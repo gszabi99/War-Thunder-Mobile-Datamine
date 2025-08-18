@@ -5,29 +5,29 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpSeasonActive, isBpActive,
-  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
-  BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods
-} = require("battlePassState.nut")
+  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, getBpIcon, seasonEndTime,
+  BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods, pointsCurStage, pointsPerStage, seasonName,
+  receiveBpRewards, isBpRewardsInProgress
+} = require("%rGui/battlePass/battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let battlePassSeason = require("battlePassSeason.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize } = require("battlePassPkg.nut")
+let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
+let { bpCurProgressbar, bpProgressText, progressIconSize } = require("%rGui/battlePass/battlePassPkg.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let bpProgressBar = require("bpProgressBar.nut")
-let battlePassRewardsList = require("battlePassRewardsList.nut")
+let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
+let battlePassRewardsList = require("%rGui/battlePass/battlePassRewardsList.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let bpRewardDesc = require("bpRewardDesc.nut")
-let { bpCardStyle, bpCardPadding, bpCardMargin } = require("bpCardsStyle.nut")
+let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
+let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-
 
 isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBattlePassWnd())
 
@@ -38,7 +38,7 @@ let rewardPannable = horizontalPannableAreaCtor(sw(100),
   [saBorders[0], saBorders[0]])
 
 function scrollToCard(scrollX, selProgress) {
-  selectedStage(selProgress)
+  selectedStage.set(selProgress)
   if (scrollX > saSize[0] / 2)
     scrollHandler.scrollToX(scrollX - saSize[0] / 2)
 }
@@ -47,12 +47,13 @@ let header = {
   size = [flex(), gamercardHeight]
   valign = ALIGN_CENTER
   children = [
-    {
+    @() {
+      watch = [seasonName, seasonEndTime]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
-      children =[
+      children = [
         backButton(closeBattlePassWnd)
-        battlePassSeason
+        battlePassSeason(seasonName.get(), seasonEndTime.get())
       ]
     }
     {
@@ -85,7 +86,7 @@ let rewardsList = @(stages, recommendInfo) @() {
   gap = hdpx(20)
   onAttach = @() scrollToCard(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
   children = [
-    bpProgressBar(stages)
+    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage)
     battlePassRewardsList(stages)
   ]
 }
@@ -111,8 +112,8 @@ let levelBlock = @() {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
-        bpCurProgressbar
-        bpProgressText
+        bpCurProgressbar(pointsCurStage, pointsPerStage)
+        bpProgressText(pointsCurStage, pointsPerStage)
       ]
     }
   ]
@@ -158,7 +159,7 @@ let rightMiddle = @() {
       rendObj = ROBJ_IMAGE
       image = Picture($"{getBpIcon(purchasedBp.get(), eventSeason.get())}:{bpIconSize[0]}:{bpIconSize[1]}:P")
       fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
-      opacity = isBpActive.value ? 1 : 0.5
+      opacity = isBpActive.get() ? 1 : 0.5
     }
     purchasedBp.get() == BP_COMMON && battlePassGoods.get()[BP_VIP] != null
         ? openPurchBpButton(loc("battlePass/upgrade"))
@@ -178,7 +179,7 @@ let rightMiddle = @() {
 }
 
 let middlePart = @(stagesList) function() {
-  let stageData = stagesList.findvalue(@(s) s.progress == selectedStage.value)
+  let stageData = stagesList.findvalue(@(s) s.progress == selectedStage.get())
   return {
     watch = selectedStage
     size = flex()
@@ -187,7 +188,12 @@ let middlePart = @(stagesList) function() {
       leftMiddle
       {
         size = flex()
-        children = stageData == null ? null : bpRewardDesc(stageData)
+        children = stageData == null ? null
+          : bpRewardDesc(stageData,
+              { lockText = "battlepass/lock", paidText = "battlepass/paid" },
+              curStage,
+              @() receiveBpRewards(stageData.progress),
+              isBpRewardsInProgress)
       }
       rightMiddle
     ]
@@ -231,7 +237,7 @@ function battlePassWnd() {
     foreach(s in stagesList.get()) {
       selProgress = s.progress
       if (s.canReceive
-          || (!s.isReceived && (!s.isPaid || isBpActive.value))) {
+          || (!s.isReceived && (!s.isPaid || isBpActive.get()))) {
         scrollX += bpCardMargin + bpCardPadding[1]
           + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0] / 2
         break

@@ -174,6 +174,10 @@ return {
     "bv-155b-1": {
       "": "germ_do335a_1"
     },
+    "bv-238": {
+      "": "germ_ger_bv_238_red",
+      "standart": "germ_ger_bv_238"
+    },
     "cn_al_khalid_1": {
       "": "pak_forest_fourcolor",
       "forest": "ussr_camo_green"
@@ -1649,6 +1653,9 @@ return {
     "it_battleship_francesco_caracciolo_nc": {
       "": "camo_blue_geometry"
     },
+    "it_battleship_leonardo_da_vinci": {
+      "": "camo_fadedgreen"
+    },
     "it_breda_52_autocannone": {
       "": "ann_camo",
       "forest": "it_camo_olive_green"
@@ -2257,6 +2264,9 @@ return {
     "me-410a-1_u2": {
       "": "germ_me_410a_1"
     },
+    "me-410b-6_r3": {
+      "": "germ_me_410b_6_re"
+    },
     "me_264": {
       "": "germ_ta152c"
     },
@@ -2548,6 +2558,10 @@ return {
       "": "uk_camo_light_stone_light_grey_slate_grey",
       "forest": "uk_camo_very_dark_drab"
     },
+    "uk_ac4_thunderbolt": {
+      "": "ann_2_camo",
+      "forest": "uk_camo_middle_deep_bronze_greens"
+    },
     "uk_armored_car_mk_2_aa": {
       "": "uk_camo_light_stone_slate_grey",
       "forest": "uk_camo_very_dark_drab"
@@ -2623,6 +2637,10 @@ return {
       "": "uk_camo_light_mud_blue_black",
       "forest": "uk_camo_very_dark_drab"
     },
+    "uk_bosvark_reskin": {
+      "": "ann_2_camo",
+      "forest": "uk_camo_middle_deep_bronze_greens"
+    },
     "uk_centurion_action_x": {
       "": "uk_camo_middle_deep_bronze_greens",
       "forest": "uk_camo_very_dark_drab"
@@ -2647,6 +2665,10 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_desert_bicolor"
     },
+    "uk_challenger_1_mk_3_gulf": {
+      "": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_challenger_2_tes": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
@@ -2664,6 +2686,10 @@ return {
     "uk_chieftain_marksman": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
+    },
+    "uk_chieftain_marksman_reskin": {
+      "": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_very_dark_drab"
     },
     "uk_chieftain_mk_10": {
       "": "uk_camo_very_dark_drab",
@@ -2730,6 +2756,10 @@ return {
     "uk_desert_warrior_reskin": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
+    },
+    "uk_desert_warrior_reskin2": {
+      "": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_very_dark_drab"
     },
     "uk_destroyer_hunt_4series": {
       "upgraded": "camo_mtb_spots"
@@ -2838,6 +2868,10 @@ return {
       "": "uk_camo_light_mud_blue_black",
       "forest": "uk_camo_very_dark_drab"
     },
+    "uk_ram_90mm_aa_reskin": {
+      "": "ann_2_camo",
+      "forest": "uk_camo_middle_deep_bronze_greens"
+    },
     "uk_ratel_20": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
@@ -2921,6 +2955,14 @@ return {
     },
     "uk_sub_valiant_nc": {
       "upgraded": "camo_bluegray_geometry"
+    },
+    "uk_t_90s_bheeshma": {
+      "": "uk_camo_bheeshma",
+      "forest": "uk_camo_very_dark_drab"
+    },
+    "uk_tog_2": {
+      "": "ann_2_camo",
+      "forest": "uk_camo_tog"
     },
     "uk_ttd": {
       "": "rsa_camo_dark_earth",
@@ -3784,6 +3826,9 @@ return {
     },
     "ussr_destroyer_rckt_pr956": {
       "upgraded": "camo_northern_fleet_contrast"
+    },
+    "ussr_ekranoplan_lun": {
+      "": "gev_ann_camo"
     },
     "ussr_is_1": {
       "": "ussr_camo_green",

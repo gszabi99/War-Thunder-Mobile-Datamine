@@ -8,8 +8,8 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { isInBattle, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { unitType } = require("%rGui/hudState.nut")
-let { INDICATOR_TYPE, indicatorTypes } = require("hudIndicatorTypes.nut")
-let { getTitleShowDist } = require("playerIndicator.nut")
+let { INDICATOR_TYPE, indicatorTypes } = require("%rGui/hud/indicators/hudIndicatorTypes.nut")
+let { getTitleShowDist } = require("%rGui/hud/indicators/playerIndicator.nut")
 
 let TRACKED_PLAYERS_INFO_UPDATE_INTERVAL_SEC = 0.5
 let FAR_DISTANCE_METERS = 100000.0

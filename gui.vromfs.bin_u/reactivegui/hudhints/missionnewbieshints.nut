@@ -34,23 +34,23 @@ let areCaptureHintsReady = mkWatched(persist, "areCaptureHintsReady", false)
 
 isInFlight.subscribe(function(v) {
   if (v) {
-    areStartMissionHintsReady(true)
-    areCaptureHintsReady(true)
+    areStartMissionHintsReady.set(true)
+    areCaptureHintsReady.set(true)
   }
 })
 
 let seriaState = mkWatched(persist, "currentHintStage", { idx = -1 , cfgId = -1, nextStageTime = 0} )
 
-let nextStageTimeSec = keepref(Computed(@() !isHudAttached.value || seriaState.value.cfgId not in seriesCfg
+let nextStageTimeSec = keepref(Computed(@() !isHudAttached.get() || seriaState.get().cfgId not in seriesCfg
   ? 0
-  : seriaState.value.nextStageTime))
+  : seriaState.get().nextStageTime))
 
-let clearHintStage = @() seriaState({cfgId = -1, idx = -1, nextStageTime = 0})
+let clearHintStage = @() seriaState.set({cfgId = -1, idx = -1, nextStageTime = 0})
 
 isInBattle.subscribe(@(_) clearHintStage())
 
 function nextStage() {
-  local { idx, cfgId } = seriaState.value
+  local { idx, cfgId } = seriaState.get()
   let cfg = seriesCfg?[cfgId]
   if (cfg == null)
     return
@@ -79,24 +79,24 @@ function addHintSeria(seriaCfgId) {
 }
 
 let startMissionHintSeria =  function (){
-  if (!areStartMissionHintsReady.value)
+  if (!areStartMissionHintsReady.get())
     return
   addHintSeria(CFG_TYPES.MISSION_START)
-  areStartMissionHintsReady(false)
+  areStartMissionHintsReady.set(false)
 }
 let captureHintSeria = function() {
-  if (!areCaptureHintsReady.value)
+  if (!areCaptureHintsReady.get())
     return
   addHintSeria(CFG_TYPES.CAPTURE_POINT)
-  areCaptureHintsReady(false)
+  areCaptureHintsReady.set(false)
 }
 
 register_command(function() {
-  areStartMissionHintsReady(true)
+  areStartMissionHintsReady.set(true)
   startMissionHintSeria()
 } , "start_mission_hint_seria")
 register_command(function() {
-  areCaptureHintsReady(true)
+  areCaptureHintsReady.set(true)
   captureHintSeria()
 }, "capture_hint_seria")
 

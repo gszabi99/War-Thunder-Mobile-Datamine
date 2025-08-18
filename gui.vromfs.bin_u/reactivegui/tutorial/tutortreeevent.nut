@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
 let logT = log_with_prefix("[EVENT_TUTOR] ")
-let { TUTORIAL_TREE_EVENT } = require("tutorialConst.nut")
-let { setTutorialConfig, isTutorialActive } = require("tutorialWnd/tutorialWndState.nut")
+let { TUTORIAL_TREE_EVENT } = require("%rGui/tutorial/tutorialConst.nut")
+let { setTutorialConfig, isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { treeEventPresets, selectedElemId, curEventUnlocks, openedTreeEventId,
   getFirstOrCurSubPreset } = require("%rGui/event/treeEvent/treeEventState.nut")
 let { getUnlockPrice, buyUnlock } = require("%rGui/unlocks/unlocks.nut")
@@ -10,7 +10,7 @@ let { getRewardsPreviewInfo, getEventCurrencyReward} = require("%rGui/quests/rew
 let { exploreRewardMsgBox } = require("%rGui/quests/questsWndPage.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
-let { markTutorialCompleted, isFinishedEvent } = require("completedTutorials.nut")
+let { markTutorialCompleted, isFinishedEvent } = require("%rGui/tutorial/completedTutorials.nut")
 
 let canStartTutorial = Computed(@() openedTreeEventId.get()
   && treeEventPresets.get().len() > 0

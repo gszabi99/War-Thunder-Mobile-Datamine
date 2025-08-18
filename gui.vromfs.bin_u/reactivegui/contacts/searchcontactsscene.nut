@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { searchContactsResult, isSearchInProgress, searchContacts, searchedNick, clearSearchData
-} = require("contactsState.nut")
+} = require("%rGui/contacts/contactsState.nut")
 let { floatingTextInput, floatingTextInputHeight } = require("%rGui/components/textInput.nut")
 let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
-let mkContactRow = require("mkContactRow.nut")
-let { mkContactActionBtnPrimary, mkContactActionBtn } = require("mkContactActionBtn.nut")
+let mkContactRow = require("%rGui/contacts/mkContactRow.nut")
+let { mkContactActionBtnPrimary, mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,
   INVITE_TO_SQUAD, REVOKE_INVITE, PROFILE_VIEW
-} = require("contactActions.nut")
+} = require("%rGui/contacts/contactActions.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
@@ -21,15 +21,15 @@ let gap = hdpx(24)
 let onChangeDelay = 0.8 
 let searchName = Watched("")
 let playerSelectedUserId = mkWatched(persist, "playerSelectedUserId", null)
-let selectedUserId = Computed(@() playerSelectedUserId.value in searchContactsResult.value
-  ? playerSelectedUserId.value
+let selectedUserId = Computed(@() playerSelectedUserId.get() in searchContactsResult.get()
+  ? playerSelectedUserId.get()
   : null)
-let hasResult = Computed(@() searchContactsResult.value.len() > 0)
-let isNotFound = Computed(@() !hasResult.value && searchedNick.value != null)
+let hasResult = Computed(@() searchContactsResult.get().len() > 0)
+let isNotFound = Computed(@() !hasResult.get() && searchedNick.get() != null)
 
 function startSearch() {
-  if (searchName.value != "" && searchName.value != searchedNick.value)
-    searchContacts(searchName.value)
+  if (searchName.get() != "" && searchName.get() != searchedNick.get())
+    searchContacts(searchName.get())
 }
 
 searchName.subscribe(@(_) resetTimeout(onChangeDelay, startSearch))
@@ -63,7 +63,7 @@ let resetBtn = {
   children = closeWndBtn(
     function() {
       clearSearchData()
-      searchName(searchedNick.value ?? "")
+      searchName.set(searchedNick.get() ?? "")
     },
     { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
 }
@@ -91,13 +91,13 @@ let contactsList = {
         watch = searchContactsResult
         size = FLEX_H
         flow = FLOW_VERTICAL
-        children = searchContactsResult.value
+        children = searchContactsResult.get()
           .map(@(name, uid) { uid, name })
           .values()
           .sort(@(a, b) a.name <=> b.name)
           .map(@(c, idx) mkContactRow(c.uid, idx,
-            Computed(@() selectedUserId.value == c.uid),
-            @() playerSelectedUserId(c.uid)))
+            Computed(@() selectedUserId.get() == c.uid),
+            @() playerSelectedUserId.set(c.uid)))
       }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
     mkScrollArrow(scrollHandler, MR_B)
   ]
@@ -127,9 +127,9 @@ let notFoundMsg = {
 let contactsBlock = @() {
   watch = [isSearchInProgress, hasResult, isNotFound]
   size = flex()
-  children = isSearchInProgress.value ? inProgressInfo
-    : hasResult.value ? contactsList
-    : isNotFound.value ? notFoundMsg
+  children = isSearchInProgress.get() ? inProgressInfo
+    : hasResult.get() ? contactsList
+    : isNotFound.get() ? notFoundMsg
     : null
 }
 
@@ -139,22 +139,22 @@ let buttons = @() {
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   gap
-  children = selectedUserId.value == null ? null
+  children = selectedUserId.get() == null ? null
     : [
-        mkContactActionBtn(PROFILE_VIEW, selectedUserId.value, { hotkeys = ["^J:LT"] })
-        mkContactActionBtn(REMOVE_FROM_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RB"] })
-        mkContactActionBtn(ADD_TO_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RT"] })
-        mkContactActionBtn(REVOKE_INVITE, selectedUserId.value, { hotkeys = ["^J:LB"] })
-        mkContactActionBtnPrimary(INVITE_TO_SQUAD, selectedUserId.value, { hotkeys = ["^J:Y"] })
-        mkContactActionBtn(CANCEL_INVITE, selectedUserId.value, { hotkeys = ["^J:RB"] })
-        mkContactActionBtnPrimary(INVITE_TO_FRIENDS, selectedUserId.value, { hotkeys = ["^J:X | Enter"] })
+        mkContactActionBtn(PROFILE_VIEW, selectedUserId.get(), { hotkeys = ["^J:LT"] })
+        mkContactActionBtn(REMOVE_FROM_BLACKLIST, selectedUserId.get(), { hotkeys = ["^J:RB"] })
+        mkContactActionBtn(ADD_TO_BLACKLIST, selectedUserId.get(), { hotkeys = ["^J:RT"] })
+        mkContactActionBtn(REVOKE_INVITE, selectedUserId.get(), { hotkeys = ["^J:LB"] })
+        mkContactActionBtnPrimary(INVITE_TO_SQUAD, selectedUserId.get(), { hotkeys = ["^J:Y"] })
+        mkContactActionBtn(CANCEL_INVITE, selectedUserId.get(), { hotkeys = ["^J:RB"] })
+        mkContactActionBtnPrimary(INVITE_TO_FRIENDS, selectedUserId.get(), { hotkeys = ["^J:X | Enter"] })
       ]
 }
 
 return {
   key = {}
   size = flex()
-  onAttach = @() searchName(searchedNick.value ?? "")
+  onAttach = @() searchName.set(searchedNick.get() ?? "")
   flow = FLOW_VERTICAL
   gap
   children = [

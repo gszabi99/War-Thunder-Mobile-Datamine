@@ -18,7 +18,7 @@ let winchImages = {
   [AB_WINCH_DETACH] = "hud_winch_detach.svg",
 }
 
-let winchAction = Computed(@() actionBarItems.value?[winchImages.findindex(@(_, aType) aType in actionBarItems.value)])
+let winchAction = Computed(@() actionBarItems.get()?[winchImages.findindex(@(_, aType) aType in actionBarItems.get())])
 
 let stateFlags = Watched(0)
 function winchButton(scale) {
@@ -26,24 +26,24 @@ function winchButton(scale) {
   let imgSize = scaleEven(imgSizeBase, scale)
   return function() {
     let res = { watch = [winchAction, stateFlags], key = winchAction }
-    if (winchAction.value == null)
+    if (winchAction.get() == null)
       return res
 
-    let { shortcutIdx, selected, active } = winchAction.value
+    let { shortcutIdx, selected, active } = winchAction.get()
     let color = selected || active ? colorActive : colorInactive
-    let image = winchImages[getActionType(winchAction.value)]
+    let image = winchImages[getActionType(winchAction.get())]
     let shortcutId = $"ID_ACTION_BAR_ITEM_{shortcutIdx + 1}"
 
     return res.__update({
       size = [bgSize, bgSize]
       rendObj = ROBJ_BOX
-      borderColor = stateFlags.value & S_ACTIVE ? 0 : color
+      borderColor = stateFlags.get() & S_ACTIVE ? 0 : color
       fillColor = btnBgColor.empty
       borderWidth
       behavior = Behaviors.Button
       cameraControl = true
       onClick = @() toggleShortcut(shortcutId)
-      onElemState = @(v) stateFlags(v)
+      onElemState = @(v) stateFlags.set(v)
       hotkeys = mkGamepadHotkey(shortcutId)
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER

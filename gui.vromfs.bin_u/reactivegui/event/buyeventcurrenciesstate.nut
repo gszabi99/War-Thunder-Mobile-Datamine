@@ -9,7 +9,7 @@ let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentati
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { activeUnlocks, allUnlocksDesc, hasUnlockReward } = require("%rGui/unlocks/unlocks.nut")
-let { eventLootboxesRaw } = require("eventLootboxes.nut")
+let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 
 
 let currencyIdToOpen = mkWatched(persist, "currencyIdToOpen", null)
@@ -49,6 +49,7 @@ let parentEventId = Computed(function() {
 })
 let isParentEventActive = Computed(@() parentEventId.get() == MAIN_EVENT_ID ? isEventActive.get()
   : parentEventId.get() != null)
+
 let currencyId = Computed(@() (parentEventName.get() == null || isParentEventActive.get()) ? currencyIdToOpen.get() : null)
 let currencyWndOpenCount = Computed(function(prev) {
   if (currencyId.get() == null)

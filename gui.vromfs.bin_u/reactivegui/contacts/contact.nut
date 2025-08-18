@@ -9,12 +9,12 @@ let allContacts = hardPersistWatched("allContacts", {})
 
 let isValidContactNick = @(c) c.value.realnick != invalidNickName
 let isValidUserIdNick = @(userId)
-  (allContacts.value?[userId.tostring()].realnick ?? invalidNickName) != invalidNickName
+  (allContacts.get()?[userId.tostring()].realnick ?? invalidNickName) != invalidNickName
 
 function Contact(userId) {
   if (type(userId) != "string")
     userId = userId.tostring()
-  return Computed(@() allContacts.value?[userId])
+  return Computed(@() allContacts.get()?[userId])
 }
 
 let mkContactTbl = @(userIdStr, name)
@@ -25,18 +25,18 @@ let initContact = @(userIdStr, name)
 
 function updateContact(userId, name = invalidNickName) {
   let userIdStr = userId.tostring()
-  if (userIdStr not in allContacts.value) {
+  if (userIdStr not in allContacts.get()) {
     initContact(userIdStr, name)
     return Contact(userIdStr)
   }
-  let contact = allContacts.value[userIdStr]
+  let contact = allContacts.get()[userIdStr]
   if (name != invalidNickName && name != contact.realnick)
     allContacts.mutate(@(v) v[userIdStr] <- contact.__merge({ realnick = name }))
   return Contact(userIdStr)
 }
 
 function updateContactNames(names) {
-  let filtered = names.filter(@(userId, name) type(userId) == "string" && allContacts.value?[userId].realnick != name)
+  let filtered = names.filter(@(userId, name) type(userId) == "string" && allContacts.get()?[userId].realnick != name)
   if (filtered.len() == 0)
     return
   allContacts.mutate(function(v) {

@@ -14,7 +14,7 @@ let { isInQueue } = require("%appGlobals/queueState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView,
   skipUnseenMessageAnimOnce, isUnseenGoodsVisible, unseenPurchaseUnitPlateKey
-} = require("unseenPurchasesState.nut")
+} = require("%rGui/shop/unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lootboxes, curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -52,7 +52,7 @@ let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkPro
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkMsgConvert, mkMsgDiscount } = require("unseenPurchaseAddMessage.nut")
+let { mkMsgConvert, mkMsgDiscount } = require("%rGui/shop/unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -126,7 +126,7 @@ let stackData = Computed(function() {
   let stackRaw = {}
   local convertions = []
   let lboxes = lootboxes.get()
-  foreach (purch in activeUnseenPurchasesGroup.value.list) {
+  foreach (purch in activeUnseenPurchasesGroup.get().list) {
     convertions.extend(purch?.conversions ?? [])
     let conversionList = []
     foreach(c in purch?.conversions ?? [])
@@ -208,15 +208,15 @@ let stackData = Computed(function() {
   }.filter(@(v) v.len() != 0))
 })
 
-let needShow = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.value
+let needShow = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
   && ((stackData.get()?.rewardIcons.len() ?? 0) > 0
     || (stackData.get()?.unitPlates.len() ?? 0) > 0
     || (stackData.get()?.battleMod.len() ?? 0) > 0)
-  && activeUnseenPurchasesGroup.value.list.len() != 0
+  && activeUnseenPurchasesGroup.get().list.len() != 0
   && isInMenu.get()
-  && isLoggedIn.value
-  && !isTutorialActive.value
-  && !isInQueue.value
+  && isLoggedIn.get()
+  && !isTutorialActive.get()
+  && !isInQueue.get()
   && !hasJustUnlockedUnitsAnimation.get()))
 
 let WND_UID = "unseenPurchaseWindow"
@@ -376,7 +376,7 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
     valign = ALIGN_CENTER
     children = [
       mkHighlight(startDelay, aRewardIconFlareScale)
-      decoratorCompByType?[decoratorType.value](decoratorId)
+      decoratorCompByType?[decoratorType.get()](decoratorId)
         .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
     ]
   }
@@ -734,7 +734,7 @@ function mkUnitButton(unitInfo, myUnits, cUnitInProgress, cSlots, cCampaignSlots
     let onClick = @() openSelectUnitToSlotWnd(unitInfo.id, unseenPurchaseUnitPlateKey(unitInfo.id))
     return cSlots.findindex(@(slot) slot.name == unitInfo.id) == null
       ? textButtonPrimary(loc("mainmenu/btnEquip"), onClick, btnOvr)
-      : textButtonCommon(loc("mainmenu/btnEquipped"), onClick, btnOvr)
+      : textButtonCommon(loc("mainmenu/btnEquipped"), null, btnOvr)
   }
 
   return cUnitInProgress == null && unitInfo.id in myUnits && !myUnits[unitInfo.id].isCurrent
@@ -1087,7 +1087,7 @@ function onCloseRequest() {
     requestOpenUnitPurchEffect(unit)
   }
   
-  markPurchasesSeen(activeUnseenPurchasesGroup.value.list.keys())
+  markPurchasesSeen(activeUnseenPurchasesGroup.get().list.keys())
 }
 
 function mkMsgContent(stackDataV, purchGroup, onClick) {
@@ -1155,9 +1155,9 @@ let showAddRewardMessage = @() addModalWindow(bgShadedDark.__merge({
   key = $"{WND_UID}_add"
   size = flex()
   function onAttach() {
-    if (!skipUnseenMessageAnimOnce.value)
+    if (!skipUnseenMessageAnimOnce.get())
       return
-    skipUnseenMessageAnimOnce(false)
+    skipUnseenMessageAnimOnce.set(false)
     skipAnims()
   }
   onClick = onCloseRequest
@@ -1192,9 +1192,9 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
   key = WND_UID
   size = flex()
   function onAttach() {
-    if (!skipUnseenMessageAnimOnce.value)
+    if (!skipUnseenMessageAnimOnce.get())
       return
-    skipUnseenMessageAnimOnce(false)
+    skipUnseenMessageAnimOnce.set(false)
     skipAnims()
   }
   onClick

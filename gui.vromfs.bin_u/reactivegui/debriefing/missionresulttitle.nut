@@ -30,6 +30,11 @@ let missionResultParamsByType = {
     color = 0xFFFB5F28
     animTextColor = 0xFFFFA07F
   }
+  finished = {
+    text = @(_) loc("MISSION_FINISHED")
+    color = 0xFFFFB70B
+    animTextColor = 0xFFFFDA83
+  }
   inProgress = {
     text = @(campaign) loc(locByCampaign?[campaign] ?? locByCampaign.default)
     color = 0xFFFFFFFF
@@ -110,12 +115,14 @@ let mkMissionResultLine = @(needAnim, missionResult) {
 }
 
 function mkMissionResultTitle(debrData, needAnim) {
-  let { isWon = false, isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false, campaign = "" } = debrData
+  let { isWon = false, isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false,
+    gameType = 0, campaign = "" } = debrData
   let missionResult = debrData == null ? missionResultParamsByType.unknown
     : kickInactivity ? missionResultParamsByType.inactivity
     : isDisconnected ? missionResultParamsByType.disconnect
     : isDeserter ? missionResultParamsByType.deserter
     : !isFinished ? missionResultParamsByType.inProgress
+    : (gameType & GT_FFA) != 0 ? missionResultParamsByType.finished
     : isWon ? missionResultParamsByType.victory
     : missionResultParamsByType.defeat
   return {

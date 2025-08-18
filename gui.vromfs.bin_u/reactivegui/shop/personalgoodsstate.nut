@@ -7,7 +7,7 @@ let { check_new_personal_goods, personalGoodsInProgress } = require("%appGlobals
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { SC_FEATURED } = require("shopConst.nut")
+let { SC_FEATURED } = require("%rGui/shop/shopConst.nut")
 
 
 let personalGoodsCfg = Computed(@() serverConfigs.get()?.personalGoodsCfg ?? {})

@@ -24,7 +24,7 @@ function loadUnseenUnits() {
         (unit.name not in seenBlk))
       res[unit.name] <- true
   }
-  unseenUnits(res)
+  unseenUnits.set(res)
 }
 
 availableUnitsList.subscribe(@(_) loadUnseenUnits())

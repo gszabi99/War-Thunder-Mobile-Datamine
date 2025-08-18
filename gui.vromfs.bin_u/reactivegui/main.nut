@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 let { get_time_msec } = require("dagor.time")
-let isScriptsLoading = require("isScriptsLoading.nut")
+let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
 let setIsScriptsLoading = @(v) isScriptsLoading.set(v)
 isScriptsLoading.whiteListMutatorClosure(setIsScriptsLoading)
 
@@ -11,26 +11,26 @@ let startLoadTime = get_time_msec()
 clear_vm_entity_systems()
 
 require("%appGlobals/sqevents.nut")
-require("initVM.nut")
+require("%rGui/initVM.nut")
 require("%appGlobals/pServer/pServerApi.nut")
-require("consoleCmd.nut")
+require("%rGui/consoleCmd.nut")
 require("%sqstd/regScriptProfiler.nut")("darg", dlog) 
 require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/logEvents.nut")
 require("%rGui/options/guiOptions.nut") 
 require("%appGlobals/clientState/initWindowState.nut")
-require("account/legalAcceptWnd.nut")
+require("%rGui/account/legalAcceptWnd.nut")
 require("%globalScripts/windowStateEs.nut")
 require("%appGlobals/windowState.nut").allowDebug(true)
-require("contacts/contactsState.nut") 
-require("squad/squadManager.nut") 
-require("initHangar.nut")
-require("updater/connectionStatus/initConnectionStatus.nut")
-require("updater/initAddonsState.nut")
-require("activeControls.nut")
-require("login/consentGoogleState.nut")
-require("login/previewIDFAWnd.nut")
-require("login/reloginAuto.nut")
+require("%rGui/contacts/contactsState.nut") 
+require("%rGui/squad/squadManager.nut") 
+require("%rGui/initHangar.nut")
+require("%rGui/updater/connectionStatus/initConnectionStatus.nut")
+require("%rGui/updater/initAddonsState.nut")
+require("%rGui/activeControls.nut")
+require("%rGui/login/consentGoogleState.nut")
+require("%rGui/login/previewIDFAWnd.nut")
+require("%rGui/login/reloginAuto.nut")
 require("%rGui/debugTools/debugSafeArea.nut")
 
 let { get_platform_string_id } = require("platform")
@@ -49,13 +49,13 @@ let fpsLineComp = require("%rGui/mainMenu/fpsLineComp.nut")
 let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { needCursorForActiveInputDevice, isGamepad } = require("%appGlobals/activeControls.nut")
 let { enableClickButtons }  = require("%rGui/controlsMenu/gpActBtn.nut")
-let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
-let { debugTouchesUi, debugTouchesHandlerComp, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
+let hotkeysPanel = require("%rGui/controlsMenu/hotkeysPanel.nut")
+let { debugTouchesUi, debugTouchesHandlerComp, isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
-let { tooltipComp } = require("tooltip.nut")
-let { waitboxes } = require("notifications/waitBox.nut")
-let { bgShadedDark } = require("style/backgrounds.nut")
-let { spinnerOpacityAnim, spinner } = require("components/spinner.nut")
+let { tooltipComp } = require("%rGui/tooltip.nut")
+let { waitboxes } = require("%rGui/notifications/waitBox.nut")
+let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { spinnerOpacityAnim, spinner } = require("%rGui/components/spinner.nut")
 
 log($"DaRg scripts load before login {get_time_msec() - startLoadTime} msec")
 setIsScriptsLoading(false)
@@ -64,12 +64,12 @@ local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
 
 let forceHideCursor = Watched(false)
-let needCursorInHud = Computed(@() !isGamepad.get() || !isHudAttached.value || hasModalWindows.get())
-let needShowCursor  = Computed(@() !forceHideCursor.value
+let needCursorInHud = Computed(@() !isGamepad.get() || !isHudAttached.get() || hasModalWindows.get())
+let needShowCursor  = Computed(@() !forceHideCursor.get()
                                   && needCursorForActiveInputDevice.get()
-                                  && (!isInBattle.get() || (isHudVisible.get() && needCursorInHud.value)))
+                                  && (!isInBattle.get() || (isHudVisible.get() && needCursorInHud.get())))
 
-register_command(@() forceHideCursor(!forceHideCursor.value), "ui.force_hide_mouse_pointer")
+register_command(@() forceHideCursor.set(!forceHideCursor.get()), "ui.force_hide_mouse_pointer")
 
 isHudAttached.subscribe(@(v) enableClickButtons(!v))
 enableClickButtons(!isHudAttached.get())
@@ -97,7 +97,7 @@ function loadAfterLoginImpl() {
   })
 }
 
-if (isReadyToFullLoad.value || !isLoginRequired.value)
+if (isReadyToFullLoad.get() || !isLoginRequired.get())
   loadAfterLoginImpl() 
 function loadAfterLogin() {
   if (sceneAfterLogin != null)
@@ -114,11 +114,11 @@ isInBattle.subscribe(@(_) closeAllModalWindows())
 
 let debugSa = mkWatched(persist, "debugSa", false)
 register_command(function() {
-  debugSa(!debugSa.value)
-  log("Debug show safearea: ", debugSa.value)
+  debugSa.set(!debugSa.get())
+  log("Debug show safearea: ", debugSa.get())
 }, "debug.safeAreaShow")
 
-let debugSafeArea = @() !debugSa.value ? { watch = debugSa }
+let debugSafeArea = @() !debugSa.get() ? { watch = debugSa }
   : {
       watch = debugSa
       size = saSize
@@ -162,7 +162,7 @@ let waitbox = @() {
 }
 
 return function() {
-  let children = !isLoggedIn.value && isLoginRequired.value
+  let children = !isLoggedIn.get() && isLoginRequired.get()
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.get() ? [loadingScreen]
     : [sceneAfterLogin]
@@ -177,6 +177,6 @@ return function() {
     key = "sceneRoot"
     size = flex()
     children
-    cursor = needShowCursor.value ? cursor : null
+    cursor = needShowCursor.get() ? cursor : null
   }
 }

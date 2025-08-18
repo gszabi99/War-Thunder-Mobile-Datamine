@@ -17,8 +17,8 @@ function initOptions() {
   
   set_show_attachables(true)
 
-  if (failedLoadPreset.value != null) {
-    let preset = failedLoadPreset.value
+  if (failedLoadPreset.get() != null) {
+    let preset = failedLoadPreset.get()
     let defPath = getDefaultPresetPath()
     failedLoadPreset(null)
     if (preset == defPath)

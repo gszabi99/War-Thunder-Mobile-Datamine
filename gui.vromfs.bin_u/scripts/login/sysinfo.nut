@@ -19,7 +19,7 @@ let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 function getSysInfo() {
   let tbl = get_user_system_info()
-  tbl.userName <- myUserName.value
+  tbl.userName <- myUserName.get()
   tbl.appsflyer_id <- getAppsFlyerUID()
   tbl.gameVersion <- get_game_version_str()
   tbl.apkVersion <- get_base_game_version_str()

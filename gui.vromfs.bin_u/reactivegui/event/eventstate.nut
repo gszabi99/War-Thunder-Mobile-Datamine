@@ -11,7 +11,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campaignsLevelInfo, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
-let { eventLootboxesRaw, orderLootboxesBySlot } = require("eventLootboxes.nut")
+let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
@@ -19,7 +19,7 @@ let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-
+let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 
 let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
@@ -36,10 +36,10 @@ eventWndOpenCounter.subscribe(function(v) {
     closeEventWndLootbox()
 })
 
-let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
+let eventEndsAt = Computed(@() userstatStats.get()?.stats.season["$endsAt"] ?? 0)
 let eventSeasonIdx = Computed(@() userstatStats.get()?.stats.season["$index"] ?? 0)
 let eventSeason = Computed(@() getSeasonPrefix(eventSeasonIdx.get()))
-let isEventActive = Computed(@() unlockTables.value?.season == true)
+let isEventActive = Computed(@() unlockTables.get()?.season == true)
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
@@ -47,7 +47,7 @@ let unseenLootboxes = Computed(function() {
   let res = {}
   foreach (lootbox in eventLootboxesRaw.get()) {
     let eventId = lootbox?.meta.event_id ?? MAIN_EVENT_ID
-    if (lootbox.name in seenLootboxes.value?[eventId])
+    if (lootbox.name in seenLootboxes.get()?[eventId])
       continue
     if (eventId not in res)
       res[eventId] <- {}
@@ -77,6 +77,7 @@ let eventsLists = Computed(function() {
       eventName = event_id
       endsAt
       season
+      tableId
     }
     if (isTreeEvent)
       eventsWithTree[event_id] <- eventData
@@ -113,7 +114,7 @@ let specialEventsLootboxesState = Computed(function() {
     let { eventName } = se
     if (eventName in lootboxesEventIds)
       res.withLootboxes[eventName] <- se
-    else
+    else if (eventName not in separateEventModes.get())
       res.withoutLootboxes[eventName] <- se
   }
   return res
@@ -132,13 +133,13 @@ function getEventLoc(eventId, eSeason, sEvents) {
 }
 let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), allSpecialEvents.get()))
 
-let curEventSeason = Computed(@() curEvent.value == MAIN_EVENT_ID
-    ? (userstatStats.value?.stats.season["$index"] ?? 0)
-  : specialEvents.value?[curEvent.value].season)
+let curEventSeason = Computed(@() curEvent.get() == MAIN_EVENT_ID
+    ? (userstatStats.get()?.stats.season["$index"] ?? 0)
+  : specialEvents.get()?[curEvent.get()].season)
 
-let curEventEndsAt = Computed(@() curEvent.value == MAIN_EVENT_ID
-    ? eventEndsAt.value
-  : (specialEvents.value?[curEvent.value].endsAt ?? 0))
+let curEventEndsAt = Computed(@() curEvent.get() == MAIN_EVENT_ID
+    ? eventEndsAt.get()
+  : (specialEvents.get()?[curEvent.get()].endsAt ?? 0))
 
 let curEventName = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? curEvent.get()
@@ -148,9 +149,9 @@ let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID ? isEventAct
   : curEvent.get() in specialEvents.get())
 
 let curEventLootboxes = Computed(@()
-  orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.value)))
+  orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.get())))
 
-let curEventCurrencies = Computed(@() curEventLootboxes.value.reduce(function(res, l) {
+let curEventCurrencies = Computed(@() curEventLootboxes.get().reduce(function(res, l) {
   let currencyId = l?.currencyId
   if (currencyId != null && res.findindex(@(v) v == currencyId) == null)
     res.append(currencyId)
@@ -158,7 +159,7 @@ let curEventCurrencies = Computed(@() curEventLootboxes.value.reduce(function(re
 }, []))
 
 function saveSeenLootboxes(ids, eventName) {
-  ids = ids.filter(@(id) id not in seenLootboxes.value?[eventName])
+  ids = ids.filter(@(id) id not in seenLootboxes.get()?[eventName])
   if (ids.len() == 0)
     return
   seenLootboxes.mutate(function(v) {
@@ -169,7 +170,7 @@ function saveSeenLootboxes(ids, eventName) {
   })
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_LOOTBOXES)
   let blk = sBlk.addBlock(eventName)
-  foreach (id, isSeen in seenLootboxes.value?[eventName] ?? {})
+  foreach (id, isSeen in seenLootboxes.get()?[eventName] ?? {})
     if (isSeen)
       blk[id] = true
   eventbus_send("saveProfile", {})
@@ -181,7 +182,7 @@ function loadSeenLootboxes() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_LOOTBOXES]
   if (!isDataBlock(htBlk)) {
-    seenLootboxes({})
+    seenLootboxes.set({})
     return
   }
   let res = {}
@@ -191,7 +192,7 @@ function loadSeenLootboxes() {
     if (seasonSeenLootboxes.len() > 0)
       res[season] <- seasonSeenLootboxes
   }
-  seenLootboxes(res)
+  seenLootboxes.set(res)
 }
 
 function loadLootboxesAvailability() {
@@ -200,16 +201,16 @@ function loadLootboxesAvailability() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[LOOTBOXES_AVAILABILITY]
   if (!isDataBlock(htBlk)) {
-    lootboxesAvailability({})
+    lootboxesAvailability.set({})
     return
   }
   let res = {}
   eachParam(htBlk, @(canBuy, id) res[id] <- canBuy)
-  lootboxesAvailability(res)
+  lootboxesAvailability.set(res)
 }
 
 function updateLootboxAvailability(lootboxes) {
-  lootboxes = lootboxes.filter(@(canBuy, id) lootboxesAvailability.value?[id] != canBuy)
+  lootboxes = lootboxes.filter(@(canBuy, id) lootboxesAvailability.get()?[id] != canBuy)
   if (lootboxes.len() == 0)
     return
   lootboxesAvailability.mutate(function(v) {
@@ -218,13 +219,13 @@ function updateLootboxAvailability(lootboxes) {
   })
   let sBlk = get_local_custom_settings_blk()
   let blk = sBlk.addBlock(LOOTBOXES_AVAILABILITY)
-  foreach (id, canBuy in lootboxesAvailability.value ?? {})
+  foreach (id, canBuy in lootboxesAvailability.get() ?? {})
     blk[id] = canBuy
   eventbus_send("saveProfile", {})
 }
 
 function updateUnseenLootboxesShowOnce(lootboxes) {
-  lootboxes = lootboxes.filter(@(showMark, id) unseenLootboxesShowOnce.value?[id] != showMark)
+  lootboxes = lootboxes.filter(@(showMark, id) unseenLootboxesShowOnce.get()?[id] != showMark)
   if (lootboxes.len() == 0)
     return
   unseenLootboxesShowOnce.mutate(function(v) {
@@ -233,9 +234,9 @@ function updateUnseenLootboxesShowOnce(lootboxes) {
   })
 }
 
-if (seenLootboxes.value.len() == 0)
+if (seenLootboxes.get().len() == 0)
   loadSeenLootboxes()
-if (lootboxesAvailability.value.len() == 0)
+if (lootboxesAvailability.get().len() == 0)
   loadLootboxesAvailability()
 
 isSettingsAvailable.subscribe(function(_) {
@@ -248,7 +249,7 @@ balance.subscribe(function(v) {
   let availability = {}
   foreach (lootbox in eventLootboxesRaw.get()) {
     let canBuy = (v?[lootbox.currencyId] ?? 0) >= lootbox.price
-    if (canBuy && lootboxesAvailability.value?[lootbox.name] == false)
+    if (canBuy && lootboxesAvailability.get()?[lootbox.name] == false)
       showOnce[lootbox.name] <- lootbox?.meta.event_id ?? MAIN_EVENT_ID
     availability[lootbox.name] <- canBuy
   }
@@ -267,7 +268,7 @@ function openEventWnd(eventName = MAIN_EVENT_ID) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
   }
-  openEventInfo({
+  openEventInfo.set({
     eventName
     counter = curEvent.get() == eventName ? eventWndOpenCounter.get() + 1 : 1
   })
@@ -277,6 +278,7 @@ let gamercardItemsBySpecialEvent = {
   christmas = [ "firework_kit" ]
   event_new_year = [ "firework_kit" ]
   event_lunar_ny_season = [ "firework_kit" ]
+  anniversary_2025 = [ "firework_kit" ]
 }
 let specialEventGamercardItems = Computed(function() {
   let specialEventsList = specialEvents.get().reduce(function(acc, e) {
@@ -326,13 +328,13 @@ let isFitSeasonRewardsRequirements = Computed(function() {
 })
 
 register_command(function() {
-  seenLootboxes({})
+  seenLootboxes.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_LOOTBOXES)
   eventbus_send("saveProfile", {})
 }, "debug.reset_seen_lootboxes")
 
 register_command(function() {
-  lootboxesAvailability({})
+  lootboxesAvailability.set({})
   get_local_custom_settings_blk().removeBlock(LOOTBOXES_AVAILABILITY)
   eventbus_send("saveProfile", {})
 }, "debug.reset_lootboxes_availability")

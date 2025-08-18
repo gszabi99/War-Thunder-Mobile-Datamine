@@ -16,7 +16,7 @@ let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
-} = require("goodsPreviewPkg.nut")
+} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
@@ -48,10 +48,10 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 let { backButtonHeight } = require("%rGui/components/backButton.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let mkGiftSchRewardBtn = require("mkGiftSchRewardBtn.nut")
-let mkPersonalDiscountBtn = require("mkPersonalDiscountBtn.nut")
+let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut")
+let mkPersonalDiscountBtn = require("%rGui/shop/goodsPreview/mkPersonalDiscountBtn.nut")
 let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
-let skipOfferBtn = require("skipOfferBtn.nut")
+let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
 
 let TIME_TO_SHOW_UI = 5.0 
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
@@ -101,8 +101,8 @@ isWindowAttached.subscribe(function(v) {
     return
   }
 
-  needShowUi.set(skipAnimsOnce.value)
-  if (!skipAnimsOnce.value) {
+  needShowUi.set(skipAnimsOnce.get())
+  if (!skipAnimsOnce.get()) {
     resetTimeout(TIME_TO_SHOW_UI, showUi)
     hideModals(HIDE_PREVIEW_MODALS_ID)
   }
@@ -123,12 +123,12 @@ isPurchEffectVisible.subscribe(function(v) {
 eventbus_subscribe("onCutsceneUnitShoot", @(_) resetTimeout(TIME_TO_SHOW_UI_AFTER_SHOT, showUi))
 
 let curSelectedUnitId = Watched("")
-previewGoodsUnit.subscribe(@(v) curSelectedUnitId(v?.name ?? ""))
+previewGoodsUnit.subscribe(@(v) curSelectedUnitId.set(v?.name ?? ""))
 
 let unitForShow = keepref(Computed(function() {
-  if (!isWindowAttached.value || previewGoodsUnit.get() == null)
+  if (!isWindowAttached.get() || previewGoodsUnit.get() == null)
     return null
-  let unitName = curSelectedUnitId.value
+  let unitName = curSelectedUnitId.get()
   local res = unitName == previewGoodsUnit.get().name || unitName == "" ? previewGoodsUnit.get()
     : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.get().__merge({ name = unitName }))
 
@@ -158,17 +158,21 @@ let cutSceneWaitForVisualsLoaded = get_settings_blk()?.unitOffer.cutSceneWaitFor
 let transitionThroughBlackScreen = get_settings_blk()?.unitOffer.transitionThroughBlackScreen ?? false
 
 let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
-eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
-eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
+eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene.set(false))
+eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene.set(true))
 
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.value?.name ?? "")
-  && readyToShowCutScene.value ))
+  && readyToShowCutScene.get() ))
 
 function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
-  else if (!needShowUi.value && !skipAnimsOnce.value) {
+  else if (!needShowUi.get() && !skipAnimsOnce.get()) {
+    if (unitForShow.get()?.name == "ussr_ekranoplan_lun") {
+      needShowUi.set(true)
+      return
+    }
     let unitType = unitForShow.value?.unitType ?? ""
     local presetType = TANK_PRESET_TYPE
     if (unitType == SHIP)
@@ -301,7 +305,7 @@ function mkAirBranchUnitPlate(unit, platoonUnit, onSelectUnit){
 function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let p = getUnitPresentation(platoonUnit)
   let platoonUnitFull = unit.__merge(platoonUnit)
-  let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.value == platoonUnit.name)
+  let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.get() == platoonUnit.name)
   let size = idx != 0 ? unitPlateSize
     : onSelectUnit == null ? unitPlateSizeSingle
     : unitPlateSizeMain
@@ -320,7 +324,7 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(platoonUnitFull)
           mkUnitTexts(platoonUnitFull, loc(p.locId))
-          !isLocked.value ? mkUnitInfo(unit) : null
+          !isLocked.get() ? mkUnitInfo(unit) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.get())
         ]
       }
@@ -337,7 +341,7 @@ let platoonUnitsBlock = @() {
   children = previewGoodsUnit.get() == null ? null
     : [ { name = previewGoodsUnit.get().name, reqLevel = 0 } ]
         .extend(previewGoodsUnit.get()?.platoonUnits)
-        .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.get(), pu, @() curSelectedUnitId(pu.name)))
+        .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.get(), pu, @() curSelectedUnitId.set(pu.name)))
 }
 
 let singleUnitBlock = @() {
@@ -617,10 +621,10 @@ let previewWnd = @() {
 
   function onAttach() {
     addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
-    isWindowAttached(true)
+    isWindowAttached.set(true)
     if (transitionThroughBlackScreen) {
       showBlackOverlay()
-      if (!readyToShowCutScene.value)
+      if (!readyToShowCutScene.get())
         readyToShowCutScene.subscribe(closeBlackOverlayOnceOnVisualsLoaded)
       else
         closeBlackOverlay()
@@ -629,10 +633,10 @@ let previewWnd = @() {
 
   function onDetach() {
     removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
-    isWindowAttached(false)
+    isWindowAttached.set(false)
   }
 
-  children = !needShowUi.value ? doubleClickListener(@() needShowUi(true))
+  children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true))
     : [
         {
           size = FLEX_H

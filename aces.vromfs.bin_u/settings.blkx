@@ -307,6 +307,10 @@
         "campaign": "ships"
       }
     },
+    "pkg_battle_royale_event": {},
+    "pkg_lvl_hangar_bd": {
+      "hangarPath": "config/hangar_field_birthday.blk"
+    },
     "pkg_tier_1_naval": {
       "conditions": {
         "campaign": "ships",
@@ -1092,6 +1096,18 @@
         "mRank": 6
       }
     },
+    "pkg_it_battleship_leonardo_da_vinci": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_ussr_ekranoplan_lun": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1630,6 +1646,18 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 9
+      }
+    },
+    "pkg_uk_tog_2": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_uk_t_90s_bheeshma": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
       }
     },
     "pkg_environment_uhq": {

@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
-let { isVoiceMsgStickActive, voiceMsgStickDelta, voiceMsgCooldownEndTime, COOLDOWN_TIME_SEC, isVoiceMsgEnabled
+let { isVoiceMsgAllowedInMission, isVoiceMsgStickActive, voiceMsgStickDelta,
+  voiceMsgCooldownEndTime, COOLDOWN_TIME_SEC, isVoiceMsgEnabled
 } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { hudUnitType } = require("%rGui/hudState.nut")
 let { tuningUnitType } = require("%rGui/hudTuning/hudTuningState.nut")
@@ -37,4 +38,5 @@ let { stickControl, stickView } = mkMiniStick({
 return {
   voiceMsgStickBlock = stickControl
   voiceMsgStickView = stickView
+  isVoiceMsgStickVisibleInBattle = isVoiceMsgAllowedInMission
 }

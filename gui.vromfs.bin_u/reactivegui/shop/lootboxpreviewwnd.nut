@@ -4,8 +4,8 @@ let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { lootboxPreviewContent } = require("lootboxPreviewContent.nut")
-let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("lootboxPreviewState.nut")
+let { lootboxPreviewContent } = require("%rGui/shop/lootboxPreviewContent.nut")
+let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 
 let defaultBgImage = "ui/images/event_bg.avif"
 let bgImage = keepref(Computed(@() lootboxPreviewBg?[previewLootbox.get()?.name] ?? defaultBgImage))

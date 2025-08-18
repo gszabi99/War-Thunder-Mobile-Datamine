@@ -120,13 +120,13 @@ registerInteropFunc("updateAdditionalCannons", function(count, _seconds, _mode, 
 })
 
 registerInteropFunc("updateBombs", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  BombsState({ count, time, endTime }))
+  BombsState.set({ count, time, endTime }))
 
 registerInteropFunc("updateRockets", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  RocketsState({ count, time, endTime }))
+  RocketsState.set({ count, time, endTime }))
 
 registerInteropFunc("updateTorpedoes", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  TorpedoesState({ count, time, endTime }))
+  TorpedoesState.set({ count, time, endTime }))
 
 registerInteropFunc("updateEnginesThrottle", function(mode, trt, _state, index) {
   if (index != 0)
@@ -159,17 +159,17 @@ let logMask = @() log("MainMask = ",
 register_command(logMask, "debug.airWeaponMask")
 
 let maxDebugDebuff = 1023
-register_command(@() debugDebuff(debugDebuff.value == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.airDebuffsAll")
-register_command(@() debugDebuff(rnd_int(0, maxDebugDebuff)), "hud.debug.airDebuffsRandom")
+register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.airDebuffsAll")
+register_command(@() debugDebuff.set(rnd_int(0, maxDebugDebuff)), "hud.debug.airDebuffsRandom")
 register_command(function(idx) {
   let bit = 1 << idx
-  log(debugDebuff.value)
-  debugDebuff((debugDebuff.value & bit) ? (debugDebuff.value & ~bit) : (debugDebuff.value | bit))
-  log(debugDebuff.value)
+  log(debugDebuff.get())
+  debugDebuff.set((debugDebuff.get() & bit) ? (debugDebuff.get() & ~bit) : (debugDebuff.get() | bit))
+  log(debugDebuff.get())
 }, "hud.debug.airDebuffsToggle")
 
 let export = planeState.__merge(airState).__merge({
-  DmStateMask = Computed(@() DmStateMask.value | debugDebuff.value)
+  DmStateMask = Computed(@() DmStateMask.get() | debugDebuff.get())
 })
 
 return export

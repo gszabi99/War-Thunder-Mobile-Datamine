@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { openBattlePassWnd, isBpSeasonActive, hasBpRewardsToReceive } = require("battlePassState.nut")
+let { openBattlePassWnd, isBpSeasonActive, hasBpRewardsToReceive } = require("%rGui/battlePass/battlePassState.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_EVENT_ID, isEventActive,
   isFitSeasonRewardsRequirements

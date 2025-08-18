@@ -18,13 +18,13 @@ let curLbErrName = hardPersistWatched("lb.curLbErrName", null)
 let lastRequestTime = Watched(0)
 let lastUpdateTime = Watched(0)
 let isRequestTimeout = Watched(false)
-let isLbRequestInProgress = Computed(@() !isRequestTimeout.value && lastRequestTime.value > lastUpdateTime.value)
+let isLbRequestInProgress = Computed(@() !isRequestTimeout.get() && lastRequestTime.get() > lastUpdateTime.get())
 
 
 isLbRequestInProgress.subscribe(function(v) {
-  deferOnce(@() isRequestTimeout(false))
+  deferOnce(@() isRequestTimeout.set(false))
   if (v)
-    resetTimeout(0.001 * LB_REQUEST_TIMEOUT, @() isRequestTimeout(true))
+    resetTimeout(0.001 * LB_REQUEST_TIMEOUT, @() isRequestTimeout.set(true))
 })
 
 function mkSelfRequest(requestData) {
@@ -37,10 +37,10 @@ function mkSelfRequest(requestData) {
 }
 
 function setLbRequestData(requestData) {
-  if (isEqual(requestData, curLbRequestData.value))
+  if (isEqual(requestData, curLbRequestData.get()))
     return
 
-  if (!isEqual(mkSelfRequest(requestData), mkSelfRequest(curLbRequestData.value)))
+  if (!isEqual(mkSelfRequest(requestData), mkSelfRequest(curLbRequestData.get())))
     curLbSelfRow(null)
   curLbData(null) 
   curLbErrName(null)
@@ -48,7 +48,7 @@ function setLbRequestData(requestData) {
 }
 
 function requestSelfRow() {
-  let requestData = curLbRequestData.value
+  let requestData = curLbRequestData.get()
   if (requestData == null)
     return
 
@@ -57,35 +57,35 @@ function requestSelfRow() {
 }
 
 contactsRegisterHandler("cln_get_leaderboard_json:self", function(result, selfRequest) {
-  if (!isEqual(selfRequest, mkSelfRequest(curLbRequestData.value)))
+  if (!isEqual(selfRequest, mkSelfRequest(curLbRequestData.get())))
     return
 
-  local newSelfRow = result.findvalue(@(v) v?._id == myUserId.value)
-    ?.__merge({ name = myUserName.value })
+  local newSelfRow = result.findvalue(@(v) v?._id == myUserId.get())
+    ?.__merge({ name = myUserName.get() })
   curLbSelfRow(newSelfRow)
 })
 
-let canRefresh = @() !isLbRequestInProgress.value
-  && isLoggedIn.value
-  && (!curLbData.value || (lastUpdateTime.value + LB_UPDATE_INTERVAL < get_time_msec()))
+let canRefresh = @() !isLbRequestInProgress.get()
+  && isLoggedIn.get()
+  && (!curLbData.get() || (lastUpdateTime.get() + LB_UPDATE_INTERVAL < get_time_msec()))
 
 function refreshLbData() {
   if (!canRefresh())
     return
-  let requestData = curLbRequestData.value
+  let requestData = curLbRequestData.get()
   if (requestData == null) {
     curLbData([])
     curLbErrName(null)
     return
   }
-  lastRequestTime(get_time_msec())
+  lastRequestTime.set(get_time_msec())
   contactsRequest("cln_get_leaderboard_json", { data = requestData }, requestData)
 }
 
 
 contactsRegisterHandler("cln_get_leaderboard_json", function(result, requestData) {
-  lastUpdateTime(get_time_msec())
-  if (!isEqual(requestData, curLbRequestData.value)) {
+  lastUpdateTime.set(get_time_msec())
+  if (!isEqual(requestData, curLbRequestData.get())) {
     refreshLbData()
     return
   }
@@ -100,7 +100,7 @@ contactsRegisterHandler("cln_get_leaderboard_json", function(result, requestData
     if (typeof data != "table")
       continue
     newLbData.append(data.__merge({ name }))
-    if (data?._id == myUserId.value)
+    if (data?._id == myUserId.get())
       selfRow = newLbData.top()
   }
   newLbData.sort(@(a, b)
@@ -115,8 +115,8 @@ contactsRegisterHandler("cln_get_leaderboard_json", function(result, requestData
 return {
   curLbData
   curLbSelfRow
-  curLbRequestData = Computed(@() curLbRequestData.value)
-  curLbErrName = Computed(@() curLbErrName.value)
+  curLbRequestData = Computed(@() curLbRequestData.get())
+  curLbErrName = Computed(@() curLbErrName.get())
   isLbRequestInProgress
 
   setLbRequestData

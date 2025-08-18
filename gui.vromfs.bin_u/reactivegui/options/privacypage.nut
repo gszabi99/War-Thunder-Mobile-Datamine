@@ -5,7 +5,7 @@ let { textButtonPrimary, textButtonCommon, buttonsHGap, mkCustomButton, mkButton
 let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isOpenedManage, consentRequiredForCurrentRegion } = require("%rGui/notifications/consent/consentState.nut")
-let { openLicenseWnd, licenseFileName } = require("licenseWnd.nut")
+let { openLicenseWnd, licenseFileName } = require("%rGui/options/licenseWnd.nut")
 let { file_exists } = require("dagor.fs")
 
 let buttonsWidthStyle = {
@@ -37,7 +37,7 @@ return @() {
         {size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-8)}.__update(fontSmallAccentedShaded)),
       @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }),
       mergeStyles(PRIMARY, buttonsWidthStyle))
-    consentRequiredForCurrentRegion.get() ? textButtonPrimary(loc("mainmenu/consentPrivacy"), @() isOpenedManage(true), buttonsWidthStyle) : null
+    consentRequiredForCurrentRegion.get() ? textButtonPrimary(loc("mainmenu/consentPrivacy"), @() isOpenedManage.set(true), buttonsWidthStyle) : null
     !file_exists(licenseFileName) ? null
       : textButtonPrimary(loc("options/license"), openLicenseWnd, buttonsWidthStyle)
   ]

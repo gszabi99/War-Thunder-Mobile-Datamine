@@ -44,7 +44,7 @@ let function skinBtn(skin) {
     image = Picture($"ui/gameuiskin#{getSkinPresentation(unitName.get(), skin).image}:{skinSize}:{skinSize}:P")
     xmbNode = {}
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick = @() selectedSkins.mutate(@(skins) skins[unitName.get()] <- skin)
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [

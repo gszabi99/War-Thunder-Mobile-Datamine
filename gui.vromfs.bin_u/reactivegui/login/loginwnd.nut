@@ -35,28 +35,28 @@ let isPasswordVisible = Watched(false)
 let isCanViewPassword = Watched(true)
 
 loginName.subscribe(function(_) {
-  check2StepAuthCode(false)
-  hasEmail2step(false)
+  check2StepAuthCode.set(false)
+  hasEmail2step.set(false)
 })
 
 loginPas.subscribe(function(v) {
-  check2StepAuthCode(false)
-  hasEmail2step(false)
+  check2StepAuthCode.set(false)
+  hasEmail2step.set(false)
   if (v == "")
-    isCanViewPassword(true)
+    isCanViewPassword.set(true)
 })
 
-check2StepAuthCode.subscribe(@(v) v ? isLoginByGajin(true) : null)
+check2StepAuthCode.subscribe(@(v) v ? isLoginByGajin.set(true) : null)
 
 eventbus_subscribe("updateAuthStates", function(params) {
-  let incomingPass = params?.loginPas ?? loginPas.value
-  let isPassEqual = (loginPas.value == incomingPass)
-  loginName(params?.loginName ?? loginName.value)
-  loginPas(incomingPass)
-  isCanViewPassword(loginPas.value == "" || (isCanViewPassword.value && isPassEqual))
-  check2StepAuthCode(params?.check2StepAuthCode ?? check2StepAuthCode.value)
-  secStepType(params?.secStepType ?? SST_UNKNOWN)
-  hasEmail2step(secStepType.value == SST_MAIL)
+  let incomingPass = params?.loginPas ?? loginPas.get()
+  let isPassEqual = (loginPas.get() == incomingPass)
+  loginName.set(params?.loginName ?? loginName.get())
+  loginPas.set(incomingPass)
+  isCanViewPassword.set(loginPas.get() == "" || (isCanViewPassword.get() && isPassEqual))
+  check2StepAuthCode.set(params?.check2StepAuthCode ?? check2StepAuthCode.get())
+  secStepType.set(params?.secStepType ?? SST_UNKNOWN)
+  hasEmail2step.set(secStepType.get() == SST_MAIL)
 })
 
 let gaijinLogoWidth = (256.0 / 128.0 * defButtonHeight).tointeger()
@@ -79,27 +79,27 @@ languageTitle = languageTitle == languageTitleEn ? languageTitle
   : "".concat(languageTitle, loc("ui/parentheses/space", { text = languageTitleEn }))
 
 function doLoginGaijin() {
-  if (loginName.value == "") {
+  if (loginName.get() == "") {
     anim_start(loginName)
     return
   }
 
-  if (loginPas.value == "") {
+  if (loginPas.get() == "") {
     anim_start(loginPas)
     return
   }
 
-  if (check2StepAuthCode.value && twoStepAuthCode.value == "") {
+  if (check2StepAuthCode.get() && twoStepAuthCode.get() == "") {
     anim_start(twoStepAuthCode)
     return
   }
 
   eventbus_send("doLogin", {
     loginType = LT_GAIJIN
-    loginName = loginName.value
-    loginPas = loginPas.value
-    check2StepAuthCode = check2StepAuthCode.value
-    twoStepAuthCode = check2StepAuthCode.value ? twoStepAuthCode.value : ""
+    loginName = loginName.get()
+    loginPas = loginPas.get()
+    check2StepAuthCode = check2StepAuthCode.get()
+    twoStepAuthCode = check2StepAuthCode.get() ? twoStepAuthCode.get() : ""
   })
 }
 
@@ -113,10 +113,10 @@ function transparentButton(text, icon, onClick, override = {}) {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     sound = { click  = "click" }
     onClick
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     children = [
       {
@@ -133,7 +133,7 @@ function transparentButton(text, icon, onClick, override = {}) {
 }
 
 let languageButton = transparentButton(languageTitle, "ui/gameuiskin#menu_lang.svg",
-  @() isShowLanguagesList.update(true))
+  @() isShowLanguagesList.set(true))
 
 let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#menu_support.svg",
   openSupportTicketWndOrUrl,
@@ -166,8 +166,8 @@ let mkPasswordInputField = @() {
   valign = ALIGN_CENTER
   size = FLEX_H
   children = [
-    mkTextInputField(loginPas, loc("mainmenu/password"), { password = isPasswordVisible.value ? null : "\u2022" })
-    isCanViewPassword.value
+    mkTextInputField(loginPas, loc("mainmenu/password"), { password = isPasswordVisible.get() ? null : "\u2022" })
+    isCanViewPassword.get()
       ? {
           rendObj = ROBJ_IMAGE
           size = showPasswordIconSize
@@ -175,8 +175,8 @@ let mkPasswordInputField = @() {
           hplace = ALIGN_RIGHT
           pos = [-hdpx(16), 0]
           behavior = Behaviors.Button
-          onClick = @() isPasswordVisible(!isPasswordVisible.value)
-          opacity = isPasswordVisible.value ? 1.0 : 0.4
+          onClick = @() isPasswordVisible.set(!isPasswordVisible.get())
+          opacity = isPasswordVisible.get() ? 1.0 : 0.4
           keepAspect = true
         }
       : null
@@ -189,9 +189,9 @@ let recoveryPassword = urlText(loc("msgbox/btn_recovery"), FORGOT_PASSWORD_URL, 
 let resendTimer = Watched(resendTimeout)
 local timerMult = 1;
 function updateResendTimer() {
-  let v = resendTimer.value - 1
+  let v = resendTimer.get() - 1
   if ( v >= 0 )
-    resendTimer(v)
+    resendTimer.set(v)
 }
 
 check2StepAuthCode.subscribe( function (v) { if (v) resendTimer(resendTimeout * timerMult) } )
@@ -200,8 +200,8 @@ function doResendCode() {
   timerMult++
   eventbus_send("doLogin", {
     loginType = LT_GAIJIN
-    loginName = loginName.value
-    loginPas = loginPas.value
+    loginName = loginName.get()
+    loginPas = loginPas.get()
     check2StepAuthCode = false
     twoStepAuthCode = ""
   })
@@ -211,10 +211,10 @@ let resendCodeBlock = @() {
   flow = FLOW_HORIZONTAL
   watch = [resendTimer]
   valign = ALIGN_CENTER
-  children = resendTimer.value > 0
+  children = resendTimer.get() > 0
     ? {
         rendObj = ROBJ_TEXT
-        text = loc("msgbox/btn_resend_code_message", {value = resendTimer.value})
+        text = loc("msgbox/btn_resend_code_message", {value = resendTimer.get()})
         color = Color(192, 192, 192)
         fontFx = FFT_GLOW
         fontFxFactor = 64
@@ -246,15 +246,15 @@ let gaijinAuthorization = @() {
     }
     mkTextInputField(loginName, loc("mainmenu/login"), { inputType = "mail" })
     mkPasswordInputField
-    check2StepAuthCode.value
-      ? mkTextInputField(twoStepAuthCode, loc($"mainmenu/2step/code{secStepType.value}"), { inputType = "num" })
+    check2StepAuthCode.get()
+      ? mkTextInputField(twoStepAuthCode, loc($"mainmenu/2step/code{secStepType.get()}"), { inputType = "num" })
       : null
-    hasEmail2step.value ? resendCodeBlock : recoveryPassword
+    hasEmail2step.get() ? resendCodeBlock : recoveryPassword
     {
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       children = [
-        textButtonCommon(cancelText, @() isLoginByGajin.update(false), { hotkeys = [btnBEscUp] })
+        textButtonCommon(cancelText, @() isLoginByGajin.set(false), { hotkeys = [btnBEscUp] })
         textButtonBright(utf8ToUpper(loc("msgbox/btn_signIn")), doLoginGaijin, { hotkeys = ["^J:X"] })
       ]
     }
@@ -378,7 +378,7 @@ let guestLoginButtonContent = firebaseLoginButtonContent
 
 let loginButtonCtors = {
   [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(),
-    @() isLoginByGajin.update(true),
+    @() isLoginByGajin.set(true),
     loginButtonStyle),
   [LT_GOOGLE] = !gpButtonVisible ? null : @() mkCustomButton(googleLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
@@ -439,7 +439,7 @@ let langOptionsContent = {
   valign = ALIGN_CENTER
   children = [
     mkOption(optLang)
-    textButtonCommon(cancelText, @() isShowLanguagesList.update(false), { hotkeys = [btnBEscUp] })
+    textButtonCommon(cancelText, @() isShowLanguagesList.set(false), { hotkeys = [btnBEscUp] })
   ]
 }
 
@@ -448,8 +448,8 @@ let contentBlock = @() {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = isShowLanguagesList.value ? langOptionsContent
-    : isLoginByGajin.value ? gaijinAuthorization
+  children = isShowLanguagesList.get() ? langOptionsContent
+    : isLoginByGajin.get() ? gaijinAuthorization
     : mainAuthorizationButtons
 }
 

@@ -14,12 +14,13 @@ let APRILMAPPIECE = "aprilMapPiece"
 let APRILDOUBLON = "aprilDoublon"
 let HOTMAYBOND = "hotmaybond"
 let INDEPENDENCEBOND = "independencebond"
+let ANNIVERSARYBOND = "anniversarybond"
 
 let balance = sharedWatched("balance", @() {})
 let isBalanceReceived = sharedWatched("isBalanceReceived", @() false)
-let isValidBalance = Computed(@() balance.value.findindex(@(val) val < 0) == null)
+let isValidBalance = Computed(@() balance.get().findindex(@(val) val < 0) == null)
 
-let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, NYBOND, APRILBOND, BLACK_FRIDAY_BOND, APRILMAPPIECE, APRILDOUBLON, HOTMAYBOND, INDEPENDENCEBOND]
+let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, NYBOND, APRILBOND, BLACK_FRIDAY_BOND, APRILMAPPIECE, APRILDOUBLON, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND]
 let orderByCurrency = currencyOrder.reduce(@(res, c, i) res.$rawset(c, i + 1), {})
 
 let dbgCurrencyCount = {
@@ -41,11 +42,12 @@ return {
   BLACK_FRIDAY_BOND
   HOTMAYBOND
   INDEPENDENCEBOND
+  ANNIVERSARYBOND
 
   isBalanceReceived
   balance
-  balanceWp = Computed(@() balance.value?[WP] ?? 0)
-  balanceGold = Computed(@() balance.value?[GOLD] ?? 0)
+  balanceWp = Computed(@() balance.get()?[WP] ?? 0)
+  balanceGold = Computed(@() balance.get()?[GOLD] ?? 0)
   isValidBalance
   orderByCurrency
   currencyOrder

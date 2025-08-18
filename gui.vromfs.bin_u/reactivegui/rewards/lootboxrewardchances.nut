@@ -2,9 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { get_my_lootbox_chances, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let chances = Watched({})
 servProfile.subscribe(@(_) chances.get().len() != 0 ? chances.set({}) : null)
+serverConfigs.subscribe(@(_) chances.get().len() != 0 ? chances.set({}) : null)
 
 registerHandler("onGetMyLootboxChances",
   function(res, context) {

@@ -8,9 +8,9 @@ let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, goToStep
-} = require("tutorialWnd/tutorialWndState.nut")
-let { TUTORIAL_SLOT_ATTRIBUTES_ID } = require("tutorialConst.nut")
-let { markTutorialCompleted, isFinishedSlotAttributes } = require("completedTutorials.nut")
+} = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { TUTORIAL_SLOT_ATTRIBUTES_ID } = require("%rGui/tutorial/tutorialConst.nut")
+let { markTutorialCompleted, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
 let { hasSlotAttrPreset, curCategoryId, selAttributes, getMaxAttrLevelData, attrPresets
 } = require("%rGui/attributes/attrState.nut")
 let { isSlotAttrAttached, openSlotAttrWnd, slotAttributes, leftSlotSp,

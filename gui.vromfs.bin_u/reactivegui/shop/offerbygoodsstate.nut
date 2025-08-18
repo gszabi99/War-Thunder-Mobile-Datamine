@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("platformGoods.nut")
+let { platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("%rGui/shop/platformGoods.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { shopGoods } = require("shopState.nut")
+let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { curCampaign, purchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { PURCHASING, DELAYED } = require("goodsStates.nut")
+let { PURCHASING, DELAYED } = require("%rGui/shop/goodsStates.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 

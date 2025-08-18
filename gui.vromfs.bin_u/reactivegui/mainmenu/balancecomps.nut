@@ -10,7 +10,7 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { mkCurrencyComp, CS_GAMERCARD } = require("%rGui/components/currencyComp.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
-let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.nut")
+let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { isAdsVisible } = require("%rGui/ads/adsState.nut")
 let { GPT_PREMIUM } = require("%rGui/shop/goodsPreviewState.nut")
 
@@ -40,11 +40,11 @@ let hoverBg = {
   texOffs = gradCircCornerOffset
 }
 
-let initCurrencyBalance = @(currencyId) currencyId in visibleBalance.value  || !currencyId ? null
+let initCurrencyBalance = @(currencyId) currencyId in visibleBalance.get()  || !currencyId ? null
   : visibleBalance.mutate(@(v) v[currencyId] <- balance.get()?[currencyId])
-let initItemBalance = @(itemId) itemId in visibleBalance.value ? null
-  : visibleBalance.mutate(@(v) v[itemId] <- items.value?[itemId].count
-      ?? (isProfileReceived.value ? 0 : null))
+let initItemBalance = @(itemId) itemId in visibleBalance.get() ? null
+  : visibleBalance.mutate(@(v) v[itemId] <- items.get()?[itemId].count
+      ?? (isProfileReceived.get() ? 0 : null))
 
 function applyChanges(changes) {
   if (changes.len() != 0)
@@ -61,7 +61,7 @@ local prevBalance = clone balance.get()
 balance.subscribe(function(b) {
   let changes = {}
   let visBalanceApply = {}
-  foreach (id, val in visibleBalance.value) {
+  foreach (id, val in visibleBalance.get()) {
     let cur = b?[id] ?? 0
     if (val == null) {
       visBalanceApply[id] <- cur
@@ -74,14 +74,14 @@ balance.subscribe(function(b) {
   prevBalance = clone balance.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
-    visibleBalance(visibleBalance.value.__merge(visBalanceApply))
+    visibleBalance(visibleBalance.get().__merge(visBalanceApply))
 })
 
-local prevItems = clone items.value
+local prevItems = clone items.get()
 items.subscribe(function(it) {
   let changes = {}
   let visBalanceApply = {}
-  foreach (id, val in visibleBalance.value) {
+  foreach (id, val in visibleBalance.get()) {
     let cur = it?[id].count ?? 0
     if (val == null) {
       visBalanceApply[id] <- cur
@@ -91,14 +91,14 @@ items.subscribe(function(it) {
     if (diff != 0)
       changes[id] <- { cur, diff }
   }
-  prevItems = clone items.value
+  prevItems = clone items.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
-    visibleBalance(visibleBalance.value.__merge(visBalanceApply))
+    visibleBalance(visibleBalance.get().__merge(visBalanceApply))
 })
 
 function onChangeAnimFinish(id, change) {
-  if (change != changeOrders.value?[id][0] || id not in visibleBalance.value)
+  if (change != changeOrders.get()?[id][0] || id not in visibleBalance.get())
     return
   visibleBalance.mutate(@(v) v[id] = change.cur)
   changeOrders.mutate(@(v) v[id].remove(0))
@@ -144,9 +144,9 @@ function mkBalance(baseId, style, onClick, initBalance) {
   let id = Computed(@() currencyToFullId.get()?[baseId] ?? baseId)
   id.subscribe(@(v) initBalance(v))
 
-  let visCount = Computed(@() visibleBalance.value?[id.get()]
+  let visCount = Computed(@() visibleBalance.get()?[id.get()]
     ?? (isBalanceReceived.get() ? 0 : loc("leaderboards/notAvailable")))
-  let nextChange = Computed(@() isAdsVisible.value ? null : changeOrders.value?[id.get()][0])
+  let nextChange = Computed(@() isAdsVisible.get() ? null : changeOrders.get()?[id.get()][0])
   let stateFlags = Watched(0)
   let currencyOvr = {}
   local imgChild = null
@@ -154,7 +154,7 @@ function mkBalance(baseId, style, onClick, initBalance) {
     currencyOvr.__update({
       behavior = Behaviors.Button
       onClick
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       sound = { click  = "meta_shop_buttons" }
     })
     imgChild = plus
@@ -166,7 +166,7 @@ function mkBalance(baseId, style, onClick, initBalance) {
       @() {
         watch = stateFlags
         size = flex()
-        children = stateFlags.value & S_HOVER ? hoverBg : null
+        children = stateFlags.get() & S_HOVER ? hoverBg : null
       }
       {
         children = [
@@ -175,7 +175,7 @@ function mkBalance(baseId, style, onClick, initBalance) {
               {
                 watch = [visCount, stateFlags, id]
                 transform = {
-                  scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
+                  scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
                 }
                 animations = mkBalanceHiglightAnims($"balance_{id.get()}")
               })
@@ -184,8 +184,8 @@ function mkBalance(baseId, style, onClick, initBalance) {
             size = 0 
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
-            children = nextChange.value == null ? null
-              : mkChangeView(id.get(), nextChange.value)
+            children = nextChange.get() == null ? null
+              : mkChangeView(id.get(), nextChange.get())
           }
         ]
       }

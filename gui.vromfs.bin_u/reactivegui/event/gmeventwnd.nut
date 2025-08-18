@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isGmEventWndOpened, closeGmEventWnd, curGmList, openedGmEventId, reqBattleMods, hasAccessCurGmEvent
-} = require("gmEventState.nut")
+} = require("%rGui/event/gmEventState.nut")
 let { userstatStats, userstatSetStat, userstatRegisterExecutor, statsInProgress
 } = require("%rGui/unlocks/userstat.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
@@ -20,7 +20,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendNewbieBqEvent, sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
-let { gmEventContent, goodsSize, goodsGap } = require("gmEventComps.nut")
+let { gmEventContent, goodsSize, goodsGap } = require("%rGui/event/gmEventComps.nut")
 let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
@@ -142,8 +142,8 @@ let content = @() {
   size = flex()
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  onAttach = @() isWndAttached(true)
-  onDetach = @() isWndAttached(false)
+  onAttach = @() isWndAttached.set(true)
+  onDetach = @() isWndAttached.set(false)
   children = !hasAccessCurGmEvent.get() && curEventAccessStat.get() != "" && curEventAccessStatValue.get() != STAT_REQUESTED
     ? signUpForCbtContent
     : [
@@ -237,15 +237,20 @@ let footer = @() {
           children = hasAccessCurGmEvent.get()
             ? [
                 toBattleHint(loc("events/toBattle"))
-                mkToBattleButtonWithSquadManagement(function() {
-                  if (curGmList.get().len() == 0)
-                    return
-                  sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
-                  let modeId = curGmList.get()[0].gameModeId
-                  if (tryOpenQueuePenaltyWnd(curGmList.get()[0].campaign, { id = "queueToGameMode", modeId }))
-                    return
-                  eventbus_send("queueToGameMode", { modeId })
-                })
+                mkToBattleButtonWithSquadManagement(
+                  function() {
+                    if (curGmList.get().len() == 0)
+                      return
+                    sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
+                    let modeId = curGmList.get()[0].gameModeId
+                    let campaign = curGmList.get()[0].campaign
+                    let name = curGmList.get()[0]?.mission_decl.missions_list.findindex(@(_) true) ?? curGmList.get()[0]?.name ?? ""
+                    if (tryOpenQueuePenaltyWnd(campaign, { id = "queueToGameMode", modeId }, null, name))
+                      return
+                    eventbus_send("queueToGameMode", { modeId })
+                  },
+                  Watched(null)
+                )
               ]
             : [
                 toBattleHint(loc($"{openedGmEventId.get()}/requireAccess"))

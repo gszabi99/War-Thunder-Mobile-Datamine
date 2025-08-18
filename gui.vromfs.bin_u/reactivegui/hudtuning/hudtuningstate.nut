@@ -22,9 +22,9 @@ let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE, SAILBOAT]
   .reduce(@(res, v) res.__update({ [v] = true }), {})
 
 let tuningUnitType = mkWatched(persist, "tuningUnitType", null)
-let isTuningOpened = Computed(@() tuningUnitType.value != null)
+let isTuningOpened = Computed(@() tuningUnitType.get() != null)
 let presetsSaved = mkWatched(persist, "presetsSaved", {})
-let hudTuningStateByUnitType = Computed(@() presetsSaved.value.map(
+let hudTuningStateByUnitType = Computed(@() presetsSaved.get().map(
   function(p) {
     let { transforms = {}, resolution = [], options = {} } = p
     if (resolution?[1] == sh(100).tointeger() || (resolution?[1] ?? 0) <= 0)
@@ -54,7 +54,7 @@ selectedId.subscribe(@(v) v != null ? isAllElemsOptionsOpened.set(false) : null)
 isAllElemsOptionsOpened.subscribe(@(v) v ? selectedId.set(null) : null)
 
 let isCurPresetChanged = Computed(function() {
-  let ut = tuningUnitType.value
+  let ut = tuningUnitType.get()
   if (ut == null || tuningState.get() == null)
     return false
   return !isEqual(tuningState.get(), hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState())
@@ -64,7 +64,7 @@ function loadPresets() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SAVE_ID]
   if (!isDataBlock(htBlk)) {
-    presetsSaved({})
+    presetsSaved.set({})
     return
   }
   let res = {}
@@ -76,10 +76,10 @@ function loadPresets() {
       logerr($"Failed to load hud tuning data for {unitType}")
     }
   })
-  presetsSaved(res)
+  presetsSaved.set(res)
 }
 
-if (isOnlineSettingsAvailable.value && presetsSaved.value.len() == 0)
+if (isOnlineSettingsAvailable.get() && presetsSaved.get().len() == 0)
   loadPresets()
 isOnlineSettingsAvailable.subscribe(@(_) loadPresets())
 
@@ -91,10 +91,10 @@ function savePreset(unitType, preset) {
   eventbus_send("saveProfile", {})
 }
 
-local lastHistoryIdx = curHistoryIdx.value
+local lastHistoryIdx = curHistoryIdx.get()
 tuningStateWithLastChange.subscribe(function(t) {
-  if (t == null || curHistoryIdx.value != null) {
-    lastHistoryIdx = curHistoryIdx.value
+  if (t == null || curHistoryIdx.get() != null) {
+    lastHistoryIdx = curHistoryIdx.get()
     return
   }
   local h = clone history.get()
@@ -132,26 +132,26 @@ tuningUnitType.subscribe(function(ut) {
 
 let clearTuningState = @() setTuningState(mkEmptyTuningState())
 
-let saveCurrentTransform = @() tuningUnitType.value == null ? null
-  : savePreset(tuningUnitType.value,
+let saveCurrentTransform = @() tuningUnitType.get() == null ? null
+  : savePreset(tuningUnitType.get(),
       tuningState.get() == null ? {}
         : tuningState.get().__merge({ resolution = [sw(100).tointeger(), sh(100).tointeger()] }))
 
 function applyTransformProgress() {
-  if (selectedId.value == null || transformInProgress.value == null)
+  if (selectedId.get() == null || transformInProgress.get() == null)
     return
   let state = tuningState.get()
   setTuningState(state.__merge({
-    transforms = state.transforms.__merge({ [selectedId.value] = transformInProgress.get() })
+    transforms = state.transforms.__merge({ [selectedId.get()] = transformInProgress.get() })
   }))
-  transformInProgress(null)
+  transformInProgress.set(null)
 }
 
 function openTuningRecommended() {
-  let uType = isInBattle.get() ? hudUnitType.value
+  let uType = isInBattle.get() ? hudUnitType.get()
     : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
     : null
-  tuningUnitType(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
+  tuningUnitType.set(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
 }
 
 let logSelElem = @(id) dlog("Hud tuning selectedId: ", id)  
@@ -185,9 +185,9 @@ return {
   isCurPresetChanged
   canShowRadar
 
-  openTuning = @(unitType) tuningUnitType(unitType)
+  openTuning = @(unitType) tuningUnitType.set(unitType)
   openTuningRecommended
-  closeTuning = @() tuningUnitType(null)
+  closeTuning = @() tuningUnitType.set(null)
   applyTransformProgress
   saveCurrentTransform
   clearTuningState

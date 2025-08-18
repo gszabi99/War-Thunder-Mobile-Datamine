@@ -105,10 +105,10 @@ function mkButton(text, onClick) {
     valign = ALIGN_CENTER
     rendObj = ROBJ_BOX
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     onClick
-    brightness = stateFlags.value & S_HOVER ? 1.5 : 1
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = [
       pattern

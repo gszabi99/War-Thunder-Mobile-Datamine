@@ -16,13 +16,13 @@ let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setUnitToSlot, buyUnitSlot, newSlotPriceGold, slotsNeedAddAnim, visibleNewModsSlots, selectedTreeSlotIdx,
   getSlotAnimTrigger, onFinishSlotAnim, selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, slotBarSelectWndAttached,
   selectedUnitToSlot
-} = require("slotBarState.nut")
+} = require("%rGui/slotBar/slotBarState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { slotBarTreeHeight, unitPlateSize, unitPlateHeader } = require("slotBarConsts.nut")
+let { slotBarTreeHeight, unitPlateSize, unitPlateHeader } = require("%rGui/slotBar/slotBarConsts.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { mkSlotLevel, levelHolderSize } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
@@ -32,8 +32,8 @@ let { openSlotAttrWnd, mkUnseenSlotAttrByIdx } = require("%rGui/attributes/slotA
 let { infoPanelWidth } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
-let { draggedData, dropUnitToSlot, dropZoneSlotIdx } = require("dragDropSlotState.nut")
-let { notActualSlotsByUnit } = require("slotBarUpdater.nut")
+let { draggedData, dropUnitToSlot, dropZoneSlotIdx } = require("%rGui/slotBar/dragDropSlotState.nut")
+let { notActualSlotsByUnit } = require("%rGui/slotBar/slotBarUpdater.nut")
 
 
 let slotsGap = hdpx(4)
@@ -169,7 +169,7 @@ let function slotToPurchase(priceGold) {
     borderWidth = hdpx(3)
     behavior = Behaviors.Button
     onClick = buyUnitSlot
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     children = [
       mkUnitSelectedGlow(null, Computed(@() stateFlags.get() & S_HOVER))
       {

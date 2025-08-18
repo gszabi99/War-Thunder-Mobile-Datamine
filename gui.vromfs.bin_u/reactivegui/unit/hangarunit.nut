@@ -18,7 +18,7 @@ let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { mkWeaponPreset } = require("unitSettings.nut")
+let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -28,14 +28,14 @@ let loadedInfo = Watched({
   name = hangar_get_current_unit_name()
   skin = hangar_get_current_unit_skin()
 })
-let loadedHangarUnitName = Computed(@() loadedInfo.value.name)
+let loadedHangarUnitName = Computed(@() loadedInfo.get().name)
 let hangarUnitData = mkWatched(persist, "hangarUnitData", null)
 let hangarUnitDataBackup = mkWatched(persist, "hangarUnitDataBackup", null)
-let hangarUnitName = Computed(@() hangarUnitData.value?.name ?? loadedHangarUnitName.value ?? "")
+let hangarUnitName = Computed(@() hangarUnitData.get()?.name ?? loadedHangarUnitName.get() ?? "")
 local wasLoadBgModelsAfterLoading = false
 
 let mainHangarUnit = Computed(function() {
-  let { name = loadedHangarUnitName.value, custom = null } = hangarUnitData.value
+  let { name = loadedHangarUnitName.get(), custom = null } = hangarUnitData.get()
   if (custom != null) {
     if (custom.name not in campUnitsCfg.get()) {
       let mainName = allMainUnitsByPlatoon.get()?[custom.name].name
@@ -74,7 +74,7 @@ let hangarUnitPreset = Computed(function() {
 
 let hangarUnit = Computed(function() {
   let mainUnit = mainHangarUnit.get()
-  let { name = loadedHangarUnitName.value } = hangarUnitData.value
+  let { name = loadedHangarUnitName.get() } = hangarUnitData.get()
   if (mainUnit == null || name == mainUnit.name)
     return mainUnit
   return mainUnit.__merge(mainUnit.platoonUnits.findvalue(@(pu) pu.name == name) ?? {})
@@ -175,9 +175,9 @@ hangarUnitSkin.subscribe(@(_) loadCurrentHangarUnitModel())
 hangarUnitPreset.subscribe(@(_) loadCurrentHangarUnitModel())
 
 isInMpSession.subscribe(function(v) {
-  if (v || !isInMenu.get() || hangar_get_current_unit_name() == loadedInfo.value.name)
+  if (v || !isInMenu.get() || hangar_get_current_unit_name() == loadedInfo.get().name)
     return
-  loadedInfo({
+  loadedInfo.set({
     name = hangar_get_current_unit_name()
     skin = hangar_get_current_unit_skin()
   })
@@ -235,20 +235,20 @@ isInLoadingScreen.subscribe(function(v) {
     wasLoadBgModelsAfterLoading = false
 })
 
-let setHangarUnit = @(unitName) hangarUnitData({ name = unitName ?? "" })
+let setHangarUnit = @(unitName) hangarUnitData.set({ name = unitName ?? "" })
 
-let setHangarUnitWithSkin = @(name, skin) hangarUnitData({ name, skin })
+let setHangarUnitWithSkin = @(name, skin) hangarUnitData.set({ name, skin })
 
 function setCustomHangarUnit(customUnit) {
-  if (hangarUnitDataBackup.value == null)
-    hangarUnitDataBackup(hangarUnitData.value)
-  hangarUnitData({ name = customUnit.name, custom = customUnit })
+  if (hangarUnitDataBackup.get() == null)
+    hangarUnitDataBackup.set(hangarUnitData.get())
+  hangarUnitData.set({ name = customUnit.name, custom = customUnit })
 }
 
 function resetCustomHangarUnit() {
-  if (hangarUnitDataBackup.value) {
-    hangarUnitData(hangarUnitDataBackup.value)
-    hangarUnitDataBackup(null)
+  if (hangarUnitDataBackup.get()) {
+    hangarUnitData.set(hangarUnitDataBackup.get())
+    hangarUnitDataBackup.set(null)
   }
 }
 
@@ -274,10 +274,10 @@ function onReloadModel() {
 }
 canReloadModel.subscribe(@(_) deferOnce(onReloadModel))
 
-eventbus_subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded(false))
+eventbus_subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded.set(false))
 
 eventbus_subscribe("onHangarModelLoaded", function(_) {
-  isHangarUnitLoaded(true)
+  isHangarUnitLoaded.set(true)
   if (hangar_get_loaded_unit_name() != hangar_get_current_unit_name())
     return
   let lInfo = {
@@ -285,8 +285,8 @@ eventbus_subscribe("onHangarModelLoaded", function(_) {
     skin = hangar_get_current_unit_skin()
   }
 
-  if (!isEqual(loadedInfo.value, lInfo))
-    loadedInfo(lInfo)
+  if (!isEqual(loadedInfo.get(), lInfo))
+    loadedInfo.set(lInfo)
   if (lInfo.name != getTagsUnitName(hangarUnitName.get()) || lInfo.skin != hangarUnitSkin.get()) {
     log("Reload hangar unit because of wrong skin")
     loadCurrentHangarUnitModel()

@@ -10,7 +10,7 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
-let { setSlots } = require("slotBarUpdater.nut")
+let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 
 
 let animTimeout = 5.0 

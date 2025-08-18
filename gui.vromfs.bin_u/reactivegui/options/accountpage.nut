@@ -8,7 +8,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
-let { contentWidth } = require("optionsStyle.nut")
+let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -226,7 +226,7 @@ function mkLinkBtn(text, onClick) {
       color
 
       behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       onClick
 
       children = {

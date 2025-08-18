@@ -35,11 +35,11 @@ function resetAuthState() {
 
 eventbus_subscribe("authState.reset", @(_) resetAuthState())
 eventbus_subscribe("authState.request", function(_) {
-  let { loginName, loginPas } = authState.value
+  let { loginName, loginPas } = authState.get()
   if (loginName == "" && loginPas == "")
     resetAuthState()
   else
-    sendState(authState.value)
+    sendState(authState.get())
 })
 
 return {

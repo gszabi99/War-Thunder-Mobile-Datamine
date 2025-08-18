@@ -14,9 +14,9 @@ let NEED_CURSOR_MASK =
 
 let activeControlsType = sharedWatched("activeControlsType", @() 0)
 
-let isGamepad = Computed(@() (activeControlsType.value & DEV_GAMEPAD) != 0)
-let isKeyboard = Computed(@() (activeControlsType.value & DEV_KBD) != 0)
-let needCursorForActiveInputDevice = Computed(@() (activeControlsType.value & NEED_CURSOR_MASK) != 0)
+let isGamepad = Computed(@() (activeControlsType.get() & DEV_GAMEPAD) != 0)
+let isKeyboard = Computed(@() (activeControlsType.get() & DEV_KBD) != 0)
+let needCursorForActiveInputDevice = Computed(@() (activeControlsType.get() & NEED_CURSOR_MASK) != 0)
 
 return {
   activeControlsType

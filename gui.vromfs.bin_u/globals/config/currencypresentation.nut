@@ -41,7 +41,7 @@ let icons = {
   aprilbond = "ui/gameuiskin#warbond_icon_april.avif"
   aprilMapPiece = "ui/gameuiskin#warbond_icon_aprilmappiece.svg"
   aprilDoublon = "ui/gameuiskin#warbond_icon_aprildoublon.svg"
-  anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond.avif"
+  anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond_2025.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
   hotmaybond = "ui/gameuiskin#warbond_icon_hotmaybond.avif"
@@ -69,6 +69,7 @@ let bigIcons = {
   blackfridaybond = "ui/gameuiskin#blackfridaybond_goods_01.avif"
   hotmaybond = "ui/gameuiskin#hotmaybond_goods_01.avif"
   independencebond = "ui/gameuiskin#independencebond_goods_01.avif"
+  anniversarybond = "ui/gameuiskin#anniversarybond_goods_2025_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
@@ -94,6 +95,7 @@ let currencyEventDescriptions = {
   aprilMapPiece   = convertsToGold
   hotmaybond      = convertsToGold
   independencebond      = convertsToGold
+  anniversarybond      = convertsToGold
 }
 
 let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {

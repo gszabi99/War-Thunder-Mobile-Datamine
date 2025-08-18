@@ -5,13 +5,13 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let isReplaySaved = mkWatched(persist, "isSaved", false)
 let isReplayPresent = Watched(is_replay_present())
-let hasUnsavedReplay = Computed(@() isReplayPresent.value && !isReplaySaved.value)
+let hasUnsavedReplay = Computed(@() isReplayPresent.get() && !isReplaySaved.get())
 
 isInBattle.subscribe(function(_) {
-  isReplaySaved(false)
-  isReplayPresent(is_replay_present())
+  isReplaySaved.set(false)
+  isReplayPresent.set(is_replay_present())
 })
-isInLoadingScreen.subscribe(@(_) isReplayPresent(is_replay_present()))
+isInLoadingScreen.subscribe(@(_) isReplayPresent.set(is_replay_present()))
 
 function saveLastReplay(name) {
   let isSuccess = on_save_replay(name)
@@ -19,7 +19,7 @@ function saveLastReplay(name) {
     text = isSuccess ? loc("replay/save_success") : loc("replays/save_error")
   })
   if (isSuccess)
-    isReplaySaved(true)
+    isReplaySaved.set(true)
   return isSuccess
 }
 

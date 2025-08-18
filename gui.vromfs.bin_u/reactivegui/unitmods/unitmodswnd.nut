@@ -9,9 +9,9 @@ let { isUnitModsOpen, closeUnitModsWnd, modsCategories, curCategoryId, curMod, c
   modsSorted, unit, curModIndex, enableCurUnitMod, disableCurUnitMod,
   isCurModPurchased, isCurModEnabled, isCurModLocked, setCurUnitSeenModsCurrent,
   getModCurrency, getModCost, curUnitAllModsCost
-} = require("unitModsState.nut")
-let { mkModsCategories, tabW, tabH } = require("unitModsWndTabs.nut")
-let { mkMods, modW, modTotalH, modsGap } = require("unitModsCarousel.nut")
+} = require("%rGui/unitMods/unitModsState.nut")
+let { mkModsCategories, tabW, tabH } = require("%rGui/unitMods/unitModsWndTabs.nut")
+let { mkMods, modW, modTotalH, modsGap } = require("%rGui/unitMods/unitModsCarousel.nut")
 let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
@@ -33,7 +33,7 @@ let modsWidth = saSize[0] - modW - blocksGap
 let catsBlockMargin = hdpx(24)
 let catsBlockHeight = saSize[1] - gamercardHeight - catsBlockMargin
 let catsHeight = Computed(@() min((tabH + tabsGap) * modsCategories.get().len() - tabsGap, catsBlockHeight))
-let emptyCatSlotHeight = Computed(@() catsBlockHeight - catsHeight.value - tabsGap)
+let emptyCatSlotHeight = Computed(@() catsBlockHeight - catsHeight.get() - tabsGap)
 
 let pageWidth = saSize[0] + saBorders[0] - tabW
 let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
@@ -46,7 +46,7 @@ let scrollToMod = @() curModIndex.get() == null ? null
 
 curCategoryId.subscribe(@(v) v == null ? null
   : catsScrollHandler.scrollToY((modsCategories.get().findindex(@(cat) cat == v) ?? 0)
-    * (tabH + tabsGap) - catsHeight.value + tabH))
+    * (tabH + tabsGap) - catsHeight.get() + tabH))
 
 let mkVerticalPannableArea = @(content) {
   clipChildren = true
@@ -165,7 +165,7 @@ let spinner = {
 function onPurchase() {
   let unitName = unit.get().name
   let modName = curMod.get().name
-  let price = getModCost(curMod.get(), curUnitAllModsCost.value)
+  let price = getModCost(curMod.get(), curUnitAllModsCost.get())
   let currencyId = getModCurrency(curMod.get())
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion",
@@ -202,12 +202,12 @@ let unitModsWnd = {
           size = [tabW, flex()]
           margin = [catsBlockMargin, 0, 0, 0]
           flow = FLOW_VERTICAL
-          children = emptyCatSlotHeight.value <= 0 ? mkVerticalPannableArea(categoriesBlock)
+          children = emptyCatSlotHeight.get() <= 0 ? mkVerticalPannableArea(categoriesBlock)
             : [
                 categoriesBlock
                 {
                   margin = [tabsGap, 0, 0, tabExtraWidth]
-                  size = [tabW - tabExtraWidth, emptyCatSlotHeight.value]
+                  size = [tabW - tabExtraWidth, emptyCatSlotHeight.get()]
                   rendObj = ROBJ_SOLID
                   color = bgColor
                 }
@@ -230,7 +230,7 @@ let unitModsWnd = {
                 : isCurModLocked.get()
                   ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curMod.get()?.reqLevel,
                     @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
-                : modsInProgress.value != null ? spinner
+                : modsInProgress.get() != null ? spinner
                 : !isCurModPurchased.get() ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchase)
                 : !isCurModEnabled.get() ? textButtonPrimary(loc("mod/enable"), enableCurUnitMod)
                 : !curMod.get()?.isAlwaysOn ? textButtonPrimary(loc("mod/disable"), disableCurUnitMod)

@@ -6,12 +6,12 @@ let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId, mkHasConflicts
   curMods, curUnitAllModsCost, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
   curWeaponBeltsOrdered, curBeltIdx, equippedBeltId, curSlotIdx, curUnseenMods,
   slotBeltKey, slotWeaponKey
-} = require("unitModsSlotsState.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator } = require("modsComps.nut")
+} = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator } = require("%rGui/unitMods/modsComps.nut")
 let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
 let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
-let { contentMargin } = require("unitModsConst.nut")
+let { contentMargin } = require("%rGui/unitMods/unitModsConst.nut")
 let { warningTextColor } = require("%rGui/style/stdColors.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
@@ -178,7 +178,7 @@ function mkSlotWeapon(idx, scrollToWeapon) {
     key = slotWeaponKey(idx)
     size = FLEX_V
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
     xmbNode
     function onClick() {
@@ -256,7 +256,7 @@ function mkSlotBelt(idx, scrollToWeapon) {
     key = slotBeltKey(idx)
     size = FLEX_V
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
     xmbNode
     function onClick() {

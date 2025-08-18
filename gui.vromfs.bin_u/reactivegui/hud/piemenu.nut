@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { sqrt, pow, fabs, sin, cos, atan2, PI } = require("math")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { STICK } = require("stickState.nut")
+let { STICK } = require("%rGui/hud/stickState.nut")
 
 let RAD_TO_DEG = 180.0 / PI
 let DEG_TO_RAD = PI / 180.0

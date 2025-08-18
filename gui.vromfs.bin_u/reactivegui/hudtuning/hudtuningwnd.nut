@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-from "hudTuningConsts.nut" import *
+from "%rGui/hudTuning/hudTuningConsts.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
+let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { isTuningOpened, tuningUnitType, tuningTransform, transformInProgress, selectedId,
   allTuningUnitTypes, closeTuning, tuningOptions
-} = require("hudTuningState.nut")
-let { optScale } = require("cfg/cfgOptions.nut")
+} = require("%rGui/hudTuning/hudTuningState.nut")
+let { optScale } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
-let manipulator = require("hudTuningManipulator.nut")
-let hudTuningOptions = require("hudTuningOptions.nut")
-let hudTuningElemOptions = require("hudTuningElemOptions.nut")
+let manipulator = require("%rGui/hudTuning/hudTuningManipulator.nut")
+let hudTuningOptions = require("%rGui/hudTuning/hudTuningOptions.nut")
+let hudTuningElemOptions = require("%rGui/hudTuning/hudTuningElemOptions.nut")
 
 let lineWidth = evenPx(4)
 let lineColor = 0xC01860C0
@@ -56,7 +56,7 @@ let selectBorder = {
 
 function mkHudTuningElem(cfg) {
   let { id, editView, editViewKey, defTransform = {}, isVisibleInEditor = null, isVisible = null, hasScale } = cfg
-  let transform = Computed(@() (selectedId.value == id ? transformInProgress.value : null)
+  let transform = Computed(@() (selectedId.value == id ? transformInProgress.get() : null)
     ?? tuningTransform.get()?[id]
     ?? defTransform)
   let isSelected = Computed(@() selectedId.value == id)
@@ -85,7 +85,7 @@ function mkHudTuningElem(cfg) {
     : Computed(@() optScale.getValue(tuningOptions.get(), id))
 
   let res = function() {
-    let { align = 0, pos = null } = transform.value
+    let { align = 0, pos = null } = transform.get()
     let scaleOvr = scale.get() == 1 ? {} : { transform = { scale = array(2, scale.get()) } }
     return {
       watch = [transform, scale]
@@ -115,7 +115,7 @@ let tuningElems = @() {
   size = saSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = cfgByUnitTypeOrdered?[tuningUnitType.value].map(mkHudTuningElem)
+  children = cfgByUnitTypeOrdered?[tuningUnitType.get()].map(mkHudTuningElem)
 }
 
 let tuningScene = {

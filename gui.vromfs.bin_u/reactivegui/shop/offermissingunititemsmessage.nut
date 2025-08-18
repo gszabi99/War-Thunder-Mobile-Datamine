@@ -3,7 +3,7 @@ let { defer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { shopGoods } = require("shopState.nut")
+let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { itemsCfgOrdered, orderByItems } = require("%appGlobals/itemsState.nut")
 let { items } = require("%appGlobals/pServer/campaign.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -19,7 +19,7 @@ let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
-} = require("unseenPurchasesState.nut")
+} = require("%rGui/shop/unseenPurchasesState.nut")
 let { balanceWp, balanceGold, balance } = require("%appGlobals/currenciesState.nut")
 let { CS_COMMON, CS_NO_BALANCE } = require("%rGui/components/currencyStyles.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
@@ -173,7 +173,7 @@ function mkItemsRewards(item) {
 }
 
 function saveTimeShowingWnd(itemId){
-  if (itemId in itemShowCd && isOnlineSettingsAvailable.value){
+  if (itemId in itemShowCd && isOnlineSettingsAvailable.get()){
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
     blk[itemId] = serverTime.get()
@@ -205,7 +205,7 @@ function mkPurchaseBtn(item, toBattle) {
 }
 
 let mkMsButtons = @(item, toBattle)
-  mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.value != null),
+  mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.get() != null),
     mkPurchaseBtn(item, toBattle),
     {
       size = [SIZE_TO_CONTENT, defButtonHeight]
@@ -362,15 +362,15 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
       function onAttach() {
         needSwitchAnim = true
       }
-      children = itemToShow.value == null ? null
-        : mkMsgContent(itemToShow.value, needSwitchAnim, toBattle, unit)
+      children = itemToShow.get() == null ? null
+        : mkMsgContent(itemToShow.get(), needSwitchAnim, toBattle, unit)
     }
   }
   addModalWindow(bgShaded.__merge({
     key = WND_UID
     function onClick() {
       if (itemToShow.get() != null)
-        saveTimeShowingWnd(itemToShow.value.itemId)
+        saveTimeShowingWnd(itemToShow.get().itemId)
       onClose()
       close()
     }
@@ -392,7 +392,7 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
 
 debriefingData.subscribe(function(_data) {
   let { itemsUsed = {} } = debriefingData.get()
-  if (isOnlineSettingsAvailable.value){
+  if (isOnlineSettingsAvailable.get()){
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
     local hasChanges = false

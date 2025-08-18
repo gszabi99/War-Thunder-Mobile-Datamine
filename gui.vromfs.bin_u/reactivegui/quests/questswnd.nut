@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
   COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB,
   progressUnlockByTab, progressUnlockBySection, curTabParams
-} = require("questsState.nut")
-let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("questsWndPage.nut")
+} = require("%rGui/quests/questsState.nut")
+let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("%rGui/quests/questsWndPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -13,13 +13,14 @@ let { openBattlePassWnd, hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { mkQuestsHeaderBtn, linkToEventWidth } = require("questsPkg.nut")
+let { mkQuestsHeaderBtn, linkToEventWidth } = require("%rGui/quests/questsPkg.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
 let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { progressBarRewardSize } = require("rewardsComps.nut")
+let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
+let { eventsPassList, openEventPassWnd } = require("%rGui/battlePass/eventPassState.nut")
 
 let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
@@ -62,19 +63,21 @@ let linkToBattlePassBtnCtor = @() {
 function mkLinkToStoreBtnInfo(idx) {
   let lootboxInfo = Computed(@() specialEventsLootboxesState.get().withLootboxes.findvalue(@(v) v.idx == idx))
   let id = getSpecialEventName(idx + 1)
-  let eventName = Computed(@() specialEventsLootboxesState.get().withoutLootboxes.findvalue(@(v) v.eventId == id)?.eventName ?? "")
+  let eventName = Computed(@() specialEventsOrdered.get().findvalue(@(v) v.eventId == id)?.eventName ?? "")
   let eventIcon = Computed(@() lootboxInfo.get()
     ? getEventPresentation(lootboxInfo.get().eventName).icon
     : getEventPresentation(eventName.get()).icon)
   let hasGoods = Computed(@() eventName.get() != ""
     && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
-
+  let isEventPassQuests = Computed(@() eventsPassList.get().findindex(@(v) v.eventName == eventName.get()) != null)
   return {
     width = Computed(@() hasGoods.get() || lootboxInfo.get() ? linkToEventWidth : 0)
     comp = @() {
       minHeight = progressBarRewardSize
-      watch = [hasGoods, lootboxInfo]
-      children = hasGoods.get()
+      watch = [hasGoods, lootboxInfo, isEventPassQuests, eventName]
+      children = isEventPassQuests.get()
+          ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventPassWnd(eventName.get()))
+        : hasGoods.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(defaultShopCategory))
         : lootboxInfo.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
@@ -85,7 +88,7 @@ function mkLinkToStoreBtnInfo(idx) {
 
 function eventTabContent(){
   let eventSeasonName = Computed(function() {
-    local locId = $"events/name/{eventSeason.value}"
+    local locId = $"events/name/{eventSeason.get()}"
     if (!doesLocTextExist(locId))
       locId = "events/name/default"
     return loc(locId)
@@ -101,15 +104,15 @@ function eventTabContent(){
         halign = ALIGN_RIGHT
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
-        text = eventSeasonName.value
+        text = eventSeasonName.get()
       }.__update(fontTinyAccented)
       @() {
         watch = [eventEndsAt, serverTime]
         size = FLEX_H
         halign = ALIGN_RIGHT
         rendObj = ROBJ_TEXT
-        text = !eventEndsAt.value || (eventEndsAt.value - serverTime.get() < 0) ? null
-          : secondsToHoursLoc(eventEndsAt.value - serverTime.get())
+        text = !eventEndsAt.get() || (eventEndsAt.get() - serverTime.get() < 0) ? null
+          : secondsToHoursLoc(eventEndsAt.get() - serverTime.get())
       }.__update(fontTinyAccented)
     ]
   }
@@ -192,7 +195,7 @@ let tabs = [
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
     tabContent = eventTabContent()
-    isVisible = Computed(@() isEventActive.value
+    isVisible = Computed(@() isEventActive.get()
       && questsCfg.get()[EVENT_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     ovr = { key = "main_event_tab" } 
   }

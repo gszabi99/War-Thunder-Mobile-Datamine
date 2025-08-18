@@ -100,6 +100,7 @@ let skinsByTag = {
     "pak_forest_fourcolor"
     "jp_camo_modern_bicolor"
     "ussr_modern_green"
+    "uk_camo_tog"
   ],
 
   [DESERT] = [
@@ -157,6 +158,7 @@ let skinsByTag = {
     "it_camo_desert_light_yellow"
     "uk_camo_standart_modern_light_stone"
     "ussr_camo_desert_sand_green_brown"
+    "uk_camo_bheeshma"
   ],
 
   [WINTER] = [
@@ -195,6 +197,7 @@ let skinsByTag = {
     "camo_ny_24"
     "camo_lunar_ny_25"
     "it_camo_winter_white"
+    "ann_2_camo"
   ],
 
   [NAVAL] = [
@@ -304,6 +307,7 @@ let skinsByTag = {
     "camo_destroyer_gearing_lny"
     "ussr_1114_rct"
     "camo_yellow"
+    "gev_ann_camo"
   ],
 
   [AIR] = [
@@ -327,6 +331,8 @@ let skinsByTag = {
     "germ_bf_110f_2"
     "germ_bf_110g_2"
     "germ_bf_110g_2_night"
+    "germ_ger_bv_238"
+    "germ_ger_bv_238_red"
     "germ_do335a_1"
     "germ_do_217m_1"
     "germ_do_217m_1_prem"
@@ -356,6 +362,7 @@ let skinsByTag = {
     "germ_ju_188a_2_3color"
     "germ_me_410a_1"
     "germ_me_410a_1_grey"
+    "germ_me_410b_6_re"
     "germ_ta_154a_1"
     "germ_ta152c"
     "germ_tropic_ju_87r_2"

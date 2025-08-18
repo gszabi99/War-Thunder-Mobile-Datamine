@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { NUM, PLACE, NICKNAME, RATING, WIN_TEXT } = require("lbDataType.nut")
+let { NUM, PLACE, NICKNAME, RATING, WIN_TEXT } = require("%rGui/leaderboard/lbDataType.nut")
 
 function makeType(params, id) {
   let { dataType = NUM, field = id.tolower()

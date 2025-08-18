@@ -3,7 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("hudBottomCenter.nut")
+let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
 let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera
 } = require("%rGui/hudState.nut")
@@ -11,7 +11,7 @@ let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut
 let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
 let { shootReadyness, primaryRocketGun, allowShoot } = require("%rGui/hud/tankState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
+let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
@@ -60,8 +60,8 @@ let mkCrosshairAnims = @(from, to) [
 let sightDestinationUpdate = @() {
   transform = {
     translate = [
-      crosshairDestinationScreenPosition.value.x
-      crosshairDestinationScreenPosition.value.y
+      crosshairDestinationScreenPosition.get().x
+      crosshairDestinationScreenPosition.get().y
     ]
   }
 }
@@ -78,16 +78,16 @@ eventbus_subscribe("onControlledBulletStart", @(d) anim_start(triggers?[d.trigge
 
 function mkCrosshairLine(from, to, ovr) {
   return {
-      key = hasNoPenetrationState.value
+      key = hasNoPenetrationState.get()
       rendObj = ROBJ_SOLID
-      color = tankCrosshairColor.value
+      color = tankCrosshairColor.get()
       transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = Linear }]
-      transform = { translate = hasNoPenetrationState.value ? from : [0, 0] }
-      animations = hasNoPenetrationState.value ? mkCrosshairAnims(from, to) : mkCrosshairAnims([0, 0], to)
+      transform = { translate = hasNoPenetrationState.get() ? from : [0, 0] }
+      animations = hasNoPenetrationState.get() ? mkCrosshairAnims(from, to) : mkCrosshairAnims([0, 0], to)
     }.__update(ovr)
 }
 
-let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
+let arcadeCrosshairSight = @() tankZoomAutoAimMode.get()  ?
 { watch = [tankCrosshairColor, tankZoomAutoAimMode ] }
 :
 {
@@ -107,7 +107,7 @@ let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
 }
 
 
-let arcadeCrosshairAim = @() tankZoomAutoAimMode.value ?
+let arcadeCrosshairAim = @() tankZoomAutoAimMode.get() ?
 {
   watch = [tankCrosshairColor, tankZoomAutoAimMode, currentArmorPiercingFixed]
   behavior = Behaviors.RtPropUpdate
@@ -160,8 +160,8 @@ let arcadeCrosshair = @() {
     crosshairAmount
   ]
   children = [
-    primaryRocketGun.value || isFreeCamera.value ? null : arcadeCrosshairSight
-  ].extend(currentArmorPiercingFixed.get() && !primaryRocketGun.value && allowShoot.value
+    primaryRocketGun.get() || isFreeCamera.get() ? null : arcadeCrosshairSight
+  ].extend(currentArmorPiercingFixed.get() && !primaryRocketGun.get() && allowShoot.get()
       ? array(crosshairAmount.get()).map(@(_, i) mkCircleGunPosition(i)) : [])
 }
 
@@ -193,7 +193,7 @@ let gunReadyIndicator = @() {
   size = [crosshairReadySize, crosshairReadySize]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = mkReadyPart(shootReadyness.value)
+  children = mkReadyPart(shootReadyness.get())
 }
 
 eventbus_subscribe("LocalPlayerDead", @(_) setShortcutOff("ID_FIRE_GM_MACHINE_GUN"))

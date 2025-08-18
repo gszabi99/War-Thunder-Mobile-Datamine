@@ -22,7 +22,7 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
-} = require("rewardStyles.nut")
+} = require("%rGui/rewards/rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
@@ -379,9 +379,9 @@ function mkRewardPlateDecoratorImage(r, rStyle) {
   let size = getRewardPlateSize(r.slots, rStyle)
   let decoratorType = Computed(@() (allDecorators.get()?[id].dType))
   let comp = { watch = decoratorType }
-  return @() decoratorType.value == null ? comp : comp.__update({
+  return @() decoratorType.get() == null ? comp : comp.__update({
     size
-    children = decoratorIconContentCtors?[decoratorType.value](id, rStyle, size)
+    children = decoratorIconContentCtors?[decoratorType.get()](id, rStyle, size)
   })
 }
 
@@ -389,7 +389,7 @@ function mkRewardPlateDecoratorTexts(r, rStyle) {
   let { id } = r
   let decoratorType = Computed(@() (allDecorators.get()?[id].dType))
   let comp = { watch = decoratorType }
-  return @() decoratorType.value == null ? comp
+  return @() decoratorType.get() == null ? comp
     : comp.__update(
         mkRewardLabel(mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.get()?[id].dType}"), rStyle), rStyle))
 }
@@ -440,11 +440,11 @@ function mkRewardPlateBoosterImage(r, rStyle) {
 function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.get()?.allUnits?[r.id].__merge({ isUpgraded }))
   let comp = { watch = unit }
-  return @() unit.value == null ? comp : comp.__update({
+  return @() unit.get() == null ? comp : comp.__update({
     size = getRewardPlateSize(r.slots, rStyle)
     children = [
-      mkUnitBg(unit.value)
-      mkUnitImage(unit.value)
+      mkUnitBg(unit.get())
+      mkUnitImage(unit.get())
     ]
   })
 }
@@ -504,9 +504,9 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let size = getRewardPlateSize(r.slots, rStyle)
   return function() {
     let res = { watch = unit }
-    if (unit.value == null)
+    if (unit.get() == null)
       return res
-    let unitNameLoc = loc(getUnitLocId(unit.value))
+    let unitNameLoc = loc(getUnitLocId(unit.get()))
     return res.__update({
       size
       padding = textPadding
@@ -519,13 +519,13 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
           halign = ALIGN_RIGHT
           children = [
             mkUnitNameText(unitNameLoc, size, rStyle)
-            mkPlateText(getUnitClassFontIcon(unit.value), rStyle.textStyle)
+            mkPlateText(getUnitClassFontIcon(unit.get()), rStyle.textStyle)
           ]
         }
         {
           hplace = ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
-          children = mkGradRankSmall(unit.value.mRank)
+          children = mkGradRankSmall(unit.get().mRank)
         }
       ]
     })

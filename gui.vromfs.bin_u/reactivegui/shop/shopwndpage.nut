@@ -6,20 +6,20 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks, subsByCategory, subsGroups
 } = require("%rGui/shop/shopState.nut")
-let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
-let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
-let { purchasePersonalGoods } = require("personalGoodsPurchase.nut")
+let { actualSchRewardByCategory, onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
+let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
+let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE } = require("goodsStates.nut")
-let { purchaseGoods } = require("purchaseGoods.nut")
+let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE } = require("%rGui/shop/goodsStates.nut")
+let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
-} = require("platformGoods.nut")
-let { mkGoods } = require("goodsView/goods.nut")
-let { mkSubscriptionCard } = require("goodsView/subscriptionCard.nut")
+} = require("%rGui/shop/platformGoods.nut")
+let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
+let { mkSubscriptionCard } = require("%rGui/shop/goodsView/subscriptionCard.nut")
 let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, mkGoodsTimeProgress
-} = require("goodsView/sharedParts.nut")
+} = require("%rGui/shop/goodsView/sharedParts.nut")
 let { openGoodsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
@@ -27,13 +27,13 @@ let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { SC_CONSUMABLES } = require("shopCommon.nut")
+let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { categoryGap, titleGap, goodsPerRow, titleH } = require("shopWndConst.nut")
-let rewardsToShopGoods = require("rewardsToShopGoods.nut")
+let { categoryGap, titleGap, goodsPerRow, titleH } = require("%rGui/shop/shopWndConst.nut")
+let rewardsToShopGoods = require("%rGui/shop/rewardsToShopGoods.nut")
 
 let goodsGlareRepeatDelay = 3
 let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
@@ -97,15 +97,15 @@ let function purchaseFunc(goods) {
 
 let mkGoodsState = @(goods) Computed(function() {
   local res = 0
-  let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.value
-    : platformPurchaseInProgress.value
+  let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.get()
+    : platformPurchaseInProgress.get()
   if (idInProgress != null) {
     res = res | DELAYED
     if (idInProgress == goods.id)
       res = res | PURCHASING
   }
   foreach(id in goodsLinks.get()?[goods.id] ?? [goods.id])
-    if (purchasesCount.value?[id].isFirstPurchaseBonusReceived ?? false) {
+    if (purchasesCount.get()?[id].isFirstPurchaseBonusReceived ?? false) {
       res = res | HAS_PURCHASES
       break
     }

@@ -19,7 +19,7 @@ let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let { unseenCampaigns, markAllCampaignsSeen } = require("unseenCampaigns.nut")
+let { unseenCampaigns, markAllCampaignsSeen } = require("%rGui/mainMenu/unseenCampaigns.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { imageBtn } = require("%rGui/components/imageButton.nut")
 let { unseenUnits, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
@@ -28,11 +28,11 @@ let iconSize = evenPx(40)
 let RESET_MSG_UID = "resetCampaignMsg"
 
 let isOpened = mkWatched(persist, "isOpened", false)
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 let backBtn = backButton(close)
 
-let needToForceOpen = keepref(Computed(@() isLoggedIn.value && !isAnyCampaignSelected.value
-  && campaignsList.value.len() > 1))
+let needToForceOpen = keepref(Computed(@() isLoggedIn.get() && !isAnyCampaignSelected.get()
+  && campaignsList.get().len() > 1))
 
 let skipTutor = mkWatched(persist, "skipTutorDev", false)
 
@@ -104,10 +104,10 @@ function onCampaignChange(campaign, onChangeCamp = null) {
     return
   }
 
-  if (!isAnyCampaignSelected.value)
+  if (!isAnyCampaignSelected.get())
     sendUiBqEvent("campaign_first_choice", { id = campaign })
 
-  if (!isAnyCampaignSelected.value || !needFirstBattleTutorForCampaign(campaign)) {
+  if (!isAnyCampaignSelected.get() || !needFirstBattleTutorForCampaign(campaign)) {
     applyCampaign()
     return
   }
@@ -262,14 +262,14 @@ function mkCampaignButton(campaign) {
     color = 0XFF323232
     behavior = Behaviors.Button
     onClick = @() onCampaignChange(campaign)
-    onElemState = @(v) stateFlags(v)
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    onElemState = @(v) stateFlags.set(v)
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click  = "click" }
 
     children = [
       campaignImage
-      mkCampaignName(utf8ToUpper(loc(getCampaignPresentation(campaign).headerLocId)), stateFlags.value)
+      mkCampaignName(utf8ToUpper(loc(getCampaignPresentation(campaign).headerLocId)), stateFlags.get())
       campaign not in unseenCampaigns.get() ? null
         : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(-20), hdpx(20)] })
       !can_use_debug_console.get() ? null
@@ -324,7 +324,7 @@ let chooseCampaignScene = bgShaded.__merge({
   padding = saBordersRv
   gap
   function onAttach() {
-    if (!isAnyCampaignSelected.value)
+    if (!isAnyCampaignSelected.get())
       sendUiBqEvent("campaign_first_choice_open")
   }
   children = [
@@ -343,10 +343,10 @@ let chooseCampaignScene = bgShaded.__merge({
 registerScene("chooseCampaignWnd", chooseCampaignScene, close, isOpened)
 
 if (needToForceOpen.value)
-  isOpened(true)
-needToForceOpen.subscribe(@(v) v ? isOpened(true) : null)
+  isOpened.set(true)
+needToForceOpen.subscribe(@(v) v ? isOpened.set(true) : null)
 
 return {
   onCampaignChange
-  chooseCampaignWnd = @() isOpened(true)
+  chooseCampaignWnd = @() isOpened.set(true)
 }

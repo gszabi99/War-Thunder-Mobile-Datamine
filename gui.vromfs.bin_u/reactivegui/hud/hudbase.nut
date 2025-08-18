@@ -12,6 +12,7 @@ let cutsceneHud = require("%rGui/hud/cutsceneHud.nut")
 let freeCamHud = require("%rGui/hud/freeCamHud.nut")
 let hudIndicators = require("%rGui/hud/indicators/hudIndicators.nut")
 let captureZoneIndicators = require("%rGui/hud/capZones/captureZoneIndicators.nut")
+let hudVignette = require("%rGui/hud/hudVignette.nut")
 let { hudElementShade } = require("%rGui/tutorial/hudElementShade.nut")
 let { hudElementBlink } = require("%rGui/tutorial/hudElementBlink.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
@@ -51,6 +52,7 @@ let emptySceneWithMenuButton = {
 
 let hudByType = {
   [HT_HUD] = @(unitTypeV) [
+    hudVignette
     hudIndicators
     captureZoneIndicators
     hudByUnitType?[unitTypeV]
@@ -70,8 +72,8 @@ let hudByType = {
 let hudBase = {
   key = isHudAttached
   size = flex()
-  onAttach = @() isHudAttached(true)
-  onDetach = @() isHudAttached(false)
+  onAttach = @() isHudAttached.set(true)
+  onDetach = @() isHudAttached.set(false)
   children = [
     @() {
       watch = hudUnitType
@@ -88,11 +90,11 @@ let hudBase = {
     @() {
       watch = [isInFlight, viewHudType, hudUnitType]
       size = flex()
-      children = !isInFlight.value ? null
+      children = !isInFlight.get() ? null
         : {
-            key = viewHudType.value
+            key = viewHudType.get()
             size = flex()
-            children = hudByType?[viewHudType.value](hudUnitType.value)
+            children = hudByType?[viewHudType.get()](hudUnitType.get())
             animations = wndSwitchAnim
           }
     }

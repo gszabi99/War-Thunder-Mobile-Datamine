@@ -30,12 +30,12 @@ isLvlUpOpened.subscribe(@(v) v ? isSeen(true) : null)
 isInDebriefing.subscribe(function(v) {
   if (!v)
     return
-  failedRewardsLevelStr({}) 
+  failedRewardsLevelStr.set({}) 
 
   local hasBalanceForLevelUpUnit = false
-  foreach(unit in buyUnitsData.value.canBuyOnLvlUp) {
+  foreach(unit in buyUnitsData.get().canBuyOnLvlUp) {
     let { currencyId = null, price = 0 } = getUnitAnyPrice(unit, true, unitDiscounts.get())
-    if (currencyId != WP || price > balanceWp.value)
+    if (currencyId != WP || price > balanceWp.get())
       continue
     hasBalanceForLevelUpUnit = true
     break
@@ -43,7 +43,7 @@ isInDebriefing.subscribe(function(v) {
   if (hasBalanceForLevelUpUnit)
     isSeen(false)
 })
-isLvlUpOpened.subscribe(@(_) upgradeUnitName(null))
+isLvlUpOpened.subscribe(@(_) upgradeUnitName.set(null))
 
 let maxRewardLevelInfo = Computed(function(prev) {
   let { level, starLevel, isReadyForLevelUp, isStarProgress = false } = playerLevelInfo.get()
@@ -57,11 +57,11 @@ let maxRewardLevelInfo = Computed(function(prev) {
 })
 
 let rewardsToReceive = Computed(function() {
-  let level = maxRewardLevelInfo.value.level
+  let level = maxRewardLevelInfo.get().level
   let received = receivedLvlRewards.get()
-  let failed = failedRewardsLevelStr.value
+  let failed = failedRewardsLevelStr.get()
   let res = {}
-  foreach (lvlStr, reward in (campConfigs.value?.playerLevelRewards ?? {}))
+  foreach (lvlStr, reward in (campConfigs.get()?.playerLevelRewards ?? {}))
     if (lvlStr not in received && lvlStr not in failed && lvlStr.tointeger() <= level)
       res[lvlStr.tointeger()] <- reward
   return res
@@ -77,9 +77,9 @@ hasDataForLevelWnd.subscribe(function(v) {
 })
 
 let needAutoLevelUp = keepref(Computed(@() !levelInProgress.get()
-  && hasDataForLevelWnd.value
-  && rewardsToReceive.value.len() == 0
-  && buyUnitsData.value.canBuyOnLvlUp.len() == 0
+  && hasDataForLevelWnd.get()
+  && rewardsToReceive.get().len() == 0
+  && buyUnitsData.get().canBuyOnLvlUp.len() == 0
   && !isInBattle.get()))
 
 function skipLevelUpUnitPurchase() {

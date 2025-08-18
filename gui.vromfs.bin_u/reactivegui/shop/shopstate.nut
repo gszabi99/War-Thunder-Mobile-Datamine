@@ -20,9 +20,9 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
-} = require("schRewardsState.nut")
-let { platformGoods, platformSubs } = require("platformGoods.nut")
-let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
+} = require("%rGui/shop/schRewardsState.nut")
+let { platformGoods, platformSubs } = require("%rGui/shop/platformGoods.nut")
+let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
 let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
@@ -58,7 +58,7 @@ let sortGoods = @(a, b)
   || a.premiumDays <=> b.premiumDays
   || a.id <=> b.id
 
-let goodsWithTimers = Computed(@() (campConfigs.value?.allGoods ?? {})
+let goodsWithTimers = Computed(@() (campConfigs.get()?.allGoods ?? {})
   .filter(@(g) "timeRange" in g ? g.timeRange.start > 0 || g.timeRange.end > 0 
     : g.timeRanges.len() > 0
   ))
@@ -144,7 +144,7 @@ function updateGoodsTimers() {
     inactiveGoodsByTime.set(inactive)
   if (!isEqual(finished, finishedGoodsByTime.get()))
     finishedGoodsByTime.set(finished)
-  nextUpdateTime({ time = nextTime ?? 0 })
+  nextUpdateTime.set({ time = nextTime ?? 0 })
 }
 
 nextUpdateTime.subscribe(function(v) {
@@ -277,11 +277,11 @@ let subsByCategory = Computed(function() {
 
 let goodsIdsByCategory = Computed(function() {
   let goods = {}
-  foreach (cat, val in goodsByCategory.value){
+  foreach (cat, val in goodsByCategory.get()){
     goods[cat] <- []
     val.map(@(item) goods[cat].append(item?.id))
-    if (actualSchRewardByCategory.value?[cat]?.id)
-      goods[cat].append(actualSchRewardByCategory.value[cat].id)
+    if (actualSchRewardByCategory.get()?[cat]?.id)
+      goods[cat].append(actualSchRewardByCategory.get()[cat].id)
   }
   foreach (cat, list in subsByCategory.get()) {
     if (cat not in goods)
@@ -292,8 +292,8 @@ let goodsIdsByCategory = Computed(function() {
 })
 
 function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
-  let toRemove = unmarkSeen.filter(@(id) id in shopSeenGoods.value)
-  let counters = unmarkCounters.filter(@(id, count) unmarkSeenCounters.value?[id] != count)
+  let toRemove = unmarkSeen.filter(@(id) id in shopSeenGoods.get())
+  let counters = unmarkCounters.filter(@(id, count) unmarkSeenCounters.get()?[id] != count)
   if (toRemove.len() == 0 && counters.len() == 0)
     return
 
@@ -310,7 +310,7 @@ function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
   }
 
   if (counters.len() != 0) {
-    unmarkSeenCounters(unmarkSeenCounters.value.__merge(counters))
+    unmarkSeenCounters.set(unmarkSeenCounters.get().__merge(counters))
     let blk = sBlk.addBlock(UNMARK_SEEN_COUNTERS)
     foreach (id, v in counters)
       blk[id] = v
@@ -323,9 +323,9 @@ lastAppliedSchReward.subscribe(function(v) {
   let unmarkSeen = [rewardId]
   let unmarkCounters = {}
 
-  let { gtype = null, needAdvert = false } = schRewards.value?[rewardId]
+  let { gtype = null, needAdvert = false } = schRewards.get()?[rewardId]
   if (gtype != null && !needAdvert)
-    foreach(id, rew in schRewards.value)
+    foreach(id, rew in schRewards.get())
       if (rew.gtype == gtype && id != rewardId && rew.needAdvert) {
         unmarkSeen.append(id)
         unmarkCounters[id] <- 1
@@ -336,33 +336,33 @@ lastAppliedSchReward.subscribe(function(v) {
 
 isInDebriefing.subscribe(function(v) {
   if (!v)
-    unmarkSeenGoods(unmarkSeenCounters.value.filter(@(c) c == 0).keys())
+    unmarkSeenGoods(unmarkSeenCounters.get().filter(@(c) c == 0).keys())
 })
 
 function saveSeenGoods(ids) {
   let upd = {}
   let cUpd = {}
   foreach(id in ids) {
-    if (shopSeenGoods.value?[id])
+    if (shopSeenGoods.get()?[id])
       continue
-    let schReward = actualSchRewards.value?[id]
+    let schReward = actualSchRewards.get()?[id]
     if (schReward != null && (!schReward.needAdvert || !schReward.isReady))
       continue
     upd[id] <- true
-    if (id in unmarkSeenCounters.value)
-      cUpd[id] <- unmarkSeenCounters.value[id] - 1
+    if (id in unmarkSeenCounters.get())
+      cUpd[id] <- unmarkSeenCounters.get()[id] - 1
   }
   if (upd.len() == 0)
     return
 
   let sBlk = get_local_custom_settings_blk()
-  shopSeenGoods(shopSeenGoods.value.__merge(upd))
+  shopSeenGoods.set(shopSeenGoods.get().__merge(upd))
   let seenBlk = sBlk.addBlock(SEEN_GOODS)
   foreach (id, _ in upd)
     seenBlk[id] = true
 
   if (cUpd.len() != 0) {
-    unmarkSeenCounters(unmarkSeenCounters.value.__merge(cUpd))
+    unmarkSeenCounters.set(unmarkSeenCounters.get().__merge(cUpd))
     let cBlk = sBlk.addBlock(UNMARK_SEEN_COUNTERS)
     foreach (id, v in cUpd)
       cBlk[id] = v
@@ -383,16 +383,16 @@ function loadSeenGoods() {
   let seen = {}
   if (isDataBlock(seenBlk))
     eachParam(seenBlk, @(isSeen, id) seen[id] <- isSeen)
-  shopSeenGoods(seen)
+  shopSeenGoods.set(seen)
 
   let countersBlk = blk?[UNMARK_SEEN_COUNTERS]
   let counters = {}
   if (isDataBlock(countersBlk))
     eachParam(countersBlk, @(v, id) counters[id] <- v)
-  unmarkSeenCounters(counters)
+  unmarkSeenCounters.set(counters)
 }
 
-if (shopSeenGoods.value.len() == 0)
+if (shopSeenGoods.get().len() == 0)
   loadSeenGoods()
 
 isSettingsAvailable.subscribe(@(_) loadSeenGoods())
@@ -410,20 +410,20 @@ let shopUnseenGoods = Computed(function() {
 })
 
 let hasUnseenGoodsByCategory = Computed(function() {
-  return goodsIdsByCategory.value.map(function(ids) {
+  return goodsIdsByCategory.get().map(function(ids) {
     foreach (id in ids)
-      if (id in shopUnseenGoods.value)
+      if (id in shopUnseenGoods.get())
         return true
     return false
   })
 })
 
-let saveSeenGoodsCurrent = @() !hasUnseenGoodsByCategory.value?[curCategoryId.value] ? null
-  : saveSeenGoods(goodsIdsByCategory.value[curCategoryId.value])
+let saveSeenGoodsCurrent = @() !hasUnseenGoodsByCategory.get()?[curCategoryId.get()] ? null
+  : saveSeenGoods(goodsIdsByCategory.get()[curCategoryId.get()])
 
 function onTabChange(id) {
   saveSeenGoodsCurrent()
-  curCategoryId(id)
+  curCategoryId.set(id)
 }
 
 function isDisabledGoods(reward) {
@@ -450,9 +450,9 @@ function openShopWnd(catId = null, bqPurchaseInfo = null) {
 
   curCategoryId.set(hasGoodsCategoryNonUpdatable(catId) ? catId
     : shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id)
-  shopOpenCount(shopOpenCount.value + 1)
+  shopOpenCount.set(shopOpenCount.get() + 1)
   sendBqEventOnOpenCurrencyShop(bqPurchaseInfo)
-  isShopOpened(true)
+  isShopOpened.set(true)
 }
 
 function openShopWndByGoods(goods) {
@@ -464,7 +464,7 @@ let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo)
   openShopWnd(categoryByCurrency?[currencyId], bqPurchaseInfo.__merge({ id = currencyId }))
 
 register_command(function() {
-  shopSeenGoods({})
+  shopSeenGoods.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_GOODS)
   get_local_custom_settings_blk().removeBlock(UNMARK_SEEN_COUNTERS)
   eventbus_send("saveProfile", {})

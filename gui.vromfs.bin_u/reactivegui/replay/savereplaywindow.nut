@@ -5,7 +5,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { saveLastReplay } = require("lastReplayState.nut")
+let { saveLastReplay } = require("%rGui/replay/lastReplayState.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { buttonsHGap, textButton } = require("%rGui/components/textButton.nut")
 let { PRIMARY, COMMON } = require("%rGui/components/buttonStyles.nut")
@@ -15,10 +15,10 @@ const WND_UID = "saveReplayWnd"
 let close = @() removeModalWindow(WND_UID)
 let replayName = Watched("")
 let isNameValid = Computed(function() {
-  if (replayName.value == "")
+  if (replayName.get() == "")
     return false
   foreach (c in "\\|/<>:?*\"")  
-    if (replayName.value.indexof(c.tochar()) != null)
+    if (replayName.get().indexof(c.tochar()) != null)
       return false
   return true
 })
@@ -26,20 +26,20 @@ let isNameValid = Computed(function() {
 let editbox = textInput(replayName)
 
 function save() {
-  if (!isNameValid.value) {
+  if (!isNameValid.get()) {
     openMsgBox({ text = loc("msgbox/invalidReplayFileName") })
     return
   }
-  if (!saveLastReplay(replayName.value))
+  if (!saveLastReplay(replayName.get()))
     return
   close()
-  replayName("")
+  replayName.set("")
 }
 
 let applyButton = @() {
   watch = isNameValid
   children = textButton(utf8ToUpper(loc("mainmenu/btnApply")), save,
-    isNameValid.value ? PRIMARY : COMMON)
+    isNameValid.get() ? PRIMARY : COMMON)
 }
 
 let wndContent = {

@@ -639,7 +639,7 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   return unitStats.filter(@(v) v != null)
 }
 
-let setMaxAttrs = @(attrPreset) attrPresets.value?[attrPreset]
+let setMaxAttrs = @(attrPreset) attrPresets.get()?[attrPreset]
   .reduce(function(res, v) {
     res[v.id] <- v.attrList.reduce(function(acc, a) {
       acc[a.id] <- MAX_ATTR_VALUE

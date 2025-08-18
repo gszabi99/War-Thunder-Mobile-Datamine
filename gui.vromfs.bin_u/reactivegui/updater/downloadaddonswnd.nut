@@ -4,7 +4,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { downloadWndParams, closeDownloadAddonsWnd, wantStartDownloadAddons, isDownloadPaused, downloadAddonsStr,
   totalSizeBytes, downloadState, updaterError, progressPercent, allowLimitedDownload,
   isDownloadPausedByConnection, isDownloadInProgress, isStageDownloading
-} = require("updaterState.nut")
+} = require("%rGui/updater/updaterState.nut")
 let { loadingAnimBg, gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -25,15 +25,15 @@ let progressPercentInt = Computed(@() progressPercent.get() ?? 0)
 let statusText = Computed(@() wantStartDownloadAddons.get().len() == 0 ? loc("updater/status/complete")
   : isDownloadPaused.get() ? "".concat(
       loc("updater/status/paused", { addonInfo = downloadAddonsStr.get() }),
-      colon, getDownloadInfoText(totalSizeBytes.value, 0, 0))
-  : isDownloadPausedByConnection.value ? "".concat(
+      colon, getDownloadInfoText(totalSizeBytes.get(), 0, 0))
+  : isDownloadPausedByConnection.get() ? "".concat(
       loc("updater/status/pausedByConnection", { addonInfo = downloadAddonsStr.get() }),
-      colon, getDownloadInfoText(totalSizeBytes.value, 0, 0))
+      colon, getDownloadInfoText(totalSizeBytes.get(), 0, 0))
   : updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
   : !isStageDownloading.get() ? loc("pl1/check_profile")
   : "".concat(
       loc("updater/status/downloading", { addonInfo = downloadAddonsStr.get() }),
-      colon, getDownloadInfoText(totalSizeBytes.value, downloadState.value?.etaSec ?? 0, downloadState.value?.dspeed ?? 0))
+      colon, getDownloadInfoText(totalSizeBytes.get(), downloadState.get()?.etaSec ?? 0, downloadState.get()?.dspeed ?? 0))
 )
 
 let waitSpinner = {
@@ -54,7 +54,7 @@ let headerRight = @() {
   flow = FLOW_VERTICAL
   children = [
     limitedDownloadToggle
-    isDownloadInProgress.value ? waitSpinner : null
+    isDownloadInProgress.get() ? waitSpinner : null
   ]
 }
 
@@ -76,7 +76,7 @@ let openLimitConnectionMsgBox = @() openMsgBox({
     { id = "download", styleId = "PRIMARY", isDefault = true,
       function cb() {
         allowLimitedDownload(true)
-        isDownloadPaused(false)
+        isDownloadPaused.set(false)
       }
     }
   ]
@@ -87,13 +87,13 @@ function pauseButton() {
   if (wantStartDownloadAddons.get().len() == 0)
     return res
   return res.__update({
-    opacity = isDownloadPausedByConnection.value ? 0.3 : 1.0
+    opacity = isDownloadPausedByConnection.get() ? 0.3 : 1.0
     children = translucentIconButton(
-      isDownloadPaused.get() || isDownloadPausedByConnection.value
+      isDownloadPaused.get() || isDownloadPausedByConnection.get()
         ? "ui/gameuiskin#replay_play.svg"
         : "ui/gameuiskin#replay_pause.svg",
-      @() isDownloadPausedByConnection.value ? openLimitConnectionMsgBox()
-        : isDownloadPaused(!isDownloadPaused.get()),
+      @() isDownloadPausedByConnection.get() ? openLimitConnectionMsgBox()
+        : isDownloadPaused.set(!isDownloadPaused.get()),
       hdpxi(45),
       [hdpx(105), hdpx(80)]
     )

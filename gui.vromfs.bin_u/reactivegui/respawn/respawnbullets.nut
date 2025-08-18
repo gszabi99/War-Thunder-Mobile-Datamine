@@ -3,10 +3,10 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets,
   maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo, bulletSecStep, bulletSecLeftSteps
   chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo
-} = require("bulletsChoiceState.nut")
-let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo } = require("respawnComps.nut")
-let { openedSlot } = require("respawnChooseBulletWnd.nut")
-let { selSlot, hasUnseenShellsBySlot } = require("respawnState.nut")
+} = require("%rGui/respawn/bulletsChoiceState.nut")
+let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo } = require("%rGui/respawn/respawnComps.nut")
+let { openedSlot } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
+let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
 let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkBulletSliderSlot } = require("%rGui/bullets/bulletsSlotComps.nut")
 

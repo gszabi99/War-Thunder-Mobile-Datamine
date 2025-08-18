@@ -9,18 +9,18 @@ let squadMembers = sharedWatched("squadMembers", @() {})
 let squadOnline = sharedWatched("squadOnline", @() {})
 let squadMembersOrder = sharedWatched("squadMembersOrder", @() [])
 let isReady = sharedWatched("squadIsReady", @() false)
-let squadLen = Computed(@() squadMembers.value.len())
-let squadMyState = Computed(@() squadMembers.value?[myUserId.value])
-let squadLeaderState = Computed(@() squadMembers.value?[squadId.value])
-let squadLeaderCampaign = Computed(@() squadLeaderState.value?.campaign)
-let squadLeaderReadyCheckTime = Computed(@() squadLeaderState.value?.readyCheckTime ?? 0)
-let squadLeaderMRankCheckTime = Computed(@() squadLeaderState.value?.mRankCheckTime ?? 0)
-let squadLeaderQueueDataCheckTime = Computed(@() squadLeaderState.value?.queueDataCheckTime ?? 0)
+let squadLen = Computed(@() squadMembers.get().len())
+let squadMyState = Computed(@() squadMembers.get()?[myUserId.get()])
+let squadLeaderState = Computed(@() squadMembers.get()?[squadId.get()])
+let squadLeaderCampaign = Computed(@() squadLeaderState.get()?.campaign)
+let squadLeaderReadyCheckTime = Computed(@() squadLeaderState.get()?.readyCheckTime ?? 0)
+let squadLeaderMRankCheckTime = Computed(@() squadLeaderState.get()?.mRankCheckTime ?? 0)
+let squadLeaderQueueDataCheckTime = Computed(@() squadLeaderState.get()?.queueDataCheckTime ?? 0)
 
-let isInSquad = Computed(@() squadId.value != null)
-let isSquadLeader = Computed(@() squadId.value == myUserId.value)
-let isLeavingWillDisbandSquad = Computed(@() squadLen.value == 1 || (squadLen.value + isInvitedToSquad.value.len() <= 2))
-let canInviteToSquad = Computed(@() !isInSquad.value || isSquadLeader.value)
+let isInSquad = Computed(@() squadId.get() != null)
+let isSquadLeader = Computed(@() squadId.value == myUserId.get())
+let isLeavingWillDisbandSquad = Computed(@() squadLen.value == 1 || (squadLen.get() + isInvitedToSquad.get().len() <= 2))
+let canInviteToSquad = Computed(@() !isInSquad.get() || isSquadLeader.get())
 let myClustersRTT = sharedWatched("myClustersRTT", @() {})
 let queueDataCheckTime = sharedWatched("queueDataCheckTime", @() 0)
 
@@ -40,7 +40,7 @@ return {
   squadMembers
   squadOnline
   squadMembersOrder
-  isSquadNotEmpty = Computed(@() squadMembers.value.len()>1)
+  isSquadNotEmpty = Computed(@() squadMembers.get().len()>1)
   squadLen
   squadMyState
   squadLeaderState

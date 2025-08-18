@@ -15,17 +15,17 @@ let vendorIdToGamepadPresetId = {
 
 let lastVendorId = hardPersistWatched("lastGamepadVendorId", null)
 let debugVendorId = hardPersistWatched("debugGamepadVendorId", null)
-let curVendorId = Computed(@() debugVendorId.value ?? lastVendorId.value)
-let presetId = Computed(@() vendorIdToGamepadPresetId?[curVendorId.value] ?? defGamepadPresetId)
+let curVendorId = Computed(@() debugVendorId.get() ?? lastVendorId.get())
+let presetId = Computed(@() vendorIdToGamepadPresetId?[curVendorId.get()] ?? defGamepadPresetId)
 
-if (lastVendorId.value == null) {
+if (lastVendorId.get() == null) {
   lastVendorId(getJoystickVendor())
-  log("[GAMEPAD] presetId = ", presetId.value) 
+  log("[GAMEPAD] presetId = ", presetId.get()) 
 }
 presetId.subscribe(@(v) log("[GAMEPAD] presetId = ", v))
 
-let vendorIdToShow = lastVendorId.value 
-let presetIdToShow = presetId.value 
+let vendorIdToShow = lastVendorId.get() 
+let presetIdToShow = presetId.get() 
 
 function updateVendor(_) {
   let id = getJoystickVendor()
@@ -36,14 +36,14 @@ eventbus_subscribe("controls.joystickConnected", updateVendor)
 eventbus_subscribe("controls.joystickDisconnected", updateVendor)
 
 function reloadVmIfNeed() {
-  if (presetId.value != presetIdToShow)
+  if (presetId.get() != presetIdToShow)
     eventbus_send("reloadDargVM", { msg = "gamepad vendor changed" })
 }
 presetId.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))
 
 function setDbgVendor(id) {
   debugVendorId(id == UNKNOWN ? null : id)
-  console_print("gamepad preset id = ", presetId.value) 
+  console_print("gamepad preset id = ", presetId.get()) 
 }
 
 VendorId.each(@(id, name) register_command(

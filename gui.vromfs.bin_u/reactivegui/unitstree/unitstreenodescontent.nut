@@ -3,7 +3,7 @@ let { PI, sin } = require("math")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset, gamercardOverlap, infoPanelWidth
-} = require("unitsTreeComps.nut")
+} = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curSelectedUnit, curUnitName, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
@@ -15,9 +15,9 @@ let { doubleSidePannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll, interruptAnimScroll
-} = require("unitsTreeScroll.nut")
+} = require("%rGui/unitsTree/unitsTreeScroll.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
-let { mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault } = require("mkUnitPlate.nut")
+let { mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -27,19 +27,19 @@ let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
   setUnitToScroll, unitToScroll, unitInfoToScroll, blockedCountries
-} = require("unitsTreeNodesState.nut")
+} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { rankBlockOffset } = require("unitsTreeConsts.nut")
+let { rankBlockOffset } = require("%rGui/unitsTree/unitsTreeConsts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
   animUnitAfterResearch, canPlayAnimUnitWithLink, hasAnimDarkScreen, resetAnim,
   animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirementsUnitId, animResearchRequirements
   animResearchRequirementsAncestors, animNewUnitsAfterResearchTrigger, animBuyRequirementsInfo
-} = require("animState.nut")
-let { attractColor } = require("treeAnimConsts.nut")
+} = require("%rGui/unitsTree/animState.nut")
+let { attractColor } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let { draggedData, removeUnitFromSlot } = require("%rGui/slotBar/dragDropSlotState.nut")
 
 let aTimeAppearLink = 1

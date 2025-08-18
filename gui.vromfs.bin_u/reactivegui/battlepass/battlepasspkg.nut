@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { pointsCurStage, pointsPerStage } = require("battlePassState.nut")
 let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 
 let progressIconSize = [evenPx(54), hdpxi(58)]
@@ -24,10 +23,10 @@ function mkLevelLine(points, stagePoints, ovr = {}) {
   }
 }
 
-let bpCurProgressbar = @(ovr = {}){
+let bpCurProgressbar = @(pointsCurStage, pointsPerStage, ovr = {}) @() {
   watch = [pointsCurStage, pointsPerStage]
   size = flex()
-  children = mkLevelLine(pointsCurStage.value, pointsPerStage.value, ovr)
+  children = mkLevelLine(pointsCurStage.get(), pointsPerStage.get(), ovr)
 }
 
 let fullLineBP = {
@@ -44,12 +43,12 @@ let bpProgress = @(children) mkProgressLevelBg({
 })
 
 
-let bpProgressText  = @(ovr = {}){
+let bpProgressText  = @(pointsCurStage, pointsPerStage, ovr = {}) @() {
   watch = [pointsCurStage, pointsPerStage]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_TEXT
-  text = "/".concat(pointsCurStage.value, pointsPerStage.value)
+  text = "/".concat(pointsCurStage.get(), pointsPerStage.get())
 }.__update(fontVeryTiny, ovr)
 
 return {

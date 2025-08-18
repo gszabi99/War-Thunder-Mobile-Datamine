@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { DM_VIEWER_ARMOR, hangar_get_dm_viewer_parts_count } = require("hangar")
-let { dmViewerMode, dmViewerUnitReady } = require("dmViewerState.nut")
+let { dmViewerMode, dmViewerUnitReady } = require("%rGui/dmViewer/dmViewerState.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText, accentColor, mkUnitStatusText
-} = require("dmViewerPkg.nut")
-let { collectArmorClassToSteelMuls } = require("modeXrayUtils.nut")
+} = require("%rGui/dmViewer/dmViewerPkg.nut")
+let { collectArmorClassToSteelMuls } = require("%rGui/dmViewer/modeXrayUtils.nut")
 
 let absoluteArmorThreshold = 500
 let relativeArmorThreshold = 5.0
@@ -35,6 +35,7 @@ let partNameW = Watched("")
 
 dmViewerMode.subscribe(function(_) {
   partNameW.set("")
+  thicknessW.set(0.0)
   scrPosX.set(0)
   scrPosY.set(0)
 })

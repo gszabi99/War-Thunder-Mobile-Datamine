@@ -13,7 +13,7 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 let wndHeaderHeight = hdpx(60)
 let opacityGradientSize = saBorders[1]
 let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
@@ -96,4 +96,4 @@ let mkDebugStreakWnd = @() bgShaded.__merge({
 
 registerScene("debugStreakWnd", mkDebugStreakWnd, close, isOpened)
 
-register_command(@() isOpened(true), "ui.debug.streak")
+register_command(@() isOpened.set(true), "ui.debug.streak")

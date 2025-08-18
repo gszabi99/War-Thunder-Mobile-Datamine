@@ -5,9 +5,9 @@ let { setInterval, clearTimer, resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 
-let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox } = require("tutorialWnd/tutorialUtils.nut")
-let { pointerArrow } = require("tutorialWnd/tutorialWndDefStyle.nut")
-let hudElementsCfg = require("hudElementsCfg.nut")
+let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
+let { pointerArrow } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
+let hudElementsCfg = require("%rGui/tutorial/hudElementsCfg.nut")
 let { sizeIncDef } = hudElementsCfg
 let hudElements = hudElementsCfg.elements
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")

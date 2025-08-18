@@ -21,7 +21,7 @@ let mkLbMedalTop10Ctor = @(presentation) function(medal) {
     watch = stateFlags
     key = medal
     behavior = Behaviors.Button
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     onDetach = tooltipDetach(stateFlags)
     onElemState = withTooltip(stateFlags, medal, @() {
       flow = FLOW_HORIZONTAL
@@ -71,7 +71,7 @@ let mkSimpleMedalCtor = @(presentation) function(medal) {
     image = image == null ? Picture("ui/unitskin#image_in_progress")
       : Picture($"ui/gameuiskin#{image}:{medalSize}:{medalSize}:P")
     behavior = Behaviors.Button
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     onDetach = tooltipDetach(stateFlags)
     onElemState = withTooltip(stateFlags, medal,
       @() {

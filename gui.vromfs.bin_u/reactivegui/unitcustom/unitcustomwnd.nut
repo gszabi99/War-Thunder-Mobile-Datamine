@@ -14,7 +14,7 @@ let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isCustomization
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { closeUnitCustom, unitCustomOpenCount } = require("unitCustomState.nut")
+let { closeUnitCustom, unitCustomOpenCount } = require("%rGui/unitCustom/unitCustomState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -58,7 +58,7 @@ function platoonUnitsBlock() {
         flow = FLOW_VERTICAL
         gap = unitPlatesGap
         children = platoonUnitsList.get()
-          .map(@(pu) mkUnitPlate(baseUnit.get(), pu, @() curSelectedUnitId(pu.name)))
+          .map(@(pu) mkUnitPlate(baseUnit.get(), pu, @() curSelectedUnitId.set(pu.name)))
       })
 }
 

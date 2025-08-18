@@ -9,7 +9,7 @@ let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
-let { activeOffer } = require("offerState.nut")
+let { activeOffer } = require("%rGui/shop/offerState.nut")
 let { openMsgBoxPurchase, closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -51,7 +51,7 @@ registerHandler("onShopGoodsPurchase",
   })
 
 function purchaseGoodsImpl(goodsId, currencyId, price) {
-  if (shopPurchaseInProgress.value != null)
+  if (shopPurchaseInProgress.get() != null)
     return "shopPurchaseInProgress"
   buy_goods(goodsId, currencyId, price, 1, "onShopGoodsPurchase")
   return ""
@@ -124,8 +124,8 @@ function startRemoveTimer(goods) {
 
 function purchaseGoods(goodsId, description = "") {
   logShop($"User tries to purchase: {goodsId}")
-  if (shopPurchaseInProgress.value != null)
-    return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
+  if (shopPurchaseInProgress.get() != null)
+    return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.get()}")
   let isOffer = activeOffer.get()?.id == goodsId
   let goods = isOffer ? activeOffer.get() : shopGoodsAllCampaigns.get()?[goodsId]
   if (goods == null)
@@ -176,8 +176,8 @@ function purchaseGoods(goodsId, description = "") {
 
 function purchaseGoodsSeq(goodsList, name, description = "") {
   logShop($"User tries to purchase: ", goodsList.map(@(v) v.id))
-  if (shopPurchaseInProgress.value != null || goodsList.len() == 0)
-    return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
+  if (shopPurchaseInProgress.get() != null || goodsList.len() == 0)
+    return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.get()}")
   local sum = 0
   local currency = ""
   foreach (goods in goodsList) {

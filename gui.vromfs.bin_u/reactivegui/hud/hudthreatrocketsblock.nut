@@ -65,8 +65,8 @@ let threatRocketsBlock = @() {
   halign = ALIGN_LEFT
   flow = FLOW_VERTICAL
   pos = [rocketsPosX, 0]
-  children = !hasCountermeasures.value ? null
-    : threatRockets.value
+  children = !hasCountermeasures.get() ? null
+    : threatRockets.get()
         .map(@(threat) threat.x > 0 ? mkRecord(threat.x, threat.y, threat.z) : null)
 }
 

@@ -103,7 +103,7 @@ return ads.__merge({
   }
   function showAds() {
     eventbus_send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() })
-    debugAdsWndParams({
+    debugAdsWndParams.set({
       rewardEvent = "android.ads.onReward"
       rewardData = { amount = 1, type = "debug", provider = loadedProvider.get() }
       finishEvent = "android.ads.onShow"

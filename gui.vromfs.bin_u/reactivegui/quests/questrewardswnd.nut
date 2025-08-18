@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { openRewardsPreviewModal, closeRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
-let { isRewardsListOpen, closeRewardsList, rewardsList } = require("questsState.nut")
+let { isRewardsListOpen, closeRewardsList, rewardsList } = require("%rGui/quests/questsState.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
-let { mkRewardPlateWithAnim } = require("rewardsComps.nut")
+let { mkRewardPlateWithAnim } = require("%rGui/quests/rewardsComps.nut")
 
 let REWARD_INTERVAL = 0.1
 let MAX_APPEAR_TIME = 0.25

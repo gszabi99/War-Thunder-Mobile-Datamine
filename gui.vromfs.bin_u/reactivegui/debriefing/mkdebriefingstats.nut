@@ -5,11 +5,11 @@ let { roundToDigits } = require("%sqstd/math.nut")
 let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { gradRadial } = require("%rGui/style/gradients.nut")
 let { startSound, stopSound } = require("sound_wt")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
-let mkAnimatedCountText = require("mkAnimatedCountText.nut")
+let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
+let mkAnimatedCountText = require("%rGui/debriefing/mkAnimatedCountText.nut")
 
 let statIncreaseAnimTimeMsec = 500
 let iconSize = hdpxi(30)
@@ -69,32 +69,59 @@ let toLbRating = @(v) (0.01 * v + 0.5).tointeger()
 let damageZoneTons = @(v) roundToDigits(v * KG_TO_TONS, 3)
 
 let getValIfPositive = @(val, convertFunc = @(v) v) (val ?? 0) > 0 ? convertFunc(val) : null
+let isFFA = @(debrData) !!((debrData?.gameType ?? 0) & (GT_FFA_DEATHMATCH | GT_FFA))
+let isBattleRoyale = @(debrData) !!((debrData?.gameType ?? 0) & GT_FFA)
+let getPlayerPlaceLabel = @(debrData) loc(isFFA(debrData) ? "multiplayer/place" : "debriefing/PlayerPlace")
+let hasUserstatMode = @(debrData, mode) debrData?.userstatModes.contains(mode) ?? false
+
+let rowTotalScore =
+  { locId = "debriefing/totalscore", getVal = @(debrData, _) (100 * (debrData?.reward.dmgScoreBonus ?? 0)).tointeger() }
+let rowLifeTime =
+  { locId = "multiplayer/lifetime", getVal = @(debrData, player) isBattleRoyale(debrData) ? (player?.missionAliveTime ?? 0) : null }
+let rowPlace =
+  { getLoc = getPlayerPlaceLabel, getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
+
+let rowLbShips = { getLoc = @(_) labelLbShips, getVal = @(debrData, _) hasUserstatMode(debrData, "ships")
+  ? getValIfPositive(debrData?.userstat.ships_rating, toLbRating)
+  : null }
+let rowLbTanks = { getLoc = @(_) labelLbTanks, getVal = @(debrData, _) hasUserstatMode(debrData, "tanks")
+  ? getValIfPositive(debrData?.userstat.tanks_rating, toLbRating)
+  : null }
+let rowLbAir = { getLoc = @(_) labelLbAir, getVal = @(debrData, _) hasUserstatMode(debrData, "air")
+  ? getValIfPositive(debrData?.userstat.air_rating, toLbRating)
+  : null }
+let rowLbCommon = { getLoc = @(_) labelLbCommon, getVal = @(debrData, _) hasUserstatMode(debrData, "battle_common")
+  ? getValIfPositive(debrData?.userstat.wp_rating, toLbRating)
+  : null }
 
 let statsByCamp = {
   ships = [
     { locId = "debriefing/damageDealt", getVal = @(debrData, _) debrData?.reward.damage.tointeger() ?? 0 }
     { locId = "debriefing/NavalKills", getVal = @(_, player) player?.navalKills ?? 0 }
-    { getLoc = @() labelLbShips,  getVal = @(debrData, _) getValIfPositive(debrData?.userstat.ships_rating, toLbRating) }
-    { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
-    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
+    rowLifeTime
+    rowLbShips
+    rowLbCommon
+    rowPlace
   ],
   tanks = [
-    { locId = "debriefing/totalscore", getVal = @(debrData, _) (100 * (debrData?.reward.dmgScoreBonus ?? 0)).tointeger() }
+    rowTotalScore
     { locId = "debriefing/GroundKills", getVal = @(_, player) player?.groundKills ?? 0 }
     { locId = "debriefing/AirKills", getVal = @(_, player) getValIfPositive(player?.kills) }
-    { locId = "debriefing/Captures", getVal = @(_, player) player?.captures ?? 0 }
-    { getLoc = @() labelLbTanks,  getVal = @(debrData, _) getValIfPositive(debrData?.userstat.tanks_rating, toLbRating) }
-    { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
-    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
+    { locId = "debriefing/Captures", getVal = @(debrData, player) isFFA(debrData) ? null : (player?.captures ?? 0) }
+    rowLifeTime
+    rowLbTanks
+    rowLbCommon
+    rowPlace
   ],
   air = [
-    { locId = "debriefing/totalscore", getVal = @(debrData, _) (100 * (debrData?.reward.dmgScoreBonus ?? 0)).tointeger() }
+    rowTotalScore
     { locId = "debriefing/AirKills", getVal = @(_, player) player?.kills ?? 0 }
     { locId = "debriefing/GroundKills", getVal = @(_, player) getValIfPositive(player?.groundKills) }
     { locId = "debriefing/Damage", getVal = @(_, player) getValIfPositive(player?.damageZone), printVal = damageZoneTons }
-    { getLoc = @() labelLbAir,  getVal = @(debrData, _) getValIfPositive(debrData?.userstat.air_rating, toLbRating) }
-    { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
-    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
+    rowLifeTime
+    rowLbAir
+    rowLbCommon
+    rowPlace
   ],
 }
 
@@ -185,18 +212,13 @@ function mkItemsUsedRows(itemsUsed, delay) {
   })
 }
 
-function getPlayerPlace(campaign, player, allPlayers) {
-  let key = getScoreKeyRaw(campaign)
-  let score = player?[key] ?? 0
-  let { team = null } = player
-  if (score <= 0 || team == null)
-    return null
-
-  local place = 1
-  foreach(p in allPlayers)
-    if (p.team == team && (p?[key] ?? 0) > score)
-      place++
-  return place
+function getPlayerPlace(debrData, userId) {
+  let userIdStr = userId.tostring()
+  foreach (team in mkPlayersByTeam(debrData))
+    foreach (idx, p in team)
+      if (p.userId == userIdStr)
+        return idx + 1
+  return null
 }
 
 function mkDebriefingStats(debrData, startAnimTime) {
@@ -206,7 +228,7 @@ function mkDebriefingStats(debrData, startAnimTime) {
   local player = players?[userId.tostring()]
 
   if (!isSingleMission && player != null) {
-    let place = getPlayerPlace(campaign, player, players)
+    let place = getPlayerPlace(debrData, userId)
     if (place != null)
       player = player.__merge({ place })
   }
@@ -216,7 +238,7 @@ function mkDebriefingStats(debrData, startAnimTime) {
     let val = s.getVal(debrData, player)
     return val == null
       ? null
-      : mkStat(uid, s?.getLoc() ?? loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.printVal, s?.valueCtor)
+      : mkStat(uid, s?.getLoc(debrData) ?? loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.printVal, s?.valueCtor)
   }).filter(@(v) v != null)
 
   let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * offsetTime)))

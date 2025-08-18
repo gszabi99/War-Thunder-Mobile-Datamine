@@ -3,6 +3,7 @@ let logQ = log_with_prefix("[QUEUE] ")
 let { get_time_msec } = require("dagor.time")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
+let { get_meta_mission_info_by_name } = require("guiMission")
 let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matching.errors")
 let { isEqual } = require("%sqstd/underscore.nut")
 let queueState = require("%appGlobals/queueState.nut")
@@ -60,7 +61,13 @@ function getCurQueueCampaignNotUpdatable() {
 }
 
 function hasPenaltyNonUpdatable() {
-  let campaign = getCurQueueCampaignNotUpdatable()
+  let curGm = allGameModes.get()?.findvalue(@(m) m.name == curQueue.get()?.params.mode)
+  let mName = curGm?.mission_decl.missions_list.findindex(@(_) true) ?? curGm?.name ?? ""
+  let mInfo = get_meta_mission_info_by_name(mName)
+  if (mInfo?.gt_ffa)
+    return false
+
+  let { campaign = curCampaign.get() } = curGm
   return (servProfile.get()?.penalties[campaign].penaltyEndTime ?? 0) > serverTime.get()
     || (servProfile.get()?.penalties[curCampaign.get()].penaltyEndTime ?? 0) > serverTime.get()
 }

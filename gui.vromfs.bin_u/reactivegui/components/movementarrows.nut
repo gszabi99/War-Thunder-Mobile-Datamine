@@ -53,7 +53,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
         rendObj = ROBJ_IMAGE
         size
         image = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{size[0]}:{size[1]}")
-        color = (stateFlags.value & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
+        color = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
         flipX
       }
     ].extend(isDisabled.value ? []
@@ -64,9 +64,9 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
             vplace = ALIGN_CENTER
-            opacity = (stateFlags.value & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 100 : 0
+            opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 100 : 0
             transform = {
-              translate = (stateFlags.value & S_ACTIVE) != 0
+              translate = (stateFlags.get() & S_ACTIVE) != 0
                 ? [flipX ? 0.6 * size[0] : 0.4 * size[0] - horAnimSize[0], 0]
                 : [flipX ? 0.5 * size[0] : 0.5 * size[0] - horAnimSize[0], 0]
             }
@@ -119,7 +119,7 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
         keepAspect = true
         size = stopSize
         image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{stopSize[0]}:{stopSize[1]}")
-        color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
+        color = (stateFlags.get() & S_ACTIVE) != 0 ? bgColorPushed : bgColor
         children = {
           rendObj = ROBJ_TEXT
           vplace = ALIGN_CENTER
@@ -192,7 +192,7 @@ function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
     size
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{size[0]}:{size[1]}")
-    color = (stateFlags.value & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
+    color = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
     cameraControl = false
   }, ovr)
 }

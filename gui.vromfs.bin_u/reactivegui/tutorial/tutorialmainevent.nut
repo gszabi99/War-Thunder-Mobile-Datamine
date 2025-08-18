@@ -16,9 +16,9 @@ let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/re
 let { openEventWnd, curEventLootboxes, isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted,
-  isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal } = require("completedTutorials.nut")
-let { questTutorialOptionalTime } = require("tutorialConst.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
+  isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal } = require("%rGui/tutorial/completedTutorials.nut")
+let { questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
+let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 
 
 const TUTORIAL_ID = "tutorialMainEvent"

@@ -1,0 +1,5698 @@
+{
+  "entity": [
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.18545,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.18545,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.18545
+        ],
+        [
+          2875.4,
+          54.9,
+          1900.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.677936,
+          0.0,
+          -1.11438
+        ],
+        [
+          0.0,
+          1.3044,
+          0.0
+        ],
+        [
+          1.11438,
+          0.0,
+          0.677936
+        ],
+        [
+          2935.4,
+          44.05,
+          1901.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.716741,
+          0.0,
+          0.842611
+        ],
+        [
+          0.0,
+          1.10621,
+          0.0
+        ],
+        [
+          -0.842611,
+          0.0,
+          -0.716741
+        ],
+        [
+          2933.15,
+          44.05,
+          1890.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.24749,
+          0.0,
+          0.696168
+        ],
+        [
+          0.0,
+          1.42859,
+          0.0
+        ],
+        [
+          -0.696168,
+          0.0,
+          -1.24749
+        ],
+        [
+          2932.9,
+          54.9,
+          1942.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.243981,
+          0.0,
+          1.16007
+        ],
+        [
+          0.0,
+          1.18545,
+          0.0
+        ],
+        [
+          -1.16007,
+          0.0,
+          0.243981
+        ],
+        [
+          2856.18,
+          54.9,
+          1874.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.585171,
+          -0.089128,
+          -0.972991
+        ],
+        [
+          0.171488,
+          -1.12591,
+          0.0
+        ],
+        [
+          -0.961897,
+          -0.146508,
+          0.59192
+        ],
+        [
+          2858.4,
+          54.4,
+          1929.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.829365,
+          0.0539591,
+          -1.36618
+        ],
+        [
+          -0.103821,
+          1.59576,
+          0.0
+        ],
+        [
+          1.3633,
+          0.0886973,
+          0.831119
+        ],
+        [
+          2889.45,
+          37.35,
+          1985.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.6498,
+          0.0,
+          -1.54805
+        ],
+        [
+          0.0,
+          1.6789,
+          0.0
+        ],
+        [
+          1.54805,
+          0.0,
+          -0.6498
+        ],
+        [
+          2930.7,
+          37.65,
+          1843.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.15135,
+          0.0,
+          -1.22193
+        ],
+        [
+          0.0,
+          1.6789,
+          0.0
+        ],
+        [
+          1.22193,
+          0.0,
+          -1.15135
+        ],
+        [
+          2938.8,
+          37.65,
+          2014.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.220296,
+          0.0,
+          1.1648
+        ],
+        [
+          0.0,
+          1.38617,
+          0.0
+        ],
+        [
+          -1.1648,
+          0.0,
+          0.220296
+        ],
+        [
+          2833.8,
+          55.55,
+          1825.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.43065,
+          0.0,
+          0.79838
+        ],
+        [
+          0.0,
+          1.63834,
+          0.0
+        ],
+        [
+          -0.79838,
+          0.0,
+          -1.43065
+        ],
+        [
+          2791.21,
+          49.35,
+          1692.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          1.08981,
+          0.0,
+          0.579173
+        ],
+        [
+          0.0,
+          1.23416,
+          0.0
+        ],
+        [
+          -0.579173,
+          0.0,
+          1.08981
+        ],
+        [
+          2772.24,
+          34.3,
+          1681.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          1.45805,
+          0.0,
+          0.77487
+        ],
+        [
+          0.0,
+          1.65116,
+          0.0
+        ],
+        [
+          -0.77487,
+          0.0,
+          1.45805
+        ],
+        [
+          2761.25,
+          30.25,
+          1639.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.20057,
+          0.0916267,
+          -1.42936
+        ],
+        [
+          0.142221,
+          1.86349,
+          0.0
+        ],
+        [
+          1.42521,
+          -0.108772,
+          -1.20406
+        ],
+        [
+          2842.25,
+          46.6,
+          1545.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.677936,
+          0.0,
+          -1.11438
+        ],
+        [
+          0.0,
+          1.3044,
+          0.0
+        ],
+        [
+          1.11438,
+          0.0,
+          0.677936
+        ],
+        [
+          2865.3,
+          32.85,
+          1549.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.707216,
+          0.0,
+          1.61969
+        ],
+        [
+          0.0,
+          1.76735,
+          0.0
+        ],
+        [
+          -1.61969,
+          0.0,
+          0.707216
+        ],
+        [
+          2506.15,
+          37.95,
+          1521.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -2.49922,
+          0.0,
+          -0.407476
+        ],
+        [
+          0.0,
+          2.53222,
+          0.0
+        ],
+        [
+          0.407476,
+          0.0,
+          -2.49922
+        ],
+        [
+          2542.45,
+          46.6,
+          1486.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.76696,
+          0.0,
+          0.0371065
+        ],
+        [
+          0.0,
+          1.76735,
+          0.0
+        ],
+        [
+          -0.0371065,
+          0.0,
+          -1.76696
+        ],
+        [
+          2523.9,
+          34.8,
+          1501.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.87666,
+          0.0,
+          2.00775
+        ],
+        [
+          0.0,
+          2.1908,
+          0.0
+        ],
+        [
+          -2.00775,
+          0.0,
+          0.87666
+        ],
+        [
+          2574.7,
+          22.75,
+          1489.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.87666,
+          0.0,
+          2.00775
+        ],
+        [
+          0.0,
+          2.1908,
+          0.0
+        ],
+        [
+          -2.00775,
+          0.0,
+          0.87666
+        ],
+        [
+          2629.8,
+          22.75,
+          1510.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -2.49922,
+          0.0,
+          -0.407476
+        ],
+        [
+          0.0,
+          2.53222,
+          0.0
+        ],
+        [
+          0.407476,
+          0.0,
+          -2.49922
+        ],
+        [
+          2655.85,
+          46.6,
+          1505.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.76696,
+          0.0,
+          0.0371065
+        ],
+        [
+          0.0,
+          1.76735,
+          0.0
+        ],
+        [
+          -0.0371065,
+          0.0,
+          -1.76696
+        ],
+        [
+          2538.75,
+          34.8,
+          1572.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.07765,
+          0.0926262,
+          1.44462
+        ],
+        [
+          0.0,
+          2.52703,
+          -0.162028
+        ],
+        [
+          -1.44759,
+          0.132942,
+          2.07339
+        ],
+        [
+          2514.85,
+          54.85,
+          1555.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.618949,
+          0.0,
+          2.10155
+        ],
+        [
+          0.0,
+          2.1908,
+          0.0
+        ],
+        [
+          -2.10155,
+          0.0,
+          0.618949
+        ],
+        [
+          2606.11,
+          25.4314,
+          1585.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.06841,
+          0.0926262,
+          -2.29392
+        ],
+        [
+          -0.0815385,
+          2.52703,
+          0.140016
+        ],
+        [
+          2.29434,
+          0.132942,
+          -1.06324
+        ],
+        [
+          2587.77,
+          48.9455,
+          1606.83
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.50039,
+          0.0926262,
+          0.389357
+        ],
+        [
+          -0.0709282,
+          2.52703,
+          -0.145679
+        ],
+        [
+          -0.393888,
+          0.132942,
+          2.49786
+        ],
+        [
+          1880.24,
+          29.3743,
+          1502.72
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.87637,
+          0.0997495,
+          -1.97626
+        ],
+        [
+          -0.172479,
+          2.72137,
+          -0.0264033
+        ],
+        [
+          1.97124,
+          0.143165,
+          1.87883
+        ],
+        [
+          1860.85,
+          29.3743,
+          1615.89
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.307248,
+          0.0,
+          -2.596
+        ],
+        [
+          0.0,
+          2.61412,
+          0.0
+        ],
+        [
+          2.596,
+          0.0,
+          -0.307248
+        ],
+        [
+          1817.98,
+          -1.63437,
+          1594.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.37198,
+          0.074361,
+          -1.49826
+        ],
+        [
+          -0.0286142,
+          2.02872,
+          0.126891
+        ],
+        [
+          1.49983,
+          0.106727,
+          -1.36812
+        ],
+        [
+          1990.62,
+          32.6886,
+          1618.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.315294,
+          0.395648,
+          -2.48117
+        ],
+        [
+          -2.51248,
+          0.0623161,
+          -0.309337
+        ],
+        [
+          0.0127273,
+          2.50034,
+          0.400323
+        ],
+        [
+          1903.01,
+          27.2152,
+          1494.31
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -2.50493,
+          -0.127844,
+          0.348035
+        ],
+        [
+          0.341154,
+          0.136207,
+          2.50543
+        ],
+        [
+          -0.145212,
+          2.52532,
+          -0.117515
+        ],
+        [
+          1992.02,
+          27.2152,
+          1497.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.618949,
+          0.0,
+          2.10155
+        ],
+        [
+          0.0,
+          2.1908,
+          0.0
+        ],
+        [
+          -2.10155,
+          0.0,
+          0.618949
+        ],
+        [
+          1981.24,
+          7.53798,
+          1449.59
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_large_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1906.06,
+          31.0245,
+          1526.28
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_large_b",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1968.56,
+          32.7097,
+          1572.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_medium_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1899.02,
+          29.537,
+          1530.12
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_large_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1965.07,
+          27.6983,
+          1510.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_large_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1881.04,
+          29.738,
+          1590.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_small_b",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1970.8,
+          33.0329,
+          1577.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_small_b",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1872.66,
+          28.6382,
+          1574.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_small_b",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1890.14,
+          29.5825,
+          1560.68
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_small_b",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1970.99,
+          34.3995,
+          1614.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tree_date_palm_medium_b",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1960.07,
+          32.464,
+          1601.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.46462,
+          0.0982414,
+          -1.06261
+        ],
+        [
+          -0.145951,
+          2.68023,
+          -0.0907247
+        ],
+        [
+          1.05711,
+          0.141001,
+          2.46491
+        ],
+        [
+          1568.28,
+          34.1337,
+          1904.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.59379,
+          -0.102177,
+          -1.24309
+        ],
+        [
+          -1.23853,
+          0.108861,
+          -1.59689
+        ],
+        [
+          0.147487,
+          2.01831,
+          0.0231993
+        ],
+        [
+          1472.55,
+          27.2153,
+          1873.78
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.6254,
+          0.0982414,
+          -0.557486
+        ],
+        [
+          -0.125273,
+          2.68023,
+          -0.11764
+        ],
+        [
+          0.55204,
+          0.141001,
+          2.6246
+        ],
+        [
+          1463.44,
+          22.6968,
+          1774.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.85921,
+          -0.119193,
+          -1.45011
+        ],
+        [
+          -1.44479,
+          0.126989,
+          -1.86283
+        ],
+        [
+          0.172049,
+          2.35443,
+          0.0270627
+        ],
+        [
+          1546.99,
+          58.9842,
+          2211.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.217797,
+          -0.119193,
+          2.34777
+        ],
+        [
+          2.34677,
+          0.126989,
+          0.22415
+        ],
+        [
+          -0.137602,
+          2.35443,
+          0.106766
+        ],
+        [
+          1395.5,
+          50.4249,
+          2163.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.00071,
+          0.114602,
+          2.40825
+        ],
+        [
+          0.0534709,
+          3.12657,
+          -0.193207
+        ],
+        [
+          -2.41038,
+          0.164482,
+          1.99465
+        ],
+        [
+          1475.75,
+          47.52,
+          2103.41
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          1.21702,
+          0.0,
+          1.94378
+        ],
+        [
+          0.0,
+          2.29334,
+          0.0
+        ],
+        [
+          -1.94378,
+          0.0,
+          1.21702
+        ],
+        [
+          1440.65,
+          20.0121,
+          2096.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.50607,
+          0.112287,
+          2.6725
+        ],
+        [
+          0.0854429,
+          3.06341,
+          -0.176862
+        ],
+        [
+          -2.67349,
+          0.16116,
+          1.49986
+        ],
+        [
+          1403.34,
+          38.003,
+          2080.73
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.526698,
+          -0.119193,
+          2.29827
+        ],
+        [
+          2.29643,
+          0.126989,
+          0.532862
+        ],
+        [
+          -0.150525,
+          2.35443,
+          0.087609
+        ],
+        [
+          1531.65,
+          46.5616,
+          2097.06
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.9625,
+          0.405648,
+          2.40825
+        ],
+        [
+          -0.403851,
+          3.10084,
+          -0.193207
+        ],
+        [
+          -2.40855,
+          -0.189406,
+          1.99465
+        ],
+        [
+          1473.66,
+          56.9155,
+          2263.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.629768,
+          0.261105,
+          2.7393
+        ],
+        [
+          2.74582,
+          0.243432,
+          0.608064
+        ],
+        [
+          -0.179982,
+          2.8002,
+          -0.308288
+        ],
+        [
+          1460.25,
+          48.5506,
+          2253.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          1.21702,
+          0.0,
+          1.94378
+        ],
+        [
+          0.0,
+          2.29334,
+          0.0
+        ],
+        [
+          -1.94378,
+          0.0,
+          1.21702
+        ],
+        [
+          1415.07,
+          27.0372,
+          2251.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.39159,
+          0.132713,
+          1.6799
+        ],
+        [
+          -0.045284,
+          2.18082,
+          -0.134773
+        ],
+        [
+          -1.68452,
+          0.0510082,
+          1.39139
+        ],
+        [
+          1444.76,
+          70.3649,
+          2514.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          1.5215,
+          -0.174334,
+          -1.43334
+        ],
+        [
+          0.238778,
+          2.08394,
+          0.0
+        ],
+        [
+          1.42403,
+          -0.163165,
+          1.53145
+        ],
+        [
+          1418.5,
+          43.4653,
+          2537.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -1.63739,
+          -0.052945,
+          -0.741391
+        ],
+        [
+          -0.740992,
+          -0.0243263,
+          1.63824
+        ],
+        [
+          -0.0582652,
+          1.79725,
+          0.000333519
+        ],
+        [
+          1472.27,
+          72.2406,
+          2612.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.86794,
+          0.108574,
+          1.12925
+        ],
+        [
+          -0.045284,
+          2.18082,
+          -0.134773
+        ],
+        [
+          -1.13355,
+          0.0917941,
+          1.86623
+        ],
+        [
+          1541.65,
+          73.9372,
+          2590.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.324718,
+          -0.220713,
+          2.0605
+        ],
+        [
+          -0.00109977,
+          2.08566,
+          0.223235
+        ],
+        [
+          -2.07229,
+          0.0334779,
+          -0.322989
+        ],
+        [
+          1453.46,
+          47.7033,
+          2642.89
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.77079,
+          -0.135514,
+          -1.11614
+        ],
+        [
+          0.101901,
+          2.05437,
+          -0.411096
+        ],
+        [
+          1.11971,
+          -0.401273,
+          -1.72773
+        ],
+        [
+          1370.02,
+          45.3488,
+          2556.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.907391,
+          -0.119121,
+          -1.8874
+        ],
+        [
+          0.143704,
+          2.08301,
+          -0.200554
+        ],
+        [
+          1.88568,
+          -0.216062,
+          -0.892931
+        ],
+        [
+          1467.21,
+          48.0516,
+          2531.54
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.723642,
+          0.207874,
+          -1.4922
+        ],
+        [
+          0.0624576,
+          1.65812,
+          0.200699
+        ],
+        [
+          1.50532,
+          0.0311325,
+          -0.725665
+        ],
+        [
+          1519.5,
+          57.55,
+          2645.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.39133,
+          -0.0206352,
+          1.68522
+        ],
+        [
+          0.0524704,
+          2.18476,
+          -0.0165682
+        ],
+        [
+          -1.68452,
+          0.0510082,
+          1.39139
+        ],
+        [
+          1575.4,
+          69.9572,
+          2670.18
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.953636,
+          0.290338,
+          -1.49659
+        ],
+        [
+          -1.5207,
+          -0.0567806,
+          0.957983
+        ],
+        [
+          0.10742,
+          1.77369,
+          0.275647
+        ],
+        [
+          1599.65,
+          63.0493,
+          2656.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0856823,
+          -1.73799,
+          0.2641
+        ],
+        [
+          -0.316205,
+          -0.275339,
+          -1.70935
+        ],
+        [
+          1.72926,
+          0.035767,
+          -0.325648
+        ],
+        [
+          1609.75,
+          58.15,
+          2578.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.29035,
+          -0.0191376,
+          1.56291
+        ],
+        [
+          0.0486622,
+          2.02619,
+          -0.0153657
+        ],
+        [
+          -1.56226,
+          0.0473061,
+          1.2904
+        ],
+        [
+          1582.78,
+          69.9572,
+          2732.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.35539,
+          0.201494,
+          -1.24289
+        ],
+        [
+          0.0691319,
+          1.8353,
+          0.222145
+        ],
+        [
+          1.25722,
+          0.116309,
+          -1.35216
+        ],
+        [
+          1557.32,
+          46.7183,
+          2726.12
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.74575,
+          0.0645177,
+          -0.426254
+        ],
+        [
+          -0.431057,
+          0.288717,
+          -1.72172
+        ],
+        [
+          0.00666498,
+          1.77369,
+          0.295763
+        ],
+        [
+          1652.77,
+          63.0493,
+          2727.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.68582,
+          0.140778,
+          -0.748766
+        ],
+        [
+          0.760788,
+          0.213523,
+          -1.67274
+        ],
+        [
+          -0.0408681,
+          -1.83222,
+          -0.252468
+        ],
+        [
+          1645.48,
+          55.4278,
+          2764.76
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.15065,
+          -0.172522,
+          1.4383
+        ],
+        [
+          -1.44803,
+          0.188803,
+          -1.13579
+        ],
+        [
+          -0.0408681,
+          -1.83222,
+          -0.252468
+        ],
+        [
+          1942.64,
+          53.7799,
+          2812.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.11337,
+          -0.181091,
+          0.526358
+        ],
+        [
+          0.0872551,
+          2.14879,
+          0.388943
+        ],
+        [
+          -0.549758,
+          -0.355101,
+          2.08515
+        ],
+        [
+          1863.34,
+          66.109,
+          2826.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.1266,
+          -0.462299,
+          -1.39266
+        ],
+        [
+          -1.42817,
+          -0.0577893,
+          1.1745
+        ],
+        [
+          -0.337004,
+          1.79036,
+          -0.321696
+        ],
+        [
+          1912.71,
+          65.2813,
+          2927.76
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.346633,
+          0.254922,
+          1.79926
+        ],
+        [
+          -1.71743,
+          0.644592,
+          0.239543
+        ],
+        [
+          -0.593906,
+          -1.71522,
+          0.357433
+        ],
+        [
+          1879.98,
+          56.2445,
+          2819.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.79346,
+          -0.0135091,
+          -0.129644
+        ],
+        [
+          -0.130063,
+          -0.0675819,
+          -1.79221
+        ],
+        [
+          0.00859166,
+          1.79687,
+          -0.0683812
+        ],
+        [
+          2191.17,
+          63.0493,
+          2663.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0231813,
+          1.63723,
+          -0.311852
+        ],
+        [
+          -0.318963,
+          0.310476,
+          1.60629
+        ],
+        [
+          1.63586,
+          0.0373367,
+          0.317617
+        ],
+        [
+          2116.82,
+          57.7973,
+          2685.28
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.58361,
+          -0.0135091,
+          1.7008
+        ],
+        [
+          1.69981,
+          -0.0675819,
+          0.582734
+        ],
+        [
+          0.0595437,
+          1.79687,
+          0.0347039
+        ],
+        [
+          2175.44,
+          58.7503,
+          2661.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.25447,
+          -0.137458,
+          -1.2067
+        ],
+        [
+          -1.20138,
+          -0.209182,
+          -0.229521
+        ],
+        [
+          -0.177996,
+          1.21536,
+          -0.175981
+        ],
+        [
+          2118.22,
+          62.7551,
+          2606.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.07337,
+          -0.198606,
+          -1.25966
+        ],
+        [
+          -1.24601,
+          -0.187043,
+          1.09123
+        ],
+        [
+          -0.271375,
+          1.64435,
+          -0.0280166
+        ],
+        [
+          2190.93,
+          60.3216,
+          2712.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.114222,
+          -1.51768,
+          -0.679642
+        ],
+        [
+          1.18225,
+          -0.55319,
+          1.03661
+        ],
+        [
+          -1.16942,
+          -0.411024,
+          1.11437
+        ],
+        [
+          2117.21,
+          58.845,
+          2757.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.109582,
+          -0.00589852,
+          1.42848
+        ],
+        [
+          0.266,
+          1.40771,
+          -0.0145928
+        ],
+        [
+          -1.40351,
+          0.266334,
+          0.108766
+        ],
+        [
+          2133.05,
+          70.8587,
+          2762.71
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.34809,
+          0.178297,
+          0.451062
+        ],
+        [
+          -0.194665,
+          1.41925,
+          0.0207936
+        ],
+        [
+          -0.444243,
+          -0.0808533,
+          1.35967
+        ],
+        [
+          2393.82,
+          74.7656,
+          2745.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.338881,
+          -0.0459974,
+          1.40135
+        ],
+        [
+          0.287594,
+          -1.40876,
+          -0.115788
+        ],
+        [
+          1.37229,
+          0.306597,
+          -0.32179
+        ],
+        [
+          2406.92,
+          61.8604,
+          2720.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.949095,
+          -0.316821,
+          -0.900713
+        ],
+        [
+          -0.826854,
+          0.362355,
+          -0.998726
+        ],
+        [
+          0.477464,
+          1.25729,
+          0.0608681
+        ],
+        [
+          2298.9,
+          71.3783,
+          2788.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.141478,
+          1.33845,
+          -0.0313455
+        ],
+        [
+          1.24536,
+          0.119996,
+          -0.497113
+        ],
+        [
+          -0.49143,
+          -0.081237,
+          -1.25073
+        ],
+        [
+          2449.45,
+          73.7562,
+          2763.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.109941,
+          1.09111,
+          -0.0432181
+        ],
+        [
+          0.641828,
+          0.0997111,
+          0.884646
+        ],
+        [
+          0.883434,
+          0.063345,
+          -0.648089
+        ],
+        [
+          2758.1,
+          79.2,
+          2542.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0474892,
+          1.07131,
+          -0.233515
+        ],
+        [
+          -0.898313,
+          -0.0960058,
+          -0.623138
+        ],
+        [
+          -0.6287,
+          0.218099,
+          0.872729
+        ],
+        [
+          2733.05,
+          79.6032,
+          2530.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0474892,
+          1.07131,
+          -0.233515
+        ],
+        [
+          -0.756994,
+          0.201124,
+          0.768761
+        ],
+        [
+          0.793215,
+          0.127802,
+          0.747638
+        ],
+        [
+          2772.9,
+          79.4,
+          2474.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.0323028,
+          -0.406844,
+          1.01878
+        ],
+        [
+          -1.02987,
+          0.362356,
+          0.11205
+        ],
+        [
+          -0.377907,
+          -0.952713,
+          -0.392442
+        ],
+        [
+          2796.85,
+          77.7,
+          2462.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.469758,
+          1.03046,
+          -0.0129255
+        ],
+        [
+          -0.925631,
+          0.415658,
+          -0.503115
+        ],
+        [
+          -0.453017,
+          0.219244,
+          1.01459
+        ],
+        [
+          2402.05,
+          69.2245,
+          2061.74
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.844685,
+          0.066967,
+          0.720457
+        ],
+        [
+          0.719181,
+          0.0439756,
+          -0.847278
+        ],
+        [
+          -0.0858566,
+          1.19802,
+          -0.0106963
+        ],
+        [
+          2443.91,
+          78.1165,
+          2037.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.108646,
+          1.09111,
+          -0.0463783
+        ],
+        [
+          -1.07808,
+          0.0997111,
+          -0.179674
+        ],
+        [
+          -0.174417,
+          0.063345,
+          1.08169
+        ],
+        [
+          2745.9,
+          70.55,
+          2239.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.34503,
+          0.0926894,
+          -0.414679
+        ],
+        [
+          -0.412777,
+          -0.0416185,
+          -1.34816
+        ],
+        [
+          -0.108886,
+          1.51937,
+          -0.0135654
+        ],
+        [
+          2772.0,
+          68.8,
+          2202.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.813557,
+          0.0437586,
+          -1.05845
+        ],
+        [
+          -0.055218,
+          1.3345,
+          0.0127289
+        ],
+        [
+          1.05791,
+          0.0360034,
+          0.814633
+        ],
+        [
+          2765.2,
+          74.2,
+          2247.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.384201,
+          -0.554376,
+          0.865761
+        ],
+        [
+          -0.974995,
+          0.0965719,
+          0.494514
+        ],
+        [
+          -0.325976,
+          -0.942246,
+          -0.458693
+        ],
+        [
+          2786.5,
+          70.55,
+          2243.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.183881,
+          0.0850386,
+          -1.27816
+        ],
+        [
+          -1.28001,
+          -0.0381832,
+          -0.186687
+        ],
+        [
+          -0.0539759,
+          1.39395,
+          0.0849772
+        ],
+        [
+          2721.45,
+          68.8,
+          2236.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.838746,
+          -0.0209541,
+          0.943645
+        ],
+        [
+          0.942432,
+          0.0885078,
+          -0.835703
+        ],
+        [
+          -0.0564553,
+          1.36011,
+          0.0803812
+        ],
+        [
+          2613.05,
+          57.85,
+          2068.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.172076,
+          -0.351269,
+          1.37826
+        ],
+        [
+          -0.145311,
+          1.38539,
+          0.334943
+        ],
+        [
+          -1.41488,
+          -0.0995619,
+          -0.202022
+        ],
+        [
+          2646.05,
+          60.35,
+          1841.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.34503,
+          0.0926894,
+          -0.414679
+        ],
+        [
+          -0.412777,
+          -0.0416185,
+          -1.34816
+        ],
+        [
+          -0.108886,
+          1.51937,
+          -0.0135654
+        ],
+        [
+          2601.9,
+          53.7,
+          1889.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.124889,
+          1.32373,
+          -0.0703002
+        ],
+        [
+          -1.32389,
+          0.120969,
+          -0.0740926
+        ],
+        [
+          -0.0672751,
+          0.0768498,
+          1.32755
+        ],
+        [
+          2656.5,
+          53.2,
+          1838.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.451265,
+          -0.0130777,
+          1.3597
+        ],
+        [
+          0.0156177,
+          1.43258,
+          0.00859531
+        ],
+        [
+          -1.35968,
+          0.0121148,
+          0.451372
+        ],
+        [
+          2645.05,
+          54.0,
+          1925.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.109339,
+          1.26889,
+          0.388302
+        ],
+        [
+          0.390863,
+          -0.341536,
+          1.22613
+        ],
+        [
+          1.2681,
+          0.214678,
+          -0.344446
+        ],
+        [
+          2590.4,
+          53.2,
+          1912.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.99938,
+          -0.188042,
+          -0.323812
+        ],
+        [
+          -0.232289,
+          1.03519,
+          0.115765
+        ],
+        [
+          0.293693,
+          0.178885,
+          -1.01031
+        ],
+        [
+          2638.45,
+          59.0,
+          1888.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.0949392,
+          -1.20493,
+          0.322536
+        ],
+        [
+          -0.919357,
+          0.286208,
+          0.798596
+        ],
+        [
+          -0.843005,
+          -0.176431,
+          -0.907251
+        ],
+        [
+          2686.15,
+          49.55,
+          1878.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.176652,
+          0.658663,
+          0.0560426
+        ],
+        [
+          -0.613606,
+          0.141806,
+          0.26751
+        ],
+        [
+          0.245896,
+          -0.119321,
+          0.627281
+        ],
+        [
+          2241.05,
+          68.9,
+          2098.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.172196,
+          0.00607543,
+          -0.701702
+        ],
+        [
+          -0.699826,
+          -0.0516905,
+          -0.172182
+        ],
+        [
+          -0.0557762,
+          0.778288,
+          -0.0069488
+        ],
+        [
+          2173.4,
+          71.55,
+          2148.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.137421,
+          -0.144272,
+          0.576277
+        ],
+        [
+          0.0244766,
+          0.589617,
+          0.153448
+        ],
+        [
+          -0.593557,
+          0.0577162,
+          -0.127093
+        ],
+        [
+          2197.3,
+          73.35,
+          2134.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.642903,
+          0.0589514,
+          -0.404802
+        ],
+        [
+          0.0758867,
+          0.758158,
+          -0.0101121
+        ],
+        [
+          0.401972,
+          -0.0488445,
+          -0.645521
+        ],
+        [
+          2222.25,
+          73.35,
+          2150.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.173816,
+          0.64809,
+          0.055143
+        ],
+        [
+          -0.629621,
+          0.181972,
+          -0.154067
+        ],
+        [
+          -0.163213,
+          -0.0117932,
+          0.653067
+        ],
+        [
+          2197.25,
+          70.65,
+          2197.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.754684,
+          -0.0520795,
+          0.224581
+        ],
+        [
+          0.223533,
+          0.0227734,
+          0.756446
+        ],
+        [
+          -0.0609145,
+          0.849986,
+          -0.00758895
+        ],
+        [
+          2245.95,
+          71.55,
+          2072.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.173816,
+          0.64809,
+          0.055143
+        ],
+        [
+          -0.629621,
+          0.181972,
+          -0.154067
+        ],
+        [
+          -0.163213,
+          -0.0117932,
+          0.653067
+        ],
+        [
+          2226.0,
+          71.5,
+          2036.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.072091,
+          1.07895,
+          0.0919146
+        ],
+        [
+          0.323887,
+          -0.109386,
+          1.03
+        ],
+        [
+          1.03328,
+          -0.0409894,
+          -0.329272
+        ],
+        [
+          2073.35,
+          73.8,
+          1808.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.80363,
+          0.000829744,
+          0.893782
+        ],
+        [
+          0.893779,
+          0.00366034,
+          0.803624
+        ],
+        [
+          -0.00234042,
+          1.29803,
+          -0.00330938
+        ],
+        [
+          2127.55,
+          74.25,
+          1802.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.489102,
+          -0.288381,
+          1.03007
+        ],
+        [
+          0.0472149,
+          1.13736,
+          0.295999
+        ],
+        [
+          -1.06864,
+          -0.0817372,
+          0.48453
+        ],
+        [
+          2085.0,
+          79.1,
+          1785.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0764735,
+          -0.0725376,
+          1.25829
+        ],
+        [
+          -1.25519,
+          -0.118733,
+          0.06944
+        ],
+        [
+          0.114329,
+          -1.25501,
+          -0.0792969
+        ],
+        [
+          2116.45,
+          71.25,
+          1833.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.486794,
+          -0.01809,
+          1.07058
+        ],
+        [
+          -0.0669455,
+          1.17321,
+          0.0502645
+        ],
+        [
+          -1.06864,
+          -0.0817372,
+          0.48453
+        ],
+        [
+          2128.75,
+          79.1,
+          1839.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.29787,
+          0.0696234,
+          -1.29451
+        ],
+        [
+          -0.0778923,
+          1.32681,
+          0.053437
+        ],
+        [
+          1.29404,
+          0.0638382,
+          0.301195
+        ],
+        [
+          2145.45,
+          79.1,
+          1839.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.283157,
+          1.06188,
+          -0.621816
+        ],
+        [
+          -1.0552,
+          -0.118733,
+          -0.683269
+        ],
+        [
+          -0.63307,
+          0.672857,
+          0.860756
+        ],
+        [
+          2091.5,
+          71.25,
+          1868.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.0395606,
+          0.0210258,
+          1.72243
+        ],
+        [
+          0.0851519,
+          1.72076,
+          -0.0229611
+        ],
+        [
+          -1.72045,
+          0.0856503,
+          0.0384697
+        ],
+        [
+          2485.0,
+          70.55,
+          2217.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.417185,
+          -0.191391,
+          1.33378
+        ],
+        [
+          1.33719,
+          -0.113137,
+          -0.434485
+        ],
+        [
+          0.179199,
+          1.50428,
+          0.159806
+        ],
+        [
+          2457.5,
+          64.8,
+          2249.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.909877,
+          0.0255067,
+          1.46296
+        ],
+        [
+          0.018071,
+          1.72282,
+          -0.0187981
+        ],
+        [
+          -1.46307,
+          0.00541674,
+          -0.91004
+        ],
+        [
+          2495.05,
+          70.55,
+          2307.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.101249,
+          1.27001,
+          0.245293
+        ],
+        [
+          0.803298,
+          -0.254582,
+          0.986527
+        ],
+        [
+          1.0138,
+          0.0748854,
+          -0.806184
+        ],
+        [
+          2414.1,
+          62.9,
+          2337.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.570408,
+          -0.0521686,
+          0.907784
+        ],
+        [
+          0.909099,
+          -0.0542407,
+          0.568117
+        ],
+        [
+          0.0197208,
+          1.15635,
+          0.0788448
+        ],
+        [
+          2309.3,
+          65.4,
+          2424.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.768086,
+          -0.258442,
+          0.870533
+        ],
+        [
+          0.0627701,
+          1.51207,
+          0.393518
+        ],
+        [
+          -0.90683,
+          -0.15835,
+          0.753101
+        ],
+        [
+          2269.5,
+          69.7,
+          2422.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.705685,
+          -0.0741115,
+          0.910423
+        ],
+        [
+          0.904938,
+          -0.0998296,
+          -0.70956
+        ],
+        [
+          0.134235,
+          1.23931,
+          -0.00316415
+        ],
+        [
+          2278.05,
+          66.95,
+          2398.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.145473,
+          0.0159462,
+          1.14496
+        ],
+        [
+          1.14493,
+          -0.0163165,
+          0.145697
+        ],
+        [
+          0.0196524,
+          1.24632,
+          -0.0148609
+        ],
+        [
+          2314.5,
+          65.45,
+          2498.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.314835,
+          -0.989507,
+          -0.0936086
+        ],
+        [
+          0.570327,
+          -0.260272,
+          0.833062
+        ],
+        [
+          -0.814011,
+          0.200355,
+          0.619881
+        ],
+        [
+          2341.15,
+          66.65,
+          2462.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.236087,
+          1.14599,
+          -0.0816804
+        ],
+        [
+          -1.13581,
+          -0.220259,
+          0.192651
+        ],
+        [
+          0.172892,
+          0.117875,
+          1.15409
+        ],
+        [
+          2369.3,
+          65.05,
+          2519.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.479683,
+          -0.0734621,
+          0.957427
+        ],
+        [
+          0.960068,
+          0.0163381,
+          -0.479752
+        ],
+        [
+          0.0197208,
+          1.15635,
+          0.0788448
+        ],
+        [
+          2390.5,
+          68.15,
+          2509.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.169572,
+          0.823117,
+          -0.0586677
+        ],
+        [
+          -0.547117,
+          -0.15698,
+          -0.621081
+        ],
+        [
+          -0.617762,
+          -0.086913,
+          0.566161
+        ],
+        [
+          2253.95,
+          65.05,
+          2484.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.35591,
+          0.04076,
+          0.865503
+        ],
+        [
+          0.86616,
+          -0.00795067,
+          0.356555
+        ],
+        [
+          0.0246891,
+          1.0106,
+          -0.0374409
+        ],
+        [
+          2272.35,
+          64.7,
+          2512.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.299278,
+          0.00381208,
+          1.10459
+        ],
+        [
+          1.10109,
+          0.0921074,
+          0.298012
+        ],
+        [
+          -0.0949372,
+          1.2319,
+          -0.0299738
+        ],
+        [
+          2130.25,
+          77.6,
+          2388.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.520517,
+          0.0342034,
+          1.11504
+        ],
+        [
+          0.205006,
+          1.20656,
+          -0.132711
+        ],
+        [
+          -1.09656,
+          0.241805,
+          0.504475
+        ],
+        [
+          2066.4,
+          77.55,
+          2406.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.10418,
+          0.256714,
+          -0.156778
+        ],
+        [
+          -0.158986,
+          -0.00828061,
+          -1.13329
+        ],
+        [
+          -0.275767,
+          1.20439,
+          0.0298863
+        ],
+        [
+          2139.9,
+          81.75,
+          2393.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.549469,
+          0.00381208,
+          1.00388
+        ],
+        [
+          1.00077,
+          0.0921074,
+          0.54742
+        ],
+        [
+          -0.0852863,
+          1.2319,
+          -0.0513591
+        ],
+        [
+          2080.45,
+          74.55,
+          2370.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.22217,
+          0.00104439,
+          -0.147367
+        ],
+        [
+          -0.00552592,
+          1.2298,
+          0.0545442
+        ],
+        [
+          0.147267,
+          0.0548135,
+          -1.22095
+        ],
+        [
+          2046.3,
+          78.0,
+          2342.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.520422,
+          0.0186456,
+          -0.858296
+        ],
+        [
+          -0.857952,
+          0.0470888,
+          -0.519191
+        ],
+        [
+          0.0330631,
+          1.0828,
+          0.0435704
+        ],
+        [
+          2514.8,
+          76.8,
+          2411.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.260334,
+          0.732213,
+          -0.0788873
+        ],
+        [
+          -0.727058,
+          -0.268855,
+          -0.0960993
+        ],
+        [
+          -0.117236,
+          0.0413998,
+          0.771151
+        ],
+        [
+          2513.65,
+          76.6,
+          2460.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.513535,
+          -0.0190221,
+          0.862426
+        ],
+        [
+          0.859155,
+          0.0787866,
+          0.513326
+        ],
+        [
+          -0.0835974,
+          1.08065,
+          -0.0259432
+        ],
+        [
+          2497.1,
+          72.8,
+          2458.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.348553,
+          -0.834271,
+          -0.127432
+        ],
+        [
+          -0.496806,
+          -0.314283,
+          0.698674
+        ],
+        [
+          -0.682225,
+          -0.197369,
+          -0.573892
+        ],
+        [
+          2470.8,
+          74.95,
+          2431.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.05921,
+          0.074029,
+          0.376514
+        ],
+        [
+          0.379227,
+          -0.0332398,
+          -1.06031
+        ],
+        [
+          -0.0632476,
+          1.21348,
+          -0.0606627
+        ],
+        [
+          1826.75,
+          68.55,
+          2421.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.252758,
+          -0.132284,
+          1.37666
+        ],
+        [
+          1.38279,
+          -0.000369746,
+          -0.253918
+        ],
+        [
+          0.0261926,
+          1.51158,
+          0.140439
+        ],
+        [
+          1854.95,
+          64.0,
+          2358.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.36496,
+          0.133115,
+          0.309425
+        ],
+        [
+          0.298324,
+          0.121974,
+          -1.36847
+        ],
+        [
+          -0.168921,
+          1.50574,
+          0.0973844
+        ],
+        [
+          1914.95,
+          64.0,
+          2425.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.15478,
+          0.128692,
+          0.74912
+        ],
+        [
+          -0.143201,
+          1.37496,
+          -0.0154602
+        ],
+        [
+          -0.746482,
+          -0.0646819,
+          1.16182
+        ],
+        [
+          1898.3,
+          66.7,
+          2445.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.21344,
+          1.1376,
+          0.0716372
+        ],
+        [
+          -0.233334,
+          0.0277329,
+          -1.1356
+        ],
+        [
+          -1.11571,
+          -0.223427,
+          0.22379
+        ],
+        [
+          1820.85,
+          63.85,
+          2465.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -1.16491,
+          -0.132284,
+          0.775935
+        ],
+        [
+          0.779421,
+          -0.000369746,
+          1.17008
+        ],
+        [
+          -0.118676,
+          1.51158,
+          0.0795307
+        ],
+        [
+          1823.7,
+          64.0,
+          2485.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.15478,
+          0.128692,
+          0.74912
+        ],
+        [
+          -0.143201,
+          1.37496,
+          -0.0154602
+        ],
+        [
+          -0.746482,
+          -0.0646819,
+          1.16182
+        ],
+        [
+          1837.2,
+          71.45,
+          2530.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0841564,
+          1.14303,
+          -0.176661
+        ],
+        [
+          0.976405,
+          -0.165157,
+          -0.603464
+        ],
+        [
+          -0.619971,
+          -0.104951,
+          -0.97439
+        ],
+        [
+          1899.15,
+          61.7,
+          2524.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.201305,
+          1.07805,
+          0.0419528
+        ],
+        [
+          -0.54848,
+          0.139013,
+          -0.940388
+        ],
+        [
+          -0.929049,
+          0.151522,
+          0.564266
+        ],
+        [
+          1824.25,
+          74.35,
+          1942.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.31518,
+          -0.0783702,
+          0.56282
+        ],
+        [
+          0.129989,
+          1.42287,
+          -0.105625
+        ],
+        [
+          -0.553183,
+          0.148027,
+          1.31327
+        ],
+        [
+          1825.0,
+          77.1,
+          2030.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.866716,
+          -0.372816,
+          -0.560623
+        ],
+        [
+          -0.513559,
+          0.224865,
+          -0.943492
+        ],
+        [
+          0.43537,
+          1.00744,
+          0.0031257
+        ],
+        [
+          1857.4,
+          74.3709,
+          1996.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.36775,
+          -0.0957912,
+          0.415556
+        ],
+        [
+          -0.110243,
+          1.42805,
+          -0.0336664
+        ],
+        [
+          -0.411957,
+          -0.0641166,
+          -1.37069
+        ],
+        [
+          1871.09,
+          75.1,
+          2016.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0401979,
+          0.601621,
+          0.0512516
+        ],
+        [
+          -0.597305,
+          0.0321083,
+          0.0915759
+        ],
+        [
+          0.0883245,
+          -0.0566715,
+          0.595968
+        ],
+        [
+          2031.62,
+          69.7,
+          2049.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.464258,
+          0.0109706,
+          0.376977
+        ],
+        [
+          0.375746,
+          0.0378412,
+          -0.463843
+        ],
+        [
+          -0.0349439,
+          0.644555,
+          0.0242769
+        ],
+        [
+          2059.75,
+          72.4396,
+          2099.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.461639,
+          -0.0189065,
+          0.092089
+        ],
+        [
+          0.0220108,
+          0.470398,
+          -0.0137635
+        ],
+        [
+          -0.0913967,
+          0.0177891,
+          0.46182
+        ],
+        [
+          2045.3,
+          73.5443,
+          2086.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.110552,
+          0.0120203,
+          0.587618
+        ],
+        [
+          0.0279413,
+          0.59714,
+          -0.0174718
+        ],
+        [
+          -0.587077,
+          0.0306838,
+          0.109822
+        ],
+        [
+          2089.65,
+          72.8353,
+          2101.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.0908039,
+          0.426953,
+          0.0540571
+        ],
+        [
+          -0.425546,
+          -0.097318,
+          0.0538133
+        ],
+        [
+          0.0641977,
+          -0.0411911,
+          0.433173
+        ],
+        [
+          2088.31,
+          70.55,
+          2085.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.110552,
+          0.0120203,
+          0.587618
+        ],
+        [
+          0.0279413,
+          0.59714,
+          -0.0174718
+        ],
+        [
+          -0.587077,
+          0.0306838,
+          0.109822
+        ],
+        [
+          2001.65,
+          72.65,
+          2039.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.130128,
+          0.0106403,
+          0.385378
+        ],
+        [
+          0.381273,
+          -0.0637963,
+          -0.12698
+        ],
+        [
+          0.0571024,
+          0.401721,
+          -0.0303729
+        ],
+        [
+          2018.3,
+          72.3,
+          2064.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.23103,
+          0.115142,
+          0.542013
+        ],
+        [
+          -0.0713261,
+          1.34246,
+          -0.123188
+        ],
+        [
+          -0.549498,
+          0.0836958,
+          1.23025
+        ],
+        [
+          2428.6,
+          74.95,
+          2022.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.286767,
+          1.09558,
+          -0.0129255
+        ],
+        [
+          -0.980136,
+          -0.262486,
+          -0.503115
+        ],
+        [
+          -0.489682,
+          -0.116204,
+          1.01459
+        ],
+        [
+          2419.4,
+          68.05,
+          2016.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.1059,
+          0.066967,
+          0.0976112
+        ],
+        [
+          0.0950695,
+          0.0439756,
+          -1.10728
+        ],
+        [
+          -0.0761676,
+          1.19802,
+          0.0410398
+        ],
+        [
+          2399.2,
+          71.45,
+          2085.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.692605,
+          -0.181134,
+          1.56918
+        ],
+        [
+          0.16183,
+          1.71251,
+          0.126251
+        ],
+        [
+          -1.57129,
+          0.0965336,
+          0.704678
+        ],
+        [
+          2381.3,
+          77.9,
+          2069.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.110789,
+          1.03046,
+          0.45669
+        ],
+        [
+          0.298614,
+          0.415658,
+          -1.01032
+        ],
+        [
+          -1.08685,
+          0.219244,
+          -0.231034
+        ],
+        [
+          2358.8,
+          75.4,
+          2092.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.239815,
+          -0.979821,
+          -0.514907
+        ],
+        [
+          0.0613793,
+          -0.514271,
+          1.0072
+        ],
+        [
+          -1.10518,
+          -0.241176,
+          -0.0557935
+        ],
+        [
+          2379.7,
+          72.95,
+          2100.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.33501,
+          -0.0790997,
+          -0.244967
+        ],
+        [
+          0.0619302,
+          1.35451,
+          -0.0998672
+        ],
+        [
+          0.24986,
+          0.0869025,
+          1.33361
+        ],
+        [
+          2385.35,
+          76.5,
+          2118.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.360674,
+          0.24366,
+          1.02351
+        ],
+        [
+          1.0502,
+          -0.0181723,
+          -0.365753
+        ],
+        [
+          -0.0684736,
+          1.1718,
+          -0.254832
+        ],
+        [
+          2438.2,
+          72.95,
+          2158.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.59198,
+          -0.851101,
+          -0.455936
+        ],
+        [
+          -0.434471,
+          0.242794,
+          -1.01734
+        ],
+        [
+          0.862256,
+          0.70666,
+          -0.199592
+        ],
+        [
+          2390.0,
+          73.3,
+          2142.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_gates_c",
+      "transform": [
+        [
+          1.20023,
+          0.0,
+          1.56417
+        ],
+        [
+          0.0,
+          1.97159,
+          0.0
+        ],
+        [
+          -1.56417,
+          0.0,
+          1.20023
+        ],
+        [
+          1692.7,
+          33.5,
+          1820.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.07518,
+          -0.034772,
+          -0.897848
+        ],
+        [
+          -0.122889,
+          2.22744,
+          -0.370297
+        ],
+        [
+          0.890074,
+          0.388603,
+          2.04217
+        ],
+        [
+          1654.25,
+          34.1337,
+          1775.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_stronghold_a",
+      "transform": [
+        [
+          -0.608761,
+          0.0,
+          -0.793353
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.793353,
+          0.0,
+          -0.608761
+        ],
+        [
+          1828.25,
+          39.2,
+          1722.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -2.32819,
+          -0.118824,
+          0.323479
+        ],
+        [
+          0.317083,
+          0.126597,
+          2.32865
+        ],
+        [
+          -0.134966,
+          2.34714,
+          -0.109223
+        ],
+        [
+          1800.15,
+          27.2152,
+          1742.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_tower_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1554.5,
+          35.75,
+          1982.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_corner_a",
+      "transform": [
+        [
+          0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          0.173648
+        ],
+        [
+          2055.95,
+          32.7,
+          1617.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_gates_c",
+      "transform": [
+        [
+          0.642788,
+          0.0,
+          0.766044
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.766044,
+          0.0,
+          0.642788
+        ],
+        [
+          2075.6,
+          35.3,
+          1559.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_tower_a",
+      "transform": [
+        [
+          1.2124,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.2124,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.2124
+        ],
+        [
+          1596.2,
+          68.85,
+          2604.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.897547,
+          0.0504665,
+          -1.992
+        ],
+        [
+          0.325244,
+          2.15916,
+          -0.0918455
+        ],
+        [
+          1.96591,
+          -0.334173,
+          -0.894268
+        ],
+        [
+          1606.05,
+          65.45,
+          2601.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_tower_a",
+      "transform": [
+        [
+          0.0528844,
+          0.0,
+          1.21125
+        ],
+        [
+          0.0,
+          1.2124,
+          0.0
+        ],
+        [
+          -1.21125,
+          0.0,
+          0.0528844
+        ],
+        [
+          2010.55,
+          68.85,
+          2830.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.95095,
+          0.0504665,
+          -0.983582
+        ],
+        [
+          0.105945,
+          2.15916,
+          0.320928
+        ],
+        [
+          0.979169,
+          -0.334173,
+          1.92503
+        ],
+        [
+          2013.88,
+          65.45,
+          2839.86
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.56127,
+          -0.358782,
+          0.925291
+        ],
+        [
+          -0.983992,
+          0.335438,
+          -1.53026
+        ],
+        [
+          0.129002,
+          -1.78359,
+          -0.47392
+        ],
+        [
+          2018.04,
+          56.5438,
+          2856.18
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_gates_c",
+      "transform": [
+        [
+          0.354037,
+          0.0,
+          1.32128
+        ],
+        [
+          0.0,
+          1.36789,
+          0.0
+        ],
+        [
+          -1.32128,
+          0.0,
+          0.354037
+        ],
+        [
+          1781.74,
+          67.7855,
+          2723.81
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          1.74575,
+          0.0645177,
+          -0.426254
+        ],
+        [
+          -0.431057,
+          0.288717,
+          -1.72172
+        ],
+        [
+          0.00666498,
+          1.77369,
+          0.295763
+        ],
+        [
+          1766.39,
+          63.0493,
+          2687.04
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.27086,
+          0.120575,
+          -0.938624
+        ],
+        [
+          0.946252,
+          0.18288,
+          -1.25769
+        ],
+        [
+          0.0126287,
+          -1.56928,
+          -0.218687
+        ],
+        [
+          1772.7,
+          58.7249,
+          2792.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_tower_b",
+      "transform": [
+        [
+          1.327,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.327,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.327
+        ],
+        [
+          2603.66,
+          62.7119,
+          2158.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.108646,
+          1.09111,
+          -0.0463783
+        ],
+        [
+          -1.07808,
+          0.0997111,
+          -0.179674
+        ],
+        [
+          -0.174417,
+          0.063345,
+          1.08169
+        ],
+        [
+          2601.17,
+          60.1508,
+          2172.81
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.51544,
+          -0.967355,
+          0.0549676
+        ],
+        [
+          0.366194,
+          -0.252136,
+          -1.0034
+        ],
+        [
+          0.897055,
+          -0.452912,
+          0.441191
+        ],
+        [
+          2615.69,
+          58.8955,
+          2163.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_corner_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2668.5,
+          66.2052,
+          2246.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.512104,
+          -0.967355,
+          0.080311
+        ],
+        [
+          -0.613415,
+          -0.252136,
+          0.874432
+        ],
+        [
+          -0.7523,
+          -0.452912,
+          -0.658333
+        ],
+        [
+          2655.98,
+          61.8391,
+          2232.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.164183,
+          1.08417,
+          0.0458623
+        ],
+        [
+          0.457688,
+          0.0271302,
+          0.99713
+        ],
+        [
+          0.983896,
+          0.168296,
+          -0.456192
+        ],
+        [
+          2653.18,
+          62.5256,
+          2256.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "african_fortress_gates_c",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2816.39,
+          80.4252,
+          2406.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0642314,
+          0.961318,
+          0.0818939
+        ],
+        [
+          0.894245,
+          -0.0285103,
+          -0.366709
+        ],
+        [
+          -0.362165,
+          0.100097,
+          -0.890944
+        ],
+        [
+          2346.26,
+          70.1258,
+          2589.04
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.128185,
+          1.08857,
+          -0.37868
+        ],
+        [
+          0.270439,
+          0.398785,
+          1.05482
+        ],
+        [
+          1.12038,
+          0.0282861,
+          -0.297941
+        ],
+        [
+          1512.46,
+          29.9541,
+          1980.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.500582,
+          1.36332,
+          0.0104963
+        ],
+        [
+          1.36176,
+          0.499438,
+          0.0742271
+        ],
+        [
+          0.0660669,
+          0.0354255,
+          -1.45042
+        ],
+        [
+          1653.82,
+          51.8788,
+          2017.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.443157,
+          0.0504163,
+          1.1456
+        ],
+        [
+          -1.12898,
+          0.195956,
+          -0.445353
+        ],
+        [
+          -0.200869,
+          -1.2126,
+          -0.0243375
+        ],
+        [
+          1829.94,
+          37.6837,
+          1772.54
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          2.46462,
+          0.0982414,
+          -1.06261
+        ],
+        [
+          -0.237529,
+          2.65774,
+          -0.305211
+        ],
+        [
+          1.04037,
+          0.374062,
+          2.44762
+        ],
+        [
+          1920.69,
+          48.8519,
+          1777.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.134675,
+          0.317902,
+          2.66345
+        ],
+        [
+          -0.237529,
+          2.65774,
+          -0.305211
+        ],
+        [
+          -2.67181,
+          -0.220253,
+          0.161391
+        ],
+        [
+          1701.29,
+          22.4599,
+          1624.16
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.196157,
+          -0.107734,
+          -3.39447
+        ],
+        [
+          0.28485,
+          -3.38867,
+          0.0910888
+        ],
+        [
+          -3.38421,
+          -0.27898,
+          0.204423
+        ],
+        [
+          1673.92,
+          27.9346,
+          1647.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.12916,
+          0.179753,
+          2.38359
+        ],
+        [
+          -0.206277,
+          2.37901,
+          -0.168229
+        ],
+        [
+          -2.38144,
+          -0.196316,
+          0.143851
+        ],
+        [
+          2171.01,
+          44.2832,
+          1635.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.104224,
+          -0.145049,
+          -1.92341
+        ],
+        [
+          0.166453,
+          -1.91971,
+          0.13575
+        ],
+        [
+          -1.92168,
+          -0.158415,
+          0.116079
+        ],
+        [
+          2150.95,
+          45.8849,
+          1627.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.000451112,
+          1.2216,
+          -0.320076
+        ],
+        [
+          0.51278,
+          -0.292678,
+          -1.1163
+        ],
+        [
+          -1.15403,
+          -0.12957,
+          -0.49614
+        ],
+        [
+          1887.03,
+          69.0309,
+          2067.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.156921,
+          -0.120027,
+          1.24728
+        ],
+        [
+          1.19342,
+          -0.368814,
+          -0.185637
+        ],
+        [
+          0.381915,
+          1.20179,
+          0.0675997
+        ],
+        [
+          1890.19,
+          66.9852,
+          1951.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -0.512357,
+          0.0,
+          -1.55469
+        ],
+        [
+          0.0,
+          1.63694,
+          0.0
+        ],
+        [
+          1.55469,
+          0.0,
+          -0.512357
+        ],
+        [
+          2553.78,
+          49.0786,
+          1681.11
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.0300618,
+          1.1571,
+          -0.0708735
+        ],
+        [
+          0.521625,
+          0.049813,
+          1.03452
+        ],
+        [
+          1.03529,
+          -0.0586974,
+          -0.519184
+        ],
+        [
+          2331.93,
+          55.4942,
+          1782.99
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.45005,
+          0.0,
+          0.527776
+        ],
+        [
+          0.0,
+          1.54311,
+          0.0
+        ],
+        [
+          -0.527776,
+          0.0,
+          -1.45005
+        ],
+        [
+          2892.68,
+          57.9343,
+          1800.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.333991,
+          0.0,
+          -1.50653
+        ],
+        [
+          0.0,
+          1.54311,
+          0.0
+        ],
+        [
+          1.50653,
+          0.0,
+          0.333991
+        ],
+        [
+          2878.29,
+          56.6896,
+          1793.63
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.11514,
+          0.0,
+          -0.316312
+        ],
+        [
+          0.0,
+          1.15913,
+          0.0
+        ],
+        [
+          0.316312,
+          0.0,
+          -1.11514
+        ],
+        [
+          2759.4,
+          52.4,
+          1887.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.0339447,
+          -0.0482205,
+          1.15763
+        ],
+        [
+          0.0137972,
+          -1.15803,
+          -0.0486415
+        ],
+        [
+          1.15856,
+          0.0152039,
+          -0.0333385
+        ],
+        [
+          2743.1,
+          55.35,
+          1884.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -1.82393,
+          -0.0842574,
+          0.778222
+        ],
+        [
+          -0.00104064,
+          1.97353,
+          0.211234
+        ],
+        [
+          -0.782769,
+          0.193704,
+          -1.81361
+        ],
+        [
+          1395.95,
+          47.7033,
+          2539.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.110356,
+          -1.68561,
+          0.494203
+        ],
+        [
+          0.933005,
+          -0.475801,
+          -1.4145
+        ],
+        [
+          1.48829,
+          0.17329,
+          0.923388
+        ],
+        [
+          1680.85,
+          59.35,
+          2225.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.266875,
+          1.73946,
+          -0.0270422
+        ],
+        [
+          0.96562,
+          0.170871,
+          1.46153
+        ],
+        [
+          1.44708,
+          0.206777,
+          -0.980248
+        ],
+        [
+          1690.1,
+          57.8,
+          2101.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.431387,
+          -0.877083,
+          -1.46367
+        ],
+        [
+          -1.56207,
+          -0.404569,
+          0.702821
+        ],
+        [
+          -0.686686,
+          1.4713,
+          -0.679272
+        ],
+        [
+          1667.75,
+          50.45,
+          2106.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.32889,
+          0.0731538,
+          -1.49273
+        ],
+        [
+          -0.127048,
+          1.99579,
+          -0.015297
+        ],
+        [
+          1.48911,
+          0.104994,
+          1.33082
+        ],
+        [
+          1782.35,
+          66.25,
+          2295.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          1.54619,
+          -0.20935,
+          1.25101
+        ],
+        [
+          0.099913,
+          1.98643,
+          0.208933
+        ],
+        [
+          -1.26446,
+          -0.0990341,
+          1.54624
+        ],
+        [
+          1988.8,
+          65.3,
+          2549.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          -1.65036,
+          0.0444478,
+          -0.193975
+        ],
+        [
+          -0.00746195,
+          1.60536,
+          0.431342
+        ],
+        [
+          0.198863,
+          0.42911,
+          -1.59361
+        ],
+        [
+          2131.05,
+          72.2,
+          2497.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          0.207607,
+          -1.01993,
+          -0.348026
+        ],
+        [
+          -0.705397,
+          -0.396561,
+          0.741376
+        ],
+        [
+          -0.814739,
+          0.0834471,
+          -0.730565
+        ],
+        [
+          2577.25,
+          79.2,
+          2786.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          0.918828,
+          0.0159462,
+          0.698463
+        ],
+        [
+          0.698642,
+          -0.0163165,
+          -0.91869
+        ],
+        [
+          -0.00304372,
+          1.24632,
+          -0.0244499
+        ],
+        [
+          2569.55,
+          80.65,
+          2619.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -0.528299,
+          0.0159462,
+          1.02616
+        ],
+        [
+          1.02605,
+          -0.0163165,
+          0.528499
+        ],
+        [
+          0.0235499,
+          1.24632,
+          -0.00724316
+        ],
+        [
+          2485.25,
+          77.25,
+          2727.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_a_brown",
+      "transform": [
+        [
+          -1.15283,
+          0.0159462,
+          0.0555574
+        ],
+        [
+          0.0553317,
+          -0.0163165,
+          1.15284
+        ],
+        [
+          0.0180477,
+          1.24632,
+          0.0167733
+        ],
+        [
+          2419.2,
+          79.25,
+          2675.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_b_brown",
+      "transform": [
+        [
+          0.57897,
+          0.152187,
+          -1.06634
+        ],
+        [
+          -0.0113741,
+          1.21141,
+          0.166715
+        ],
+        [
+          1.07708,
+          -0.0690129,
+          0.574955
+        ],
+        [
+          2686.3,
+          81.35,
+          2474.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_cliff_medium_d_brown",
+      "transform": [
+        [
+          -0.104022,
+          0.961318,
+          -0.00343628
+        ],
+        [
+          -0.293894,
+          -0.0285103,
+          0.920747
+        ],
+        [
+          0.915298,
+          0.100097,
+          0.295253
+        ],
+        [
+          2337.2,
+          70.1258,
+          2635.85
+        ]
+      ]
+    }
+  ]
+}

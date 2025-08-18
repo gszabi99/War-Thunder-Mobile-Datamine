@@ -9,11 +9,11 @@ let { is_mobile } = require("%appGlobals/clientState/platform.nut")
 let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})
 let wndStartInactiveMsec = hardPersistWatched("globals.lastTimeInactive", -1)
 let wndStartActiveMsec = hardPersistWatched("globals.lastTimeActive", 0)
-let windowActive = ComputedImmediate(@() windowInactiveFlags.value.len() == 0)
+let windowActive = ComputedImmediate(@() windowInactiveFlags.get().len() == 0)
 local needDebug = false
 
 function blockWindow(flag) {
-  if (flag in windowInactiveFlags.value)
+  if (flag in windowInactiveFlags.get())
     return
   if (needDebug)
     logW($"block by {flag}. {windowActive.value ? "Set window to inactive" : ""}")
@@ -21,10 +21,10 @@ function blockWindow(flag) {
 }
 
 function unblockWindow(flag) {
-  if (flag not in windowInactiveFlags.value)
+  if (flag not in windowInactiveFlags.get())
     return
   if (needDebug)
-    logW($"unblock by {flag}. {windowInactiveFlags.value.len() == 1 ? "Set window to active" : ""}")
+    logW($"unblock by {flag}. {windowInactiveFlags.get().len() == 1 ? "Set window to active" : ""}")
   windowInactiveFlags.mutate(@(v) v.$rawdelete(flag))
 }
 

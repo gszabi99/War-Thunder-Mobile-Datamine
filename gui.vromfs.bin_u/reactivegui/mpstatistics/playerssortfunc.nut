@@ -23,6 +23,10 @@ let sortByCampaign = {
     || a.id <=> b.id
 }
 
+let ffaSort = {
+  tanks = @(a, b) (b?.missionAliveTime ?? 0) <=> (a?.missionAliveTime ?? 0) || sortByCampaign.tanks(a, b)
+}
+
 let scoreKey = {
   ships = "damage"
   ships_new = "damage"
@@ -62,9 +66,17 @@ function sortAndFillPlayerPlaces(campaign, players) {
   return players
 }
 
+function sortAndFillPlayerPlacesByFFA(campaign, players) {
+  players.sort(ffaSort?[campaign] ?? ffaSort.tanks)
+  foreach(idx, p in players)
+    p.place <- idx + 1
+  return players
+}
+
 return {
   getScoreKey
   getScoreKeyRaw
   playersSortFunc
   sortAndFillPlayerPlaces
+  sortAndFillPlayerPlacesByFFA
 }

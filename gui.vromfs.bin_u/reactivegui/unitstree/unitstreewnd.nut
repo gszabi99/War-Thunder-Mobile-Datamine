@@ -19,8 +19,8 @@ let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkT
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
   blockSize, flagTreeOffset, gamercardOverlap, infoPanelWidth,
   RGAP_HAS_GAP, RGAP_HAS_NEXT_LEVEL, RGAP_RECEIVED_NEXT_LEVEL
-} = require("unitsTreeComps.nut")
-let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("animState.nut")
+} = require("%rGui/unitsTree/unitsTreeComps.nut")
+let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curSelectedUnit, sizePlatoon, curUnitName,availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
@@ -35,12 +35,12 @@ let { lvlUpCost, openLvlUpWndIfCan, isLvlUpAnimated } = require("%rGui/levelUp/l
 let { isFiltersVisible, filterStateFlags, openFilters, activeFilters, mkFilteredUnits
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("unitsTreeNodesContent.nut")
-let { blockedCountries } = require("unitsTreeNodesState.nut")
-let { rankBlockOffset } = require("unitsTreeConsts.nut")
-let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
+let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
+let { blockedCountries } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { rankBlockOffset } = require("%rGui/unitsTree/unitsTreeConsts.nut")
+let { mkUnitPlate, framesGapMul } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { scrollHandler, startAnimScroll, interruptAnimScroll, scrollPos, unseenArrowsBlockCtor
-} = require("unitsTreeScroll.nut")
+} = require("%rGui/unitsTree/unitsTreeScroll.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -160,7 +160,7 @@ let unitFilterButton = @() {
   : {
       padding = const [hdpx(10), hdpx(25)]
       behavior = Behaviors.Button
-      onElemState = @(s) filterStateFlags(s)
+      onElemState = @(s) filterStateFlags.set(s)
       onClick = @(e) openFiltersPopup(e)
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)

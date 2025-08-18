@@ -30,7 +30,7 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
     ["{price}"] = mkCurrencyComp(price, currencyId), 
     ["{priceDiff}"] = @() { 
       watch = notEnough
-      children = mkCurrencyComp(notEnough.value, currencyId, CS_NO_BALANCE)
+      children = mkCurrencyComp(notEnough.get(), currencyId, CS_NO_BALANCE)
     },
   }
   openMsgBox({

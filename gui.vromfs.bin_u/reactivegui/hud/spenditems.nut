@@ -8,7 +8,7 @@ let spendItemsQueue = Watched([])
 let addSpendItem = @(itemId, count) spendItemsQueue.mutate(@(v) v.append({ itemId, count }))
 
 function removeSpendItem(itemData) {
-  let idx = spendItemsQueue.value.indexof(itemData)
+  let idx = spendItemsQueue.get().indexof(itemData)
   if (idx != null)
     spendItemsQueue.mutate(@(v) v.remove(idx))
 }

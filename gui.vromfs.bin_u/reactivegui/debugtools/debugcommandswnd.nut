@@ -22,18 +22,18 @@ let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { isTutorialMissionsDebug } = require("%rGui/tutorial/tutorialMissions.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let debugGameModesWnd = require("debugGameModesWnd.nut")
+let debugGameModesWnd = require("%rGui/debugTools/debugGameModesWnd.nut")
 let { randomBattleMode, forceNewbieModeIdx } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let debugOffersWnd = require("debugOffersWnd.nut")
-let debugUnlocks = require("debugUnlocks.nut")
+let debugOffersWnd = require("%rGui/debugTools/debugOffersWnd.nut")
+let debugUnlocks = require("%rGui/debugTools/debugUnlocks.nut")
 let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { currencyOrder, getDbgCurrencyCount, balance } = require("%appGlobals/currenciesState.nut")
 let { canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
-let debugPermissionsWnd = require("debugPermissionsWnd.nut")
+let debugPermissionsWnd = require("%rGui/debugTools/debugPermissionsWnd.nut")
 let { removeAddonsForCampaign } = require("%rGui/updater/updaterState.nut")
 
 
@@ -99,7 +99,7 @@ let commandsList = [].extend(
     { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(mainHangarUnitName.get())) }
     { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(mainHangarUnitName.get())) }
     { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
-    { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
+    { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug.set(!isTutorialMissionsDebug.get())) }
     { label = "startFirstBattlesOfflineMission",
       func = withClose(@() notAvailableForSquadMsg(startDebugNewbieMission)) }
     { label = "startLocalMultiplayerMission",
@@ -118,22 +118,22 @@ let commandsList = [].extend(
     { label = "debug_unlocks", func = withClose(debugUnlocks) }
     {
       function customBtn() {
-        let list = newbieGameModesConfig?[curCampaign.value]
+        let list = newbieGameModesConfig?[curCampaign.get()]
         let curMode = list == null ? "not allowed"
-          : forceNewbieModeIdx.value < 0 ? "cur = default"
-          : forceNewbieModeIdx.value >= list.len() ? "cur = not newbie"
-          : $"cur = newbie {forceNewbieModeIdx.value}"
+          : forceNewbieModeIdx.get() < 0 ? "cur = default"
+          : forceNewbieModeIdx.get() >= list.len() ? "cur = not newbie"
+          : $"cur = newbie {forceNewbieModeIdx.get()}"
         return {
           watch = [curCampaign, forceNewbieModeIdx]
           size = FLEX_H
           children = mkBtn($"Toggle newbie mode ({curMode})",
             function() {
               if (list == null) {
-                dlog("Newbie modes not allowed for campaign: ", curCampaign.value) 
+                dlog("Newbie modes not allowed for campaign: ", curCampaign.get()) 
                 return
               }
-              forceNewbieModeIdx((forceNewbieModeIdx.value + 2) % (list.len() + 2) - 1)
-              dlog("Mode name by main battle button: ", randomBattleMode.value?.name) 
+              forceNewbieModeIdx.set((forceNewbieModeIdx.get() + 2) % (list.len() + 2) - 1)
+              dlog("Mode name by main battle button: ", randomBattleMode.get()?.name) 
             })
         }
       }
@@ -172,9 +172,9 @@ function mkCommandsList() {
 }
 
 let consoleText = Watched("")
-let consoleClear = @() consoleText("")
+let consoleClear = @() consoleText.set("")
 function consoleExecute() {
-  let cmd = consoleText.value.strip()
+  let cmd = consoleText.get().strip()
   if (cmd == "")
     return
   consoleClear()
@@ -192,7 +192,7 @@ let consoleTextInput = {
   children = [
     textInput(consoleText, {
       placeholder = loc("Enter console commands here")
-      onChange = @(value) consoleText(value)
+      onChange = @(value) consoleText.set(value)
       onReturn = consoleExecute
     })
     textButtonCommon("Enter", consoleExecute,

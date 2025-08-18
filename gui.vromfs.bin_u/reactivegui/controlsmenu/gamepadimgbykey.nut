@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamepadPreset } = require("gamepadVendor.nut")
-let allPresets = require("gamepadImagePresets.nut")
+let { gamepadPreset } = require("%rGui/controlsMenu/gamepadVendor.nut")
+let allPresets = require("%rGui/controlsMenu/gamepadImagePresets.nut")
 let { BTN_A, BTN_B, BTN_X, BTN_Y, BTN_DIRPAD, BTN_DIRPAD_DOWN, BTN_DIRPAD_LEFT, BTN_DIRPAD_RIGHT, BTN_DIRPAD_UP,
   BTN_BACK, BTN_START, BTN_LB, BTN_RB, BTN_LT, BTN_RT,
   BTN_LS, BTN_LS_ANY, BTN_LS_UP, BTN_LS_DOWN, BTN_LS_LEFT, BTN_LS_RIGHT, BTN_LS_HOR, BTN_LS_VER,

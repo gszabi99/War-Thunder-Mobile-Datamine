@@ -23,7 +23,7 @@ let statusLoc = {
 }
 
 let curFilters = mkWatched(persist, "curFilters", {})
-let mkValue = @(id, defValue = null) Computed(@() curFilters.value?[id] ?? defValue)
+let mkValue = @(id, defValue = null) Computed(@() curFilters.get()?[id] ?? defValue)
 let saveValue = @(id, value) curFilters.mutate(@(f) f[id] <- value)
 let mkSetValue = @(id) @(value) saveValue(id, value)
 let clearFilters = @() curFilters.set({})
@@ -31,7 +31,7 @@ let clearFilters = @() curFilters.set({})
 curCampaign.subscribe(@(_) clearFilters())
 
 let mkListToggleValue = @(id, allValuesW) function toggleValue(value, isChecked) {
-  local res = curFilters.value?[id]
+  local res = curFilters.get()?[id]
   if (res == null) {
     res = {}
     allValuesW.value.each(@(v) res[v] <- true)
@@ -88,7 +88,7 @@ let optUnitClass = mkOptMultiselect("unitClass", { inBoxValue = @(v) {
   text = unitClassFontIcons?[v]
 }.__update(fontBig) })
 
-let allStatuses = Computed(@() canBuyUnitsStatus.value
+let allStatuses = Computed(@() canBuyUnitsStatus.get()
   .reduce(function(res, status, unitName) {
     if (!campUnitsCfg.get()?[unitName].isHidden)
       res[status] <- true
@@ -98,7 +98,7 @@ let allStatuses = Computed(@() canBuyUnitsStatus.value
   .sort())
 let optStatus = mkOptMultiselect("unitStatus", {
   allValues = allStatuses
-  getUnitValue = @(unit) canBuyUnitsStatus.value?[unit.name] ?? US_UNKNOWN
+  getUnitValue = @(unit) canBuyUnitsStatus.get()?[unit.name] ?? US_UNKNOWN
   valueWatch = canBuyUnitsStatus
   valToString = @(st) loc(statusLoc?[st] ?? "???")
   locId = null

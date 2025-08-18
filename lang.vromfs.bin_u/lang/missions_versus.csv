@@ -857,3 +857,24 @@ Target armada:
 
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t艦\t隊";;
+"missions/BR";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Королевская битва]";"[Королівська битва]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[Battle Royale]";"[배틀 로얄]";"【大\t逃\t杀\t】";"[バトル・ロイヤル]";"【大\t逃\t殺\t】";;
+"missions/BR/desc";"Battle Royale is a variation of the ""free for all"" game mode. There are no respawns available in ""Battle Royale"", and the battle area shrinks over time.
+There can be only one!";"Le mode ""Battle Royale"" est une variante du mode ""Chacun pour soi"". Il n'y a aucune réapparition disponible en ""Battle Royale"", et la zone de combat rétrécit au fil du temps.
+Il ne peut en rester qu'un !";"La Battle Royale è una variante della ""Per Tutti"". Non vi sono rigenerazioni disponibili nella ""Battle Royale"" e l'area di combattimento si restringe col passare del tempo.
+Ci potrà essere un solo vincitore!";"'Battle Royal' ist eine abgewandelte Form des Spielmodus 'Jeder gegen Jeden'. In diesem Deathmatch sind keine Wiedereinstiege möglich und das Schlachtfeld wird schrittweise kleiner.
+Es kann nur einen geben!";"Battle Royale es una variación del modo de juego ""todos contra todos"". En ""Battle Royale"" no hay reapariciones, y el área de batalla se reduce con el tiempo.
+¡Sólo puede haber uno!";"Королевская битва - вариация режима игры ""все против всех"". Основными особенностями режима являются со временем уменьшающаяся боевая зона и отсутствие возрождений.
+В конце должен остаться только один!";"Королівська битва — варіація ігрового режиму «всі проти всіх». Основними особливостями режиму є бойова зона, яка постійно зменшується, і відсутність відроджень.
+Залишитися має тільки один!";"Battle Royale jest odmianą trybu „Każdy na każdego”. Nie ma dostępnych odrodzeń, a obszar bitwy zmniejsza się wraz z upływem czasu.
+Zwycięzca może być tylko jeden!";"Battle Royale é uma variação do modo de jogo ""free for all"". No ""Battle Royale"", não estão disponíveis respawns e a área de batalha vai encolhendo ao longo do tempo.
+Só um pode vencer!";"Battle Royale, ""herkes tek"" oyun modunun bir çeşididir. ""Battle Royale"" modunda yeniden doğma kullanılamaz ve savaş alanı gittikçe daralır.
+Sadece bir kişi ayakta kalacak!";"Battle Royale je variantou módu Všichni proti všem. Nejsou v ní žádná dodatečná nasazení a bitevní oblast se s postupujícím časem zmenšuje. Přežít může jen jeden!";"Battle Royale is a variation of the ""free for all"" game mode. There are no respawns available in ""Battle Royale"", and the battle area shrinks over time.
+There can be only one!";"Battle Royale adalah variasi dari mode game ""bebas untuk semua"". Tidak ada respawn yang tersedia dalam ""Battle Royale"", dan area pertempuran menyusut seiring waktu.
+Hanya ada satu pemenang!";"Battle Royale is a variation of the ""free for all"" game mode. There are no respawns available in ""Battle Royale"", and the battle area shrinks over time.
+There can be only one!";"배틀 로얄은 ""자유 전투"" 모드의 변형입니다. 배틀 로얄 모드에선 리스폰이 불가능하며 시간이 지날수록 전투지역이 줄어듭니다.
+오직 한 사람만이 남습니다!";"【大\t逃\t杀\t】\t是\t一\t种\t特\t别\t的\t死\t亡\t竞\t赛\t模\t式。\t在\t【大\t逃\t杀\t】\t模\t式\t中，\t玩\t家\t无\t法\t重\t生，\t且\t战\t斗\t区\t域\t会\t随\t时\t间\t推\t移\t逐\t渐\t缩\t小。
+
+在\t这\t里，\t只\t有\t唯\t一\t一\t人\t能\t成\t为\t最\t终\t赢\t家！";"バトル・ロイヤルは、\t「デスマッチ\t形式」\tの\tゲームモードの\t一種です。\t「バトル・ロイヤル」\tでは\tリスポーンはなく、\t戦闘\tエリアは\t時間とともに\t縮小していきます。\t
+最後に\t生き\t残るのは、\tただ\t一人！";"【大\t逃\t殺\t】\t是\t一\t種\t特\t別\t的\t免\t費\t死\t鬥\t模\t式。\t在\t【大\t逃\t殺\t】\t模\t式\t中，\t玩\t家\t無\t法\t重\t生，\t且\t戰\t鬥\t區\t域\t會\t隨\t時\t間\t推\t移\t逐\t漸\t縮\t小。
+
+在\t這\t裡，\t只\t有\t唯\t一\t一\t人\t能\t成\t為\t最\t終\t贏\t家！";;

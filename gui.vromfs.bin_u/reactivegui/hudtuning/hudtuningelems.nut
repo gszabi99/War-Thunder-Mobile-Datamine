@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-from "hudTuningConsts.nut" import *
+from "%rGui/hudTuning/hudTuningConsts.nut" import *
 let { dfAnimBottomCenter, dfAnimBottomLeft, dfAnimBottomRight
 } = require("%rGui/style/unitDelayAnims.nut")
 let { hudUnitType, isUnitDelayed } = require("%rGui/hudState.nut")
-let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
-let { curUnitHudTuning } = require("hudTuningBattleState.nut")
-let { optScale } = require("cfg/cfgOptions.nut")
+let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
+let { curUnitHudTuning } = require("%rGui/hudTuning/hudTuningBattleState.nut")
+let { optScale } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
 
 let anims = {
@@ -43,7 +43,7 @@ function mkHudTuningElem(cfg, transform, options) {
   }
   res.__update(emptyRes)
 
-  return @() isUnitDelayed.value ? emptyRes : res
+  return @() isUnitDelayed.get() ? emptyRes : res
 }
 
 let hudTuningElems = @() {

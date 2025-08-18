@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { decoratorInProgress, set_current_decorator, buy_decorator, registerHandler
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { allDecorators, myDecorators } = require("decoratorState.nut")
+let { allDecorators, myDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 
@@ -15,7 +15,7 @@ registerHandler("onDecoratorPurchaseResult",
   })
 
 function purchaseDecorator(decId, localizedName, bqInfo) {
-  if (decoratorInProgress.value != null)
+  if (decoratorInProgress.get() != null)
     return
   if (decId in myDecorators.get()) {
     logerr("Try to purchase own decorator")

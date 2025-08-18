@@ -5,8 +5,8 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isInZoom } = require("%rGui/hudState.nut")
-let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
-let damagePanelBacklight = require("components/damagePanelBacklight.nut")
+let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
+let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { DmStateMask } = require("%rGui/hud/airState.nut")
 
@@ -50,9 +50,9 @@ let xrayModel = @(scale) @() {
   cameraControl = true
   touchMarginPriority = TOUCH_BACKGROUND
   function onElemState(sf) {
-    let prevSf = stateFlags.value
-    stateFlags(sf)
-    let active = isActive(sf) && !isInZoom.value
+    let prevSf = stateFlags.get()
+    stateFlags.set(sf)
+    let active = isActive(sf) && !isInZoom.get()
 
     if (active != isActive(prevSf))
       if (active)
@@ -66,7 +66,7 @@ let xrayModel = @(scale) @() {
   }
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    xrayDoll(isInZoom.value ? null : stateFlags, scale)
+    xrayDoll(isInZoom.get() ? null : stateFlags, scale)
     mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
   ]
 }

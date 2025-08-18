@@ -1,0 +1,2253 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "entities": "gamedata/scenes/avg_abandoned_factory_battleroyal_objects.blk",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "player01",
+        "player02",
+        "player03",
+        "player04",
+        "player05",
+        "player06",
+        "player07",
+        "player08",
+        "player09",
+        "player10",
+        "player11",
+        "player12",
+        "player13",
+        "player14",
+        "player15",
+        "player16",
+        "player17",
+        "player18",
+        "player19",
+        "player20",
+        "player21",
+        "player22",
+        "player23",
+        "player24",
+        "player25",
+        "player26",
+        "player27",
+        "player28",
+        "player29",
+        "player30",
+        "player31",
+        "player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "player33",
+        "player34",
+        "player35",
+        "player36",
+        "player37",
+        "player38",
+        "player39",
+        "player40",
+        "player41",
+        "player42",
+        "player43",
+        "player44",
+        "player45",
+        "player46",
+        "player47",
+        "player48",
+        "player49",
+        "player50",
+        "player51",
+        "player52",
+        "player53",
+        "player54",
+        "player55",
+        "player56",
+        "player57",
+        "player58",
+        "player59",
+        "player60",
+        "player61",
+        "player62",
+        "player63",
+        "player64",
+        "player65"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/avg_abandoned_factory.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "maxTimeToReturnToMapForTanks": 40.0,
+      "killDistFromBattleAreaForTanks": 0.0,
+      "locName": "missions/BR;abandoned_factory/name",
+      "locDesc": "missions/BR/desc",
+      "gt_ffa": true,
+      "gt_last_man_standing": true,
+      "timeLimit": 60,
+      "useTankBots": true,
+      "battleAreaColorPreset": "battleRoyale",
+      "ignoreInvulnerableTimer": false,
+      "useCustomSuperArtillery": true,
+      "customSuperArtillery": "structures/streakArtillery_203mm_r100m",
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": false,
+        "isTanksAllowed": true,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "battleArea": {
+            "target": "tank_map_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/battle_royale/battle_royale_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "abandoned_factory_br_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "from 1 to br_area_div included"
+          },
+          {
+            "value": "from bottom left corner to up right corner"
+          },
+          {
+            "value": "(1,1) - bottom left"
+          },
+          {
+            "value": "(5,1) - bottom right"
+          },
+          {
+            "value": "(1,5) - up left"
+          },
+          {
+            "value": "(5,5) - up right"
+          }
+        ],
+        "varSetString": {
+          "value": "(1,1);(2,1);(3,1);(4,1);(5,1);(6,1);(1,2);(6,2);(1,3);(6,3);(1,4);(6,4);(1,5);(2,5);(5,5);(6,5);(1,6);(2,6);(3,6);(4,6);(5,6);(6,6);",
+          "var": "br_final_sector_exclude",
+          "fromDescriptor": "br_final_sector_exclude"
+        },
+        "varSetInt": [
+          {
+            "value": 8,
+            "var": "br_area_div",
+            "fromDescriptor": "br_area_div"
+          },
+          {
+            "value": 5,
+            "var": "pickups_count",
+            "fromDescriptor": "pickups_count"
+          },
+          {
+            "value": 0,
+            "var": "pickups2_stage",
+            "fromDescriptor": "pickups2_stage"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "spawn_area_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1921.55,
+            22.4,
+            2657.65
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "spawn01",
+            "spawn02",
+            "spawn03",
+            "spawn04",
+            "spawn05",
+            "spawn06",
+            "spawn07",
+            "spawn08",
+            "spawn09",
+            "spawn10",
+            "spawn11",
+            "spawn12",
+            "spawn13",
+            "spawn14",
+            "spawn15",
+            "spawn16",
+            "spawn17",
+            "spawn18",
+            "spawn19",
+            "spawn20"
+          ]
+        }
+      },
+      {
+        "name": "pickups_area_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1964.15,
+            14.95,
+            2670.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "pickuparea01",
+            "pickuparea02",
+            "pickuparea03",
+            "pickuparea04",
+            "pickuparea05",
+            "pickuparea06",
+            "pickuparea07",
+            "pickuparea08",
+            "pickuparea09",
+            "pickuparea10",
+            "pickuparea11",
+            "pickuparea12",
+            "pickuparea13",
+            "pickuparea14",
+            "pickuparea15",
+            "pickuparea16",
+            "pickuparea17",
+            "pickuparea18",
+            "pickuparea19",
+            "pickuparea20",
+            "pickuparea21",
+            "pickuparea22",
+            "pickuparea23",
+            "pickuparea24",
+            "pickuparea25",
+            "pickuparea26",
+            "pickuparea27",
+            "pickuparea28",
+            "pickuparea29",
+            "pickuparea30",
+            "pickuparea31",
+            "pickuparea32",
+            "pickuparea33",
+            "pickuparea34",
+            "pickuparea35",
+            "pickuparea36",
+            "pickuparea37",
+            "pickuparea38",
+            "pickuparea39",
+            "pickuparea40"
+          ]
+        }
+      }
+    ],
+    "tankModels": {
+      "name": "player01",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1744.14,
+          8.03059,
+          1785.93
+        ]
+      ],
+      "unit_class": "ussr_t_34_1941",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "tank_map_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -1200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          175.475,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1200.0
+        ],
+        [
+          2223.1,
+          12.25,
+          2141.55
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.11248,
+          0.0,
+          -9.66503
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          9.66503,
+          0.0,
+          -7.11248
+        ],
+        [
+          2119.9,
+          12.85,
+          2502.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2.15979,
+          0.0,
+          11.8041
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -11.8041,
+          0.0,
+          2.15979
+        ],
+        [
+          1983.75,
+          8.05003,
+          1653.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.21706,
+          0.0,
+          -10.8066
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          10.8066,
+          0.0,
+          5.21706
+        ],
+        [
+          1754.35,
+          8.04993,
+          2225.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.12834,
+          0.0,
+          7.78928
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -7.78928,
+          0.0,
+          -9.12834
+        ],
+        [
+          1784.15,
+          8.04929,
+          1672.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.183645,
+          0.0,
+          11.9986
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -11.9986,
+          0.0,
+          -0.183645
+        ],
+        [
+          2207.6,
+          7.99954,
+          1659.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.31622,
+          0.0,
+          10.7582
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -10.7582,
+          0.0,
+          -5.31622
+        ],
+        [
+          2663.55,
+          8.0,
+          1731.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -11.996,
+          0.0,
+          0.308766
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -0.308766,
+          0.0,
+          -11.996
+        ],
+        [
+          2626.2,
+          8.05,
+          1851.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.468044,
+          0.0,
+          11.9908
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -11.9908,
+          0.0,
+          -0.468044
+        ],
+        [
+          2265.25,
+          9.20039,
+          2102.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -11.9978,
+          0.0,
+          -0.230879
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          0.230879,
+          0.0,
+          -11.9978
+        ],
+        [
+          2226.35,
+          8.04999,
+          1925.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          12.0,
+          0.0,
+          -0.00891793
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          0.00891793,
+          0.0,
+          12.0
+        ],
+        [
+          2087.4,
+          8.05005,
+          2114.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0563846,
+          0.0,
+          11.9998
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -11.9998,
+          0.0,
+          -0.0563846
+        ],
+        [
+          2294.15,
+          8.05,
+          1845.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          9.23065,
+          0.0,
+          -7.66773
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          7.66773,
+          0.0,
+          9.23065
+        ],
+        [
+          2551.65,
+          10.5,
+          2326.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.2051,
+          0.0,
+          10.2711
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -10.2711,
+          0.0,
+          -6.2051
+        ],
+        [
+          2164.5,
+          10.5,
+          2300.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -11.9782,
+          0.0,
+          0.723339
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -0.723339,
+          0.0,
+          -11.9782
+        ],
+        [
+          2349.2,
+          8.05038,
+          2173.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2.61859,
+          0.0,
+          11.7108
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -11.7108,
+          0.0,
+          2.61859
+        ],
+        [
+          1774.7,
+          8.05,
+          1876.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.29712,
+          0.0,
+          11.9297
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -11.9297,
+          0.0,
+          -1.29712
+        ],
+        [
+          1913.6,
+          8.05,
+          1933.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.16994,
+          0.0,
+          10.8292
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -10.8292,
+          0.0,
+          5.16994
+        ],
+        [
+          2635.01,
+          11.8,
+          1993.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.85793,
+          0.0,
+          -9.06933
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          9.06933,
+          0.0,
+          -7.85793
+        ],
+        [
+          2296.9,
+          13.0,
+          2501.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9.18159,
+          0.0,
+          7.72646
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          -7.72646,
+          0.0,
+          -9.18159
+        ],
+        [
+          2356.7,
+          13.0,
+          2362.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.03837,
+          0.0,
+          -10.891
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          10.891,
+          0.0,
+          5.03837
+        ],
+        [
+          1899.55,
+          12.05,
+          2455.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2496.35,
+          8.05457,
+          1970.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2529.05,
+          8.02053,
+          2103.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2563.45,
+          8.26362,
+          1650.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea04": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2150.5,
+          7.99966,
+          1850.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea05": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2361.6,
+          7.99967,
+          1811.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea06": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2265.25,
+          7.99966,
+          1694.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea07": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2013.65,
+          8.02419,
+          1591.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea08": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2036.75,
+          7.99966,
+          1724.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea09": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1884.55,
+          8.00812,
+          1724.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea10": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1910.55,
+          7.99967,
+          2029.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea11": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1708.2,
+          8.03108,
+          2117.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea12": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2171.55,
+          7.99967,
+          2095.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea13": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2104.34,
+          7.99966,
+          2126.34
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea14": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1957.0,
+          7.99974,
+          2181.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea15": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1975.9,
+          9.63142,
+          2417.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea16": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1884.0,
+          8.00449,
+          1869.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea17": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1827.15,
+          8.31126,
+          2371.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea18": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2164.1,
+          12.8627,
+          2442.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea19": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2390.85,
+          9.99854,
+          2369.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea20": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2494.65,
+          8.01656,
+          2244.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea21": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2347.6,
+          7.99966,
+          1950.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea22": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2345.0,
+          7.99967,
+          2066.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea23": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2261.95,
+          8.05926,
+          2201.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea24": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2104.2,
+          8.0616,
+          2211.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea25": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2083.6,
+          10.2955,
+          2316.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea26": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2064.95,
+          7.99966,
+          2025.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea27": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2192.35,
+          12.7928,
+          2591.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea28": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2409.4,
+          7.99963,
+          1987.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea29": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1973.3,
+          7.99966,
+          1822.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea30": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2329.05,
+          8.00299,
+          1627.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea31": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2110.55,
+          7.99966,
+          1927.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea32": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1814.7,
+          7.99963,
+          2052.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea33": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2167.3,
+          7.99966,
+          1754.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea34": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2345.3,
+          7.99966,
+          1732.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea35": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2263.0,
+          7.99966,
+          1895.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea36": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2474.3,
+          8.17871,
+          1726.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea37": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1736.1,
+          8.0365,
+          1794.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea38": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2145.5,
+          8.18665,
+          1669.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea39": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2797.3,
+          8.16795,
+          1890.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea40": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2482.85,
+          8.12578,
+          1818.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2156.25,
+          7.99955,
+          1769.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          1866.0,
+          12.8166,
+          1783.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2074.8,
+          7.99955,
+          2054.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2259.45,
+          12.2397,
+          2328.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_05": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2347.85,
+          7.99955,
+          1949.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_06": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          1880.0,
+          6.09009,
+          2186.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_area_07": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.3956,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0
+        ],
+        [
+          2359.8,
+          7.99955,
+          1733.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

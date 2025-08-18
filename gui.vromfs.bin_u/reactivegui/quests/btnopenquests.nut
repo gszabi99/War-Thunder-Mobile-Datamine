@@ -3,7 +3,7 @@ let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasUnseenQuestsBySection, questsBySection, progressUnlockByTab, progressUnlockBySection,
   questsCfg, openQuestsWnd, openQuestsWndOnTab
-} = require("questsState.nut")
+} = require("%rGui/quests/questsState.nut")
 
 let statusMark = @(_) @() {
   watch = [hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]

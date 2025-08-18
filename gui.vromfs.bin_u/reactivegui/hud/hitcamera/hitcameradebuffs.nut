@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { SHIP, BOAT } = require("%appGlobals/unitConst.nut")
-let { hcUnitType, hcInfo, hcDamageStatus } = require("hitCameraState.nut")
+let { hcUnitType, hcInfo, hcDamageStatus } = require("%rGui/hud/hitCamera/hitCameraState.nut")
 
 let iconSize = hdpxi(30)
 
@@ -58,11 +58,11 @@ function mkCommonDebuff(icon, scale, textW, stateW) {
 
 let shipDebuffs = [
   function(scale) {
-    let buoyancy = Computed(@() hcDamageStatus.value?.buoyancy ?? hcInfo.value?.buoyancy ?? 1.0)
+    let buoyancy = Computed(@() hcDamageStatus.get()?.buoyancy ?? hcInfo.get()?.buoyancy ?? 1.0)
     return mkCommonDebuff("ui/gameuiskin#buoyancy_icon.svg", scale,
-      Computed(@() $"{(100 * buoyancy.value + 0.5).tointeger()}%"),
-      Computed(@() buoyancy.value > 0.995 ? HIDDEN
-        : stateByValue(buoyancy.value, 0.995, 0.505, 0.005)))
+      Computed(@() $"{(100 * buoyancy.get() + 0.5).tointeger()}%"),
+      Computed(@() buoyancy.get() > 0.995 ? HIDDEN
+        : stateByValue(buoyancy.get(), 0.995, 0.505, 0.005)))
   }
 ]
 
@@ -75,7 +75,7 @@ let hitCameraDebuffs = @(scale) @() {
   watch = hcUnitType
   padding = hdpx(6)
   flow = FLOW_VERTICAL
-  children = (debuffsByType?[hcUnitType.value] ?? []).map(@(ctor) ctor(scale))
+  children = (debuffsByType?[hcUnitType.get()] ?? []).map(@(ctor) ctor(scale))
 }
 
 return hitCameraDebuffs

@@ -14,7 +14,7 @@ let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
-} = require("goodsPreviewPkg.nut")
+} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
@@ -87,7 +87,7 @@ isPurchEffectVisible.subscribe(function(v) {
 eventbus_subscribe("onCutsceneUnitShoot", @(_) resetTimeout(TIME_TO_SHOW_UI_AFTER_SHOT, showUi))
 
 let curSelectedUnitId = Watched("")
-previewGoodsUnit.subscribe(@(v) curSelectedUnitId(v?.name ?? ""))
+previewGoodsUnit.subscribe(@(v) curSelectedUnitId.set(v?.name ?? ""))
 
 let unitForShow = Computed(function() {
   let unitName = previewGoods.get()?.skins.keys()[0]
@@ -120,8 +120,8 @@ let cutSceneWaitForVisualsLoaded = get_settings_blk()?.unitOffer.cutSceneWaitFor
 let transitionThroughBlackScreen = get_settings_blk()?.unitOffer.transitionThroughBlackScreen ?? false
 
 let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
-eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
-eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
+eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene.set(false))
+eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene.set(true))
 
 let needShowCutscene = keepref(Computed(@() unitForShow.get() != null
   && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.get()?.name ?? "")
@@ -295,9 +295,9 @@ let previewWnd = @() {
         closeBlackOverlay()
     }
   }
-  onDetach = @() isWindowAttached(false)
+  onDetach = @() isWindowAttached.set(false)
 
-  children = !needShowUi.get() ? doubleClickListener(@() needShowUi(true)):
+  children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true)):
    [
         {
           size = FLEX_H

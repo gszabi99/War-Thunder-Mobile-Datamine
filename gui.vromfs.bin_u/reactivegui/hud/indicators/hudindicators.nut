@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { Indicator } = require("wt.behaviors")
 let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { isHudIndicatorsAttached, hudIndicatorsByPlayerSorted, playerTitlesVisibility, indicatorTypes
-} = require("hudIndicatorsState.nut")
+} = require("%rGui/hud/indicators/hudIndicatorsState.nut")
 
 let PLAYER_LOCAL_INDICATOR_SHIFT_Y = 0
 let PLAYER_WITHOUT_TITLE_INDICATOR_SHIFT_Y = hdpx(-88)

@@ -1,5 +1,5 @@
-println("require('wtmRGui/main.nut')")
+println("require(\"wtmRGui/main.nut\")")
 require("%rGui/main.nut")
 let { isLoginRequired } = require("%appGlobals/loginState.nut")
-isLoginRequired(false) 
+isLoginRequired.set(false) 
 require("%darg/test_ui.nut").test("%rGui/main.nut")

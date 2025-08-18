@@ -3,7 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevelInfo, isRewardsModalOpen,
   openLvlUpAfterDelay, startLvlUpAnimation, closeRewardsModal, skipLevelUpUnitPurchase
-} = require("levelUpState.nut")
+} = require("%rGui/levelUp/levelUpState.nut")
 let { rewardInProgress, get_player_level_rewards, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -12,7 +12,7 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { mkPlayerLevel, mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { levelUpFlag } = require("levelUpFlag.nut")
+let { levelUpFlag } = require("%rGui/levelUp/levelUpFlag.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -54,9 +54,9 @@ function receiveRewards() {
     afterReceiveRewards()
     return
   }
-  if (rewardInProgress.value)
+  if (rewardInProgress.get())
     return
-  get_player_level_rewards(curCampaign.value, level,
+  get_player_level_rewards(curCampaign.get(), level,
     { id = "playerLevelRewards.receiveNext", level })
   afterReceiveRewards()
 }
@@ -68,7 +68,7 @@ registerHandler("playerLevelRewards.receiveNext",
     receiveRewards()
   })
 
-let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null),
+let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.get() != null),
   textButtonPrimary(utf8ToUpper(loc("btn/receive")), receiveRewards, { hotkeys = [btnAUp] }),
   {
     margin = const [hdpx(20),0,0,0]

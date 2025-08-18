@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { tabW, tabH } = require("optionsStyle.nut")
+let { tabW, tabH } = require("%rGui/options/optionsStyle.nut")
 let { mkTabs } = require("%rGui/components/tabs.nut")
 let { mkUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { SEEN } = require("%rGui/unseenPriority.nut")

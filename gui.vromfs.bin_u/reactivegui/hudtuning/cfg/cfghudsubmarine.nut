@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 let { SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_TOOLKIT } = require("%rGui/hud/weaponsButtonsConfig.nut")
-let cfgHudCommon = require("cfgHudCommon.nut")
-let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
+let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
+let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
 let { mkRhombZoomButton, mkDivingLockButton } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
-  withActionBarButtonCtor } = require("hudTuningPkg.nut")
+  withActionBarButtonCtor } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let { depthSliderBlock, depthSliderEditView } = require("%rGui/hud/submarineDepthBlock.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
-let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
+let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
 } = require("%rGui/hud/oxygenBlock.nut")
 
@@ -66,7 +66,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(-10), hdpx(-10)])
     editView = voiceMsgStickView
-    isVisibleInBattle = isInMpSession
+    isVisibleInBattle = isVoiceMsgStickVisibleInBattle
     priority = Z_ORDER.STICK
   }
 

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { openUnitCustom } = require("unitCustomState.nut")
+let { openUnitCustom } = require("%rGui/unitCustom/unitCustomState.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")

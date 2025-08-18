@@ -3,7 +3,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInSquad, squadId, isSquadLeader, squadLeaderReadyCheckTime, squadMembers } = require("%appGlobals/squadState.nut")
-let setReady = require("setReady.nut")
+let setReady = require("%rGui/squad/setReady.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
@@ -27,23 +27,23 @@ isSquadLeader.subscribe(@(v) !isInSquad.get() ? null
 
 let needReadyCheckMsg = Computed(@() isInSquad.get()
   && !isSquadLeader.get()
-  && squadLeaderReadyCheckTime.get() > readyCheckTime.value)
+  && squadLeaderReadyCheckTime.get() > readyCheckTime.get())
 let canShowReadyCheck = Computed(@() !isInBattle.get()
   && !isInLoadingScreen.get()
   && (!isInDebriefing.get() || isDebriefingAnimFinished.get()))
 
-let shouldShowMsg = keepref(Computed(@() needReadyCheckMsg.value && canShowReadyCheck.value))
+let shouldShowMsg = keepref(Computed(@() needReadyCheckMsg.get() && canShowReadyCheck.get()))
 
 function initiateReadyCheck() {
   if (!isSquadLeader.get())
     return
-  if (isReadyCheckSuspended.value) {
+  if (isReadyCheckSuspended.get()) {
     openMsgBox({ text = loc("squad/readyCheckInCooldownMsg") })
     return
   }
   readyCheckTime(serverTime.get())
-  isReadyCheckSuspended(true)
-  resetTimeout(CAN_REPEAT_SEC, @() isReadyCheckSuspended(false))
+  isReadyCheckSuspended.set(true)
+  resetTimeout(CAN_REPEAT_SEC, @() isReadyCheckSuspended.set(false))
 }
 
 function applyReadyCheckResult(newReady) {

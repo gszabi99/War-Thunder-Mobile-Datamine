@@ -4,13 +4,13 @@ let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { urlUnderline, gapAfterPoint, linkColor } = require("consentComps.nut")
+let { urlUnderline, gapAfterPoint, linkColor } = require("%rGui/notifications/consent/consentComps.nut")
 let { openMsgBox, msgBoxText, wndWidthDefault } = require("%rGui/components/msgBox.nut")
 let { isOpenedManage, defaultPointsTable, savedPoints,
-  applyConsent} = require("consentState.nut")
+  applyConsent} = require("%rGui/notifications/consent/consentState.nut")
 
 let key = "consentManage"
-let close = @() isOpenedManage(false)
+let close = @() isOpenedManage.set(false)
 
 let checkSize = [hdpxi(30), hdpxi(30)]
 
@@ -75,7 +75,7 @@ let optionRow = @(p){
       behavior = Behaviors.Button
       function onClick() {
         let oldValue = choosenPoints.get()[p]
-        choosenPoints(choosenPoints.get().__merge({[p] = !oldValue}))
+        choosenPoints.set(choosenPoints.get().__merge({[p] = !oldValue}))
       }
       children = [
         checkBox(p)

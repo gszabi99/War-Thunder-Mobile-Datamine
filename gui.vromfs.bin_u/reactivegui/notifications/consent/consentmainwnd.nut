@@ -7,15 +7,15 @@ let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { urlUnderline, linkColor } = require("consentComps.nut")
+let { urlUnderline, linkColor } = require("%rGui/notifications/consent/consentComps.nut")
 let { wndWidthDefault } = require("%rGui/components/msgBox.nut")
 let { isOpenedConsentWnd,needOpenConsentWnd, isOpenedPartners, isOpenedManage,
-  defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics} = require("consentState.nut")
+  defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics} = require("%rGui/notifications/consent/consentState.nut")
 let { can_skip_consent } = require("%appGlobals/permissions.nut")
 let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 
 let key = "consentMain"
-let close = @() needOpenConsentWnd(false)
+let close = @() needOpenConsentWnd.set(false)
 
 let mainButtons = {
   size = FLEX_H
@@ -52,9 +52,9 @@ let desc = {
   flow = FLOW_VERTICAL
   children = [
     textCtor("consentWnd/main/consentMesssagePart1")
-    linkTextCtor("consentWnd/main/partners", @() isOpenedPartners(true))
+    linkTextCtor("consentWnd/main/partners", @() isOpenedPartners.set(true))
     textCtor("consentWnd/main/consentMesssagePart2")
-    linkTextCtor("consentWnd/main/manage", @() isOpenedManage(true), { hplace = ALIGN_CENTER })
+    linkTextCtor("consentWnd/main/manage", @() isOpenedManage.set(true), { hplace = ALIGN_CENTER })
   ]
 }
 
@@ -72,7 +72,7 @@ let content = modalWndBg.__merge({
         can_skip_consent.get()
           ? closeWndBtn(function(){
             if (!isConsentAcceptedOnce.get()) {
-              savedPoints(defaultPointsTable.map(@(_) false))
+              savedPoints.set(defaultPointsTable.map(@(_) false))
               logC("consent skipped")
               sendUiBqEvent("ads_consent_firebase", { id = "consent_skip" })
               setupAnalytics()

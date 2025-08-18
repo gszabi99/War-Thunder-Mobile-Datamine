@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
-let { allSpecialEvents, eventEndsAt } = require("eventState.nut")
+let { allSpecialEvents, eventEndsAt } = require("%rGui/event/eventState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { get_profile } = require("%appGlobals/pServer/pServerApi.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
@@ -27,7 +27,7 @@ function updateTime() {
     if (evt.endsAt > sTime)
       time = min(time ?? evt.endsAt, evt.endsAt)
 
-  foreach(t in campConfigs.value?.circuit.writeOffCurrency ?? {})
+  foreach(t in campConfigs.get()?.circuit.writeOffCurrency ?? {})
     if (t > sTime)
       time = min(time ?? t, t)
 

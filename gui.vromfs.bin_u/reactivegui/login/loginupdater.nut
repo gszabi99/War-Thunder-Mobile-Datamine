@@ -3,7 +3,7 @@ let { get_base_game_version_str } = require("app")
 let { UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
 } = require("contentUpdater")
 let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
-let { updaterState } = require("loginUpdaterState.nut")
+let { updaterState } = require("%rGui/login/loginUpdaterState.nut")
 let { gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")

@@ -4,7 +4,7 @@ from "%rGui/options/optCtrlType.nut" import *
 let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 let { isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
 let { OPT_SHOW_TOUCHES_ENABLED, mkOptionValue, optionsVersion } = require("%rGui/options/guiOptions.nut")
-let { isGameAutoUpdateEnabled, gameAutoUpdateList } = require("gameAutoUpdateOption.nut")
+let { isGameAutoUpdateEnabled, gameAutoUpdateList } = require("%rGui/options/options/gameAutoUpdateOption.nut")
 let { allow_apk_update } = require("%appGlobals/permissions.nut")
 let { reset_gui_options } = require("controlsOptions")
 let { reset_volumes } = require("soundOptions")
@@ -39,7 +39,7 @@ let resetButton = @() openMsgBox({
     { id = "ok", styleId = "PRIMARY",cb = function() {
       reset_gui_options()
       reset_volumes()
-      optionsVersion(optionsVersion.get() + 1)
+      optionsVersion.set(optionsVersion.get() + 1)
     } }
   ]
 })

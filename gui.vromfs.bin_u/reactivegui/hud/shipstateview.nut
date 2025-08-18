@@ -39,7 +39,7 @@ function speedValue(scale) {
   return @() {
     watch = speed
     rendObj = ROBJ_TEXT
-    text = speed.value.tostring()
+    text = speed.get().tostring()
   }.__update(font)
 }
 
@@ -48,9 +48,9 @@ let speedUnits = @(scale) {
   text = loc("measureUnits/kmh")
 }.__update(getScaledFont(fontVeryTinyShaded, scale))
 
-let averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
+let averageSpeed = Computed(@() clamp((portSideMachine.get() + sideboardSideMachine.get()) / 2, 0, machineSpeedLoc.len()))
 
-let isStoppedSpeedStep = Computed(@() averageSpeed.value == IS_STOPPED_STEP)
+let isStoppedSpeedStep = Computed(@() averageSpeed.get() == IS_STOPPED_STEP)
 
 return {
   speedValue

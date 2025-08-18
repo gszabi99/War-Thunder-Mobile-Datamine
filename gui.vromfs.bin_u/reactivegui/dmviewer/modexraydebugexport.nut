@@ -12,8 +12,8 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { getPlatoonUnitCfg, allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { getPartType } = require("%globalScripts/modeXrayLib.nut")
-let { dmViewerMode, isDebugBatchExportProcess } = require("dmViewerState.nut")
-let { mkUnitDataForXray, mkPartTooltipInfo } = require("modeXray.nut")
+let { dmViewerMode, isDebugBatchExportProcess } = require("%rGui/dmViewer/dmViewerState.nut")
+let { mkUnitDataForXray, mkPartTooltipInfo } = require("%rGui/dmViewer/modeXray.nut")
 
 let progressId = "unitsXray"
 local loadAllItemsProgress = null

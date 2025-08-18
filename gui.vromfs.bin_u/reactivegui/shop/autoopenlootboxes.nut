@@ -5,10 +5,10 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { unseenPurchasesExt, isShowUnseenDelayed } = require("unseenPurchasesState.nut")
+let { unseenPurchasesExt, isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
-let lootboxOpenRouletteConfig = require("lootboxOpenRouletteConfig.nut")
+let lootboxOpenRouletteConfig = require("%rGui/shop/lootboxOpenRouletteConfig.nut")
 
 let ERROR_UPDATE_DELAY = 60
 let wasErrorSoon = Watched(false)
@@ -29,26 +29,26 @@ let lootboxes = Computed(function() {
   return { roulette, silent }
 })
 
-let canOpenSilent = Computed(@() !isInBattle.get() && lootboxInProgress.value == null && !wasErrorSoon.value)
-let canOpenWithWindow = Computed(@() canOpenSilent.value
-  && isLoggedIn.value
-  && unseenPurchasesExt.value.len() == 0
-  && !isShowUnseenDelayed.value
-  && !isTutorialActive.value
+let canOpenSilent = Computed(@() !isInBattle.get() && lootboxInProgress.value == null && !wasErrorSoon.get())
+let canOpenWithWindow = Computed(@() canOpenSilent.get()
+  && isLoggedIn.get()
+  && unseenPurchasesExt.get().len() == 0
+  && !isShowUnseenDelayed.get()
+  && !isTutorialActive.get()
   && !hasJustUnlockedUnitsAnimation.get())
 
-let idToSilentOpen = keepref(Computed(@() canOpenSilent.value ? lootboxes.value.silent.findindex(@(_) true) : null))
+let idToSilentOpen = keepref(Computed(@() canOpenSilent.get() ? lootboxes.get().silent.findindex(@(_) true) : null))
 
-registerHandler("onAutoOpenLootbox", @(res) res?.error == null ? null : wasErrorSoon(true))
+registerHandler("onAutoOpenLootbox", @(res) res?.error == null ? null : wasErrorSoon.set(true))
 
 function tryOpen() {
   if (idToSilentOpen.value != null)
-    open_lootbox_several(idToSilentOpen.value, lootboxes.value.silent?[idToSilentOpen.value] ?? 1, "onAutoOpenLootbox")
+    open_lootbox_several(idToSilentOpen.value, lootboxes.get().silent?[idToSilentOpen.value] ?? 1, "onAutoOpenLootbox")
 }
 tryOpen()
 idToSilentOpen.subscribe(@(_) deferOnce(tryOpen))
 
-let resetError = @() wasErrorSoon(false)
+let resetError = @() wasErrorSoon.set(false)
 wasErrorSoon.subscribe(@(v) v ? resetTimeout(ERROR_UPDATE_DELAY, resetError) : null)
 
 return {

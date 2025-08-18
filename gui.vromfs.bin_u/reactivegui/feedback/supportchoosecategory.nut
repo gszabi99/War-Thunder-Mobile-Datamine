@@ -8,7 +8,7 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { categoryList, getCategoryLocName, fieldCategory } = require("%rGui/feedback/supportState.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
-let onClose = @() isOpened(false)
+let onClose = @() isOpened.set(false)
 
 let mkVerticalPannableArea = @(content, override) {
   size = flex()
@@ -68,4 +68,4 @@ let supportChooseCategoryWnd = bgShaded.__merge({
 
 registerScene("supportChooseCategoryWnd", supportChooseCategoryWnd, onClose, isOpened)
 
-return @() isOpened(true)
+return @() isOpened.set(true)

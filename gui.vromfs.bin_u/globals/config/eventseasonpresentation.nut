@@ -18,6 +18,7 @@ let presentations = {
   season_20 = { color = 0xFF2F48EC }
   season_21 = { color = 0xFFFE6F71 }
   season_22 = { color = 0xFFE9AB11, imageSizeMul = 1.8 }
+  season_23 = { color = 0xFFBC0022 }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
   event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif" }
@@ -28,6 +29,8 @@ let presentations = {
   hot_may                      = { icon = "ui/gameuiskin#icon_event_hot_may.svg", bg = "ui/images/event_bg_season_20.avif" }
   hotmaybond                   = { bg = "ui/images/event_bg_season_20.avif" }
   independencebond             = { bg = "ui/images/event_bg_event_independence_day.avif" }
+  anniversary_2025             = { bg = "ui/images/event_bg_anniversary_2025.avif" }
+  anniversarybond              = { bg = "ui/images/event_bg_anniversary_2025.avif" }
 }
 
 let genParams = {

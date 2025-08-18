@@ -15,7 +15,7 @@ let pannableBase = {
 }
 
 function mkBitmapPictureLazyCached(w, h, errId, fillCb) {
-  if (!isScriptsLoading.value && !__static_analysis__) {
+  if (!isScriptsLoading.get() && !__static_analysis__) {
     logerr($"Try to create {errId} mask not on scripts load")
     return @() null
   }
@@ -61,7 +61,7 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
       image = pageMask()
       clipChildren = true
     }.__update(rootOvr)
-    return @() isMoveByKeys.value
+    return @() isMoveByKeys.get()
       ? root.__merge({
           children = {
             key
@@ -128,7 +128,7 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
       image = pageMask()
       clipChildren = true
     }.__update(rootOvr)
-    return @() isMoveByKeys.value
+    return @() isMoveByKeys.get()
       ? root.__merge({
           children = {
             key

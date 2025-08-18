@@ -9,7 +9,7 @@ let openDebugCommandsWnd = require("%rGui/debugTools/debugCommandsWnd.nut")
 let debugQuirrelConsoleWnd = require("%rGui/debugTools/debugQuirrelConsoleWnd.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
-let chooseBenchmarkWnd = require("chooseBenchmarkWnd.nut")
+let chooseBenchmarkWnd = require("%rGui/mainMenu/chooseBenchmarkWnd.nut")
 let replaysWnd = require("%rGui/replay/replaysWnd.nut")
 let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
@@ -119,7 +119,7 @@ let STORE = {
 }
 let LOGIN_AWARD = {
   name = loc("dailyRewards/header")
-  cb = @() canShowLoginAwards.value ? isLoginAwardOpened(true)
+  cb = @() canShowLoginAwards.get() ? isLoginAwardOpened.set(true)
     : openMsgBox({ text = loc("error/serverTemporaryUnavailable") })
 }
 let BUG_REPORT = {
@@ -163,16 +163,16 @@ function getPublicButtons() {
 
 function getDevButtons() {
   let res = []
-  if (!can_debug_configs.value && !can_debug_missions.value)
+  if (!can_debug_configs.get() && !can_debug_missions.get())
     return res
 
-  if (can_debug_missions.value)
+  if (can_debug_missions.get())
     res.append(TEST_FLIGHT, TF_SHIP_TUNE, TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
   else if (isOfflineMenu)
     res.append(TEST_FLIGHT, BENCHMARK)
-  if (can_debug_configs.value)
+  if (can_debug_configs.get())
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
-  if (can_use_debug_console.value)
+  if (can_use_debug_console.get())
     res.append(DEBUG_QCONSOLE, DEBUG_COMMANDS)
   return res
 }

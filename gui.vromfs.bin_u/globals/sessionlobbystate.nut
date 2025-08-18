@@ -36,6 +36,6 @@ let notInRoomStatuses = [
 return {
   lobbyStates
   sessionLobbyStatus
-  isInJoiningGame = Computed(@() !notInJoiningGameStatuses.contains(sessionLobbyStatus.value))
-  isInRoom = Computed(@() !notInRoomStatuses.contains(sessionLobbyStatus.value))
+  isInJoiningGame = Computed(@() !notInJoiningGameStatuses.contains(sessionLobbyStatus.get()))
+  isInRoom = Computed(@() !notInRoomStatuses.contains(sessionLobbyStatus.get()))
 }

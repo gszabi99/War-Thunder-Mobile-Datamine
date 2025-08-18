@@ -11,10 +11,10 @@ let { randomBattleMode, isGameModesReceived, shouldStartNewbieSingleOnline } = r
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenuNoModals, isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
-  activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
+  activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { markTutorialCompleted, mkIsTutorialCompleted } = require("%rGui/tutorial/completedTutorials.nut")
 let { needShowTutorialAfterReward } = require("%rGui/rewards/freeRewardCampaigns.nut")
-let { TUTORIAL_AFTER_REWARD_ID } = require("tutorialConst.nut")
+let { TUTORIAL_AFTER_REWARD_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { isPurchEffectVisible, needOpenPurchEffect, hasUnitToShow } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 
 
@@ -84,13 +84,13 @@ let startTutorialDelayed = @() deferOnce(function() {
   if (!showTutorial.value)
     return
   startTutorial()
-  isDebugMode(false)
+  isDebugMode.set(false)
 })
 
 startTutorialDelayed()
 showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
 
 register_command(
-  @() activeTutorialId.get() != TUTORIAL_AFTER_REWARD_ID ? isDebugMode(true)
+  @() activeTutorialId.get() != TUTORIAL_AFTER_REWARD_ID ? isDebugMode.set(true)
     : finishTutorial(),
   "debug.tutorial_after_free_reward")

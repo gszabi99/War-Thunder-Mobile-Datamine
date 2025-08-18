@@ -8,7 +8,7 @@ let presets = require("%rGui/controlsMenu/gamepadImagePresets.nut")
 let wndUid = "debugGamepadIconsWnd"
 let wndPadding = hdpxi(30)
 let isOpened = mkWatched(persist, "isOpened", false)
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 
 let viewOrder = [
   "BTN_A", "BTN_A_PRESSED", "BTN_B", "BTN_B_PRESSED", "BTN_X", "BTN_X_PRESSED", "BTN_Y", "BTN_Y_PRESSED",
@@ -100,8 +100,8 @@ let openImpl = @() addModalWindow({
   onClick = close
 })
 
-if (isOpened.value)
+if (isOpened.get())
   openImpl()
 isOpened.subscribe(@(v) v ? openImpl() : removeModalWindow(wndUid))
 
-register_command(@() isOpened(true), "ui.debugGamepadIcons")
+register_command(@() isOpened.set(true), "ui.debugGamepadIcons")

@@ -8,6 +8,7 @@ let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { unitType, isUnitDelayed } = require("%rGui/hudState.nut")
 let { addCommonHintWithTtl } = require("%rGui/hudHints/commonHintLogState.nut")
 let { addHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
+let { isGtFFA } = require("%rGui/missionState.nut")
 
 let SAVE_ID_HINT_SHOW_TIMES_LEFT = "hintMinimapVoiceMsgLeft"
 
@@ -52,6 +53,7 @@ isInMpBattle.subscribe(function(v) {
 let shouldShowHint = keepref(Computed(@() showTimesLeft.get() > 0 && hasEnoughBattles.get()
   && !isSeenInCurBattle && isInMpBattle.get()
   && !isUnitDelayed.get() && hudTypesWithMinimap.contains(unitType.get())
+  && !isGtFFA.get()
 ))
 
 function showHint() {

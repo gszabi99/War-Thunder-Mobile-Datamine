@@ -15,7 +15,7 @@ let needCheck = Computed(@() needCall.get()
   && authTags.get().contains("email_verified")
   && null != authTags.get().findvalue(@(t) t in statsUpdateAuthTags))
 
-let updateNeedCall = @() needCall(!get_local_custom_settings_blk()?[storeId])
+let updateNeedCall = @() needCall.set(!get_local_custom_settings_blk()?[storeId])
 updateNeedCall()
 isOnlineSettingsAvailable.subscribe(@(_) updateNeedCall())
 

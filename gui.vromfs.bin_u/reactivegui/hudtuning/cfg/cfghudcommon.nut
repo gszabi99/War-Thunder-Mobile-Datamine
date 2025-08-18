@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
-let { Z_ORDER, mkRBPos, mkCTPos, mkLTPos } = require("hudTuningPkg.nut")
-let { scoreBoardEditView, mkScoreBoard, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
+let { Z_ORDER, mkRBPos, mkCTPos, mkLTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
+let { scoreBoardEditView, needScoreBoard, scoreBoardCfgByType, scoreBoardType } = require("%rGui/hud/scoreBoard.nut")
 let { capZonesEditView, capZonesList } = require("%rGui/hud/capZones/capZones.nut")
 let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 let { mkMenuButton, mkMenuButtonEditView } = require("%rGui/hud/menuButton.nut")
-let { optFontSize, optTextWidth } = require("cfgOptions.nut")
+let { optFontSize, optTextWidth } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
 return {
   zoomSlider = {
@@ -16,7 +16,10 @@ return {
   }
 
   scores = {
-    ctor = mkScoreBoard
+    ctor = @(scale) @() {
+      watch = scoreBoardType
+      children = scoreBoardCfgByType?[scoreBoardType.get()].ctor(scale)
+    }
     defTransform = mkCTPos([0, -hdpx(16)])
     editView = scoreBoardEditView
     hideForDelayed = false
@@ -42,5 +45,6 @@ return {
     defTransform = mkLTPos([0, 0])
     priority = Z_ORDER.SUPERIOR
     editView = mkMenuButtonEditView
+    hideForDelayed = false
   }
 }

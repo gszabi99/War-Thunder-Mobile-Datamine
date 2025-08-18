@@ -10,7 +10,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
-let { flagsWidth, unitPlateSize, blockSize } = require("unitsTreeComps.nut")
+let { flagsWidth, unitPlateSize, blockSize } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { discountTagUnitSmall } = require("%rGui/components/discountTag.nut")
 let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
@@ -23,16 +23,16 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlockedUnits.nut")
 let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { ceil } = require("math")
-let { nodeToScroll } = require("unitsTreeScroll.nut")
+let { nodeToScroll } = require("%rGui/unitsTree/unitsTreeScroll.nut")
 let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus,
-  unseenResearchedUnits, selectedCountry } = require("unitsTreeNodesState.nut")
-let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("unitResearchBar.nut")
+  unseenResearchedUnits, selectedCountry } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("%rGui/unitsTree/unitResearchBar.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { animUnitAfterResearch, needShowPriceUnit, animExpPart, animNewUnitsAfterResearch, needDelayAnimation, loadStatusesAnimUnits,
   animNewUnitsAfterResearchTrigger, hasAnimDarkScreen, unitsForExpAnim, isBuyUnitWndOpened, canPlayAnimUnitAfterResearch
-} = require("animState.nut")
+} = require("%rGui/unitsTree/animState.nut")
 let { animUnitSlot, mkUnitResearchPriceAnim, priceAnimDuration } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
 let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
@@ -159,7 +159,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
           ? nodeToScroll.set(xmbNode)
         : null
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
     xmbNode
     sound = { click = "choose" }
@@ -485,7 +485,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
         && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
             ? nodeToScroll.set(xmbNode)
           : null
-      onElemState = @(s) stateFlags(s)
+      onElemState = @(s) stateFlags.set(s)
       clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
       xmbNode
       sound = { click  = "choose" }

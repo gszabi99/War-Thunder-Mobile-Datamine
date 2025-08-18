@@ -3,11 +3,11 @@ let { getActionBarItems } = require("hudActionBar")
 let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
 let { get_mission_time } = require("mission")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { getActionType, AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON } = require("actionType.nut")
+let { getActionType, AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON } = require("%rGui/hud/actionBar/actionType.nut")
 
 let actionBar = Watched([])
 let actionBarUpdaters = Watched({})
-let needUpdate = keepref(Computed(@() actionBarUpdaters.value.len() > 0))
+let needUpdate = keepref(Computed(@() actionBarUpdaters.get().len() > 0))
 
 let emptyActionItem = {count = 0, available = false, shortcutIdx = -1, weaponName = "", countEx = 0}
 let actionItemsInCd = Watched({})
@@ -33,7 +33,7 @@ let actionBarByType = @(ab) ab.reduce(function(res, a) {
 local actionBarItems = Computed(function(prev) {
   if (prev == FRP_INITIAL)
     prev = {}
-  let cur = actionBarByType(actionBar.value)
+  let cur = actionBarByType(actionBar.get())
   let res = {}
   local hasChanges = prev.len() != cur.len()
   foreach (aType, action in cur) {
@@ -50,15 +50,15 @@ let curActionBarTypes = Computed(function(prev) {
   return isEqual(prev, types) ? prev : types
 })
 
-let updateActionBar = @() actionBar(getActionBarItems())
+let updateActionBar = @() actionBar.set(getActionBarItems())
 let updateActionBarDelayed = @() gui_scene.resetTimeout(0.1, @() updateActionBar())
 
 let primaryAction = Computed(@() actionBarItems.value?[AB_PRIMARY_WEAPON])
 let secondaryAction = keepref(Computed(@() actionBarItems.value?[AB_SECONDARY_WEAPON]))
 
-let startActionBarUpdate = @(id) id in actionBarUpdaters.value ? null
+let startActionBarUpdate = @(id) id in actionBarUpdaters.get() ? null
   : actionBarUpdaters.mutate(@(v) v[id] <- true)
-let stopActionBarUpdate = @(id) id not in actionBarUpdaters.value ? null
+let stopActionBarUpdate = @(id) id not in actionBarUpdaters.get() ? null
   : actionBarUpdaters.mutate(@(v) v.$rawdelete(id))
 
 needUpdate.subscribe(function(v) {

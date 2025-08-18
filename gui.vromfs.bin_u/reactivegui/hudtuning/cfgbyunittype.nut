@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { optScale } = require("cfg/cfgOptions.nut")
+let { optScale } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
 let config = {
-  [TANK] = require("cfg/cfgHudTank.nut"),
-  [AIR] = require("cfg/cfgHudAircraft.nut"),
-  [SHIP] = require("cfg/cfgHudShip.nut"),
-  [SUBMARINE] = require("cfg/cfgHudSubmarine.nut"),
-  [SAILBOAT] = require("cfg/cfgHudSailboat.nut"),
+  [TANK] = require("%rGui/hudTuning/cfg/cfgHudTank.nut"),
+  [AIR] = require("%rGui/hudTuning/cfg/cfgHudAircraft.nut"),
+  [SHIP] = require("%rGui/hudTuning/cfg/cfgHudShip.nut"),
+  [SUBMARINE] = require("%rGui/hudTuning/cfg/cfgHudSubmarine.nut"),
+  [SAILBOAT] = require("%rGui/hudTuning/cfg/cfgHudSailboat.nut"),
 }
 
 let reqFields = ["ctor", "defTransform", "editView"]

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "loginAwardPlaces.nut" import *
+from "%rGui/unlocks/loginAwardPlaces.nut" import *
 let { register_command } = require("console")
 let { get_time_msec } = require("dagor.time")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -10,13 +10,13 @@ let { registerScene } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { loginAwardUnlock, isLoginAwardOpened, receiveLoginAward, isLoginAwardInProgress,
   hasLoginAwardByAds, showLoginAwardAds
-} = require("loginAwardState.nut")
-let { getRelativeStageData } = require("unlocks.nut")
+} = require("%rGui/unlocks/loginAwardState.nut")
+let { getRelativeStageData } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { mkRewardImage, getRewardName } = require("rewardsView/rewardsPresentation.nut")
+let { mkRewardImage, getRewardName } = require("%rGui/unlocks/rewardsView/rewardsPresentation.nut")
 let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { textButtonBattle, textButtonPrimary, buttonsHGap
 } = require("%rGui/components/textButton.nut")
@@ -60,7 +60,7 @@ let receiveAnimCheckStartShowTime = receiveAnimItemTime - 0.1
 
 local lastAnimState = -1
 local animStateStartTime = 0
-let close = @() isLoginAwardOpened(false)
+let close = @() isLoginAwardOpened.set(false)
 let canClose = Computed(@() !loginAwardUnlock.get()?.hasReward)
 
 let activePlateHotkeys = ["^J:X | Enter"]
@@ -90,7 +90,7 @@ let header = {
     @() {
       watch = canClose
       size = const [hdpx(80), SIZE_TO_CONTENT]
-      children = canClose.value ? backButton(close, { animations = wndSwitchAnim }) : null
+      children = canClose.get() ? backButton(close, { animations = wndSwitchAnim }) : null
     }
     mkText(loc("dailyRewards/header"), fontBig)
   ]
@@ -207,9 +207,9 @@ let activePlateButtonBlock = function() {
   let targetButtonComponent = @() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed]
     size = flex()
-    children = isShowUnseenDelayed.value ? null 
+    children = isShowUnseenDelayed.get() ? null 
       : loginAwardUnlock.get()?.hasReward ? receiveBtn
-      : !hasLoginAwardByAds.value ? null
+      : !hasLoginAwardByAds.get() ? null
       : watchAdsBtn
   }
   let blockOvr = {
@@ -221,9 +221,9 @@ let activePlateButtonBlock = function() {
   return mkSpinnerHideBlock(isLoginAwardInProgress, targetButtonComponent, blockOvr)
 }
 
-let onActivePlateClick = @() isShowUnseenDelayed.value ? null
+let onActivePlateClick = @() isShowUnseenDelayed.get() ? null
   : loginAwardUnlock.get()?.hasReward ? receiveLoginAward()
-  : !hasLoginAwardByAds.value ? null
+  : !hasLoginAwardByAds.get() ? null
   : showLoginAwardAds()
 
 function activePlateHotkeyComp() {
@@ -238,7 +238,7 @@ let smallBtnHeight = evenPx(50)
 let smallBtnMargin = hdpx(10)
 function previewBtnBlock() {
   let res = { watch = [loginAwardUnlock, isShowUnseenDelayed] }
-  return (isShowUnseenDelayed.value || loginAwardUnlock.get()?.hasReward) ? res : res.__update({
+  return (isShowUnseenDelayed.get() || loginAwardUnlock.get()?.hasReward) ? res : res.__update({
     hplace = ALIGN_LEFT
     margin = [dayTextHeight + smallBtnMargin, 0, 0, smallBtnMargin]
     children = [
@@ -379,7 +379,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
   let isNonInteractive = !isCurrentActivePlate && !isPreviewable
   let stateFlags = isNonInteractive ? null : Watched(0)
   let plateComp = isNonInteractive ? plateBase
-    : @() (isShowUnseenDelayed.value || (isPreviewable && loginAwardUnlock.get()?.hasReward))
+    : @() (isShowUnseenDelayed.get() || (isPreviewable && loginAwardUnlock.get()?.hasReward))
       ? plateBase.__update({ watch = [ isShowUnseenDelayed, loginAwardUnlock ] })
       : plateBase.__update({
           watch = [ isShowUnseenDelayed, loginAwardUnlock, stateFlags ]
@@ -400,7 +400,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
 }
 
 function itemsBlock() {
-  let stageOffsetByAds = hasLoginAwardByAds.value ? -1 : 0
+  let stageOffsetByAds = hasLoginAwardByAds.get() ? -1 : 0
   let { lastRewardedStage = 0 } = loginAwardUnlock.get()
   let { stages = [], stage = 0 } = getRelativeStageData(
     stageOffsetByAds == 0 || loginAwardUnlock.get() == null ? loginAwardUnlock.get()
@@ -426,7 +426,7 @@ function itemsBlock() {
     lastPeriodStages = curPeriodStages
   }
   let prevStages = lastPeriodStartStage < startStageFull ? lastPeriodStages : []
-  let animState = debugAnimState.value
+  let animState = debugAnimState.get()
     ?? (lastRewardedStageInPeriod < 7 ? BEFORE_7_DAY : AFTER_7_DAY)
 
   if (animState != lastAnimState) {
@@ -455,7 +455,7 @@ function itemsBlock() {
 }
 
 function rewardText() {
-  let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.value?.stats.daily.meta_common
+  let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.get()?.stats.daily.meta_common
   let skipDays = min(wtm_skip_days_streak, wt_skip_days_streak)
   return mkText(loc(skipDays == 1 ? "EveryDayLoginAward/resetPeriod1"
                   : skipDays == 2 ? "EveryDayLoginAward/resetPeriod2"
@@ -509,13 +509,13 @@ registerScene("loginAwardWnd", awardScene, close, isLoginAwardOpened)
 
 register_command(
   function() {
-    debugAnimState(((debugAnimState.value ?? -1) + 1) % (AFTER_14_DAY + 1))
-    log("debugState set to: ", debugAnimState.value)
+    debugAnimState.set(((debugAnimState.get() ?? -1) + 1) % (AFTER_14_DAY + 1))
+    log("debugState set to: ", debugAnimState.get())
   },
   "debug.everydayAwardAnimationTest")
 register_command(
   function() {
-    debugAnimState(null)
-    log("debugState set to: ", debugAnimState.value)
+    debugAnimState.set(null)
+    log("debugState set to: ", debugAnimState.get())
   },
   "debug.everydayAwardAnimationTestOff")

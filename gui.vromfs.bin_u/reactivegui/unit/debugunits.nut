@@ -4,7 +4,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { hangar_load_model } = require("hangar")
-let { gatherUnitStatsLimits } = require("unitStats.nut")
+let { gatherUnitStatsLimits } = require("%rGui/unit/unitStats.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitTags, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")

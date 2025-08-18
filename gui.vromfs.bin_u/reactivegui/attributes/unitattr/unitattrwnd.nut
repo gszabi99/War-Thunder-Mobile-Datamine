@@ -17,7 +17,7 @@ let { hasUpgradedAttrUnitNotUpdatable } = require("%rGui/attributes/slotAttr/slo
 let { mkAttrTabs, contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
 let { unitAttrPage } = require("%rGui/attributes/unitAttr/unitAttrWndPage.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let buyUnitLevelWnd = require("buyUnitLevelWnd.nut")
+let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
@@ -46,7 +46,7 @@ let attrRowHighlightColor = 0x052E2E2E
 
 let isAttrDetailsVisible = Watched(false)
 let showAttrStateFlags = Watched(0)
-showAttrStateFlags.subscribe(@(sf) isAttrDetailsVisible(!!(sf & S_ACTIVE)))
+showAttrStateFlags.subscribe(@(sf) isAttrDetailsVisible.set(!!(sf & S_ACTIVE)))
 
 let txt = @(ovr) {
   rendObj = ROBJ_TEXT
@@ -74,11 +74,11 @@ let categoriesBlock = @() {
   watch = attrUnitData
   size = FLEX_H
   flow = FLOW_VERTICAL
-  children = mkAttrTabs(attrUnitData.value.preset.map(@(page, idx) {
+  children = mkAttrTabs(attrUnitData.get().preset.map(@(page, idx) {
       id = page.id
       locId = loc($"attrib_section/{page.id}")
       image = categoryImages?[page.id] ?? defCategoryImage
-      statusW = Computed(@() availableAttributes.value.statusByCat?[idx])
+      statusW = Computed(@() availableAttributes.get().statusByCat?[idx])
     }),
     curCategoryId
   )
@@ -122,7 +122,7 @@ function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
 let attrDetails = @() {
   watch = isAttrDetailsVisible
   pos = [-(attrDetailsWidth + connectLineWidth), 0]
-  children = isAttrDetailsVisible.value
+  children = isAttrDetailsVisible.get()
     ? @() tooltipBg.__merge({
         watch = [curCategory, lastModifiedAttr, isAttrDetailsVisible]
         size = [attrDetailsWidth, SIZE_TO_CONTENT]
@@ -133,8 +133,8 @@ let attrDetails = @() {
           {
             size = FLEX_H
             flow = FLOW_VERTICAL
-            children = (curCategory.value?.attrList ?? [])
-              .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.value))
+            children = (curCategory.get()?.attrList ?? [])
+              .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.get()))
           }
         ]
       })
@@ -146,7 +146,7 @@ let pageBlock = {
   hplace = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   children = [
-    @() !isUnitMaxSkills.value
+    @() !isUnitMaxSkills.get()
       ? {
         watch = isUnitMaxSkills
         rendObj = ROBJ_SOLID
@@ -158,8 +158,8 @@ let pageBlock = {
           txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
           @() txt({
             watch = leftUnitSp
-            text = getSpCostText(leftUnitSp.value)
-            color = leftUnitSp.value > 0 ? textColor : badTextColor
+            text = getSpCostText(leftUnitSp.get())
+            color = leftUnitSp.get() > 0 ? textColor : badTextColor
           })
         ]
       }
@@ -205,11 +205,11 @@ let actionButtons = @() {
   children = [
     mkCustomButton(mkMoreDetailBtn(utf8ToUpper(loc("terms_wnd/more_detailed"))), @() null,
       mergeStyles(PRIMARY, { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags}))
-    attrUnitLevelsToMax.value <= 0 ? null
+    attrUnitLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-        (attrUnitData.value?.unit.level ?? 0) + 1,
-        @() buyUnitLevelWnd(attrUnitName.value), { hotkeys = ["^J:Y"] })
-    selAttrSpCost.value <= 0 ? null
+        (attrUnitData.get()?.unit.level ?? 0) + 1,
+        @() buyUnitLevelWnd(attrUnitName.get()), { hotkeys = ["^J:Y"] })
+    selAttrSpCost.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
           ovr = { sound = { click  = "characteristics_apply" } }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
           hotkeys = ["^J:X"]
@@ -217,7 +217,7 @@ let actionButtons = @() {
   ]
 }
 
-let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
+let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.get() != null),
   actionButtons,
   {
     size = [ flex(), defButtonHeight ]
@@ -225,21 +225,21 @@ let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
   })
 
 function onClose() {
-  if (selAttrSpCost.value == 0 || unitInProgress.value != null) 
-    isUnitAttrOpened(false)
+  if (selAttrSpCost.get() == 0 || unitInProgress.get() != null) 
+    isUnitAttrOpened.set(false)
   else
     openMsgBox({
       text = loc("unitUpgrades/apply"),
       buttons = [
         { id = "cancel", isCancel = true }
-        { id = "reset", cb = @() isUnitAttrOpened(false), hotkeys = ["^J:X"] }
+        { id = "reset", cb = @() isUnitAttrOpened.set(false), hotkeys = ["^J:X"] }
         {
           id = "apply"
           styleId = "PRIMARY"
           isDefault = true
           cb = function() {
             applyAttributes()
-            isUnitAttrOpened(false)
+            isUnitAttrOpened.set(false)
           }
         }
       ]
@@ -301,4 +301,4 @@ let unitAttrWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("unitAttrWnd", unitAttrWnd, @() isUnitAttrOpened(false), isUnitAttrOpened, false, @() selAttrSpCost.value <= 0)
+registerScene("unitAttrWnd", unitAttrWnd, @() isUnitAttrOpened.set(false), isUnitAttrOpened, false, @() selAttrSpCost.get() <= 0)

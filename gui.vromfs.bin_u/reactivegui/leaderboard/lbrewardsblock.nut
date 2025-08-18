@@ -4,10 +4,10 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { lbRewardsBlockWidth, lbTableHeight, lbHeaderRowHeight, prizeIcons,
   rewardStyle, lbRewardRowPadding, lbRewardsGap, getRowBgColor
-} = require("lbStyle.nut")
+} = require("%rGui/leaderboard/lbStyle.nut")
 let { localPlayerColor } = require("%rGui/style/stdColors.nut")
-let { curLbRewards } = require("lbRewardsState.nut")
-let { lbMyPlace, lbTotalPlaces } = require("lbState.nut")
+let { curLbRewards } = require("%rGui/leaderboard/lbRewardsState.nut")
+let { lbMyPlace, lbTotalPlaces } = require("%rGui/leaderboard/lbState.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardsPreview } = require("%rGui/quests/rewardsComps.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")

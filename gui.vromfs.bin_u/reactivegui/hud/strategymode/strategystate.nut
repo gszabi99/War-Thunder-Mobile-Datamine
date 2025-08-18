@@ -24,31 +24,31 @@ let strategyDataRest = Watched(null)
 let strategyDataShip = Watched(null)
 
 let curGroupIndex = Watched(0)
-let curAirGroupType = Computed(@() getAirGroupType(strategyDataCur.value?.behaviour ?? "unknown"))
-let curAirGroupCanAttackAir = Computed(@() strategyDataCur.value?.canAttackAir ?? false)
-let curAirGroupCanAttackGround = Computed(@() strategyDataCur.value?.canAttackGround ?? false)
-let curAirGroupCanDefend = Computed(@() strategyDataCur.value?.canDefend ?? false)
-let curAirGroupCanHunt = Computed(@() strategyDataCur.value?.canHunt ?? false)
-let curAirGroupPathLength = Computed(@() strategyDataCur.value?.nodes.len() ?? 0)
-let curAirGroupIsLaunched = Computed(@() strategyDataCur.value?.isLaunched ?? false)
-let curAirGroupIsReturning = Computed(@() strategyDataCur.value &&
-  strategyDataCur.value.nodes.len() == 2 && strategyDataCur.value.nodes[1].type == NODE_ORDER_RETURN)
+let curAirGroupType = Computed(@() getAirGroupType(strategyDataCur.get()?.behaviour ?? "unknown"))
+let curAirGroupCanAttackAir = Computed(@() strategyDataCur.get()?.canAttackAir ?? false)
+let curAirGroupCanAttackGround = Computed(@() strategyDataCur.get()?.canAttackGround ?? false)
+let curAirGroupCanDefend = Computed(@() strategyDataCur.get()?.canDefend ?? false)
+let curAirGroupCanHunt = Computed(@() strategyDataCur.get()?.canHunt ?? false)
+let curAirGroupPathLength = Computed(@() strategyDataCur.get()?.nodes.len() ?? 0)
+let curAirGroupIsLaunched = Computed(@() strategyDataCur.get()?.isLaunched ?? false)
+let curAirGroupIsReturning = Computed(@() strategyDataCur.get() &&
+  strategyDataCur.get().nodes.len() == 2 && strategyDataCur.get().nodes[1].type == NODE_ORDER_RETURN)
 
 function updateStrategyDataCur() {
   let data = getStrategyState(curGroupIndex.get())
   if (data?.groupNotDead) {
-    strategyDataCur(data)
+    strategyDataCur.set(data)
   }
   else {
     curGroupIndex.set(-1)
     let shipData = getStrategyState(-1)
-    strategyDataCur(shipData)
+    strategyDataCur.set(shipData)
   }
 }
 
 function updateStrategyDataShip() {
   let data = getStrategyState(-1)
-  strategyDataShip(data)
+  strategyDataShip.set(data)
 }
 
 function udpateStrategyDataRest() {
@@ -57,7 +57,7 @@ function udpateStrategyDataRest() {
     let airGroupData = getStrategyState(airGroupIndex)
     data.rawset(airGroupIndex, airGroupData)
   }
-  strategyDataRest(data)
+  strategyDataRest.set(data)
 }
 
 function strategyStateUpdateStart() {
@@ -75,8 +75,8 @@ function strategyStateUpdateStop() {
   clearTimer(updateStrategyDataShip)
 }
 
-register_command(@(v) optDebugDraw(v), "strategymode.debugDraw")
-register_command(@(v) optMoveCameraByDrag(v), "strategymode.moveCameraByDrag")
+register_command(@(v) optDebugDraw.set(v), "strategymode.debugDraw")
+register_command(@(v) optMoveCameraByDrag.set(v), "strategymode.moveCameraByDrag")
 
 return {
   curGroupIndex

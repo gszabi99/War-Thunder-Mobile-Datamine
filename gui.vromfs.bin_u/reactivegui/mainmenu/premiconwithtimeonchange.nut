@@ -9,7 +9,7 @@ let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip } = require("%rGui/state/profilePremium.nut")
 let { premiumTextColor, goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
 let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
-let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.nut")
+let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
@@ -20,16 +20,16 @@ let highlightTrigger = {}
 
 let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.get() ?? -1)
 let changeOrders = hardPersistWatched("premium.changeOrders", [])
-let nextChange = Computed(@() changeOrders.value?[0])
+let nextChange = Computed(@() changeOrders.get()?[0])
 
 isProfileReceived.subscribe(function(_) {
   visibleEndsAt(premiumEndsAt.get())
   changeOrders([])
 })
 premiumEndsAt.subscribe(function(endsAt) {
-  if (endsAt == visibleEndsAt.value && changeOrders.value.len() == 0)
+  if (endsAt == visibleEndsAt.get() && changeOrders.get().len() == 0)
     return
-  let prev = max(changeOrders.value.len() == 0 ? visibleEndsAt.value : changeOrders.value.top().cur, serverTime.get())
+  let prev = max(changeOrders.get().len() == 0 ? visibleEndsAt.get() : changeOrders.get().top().cur, serverTime.get())
   local diff = endsAt - prev
   if (abs(diff % TIME_HOUR_IN_SECONDS) < TIME_MINUTE_IN_SECONDS)
     diff = round_by_value(diff, TIME_MINUTE_IN_SECONDS).tointeger()
@@ -56,7 +56,7 @@ let premImageMain = @() mkSubsIcon(
 })
 
 function premiumTime(style = CS_GAMERCARD) {
-  local timeLeft = max(0, visibleEndsAt.value - serverTime.get())
+  local timeLeft = max(0, visibleEndsAt.get() - serverTime.get())
   if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  
     timeLeft = round_by_value(timeLeft, TIME_HOUR_IN_SECONDS).tointeger()
 
@@ -87,7 +87,7 @@ function premiumTime(style = CS_GAMERCARD) {
 }
 
 function onChangeAnimFinish(change) {
-  if (change != changeOrders.value?[0])
+  if (change != changeOrders.get()?[0])
     return
   visibleEndsAt(change.cur)
   changeOrders.mutate(@(v) v.remove(0))
@@ -133,7 +133,7 @@ let withHoveredBg = @(content, stateFlags) {
       key = stateFlags
       size = flex()
       padding = const [hdpx(3), 0]
-      children =  stateFlags.value & S_HOVER ? hoverBg : null
+      children =  stateFlags.get() & S_HOVER ? hoverBg : null
     }
     content
   ]
@@ -150,7 +150,7 @@ function premIconWithTimeOnChange() {
         behavior = Behaviors.Button
         onClick = @() openShopWnd(SC_PREMIUM)
         sound = { click  = "meta_shop_buttons" }
-        onElemState = @(sf) stateFlags(sf)
+        onElemState = @(sf) stateFlags.set(sf)
         flow = FLOW_HORIZONTAL
         gap = hdpx(10)
         children = [
@@ -166,8 +166,8 @@ function premIconWithTimeOnChange() {
         size = 0 
         vplace = ALIGN_BOTTOM
         hplace = ALIGN_CENTER
-        children = nextChange.value == null ? null
-          : mkChangeView(nextChange.value)
+        children = nextChange.get() == null ? null
+          : mkChangeView(nextChange.get())
       }
     ]
   }

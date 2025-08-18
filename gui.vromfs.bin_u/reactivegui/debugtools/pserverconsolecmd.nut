@@ -108,7 +108,7 @@ currencyOrder.each(@(c)
 register_command(@(currencyId, count) add_currency_no_popup_by_full_id(currencyId, count, "consolePrintResult"),
     $"meta.add_currency_by_full_id")
 
-register_command(@(exp) add_player_exp(curCampaign.value, exp, "consolePrintResult"), "meta.add_player_exp")
+register_command(@(exp) add_player_exp(curCampaign.get(), exp, "consolePrintResult"), "meta.add_player_exp")
 register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.add_item")
 register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
@@ -178,13 +178,13 @@ register_command(function(count) {
     add_premium(seconds, "consolePrintResult")
 }, "meta.add_all_items_and_currency")
 
-registerHandler("onCheatShiftTime", @(_) check_new_offer(curCampaign.value, "consolePrintResult"))
+registerHandler("onCheatShiftTime", @(_) check_new_offer(curCampaign.get(), "consolePrintResult"))
 
 register_command(@() shift_all_offers_time(86400, "onCheatShiftTime"),
   "meta.gen_next_day_offer")
 register_command(@(minutes) shift_all_offers_time(minutes * 60, "consolePrintResult"),
   "meta.shift_offer_time_minutes")
-register_command(@() debug_offer_generation_stats(curCampaign.value, "consolePrint"),
+register_command(@() debug_offer_generation_stats(curCampaign.get(), "consolePrint"),
   "meta.debug_offer_generation_stats")
 
 let offerTypes = ["start", "gold", "collection", "sidegrade", "upgrade", "premUnit", "branch",
@@ -192,7 +192,7 @@ let offerTypes = ["start", "gold", "collection", "sidegrade", "upgrade", "premUn
 ]
 foreach (ot in offerTypes) {
   let offerType = ot
-  register_command(@() generate_fixed_type_offer(curCampaign.value, offerType, "consolePrintResult"),
+  register_command(@() generate_fixed_type_offer(curCampaign.get(), offerType, "consolePrintResult"),
     $"meta.generate_offer_{offerType}")
 }
 register_command(@() validate_active_offer(curCampaign.get()),

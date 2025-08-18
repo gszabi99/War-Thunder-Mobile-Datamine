@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { ceil } = require("%sqstd/math.nut")
-let { contentWidth } = require("optionsStyle.nut")
+let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { sliderWithButtons, sliderValueSound } = require("%rGui/components/slider.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")

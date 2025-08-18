@@ -89,7 +89,7 @@ function mkItemRow(idx) {
 
     behavior = Behaviors.Button
     onClick = @() selectItem(idx)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.98, 0.98] : [1, 1] }

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { currencyWndOpenCount, closeBuyEventCurrenciesWnd, bgImage
-} = require("buyEventCurrenciesState.nut")
+} = require("%rGui/event/buyEventCurrenciesState.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard,
-  buyEventCurrenciesDesc } = require("buyEventCurrenciesComps.nut")
+  buyEventCurrenciesDesc } = require("%rGui/event/buyEventCurrenciesComps.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
@@ -12,6 +12,8 @@ let buyEventCurrenciesWnd = {
   key = {}
   size = flex()
   padding = saBordersRv
+  rendObj = ROBJ_SOLID
+  color = 0x80000000
   flow = FLOW_VERTICAL
   children = [
     buyEventCurrenciesGamercard

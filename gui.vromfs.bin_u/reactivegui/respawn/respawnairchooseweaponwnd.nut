@@ -18,14 +18,14 @@ let { selectedSlotWeaponName, equippedWeaponsBySlots, wCards, beltCards,
   selectWeaponSlot, selectBeltSlot, selectWeaponCard, selectBeltCard,
   overloadInfo, fixCurPresetOverload, courseBeltSlots, turretBeltSlots, mirrorIdx,
   unequipSelWeaponFromWings, equipSelWeaponToWings
-} = require("respawnAirChooseState.nut")
+} = require("%rGui/respawn/respawnAirChooseState.nut")
 let { mkWeaponStates, getConflictsList, mkHasConflicts } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
-let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { mkBeltDesc, mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
 let { padding, weaponSize, smallGap, commonWeaponIcon, getWeaponTitle, mkBeltImage,
   header, headerText, caliberTitle, headerHeight, defPadding, imgSize
-} = require("respawnComps.nut")
+} = require("%rGui/respawn/respawnComps.nut")
 let { badTextColor2, commonTextColor, warningTextColor } = require("%rGui/style/stdColors.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 

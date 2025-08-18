@@ -17,7 +17,7 @@ let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { mkActionBtnGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
-let { isAvailableActionItem } = require("actionButtonComps.nut")
+let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
 
 
 let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
@@ -81,7 +81,7 @@ let mkRhombBtnBorder = @(stateFlags, isAvailable, scale) {
     watch = stateFlags
     size = flex()
     rendObj = ROBJ_BOX
-    borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
+    borderColor = stateFlags.get() & S_ACTIVE ? borderColorPushed
       : !isAvailable ? borderNoAmmoColor
       : borderColor
     borderWidth = round(borderWidth * scale)
@@ -119,7 +119,7 @@ function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale) {
         size = [btnTouchSize, btnTouchSize]
         behavior = Behaviors.Button
         cameraControl = true
-        onElemState = @(v) stateFlags(v)
+        onElemState = @(v) stateFlags.set(v)
         hotkeys = mkGamepadHotkey(shortcutId)
         onClick = @() useShortcut(shortcutId)
       }
@@ -172,8 +172,8 @@ function mkRhombZoomButton(scale) {
         watch = [stateFlags, isDisabled, isInZoom, hasAimingModeForWeapon]
         size = flex()
         rendObj = ROBJ_BOX
-        borderColor = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed
-          : (canZoom.value && !isDisabled.value && (isInZoom.value || hasAimingModeForWeapon.value)) ? borderColor
+        borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed
+          : (canZoom.get() && !isDisabled.value && (isInZoom.get() || hasAimingModeForWeapon.get())) ? borderColor
           : borderNoAmmoColor
         borderWidth = borderW
         fillColor = btnBgColor.empty
@@ -182,10 +182,10 @@ function mkRhombZoomButton(scale) {
       {
         rendObj = ROBJ_IMAGE
         size = [btnSize, btnSize]
-        image = isInZoom.value ? Picture($"ui/gameuiskin#hud_binoculars_zoom.svg:{btnSize}:{btnSize}:P")
+        image = isInZoom.get() ? Picture($"ui/gameuiskin#hud_binoculars_zoom.svg:{btnSize}:{btnSize}:P")
           : Picture($"ui/gameuiskin#hud_binoculars.svg:{btnSize}:{btnSize}:P")
         keepAspect = KEEP_ASPECT_FIT
-        color = (canZoom.value && !isDisabled.value && (isInZoom.value || hasAimingModeForWeapon.value))
+        color = (canZoom.get() && !isDisabled.value && (isInZoom.get() || hasAimingModeForWeapon.get()))
           ? imageColor
           : imageDisabledColor
       }
@@ -196,17 +196,17 @@ function mkRhombZoomButton(scale) {
         behavior = Behaviors.Button
         cameraControl = true
         hotkeys = mkGamepadHotkey(shortcutId)
-        onElemState = @(v) stateFlags(v)
+        onElemState = @(v) stateFlags.set(v)
         function onClick() {
           if (isDisabled.value)
             return
-          if (canZoom.value && ((hasAimingModeForWeapon.value) ||
-              (isInZoom.value && !hasAimingModeForWeapon.value))) {
+          if (canZoom.get() && ((hasAimingModeForWeapon.get()) ||
+              (isInZoom.get() && !hasAimingModeForWeapon.get()))) {
             toggleShortcut(shortcutId)
             return
           }
 
-          if (!canZoom.value) {
+          if (!canZoom.get()) {
             addCommonHint(loc("hints/select_enemy_to_aim"))
             return
           }

@@ -4,8 +4,8 @@ let { parse_json } = require("json")
 let { register_command } = require("console")
 let { screenlog } = require("dagor.debug")
 let { httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED } = require("dagor.http")
-let { zendeskApiUploadsUrl, zendeskApiRequestsUrl } = require("supportState.nut")
-let { getLogFileData } = require("logFileAttachment.nut")
+let { zendeskApiUploadsUrl, zendeskApiRequestsUrl } = require("%rGui/feedback/supportState.nut")
+let { getLogFileData } = require("%rGui/feedback/logFileAttachment.nut")
 
 
 
@@ -133,7 +133,7 @@ function onSendFormFailure(errInfo) {
 
 function sendFormData() {
   let { email, userId, name, category, subject, message, locale, lang, needAttachLogFile } = requestState.get().formData
-  let { attachments } = requestState.value
+  let { attachments } = requestState.get()
   logZ($"Sending request from user {email}")
   let data = {
     request = {
@@ -165,7 +165,7 @@ function sendFormData() {
 }
 
 function submitSupportRequest(formData) {
-  if (requestState.value.isProcessing)
+  if (requestState.get().isProcessing)
     return
   requestState.mutate(@(v) v.__update({
     isProcessing = true
@@ -178,9 +178,9 @@ function submitSupportRequest(formData) {
     sendFormData()
 }
 
-let onRequestResultSeen = @() requestState.value.isProcessing
+let onRequestResultSeen = @() requestState.get().isProcessing
   ? null
-  : requestState(clone defaultRequestState)
+  : requestState.set(clone defaultRequestState)
 
 register_command(function() {
   isDebug.set(!isDebug.get())

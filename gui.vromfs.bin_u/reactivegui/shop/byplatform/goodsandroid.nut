@@ -19,7 +19,7 @@ let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { logEvent } = require("appsFlyer")
-let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
+let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 
 let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
@@ -117,7 +117,7 @@ function getPriceInfo(info) {
 
 let availableSkusPrices = Computed(function() {
   let res = {}
-  foreach (info in skusInfo.value) {
+  foreach (info in skusInfo.get()) {
     let { productId = null, subscriptionOfferDetails = [] } = info
     let priceInfo = getPriceInfo(info)
     if (productId == null || priceInfo == null)
@@ -174,8 +174,8 @@ let getAndroidDiscount = @(goods) goods?.purchaseGuids.android.discountInPercent
 
 let goodsIdBySku = Computed(function() {
   let res = {}
-  foreach (id, goods in campConfigs.value?.allGoods ?? {})
-    if (can_debug_shop.value || !goods.isShowDebugOnly) {
+  foreach (id, goods in campConfigs.get()?.allGoods ?? {})
+    if (can_debug_shop.get() || !goods.isShowDebugOnly) {
       let sku = getSku(goods)
       if (sku != null)
         res[sku] <- id
@@ -183,11 +183,11 @@ let goodsIdBySku = Computed(function() {
   return res
 })
 
-let offerSku = Computed(@() getSku(activeOffers.value))
+let offerSku = Computed(@() getSku(activeOffers.get()))
 
 let subsIdBySku = Computed(function() {
   let res = {}
-  foreach (id, subs in campConfigs.value?.subscriptionsCfg ?? {}) {
+  foreach (id, subs in campConfigs.get()?.subscriptionsCfg ?? {}) {
     let sku = getSku(subs)
     let planId = getPlanId(subs)
     if (sku == null || planId == null)
@@ -202,13 +202,13 @@ let subsIdBySku = Computed(function() {
 })
 
 let skusForRequest = keepref(Computed(function() {
-  if (!isAuthorized.value)
+  if (!isAuthorized.get())
     return ""
 
   let received = skusInfo.get()
-  let ids = goodsIdBySku.value.filter(@(_, sku) sku not in received)
-  if (offerSku.value != null && (offerSku.value not in received))
-    ids[offerSku.value] <- activeOffers.value.id
+  let ids = goodsIdBySku.get().filter(@(_, sku) sku not in received)
+  if (offerSku.get() != null && (offerSku.get() not in received))
+    ids[offerSku.get()] <- activeOffers.get().id
   let subsIds = subsIdBySku.get().filter(@(_, sku) sku not in received)
   if (ids.len() == 0 && subsIds.len() == 0)
     return ""
@@ -223,36 +223,36 @@ let skusForRequest = keepref(Computed(function() {
 function refreshAvailableSkus() {
   if (skusForRequest.value.len() == 0)
     return
-  if (lastInitStatus.value != GP_OK)
+  if (lastInitStatus.get() != GP_OK)
     lastInitStatus(GP_NOT_INITED) 
   logG("initAndRequestData: ", skusForRequest.value)
   initAndRequestData(skusForRequest.value)
 }
 
 skusForRequest.subscribe(@(_) refreshAvailableSkus())
-if (lastInitStatus.value == GP_NOT_INITED)
+if (lastInitStatus.get() == GP_NOT_INITED)
   refreshAvailableSkus()
 
 let updateNextRefreshTime = @(status)
-  nextRefreshTime(status == GP_NOT_INITED || status == GP_OK ? -1 : get_time_msec() + REPEAT_ON_ERROR_MSEC)
-updateNextRefreshTime(lastInitStatus.value)
+  nextRefreshTime.set(status == GP_NOT_INITED || status == GP_OK ? -1 : get_time_msec() + REPEAT_ON_ERROR_MSEC)
+updateNextRefreshTime(lastInitStatus.get())
 lastInitStatus.subscribe(updateNextRefreshTime)
 
 function startRefreshTimer() {
-  if (isInBattle.get() || nextRefreshTime.value <= 0)
+  if (isInBattle.get() || nextRefreshTime.get() <= 0)
     clearTimer(refreshAvailableSkus)
   else
-    resetTimeout(max(0.1, 0.001 * (nextRefreshTime.value - get_time_msec())), refreshAvailableSkus)
+    resetTimeout(max(0.1, 0.001 * (nextRefreshTime.get() - get_time_msec())), refreshAvailableSkus)
 }
 startRefreshTimer()
 nextRefreshTime.subscribe(@(_) startRefreshTimer())
 isInBattle.subscribe(@(_) startRefreshTimer())
 
 let platformGoods = Computed(function() {
-  let allGoods = campConfigs.value?.allGoods ?? {}
-  let skuToGoodsId = goodsIdBySku.value
+  let allGoods = campConfigs.get()?.allGoods ?? {}
+  let skuToGoodsId = goodsIdBySku.get()
   let res = {}
-  foreach (sku, priceExt in availableSkusPrices.value) {
+  foreach (sku, priceExt in availableSkusPrices.get()) {
     let goodsId = skuToGoodsId?[sku]
     let goods = allGoods?[goodsId]
     if (goods != null) {
@@ -280,7 +280,7 @@ let platformSubs = Computed(function() {
 
 let platformOffer = Computed(function() {
   let offer = activeOffers.get()
-  let priceExt = availableSkusPrices.value?[getSku(offer)]
+  let priceExt = availableSkusPrices.get()?[getSku(offer)]
   if (priceExt == null || offer == null)
     return null
   let platformDiscount = getAndroidDiscount(offer)
@@ -324,9 +324,9 @@ function sendLogPurchaseData(json_value) {
   local af = {
     af_order_id = orderId
     af_content_id = productId
-    af_revenue = availableSkusPrices.value?[productId].price ?? -1
-    af_price = availableSkusPrices.value?[productId].price ?? -1
-    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" 
+    af_revenue = availableSkusPrices.get()?[productId].price ?? -1
+    af_price = availableSkusPrices.get()?[productId].price ?? -1
+    af_currency = availableSkusPrices.get()?[productId].currencyId ?? "USD" 
   }
   logEvent("af_purchase", object_to_json_string(af, true))
 }

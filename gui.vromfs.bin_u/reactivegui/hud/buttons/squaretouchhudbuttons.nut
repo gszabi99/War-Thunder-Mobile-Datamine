@@ -5,7 +5,7 @@ let { touchButtonSize, btnBgColor, borderColor, borderColorPushed, borderWidth
 let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { defShortcutOvr}  = require("hudButtonsPkg.nut")
+let { defShortcutOvr}  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
 let { get_mission_time } = require("mission")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
@@ -42,14 +42,14 @@ function mkSimpleSquareButton(shortcutId, img, scale) {
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       onClick = @() toggleShortcut(shortcutId)
-      onElemState = @(v) stateFlags(v)
+      onElemState = @(v) stateFlags.set(v)
       hotkeys = mkGamepadHotkey(shortcutId)
       children = [
         @() {
           watch = stateFlags
           size = flex()
           rendObj = ROBJ_BOX
-          borderColor = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed : borderColor
+          borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed : borderColor
           borderWidth = borderW
           fillColor = btnBgColor.empty
         }

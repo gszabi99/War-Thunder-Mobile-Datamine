@@ -34,12 +34,12 @@ let wndHSize = avatarSize + wndGap + defButtonHeight
 let openParams = mkWatched(persist, "openParams", null)
 let wndAABB = Watched(null)
 
-let close = @() openParams(null)
-openParams.subscribe(@(_) wndAABB(null))
-squadMembers.subscribe(@(v) openParams.value == null || openParams.value.uid in v ? null
+let close = @() openParams.set(null)
+openParams.subscribe(@(_) wndAABB.set(null))
+squadMembers.subscribe(@(v) openParams.get() == null || openParams.get().uid in v ? null
   : close())
 isInvitedToSquad.subscribe(function(v) {
-  let { uid = null } = openParams.value
+  let { uid = null } = openParams.get()
   if (uid != null && uid not in squadMembers.get() && uid not in v)
     close()
 })
@@ -103,13 +103,13 @@ function statusBlock(uid) {
     : squadLeaderReadyCheckTime.get() > (squadMembers.get()?[uid].readyCheckTime ?? 0) ? statusView.memberReadyCheck
     : uid in squadMembers.get() ? statusView.memberNotReady
     : null)
-  return @() mkStatusRow(view.value?.icon, view.value?.color, view.value?.text,
+  return @() mkStatusRow(view.get()?.icon, view.get()?.color, view.get()?.text,
     { watch = view })
 }
 
 function inBattleBlock(uid) {
   let isInBattle = Computed(@() squadMembers.get()?[uid].inBattle ?? false)
-  return @() !isInBattle.value ? { watch = isInBattle }
+  return @() !isInBattle.get() ? { watch = isInBattle }
     : mkStatusRow("in_battle.svg", 0xFFFFFFFF, loc("status/in_battle"), { watch = isInBattle })
 }
 
@@ -166,8 +166,8 @@ function memberInfo(uid) {
 
 function buttons(uid) {
   let userId = uid.tostring()
-  let needButtonsPlace = Computed(@() isSquadLeader.get() || uid == myUserId.value)
-  return @() !needButtonsPlace.value ? { watch = needButtonsPlace }
+  let needButtonsPlace = Computed(@() isSquadLeader.get() || uid == myUserId.get())
+  return @() !needButtonsPlace.get() ? { watch = needButtonsPlace }
     : {
         watch = needButtonsPlace
         size = [flex(), defButtonHeight]
@@ -189,7 +189,7 @@ let mkWindow = @(uid) {
   stopMouse = true
   function onAttach() {
     refreshPublicInfo(uid.tostring())
-    defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
+    defer(@() wndAABB.set(gui_scene.getCompAABBbyKey(wndKey)))
   }
 
   rendObj = ROBJ_SOLID
@@ -207,11 +207,11 @@ let mkWindow = @(uid) {
 
 let animLines = @(rect) function() {
   let res = { watch = wndAABB }
-  if (wndAABB.value == null)
+  if (wndAABB.get() == null)
     return res
 
   let { t, b, r, l } = rect
-  let w = wndAABB.value
+  let w = wndAABB.get()
   let midX = (r + l) / 2
   let wMidX = (w.r + w.l) / 2
 
@@ -253,7 +253,7 @@ let animLines = @(rect) function() {
 }
 
 function content() {
-  if (openParams.value == null)
+  if (openParams.get() == null)
     return { watch = openParams }
 
   let { uid, rect } = openParams.get()
@@ -289,9 +289,9 @@ let openImpl = @() addModalWindow({
   onClick = close
 })
 
-if (openParams.value != null)
+if (openParams.get() != null)
   openImpl()
 openParams.subscribe(@(v) v != null ? openImpl() : removeModalWindow(WND_UID))
 
 
-return @(uid, rect) openParams({ uid, rect })
+return @(uid, rect) openParams.set({ uid, rect })

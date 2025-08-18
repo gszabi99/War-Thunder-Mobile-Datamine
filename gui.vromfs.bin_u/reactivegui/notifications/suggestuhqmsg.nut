@@ -32,17 +32,17 @@ let uhqAddons = Computed(function() {
   }
   return res
 })
-let needSuggest = Computed(@() isUhqAllowed.value
-  && !isSuggested.value
-  && uhqAddons.value.len() != 0
-  && !needUhqTextures.value
-  && isLoggedIn.value
-  && (!isRandomBattleNewbie.value && randomBattleMode.value != null)
+let needSuggest = Computed(@() isUhqAllowed.get()
+  && !isSuggested.get()
+  && uhqAddons.get().len() != 0
+  && !needUhqTextures.get()
+  && isLoggedIn.get()
+  && (!isRandomBattleNewbie.get() && randomBattleMode.get() != null)
 )
-let needShow = keepref(Computed(@() needSuggest.value && isInMenuNoModals.get()))
+let needShow = keepref(Computed(@() needSuggest.get() && isInMenuNoModals.get()))
 
 function setSuggested(suggested) {
-  isSuggested(suggested)
+  isSuggested.set(suggested)
   get_common_local_settings_blk().uhqTexturesSuggested = suggested
   eventbus_send("saveProfile", {})
 }
@@ -55,7 +55,7 @@ function openMsg() {
     uid = MSG_UID
     wndOvr = { size = [hdpx(1300), wndHeight] }
     text = loc("msg/suggestUhqTextures",
-      { size = colorize("@mark", getAddonsSizeStr(uhqAddons.value.keys(), addonsSizes.get())) })
+      { size = colorize("@mark", getAddonsSizeStr(uhqAddons.get().keys(), addonsSizes.get())) })
     buttons = [
       { text = loc("btnHighQuality"), isCancel = true,
         cb = @() setSuggested(true)

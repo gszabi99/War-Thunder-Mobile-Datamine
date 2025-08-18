@@ -7,11 +7,8 @@ let newbieGameModesConfig = {
       isFit = @(s, _) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
       isSingle = true
       abTest = true
-      offlineMissions = [
-        "abandoned_factory_single_Conq1"
-        "abandoned_factory_single_Conq2"
-        "abandoned_factory_single_Conq3"
-      ]
+      offlineMissions = ["abandoned_factory_single_Conq1"]
+      abTestOfflineMissions = ["abandoned_factory_single_Conq1_restricted"]
     }
     {
       gmName = "tank_new_players_battle_coop"

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
+let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("hudBottomCenter.nut")
+let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
@@ -63,8 +63,8 @@ function mkReloadProgress(orientation, duration) {
 let pointCrosshairScreenPositionUpdate = @() {
   transform = {
     translate = [
-      pointCrosshairScreenPosition.value.x,
-      pointCrosshairScreenPosition.value.y
+      pointCrosshairScreenPosition.get().x,
+      pointCrosshairScreenPosition.get().y
     ]
   }
 }
@@ -124,8 +124,8 @@ let hitIndicatorImage = Picture($"ui/gameuiskin#sight_hit_air.svg:{hitIndicatorS
 let hitIndicatorCritImage = Picture($"ui/gameuiskin#sight_hit_air_crit.svg:{hitIndicatorSize}:{hitIndicatorSize}:P")
 
 let resetHitIndicatorState = function() {
-  hitIndicatorStateCount(0)
-  hitIndicatorStateCrit(false)
+  hitIndicatorStateCount.set(0)
+  hitIndicatorStateCrit.set(false)
 }
 
 let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
@@ -164,8 +164,8 @@ let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
 
 
 eventbus_subscribe("onHitIndicator", function(evt) {
-  hitIndicatorStateCount(evt.state)
-  hitIndicatorStateCrit(evt?.crit ?? false)
+  hitIndicatorStateCount.set(evt.state)
+  hitIndicatorStateCrit.set(evt?.crit ?? false)
   resetTimeout(showHitIndicatorTimer, resetHitIndicatorState)
 })
 

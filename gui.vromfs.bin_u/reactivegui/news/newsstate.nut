@@ -40,7 +40,7 @@ let receivedArticles = hardPersistWatched("news.receivedArticles", {})
 let newsfeed = hardPersistWatched("news.newsfeed", [])
 let requestMadeTime = hardPersistWatched("news.requestMadeTime", 0)
 let isNewsWndOpened = mkWatched(persist, "isOpened", false)
-let isFeedReceived = Computed(@() newsfeed.value.len() > 0)
+let isFeedReceived = Computed(@() newsfeed.get().len() > 0)
 let receivedNewsFeedLang = persist("receivedNewsFeedLang", @() { value = null })
 let playerSelectedArticleId = Watched(null)
 let lastSeenId = Watched(-1)
@@ -48,9 +48,9 @@ let articlesPerPage = Watched(8)
 let unreadArticles = hardPersistWatched("news.unreadArticles" {})
 
 let updateUnreadArticles = @() unreadArticles.mutate(function(v) {
-  let lastId = lastSeenId.value
+  let lastId = lastSeenId.get()
   v.clear()
-  foreach (_idx, info in newsfeed.value)
+  foreach (_idx, info in newsfeed.get())
     if (info.id > lastId)
       v[info.id] <- true
 })
@@ -63,20 +63,20 @@ if (receivedNewsFeedLang.value != shortLang) {
 }
 
 let unseenArticleId = Computed(function() {
-  if (lastSeenId.value == -1)
+  if (lastSeenId.get() == -1)
     return null
   
-  let lastId = lastSeenId.value
-  foreach (idx, info in newsfeed.value) {
-    if (idx >= articlesPerPage.value)
+  let lastId = lastSeenId.get()
+  foreach (idx, info in newsfeed.get()) {
+    if (idx >= articlesPerPage.get())
       break
     if (info.pinned > 0 && info.id > lastId)
       return info.id
   }
   
   local res = null
-  foreach (idx, info in newsfeed.value) {
-    if (idx >= articlesPerPage.value)
+  foreach (idx, info in newsfeed.get()) {
+    if (idx >= articlesPerPage.get())
       break
     if (info.id > lastId)
       res = info.id
@@ -85,56 +85,56 @@ let unseenArticleId = Computed(function() {
 })
 
 let curArticleId = Computed(function() {
-  let id = playerSelectedArticleId.value
-  if (id != null && newsfeed.value.findvalue(@(v) v.id == id) != null)
+  let id = playerSelectedArticleId.get()
+  if (id != null && newsfeed.get().findvalue(@(v) v.id == id) != null)
     return id
-  return unseenArticleId.value ?? newsfeed.value?[0].id
+  return unseenArticleId.get() ?? newsfeed.get()?[0].id
 })
-let curArticleContent = Computed(@() receivedArticles.value?[curArticleId.value])
-let curArticleIdx = Computed(@() newsfeed.value.findindex(@(v) v.id == curArticleId.value) ?? -1)
-let haveUnseenArticles = Computed(@() unseenArticleId.value != null)
+let curArticleContent = Computed(@() receivedArticles.get()?[curArticleId.get()])
+let curArticleIdx = Computed(@() newsfeed.get().findindex(@(v) v.id == curArticleId.get()) ?? -1)
+let haveUnseenArticles = Computed(@() unseenArticleId.get() != null)
 let needShowNewsWnd = Computed(@() isMainMenuAttached.get()
-  && haveUnseenArticles.value
-  && (sharedStats.value?.sessionsCountPersist ?? 0) >= MIN_SESSIONS_TO_FORCE_SHOW
+  && haveUnseenArticles.get()
+  && (sharedStats.get()?.sessionsCountPersist ?? 0) >= MIN_SESSIONS_TO_FORCE_SHOW
   && !hasModalWindows.get()
-  && (curArticleContent.value?.id ?? EMPTY_PAGE_ID) != EMPTY_PAGE_ID
+  && (curArticleContent.get()?.id ?? EMPTY_PAGE_ID) != EMPTY_PAGE_ID
 )
 
-let pagesCount = Computed(@() ceil(newsfeed.value.len() * 1.0 / articlesPerPage.value))
-let curPageIdx = Computed(@() curArticleIdx.value / articlesPerPage.value)
+let pagesCount = Computed(@() ceil(newsfeed.get().len() * 1.0 / articlesPerPage.get()))
+let curPageIdx = Computed(@() curArticleIdx.get() / articlesPerPage.get())
 
 function saveLastSeenId(id) {
-  lastSeenId(id)
+  lastSeenId.set(id)
   let sBlk = get_local_custom_settings_blk()
   setBlkValueByPath(sBlk, SEEN_SAVE_ID, id)
   eventbus_send("saveProfile", {})
 }
 
 isNewsWndOpened.subscribe(function (v) {
-  if (haveUnseenArticles.value)
-    playerSelectedArticleId(null)
+  if (haveUnseenArticles.get())
+    playerSelectedArticleId.set(null)
 
   if (v)
     updateUnreadArticles()
   else
-    saveLastSeenId(newsfeed.value.reduce(@(res, val) max(res, val.id), lastSeenId.value))
+    saveLastSeenId(newsfeed.get().reduce(@(res, val) max(res, val.id), lastSeenId.get()))
 })
 
 function loadLastSeenArticleId() {
   let sBlk = get_local_custom_settings_blk()
-  lastSeenId(getBlkValueByPath(sBlk, SEEN_SAVE_ID) ?? 0)
+  lastSeenId.set(getBlkValueByPath(sBlk, SEEN_SAVE_ID) ?? 0)
   updateUnreadArticles()
 }
 isOnlineSettingsAvailable.subscribe(@(v) v ? loadLastSeenArticleId() : null)
-if (isOnlineSettingsAvailable.value)
+if (isOnlineSettingsAvailable.get())
   loadLastSeenArticleId()
 
 function markArticleSeenById(id) {
-  if (unreadArticles.value?[id])
+  if (unreadArticles.get()?[id])
     unreadArticles.mutate(@(v) v.$rawdelete(id))
 }
 
-let markCurArticleSeen = @() markArticleSeenById(curArticleId.value)
+let markCurArticleSeen = @() markArticleSeenById(curArticleId.get())
 
 let sortNewsfeed = @(a, b) b.pinned <=> a.pinned
   || b.iDate <=> a.iDate
@@ -182,8 +182,8 @@ eventbus_subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
 
 function requestNewsFeed() {
   let currTimeMsec = get_time_msec()
-  if (requestMadeTime.value > 0
-      && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
+  if (requestMadeTime.get() > 0
+      && (currTimeMsec - requestMadeTime.get() < MSEC_BETWEEN_REQUESTS))
     return
 
   httpRequest({
@@ -231,10 +231,10 @@ eventbus_subscribe(ARTICLE_RECEIVED, function onArticleReceived(response) {
 })
 
 function requestNewsArticle(id) {
-  if (id == null || (receivedArticles.value?[id].id ?? EMPTY_PAGE_ID) != EMPTY_PAGE_ID)
+  if (id == null || (receivedArticles.get()?[id].id ?? EMPTY_PAGE_ID) != EMPTY_PAGE_ID)
     return
 
-  if (id in receivedArticles.value)
+  if (id in receivedArticles.get())
     receivedArticles.mutate(@(v) v.$rawdelete(id))
 
   httpRequest({
@@ -246,20 +246,20 @@ function requestNewsArticle(id) {
 }
 
 function changeArticle(delta = 1) {
-  if (newsfeed.value.len() == 0)
+  if (newsfeed.get().len() == 0)
     return
-  let nextIdx = clamp(curArticleIdx.value - delta, 0, newsfeed.value.len() - 1)
-  let item = newsfeed.value[nextIdx]
+  let nextIdx = clamp(curArticleIdx.get() - delta, 0, newsfeed.get().len() - 1)
+  let item = newsfeed.get()[nextIdx]
   markCurArticleSeen()
-  playerSelectedArticleId(item.id)
+  playerSelectedArticleId.set(item.id)
 }
 
-let openNewsWnd = @() isNewsWndOpened(true)
-let openNewsWndIfNeed = @() needShowNewsWnd.value ? openNewsWnd() : null
+let openNewsWnd = @() isNewsWndOpened.set(true)
+let openNewsWndIfNeed = @() needShowNewsWnd.get() ? openNewsWnd() : null
 needShowNewsWnd.subscribe(@(v) v ? setTimeout(0.1, openNewsWndIfNeed) : clearTimer(openNewsWndIfNeed))
 
 function openNewsWndTagged(tag) {
-  let article = newsfeed.value.findvalue(@(v) v.tags?.contains(tag))
+  let article = newsfeed.get().findvalue(@(v) v.tags?.contains(tag))
   if (article)
     playerSelectedArticleId.set(article.id)
   else
@@ -267,14 +267,14 @@ function openNewsWndTagged(tag) {
   openNewsWnd()
 }
 
-let requestCurArticle = @() requestNewsArticle(curArticleId.value)
+let requestCurArticle = @() requestNewsArticle(curArticleId.get())
 isFeedReceived.subscribe(function(value) {
-  if (value && (haveUnseenArticles.value || isNewsWndOpened.value))
+  if (value && (haveUnseenArticles.get() || isNewsWndOpened.get()))
     requestCurArticle()
 })
 isNewsWndOpened.subscribe(@(v) v ? requestCurArticle() : null)
-curArticleId.subscribe(@(v) isNewsWndOpened.value ? requestNewsArticle(v) : null)
-if (isLoggedIn.value && isFeedReceived.value && (isNewsWndOpened.value || haveUnseenArticles.value))
+curArticleId.subscribe(@(v) isNewsWndOpened.get() ? requestNewsArticle(v) : null)
+if (isLoggedIn.get() && isFeedReceived.get() && (isNewsWndOpened.get() || haveUnseenArticles.get()))
   requestCurArticle()
 
 register_command(@() saveLastSeenId(0), "ui.resetNewsSeen")
@@ -295,7 +295,7 @@ return {
   isFeedReceived
 
   openNewsWnd
-  closeNewsWnd = @() isNewsWndOpened(false)
+  closeNewsWnd = @() isNewsWndOpened.set(false)
   openNewsWndTagged
 
   unreadArticles

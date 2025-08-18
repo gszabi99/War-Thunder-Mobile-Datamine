@@ -1,4 +1,3 @@
-
 from "%scripts/dagui_library.nut" import *
 let { loading_is_in_progress } = require("loading")
 let { get_mp_session_id_int } = require("multiplayer")
@@ -11,16 +10,16 @@ let { get_current_mission_info_cached } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 
 function updateStates() {
-  isInBattle.update(isInFlight())
-  isInLoadingScreen.update(loading_is_in_progress())
-  isInFlightMenu(false)
-  isMpStatisticsActive(false)
+  isInBattle.set(isInFlight())
+  isInLoadingScreen.set(loading_is_in_progress())
+  isInFlightMenu.set(false)
+  isMpStatisticsActive.set(false)
   let { id = -1, team = MP_TEAM_NEUTRAL } = isInFlight() ? get_local_mplayer() : null
-  localMPlayerId(id)
-  localMPlayerTeam(team)
+  localMPlayerId.set(id)
+  localMPlayerTeam.set(team)
 }
 
-isInBattle.subscribe(@(v) v ? battleSessionId(get_mp_session_id_int()) : null)
+isInBattle.subscribe(@(v) v ? battleSessionId.set(get_mp_session_id_int()) : null)
 
 wlog(isInBattle, "[UI_STATES] isInBattle")
 wlog(battleSessionId, "[UI_STATES] battleSessionId")
@@ -32,10 +31,10 @@ wlog(isMpStatisticsActive, "[UI_STATES] isMpStatisticsActive")
 updateStates()
 
 let updateMissionState = @()
-  missionProgressType(get_current_mission_info_cached()?.missionProgressType ?? "")
+  missionProgressType.set(get_current_mission_info_cached()?.missionProgressType ?? "")
 
 let shouldUpdateMisson = keepref(Computed(@() isInBattle.get() && !isInLoadingScreen.get()))
-if (shouldUpdateMisson.value)
+if (shouldUpdateMisson.get())
   updateMissionState()
 shouldUpdateMisson.subscribe(@(v) v ? updateMissionState() : null)
 

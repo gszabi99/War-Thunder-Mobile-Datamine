@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { isOpenedBoosterWnd } = require("boostersState.nut")
+let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
 let stateFlags = Watched(0)
@@ -13,7 +13,7 @@ let boostersHeight = iconSize * 1.3
 
 let activeBoosters = Computed(function() {
   let res = []
-  foreach(key, boost in (servProfile.value?.boosters ?? {}))
+  foreach(key, boost in (servProfile.get()?.boosters ?? {}))
     if (!boost.isDisabled && boost.battlesLeft > 0 && key in campConfigs.get()?.allBoosters)
       res.append(key)
   return res.sort(@(a, b) a <=> b)
@@ -65,16 +65,16 @@ let function boostersListActive() {
     watch = [activeBoosters, stateFlags]
     size = [SIZE_TO_CONTENT, iconSize]
     vplace = ALIGN_CENTER
-    onClick = @() isOpenedBoosterWnd(true)
+    onClick = @() isOpenedBoosterWnd.set(true)
     behavior = Behaviors.Button
     sound = { click  = "click" }
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
 
     transform = {
-      scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
     }
     children = [
-      stateFlags.value & S_HOVER ? hoverBg : null
+      stateFlags.get() & S_HOVER ? hoverBg : null
       content
       plus
     ]

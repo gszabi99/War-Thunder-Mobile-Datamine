@@ -13,8 +13,8 @@ let hitIndicatorImage = Picture($"ui/gameuiskin#sight_hit_air.svg:{hitIndicatorS
 let hitIndicatorCritImage = Picture($"ui/gameuiskin#sight_hit_air_crit.svg:{hitIndicatorSize}:{hitIndicatorSize}:P")
 
 function resetHitIndicatorState() {
-  hitIndicatorStateCount(0)
-  hitIndicatorStateCrit(false)
+  hitIndicatorStateCount.set(0)
+  hitIndicatorStateCrit.set(false)
 }
 
 let hitIndicator = @() {
@@ -34,8 +34,8 @@ let hitIndicator = @() {
 
 eventbus_subscribe("onHitIndicator", function(evt) {
   if(isInAntiairMode.get()) {
-    hitIndicatorStateCount(evt.state)
-    hitIndicatorStateCrit(evt?.crit ?? false)
+    hitIndicatorStateCount.set(evt.state)
+    hitIndicatorStateCrit.set(evt?.crit ?? false)
     resetTimeout(showHitIndicatorTimer, resetHitIndicatorState)
   }
 })

@@ -5,7 +5,7 @@ let { fabs } = require("math")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { GAME_ID } = require("%appGlobals/gameIdentifiers.nut")
 let { myUserIdStr } = require("%appGlobals/profileStates.nut")
-let { presences } = require("contactPresence.nut")
+let { presences } = require("%rGui/contacts/contactPresence.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
@@ -16,7 +16,7 @@ let presenceDefault = {
   gameId = GAME_ID
 }
 
-let serverPresence = Computed(@() presences.get()?[myUserIdStr.value])
+let serverPresence = Computed(@() presences.get()?[myUserIdStr.get()])
 let localPresence = hardPersistWatched("myLocalPresence", presenceDefault)
 
 function isFloatEqual(a, b, eps = 1e-6) {
@@ -26,9 +26,9 @@ function isFloatEqual(a, b, eps = 1e-6) {
 let isEqualWithFloat = @(v1, v2) isEqual(v1, v2, { float = isFloatEqual })
 
 let presenceDiff = keepref(Computed(function(prev) {
-  if (serverPresence.value == null || !isMatchingConnected.value)
+  if (serverPresence.get() == null || !isMatchingConnected.get())
     return null
-  let res = localPresence.value.filter(@(v, id) !isEqualWithFloat(serverPresence.value?[id], v))
+  let res = localPresence.get().filter(@(v, id) !isEqualWithFloat(serverPresence.get()?[id], v))
   return isEqualWithFloat(prev, res) ? prev : res
 }))
 
@@ -49,11 +49,11 @@ function setMyPresence(diff) {
   if (badIndex != null)
     logerr($"Try to change presence field {badIndex}")
   else
-    localPresence(localPresence.value.__merge(diff))
+    localPresence(localPresence.get().__merge(diff))
 }
 
 let setBattleUnit = @(battleUnit) setMyPresence({ battleUnit })
-setBattleUnit(mainBattleUnitName.value)
+setBattleUnit(mainBattleUnitName.get())
 mainBattleUnitName.subscribe(setBattleUnit)
 
 eventbus_subscribe("setMyPresence", setMyPresence)

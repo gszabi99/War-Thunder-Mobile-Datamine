@@ -11,7 +11,6 @@ let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
-let { receiveBpRewards, isBpRewardsInProgress, curStage } = require("battlePassState.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
@@ -89,12 +88,12 @@ let specialHeadCtors = {
   decorator = mkDecoratorHeader
 }
 
-let receiveBtn = @(reward) mkSpinnerHideBlock(isBpRewardsInProgress,
+let receiveBtn = @(receive, isInProgress) mkSpinnerHideBlock(isInProgress,
   textButtonBattle(
     utf8ToUpper(loc("btn/receive")),
-    @() receiveBpRewards(reward.progress)))
+    receive))
 
-let rewardDesc = @(reward) @() {
+let rewardDesc = @(reward, curStage, lockText, paidText) @() {
   watch = curStage
   size = const [flex(), hdpx(40)]
   rendObj = ROBJ_TEXTAREA
@@ -103,9 +102,9 @@ let rewardDesc = @(reward) @() {
   valign = ALIGN_BOTTOM
   text = reward.isReceived ? loc("battlepass/receivedRew")
     : reward.canReceive ? ""
-    : reward.progress > curStage.get() ? loc("battlepass/lock", { level = reward.progress })
+    : reward.progress > curStage.get() ? loc(lockText, { level = reward.progress })
     : reward?.isVip ? loc("battlepass/paid/vip")
-    : loc("battlepass/paid")
+    : loc(paidText)
 }.__update(fontTinyAccented)
 
 let defImageCtor = @(viewInfo, _) mkRewardPlateImage(viewInfo, REWARD_STYLE_LARGE)
@@ -115,9 +114,11 @@ let infoImageCtors = {
   unit = unitImageCtor
   unitUpgrade = unitImageCtor
   decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
+  currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
 }
 
-let bpRewardDesc = @(reward) function() {
+let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() {
+  let { lockText = "", paidText = "" } = texts
   local viewInfo = reward?.viewInfo
   if (viewInfo == null && "rewards" in reward) {
     let rewInfo = []
@@ -148,7 +149,7 @@ let bpRewardDesc = @(reward) function() {
             children = viewInfo == null ? null
               : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo, reward.canReceive)
           }
-          reward.canReceive ? receiveBtn(reward) : rewardDesc(reward)
+          reward.canReceive ? receiveBtn(receive, isInProgress) : rewardDesc(reward, curStage, lockText, paidText)
         ]
   })
 }

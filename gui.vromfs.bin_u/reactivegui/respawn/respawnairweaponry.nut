@@ -11,12 +11,12 @@ let { headerText, header, headerHeight, bulletsBlockMargin, unitListHeight, text
   weaponSize, weaponGroupWidth, smallGap, commonWeaponIcon,
   caliberTitle, secondaryTitleKey, courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey,
   mkBeltImage
-} = require("respawnComps.nut")
+} = require("%rGui/respawn/respawnComps.nut")
 let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { unitPlatesGap, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
-let { respawnSlots, unitListScrollHandler } = require("respawnState.nut")
-let { selectedBeltWeaponId } = require("respawnAirChooseState.nut")
-let { showAirRespChooseSecWnd, showAirRespChooseBeltWnd } = require("respawnAirChooseWeaponWnd.nut")
+let { respawnSlots, unitListScrollHandler } = require("%rGui/respawn/respawnState.nut")
+let { selectedBeltWeaponId } = require("%rGui/respawn/respawnAirChooseState.nut")
+let { showAirRespChooseSecWnd, showAirRespChooseBeltWnd } = require("%rGui/respawn/respawnAirChooseWeaponWnd.nut")
 
 let mkCardTitle = @(title) title == "" ? null
   : {

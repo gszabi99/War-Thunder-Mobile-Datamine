@@ -21,7 +21,7 @@ let { openUnitAttrWnd } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
   DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, stopDebriefingAnimation,
   needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final, needReinitScene
-} = require("debriefingState.nut")
+} = require("%rGui/debriefing/debriefingState.nut")
 let { randomBattleMode, allGameModes, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
@@ -39,10 +39,10 @@ let { lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { isPlayerReceiveLevel, getResearchedUnit, getBestUnitName, isUnitReceiveLevel, getNewPlatoonUnit, getSlotOrUnitLevelUnlockRewards
-} = require("debrUtils.nut")
-let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
-let debriefingTabBar = require("debriefingTabBar.nut")
-let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
+} = require("%rGui/debriefing/debrUtils.nut")
+let mkDebrTabsInfo = require("%rGui/debriefing/mkDebrTabsInfo.nut")
+let debriefingTabBar = require("%rGui/debriefing/debriefingTabBar.nut")
+let mkDebriefingEmpty = require("%rGui/debriefing/mkDebriefingEmpty.nut")
 let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
 let { openEventWnd, allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
@@ -55,6 +55,11 @@ let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutoria
 let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { mkToBattleButton } = require("%rGui/mainMenu/toBattleButton.nut")
+let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+
+let footerGap = hdpx(30)
+let footerHeight = defButtonHeight
+let contentHeight = saSize[1] - footerGap - footerHeight
 
 local isAttached = false
 
@@ -67,7 +72,9 @@ let function openSpecialEvent() {
   let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.eventId
   let eventId = allSpecialEvents.get().findindex(@(e) e.eventName == eventName)
   if (eventId) {
-    if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
+    if (eventName in gmEventsList.get())
+      openGmEventWnd(eventName)
+    else if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
       openTreeEventWnd(eventId)
     else
       openEventWnd(eventId)
@@ -194,6 +201,7 @@ let toBattleButton = @(gmId, campaign)
       nextAction()
   },
   campaign,
+  Computed(@() gmId == randomBattleMode.get()?.gameModeId ? randomBattleMode.get() : null),
   { hotkeys = ["^J:X | Enter"] })
 
 let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
@@ -341,6 +349,7 @@ function debriefingWnd() {
   let newPlatoonUnit = needForceQuitToHangar ? null : getNewPlatoonUnit(unitName, debrData)
 
   let tabsParams = {
+    contentHeight
     needBtnCampaign = hasPlayerLevelUp || researchedUnit != null
     needBtnUnit = newPlatoonUnit != null || (!hasPlayerLevelUp && !researchedUnit && hasUnitLevelUp)
   }
@@ -386,7 +395,7 @@ function debriefingWnd() {
       {
         size = flex()
         flow = FLOW_VERTICAL
-        gap = hdpx(30)
+        gap = footerGap
         children = [
           @() {
             watch = curDebrTabId
@@ -397,7 +406,7 @@ function debriefingWnd() {
           
           @() {
             watch = countUpgradeButtonPushed
-            size = [flex(), defButtonHeight]
+            size = [flex(), footerHeight]
             vplace = ALIGN_BOTTOM
             valign = ALIGN_BOTTOM
             flow = FLOW_HORIZONTAL

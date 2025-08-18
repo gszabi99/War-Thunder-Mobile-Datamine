@@ -34,12 +34,12 @@ let campMyUnits = Computed(function() {
 })
 
 let curUnitInProgressExt = Watched(curUnitInProgress.value)
-curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt(v)
-  : deferOnce(@() curUnitInProgressExt(curUnitInProgress.value)))
+curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt.set(v)
+  : deferOnce(@() curUnitInProgressExt.set(curUnitInProgress.value)))
 
 let curUnit = Computed(function() {
   let my = campMyUnits.get()
-  local res = my?[curUnitInProgressExt.value]
+  local res = my?[curUnitInProgressExt.get()]
     ?? my.findvalue(@(u) u?.isCurrent)
   let slots = curCampaignSlotUnits.get()
   if (slots != null) {
@@ -49,8 +49,8 @@ let curUnit = Computed(function() {
   }
   return res ?? my.findvalue(@(_) true)
 })
-let curUnitName = Computed(@() curUnit.value?.name)
-let battleUnitsMaxMRank = Computed(@() curCampaignSlotUnits.get() == null ? (curUnit.value?.mRank ?? 0)
+let curUnitName = Computed(@() curUnit.get()?.name)
+let battleUnitsMaxMRank = Computed(@() curCampaignSlotUnits.get() == null ? (curUnit.get()?.mRank ?? 0)
   : curCampaignSlotUnits.get().reduce(@(res, name) max(res, campConfigs.get()?.allUnits[name].mRank ?? 0), 0))
 
 let playerLevelInfo = Computed(function() {

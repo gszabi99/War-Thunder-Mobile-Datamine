@@ -11,7 +11,7 @@ let { isInSquad } = require("%appGlobals/squadState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
-  activeTutorialId, WND_UID } = require("tutorialWnd/tutorialWndState.nut")
+  activeTutorialId, WND_UID } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots } = require("%rGui/slotBar/slotBarState.nut")
 let { curWeaponIdx, curBeltIdx, setCurSlotIdx, setCurBeltsWeaponIdx, isUnitModSlotsAttached, openUnitModsSlotsWndByName,
   slotWeaponKey, slotBeltKey, groupedCurUnseenMods, curWeaponBeltsOrdered, curWeaponsOrdered, weaponsScrollHandler,
@@ -26,7 +26,7 @@ let { openMsgBoxPurchase, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchas
 let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { markTutorialCompleted, isFinishedArsenal, isFinishedUnitsResearch } = require("%rGui/tutorial/completedTutorials.nut")
-let { TUTORIAL_ARSENAL_ID } = require("tutorialConst.nut")
+let { TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
 
 
 let MIN_BATLES_TO_START = 4

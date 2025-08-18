@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { roundToDigits, ceil } = require("%sqstd/math.nut")
+let { roundToDigits, ceil, round_by_value } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
@@ -31,7 +31,7 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkButtonHoldTooltip  } = require("%rGui/tooltip.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { getStepsToNextFixed, openLootboxPreview } = require("lootboxPreviewState.nut")
+let { getStepsToNextFixed, openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
@@ -63,6 +63,8 @@ let headerTextHeight = calc_str_box("A", fontSmallShaded)[1]
 let maxNoScrollHeight = saSize[1] - hdpx(110) 
 
 let chanceStyle = CS_COMMON
+
+let roundChance = @(chance) chance > 1 ? round_by_value(chance, 0.1) : roundToDigits(chance, 2)
 
 let getSlotsInRow = @(width, style) 2 * max(1, (width + style.boxGap).tointeger() / (style.boxSize + style.boxGap) / 2)
 
@@ -155,16 +157,16 @@ let mkChanceRow = @(count, chance, icon) {
   children = [
     mkText(loc("item/chance"))
     icon
-    mkText($"{decimalFormat(count)}{colon}{roundToDigits(chance, 2)}%")
+    mkText($"{decimalFormat(count)}{colon}{roundChance(chance)}%")
   ]
 }
 
 let mkTextForChanceCurrency = @(sr, chances, rId)
-  mkChanceRow(sr.count, chances.percents[sr.id], mkCurrencyImage(rId, chanceStyle.iconSize))
+  mkChanceRow(sr.count, chances.percents?[sr.id] ?? 0, mkCurrencyImage(rId, chanceStyle.iconSize))
 
 let chancePartCtors = {
   blueprint = @(sr, chances, _)
-    mkChanceRow(sr.count, chances.percents[sr.id],
+    mkChanceRow(sr.count, chances.percents?[sr.id] ?? 0,
       {
         size = [blueprintSize, blueprintSize]
         rendObj = ROBJ_IMAGE
@@ -172,7 +174,7 @@ let chancePartCtors = {
         transform = { rotate = -10 }
       })
   booster = @(sr, chances, rId)
-    mkChanceRow(sr.count, chances.percents[sr.id],
+    mkChanceRow(sr.count, chances.percents?[sr.id] ?? 0,
       {
         size = [chanceStyle.iconSize, chanceStyle.iconSize]
         rendObj = ROBJ_IMAGE
@@ -187,13 +189,13 @@ function mkJackpotChanceText(id, chances, mainChances, stepsCount) {
   if(chances == null || mainChances == null)
     return loc("item/chance/error")
 
-  let chance = roundToDigits(chances.percents[id], 2)
+  let chance = roundChance(chances.percents?[id] ?? 0)
   let chanceForGuaranteed = $"{loc("item/chance/fixedReward", { count = stepsCount })}{colon}{chance}%"
 
   if (!mainChances.percents?[id] && chances.percents?[id])
     return chanceForGuaranteed
 
-  let mainChance = roundToDigits(mainChances.percents[id], 2)
+  let mainChance = roundChance(mainChances.percents?[id] ?? 0)
 
   return "\n".concat($"{loc("item/chance")}{colon}{mainChance}%", chanceForGuaranteed)
 }
@@ -255,7 +257,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
         : mainChances.get() == null ? mkText(loc("item/chance/error"))
         : agregatedRewards != null ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward.rType, rId.get()))
         : rewardId != null
-          ? mkText("".concat(loc("item/chance"), colon, roundToDigits(mainChances.get().percents[rewardId], 2), "%"))
+          ? mkText("".concat(loc("item/chance"), colon, roundChance(mainChances.get().percents?[rewardId] ?? 0), "%"))
         : null
     }
   }
@@ -277,14 +279,14 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
             agregatedRewards != null
                 ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward.rType, rId.get()))
               : rewardId != null
-                ? [mkText("".concat(loc("item/chance"), colon, roundToDigits(mainChances.get().percents[rewardId], 2), "%"))]
+                ? [mkText("".concat(loc("item/chance"), colon, roundChance(mainChances.get().percents?[rewardId] ?? 0), "%"))]
               : [])
           .append(
             {  size = hdpx(20) },
             mkText(loc("item/chance/withName",
               {
                 name = getLootboxName(dropFromNested.id)
-                chance = roundToDigits(nestedChances.get().percents[dropFromNested.rewardId], 2)
+                chance = roundChance(nestedChances.get().percents?[dropFromNested.rewardId] ?? 0)
               })))
   }
 }
@@ -513,12 +515,14 @@ function calcBlockHeightWithGap(rewards, slotsInRow, style) {
   return headerTextHeight + style.boxGap + rows * (style.boxSize + style.boxGap)
 }
 
-let mkStyleComp = @(width, r1, r2, r3) Computed(function() {
+let mkStyleComp = @(width, r1, r2, r3, lootboxes) Computed(function() {
   foreach(style in [REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL]) {
     let slotsInRow = getSlotsInRow(width, style)
     let height = calcBlockHeightWithGap(r1.get(), slotsInRow, style)
       + calcBlockHeightWithGap(r2.get(), slotsInRow, style)
       + calcBlockHeightWithGap(r3.get(), slotsInRow, style)
+      + (lootboxes.get().len() == 0 ? 0
+        : (headerTextHeight + style.boxGap + lootboxes.get().len() * (style.boxSize + style.boxGap)))
     if (height <= maxNoScrollHeight)
       return style
   }
@@ -567,7 +571,7 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
   let lockedJackpotCount = Computed(@() jackpotRewards.get().findvalue(@(r) r.lockedBy.len() > 0) == null ? 0
     : getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())[1])
 
-  let style = mkStyleComp(width, openRewards, jackpotRewards, commonRewards)
+  let style = mkStyleComp(width, openRewards, jackpotRewards, commonRewards, rewardLootboxes)
   return @() {
     key = {}
     watch = [style, jackpotRewards, commonRewards, lootBoxWithSameJackpot, openRewards, rewardLootboxes, lootboxName]

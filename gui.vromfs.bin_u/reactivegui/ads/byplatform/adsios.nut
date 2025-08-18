@@ -10,7 +10,7 @@ let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIM
   hasAdsPreloadError, adsPreloadParams
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let ads = is_ios ? require("ios.ads") : require("adsIosDbg.nut")
+let ads = is_ios ? require("ios.ads") : require("%rGui/ads/byPlatform/adsIosDbg.nut")
 let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUEUE_SKIP,
@@ -38,7 +38,7 @@ function isAllProvidersFailed(providers, statuses) {
 }
 
 function handleShowAds(rInfo) {
-  rewardInfo(rInfo)
+  rewardInfo.set(rInfo)
   onShowAds(loadedProvider.get())
   showAds()
 }
@@ -84,7 +84,7 @@ eventbus_subscribe("ios.ads.onInit", function(msg) {
   if (status != ADS_STATUS_OK)
     return
   logA($"Provider {provider} inited")
-  isInited(true)
+  isInited.set(true)
 })
 
 local isLoadStarted = false
@@ -94,7 +94,7 @@ function startLoading() {
   loadAds()
   sendAdsBqEvent("load_request", "", false)
 }
-if (needAdsLoad.value)
+if (needAdsLoad.get())
   startLoading()
 needAdsLoad.subscribe(function(v) {
   if (v)
@@ -104,7 +104,7 @@ needAdsLoad.subscribe(function(v) {
 local isRetryQueued = false
 function retryLoad() {
   isRetryQueued = false
-  if (!needAdsLoad.value || isLoadStarted)
+  if (!needAdsLoad.get() || isLoadStarted)
     return
   logA($"Retry loading")
   isLoadStarted = true
@@ -122,7 +122,7 @@ eventbus_subscribe("ios.ads.onLoad",function (params) {
   }
   isLoadStarted = false
   loadedProvider.set(provider)
-  isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
+  isLoaded.set(status == ADS_STATUS_LOADED && isAdsLoaded())
   if (isLoaded.get()) {
     failInARow(0)
     clearTimer(retryLoad)
@@ -169,7 +169,7 @@ eventbus_subscribe("ios.ads.onRevenue", function (params) {
 
 eventbus_subscribe("ios.ads.onShow",function (params) { 
   let { status, provider = "unknown", adapter = "none" } = params
-  logA($"onShow {getStatusName(status)} / {provider}({adapter}):", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
+  logA($"onShow {getStatusName(status)} / {provider}({adapter}):", rewardInfo.get()?.bqId, rewardInfo.get()?.bqParams)
   if (status == ADS_STATUS_SHOWN) {
     sendAdsBqEvent("show_start", provider)
     isAdsVisible.set(true)
@@ -185,7 +185,7 @@ eventbus_subscribe("ios.ads.onShow",function (params) {
 
 eventbus_subscribe("ios.ads.onReward", function (params) {
   let { provider = "unknown", adapter = "none" } = params
-  logA($"onReward {provider}({adapter}) {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
+  logA($"onReward {provider}({adapter}) {params.amount} {params.type}:", rewardInfo.get()?.bqId, rewardInfo.get()?.bqParams)
   giveReward()
   closeAdsPreloader()
   sendAdsBqEvent("receive_reward", provider)

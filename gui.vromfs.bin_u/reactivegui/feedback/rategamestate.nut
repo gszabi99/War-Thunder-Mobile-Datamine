@@ -79,23 +79,23 @@ isServerTimeValid.subscribe(@(_) updateCanRateByTime())
 lastSeenDate.subscribe(@(_) updateCanRateByTime())
 
 function initSavedData() {
-  if (!isOnlineSettingsAvailable.value)
+  if (!isOnlineSettingsAvailable.get())
     return
   let blk = get_local_custom_settings_blk()
-  isRatedOnStore(getBlkValueByPath(blk, SAVE_ID_STORE, false))
-  savedRating(getBlkValueByPath(blk, SAVE_ID_RATED, 0))
-  lastSeenDate(getBlkValueByPath(blk, SAVE_ID_SEEN, 0))
-  lastSeenBattles(getBlkValueByPath(blk, SAVE_ID_BATTLES, 0))
+  isRatedOnStore.set(getBlkValueByPath(blk, SAVE_ID_STORE, false))
+  savedRating.set(getBlkValueByPath(blk, SAVE_ID_RATED, 0))
+  lastSeenDate.set(getBlkValueByPath(blk, SAVE_ID_SEEN, 0))
+  lastSeenBattles.set(getBlkValueByPath(blk, SAVE_ID_BATTLES, 0))
 }
 isOnlineSettingsAvailable.subscribe(@(_) initSavedData())
 initSavedData()
 
-let showAfterBattlesCount = Computed(@() lastSeenDate.value == 0 ? 0
-  : (lastSeenBattles.value + SKIP_BATTLES_WHEN_REJECTED)
+let showAfterBattlesCount = Computed(@() lastSeenDate.get() == 0 ? 0
+  : (lastSeenBattles.get() + SKIP_BATTLES_WHEN_REJECTED)
 )
 
 let isGameUnrated = Computed(@()
-  ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.value) || savedRating.value == 0)) 
+  ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.get()) || savedRating.get() == 0)) 
 
 function needRateGameByDebriefing(dData) {
   let { sessionId = -1, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
@@ -133,10 +133,10 @@ function sendGameRating(rating, comment) {
     gameVersion = get_game_version_str()
   }))
 
-  savedRating(rating)
-  if (isOnlineSettingsAvailable.value) {
+  savedRating.set(rating)
+  if (isOnlineSettingsAvailable.get()) {
     let blk = get_local_custom_settings_blk()
-    setBlkValueByPath(blk, SAVE_ID_RATED, savedRating.value)
+    setBlkValueByPath(blk, SAVE_ID_RATED, savedRating.get())
     eventbus_send("saveProfile", {})
   }
 }
@@ -184,10 +184,10 @@ function tryToShowAppReview() {
 function platformAppReview(isRatedExcellent) {
   if (!IS_PLATFORM_STORE_AVAILABLE)
     return
-  isRatedOnStore(true)
-  if (isOnlineSettingsAvailable.value) {
+  isRatedOnStore.set(true)
+  if (isOnlineSettingsAvailable.get()) {
     let blk = get_local_custom_settings_blk()
-    setBlkValueByPath(blk, SAVE_ID_STORE, isRatedOnStore.value)
+    setBlkValueByPath(blk, SAVE_ID_STORE, isRatedOnStore.get())
     eventbus_send("saveProfile", {})
   }
   if (needShowAppReview(isRatedExcellent))
@@ -200,18 +200,18 @@ function platformAppReview(isRatedExcellent) {
 isRateGameSeen.subscribe(function(val) {
   if (!val)
     return
-  lastSeenDate(serverTime.get())
-  lastSeenBattles(lastBattles.value.len())
-  if (isOnlineSettingsAvailable.value) {
+  lastSeenDate.set(serverTime.get())
+  lastSeenBattles.set(lastBattles.get().len())
+  if (isOnlineSettingsAvailable.get()) {
     let blk = get_local_custom_settings_blk()
-    setBlkValueByPath(blk, SAVE_ID_SEEN, lastSeenDate.value)
-    setBlkValueByPath(blk, SAVE_ID_BATTLES, lastSeenBattles.value)
+    setBlkValueByPath(blk, SAVE_ID_SEEN, lastSeenDate.get())
+    setBlkValueByPath(blk, SAVE_ID_BATTLES, lastSeenBattles.get())
     eventbus_send("saveProfile", {})
   }
 })
 
 register_command(function() {
-  if (!isOnlineSettingsAvailable.value)
+  if (!isOnlineSettingsAvailable.get())
     return
   let blk = get_local_custom_settings_blk()
   blk.removeBlock(SAVE_ID_BLK)

@@ -12,7 +12,7 @@ let openMsgAccStatus = require("%rGui/components/openMsgAccStatus.nut")
 let persistMsgBoxes = hardPersistWatched("persistMsgBoxes", [])
 
 function removeMsg(msg) {
-  let idx = persistMsgBoxes.value.indexof(msg)
+  let idx = persistMsgBoxes.get().indexof(msg)
   if (idx != null)
     persistMsgBoxes.mutate(@(v) v.remove(idx))
 }
@@ -50,7 +50,7 @@ let ctors = {
 
 function open(msg) {
   let { isPersist = false, viewType = "", canShowOverHud = false } = msg
-  let canShowNow = canShowOverHud || !isHudAttached.value
+  let canShowNow = canShowOverHud || !isHudAttached.get()
   if (isPersist || !canShowNow)
     persistMsgBoxes.mutate(@(v) v.append(msg))
   if (!canShowNow)
@@ -68,9 +68,9 @@ function close(msg) {
 }
 
 function restorePersist() {
-  if (persistMsgBoxes.value.len() == 0)
+  if (persistMsgBoxes.get().len() == 0)
     return
-  let msgs = persistMsgBoxes.value
+  let msgs = persistMsgBoxes.get()
   persistMsgBoxes([])
   msgs.each(open)
 }
@@ -86,7 +86,7 @@ hasModalWindows.subscribe(function(v) {
 isHudAttached.subscribe(function(v) {
   if (!v)
     deferOnce(function() {
-      if (!isHudAttached.value)
+      if (!isHudAttached.get())
         restorePersist()
     })
 })

@@ -2,17 +2,18 @@ from "%globalsDarg/darg_library.nut" import *
 let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { onWatchQuestAd, SPEED_UP_AD_COST } = require("questsState.nut")
+let { onWatchQuestAd, SPEED_UP_AD_COST } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { progressBarRewardSize } = require("rewardsComps.nut")
+let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
-let { sendBqQuestsSpeedUp } = require("bqQuests.nut")
+let { sendBqQuestsSpeedUp } = require("%rGui/quests/bqQuests.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
+let { unlockProgress } = require("%rGui/unlocks/unlocks.nut")
 
 let SECTION_OPACITY = 0.3
 let bgGradColor = 0x990C1113
@@ -114,7 +115,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
     behavior = Behaviors.Button
     onClick
     clickableInfo = loc("item/open")
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     clipChildren = true
     children = [
       {
@@ -143,7 +144,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
       mkGlare(linkToEventWidth)
       addChild
     ]
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }
 }
@@ -190,6 +191,55 @@ function mkAdsBtn(unlock) {
   }
 }
 
+let lockIconSize = [hdpxi(35), hdpxi(45)]
+
+let lockIcon = {
+  size = lockIconSize
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#lock_icon.svg:{lockIconSize[0]}:{lockIconSize[1]}:P")
+}
+
+function mkQuestText(item, ovr = {}) {
+  let locId = item.meta?.lang_id ?? item.name
+  let header = loc(locId)
+  let text = loc($"{locId}/desc")
+  let isLocked = item.meta?.chain_quest
+    && item.requirement != ""
+    && !(unlockProgress.get()?[item.requirement].isCompleted ?? false)
+
+  return {
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    gap = hdpx(8)
+    children = [
+      {
+        rendObj = ROBJ_BOX
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(20)
+        children = [
+          isLocked ? lockIcon : null
+          {
+            rendObj = ROBJ_TEXT
+            behavior = Behaviors.Marquee
+            speed = hdpx(30)
+            delay = defMarqueeDelay
+            maxWidth = pw(100)
+            text = header
+          }.__update(fontSmall)
+        ]
+      }
+
+
+      {
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        maxWidth = pw(100)
+        text
+      }.__update(fontTiny)
+    ]
+  }.__update(ovr)
+}
+
 return {
   newMark
   mkSectionBtn
@@ -206,4 +256,5 @@ return {
   btnStyle
   btnStyleSound
   mkAdsBtn
+  mkQuestText
 }

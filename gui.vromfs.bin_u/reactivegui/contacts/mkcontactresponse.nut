@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { approveFriendRequest, rejectFriendRequest } = require("contactsState.nut")
+let { approveFriendRequest, rejectFriendRequest } = require("%rGui/contacts/contactsState.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
-let { gap } = require("contactInfoPkg.nut")
+let { gap } = require("%rGui/contacts/contactInfoPkg.nut")
 
 let btnDefOvr = { size = [evenPx(100), evenPx(55)], vplace = ALIGN_CENTER }
 let mkContactResponse = @(uid) @() {

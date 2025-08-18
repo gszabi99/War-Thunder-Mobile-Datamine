@@ -10,7 +10,8 @@ let { shopGoods } = require("%rGui/shop/shopState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
 
 
 let BP_GOODS_ID = "battle_pass"
@@ -19,6 +20,8 @@ let BP_PROGRESS_UNLOCK_ID = "battlepass_points_to_progress"
 let BP_NONE = "none"
 let BP_COMMON = "common"
 let BP_VIP = "vip"
+
+let BP_MAX_LEVELS_TO_ADD = 10
 
 let bpPresentation = {
   [BP_NONE] = {
@@ -43,27 +46,27 @@ let tutorialFreeMarkIdx = Watched(null)
 let openBattlePassWnd = @() battlePassOpenCounter.set(battlePassOpenCounter.get() + 1)
 let closeBattlePassWnd = @() battlePassOpenCounter.set(0)
 
-let seasonNumber = Computed(@() userstatStats.value?.stats.season["$index"] ?? 0)
-let seasonName = Computed(@() loc($"events/name/season_{seasonNumber.value}"))
-let seasonEndTime = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
+let seasonNumber = Computed(@() userstatStats.get()?.stats.season["$index"] ?? 0)
+let seasonName = Computed(@() loc($"events/name/season_{seasonNumber.get()}"))
+let seasonEndTime = Computed(@() userstatStats.get()?.stats.season["$endsAt"] ?? 0)
 
-let bpProgressUnlock = Computed(@() activeUnlocks.value?[BP_PROGRESS_UNLOCK_ID])
-let pointsPerStage   = Computed(@() bpProgressUnlock.value?.stages[0].progress ?? 1)
+let bpProgressUnlock = Computed(@() activeUnlocks.get()?[BP_PROGRESS_UNLOCK_ID])
+let pointsPerStage   = Computed(@() bpProgressUnlock.get()?.stages[0].progress ?? 1)
 let bpLevelPrice = Computed(@() getUnlockPrice(bpProgressUnlock.get()))
 
 let bpFreeRewardsUnlock = Computed(@()
-  activeUnlocks.value.findvalue(@(unlock) "battle_pass_free" in unlock?.meta
-    && unlock?.activity.start_index == seasonNumber.value))
+  activeUnlocks.get().findvalue(@(unlock) "battle_pass_free" in unlock?.meta
+    && unlock?.activity.start_index == seasonNumber.get()))
 let bpPaidRewardsUnlock = Computed(@()
-  activeUnlocks.value.findvalue(@(unlock) "battle_pass_paid" in unlock?.meta
-    && unlock?.activity.start_index == seasonNumber.value))
+  activeUnlocks.get().findvalue(@(unlock) "battle_pass_paid" in unlock?.meta
+    && unlock?.activity.start_index == seasonNumber.get()))
 let bpPurchasedUnlock = Computed(@()
-  activeUnlocks.value.findvalue(@(unlock) "battlepas_purchased" in unlock?.meta))
+  activeUnlocks.get().findvalue(@(unlock) "battlepas_purchased" in unlock?.meta))
 
 let isBpRewardsInProgress = Computed(@()
-  bpFreeRewardsUnlock.value?.name in unlockInProgress.value
-    || bpPaidRewardsUnlock.value?.name in unlockInProgress.value
-    || bpPurchasedUnlock.value?.name in unlockInProgress.value)
+  bpFreeRewardsUnlock.get()?.name in unlockInProgress.get()
+    || bpPaidRewardsUnlock.get()?.name in unlockInProgress.get()
+    || bpPurchasedUnlock.get()?.name in unlockInProgress.get())
 
 let battlePassGoods = Computed(@() {
   [BP_COMMON] = shopGoods.get()?[BP_GOODS_ID],
@@ -93,7 +96,7 @@ let purchasedBpRaw = Computed(@() !isBpPurchasedByType.get()[BP_COMMON] ? BP_NON
 let purchasedBp = Computed(@() debugBp.get() ?? purchasedBpRaw.get())
 
 let isBpActive = Computed(@() debugBp.get() == null
-  ? (activeUnlocks.value?[bpPaidRewardsUnlock.value?.requirement].isCompleted ?? false)
+  ? (activeUnlocks.get()?[bpPaidRewardsUnlock.get()?.requirement].isCompleted ?? false)
   : debugBp.get() != BP_NONE)
 
 purchasedBp.subscribe(@(_) isBPPurchaseWndOpened.set(false))
@@ -102,69 +105,11 @@ let hasBpRewardsToReceive = Computed(@() !!bpFreeRewardsUnlock.get()?.hasReward
   || !!bpPurchasedUnlock.get()?.hasReward
   || (isBpActive.get() && !!bpPaidRewardsUnlock.get()?.hasReward))
 
-let pointsCurStage = Computed(@() (bpProgressUnlock.value?.current ?? 0)
-  % pointsPerStage.value )
-let curStage = Computed(@() bpProgressUnlock.value?.stage ?? 0)
+let pointsCurStage = Computed(@() (bpProgressUnlock.get()?.current ?? 0)
+  % pointsPerStage.get() )
+let curStage = Computed(@() bpProgressUnlock.get()?.stage ?? 0)
 let maxStage = Computed(@() max(bpFreeRewardsUnlock.get()?.stages.top().progress ?? 0,
   bpPaidRewardsUnlock.get()?.stages.top().progress ?? 0))
-
-function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV, maxStageV) {
-  let { name = "", stages = [], lastRewardedStage = -1,
-    hasReward = false, startStageLoop = 1, periodic = false,
-  } = unlock
-  let loopIterationSize = periodic ? max(1, stages.len() - startStageLoop + 1) : 0
-  return stages.map(function(stage, idx) {
-    let { progress = 0, rewards = {} } = stage
-    local viewProgress = progress
-    local loopMultiply = 0
-    local isReceived = idx < lastRewardedStage
-    let isLoop = periodic && idx >= startStageLoop - 1
-    if (isLoop) {
-      let startStageLoopProgress = maxStageV - loopIterationSize + 1
-
-      let loopIndexByCurStage = max(0, (curStageV - startStageLoopProgress) / loopIterationSize)
-      let addProgressByCurStage = loopIterationSize * loopIndexByCurStage
-      let progressByCurStage = progress + addProgressByCurStage
-      let prevProgressByCurStage = max(progress, progressByCurStage - loopIterationSize)
-
-      let lastLoopRewardedStage = max(0, lastRewardedStage - startStageLoop + 1)
-
-      let canReceiveOnlyFromPrevIterations = (prevProgressByCurStage - startStageLoopProgress > lastLoopRewardedStage)
-        && (curStageV < progressByCurStage)
-      viewProgress = canReceiveOnlyFromPrevIterations ? prevProgressByCurStage
-        : (lastLoopRewardedStage  - addProgressByCurStage == 1) ? progressByCurStage + loopIterationSize
-        : progressByCurStage
-      loopMultiply = 1 + (viewProgress - startStageLoopProgress - lastLoopRewardedStage) / loopIterationSize
-      isReceived = viewProgress - startStageLoopProgress < lastLoopRewardedStage
-    }
-    return {
-      loopMultiply
-      progress = viewProgress
-      rewards
-      unlockName = name
-      isPaid
-      isReceived
-      canBuyLevel = ((curStageV + 1) == viewProgress) || (isLoop && curStageV >= maxStageV && loopIterationSize == 1)
-      canReceive = !isReceived && isActive && hasReward && curStageV >= viewProgress
-    }
-  })
-}
-
-function fillViewInfo(res, servConfigs) {
-  foreach(idx, s in res) {
-    if ("viewInfo" not in s) {
-      let rewInfo = []
-      foreach(key, count in s.rewards) {
-        let reward = servConfigs?.userstatRewards[key]
-        rewInfo.extend(getRewardsViewInfo(reward, (count ?? 1) * max(1, s?.loopMultiply ?? 0)))
-      }
-      s.viewInfo <- rewInfo.sort(sortRewardsViewInfo)?[0]
-    }
-    s.nextSlots <- 0
-    if (idx > 0)
-      res[idx - 1].nextSlots = s.viewInfo?.slots ?? 1
-  }
-}
 
 let mkBpStagesList = @() Computed(function() {
   let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.get(), true, isBpActive.get(), curStage.get(), maxStage.get())
@@ -251,14 +196,14 @@ let sendBpBqEvent = @(action, params = {}) sendCustomBqEvent("battlepass_1", par
 }))
 
 function receiveBpRewards(progress) {
-  if (isBpRewardsInProgress.value)
+  if (isBpRewardsInProgress.get())
     return
 
   let fullList = [
-    !bpPurchasedUnlock.value?.hasReward ? null
-      : { unlockName = bpPurchasedUnlock.value.name, stage = bpPurchasedUnlock.value.stage }
-    getNotReceivedInfo(bpFreeRewardsUnlock.value, progress)
-    isBpActive.value ? getNotReceivedInfo(bpPaidRewardsUnlock.value, progress) : null
+    !bpPurchasedUnlock.get()?.hasReward ? null
+      : { unlockName = bpPurchasedUnlock.get().name, stage = bpPurchasedUnlock.get().stage }
+    getNotReceivedInfo(bpFreeRewardsUnlock.get(), progress)
+    isBpActive.get() ? getNotReceivedInfo(bpPaidRewardsUnlock.get(), progress) : null
   ].filter(@(v) v != null)
 
   if (fullList.len() == 0)
@@ -296,7 +241,7 @@ register_command(
     let cur = debugBp.get() ?? purchasedBpRaw.get()
     let idx = (dbgOrder.indexof(cur) ?? -1) + 1
     let new = dbgOrder[idx % dbgOrder.len()]
-    debugBp(new == purchasedBpRaw.get() ? null : new)
+    debugBp.set(new == purchasedBpRaw.get() ? null : new)
     log($"New purchased BP = {purchasedBp.get()}. (isReal = {purchasedBp.get() == purchasedBpRaw.get()})")
   },
   "ui.debug.battlePass")
@@ -306,8 +251,8 @@ return {
   openBattlePassWnd
   closeBattlePassWnd
   isBPPurchaseWndOpened
-  openBPPurchaseWnd = @() isBPPurchaseWndOpened(true)
-  closeBPPurchaseWnd = @() isBPPurchaseWndOpened(false)
+  openBPPurchaseWnd = @() isBPPurchaseWndOpened.set(true)
+  closeBPPurchaseWnd = @() isBPPurchaseWndOpened.set(false)
   receiveBpRewards
   sendBpBqEvent
   buyBPLevel
@@ -331,6 +276,7 @@ return {
   bpLevelPrice
   isBPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
   BP_PROGRESS_UNLOCK_ID
+  BP_MAX_LEVELS_TO_ADD
 
   seasonNumber
   seasonName

@@ -31,7 +31,7 @@ registerHandler("closeOfferWndOnSuccess",
       close()
   })
 
-registerHandler("onDebugShiftOffer", @(_) check_new_offer(curCampaign.value, "closeOfferWndOnSuccess"))
+registerHandler("onDebugShiftOffer", @(_) check_new_offer(curCampaign.get(), "closeOfferWndOnSuccess"))
 
 let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] } })
 let infoTextOvr = {
@@ -117,7 +117,7 @@ let commandsList = [
     func = @() shift_all_offers_time(86400, "onDebugShiftOffer")
   }
   { label = "debug_offer_generation_stats",
-    func = @() debug_offer_generation_stats(curCampaign.value, "onDebugOfferStats")
+    func = @() debug_offer_generation_stats(curCampaign.get(), "onDebugOfferStats")
   }
   {
     label = "debug_offer_possible_units"
@@ -133,7 +133,7 @@ foreach (ot in offersList) {
   let offerType = ot
   commandsList.append({
     label = $"generate {offerType}",
-    func = @() generate_fixed_type_offer(curCampaign.value, offerType, "closeOfferWndOnSuccess")
+    func = @() generate_fixed_type_offer(curCampaign.get(), offerType, "closeOfferWndOnSuccess")
   })
 }
 

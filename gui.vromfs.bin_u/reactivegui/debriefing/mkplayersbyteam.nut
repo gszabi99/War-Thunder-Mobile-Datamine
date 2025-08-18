@@ -2,9 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { genBotDecorators } = require("%appGlobals/botUtils.nut")
+let { sortAndFillPlayerPlaces, sortAndFillPlayerPlacesByFFA } = require("%rGui/mpStatistics/playersSortFunc.nut")
 
 function mkPlayersByTeam(debrData) {
-  let { localTeam = 0, isSeparateSlots = false, players = {}, playersCommonStats = {} } = debrData
+  let { gameType = 0, campaign = "", localTeam = 0, isSeparateSlots = false,
+    players = {}, playersCommonStats = {} } = debrData
   let localUserName = debrData?.userName ?? ""
   let mplayersList = players.values().map(function(p) {
     let { userId, name, isLocal = 0, isBot, aircraftName, dmgScoreBonus = 0.0 } = p
@@ -59,8 +61,14 @@ function mkPlayersByTeam(debrData) {
       decorators = botDecorators ?? decorators
     })
   })
+  let isFFA = !!(gameType & (GT_FFA_DEATHMATCH | GT_FFA))
   let teamsOrder = localTeam == 2 ? [ 2, 1 ] : [ 1, 2 ]
-  return teamsOrder.map(@(team) mplayersList.filter(@(v) v.team == team))
+  let playersByTeam = isFFA
+    ? [ mplayersList ]
+    : teamsOrder.map(@(team) mplayersList.filter(@(v) v.team == team))
+  let sortFunc = isFFA ? sortAndFillPlayerPlacesByFFA : sortAndFillPlayerPlaces
+  playersByTeam.each(@(list) sortFunc(campaign, list))
+  return playersByTeam
 }
 
 return mkPlayersByTeam

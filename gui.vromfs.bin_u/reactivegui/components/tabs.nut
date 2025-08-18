@@ -29,8 +29,8 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
       size = flex()
       rendObj = ROBJ_IMAGE
       image = bgGradient()
-      opacity = isActive.value ? 1
-        : isHover.value ? 0.5
+      opacity = isActive.get() ? 1
+        : isHover.get() ? 0.5
         : 0
       transitions = opacityTransition
     }
@@ -39,14 +39,14 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
 
 function mkTab(id, content, curTabId, tabOverride, onClick = null) {
   let stateFlags = Watched(0)
-  let isActive = Computed (@() curTabId.value == id || (stateFlags.value & S_ACTIVE) != 0)
-  let isHover = Computed (@() stateFlags.value & S_HOVER)
+  let isActive = Computed (@() curTabId.value == id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isHover = Computed (@() stateFlags.get() & S_HOVER)
 
   return {
     size = FLEX_H
     behavior = Behaviors.Button
     xmbNode = {}
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
     onClick = onClick ?? @() curTabId(id)
     sound = { click = "choose" }

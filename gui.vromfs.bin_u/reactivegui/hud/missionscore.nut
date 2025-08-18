@@ -10,7 +10,7 @@ let missionScoreIconSize = [hdpxi(40), hdpxi(40)]
 let missionScoresTable = mkWatched(persist, "missionScoresTable", {})
 let missionScoreBlockSize = [hdpxi(180), 2 * missionScoreIconSize[1]]
 
-isInBattle.subscribe(@(_) missionScoresTable({}))
+isInBattle.subscribe(@(_) missionScoresTable.set({}))
 
 eventbus_subscribe("setMissionScore", function(ev) {
   missionScoresTable.mutate( @(v) ev.visible

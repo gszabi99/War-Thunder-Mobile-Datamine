@@ -8,7 +8,7 @@ let { dropDownMenu } = require("%rGui/components/dropDownMenu.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg, fieldCategory, fieldMessage,
   getFormValidationError, selectedPlayerForReport, requestSelfRow, close,
-  isReportStatusSuccessed, isReportStatusRejected, MAX_MESSAGE_CHARS, isRequestInProgress } = require("reportPlayerState.nut")
+  isReportStatusSuccessed, isReportStatusRejected, MAX_MESSAGE_CHARS, isRequestInProgress } = require("%rGui/report/reportPlayerState.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")

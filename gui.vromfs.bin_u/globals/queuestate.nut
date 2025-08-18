@@ -15,7 +15,7 @@ let { QS_NOT_IN_QUEUE } = queueStates
 
 let curQueue = sharedWatched("curQueue", @() null)
 let queueInfo = sharedWatched("queueInfo", @() null)
-let curQueueState = Computed(@() curQueue.value?.state ?? QS_NOT_IN_QUEUE)
+let curQueueState = Computed(@() curQueue.get()?.state ?? QS_NOT_IN_QUEUE)
 let myQueueToken = sharedWatched("myQueueToken", @() "")
 
 return queueStates.__merge({
@@ -23,6 +23,6 @@ return queueStates.__merge({
   curQueue
   queueInfo
   curQueueState
-  isInQueue = Computed(@() curQueueState.value != QS_NOT_IN_QUEUE)
+  isInQueue = Computed(@() curQueueState.get() != QS_NOT_IN_QUEUE)
   myQueueToken
 })

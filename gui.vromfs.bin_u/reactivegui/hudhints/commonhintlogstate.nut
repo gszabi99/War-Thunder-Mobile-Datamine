@@ -15,6 +15,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { HudTextId } = require("hudTexts")
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
+let { isGtFFA } = require("%rGui/missionState.nut")
 
 
 let state = require("%sqstd/mkEventLogState.nut")({
@@ -33,7 +34,7 @@ let warningColor = Color(255, 35, 30, 255)
 
 isInBattle.subscribe(function(_) {
   clearEvents()
-  isThrottleHintAvailable(false)
+  isThrottleHintAvailable.set(false)
 })
 
 
@@ -72,7 +73,9 @@ eventbus_subscribe("hint:action_not_available", function(data) {
 
 const ART_SUPPORT_ID = "have_art_support"
 eventbus_subscribe("hint:have_art_support:show",
-  @(_) addEvent({ id = ART_SUPPORT_ID, hType = "simpleTextTiny", text = loc("hints/have_art_support") }))
+  @(_) !isGtFFA.get()
+    ? addEvent({ id = ART_SUPPORT_ID, hType = "simpleTextTiny", text = loc("hints/have_art_support") })
+    : null)
 
 eventbus_subscribe("hint:have_art_support:hide",
   @(_) removeEvent({ id = ART_SUPPORT_ID }))
@@ -438,9 +441,9 @@ eventbus_subscribe("hint:need_lock_target", function(_) {
 })
 
 eventbus_subscribe("hint:air_increase_throttle", function(_) {
-  if (isThrottleHintAvailable.value || incHintCounter("air_increase_throttle", 3)) {
+  if (isThrottleHintAvailable.get() || incHintCounter("air_increase_throttle", 3)) {
     addCommonHintWithTtl(loc("hints/air_increase_throttle"), 5)
-    isThrottleHintAvailable(true)
+    isThrottleHintAvailable.set(true)
   }
 })
 

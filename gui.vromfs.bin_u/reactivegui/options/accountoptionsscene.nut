@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let communityOptions = require("options/communityOptions.nut")
-let accountPage = require("accountPage.nut")
-let statisticsPage = require("statisticsPage.nut")
-let privacyPage = require("privacyPage.nut")
-let { mkOptionsScene } = require("mkOptionsScene.nut")
+let communityOptions = require("%rGui/options/options/communityOptions.nut")
+let accountPage = require("%rGui/options/accountPage.nut")
+let statisticsPage = require("%rGui/options/statisticsPage.nut")
+let privacyPage = require("%rGui/options/privacyPage.nut")
+let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { UNSEEN_HIGH, SEEN } = require("%rGui/unseenPriority.nut")
 

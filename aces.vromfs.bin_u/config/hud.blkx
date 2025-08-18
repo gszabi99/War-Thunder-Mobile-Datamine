@@ -535,16 +535,16 @@
     "minDistBetweenZonesOnRespawnBases": 200.0,
     "minDistBetweenZonesOnBoatsRespawnBases": 500.0,
     "minDistBetweenZonesOnDestroyerRespawnBases": 2000.0,
-    "icon_superartallery_target": "chat_icon_attack",
-    "icon_superartillery_zone": "artillery_region",
-    "icon_superartillery_skull": "objective_kill",
+    "icon_superartillery_zone": "super_artillery_circle.svg:72:72:K",
+    "icon_superartallery_target": "super_artillery_calling.svg:50:50:K",
+    "icon_superartillery_skull": "super_artillery_firing.svg:58:58:K",
     "colorSuperArtillery": [
-      81,
-      183,
+      30,
+      30,
       255,
-      125
+      178
     ],
-    "superArtilleryShrinkRatio": 0.25,
+    "superArtilleryShrinkRatio": 0.5,
     "sizeScale": {
       "scale": [
         0.75,
@@ -553,7 +553,10 @@
         1.5
       ]
     },
-    "customIcons": {}
+    "customIcons": {
+      "iconPickupAllInOne": "pickup_map_icon_allinone.svg:21:21:K",
+      "iconPickupCrewSkill": "pickup_map_icon_crewskill.svg:21:21:K"
+    }
   },
   "radar": {
     "position": [

@@ -9,7 +9,7 @@ let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIM
   hasAdsPreloadError, adsPreloadParams
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
+let ads = is_android ? require("android.ads") : require("%rGui/ads/byPlatform/adsAndroidDbg.nut")
 let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUEUE_SKIP,
@@ -38,7 +38,7 @@ function isAllProvidersFailed(providers, statuses) {
 }
 
 function handleShowAds(rInfo) {
-  rewardInfo(rInfo)
+  rewardInfo.set(rInfo)
   onShowAds(loadedProvider.get())
   showAds()
 }
@@ -88,7 +88,7 @@ eventbus_subscribe("android.ads.onInit", function(msg) {
     return
   }
   logA($"Provider {provider} inited")
-  isInited(true)
+  isInited.set(true)
 })
 
 local isLoadStarted = false
@@ -98,7 +98,7 @@ function startLoading() {
   loadAds()
   sendAdsBqEvent("load_request", "", false)
 }
-if (needAdsLoad.value)
+if (needAdsLoad.get())
   startLoading()
 needAdsLoad.subscribe(function(v) {
   if (v)
@@ -108,7 +108,7 @@ needAdsLoad.subscribe(function(v) {
 local isRetryQueued = false
 function retryLoad() {
   isRetryQueued = false
-  if (!needAdsLoad.value || isLoadStarted)
+  if (!needAdsLoad.get() || isLoadStarted)
     return
   logA($"Retry loading")
   isLoadStarted = true
@@ -126,7 +126,7 @@ eventbus_subscribe("android.ads.onLoad", function (params) {
   }
   isLoadStarted = false
   loadedProvider.set(provider)
-  isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
+  isLoaded.set(status == ADS_STATUS_LOADED && isAdsLoaded())
   if (isLoaded.get()) {
     failInARow(0)
     clearTimer(retryLoad)
@@ -172,7 +172,7 @@ eventbus_subscribe("android.ads.onRevenue", function (params) {
 
 eventbus_subscribe("android.ads.onShow", function (params) { 
   let { status, provider = "unknown" } = params
-  logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
+  logA($"onShow {getStatusName(status)}:", rewardInfo.get()?.bqId, rewardInfo.get()?.bqParams)
   if (status == ADS_STATUS_SHOWN) {
     sendAdsBqEvent("show_start", provider)
     isAdsVisible.set(true)
@@ -188,7 +188,7 @@ eventbus_subscribe("android.ads.onShow", function (params) {
 
 eventbus_subscribe("android.ads.onReward", function (params) {
   let { provider = "unknown" } = params
-  logA($"onReward {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
+  logA($"onReward {params.amount} {params.type}:", rewardInfo.get()?.bqId, rewardInfo.get()?.bqParams)
   giveReward()
   closeAdsPreloader()
   sendAdsBqEvent("receive_reward", provider)

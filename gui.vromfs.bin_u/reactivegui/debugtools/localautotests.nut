@@ -18,7 +18,7 @@ function getIndexOrRandom(msg, size) {
 
 
 function leaveQueueOnTimeout() {
-  if (isInQueue.value) {
+  if (isInQueue.get()) {
     log("autotests: queue timeout reached, leaving queue")
     eventbus_send("leaveQueue", {})
   }

@@ -2,98 +2,42 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team, get_current_mission_name } = require("mission")
+let { get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
-let { gameOverReason } = require("%rGui/missionState.nut")
-let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { sortAndFillPlayerPlaces } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { gameOverReason, isGtFFA } = require("%rGui/missionState.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
-let { playersDamageStats } = require("playersDamageStats.nut")
-let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
-let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
+let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
+let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { squadLabels } = require("%appGlobals/squadLabelState.nut")
+let { updatePlayersByTeams, playersByTeam, startContinuousUpdate, stopContinuousUpdate
+} = require("%rGui/mpStatistics/playersByTeamState.nut")
 
-const STATS_UPDATE_TIMEOUT = 1.0
 
 let isAttached = Watched(false)
-let playersByTeamBase = Watched([])
 let missionName = Watched("")
-let playersByTeam = Computed(function() {
-  let res = playersByTeamBase.value
-    .map(@(list) sortAndFillPlayerPlaces(battleCampaign.value,
-      list.map(function(p) {
-        
-        let { id, userId, name, isBot, aircraftName, ownedUnitName = "" } = p
-        let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
-        let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
-        let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
-          hasVip = false, hasPrem = false } = !isBot
-            ? playersCommonStats.get()?[userId.tointeger()]
-            : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
-        let unit = units?[unitName]
-        let { unitClass = "", mRank = null } = unit
-        let isUnitCollectible = unit?.isCollectible ?? false
-        let isUnitPremium = unit?.isPremium ?? false
-        let isUnitUpgraded = unit?.isUpgraded ?? false
-        let squadLabel = squadLabels.get()?[userId] ?? -1
-        return p.__merge({
-          damage
-          score
-          level
-          starLevel
-          hasPremium
-          hasVip
-          hasPrem
-          decorators
-          unitName
-          unitClass
-          mRank
-          isUnitCollectible
-          isUnitPremium
-          isUnitUpgraded
-          userId
-          squadLabel
-        })
-      })))
-  let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)
-  res.each(@(t) t.resize(maxTeamSize, null))
-  return res
-})
 
-eventbus_subscribe("MpStatistics_InitialData", @(p) missionName(p.missionName))
+eventbus_subscribe("MpStatistics_InitialData", @(p) missionName.set(p.missionName))
 
 let onQuit = @() eventbus_send("MpStatistics_CloseInDagui", {})
 
 gameOverReason.subscribe(function(val) {
-  if (isAttached.value && (val == GO_WIN || val == GO_FAIL))
+  if (isAttached.get() && (val == GO_WIN || val == GO_FAIL))
     onQuit()
 })
 
-function getTeamsList() {
-  let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true)
-  let teamsOrder = get_mp_local_team() == 2 ? [ 2, 1 ] : [ 1, 2 ]
-  return teamsOrder.map(@(team) mplayersList.filter(@(v) v.team == team))
-}
-
-let updatePlayersByTeams = @() playersByTeamBase(getTeamsList())
-
 eventbus_subscribe("MissionResult", @(_) updatePlayersByTeams())
+isGtFFA.subscribe(@(_) isAttached.get() ? updatePlayersByTeams() : null)
 
 function onAttach() {
   isAttached(true)
   eventbus_send("MpStatistics_GetInitialData", {})
-  updatePlayersByTeams()
-  gui_scene.setInterval(STATS_UPDATE_TIMEOUT, updatePlayersByTeams)
+  startContinuousUpdate()
 }
 
 function onDetach() {
   isAttached(false)
-  gui_scene.clearTimer(updatePlayersByTeams)
+  stopContinuousUpdate()
 }
 
 let wndTitle = @() {
@@ -106,31 +50,33 @@ let wndTitle = @() {
   speed = hdpx(30)
   delay = defMarqueeDelayVert
   color = Color(255, 255, 255)
-  text = missionName.value
+  text = missionName.get()
 }.__update(fontSmallShaded)
 
 let cornerBackBtn = backButton(onQuit)
 
+let statisticsHeight = sh(100) - saBorders[1] * 2 - backButtonHeight
+
 return bgShaded.__merge({
   key = {}
   size = flex()
-  padding =  [saBorders[1], 0 ]
+  padding = [saBorders[1], 0]
   onAttach
   onDetach
+  flow = FLOW_VERTICAL
   children = [
-    @() {
-      watch = [playersByTeam, battleCampaign]
-      size = FLEX_H
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name()), playersByTeam.get())
-    }
     {
-      size = saSize
+      size = [saSize[0], SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       children = [
-        scoreBoard
+        @() {
+          watch = scoreBoardType
+          size = [saSize[0], SIZE_TO_CONTENT]
+          hplace = ALIGN_CENTER
+          vplace = ALIGN_CENTER
+          children = scoreBoardCfgByType?[scoreBoardType.get()].comp
+        }
         {
           size = [saSize[0], SIZE_TO_CONTENT]
           valign = ALIGN_CENTER
@@ -141,6 +87,15 @@ return bgShaded.__merge({
             wndTitle
           ]
         }]
+    }
+    @() {
+      watch = [playersByTeam, battleCampaign, isGtFFA]
+      size = FLEX_H
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name(), isGtFFA.get()),
+        playersByTeam.get(),
+        isGtFFA.get() ? statisticsHeight : null)
     }
   ]
   animations = wndSwitchAnim

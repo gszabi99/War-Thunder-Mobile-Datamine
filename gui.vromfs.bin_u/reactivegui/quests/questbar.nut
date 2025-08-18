@@ -3,7 +3,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { progressBarRewardSize, questItemsGap, rewardProgressBarCtor, statsAnimation
-} = require("rewardsComps.nut")
+} = require("%rGui/quests/rewardsComps.nut")
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { receiveUnlockRewards, unlockInProgress, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
@@ -11,8 +11,8 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
 let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
-let { headerLineGap } = require("questsPkg.nut")
-let { sendBqQuestsStage } = require("bqQuests.nut")
+let { headerLineGap } = require("%rGui/quests/questsPkg.nut")
+let { sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { allShopGoods, isDisabledGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
@@ -97,7 +97,7 @@ unlockProgress.subscribe(function(up) {
 })
 
 function onChangeAnimFinish(name, change) {
-  if (change != changeOrders.get()?[name][0] || name not in visibleProgress.value)
+  if (change != changeOrders.get()?[name][0] || name not in visibleProgress.get())
     return
   visibleProgress.mutate(@(v) v[name] = change.cur)
   changeOrders.mutate(@(v) v[name].remove(0))
@@ -233,7 +233,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
   let curStageIdx = getCurStageIdx(progressUnlock)
   let { hasReward = false, stage, stages, name } = progressUnlock
   let required = stages?[curStageIdx].progress
-  let isRewardInProgress = Computed(@() name in unlockInProgress.value)
+  let isRewardInProgress = Computed(@() name in unlockInProgress.get())
   let visProgress = Computed(@() visibleProgress.get()?[name] ?? unlockProgress.get()?[name].current ?? 0)
   let nextChange = Computed(@() changeOrders.get()?[name][0])
 

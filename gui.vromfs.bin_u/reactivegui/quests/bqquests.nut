@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { EVENT_TAB, progressUnlockByTab, progressUnlockBySection } = require("questsState.nut")
+let { EVENT_TAB, progressUnlockByTab, progressUnlockBySection } = require("%rGui/quests/questsState.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
@@ -22,7 +22,7 @@ let getCommonData = @(unlock) {
   starsTotal = (progressUnlockByTab.get()?[unlock?.tabId]
       ?? progressUnlockBySection.get()?[unlock?.sectionId]
     )?.current ?? 0
-}.__merge(unlock?.tabId == EVENT_TAB ? { season = userstatStats.value?.stats.season["$index"] ?? 0 } : {})
+}.__merge(unlock?.tabId == EVENT_TAB ? { season = userstatStats.get()?.stats.season["$index"] ?? 0 } : {})
 
 function sendBqQuestsTask(unlock, warbondDelta, currencyId) {
   let data = getCommonData(unlock).__merge({

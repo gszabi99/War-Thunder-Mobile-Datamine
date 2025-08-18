@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids, myBlacklistUids
-} = require("contactLists.nut")
+} = require("%rGui/contacts/contactLists.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
-let { isContactsOpened, SEARCH_TAB, FRIENDS_TAB, contactsOpenTabId } = require("contactsState.nut")
-let searchContactsScene = require("searchContactsScene.nut")
-let mkContactListScene = require("mkContactListScene.nut")
-let { mkContactActionBtn, mkContactActionBtnPrimary } = require("mkContactActionBtn.nut")
+let { isContactsOpened, SEARCH_TAB, FRIENDS_TAB, contactsOpenTabId } = require("%rGui/contacts/contactsState.nut")
+let searchContactsScene = require("%rGui/contacts/searchContactsScene.nut")
+let mkContactListScene = require("%rGui/contacts/mkContactListScene.nut")
+let { mkContactActionBtn, mkContactActionBtnPrimary } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { CANCEL_INVITE, APPROVE_INVITE, REJECT_INVITE, REMOVE_FROM_FRIENDS,
   ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, REVOKE_INVITE, PROFILE_VIEW
-} = require("contactActions.nut")
+} = require("%rGui/contacts/contactActions.nut")
 let { UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
-let friendRequestToMeResponse = require("mkContactResponse.nut")
+let friendRequestToMeResponse = require("%rGui/contacts/mkContactResponse.nut")
 
 let tabs = [
   {
@@ -44,7 +44,7 @@ let tabs = [
       mkContactActionBtnPrimary(APPROVE_INVITE, userId, { hotkeys = ["^J:X | Enter"] })
     ], friendRequestToMeResponse)
     isFullWidth = true
-    isVisible = Computed(@() requestsToMeUids.value.len() > 0)
+    isVisible = Computed(@() requestsToMeUids.get().len() > 0)
     unseen = Watched(UNSEEN_HIGH)
   }
   {
@@ -57,7 +57,7 @@ let tabs = [
       mkContactActionBtnPrimary(INVITE_TO_SQUAD, userId, { hotkeys = ["^J:Y"] })
     ])
     isFullWidth = true
-    isVisible = Computed(@() myRequestsUids.value.len() > 0)
+    isVisible = Computed(@() myRequestsUids.get().len() > 0)
   }
   {
     locId = "contacts/rejectedByMe"
@@ -70,7 +70,7 @@ let tabs = [
       mkContactActionBtnPrimary(APPROVE_INVITE, userId, { hotkeys = ["^J:X | Enter"] })
     ])
     isFullWidth = true
-    isVisible = Computed(@() rejectedByMeUids.value.len() > 0)
+    isVisible = Computed(@() rejectedByMeUids.get().len() > 0)
   }
   {
     locId = "contacts/block"
@@ -80,7 +80,7 @@ let tabs = [
       mkContactActionBtn(REMOVE_FROM_BLACKLIST, userId, { hotkeys = ["^J:X | Enter"] })
     ])
     isFullWidth = true
-    isVisible = Computed(@() myBlacklistUids.value.len() > 0)
+    isVisible = Computed(@() myBlacklistUids.get().len() > 0)
   }
 ]
 

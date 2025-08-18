@@ -3,7 +3,7 @@ let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("goodsPreviewPkg.nut")
+let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 
 let verticalGap = hdpx(20)
 

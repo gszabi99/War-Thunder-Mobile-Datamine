@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { onControlsApply } = require("chooseMovementControlsState.nut")
+let { onControlsApply } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
-} = require("tankMoveControlType.nut")
+} = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let controlsTypesButton = require("controlsTypesButton.nut")
-let controlsTypesAnimsCtors = require("controlsTypesAnims.nut")
+let controlsTypesButton = require("%rGui/options/chooseMovementControls/controlsTypesButton.nut")
+let controlsTypesAnimsCtors = require("%rGui/options/chooseMovementControls/controlsTypesAnims.nut")
 
 let defaultValue = "stick_static"
 let btnW = evenPx(380)
@@ -19,7 +19,7 @@ let bgGradWidth = contentWidth + hdpx(400)
 let selectedValue = Watched("")
 
 function apply() {
-  currentTankMoveCtrlType(selectedValue.value)
+  currentTankMoveCtrlType(selectedValue.get())
   onControlsApply()
 }
 
@@ -96,8 +96,8 @@ let mkOptButtonsRow = @() {
   gap = btnGap
   children = reorderList(tankMoveCtrlTypesList, defaultValue).map(@(id) controlsTypesButton(
     mkBtnContent(id, defaultValue == id),
-    Computed(@() id == selectedValue.value),
-    @() selectedValue(id)))
+    Computed(@() id == selectedValue.get()),
+    @() selectedValue.set(id)))
 }
 
 let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
@@ -111,7 +111,7 @@ let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
   loc("option_can_be_changed_later")
 )
 
-let onAttach = @() selectedValue(currentTankMoveCtrlType.value)
+let onAttach = @() selectedValue.set(currentTankMoveCtrlType.get())
 
 let mkChooseMoveControlsScene = @() bgShaded.__merge({
   key = {}
@@ -138,12 +138,12 @@ let mkChooseMoveControlsScene = @() bgShaded.__merge({
           @() txtArea({
             watch = [selectedValue]
             minHeight = hdpx(132)
-            text = getDescText(selectedValue.value, defaultValue == selectedValue.value)
+            text = getDescText(selectedValue.get(), defaultValue == selectedValue.get())
           })
           @() {
             watch = selectedValue
             padding = const [hdpx(10), 0]
-            children = selectedValue.value == ""
+            children = selectedValue.get() == ""
               ? { size = [0, buttonStyles.defButtonHeight] }
               : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), apply, { hotkeys = ["^J:X | Enter"] })
           }

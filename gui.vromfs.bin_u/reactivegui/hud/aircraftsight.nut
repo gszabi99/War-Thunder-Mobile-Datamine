@@ -107,8 +107,8 @@ let aircraftSight = @() {
   children = areSightHidden.get() ? null
     : [
         airCrosshair
-        currentAircraftCtrlType.value != "mouse_aim" ? null
-          : currentFixedAimCursor.value ? fixedAirDestination
+        currentAircraftCtrlType.get() != "mouse_aim" ? null
+          : currentFixedAimCursor.get() ? fixedAirDestination
           : airDestination
         airTarget
       ]

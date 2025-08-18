@@ -10,7 +10,8 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isInBattle, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isInMpSession, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
+let { isGtFFA } = require("%rGui/missionState.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { CMD_MSG_PREFIX, registerChatCmdHandler, sendChatMessage } = require("%rGui/chat/mpChatState.nut")
 let { radioMessageVoice } = require("%rGui/options/options/soundOptions.nut")
@@ -24,6 +25,8 @@ let COOLDOWN_TIME_SEC = 20.0
 let SAVE_ID_BLK = "voiceMsg"
 let SAVE_ID_ORDER = $"{SAVE_ID_BLK}/order"
 let SAVE_ID_HIDDEN = $"{SAVE_ID_BLK}/hide"
+
+let isVoiceMsgAllowedInMission = Computed(@() isInMpSession.get() && !isGtFFA.get())
 
 let mapMarkTypeByMessageIdPrefix = {
   attack_ = MARKER_TYPE.CAPTURE_POINT_MARK
@@ -74,7 +77,7 @@ updateUsesTime()
 let addLastUseNow = @() updateUsesTime(true)
 
 let voiceMsgCooldownEndTime = Computed(@() lastUsesTime.get().len() < COOLDOWN_AFTER_USES ? -1 : (lastUsesTime.get()[0] + COOLDOWN_TIME_SEC))
-let isVoiceMsgEnabled = Computed(@() voiceMsgCooldownEndTime.get() <= 0)
+let isVoiceMsgEnabled = Computed(@() isVoiceMsgAllowedInMission.get() && voiceMsgCooldownEndTime.get() <= 0)
 
 function updateCooldownTimer(cooldownEndTime) {
   let cdLeft = cooldownEndTime - get_mission_time()
@@ -200,6 +203,7 @@ return {
   mkVoiceMsgCfgItem
   sendVoiceMsgById
 
+  isVoiceMsgAllowedInMission
   isVoiceMsgEnabled
   voiceMsgCooldownEndTime
   isVoiceMsgStickActive

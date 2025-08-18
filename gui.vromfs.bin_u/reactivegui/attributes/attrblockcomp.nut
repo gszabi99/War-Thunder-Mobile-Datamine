@@ -101,7 +101,7 @@ function mkProgressBtn(childrenCtor, onClick) {
   return @() progressBtnBase.__merge({
     watch = stateFlags
     onClick
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     children = childrenCtor(stateFlags.get())
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
   })
@@ -189,7 +189,7 @@ function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
     function onElemState(sf) {
       let wasHovered = (stateFlags.get() & S_HOVER) != 0
       let isHovered = (sf & S_HOVER) != 0
-      stateFlags(sf)
+      stateFlags.set(sf)
       if (isHovered == wasHovered)
         return
       if (isHovered && hoveredLevel.get() < level)

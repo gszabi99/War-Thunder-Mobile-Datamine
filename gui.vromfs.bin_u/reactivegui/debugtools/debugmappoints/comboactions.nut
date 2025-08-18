@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { transformInProgress, ELEM_POINT, ELEM_LINE, ELEM_BG, addLine, changeLine, presetLines,
   tuningPoints, tuningBgElems
-} = require("mapEditorState.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
 let { getClosestSegment } = require("%rGui/event/treeEvent/segmentMath.nut")
 
 

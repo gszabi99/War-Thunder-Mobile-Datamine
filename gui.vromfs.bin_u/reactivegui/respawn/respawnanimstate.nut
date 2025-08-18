@@ -7,14 +7,14 @@ let slotAABB = Watched(null)
 let bulletsAABB = Watched({})
 let selSlotLinesSteps = Watched(null)
 slotAABB.subscribe(function(_) {
-  bulletsAABB({})
-  selSlotLinesSteps(null)
+  bulletsAABB.set({})
+  selSlotLinesSteps.set(null)
 })
 
 function calcSelSlotLines() {
-  if (slotAABB.value == null || bulletsAABB.value.len() == 0)
+  if (slotAABB.get() == null || bulletsAABB.get().len() == 0)
     return null
-  let list = bulletsAABB.value.values()
+  let list = bulletsAABB.get().values()
   let { t, b, r } = slotAABB.get()
   let midY = (t + b) / 2
   let midX = (r + list[0].l) / 2
@@ -26,7 +26,7 @@ function calcSelSlotLines() {
   ]
 }
 
-let updateSelSlotLines = @() selSlotLinesSteps(calcSelSlotLines())
+let updateSelSlotLines = @() selSlotLinesSteps.set(calcSelSlotLines())
 bulletsAABB.subscribe(@(_) deferOnce(updateSelSlotLines))
 
 

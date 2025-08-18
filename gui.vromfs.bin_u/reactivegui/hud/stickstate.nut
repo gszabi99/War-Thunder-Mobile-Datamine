@@ -13,6 +13,6 @@ return {
   STICK
   isStickActiveByStick
   isStickActiveByArrows
-  isStickActive = Computed(@() isStickActiveByStick.value || isStickActiveByArrows.value)
+  isStickActive = Computed(@() isStickActiveByStick.get() || isStickActiveByArrows.get())
   stickDelta = Watched(Point2(0, 0))
 }

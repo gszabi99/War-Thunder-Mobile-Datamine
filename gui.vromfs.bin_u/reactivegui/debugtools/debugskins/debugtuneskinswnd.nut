@@ -16,8 +16,8 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let chooseSkinsUnitTypeWnd = require("chooseSkinsUnitTypeWnd.nut")
-let chooseByNameWnd = require("chooseByNameWnd.nut")
+let chooseSkinsUnitTypeWnd = require("%rGui/debugTools/debugSkins/chooseSkinsUnitTypeWnd.nut")
+let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { imageBtn, framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { unitSkinView, unknownSkinPreset } = require("%appGlobals/config/skinPresentation.nut")
@@ -46,12 +46,12 @@ let selectedColor = 0x8052C4E4
 let checkSize = [hdpxi(50), hdpxi(25)]
 let underlineSize = hdpx(5)
 
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 
 function initSkinsWnd() {
   savedUnitType(getUnitType(hangarUnitName.get()))
-  savedUnitName(hangarUnitName.get())
-  savedUnitSkin(hangarUnitSkin.get())
+  savedUnitName.set(hangarUnitName.get())
+  savedUnitSkin.set(hangarUnitSkin.get())
 }
 
 isOpened.subscribe(function(v) {
@@ -60,7 +60,7 @@ isOpened.subscribe(function(v) {
 })
 
 function saveSkinView(view) {
-  hasViewChanges(true)
+  hasViewChanges.set(true)
   let saveTbl = view.map(@(mainList)
     mainList.map(@(list)
       list.map(@(v) v.id)))
@@ -116,7 +116,7 @@ let wndHeader = @(children) {
 let unitTypeSelector = @(curUnitType, allUnitTypes) @() {
   watch = curUnitType
   children = textButtonPrimary(loc($"mainmenu/type_{curUnitType.get()}"),
-    @(event) chooseSkinsUnitTypeWnd(event.targetRect, allUnitTypes.get(), curUnitType.get(), @(ut) savedUnitType(ut)))
+    @(event) chooseSkinsUnitTypeWnd(event.targetRect, allUnitTypes.get(), curUnitType.get(), @(ut) savedUnitType.set(ut)))
 }
 
 let toggleBtn = @(isLeft, onClick, isActive) framedImageBtn(
@@ -211,7 +211,7 @@ function mkTagButton(tag) {
   return @() {
     watch = [stateFlags, isSelected]
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick = @() selTag.set(tag)
     rendObj = ROBJ_TEXT
     text = tag
@@ -278,7 +278,7 @@ let function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
     borderRadius = presetBorderSize
     image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick = @() selPreset.set(preset)
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
@@ -516,4 +516,4 @@ function mkDebugTuneSkinsWnd() {
 
 registerScene("debugTuneSkinsWnd", mkDebugTuneSkinsWnd, close, isOpened)
 
-register_command(@() isOpened(true), "ui.debug.skins")
+register_command(@() isOpened.set(true), "ui.debug.skins")

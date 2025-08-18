@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
-let { curLbCfg, ratingBattlesCount, bestBattles, isLbBestBattlesOpened } = require("lbState.nut")
+let { curLbCfg, ratingBattlesCount, bestBattles, isLbBestBattlesOpened } = require("%rGui/leaderboard/lbState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
-let { LOG_TIME } = require("lbCategory.nut")
+let { LOG_TIME } = require("%rGui/leaderboard/lbCategory.nut")
 
 let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { lbHeaderHeight, lbVGap, lbHeaderRowHeight, lbTableBorderWidth,
   rowBgOddColor, rowBgEvenColor, getRowBgColor
-} = require("lbStyle.nut")
+} = require("%rGui/leaderboard/lbStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { mkLbHeaderRow } = require("mkLbHeaderRow.nut")
+let { mkLbHeaderRow } = require("%rGui/leaderboard/mkLbHeaderRow.nut")
 let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
 
 let tableWidth = hdpx(1200)
@@ -23,7 +23,7 @@ let maxRowsNoScroll = (saSize[1] - lbHeaderHeight - lbVGap - lbHeaderRowHeight -
 let defTxtColor = 0xFFD8D8D8
 let unratedColor = 0xFFF08466
 
-let close = @() isLbBestBattlesOpened(false)
+let close = @() isLbBestBattlesOpened.set(false)
 
 let mkLbName = @(locId) {
   rendObj = ROBJ_TEXTAREA
@@ -81,7 +81,7 @@ let mkCell = @(category, rowData, isRated) mkTextCell(category, category.getText
 function mkLogTimeCell(category, rowData, isRated) {
   let timeLeft = Computed(@() rowData.timestamp <= 0 ? ""
     : secondsToHoursLoc(serverTime.get() - rowData.timestamp))
-  return @() mkTextCell(category, timeLeft.value, isRated)
+  return @() mkTextCell(category, timeLeft.get(), isRated)
     .__update({ watch = timeLeft })
 }
 

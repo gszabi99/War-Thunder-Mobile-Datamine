@@ -2,14 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { isLvlUpOpened, upgradeUnitName, closeLvlUpWnd } = require("levelUpState.nut")
+let { maxRewardLevelInfo, isLvlUpOpened, upgradeUnitName, closeLvlUpWnd } = require("%rGui/levelUp/levelUpState.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { levelUpFlag, flagAnimFullTime, flagHeight } = require("levelUpFlag.nut")
+let { levelUpFlag, flagAnimFullTime, flagHeight } = require("%rGui/levelUp/levelUpFlag.nut")
 let { mkLinearGradientImg } = require("%darg/helpers/mkGradientImg.nut")
-let levelUpChooseUnits = require("levelUpChooseUnits.nut")
+let levelUpChooseUnits = require("%rGui/levelUp/levelUpChooseUnits.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { hasAddons, addonsSizes } = require("%appGlobals/updater/addonsState.nut")
@@ -17,7 +17,6 @@ let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { maxRewardLevelInfo } = require("%rGui/levelUp/levelUpState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
@@ -81,7 +80,7 @@ let headerPanel = @(hasLvlUpPkgs) @() {
     @() {
       watch = upgradeUnitName
       hplace = ALIGN_LEFT
-      children = upgradeUnitName.get() != null ? backButton(@() upgradeUnitName(null))
+      children = upgradeUnitName.get() != null ? backButton(@() upgradeUnitName.set(null))
         : !hasLvlUpPkgs ? backButton(closeByBackButton)
         : null
     }

@@ -5,9 +5,9 @@ let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campai
 let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 
 let hasCurCampaignNewbiePkg = Computed(function() {
-  let addons = getCampaignPkgsForOnlineBattle(curCampaign.value, 1)
+  let addons = getCampaignPkgsForOnlineBattle(curCampaign.get(), 1)
   return addons.len() == 0 || null == addons.findvalue(@(a) !hasAddons.get()?[a])
 })
 
-return Computed(@() prepareStatsForNewbieConfig(sharedStatsByCampaign.value)
-  .__update({ hasPkg = hasCurCampaignNewbiePkg.value }))
+return Computed(@() prepareStatsForNewbieConfig(sharedStatsByCampaign.get())
+  .__update({ hasPkg = hasCurCampaignNewbiePkg.get() }))

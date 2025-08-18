@@ -13,7 +13,7 @@ let getServerTimeAt = @(msec) gameStartServerTimeMsec.get() <= 0 ? 0
 
 let getServerTime = @() getServerTimeAt(get_time_msec())
 
-let updateTime = @() serverTime(getServerTime())
+let updateTime = @() serverTime.set(getServerTime())
 
 updateTime()
 gameStartServerTimeMsec.subscribe(@(_) updateTime())

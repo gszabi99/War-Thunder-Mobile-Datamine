@@ -7,9 +7,9 @@ let { imageColor, textDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.n
 let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, ph(-50)] }
 
 function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
-  let isVisible = Computed(@() !isGamepad.get() && (userHoldWeapKeys.value?[key].isHold ?? false))
-  let isInside = Computed(@() userHoldWeapInside.value?[key] ?? true)
-  return @() !isVisible.value ? { watch = isVisible }
+  let isVisible = Computed(@() !isGamepad.get() && (userHoldWeapKeys.get()?[key].isHold ?? false))
+  let isInside = Computed(@() userHoldWeapInside.get()?[key] ?? true)
+  return @() !isVisible.get() ? { watch = isVisible }
     : {
         watch = isVisible
         size = [2 * zoneRadiusX, 2 * zoneRadiusY]
@@ -19,7 +19,7 @@ function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
           watch = isInside
           size = flex()
           rendObj = ROBJ_VECTOR_CANVAS
-          color = isInside.value ? 0x20404040 : 0x20602020
+          color = isInside.get() ? 0x20404040 : 0x20602020
           fillColor = 0
           lineWidth = hdpx(3)
           commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
@@ -29,7 +29,7 @@ function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
       }
 }
 
-let canLock = Computed(@() ((hasTargetCandidate.value && !hasTarget.value) || hasTarget.value ))
+let canLock = Computed(@() ((hasTargetCandidate.get() && !hasTarget.get()) || hasTarget.get() ))
 
 let lockButtonIcon = @(targetTrackingImgSize, targetTrackingOffImgSize) @(){
   watch = [hasTarget, canLock]
@@ -39,7 +39,7 @@ let lockButtonIcon = @(targetTrackingImgSize, targetTrackingOffImgSize) @(){
     ? Picture($"ui/gameuiskin#hud_target_tracking.svg:{targetTrackingImgSize}:{targetTrackingImgSize}")
     : Picture($"ui/gameuiskin#hud_target_tracking_off.svg:{targetTrackingOffImgSize}:{targetTrackingOffImgSize}")
   keepAspect = true
-  color = canLock.value ? imageColor : textDisabledColor
+  color = canLock.get() ? imageColor : textDisabledColor
 }
 
 

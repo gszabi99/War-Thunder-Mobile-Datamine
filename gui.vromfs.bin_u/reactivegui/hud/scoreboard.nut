@@ -8,7 +8,6 @@ let { getBombingZones } = require("guiMission")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -18,10 +17,22 @@ let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType
 let { teamBlueColor, teamRedColor, teamBlueDarkColor, teamRedDarkColor } = require("%rGui/style/teamColors.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { ticketPenaltyReasonAllyLogPlace, ticketPenaltyReasonEnemyLogPlace } = require("%rGui/hudHints/ticketsPenaltyReason.nut")
+let { mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
+let { mkImageWithCount } = require("%rGui/hud/myScores.nut")
+let { mkMissionVar } = require("%rGui/hud/missionVariableState.nut")
+let { playersByTeam, startContinuousUpdate, stopContinuousUpdate } = require("%rGui/mpStatistics/playersByTeamState.nut")
+let { cellTextProps } = require("%rGui/mpStatistics/mpStatsTable.nut")
+
 
 let secondsPerHour = 3600
 let barRatio = 56.0 / 19
 const SCORE_PLATES_TEAM_COUNT = 5
+
+let ffaScoreBoardCfg = {
+  aliveImage = "ui/gameuiskin#selected_icon_tank.svg"
+  killImage = "ui/gameuiskin#tanks_destroyed_icon.svg"
+  killProperty = "groundKills"
+}
 
 let scoreBarPlateHeight = hdpxi(15)
 let scoreBarPlateWidth = (barRatio * scoreBarPlateHeight + 0.5).tointeger()
@@ -38,11 +49,15 @@ let penaltyReasonBlockSize = [hdpx(130), hdpx(60)]
 
 let timerBgColor = 0x4D000000
 
-let localTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
-let enemyTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamA.value : ticketsTeamB.value)
+let timeWarningIconSide = hdpxi(40)
+let aliveAmountIconSide = hdpxi(80)
+
+let localTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamB.get() : ticketsTeamA.get())
+let enemyTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamA.get() : ticketsTeamB.get())
 
 let scoresForOneKill = Computed(@() (scoreLimit.get().tofloat() / SCORE_PLATES_TEAM_COUNT).tointeger())
-let needScoreBoard = Computed(@() (gameType.get() & (GT_MP_SCORE | GT_MP_TICKETS)) != 0)
+let needScoreBoard = Computed(@() (gameType.get() & (GT_MP_SCORE | GT_MP_TICKETS | GT_FFA)) != 0)
+let scoreBoardType = Computed(@() ((gameType.get() & GT_FFA) != 0) ? "ffa" : "common")
 
 let battleBasesRaw = hardPersistWatched("battleBasesRaw",[])
 
@@ -110,8 +125,8 @@ function mkSplitScoreBar(teamName, scale) {
   let padding = max(round(scoreBarPadding * scale).tointeger(), 1)
   let bgSize = [SCORE_PLATES_TEAM_COUNT * (size[0] + gap) - gap + 4 * padding, size[1] + 2 * padding]
 
-  let remainingPlatesCount = Computed(@() scoresForOneKill.value == 0 ? 0
-    : ceil(score.value.tofloat() / scoresForOneKill.value).tointeger())
+  let remainingPlatesCount = Computed(@() scoresForOneKill.get() == 0 ? 0
+    : ceil(score.value.tofloat() / scoresForOneKill.get()).tointeger())
 
   let res = mkScoreBarBg(image, bgSize).__update({
     watch = remainingPlatesCount
@@ -122,7 +137,7 @@ function mkSplitScoreBar(teamName, scale) {
     gap
   })
   return @() res.__merge({
-    children = array(remainingPlatesCount.value,
+    children = array(remainingPlatesCount.get(),
       {
         size
         rendObj = ROBJ_IMAGE
@@ -136,7 +151,7 @@ let ofs = 3.8
 let full = 100.0 - ofs
 function mkLinearScoreBar(teamName, scale) {
   let { score, fillColor, image, halign } = scoreParamsByTeam[teamName]
-  let progress = Computed(@() scoreLimit.value == 0 ? 0 : clamp(score.value.tofloat() / scoreLimit.value, 0.0, 1.0))
+  let progress = Computed(@() scoreLimit.value == 0 ? 0 : clamp(score.value.tofloat() / scoreLimit.get(), 0.0, 1.0))
   let padding = max(round(scoreBarPadding * scale).tointeger(), 1)
   let paddingInc = hdpxi(scale)
   return mkScoreBarBg(image, scaleArr([scoreBarWidth, scoreBarHeight], scale)).__update({
@@ -152,8 +167,8 @@ function mkLinearScoreBar(teamName, scale) {
       rendObj = ROBJ_VECTOR_CANVAS
       commands = [
         halign == ALIGN_RIGHT
-          ? [VECTOR_POLY, 100, 100, full, 0, full - full * progress.value, 0, 100.0 - full * progress.value, 100]
-          : [VECTOR_POLY, 0, 100, ofs, 0, ofs + full * progress.value, 0, full * progress.value, 100]
+          ? [VECTOR_POLY, 100, 100, full, 0, full - full * progress.get(), 0, 100.0 - full * progress.get(), 100]
+          : [VECTOR_POLY, 0, 100, ofs, 0, ofs + full * progress.get(), 0, full * progress.get(), 100]
       ]
     }
   })
@@ -309,19 +324,22 @@ let barCtors = {
   airGS = mkLinearScoreBarWithScore
 }
 
+let scoreBoardBase = {
+  key = "score_board"
+  hplace = ALIGN_CENTER
+  cameraControl = true
+  hotkeys = mkGamepadHotkey(shortcutId)
+  sound = { click = "click" }
+}
+
 let mkScoreBoard = @(scale) function() {
   let barCtor = barCtors?[missionProgressType.get()] ?? mkLinearScoreBar
   let tSize = scaleArr([timerBgWidth, timerBgHeight], scale)
   let font = prettyScaleForSmallNumberCharVariants(fontTiny, scale)
-  return {
-    key = "score_board"
-    watch = [missionProgressType, isInMpBattle, curCampaign]
-    hplace = ALIGN_CENTER
+  return scoreBoardBase.__merge({
+    watch = [missionProgressType, isInMpBattle]
     behavior = isInMpBattle.get() ? Behaviors.Button : null
-    cameraControl = true
     onClick = isInMpBattle.get() ? @() eventbus_send("toggleMpstatscreen", {}) : null
-    hotkeys = mkGamepadHotkey(shortcutId)
-    sound = { click = "click" }
     children = [
       isInMpBattle.get() ? shortcutImg(scale) : null
       {
@@ -348,7 +366,118 @@ let mkScoreBoard = @(scale) function() {
         ]
       }
     ]
+  })
+}
+
+function findLocalPlayerProperty(teams, propertyName, defValue) {
+  foreach (team in teams) {
+    let localP = team.findvalue(@(p) p?.isLocal)
+    if (localP)
+      return localP?[propertyName] ?? defValue
   }
+  return defValue
+}
+
+let mkIcon = @(icon, size, color = 0xFFFFFFFF) {
+  size
+  rendObj = ROBJ_IMAGE
+  color
+  image = Picture($"{icon}:{size[0]}:{size[1]}:P")
+  keepAspect = KEEP_ASPECT_FIT
+}
+
+function mkTimeFFA(fontOvr) {
+  let battleRoyaleZoneTimer = mkMissionVar("BRzoneTimer", 0)
+  return @() {
+    watch = battleRoyaleZoneTimer
+    rendObj = ROBJ_TEXT
+    text = battleRoyaleZoneTimer.get() >= secondsPerHour
+      ? secondsToHoursLoc(battleRoyaleZoneTimer.get())
+      : secondsToTimeSimpleString(battleRoyaleZoneTimer.get())
+  }.__update(fontOvr)
+}
+
+function mkTimeWarningFFA(scale) {
+  let timeWarningIconSize = scaleArr([timeWarningIconSide, timeWarningIconSide], scale)
+  let timeWarningIconActiveSize = scaleArr([round(timeWarningIconSide / 40.0 * 84).tointeger(), timeWarningIconSide], scale)
+  let isBattleRoyaleZoneShrink = mkMissionVar("BRzoneShrink", false)
+  let iconNormal = mkIcon("ui/gameuiskin#hud_danger_timer.svg", timeWarningIconSize)
+  let iconActive = mkIcon("ui/gameuiskin#hud_danger_timer_active.svg", timeWarningIconActiveSize)
+  return @() {
+    watch = isBattleRoyaleZoneShrink
+    size = timeWarningIconSize
+    halign = ALIGN_CENTER
+    children = isBattleRoyaleZoneShrink.get() ? iconActive : iconNormal
+  }
+}
+
+function mkScoreBoardFFA(scale) {
+  let place = Computed(@() findLocalPlayerProperty(playersByTeam.get(), "place", 0))
+  let kills = Computed(@()
+    findLocalPlayerProperty(playersByTeam.get(), ffaScoreBoardCfg.killProperty, 0))
+  let aliveAmount = Computed(@() (playersByTeam.get()?.findvalue(@(_) true) ?? [])
+    .filter(@(p) p != null && (!p.isDead || p.isTemporary))
+    .len())
+
+  let ffaBlockSize = scaleArr([timerBgWidth, timerBgHeight], scale)
+  let aliveAmountIconSize = scaleArr([aliveAmountIconSide, aliveAmountIconSide], scale)
+  let fontTinyScaled = prettyScaleForSmallNumberCharVariants(fontTiny, scale)
+  let fontTinyAccentedScaled = prettyScaleForSmallNumberCharVariants(fontTinyAccented, scale)
+  let fontMonoTinyScaled = prettyScaleForSmallNumberCharVariants(fontMonoTiny, scale)
+
+  return scoreBoardBase.__merge({
+    behavior = Behaviors.Button
+    onClick = @() eventbus_send("toggleMpstatscreen", {})
+    onAttach = startContinuousUpdate
+    onDetach = stopContinuousUpdate
+    children = [
+      shortcutImg(scale)
+      {
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = scaleEven(hdpx(44), scale)
+        children = [
+          @() {
+            watch = aliveAmount
+            size = ffaBlockSize
+            flow = FLOW_HORIZONTAL
+            valign = ALIGN_CENTER
+            halign = ALIGN_RIGHT
+            gap = scaleEven(hdpx(8), scale)
+            margin = scaleArr([0, hdpx(12)], scale)
+            children = [
+              mkIcon(ffaScoreBoardCfg.aliveImage, aliveAmountIconSize, 0xFF999999)
+              cellTextProps.__merge({ text = aliveAmount.get() }, fontTinyAccentedScaled)
+            ]
+          }
+          {
+            size = ffaBlockSize
+            rendObj = ROBJ_SOLID
+            flow = FLOW_HORIZONTAL
+            color = timerBgColor
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            gap = scaleEven(hdpx(8), scale)
+            children = [
+              mkTimeWarningFFA(scale)
+              mkTimeFFA(fontMonoTinyScaled)
+            ]
+          }
+          @() {
+            watch = place
+            size = ffaBlockSize
+            flow = FLOW_HORIZONTAL
+            valign = ALIGN_CENTER
+            halign = ALIGN_LEFT
+            children = [
+              mkPlaceIcon(place.get(), scaleEven(evenPx(100), scale), fontTinyScaled)
+              mkImageWithCount(kills, ffaScoreBoardCfg.killImage, scale)
+            ]
+          }
+        ]
+      }
+    ]
+  })
 }
 
 let scoreBoardEditView = {
@@ -373,11 +502,24 @@ let scoreBoardEditView = {
   ]
 }
 
+let scoreBoardCfgByType = {
+  common = {
+    comp = mkScoreBoard(1)
+    ctor = mkScoreBoard
+    addMyScores = true
+  }
+  ffa = {
+    comp = mkScoreBoardFFA(1)
+    ctor = mkScoreBoardFFA
+  }
+}
+
 
 return {
   needScoreBoard
-  mkScoreBoard
-  scoreBoard = mkScoreBoard(1)
   scoreBoardEditView
   scoreBoardHeight = timerBgHeight
+
+  scoreBoardType
+  scoreBoardCfgByType
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkTabs } = require("%rGui/components/tabs.nut")
-let mkAvailAttrMark = require("mkAvailAttrMark.nut")
+let mkAvailAttrMark = require("%rGui/attributes/mkAvailAttrMark.nut")
 
 let tabH = hdpx(165)
 let contentMargin = hdpx(20)

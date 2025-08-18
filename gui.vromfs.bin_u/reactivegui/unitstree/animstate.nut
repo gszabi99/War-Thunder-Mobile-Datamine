@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { resetTimeout } = require("dagor.workcycle")
-let { unitsResearchStatus, blueprintUnitsStatus, setUnitToScroll } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, blueprintUnitsStatus, setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { needSelectResearch } = require("selectResearchWnd.nut")
+let { needSelectResearch } = require("%rGui/unitsTree/selectResearchWnd.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { maxBuyRequirementsAnimTime, maxResearchRequirementsAnimTime } = require("%rGui/unitsTree/treeAnimConsts.nut")
@@ -31,7 +31,7 @@ local expPartValue = 0
 animUnitAfterResearch.subscribe(function(v) {
   if(v) {
     anim_start($"anim_{v}")
-    resetTimeout(animExpPartDelay, @() animExpPart(1))
+    resetTimeout(animExpPartDelay, @() animExpPart.set(1))
   }
 })
 
@@ -39,16 +39,16 @@ isUnitsTreeOpen.subscribe(function(v){
   if(v && animUnitAfterResearch.get()) {
     if (animUnitAfterResearch.get() in blueprintUnitsStatus.get())
       setUnitToScroll(animUnitAfterResearch.get())
-    animExpPart(expPartValue)
-    resetTimeout(animExpPartDelay, @() animExpPart(1))
+    animExpPart.set(expPartValue)
+    resetTimeout(animExpPartDelay, @() animExpPart.set(1))
   }
 })
 
 let canPlayAnimUnitAfterResearch = Computed(@() animUnitAfterResearch.get() != null && !needDelayAnimation.get())
 needDelayAnimation.subscribe(function(v) {
   if(!v) {
-    animExpPart(expPartValue)
-    resetTimeout(animExpPartDelay, @() animExpPart(1))
+    animExpPart.set(expPartValue)
+    resetTimeout(animExpPartDelay, @() animExpPart.set(1))
   }
 })
 
@@ -87,7 +87,7 @@ function updateUnitsResearchProgress(v) {
     if(v?[key].exp != value?.expStart){
       if(v?[key].isResearched){
         expPartValue = (1.0 * (value?.expStart ?? 0))/(v?[key].reqExp ?? 1)
-        animUnitAfterResearch(key)
+        animUnitAfterResearch.set(key)
       }
       addList.__update({ [key] = { expStart = v?[key].exp } })
     }

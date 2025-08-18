@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/frp.nut" import ComputedImmediate
 let { eventbus_send } = require("eventbus")
-let { sendAppsFlyerEvent } = require("logEvents.nut")
+let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { lastBattles, sharedStats, curCampaign, campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
@@ -15,7 +15,7 @@ let { curStage } = require("%rGui/battlePass/battlePassState.nut")
 
 
 let tutorialResultEvent = keepref(Computed(function() {
-  let mission = tutorialMissions.value?[firstBattleTutor.value]
+  let mission = tutorialMissions.get()?[firstBattleTutor.get()]
   let typeId = curCampaign.value == "ships" ? "ship" : "tank"
   return mission == null || debriefingData.get()?.mission != mission ? null
     : (debriefingData.get()?.isFinished ?? false) ? $"battle_tutorial_{typeId}_complete"
@@ -91,11 +91,11 @@ isLoggedIn.subscribe(function(v) {
   }
 })
 
-let loginCount = keepref(Computed(@() sharedStats.value?.loginDaysCount ?? 0))
+let loginCount = keepref(Computed(@() sharedStats.get()?.loginDaysCount ?? 0))
 loginCount.subscribe(function(count) {
   if (count != 2)
     return
-  let todayFirstLogin = sharedStats.value?.lastLoginDayFirstTime ?? 0
+  let todayFirstLogin = sharedStats.get()?.lastLoginDayFirstTime ?? 0
   if (serverTime.get() - todayFirstLogin <= 60)
     sendAppsFlyerEvent("login_day_2")
 })

@@ -54,7 +54,7 @@ function mkFilterIcon(onClick, iconSize, img) {
     color = 0xFF303030
     behavior = Behaviors.Button
     onClick
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     children = {
       size = [iconSize, iconSize]
@@ -72,7 +72,7 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
     watch = stateFlags
     behavior = Behaviors.Button
     onClick
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(10)
@@ -86,7 +86,7 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
       }.__update(fontTiny)
       customValue
           ? mkCustomCheck(isChecked, hasValues, customValue)
-        : mkCheckIcon(isChecked, hasValues, stateFlags.value & S_ACTIVE ? 0.5 : 1.0, inBoxValue)
+        : mkCheckIcon(isChecked, hasValues, stateFlags.get() & S_ACTIVE ? 0.5 : 1.0, inBoxValue)
     ]
   }
 }

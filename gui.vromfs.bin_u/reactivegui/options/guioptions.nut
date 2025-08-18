@@ -96,21 +96,21 @@ foreach (id in optListLocalScriptOnly)
 
 function mkOptionValueNative(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
-  let value = Watched(isSettingsAvailable.value ? getSaved() : validate(defValue))
+  let value = Watched(isSettingsAvailable.get() ? getSaved() : validate(defValue))
   function updateSaved() {
-    if (!isSettingsAvailable.value || get_gui_option(id) == value.value)
+    if (!isSettingsAvailable.get() || get_gui_option(id) == value.get())
       return
-    set_gui_option(id, value.value)
+    set_gui_option(id, value.get())
     eventbus_send("saveProfile", {})
   }
   updateSaved()
   isSettingsAvailable.subscribe(function(_) {
-    value(getSaved())
+    value.set(getSaved())
     updateSaved()
   })
 
   optionsVersion.subscribe(function(_) {
-    value(validate(defValue))
+    value.set(validate(defValue))
     updateSaved()
   })
 
@@ -120,22 +120,22 @@ function mkOptionValueNative(id, defValue, validate) {
 
 function mkOptionValueScriptOnly(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
-  let value = Watched(isSettingsAvailable.value ? getSaved() : validate(defValue))
+  let value = Watched(isSettingsAvailable.get() ? getSaved() : validate(defValue))
   local isInit = false
   isSettingsAvailable.subscribe(function(_) {
     let v = getSaved()
-    if (value.value == v)
+    if (value.get() == v)
       return
     isInit = true
-    value(v)
+    value.set(v)
   })
 
   optionsVersion.subscribe(function(_) {
     let v = validate(defValue)
-    if (value.value == v)
+    if (value.get() == v)
       return
     isInit = true
-    value(v)
+    value.set(v)
   })
 
   value.subscribe(function(v) {

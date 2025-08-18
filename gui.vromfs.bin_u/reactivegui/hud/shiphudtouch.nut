@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("hudBottomCenter.nut")
+let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
 let { shipSight } = require("%rGui/hud/sight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
+let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { threatRocketsBlock } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 let { isInStrategyMode } = require("%rGui/hudState.nut")
@@ -14,7 +14,7 @@ let { hitIndicator } = require("%rGui/hud/shipHitIndicator.nut")
 return @() {
   watch = isInStrategyMode
   size = flex()
-  children = isInStrategyMode.value
+  children = isInStrategyMode.get()
     ? strategyHud
     : {
       size = saSize

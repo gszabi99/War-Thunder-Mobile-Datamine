@@ -13,8 +13,8 @@ let myInfo = sharedWatched("myInfo", @() {
 return {
   INVALID_USER_ID
   myInfo
-  myUserName = Computed(@() myInfo.value.name)
-  myUserRealName = Computed(@() myInfo.value.realName)
-  myUserId = Computed(@() myInfo.value.userId)
-  myUserIdStr = Computed(@() myInfo.value.userId.tostring())
+  myUserName = Computed(@() myInfo.get().name)
+  myUserRealName = Computed(@() myInfo.get().realName)
+  myUserId = Computed(@() myInfo.get().userId)
+  myUserIdStr = Computed(@() myInfo.get().userId.tostring())
 }

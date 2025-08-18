@@ -3,7 +3,7 @@ let { ceil } = require("math")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { bgCollection } = require("mapEditorState.nut")
+let { bgCollection } = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
 
 let imgSize = evenPx(180)
 let gap = hdpxi(10)

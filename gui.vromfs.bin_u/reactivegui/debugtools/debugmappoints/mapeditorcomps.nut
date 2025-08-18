@@ -3,7 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { optionBtnSize, imgSize, btnBgColorDefault, btnBgColorDisabled, btnImgColor, btnImgColorDisabled
-} = require("mapEditorConsts.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
 
 let mkOptionBtnImg = @(image, ovr = {}) {
   size = [imgSize, imgSize]

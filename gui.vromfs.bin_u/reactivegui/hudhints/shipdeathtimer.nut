@@ -6,7 +6,7 @@ let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 
 let HINT_TYPE = "deathTimer"
 let alert = Color(221, 17, 17)
-let showTimeToDeath = keepref(Computed(@() timeToDeath.value > 0))
+let showTimeToDeath = keepref(Computed(@() timeToDeath.get() > 0))
 
 registerHintCreator(HINT_TYPE, @(_, __) @() {
   flow = FLOW_HORIZONTAL
@@ -25,7 +25,7 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))
       fontFx = FFT_GLOW
-      text = secondsToTimeAbbrString(timeToDeath.value)
+      text = secondsToTimeAbbrString(timeToDeath.get())
       color = alert
     }.__update(fontTiny)
   ]

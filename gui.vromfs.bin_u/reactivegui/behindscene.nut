@@ -41,9 +41,9 @@ function addBehindScene(component, onClearScenes = null, uid = null) {
   let idx = getIdx(id ?? component)
   if (idx != null)
     scenesList.remove(idx)
-  id = id ?? $"_{sceneListGeneration.value}"
+  id = id ?? $"_{sceneListGeneration.get()}"
   scenesList.append({ scene = component, id, onClearScenes })
-  sceneListGeneration(sceneListGeneration.value + 1)
+  sceneListGeneration.set(sceneListGeneration.get() + 1)
   return id
 }
 
@@ -52,13 +52,13 @@ function removeBehindScene(componentOrId) {
   if (idx == null)
     return
   scenesList.remove(idx)
-  sceneListGeneration(sceneListGeneration.value + 1)
+  sceneListGeneration.set(sceneListGeneration.get() + 1)
 }
 
 function clearScenes() {
   let prev = clone scenesList 
   scenesList.clear()
-  sceneListGeneration(sceneListGeneration.value + 1)
+  sceneListGeneration.set(sceneListGeneration.get() + 1)
   foreach (scene in prev)
     scene.onClearScenes?()
 }

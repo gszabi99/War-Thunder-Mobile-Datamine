@@ -117,7 +117,7 @@ function act() {
 
 function spamStart() {
   clearTimer(act)
-  setInterval(1.0 / frequency.value, act)
+  setInterval(1.0 / frequency.get(), act)
   defer(act)
 }
 
@@ -129,18 +129,18 @@ function spamStop() {
 }
 
 isActive.subscribe(@(v) v ? spamStart() : spamStop())
-if (isActive.value)
+if (isActive.get())
   spamStart()
 
 frequency.subscribe(function(_) {
-  if (isActive.value) {
+  if (isActive.get()) {
     spamStop()
     spamStart()
   }
 })
 
-let toggleSpam = @() isActive(!isActive.value)
-let setSpeedMul = @(speedMul = 1.0) frequency(DEFAULT_FREQUENCY * speedMul)
+let toggleSpam = @() isActive.set(!isActive.get())
+let setSpeedMul = @(speedMul = 1.0) frequency.set(DEFAULT_FREQUENCY * speedMul)
 
 register_command(toggleSpam, "hud.debug.spam")
 register_command(setSpeedMul, "hud.debug.spam.set_speed_mul")

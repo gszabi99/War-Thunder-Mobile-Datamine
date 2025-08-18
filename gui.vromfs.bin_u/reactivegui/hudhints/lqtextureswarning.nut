@@ -32,7 +32,7 @@ function lqTexturesWarning(wasShown, showWarning) {
     showWarning(false)
     wasShown(true)
   }
-  let updateShowWarning = @() showWarning(notUploadedHqTextures.value)
+  let updateShowWarning = @() showWarning(notUploadedHqTextures.get())
 
   return {
     watch = [showWarning, wasShown]

@@ -64,7 +64,7 @@ let toggle = @(valueW, sf) @() {
 let toggleWithLabel = @(stateFlags, valueW, children, ovr = {}) @() {
   watch = stateFlags
   behavior = Behaviors.Button
-  onElemState = @(v) stateFlags(v)
+  onElemState = @(v) stateFlags.set(v)
   sound = { click  = "click" }
   onClick = @() valueW(!valueW.get())
   valign = ALIGN_CENTER

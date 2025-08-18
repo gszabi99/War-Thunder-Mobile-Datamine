@@ -14,7 +14,7 @@ let close = @() removeModalWindow(wndUid)
 let gap = hdpx(10)
 
 let benchmarksList = Watched([])
-eventbus_subscribe("benchmarksList", @(msg) benchmarksList(msg.benchmarks))
+eventbus_subscribe("benchmarksList", @(msg) benchmarksList.set(msg.benchmarks))
 
 function byRows(list) {
   if (list.len() == 0)
@@ -37,7 +37,7 @@ function byRows(list) {
 
 let btnStyle = { ovr = { size = const [flex(), hdpx(100)] } }
 function missionsListUi() {
-  let children = [byRows(benchmarksList.value.map(@(b)
+  let children = [byRows(benchmarksList.get().map(@(b)
     textButtonCommon(
       b.name,
       function() {
@@ -46,14 +46,14 @@ function missionsListUi() {
       },
       btnStyle)))
   ]
-  if (benchmarkGameModes.value.len() > 0)
+  if (benchmarkGameModes.get().len() > 0)
     children.append(
       {
         margin = const [hdpx(10), 0, 0, 0]
         rendObj = ROBJ_TEXT
         text = loc("chapters/onlineBenchmark")
       }.__update(fontSmall),
-      byRows(benchmarkGameModes.value.values()
+      byRows(benchmarkGameModes.get().values()
         .sort(@(a, b) a.gameModeId <=> b.gameModeId)
         .map(@(gm) textButtonCommon(
           loc($"gameMode/{gm.name}", gm.name),

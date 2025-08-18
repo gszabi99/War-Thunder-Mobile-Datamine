@@ -5,9 +5,9 @@ let presences = hardPersistWatched("contactPresence", {})
 let squadStatus = hardPersistWatched("contactSquadStatus", {})
 
 let calcStatus = @(presence) presence?.unknown ? null : presence?.online
-let onlineStatusBase = Watched(presences.value.map(calcStatus))
+let onlineStatusBase = Watched(presences.get().map(calcStatus))
 
-let onlineStatus = Computed(@() onlineStatusBase.value.__merge(squadStatus.value))
+let onlineStatus = Computed(@() onlineStatusBase.get().__merge(squadStatus.get()))
 
 let mkUpdatePresences = @(watch) function(newPresences) {
   if (newPresences.len() > 10) { 
@@ -39,7 +39,7 @@ function isContactOnline(userId, onlineStatusVal) {
   return onlineStatusVal?[uid] == true
 }
 
-let mkContactOnlineStatus = @(userId) Computed(@() onlineStatus.value?[userId])
+let mkContactOnlineStatus = @(userId) Computed(@() onlineStatus.get()?[userId])
 
 return {
   presences

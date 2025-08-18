@@ -49,8 +49,8 @@ function mkPage(page, onClick, color) {
   let stateFlags = Watched(0)
   return @() pageContainer(
     [
-      pageText(page, stateFlags.value & S_HOVER ? hoverColor : color)
-      underline(stateFlags.value & S_HOVER ? hoverColor : 0)
+      pageText(page, stateFlags.get() & S_HOVER ? hoverColor : color)
+      underline(stateFlags.get() & S_HOVER ? hoverColor : 0)
     ],
     {
       watch = stateFlags
@@ -58,9 +58,9 @@ function mkPage(page, onClick, color) {
 
       behavior = Behaviors.Button
       sound = { click  = "click" }
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       onClick
-      transform = { scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
+      transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
     })
 }
 
@@ -73,15 +73,15 @@ function arrowBtn(onClick, rotate) {
     size = [pageHeight, pageHeight]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{pageHeight}:{pageHeight}:P")
-    color = stateFlags.value & S_HOVER ? hoverColor : defPageColor
+    color = stateFlags.get() & S_HOVER ? hoverColor : defPageColor
 
     behavior = Behaviors.Button
     sound = { click  = "click" }
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
 
     transform = {
-      scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+      scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
       rotate
     }
     transitions

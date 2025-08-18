@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { userstatRequest, userstatRegisterHandler, userstatDescList
 } = require("%rGui/unlocks/userstat.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { curLbCfg } = require("lbState.nut")
+let { curLbCfg } = require("%rGui/leaderboard/lbState.nut")
 let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
 
 let lbRewardsTypes = ["tillPlaces", "tillPercent"]
@@ -20,7 +20,7 @@ userstatRegisterHandler("GetSeasonRewards", function(result) {
   }
 })
 
-if (userstatDescList.value.len() > 0 && seasonRewards.value == null)
+if (userstatDescList.get().len() > 0 && seasonRewards.get() == null)
   updateSeasonRewards()
 userstatDescList.subscribe(function(v) {
   if (v.len() > 0)
@@ -60,13 +60,13 @@ let lbRewards = Computed(function() {
   return res
 })
 
-let curLbRewards = Computed(@() lbRewards.value?[curLbCfg.get()?.gameMode] ?? [])
+let curLbRewards = Computed(@() lbRewards.get()?[curLbCfg.get()?.gameMode] ?? [])
 
 let curLbTimeRange = Computed(function() {
   let { gameMode = null } = curLbCfg.get()
   if (gameMode == null)
     return null
-  foreach(data in seasonRewards.value?.current ?? [])
+  foreach(data in seasonRewards.get()?.current ?? [])
     if (null != data?.modes.findvalue(@(v) v == gameMode))
       return { start = data?.start, end = data?.end }
   return null
@@ -76,6 +76,6 @@ return {
   lbRewardsTypes
   lbRewards
   curLbRewards
-  hasCurLbRewards = Computed(@() curLbRewards.value.len() > 0)
+  hasCurLbRewards = Computed(@() curLbRewards.get().len() > 0)
   curLbTimeRange
 }

@@ -68,8 +68,8 @@ let unlockedPlatoonUnits = Computed(function() {
   return res
 })
 
-let canBuyUnits = Computed(@() buyUnitsData.value.canBuy)
-let canBuyUnitsStatus = Computed(@() buyUnitsData.value.unitStatus)
+let canBuyUnits = Computed(@() buyUnitsData.get().canBuy)
+let canBuyUnitsStatus = Computed(@() buyUnitsData.get().unitStatus)
 
 function getUnitLockedShortText(unit, status, reqPlayerLevel) {
   if (unit == null || status == null || reqPlayerLevel == null)

@@ -47,18 +47,18 @@ let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr 
     rendObj = ROBJ_SOLID
     color = bgColor
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     xmbNode = {}
     sound = { click  = "click" }
     onClick
-    brightness = stateFlags.value & S_HOVER ? 1.5 : 1
+    brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
     children = [
       pattern
       gradient
       iText.__merge(textOvr)
     ]
 
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }.__update(ovr)
 }
@@ -75,16 +75,16 @@ let mkInfoEllipseButtonCtor = @(borderColor, fillColor) function(onClick, ovr = 
     color = borderColor
     commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     xmbNode = {}
     sound = { click  = "click" }
     onClick
-    brightness = stateFlags.value & S_HOVER ? 1.5 : 1
+    brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
     children = [
       iText.__merge(textOvr)
     ]
 
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }.__update(ovr)
 }
@@ -102,11 +102,11 @@ function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
     size
     rendObj = ROBJ_SOLID
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
     color = 0x28262626
     children = iText.__merge(textOvr)
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.3, easing = Linear }]
   }.__update(ovr)
 }
@@ -121,8 +121,8 @@ function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
     behavior = Behaviors.Button
     onClick
     sound = { click  = "click" }
-    onElemState = @(sf) stateFlags(sf)
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    onElemState = @(sf) stateFlags.set(sf)
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = [
       {
@@ -130,7 +130,7 @@ function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
         rendObj = ROBJ_BOX
         fillColor = 0x70000000
         borderWidth = hdpx(1)
-        borderColor = stateFlags.value & S_ACTIVE ? hoverColor : 0xFFFFFFFF
+        borderColor = stateFlags.get() & S_ACTIVE ? hoverColor : 0xFFFFFFFF
         transform = { rotate = 45 }
       }
       iText.__merge(textOvr)
@@ -160,7 +160,7 @@ function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
     commands = [
       [VECTOR_ELLIPSE, 50, 50, 50, 50],
     ]
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     children = [
       {
         rendObj = ROBJ_TEXT

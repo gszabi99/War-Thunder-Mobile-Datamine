@@ -142,6 +142,8 @@ let nickFrames = {
   feathers = @(n) $"⛨{n}⛩"
   roach_tomahawk = @(n) $"⛦{n}⛧"
   drums = @(n) $"⛪{n}⛫"
+  snail_cake = @(n) $"⛬{n}⛭"
+  wreath_2 = @(n) $"⛮{n}⛮"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

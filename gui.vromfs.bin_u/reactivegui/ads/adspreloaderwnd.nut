@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isLoaded } = require("adsState.nut")
-let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWndParams } = require("adsInternalState.nut")
+let { isLoaded } = require("%rGui/ads/adsState.nut")
+let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")

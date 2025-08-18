@@ -7,8 +7,8 @@ let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
 let { mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates, calcOverloadInfo
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
-let { sendPlayerActivityToServer } = require("playerActivity.nut")
-let { selSlot, hasRespawnSeparateSlots, curUnitsAvgCostWp } = require("respawnState.nut")
+let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
+let { selSlot, hasRespawnSeparateSlots, curUnitsAvgCostWp } = require("%rGui/respawn/respawnState.nut")
 
 
 let selectedBeltWeaponId = Watched(null)
@@ -20,8 +20,10 @@ let selectedWCardIdx = Watched(null)
 let isSecondaryWeapChoiceOpened = Computed(@() selectedWSlotIdx.get() != null)
 let canShowChooseBulletWnd = Computed(@() selectedWSlotIdx.get() != null || selectedBeltWeaponId.get() != null)
 
-let curUnit = Computed(@() hasRespawnSeparateSlots.get() && canShowChooseBulletWnd.get() ? selSlot.get() : null)
+let selSlotUnit = keepref(Computed(@() hasRespawnSeparateSlots.get() && canShowChooseBulletWnd.get() ? selSlot.get() : null))
+let curUnit = Watched(selSlotUnit.get())
 let unitName = Computed(@() curUnit.get()?.name)
+selSlotUnit.subscribe(@(v) v ? curUnit.set(v) : null)
 let curMods = Computed(@() curUnit.get()?.mods)
 let curModPresetCfg = Computed(@() curUnit.get()?.modPresetCfg)
 let curUnitAllModsCost = Computed(function() {
@@ -122,6 +124,10 @@ let selectedBeltCard = Computed(@() beltCards.get()?[selectedBeltCardIdx.get()])
 let selectedBeltCardStates = mkWeaponStates(selectedBeltCard, curModPresetCfg, curUnit)
 
 function closeWnd() {
+  let { overloads = [] } = overloadInfo.get()
+  if (overloads.len() != 0)
+    fixCurPresetOverload()
+  curUnit.set(null)
   selectedWSlotIdx.set(null)
   selectedWCardIdx.set(null)
   selectedBeltWeaponId.set(null)
@@ -189,7 +195,7 @@ function applyBelt(weaponId, beltId) {
 }
 
 function selectWeaponCard(slotIdx) {
-  selectedWCardIdx.set(slotIdx == selectedWCardIdx.get() ? null : slotIdx)
+  selectedWCardIdx.set(slotIdx)
   sendPlayerActivityToServer()
 }
 
@@ -199,14 +205,14 @@ function selectBeltCard(slotIdx) {
 }
 
 function selectWeaponSlot(slotIdx) {
-  closeWnd()
+  sendPlayerActivityToServer()
   selectedWSlotIdx.set(slotIdx)
   let currentCardWName = selectedSlotWeaponName.get()
   selectWeaponCard(wCards.get()?.findindex(@(wc) wc.name == currentCardWName) ?? 0)
 }
 
 function selectBeltSlot(weaponId) {
-  closeWnd()
+  sendPlayerActivityToServer()
   selectedBeltWeaponId.set(weaponId)
   let currentCardBeltId = selectedBeltSlot.get()?.equipped.id ?? ""
   selectBeltCard(beltCards.get()?.findindex(@(bc) bc.id == currentCardBeltId) ?? 0)

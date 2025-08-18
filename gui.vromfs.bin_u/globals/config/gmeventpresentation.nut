@@ -22,6 +22,11 @@ let allPresentations = {
     bgImage = "ui/images/pirates/map_border_table.avif"
     bgMapImage = "ui/images/pirates/map_border_2.avif"
   }
+
+  anniversary_2025 = {
+    image = "ui/gameuiskin#icon_event_anniversary_2025.svg"
+    bgImage = "ui/images/event_bg_anniversary_2025.avif"
+  }
 }
   .map(@(cfg, id) defCfg.__merge(cfg, { id }))
 

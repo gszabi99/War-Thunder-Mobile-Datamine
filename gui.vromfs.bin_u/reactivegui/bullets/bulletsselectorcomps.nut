@@ -7,8 +7,8 @@ let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText } = require("%rGui/wea
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { saveSeenShells } = require("%rGui/respawn/respawnState.nut")
-let getBulletStats = require("bulletStats.nut")
-let mkBulletSlot = require("mkBulletSlot.nut")
+let getBulletStats = require("%rGui/bullets/bulletStats.nut")
+let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
 
 
 let bgSlotColor = 0xFF51C1D1
@@ -152,10 +152,10 @@ let mkBulletButton = kwarg(function mkBtn(
       children = [
         @() mkBulletSlot(chosenBullets, bSet, fromUnitTags,
           {
-            color = isCurrent.value ? 0xFF51C1D1 : 0x402C2C2C
-            opacity = isLockedSlot.value ? 0.5 : 1
-            rendObj = isCurrent.value ? ROBJ_IMAGE : ROBJ_SOLID
-            image = isCurrent.value ? slotBGImage() : null
+            color = isCurrent.get() ? 0xFF51C1D1 : 0x402C2C2C
+            opacity = isLockedSlot.get() ? 0.5 : 1
+            rendObj = isCurrent.get() ? ROBJ_IMAGE : ROBJ_SOLID
+            image = isCurrent.get() ? slotBGImage() : null
           }, {
             key = $"{name}_icon" 
           }, {
@@ -167,12 +167,12 @@ let mkBulletButton = kwarg(function mkBtn(
           size = const [hdpx(9), flex()]
           rendObj = ROBJ_IMAGE
           image = lineGradient()
-          opacity = isCurrent.value ? 1 : 0
+          opacity = isCurrent.get() ? 1 : 0
           transitions = opacityTransition
           hplace = id % 2 != 0 ? ALIGN_RIGHT : ALIGN_LEFT
           pos = [id % 2 != 0 ? hdpx(15) : hdpx(-15), 0]
         }
-        isLockedSlot.value
+        isLockedSlot.get()
           ? {
             rendObj = ROBJ_IMAGE
             pos = [0, -hdpx(5)]
@@ -193,7 +193,7 @@ let mkBulletButton = kwarg(function mkBtn(
           watch = isLockedSlot
           size = const [flex(), hdpx(108)]
           rendObj = ROBJ_BOX
-          borderWidth = isLockedSlot.value ? 0 : hdpxi(4)
+          borderWidth = isLockedSlot.get() ? 0 : hdpxi(4)
         }
       ]
     }

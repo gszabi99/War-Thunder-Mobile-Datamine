@@ -172,7 +172,7 @@ return function() {
     padding = const [0, 0, hdpx(40), 0]
     flow = FLOW_VERTICAL
     gap = hdpx(20)
-    children = campaignsList.value
+    children = campaignsList.get()
       .map(@(v) mkInfo(v, unitsStats))
   }
 }

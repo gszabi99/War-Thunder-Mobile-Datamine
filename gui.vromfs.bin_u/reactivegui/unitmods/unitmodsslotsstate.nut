@@ -11,8 +11,8 @@ let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
 } = require("%rGui/unit/unitSettings.nut")
-let { mkUnitAllModsCost, getModCurrency, getModCost, hasEnoughCurrencies } = require("unitModsState.nut")
-let { getEquippedWeapon, getEqippedWithoutOverload, hasConflictWeapons } = require("equippedSecondaryWeapons.nut")
+let { mkUnitAllModsCost, getModCurrency, getModCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
+let { getEquippedWeapon, getEqippedWithoutOverload, hasConflictWeapons } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 
 
 let WS_SEEN_AVAILABLE = true

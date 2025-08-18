@@ -84,7 +84,7 @@ function handleMessages(msg) {
       if ("removed" in result)
         logerr($"Not empty removed field on full profile update on '{msg?.method}'")
       servProfile(result)
-      lastProfileKeysUpdated(result
+      lastProfileKeysUpdated.set(result
         .map(@(v, k) type(v) == "table" && k != "configs")
         .filter(@(v) v))
     }
@@ -115,7 +115,7 @@ function handleMessages(msg) {
         }
       if (updatedKeys.len() != 0) {
         servProfile(newProfile)
-        lastProfileKeysUpdated(updatedKeys)
+        lastProfileKeysUpdated.set(updatedKeys)
       }
     }
 

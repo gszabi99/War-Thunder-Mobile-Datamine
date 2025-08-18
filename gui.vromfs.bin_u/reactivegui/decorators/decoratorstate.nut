@@ -10,33 +10,33 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let isDecoratorsSceneOpened = mkWatched(persist, "isDecoratorsSceneOpened", false)
 let isShowAllDecorators = mkWatched(persist, "isShowAllDecorators", false)
 
-let allDecorators = Computed(@() campConfigs.value?.allDecorators ?? {})
-let myDecorators = Computed(@() decorators.value?.filter(@(d) d.name in allDecorators.value) ?? {})
+let allDecorators = Computed(@() campConfigs.get()?.allDecorators ?? {})
+let myDecorators = Computed(@() decorators.get()?.filter(@(d) d.name in allDecorators.get()) ?? {})
 
-let allTitles = Computed(@() allDecorators.value?.filter(@(dec) dec.dType == "title") ?? {})
-let allFrames = Computed(@() allDecorators.value?.filter(@(dec) dec.dType == "nickFrame") ?? {})
-let allAvatars = Computed(@() allDecorators.value?.filter(@(dec) dec.dType == "avatar") ?? {})
+let allTitles = Computed(@() allDecorators.get()?.filter(@(dec) dec.dType == "title") ?? {})
+let allFrames = Computed(@() allDecorators.get()?.filter(@(dec) dec.dType == "nickFrame") ?? {})
+let allAvatars = Computed(@() allDecorators.get()?.filter(@(dec) dec.dType == "avatar") ?? {})
 
-let availTitles = Computed(@() decorators.value?.filter(@(frame) frame.name in allTitles.value) ?? {})
-let availNickFrames = Computed(@() decorators.value?.filter(@(frame) frame.name in allFrames.value) ?? {})
-let availAvatars = Computed(@() decorators.value?.filter(@(avatar) avatar.name in allAvatars.value) ?? {})
+let availTitles = Computed(@() decorators.get()?.filter(@(frame) frame.name in allTitles.get()) ?? {})
+let availNickFrames = Computed(@() decorators.get()?.filter(@(frame) frame.name in allFrames.get()) ?? {})
+let availAvatars = Computed(@() decorators.get()?.filter(@(avatar) avatar.name in allAvatars.get()) ?? {})
 
 let ignoreUnseenDecoratorsList = hardPersistWatched("ignoreUnseenDecoratorsList", {})
-let unseenDecorators = Computed(@() myDecorators.value.filter(@(d) !d.wasSeen &&
-  d.name not in ignoreUnseenDecoratorsList.value))
-let hasUnseenDecorators = Computed(@() unseenDecorators.value.len() != 0)
+let unseenDecorators = Computed(@() myDecorators.get().filter(@(d) !d.wasSeen &&
+  d.name not in ignoreUnseenDecoratorsList.get()))
+let hasUnseenDecorators = Computed(@() unseenDecorators.get().len() != 0)
 
-let chosenTitle = Computed(@() availTitles.value.findvalue(@(v) v.isCurrent))
-let chosenNickFrame = Computed(@() availNickFrames.value.findvalue(@(v) v.isCurrent))
-let chosenAvatar = Computed(@() availAvatars.value.findvalue(@(v) v.isCurrent))
+let chosenTitle = Computed(@() availTitles.get().findvalue(@(v) v.isCurrent))
+let chosenNickFrame = Computed(@() availNickFrames.get().findvalue(@(v) v.isCurrent))
+let chosenAvatar = Computed(@() availAvatars.get().findvalue(@(v) v.isCurrent))
 
 let chosenDecoratorsHash = Computed(@() (chosenTitle.get()?.name ?? "").hash() + (chosenNickFrame.get()?.name ?? "").hash() + (chosenAvatar.get()?.name ?? "").hash())
 
-let myNameWithFrame = Computed(@() frameNick(myUserName.value, chosenNickFrame.value?.name))
-let myAvatarImage = Computed(@() getAvatarImage(chosenAvatar.value?.name))
+let myNameWithFrame = Computed(@() frameNick(myUserName.get(), chosenNickFrame.get()?.name))
+let myAvatarImage = Computed(@() getAvatarImage(chosenAvatar.get()?.name))
 
 function markDecoratorsSeen(names) {
-  let unseenNames = names.filter(@(name) name in unseenDecorators.value)
+  let unseenNames = names.filter(@(name) name in unseenDecorators.get())
   if (unseenNames.len() == 0)
     return
   ignoreUnseenDecoratorsList.mutate(@(v) unseenNames.each(@(name) v[name] <- true))
@@ -46,21 +46,21 @@ function markDecoratorsSeen(names) {
 function markDecoratorSeen(name) {
   if (!name)
     return
-  if (name in unseenDecorators.value) {
+  if (name in unseenDecorators.get()) {
     ignoreUnseenDecoratorsList.mutate(@(v) v[name] <- true)
     mark_decorators_seen([name])
   }
 }
 
-register_command(@() mark_decorators_seen(allDecorators.value.keys(), "consolePrintResult")
+register_command(@() mark_decorators_seen(allDecorators.get().keys(), "consolePrintResult")
   "meta.mark_all_decorators_seen")
-register_command(@() mark_decorators_unseen(allDecorators.value.keys(), "consolePrintResult")
+register_command(@() mark_decorators_unseen(allDecorators.get().keys(), "consolePrintResult")
   "meta.mark_all_decorators_unseen")
-register_command(@() isShowAllDecorators(!isShowAllDecorators.value), "meta.show_all_decorators")
+register_command(@() isShowAllDecorators.set(!isShowAllDecorators.get()), "meta.show_all_decorators")
 
 return {
   isDecoratorsSceneOpened
-  openDecoratorsScene = @() isDecoratorsSceneOpened(true)
+  openDecoratorsScene = @() isDecoratorsSceneOpened.set(true)
   isShowAllDecorators
 
   allDecorators

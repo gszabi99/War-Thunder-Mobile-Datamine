@@ -71,13 +71,13 @@ function getSizes(scale) {
 
 let idleTimeForThrottleOpacity = 5
 let needOpacityThrottle = Watched(false)
-let makeOpacityThrottle = @() needOpacityThrottle(true)
+let makeOpacityThrottle = @() needOpacityThrottle.set(true)
 let showModelName = Watched(false)
 let SHOW_MODEL_NAME_TIMEOUT = 7.0
 let isThrottleDisabled = mkIsControlDisabled("throttle")
 
 let throttleAxisVal = Watched(0)
-let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.value) > throttleDeadZone))
+let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.get()) > throttleDeadZone))
 
 let knobColor = Color(230, 230, 230, 230)
 
@@ -122,18 +122,18 @@ let throttleHintMaxCount = 5
 let throttleHintDelay = 20
 let throttleHintCount = Watched(0)
 
-isInBattle.subscribe(@(_) throttleHintCount(0))
+isInBattle.subscribe(@(_) throttleHintCount.set(0))
 
 function showIncreaseThrottleHint() {
   send("hint:air_increase_throttle", {})
-  throttleHintCount(throttleHintCount.value + 1)
-  if (throttleHintCount.value < throttleHintMaxCount)
+  throttleHintCount.set(throttleHintCount.get() + 1)
+  if (throttleHintCount.get() < throttleHintMaxCount)
     resetTimeout(throttleHintDelay, showIncreaseThrottleHint)
 }
 
 function changeThrottleValue(val) {
   val = clamp(val, sliderWepValue, maxThrottle)
-  needOpacityThrottle(false)
+  needOpacityThrottle.set(false)
   resetTimeout(idleTimeForThrottleOpacity, makeOpacityThrottle)
 
   let axisVal = sliderToThrottleAxisValue(val).tofloat()
@@ -143,9 +143,9 @@ function changeThrottleValue(val) {
   setVirtualAxisValue("throttle", axisVal <= 0 ? -1 : 0)
   if (axisVal >= wepAxisValue)
     setShortcutOn("throttle_rangeMax")
-  sliderValue(val)
+  sliderValue.set(val)
   playHapticPattern(HAPT_THROTTLE)
-  if (throttleHintCount.value < throttleHintMaxCount && maxThrottle - val < throttleHitThreshold)
+  if (throttleHintCount.get() < throttleHintMaxCount && maxThrottle - val < throttleHitThreshold)
     resetTimeout(throttleHintDelay, showIncreaseThrottleHint)
   else
     clearTimer(showIncreaseThrottleHint)
@@ -163,12 +163,12 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
 }
 
 let btnImageThrottleInc = mkGamepadHotkey(axisMinToHotkey(throttle_axis),
-  Computed(@() sliderValue.value > sliderWepValue),
-  Computed(@() isThrottleAxisActive.value && throttleAxisVal.value > 0),
+  Computed(@() sliderValue.get() > sliderWepValue),
+  Computed(@() isThrottleAxisActive.value && throttleAxisVal.get() > 0),
   { hplace = ALIGN_RIGHT, pos = [pw(90), 0] })
 let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
-  Computed(@() sliderValue.value < maxThrottle),
-  Computed(@() isThrottleAxisActive.value && throttleAxisVal.value < 0),
+  Computed(@() sliderValue.get() < maxThrottle),
+  Computed(@() isThrottleAxisActive.value && throttleAxisVal.get() < 0),
   { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(90), 0] })
 
 let isStateVisible = @(state) state == ON
@@ -303,7 +303,7 @@ let throttleSlider = kwarg(@(height, scaleWidth, knobSize, knobPadding, sliderPa
     unit = stepThrottle
     orientation = O_VERTICAL
     opacity = isThrottleDisabled.get() ? 0.2
-      : needOpacityThrottle.value ? 0.5
+      : needOpacityThrottle.get() ? 0.5
       : 1.0
 
     transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = Linear }]
@@ -344,15 +344,15 @@ let throttleSlider = kwarg(@(height, scaleWidth, knobSize, knobPadding, sliderPa
       btnImageThrottleDec
     ]
     function onAttach() {
-      resetTimeout(0.1, @() sliderValue(throttleToSlider(Trt0.get())))
-      needOpacityThrottle(true)
+      resetTimeout(0.1, @() sliderValue.set(throttleToSlider(Trt0.get())))
+      needOpacityThrottle.set(true)
     }
     onChange = !isThrottleDisabled.get() ? changeThrottleValue : null
   }
 })
 
 eventbus_subscribe("throttleFromMission", function(msg) {
-  sliderValue(throttleToSlider(msg.value * 100))
+  sliderValue.set(throttleToSlider(msg.value * 100))
   if (msg.value > wepAxisValue)
     setShortcutOn("throttle_rangeMax")
   else
@@ -465,14 +465,14 @@ function applyGravityUp(val, setAxesFunc, aileronsDeadZone, aileronsSensitivity,
 function makeGravityListenerMap(setAxesFunc) {
   return {
     [shortcutsMap.imuAxes.gravityLeft]    = @(v) applyGravityLeft   ( v, setAxesFunc,
-      currentControlByGyroModeAileronsDeadZone.value, currentControlByGyroModeAileronsSensitivity.value,
-      currentControlByGyroModeElevatorDeadZone.value, currentControlByGyroModeElevatorSensitivity.value),
+      currentControlByGyroModeAileronsDeadZone.get(), currentControlByGyroModeAileronsSensitivity.get(),
+      currentControlByGyroModeElevatorDeadZone.get(), currentControlByGyroModeElevatorSensitivity.get()),
     [shortcutsMap.imuAxes.gravityForward] = @(v) applyGravityForward(-v, setAxesFunc,
-      currentControlByGyroModeAileronsDeadZone.value, currentControlByGyroModeAileronsSensitivity.value,
-      currentControlByGyroModeElevatorDeadZone.value, currentControlByGyroModeElevatorSensitivity.value),
+      currentControlByGyroModeAileronsDeadZone.get(), currentControlByGyroModeAileronsSensitivity.get(),
+      currentControlByGyroModeElevatorDeadZone.get(), currentControlByGyroModeElevatorSensitivity.get()),
     [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, setAxesFunc,
-      currentControlByGyroModeAileronsDeadZone.value, currentControlByGyroModeAileronsSensitivity.value,
-      currentControlByGyroModeElevatorDeadZone.value, currentControlByGyroModeElevatorSensitivity.value)
+      currentControlByGyroModeAileronsDeadZone.get(), currentControlByGyroModeAileronsSensitivity.get(),
+      currentControlByGyroModeElevatorDeadZone.get(), currentControlByGyroModeElevatorSensitivity.get())
   }
 }
 
@@ -674,7 +674,7 @@ let aircraftMovement = @(scale) {
       watch = [ currentAircraftCtrlType, currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
         currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive]
       children = [
-        getImuAxesListener(currentAircraftCtrlType.value, currentControlByGyroAimMode.value, currentControlByGyroModeAileronsAssist.value, currentControlByGyroDirectControl.value),
+        getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroModeAileronsAssist.get(), currentControlByGyroDirectControl.get()),
         isGamepad.get() && !isPieMenuActive.get() ? mkGamepadAxisListener() : null
       ]
     }
@@ -714,14 +714,14 @@ function mkEditView() {
 
 let aircraftMovementEditView = mkEditView()
 
-let showModelNameOff = @() showModelName(false)
+let showModelNameOff = @() showModelName.set(false)
 
 playerUnitName.subscribe(function(_) {
-  if (unitType.value != AIR) {
-    showModelName(false)
+  if (unitType.get() != AIR) {
+    showModelName.set(false)
     return
   }
-  showModelName(true)
+  showModelName.set(true)
   resetTimeout(SHOW_MODEL_NAME_TIMEOUT, showModelNameOff)
 })
 resetTimeout(SHOW_MODEL_NAME_TIMEOUT, showModelNameOff)
@@ -742,12 +742,12 @@ function aircraftIndicators(scale) {
     flow = FLOW_VERTICAL
     gap = hdpx(5 * scale)
     children = [
-      @() !showModelName.value ? { watch = showModelName }
+      @() !showModelName.get() ? { watch = showModelName }
       : {
           watch = [showModelName, playerUnitName]
           rendObj = ROBJ_TEXT
           color = neutralColor
-          text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
+          text = loc($"{playerUnitName.get()}_1", loc(playerUnitName.get()))
         }.__update(font)
       @() {
         watch = IsSpdCritical
@@ -821,7 +821,7 @@ let aircraftIndicatorsEditView = {
 }
 
 let outlineColor = Watched(0x4D4D4D4D)
-let isAircraftMoveArrowsAvailable = Computed(@() currentAdditionalFlyControls.value)
+let isAircraftMoveArrowsAvailable = Computed(@() currentAdditionalFlyControls.get())
 let toInt = @(list) list.map(@(v) v.tointeger())
 let horSize = toInt([shHud(9), shHud(12)])
 let verSizeBase = toInt([shHud(12), shHud(10)])

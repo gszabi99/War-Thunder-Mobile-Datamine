@@ -10,7 +10,7 @@ let { setAxisValue, toggleShortcut } = require("%globalScripts/controls/shortcut
 let { wishDist, waterDist, periscopeDepthCtrl, deadZoneDepth, maxControlDepth } = require("%rGui/hud/shipState.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
+let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
 
 
 let markStep = 5
@@ -20,8 +20,8 @@ let knobColor = Color(230, 230, 230, 230)
 
 let isDepthIncPushed = Watched(false)
 let isDepthDecPushed = Watched(false)
-let depthChangeDir = Computed(@() isDepthIncPushed.value == isDepthDecPushed.value ? 0
-  : isDepthIncPushed.value ? 1
+let depthChangeDir = Computed(@() isDepthIncPushed.get() == isDepthDecPushed.get() ? 0
+  : isDepthIncPushed.get() ? 1
   : -1)
 
 let periscopSize = [hdpxi(70), hdpxi(50)]
@@ -38,17 +38,17 @@ function getSizes(scale) {
 
 local updateCount = 0
 function depthValueUpdate() {
-  if (depthChangeDir.value == 0 || periscopeDepthCtrl.value == 0) {
+  if (depthChangeDir.get() == 0 || periscopeDepthCtrl.value == 0) {
     updateCount = 0
     return
   }
-  let curDepth = wishDist.value * maxControlDepth.value
-  let newDepth = clamp(curDepth + markStep * depthChangeDir.value, periscopeDepthCtrl.value, maxControlDepth.value)
+  let curDepth = wishDist.get() * maxControlDepth.get()
+  let newDepth = clamp(curDepth + markStep * depthChangeDir.get(), periscopeDepthCtrl.get(), maxControlDepth.get())
   if (curDepth == newDepth) {
     updateCount = 0
     return
   }
-  setAxisValue("submarine_depth", newDepth.tofloat() / maxControlDepth.value)
+  setAxisValue("submarine_depth", newDepth.tofloat() / maxControlDepth.get())
   resetTimeout(depthRepeatTimes?[updateCount++] ?? depthRepeatTimes.top(), depthValueUpdate)
 }
 
@@ -86,15 +86,15 @@ function mkMarksOfDepthTexts(countOfMarks, scale) {
   }
 }
 
-let isDeeperThanPeriscopeDepth = Computed(@() waterDist.value.tointeger() > periscopeDepthCtrl.value.tointeger())
-let isNotOnTheSurface = Computed(@() waterDist.value.tointeger() > periscopeDepthCtrl.value.tofloat() / 2)
+let isDeeperThanPeriscopeDepth = Computed(@() waterDist.get().tointeger() > periscopeDepthCtrl.get().tointeger())
+let isNotOnTheSurface = Computed(@() waterDist.get().tointeger() > periscopeDepthCtrl.get().tofloat() / 2)
 
 let isControlDepthAllowed = Computed(function(prev) {
-  let wishDepth = wishDist.value * maxControlDepth.value
-  let periscopeDepth = periscopeDepthCtrl.value.tofloat() * 0.7 - 1.0
-  if (waterDist.value >= periscopeDepth && wishDepth >= periscopeDepthCtrl.value)
+  let wishDepth = wishDist.get() * maxControlDepth.get()
+  let periscopeDepth = periscopeDepthCtrl.get().tofloat() * 0.7 - 1.0
+  if (waterDist.get() >= periscopeDepth && wishDepth >= periscopeDepthCtrl.get())
     return true
-  if (wishDepth < periscopeDepthCtrl.value)
+  if (wishDepth < periscopeDepthCtrl.get())
     return false
   return prev == FRP_INITIAL ? false : prev
 })
@@ -111,19 +111,19 @@ function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, scale, ovr) {
         key = imageComp
         vplace = ALIGN_CENTER
         children = isVisible.value && isGamepad.get() ? imageComp : null
-        transform = { scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1.0, 1.0] }
+        transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1.0, 1.0] }
         transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
       })
 }
 
 let btnImageDepthInc = @(scale) mkGamepadShortcutImg("submarine_depth_inc",
   isDepthIncPushed,
-  Computed(@() fabs(wishDist.value - 1) > 0.01),
+  Computed(@() fabs(wishDist.get() - 1) > 0.01),
   scale,
   { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(50)] })
 let btnImageDepthDec = @(scale) mkGamepadShortcutImg("submarine_depth_dec",
   isDepthDecPushed,
-  Computed(@() fabs(wishDist.value * maxControlDepth.value - periscopeDepthCtrl.value) > 0.01),
+  Computed(@() fabs(wishDist.get() * maxControlDepth.get() - periscopeDepthCtrl.get()) > 0.01),
   scale,
   { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(-50)] })
 
@@ -132,12 +132,12 @@ function mkDepthSlider(scale) {
   let inc = btnImageDepthInc(scale)
   let dec = btnImageDepthDec(scale)
   return function() {
-    let minVal = maxControlDepth.value > 0 ? periscopeDepthCtrl.value / maxControlDepth.value : 0.0
-    let deadZoneVal = maxControlDepth.value > 0 ? deadZoneDepth.value / maxControlDepth.value : 0.0
-    let countOfMarks = max(maxControlDepth.value / markStep, 2).tointeger()
-    let firstMark = (deadZoneDepth.value / markStep).tointeger()
+    let minVal = maxControlDepth.get() > 0 ? periscopeDepthCtrl.get() / maxControlDepth.get() : 0.0
+    let deadZoneVal = maxControlDepth.get() > 0 ? deadZoneDepth.get() / maxControlDepth.get() : 0.0
+    let countOfMarks = max(maxControlDepth.get() / markStep, 2).tointeger()
+    let firstMark = (deadZoneDepth.get() / markStep).tointeger()
 
-    let wishDistClamped = clamp(wishDist.value, minVal, 1.0)
+    let wishDistClamped = clamp(wishDist.get(), minVal, 1.0)
 
     let knob = {
       vplace = ALIGN_CENTER
@@ -156,7 +156,7 @@ function mkDepthSlider(scale) {
       size = [fullWidth, height]
       padding = sliderPadding
       behavior = Behaviors.Slider
-      fValue = wishDist.value
+      fValue = wishDist.get()
       knob = knob
       min = minVal
       max = 1.0
@@ -184,7 +184,7 @@ function mkDepthSlider(scale) {
         mkMarksOfDepthTexts(countOfMarks, scale)
       ]
       onChange = function(val) {
-        if (!isDeeperThanPeriscopeDepth.value && wishDist.value == 0) {
+        if (!isDeeperThanPeriscopeDepth.get() && wishDist.value == 0) {
           toggleShortcut("ID_DIVING_LOCK")
           updateActionBarDelayed()
         } else {
@@ -202,7 +202,7 @@ function depthSliderBlock(scale) {
   let depthSlider = mkDepthSlider(scale)
   return @() {
     watch = isControlDepthAllowed
-    opacity = isControlDepthAllowed.value ? 1 : 0.3
+    opacity = isControlDepthAllowed.get() ? 1 : 0.3
     children = depthSlider
     transitions = [
       { prop = AnimProp.opacity, duration = 0.5, easing = InOutQuad }

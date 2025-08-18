@@ -55,12 +55,12 @@ function getMaxAttrLevelData(attr, fromLevel, availSp) {
 }
 
 function setAttribute(catId, attrId, value) {
-  selAttributes(selAttributes.get().__merge({
+  selAttributes.set(selAttributes.get().__merge({
     [catId] = (selAttributes.get()?[catId] ?? {}).__merge({
       [attrId] = value
     })
   }))
-  lastModifiedAttr(attrId)
+  lastModifiedAttr.set(attrId)
 }
 
 let getSpCostText = @(val) $"⋥{val}"

@@ -20,18 +20,18 @@ let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let AUTH_TAG_REQUEST_TIME = 60
 let MAX_ATTEMPTS_TO_UPDATE_TAGS = 3
 
-let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
-  || authTags.value.contains("firebaselogin"))
+let isGuestLoginBase = Computed(@() authTags.get().contains("guestlogin")
+  || authTags.get().contains("firebaselogin"))
 let isDebugGuestLogin = mkWatched(persist, "isDebugGuestLogin", false)
-let isGuestLogin = Computed(@() isGuestLoginBase.value != isDebugGuestLogin.value)
-let needVerifyEmailBase = Computed(@() !isGuestLogin.value
+let isGuestLogin = Computed(@() isGuestLoginBase.get() != isDebugGuestLogin.get())
+let needVerifyEmailBase = Computed(@() !isGuestLogin.get()
   && isContactsReceived.get()
   && accountLink.get() == null
-  && !authTags.value.contains("email_verified")
-  && !(authTags.value.contains("gplogin") || authTags.value.contains("applelogin")
-        || authTags.value.contains("fblogin") || authTags.value.contains("hwlogin")))
+  && !authTags.get().contains("email_verified")
+  && !(authTags.get().contains("gplogin") || authTags.get().contains("applelogin")
+        || authTags.get().contains("fblogin") || authTags.get().contains("hwlogin")))
 let isDebugVerifyEmail = mkWatched(persist, "isDebugVerifyEmail", false)
-let needVerifyEmail = Computed(@() needVerifyEmailBase.value != isDebugVerifyEmail.value)
+let needVerifyEmail = Computed(@() needVerifyEmailBase.get() != isDebugVerifyEmail.get())
 let needCheckRelogin = hardPersistWatched("guest.needCheckRelogin", false)
 let attemptsToUpdateTags = hardPersistWatched("guest.attemptsToUpdateTags", 0)
 let isDelayedUpdateTagsActive = hardPersistWatched("guest.isDelayedUpdateTagsActive", false)
@@ -139,15 +139,15 @@ function onGuestTagsUpdateWithWaiting() {
 }
 
 eventbus_subscribe("onRenewAuthToken", function(_) {
-  authTags(get_player_tags())
-  isDebugGuestLogin(false)
-  logGuest($"onRenewAuthToken. isGuestLogin = {isGuestLogin.value}, Tags = ", authTags.value)
+  authTags.set(get_player_tags())
+  isDebugGuestLogin.set(false)
+  logGuest($"onRenewAuthToken. isGuestLogin = {isGuestLogin.get()}, Tags = ", authTags.get())
   onGuestTagsUpdateWithWaiting()
 })
 
 eventbus_subscribe("onRenewGuestAuthTokenInAdvance", function(_) {
-  authTags(get_player_tags())
-  logGuest($"onRenewGuestAuthTokenInAdvance. isGuestLogin = {isGuestLogin.value}, Tags = ", authTags.value)
+  authTags.set(get_player_tags())
+  logGuest($"onRenewGuestAuthTokenInAdvance. isGuestLogin = {isGuestLogin.get()}, Tags = ", authTags.get())
   onGuestTagsUpdate()
 })
 
@@ -159,13 +159,13 @@ function renewGuestRegistrationTags() {
 }
 
 register_command(function() {
-    isDebugGuestLogin(!isDebugGuestLogin.value)
-    console_print("isGuestLogin = ", isGuestLogin.value) 
+    isDebugGuestLogin.set(!isDebugGuestLogin.get())
+    console_print("isGuestLogin = ", isGuestLogin.get()) 
   }, "ui.debug.guestLogin")
 
 register_command(function() {
-    isDebugVerifyEmail(!isDebugVerifyEmail.value)
-    console_print("needVerifyEmail = ", needVerifyEmail.value) 
+    isDebugVerifyEmail.set(!isDebugVerifyEmail.get())
+    console_print("needVerifyEmail = ", needVerifyEmail.get()) 
   }, "ui.debug.verifyEmail")
 
 return {

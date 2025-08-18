@@ -42,14 +42,14 @@ let selectedInfo = Watched({
 })
 
 let curAttackIcon = Computed(@() airGroupAttackIcons?[curAirGroupType.get()] ?? debugIconWarning)
-let selectedNodeId = Computed(@() selectedInfo.value?.nodeId ?? -1)
-let selectedEdgeId = Computed(@() selectedInfo.value?.edgeId ?? -1)
-let selectedNodeType = Computed(@() selectedInfo.value?.nodeType ?? NODE_INVALID)
-let selectedUnitId = Computed(@() selectedInfo.value?.unitId ?? -1)
-let selectedUnitIsEnemy = Computed(@() selectedInfo.value?.unitIsEnemy ?? false)
-let selectedUnitIsFlyModel = Computed(@() selectedInfo.value?.unitIsFlyModel ?? false)
-let selectedPos = Computed(@() selectedInfo.value?.pos ?? Point3())
-let selectedPosIsValid = Computed(@() selectedInfo.value?.posIsValid ?? false)
+let selectedNodeId = Computed(@() selectedInfo.get()?.nodeId ?? -1)
+let selectedEdgeId = Computed(@() selectedInfo.get()?.edgeId ?? -1)
+let selectedNodeType = Computed(@() selectedInfo.get()?.nodeType ?? NODE_INVALID)
+let selectedUnitId = Computed(@() selectedInfo.get()?.unitId ?? -1)
+let selectedUnitIsEnemy = Computed(@() selectedInfo.get()?.unitIsEnemy ?? false)
+let selectedUnitIsFlyModel = Computed(@() selectedInfo.get()?.unitIsFlyModel ?? false)
+let selectedPos = Computed(@() selectedInfo.get()?.pos ?? Point3())
+let selectedPosIsValid = Computed(@() selectedInfo.get()?.posIsValid ?? false)
 
 function midPoint(p1, p2) {
   return Point2(
@@ -123,34 +123,34 @@ function pathRefreshUi() {
 
 function onNodeEditClick(newNodeType) {
   local nodeId = -1
-  if (selectedEdgeId.value != -1) {
-    nodeId = nodeInsert(curGroupIndex.get(), selectedEdgeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
-  } else if(selectedNodeId.value != -1) {
-    nodeId = nodeEdit(curGroupIndex.get(), selectedNodeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
+  if (selectedEdgeId.get() != -1) {
+    nodeId = nodeInsert(curGroupIndex.get(), selectedEdgeId.get(), newNodeType, selectedUnitId.get(), selectedPos.get())
+  } else if(selectedNodeId.get() != -1) {
+    nodeId = nodeEdit(curGroupIndex.get(), selectedNodeId.get(), newNodeType, selectedUnitId.get(), selectedPos.get())
   }
   else {
-    nodeId = nodeAdd(curGroupIndex.get(), newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeAdd(curGroupIndex.get(), newNodeType, selectedUnitId.get(), selectedPos.get())
   }
   pathSelectNode(newNodeType, nodeId, -1, false)
 }
 
 function onNodeInsertClick(newNodeType) {
-  local insertPos = selectedPos.value
+  local insertPos = selectedPos.get()
   for (local i = 1; i < strategyDataCur.get().nodes.len(); i++) {
     let node = strategyDataCur.get().nodes[i]
-    if (strategyDataCur.get().nodes[i].id == selectedEdgeId.value) {
+    if (strategyDataCur.get().nodes[i].id == selectedEdgeId.get()) {
       let prevNode = strategyDataCur.get().nodes[i - 1]
       let edgeMidPos = midPoint(prevNode.pos2, node.pos2)
       insertPos = setSelection(edgeMidPos.x, edgeMidPos.y).pos
       break
     }
   }
-  let nodeId = nodeInsert(curGroupIndex.get(), selectedEdgeId.value, newNodeType, selectedUnitId.value, insertPos)
+  let nodeId = nodeInsert(curGroupIndex.get(), selectedEdgeId.get(), newNodeType, selectedUnitId.get(), insertPos)
   pathSelectNode(newNodeType, nodeId, -1, false)
 }
 
 function onNodeClearClick() {
-  nodeClear(curGroupIndex.get(), selectedNodeId.value, false)
+  nodeClear(curGroupIndex.get(), selectedNodeId.get(), false)
   pathSelectionReset()
 }
 
@@ -163,7 +163,7 @@ function onNodeClick(nodeType, nodeId, edgeId, pos) {
 function onNodeMove(nodeType, nodeId, newPos) {
   let newNodeType = (nodeType == NODE_ORDER_HUNT) ? NODE_ORDER_HUNT : NODE_ORDER_POINT
   pathSelectPoint(newPos.x, newPos.y)
-  nodeId = nodeEdit(curGroupIndex.get(), nodeId, newNodeType, selectedUnitId.value, selectedPos.value)
+  nodeId = nodeEdit(curGroupIndex.get(), nodeId, newNodeType, selectedUnitId.get(), selectedPos.get())
   pathSelectNode(newNodeType, nodeId, -1, true)
 }
 
@@ -232,7 +232,7 @@ function mkWarningNode(nodeId, nodePos, nodeSize, hintStr) {
     size = [nodeSize, nodeSize]
     image = Picture($"{debugIconWarning}:{nodeSize}:{nodeSize}:P")
     onClick = @(evt) showHint(evt.targetRect, hintStr, 3)
-    onAttach = @() (nodeId == selectedNodeId.value) ? showHint([nodePos.x, nodePos.y], hintStr, 3) : null
+    onAttach = @() (nodeId == selectedNodeId.get()) ? showHint([nodePos.x, nodePos.y], hintStr, 3) : null
   }
 }
 
@@ -241,7 +241,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
   let iconSize = (size * 0.85).tointeger()
   let warningSize = (size * 0.45).tointeger()
   let isMoving = Computed(@() nodeId != -1 && nodeId == movingNodeId.value)
-  let isSelected = Computed(@() nodeId != -1 && nodeId == selectedNodeId.value && !isMoving.value)
+  let isSelected = Computed(@() nodeId != -1 && nodeId == selectedNodeId.get() && !isMoving.get())
 
   return @() {
     watch = [isSelected, isMoving]
@@ -250,7 +250,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
     pos = [nodePos.x, nodePos.y]
     halign = ALIGN_CENTER
     valign = valign
-    opacity = isSelected.value ? 1 : opacity
+    opacity = isSelected.get() ? 1 : opacity
     children = [
       {
         size = [size, size]
@@ -304,12 +304,12 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
           {
             rendObj = ROBJ_BOX
             size = flex()
-            fillColor = isSelected.value ? btnBgColor.ready : 0
-            borderWidth = (isSelected.value || border) ? borderWidth : 0
+            fillColor = isSelected.get() ? btnBgColor.ready : 0
+            borderWidth = (isSelected.get() || border) ? borderWidth : 0
             borderColor = borderColor
             transform = { rotate }
           }
-          !isMoving.value
+          !isMoving.get()
             ? {
               hplace = ALIGN_CENTER
               vplace = ALIGN_CENTER
@@ -345,7 +345,7 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
   let btnSize = hdpx(50)
   let imgSizeOuter = (btnSize * 0.95).tointeger()
   let imgSizeInner = (btnSize * 0.65).tointeger()
-  let isSelected = Computed(@() edgeId != -1 && selectedEdgeId.value == edgeId)
+  let isSelected = Computed(@() edgeId != -1 && selectedEdgeId.get() == edgeId)
   return @() {
     watch = isSelected
     halign = ALIGN_CENTER
@@ -356,8 +356,8 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
       {
         rendObj = ROBJ_BOX
         size = [btnSize, btnSize]
-        fillColor = isSelected.value ? btnBgColor.ready : 0
-        borderWidth = isSelected.value ? borderWidth : 0
+        fillColor = isSelected.get() ? btnBgColor.ready : 0
+        borderWidth = isSelected.get() ? borderWidth : 0
         borderColor = borderColor
         behavior = Behaviors.Button
         onClick = @() onNodeClick(NODE_INVALID, -1, edgeId, edgePos)
@@ -420,7 +420,7 @@ function mkNodesUi(data) {
     }
 
     let edgeId = node.id
-    let edgeColor = (edgeId == selectedNodeId.value)
+    let edgeColor = (edgeId == selectedNodeId.get())
       ? getNodeStyle(node.type).edgeColorSelected
       : getNodeStyle(node.type).edgeColor
 
@@ -446,11 +446,11 @@ function mkNodesUi(data) {
     i++
   }
 
-  if (movingNodeId.value == -1 && (selectedPosIsValid.value || selectedUnitId.value != -1)) {
-    let pendingDstPos = getSelectionPos2d(selectedPos.value, selectedUnitId.value)
-    let pendingSrcPos = (selectedPosIsValid.value) ? edgePrevPos : getSelectionPos2d(selectedPos.value, -1)
-    let pendingIcon = (selectedUnitId.value != -1) ? iconSelectedUnit : iconPointPending
-    let pendingIconVAlign = (selectedUnitId.value != -1) ? ALIGN_CENTER : ALIGN_BOTTOM
+  if (movingNodeId.value == -1 && (selectedPosIsValid.get() || selectedUnitId.get() != -1)) {
+    let pendingDstPos = getSelectionPos2d(selectedPos.get(), selectedUnitId.get())
+    let pendingSrcPos = (selectedPosIsValid.get()) ? edgePrevPos : getSelectionPos2d(selectedPos.get(), -1)
+    let pendingIcon = (selectedUnitId.get() != -1) ? iconSelectedUnit : iconPointPending
+    let pendingIconVAlign = (selectedUnitId.get() != -1) ? ALIGN_CENTER : ALIGN_BOTTOM
     let pendingIconSize = hdpxi(100)
 
     edgesUi.append([VECTOR_COLOR, edgeColorPending])
@@ -484,7 +484,7 @@ function mkNodesUi(data) {
 
 function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
   let stateFlags = Watched(0)
-  let isActive = Computed(@() isAllowed.value && (stateFlags.value & S_ACTIVE))
+  let isActive = Computed(@() isAllowed.value && (stateFlags.get() & S_ACTIVE))
   let iconSize = (touchButtonSize * 0.55).tointeger()
   return @() {
     watch = [stateFlags, isActive, isAllowed, isEnabled]
@@ -501,9 +501,9 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
     borderColor = (isEnabled.value && isAllowed.value) ? borderColor : borderNoAmmoColor
     fillColor = (isEnabled.value && isAllowed.value) ? btnBgColor.ready : btnBgColor.empty
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     onClick = (isEnabled.value && isAllowed.value) ? onClick : null
-    transform = { scale = isActive.value ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = isActive.get() ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
       {
@@ -526,13 +526,13 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
 }
 
 function mkCommandsUi(groupIndex) {
-  let isWorldPointSelected = Computed(@() selectedEdgeId.value == -1 && selectedPosIsValid.value)
-  let isAttackAllowed = Computed(@() selectedUnitId.value != -1 && selectedUnitIsEnemy.value)
-  let isDeffendAllowed = Computed(@() selectedUnitId.value != -1 && !selectedUnitIsEnemy.value)
-  let isHuntAllowed = Computed(@() selectedUnitId.value == -1 && (isWorldPointSelected.value || selectedNodeType.value == NODE_ORDER_POINT))
-  let isPointAllowed = Computed(@() selectedUnitId.value == -1 && (isWorldPointSelected.value || selectedNodeType.value == NODE_ORDER_HUNT))
-  let isPointClearAllowed = Computed(@() selectedEdgeId.value == -1 && (selectedNodeId.value != -1 || (curAirGroupPathLength.get() > 1 && !curAirGroupIsReturning.get())))
-  let isPointInsertAllowed = Computed(@() selectedNodeId.value == -1 && selectedEdgeId.value != -1)
+  let isWorldPointSelected = Computed(@() selectedEdgeId.get() == -1 && selectedPosIsValid.get())
+  let isAttackAllowed = Computed(@() selectedUnitId.get() != -1 && selectedUnitIsEnemy.get())
+  let isDeffendAllowed = Computed(@() selectedUnitId.get() != -1 && !selectedUnitIsEnemy.get())
+  let isHuntAllowed = Computed(@() selectedUnitId.get() == -1 && (isWorldPointSelected.get() || selectedNodeType.get() == NODE_ORDER_POINT))
+  let isPointAllowed = Computed(@() selectedUnitId.get() == -1 && (isWorldPointSelected.get() || selectedNodeType.get() == NODE_ORDER_HUNT))
+  let isPointClearAllowed = Computed(@() selectedEdgeId.get() == -1 && (selectedNodeId.get() != -1 || (curAirGroupPathLength.get() > 1 && !curAirGroupIsReturning.get())))
+  let isPointInsertAllowed = Computed(@() selectedNodeId.get() == -1 && selectedEdgeId.get() != -1)
   let isAllwaysEnabled = Watched(true)
   return {
     hplace = ALIGN_LEFT
@@ -550,8 +550,8 @@ function mkCommandsUi(groupIndex) {
             watch = [selectedUnitIsFlyModel, curAttackIcon]
             children = mkCommandButton(
               "ATTACK",
-              curAttackIcon.value,
-              selectedUnitIsFlyModel.value ? curAirGroupCanAttackAir : curAirGroupCanAttackGround,
+              curAttackIcon.get(),
+              selectedUnitIsFlyModel.get() ? curAirGroupCanAttackAir : curAirGroupCanAttackGround,
               isAttackAllowed,
               @() onNodeEditClick(NODE_ORDER_ATTACK)
             )

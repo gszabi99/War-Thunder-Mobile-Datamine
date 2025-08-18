@@ -6,9 +6,9 @@ let { scopeSize } = require("%rGui/hud/commonSight.nut")
 let halfScopeHeight = scopeSize[1] / 2
 
 let weaponHintText = Watched(null)
-let clearWeaponText = @() weaponHintText(null)
+let clearWeaponText = @() weaponHintText.set(null)
 currentHoldWeaponName.subscribe(function(v) {
-  weaponHintText(v)
+  weaponHintText.set(v)
   resetTimeout(3.0, clearWeaponText)
 })
 
@@ -47,8 +47,8 @@ let currentWeaponNameText = @() {
   pos = [0, halfScopeHeight + hdpx(20)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = weaponHintText.value == null ? null
-    : mkWeaponNameText(weaponHintText.value)
+  children = weaponHintText.get() == null ? null
+    : mkWeaponNameText(weaponHintText.get())
 }
 
 return {

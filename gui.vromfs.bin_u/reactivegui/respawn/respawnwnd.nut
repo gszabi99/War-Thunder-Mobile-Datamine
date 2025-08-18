@@ -5,15 +5,16 @@ let { round, sqrt } = require("math")
 let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
   needRespawnSlotsAndWeaponry
-} = require("respawnState.nut")
+} = require("%rGui/respawn/respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets, hasZeroMainBullets
-} = require("bulletsChoiceState.nut")
-let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
+} = require("%rGui/respawn/bulletsChoiceState.nut")
+let { slotAABB, selSlotLinesSteps, lineSpeed } = require("%rGui/respawn/respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems,
   hasRespawnSeparateSlots, hasPredefinedReward, dailyBonus
 } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -24,7 +25,7 @@ let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/s
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { textButtonCommon, textButtonBattle, iconButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
+let { scoreBoardType, scoreBoardCfgByType, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitPrice, mkUnitBg, mkUnitSelectedGlow,
   mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
   mkUnitSelectedUnderline, mkUnitInfo, unitPlatesGap, plateTextsSmallPad,
@@ -34,21 +35,21 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
 let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let respawnMap = require("respawnMap.ui.nut")
-let respawnBullets = require("respawnBullets.nut")
-let respawnAirWeaponry = require("respawnAirWeaponry.nut")
+let { respawnMap, visibleRespawnBases } = require("%rGui/respawn/respawnMap.ui.nut")
+let respawnBullets = require("%rGui/respawn/respawnBullets.nut")
+let respawnAirWeaponry = require("%rGui/respawn/respawnAirWeaponry.nut")
 let { bg, headerText, headerHeight, header, gap, headerMarquee, bulletsBlockMargin, bulletsBlockWidth,
   contentOffset, unitListHeight, skinTextHeight, topSkinPadding, skinPadding
-} = require("respawnComps.nut")
+} = require("%rGui/respawn/respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { respawnSkins, skinSize } = require("respawnSkins.nut")
+let { respawnSkins, skinSize } = require("%rGui/respawn/respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
-let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { CS_RESPAWN } = require("%rGui/components/currencyStyles.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -59,12 +60,12 @@ let levelHolderSize = evenPx(84)
 let unitListGradientSize = [unitPlatesGap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
-let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.value.len() > 1)
+let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.get().len() > 1)
 let showLowBulletsWarning = Watched(true)
 let startRespawnTime = mkWatched(persist, "startRespawnTime", -1)
 isRespawnStarted.subscribe(function(v) {
   if (v)
-    startRespawnTime(get_mission_time())
+    startRespawnTime.set(get_mission_time())
 })
 
 let balanceBlock = @() {
@@ -73,7 +74,7 @@ let balanceBlock = @() {
   vplace = ALIGN_CENTER
   size = FLEX_V
   children = [
-    mkCurrencyComp(sparesNum.value, SPARE)
+    mkCurrencyComp(sparesNum.get(), SPARE)
     mkConsumableSpend(SPARE, hdpx(20), hdpx(80), @(count) sparesNum.set(sparesNum.get() - count))
   ]
 }
@@ -83,7 +84,11 @@ let topPanel = @() {
   watch = respawnUnitItems
   children = [
     { size = FLEX_V, children = logerrHintsBlock }
-    scoreBoard
+    @() {
+      watch = scoreBoardType
+      size = flex()
+      children = scoreBoardCfgByType?[scoreBoardType.get()].comp
+    }
     mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
     respawnUnitItems.get()?.spare ? balanceBlock : null
   ]
@@ -93,7 +98,7 @@ function onSlotClick(slot) {
   
   sendPlayerActivityToServer()
   if (slot.canSpawn) {
-    playerSelectedSlotIdx(slot.id)
+    playerSelectedSlotIdx.set(slot.id)
     return
   }
   let name = colorize(markTextColor, loc(getUnitLocId(slot.name)))
@@ -115,7 +120,7 @@ let sparePrice = {
 
 function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
-  let isSelected = Computed(@() selSlot.value?.id == slot.id)
+  let isSelected = Computed(@() selSlot.get()?.id == slot.id)
   let unit = baseUnit.__merge(slot)
   let { canSpawn, isSpawnBySpare, mRank } = slot
   return @() {
@@ -146,8 +151,10 @@ function mkSlotPlate(slot, baseUnit) {
             : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
           unit?.hasDailyBonus || (!hasRespawnSeparateSlots.get() && baseUnit?.hasDailyBonus)
-            ? mkUnitDailyBonus(Computed(@() !hasPredefinedReward.get()), Computed(@() dailyBonus.get()?.wpMul ?? 1),
-              Computed(@() dailyBonus.get()?.expMul ?? 1))
+            ? mkUnitDailyBonus(Computed(@() !hasPredefinedReward.get()),
+              Computed(@() dailyBonus.get()?.wpMul ?? 1),
+              Computed(@() dailyBonus.get()?.expMul ?? 1),
+              Computed(@() (serverConfigs.get()?.campaignCfg[unit?.campaign].totalSlots ?? 0) > 0))
             : null
         ]
       }
@@ -210,7 +217,7 @@ let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSiz
 
 function slotsBlock() {
   let title = slotsBlockTitle(respawnUnitInfo.get(), hasRespawnSeparateSlots.get())
-  let list = respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.get()))
+  let list = respawnSlots.get().map(@(slot) mkSlotPlate(slot, respawnUnitInfo.get()))
   return {
     watch = [respawnSlots, respawnUnitInfo, hasRespawnSeparateSlots]
     size = [unitPlateWidth, SIZE_TO_CONTENT]
@@ -240,14 +247,15 @@ function slotsBlock() {
   }
 }
 
-let map = {
+let map = @() {
+  watch = visibleRespawnBases
   size = FLEX_H
   maxHeight = mapMaxSize + headerHeight + gap
   maxWidth = mapMaxSize
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
   children = [
-    header(headerText(loc("respawn/choose_respawn_point")))
+    visibleRespawnBases.get().len() > 0 ? header(headerText(loc("respawn/choose_respawn_point"))) : null
     bg.__merge({
       size = const [flex(), pw(100)]
       padding = gap
@@ -280,7 +288,7 @@ let vehicleActionLangKeys = {
 
 function toBattleButton(onClick, styleOvr) {
   let button = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")), onClick, styleOvr)
-  if (!(selSlot.value?.isSpawnBySpare ?? false))
+  if (!(selSlot.get()?.isSpawnBySpare ?? false))
     return button
   return {
     flow = FLOW_HORIZONTAL
@@ -303,24 +311,24 @@ function toBattleButton(onClick, styleOvr) {
 
 function toBattle() {
   if (chosenBullets.get().len() == 0) 
-    respawn(selSlot.value, bulletsToSpawn.get())
+    respawn(selSlot.get(), bulletsToSpawn.get())
   else if (hasZeroBullets.get())
     openMsgBox({ text = loc("respawn/zero_ammo") })
   else if (hasZeroMainBullets.get())
     openMsgBox({ text = loc("respawn/zero_main_ammo") })
-  else if (hasLowBullets.get() && hasChangedCurSlotBullets.get() && showLowBulletsWarning.value) {
+  else if (hasLowBullets.get() && hasChangedCurSlotBullets.get() && showLowBulletsWarning.get()) {
     openMsgBox({
       text = loc("respawn/low_ammo")
       buttons = [
         { id = "cancel", isCancel = true }
         { text = utf8ToUpper(loc("mainmenu/toBattle/short")), styleId = "BATTLE",
-          cb = @() respawn(selSlot.value, bulletsToSpawn.get()) }
+          cb = @() respawn(selSlot.get(), bulletsToSpawn.get()) }
       ]
     })
-    showLowBulletsWarning(false)
+    showLowBulletsWarning.set(false)
   }
   else
-    respawn(selSlot.value, bulletsToSpawn.get())
+    respawn(selSlot.get(), bulletsToSpawn.get())
 }
 
 let buttons = @() {
@@ -351,8 +359,8 @@ let rightBlock = {
   ]
 }
 
-let updateSlotAABB = @() slotAABB(selSlot.value == null ? null
-  : gui_scene.getCompAABBbyKey(selSlot.value))
+let updateSlotAABB = @() slotAABB.set(selSlot.value == null ? null
+  : gui_scene.getCompAABBbyKey(selSlot.get()))
 selSlot.subscribe(@(_) deferOnce(updateSlotAABB))
 
 let weaponryBlockByUnitType = {
@@ -437,8 +445,8 @@ let animLines = @() {
 return bgShaded.__merge({
   key = {}
   size = flex()
-  onAttach = @() isRespawnAttached(true)
-  onDetach = @() isRespawnAttached(false)
+  onAttach = @() isRespawnAttached.set(true)
+  onDetach = @() isRespawnAttached.set(false)
   children = [
     {
       size = flex()

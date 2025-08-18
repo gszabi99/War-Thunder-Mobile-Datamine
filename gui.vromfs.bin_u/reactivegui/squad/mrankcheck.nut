@@ -6,7 +6,7 @@ let { isInSquad, isSquadLeader, squadLeaderMRankCheckTime, squadMembers,
   squadLeaderCampaign, squadLeaderState, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let setReady = require("setReady.nut")
+let setReady = require("%rGui/squad/setReady.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
@@ -25,23 +25,23 @@ isSquadLeader.subscribe(@(v) !isInSquad.get() ? null
 
 let needMRankCheckMsg = Computed(@() isInSquad.get()
   && !isSquadLeader.get()
-  && squadLeaderMRankCheckTime.get() > mRankCheckTime.value)
+  && squadLeaderMRankCheckTime.get() > mRankCheckTime.get())
 let canShowMRankCheck = Computed(@() !isInBattle.get()
   && !isInLoadingScreen.get()
   && (!isInDebriefing.get() || isDebriefingAnimFinished.get()))
 
-let shouldShowMsg = keepref(Computed(@() needMRankCheckMsg.value && canShowMRankCheck.value))
+let shouldShowMsg = keepref(Computed(@() needMRankCheckMsg.get() && canShowMRankCheck.get()))
 
 function initiateMRankCheck() {
   if (!isSquadLeader.get())
     return
-  if (isMRankCheckSuspended.value) {
+  if (isMRankCheckSuspended.get()) {
     openMsgBox({ text = loc("msg/bigRankDiff/checkInCooldown") })
     return
   }
   mRankCheckTime(serverTime.get())
-  isMRankCheckSuspended(true)
-  resetTimeout(CAN_REPEAT_SEC, @() isMRankCheckSuspended(false))
+  isMRankCheckSuspended.set(true)
+  resetTimeout(CAN_REPEAT_SEC, @() isMRankCheckSuspended.set(false))
 }
 
 function showMRankCheck() {

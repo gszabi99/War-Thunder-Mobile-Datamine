@@ -21,12 +21,12 @@ let isInDebriefing = sharedWatched("isInDebriefing", @() false)
 let isInFlightMenu = sharedWatched("isInFlightMenu", @() false)
 let canBailoutFromFlightMenu = sharedWatched("canBailoutFromFlightMenu", @() false)
 let isMpStatisticsActive = sharedWatched("isMpStatisticsActive", @() false)
-let isInMenu = Computed(@() isLoggedIn.value && !isInBattle.value && !isInLoadingScreen.value)
-let isOutOfBattleAndResults = Computed(@() !isInBattle.value && !isInDebriefing.value && !isInLoadingScreen.value)
+let isInMenu = Computed(@() isLoggedIn.get() && !isInBattle.get() && !isInLoadingScreen.get())
+let isOutOfBattleAndResults = Computed(@() !isInBattle.get() && !isInDebriefing.get() && !isInLoadingScreen.get())
 let isHudVisible = sharedWatched("isHudVisible", @() false)
 let isInMpSession = Watched(get_mp_session_id_int() != -1)
 let isLocalMultiplayer = Watched(is_local_multiplayer())
-let isInMpBattle = Computed(@() isInBattle.value && isInMpSession.value)
+let isInMpBattle = Computed(@() isInBattle.get() && isInMpSession.get())
 let canBattleWithoutAddons = sharedWatched("canBattleWithoutAddons", @() false)
 let isDownloadedFromSite = (is_android || is_pc) && !isDownloadedFromGooglePlay() && !isHuaweiBuild
 let isSingleMissionOverrided = sharedWatched("isSingleMissionOverrided", @() false)
@@ -34,15 +34,15 @@ let isSingleMissionOverrided = sharedWatched("isSingleMissionOverrided", @() fal
 eventbus_subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()
   battleSessionId(sessionId)
-  isInMpSession(sessionId != -1)
+  isInMpSession.set(sessionId != -1)
 })
 
 isInBattle.subscribe(function(v) {
   if (v)
-    isLocalMultiplayer(is_local_multiplayer())
+    isLocalMultiplayer.set(is_local_multiplayer())
 })
 
-eventbus_subscribe("destroyMultiplayer", @(_) isInMpSession(get_mp_session_id_int() != -1))
+eventbus_subscribe("destroyMultiplayer", @(_) isInMpSession.set(get_mp_session_id_int() != -1))
 
 return {
   isInBattle

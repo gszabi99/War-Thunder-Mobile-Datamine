@@ -4,13 +4,13 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, setOrSwapCurUnitBullet,
   visibleBullets, visibleBulletsSec
-} = require("bulletsChoiceState.nut")
-let { selSlot, hasUnseenShellsBySlot } = require("respawnState.nut")
+} = require("%rGui/respawn/bulletsChoiceState.nut")
+let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
 let { mkBulletsList, mkCurListBulletInfo } = require("%rGui/bullets/bulletsSelectorComps.nut")
 
@@ -31,17 +31,17 @@ let wndAABB = Watched(null)
 
 function close(){
   openedSlot(-1)
-  openParams(null)
+  openParams.set(null)
   sendPlayerActivityToServer()
 }
-savedSlotName.subscribe(@(v) curSlotName(v))
-chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
+savedSlotName.subscribe(@(v) curSlotName.set(v))
+chosenBullets.subscribe(@(_) curSlotName.set(savedSlotName.get()))
 chosenBulletsSec.subscribe(@(_) curSlotName.set(savedSlotName.get()))
-openParams.subscribe(@(_) wndAABB(null))
+openParams.subscribe(@(_) wndAABB.set(null))
 curSlotName.subscribe(@(_) defer( function() {
   let aabb = gui_scene.getCompAABBbyKey(wndKey)
-  if (!isEqual(aabb, wndAABB.value))
-    wndAABB(aabb)
+  if (!isEqual(aabb, wndAABB.get()))
+    wndAABB.set(aabb)
 }))
 
 function applyBullet() {
@@ -54,9 +54,9 @@ function applyBullet() {
 let applyText = utf8ToUpper(loc("msgbox/btn_choose"))
 function applyButton() {
   let { fromUnitTags = null } = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
-  let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
-  let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
-  let children = savedSlotName.value == curSlotName.value
+  let { reqLevel = 0 } = fromUnitTags?[curSlotName.get()]
+  let isEnoughLevel = reqLevel <= (selSlot.get()?.level ?? 0)
+  let children = savedSlotName.get() == curSlotName.get()
       ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")),
         close,
         { ovr = { key = "closeButton" }}) 
@@ -107,7 +107,7 @@ function bulletContent() {
 }
 
 let window = {
-  onAttach = @() defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
+  onAttach = @() defer(@() wndAABB.set(gui_scene.getCompAABBbyKey(wndKey)))
   key = "bulletsInfo" 
   stopMouse = true
   vplace = ALIGN_CENTER
@@ -120,10 +120,10 @@ let window = {
 }
 
 function content() {
-  if (openParams.value == null)
+  if (openParams.get() == null)
     return { watch = openParams }
 
-  let { wndBox, bulletBox } = openParams.value
+  let { wndBox, bulletBox } = openParams.get()
   return {
     watch = openParams
     size = flex()
@@ -146,13 +146,13 @@ let openImpl = @() addModalWindow({
   onClick = close
 })
 
-if (openParams.value != null)
+if (openParams.get() != null)
   openImpl()
 openParams.subscribe(@(v) v != null ? openImpl() : removeModalWindow(WND_UID))
 
 function showRespChooseWnd(slotIdx, bulletBox, wndBox) {
-  openParams({ slotIdx, bulletBox, wndBox })
-  openedSlot(slotIdx)
+  openParams.set({ slotIdx, bulletBox, wndBox })
+  openedSlot.set(slotIdx)
 }
 return {
   showRespChooseWnd

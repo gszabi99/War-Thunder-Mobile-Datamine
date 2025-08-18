@@ -3,9 +3,9 @@ let isFirstLoad = require("%rGui/isFirstLoad.nut")
 let { is_ios } = require("%sqstd/platform.nut")
 let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut")
 if (is_ios)
-  require("connectionStatusIos.nut")
+  require("%rGui/updater/connectionStatus/connectionStatusIos.nut")
 else
-  require("connectionStatusAndroid.nut") 
+  require("%rGui/updater/connectionStatus/connectionStatusAndroid.nut") 
 
 if (isFirstLoad)
   log($"Connection status on init: {connectionStatus.get()}")

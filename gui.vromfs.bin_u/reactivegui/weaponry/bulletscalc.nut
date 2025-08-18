@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { AIR, SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { loadUnitBulletsChoice } = require("loadUnitBullets.nut")
+let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
 

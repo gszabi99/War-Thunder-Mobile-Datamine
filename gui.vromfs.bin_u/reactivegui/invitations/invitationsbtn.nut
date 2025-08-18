@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hasUnread, hasImportantUnread, openInvitations, invitations } = require("invitationsState.nut")
+let { hasUnread, hasImportantUnread, openInvitations, invitations } = require("%rGui/invitations/invitationsState.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { priorityUnseenMark, unseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 

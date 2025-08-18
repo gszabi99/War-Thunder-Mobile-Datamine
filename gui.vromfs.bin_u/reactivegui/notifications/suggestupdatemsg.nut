@@ -10,11 +10,11 @@ let { can_view_update_suggestion, allow_apk_update } = require("%appGlobals/perm
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults, isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { needSuggestToUpdate } = isHuaweiBuild ? require("needUpdate/needUpdateAppGallery.nut")
-  : isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
-  : is_ios ? require("needUpdate/needUpdateAppStore.nut")
-  : require("needUpdate/needUpdateAndroidSite.nut")
-let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("updateClientBySite.nut")
+let { needSuggestToUpdate } = isHuaweiBuild ? require("%rGui/notifications/needUpdate/needUpdateAppGallery.nut")
+  : isDownloadedFromGooglePlay() ? require("%rGui/notifications/needUpdate/needUpdateGooglePlay.nut")
+  : is_ios ? require("%rGui/notifications/needUpdate/needUpdateAppStore.nut")
+  : require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
+let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("%rGui/notifications/updateClientBySite.nut")
 
 const SUGGEST_UPDATE = "suggest_update_msg"
 

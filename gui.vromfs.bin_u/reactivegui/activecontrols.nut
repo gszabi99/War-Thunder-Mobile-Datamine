@@ -17,12 +17,12 @@ let ALLOWED_MASK = is_nswitch ? DEV_GAMEPAD
 
 let forcedControlsType = hardPersistWatched("forcedControlsType")
 let lastActiveControlsTypeRaw = Watched(get_last_used_device_mask())
-let lastActiveControlsType = Computed(@(prev) (lastActiveControlsTypeRaw.value & ALLOWED_MASK)
+let lastActiveControlsType = Computed(@(prev) (lastActiveControlsTypeRaw.get() & ALLOWED_MASK)
   || (prev == FRP_INITIAL ? 0 : prev))
 
-let activeControlsTypeComputed = keepref(Computed(@() forcedControlsType.value || lastActiveControlsType.value || defControlsType))
+let activeControlsTypeComputed = keepref(Computed(@() forcedControlsType.get() || lastActiveControlsType.get() || defControlsType))
 
-eventbus_subscribe("input_dev_used", @(ev) lastActiveControlsTypeRaw(ev.mask))
+eventbus_subscribe("input_dev_used", @(ev) lastActiveControlsTypeRaw.set(ev.mask))
 
 let dbgNames = {
   DEV_MOUSE = DEV_MOUSE
@@ -44,7 +44,7 @@ activeControlsTypeComputed.subscribe(function(v) {
   activeControlsType.set(v)
 })
 
-let toggleForce = @(mask) forcedControlsType(forcedControlsType.value == mask ? 0 : mask)
+let toggleForce = @(mask) forcedControlsType.modify(@(v) v == mask ? 0 : mask)
 register_command(@() toggleForce(DEV_TOUCH), "ui.forceControlTypeTouch")
 register_command(@() toggleForce(DEV_GAMEPAD), "ui.forceControlTypeGamepad")
 register_command(@() forcedControlsType(0), "ui.forceControlTypeAuto")

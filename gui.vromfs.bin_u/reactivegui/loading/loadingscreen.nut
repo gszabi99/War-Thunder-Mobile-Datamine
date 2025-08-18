@@ -7,7 +7,7 @@ let { loadingAnimBg, isLoadinAnimBgAttached, curScreenId, screenWeights
 } = require("%globalsDarg/loading/loadingAnimBg.nut")
 let { register_command } = require("console")
 let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
-let { gradientLoadingTip } = require("mkLoadingTip.nut")
+let { gradientLoadingTip } = require("%rGui/loading/mkLoadingTip.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
 
@@ -23,7 +23,7 @@ function setMissionLoadingScreen(screen) {
 let updateWeights = @(campaign) screenWeights(screensList
   .filter(@(v) campaign == null || (v?.camp.contains(campaign) ?? true))
   .map(@(s) s.weight))
-updateWeights(curCampaign.value)
+updateWeights(curCampaign.get())
 curCampaign.subscribe(updateWeights)
 
 let lsKey = {}
@@ -44,8 +44,8 @@ let loadingScreen = @() {
 
 isLoadinAnimBgAttached.subscribe(function(v) {
   if (!v)
-    lastLoadingBgShow(get_time_msec())
-  else if (lastLoadingBgShow.value - get_time_msec() < 300)
+    lastLoadingBgShow.set(get_time_msec())
+  else if (lastLoadingBgShow.get() - get_time_msec() < 300)
     anim_skip(wndSwitchTrigger)
 })
 
@@ -62,10 +62,10 @@ register_command(function(id) {
   curScreenId(id)
   return log($"Set to loading screen '{id}'")
 }, "ui.debug.loadingSet")
-register_command(@() isInLoadingScreen(!isInLoadingScreen.get()), "ui.debug.loadingScreen")
+register_command(@() isInLoadingScreen.set(!isInLoadingScreen.get()), "ui.debug.loadingScreen")
 register_command(function() {
-  isMissionLoading(!isMissionLoading.get() || !isInLoadingScreen.get())
-  isInLoadingScreen(true)
+  isMissionLoading.set(!isMissionLoading.get() || !isInLoadingScreen.get())
+  isInLoadingScreen.set(true)
 }, "ui.debug.missionLoading")
 
 return {

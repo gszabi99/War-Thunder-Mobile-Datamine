@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
-let { skinSize } = require("respawnSkins.nut")
-let { hasSkins } = require("respawnState.nut")
+let { skinSize } = require("%rGui/respawn/respawnSkins.nut")
+let { hasSkins } = require("%rGui/respawn/respawnState.nut")
 let { scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")

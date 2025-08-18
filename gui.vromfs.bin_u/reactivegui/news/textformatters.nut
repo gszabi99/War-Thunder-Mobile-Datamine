@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
 let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
-let urlAliases = require("urlAliases.nut")
+let urlAliases = require("%rGui/news/urlAliases.nut")
 let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { expandArrow, defaultExpandAnimationDuration } = require("%rGui/components/expandArrow.nut")
@@ -55,7 +55,7 @@ function url(data, _, __) {
   let stateFlags = Watched(0)
   let onClick = @() openUrl(data.url)
   return function() {
-    let color = stateFlags.value & S_HOVER ? urlHoverColor : urlColor
+    let color = stateFlags.get() & S_HOVER ? urlHoverColor : urlColor
     return {
       watch = stateFlags
       rendObj = ROBJ_TEXT
@@ -63,7 +63,7 @@ function url(data, _, __) {
       color
 
       behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       onClick
 
       children = {
@@ -207,12 +207,12 @@ function video(obj, _, __) {
     padding = borderWidth
 
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
 
     rendObj = ROBJ_BOX
     fillColor = 0xFF0C0C0C
-    borderColor = stateFlags.value & S_HOVER ? urlHoverColor : 0xFF191919
+    borderColor = stateFlags.get() & S_HOVER ? urlHoverColor : 0xFF191919
     borderWidth
     children = watchVideo
   }.__update(obj)
@@ -262,8 +262,8 @@ function spoiler(obj, formatTextFunc, __) {
       : !isHover.get() && !isExpanded.get() ? btnDef
       : btnHovDef
     behavior = Behaviors.Button
-    onClick = @() isExpanded(!isExpanded.get())
-    onHover = @(sf) isHover(sf)
+    onClick = @() isExpanded.set(!isExpanded.get())
+    onHover = @(sf) isHover.set(sf)
     children = [
       @() {
         watch = isExpanded
@@ -336,8 +336,8 @@ function tabs(obj, formatTextFunc, __) {
           : currentTab.get()?.header != tab?.header && isHovered ? btnHovDef : btnDef
         behavior = Behaviors.Button
         margin = obj.v?[obj.v.len() - 1] != tab ? [0, hdpx(10), 0, 0] : 0
-        onElemState = @(x) stateFlags(x)
-        onClick = @() currentTab(tab)
+        onElemState = @(x) stateFlags.set(x)
+        onClick = @() currentTab.set(tab)
         children = {
           rendObj = ROBJ_TEXT
           text = tab?.header ?? "untitled"

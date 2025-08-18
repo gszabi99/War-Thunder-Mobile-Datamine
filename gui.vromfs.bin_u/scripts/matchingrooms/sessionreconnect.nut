@@ -22,19 +22,19 @@ const MSG_UID = "reconnect_msg"
 let reconnectData = hardPersistWatched("session.reconnectData", null)
 let rejectedRoomsIds = hardPersistWatched("session.rejectedRoomsIds", [])
 let isNeedReconnectMsg = Computed(@()
-  reconnectData.value != null
-    && !rejectedRoomsIds.value.contains(reconnectData.value.roomId)
+  reconnectData.get() != null
+    && !rejectedRoomsIds.get().contains(reconnectData.get().roomId)
     && isInMenu.get()
     && sessionLobbyStatus.get() == lobbyStates.NOT_IN_ROOM)
 
 eventbus_subscribe("reconnectAfterAddons", @(c) joinRoom(c.roomId))
 
 let getAttribUnitName = @(attribs)
-  attribs?[$"pinfo_{myUserId.value}"].crafts_info[0].name
+  attribs?[$"pinfo_{myUserId.get()}"].crafts_info[0].name
 
 function getMaxRankUnitName() {
   let { allUnits = {} } = serverConfigs.get()
-  let { units } = servProfile.value
+  let { units } = servProfile.get()
   local resUnit = null
   foreach(unit in allUnits)
     if (unit.name in units && (resUnit?.mRank ?? -1) < unit.mRank)
@@ -75,23 +75,23 @@ function reconnect(roomId, attribs) {
 subscribeFMsgBtns({
   function reconnectApply(_) {
     logR($"Apply")
-    if (reconnectData.value == null)
+    if (reconnectData.get() == null)
       return
-    let { roomId, attribs = null } = reconnectData.value
+    let { roomId, attribs = null } = reconnectData.get()
     reconnect(roomId, attribs)
     reconnectData(null)
   }
   function reconnectReject(_) {
     logR($"Reject")
-    if (reconnectData.value == null)
+    if (reconnectData.get() == null)
       return
-    rejectedRoomsIds.mutate(@(v) v.append(reconnectData.value.roomId))
-    reconnectData(null)
+    rejectedRoomsIds.mutate(@(v) v.append(reconnectData.get().roomId))
+    reconnectData.set(null)
   }
 })
 
 function showReconnectMsg() {
-  if (!isNeedReconnectMsg.value)
+  if (!isNeedReconnectMsg.get())
     return
 
   openFMsgBox({

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { contentOffset, minContentOffset, contentWidth, contentWidthFull, tabW } = require("optionsStyle.nut")
+let { contentOffset, minContentOffset, contentWidth, contentWidthFull, tabW } = require("%rGui/options/optionsStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -8,9 +8,9 @@ let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollA
 
 let { registerScene } = require("%rGui/navState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
-let mkOption = require("mkOption.nut")
-let mkOptionsTabs = require("mkOptionsTabs.nut")
-let mkChildrenOptions = require("mkChildrenOptions.nut")
+let mkOption = require("%rGui/options/mkOption.nut")
+let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
+let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
 
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
@@ -47,28 +47,28 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
   })
   isAuthorized.subscribe(@(_) isOpened(false))
 
-  let resetCurTabIdx = @() curTabIdx(tabs.findindex(@(t) t?.isVisible.value ?? true))
+  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(t) t?.isVisible.value ?? true))
 
   foreach(idx, tab in tabs) {
     let { isVisible = null } = tab
     if (isVisible == null)
       continue
     let tabIdx = idx
-    isVisible.subscribe(@(v) v || tabIdx != curTabIdx.value ? null : resetCurTabIdx())
-    if (tabIdx == curTabIdx.value && !isVisible.value)
+    isVisible.subscribe(@(v) v || tabIdx != curTabIdx.get() ? null : resetCurTabIdx())
+    if (tabIdx == curTabIdx.get() && !isVisible.value)
       resetCurTabIdx()
   }
 
   function setTabById(id) {
     let idx = findTabIdxById(id)
     if (idx != null && (tabs[idx]?.isVisible.value ?? true))
-      curTabIdx(idx)
+      curTabIdx.set(idx)
   }
   curTabId.subscribe(setTabById)
   curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
 
   function curOptionsContent() {
-    let tab = tabs?[curTabIdx.value]
+    let tab = tabs?[curTabIdx.get()]
     let { isFullWidth = false } = tab
     return (tab?.content ?? tab?.contentCtor)
       ? {
@@ -116,7 +116,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
     gap = hdpx(50)
 
     function onAttach() {
-      if (curTabIdx.value not in tabs || !(tabs[curTabIdx.value]?.isVisible.value ?? true))
+      if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.value ?? true))
         resetCurTabIdx()
     }
 

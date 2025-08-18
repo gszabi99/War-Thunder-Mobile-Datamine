@@ -19,7 +19,7 @@ const MAX_TABLES_UPDATE_DELAY = 10
 function mkUserstatWatch(id, defValue = {}) {
   let key = $"userstat.{id}"
   let data = Watched(ndbTryRead(key) ?? defValue) 
-  eventbus_subscribe($"userstat.update.{id}", @(_) data(ndbTryRead(key) ?? defValue))
+  eventbus_subscribe($"userstat.update.{id}", @(_) data.set(ndbTryRead(key) ?? defValue))
   return data
 }
 
@@ -34,15 +34,15 @@ let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_A
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
 userstatStats.subscribe(function(_) {
   let timeLeft = getStatsActualTimeLeft()
-  isStatsActualByTime(timeLeft > 0)
+  isStatsActualByTime.set(timeLeft > 0)
   if (timeLeft > 0)
-    resetTimeout(timeLeft, @() isStatsActualByTime(false))
+    resetTimeout(timeLeft, @() isStatsActualByTime.set(false))
 })
 
 let isStatsActualByBattle = hardPersistWatched("userstats.actualByBattle", true)
 isInBattle.subscribe(@(_) isStatsActualByBattle(false))
 
-let isStatsActual = Computed(@() isStatsActualByTime.value && isStatsActualByBattle.value)
+let isStatsActual = Computed(@() isStatsActualByTime.get() && isStatsActualByBattle.get())
 
 let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
@@ -50,7 +50,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatInfoTables.value.len() == 0)
 
 function actualizeStats() {
-  if (isStatsActual.value)
+  if (isStatsActual.get())
     return
   logU("request stats refresh")
   eventbus_send($"userstat.stats.refresh", {})
@@ -116,12 +116,12 @@ function updateActualSeasonsIntervals() {
       }
     })
   )
-  seasonIntervals(simplifySeasonsWithActiveStatus)
+  seasonIntervals.set(simplifySeasonsWithActiveStatus)
 
   if (nextTime != maxTime)
-    nextUpdateIntervals({ time = nextTime + 1 })
+    nextUpdateIntervals.set({ time = nextTime + 1 })
   else
-    nextUpdateIntervals({ time = 0 })
+    nextUpdateIntervals.set({ time = 0 })
 }
 
 updateActualSeasonsIntervals()

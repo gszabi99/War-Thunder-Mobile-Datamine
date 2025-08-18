@@ -49,17 +49,17 @@ let deviceState = Watched(null)
 let batteryCharge = Watched(getBattery())
 let isCharging = Watched(is_charging())
 
-let fps = Computed(@() min(maxFpsVal, deviceState.value?.fps.tointeger() ?? -1))
-let ping = Computed(@() min(maxPingVal, deviceState.value?.ping.tointeger() ?? -1))
-let pl = Computed(@() min(maxPlVal, deviceState.value?.pl.tointeger() ?? -1))
+let fps = Computed(@() min(maxFpsVal, deviceState.get()?.fps.tointeger() ?? -1))
+let ping = Computed(@() min(maxPingVal, deviceState.get()?.ping.tointeger() ?? -1))
+let pl = Computed(@() min(maxPlVal, deviceState.get()?.pl.tointeger() ?? -1))
 
-let updateDeviceState = @(state) deviceState(state)
+let updateDeviceState = @(state) deviceState.set(state)
 function enableDeviceState(isEnable) {
   if (isEnable)
     eventbus_subscribe(UPDATE_STATUS_STRING_EVENT_ID, updateDeviceState)
   else {
     eventbus_unsubscribe(UPDATE_STATUS_STRING_EVENT_ID, updateDeviceState)
-    deviceState(null)
+    deviceState.set(null)
   }
 }
 isInBattle.subscribe(enableDeviceState)
@@ -124,27 +124,27 @@ let plComp = @() pl.get() < 0 ? { watch = pl } : {
   ]
 }
 
-let pingIconFn = Computed(@() ping.value < 0 ? ""
-  : ping.value < PING_LEVEL_MEDIUM ? "icon_wifi_high"
-  : ping.value < PING_LEVEL_SLOW ? "icon_wifi_med"
+let pingIconFn = Computed(@() ping.get() < 0 ? ""
+  : ping.get() < PING_LEVEL_MEDIUM ? "icon_wifi_high"
+  : ping.get() < PING_LEVEL_SLOW ? "icon_wifi_med"
   : "icon_wifi_low"
 )
-let pingIconComp = @() pingIconFn.value == "" ? { watch = pingIconFn } : {
+let pingIconComp = @() pingIconFn.get() == "" ? { watch = pingIconFn } : {
   watch = pingIconFn
   size = pingIconSize
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{pingIconFn.value}.svg:{pingIconSize[0]}:{pingIconSize[1]}:P")
-  color = pingIconFn.value != "icon_wifi_low" ? defaultColor : badQualityColor
+  image = Picture($"ui/gameuiskin#{pingIconFn.get()}.svg:{pingIconSize[0]}:{pingIconSize[1]}:P")
+  color = pingIconFn.get() != "icon_wifi_low" ? defaultColor : badQualityColor
   keepAspect = true
 }
 
 function updateBatteryState() {
-  batteryCharge(getBattery())
-  isCharging(is_charging())
+  batteryCharge.set(getBattery())
+  isCharging.set(is_charging())
 }
 
-let batteryIconFn = Computed(@() batteryCharge.value < 0 ? BATTERY_BG_NONE
-  : isCharging.value > 0 ? BATTERY_BG_CHARGING
+let batteryIconFn = Computed(@() batteryCharge.get() < 0 ? BATTERY_BG_NONE
+  : isCharging.get() > 0 ? BATTERY_BG_CHARGING
   : BATTERY_BG_NORMAL
 )
 
@@ -194,6 +194,6 @@ let deviceStateArea = {
 }
 
 register_command(@() log($"Device state: battery={get_battery()}, charging={is_charging()}, params:",
-  deviceState.value), "ui.debug.dump_device_state")
+  deviceState.get()), "ui.debug.dump_device_state")
 
 return deviceStateArea

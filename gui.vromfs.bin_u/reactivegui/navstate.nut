@@ -16,7 +16,7 @@ let scenesOrder = ComputedImmediate(function(prev) {
   let ver = scenesVersion 
   let top = []
   let res = []
-  foreach(s in scenesOrderSaved.value) {
+  foreach(s in scenesOrderSaved.get()) {
     if (s not in scenes)
       continue
     else if (scenes[s].alwaysOnTop)
@@ -28,10 +28,10 @@ let scenesOrder = ComputedImmediate(function(prev) {
   return isEqual(prev, res) ? prev : res
 })
 
-let curSceneBgRaw = keepref(Computed(@() sceneBgList.value?[scenesOrder.value?[scenesOrder.value.len() - 1]]))
+let curSceneBgRaw = keepref(Computed(@() sceneBgList.get()?[scenesOrder.get()?[scenesOrder.get().len() - 1]]))
 let curSceneBg = Watched(curSceneBgRaw.get())
 curSceneBgRaw.subscribe(@(_) deferOnce(@() curSceneBg.set(curSceneBgRaw.get())))
-let curSceneBgFallbackRaw = keepref(Computed(@() sceneBgListFallback.value?[scenesOrder.value?[scenesOrder.value.len() - 1]]))
+let curSceneBgFallbackRaw = keepref(Computed(@() sceneBgListFallback.get()?[scenesOrder.get()?[scenesOrder.get().len() - 1]]))
 let curSceneBgFallback = Watched(curSceneBgFallbackRaw.get())
 curSceneBgFallbackRaw.subscribe(@(_) deferOnce(@() curSceneBgFallback.set(curSceneBgFallbackRaw.get())))
 
@@ -56,7 +56,7 @@ function addScene(id) {
 }
 
 function removeScene(id) {
-  let idx = scenesOrderSaved.value.indexof(id)
+  let idx = scenesOrderSaved.get().indexof(id)
   if (idx == null)
     return
   logNS($"Remove scene {id}")
@@ -64,7 +64,7 @@ function removeScene(id) {
 }
 
 function moveSceneToTop(id) {
-  let idx = scenesOrderSaved.value.indexof(id)
+  let idx = scenesOrderSaved.get().indexof(id)
   if (idx == null)
     return false
   logNS($"Move scene to top {id}")
@@ -81,14 +81,14 @@ function registerScene(id, scene, onClearScenes = null, openedCounterWatch = nul
     return
   }
   scenes[id] <- { id, scene, onClearScenes, alwaysOnTop, canClear }
-  scenesVersion(scenesVersion.value + 1)
+  scenesVersion.set(scenesVersion.get() + 1)
 
   if (openedCounterWatch == null)
     return
 
   let isOpenedWatch = ComputedImmediate(@() type(openedCounterWatch.get()) == "bool" ? openedCounterWatch.get()
     : openedCounterWatch.get() > 0)
-  let isOpened = scenesOrderSaved.value.indexof(id) != null
+  let isOpened = scenesOrderSaved.get().indexof(id) != null
 
   function show(_) {
     if (!isOpenedWatch.get())
@@ -97,12 +97,12 @@ function registerScene(id, scene, onClearScenes = null, openedCounterWatch = nul
       addScene(id)
   }
   openedCounterWatch.subscribe(show)
-  if (isOpenedWatch.value != isOpened)
+  if (isOpenedWatch.get() != isOpened)
     show(null)
 }
 
 function clearScenes() {
-  let prev = clone scenesOrder.value 
+  let prev = clone scenesOrder.get() 
   scenesOrderSaved([])
   foreach (id in prev)
     scenes?[id].onClearScenes()
@@ -112,7 +112,7 @@ isInBattle.subscribe(@(_) clearScenes())
 isAuthorized.subscribe(@(v) v ? null : clearScenes())
 
 function canResetToMainScene() {
-  return scenesOrderSaved.value.reduce(@(val, id) val && (scenes?[id].canClear() ?? true), true)
+  return scenesOrderSaved.get().reduce(@(val, id) val && (scenes?[id].canClear() ?? true), true)
 }
 
 function tryResetToMainScene() {

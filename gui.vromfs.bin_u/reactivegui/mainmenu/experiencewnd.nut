@@ -19,7 +19,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo, mkUnitSele
   mkPlayerLevel
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { isExperienceWndOpen } = require("expWndState.nut")
+let { isExperienceWndOpen } = require("%rGui/mainMenu/expWndState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -34,9 +34,9 @@ let expStarIconSize = hdpx(35)
 
 let expBuyWndUid = "exp_buy_wnd_uid"
 
-let closeExperienceWnd = @() isExperienceWndOpen(false)
+let closeExperienceWnd = @() isExperienceWndOpen.set(false)
 
-let availableUnitsList = Computed(@() Rand.shuffle(buyUnitsData.value.canBuyOnLvlUp.values()))
+let availableUnitsList = Computed(@() Rand.shuffle(buyUnitsData.get().canBuyOnLvlUp.values()))
 
 function mkUnitPlate(unit, onClick) {
   if (unit == null)
@@ -45,7 +45,7 @@ function mkUnitPlate(unit, onClick) {
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
     sound = {
       click  = "choose"
@@ -119,7 +119,7 @@ let chooseUnitBlock = @() {
           gap = hdpx(40)
           flow = FLOW_HORIZONTAL
           children = availableUnitsList.get().map(@(u) mkUnitPlate(u, function(){
-            buyExpUnitName(u.name)
+            buyExpUnitName.set(u.name)
             setHangarUnit(u.name)
             closeExperienceWnd()
           }))
@@ -134,7 +134,7 @@ let chooseUnitBlock = @() {
           halign = ALIGN_CENTER
           text = loc("mainmenu/campaign_levelup/no_unit")
         }.__merge(fontSmallAccented)
-        mkSpinnerHideBlock(Computed(@() levelInProgress.value != null),
+        mkSpinnerHideBlock(Computed(@() levelInProgress.get() != null),
           @() {
             watch = [playerLevelInfo, lvlUpCost, curCampaign]
             children = buyLevelNoUnitBtn(playerLevelInfo.get(), lvlUpCost.get(), curCampaign.get())

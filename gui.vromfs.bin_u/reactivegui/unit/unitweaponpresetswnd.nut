@@ -5,7 +5,7 @@ let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
 let { unitWeaponPresetWeaponry, curUnit, onDelete, onApply, openEditNameWnd, isCurrentPreset,
-  isNotSavedPreset, isMaxSavedPresetAmountReached } = require("unitWeaponPresetsWeaponry.nut")
+  isNotSavedPreset, isMaxSavedPresetAmountReached } = require("%rGui/unit/unitWeaponPresetsWeaponry.nut")
 let { textButtonPrimary, textButtonCommon, iconButtonPrimary, iconButtonCommon } = require("%rGui/components/textButton.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")

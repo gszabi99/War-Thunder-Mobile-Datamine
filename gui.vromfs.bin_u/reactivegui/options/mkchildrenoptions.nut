@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let mkOption = require("mkOption.nut")
-let { tabW } = require("optionsStyle.nut")
+let mkOption = require("%rGui/options/mkOption.nut")
+let { tabW } = require("%rGui/options/optionsStyle.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -35,7 +35,7 @@ let scrollArrowsBlock = {
 
 function mkChildrenOptions(tabs) {
   let curTabIdx = mkWatched(persist, $"childrenOptions_curTabIdx", 0)
-  let resetCurTabIdx = @() curTabIdx(tabs.findindex(@(_) true))
+  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(_) true))
 
   curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
   let gap = hdpx(50)

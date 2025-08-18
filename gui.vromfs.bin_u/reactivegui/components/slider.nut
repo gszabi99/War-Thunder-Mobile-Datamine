@@ -38,8 +38,8 @@ let mkSliderKnob = @(relValue, stateFlags, fullW, ovr = {}) @() {
   fillColor = textColor
 
   transform = {
-    scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1]
-    translate = [(relValue.value - 0.5) * fullW, 0]
+    scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1]
+    translate = [(relValue.get() - 0.5) * fullW, 0]
   }
   transitions = [
     { prop = AnimProp.translate, duration = transTime, easing = transEasing }
@@ -82,7 +82,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         size = flex()
         behavior = Behaviors.Slider
         xmbNode = {}
-        onElemState = @(sf) stateFlags(sf)
+        onElemState = @(sf) stateFlags.set(sf)
         onChange
         min = 0
         max = 100
@@ -102,7 +102,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
 
         transform = {
           pivot = [0, 0]
-          scale = [relValue.value, 1]
+          scale = [relValue.get(), 1]
         }
         transitions = [{ prop = AnimProp.scale, duration = transTime, easing = transEasing }]
       }
@@ -183,7 +183,7 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
     behavior = Behaviors.Button
     xmbNode = {}
     function onElemState(sf) {
-      stateFlags(sf)
+      stateFlags.set(sf)
       let isActive = !!(sf & S_ACTIVE)
       if (isActive == (holdCount >= 0))
         return
@@ -198,8 +198,8 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
     }
     onClick = @() get_time_msec() - lastTime < firstTick * 1000 ? onChangeValue() : null
     onDetach = resetTimer
-    children = childrenCtor(stateFlags.value)
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    children = childrenCtor(stateFlags.get())
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
   })
 }
 

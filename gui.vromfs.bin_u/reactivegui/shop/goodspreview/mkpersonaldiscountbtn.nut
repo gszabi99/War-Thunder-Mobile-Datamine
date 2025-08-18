@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("goodsPreviewPkg.nut")
+let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { specialEventsLootboxesState } = require("%rGui/event/eventState.nut")
 let { openQuestsWndOnTab, questsBySection } = require("%rGui/quests/questsState.nut")
 let { discountsToApply } = require("%rGui/shop/shopState.nut")

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let mkContactRow = require("mkContactRow.nut")
+let mkContactRow = require("%rGui/contacts/mkContactRow.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkVerticalPannableArea } = require("%rGui/options/mkOptionsScene.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
-let mkContactsOrder = require("mkContactsOrder.nut")
+let mkContactsOrder = require("%rGui/contacts/mkContactsOrder.nut")
 
 let gap = hdpx(24)
 
@@ -20,8 +20,8 @@ function contactsList(uidsList, playerSelectedUserId, responseAction) {
           flow = FLOW_VERTICAL
           children = ordered.value
             .map(@(uid, idx) mkContactRow(uid, idx,
-              Computed(@() playerSelectedUserId.value == uid),
-              @() playerSelectedUserId(uid),
+              Computed(@() playerSelectedUserId.get() == uid),
+              @() playerSelectedUserId.set(uid),
               responseAction?(uid)))
         }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
       mkScrollArrow(scrollHandler, MR_B)
@@ -40,7 +40,7 @@ function contactsBlock(uidsList, playerSelectedUserId, responseAction) {
   return @() {
     watch = hasContacts
     size = flex()
-    children = !hasContacts.value ? noContactsMsg
+    children = !hasContacts.get() ? noContactsMsg
       : contactsList(uidsList, playerSelectedUserId, responseAction)
   }
 }
@@ -51,16 +51,16 @@ let buttons = @(selectedUserId, mkContactActions) @() {
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   gap
-  children = selectedUserId.value == null ? null
-    : mkContactActions(selectedUserId.value)
+  children = selectedUserId.get() == null ? null
+    : mkContactActions(selectedUserId.get())
 }
 
 let playerSelectedUserId = mkWatched(persist, "selectedUserId")
 
 
 function mkContactListScene(uidsList, mkContactActions, responseAction = null) {
-  let selectedUserId = Computed(@() playerSelectedUserId.value in uidsList.value
-    ? playerSelectedUserId.value
+  let selectedUserId = Computed(@() playerSelectedUserId.get() in uidsList.value
+    ? playerSelectedUserId.get()
     : null)
   return {
     key = uidsList

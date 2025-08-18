@@ -19,10 +19,10 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
     size
     rendObj = ROBJ_BOX
     borderWidth = hdpx(2)
-    borderColor = stateFlags.value & S_HOVER ? hoverColor : borderColor
+    borderColor = stateFlags.get() & S_HOVER ? hoverColor : borderColor
     fillColor = bgColor
 
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     behavior = Behaviors.Button
     onClick
 
@@ -33,14 +33,14 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
       {
         size = imageSize
         rendObj = ROBJ_IMAGE
-        color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+        color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
         image = Picture($"{image}:{imageSize?[0] ?? imageSize}:{imageSize?[1] ?? imageSize}:P")
         keepAspect = true
       }
       addChild
     ]
 
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
   }.__update(ovr)
 }
@@ -62,20 +62,20 @@ function imageBtn(image, onClick, ovr = {}, addChild = null) {
   return @() {
     watch = stateFlags
     size
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     behavior = Behaviors.Button
     onClick
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      stateFlags.value & S_HOVER ? hoverBg : null
+      stateFlags.get() & S_HOVER ? hoverBg : null
       typeof(image) != "string" ? image
         : {
           size = flex()
           rendObj = ROBJ_IMAGE
           image = Picture($"{image}:{size[0]}:{size[1]}:P")
           keepAspect = true
-          transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+          transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
           transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
         }
       addChild

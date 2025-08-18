@@ -29,17 +29,17 @@ let isAnyAdsButtonAttached = Computed(@() attachedAdsButtons.get() > 0)
 isLoggedIn.subscribe(@(v) !v? adsPreloadParams.set(null) : null)
 
 function giveReward() {
-  if (rewardInfo.value != null)
-    eventbus_send("adsRewardApply", rewardInfo.value)
+  if (rewardInfo.get() != null)
+    eventbus_send("adsRewardApply", rewardInfo.get())
 }
 
 function onFinishShowAds() {
-  if (rewardInfo.value != null)
-    eventbus_send("adsShowFinish", rewardInfo.value)
+  if (rewardInfo.get() != null)
+    eventbus_send("adsShowFinish", rewardInfo.get())
   set_mute_sound(true)
 }
 
-let cancelReward = @() rewardInfo(null)
+let cancelReward = @() rewardInfo.set(null)
 
 let providersId = is_ios ? "iOS"
   : isDownloadedFromGooglePlay() ? "android_gp"

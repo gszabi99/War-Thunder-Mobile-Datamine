@@ -4,8 +4,8 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let buyPlatformGoodsIOS = require("byPlatform/goodsIos.nut").buyPlatformGoods
-let buyPlatformGoodsGaijin = require("byPlatform/goodsGaijin.nut").buyPlatformGoodsFromOtherPlatform
+let buyPlatformGoodsIOS = require("%rGui/shop/byPlatform/goodsIos.nut").buyPlatformGoods
+let buyPlatformGoodsGaijin = require("%rGui/shop/byPlatform/goodsGaijin.nut").buyPlatformGoodsFromOtherPlatform
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let goodsToPaySpecialWnd = mkWatched(persist, "iosPaymentWaysWnd", null)

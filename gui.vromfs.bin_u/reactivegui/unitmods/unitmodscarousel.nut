@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("unitModsState.nut")
+let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("%rGui/unitMods/unitModsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModImage } = require("modsComps.nut")
+let { mkLevelLock, mkNotPurchasedShade, mkModImage } = require("%rGui/unitMods/modsComps.nut")
 let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
 let { defer } = require("dagor.workcycle")
 
@@ -50,15 +50,15 @@ let mkModContent = @(content, isActive, isHover) {
       size = flex()
       rendObj = ROBJ_IMAGE
       image = bgGradient()
-      opacity = isActive.value ? 1
-        : isHover.value ? 0.5
+      opacity = isActive.get() ? 1
+        : isHover.get() ? 0.5
         : 0
       transitions = opacityTransition
     }
   ].append(content)
 }
 
-let mkEquippedFrame = @(isEquipped) @() !isEquipped.value ? { watch = isEquipped }
+let mkEquippedFrame = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
   : {
       watch = isEquipped
       size = [modW, modH]
@@ -70,17 +70,17 @@ let mkEquippedFrame = @(isEquipped) @() !isEquipped.value ? { watch = isEquipped
 function mkEquippedIcon(isEquipped) {
   let icon = Computed(@() iconsCfg?[unit.get()?.unitType] ?? iconsCfg.tank)
 
-  return @() !isEquipped.value ? { watch = [unit, isEquipped] }
+  return @() !isEquipped.get() ? { watch = [unit, isEquipped] }
     : {
         watch = [unit, isEquipped]
         margin = contentMargin
         hplace = ALIGN_RIGHT
         vplace = ALIGN_BOTTOM
-        size = icon.value.size
+        size = icon.get().size
         rendObj = ROBJ_IMAGE
         color = equippedColor
         keepAspect = KEEP_ASPECT_FIT
-        image = Picture($"ui/gameuiskin#{icon.value.img}:{icon.value.size[0]}:{icon.value.size[1]}:P")
+        image = Picture($"ui/gameuiskin#{icon.get().img}:{icon.get().size[0]}:{icon.get().size[1]}:P")
       }
 }
 
@@ -127,7 +127,7 @@ function modData(mod) {
         }
         @() {
           watch = [isPurchased, isLocked, cost]
-          children = isPurchased.value || isLocked.value ? null : mkCurrencyComp(cost.value, currency)
+          children = isPurchased.get() || isLocked.get() ? null : mkCurrencyComp(cost.value, currency)
         }
       ]
     }
@@ -137,13 +137,13 @@ function modData(mod) {
 function mkMod(id, content, scrollToMod) {
   let xmbNode = XmbNode()
   let stateFlags = Watched(0)
-  let isActive = Computed (@() curModId.get() == id || (stateFlags.value & S_ACTIVE) != 0)
-  let isHover = Computed (@() stateFlags.value & S_HOVER)
+  let isActive = Computed (@() curModId.get() == id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isHover = Computed (@() stateFlags.get() & S_HOVER)
 
   return {
     size = FLEX_V
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
     xmbNode
     function onClick() {

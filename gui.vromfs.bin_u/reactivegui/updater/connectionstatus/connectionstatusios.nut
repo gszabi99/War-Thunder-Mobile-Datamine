@@ -19,7 +19,7 @@ let connectionStatusMap = {
 let debugStatus = hardPersistWatched("connectionStatusIos.debugStatus", null)
 let connectionStatusIosRaw = Watched(getConnectionStatus())
 let connectionStatusIos = Computed(@() debugStatus.get() ?? connectionStatusIosRaw.get())
-let updateStatus = @() connectionStatus.set(connectionStatusMap?[connectionStatusIos.value] ?? CON_UNKNOWN)
+let updateStatus = @() connectionStatus.set(connectionStatusMap?[connectionStatusIos.get()] ?? CON_UNKNOWN)
 updateStatus()
 connectionStatusIos.subscribe(@(_) updateStatus())
 

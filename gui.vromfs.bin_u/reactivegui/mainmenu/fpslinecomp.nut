@@ -24,7 +24,7 @@ let hasDebugInterfaceInMpSession = Watched(false)
 function initSubscription() {
   if (is_dev_version() && !(dgs_get_settings()?.debug.showDebugInterface ?? true))
     return
-  eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
+  eventbus_subscribe("updateStatusString", @(s) state.set(state.get().__merge(s)))
   gameVersion.set(get_base_game_version_str())
   hasDebugInterfaceInMpSession.set(isShowDebugInterface())
 }
@@ -35,7 +35,7 @@ eventbus_subscribe("onAcesInitComplete", @(_) initSubscription())
 let comps = {}
 foreach (key in [ "gpu", "preset", "sessionId", "latency", "latencyA", "latencyR" ]) {
   let k = key
-  comps[k] <- Computed(@() state.value[k])
+  comps[k] <- Computed(@() state.get()[k])
 }
 let { gpu, preset, sessionId, latency, latencyA, latencyR } = comps
 
@@ -67,7 +67,7 @@ let textStyle = {
 
 let graphicsComp = @() textStyle.__merge({
   watch = graphicsText
-  text = graphicsText.value
+  text = graphicsText.get()
 }, fontTinyShaded)
 
 let gpuComp = @() textStyle.__merge({
@@ -98,7 +98,7 @@ let lastBattleID = @() textStyle.__merge({
 
 let latencyComp = @() textStyle.__merge({
   watch = latencyText
-  text = latencyText.value
+  text = latencyText.get()
   monoWidth = "0"
 })
 

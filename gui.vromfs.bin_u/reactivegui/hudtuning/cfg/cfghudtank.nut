@@ -3,21 +3,21 @@ let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
   EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
-let cfgHudCommon = require("cfgHudCommon.nut")
+let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
 let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoomCtor,
   mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn,
   mkCircleFireworkBtn
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { withActionBarButtonCtor, withAnyActionBarButtonCtor,
   withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
-} = require("hudTuningPkg.nut")
+} = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let { tankMoveStick, tankMoveStickView, tankGamepadMoveBlock
 } = require("%rGui/hud/tankMovementBlock.nut")
-let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
+let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsOptions.nut")
@@ -35,19 +35,22 @@ let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
 let { mkBulletEditView, mkRepairActionItem } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
+let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
 let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns,
   optDoubleRepairBtn
-} = require("cfgOptions.nut")
+} = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
 let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
+let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
-let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.get()) && !isGamepad.get())
-let isTargetTracking = Computed(@() !currentTargetTrackingType.value)
+let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get()) && !isGamepad.get())
+let isTargetTracking = Computed(@() !currentTargetTrackingType.get())
+let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
@@ -200,7 +203,7 @@ return {
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), hdpx(-130)])
     editView = voiceMsgStickView
-    isVisibleInBattle = isInMpSession
+    isVisibleInBattle = isVoiceMsgStickVisibleInBattle
     priority = Z_ORDER.STICK
   }
 
@@ -212,8 +215,8 @@ return {
     }
     defTransform = mkLBPos([0, 0])
     editView = tankMoveStickView
-    isVisibleInEditor = Computed(@() !isViewMoveArrows.value)
-    isVisibleInBattle = Computed(@() !isBattleMoveArrows.value)
+    isVisibleInEditor = Computed(@() !isViewMoveArrows.get())
+    isVisibleInBattle = Computed(@() !isBattleMoveArrows.get())
     priority = Z_ORDER.STICK
     options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
@@ -252,6 +255,7 @@ return {
     defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(330)])
     editView = mkMyPlace(1)
     hideForDelayed = false
+    isVisibleInBattle = hasMyScores
   }
 
   myScores = {
@@ -259,6 +263,7 @@ return {
     defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(330)])
     editView = { children = mkTankMyScores(221) }
     hideForDelayed = false
+    isVisibleInBattle = hasMyScores
   }
 
   doll = {
@@ -302,5 +307,13 @@ return {
     ctor = missionScoreCtr
     defTransform = mkRTPos([hdpx(80), hdpx(20)])
     editView = missionScoreEditView
+  }
+
+  crewRank = {
+    ctor = crewRankCtr
+    defTransform = mkLBPos([hdpx(540), -hdpx(215)])
+    editView = crewRankEditView
+    isVisibleInBattle = isVisibleCrewRank
+    isVisibleInEditor = isVisibleCrewRank
   }
 }.__update(cfgHudCommon).filter(@(v) v != null)

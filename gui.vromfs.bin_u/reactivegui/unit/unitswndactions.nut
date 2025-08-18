@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { abs } = require("%sqstd/math.nut")
-let { hangarUnitName } = require("hangarUnit.nut")
+let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -70,14 +70,14 @@ let curSelectedUnitPrice = Computed(@()
 let canEquipSelectedUnit = Computed(@() (curSelectedUnit.get() in campMyUnits.get()) && (curSelectedUnit.get() != curUnit.get()?.name))
 
 function onSetCurrentUnit() {
-  if (curSelectedUnit.get() == null || curUnitInProgress.value != null)
+  if (curSelectedUnit.get() == null || curUnitInProgress.get() != null)
     return
   setCurrentUnit(curSelectedUnit.get())
   tryResetToMainScene()
 }
 
 function onBuyUnit() {
-  if (curSelectedUnit.get() == null || unitInProgress.value != null)
+  if (curSelectedUnit.get() == null || unitInProgress.get() != null)
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.get())
   purchaseUnit(curSelectedUnit.get(), bqPurchaseInfo)
@@ -316,7 +316,7 @@ let unitActionButtons = @(allowSeveralRows) function() {
     else if (deltaLevels == 1 && canBuyStatus != US_NOT_FOR_SALE) {
       let premId = findGoodsPrem(shopGoods.get())?.id
       bigBtnsList.append(textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
-        @() havePremium.get() || premId == null ? buyExpUnitName(unitName) : openGoodsPreview(premId)
+        @() havePremium.get() || premId == null ? buyExpUnitName.set(unitName) : openGoodsPreview(premId)
         { hotkeys = ["^J:Y"] , childOvr = { padding = const [0, hdpx(6)] gap = 0 }})
       )
     }
@@ -378,7 +378,7 @@ function discountBlock() {
 }
 
 let unitActions = @(allowSeveralRows) mkSpinnerHideBlock(
-  Computed(@() unitInProgress.value != null || curUnitInProgress.value != null),
+  Computed(@() unitInProgress.get() != null || curUnitInProgress.get() != null),
   unitActionButtons(allowSeveralRows),
   {
     minHeight = defButtonHeight

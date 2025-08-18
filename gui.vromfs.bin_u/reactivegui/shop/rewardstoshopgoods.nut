@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { G_UNIT, G_UNIT_UPGRADE, G_ITEM, G_CURRENCY, G_LOOTBOX, G_PREMIUM, G_BOOSTER, G_SKIN
 } = require("%appGlobals/rewardType.nut")
-let { getGoodsType } = require("shopCommon.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 
 
 function rewardsToShopGoods(rewards) {

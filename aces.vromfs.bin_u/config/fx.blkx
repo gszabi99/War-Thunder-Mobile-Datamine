@@ -490,6 +490,11 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "smoke_rocketlaunch_ground_big": {
+    "fx": "smoke_rocketlaunch_ground_big_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "fire_ground_black_fx": {
     "fx": "fire_ground_black_cmps_fx",
     "sfxPath": "tanks/explosions_tanks",
@@ -2807,6 +2812,31 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "pv_point_smoke_white": {
+    "fx": "smoke_point_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pv_point_smoke_blue": {
+    "fx": "smoke_point_blue_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pv_point_smoke_red": {
+    "fx": "smoke_point_red_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_point_circle_blue": {
+    "fx": "smoke_point_circle_blue_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_point_circle_green": {
+    "fx": "smoke_point_circle_green_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "water_under_explosion_medium": {
     "fx": "water_under_explosion_medium_cmps_fx",
     "sfxPathStudio": "naval/effects",
@@ -2929,6 +2959,11 @@
   },
   "water_tank_foam": {
     "fx": "water_tank_foam_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_ship_cloud_back": {
+    "fx": "water_ship_cloud_back_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
@@ -3063,21 +3098,6 @@
   },
   "ship_scrape_ground_steel": {
     "fx": "sparks_ship_collision_cmps_fx",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pv_point_smoke_white": {
-    "fx": "smoke_point_cmps_fx",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pv_point_smoke_blue": {
-    "fx": "smoke_point_blue_cmps_fx",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pv_point_smoke_red": {
-    "fx": "smoke_point_red_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },

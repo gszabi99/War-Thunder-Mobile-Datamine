@@ -11,7 +11,7 @@ let { debugHudType, HT_CUTSCENE } = require("%appGlobals/clientState/hudState.nu
 let { areHintsHidden } = require("%rGui/hudState.nut")
 let { playersCommonStats, dbgCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
+let hudMessagesUnitTypesMap = require("%rGui/hudHints/hudMessagesUnitTypesMap.nut")
 let { get_unlocks_blk} = require("blkGetters")
 
 
@@ -107,7 +107,7 @@ register_command(
 register_command(
   function() {
     if (debugHudType.value == HT_CUTSCENE) {
-      debugHudType(null)
+      debugHudType.set(null)
       return
     }
     let unit = campUnitsCfg.get().findvalue(@(_) true)
@@ -129,8 +129,8 @@ register_command(
       victimUnitType = unitType
       victimUnitNameLoc = "Victim Unit"
     })
-    if (myUserId.value != null && (playersCommonStats.get()?[myUserId.value].len() ?? 0) == 0)
-      dbgCommonStats.mutate(@(v) v[myUserId.value] <- {
+    if (myUserId.get() != null && (playersCommonStats.get()?[myUserId.get()].len() ?? 0) == 0)
+      dbgCommonStats.mutate(@(v) v[myUserId.get()] <- {
         hasPremium = true
         hasVip = true
         hasPrem = true
@@ -140,7 +140,7 @@ register_command(
           [unit?.name ?? ""] = { level = 25, mRank = unit?.mRank, isUpgraded = true }
         }
       })
-    debugHudType(HT_CUTSCENE)
+    debugHudType.set(HT_CUTSCENE)
   },
   "hud.debug.deathScreen")
 

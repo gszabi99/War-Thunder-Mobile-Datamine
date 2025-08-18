@@ -73,7 +73,7 @@ let mkActionItemImage = @(getImage, isAvailable, size) @() {
   watch = unitType
   rendObj = ROBJ_IMAGE
   size = [size, size]
-  image = svgNullable(getImage(unitType.value), size)
+  image = svgNullable(getImage(unitType.get()), size)
   keepAspect = KEEP_ASPECT_FIT
   color = !isAvailable ? imageDisabledColor : imageColor
 }

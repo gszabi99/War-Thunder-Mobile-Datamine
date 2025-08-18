@@ -4,13 +4,13 @@ let { get_mission_time } = require("mission")
 let { tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera } = require("%rGui/hudState.nut")
 let { hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
 } = require("%rGui/hud/currentWeaponsStates.nut")
-let { primaryAction, secondaryAction } = require("actionBar/actionBarState.nut")
-let { isSecondaryBulletsSame } = require("bullets/hudUnitBulletsState.nut")
+let { primaryAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { isSecondaryBulletsSame } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
 let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
-let { isHrosshairVisibile, aimModulePos } = require("shipState.nut")
+let { isHrosshairVisibile, aimModulePos } = require("%rGui/hud/shipState.nut")
 
 let crosshairColorFire = Color(70, 70, 70)
 let reloadColorPrimary = 0xCC23CACC
@@ -82,7 +82,7 @@ function mkReloadPartData(action, color) {
   }
 }
 
-let reloadSecAction = Computed(@() isSecondaryBulletsSame.get() ? secondaryAction.value : null)
+let reloadSecAction = Computed(@() isSecondaryBulletsSame.get() ? secondaryAction.get() : null)
 let reloadIndicator = @() {
   watch = [primaryAction, reloadSecAction]
   size = [crosshairReloadSize, crosshairReloadSize]
@@ -90,7 +90,7 @@ let reloadIndicator = @() {
   vplace = ALIGN_CENTER
   children = [
     mkReloadPartData(primaryAction.get(), reloadColorPrimary)
-    mkReloadPartData(reloadSecAction.value, reloadColorSecondary)
+    mkReloadPartData(reloadSecAction.get(), reloadColorSecondary)
   ]
     .filter(@(v) v != null)
     .sort(@(a, b) a.cdLeft <=> b.cdLeft)
@@ -100,8 +100,8 @@ let reloadIndicator = @() {
 let pointCrosshairScreenPositionUpdate = @() {
     transform = {
       translate = [
-        pointCrosshairScreenPosition.value.x,
-        pointCrosshairScreenPosition.value.y
+        pointCrosshairScreenPosition.get().x,
+        pointCrosshairScreenPosition.get().y
       ]
     }
   }
@@ -225,9 +225,9 @@ let shipSight = @() {
     targetSelectionProgress
     asmCaptureProgress
     aimModulePos.get().x > 0 && aimModulePos.get().y > 0 ? aimModuleIndicator : null
-    !isHrosshairVisibile.value ? null
-      : isCurHoldWeaponInCancelZone.value ? cancelShootMark
-      : !hasCrosshairForWeapon.value ? sightFrame
+    !isHrosshairVisibile.get() ? null
+      : isCurHoldWeaponInCancelZone.get() ? cancelShootMark
+      : !hasCrosshairForWeapon.get() ? sightFrame
       : circleCrosshair
     ]
 }
@@ -239,10 +239,10 @@ let tankSight = @() {
   valign = ALIGN_CENTER
   children = [
     targetSelectionProgress
-    isFreeCamera.value ? (isCurHoldWeaponInCancelZone.value ? cancelShootMark : null)
-      : isCurHoldWeaponInCancelZone.value ? cancelShootMark
-      : !tankZoomAutoAimMode.value ? pointCrosshair
-      : tankCrosshairColor.value != 0 ? mkCrosshairAutoAim(tankCrosshairColor.value)
+    isFreeCamera.get() ? (isCurHoldWeaponInCancelZone.get() ? cancelShootMark : null)
+      : isCurHoldWeaponInCancelZone.get() ? cancelShootMark
+      : !tankZoomAutoAimMode.get() ? pointCrosshair
+      : tankCrosshairColor.get() != 0 ? mkCrosshairAutoAim(tankCrosshairColor.get())
       : null
   ]
 }

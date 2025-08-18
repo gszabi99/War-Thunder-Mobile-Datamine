@@ -4,12 +4,12 @@ import "%sqstd/ecs.nut" as ecs
 let { EventOnSupportUnitSpawn } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { actionBarItems } = require("actionBar/actionBarState.nut")
+let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { unitType, HM_MANUAL_ANTIAIR } = require("%rGui/hudState.nut")
 let { MainMask } = require("%rGui/hud/airState.nut")
 let { selectActionBarAction } = require("hudActionBar")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
-let { playHapticPattern, HAPT_WEAP_SELECT } = require("hudHaptic.nut")
+let { playHapticPattern, HAPT_WEAP_SELECT } = require("%rGui/hud/hudHaptic.nut")
 let { playSound } = require("sound_wt")
 
 
@@ -62,7 +62,7 @@ let gunsList = Computed(function() {
     return null
 
   let actionsByTriggers = {}
-  foreach (a in actionBarItems.value)
+  foreach (a in actionBarItems.get())
     actionsByTriggers[a?.triggerGroupNo ?? ""] <- a
 
   let calibers = {}
@@ -109,28 +109,28 @@ local visibleWeaponsList = Computed(function(prev) {
     prev = []
 
   let res = []
-  let { insertIdx = 0, guns = [] } = gunsList.value
+  let { insertIdx = 0, guns = [] } = gunsList.get()
   local gunsIdx = 0
   let explosiveMass = {}
-  foreach (_, weapon in weaponsList.value) {
+  foreach (_, weapon in weaponsList.get()) {
     let actionType = weaponsButtonsConfig[weapon]?.actionType
     if(actionType != null) {
-      let mass = actionBarItems.value?[actionType]?.explosiveMass
+      let mass = actionBarItems.get()?[actionType]?.explosiveMass
       if (mass != null && mass > 0)
         explosiveMass[mass] <- (explosiveMass?[mass] ?? 0) + 1
     }
   }
   let counts = {}
-  foreach (idx, weapon in weaponsList.value) {
+  foreach (idx, weapon in weaponsList.get()) {
     let config = weaponsButtonsConfig[weapon]
     local actionItem = null
     if (!(config?.isAlwaysVisible ?? false)) {
       if (config?.flag != null) {
-        if (((1 << config.flag) & MainMask.value) == 0)
+        if (((1 << config.flag) & MainMask.get()) == 0)
           continue
       }
       else if (config?.actionType != null) {
-        actionItem = actionBarItems.value?[config.actionType]
+        actionItem = actionBarItems.get()?[config.actionType]
         if (actionItem == null)
           continue
       }
@@ -207,43 +207,43 @@ function unmarkWeapKeyHold(key) {
     clearTimer(holdTimers[key])
     holdTimers.$rawdelete(key)
   }
-  if (key in userHoldWeapKeys.value)
+  if (key in userHoldWeapKeys.get())
     userHoldWeapKeys.mutate(@(v) v.$rawdelete(key))
   selectActionBarAction("")
 }
 
 let defWeaponKey = Computed(@() unitType.value == AIR ? "ID_BOMBS" : TRIGGER_GROUP_PRIMARY)
 let currentWeaponInfo = Computed(function() {
-  let key = userHoldWeapKeys.value.findindex(@(v) v.isHold && !v.isOnlyHint)
-    ?? defWeaponKey.value
+  let key = userHoldWeapKeys.get().findindex(@(v) v.isHold && !v.isOnlyHint)
+    ?? defWeaponKey.get()
   return visibleWeaponsList.value.findvalue(@(v) v.id == key)
 })
 
-let currentWeaponKey = keepref(Computed(@() currentWeaponInfo.value?.id))
-let getViewCfg = @(curWeaponInfoVal) curWeaponInfoVal?.viewCfg ?? weaponsButtonsConfig?[currentWeaponInfo.value?.id]
+let currentWeaponKey = keepref(Computed(@() currentWeaponInfo.get()?.id))
+let getViewCfg = @(curWeaponInfoVal) curWeaponInfoVal?.viewCfg ?? weaponsButtonsConfig?[currentWeaponInfo.get()?.id]
 
 function selectActionByViewCfg(viewCfg) {
   let { shortcut = null, getShortcut = null, actionType = null } = viewCfg
-  let sc = shortcut ?? getShortcut?(unitType.value, actionBarItems.value?[actionType])
+  let sc = shortcut ?? getShortcut?(unitType.get(), actionBarItems.get()?[actionType])
   if (sc != null)
     selectActionBarAction(sc)
 }
 
 currentWeaponKey.subscribe(function(id) {
-  selectActionByViewCfg(getViewCfg(currentWeaponInfo.value))
-  if ((id ?? defWeaponKey.value) != defWeaponKey.value) {
+  selectActionByViewCfg(getViewCfg(currentWeaponInfo.get()))
+  if ((id ?? defWeaponKey.get()) != defWeaponKey.get()) {
     playSound("weapon_choose")
     playHapticPattern(HAPT_WEAP_SELECT)
   }
 })
 
 let currentHoldWeaponName = Computed(function() {
-  let weapInfo = userHoldWeapKeys.value.findvalue(@(v) v.isHold)
+  let weapInfo = userHoldWeapKeys.get().findvalue(@(v) v.isHold)
   if (weapInfo == null)
     return null
   if (weapInfo.name != null)
     return weapInfo.name
-  let { id = null, actionItem = null } = currentWeaponInfo.value
+  let { id = null, actionItem = null } = currentWeaponInfo.get()
   if (id == null || actionItem == null)
     return null
 
@@ -256,14 +256,14 @@ let currentHoldWeaponName = Computed(function() {
 
 ecs.register_es("on_support_unit_spawned", {
   [EventOnSupportUnitSpawn] = @(_evt, _eid, _comp)
-    selectActionByViewCfg(getViewCfg(currentWeaponInfo.value))
+    selectActionByViewCfg(getViewCfg(currentWeaponInfo.get()))
 })
 
 let hasCrosshairForWeapon = Computed(@() unitType.value == TANK
-  || (getViewCfg(currentWeaponInfo.value)?.hasCrosshair ?? false))
+  || (getViewCfg(currentWeaponInfo.get())?.hasCrosshair ?? false))
 let hasAimingModeForWeapon = Computed(@() unitType.value == TANK
-  || (getViewCfg(currentWeaponInfo.value)?.hasAimingMode ?? true))
-let isCurHoldWeaponInCancelZone = Computed(@() !(userHoldWeapInside.value.findvalue(@(v) !v) ?? true))
+  || (getViewCfg(currentWeaponInfo.get())?.hasAimingMode ?? true))
+let isCurHoldWeaponInCancelZone = Computed(@() !(userHoldWeapInside.get().findvalue(@(v) !v) ?? true))
 
 return {
   visibleWeaponsList

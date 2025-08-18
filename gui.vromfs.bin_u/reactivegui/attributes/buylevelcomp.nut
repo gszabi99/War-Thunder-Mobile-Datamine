@@ -7,7 +7,7 @@ let { balanceGold } = require("%appGlobals/currenciesState.nut")
 let { mkDiscountPriceComp, CS_COMMON, CS_NO_BALANCE } = require("%rGui/components/currencyComp.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { getSpCostText } = require("attrState.nut")
+let { getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset, mkFontGradient, gradCircularSqCorners
 } = require("%rGui/style/gradients.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
@@ -179,7 +179,7 @@ function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick) {
     watch = stateFlags
     size = [blockSize[0], SIZE_TO_CONTENT]
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
     sound = { click  = "click" }
     flow = FLOW_VERTICAL

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+from "blkGetters" import get_current_mission_info_cached
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL,
   AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE
-} = require("actionBar/actionType.nut")
-let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
+} = require("%rGui/hud/actionBar/actionType.nut")
+let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
 
 function getActionBarShortcut(unitType, itemConfig) {
   let shortcutIdx = itemConfig.shortcutIdx
@@ -158,7 +159,8 @@ let actionBarItemsConfig = {
   }
   EII_ARTILLERY_TARGET = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "ui/gameuiskin#hud_artillery_fire.svg"
+    getImage = @(_) get_current_mission_info_cached()?.useCustomSuperArtillery ? "ui/gameuiskin#hud_super_artillery_strike.svg"
+      : "ui/gameuiskin#hud_artillery_fire.svg"
     actionType = AB_ARTILLERY_TARGET
     mkButtonFunction = "mkActionItem"
   }

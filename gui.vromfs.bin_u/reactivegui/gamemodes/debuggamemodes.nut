@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { debugModes } = require("gameModeState.nut")
+let { debugModes } = require("%rGui/gameModes/gameModeState.nut")
 let listButton = require("%rGui/components/listButton.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
@@ -42,7 +42,9 @@ function gameModesList() {
       function() {
         close()
         let modeId = m?.gameModeId
-        if (tryOpenQueuePenaltyWnd(m?.campaign ?? selectedCampaign.get(), { id = "queueToGameMode", modeId }))
+        let campaign = m?.campaign ?? selectedCampaign.get()
+        let name = m?.name ?? ""
+        if (tryOpenQueuePenaltyWnd(campaign, { id = "queueToGameMode", modeId }, null, name))
           return
         eventbus_send("queueToGameMode", { modeId })
       },

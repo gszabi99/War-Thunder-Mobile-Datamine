@@ -3,7 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
-} = require("userstat.nut")
+} = require("%rGui/unlocks/userstat.nut")
 let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 
 let emptyProgress = {
@@ -21,7 +21,7 @@ let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 let battlePassTables = ["battle_pass_daily", "battle_pass_weekly"]
 
 let unlockTables = Computed(function(prev) {
-  let stats = userstatStats.value
+  let stats = userstatStats.get()
   let res = {}
   foreach (name, _value in stats?.stats ?? {})
     res[name] <- true
@@ -33,7 +33,7 @@ let unlockTables = Computed(function(prev) {
   return prevIfEqual(prev, res)
 })
 
-let allUnlocksDesc = Computed(@() (userstatDescList.value?.unlocks ?? {})
+let allUnlocksDesc = Computed(@() (userstatDescList.get()?.unlocks ?? {})
   .map(@(u) u.__merge({
     stages = (u?.stages ?? []).map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
   })))
@@ -70,8 +70,8 @@ function calcUnlockProgress(progressData, unlockDesc) {
 }
 
 let unlockProgress = Computed(function(prev) {
-  let progressList = userstatUnlocks.value?.unlocks ?? {}
-  let unlockDataList = allUnlocksDesc.value
+  let progressList = userstatUnlocks.get()?.unlocks ?? {}
+  let unlockDataList = allUnlocksDesc.get()
   let res = {}
   local hasChanges = type(prev) != "table"
   foreach (name, _ in progressList.__merge(unlockDataList)) {
@@ -88,8 +88,8 @@ let unlockProgress = Computed(function(prev) {
   return hasChanges ? res : prev
 })
 
-let activeUnlocks = Computed(@(prev) allUnlocksDesc.value
-  .filter(@(u) (unlockTables.value?[u?.table] ?? false) || u?.type == "INDEPENDENT")
+let activeUnlocks = Computed(@(prev) allUnlocksDesc.get()
+  .filter(@(u) (unlockTables.get()?[u?.table] ?? false) || u?.type == "INDEPENDENT")
   .map(function(u, id) {
     let p = unlockProgress.get()?[id]
     let prevRes = prev?[id]
@@ -137,7 +137,7 @@ function callExtCb(context) {
 }
 
 function receiveUnlockRewards(unlockName, stage, context = null) {
-  if (unlockName in unlockInProgress.value)
+  if (unlockName in unlockInProgress.get())
     return
   log($"receiveRewards {unlockName}={stage}", context)
   unlockInProgress.mutate(@(u) u[unlockName] <- true)
@@ -147,7 +147,7 @@ function receiveUnlockRewards(unlockName, stage, context = null) {
 }
 
 function buyUnlock(unlockName, stage, currency, price, context) {
-  if (!unlockName || unlockName in unlockInProgress.value) {
+  if (!unlockName || unlockName in unlockInProgress.get()) {
     log($"buyUnlock ignore {unlockName} because already in progress")
     return
   }
@@ -173,7 +173,7 @@ userstatRegisterHandler("BuyUnlock", function(result, context) {
 
 userstatRegisterHandler("GrantRewards", function(result, context) {
   let { unlockName  = null, finalStage = null, stage = 0, onSuccessCb = null } = context
-  if (unlockName in unlockInProgress.value)
+  if (unlockName in unlockInProgress.get())
     unlockInProgress.mutate(@(v) v.$rawdelete(unlockName))
   if ("error" in result) {
     log("GrantRewards result: ", result)

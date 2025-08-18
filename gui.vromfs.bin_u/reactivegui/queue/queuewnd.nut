@@ -21,6 +21,7 @@ let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nu
 let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZone.nut")
 let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
 let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
+let helpEventBattleRoyale = require("%rGui/loading/complexScreens/helpEventBattleRoyale.nut")
 let helpEventChristmas = require("%rGui/loading/complexScreens/helpEventChristmas.nut")
 let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
@@ -48,7 +49,7 @@ register_command(@() isDebugQueueWnd.set(!isDebugQueueWnd.get()), "ui.debug.queu
 let needShowQueueWindow = keepref(Computed(@() !isInBattle.get()
   && (isInQueue.get() || isInJoiningGame.get() || isDebugQueueWnd.get())))
 let canCancelJoining = Watched(false)
-isInJoiningGame.subscribe(@(_) canCancelJoining(false))
+isInJoiningGame.subscribe(@(_) canCancelJoining.set(false))
 
 let lastQueueMode = mkWatched(persist, "lastQueueMode", "")
 curQueue.subscribe(@(v) (v?.params.mode ?? "") == "" ? null : lastQueueMode.set(v.params.mode))
@@ -65,14 +66,14 @@ let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode
 let playersCountInQueue = Computed(function() {
   if (curQueue.value == null || queueInfo.value == null)
     return null
-  let unitInfo = curQueue.value?.unitInfo
+  let unitInfo = curQueue.get()?.unitInfo
   let unitName = type(unitInfo) == "array" ? unitInfo?[0] : unitInfo
   let { rank = null } = campUnitsCfg.get()?[unitName] ?? curUnit.get() 
   if (rank == null)
     return null
   let rankStr = rank.tostring()
   local res = 0
-  foreach (clusterStats in queueInfo.value)
+  foreach (clusterStats in queueInfo.get())
     foreach (qStats in clusterStats)
       res += qStats?[rankStr] ?? 0
   return max(1, res) 
@@ -90,8 +91,8 @@ let textParams = {
 
 let playersCount = @() textParams.__merge({
   watch = playersCountInQueue
-  text = playersCountInQueue.value == null ? ""
-    : $"{loc("multiplayer/playersInQueue")}{loc("ui/colon")}{playersCountInQueue.value}"
+  text = playersCountInQueue.get() == null ? ""
+    : $"{loc("multiplayer/playersInQueue")}{loc("ui/colon")}{playersCountInQueue.get()}"
 })
 
 let waitCircle = {
@@ -108,7 +109,7 @@ let waitCircle = {
 
 function waitTime() {
   let now = get_time_msec()
-  let msec = now - (curQueue.value?.activateTime ?? now)
+  let msec = now - (curQueue.get()?.activateTime ?? now)
   return textParams.__merge({
     watch = [serverTime, curQueue]
     color = textColor
@@ -129,7 +130,7 @@ let waitingBlock = @() {
         : loc("yn1/waiting_time")
       color = textColor
     }, fontMedium)
-    curQueueState.value != QS_ACTUALIZE && curQueueState.value != QS_ACTUALIZE_SQUAD ? waitTime : null
+    curQueueState.get() != QS_ACTUALIZE && curQueueState.get() != QS_ACTUALIZE_SQUAD ? waitTime : null
     waitCircle
   ]
 }
@@ -193,7 +194,7 @@ let cancelQueueButton = @(isOnlyOverride) {
   ].insert(0, !isOnlyOverride ? mkMRankRange : null)
 }
 
-let allowCancelJoining = @() canCancelJoining(true)
+let allowCancelJoining = @() canCancelJoining.set(true)
 let cancelJoiningButton = @() {
   watch = canCancelJoining
   key = canCancelJoining
@@ -201,7 +202,7 @@ let cancelJoiningButton = @() {
   hplace = ALIGN_RIGHT
   onAttach = @() resetTimeout(timeToShowCancelJoining, allowCancelJoining)
   onDetach = @() clearTimer(allowCancelJoining)
-  children = !canCancelJoining.value
+  children = !canCancelJoining.get()
     ? null
     : {
         flow = FLOW_VERTICAL
@@ -222,7 +223,7 @@ let hintIcon = @() {
   watch = missionCampaign
   size = [hintIconSize, hintIconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{missionCampaign.value == "tanks" ? hintIconTank : hintIconShip}:{hintIconSize}:{hintIconSize}:P")
+  image = Picture($"ui/gameuiskin#{missionCampaign.get() == "tanks" ? hintIconTank : hintIconShip}:{hintIconSize}:{hintIconSize}:P")
 }
 
 let aimingHint = {
@@ -250,7 +251,7 @@ let aimingHint = {
 }
 
 let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankControls, helpTankCaptureZone ]
-let tanksBg = @() tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
+let tanksBg = @() tanksScreensOrder[(sharedStatsByCampaign.get()?.battles ?? 0) % tanksScreensOrder.len()]()
 
 let mkBgImagesByCampaign = {
   air   = @() helpAirAiming
@@ -263,6 +264,7 @@ let mkBgImagesByCampaign = {
 let mkBgImageByGameMode = {
   tank_event_ny_ctf_mode = @() helpEventChristmas
   event_1_april_pirates = @() helpEventPirates
+  tank_event_battle_royale = @() helpEventBattleRoyale
 }
 
 let bgImage = @() {

@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-from "hudTuningConsts.nut" import *
+from "%rGui/hudTuning/hudTuningConsts.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { abs } = require("%sqstd/math.nut")
-let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
+let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { tuningUnitType, transformInProgress, isElemHold, applyTransformProgress, selectedId,
   isAllElemsOptionsOpened
-} = require("hudTuningState.nut")
+} = require("%rGui/hudTuning/hudTuningState.nut")
 
 let INC_AREA = sh(2)
 let START_MOVE_TIME_MSEC = 300
@@ -17,7 +17,7 @@ let isHitInc = @(aabb, x, y) aabb.l - INC_AREA <= x && aabb.r + INC_AREA >= x
   && aabb.t - INC_AREA <= y && aabb.b + INC_AREA >= y
 
 function findElemInScene(x, y) {
-  let list = cfgByUnitTypeOrdered?[tuningUnitType.value]
+  let list = cfgByUnitTypeOrdered?[tuningUnitType.get()]
   if (list == null)
     return null
 
@@ -72,7 +72,7 @@ pointer.subscribe(function(p) {
     : cx - saSize[0] / 2
   let y = alignV & ALIGN_B ? cy + halfY - saSize[1]
     : cy - halfY
-  transformInProgress({ align = alignH | alignV, pos = [x, y] })
+  transformInProgress.set({ align = alignH | alignV, pos = [x, y] })
 })
 
 let wasMoved = @(pointerV, x, y) pointerV.time + START_MOVE_TIME_MSEC > get_time_msec()
@@ -86,7 +86,7 @@ let manipulator = {
   touchMarginPriority = TOUCH_BACKGROUND
   function onPointerPress(evt) {
     if ((evt.accumRes & R_PROCESSED) != 0
-        || (pointer.value != null && pointer.value.id != evt.pointerId))
+        || (pointer.get() != null && pointer.get().id != evt.pointerId))
       return 0
     local aabb = getAabbIfHit(selectedId.get(), evt.x, evt.y)
     local isChangedOnPress = false
@@ -102,12 +102,12 @@ let manipulator = {
         start = [evt.x, evt.y], offset = [0, 0],
         aabb, isChangedOnPress, isInProgress = false
       })
-      isElemHold(true)
+      isElemHold.set(true)
     }
     return 1
   }
   function onPointerRelease(evt) {
-    if (pointer.value?.id != evt.pointerId)
+    if (pointer.get()?.id != evt.pointerId)
       return 0
 
     if (pointer.get() != null) {
@@ -120,15 +120,15 @@ let manipulator = {
     }
 
     applyTransformProgress()
-    pointer(null)
-    isElemHold(false)
+    pointer.set(null)
+    isElemHold.set(false)
     return 1
   }
   function onPointerMove(evt) {
-    if (pointer.value?.id != evt.pointerId)
+    if (pointer.get()?.id != evt.pointerId)
       return 0
     let { x, y } = evt
-    if (!pointer.value.isInProgress && wasMoved(pointer.get(), x, y))
+    if (!pointer.get().isInProgress && wasMoved(pointer.get(), x, y))
       return 1
     pointer.mutate(@(v) v.__update({
       isInProgress = true
@@ -138,8 +138,8 @@ let manipulator = {
   }
   function onDetach() {
     transformInProgress(null)
-    pointer(null)
-    isElemHold(false)
+    pointer.set(null)
+    isElemHold.set(false)
   }
 }
 

@@ -18,13 +18,13 @@ let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{campaign}_1"
   : $"tutorial_{campaign.slice(0, -4)}_1_nc"
-let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.value))
+let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.get()))
 
 let forceTutorTankMissionV2 = mkWatched(persist, "forceTutorTankMissionV2", null)
 let tutorialMissions = Computed(@() {
   tutorial_ships_1 = "tutorial_ship_basic"
   tutorial_ships_1_nc = "tutorial_ship_basic"
-  tutorial_tanks_1 = (forceTutorTankMissionV2.value ?? abTests.value?.tutorialTankMissionV2) == "true" ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
+  tutorial_tanks_1 = (forceTutorTankMissionV2.get() ?? abTests.get()?.tutorialTankMissionV2) == "true" ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
   tutorial_air_1   = "tutorial_plane_basic"
 })
 let isSkippedTutor = mkWatched(persist, "isSkippedFirstBattleTutor", {})
@@ -32,24 +32,24 @@ let started = mkWatched(persist, "started", null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 
 let allMissions = Computed(@() (serverConfigs.get()?.clientMissionRewards ?? {})
-  .filter(@(_, id) id in tutorialMissions.value))
-let missionsWithRewards = Computed(@() allMissions.value
-  .filter(@(_, id) id not in started.value && (receivedMissionRewards.value?[id] ?? 0) == 0))
+  .filter(@(_, id) id in tutorialMissions.get()))
+let missionsWithRewards = Computed(@() allMissions.get()
+  .filter(@(_, id) id not in started.get() && (receivedMissionRewards.get()?[id] ?? 0) == 0))
 
 let needFirstBattleTutorByStats = @(stats) (stats?.battles ?? 0) == 0
 
 let needFirstBattleTutor = Computed(@()
-  (firstBattleTutor.value in missionsWithRewards.value
-    && isProfileReceived.value
+  (firstBattleTutor.get() in missionsWithRewards.get()
+    && isProfileReceived.get()
     && (campMyUnits.get().len() == 0 || needFirstBattleTutorByStats(sharedStatsByCampaign.get()))
     && (!isCampaignWithUnitsResearch.get() || currentResearch.get() != null)
   )
-  != isDebugMode.value)
+  != isDebugMode.get())
 
 let setSkippedTutor = @(campaign) isSkippedTutor.mutate(@(v) v[getFirstBattleTutor(campaign)] <- true)
 
 function needFirstBattleTutorForCampaign(campaign) {
-  if (getFirstBattleTutor(campaign) not in missionsWithRewards.value)
+  if (getFirstBattleTutor(campaign) not in missionsWithRewards.get())
     return false
   let sUnits = serverConfigs.get()?.allUnits ?? {}
   let ownCampUnit = (servProfile.value?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
@@ -68,26 +68,26 @@ function mkRewardBattleData(rewards) {
 }
 
 let needForceStartTutorial = keepref(Computed(@()
-  needFirstBattleTutor.value
+  needFirstBattleTutor.get()
   && !isInSquad.get()
-  && isAnyCampaignSelected.value
-  && isProfileReceived.value
-  && isLoggedIn.value
+  && isAnyCampaignSelected.get()
+  && isProfileReceived.get()
+  && isLoggedIn.get()
   && isInMenu.get()))
 
 function startTutor(id, currentUnitName = null) {
-  if (id not in tutorialMissions.value)
+  if (id not in tutorialMissions.get())
     return
-  if (id in missionsWithRewards.value) {
-    apply_client_mission_reward(curCampaign.value, id)
+  if (id in missionsWithRewards.get()) {
+    apply_client_mission_reward(curCampaign.get(), id)
     eventbus_send("lastSingleMissionRewardData", {
-      battleData = mkRewardBattleData(missionsWithRewards.value[id])
+      battleData = mkRewardBattleData(missionsWithRewards.get()[id])
       needAddUnit = true
     })
   }
   if (!isSkippedTutor.get()?[id])
     eventbus_send("startSingleMission", {
-      id = tutorialMissions.value[id],
+      id = tutorialMissions.get()[id],
       unitName = (!isCampaignWithUnitsResearch.get() || currentUnitName == "")
           ? null
         : currentUnitName
@@ -97,12 +97,12 @@ function startTutor(id, currentUnitName = null) {
         : campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))
           ?? currentResearch.get()?.name
     })
-  resetTimeout(0.1, @() isDebugMode(false))
+  resetTimeout(0.1, @() isDebugMode.set(false))
 }
 
 function rewardTutorialMission(campaign) {
   let id = getFirstBattleTutor(campaign)
-  if (id in missionsWithRewards.value)
+  if (id in missionsWithRewards.get())
     apply_client_mission_reward(campaign, id)
 }
 
@@ -113,13 +113,13 @@ function autoStartTutorial() {
 
 needForceStartTutorial.subscribe(@(v) v ? deferOnce(autoStartTutorial) : null)
 
-register_command(@() isDebugMode(!isDebugMode.value), "debug.first_battle_tutorial")
+register_command(@() isDebugMode.set(!isDebugMode.get()), "debug.first_battle_tutorial")
 register_command(function() {
   forceTutorTankMissionV2.set(forceTutorTankMissionV2.get() != null
     ? null
-    : (abTests.value?.tutorialTankMissionV2 == "true" ? "false" : "true")
+    : (abTests.get()?.tutorialTankMissionV2 == "true" ? "false" : "true")
   )
-  dlog("tutorialMissions", tutorialMissions.value) 
+  dlog("tutorialMissions", tutorialMissions.get()) 
 }, "debug.abTests.tutorialTankMission")
 
 return {

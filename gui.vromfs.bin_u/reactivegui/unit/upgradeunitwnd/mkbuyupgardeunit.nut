@@ -11,7 +11,7 @@ let { buy_upgrade_unit, registerHandler} = require("%appGlobals/pServer/pServerA
 let { infoBlueButton, infoGoldButton } = require("%rGui/components/infoButton.nut")
 let { upgradeCommonUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { ovrBuyBtn, fontIconPreview, offerCardWidth, cardHPadding } = require("upgradeUnitWndPkg.nut")
+let { ovrBuyBtn, fontIconPreview, offerCardWidth, cardHPadding } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
 
 let close = @() upgradeCommonUnitName.set(null)
 

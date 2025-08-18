@@ -47,8 +47,8 @@ function applyListToOptions() {
   optLang.list(langList.map(@(l) l.id))
   let voiceList = langList.filter(@(l) l.hasUnitSpeech).map(@(l) l.id)
   optLangVoice.list(speechUnitCountryType.get() == UNIT_LANG ? [] : voiceList)
-  if (voiceList.len() > 0 && !voiceList.contains(languageVoice.value))
-    languageVoice(voiceList[0])
+  if (voiceList.len() > 0 && !voiceList.contains(languageVoice.get()))
+    languageVoice.set(voiceList[0])
 }
 
 applyListToOptions()

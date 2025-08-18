@@ -7,17 +7,17 @@ let { isEventMapEditorOpened, closeEventMapEditor, selectedPointId, presetMapSiz
   selectedBgElem, presetGridSize, getElemKey, presetLines, selectedLineIdx, isShiftPressed,
   ELEM_BG, ELEM_POINT, ELEM_LINE, ELEM_MIDPOINT, selectedLineMidpoints, selectedMidpointIdx,
   scalableETypes
-} = require("mapEditorState.nut")
-let { shiftActions } = require("comboActions.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
+let { shiftActions } = require("%rGui/debugTools/debugMapPoints/comboActions.nut")
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { mkText } = require("mapEditorComps.nut")
+let { mkText } = require("%rGui/debugTools/debugMapPoints/mapEditorComps.nut")
 let mapNet = require("%rGui/event/treeEvent/mapNet.nut")
 
-let manipulator = require("mapPointsManipulator.nut")
-let mapEditorHeaderOptions = require("mapEditorHeaderOptions.nut")
-let mapEditorSidebarOptions = require("mapEditorSidebarOptions.nut")
+let manipulator = require("%rGui/debugTools/debugMapPoints/mapPointsManipulator.nut")
+let mapEditorHeaderOptions = require("%rGui/debugTools/debugMapPoints/mapEditorHeaderOptions.nut")
+let mapEditorSidebarOptions = require("%rGui/debugTools/debugMapPoints/mapEditorSidebarOptions.nut")
 let { mkLineCmds, mkLineCmdsOutline, editorSelLineColor, mapLineWidth
 } = require("%rGui/event/treeEvent/treeEventComps.nut")
 

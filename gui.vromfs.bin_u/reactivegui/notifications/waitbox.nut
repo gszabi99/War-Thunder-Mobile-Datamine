@@ -7,10 +7,10 @@ let { register_command } = require("console")
 let waitboxes = mkWatched(persist, "waitboxes", [])
 
 function removeWaitbox(uid) {
-  let idx = waitboxes.value.findindex(@(v) v.uid == uid)
+  let idx = waitboxes.get().findindex(@(v) v.uid == uid)
   if (idx == null)
     return
-  clearTimer(waitboxes.value[idx])
+  clearTimer(waitboxes.get()[idx])
   waitboxes.mutate(@(v) v.remove(idx))
 }
 
@@ -32,7 +32,7 @@ function addWaitbox(text, time = 0, uid = null, eventId = null, context = null) 
 }
 
 let filtered = []
-waitboxes.value.each(function(wbox) {
+waitboxes.get().each(function(wbox) {
   let { timeEnd } = wbox
   if (timeEnd > 0) {
     let timeLeft = timeEnd - get_time_msec()
@@ -42,7 +42,7 @@ waitboxes.value.each(function(wbox) {
   }
   filtered.append(wbox)
 })
-waitboxes(filtered)
+waitboxes.set(filtered)
 
 register_command(@(text, time) addWaitbox(text, time), "debug.addWaitbox")
 register_command(removeWaitbox, "debug.removeWaitbox")

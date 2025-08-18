@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 let { has_strategy_mode } = require("%appGlobals/permissions.nut")
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { AB_FIREWORK, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3,
 
 
 
 } = require("%rGui/hud/actionBar/actionType.nut")
-let cfgHudCommon = require("cfgHudCommon.nut")
-let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
+let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
+let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
 let { mkWeaponBtnEditView, mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
   withActionBarButtonCtor, withActionButtonScaleCtor
-} = require("hudTuningPkg.nut")
+} = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
-let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
+let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { mkRhombFireworkBtn, mkRhombZoomButton, mkSupportPlaneBtn, mkAntiairButton, mkRhombSimpleActionBtn
 } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
@@ -125,7 +125,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), 0])
     editView = voiceMsgStickView
-    isVisibleInBattle = isInMpSession
+    isVisibleInBattle = isVoiceMsgStickVisibleInBattle
     priority = Z_ORDER.STICK
   }
 

@@ -252,7 +252,7 @@ function mkSlot(reward, rStyle) {
     key = unit
     size
     behavior = Behaviors.Button
-    onElemState = @(v) rewardSlots.get()?.isPurchased ? null : stateFlags(v)
+    onElemState = @(v) rewardSlots.get()?.isPurchased ? null : stateFlags.set(v)
     onClick = @() rewardSlots.get()?.isPurchased
         ? null
       : isSelected.get()
@@ -269,7 +269,7 @@ function mkSlot(reward, rStyle) {
       mkRewardPlateTexts(reward, rStyle)
       reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkRewardUnitFlag(unit.get(), rStyle) : null
     ]
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14 }]
     animations = openedUnitFromTree.get() == unit.get()?.name ? rerollUnitAnim : null
   }

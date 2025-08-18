@@ -3,7 +3,7 @@ let { round } =  require("math")
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { SHIP, BOAT, TANK, SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { hcUnitType, hcDamageStatus, hcDmgPartsInfo, isHcUnitKilled, hcRelativeHealth
-} = require("hitCameraState.nut")
+} = require("%rGui/hud/hitCamera/hitCameraState.nut")
 let { hudUnitType } = require("%rGui/hudState.nut")
 let { isTargetRepair, targetHp } = require("%rGui/hud/shipState.nut")
 
@@ -32,7 +32,7 @@ let colors = {
   [KILLED] = 0xFFFF4338,
 }
 
-let currentTargetHp = Computed(@() targetHp.value < 0 ? hcRelativeHealth.value : targetHp.value)
+let currentTargetHp = Computed(@() targetHp.get() < 0 ? hcRelativeHealth.get() : targetHp.get())
 
 let getStatusByHealth = @(health)
   health == null || health == 100 ? NONE
@@ -190,19 +190,19 @@ function sailboatDmgPanelChildrenCtor(scale) {
   let iconBgSize = scaleEven(iconBgSizeBase, scale)
   return [
     mkDmgPart("ui/gameuiskin#hud_debuff_sail_weapon.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.artilleryHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.artilleryHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_fire.svg", iconSize, iconBgSize,
-      Computed(@() (hcDamageStatus.value?.hasFire ?? false) ? CRITICAL : NONE))
+      Computed(@() (hcDamageStatus.get()?.hasFire ?? false) ? CRITICAL : NONE))
     mkDmgPart("ui/gameuiskin#hud_debuff_sail_control.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.engineHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.engineHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_rudders.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.ruddersHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.ruddersHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_breach.svg", iconSize, iconBgSize,
-      Computed(@() (hcDamageStatus.value?.hasBreach ?? false) ? CRITICAL : NONE))
+      Computed(@() (hcDamageStatus.get()?.hasBreach ?? false) ? CRITICAL : NONE))
     mkTextPart("ui/gameuiskin#ship_crew.svg","ui/gameuiskin#hud_crew_wounded.svg", scale,
-      Computed(@() $"{(100 * currentTargetHp.value + 0.5).tointeger()}%"),
-      Computed(@() currentTargetHp.value > 0.505 ? 0xFFFFFFFF
-        : currentTargetHp.value > 0.005 ? 0xFFFFC000
+      Computed(@() $"{(100 * currentTargetHp.get() + 0.5).tointeger()}%"),
+      Computed(@() currentTargetHp.get() > 0.505 ? 0xFFFFFFFF
+        : currentTargetHp.get() > 0.005 ? 0xFFFFC000
         : 0XFFFF4040), isTargetRepair)
   ]
 }
@@ -212,21 +212,21 @@ function shipDmgPanelChildrenCtor(scale) {
   let iconBgSize = scaleEven(iconBgSizeBase, scale)
   return [
     mkDmgPart("ui/gameuiskin#dmg_ship_artillery.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.artilleryHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.artilleryHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_fire.svg", iconSize, iconBgSize,
-      Computed(@() (hcDamageStatus.value?.hasFire ?? false) ? CRITICAL : NONE))
+      Computed(@() (hcDamageStatus.get()?.hasFire ?? false) ? CRITICAL : NONE))
     mkDmgPart("ui/gameuiskin#dmg_ship_engine.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.engineHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.engineHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_torpedo_tubes.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.torpedoTubesHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.torpedoTubesHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_rudders.svg", iconSize, iconBgSize,
-      Computed(@() getStatusByHealth(hcDamageStatus.value?.ruddersHealth)))
+      Computed(@() getStatusByHealth(hcDamageStatus.get()?.ruddersHealth)))
     mkDmgPart("ui/gameuiskin#dmg_ship_breach.svg", iconSize, iconBgSize,
-      Computed(@() (hcDamageStatus.value?.hasBreach ?? false) ? CRITICAL : NONE))
+      Computed(@() (hcDamageStatus.get()?.hasBreach ?? false) ? CRITICAL : NONE))
     mkTextPart("ui/gameuiskin#ship_crew.svg","ui/gameuiskin#hud_crew_wounded.svg", scale,
-      Computed(@() $"{(100 * currentTargetHp.value + 0.5).tointeger()}%"),
-      Computed(@() currentTargetHp.value > 0.505 ? 0xFFFFFFFF
-        : currentTargetHp.value > 0.005 ? 0xFFFFC000
+      Computed(@() $"{(100 * currentTargetHp.get() + 0.5).tointeger()}%"),
+      Computed(@() currentTargetHp.get() > 0.505 ? 0xFFFFFFFF
+        : currentTargetHp.get() > 0.005 ? 0xFFFFC000
         : 0XFFFF4040), isTargetRepair)
   ]
 }
@@ -236,31 +236,31 @@ function tankDmgPanelChildrenCtor(scale) {
   let iconBgSize = scaleEven(iconBgSizeBase, scale)
   return [
     mkDmgPart("ui/gameuiskin#engine_state_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAny(isHcUnitKilled.value, hcDmgPartsInfo.value,
+      Computed(@() getStateByBrokenDmAny(isHcUnitKilled.get(), hcDmgPartsInfo.get(),
         ["tank_engine", "tank_transmission"])))
     mkDmgPart("ui/gameuiskin#gun_state_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmMain(isHcUnitKilled.value, hcDmgPartsInfo.value,
+      Computed(@() getStateByBrokenDmMain(isHcUnitKilled.get(), hcDmgPartsInfo.get(),
         ["tank_gun_barrel", "tank_cannon_breech"],
         ["gun_barrel_dm", "gun_barrel_01_dm", "cannon_breech_dm", "cannon_breech_01_dm"])))
     mkDmgPart("ui/gameuiskin#turret_gear_state_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmMain(isHcUnitKilled.value, hcDmgPartsInfo.value,
+      Computed(@() getStateByBrokenDmMain(isHcUnitKilled.get(), hcDmgPartsInfo.get(),
         ["tank_drive_turret_h", "tank_drive_turret_v"],
         ["drive_turret_h_dm", "drive_turret_h_01_dm", "drive_turret_v_dm", "drive_turret_v_01_dm"])))
     mkDmgPart("ui/gameuiskin#track_state_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAny(isHcUnitKilled.value, hcDmgPartsInfo.value, ["tank_track"])))
+      Computed(@() getStateByBrokenDmAny(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_track"])))
 
     { size = [iconSize, iconSize] }
 
     mkDmgPart("ui/gameuiskin#crew_gunner_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.value, hcDmgPartsInfo.value, ["tank_gunner"])))
+      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_gunner"])))
     mkDmgPart("ui/gameuiskin#crew_driver_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.value, hcDmgPartsInfo.value, ["tank_driver"])))
+      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_driver"])))
     mkDmgPart("ui/gameuiskin#crew_commander_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.value, hcDmgPartsInfo.value, ["tank_commander"])))
+      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_commander"])))
     mkDmgPart("ui/gameuiskin#crew_loader_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.value, hcDmgPartsInfo.value, ["tank_loader"])))
+      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_loader"])))
     mkDmgPart("ui/gameuiskin#crew_machine_gunner_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.value, hcDmgPartsInfo.value, ["tank_machine_gunner"])))
+      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_machine_gunner"])))
   ]
 }
 

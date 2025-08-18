@@ -19,17 +19,17 @@ let goodsInfo = hardPersistWatched("goodsGaijin.goodsInfo", {})
 let lastError = hardPersistWatched("goodsGaijin.lastError", null)
 let lastUpdateTime = hardPersistWatched("goodsGaijin.lastUpdateTime", 0)
 let needForceUpdate = Watched(false)
-let needRetry = Computed(@() lastError.value != null && !isInBattle.get() && !isGoodsRequested.value)
+let needRetry = Computed(@() lastError.get() != null && !isInBattle.get() && !isGoodsRequested.get())
 
 let resetRequestedFlag = @() isGoodsRequested(false)
 isGoodsRequested.subscribe(@(_) resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag))
-if (isGoodsRequested.value)
+if (isGoodsRequested.get())
   resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag)
 
 let guidsForRequest = keepref(Computed(function(prev) {
-  if (!isAuthorized.value)
+  if (!isAuthorized.get())
     return []
-  let res = allGuids.value.filter(@(_, guid) needForceUpdate.value || (guid not in goodsInfo.value))
+  let res = allGuids.get().filter(@(_, guid) needForceUpdate.get() || (guid not in goodsInfo.get()))
     .keys()
   return isEqual(prev, res) ? prev : res
 }))
@@ -60,32 +60,32 @@ function refreshAvailableGuids() {
 guidsForRequest.subscribe(@(_) deferOnce(refreshAvailableGuids))
 needRetry.subscribe(@(v) v ? resetTimeout(REPEAT_ON_ERROR_SEC, refreshAvailableGuids)
   : clearTimer(refreshAvailableGuids))
-if (needRetry.value)
+if (needRetry.get())
   resetTimeout(REPEAT_ON_ERROR_SEC, refreshAvailableGuids)
-else if (goodsInfo.value.len() == 0)
+else if (goodsInfo.get().len() == 0)
   refreshAvailableGuids()
 
-let forceUpdateAllGuids = @() needForceUpdate(true)
+let forceUpdateAllGuids = @() needForceUpdate.set(true)
 function startAutoUpdateTimer() {
-  needForceUpdate(false)
-  if (isInBattle.get() || lastUpdateTime.value <= 0)
+  needForceUpdate.set(false)
+  if (isInBattle.get() || lastUpdateTime.get() <= 0)
     clearTimer(forceUpdateAllGuids)
   else
-    resetTimeout(max(0.1, lastUpdateTime.value + AUTO_UPDATE_TIME_SEC - serverTime.get()), forceUpdateAllGuids)
+    resetTimeout(max(0.1, lastUpdateTime.get() + AUTO_UPDATE_TIME_SEC - serverTime.get()), forceUpdateAllGuids)
 }
 startAutoUpdateTimer()
 lastUpdateTime.subscribe(@(_) startAutoUpdateTimer())
 isInBattle.subscribe(@(_) startAutoUpdateTimer())
 
 function addGoodsInfoGuids(guids) {
-  let newGuids = clone allGuids.value
+  let newGuids = clone allGuids.get()
   foreach(guid in guids)
     newGuids[guid] <- true
-  if (newGuids.len() != allGuids.value.len())
+  if (newGuids.len() != allGuids.get().len())
     allGuids(newGuids)
 }
 
-let addGoodsInfoGuid = @(guid) guid in allGuids.value ? null
+let addGoodsInfoGuid = @(guid) guid in allGuids.get() ? null
   : allGuids.mutate(@(v) v[guid] <- true)
 
 return {

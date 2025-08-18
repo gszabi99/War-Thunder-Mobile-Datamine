@@ -63,7 +63,7 @@ function dropDownMenu(state, styles = {}) {
     borderColor = defColor
     padding = const [hdpx(10), hdpx(25)]
     behavior = Behaviors.Button
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     sound = { click = "click" }
     onClick = @(e) openSelectOptions(e, values, currentOption.get(), setValue,
       isOptionsVisible, valToString, { size = [width, SIZE_TO_CONTENT] })

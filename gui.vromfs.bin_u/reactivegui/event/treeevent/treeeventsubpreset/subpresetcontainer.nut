@@ -3,7 +3,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { closeSubPreset, currentSubPresetState, selectedElemId, presetBgElems
 } = require("%rGui/event/treeEvent/treeEventState.nut")
-let { subMapContainer } = require("subMapContainer.nut")
+let { subMapContainer } = require("%rGui/event/treeEvent/treeEventSubPreset/subMapContainer.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let shadowTexOffs = [300, 520, 310, 570]

@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_game_version_str, get_base_game_version_str } = require("app")
-let { soundOptions } = require("options/soundOptions.nut")
-let { graphicOptions } = require("options/graphicOptions.nut")
-let { langOptions } = require("options/langOptions.nut")
-let { controlsOptions } = require("options/controlsOptions.nut")
-let { tankControlsOptions } = require("options/tankControlsOptions.nut")
-let { shipControlsOptions } = require("options/shipControlsOptions.nut")
-let { airControlsOptions } = require("options/airControlsOptions.nut")
-let { systemOptions } = require("options/systemOptions.nut")
-let { gameOptions } = require("options/gameOptions.nut")
-let { mkOptionsScene } = require("mkOptionsScene.nut")
+let { soundOptions } = require("%rGui/options/options/soundOptions.nut")
+let { graphicOptions } = require("%rGui/options/options/graphicOptions.nut")
+let { langOptions } = require("%rGui/options/options/langOptions.nut")
+let { controlsOptions } = require("%rGui/options/options/controlsOptions.nut")
+let { tankControlsOptions } = require("%rGui/options/options/tankControlsOptions.nut")
+let { shipControlsOptions } = require("%rGui/options/options/shipControlsOptions.nut")
+let { airControlsOptions } = require("%rGui/options/options/airControlsOptions.nut")
+let { systemOptions } = require("%rGui/options/options/systemOptions.nut")
+let { gameOptions } = require("%rGui/options/options/gameOptions.nut")
+let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 
 let tabs = [ 
   {

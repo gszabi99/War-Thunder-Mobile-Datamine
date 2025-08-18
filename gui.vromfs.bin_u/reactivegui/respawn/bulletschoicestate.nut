@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
-let { selSlot, cancelRespawn } = require("respawnState.nut")
+let { selSlot, cancelRespawn } = require("%rGui/respawn/respawnState.nut")
 let { respawnUnitItems } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { register_command } = require("console")
@@ -13,10 +13,10 @@ let { calcBulletStep, calcVisibleBullets, calcChosenBullets, calcMaxBullets, cal
 } = require("%rGui/bullets/calcBullets.nut")
 
 
-let unitName = Computed(@() selSlot.value?.name)
-let unitLevel = Computed(@() selSlot.value?.level ?? 0)
-let bulletsInfo = Computed(@() unitName.value == null ? null
-  : loadUnitBulletsChoice(unitName.value)?.commonWeapons.primary) 
+let unitName = Computed(@() selSlot.get()?.name)
+let unitLevel = Computed(@() selSlot.get()?.level ?? 0)
+let bulletsInfo = Computed(@() unitName.get() == null ? null
+  : loadUnitBulletsChoice(unitName.get())?.commonWeapons.primary) 
 let bulletsSecInfo = Computed(function() {
   if (unitName.get() == null)
     return null
@@ -25,15 +25,15 @@ let bulletsSecInfo = Computed(function() {
 })
 
 let hasChangedCurSlotBullets = Watched(false)
-selSlot.subscribe(@(_) hasChangedCurSlotBullets(false))
+selSlot.subscribe(@(_) hasChangedCurSlotBullets.set(false))
 
-applySavedBullets(unitName.value)
+applySavedBullets(unitName.get())
 unitName.subscribe(applySavedBullets)
 
 let bulletStep = Computed(@() calcBulletStep(bulletsInfo.get()))
 let bulletSecStep = Computed(@() calcBulletStep(bulletsSecInfo.get()))
 
-let bulletTotalCount = Computed(@() (bulletsInfo.value?.total ?? 1).tofloat())
+let bulletTotalCount = Computed(@() (bulletsInfo.get()?.total ?? 1).tofloat())
 let bulletSecTotalCount = Computed(@() (bulletsSecInfo.get()?.total ?? 1).tofloat())
 
 let bulletTotalSteps = Computed(@() ceil(bulletTotalCount.get() / bulletStep.get()).tointeger())
@@ -80,13 +80,13 @@ let bulletsToSpawn = Computed(function() {
   return res
 })
 
-let chosenBulletsAmount = Computed(@() chosenBullets.value.reduce(@(acc, bullet) acc + bullet.count, 0))
+let chosenBulletsAmount = Computed(@() chosenBullets.get().reduce(@(acc, bullet) acc + bullet.count, 0))
 let chosenBulletsSecAmount = Computed(@() chosenBulletsSec.get().len() > 0
-  ? chosenBulletsSec.value.reduce(@(acc, bullet) acc + bullet.count, 0)
+  ? chosenBulletsSec.get().reduce(@(acc, bullet) acc + bullet.count, 0)
   : -1)
-let hasZeroBullets = Computed(@() chosenBulletsAmount.value == 0 || chosenBulletsSecAmount.value == 0)
-let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
-  || chosenBulletsAmount.value < bulletsInfo.value.total * BULLETS_LOW_PERCENT / 100)
+let hasZeroBullets = Computed(@() chosenBulletsAmount.get() == 0 || chosenBulletsSecAmount.get() == 0)
+let hasLowBullets = Computed(@() chosenBulletsAmount.get() < BULLETS_LOW_AMOUNT
+  || chosenBulletsAmount.get() < bulletsInfo.get().total * BULLETS_LOW_PERCENT / 100)
 let hasZeroMainBullets = Computed(@() hasExtraBullets.get()
   && bulletsToSpawn.get().len() > 0
   && bulletsToSpawn.get()[0].count == 0)

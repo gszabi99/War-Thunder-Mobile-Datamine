@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { gamepadShortcuts, allShortcutsUp } = require("shortcutsMap.nut")
+let { gamepadShortcuts, allShortcutsUp } = require("%rGui/controls/shortcutsMap.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let defBtnHeight = hdpxi(50)

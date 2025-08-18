@@ -23,11 +23,11 @@ function closeWndBtn(onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() btnBase.__merge({
     watch = stateFlags
-    color = stateFlags.value & S_HOVER ? 0xFFFFFFFF : 0xFF808080
-    onElemState = @(sf) stateFlags(sf)
+    color = stateFlags.get() & S_HOVER ? 0xFFFFFFFF : 0xFF808080
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
 
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }, override)
 }

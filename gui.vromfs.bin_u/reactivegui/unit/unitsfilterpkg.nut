@@ -29,8 +29,8 @@ let openFilters = @(event, isTreeNodes, ovr = {})
     
     popupOffset = hdpx(20)
     hotkeys = [[btnBEscUp, closeFilters]]
-    onAttach = @() isFiltersVisible(true)
-    onDetach = @() isFiltersVisible(false)
+    onAttach = @() isFiltersVisible.set(true)
+    onDetach = @() isFiltersVisible.set(false)
   }.__merge(ovr))
 
 let filterStateFlags = Watched(0)
@@ -39,7 +39,7 @@ let getFiltersText = @(count) count <= 0 ? loc("showFilters") : loc("activeFilte
 
 function countActiveFilters() {
   filterGenId.set(filterGenId.get() + 1)
-  return activeFilters(filters.reduce(function(res, f) {
+  return activeFilters.set(filters.reduce(function(res, f) {
     let { value } = f.value
     if (value != null && value != ""
         && (type(value) != "table" || value.len() < f.allValues.value.len()))

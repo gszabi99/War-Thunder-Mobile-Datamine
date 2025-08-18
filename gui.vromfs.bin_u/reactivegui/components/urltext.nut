@@ -9,7 +9,7 @@ function urlLikeButton(text, action, style = {}) {
     watch = stateFlags
     behavior = Behaviors.Button
     rendObj = ROBJ_TEXT
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     sound = {
       click = "click"
     }
@@ -20,7 +20,7 @@ function urlLikeButton(text, action, style = {}) {
     fontFxColor = Color(0, 0, 0)
     onClick = action
     transform = {
-      scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
+      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = {

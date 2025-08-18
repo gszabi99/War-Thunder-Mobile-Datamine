@@ -12,7 +12,7 @@ let { REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardS
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { allShopGoods, calculateNewGoodsDiscount } = require("%rGui/shop/shopState.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
 
@@ -248,6 +248,11 @@ function mkMsgDiscount(stackDataV, onClick) {
       continue
 
     let goods = allShopGoods.get()?[goodsId] ?? {}
+    let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)?[0]
+
+    if (previewReward && isRewardEmpty([previewReward.__merge({ gType = previewReward.rType })], servProfile.get()))
+      continue
+
     let serverDiscounts = clone personalDiscounts[goodsId]
     let sortedDiscountsByPrice = serverDiscounts.sort(@(a, b) b.price <=> a.price)
     let prevDiscountIdx = (sortedDiscountsByPrice.findindex(@(v) v.id == info.id) ?? -1) - 1
@@ -277,6 +282,9 @@ function mkMsgDiscount(stackDataV, onClick) {
     else
       minDiscountsByGoodsId[goodsId] <- prevDiscount
   }
+
+  if (mainRewards.len() == 0 && singleRewards.len() == 0)
+    return onClick()
 
   let agregatedMainRewards = mainRewards.filter(@(data)
     data.goodsId in minDiscountsByGoodsId && data.prevDiscount <= minDiscountsByGoodsId[data.goodsId])

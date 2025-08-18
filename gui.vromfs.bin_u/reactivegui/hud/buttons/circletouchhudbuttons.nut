@@ -23,8 +23,8 @@ let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
 } = require("%rGui/hud/airState.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
-let { mkBtnZone, lockButtonIcon, canLock, defShortcutOvr}  = require("hudButtonsPkg.nut")
-let { isAvailableActionItem } = require("actionButtonComps.nut")
+let { mkBtnZone, lockButtonIcon, canLock, defShortcutOvr}  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
+let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { lowerAircraftCamera } = require("camera_control")
 let { playHapticPattern } = require("hapticVibration")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
@@ -155,7 +155,7 @@ let mkBtnBorder = @(size, isAvailable, stateFlags) @() {
   size = [size, size]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#hud_bg_round_border.svg:{size}:{size}:P")
-  color = stateFlags.value & S_ACTIVE ? borderColorPushed
+  color = stateFlags.get() & S_ACTIVE ? borderColorPushed
     : !isAvailable ? borderNoAmmoColor
     : borderColor
 }
@@ -169,7 +169,7 @@ let mkBorderPlane = @(size, isAvailable, stateFlags, scale = 1) @() {
   commands = [
     [VECTOR_ELLIPSE, 50, 50, 50, 50],
   ]
-  color = stateFlags.value & S_ACTIVE ? borderColorPushed
+  color = stateFlags.get() & S_ACTIVE ? borderColorPushed
     : !isAvailable ? borderNoAmmoColor
     : borderColor
 }
@@ -310,12 +310,12 @@ let mkCircleTankPrimaryGun = @(aType) function(actionItem, scale, key = "btn_wea
     let isAvailable = (isOnCd.get() || isAvailableActionItem(actionItem)) && !isDisabled.get()
     let { count, countEx, isBulletBelt = false, isContinuous = false } = actionItem
     let isWaitForAim = !(actionItem?.aimReady ?? true)
-    let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
-    let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
+    let isWaitToShoot = !allowShoot.get() && !primaryRocketGun.get()
+    let color = !isAvailable || isWaitToShoot || (primaryRocketGun.get() && isWaitForAim) ? disabledColor : 0xFFFFFFFF
     let needContinuous = isBulletBelt || isContinuous
     let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_main_weapon_fire.svg"
     function onTouchBegin() {
-      if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
+      if (isWaitForAim && (isWaitToShoot || primaryRocketGun.get()))
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (!isOnCd.get() && isAvailableActionItem(actionItem)) {
         if (needContinuous)
@@ -331,7 +331,7 @@ let mkCircleTankPrimaryGun = @(aType) function(actionItem, scale, key = "btn_wea
       : {
           behavior = Behaviors.Button
           cameraControl = true
-          onElemState = @(v) primStateFlags(v)
+          onElemState = @(v) primStateFlags.set(v)
           hotkeys = mkGamepadHotkey("ID_FIRE_GM")
           onClick = onTouchBegin
         }
@@ -367,7 +367,7 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
         watch = actionItemW
         onDetach = function onDetach() {
           if (stateFlags.get() & S_ACTIVE) {
-            stateFlags(0)
+            stateFlags.set(0)
             setShortcutOff("ID_FIRE_GM_MACHINE_GUN")
           }
         }
@@ -379,7 +379,7 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
     let color = !isAvailable || (isWaitForAim && isInDeadZone) ? disabledColor : 0xFFFFFFFF
     let res = mkContinuousButtonParams(
       function onTouchBegin() {
-        if (isWaitForAim && (!allowShoot.value || isInDeadZone))
+        if (isWaitForAim && (!allowShoot.get() || isInDeadZone))
           addCommonHint(loc("hints/wait_for_aiming"))
         else if (!isOnCd.get() && isAvailableActionItem(actionItem))
           useShortcutOn("ID_FIRE_GM_MACHINE_GUN")
@@ -413,13 +413,13 @@ let mkCircleTankSecondaryGun = @(shortcutId, aType, img = null) function(actionI
   return function() {
     let isAvailable = isOnCd.get() || isAvailableActionItem(actionItem)
     let isWaitForAim = !(actionItem?.aimReady ?? true)
-    let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
-    let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
+    let isWaitToShoot = !allowShoot.get() && !primaryRocketGun.get()
+    let color = !isAvailable || isWaitToShoot || (primaryRocketGun.get() && isWaitForAim) ? disabledColor : 0xFFFFFFFF
     let stateFlags = Watched(0)
     let image = weaponTouchIcons?[actionItem.weaponName] ?? img
     let res = mkContinuousButtonParams(
       function onTouchBegin() {
-        if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
+        if (isWaitForAim && (isWaitToShoot || primaryRocketGun.get()))
           addCommonHint(loc("hints/wait_for_aiming"))
         else if (!isOnCd.get() && isAvailableActionItem(actionItem))
           useShortcutOn(shortcutId)
@@ -469,7 +469,7 @@ let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, canLowerCam
       lowerAircraftCamera(false)
     }
     unmarkWeapKeyHold(shortcutId)
-    if (shortcutId in userHoldWeapInside.value)
+    if (shortcutId in userHoldWeapInside.get())
       userHoldWeapInside.mutate(@(v) v.$rawdelete(shortcutId))
   }
 
@@ -783,7 +783,7 @@ function mkCircleLockBtn(shortcutId, scale) {
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
     cameraControl = true
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     onClick = @() toggleShortcut(shortcutId)
     hotkeys = mkGamepadHotkey(shortcutId)
     children = [
@@ -796,7 +796,7 @@ function mkCircleLockBtn(shortcutId, scale) {
         commands = [
           [VECTOR_ELLIPSE, 50, 50, 50, 50],
         ]
-        color = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed : canLock.get() ? borderColor: borderNoAmmoColor
+        color = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed : canLock.get() ? borderColor: borderNoAmmoColor
       }
       lockButtonIcon(imgSize, offImgSize)
       mkCircleGlare(bgSize, "lock")
@@ -826,17 +826,17 @@ let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.sv
       function onClick() {
         if (isDisabled.value)
           return
-        if (canZoom.value)
+        if (canZoom.get())
           toggleShortcut("ID_ZOOM_TOGGLE")
         else
           addCommonHint(loc("hints/select_enemy_to_aim"))
       }
-      onElemState = @(v) stateFlags(v)
+      onElemState = @(v) stateFlags.set(v)
       children = [
         mkBtnBg(bgSize, btnBgColor.empty)
-        mkBtnBorder(bgSize, canZoom.value && !isDisabled.value, stateFlags)
+        mkBtnBorder(bgSize, canZoom.get() && !isDisabled.value, stateFlags)
         mkBtnImage(imgSize,
-          isInZoom.value ? zoomInIcon : zoomOutIcon,
+          isInZoom.get() ? zoomInIcon : zoomOutIcon,
           isDisabled.value ? disabledColor : 0xFFFFFFFF)
         isDisabled.value ? null
           : mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr, scale)
@@ -848,8 +848,8 @@ function mkCircleTargetTrackingBtn(scale) {
   let stateFlags = Watched(0)
   let bgSize = scaleEven(buttonSize, scale)
   let imgSize = scaleEven(0.8 * buttonSize, scale)
-  let color = Computed(@() isTrackingActive.value ? 0xFFFFFFFF : disabledColor)
-  let bgColor = Computed(@() isTrackingActive.value ? btnBgColor.ready : btnBgColor.empty)
+  let color = Computed(@() isTrackingActive.get() ? 0xFFFFFFFF : disabledColor)
+  let bgColor = Computed(@() isTrackingActive.get() ? btnBgColor.ready : btnBgColor.empty)
 
   return @() {
     watch = isTrackingActive
@@ -859,11 +859,11 @@ function mkCircleTargetTrackingBtn(scale) {
     cameraControl = true
     hotkeys = mkGamepadHotkey("ID_TOGGLE_TARGET_TRACKING")
     onClick = @() toggleShortcut("ID_TOGGLE_TARGET_TRACKING")
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     children = [
-      mkBtnBg(bgSize, bgColor.value)
-      mkBtnBorder(bgSize, canZoom.value, stateFlags)
-      mkBtnImage(imgSize, "ui/gameuiskin#hud_tank_target_tracking.svg", color.value)
+      mkBtnBg(bgSize, bgColor.get())
+      mkBtnBorder(bgSize, canZoom.get(), stateFlags)
+      mkBtnImage(imgSize, "ui/gameuiskin#hud_tank_target_tracking.svg", color.get())
       mkGamepadShortcutImage("ID_TOGGLE_TARGET_TRACKING", defShortcutOvr, scale)
     ]
   }
@@ -881,7 +881,7 @@ function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
     hotkeys = mkGamepadHotkey(shortcutId)
     onTouchBegin = @() useShortcutOn(shortcutId)
     onTouchEnd = @() setShortcutOff(shortcutId)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     children = [
       mkBtnBg(buttonSize, btnBgColor.empty)
       mkBtnBorder(buttonSize, true, stateFlags)
@@ -907,7 +907,7 @@ let mkCircleFireworkBtn = @(aType) function(actionItem, scale) {
       size = [bgSize, bgSize]
       behavior = Behaviors.Button
       cameraControl = true
-      onElemState = @(v) fwStateFlags(v)
+      onElemState = @(v) fwStateFlags.set(v)
       hotkeys = mkGamepadHotkey("ID_FIREWORK")
       onClick = @() useShortcut("ID_FIREWORK")
       children = [

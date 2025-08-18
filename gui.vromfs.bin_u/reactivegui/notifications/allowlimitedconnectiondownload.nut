@@ -15,10 +15,10 @@ isAsked.subscribe(function(v) {
   eventbus_send("saveProfile", {})
 })
 
-let needShowMessage = keepref(Computed(@() !isAsked.value
+let needShowMessage = keepref(Computed(@() !isAsked.get()
   && isInMenu.get()
   && !isDownloadPaused.get()
-  && isDownloadPausedByConnection.value))
+  && isDownloadPausedByConnection.get()))
 
 function openMessageIfNeed() {
   if (!needShowMessage.value)
@@ -26,11 +26,11 @@ function openMessageIfNeed() {
   openMsgBox({
     text = loc("msg/allowMobileNetworkDownload")
     buttons = [
-      { id = "cancel", isCancel = true, cb = @() isAsked(true) }
+      { id = "cancel", isCancel = true, cb = @() isAsked.set(true) }
       { id = "download", styleId = "PRIMARY", isDefault = true,
         function cb() {
           isAsked(true)
-          allowLimitedDownload(true)
+          allowLimitedDownload.set(true)
         }
       }
     ]
@@ -39,4 +39,4 @@ function openMessageIfNeed() {
 
 resetTimeout(0.2, openMessageIfNeed)
 needShowMessage.subscribe(@(v) !v ? null : resetTimeout(0.2, openMessageIfNeed))
-register_command(@() isAsked(false), "ui.resetLimitedDownloadMessage")
+register_command(@() isAsked.set(false), "ui.resetLimitedDownloadMessage")

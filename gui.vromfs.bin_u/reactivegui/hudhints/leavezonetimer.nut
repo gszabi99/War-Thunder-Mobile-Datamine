@@ -18,7 +18,7 @@ registerHintCreator(HINT_TYPE, @(hint, _) {
   update = @() {
     text = hint.endTime < get_mission_time()
       ? loc("HUD_RETURN")
-      : "".concat(inKillZone.value ? loc("TXT_LEAVE_ZONE_TIMER") : loc("HUD_RETURN_TIMER"),
+      : "".concat(inKillZone.get() ? loc("TXT_LEAVE_ZONE_TIMER") : loc("HUD_RETURN_TIMER"),
                 secondsToTimeAbbrString(hint.endTime - get_mission_time()))
   }
 }.__update(fontSmallAccented))

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { getLocNameDefault } = require("goodsDefault.nut")
+let { getLocNameDefault } = require("%rGui/shop/goodsView/goodsDefault.nut")
 let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime,
   goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
   mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
@@ -38,7 +38,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnBuy")
     onClick = canPurchase.get() ? onClick : null
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     xmbNode = XmbNode()
     transform = {
       scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]

@@ -17,8 +17,8 @@ function prevIfEqualList(cur, prev) {
   return hasChanges ? cur : prev
 }
 
-let updateCapZones = @() capZones(
-  prevIfEqualList(getCaptureZones().filter(@(c) (c.flags & CZ_IS_HIDDEN) == 0), capZones.value))
+let updateCapZones = @() capZones.set(
+  prevIfEqualList(getCaptureZones().filter(@(c) (c.flags & CZ_IS_HIDDEN) == 0), capZones.get()))
 
 function checkRestartZoneUpdater(inBattle) {
   clearTimer(updateCapZones)
@@ -32,5 +32,5 @@ isInBattle.subscribe(checkRestartZoneUpdater)
 
 return {
   capZones
-  capZonesCount = Computed(@() capZones.value.len())
+  capZonesCount = Computed(@() capZones.get().len())
 }

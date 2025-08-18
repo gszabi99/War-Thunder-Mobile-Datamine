@@ -31,7 +31,7 @@ function updateActualDiscounts() {
 
   unitDiscounts.set(serverConfigs.get()?.allDiscounts.unit
     .filter(@(v, _id) isTimeInRange(v?.timeRange ?? {}, curTime))
-    .filter(@(_v, id) id in canBuyUnits.value) ?? {})
+    .filter(@(_v, id) id in canBuyUnits.get()) ?? {})
 
   if (nextTime == maxTime || nextTime <= curTime)
     clearTimer(updateActualDiscounts)

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isEqual } = require("%sqstd/underscore.nut")
-let { allContacts } = require("contact.nut")
-let { onlineStatus } = require("contactPresence.nut")
+let { allContacts } = require("%rGui/contacts/contact.nut")
+let { onlineStatus } = require("%rGui/contacts/contactPresence.nut")
 
 let priorityByStatus = {
   [true] = 2,

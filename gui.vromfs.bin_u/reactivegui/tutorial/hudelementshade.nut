@@ -3,30 +3,30 @@ let { eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getBox, incBoxSize, createHighlight, findGoodArrowPos, sizePosToBox
-} = require("tutorialWnd/tutorialUtils.nut")
-let { lightCtor, darkCtor, pointerArrow, mkPointerArrow } = require("tutorialWnd/tutorialWndDefStyle.nut")
+} = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
+let { lightCtor, darkCtor, pointerArrow, mkPointerArrow } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { register_command } = require("console")
 let { getNativeElementBoxes } = require("hudSelectionShade")
-let { elements, sizeIncDef, pushedArrowColor } = require("hudElementsCfg.nut")
+let { elements, sizeIncDef, pushedArrowColor } = require("%rGui/tutorial/hudElementsCfg.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let isHudShadeAtached = Watched(false)
 let lastShadeEvent = mkWatched(persist, "lastShadeEvent", null)
-let isHudShadeActive = Computed(@() isHudShadeAtached.value && (lastShadeEvent.value?.enabled ?? false))
+let isHudShadeActive = Computed(@() isHudShadeAtached.get() && (lastShadeEvent.get()?.enabled ?? false))
 
-eventbus_subscribe("hudElementSelectionShade", @(ev) lastShadeEvent(ev))
-isInBattle.subscribe(@(_) lastShadeEvent(null))
+eventbus_subscribe("hudElementSelectionShade", @(ev) lastShadeEvent.set(ev))
+isInBattle.subscribe(@(_) lastShadeEvent.set(null))
 
 let staticUpdateInterval = 0.5
 let dynamicUpdateInterval = 0.02
 
-let updateInterval = keepref(Computed(@() !isHudShadeActive.value ? 0
-  : (lastShadeEvent.value?.hasNativeElements ?? false) ? dynamicUpdateInterval
+let updateInterval = keepref(Computed(@() !isHudShadeActive.get() ? 0
+  : (lastShadeEvent.get()?.hasNativeElements ?? false) ? dynamicUpdateInterval
   : staticUpdateInterval))
 
 let curElements = Computed(function() {
   let res = []
-  foreach (e in (lastShadeEvent.value?.elements ?? []))
+  foreach (e in (lastShadeEvent.get()?.elements ?? []))
     if (e in elements)
       res.extend(elements[e])
   return res
@@ -34,11 +34,11 @@ let curElements = Computed(function() {
 
 let curBoxes = Watched([])
 let pushedBoxes = Watched({})
-isHudShadeAtached.subscribe(@(_) pushedBoxes({}))
+isHudShadeAtached.subscribe(@(_) pushedBoxes.set({}))
 
 function updateCurBoxes() {
   let boxes = []
-  foreach (idx, cfg in curElements.value ?? []) {
+  foreach (idx, cfg in curElements.get() ?? []) {
     local { sizeInc = sizeIncDef, objs = null } = cfg
     local box = getBox(objs ?? cfg) 
     if (box == null)
@@ -51,8 +51,8 @@ function updateCurBoxes() {
   }
   boxes.extend(getNativeElementBoxes())
 
-  if (!isEqual(curBoxes.value, boxes))
-    curBoxes(boxes)
+  if (!isEqual(curBoxes.get(), boxes))
+    curBoxes.set(boxes)
 }
 
 updateInterval.subscribe(function(interval) {
@@ -75,7 +75,7 @@ function mkArrows(boxes, obstaclesVar) {
     let { id } = box
     if (id < 0)
       continue;
-    let ovr = Computed(@() (pushedBoxes.value?[id] ?? false) ? { color = pushedArrowColor } : {})
+    let ovr = Computed(@() (pushedBoxes.get()?[id] ?? false) ? { color = pushedArrowColor } : {})
     children.append(mkPointerArrow(ovr).__merge({ pos, transform = { rotate } }))
   }
   return {
@@ -94,11 +94,11 @@ let hudElementShade = @() {
   watch = [curBoxes, isHudShadeActive]
   key = shadeKey
   size = flex()
-  onAttach = @() isHudShadeAtached(true)
-  onDetach = @() isHudShadeAtached(false)
-  children = !isHudShadeActive.value ? null
-    : createHighlight(curBoxes.value, lightCtorExt, darkCtor)
-        .append(mkArrows(curBoxes.value, []))
+  onAttach = @() isHudShadeAtached.set(true)
+  onDetach = @() isHudShadeAtached.set(false)
+  children = !isHudShadeActive.get() ? null
+    : createHighlight(curBoxes.get(), lightCtorExt, darkCtor)
+        .append(mkArrows(curBoxes.get(), []))
 }
 
 register_command(function(ids) {
@@ -111,7 +111,7 @@ register_command(function(ids) {
     else if (id != "")
       log($"{id} - unknown element")
   }
-  lastShadeEvent({ enabled = (elems.len() != 0), elements = elems })
+  lastShadeEvent.set({ enabled = (elems.len() != 0), elements = elems })
   },
   "debug.hudShade")
 

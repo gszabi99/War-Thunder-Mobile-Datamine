@@ -13,11 +13,11 @@ let alertDMColor = Color(221, 17, 17)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let isDebugDistance = mkWatched(persist, "debugDistance", false)
 let debugDistance = Watched(null)
-let needHint = keepref(Computed(@() obstacleIsNear.value != isDebugMode.value))
+let needHint = keepref(Computed(@() obstacleIsNear.get() != isDebugMode.get()))
 let distanceToObstacleExt = Computed(@() debugDistance.get() ?? distanceToObstacle.get())
 let showCollideWarning = Computed(@() distanceToObstacleExt.get() < 0)
 
-let textToShow = Computed(@() showCollideWarning.value ? loc("hud_ship_collide_warning")
+let textToShow = Computed(@() showCollideWarning.get() ? loc("hud_ship_collide_warning")
   : loc("hud_ship_depth_on_course_warning"))
 
 let updateDebugDistance = @() debugDistance.set((((debugDistance.get() ?? 0) + 2) % 10) - 1)
@@ -42,7 +42,7 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
   fontFxColor = Color(0, 0, 0, 50)
   fontFxFactor = min(64, hdpx(64))
   fontFx = FFT_GLOW
-  text = "".concat(textToShow.value, colon,
+  text = "".concat(textToShow.get(), colon,
     abs(distanceToObstacleExt.get()),
     loc("measureUnits/meters_alt"))
   color = alertDMColor

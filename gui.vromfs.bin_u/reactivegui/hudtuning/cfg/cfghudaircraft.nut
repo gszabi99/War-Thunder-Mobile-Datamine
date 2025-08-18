@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("hudTuningPkg.nut")
-let { optDoubleCourseGuns } = require("cfgOptions.nut")
+let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
+let { optDoubleCourseGuns } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let {
   aircraftMovement,
   aircraftIndicators,
@@ -17,18 +16,20 @@ let {
   brakeButtonEditView
 } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
-let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
+let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
 let { isCtrlPieAvailable } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut")
 let { isCameraPieAvailable } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
 let { cameraPieStickBlock, cameraPieStickView } = require("%rGui/hud/cameraPieMenu/cameraPieStick.nut")
 let { bombPieStickBlockCtor, bombPieStickView } = require("%rGui/hud/buttons/bombPieStick.nut")
 let { airMapEditView, airMap } = require("%rGui/hud/airMap.nut")
-let cfgHudCommon = require("cfgHudCommon.nut")
+let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkAirMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
+let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
   bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
@@ -49,6 +50,8 @@ let returnToShipShortcutIds = {
   AB_SUPPORT_PLANE_3 = "ID_WTM_LAUNCH_AIRCRAFT_3"
   AB_SUPPORT_PLANE_4 = "ID_WTM_LAUNCH_AIRCRAFT_4"
 }
+
+let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 
 return cfgHudCommon.__merge({
 
@@ -154,6 +157,7 @@ return cfgHudCommon.__merge({
     defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
     editView = mkMyPlace(1)
     hideForDelayed = false
+    isVisibleInBattle = hasMyScores
   }
 
   myScores = {
@@ -161,6 +165,7 @@ return cfgHudCommon.__merge({
     defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
     editView = { children = mkAirMyScores(221) }
     hideForDelayed = false
+    isVisibleInBattle = hasMyScores
   }
 
   dmModules = {
@@ -181,7 +186,7 @@ return cfgHudCommon.__merge({
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([0, hdpx(-0)])
     editView = voiceMsgStickView
-    isVisibleInBattle = isInMpSession
+    isVisibleInBattle = isVoiceMsgStickVisibleInBattle
     priority = Z_ORDER.STICK
   }
 

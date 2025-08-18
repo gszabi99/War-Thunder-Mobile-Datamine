@@ -3,11 +3,11 @@ let { CatmullRomSplineBuilder2D } = require("dagor.math")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
-let { mkLineSplinePoints } = require("segmentMath.nut")
+let { mkLineSplinePoints } = require("%rGui/event/treeEvent/segmentMath.nut")
 let { getMapPointsPresentation } = require("%appGlobals/config/mapPointsPresentation.nut")
 let { mkCompletedPrevElem, selectedElemId, curEventUnlocks, selectedPointId, pointsStatusesByPresets,
   presetsStatuses, treeEventPresets
-} = require("treeEventState.nut")
+} = require("%rGui/event/treeEvent/treeEventState.nut")
 let { saveSeenQuests } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMarkLight } = require("%rGui/components/unseenMark.nut")
 let { mkRewardsPreview, questItemsGap, getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")

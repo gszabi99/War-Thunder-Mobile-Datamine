@@ -4,7 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getIconSize, currencyIconsColor, getCurrencyImage, getCurrencyFallback
 } = require("%appGlobals/config/currencyPresentation.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let currencyStyles = require("currencyStyles.nut")
+let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
 
 

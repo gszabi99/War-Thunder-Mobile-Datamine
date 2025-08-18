@@ -77,7 +77,7 @@ excludesdata =
     key = "t",
     arr =
     [
-      "titan"
+      "tit[aæ]n"
     ]
   },
 ]

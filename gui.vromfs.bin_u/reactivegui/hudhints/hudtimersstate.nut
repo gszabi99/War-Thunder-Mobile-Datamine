@@ -16,14 +16,14 @@ let winkFast = 1.5
 
 let activeTimers = mkWatched(persist, "activeTimers", {}) 
 let timersVisibility = Computed(function(prev) {
-  let res = activeTimers.value.map(@(_) true)
+  let res = activeTimers.get().map(@(_) true)
   return isEqual(prev, res) ? prev : res
 })
 
 let countdowns = {}
 function getTimerCountdownSec(id) {
   if (id not in countdowns)
-    countdowns[id] <- mkCountdownTimerSec(Computed(@() activeTimers.value?[id].endTime ?? 0))
+    countdowns[id] <- mkCountdownTimerSec(Computed(@() activeTimers.get()?[id].endTime ?? 0))
   return countdowns[id]
 }
 
@@ -38,8 +38,8 @@ let mkTimerOffset = @(totalTime, currentTime, ovr = {}) {
   endTime = get_time_msec() + (1000 * (totalTime - currentTime)).tointeger()
 }.__update(ovr)
 
-let clearTimers = @(_) activeTimers({})
-let removeTimer = @(timerId) timerId not in activeTimers.value ? null
+let clearTimers = @(_) activeTimers.set({})
+let removeTimer = @(timerId) timerId not in activeTimers.get() ? null
   : activeTimers.mutate(@(t) t.$rawdelete(timerId))
 
 let onCancelAction = @(timerId, time) activeTimers.mutate(function onCancelActionImpl(actTimers) {
@@ -119,7 +119,7 @@ eventbus_subscribe("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(fun
 }))
 
 eventbus_subscribe("ShipDebuffs:CancelRepairBreaches", @(data) onCancelAction(
-  "unwatering_status" in activeTimers.value ? "unwatering_status" : "repair_breaches_status",
+  "unwatering_status" in activeTimers.get() ? "unwatering_status" : "repair_breaches_status",
   data?.time ?? 0))
 
 let onRearm = @(data) activeTimers.mutate(function onRearmImpl(actTimers) {

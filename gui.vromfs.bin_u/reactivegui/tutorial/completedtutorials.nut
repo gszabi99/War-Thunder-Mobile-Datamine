@@ -6,7 +6,7 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { TUTORIAL_BATTLE_PASS_ID, TUTORIAL_ARSENAL_ID, TUTORIAL_SLOT_ATTRIBUTES_ID,
-  TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_TREE_EVENT } = require("tutorialConst.nut")
+  TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_TREE_EVENT } = require("%rGui/tutorial/tutorialConst.nut")
 
 
 const SAVE_ID = "tutorials"

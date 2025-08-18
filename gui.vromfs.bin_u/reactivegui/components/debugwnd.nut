@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
 let { tostring_r, utf8ToLower } = require("%sqstd/string.nut")
 let { startswith, endswith } = require("string")
-let { makeVertScroll } = require("scrollbar.nut")
-let textInput = require("textInputBase.nut")
-let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
+let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let textInput = require("%rGui/components/textInputBase.nut")
+let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let wndWidth = min(sw(95), sh(150))
@@ -21,9 +21,9 @@ let closeButton = function(close) {
     behavior = Behaviors.Button
     rendObj = ROBJ_SOLID
     onClick = close
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     hotkeys = [[btnBEscUp, loc("mainmenu/btnClose")]]
-    color = (stateFlags.value & S_ACTIVE) != 0 ? Color(106, 34, 17, 153) : Color(0, 0, 0, 0)
+    color = (stateFlags.get() & S_ACTIVE) != 0 ? Color(106, 34, 17, 153) : Color(0, 0, 0, 0)
     children = {
       size = [closeButtonHeight, closeButtonHeight]
       rendObj = ROBJ_IMAGE
@@ -35,8 +35,8 @@ let closeButton = function(close) {
 function tabButton(text, idx, curTab) {
   let stateFlags = Watched(0)
   return function() {
-    let isSelected = curTab.value == idx
-    let sf = stateFlags.value
+    let isSelected = curTab.get() == idx
+    let sf = stateFlags.get()
     return {
       children = {
         rendObj = ROBJ_TEXT
@@ -44,8 +44,8 @@ function tabButton(text, idx, curTab) {
         color = isSelected ? Color(255, 255, 255) : defaultColor
       }.__update(fontVeryTiny)
       behavior = Behaviors.Button
-      onClick = @() curTab(idx)
-      onElemState = @(s) stateFlags(s)
+      onClick = @() curTab.set(idx)
+      onElemState = @(s) stateFlags.set(s)
       watch = [stateFlags, curTab]
       padding = const [hdpx(5), hdpx(10)]
       rendObj = ROBJ_BOX
@@ -111,11 +111,11 @@ function filterData(data, curLevel, filterLevel, rowFilter, countLeft) {
   foreach (key, rowData in data) {
     local curData = rowData
     if (filterLevel <= curLevel) {
-      let isVisible = countLeft.value >= 0 && rowFilter(rowData, key)
+      let isVisible = countLeft.get() >= 0 && rowFilter(rowData, key)
       if (!isVisible)
         continue
-      countLeft(countLeft.value - 1)
-      if (countLeft.value < 0)
+      countLeft.set(countLeft.get() - 1)
+      if (countLeft.get() < 0)
         break
     }
     else {
@@ -128,7 +128,7 @@ function filterData(data, curLevel, filterLevel, rowFilter, countLeft) {
       res.append(curData)
     else
       res[key] <- curData
-    if (countLeft.value < 0)
+    if (countLeft.get() < 0)
       break
   }
   return (curLevel == 0 || res.len() > 0) ? res : null
@@ -162,9 +162,9 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch) {
     let countLeft = Watched(curTabV?.maxItems ?? 100)
     let resData = filterData(dataWatch.value, 0, curTabV?.recursionLevel ?? 0, rowFilter, countLeft)
     local resText = dataToText(resData)
-    if (countLeft.value < 0)
+    if (countLeft.get() < 0)
       resText = $"{resText}\n...... has more items ......"
-    textWatch(resText)
+    textWatch.set(resText)
   }
 
   function timerRestart(_) {
@@ -179,7 +179,7 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch) {
     watch = textWatch
     key = mkInfoBlockKey
     size = FLEX_H
-    children = textArea(textWatch.value)
+    children = textArea(textWatch.get())
     onAttach = recalcText
     function onDetach() {
       gui_scene.clearTimer(recalcText)
@@ -216,7 +216,7 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
           ovr = { padding = const [hdpx(5), hdpx(10)] }
           onChange = @(value) filterText(value)
           onEscape = @() filterText.value == "" ? close() : filterText("")
-          hotkeys = [["L.Ctrl C", { action = @() set_clipboard_text(textWatch.value) }]]
+          hotkeys = [["L.Ctrl C", { action = @() set_clipboard_text(textWatch.get()) }]]
         }.__update(fontVeryTiny))
         closeButton(close)
       ]
@@ -226,7 +226,7 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
       @() {
         watch = curTab
         size = FLEX_H
-        children = mkInfoBlock(curTab.value, tabs, filterText, textWatch)
+        children = mkInfoBlock(curTab.get(), tabs, filterText, textWatch)
       },
       { rootBase = { behavior = Behaviors.Pannable } })
   ]

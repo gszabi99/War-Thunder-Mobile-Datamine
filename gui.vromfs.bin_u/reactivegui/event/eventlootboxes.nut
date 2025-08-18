@@ -94,7 +94,7 @@ let eventLootboxesRaw = Computed(@() serverConfigs.get()?.lootboxesCfg
   })
     ?? {})
 
-let eventLootboxes = Computed(@() orderLootboxesBySlot(eventLootboxesRaw.value))
+let eventLootboxes = Computed(@() orderLootboxesBySlot(eventLootboxesRaw.get()))
 
 return {
   eventLootboxesRaw

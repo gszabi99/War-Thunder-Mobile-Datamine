@@ -15,12 +15,12 @@ let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
+let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
 let { mkCfg, debugOfflineBattleCfg, openOfflineBattleMenu, isOpened, savedUnitType, savedUnitName,
   idOfflineBattleDebugMapsActive, canAccessForDebug, savedMissionName, runOfflineBattle,
   refreshOfflineMissionsList, savedOBDebugMissionName, skipMissionSettings, unitPresetsLevelList,
   savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
-} = require("debugOfflineBattleState.nut")
+} = require("%rGui/debugTools/debugOfflineBattleState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { verticalToggleWithLabel, horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
 let { addModalWindowWithHeader, removeModalWindow } = require("%rGui/components/modalWindows.nut")

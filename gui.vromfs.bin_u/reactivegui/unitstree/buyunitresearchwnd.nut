@@ -13,11 +13,11 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitsResearchStatus, nodes } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, nodes } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { unitPlateWidth, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkTreeNodesUnitPlateSimple } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { mkCustomMsgBoxWnd, mkBtn } = require("%rGui/components/msgBox.nut")
-let { animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch } = require("animState.nut")
+let { animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch } = require("%rGui/unitsTree/animState.nut")
 
 let WND_UID = "buyUnitResearchWnd"
 
@@ -32,11 +32,11 @@ let wndSize = [hdpx(1000), hdpx(600)]
 let close = @() unitName.set(null)
 
 function onClick(cost) {
-  if (unitInProgress.value != null)
+  if (unitInProgress.get() != null)
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, unitName.get())
   if (!showNoBalanceMsgIfNeed(cost, GOLD, bqPurchaseInfo, close)) {
-    animExpPart(1.0 * unitExp.get() / unitReqExp.get())
+    animExpPart.set(1.0 * unitExp.get() / unitReqExp.get())
     buy_unit_research(
       unitName.get(),
       curCampaign.get(),
@@ -106,7 +106,7 @@ function mkContent() {
         children = unit.get() ? mkTreeNodesUnitPlateSimple(unit.get()) : null
       }
     ]
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }
 }

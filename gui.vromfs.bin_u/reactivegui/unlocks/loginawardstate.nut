@@ -8,17 +8,17 @@ let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let { completeAnimDelay, moveCardsFullTime, moveCardsHalfTime, FULL_DAYS
-} = require("loginAwardPlaces.nut")
+} = require("%rGui/unlocks/loginAwardPlaces.nut")
 let { delayUnseedPurchaseShow } = require("%rGui/shop/unseenPurchasesState.nut")
-let { userstatRegisterExecutor } = require("userstat.nut")
+let { userstatRegisterExecutor } = require("%rGui/unlocks/userstat.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 let showUnseenAfterAnimDelay = 0.2
 
 const LOGIN_UNLOCK_ID = "every_day_award"
-let loginAwardUnlock = Computed(@() activeUnlocks.value?[LOGIN_UNLOCK_ID])
+let loginAwardUnlock = Computed(@() activeUnlocks.get()?[LOGIN_UNLOCK_ID])
 let isLoginAwardOpened = mkWatched(persist, "isLoginAwardOpened", false)
-let needShowLoginAwardWnd = keepref(Computed(@() (loginAwardUnlock.value?.hasReward ?? false)
+let needShowLoginAwardWnd = keepref(Computed(@() (loginAwardUnlock.get()?.hasReward ?? false)
   && isInMenuNoModals.get()))
 
 function getStageReward(unlock) {
@@ -28,24 +28,24 @@ function getStageReward(unlock) {
 }
 
 let loginAwardUnlockByAds = Computed(function() {
-  if (!isAdsAvailable.value)
+  if (!isAdsAvailable.get())
     return null
-  let baseUnlock = loginAwardUnlock.value
+  let baseUnlock = loginAwardUnlock.get()
   if (baseUnlock == null || baseUnlock.hasReward)
     return null 
   let lastReward = getStageReward(baseUnlock)
-  return activeUnlocks.value.findvalue(@(u) (u?.meta.loginAwardByAds ?? false)
+  return activeUnlocks.get().findvalue(@(u) (u?.meta.loginAwardByAds ?? false)
     && u.hasReward
     && isEqual(getStageReward(u), lastReward))
 })
 
-let openWnd = @() needShowLoginAwardWnd.value ? isLoginAwardOpened(true) : null
+let openWnd = @() needShowLoginAwardWnd.value ? isLoginAwardOpened.set(true) : null
 needShowLoginAwardWnd.subscribe(@(v) v ? deferOnce(openWnd) : null)
 
 function delayUnseenAfterReward(stage) {
   local time = completeAnimDelay + showUnseenAfterAnimDelay
   if ((stage % FULL_DAYS) == 0)
-    time += isAdsAvailable.value && !loginAwardUnlock.value?.hasReward ? 0 : moveCardsFullTime
+    time += isAdsAvailable.get() && !loginAwardUnlock.get()?.hasReward ? 0 : moveCardsFullTime
   else if ((stage % (FULL_DAYS / 2)) == 0)
     time += moveCardsHalfTime
   delayUnseedPurchaseShow(time)
@@ -63,7 +63,7 @@ userstatRegisterExecutor("lAward.onReceiveRewardCb", function(result, context) {
 })
 
 function receiveLoginAward() {
-  if (!loginAwardUnlock.value?.hasReward)
+  if (!loginAwardUnlock.get()?.hasReward)
     return
   let stage = loginAwardUnlock.get().lastRewardedStage + 1
   delayUnseedPurchaseShow(completeAnimDelay + showUnseenAfterAnimDelay) 
@@ -71,10 +71,10 @@ function receiveLoginAward() {
 }
 
 function showLoginAwardAds() {
-  if (!loginAwardUnlockByAds.value)
+  if (!loginAwardUnlockByAds.get())
     return
 
-  let stage = loginAwardUnlockByAds.value.lastRewardedStage + 1
+  let stage = loginAwardUnlockByAds.get().lastRewardedStage + 1
   if(hasVip.get()) {
     let { name = null } = loginAwardUnlockByAds.get()
     let mainUnlockStage = loginAwardUnlock.get().lastRewardedStage
@@ -83,7 +83,7 @@ function showLoginAwardAds() {
     return
   }
   showAdsForReward({
-    loginUnlockId = loginAwardUnlockByAds.value.name
+    loginUnlockId = loginAwardUnlockByAds.get().name
     stage
     bqId = $"repeat_login_reward"
     bqParams = {
@@ -101,29 +101,29 @@ userstatRegisterExecutor("lAward.onReceiveAdsRewardCb", function(result, context
 
 eventbus_subscribe("adsRewardApply", function(data) {
   let { loginUnlockId = null } = data
-  let { name = null } = loginAwardUnlockByAds.value
+  let { name = null } = loginAwardUnlockByAds.get()
   if (loginUnlockId == null || loginUnlockId != name)
     return
-  let stage = loginAwardUnlockByAds.value.lastRewardedStage + 1
-  let mainUnlockStage = loginAwardUnlock.value.lastRewardedStage
+  let stage = loginAwardUnlockByAds.get().lastRewardedStage + 1
+  let mainUnlockStage = loginAwardUnlock.get().lastRewardedStage
   delayUnseenAfterAds(mainUnlockStage) 
   receiveUnlockRewards(name, stage, { executeBefore = "lAward.onReceiveAdsRewardCb", mainUnlockStage })
 })
 
 eventbus_subscribe("adsShowFinish", function(data) {
   if (data?.loginUnlockId != null)
-    delayUnseenAfterAds(loginAwardUnlock.value?.lastRewardedStage ?? 1)
+    delayUnseenAfterAds(loginAwardUnlock.get()?.lastRewardedStage ?? 1)
 })
 
-register_command(@() isLoginAwardOpened(!isLoginAwardOpened.value), "ui.openLoginAwardWnd")
+register_command(@() isLoginAwardOpened.set(!isLoginAwardOpened.get()), "ui.openLoginAwardWnd")
 
 return {
   loginAwardUnlock
   isLoginAwardOpened
-  canShowLoginAwards = Computed(@() loginAwardUnlock.value != null)
+  canShowLoginAwards = Computed(@() loginAwardUnlock.get() != null)
   receiveLoginAward
-  isLoginAwardInProgress = Computed(@() LOGIN_UNLOCK_ID in unlockInProgress.value
-    || loginAwardUnlockByAds.value?.name in unlockInProgress.value)
-  hasLoginAwardByAds = Computed(@() loginAwardUnlockByAds.value != null)
+  isLoginAwardInProgress = Computed(@() LOGIN_UNLOCK_ID in unlockInProgress.get()
+    || loginAwardUnlockByAds.get()?.name in unlockInProgress.get())
+  hasLoginAwardByAds = Computed(@() loginAwardUnlockByAds.get() != null)
   showLoginAwardAds
 }

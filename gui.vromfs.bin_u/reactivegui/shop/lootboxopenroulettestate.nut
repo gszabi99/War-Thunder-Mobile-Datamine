@@ -4,7 +4,7 @@ let { log10, round, ceil } = require("math")
 let { register_command } = require("console")
 let Rand = require("%sqstd/rand.nut")
 let { G_CURRENCY, G_ITEM } = require("%appGlobals/rewardType.nut")
-let { lootboxes, canOpenWithWindow, wasErrorSoon } = require("autoOpenLootboxes.nut")
+let { lootboxes, canOpenWithWindow, wasErrorSoon } = require("%rGui/shop/autoOpenLootboxes.nut")
 let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, isViewInfoRewardEmpty, receivedGoodsToViewInfo,
   getLootboxOpenRewardViewInfo
 } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -26,9 +26,9 @@ let rouletteOpenIdx = Watched(0)
 let isRouletteDebugMode = mkWatched(persist, "isRouletteDebugMode", false)
 
 let jackpotIdxInfo = Computed(function() {
-  let { jackpots = [] } = openConfig.value
+  let { jackpots = [] } = openConfig.get()
   local jIdx = 0
-  local idx = rouletteOpenIdx.value
+  local idx = rouletteOpenIdx.get()
   foreach(j in jackpots) {
     if (j.count > idx)
       break
@@ -37,30 +37,30 @@ let jackpotIdxInfo = Computed(function() {
   }
   return { jIdx = jIdx >= jackpots.len() ? null : jIdx, idx }
 })
-let curGroup = Computed(@() openConfig.value?.jackpots[jackpotIdxInfo.value.jIdx] ?? openConfig.value)
-let rouletteOpenId = Computed(@() openConfig.value?.id)
-let rouletteOpenType = Computed(@() curGroup.value?.openType)
-let rouletteRewardsList = Computed(@() curGroup.value?.rewardsList ?? [])
-let rouletteLastReward = Computed(@() curGroup.value?.lastReward)
-let rouletteOpenResult = Computed(@() jackpotIdxInfo.value.jIdx == null
-  ? rouletteOpenResultFull.value?.main
-  : rouletteOpenResultFull.value?.jackpots[jackpotIdxInfo.value.jIdx])
-let curJackpotInfo = Computed(@() openConfig.value?.jackpots[jackpotIdxInfo.value.jIdx])
-let lastJackpotIdx = Computed(@() openConfig.value?.jackpots.reduce(@(res, j) max(res, j.lastOpenIdx), 0) ?? 0)
+let curGroup = Computed(@() openConfig.get()?.jackpots[jackpotIdxInfo.get().jIdx] ?? openConfig.get())
+let rouletteOpenId = Computed(@() openConfig.get()?.id)
+let rouletteOpenType = Computed(@() curGroup.get()?.openType)
+let rouletteRewardsList = Computed(@() curGroup.get()?.rewardsList ?? [])
+let rouletteLastReward = Computed(@() curGroup.get()?.lastReward)
+let rouletteOpenResult = Computed(@() jackpotIdxInfo.get().jIdx == null
+  ? rouletteOpenResultFull.get()?.main
+  : rouletteOpenResultFull.get()?.jackpots[jackpotIdxInfo.get().jIdx])
+let curJackpotInfo = Computed(@() openConfig.get()?.jackpots[jackpotIdxInfo.get().jIdx])
+let lastJackpotIdx = Computed(@() openConfig.get()?.jackpots.reduce(@(res, j) max(res, j.lastOpenIdx), 0) ?? 0)
 let isAllJackpotsReceived = Computed(@()
-  (openConfig.value?.jackpots.len() ?? 0) == (rouletteOpenResultFull.value?.jackpots.len() ?? 0))
+  (openConfig.get()?.jackpots.len() ?? 0) == (rouletteOpenResultFull.get()?.jackpots.len() ?? 0))
 
-let nextOpenId = Computed(@() lootboxes.value.roulette.findindex(@(_) true))
+let nextOpenId = Computed(@() lootboxes.get().roulette.findindex(@(_) true))
 let nextOpenCount = Computed(function() {
-  let count = lootboxes.value.roulette?[nextOpenId.value] ?? 0
+  let count = lootboxes.get().roulette?[nextOpenId.get()] ?? 0
   if (count > MAX_ROULETTE_OPEN)
     return count 
   return min(count, MAX_MULTIREWARD_OPEN)
 })
-let needOpen = Computed(@() !rouletteOpenId.value
-  && !!nextOpenId.value
-  && canOpenWithWindow.value
-  && !isAdsVisible.value)
+let needOpen = Computed(@() !rouletteOpenId.get()
+  && !!nextOpenId.get()
+  && canOpenWithWindow.get()
+  && !isAdsVisible.get())
 
 function getOpenResultViewInfos(result) {
   let { unseenPurchases = null } = result
@@ -79,25 +79,25 @@ function getOpenResultViewInfos(result) {
 }
 
 let receivedRewardsAll = Computed(function() {
-  let { jackpots = [] } = openConfig.value
-  if ((rouletteOpenResultFull.value?.jackpots.len() ?? 0) != jackpots.len()
-      || rouletteOpenResultFull.value?.main == null)
+  let { jackpots = [] } = openConfig.get()
+  if ((rouletteOpenResultFull.get()?.jackpots.len() ?? 0) != jackpots.len()
+      || rouletteOpenResultFull.get()?.main == null)
     return []
 
   let res = []
-  foreach(j in rouletteOpenResultFull.value?.jackpots ?? [])
+  foreach(j in rouletteOpenResultFull.get()?.jackpots ?? [])
     res.extend(getOpenResultViewInfos(j))
 
   let jackpotIds = jackpots.reduce(@(r, j) r.rawset(j.jackpotId, true), {})
-  let mainRes = getOpenResultViewInfos(rouletteOpenResultFull.value.main)
+  let mainRes = getOpenResultViewInfos(rouletteOpenResultFull.get().main)
     .filter(@(r) null == r.viewInfo.findvalue(@(vi) vi.id in jackpotIds && vi.rType == "lootbox"))
   res.extend(mainRes)
   return res
 })
 
-let receivedRewardsCur = Computed(@() receivedRewardsAll.value?[rouletteOpenIdx.value])
-let rouletteOpenCount = Computed(@() receivedRewardsCur.value?.openCount
-    ?? ((servProfile.value?.lootboxStats[rouletteOpenId.value].opened ?? 0) + 1))
+let receivedRewardsCur = Computed(@() receivedRewardsAll.get()?[rouletteOpenIdx.get()])
+let rouletteOpenCount = Computed(@() receivedRewardsCur.get()?.openCount
+    ?? ((servProfile.value?.lootboxStats[rouletteOpenId.get()].opened ?? 0) + 1))
 
 let rouletteFixedRewards = Computed(function() {
   let res = []
@@ -117,27 +117,27 @@ let rouletteFixedRewards = Computed(function() {
 })
 
 let nextFixedReward = Computed(function() {
-  if (rouletteFixedRewards.value.len() == 0)
+  if (rouletteFixedRewards.get().len() == 0)
     return null
 
-  foreach(r in rouletteFixedRewards.value) {
+  foreach(r in rouletteFixedRewards.get()) {
     let isJackpot = r.viewInfo?[0].rType == "lootbox"
-    let compareCount = isJackpot ? openConfig.value.finalOpenCount + 1 : rouletteOpenCount.value
+    let compareCount = isJackpot ? openConfig.get().finalOpenCount + 1 : rouletteOpenCount.get()
     if (r.count >= compareCount && !isViewInfoRewardEmpty(r.viewInfo, servProfile.value))
       return {
         viewInfo = r.viewInfo
         total = r.count
-        current = rouletteOpenCount.value
+        current = rouletteOpenCount.get()
       }
   }
   return null
 })
 
-let isCurRewardFixed = Computed(@() nextFixedReward.value != null
-  && nextFixedReward.value?.total == nextFixedReward.value?.current)
+let isCurRewardFixed = Computed(@() nextFixedReward.get() != null
+  && nextFixedReward.get()?.total == nextFixedReward.get()?.current)
 
 let rouletteOpenRewards = Computed(function() {
-  let rewards = getLootboxOpenRewardViewInfo(serverConfigs.get()?.lootboxesCfg[rouletteOpenId.value],
+  let rewards = getLootboxOpenRewardViewInfo(serverConfigs.get()?.lootboxesCfg[rouletteOpenId.get()],
     serverConfigs.get(), openConfig.get()?.openCountAtOnce ?? 1)
   return rewards.sort(sortRewardsViewInfo)
 })
@@ -273,22 +273,22 @@ function calcOpenInfo(id, profile, configs) {
 }
 
 let openDelayed = @() deferOnce(function() {
-  if (!needOpen.value)
+  if (!needOpen.get())
     return
 
-  let id = nextOpenId.value
+  let id = nextOpenId.get()
   let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.value, serverConfigs.get())
   if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { 
-    open_lootbox_several(id, nextOpenCount.value)
+    open_lootbox_several(id, nextOpenCount.get())
     return
   }
 
-  let jackpots = calcJackpotOpens(id, nextOpenCount.value, servProfile.value, serverConfigs.get())
+  let jackpots = calcJackpotOpens(id, nextOpenCount.get(), servProfile.value, serverConfigs.get())
     .map(@(j) j.__update(calcOpenInfo(j.jackpotId, servProfile.value, serverConfigs.get())))
 
-  log($"[ROULETTE] Open lootbox = {id} x{nextOpenCount.value}, jackpots count = {jackpots.len()}")
+  log($"[ROULETTE] Open lootbox = {id} x{nextOpenCount.get()}, jackpots count = {jackpots.len()}")
 
-  openConfig({
+  openConfig.set({
     id
     openType
     rewardsList
@@ -298,20 +298,20 @@ let openDelayed = @() deferOnce(function() {
     finalOpenCount = (servProfile.value?.lootboxStats[id].opened ?? 0) + nextOpenCount.get()
   })
 })
-if (needOpen.value)
+if (needOpen.get())
   openDelayed()
 needOpen.subscribe(@(v) v ? openDelayed() : null)
 
-openConfig.subscribe(@(_) rouletteOpenIdx(0))
+openConfig.subscribe(@(_) rouletteOpenIdx.set(0))
 
 function closeRoulette() {
   openConfig(null)
-  rouletteOpenResultFull(null)
+  rouletteOpenResultFull.set(null)
 }
 
 registerHandler("onRouletteOpenLootbox", function(res, context) {
   if (res?.error != null) {
-    wasErrorSoon(true)
+    wasErrorSoon.set(true)
     let locId = "yn1/error/90000001"
     sendErrorLocIdBqEvent(locId)
     openFMsgBox({ text = loc(locId) })
@@ -319,10 +319,10 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
     return
   }
 
-  if (openConfig.value == null || context?.mainId != rouletteOpenId.value)
+  if (openConfig.get() == null || context?.mainId != rouletteOpenId.get())
     return
 
-  let { jackpots = [] } = openConfig.value
+  let { jackpots = [] } = openConfig.get()
   if ((context?.openCount ?? 0) > MAX_ROULETTE_OPEN) {
     foreach(j in jackpots) {
       let { jackpotId, count } = j
@@ -333,7 +333,7 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
   }
 
   let { jackpotIdx = -1 } = context
-  let openResFull = (clone rouletteOpenResultFull.value) ?? {}
+  let openResFull = (clone rouletteOpenResultFull.get()) ?? {}
   if (jackpotIdx < 0)
     openResFull.main <- res
   else {
@@ -350,7 +350,7 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
     jResList.append(res)
     openResFull.jackpots <- jResList
   }
-  rouletteOpenResultFull(openResFull)
+  rouletteOpenResultFull.set(openResFull)
 
   let nextJackpot = jackpots?[jackpotIdx + 1]
   if (nextJackpot == null)
@@ -358,12 +358,12 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
 
   let { jackpotId, count } = nextJackpot
   open_lootbox_several(jackpotId, count,
-    { id = "onRouletteOpenLootbox", jackpotIdx = jackpotIdx + 1, mainId = rouletteOpenId.value })
+    { id = "onRouletteOpenLootbox", jackpotIdx = jackpotIdx + 1, mainId = rouletteOpenId.get() })
 })
 
 function requestOpenCurLootbox() {
-  if (nextOpenId.value == rouletteOpenId.value)
-    open_lootbox_several(rouletteOpenId.value, nextOpenCount.value,
+  if (nextOpenId.get() == rouletteOpenId.get())
+    open_lootbox_several(rouletteOpenId.get(), nextOpenCount.get(),
       { id = "onRouletteOpenLootbox", jackpotIdx = -1, mainId = rouletteOpenId.get(), openCount = nextOpenCount.get() })
 }
 
@@ -371,9 +371,9 @@ function logOpenConfig() {
   log("jackpotIdxInfo: ", jackpotIdxInfo.get())
   log("rouletteOpenResult main: ", rouletteOpenResultFull.get()?.main.unseenPurchases)
   log("rouletteOpenResult jackpots: ", rouletteOpenResultFull.get()?.jackpots.map(@(v) v?.unseenPurchases))
-  log("lootbox cur open group info: ", curGroup.value)
-  if (curGroup.value != openConfig.value)
-    log("lootbox open roulette config: ", openConfig.value)
+  log("lootbox cur open group info: ", curGroup.get())
+  if (curGroup.get() != openConfig.get())
+    log("lootbox open roulette config: ", openConfig.get())
 }
 
 register_command(

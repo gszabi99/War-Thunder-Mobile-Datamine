@@ -18,7 +18,7 @@ let getModeAddonsDbgString = @(mode)
   $"only_override_units = {mode?.only_override_units ?? false}, reqPkg = {tostring_r(mode?.reqPkg ?? {})}"
 
 function getModeAddonsInfo(mode, unitNames, serverConfigsV, hasAddonsV, addonsExistInGameFolderV, addonsVersionsV) {
-  let { reqPkg = {}, campaign = curCampaign.value, name = "", only_override_units = false } = mode
+  let { reqPkg = {}, campaign = curCampaign.get(), name = "", only_override_units = false } = mode
   local addons = {}  
   local allReqAddons = {}
   local updateDiff = 0

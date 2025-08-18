@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { touchButtonSize, btnBgColor, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
-  mainBulletCount, extraBulletCount } = require("hudUnitBulletsState.nut")
+  mainBulletCount, extraBulletCount } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
@@ -35,14 +35,14 @@ function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
     size = flex()
     rendObj = ROBJ_BOX
     borderWidth = isCurrent ? borderWidthCurrent : borderWidth
-    borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed : colorActive
+    borderColor = stateFlags.get() & S_ACTIVE ? borderColorPushed : colorActive
     fillColor = btnBgColor.empty
     valign = ALIGN_TOP
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
     cameraControl = true
     onClick = @() onToggleBullet(isNext, isCurrent)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     hotkeys = mkGamepadHotkey("ID_NEXT_BULLET_TYPE")
     children = {
       size = [imgSize, imgSize]
@@ -83,8 +83,8 @@ let bulletStatus = @(isNext, isCurrent, scale) {
 function bulletButton(bulletInfo, bulletCount, scale) {
   let name = Computed(@() bulletInfo.value?.bullets[0])
   let id = Computed(@() bulletInfo.value?.id)
-  let isNext = Computed(@() id.value == nextBulletName.get())
-  let isCurrent = Computed(@() id.value == currentBulletName.get())
+  let isNext = Computed(@() id.get() == nextBulletName.get())
+  let isCurrent = Computed(@() id.get() == currentBulletName.get())
   let isBulletBelt = Computed(@() bulletInfo.value?.isBulletBelt)
   let btnSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
@@ -92,9 +92,9 @@ function bulletButton(bulletInfo, bulletCount, scale) {
     watch = [name, id, isNext, isCurrent, isBulletBelt, bulletCount]
     size = [btnSize, btnSize]
     children = [
-      bulletIcon(id.value, isNext.value, isCurrent.value, isBulletBelt.value, imgSize)
-      bulletName(name.value, scale)
-      bulletStatus(isNext.value, isCurrent.value, scale)
+      bulletIcon(id.get(), isNext.get(), isCurrent.get(), isBulletBelt.get(), imgSize)
+      bulletName(name.get(), scale)
+      bulletStatus(isNext.get(), isCurrent.get(), scale)
       mkGamepadShortcutImage("ID_NEXT_BULLET_TYPE",
         { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
         scale)

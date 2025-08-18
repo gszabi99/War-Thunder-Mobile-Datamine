@@ -18,7 +18,7 @@ let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { btnBEscUp, btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardReceivedMark
 } = require("%rGui/rewards/rewardPlateComp.nut")
-let { openSubsPreview } = require("goodsPreviewState.nut")
+let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 
 
 let WND_UID = "premDailyBonusWnd"

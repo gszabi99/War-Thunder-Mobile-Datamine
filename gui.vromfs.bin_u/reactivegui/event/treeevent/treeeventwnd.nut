@@ -13,7 +13,7 @@ let { isTreeEventWndOpened, closeTreeEventWnd, openedTreeEventId, presetBgElems,
   presetBackground, presetMapSize, presetPointSize, selectedPointId, curEventEndsAt, getUnlocksCurrencies,
   presetGridSize, curGmList, presetLines, curEventUnlocks, presetPoints, isSubPresetOpened,
   getFirstOrCurSubPreset, presetUnlocksComplete
-} = require("treeEventState.nut")
+} = require("%rGui/event/treeEvent/treeEventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
@@ -23,16 +23,16 @@ let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
-let mapNet = require("mapNet.nut")
+let mapNet = require("%rGui/event/treeEvent/mapNet.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { mkLineCmds, mkLineCmdsOutline, mkLinePresetColor, mkPoint, mkBgElement, mkQuestInfoWnd
-} = require("treeEventComps.nut")
+} = require("%rGui/event/treeEvent/treeEventComps.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { openEventWnd, unseenLootboxes, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
-let { subPresetContainer } = require("treeEventSubPreset/subPresetContainer.nut")
+let { subPresetContainer } = require("%rGui/event/treeEvent/treeEventSubPreset/subPresetContainer.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 

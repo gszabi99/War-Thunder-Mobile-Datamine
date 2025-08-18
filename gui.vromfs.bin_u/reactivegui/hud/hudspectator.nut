@@ -1,18 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
+let { get_game_params_blk } = require("blkGetters")
 let { TouchCameraControl } = require("wt.behaviors")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
+let { isGtLastManStanding } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
-let { tacticalMap } = require("components/tacticalMap.nut")
-let { scoreBoard, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
-let { capZonesList } = require("capZones/capZones.nut")
+let { tacticalMap } = require("%rGui/hud/components/tacticalMap.nut")
+let { scoreBoardType, scoreBoardCfgByType, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
+let { capZonesList } = require("%rGui/hud/capZones/capZones.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let { isInSpectatorMode } = require("%rGui/hudState.nut")
 let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
@@ -35,13 +37,13 @@ let isAttached = Watched(false)
 let needShowTapHint = mkWatched(persist, "needShowTapHint", true)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
-eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
+eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId.set(getSpectatorTargetId()))
 eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() ? needShowTapHint.set(false) : null)
 
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
-let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
-let watchedHeroColor = Computed(@() watchedHero.value == null ? 0xFFFFFFFF
-  : watchedHero.value.team == localMPlayerTeam.get() ? teamBlueColor : teamRedColor)
+let watchedHeroName = Computed(@() watchedHero.get() == null ? "" : watchedHero.get().name)
+let watchedHeroColor = Computed(@() watchedHero.get() == null ? 0xFFFFFFFF
+  : watchedHero.get().team == localMPlayerTeam.get() ? teamBlueColor : teamRedColor)
 let hasTapHint = Computed(@() needShowTapHint.get() && (isPlaceVisible.get() || isScoreVisible.get()))
 
 let switchTargetImage = Picture($"!ui/gameuiskin#spinnerListBox_arrow_up.svg:{buttonImageSize}:{buttonImageSize}")
@@ -69,15 +71,15 @@ function mkTargetButton(isNext = false) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_SOLID
-    color = isActive(stateFlags.value) ? bgButtonColorPushed
+    color = isActive(stateFlags.get()) ? bgButtonColorPushed
       : bgButtonColor
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     onClick = @() switchSpectatorTarget(isNext)
     children = {
       size = [buttonImageSize, buttonImageSize]
       rendObj = ROBJ_IMAGE
       image = switchTargetImage
-      color = isActive(stateFlags.value) ? textColorPushed
+      color = isActive(stateFlags.get()) ? textColorPushed
         : Color(255, 255, 255)
       transform = { rotate = isNext ? 90 : -90 }
     }
@@ -97,17 +99,17 @@ let returnToHangarButton = @() {
   valign = ALIGN_CENTER
   padding = [0, gap]
   rendObj = ROBJ_BOX
-  fillColor = isActive(returnBtnSf.value) ? bgButtonColorPushed
+  fillColor = isActive(returnBtnSf.get()) ? bgButtonColorPushed
     : bgButtonColor
-  borderColor = isActive(returnBtnSf.value) ? borderColorPushed
+  borderColor = isActive(returnBtnSf.get()) ? borderColorPushed
     : borderColor
-  onElemState = @(v) returnBtnSf(v)
+  onElemState = @(v) returnBtnSf.set(v)
   onClick = @() eventbus_send("quitMission", {})
   children = @() {
     watch = battleCampaign
     rendObj = ROBJ_TEXT
     text = loc(getCampaignPresentation(battleCampaign.get()).returnToHangarLocId)
-    color = isActive(returnBtnSf.value) ? textColorPushed
+    color = isActive(returnBtnSf.get()) ? textColorPushed
       : textColor
   }.__update(fontTiny)
 }
@@ -115,8 +117,8 @@ let returnToHangarButton = @() {
 let watchedHeroLabel = @() {
   watch = [ watchedHeroName, watchedHeroColor ]
   rendObj = ROBJ_TEXT
-  text = watchedHeroName.value
-  color = watchedHeroColor.value
+  text = watchedHeroName.get()
+  color = watchedHeroColor.get()
   fontFx = FFT_GLOW
   fontFxFactor = hdpx(48)
   fontFxColor = 0xFF000000
@@ -130,20 +132,22 @@ let spectatorControlsBlock = {
   gap = hdpx(32)
   children = [
     watchedHeroLabel
-    {
+    @() {
+      watch = isGtLastManStanding
       flow = FLOW_HORIZONTAL
       gap
-      children = [
-        prevTargetButton
-        returnToHangarButton
-        nextTargetButton
-      ]
+      children = get_game_params_blk()?.allowSpectatingEnemiesInLastManStanding == false && isGtLastManStanding.get() ? returnToHangarButton
+          : [
+            prevTargetButton
+            returnToHangarButton
+            nextTargetButton
+          ]
     }
   ]
 }
 
 let hudTopCenter = @() {
-  watch = [needScoreBoard, hasTapHint]
+  watch = [needScoreBoard, hasTapHint, scoreBoardType]
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -151,16 +155,17 @@ let hudTopCenter = @() {
   children = [
     {
       children = [
-        needScoreBoard.get() ? scoreBoard : null
-        {
-          pos = [playerPlaceIconSize * 2, 0]
-          hplace = ALIGN_RIGHT
-          flow = FLOW_HORIZONTAL
-          children = [
-            mkMyPlaceUi(1)
-            mkMyScoresUi(1)
-          ]
-        }
+        needScoreBoard.get() ? scoreBoardCfgByType?[scoreBoardType.get()].comp : null
+        !scoreBoardCfgByType?[scoreBoardType.get()].addMyScores ? null
+          : {
+              pos = [playerPlaceIconSize * 2, 0]
+              hplace = ALIGN_RIGHT
+              flow = FLOW_HORIZONTAL
+              children = [
+                mkMyPlaceUi(1)
+                mkMyScoresUi(1)
+              ]
+            }
       ]
     }
     !hasTapHint.get() ? null
@@ -185,8 +190,8 @@ let hudTopCenter = @() {
 
 return {
   key = {}
-  onAttach = @() isAttached(true)
-  onDetach = @() isAttached(false)
+  onAttach = @() isAttached.set(true)
+  onDetach = @() isAttached.set(false)
   size = saSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER

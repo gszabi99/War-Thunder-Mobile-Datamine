@@ -52,13 +52,13 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = translucentButtonsVGap
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     sound = {
       click  = "click"
     }
     onClick
     transform = {
-      scale = isActive(stateFlags.value) ? [0.95, 0.95] : [1, 1]
+      scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1]
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     children = [
@@ -66,17 +66,17 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
         key = ovr?.key
         size = ovr?.size ?? [ iconBgWidth, translucentButtonsHeight - lineWidth * 2 ]
         children = [
-          btnBg.__merge({ color = stateFlags.value & S_HOVER ? hoverColor : 0xFFA0A0A0 })
+          btnBg.__merge({ color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFA0A0A0 })
           {
             rendObj = ROBJ_IMAGE
             size = [ iconSize, iconSize ]
             hplace = ALIGN_CENTER
             vplace = ALIGN_CENTER
-            color = stateFlags.value & S_HOVER ? hoverColor : textColor
+            color = stateFlags.get() & S_HOVER ? hoverColor : textColor
             image = Picture($"{icon}:{iconSize}:{iconSize}:P")
             keepAspect = KEEP_ASPECT_FIT
           }
-          mkChild?(stateFlags.value)
+          mkChild?(stateFlags.get())
         ]
       }
       text == "" ? null : {
@@ -85,7 +85,7 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         valign = ALIGN_CENTER
-        color = stateFlags.value & S_HOVER ? hoverColor : textColor
+        color = stateFlags.get() & S_HOVER ? hoverColor : textColor
         text
         fontFx = FFT_GLOW
         fontFxFactor = 64
@@ -100,9 +100,9 @@ function translucentIconButton(image, onClick, imageSize = iconSizeDefault, bgSi
   return @() btnBg.__merge({
     watch = stateFlags
     size = bgSize
-    color = stateFlags.value & S_HOVER ? hoverColor : 0xFFA0A0A0
+    color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFA0A0A0
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     sound = { click  = "click" }
     onClick
     children = [
@@ -111,13 +111,13 @@ function translucentIconButton(image, onClick, imageSize = iconSizeDefault, bgSi
         size = [ imageSize, imageSize ]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        color = stateFlags.value & S_HOVER ? hoverColor : textColor
+        color = stateFlags.get() & S_HOVER ? hoverColor : textColor
         image = Picture($"{image}:{imageSize}:{imageSize}:P")
         keepAspect = true
       }
-      mkChild?(stateFlags.value)
+      mkChild?(stateFlags.get())
     ]
-    transform = { scale = isActive(stateFlags.value) ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
   })
 }

@@ -244,25 +244,42 @@ let popularMark = @(text = null) {
 let dailyBonusTagH = hdpxi(27)
 let dailyBonusTagHTexOffs = [ 0, dailyBonusTagH / 2, 0, dailyBonusTagH / 10 ]
 let iconSize = hdpx(20)
-let dailyBonusTag = @(wpMul, expMul) wpMul <= 1 && expMul <= 1 ? null : {
-  size  = [ SIZE_TO_CONTENT, dailyBonusTagH ]
-  rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_popular.svg:{dailyBonusTagH}:{dailyBonusTagH}")
-  keepAspect = KEEP_ASPECT_NONE
-  screenOffs = dailyBonusTagHTexOffs
-  texOffs = dailyBonusTagHTexOffs
-  color = 0xFFB02020
-  gap = hdpx(4)
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  padding = const [ 0, hdpx(15), 0, hdpx(10) ]
-  children = [
-    wpMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = wpMul }) })) : null
-    wpMul > 1 ? mkCurrencyImage(WP, iconSize) : null
-    expMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = expMul }) })) : null
-    expMul > 1 ? mkCurrencyImage("unitExp", iconSize) : null
-  ]
+function dailyBonusTag(wpMul, expMul, hasSlots) {
+  if (wpMul <= 1 && expMul <= 1)
+    return null
+  let expImages = []
+  local iconShift = 0
+  if (expMul > 1) {
+    iconShift = (iconSize * 0.75 + 0.5).tointeger()
+    expImages.append(mkCurrencyImage("unitExp", iconSize),
+      mkCurrencyImage("playerExp", iconSize, {pos = [iconShift, 0]}))
+    if (hasSlots)
+      expImages.append(mkCurrencyImage("slotExp", iconSize, {pos = [iconShift * 2, 0]}))
+  }
+
+  return {
+    size  = [ SIZE_TO_CONTENT, dailyBonusTagH ]
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#tag_popular.svg:{dailyBonusTagH}:{dailyBonusTagH}")
+    keepAspect = KEEP_ASPECT_NONE
+    screenOffs = dailyBonusTagHTexOffs
+    texOffs = dailyBonusTagHTexOffs
+    color = 0xFFB02020
+    gap = hdpx(4)
+    flow = FLOW_HORIZONTAL
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    padding = const [ 0, hdpx(15), 0, hdpx(10) ]
+    children = [
+      wpMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = wpMul }) })) : null
+      wpMul > 1 ? mkCurrencyImage(WP, iconSize) : null
+      expMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = expMul }) })) : null
+      {
+        size = [iconSize + iconShift * (expImages.len() - 1), SIZE_TO_CONTENT]
+        children = expImages
+      }
+    ]
+  }
 }
 
 function mkGoodsNewPopularMark(goods, state) {
@@ -535,7 +552,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnBuy")
     onClick = canPurchase.get() ? onClick : null
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     xmbNode = XmbNode()
     transform = {
       scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
@@ -569,7 +586,7 @@ function mkOfferWrap(onClick, mkContent) {
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnPreview")
     onClick
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     xmbNode = XmbNode()
     transform = {
       scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
@@ -756,7 +773,7 @@ let underConstructionBg = {
   color = 0xFFFFFFFF
 }
 
-function mkSquareIconBtn(text, onClick, ovr) {
+function mkSquareIconBtn(text, onClick, ovr, font = fontBig) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -765,7 +782,7 @@ function mkSquareIconBtn(text, onClick, ovr) {
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
     onClick
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     sound = { click  = "click" }
     transform = {
       scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
@@ -777,7 +794,7 @@ function mkSquareIconBtn(text, onClick, ovr) {
         rendObj = ROBJ_SOLID
         color = 0x80000000
       }
-      txt({ text }.__update(fontBig))
+      txt({ text }.__update(font))
     ]
   }.__merge(ovr)
 }

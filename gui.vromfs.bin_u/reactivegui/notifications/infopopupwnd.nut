@@ -6,8 +6,8 @@ let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.n
 let getInfoPopupPresentation = require("%appGlobals/config/infoPopupPresentation.nut")
 let { isRandomBattleNewbie } = require("%rGui/gameModes/gameModeState.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { popupToShow, markCurPopupSeen } = require("infoPopupState.nut")
-let { getPopupActionCfg } = require("infoPopupActions.nut")
+let { popupToShow, markCurPopupSeen } = require("%rGui/notifications/infoPopupState.nut")
+let { getPopupActionCfg } = require("%rGui/notifications/infoPopupActions.nut")
 
 let { removeModalWindow, addModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")

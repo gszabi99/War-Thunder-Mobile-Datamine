@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { openDebugWnd } = require("%rGui/components/debugWnd.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { isForCampaign, dbgCampaignSelector } = require("debugCampaignSelector.nut")
+let { isForCampaign, dbgCampaignSelector } = require("%rGui/debugTools/debugCampaignSelector.nut")
 
-let tabs = Computed(@() (isForCampaign.get() ? campConfigs.value : serverConfigs.get())
+let tabs = Computed(@() (isForCampaign.get() ? campConfigs.get() : serverConfigs.get())
   .filter(@(v) type(v) == "table" || type(v) == "array")
   .map(@(data, id) { id, data })
   .values()

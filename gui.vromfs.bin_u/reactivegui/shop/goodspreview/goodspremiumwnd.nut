@@ -24,12 +24,12 @@ let iconSize = hdpx(300)
 let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
 let infoText = Computed(function() {
-  if (premiumBonusesCfg.value == null)
+  if (premiumBonusesCfg.get() == null)
     return null
-  let expMul = bonusMultText(premiumBonusesCfg.value?.expMul || 1.0)
+  let expMul = bonusMultText(premiumBonusesCfg.get()?.expMul || 1.0)
   return loc("charServer/entitlement/PremiumAccount/desc", {
     bonusPlayerExp = expMul
-    bonusWp = bonusMultText(premiumBonusesCfg.value?.wpMul || 1.0)
+    bonusWp = bonusMultText(premiumBonusesCfg.get()?.wpMul || 1.0)
     bonusUnitExp = expMul
     bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul || 1.0)
   })
@@ -108,7 +108,7 @@ let premiumDescription = {
                 rendObj = ROBJ_TEXTAREA
                 behavior = Behaviors.TextArea
                 size = const [ hdpx(700), SIZE_TO_CONTENT ]
-                text = infoText.value
+                text = infoText.get()
                 color = 0xFFC0C0C0
               }.__update(fontSmall)
             ]

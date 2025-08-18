@@ -4,7 +4,7 @@ let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { allow_dm_viewer, allow_dm_viewer_ships_armor } = require("%appGlobals/permissions.nut")
 let { hasNotDownloadedPkgForHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { dmViewerMode } = require("dmViewerState.nut")
+let { dmViewerMode } = require("%rGui/dmViewer/dmViewerState.nut")
 
 let forAnyUnit = @(_unitW) Watched(true)
 let noArmorForShips = @(unitW) Computed(

@@ -10,8 +10,8 @@ let wndUid = "benchmarkResult"
 let statColor = 0xFFA0A0A0
 
 let result = mkWatched(persist, "result", null)
-let close = @() result(null)
-eventbus_subscribe("showBenchmarkResult", @(msg) result(msg))
+let close = @() result.set(null)
+eventbus_subscribe("showBenchmarkResult", @(msg) result.set(msg))
 
 let statsCfg = [
   {
@@ -65,6 +65,6 @@ let openBenchmark = @(data) addModalWindow(bgShaded.__merge({
     benchmark(data.stats), buttons)
   onClick = @() null
 }))
-if (result.value != null)
-  openBenchmark(result.value)
+if (result.get() != null)
+  openBenchmark(result.get())
 result.subscribe(@(v) v != null ? openBenchmark(v) : removeModalWindow(wndUid))

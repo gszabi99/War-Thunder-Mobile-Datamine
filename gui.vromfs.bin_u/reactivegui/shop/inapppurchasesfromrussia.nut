@@ -5,7 +5,7 @@ let { register_command } = require("console")
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
 let { toIntegerSafe } = require("%sqstd/string.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { addGoodsInfoGuids, goodsInfo } = require("byPlatform/gaijinGoodsInfo.nut")
+let { addGoodsInfoGuids, goodsInfo } = require("%rGui/shop/byPlatform/gaijinGoodsInfo.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
 let { addWaitbox, removeWaitbox, waitboxes } = require("%rGui/notifications/waitBox.nut")
@@ -24,7 +24,7 @@ let getPlatformGoodsRealCurrencyId = @(goods) goods?.priceExt.currencyId.tolower
 
 let isDisabledCurrency = @(goods) getPlatformGoodsRealCurrencyId(goods) in paymentDisabledInRussiaCurrencies
 let isForbiddenPlatformPurchaseFromRussia = isDownloadedFromGooglePlay() ? isDisabledCurrency
-  : @(goods) isDebugDisabledCurrency.value && isDisabledCurrency(goods)
+  : @(goods) isDebugDisabledCurrency.get() && isDisabledCurrency(goods)
 
 function getGoodsWebId(guid) {
   let { url = "" } = goodsInfo.get()?[guid]
@@ -86,7 +86,7 @@ goodsInfo.subscribe(function(_) {
 
 function openMsgBoxInAppPurchasesFromRussia(goods) {
   let { purchaseGuids = {}, relatedGaijinId = "" } = goods
-  let relatedGoodsGuid = campConfigs.value?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
+  let relatedGoodsGuid = campConfigs.get()?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
   let guids = [
     relatedGoodsGuid
     purchaseGuids?.gaijin.guid
@@ -113,8 +113,8 @@ function openMsgBoxInAppPurchasesFromRussia(goods) {
 }
 
 register_command(function() {
-  isDebugDisabledCurrency(!isDebugDisabledCurrency.value)
-  console_print("isDebugDisabledCurrency = ", isDebugDisabledCurrency.value) 
+  isDebugDisabledCurrency.set(!isDebugDisabledCurrency.get())
+  console_print("isDebugDisabledCurrency = ", isDebugDisabledCurrency.get()) 
 }, "ui.debug.shopDisabledCurrency")
 
 return {

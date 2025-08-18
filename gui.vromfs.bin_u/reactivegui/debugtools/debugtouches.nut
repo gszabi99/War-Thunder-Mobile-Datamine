@@ -31,7 +31,7 @@ let mkPointer = @(id) {
 
 let debugTouchesView = @() {
   watch = activePointers
-  children = activePointers.value.keys()
+  children = activePointers.get().keys()
     .map(mkPointer)
 }
 
@@ -48,7 +48,7 @@ let debugTouchesHandlerComp = {
   }
   function onPointerRelease(evt) {
     let { pointerId } = evt
-    if (pointerId in activePointers.value)
+    if (pointerId in activePointers.get())
       activePointers.mutate(@(v) v.$rawdelete(pointerId))
     return 0
   }
@@ -57,7 +57,7 @@ let debugTouchesHandlerComp = {
     pointerPos[pointerId] <- [x, y]
     return 0
   }
-  onDetach = @() activePointers({})
+  onDetach = @() activePointers.set({})
 }
 
 let debugTouchesUi = {

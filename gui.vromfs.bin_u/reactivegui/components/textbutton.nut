@@ -131,7 +131,7 @@ function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
       padding = [0, paddingX]
       children = content
     }
-    let hotkey = isHovered.value ? btnA
+    let hotkey = isHovered.get() ? btnA
       : isHotkeyDisabled.value ? null
       : hotkeyBase
     if (!isGamepad.get() || hotkey == null)
@@ -260,6 +260,7 @@ return {
   buttonsVGap
   buttonStyles
   textButtonUnseenMargin
+  ICON_SIZE
 
   textButtonPrimary = @(text, onClick, styleOvr = null)
     textButton(text, onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr)) 

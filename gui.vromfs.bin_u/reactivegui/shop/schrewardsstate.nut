@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { G_UNIT, G_UNIT_UPGRADE, G_ITEM } = require("%appGlobals/rewardType.nut")
-let { getShopCategory } = require("shopCommon.nut")
+let { getShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -11,7 +11,7 @@ let { isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
-let rewardsToShopGoods = require("rewardsToShopGoods.nut")
+let rewardsToShopGoods = require("%rGui/shop/rewardsToShopGoods.nut")
 
 let rewardsToGoodsFormat = @(schReward, id)
   schReward.__merge({ id, isFreeReward = true }, rewardsToShopGoods(schReward?.rewards ?? []))
@@ -27,12 +27,12 @@ function isRewardsFitToCampaign(schReward, cConfigs) {
 }
 
 let lastAppliedSchReward = Watched({})
-let schRewardsBase = Computed(@() (campConfigs.value?.schRewards ?? {})
-  .filter(@(g) isRewardsFitToCampaign(g, campConfigs.value))
+let schRewardsBase = Computed(@() (campConfigs.get()?.schRewards ?? {})
+  .filter(@(g) isRewardsFitToCampaign(g, campConfigs.get()))
   .map(rewardsToGoodsFormat))
 let schRewardsStatus = Watched({})
-let schRewards = Computed(@() schRewardsBase.value
-  .map(@(r, id) id in schRewardsStatus.value ? r.__merge(schRewardsStatus.value[id]) : r))
+let schRewards = Computed(@() schRewardsBase.get()
+  .map(@(r, id) id in schRewardsStatus.get() ? r.__merge(schRewardsStatus.get()[id]) : r))
 
 let schRewardsByCategory = Computed(function() {
   let res = {}
@@ -56,7 +56,7 @@ let schRewardsByCategory = Computed(function() {
 let actualSchRewardByCategory = Watched({})
 let actualSchRewards = Computed(function() {
   let res = {}
-  foreach (v in actualSchRewardByCategory.value)
+  foreach (v in actualSchRewardByCategory.get())
     res[v.id] <- v
   return res
 })
@@ -73,16 +73,16 @@ let getRewardPriority = @(rew) - rew.readyTime
 function updateActualSchRewards() {
   if (!isServerTimeValid.get())
     return
-  let received = receivedSchRewards.value
+  let received = receivedSchRewards.get()
   let curTime = serverTime.get()
   local nextTime = 0
   local actual = {}
   local status = {}
-  foreach (r in schRewardsBase.value) {
+  foreach (r in schRewardsBase.get()) {
     let readyTime = (received?[r.id] ?? 0) + r.interval
     status[r.id] <- { isReady = readyTime <= curTime, readyTime }
   }
-  foreach (catId, list in schRewardsByCategory.value.shop) {
+  foreach (catId, list in schRewardsByCategory.get().shop) {
     local schReward = null
     local priority = 0
     foreach (r in list) {
@@ -97,13 +97,13 @@ function updateActualSchRewards() {
     }
     actual[catId] <- schReward
   }
-  foreach (r in schRewardsByCategory.value.hidden)
+  foreach (r in schRewardsByCategory.get().hidden)
     if (r.id in status && !status[r.id].isReady)
       nextTime = nextTime == 0 ? status[r.id].readyTime : min(nextTime, status[r.id].readyTime)
 
-  nextUpdate({ time = nextTime })
-  actualSchRewardByCategory(actual)
-  schRewardsStatus(status)
+  nextUpdate.set({ time = nextTime })
+  actualSchRewardByCategory.set(actual)
+  schRewardsStatus.set(status)
 }
 updateActualSchRewards()
 schRewardsByCategory.subscribe(@(_) updateActualSchRewards())
@@ -111,7 +111,7 @@ receivedSchRewards.subscribe(@(_) updateActualSchRewards())
 isServerTimeValid.subscribe(@(v) v ? updateActualSchRewards() : null)
 
 function resetUpdateTimer() {
-  let { time } = nextUpdate.value
+  let { time } = nextUpdate.get()
   let left = time - serverTime.get()
   if (left <= 0)
     clearTimer(updateActualSchRewards)
@@ -125,7 +125,7 @@ registerHandler("onSchRewardApplied", function(res, context) {
   if (res?.error != null)
     return
   let { rewardId } = context
-  lastAppliedSchReward({ rewardId, time = serverTime.get() })
+  lastAppliedSchReward.set({ rewardId, time = serverTime.get() })
 })
 
 let applyScheduledReward = @(rewardId)
@@ -158,10 +158,10 @@ function onSchRewardReceive(schReward) {
 
 eventbus_subscribe("adsRewardApply", function(data) {
   let { schRewardId = null } = data
-  let reward = schRewards.value?[schRewardId]
+  let reward = schRewards.get()?[schRewardId]
   if (reward == null)
     return
-  let receivedTime = receivedSchRewards.value?[schRewardId] ?? 0
+  let receivedTime = receivedSchRewards.get()?[schRewardId] ?? 0
   if (receivedTime + reward.interval <= serverTime.get())
     applyScheduledReward(schRewardId)
 })

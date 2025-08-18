@@ -6,8 +6,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
 let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
-let cameraEventUnitType = require("cameraEventUnitType.nut")
-let { hitResultCfg, defPartPriority, partsPriority } = require("hitCameraConfig.nut")
+let cameraEventUnitType = require("%rGui/hud/hitCamera/cameraEventUnitType.nut")
+let { hitResultCfg, defPartPriority, partsPriority } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { register_command } = require("console")
 let { hudUnitType } = require("%rGui/hudState.nut")
@@ -24,26 +24,26 @@ let hcImportantEvents = mkWatched(persist, "hcImportantEvents", [])
 let curImportantResult = mkWatched(persist, "curImportantResult", null)
 let hcResultByState = mkWatched(persist, "hcResultByState", null)
 let isBombMiss = Watched(false)
-let mode = Computed(@() state.value.mode)
-let hcInfo = Computed(@() state.value.info)
-let isHcRender = Computed(@() mode.value != HIT_CAMERA_FINISH)
-let shouldShowHc = Computed(@() mode.value == HIT_CAMERA_FADE_IN || mode.value == HIT_CAMERA_START)
-let hcFadeTime = Computed(@(prev) state.value.info?.stopFadeTime
+let mode = Computed(@() state.get().mode)
+let hcInfo = Computed(@() state.get().info)
+let isHcRender = Computed(@() mode.get() != HIT_CAMERA_FINISH)
+let shouldShowHc = Computed(@() mode.get() == HIT_CAMERA_FADE_IN || mode.get() == HIT_CAMERA_START)
+let hcFadeTime = Computed(@(prev) state.get().info?.stopFadeTime
   ?? (prev == FRP_INITIAL ? 0.3 : prev))
 
-let hcUnitId = Computed(@() state.value.info?.unitId)
-let hcUnitType = Computed(@(prev) cameraEventUnitType?[state.value.info?.unitType]
+let hcUnitId = Computed(@() state.get().info?.unitId)
+let hcUnitType = Computed(@(prev) cameraEventUnitType?[state.get().info?.unitType]
   ?? (prev == FRP_INITIAL ? TANK : prev))
-let hcUnitVersion = Computed(@(prev) state.value.info?.unitVersion ?? (prev == FRP_INITIAL ? -1 : prev))
-let hcRelativeHealth = Computed(@() min(hcDamageStatus.value?.curRelativeHealth ?? 1.0, state.value.info?.curRelativeHealth ?? 1.0))
+let hcUnitVersion = Computed(@(prev) state.get().info?.unitVersion ?? (prev == FRP_INITIAL ? -1 : prev))
+let hcRelativeHealth = Computed(@() min(hcDamageStatus.get()?.curRelativeHealth ?? 1.0, state.get().info?.curRelativeHealth ?? 1.0))
 
 let validateByVersion = @(data, unitId, version) data == null ? data
   : data.unitId == unitId && data.unitVersion == version ? data
   : null
 
 let hcResult = Computed(function() {
-  let sResult = validateByVersion(hcResultByState.value, hcUnitId.value, hcUnitVersion.value)
-  let iResult = validateByVersion(curImportantResult.value, hcUnitId.value, hcUnitVersion.value)
+  let sResult = validateByVersion(hcResultByState.get(), hcUnitId.get(), hcUnitVersion.get())
+  let iResult = validateByVersion(curImportantResult.get(), hcUnitId.get(), hcUnitVersion.get())
   if (sResult == null || iResult == null)
     return sResult ?? iResult
       ?? (isBombMiss.get() ? { styleId = "miss", locId = "hitcamera/result/targetNotHit" } : null)
@@ -51,11 +51,11 @@ let hcResult = Computed(function() {
 })
 
 isInBattle.subscribe(function(_) {
-  state(defaultState)
-  unitsInfo({})
+  state.set(defaultState)
+  unitsInfo.set({})
 })
-hcUnitVersion.subscribe(@(_) hcDamageStatus({}))
-hcUnitId.subscribe(@(_) hcDamageStatus({}))
+hcUnitVersion.subscribe(@(_) hcDamageStatus.set({}))
+hcUnitId.subscribe(@(_) hcDamageStatus.set({}))
 
 let mkDefaultUnitInfo = @(unitVersion) {
   unitVersion
@@ -65,12 +65,12 @@ let mkDefaultUnitInfo = @(unitVersion) {
 let emptyUnitInfo = mkDefaultUnitInfo(-1)
 
 let hcUnitDmgPartsUnitInfo = Computed(function() {
-  let res = unitsInfo.value?[hcUnitId.value]
-  return (res == null || res.unitVersion != hcUnitVersion.value) ? emptyUnitInfo : res
+  let res = unitsInfo.get()?[hcUnitId.get()]
+  return (res == null || res.unitVersion != hcUnitVersion.get()) ? emptyUnitInfo : res
 })
-let isHcUnitHit = Computed(@() state.value.result > DM_HIT_RESULT_NONE || hcUnitDmgPartsUnitInfo.value.isKilled)
-let isHcUnitKilled = Computed(@() state.value.result >= DM_HIT_RESULT_KILL || hcUnitDmgPartsUnitInfo.value.isKilled)
-let hcDmgPartsInfo = Computed(@() hcUnitDmgPartsUnitInfo.value.parts)
+let isHcUnitHit = Computed(@() state.get().result > DM_HIT_RESULT_NONE || hcUnitDmgPartsUnitInfo.get().isKilled)
+let isHcUnitKilled = Computed(@() state.get().result >= DM_HIT_RESULT_KILL || hcUnitDmgPartsUnitInfo.get().isKilled)
+let hcDmgPartsInfo = Computed(@() hcUnitDmgPartsUnitInfo.get().parts)
 
 let modifyUnitsInfo = @(units, update)
   unitsInfo.mutate(function(list) {
@@ -128,23 +128,23 @@ function onEnemyPartsDamage(data) {
 }
 
 
-let clearHcResultByState = @() hcResultByState(null)
+let clearHcResultByState = @() hcResultByState.set(null)
 
 state.subscribe(function(s) {
   let { result } = s
   let cfg = hitResultCfg?[result]
   if (cfg == null)
     return
-  hcResultByState(cfg.__merge({
-    unitId = hcUnitId.value
-    unitVersion = hcUnitVersion.value
+  hcResultByState.set(cfg.__merge({
+    unitId = hcUnitId.get()
+    unitVersion = hcUnitVersion.get()
     time = get_time_msec()
   }))
   resetTimeout(0.001 * MAX_SHOW_HIT_MSEC, clearHcResultByState)
 })
 
-if (hcResultByState.value != null) {
-  let timeLeft = hcResultByState.value.time + MAX_SHOW_HIT_MSEC - get_time_msec()
+if (hcResultByState.get() != null) {
+  let timeLeft = hcResultByState.get().time + MAX_SHOW_HIT_MSEC - get_time_msec()
   if (timeLeft > 0)
     setTimeout(0.001 * timeLeft, clearHcResultByState)
   else
@@ -175,7 +175,7 @@ function getImportantEventInfo(event) {
   }
 
   if (result != null) {
-    if (unitId == hcUnitId.value && unitVersion == hcUnitVersion.value)
+    if (unitId == hcUnitId.get() && unitVersion == hcUnitVersion.get())
       priority += 10000000
     result.__update({ unitId, unitVersion })
   }
@@ -183,11 +183,11 @@ function getImportantEventInfo(event) {
 }
 
 function updateCurImportantResult() {
-  if (hcImportantEvents.value.len() == 0) {
-    let { time } = curImportantResult.value
+  if (hcImportantEvents.get().len() == 0) {
+    let { time } = curImportantResult.get()
     let timeLeft = time + MAX_SHOW_HIT_MSEC - get_time_msec()
     if (timeLeft <= 0)
-      curImportantResult(null)
+      curImportantResult.set(null)
     else {
       curImportantResult.mutate(@(r) r.isRelevant = false)
       setTimeout(0.001 * timeLeft, updateCurImportantResult)
@@ -196,22 +196,22 @@ function updateCurImportantResult() {
   }
 
   local found = null
-  foreach (ev in hcImportantEvents.value) {
+  foreach (ev in hcImportantEvents.get()) {
     let info = getImportantEventInfo(ev)
     if (info.priority >= (found?.priority ?? -1))
       found = info
   }
-  hcImportantEvents([])
+  hcImportantEvents.set([])
   let { result } = found
   if (result != null) {
     result.__update({ time = get_time_msec(), isRelevant = true })
     setTimeout(0.001 * MIN_SHOW_IMPORTANT_MSEC, updateCurImportantResult)
   }
-  curImportantResult(result)
+  curImportantResult.set(result)
 }
 
-if (curImportantResult.value != null) {
-  let timeLeft = curImportantResult.value.time + MAX_SHOW_HIT_MSEC - get_time_msec()
+if (curImportantResult.get() != null) {
+  let timeLeft = curImportantResult.get().time + MAX_SHOW_HIT_MSEC - get_time_msec()
   if (timeLeft > 0)
     setTimeout(0.001 * timeLeft, updateCurImportantResult)
   else
@@ -219,9 +219,9 @@ if (curImportantResult.value != null) {
 }
 
 function updateCurImportantResultOnUnitChange() {
-  let id = hcUnitId.value
-  let version = hcUnitVersion.value
-  if (null != hcImportantEvents.value.findvalue(@(ev) ev.unitId == id && ev.unitVersion == version)) {
+  let id = hcUnitId.get()
+  let version = hcUnitVersion.get()
+  if (null != hcImportantEvents.get().findvalue(@(ev) ev.unitId == id && ev.unitVersion == version)) {
     clearTimer(updateCurImportantResult)
     updateCurImportantResult()
   }
@@ -231,26 +231,26 @@ hcUnitVersion.subscribe(@(_) updateCurImportantResultOnUnitChange())
 
 function onHitCameraImportantEvents(data) {
   let { unitId, unitVersion, partEvent = null } = data
-  if (partEvent == null || !isHcRender.value
-      || unitId != hcUnitId.value || unitVersion != hcUnitVersion.value)
+  if (partEvent == null || !isHcRender.get()
+      || unitId != hcUnitId.get() || unitVersion != hcUnitVersion.get())
     return
   hcImportantEvents.mutate(@(curEvents) curEvents.append(data))
-  if (curImportantResult.value == null
-      || curImportantResult.value.time + MIN_SHOW_IMPORTANT_MSEC < get_time_msec()) {
+  if (curImportantResult.get() == null
+      || curImportantResult.get().time + MIN_SHOW_IMPORTANT_MSEC < get_time_msec()) {
     clearTimer(updateCurImportantResult)
     updateCurImportantResult()
   }
 }
 
-eventbus_subscribe("hitCamera", @(ev) state(ev))
+eventbus_subscribe("hitCamera", @(ev) state.set(ev))
 eventbus_subscribe("EnemyPartsDamage", onEnemyPartsDamage)
-eventbus_subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.value ? null
-  : hcDamageStatus(ev.updateDebuffsOnly ? hcDamageStatus.value.__merge(ev) : ev))
+eventbus_subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.get() ? null
+  : hcDamageStatus.set(ev.updateDebuffsOnly ? hcDamageStatus.get().__merge(ev) : ev))
 eventbus_subscribe("HitCameraImportanEvents", onHitCameraImportantEvents)
 
-let resetShowBombMiss = @() isBombMiss(false)
+let resetShowBombMiss = @() isBombMiss.set(false)
 eventbus_subscribe("onBombMiss", function(_) {
-  isBombMiss(true)
+  isBombMiss.set(true)
   resetTimeout(3, resetShowBombMiss)
 })
 
@@ -259,16 +259,16 @@ let partsBrokenInfo = @(unitInfo) unitInfo.parts.map(@(dmList)
   dmList.map(@(dm) (dm?.partKilled ?? false) || (dm?.partDead ?? false) || (dm?.partHp ?? 1.0) <= 0))
 
 register_command(
-  @() log("curDmgPartsInfo:", hcUnitDmgPartsUnitInfo.value)
+  @() log("curDmgPartsInfo:", hcUnitDmgPartsUnitInfo.get())
   "hitcamera.debugCurDmgPartsInfo")
 register_command(
-  @() log("allDmgPartsInfo:", unitsInfo.value)
+  @() log("allDmgPartsInfo:", unitsInfo.get())
   "hitcamera.debugAllDmgPartsInfo")
 register_command(
-  @() log("curDmgPartsInfo:", partsBrokenInfo(hcUnitDmgPartsUnitInfo.value))
+  @() log("curDmgPartsInfo:", partsBrokenInfo(hcUnitDmgPartsUnitInfo.get()))
   "hitcamera.debugCurDmgPartsBroken")
 register_command(
-  @() log("allDmgPartsInfo:", unitsInfo.value.map(partsBrokenInfo))
+  @() log("allDmgPartsInfo:", unitsInfo.get().map(partsBrokenInfo))
   "hitcamera.debugAllDmgPartsBroken")
 
 return {

@@ -18,11 +18,11 @@ let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.
 let TIME_TO_AUTO_CLOSE = 10.0
 
 let unitToShow = mkWatched(persist, "unit", null)
-let hasLvlUpScene = Computed(@() scenesOrder.value.findindex(@(v) v == "levelUpWnd") != null)
+let hasLvlUpScene = Computed(@() scenesOrder.get().findindex(@(v) v == "levelUpWnd") != null)
 let needOpen = Computed(@() unitToShow.get() != null && !hasLvlUpScene.get() && !isTutorialActive.get())
 let shouldOpen = keepref(Computed(@() needOpen.get() && isInMenuNoModals.get()))
 let isOpened = Watched(needOpen.get())
-let close = @() unitToShow(null)
+let close = @() unitToShow.set(null)
 let isSceneAttached = Watched(false)
 let canShowEffect = keepref(Computed(@() isSceneAttached.get()
   && isHangarUnitLoaded.get()
@@ -49,11 +49,11 @@ let effectsCfg = {
 }
 
 let getEffectCfg = @(unitName) effectsCfg?[getUnitType(unitName)] ?? defEffectCfg
-let getPurchaseSound = @() unitToShow.value?.isUpgraded || unitToShow.value?.isPremium ? "unit_buy_prem" : "unit_buy"
+let getPurchaseSound = @() unitToShow.get()?.isUpgraded || unitToShow.get()?.isPremium ? "unit_buy_prem" : "unit_buy"
 let playPurchSound = @() playSound(getPurchaseSound())
 
-canShowEffect.subscribe(function(v) {
-  if(!v)
+canShowEffect.subscribe(function(_) {
+  if (!canShowEffect.get())
     return
   let { play, timeToShowUnit, timeTotal } = getEffectCfg(unitToShow.get().name)
   disable_scene_camera()
@@ -97,7 +97,7 @@ let unitEffectScene = @() {
 
 registerScene("unitPurchaseEffectScene", unitEffectScene, close, isOpened, true)
 
-register_command(@() unitToShow(hangarUnit.get()), "ui.debug.unitPurchaseEffect")
+register_command(@() unitToShow.set(hangarUnit.get()), "ui.debug.unitPurchaseEffect")
 
 return {
   isPurchEffectVisible = isOpened

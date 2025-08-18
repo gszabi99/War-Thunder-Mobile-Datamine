@@ -19,7 +19,7 @@ let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { curUnit, playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { applyDiscount, getShortPrice } = require("%rGui/unit/unitUtils.nut")
-let { ovrBuyBtn, fontIconPreview} = require("upgradeUnitWndPkg.nut")
+let { ovrBuyBtn, fontIconPreview} = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
 
 let close = @() buyExpUnitName.set(null)
 

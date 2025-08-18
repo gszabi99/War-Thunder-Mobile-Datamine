@@ -15,7 +15,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { selectedLineHor } = require("%rGui/components/selectedLine.nut")
 let { unitsResearchStatus, currentResearch, selectedCountry, nodes, countryPriority, blockedCountries
-} = require("unitsTreeNodesState.nut")
+} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")

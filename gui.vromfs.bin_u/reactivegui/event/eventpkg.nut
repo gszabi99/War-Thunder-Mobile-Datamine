@@ -10,7 +10,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { bestCampLevel, eventSeason, curEvent } = require("eventState.nut")
+let { bestCampLevel, eventSeason, curEvent } = require("%rGui/event/eventState.nut")
 let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -125,10 +125,10 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
   let imageSize = [width, lootboxHeight].map(@(v) (v * sizeMul + 0.5).tointeger())
   let blockSize = [width, lootboxHeight]
   let { start = 0, end = 0 } = timeRange
-  let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
+  let isActive = Computed(@() bestCampLevel.get() >= reqPlayerLevel
     && start < serverTime.get()
     && (end <= 0 || end > serverTime.get()))
-  let timeText = Computed(@() bestCampLevel.value < reqPlayerLevel
+  let timeText = Computed(@() bestCampLevel.get() < reqPlayerLevel
       ? loc("lootbox/reqCampaignLevel", { reqLevel = reqPlayerLevel })
     : start > serverTime.get()
       ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
@@ -143,8 +143,8 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
       mkEventLoootboxImage(name, null,
         {
           size = imageSize
-          picSaturate = isActive.value ? 1.0 : 0.2
-          brightness = isActive.value ? 1.0 : 0.5
+          picSaturate = isActive.get() ? 1.0 : 0.2
+          brightness = isActive.get() ? 1.0 : 0.5
         })
       @() {
         watch = timeText
@@ -152,7 +152,7 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         halign = ALIGN_CENTER
-        text = timeText.value
+        text = timeText.get()
       }.__update(fontTiny)
     ]
   }
@@ -192,13 +192,13 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
         : !hasVip.get()
           ? mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter)
         : mkBtnContent("ui/gameuiskin#gamercard_subs_vip.svg", loc("shop/vip/budget_rewards", { num = adBudget.get() }), adsButtonCounter),
-      @() bestCampLevel.value >= reqPlayerLevel
+      @() bestCampLevel.get() >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
       ((isProviderInited.get()
-        && bestCampLevel.value >= reqPlayerLevel
+        && bestCampLevel.get() >= reqPlayerLevel
         && adReward?.isReady
-        && cost < adBudget.value)
+        && cost < adBudget.get())
             ? buttonStyles.SECONDARY
           : buttonStyles.COMMON)
         .__merge({ hotkeys = ["^J:RB"] }))
@@ -230,10 +230,10 @@ function mkPurchaseBtns(lootbox, onPurchase) {
   let { name, price, currencyId, hasBulkPurchase = false, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let currencyFullId = mkCurrencyFullId(currencyId)
   let { start = 0, end = 0 } = timeRange
-  let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
+  let isActive = Computed(@() bestCampLevel.get() >= reqPlayerLevel
     && start < serverTime.get()
     && (end <= 0 || end > serverTime.get()))
-  let adReward = Computed(@() schRewards.value.findvalue(
+  let adReward = Computed(@() schRewards.get().findvalue(
     @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
   let canOpenX10 = Computed(function(){
     let stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
@@ -251,17 +251,17 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     gap = hdpx(40)
     animations = revealBtnsAnimation
     children = [
-      adReward.value != null ? mkAdsBtn(reqPlayerLevel, adReward.value) : null
+      adReward.get() != null ? mkAdsBtn(reqPlayerLevel, adReward.get()) : null
       textButtonPricePurchase(hasBulkPurchase ? utf8ToUpper(loc("events/oneReward")) : null,
         mkCurrencyComp(price, currencyFullId.get()),
         @() onPurchase(lootbox, price, currencyFullId.get()),
-        (!isActive.value || (balance.get()?[currencyFullId.get()] ?? 0) < price ? buttonStyles.COMMON : {})
+        (!isActive.get() || (balance.get()?[currencyFullId.get()] ?? 0) < price ? buttonStyles.COMMON : {})
           .__merge({ hotkeys = ["^J:X"] }))
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
             mkCurrencyComp(price * 10, currencyFullId.get()),
             @() !canOpenX10.get() ? null : onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
-            (!isActive.value || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10
+            (!isActive.get() || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10
               || !canOpenX10.get() ? buttonStyles.COMMON : {})
               .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() !canOpenX10.get() ? loc("x10Btn/desc") : null,
                 repayTime = 0 }))

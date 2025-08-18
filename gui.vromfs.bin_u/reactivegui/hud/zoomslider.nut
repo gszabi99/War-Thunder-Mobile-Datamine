@@ -102,7 +102,7 @@ function mkZoomSliderImpl(scale) {
     size = [fullWidth, height]
     padding = [0, sliderPadding]
     behavior = Behaviors.Slider
-    fValue = zoomMult.value
+    fValue = zoomMult.get()
     knob = knob
     max = 1.0
     unit = stepZoom
@@ -121,7 +121,7 @@ function mkZoomSliderImpl(scale) {
           zoomScale
         ]
       }
-      knob.__merge({ pos = [0, ((1.0 - zoomMult.value) * zoomScaleHeight).tointeger() - knobPadding] })
+      knob.__merge({ pos = [0, ((1.0 - zoomMult.get()) * zoomScaleHeight).tointeger() - knobPadding] })
       mkGamepadZoomHotkeyButton(scale)
     ]
     onChange = changeZoomValue

@@ -35,7 +35,7 @@ function tuningBtn(image, onClick, description, ovr = {}) {
     behavior = Behaviors.Button
     sound = { click  = "click" }
     children
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }.__update(ovr,
     mkButtonHoldTooltip(onClick, stateFlags, key,

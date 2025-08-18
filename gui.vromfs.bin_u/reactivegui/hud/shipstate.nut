@@ -14,30 +14,30 @@ let debugDebuff = mkWatched(persist, "debugDebuff", 0)
 let blockMoveControl = Watched(false)
 let currentMaxThrottle = Watched(1.0)
 
-let isFullBuoyancy = Computed(@() buoyancy.value == 1.0)
-let hasDebuffFire = Computed(@() fire.value != ((debugDebuff.value & 1) != 0))
-let hasDebuffEngines = Computed(@() (damagedEnginesCount.value > 0) != ((debugDebuff.value & 2) != 0))
-let hasDebuffFlooding = Computed(@() (buoyancy.value < 1.0) != ((debugDebuff.value & 4) != 0))
-let hasDebuffGuns = Computed(@() (damagedArtilleryCount.value > 0) != ((debugDebuff.value & 8) != 0))
-let hasDebuffMoveControl = Computed(@() blockMoveControl.value != ((debugDebuff.value & 16) != 0))
-let hasDebuffTorpedoes = Computed(@() (brokenTorpedosCount.value > 0) != ((debugDebuff.value & 32) != 0))
+let isFullBuoyancy = Computed(@() buoyancy.get() == 1.0)
+let hasDebuffFire = Computed(@() fire.get() != ((debugDebuff.get() & 1) != 0))
+let hasDebuffEngines = Computed(@() (damagedEnginesCount.get() > 0) != ((debugDebuff.get() & 2) != 0))
+let hasDebuffFlooding = Computed(@() (buoyancy.get() < 1.0) != ((debugDebuff.get() & 4) != 0))
+let hasDebuffGuns = Computed(@() (damagedArtilleryCount.get() > 0) != ((debugDebuff.get() & 8) != 0))
+let hasDebuffMoveControl = Computed(@() blockMoveControl.get() != ((debugDebuff.get() & 16) != 0))
+let hasDebuffTorpedoes = Computed(@() (brokenTorpedosCount.get() > 0) != ((debugDebuff.get() & 32) != 0))
 
 let maxDebugDebuff = 63
-register_command(@() debugDebuff(debugDebuff.value == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.shipDebuffsAll")
-register_command(@() debugDebuff(rnd_int(0, maxDebugDebuff)), "hud.debug.shipDebuffsRandom")
+register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.shipDebuffsAll")
+register_command(@() debugDebuff.set(rnd_int(0, maxDebugDebuff)), "hud.debug.shipDebuffsRandom")
 register_command(function(idx) {
   let bit = 1 << idx
-  log(debugDebuff.value)
-  debugDebuff((debugDebuff.value & bit) ? (debugDebuff.value & ~bit) : (debugDebuff.value | bit))
-  log(debugDebuff.value)
+  log(debugDebuff.get())
+  debugDebuff.set((debugDebuff.get() & bit) ? (debugDebuff.get() & ~bit) : (debugDebuff.get() | bit))
+  log(debugDebuff.get())
 }, "hud.debug.shipDebuffsToggle")
 
 let maxHpToRepair = Watched(0.)
 let nominalHpToRepair = Watched(0.)
 ecs.register_es("maxHpToRepairTracker", {
   [["onInit", "onChange"]] = function trackMaxHpToRepair(_eid, comp) {
-    maxHpToRepair(comp.meta_parts_hp_repair__maxHp)
-    nominalHpToRepair(comp.meta_parts_hp_repair__speed * comp.meta_parts_hp_repair__duration)
+    maxHpToRepair.set(comp.meta_parts_hp_repair__maxHp)
+    nominalHpToRepair.set(comp.meta_parts_hp_repair__speed * comp.meta_parts_hp_repair__duration)
   },
   function onDestroy() {
     maxHpToRepair(1.)

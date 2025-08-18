@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkPieMenu, defaultPieMenuParams } = require("%rGui/hud/pieMenu.nut")
-let { cameraPieCfg, isCameraPieStickActive, cameraPieSelectedIdx } = require("cameraPieState.nut")
+let { cameraPieCfg, isCameraPieStickActive, cameraPieSelectedIdx } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
 let { STICK } = require("%rGui/hud/stickState.nut")
 
 let cameraMsgPieComp = mkPieMenu(cameraPieCfg, cameraPieSelectedIdx,

@@ -8,7 +8,7 @@ let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { buyUnitsData, setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { addNewPurchasedUnit, delayedPurchaseUnitData, needSaveUnitDataForTutorial, addLastPurchasedUnit
-} = require("delayedPurchaseUnit.nut")
+} = require("%rGui/unit/delayedPurchaseUnit.nut")
 let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
 let { openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -16,7 +16,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { unitDiscounts } = require("unitsDiscountState.nut")
+let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -48,13 +48,13 @@ registerHandler("onUnitPurchaseResult",
   })
 
 function purchaseUnit(unitId, bqInfo, isUpgraded = false, executeAfter = null, content = null, title = null, onCancel = null) {
-  if (unitInProgress.value != null)
+  if (unitInProgress.get() != null)
     return
   let unit = campUnitsCfg.get()?[unitId]
   if (unit == null)
     return
 
-  let isForLevelUp = playerLevelInfo.get().isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
+  let isForLevelUp = playerLevelInfo.get().isReadyForLevelUp && (unit?.name in buyUnitsData.get().canBuyOnLvlUp)
   local price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.get())
   if (isUpgraded) {
     if (!isForLevelUp) {

@@ -3,7 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { isOpenedBoosterWnd } = require("boostersState.nut")
+let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -12,15 +12,15 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let boosterDesc = require("boosterDesc.nut")
+let boosterDesc = require("%rGui/boosters/boosterDesc.nut")
 let { PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let purchaseBooster = require("purchaseBooster.nut")
+let purchaseBooster = require("%rGui/boosters/purchaseBooster.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pServer/pServerApi.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
-let close = @() isOpenedBoosterWnd(false)
+let close = @() isOpenedBoosterWnd.set(false)
 
 let checkBoxIconSize = hdpxi(72)
 let bgSize = [hdpxi(370), hdpxi(412)]
@@ -50,7 +50,7 @@ let footer = {
 }.__update(fontTiny)
 
 function mkPricePlate(bst) {
-  let isDelayed = Computed(@() boosterInProgress.value != null)
+  let isDelayed = Computed(@() boosterInProgress.get() != null)
   return @() {
     watch = isDelayed
     size = const [flex(), hdpx(90)]

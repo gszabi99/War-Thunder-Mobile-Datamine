@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let avatarScene = require("avatarScene.nut")
-let nickFramesScene  = require("nickFramesScene.nut")
+let avatarScene = require("%rGui/decorators/avatarScene.nut")
+let nickFramesScene  = require("%rGui/decorators/nickFramesScene.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
-let titlesScene = require("titlesScene.nut")
-let changeNameScene = require("changeNameScene.nut")
+let titlesScene = require("%rGui/decorators/titlesScene.nut")
+let changeNameScene = require("%rGui/decorators/changeNameScene.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { isDecoratorsSceneOpened, unseenDecorators, availNickFrames, availAvatars,
-availTitles } = require("decoratorState.nut")
+availTitles } = require("%rGui/decorators/decoratorState.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 
 let tabs = [

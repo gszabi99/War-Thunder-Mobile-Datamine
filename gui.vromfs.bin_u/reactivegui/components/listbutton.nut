@@ -70,13 +70,13 @@ function listButton(textOrCtor, isSelected, onClick, override = {}) {
     flow = FLOW_VERTICAL
     gap
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
     xmbNode = {}
 
     children = [
-      btnBase(textOrCtor, stateFlags.value, isSelected.value)
-      btnLine(isSelected.value || (stateFlags.value & S_ACTIVE) != 0)
+      btnBase(textOrCtor, stateFlags.get(), isSelected.value)
+      btnLine(isSelected.value || (stateFlags.get() & S_ACTIVE) != 0)
     ]
   }.__update(override)
 }

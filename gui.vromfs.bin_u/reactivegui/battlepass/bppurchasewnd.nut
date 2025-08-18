@@ -4,8 +4,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sendBpBqEvent,
   purchasedBp, bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, battlePassGoods, getBpIcon,
-  BP_NONE, BP_COMMON, BP_VIP, getBpName, seasonEndTime
-} = require("battlePassState.nut")
+  BP_NONE, BP_COMMON, BP_VIP, getBpName, seasonEndTime, seasonName, BP_MAX_LEVELS_TO_ADD
+} = require("%rGui/battlePass/battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -15,9 +15,9 @@ let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let battlePassSeason = require("battlePassSeason.nut")
+let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { mkRewardPlate, mkRewardPlateVip } = require("%rGui/rewards/rewardPlateComp.nut")
-let { bpCardStyle } = require("bpCardsStyle.nut")
+let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { textButtonPricePurchase, buttonStyles, mergeStyles, mkCustomButton } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PRIMARY } = buttonStyles
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -45,13 +45,14 @@ let contentGradientSize = [contentGap, saBorders[1]]
 
 let playerSelectedBp = mkWatched(persist, "playerSelectedBp", null)
 
-let header = {
+let header = @() {
+  watch = [seasonName, seasonEndTime]
   size = [flex(), gamercardHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
     backButton(closeBPPurchaseWnd)
-    battlePassSeason
+    battlePassSeason(seasonName.get(), seasonEndTime.get())
     { size = flex() }
     mkCurrenciesBtns([PLATINUM])
   ]
@@ -143,7 +144,7 @@ let rewardsList = @(selBpInfo) function() {
     watch = [bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, curStage, serverConfigs, selBpInfo, purchasedBp]
     size = FLEX_H
   }
-  if (bpPaidRewardsUnlock.value == null)
+  if (bpPaidRewardsUnlock.get() == null)
     return res
 
   let viewInfoExclusive = []
@@ -153,20 +154,34 @@ let rewardsList = @(selBpInfo) function() {
   let tgtStage = curStage.get()
   let maxProgress = max((bpPaidRewardsUnlock.get()?.stages.top().progress ?? tgtStage),
     (bpFreeRewardsUnlock.get()?.stages.top().progress ?? tgtStage))
-  let levelsToAdd = selBpInfo.get()?.bpType != BP_VIP ? 0 : min(10, maxProgress - tgtStage)
+  let isVipBp = selBpInfo.get()?.bpType == BP_VIP
+  let levelsToEnd = maxProgress - tgtStage
+  let levelsToAdd = isVipBp ? min(BP_MAX_LEVELS_TO_ADD, levelsToEnd) : 0
   let tgtStageAdd = tgtStage + levelsToAdd
 
   let rewardsOnPurchase = purchasedBp.get() != BP_NONE ? {}
-    : (bpPurchasedUnlock.value?.stages[0].rewards ?? {})
+    : (bpPurchasedUnlock.get()?.stages[0].rewards ?? {})
         .map(@(count) { count, sRange = [0, 0] })
   let rewardsAddLevels = {}
   let rewardsOnProgress = {}
-  let unlocksList = levelsToAdd ? [bpFreeRewardsUnlock.get(), bpPaidRewardsUnlock.get()] : [bpPaidRewardsUnlock.get()]
+  let unlocksList = [bpFreeRewardsUnlock.get(), bpPaidRewardsUnlock.get()]
   foreach(unlock in unlocksList) {
-    let { lastRewardedStage = 0, stages = [] } = unlock
+    let { lastRewardedStage = 0, stages = [], startStageLoop = 1, periodic = false } = unlock
     let startProgress = unlock == bpFreeRewardsUnlock.get() ? tgtStage : -1
     let endProgress = unlock == bpFreeRewardsUnlock.get() ? tgtStageAdd : null
     foreach (idx, s in stages) {
+      let isLoop = periodic && idx >= startStageLoop - 1
+      if (isLoop && isVipBp) {
+        let loopMultiply = BP_MAX_LEVELS_TO_ADD - (tgtStageAdd - startProgress) + (levelsToEnd > 10 || levelsToEnd == 0 ? 0 : 1)
+        if (loopMultiply > 0) {
+          foreach(key, _ in s.rewards)
+            rewardsAddLevels[key] <- {
+              count = min(loopMultiply, BP_MAX_LEVELS_TO_ADD)
+              sRange = [s.progress, s.progress]
+            }
+          continue
+        }
+      }
       if (idx < lastRewardedStage || s.progress <= startProgress || s.progress > (endProgress ?? s.progress))
         continue
       let list = s.progress <= tgtStage ? rewardsOnPurchase
@@ -209,7 +224,7 @@ let rewardsList = @(selBpInfo) function() {
           viewInfoExclusive.len() == 0 ? loc("battlePass/receiveOnPurchase")
             : loc("battlePass/receiveOnPurchase/exclusive", { count = viewInfoExclusive.len() }),
           viewInfoOnPurchase.extend(viewInfoExclusive), mkRewardInstant)
-        rewardsBlock(loc("battlepass/levelsBonus", { num = levelsToAdd }),
+        rewardsBlock(loc("battlepass/levelsBonus", { num = isVipBp ? BP_MAX_LEVELS_TO_ADD : levelsToAdd }),
           viewInfoAddLevels, mkRewardInstant)
         rewardsBlock(loc("battlePass/receiveOnProgress"), viewInfoOnProgress, mkRewardWithProgress)
       ]

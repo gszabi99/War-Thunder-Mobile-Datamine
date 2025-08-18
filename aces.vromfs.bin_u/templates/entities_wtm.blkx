@@ -273,6 +273,7 @@
   },
   "damage_log": {
     "nextStatsSyncTime": 0.0,
+    "nextBRZoneShrinkTime": 0,
     "maxMrank": 0,
     "curCampaign": "",
     "damageLog:array": {},
@@ -280,7 +281,8 @@
     "repairLog:object": {},
     "damageLogPlayers:object": {},
     "damageLogStats:object": {},
-    "streakLog:object": {}
+    "streakLog:object": {},
+    "battleRoyaleLog:array": {}
   },
   "statistic_players": {
     "statisticPlayers:object": {},

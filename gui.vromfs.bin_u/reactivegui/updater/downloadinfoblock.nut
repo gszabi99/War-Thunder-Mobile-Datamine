@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { wantStartDownloadAddons, openDownloadAddonsWnd, downloadAddonsStr, isDownloadPaused,
   updaterError, progressPercent, isDownloadPausedByConnection, isStageDownloading
-} = require("updaterState.nut")
+} = require("%rGui/updater/updaterState.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 
 let blockSize = [hdpx(550), evenPx(95)]
@@ -29,7 +29,7 @@ let progress = @() {
 
 function statusBlock() {
   let statusText = isDownloadPaused.get() ? loc("updater/status/paused/short")
-    : isDownloadPausedByConnection.value ? loc("updater/status/pausedByConnection/short")
+    : isDownloadPausedByConnection.get() ? loc("updater/status/pausedByConnection/short")
     : updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
     : !isStageDownloading.get() ? loc("pl1/check_profile")
     : loc("updater/status/downloading/short")
@@ -77,7 +77,7 @@ let downloadInfoBlock = @() {
 
   behavior = Behaviors.Button
   group
-  onElemState = @(v) stateFlags(v)
+  onElemState = @(v) stateFlags.set(v)
   sound = { click  = "click" }
   onClick = @() openDownloadAddonsWnd([], "downloadInfoBlock")
 
@@ -88,7 +88,7 @@ let downloadInfoBlock = @() {
     statusBlock
   ]
 
-  transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+  transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
   transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
 }
 

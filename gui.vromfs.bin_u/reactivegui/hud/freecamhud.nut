@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkSimpleCircleTouchBtn } = require("buttons/circleTouchHudButtons.nut")
+let { mkSimpleCircleTouchBtn } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 

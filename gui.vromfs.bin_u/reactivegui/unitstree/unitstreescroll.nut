@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { fabs } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer, setInterval, clearTimer } = require("dagor.workcycle")
-let { flagTreeOffset } = require("unitsTreeComps.nut")
+let { flagTreeOffset } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkScrollArrow, scrollArrowImageVerySmall } = require("%rGui/components/scrollArrows.nut")

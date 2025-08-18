@@ -17,8 +17,8 @@ let blinkOpacity = 0.75
 let animTimeBlinkFull = 0.3
 let animTimeBlinkFullOpaque = 0.5 * animTimeBlinkFull
 
-let hcResultLocId = Computed(@() hcResult.value?.locId ?? "")
-let hcResultStyleId = Computed(@() hcResult.value?.styleId ?? "")
+let hcResultLocId = Computed(@() hcResult.get()?.locId ?? "")
+let hcResultStyleId = Computed(@() hcResult.get()?.styleId ?? "")
 
 let resultBlink = {
   pos = [pw(-20), 0]
@@ -77,7 +77,7 @@ function mkhitCameraResultPlate(styleId, textVal, scale) {
 
 let hitCameraResultPlate = @(scale) @() {
   watch = [ hcResultLocId, hcResultStyleId ]
-}.__update(mkhitCameraResultPlate(hcResultStyleId.value, loc(hcResultLocId.value), scale))
+}.__update(mkhitCameraResultPlate(hcResultStyleId.get(), loc(hcResultLocId.get()), scale))
 
 return {
   hitCameraResultPlate

@@ -24,40 +24,40 @@ let isOpened = mkWatched(persist, "isOpened", false)
 
 let fieldRating = Watched(0)
 let fieldComment = Watched("")
-let hasSelectedRating = Computed(@() fieldRating.value > 0)
+let hasSelectedRating = Computed(@() fieldRating.get() > 0)
 let hasAppliedRating = Watched(false)
-let isRatedExcellent = Computed(@() hasAppliedRating.value && fieldRating.value == RATE_STARS_TOTAL)
+let isRatedExcellent = Computed(@() hasAppliedRating.get() && fieldRating.get() == RATE_STARS_TOTAL)
 
 local onCloseCb = null
 
 function close() {
   isOpened(false)
-  isRateGameSeen(true)
+  isRateGameSeen.set(true)
   onCloseCb?()
 }
 
 function resetForm() {
   fieldRating(0)
-  fieldComment("")
-  hasAppliedRating(false)
+  fieldComment.set("")
+  hasAppliedRating.set(false)
 }
 isOpened.subscribe(@(v) v ? resetForm() : null)
 
 function onBtnApply(isApply = true) {
   if (isApply) {
-    if (!hasSelectedRating.value)
+    if (!hasSelectedRating.get())
       return
-    if (hasSelectedRating.value && !hasAppliedRating.value)
-      return hasAppliedRating(true)
+    if (hasSelectedRating.get() && !hasAppliedRating.get())
+      return hasAppliedRating.set(true)
   }
-  if (!isApply && !hasAppliedRating.value) { 
+  if (!isApply && !hasAppliedRating.get()) { 
     sendRateWndEvent("close_no_choice")
     return close()
   }
 
   
-  sendGameRating(fieldRating.value, fieldComment.value)
-  platformAppReview(isRatedExcellent.value)
+  sendGameRating(fieldRating.get(), fieldComment.get())
+  platformAppReview(isRatedExcellent.get())
   sendRateWndEvent("close_after_choice")
   close()
 }
@@ -117,7 +117,7 @@ let pageRating = {
     mkRateStarsRow(fieldRating, true, true)
     mkBtnPlace(@() {
       watch = hasSelectedRating
-      children = hasSelectedRating.value
+      children = hasSelectedRating.get()
         ? textButtonBattle(utf8ToUpper(loc("msgbox/btn_rate")), onBtnApply)
         : textButtonCommon(utf8ToUpper(loc("msgbox/btn_rate")), onBtnApply)
     })
@@ -153,7 +153,7 @@ let pageComment = {
       pos = [0, hdpx(300)]
       children = textInput(fieldComment, {
         placeholder = loc("feedback/editbox/placeholder")
-        onChange = @(value) fieldComment(value)
+        onChange = @(value) fieldComment.set(value)
       })
     }
     mkBtnPlace(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_leave_feedback")), onBtnApply))
@@ -162,7 +162,7 @@ let pageComment = {
 
 let imagesPreloadComp = @() {
   watch = isOpened
-  children = !isOpened.value ? null : array(5).map(@(_, i) {
+  children = !isOpened.get() ? null : array(5).map(@(_, i) {
     size = 1
     rendObj = ROBJ_IMAGE
     image = Picture($"!ui/images/review_cue_{i + 1}.avif")
@@ -176,10 +176,10 @@ let girlImage = @() {
   vplace = ALIGN_BOTTOM
   pos = [ sw(45) - (contentW / 2) - hdpxi(444), 0 ]
   rendObj = ROBJ_IMAGE
-  image = !hasAppliedRating.value && fieldRating.value == 0 ? Picture($"!ui/images/review_cue_2.avif")
-    : !hasAppliedRating.value && fieldRating.value < RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_4.avif")
-    : !hasAppliedRating.value && fieldRating.value == RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_5.avif")
-    : isRatedExcellent.value ? Picture($"!ui/images/review_cue_3.avif")
+  image = !hasAppliedRating.get() && fieldRating.get() == 0 ? Picture($"!ui/images/review_cue_2.avif")
+    : !hasAppliedRating.get() && fieldRating.get() < RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_4.avif")
+    : !hasAppliedRating.get() && fieldRating.get() == RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_5.avif")
+    : isRatedExcellent.get() ? Picture($"!ui/images/review_cue_3.avif")
     : Picture($"!ui/images/review_cue_1.avif")
 }
 
@@ -197,8 +197,8 @@ let reviewCueWnd = bgShaded.__merge({
           watch = [hasAppliedRating, isRatedExcellent]
           size = flex()
           halign = ALIGN_CENTER
-          children = !hasAppliedRating.value ? pageRating
-            : isRatedExcellent.value ? pageThankYou
+          children = !hasAppliedRating.get() ? pageRating
+            : isRatedExcellent.get() ? pageThankYou
             : pageComment
         }
       ]
@@ -210,8 +210,8 @@ let reviewCueWnd = bgShaded.__merge({
 
 register_command(function() {
   sendRateWndEvent(isOpened.get() ? "close" : "open")
-  isRateGameSeen(false)
-  isOpened(!isOpened.value)
+  isRateGameSeen.set(false)
+  isOpened.set(!isOpened.get())
 }, "ui.debug.review_cue.show")
 
 registerScene("reviewCueWnd", reviewCueWnd, close, isOpened)
@@ -219,7 +219,7 @@ registerScene("reviewCueWnd", reviewCueWnd, close, isOpened)
 function openReviewCueWnd(cb) {
   sendRateWndEvent("open")
   onCloseCb = cb
-  isOpened(true)
+  isOpened.set(true)
 }
 
 return openReviewCueWnd

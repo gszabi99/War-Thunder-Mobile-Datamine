@@ -121,7 +121,7 @@ let armorPiercingFixedList = [false, true]
 let currentArmorPiercingFixedRaw = mkOptionValue(OPT_ARMOR_PIERCING_FIXED)
 let currentArmorPiercingFixed = Computed(@()
   validate(currentArmorPiercingFixedRaw.get() ?? true, armorPiercingFixedList))
-set_armor_piercing_fixed(currentArmorPiercingFixed.value)
+set_armor_piercing_fixed(currentArmorPiercingFixed.get())
 currentArmorPiercingFixed.subscribe(@(v) set_armor_piercing_fixed(v))
 let currentArmorPiercingType = {
   locId = "options/armor_piercing_fixed"
@@ -139,9 +139,9 @@ let autoZoomDefault = Computed(@() firstLoginTime.get() > autoZoomDefaultTrueSta
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
 let currentAutoZoom = Computed(@()
   validate(currentAutoZoomRaw.value
-      ?? autoZoomDefault.value,
+      ?? autoZoomDefault.get(),
     autoZoomList))
-set_auto_zoom(currentAutoZoom.value, false)
+set_auto_zoom(currentAutoZoom.get(), false)
 currentAutoZoom.subscribe(@(v) set_auto_zoom(v, false))
 let currentAutoZoomType = {
   locId = "options/auto_zoom"

@@ -1,20 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isCurPresetChanged, transformInProgress, closeTuning, saveCurrentTransform, tuningState,
   setByHistory, history, curHistoryIdx, tuningUnitType, clearTuningState, isAllElemsOptionsOpened
-} = require("hudTuningState.nut")
-let { hasAnyOfAllElemOptions } = require("cfg/cfgOptions.nut")
+} = require("%rGui/hudTuning/hudTuningState.nut")
+let { hasAnyOfAllElemOptions } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { tuningBtn, tuningBtnWithActivity, tuningBtnImg,
   btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled, btnBgColorDefault,
   btnImgColor, btnImgColorDisabled, tuningBtnGap
-} = require("tuningBtn.nut")
-let chooseTuningUnitTypeWnd = require("chooseTuningUnitTypeWnd.nut")
+} = require("%rGui/hudTuning/tuningBtn.nut")
+let chooseTuningUnitTypeWnd = require("%rGui/hudTuning/chooseTuningUnitTypeWnd.nut")
 
 
 let isOpen = mkWatched(persist, "isOpen", true)
 
 function askSaveAndClose() {
-  if (!isCurPresetChanged.value) {
+  if (!isCurPresetChanged.get()) {
     closeTuning()
     return
   }
@@ -41,11 +41,11 @@ let toggleBtn = @() {
   hplace = ALIGN_LEFT
   pos = [sw(37), 0]
   children = tuningBtn("ui/gameuiskin#hud_tank_arrow_segment.svg",
-    @() isOpen(!isOpen.value),
-    isOpen.value ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
+    @() isOpen.set(!isOpen.get()),
+    isOpen.get() ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
     {
       color = btnBgColorDefault
-      transform = isOpen.value ? {} : { rotate = 180 }
+      transform = isOpen.get() ? {} : { rotate = 180 }
       transitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
     })
 }
@@ -56,7 +56,7 @@ let exitBtn = @() {
     askSaveAndClose,
     "hudTuning/exit/desc",
     {
-      color = isCurPresetChanged.value ? btnBgColorNegative : btnBgColorPositive
+      color = isCurPresetChanged.get() ? btnBgColorNegative : btnBgColorPositive
     })
 }
 
@@ -81,12 +81,12 @@ function historyFwd() {
     setByHistory(curHistoryIdx.get() + 1)
 }
 
-let historyBackBtn = tuningBtnWithActivity(Computed(@() (curHistoryIdx.value ?? 0) > 0),
+let historyBackBtn = tuningBtnWithActivity(Computed(@() (curHistoryIdx.get() ?? 0) > 0),
   "ui/gameuiskin#icon_cancel.svg",
   historyBack, "hudTuning/back/desc")
 
 function historyFwdBtn() {
-  let isAvailable = curHistoryIdx.value != null && curHistoryIdx.value < history.value.len() - 1
+  let isAvailable = curHistoryIdx.get() != null && curHistoryIdx.get() < history.get().len() - 1
   return {
     watch = [curHistoryIdx, history]
     children = tuningBtn(
@@ -110,7 +110,7 @@ let allElemsOptions = tuningBtnWithActivity(Computed(@() !isAllElemsOptionsOpene
 let curUnitTypeInfo = @() {
   watch = tuningUnitType
   rendObj = ROBJ_TEXT
-  text = loc($"mainmenu/type_{tuningUnitType.value}")
+  text = loc($"mainmenu/type_{tuningUnitType.get()}")
   color = 0xC0C0C0C0
 }.__update(fontSmall)
 
@@ -146,7 +146,7 @@ let hudTuningOptions = @() {
       rendObj = ROBJ_SOLID
       color = 0xC0000000
       children = content
-      transform = { translate = [0, isOpen.value ? 0 : hdpx(-500)] }
+      transform = { translate = [0, isOpen.get() ? 0 : hdpx(-500)] }
       transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
     }
     toggleBtn

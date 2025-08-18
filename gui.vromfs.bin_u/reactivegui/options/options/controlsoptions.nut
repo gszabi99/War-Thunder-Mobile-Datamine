@@ -48,7 +48,7 @@ function hapticIntensitySlider(locId, optId, intensityType = -1) {
 }
 
 let freeCameraInertia = Watched(get_option_multiplier(OPTION_FREE_CAMERA_INERTIA))
-isOnlineSettingsAvailable.subscribe(@(_) freeCameraInertia(get_option_multiplier(OPTION_FREE_CAMERA_INERTIA)))
+isOnlineSettingsAvailable.subscribe(@(_) freeCameraInertia.set(get_option_multiplier(OPTION_FREE_CAMERA_INERTIA)))
 let optFreeCameraInertia = {
   locId = "options/free_camera_inertia"
   value = freeCameraInertia

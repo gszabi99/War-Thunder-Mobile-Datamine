@@ -71,7 +71,7 @@ eventbus_subscribe("goodsNSwitch_checkPurchasesState",function(_result) {
     showErrorWithSystemDialog()
   }
   startSeveralCheckPurchases()
-  purchaseInProgress(null)
+  purchaseInProgress.set(null)
 })
 
 function handlePurchase(product_id) {
@@ -80,7 +80,7 @@ function handlePurchase(product_id) {
 
   if (groupId.len() == 0) {
     logG("cant groupId for product_id", product_id, nintendoId)
-    purchaseInProgress(null)
+    purchaseInProgress.set(null)
     return
   }
 
@@ -90,7 +90,7 @@ function handlePurchase(product_id) {
 
 let availablePrices = Computed(function() {
   let res = {}
-  foreach (info in products.value) {
+  foreach (info in products.get()) {
     let { productId = null, formatted_price = null, raw_price = 0, currency_price = ""} = info
     if (productId == null || formatted_price == null)
       continue
@@ -116,8 +116,8 @@ let getProductId = @(goods) goods?.purchaseGuids.switch_EU.extId
 
 let goodsIdByProductId = Computed(function() {
   let res = {}
-  foreach (id, goods in campConfigs.value?.allGoods ?? {})
-    if (can_debug_shop.value || !goods.isShowDebugOnly) {
+  foreach (id, goods in campConfigs.get()?.allGoods ?? {})
+    if (can_debug_shop.get() || !goods.isShowDebugOnly) {
       let productId = getProductId(goods)
       if (productId != null)
         res[productId] <- id
@@ -125,13 +125,13 @@ let goodsIdByProductId = Computed(function() {
   return res
 })
 
-let offerProductId = Computed(@() getProductId(activeOffers.value))
+let offerProductId = Computed(@() getProductId(activeOffers.get()))
 
 let platformGoods = Computed(function() {
-  let allGoods = campConfigs.value?.allGoods ?? {}
-  let productToGoodsId = goodsIdByProductId.value
+  let allGoods = campConfigs.get()?.allGoods ?? {}
+  let productToGoodsId = goodsIdByProductId.get()
   let res = {}
-  foreach (productId, priceExt in availablePrices.value) {
+  foreach (productId, priceExt in availablePrices.get()) {
     let goodsId = productToGoodsId?[productId]
     let goods = allGoods?[goodsId]
     if (goods != null)
@@ -141,26 +141,26 @@ let platformGoods = Computed(function() {
 })
 
 let platformOffer = Computed(function() {
-  let priceExt = availablePrices.value?[getProductId(activeOffers.value)]
+  let priceExt = availablePrices.get()?[getProductId(activeOffers.get())]
   return priceExt == null || activeOffers.value == null ? null
-    : activeOffers.value.__merge({ priceExt })
+    : activeOffers.get().__merge({ priceExt })
 })
 
 eventbus_subscribe("goodsNSwitch_buyPlatformGoods",function(_result) {
   if (!canOpenEshop()) {
-    purchaseInProgress(null)
+    purchaseInProgress.set(null)
     showErrorWithSystemDialog()
     return
   }
-  if (purchaseInProgress.value)
-    handlePurchase(purchaseInProgress.value)
+  if (purchaseInProgress.get())
+    handlePurchase(purchaseInProgress.get())
 })
 
 function buyPlatformGoods(goodsOrId) {
-  let productId = getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
+  let productId = getProductId(platformGoods.get()?[goodsOrId] ?? goodsOrId)
   if (productId == null)
     return
-  purchaseInProgress(productId)
+  purchaseInProgress.set(productId)
   requestEshopState("goodsNSwitch_buyPlatformGoods")
 }
 
@@ -200,7 +200,7 @@ eventbus_subscribe("nswitch.eshop.onItemsRequested", function(val) {
   log(status)
   if (status == REQUEST_FINISHED) {
     fillItems()
-    vatMsg(getIncTaxMessage())
+    vatMsg.set(getIncTaxMessage())
     request_number = 0
   } else if(status == REQUEST_TIMEOUT && request_number < max_request_number) {
     request_number = request_number + 1

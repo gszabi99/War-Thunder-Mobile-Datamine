@@ -78,7 +78,7 @@ function replaysList() {
           tooltipCtor = @() getReplayDescription(r)
         }))))
 
-  if (can_write_replays.value) {
+  if (can_write_replays.get()) {
     let invalidVersionRelays = replays
       .filter(@(r) r.isVersionMismatch)
       .sort(replaySort)

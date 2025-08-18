@@ -14,7 +14,7 @@ function mkMoveIndicator(scale) {
   return @() {
     watch = isInZoom
     size
-    rendObj = isInZoom.value ? ROBJ_UNIT_POSE_INDICATOR : null
+    rendObj = isInZoom.get() ? ROBJ_UNIT_POSE_INDICATOR : null
   }
 }
 

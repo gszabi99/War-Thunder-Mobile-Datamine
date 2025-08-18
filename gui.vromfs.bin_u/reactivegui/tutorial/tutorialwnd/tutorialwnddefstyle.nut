@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
 let { commonTextColor } = require("%rGui/style/stdColors.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight, incBoxSizeUnlimited } = require("tutorialUtils.nut")
+let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight, incBoxSizeUnlimited } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
@@ -139,10 +139,10 @@ let skipBtnCtor = @(stepSkipDelay, skipStep, key) {
       watch = skipStateFlags
       key = "holdToSkip"
       behavior = Behaviors.Button
-      onElemState = @(sf) skipStateFlags(sf)
+      onElemState = @(sf) skipStateFlags.set(sf)
       rendObj = ROBJ_TEXT
       text = loc("HoldToSkip")
-      color = skipStateFlags.value & S_ACTIVE ? 0xFF808080
+      color = skipStateFlags.get() & S_ACTIVE ? 0xFF808080
         : 0xA0A0A0A0
     }.__update(fontSmall)
   ]

@@ -5,7 +5,9 @@ let { register_command } = require("console")
 let { unseenPurchases, lootboxes } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let unseenPurchasesDebug = require("%rGui/shop/unseenPurchasesDebug.nut")
+let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
 let invisibleGoodsTypes = ["stat", "medal"] 
   .reduce(@(res, v) res.$rawset(v, true), {})
@@ -18,17 +20,17 @@ let isUnseenGoodsVisible = @(goods, source, srvCfg, lboxes) (goods.gType not in 
     || (source == "lootbox" && (lboxes?[goods.id] ?? 0) > 0 && (srvCfg?.lootboxesCfg[goods.id].openType != "jackpot_only")))  
 let seenPurchasesNoNeedToShow = Computed(function() {
   let lboxes = lootboxes.get()
-  return unseenPurchases.value
+  return unseenPurchases.get()
     .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, serverConfigs.get(), lboxes)) == null)
 })
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
-  ?? (isShowDelayed.value ? {}
-    : unseenPurchases.value.filter(@(_, id) id not in ignoreUnseen.value
-        && id not in seenPurchasesNoNeedToShow.value)))
+  ?? (isShowDelayed.get() ? {}
+    : unseenPurchases.get().filter(@(_, id) id not in ignoreUnseen.get()
+        && id not in seenPurchasesNoNeedToShow.get())))
 
-let unseenPurchasesCount = keepref(Computed(@() unseenPurchases.value.len()))
+let unseenPurchasesCount = keepref(Computed(@() unseenPurchases.get().len()))
 unseenPurchasesCount.subscribe(@(c) logR("unseenPurchasesCount = ", c))
-let unseenPurchasesCountExt = keepref(Computed(@() unseenPurchasesExt.value.len()))
+let unseenPurchasesCountExt = keepref(Computed(@() unseenPurchasesExt.get().len()))
 unseenPurchasesCountExt.subscribe(@(c) logR("unseenPurchasesCountExt = ", c))
 
 let unseenGroups = [
@@ -45,42 +47,48 @@ let unseenGroups = [
 ]
 
 let activeUnseenPurchasesGroup = Computed(function() {
-  if (unseenPurchasesExt.value.len() != 0)
+  if (unseenPurchasesExt.get().len() != 0)
     foreach(group in unseenGroups) {
-      let list = unseenPurchasesExt.value.filter(group.isFit)
+      let list = unseenPurchasesExt.get().filter(group.isFit)
       if (list.len() > 0)
         return group.filter(@(v) type(v) != "function")
           .__update({ list })
     }
-  return { list = unseenPurchasesExt.value }
+  return { list = unseenPurchasesExt.get() }
 })
 
 function markPurchasesSeen(seenIds) {
   if (unseenPurchasesDebug.value != null)
     return unseenPurchasesDebug(null)
 
-  let hasNotIgnore = seenIds.findvalue(@(id) id not in ignoreUnseen.value) != null
+  let hasNotIgnore = seenIds.findvalue(@(id) id not in ignoreUnseen.get()) != null
   if (!hasNotIgnore)
     return
 
   ignoreUnseen.mutate(function(v) {
     foreach (id in seenIds)
       v[id] <- true
+    foreach (id in v.keys())
+      if (id not in unseenPurchases.get())
+        v.$rawdelete(id)
   })
   clear_unseen_purchases(seenIds)
 }
 
-markPurchasesSeen(seenPurchasesNoNeedToShow.value.keys())
+markPurchasesSeen(seenPurchasesNoNeedToShow.get().keys())
 seenPurchasesNoNeedToShow.subscribe(@(v) markPurchasesSeen(v.keys()))
+
+isLoggedIn.subscribe(@(_) ignoreUnseen.set({}))
+subscribeResetProfile(@() ignoreUnseen.set({}))
 
 let customUnseenPurchHandlers = []
 let customUnseenPurchVersion = Watched(0)
-let incCustomVersion = @() customUnseenPurchVersion(customUnseenPurchVersion.value + 1)
+let incCustomVersion = @() customUnseenPurchVersion.set(customUnseenPurchVersion.get() + 1)
 
 let customUnseenData = Computed(function() {
-  let ver = customUnseenPurchVersion.value 
+  let ver = customUnseenPurchVersion.get() 
   foreach (idx, cfg in customUnseenPurchHandlers) {
-    let list = unseenPurchasesExt.value.filter(cfg.isFit)
+    let list = unseenPurchasesExt.get().filter(cfg.isFit)
     if (list.len() > 0)
       return { idx, list }
   }
@@ -112,23 +120,23 @@ let unseenPurchaseUnitPlateKey = @(name) name == null ? null : $"unseenPurchaseU
 
 function undelayShow() {
   logR("undelayShow unseen")
-  isShowDelayed(false)
+  isShowDelayed.set(false)
 }
 function delayShow(time) {
   if (time > 0) {
     logR("delayShow unseen for ", time)
-    isShowDelayed(true)
+    isShowDelayed.set(true)
     resetTimeout(time, undelayShow)
   }
   else {
     logR("undelayShow unseen")
-    isShowDelayed(false)
+    isShowDelayed.set(false)
   }
 }
 
-register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.value) , "debug.currentUnseenPurchases") 
-register_command(@() console_print("activeUnseenPurchasesGroup = ", activeUnseenPurchasesGroup.value) , "debug.activeUnseenPurchasesGroup") 
-register_command(@() console_print("activeUnseenPurchasesGroup.list = ", activeUnseenPurchasesGroup.value.list) , "debug.activeUnseenPurchasesGroup.list") 
+register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.get()) , "debug.currentUnseenPurchases") 
+register_command(@() console_print("activeUnseenPurchasesGroup = ", activeUnseenPurchasesGroup.get()) , "debug.activeUnseenPurchasesGroup") 
+register_command(@() console_print("activeUnseenPurchasesGroup.list = ", activeUnseenPurchasesGroup.get().list) , "debug.activeUnseenPurchasesGroup.list") 
 
 return {
   unseenPurchasesExt
@@ -137,7 +145,7 @@ return {
   customUnseenPurchVersion
   removeCustomUnseenPurchHandler
   addCustomUnseenPurchHandler
-  hasActiveCustomUnseenView = Computed(@() customUnseenData.value != null)
+  hasActiveCustomUnseenView = Computed(@() customUnseenData.get() != null)
   delayUnseedPurchaseShow = delayShow
   isShowUnseenDelayed = isShowDelayed
   skipUnseenMessageAnimOnce

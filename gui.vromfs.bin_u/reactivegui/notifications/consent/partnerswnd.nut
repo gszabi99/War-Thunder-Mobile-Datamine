@@ -5,11 +5,11 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { gapAfterPoint, urlUnderline, linkColor } = require("consentComps.nut")
-let { isOpenedPartners } = require("consentState.nut")
+let { gapAfterPoint, urlUnderline, linkColor } = require("%rGui/notifications/consent/consentComps.nut")
+let { isOpenedPartners } = require("%rGui/notifications/consent/consentState.nut")
 
 let key = "consentPartners"
-let close = @() isOpenedPartners(false)
+let close = @() isOpenedPartners.set(false)
 
 let partners = ["google", "meta", "unity"]
 

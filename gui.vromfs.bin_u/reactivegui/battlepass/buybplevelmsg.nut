@@ -2,17 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 
-let { buyBPLevel, isBpActive, BP_PROGRESS_UNLOCK_ID, curStage } = require("battlePassState.nut")
+let { buyBPLevel, isBpActive, BP_PROGRESS_UNLOCK_ID, curStage } = require("%rGui/battlePass/battlePassState.nut")
 let { PURCH_SRC_BATTLE_PASS, PURCH_TYPE_BP_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { msgBoxText } = require("%rGui/components/msgBox.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bpCardStyle } = require("bpCardsStyle.nut")
+let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
 
 let textOvr = { size = FLEX_H }
 
 function purchaseContent(stageInfo) {
-  let needReward = Computed(@() !stageInfo.isPaid || (stageInfo.isPaid && isBpActive.value))
+  let needReward = Computed(@() !stageInfo.isPaid || (stageInfo.isPaid && isBpActive.get()))
   let nextLevel = Computed(@() stageInfo.loopMultiply > 0 ? curStage.get() + 1 : stageInfo.progress)
   return @() {
     watch = [needReward, nextLevel]

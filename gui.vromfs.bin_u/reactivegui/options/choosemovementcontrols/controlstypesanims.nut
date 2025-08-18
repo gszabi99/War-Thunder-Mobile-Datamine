@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let mkStickWidgetComps = require("mkStickWidgetComps.nut")
-let mkArrowsWidgetComps = require("mkArrowsWidgetComps.nut")
+let mkStickWidgetComps = require("%rGui/options/chooseMovementControls/mkStickWidgetComps.nut")
+let mkArrowsWidgetComps = require("%rGui/options/chooseMovementControls/mkArrowsWidgetComps.nut")
 
 let animSize = evenPx(380)
 let canvasHalfSize = 0.5 * animSize

@@ -1,4 +1,4 @@
-from "shortcutConsts.nut" import *
+from "%rGui/controls/shortcutConsts.nut" import *
 
 let axisHotkey = {
   [JOY_XBOX_REAL_AXIS_L_THUMB_H] = "J:LS",

@@ -70,7 +70,7 @@ function setupAnalytics() {
 function autoSkipConsent() {
   if (isConsentAcceptedOnce.get())
     return
-  savedPoints(defaultPointsTable.map(@(_) false))
+  savedPoints.set(defaultPointsTable.map(@(_) false))
   logC("consent skipped by denied IDFA")
   sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_denied_idfa" })
   setupAnalytics()
@@ -81,7 +81,7 @@ function autoAcceptForNonEURegion() {
   if (isConsentAcceptedOnce.get())
     return
   logC("consent auto accepted for non EU region",getCountryCode())
-  savedPoints(defaultPointsTable.map(@(_) true))
+  savedPoints.set(defaultPointsTable.map(@(_) true))
   sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_region" })
   setupAnalytics()
 }
@@ -98,12 +98,12 @@ let function loadPoints(){
   let sBlk = get_local_custom_settings_blk()
   let blk = sBlk?[CONSENT_OPTIONS_SAVE_ID]
   if(!blk){
-    savedPoints({})
+    savedPoints.set({})
     return
   }
   if (isDataBlock(blk))
     eachParam(blk, @(v, id) res[id] <- v)
-  savedPoints(res)
+  savedPoints.set(res)
   setupAnalytics() 
 }
 
@@ -117,7 +117,7 @@ if (savedPoints.get() == null && isReadyForConsent.get())
 
 function onOnlineSettingsNOTAvailable(){
   isConsentAllowLogin.set(false)
-  savedPoints(null)
+  savedPoints.set(null)
 }
 isReadyForConsent.subscribe(@(v) v ? loadPoints(): onOnlineSettingsNOTAvailable())
 
@@ -148,15 +148,15 @@ function applyConsent(pointsTable, source){
     status = source.action,
     values = object_to_json_string(pointsTable)
   })
-  savedPoints(pointsTable)
+  savedPoints.set(pointsTable)
   let sBlk = get_local_custom_settings_blk()
   let blk = sBlk.addBlock(CONSENT_OPTIONS_SAVE_ID)
   foreach(k, v in pointsTable){
     blk[k] = v
   }
   eventbus_send("saveProfile", {})
-  isOpenedManage(false)
-  needOpenConsentWnd(false)
+  isOpenedManage.set(false)
+  needOpenConsentWnd.set(false)
 
   setupAnalytics()
 }

@@ -6,17 +6,17 @@ let { isCurPresetChanged, closeEventMapEditor, saveCurrentPreset, addOrEditPoint
   isEditAllowed, presetPointSize, needUseAutoSave, tuningPoints, tuningBgElems,
   historyMapElements, selectElem, defaultPointSize, changeCurPresetField, presetGridSize,
   ELEM_POINT, ELEM_BG, addBgElement, editBgElement, selectedElem, copyElement
-} = require("mapEditorState.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { removeModalWindow, addModalWindowWithHeader } = require("%rGui/components/modalWindows.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { optionsBtnGap, btnBgColorDefault, btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled,
   btnImgColor, btnImgColorDisabled, defaultBgElemSize, optionBtnSize
-} = require("mapEditorConsts.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
 let { mkOptionBtnImg, mkOptionBtn, mkTextOptionBtn, btnWithActivity, mkTextInputField, mkText,
   mkFramedText, modalBg, mkTextOptionBtnNoUpper
-} = require("mapEditorComps.nut")
-let { mkBgCollectionChoice } = require("bgCollectionChoice.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorComps.nut")
+let { mkBgCollectionChoice } = require("%rGui/debugTools/debugMapPoints/bgCollectionChoice.nut")
 
 
 let POINTS_SIZE_SETTING_WND = "pointsSizeSettingsWnd"

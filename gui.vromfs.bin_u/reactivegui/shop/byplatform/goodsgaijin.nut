@@ -5,9 +5,9 @@ let { resetTimeout } = require("dagor.workcycle")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
-let { addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo } = require("gaijinGoodsInfo.nut")
+let { addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo } = require("%rGui/shop/byPlatform/gaijinGoodsInfo.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
+let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 
 
 let successPaymentUrl = "https://store.gaijin.net/success_payment.php" 
@@ -20,7 +20,7 @@ let goodsIdByGuid = Computed(function() {
   let res = {}
   let { allGoods = {}, subscriptionsCfg = {} } = campConfigs.get()
   foreach (id, goods in allGoods)
-    if ((can_debug_shop.value || !goods.isShowDebugOnly)
+    if ((can_debug_shop.get() || !goods.isShowDebugOnly)
         && !goods?.isHiddenInGaijinStore) {
       let guid = getGaijinGuid(goods)
       if (guid != "")
@@ -35,7 +35,7 @@ let goodsIdByGuid = Computed(function() {
 })
 
 let addGoodsInfoTbl = @(tbl) addGoodsInfoGuids(tbl.keys())
-addGoodsInfoTbl(goodsIdByGuid.value)
+addGoodsInfoTbl(goodsIdByGuid.get())
 goodsIdByGuid.subscribe(addGoodsInfoTbl)
 
 function addOfferGuid(offer) {
@@ -43,7 +43,7 @@ function addOfferGuid(offer) {
   if (offerGuid != "")
     addGoodsInfoGuid(offerGuid)
 }
-addOfferGuid(activeOffers.value)
+addOfferGuid(activeOffers.get())
 activeOffers.subscribe(addOfferGuid)
 
 function buildPurchaseUrl(info) {
@@ -81,8 +81,8 @@ function mkGoods(baseGoods, info) {
 }
 
 let platformGoods = Computed(function() {
-  let { allGoods = {} } = campConfigs.value
-  let guidToGoodsId = goodsIdByGuid.value
+  let { allGoods = {} } = campConfigs.get()
+  let guidToGoodsId = goodsIdByGuid.get()
   let res = {}
   foreach (guid, data in goodsInfo.get()) { 
     let goodsId = guidToGoodsId?[guid]
@@ -104,10 +104,10 @@ let platformSubs = Computed(function() {
 })
 
 let platformOffer = Computed(@()
-  mkGoods(activeOffers.value, goodsInfo.get()?[getGaijinGuid(activeOffers.value)]))
+  mkGoods(activeOffers.get(), goodsInfo.get()?[getGaijinGuid(activeOffers.get())]))
 
 function buyPlatformGoods(goodsOrId) {
-  local baseUrl = goodsOrId?.purchaseUrl ?? platformGoods.value?[goodsOrId].purchaseUrl
+  local baseUrl = goodsOrId?.purchaseUrl ?? platformGoods.get()?[goodsOrId].purchaseUrl
   if (baseUrl == null)
     return
   baseUrl = " ".concat("auto_local", "auto_login", baseUrl)

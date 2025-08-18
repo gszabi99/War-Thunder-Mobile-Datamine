@@ -12,7 +12,7 @@ let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, ph(-20)] }
 
 let showSkipHint = mkWatched(persist, "showSkipHint", false)
-eventbus_subscribe("hint:xrayCamera:showSkipHint", @(_) showSkipHint(true))
+eventbus_subscribe("hint:xrayCamera:showSkipHint", @(_) showSkipHint.set(true))
 
 let mkText = @(text) {
   rendObj = ROBJ_TEXT
@@ -20,7 +20,7 @@ let mkText = @(text) {
 }.__update(fontTiny)
 
 let hintForSkip = function() {
-  if (!showSkipHint.value)
+  if (!showSkipHint.get())
     return { watch = [showSkipHint, isGamepad] }
   else{
     let hintIcon = mkGamepadShortcutImage("ID_CONTINUE", defShortcutOvr)

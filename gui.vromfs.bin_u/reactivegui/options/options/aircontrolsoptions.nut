@@ -51,7 +51,7 @@ let {
   CAM_TYPE_NORMAL_PLANE,
   CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
-let { crosshairOptions } = require("crosshairOptions.nut")
+let { crosshairOptions } = require("%rGui/options/options/crosshairOptions.nut")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -190,7 +190,7 @@ let controlByGyroAimMode = {
   valToString = airCtrlTypeToString
 }
 
-let isOptAvailableControlByGyroDirectControl = Computed(@() setVirtualAxesDirectControl != null && currentAircraftCtrlType.value != "mouse_aim")
+let isOptAvailableControlByGyroDirectControl = Computed(@() setVirtualAxesDirectControl != null && currentAircraftCtrlType.get() != "mouse_aim")
 let currentControlByGyroDirectControlList = [false, true]
 let currentControlByGyroDirectControl = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL, false,
   @(v) validate(v, currentAdditionalFlyControlsList))

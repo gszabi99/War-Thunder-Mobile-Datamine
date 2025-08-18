@@ -35,6 +35,10 @@ let customLootboxImages = {
   event_special_ships_independence_2025      = "event_special_independence_2025.avif"
   event_special_air_independence_2025        = "event_special_independence_2025.avif"
 
+  event_special_gift_tanks_anniversary_2025      = "event_anniversary_gift_box.avif"
+  event_special_gift_ships_anniversary_2025      = "event_anniversary_gift_box.avif"
+  event_special_gift_air_anniversary_2025        = "event_anniversary_gift_box.avif"
+
   event_special_tanks_april_fools_2025      = "event_special_ships_april_2025.avif"
   event_special_ships_april_fools_2025      = "event_special_ships_april_2025.avif"
   event_special_air_april_fools_2025        = "event_special_ships_april_2025.avif"
@@ -98,6 +102,10 @@ let customRouletteImages = {
   event_special_tanks_april_fools_2025 = "ui/images/event_bg_roulette_event_april_2025.avif"
   event_special_ships_april_fools_2025 = "ui/images/event_bg_roulette_event_april_2025.avif"
   event_special_air_april_fools_2025   = "ui/images/event_bg_roulette_event_april_2025.avif"
+
+  event_special_gift_tanks_anniversary_2025 = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
+  event_special_gift_ships_anniversary_2025 = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
+  event_special_gift_air_anniversary_2025   = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
 }
 
 let imgIdBySeason = {
@@ -126,6 +134,10 @@ let lootboxPreviewBg = {
   event_special_tanks_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
   event_special_ships_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
   event_special_air_independence_2025            = "ui/images/event_bg_event_independence_day.avif"
+
+  event_special_gift_tanks_anniversary_2025         = "ui/images/event_bg_anniversary_2025.avif"
+  event_special_gift_ships_anniversary_2025         = "ui/images/event_bg_anniversary_2025.avif"
+  event_special_gift_air_anniversary_2025           = "ui/images/event_bg_anniversary_2025.avif"
 }
 
 let customEventLootboxScale = {
@@ -187,6 +199,10 @@ let lootboxLayers = {
   event_special_gift_tanks_new_year_2025 = mkTagLayersCtor("event_christmas_gift_tag_tanks.avif")
   event_special_gift_ships_new_year_2025 = mkTagLayersCtor("event_christmas_gift_tag_ships.avif")
   event_special_gift_air_new_year_2025   = mkTagLayersCtor("event_christmas_gift_tag_planes.avif")
+
+  event_special_gift_tanks_anniversary_2025 = mkTagLayersCtor("event_christmas_gift_tag_tanks.avif")
+  event_special_gift_ships_anniversary_2025 = mkTagLayersCtor("event_christmas_gift_tag_ships.avif")
+  event_special_gift_air_anniversary_2025   = mkTagLayersCtor("event_christmas_gift_tag_planes.avif")
 }
 
 function mkLoootboxImage(id, size, scale = 1, ovr = {}) {

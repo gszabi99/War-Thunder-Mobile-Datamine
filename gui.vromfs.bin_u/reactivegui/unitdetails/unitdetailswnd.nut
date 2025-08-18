@@ -22,8 +22,8 @@ let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.
 let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
 let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
   platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
-} = require("unitDetailsState.nut")
-let { mkPlatoonUnitsBlock } = require("unitDetailsComps.nut")
+} = require("%rGui/unitDetails/unitDetailsState.nut")
+let { mkPlatoonUnitsBlock } = require("%rGui/unitDetails/unitDetailsComps.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
@@ -40,7 +40,7 @@ let infoPanelOffsetY = panelBg.padding
 let frameButtonIconSize = hdpxi(50)
 let frameButtonGap = hdpx(5)
 
-let openCount = Computed(@() baseUnit.value != null ? unitDetailsOpenCount.get() : 0)
+let openCount = Computed(@() baseUnit.get() != null ? unitDetailsOpenCount.get() : 0)
 let hasUnseenRewards = Computed(@() baseUnit.get()?.name in unseenUnitLvlRewardsList.get())
 
 let leftBtnSizeWithRewardBtn = [defButtonMinWidth + frameButtonIconSize * 2 + frameButtonGap * 2, defButtonHeight]
@@ -64,11 +64,11 @@ let sceneHeader = @() {
 }
 
 let nextLevelToUnlockUnit = Computed(function() {
-  if ("level" not in baseUnit.value)
+  if ("level" not in baseUnit.get())
     return null
   local nextLevel
-  foreach (unlockLevel in platoonUnitsList.value.map(@(v) v.reqLevel))
-    if ((unlockLevel < nextLevel || !nextLevel) && unlockLevel > baseUnit.value.level)
+  foreach (unlockLevel in platoonUnitsList.get().map(@(v) v.reqLevel))
+    if ((unlockLevel < nextLevel || !nextLevel) && unlockLevel > baseUnit.get().level)
       nextLevel = unlockLevel
   return nextLevel
 })
@@ -79,7 +79,7 @@ platoonUnitsList.subscribe(function(pu) {
   local name = openUnitOvr.get()?.selUnitName
   if (name == null || null == pu.findvalue(@(p) p.name == name))
     name = pu?[0].name
-  curSelectedUnitId(name)
+  curSelectedUnitId.set(name)
 })
 
 let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
@@ -130,10 +130,10 @@ let testDriveButton = @() {
 
 let lvlUpButton = @() {
   watch = [nextLevelToUnlockUnit, baseUnit]
-  children = nextLevelToUnlockUnit.value == null ? null
+  children = nextLevelToUnlockUnit.get() == null ? null
     : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-        nextLevelToUnlockUnit.value,
-        @() buyUnitLevelWnd(baseUnit.value?.name), { hotkeys = ["^J:Y"] })
+        nextLevelToUnlockUnit.get(),
+        @() buyUnitLevelWnd(baseUnit.get()?.name), { hotkeys = ["^J:Y"] })
 }
 
 function buttonsBlock() {
@@ -211,7 +211,7 @@ let sceneRoot = {
   }
   function onDetach() {
     clearDmViewerUnitDataCollection()
-    isWindowAttached(false)
+    isWindowAttached.set(false)
   }
   children = {
     size = flex()

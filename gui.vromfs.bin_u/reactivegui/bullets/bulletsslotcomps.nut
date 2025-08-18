@@ -6,7 +6,7 @@ let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/compo
 let { bg, bulletsBlockWidth, headerSlotHeight } = require("%rGui/respawn/respawnComps.nut")
 let { bulletsAABB } = require("%rGui/respawn/respawnAnimState.nut")
 let { showRespChooseWnd } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
-let mkBulletSlot = require("mkBulletSlot.nut")
+let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
 
 
 let padding = hdpx(8)

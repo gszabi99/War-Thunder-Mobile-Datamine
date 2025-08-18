@@ -5,9 +5,9 @@ let { register_command } = require("console")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
   refreshLbData, requestSelfRow, isLbRequestInProgress
-} = require("lbStateBase.nut")
-let { lbCfgById } = require("lbConfig.nut")
-let { lbPageRows } = require("lbStyle.nut")
+} = require("%rGui/leaderboard/lbStateBase.nut")
+let { lbCfgById } = require("%rGui/leaderboard/lbConfig.nut")
+let { lbPageRows } = require("%rGui/leaderboard/lbStyle.nut")
 let { userstatStats, seasonIntervals } = require("%rGui/unlocks/userstat.nut")
 
 
@@ -20,9 +20,9 @@ let isLbWndOpened = mkWatched(persist, "isLbWndOpened", false)
 let isLbBestBattlesOpened = mkWatched(persist, "isLbBestBattlesOpened", false)
 let isRefreshLbEnabled = mkWatched(persist, "isRefreshLbEnabled", false)
 
-let curLbCfg = Computed(@() lbCfgById?[curLbId.value])
+let curLbCfg = Computed(@() lbCfgById?[curLbId.get()])
 let lbMyPlace = Computed(@() (curLbSelfRow.get()?.idx ?? -2) + 1)
-let lbMyPage = Computed(@() lbMyPlace.value < 0 ? -1 : (lbMyPlace.value - 1) / lbPageRows)
+let lbMyPage = Computed(@() lbMyPlace.get() < 0 ? -1 : (lbMyPlace.get() - 1) / lbPageRows)
 let lbTotalPlaces = Computed(function() {
   if (curLbData.get() == null)
     return -1
@@ -31,14 +31,14 @@ let lbTotalPlaces = Computed(function() {
 let lbLastPage = Computed(function() {
   if (curLbData.get() == null)
     return -1
-  let total = lbTotalPlaces.value
-  let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.value
+  let total = lbTotalPlaces.get()
+  let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.get()
   return lastPage
 })
 
 let requestDataInternal = keepref(Computed(function() {
-  let { lbTable = null, sortBy = null, gameMode = "" } = curLbCfg.value
-  if (lbTable == null || sortBy == null || !isLoggedIn.value)
+  let { lbTable = null, sortBy = null, gameMode = "" } = curLbCfg.get()
+  if (lbTable == null || sortBy == null || !isLoggedIn.get())
     return null
 
   let curSeasonIntervals = seasonIntervals.get()?[lbTable] ?? {}
@@ -51,7 +51,7 @@ let requestDataInternal = keepref(Computed(function() {
     gameMode
     category = sortBy.field
     count = lbPageRows
-    start = lbPage.value * lbPageRows
+    start = lbPage.get() * lbPageRows
     resolveNick = 1
     group = ""
     tableIndex = isCurSeasonActive ? interval.index
@@ -64,20 +64,20 @@ let requestDataInternal = keepref(Computed(function() {
 setLbRequestData(requestDataInternal.value)
 requestDataInternal.subscribe(function(v) {
   setLbRequestData(v)
-  if (isRefreshLbEnabled.value)
+  if (isRefreshLbEnabled.get())
     deferOnce(refreshLbData)
 })
 
-curLbCfg.subscribe(@(_) lbPage(0))
+curLbCfg.subscribe(@(_) lbPage.set(0))
 
 curLbData.subscribe(function(v) {
-  if (v != null && lbMyPlace.value == -1)
+  if (v != null && lbMyPlace.get() == -1)
     requestSelfRow()
 })
 
 function updateRefreshTimer() {
   clearTimer(refreshLbData)
-  if (isRefreshLbEnabled.value) {
+  if (isRefreshLbEnabled.get()) {
     refreshLbData()
     setInterval(REFRESH_PERIOD, refreshLbData)
   }
@@ -86,16 +86,16 @@ updateRefreshTimer()
 isRefreshLbEnabled.subscribe(@(_) updateRefreshTimer())
 
 let ratingBattlesCount = Computed(@()
-  userstatStats.value?.stats[curLbCfg.value?.lbTable].ratingSessions ?? -1)
+  userstatStats.get()?.stats[curLbCfg.get()?.lbTable].ratingSessions ?? -1)
 let minRatingBattles = Watched(5) 
 let bestBattles = Computed(@()
-  userstatStats.value?.stats[curLbCfg.value?.lbTable]["$sessions"])
-let bestBattlesCount = Computed(@() bestBattles.value?.len() ?? 0)
-let hasBestBattles = Computed(@() ratingBattlesCount.value > 0 && bestBattlesCount.value > 0)
+  userstatStats.get()?.stats[curLbCfg.get()?.lbTable]["$sessions"])
+let bestBattlesCount = Computed(@() bestBattles.get()?.len() ?? 0)
+let hasBestBattles = Computed(@() ratingBattlesCount.get() > 0 && bestBattlesCount.get() > 0)
 
-register_command(@() lbPage(lbPage.value + 1), "lb.page_next")
-register_command(@() lbPage.value > 0 && lbPage(lbPage.value - 1), "lb.page_prev")
-register_command(@() isLbWndOpened(true), "lb.open")
+register_command(@() lbPage.set(lbPage.get() + 1), "lb.page_next")
+register_command(@() lbPage.get() > 0 && lbPage.set(lbPage.get() - 1), "lb.page_prev")
+register_command(@() isLbWndOpened.set(true), "lb.open")
 
 return {
   isLbWndOpened
@@ -119,5 +119,5 @@ return {
   hasBestBattles
 
   isRefreshLbEnabled
-  openLbWnd = @() isLbWndOpened(true)
+  openLbWnd = @() isLbWndOpened.set(true)
 }

@@ -15,10 +15,10 @@ let maxSquadMRank = Computed(function() {
 })
 
 let squadAddons = Computed(function() {
-  if (maxSquadMRank.value == null)
+  if (maxSquadMRank.get() == null)
     return {}
 
-  let addons = getCampaignPkgsForOnlineBattle(squadLeaderCampaign.get(), maxSquadMRank.value)
+  let addons = getCampaignPkgsForOnlineBattle(squadLeaderCampaign.get(), maxSquadMRank.get())
   let res = {}
   foreach(a in addons)
     if (!(hasAddons.get()?[a] ?? true))

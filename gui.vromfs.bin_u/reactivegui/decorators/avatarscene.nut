@@ -4,7 +4,7 @@ let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenAvatar, allAvatars, availAvatars, unseenDecorators,
   markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
-} = require("decoratorState.nut")
+} = require("%rGui/decorators/decoratorState.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -15,13 +15,13 @@ let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { choosenMark } = require("decoratorsPkg.nut")
+let { choosenMark } = require("%rGui/decorators/decoratorsPkg.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyStyles.nut")
-let purchaseDecorator = require("purchaseDecorator.nut")
+let purchaseDecorator = require("%rGui/decorators/purchaseDecorator.nut")
 let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
+let { mkDecoratorUnlockProgress } = require("%rGui/decorators/mkDecoratorUnlockProgress.nut")
 
 let gap = hdpx(15)
 let avatarSize = hdpxi(200)
@@ -64,19 +64,19 @@ function avatarBtn(item) {
     color = 0xAA000000
     behavior = Behaviors.Button
     sound = { click  = "meta_profile_elements" }
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     size = [avatarSize, avatarSize]
     function onClick() {
       markDecoratorSeen(name)
-      if (!isSelected.value)
+      if (!isSelected.get())
         selectedAvatarName.set(name)
-      else if (isSelected.value && !isChoosen.value
+      else if (isSelected.get() && !isChoosen.get()
           && decoratorInProgress.get() != (name != "" ? name : "avatar"))
         applySelectedAvatar()
     }
     onHover = name == "" ? null : hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
     transform = {
-      scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
     }
     children = [
       @() {
@@ -84,7 +84,7 @@ function avatarBtn(item) {
         rendObj = ROBJ_IMAGE
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        color = isAvailable.value ? 0xFFFFFFFF
+        color = isAvailable.get() ? 0xFFFFFFFF
           : 0xFF707070
         size = [avatarSize, avatarSize]
         image = Picture($"{getAvatarImage(name)}:{avatarSize}:{avatarSize}:P")
@@ -94,10 +94,10 @@ function avatarBtn(item) {
         size = flex()
         rendObj = ROBJ_BOX
         borderWidth = hdpx(2)
-        borderColor = stateFlags.value & S_HOVER ? hoverColor
-          : (stateFlags.value & S_ACTIVE) || isSelected.value ? 0xFFFFFFFF
+        borderColor = stateFlags.get() & S_HOVER ? hoverColor
+          : (stateFlags.get() & S_ACTIVE) || isSelected.get() ? 0xFFFFFFFF
           : 0xFF4F4F4F
-        children = !isAvailable.value
+        children = !isAvailable.get()
           ? {
               size =const [hdpx(25),hdpx(32)]
               margin = const [hdpx(10),hdpx(15)]
@@ -105,17 +105,17 @@ function avatarBtn(item) {
               color = 0xFFAA1111
               image = Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
             }
-          : isChoosen.value || isSelected.value
-            ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.value != null),
-              isChoosen.value ? choosenMark : null)
-          : isUnseen.value
+          : isChoosen.get() || isSelected.get()
+            ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.get() != null),
+              isChoosen.get() ? choosenMark : null)
+          : isUnseen.get()
             ? {
                 margin = const [hdpx(15), hdpx(20)]
                 children = priorityUnseenMark
               }
           : null
       }
-      price.price <= 0 || isAvailable.value ? null
+      price.price <= 0 || isAvailable.get() ? null
         : {
             margin = hdpx(5)
             hplace = ALIGN_LEFT

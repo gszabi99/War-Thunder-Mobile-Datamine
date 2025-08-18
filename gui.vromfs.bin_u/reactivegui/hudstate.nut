@@ -5,7 +5,7 @@ let { register_command } = require("console")
 let { round } =  require("math")
 let { setDrawNativeAirCrosshair, setDrawNativeHitIndicator } = require("hudState")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let interopGet = require("interopGen.nut")
+let interopGet = require("%rGui/interopGen.nut")
 let { battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { DM_TEST_EMPTY } = require("crosshair")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
@@ -63,7 +63,7 @@ let nativeToUnitType = {
 }
 
 let nativeUnitType = hudStateNative.unitType
-let unitType = Computed(@() nativeToUnitType?[nativeUnitType.value])
+let unitType = Computed(@() nativeToUnitType?[nativeUnitType.get()])
 
 let { playerUnitName } = hudStateNative
 let hudUnitType = Computed(@() playerUnitName.get() == "" ? unitType.get()
@@ -73,10 +73,10 @@ let isUnitDelayedNative = hudStateNative.isUnitDelayed
 let forceDelayed = mkWatched(persist, "forceDelayed", false)
 let areHintsHidden = mkWatched(persist, "areHintsHidden", false)
 let areSightHidden = mkWatched(persist, "areSightHidden", false)
-let isUnitDelayed = Computed(@() isUnitDelayedNative.value || forceDelayed.value)
-register_command(@() forceDelayed(!forceDelayed.value), "debug.hud.isUnitDelayed")
+let isUnitDelayed = Computed(@() isUnitDelayedNative.get() || forceDelayed.get())
+register_command(@() forceDelayed.set(!forceDelayed.get()), "debug.hud.isUnitDelayed")
 
-playerUnitName.subscribe(@(v) (v ?? "") != "" ? battleUnitName(v) : null)
+playerUnitName.subscribe(@(v) (v ?? "") != "" ? battleUnitName.set(v) : null)
 
 isUnitDelayed.subscribe(@(v) v ? null : anim_start("unitDelayFinished"))
 
@@ -84,7 +84,7 @@ let HM_COMMON = 0x001
 let HM_MANUAL_ANTIAIR = 0x002
 
 let isInAntiairMode = hudStateNative.isInAntiairMode
-let hudMode = Computed(@() isInAntiairMode.value ? HM_MANUAL_ANTIAIR : HM_COMMON)
+let hudMode = Computed(@() isInAntiairMode.get() ? HM_MANUAL_ANTIAIR : HM_COMMON)
 
 let aircraftCrosshairColorNative = hudStateNative.aircraftCrosshairColor
 let aircraftCrosshairColor = Computed(function() {

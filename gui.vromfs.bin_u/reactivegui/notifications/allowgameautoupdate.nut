@@ -5,8 +5,9 @@ let { resetTimeout } = require("dagor.workcycle")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { allow_apk_update } = require("%appGlobals/permissions.nut")
 let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let { isInMenu, isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
+let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isGameAutoUpdateEnabled, AU_NOT_ALLOW, AU_ALLOW_ONLY_WIFI, AU_ALLOW_ALWAYS
 } = require("%rGui/options/options/gameAutoUpdateOption.nut")
@@ -20,12 +21,12 @@ isAsked.subscribe(function(v) {
   eventbus_send("saveProfile", {})
 })
 
-let needShowMessage = keepref(Computed(@() isDownloadedFromSite
-  && !isAsked.get()
-  && allow_apk_update.get()
-  && isInMenu.get()
-  && isGameAutoUpdateEnabled.get() == AU_NOT_ALLOW
-  && (serverTimeDay.get() - getDay(firstLoginTime.get(), dayOffset.get())) > 0))
+let needShowMessage = !isDownloadedFromSite ? Watched(false)
+  : keepref(Computed(@() !isAsked.get()
+      && allow_apk_update.get()
+      && isInMenuNoModals.get()
+      && isGameAutoUpdateEnabled.get() == AU_NOT_ALLOW
+      && (serverTimeDay.get() - getDay(firstLoginTime.get(), dayOffset.get())) > 0))
 
 function openMessageIfNeed() {
   if (!needShowMessage.get())

@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids, myBlacklistUids
-} = require("contactLists.nut")
+} = require("%rGui/contacts/contactLists.nut")
 let { contactsInProgress, botRequests, addToFriendList, cancelMyFriendRequest, approveFriendRequest,
   rejectFriendRequest, removeFromFriendList, addToBlackList, removeFromBlackList
-} = require("contactsState.nut")
+} = require("%rGui/contacts/contactsState.nut")
 let { inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite, userInProgress,
   leaveSquadMessage, isInSquad, isSquadLeader, squadMembers, isInvitedToSquad, canInviteToSquad
 } = require("%rGui/squad/squadManager.nut")
@@ -18,13 +18,13 @@ let isInMySquad = @(userId, members) members?[userId.tointeger()] != null
 let actions = {
   INVITE_TO_FRIENDS = {
     locId = "contacts/friendlist/add"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && userId not in friendsUids.value
-      && userId not in myBlacklistUids.value
-      && userId not in myRequestsUids.value
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && userId not in friendsUids.get()
+      && userId not in myBlacklistUids.get()
+      && userId not in myRequestsUids.get()
       && userId not in botRequests.get()
-      && userId not in rejectedByMeUids.value
-      && userId not in requestsToMeUids.value
+      && userId not in rejectedByMeUids.get()
+      && userId not in requestsToMeUids.get()
     )
     action = addToFriendList
     mkIsInProgress = mkCommonInProgress
@@ -32,41 +32,41 @@ let actions = {
 
   CANCEL_INVITE = {
     locId = "contacts/cancel_invitation"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && (userId in myRequestsUids.value || userId in botRequests.get()))
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && (userId in myRequestsUids.get() || userId in botRequests.get()))
     action = cancelMyFriendRequest
     mkIsInProgress = mkCommonInProgress
   }
 
   APPROVE_INVITE = {
     locId = "contacts/accept_invitation"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && (userId in requestsToMeUids.value || userId in rejectedByMeUids.value))
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && (userId in requestsToMeUids.get() || userId in rejectedByMeUids.get()))
     action = approveFriendRequest
     mkIsInProgress = mkCommonInProgress
   }
 
   REJECT_INVITE = {
     locId = "contacts/decline_invitation"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && userId in requestsToMeUids.value)
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && userId in requestsToMeUids.get())
     action = rejectFriendRequest
     mkIsInProgress = mkCommonInProgress
   }
 
   REMOVE_FROM_FRIENDS = {
     locId = "contacts/friendlist/remove"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value && userId in friendsUids.value)
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get() && userId in friendsUids.get())
     action = removeFromFriendList
     mkIsInProgress = mkCommonInProgress
   }
 
   ADD_TO_BLACKLIST = {
     locId = "contacts/blacklist/add"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && userId not in myBlacklistUids.value
-      && userId not in friendsUids.value
-      && userId not in myRequestsUids.value
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && userId not in myBlacklistUids.get()
+      && userId not in friendsUids.get()
+      && userId not in myRequestsUids.get()
       && !(isInvitedToSquad.get()?[userId.tointeger()] ?? false))
     action = addToBlackList
     mkIsInProgress = mkCommonInProgress
@@ -74,19 +74,19 @@ let actions = {
 
   REMOVE_FROM_BLACKLIST = {
     locId = "contacts/blacklist/remove"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value && userId in myBlacklistUids.value)
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get() && userId in myBlacklistUids.get())
     action = removeFromBlackList
     mkIsInProgress = mkCommonInProgress
   }
 
   INVITE_TO_SQUAD = {
     locId = "squad/invite_player"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && canInviteToSquad.value
-      && !isInMySquad(userId, squadMembers.value)
-      && maxSquadSize.value > 1
-      && !isInvitedToSquad.value?[userId.tointeger()]
-      && userId not in myBlacklistUids.value
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && canInviteToSquad.get()
+      && !isInMySquad(userId, squadMembers.get())
+      && maxSquadSize.get() > 1
+      && !isInvitedToSquad.get()?[userId.tointeger()]
+      && userId not in myBlacklistUids.get()
     )
     action = @(userId) inviteToSquad(userId.tointeger())
     mkIsInProgress = mkCommonInProgress
@@ -94,31 +94,31 @@ let actions = {
 
   REVOKE_INVITE = {
     locId = "squad/revoke_invite"
-    mkIsVisible = @(userId) Computed(@() isSquadLeader.value
-      && (isInvitedToSquad.value?[userId.tointeger()] ?? false)
-      && !isInMySquad(userId, squadMembers.value))
+    mkIsVisible = @(userId) Computed(@() isSquadLeader.get()
+      && (isInvitedToSquad.get()?[userId.tointeger()] ?? false)
+      && !isInMySquad(userId, squadMembers.get()))
     action = @(userId) revokeSquadInvite(userId.tointeger())
   }
 
   REMOVE_FROM_SQUAD = {
     locId = "squad/remove_player"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && isSquadLeader.value
-      && isInMySquad(userId, squadMembers.value))
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && isSquadLeader.get()
+      && isInMySquad(userId, squadMembers.get()))
     action = @(userId) dismissSquadMember(userId.tointeger())
   }
 
   PROMOTE_TO_LEADER = {
     locId = "squad/tranfer_leadership"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
-      && isSquadLeader.value
-      && isInMySquad(userId, squadMembers.value))
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.get()
+      && isSquadLeader.get()
+      && isInMySquad(userId, squadMembers.get()))
     action = @(userId) transferSquad(userId.tointeger())
   }
 
   LEAVE_SQUAD = {
     locId = "squadAction/leave"
-    mkIsVisible = @(userId) Computed(@() userId == myUserIdStr.value && isInSquad.value)
+    mkIsVisible = @(userId) Computed(@() userId == myUserIdStr.get() && isInSquad.get())
     action = @(_) leaveSquadMessage()
   }
 

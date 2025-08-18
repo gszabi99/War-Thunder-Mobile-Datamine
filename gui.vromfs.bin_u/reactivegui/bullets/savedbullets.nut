@@ -5,7 +5,7 @@ let DataBlock = require("DataBlock")
 let { isDataBlock } = require("%sqstd/datablock.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { BULLETS_PRIM_SLOTS } = require("bulletsConst.nut")
+let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
 
 
 const SAVE_ID = "bullets"
@@ -23,7 +23,7 @@ function loadSavedBullets(name) {
   resExt.setFrom(res)
   return resExt
 }
-let applySavedBullets = @(name) savedBullets(loadSavedBullets(name))
+let applySavedBullets = @(name) savedBullets.set(loadSavedBullets(name))
 
 isOnlineSettingsAvailable.subscribe(@(_) savedBullets.set(null)) 
 
@@ -65,7 +65,7 @@ function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec,
     blk.bullet <- collectBlkBullet(slot, maxBullets?[idx], hasExtraBullets, newNames?[idx])
   foreach (idx, slot in chosenBulletsSec)
     blk.bullet <- collectBlkBullet(slot, maxBulletsSec?[idx], hasExtraBulletsSec, newNames?[idx + BULLETS_PRIM_SLOTS])
-  savedBullets(blk)
+  savedBullets.set(blk)
   saveBullets(unitName, blk)
   return true
 }
@@ -86,7 +86,7 @@ function setUnitBullets(unitName, chosenBullets, chosenBulletsSec, slotIdx, bNam
     blk.bullet <- collectChangedBlkBullet(slot, idx == slotIdx, bName, bCount)
   foreach (idx, slot in chosenBulletsSec)
     blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS == slotIdx, bName, bCount)
-  savedBullets(blk)
+  savedBullets.set(blk)
   saveBullets(unitName, blk)
 }
 

@@ -85,7 +85,7 @@ function sendNewbieBqEvent(actionId, data = {}) {
   if (!needSendNewbieEvent())
     return
 
-  let campBattles = getTotalBattles(sharedStatsByCampaign.value)
+  let campBattles = getTotalBattles(sharedStatsByCampaign.get())
   eventbus_send("sendBqEvent",
     {
       tableId = "gui_events",

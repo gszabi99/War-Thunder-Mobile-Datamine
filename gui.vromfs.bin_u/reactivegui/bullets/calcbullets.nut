@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { ammoReductionFactorsByIdx } = require("bulletsConst.nut")
+let { ammoReductionFactorsByIdx } = require("%rGui/bullets/bulletsConst.nut")
 
 
 let calcBulletStep = @(bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)

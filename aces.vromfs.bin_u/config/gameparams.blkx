@@ -382,6 +382,7 @@
   "isAdaptiveCamAngle": true,
   "adaptiveCamAngleMult": 1.0,
   "shiftUpSteerThreshold": 0.35,
+  "allowSpectatingEnemiesInLastManStanding": false,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [

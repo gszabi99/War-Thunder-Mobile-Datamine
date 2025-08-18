@@ -533,6 +533,11 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streak_lunar.avif"
   }
 
+  streak_firework_anniversary = {
+    name = "streaks/streak_firework_anniversary"
+    bgImage = "ui/gameuiskin#streak_anniversary_firework.avif"
+  }
+
   heroic_fighter = {
     name = "streaks/heroic_fighter"
     bgImage = "ui/gameuiskin#streaks_heroic_bg.avif"

@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
 let { mkVerticalPannableArea, topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
-let { isInvitationsOpened, invitations, markReadAll, clearAll } = require("invitationsState.nut")
+let { isInvitationsOpened, invitations, markReadAll, clearAll } = require("%rGui/invitations/invitationsState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let mkNotifyRow = require("mkNotifyRow.nut")
+let mkNotifyRow = require("%rGui/invitations/mkNotifyRow.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 
 
-let close = @() isInvitationsOpened(false)
+let close = @() isInvitationsOpened.set(false)
 let hasInvitations = Computed(@() invitations.get().len() > 0)
 
 let invitesList = mkVerticalPannableArea(@() {
@@ -28,14 +28,14 @@ let content = @() {
   watch = hasInvitations
   size = flex()
   margin = [topAreaSize, 0, 0, 0]
-  children = hasInvitations.value ? invitesList : noInvitesMsg
+  children = hasInvitations.get() ? invitesList : noInvitesMsg
 }
 
 let buttons = @() {
   watch = hasInvitations
   size = FLEX_V
   valign = ALIGN_BOTTOM
-  children = !hasInvitations.value ? null
+  children = !hasInvitations.get() ? null
     : textButtonCommon(loc("invites/clearAll"), clearAll)
 }
 

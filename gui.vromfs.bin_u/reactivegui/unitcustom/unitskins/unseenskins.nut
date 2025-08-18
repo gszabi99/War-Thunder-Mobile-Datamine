@@ -37,7 +37,7 @@ function loadSeenSkins() {
   if (!isLoggedIn.get())
     return
   let seenBlk = get_local_custom_settings_blk()?[SEEN_SKINS]
-  seenSkins(isDataBlock(seenBlk) ? blk2SquirrelObjNoArrays(seenBlk) : {})
+  seenSkins.set(isDataBlock(seenBlk) ? blk2SquirrelObjNoArrays(seenBlk) : {})
 }
 
 isLoggedIn.subscribe(@(_) loadSeenSkins())

@@ -3,14 +3,14 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { shortcutsByUnitTypes, pages } = require("controlsCfg.nut")
+let { shortcutsByUnitTypes, pages } = require("%rGui/controls/help/controlsCfg.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { unitType } = require("%rGui/hudState.nut")
-let mkControlsHelpXone = require("mkControlsHelpXone.nut")
-let mkControlsHelpSony = require("mkControlsHelpSony.nut")
-let mkControlsHelpNintendo = require("mkControlsHelpNintendo.nut")
+let mkControlsHelpXone = require("%rGui/controls/help/mkControlsHelpXone.nut")
+let mkControlsHelpSony = require("%rGui/controls/help/mkControlsHelpSony.nut")
+let mkControlsHelpNintendo = require("%rGui/controls/help/mkControlsHelpNintendo.nut")
 let { gamepadShortcuts, gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { axisToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let listButton = require("%rGui/components/listButton.nut")
@@ -25,16 +25,16 @@ let mkControlsHelp = typeGamepad?[gamepadPreset] ?? mkControlsHelpXone
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let curUnitType = mkWatched(persist, "curUnitType", null)
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 let backBtn = backButton(close)
 
 isOpened.subscribe(function(v) {
   if (!v)
     return
-  let uType = isInBattle.get() ? unitType.value
+  let uType = isInBattle.get() ? unitType.get()
     : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
     : null
-  curUnitType(pages.contains(uType) ? uType : pages[0])
+  curUnitType.set(pages.contains(uType) ? uType : pages[0])
 })
 
 function appendScText(textLists, key, value) {
@@ -45,7 +45,7 @@ function appendScText(textLists, key, value) {
 }
 
 function content() {
-  let { shortcuts = [], axes = [] } = shortcutsByUnitTypes?[curUnitType.value]
+  let { shortcuts = [], axes = [] } = shortcutsByUnitTypes?[curUnitType.get()]
   let textLists = {}
   foreach (a in axes) {
     let h = axisToHotkey(gamepadAxes?[a?.value ?? a])
@@ -69,7 +69,7 @@ function content() {
 }
 
 let togglePage = @(diff)
-  curUnitType(pages[clamp((pages.indexof(curUnitType.value) ?? -1) + diff, 0, pages.len() - 1)])
+  curUnitType.set(pages[clamp((pages.indexof(curUnitType.get()) ?? -1) + diff, 0, pages.len() - 1)])
 
 let header = {
   size = FLEX_H
@@ -82,7 +82,7 @@ let header = {
       valign = ALIGN_CENTER
       gap = hdpx(20)
       children = pages.map(@(t)
-        listButton(loc($"mainmenu/type_{t}"), Computed(@() t == curUnitType.value), @() curUnitType(t),
+        listButton(loc($"mainmenu/type_{t}"), Computed(@() t == curUnitType.get()), @() curUnitType.set(t),
           { size = SIZE_TO_CONTENT, minWidth = hdpx(300) }))
       hotkeys = [
         ["J:LB", @() togglePage(-1), loc("mainmenu/btnPagePrev")],
@@ -107,4 +107,4 @@ let scene = bgShaded.__merge({
 
 registerScene("controlsHelpWnd", scene, close, isOpened)
 
-return @() isOpened(true)
+return @() isOpened.set(true)

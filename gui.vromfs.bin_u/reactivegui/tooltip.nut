@@ -100,7 +100,7 @@ function showTooltip(rectOrPos, params) {
 
   let { flow, flowOffset, halign, valign } = newState
   newState.position <- calcPosition(rectOrPos, flow, flowOffset, halign, valign)
-  state(newState)
+  state.set(newState)
 }
 
 function showDelayedTooltipImpl() {
@@ -127,7 +127,7 @@ function showHint(rectOrPos, params, showTime) {
 }
 
 let withTooltipImpl = @(stateFlags, showFunc, hideFunc = hideTooltip) function(sf) {
-  let hasHint = (stateFlags.value & S_ACTIVE) != 0
+  let hasHint = (stateFlags.get() & S_ACTIVE) != 0
   let needHint = (sf & S_ACTIVE) != 0
   stateFlags(sf)
   if (hasHint == needHint)
@@ -138,7 +138,7 @@ let withTooltipImpl = @(stateFlags, showFunc, hideFunc = hideTooltip) function(s
     hideFunc()
 }
 
-let tooltipDetach = @(stateFlags) @() (stateFlags.value & S_ACTIVE) != 0 ? hideTooltip() : null
+let tooltipDetach = @(stateFlags) @() (stateFlags.get() & S_ACTIVE) != 0 ? hideTooltip() : null
 
 local allowHoldClickKey = null
 function unallowHoldClick() {
@@ -179,16 +179,16 @@ let fadeOutAnim = { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.
   easing = OutQuad, playFadeOut = true }
 
 function tooltipComp() {
-  if (state.value == null)
+  if (state.get() == null)
     return { watch = state }
 
-  let { flow, position, content, bgOvr } = state.value
+  let { flow, position, content, bgOvr } = state.get()
   let { halign, valign } = position
 
   let visibleChild = tooltipBg.__merge(
     bgOvr ?? {},
     {
-      key = state.value
+      key = state.get()
       children = curContent ?? mkTooltipText(content)
       transform = {}
       animations = [

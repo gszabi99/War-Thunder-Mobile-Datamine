@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { setSlots } = require("slotBarUpdater.nut")
-let { selectedSlotIdx, slotIdxByHangarUnit, selectedUnitToSlot, setUnitToSlot } = require("slotBarState.nut")
+let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
+let { selectedSlotIdx, slotIdxByHangarUnit, selectedUnitToSlot, setUnitToSlot } = require("%rGui/slotBar/slotBarState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 

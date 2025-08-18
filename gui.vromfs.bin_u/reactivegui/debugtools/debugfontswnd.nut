@@ -20,9 +20,9 @@ let hGap = hdpx(30)
 let vGap = hdpx(20)
 let colCount = max(3, saSize[0] / hdpxi(700))
 
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 
-let viewText = Computed(@() curText.value == "" ? "Text example 1230" : curText.value)
+let viewText = Computed(@() curText.get() == "" ? "Text example 1230" : curText.get())
 
 let inputBlock = textInput(curText, {
   ovr = {
@@ -30,7 +30,7 @@ let inputBlock = textInput(curText, {
     padding = const [hdpx(10), hdpx(20)]
   }
   onAttach = @() set_kb_focus(curText) 
-  onEscape = @() curText.value == "" ? close() : curText("")
+  onEscape = @() curText.get() == "" ? close() : curText.set("")
   placeholder = "Input text here..."
 })
 
@@ -72,7 +72,7 @@ let textResultBlock = @(id, style) {
       size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      text = viewText.value
+      text = viewText.get()
       halign = ALIGN_CENTER
     }.__update(style)
   ]
@@ -113,4 +113,4 @@ let mkDebugFontsWnd = @() bgShaded.__merge({
 
 registerScene("debugFontsWnd", mkDebugFontsWnd, close, isOpened)
 
-register_command(@() isOpened(true), "ui.debug.fonts")
+register_command(@() isOpened.set(true), "ui.debug.fonts")

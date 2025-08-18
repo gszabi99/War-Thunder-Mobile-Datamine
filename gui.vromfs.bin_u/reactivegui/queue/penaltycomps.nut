@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_meta_mission_info_by_name } = require("guiMission")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
@@ -7,8 +8,13 @@ let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
 let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
 
 let timerSize = hdpxi(40)
-let penaltyTimerIcon = @(campaign = null) function() {
+let penaltyTimerIcon = @(campaign = null, missionName = "") function() {
   let res = { watch = [hasPenaltyStatus, battleBtnCampaign] }
+  if (missionName != "") {
+    let mInfo = get_meta_mission_info_by_name(missionName)
+    if (mInfo?.gt_ffa)
+      return res
+  }
   let hasPenalty = (hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false)
     || (hasPenaltyStatus.get()?[curCampaign.get()] ?? false)
   return !hasPenalty ? res

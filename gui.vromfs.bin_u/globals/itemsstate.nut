@@ -28,7 +28,7 @@ foreach (idx, itemId in itemsOrderFull)
   orderByItems[itemId] <- idx
 
 let itemsOrder = Computed(@() itemsOrderFull.filter(@(id) id not in hiddenItems
-  && id in campConfigs.value?.allItems))
+  && id in campConfigs.get()?.allItems))
 let itemsCfgOrdered = Computed(@() itemsOrderFull
   .map(@(id) id in hiddenItems ? null : campConfigs.get()?.allItems[id])
   .filter(@(v) v != null))

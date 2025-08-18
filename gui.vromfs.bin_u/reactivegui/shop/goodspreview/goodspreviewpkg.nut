@@ -100,7 +100,7 @@ function oldPriceBlock(child, animStartTime) {
   return @() {
     watch = needPriceBlockZOrder
     key = needPriceBlockZOrder
-    zOrder = needPriceBlockZOrder.value ? Layers.Upper : Layers.Default
+    zOrder = needPriceBlockZOrder.get() ? Layers.Upper : Layers.Default
     children = [
       child
       {
@@ -132,9 +132,9 @@ function oldPriceBlock(child, animStartTime) {
       .append(
         { prop = AnimProp.translate, from = oldPriceTranslate, to = oldPriceTranslate, play = true,
           duration = animStartTime, trigger = ANIM_SKIP,
-          onEnter = @() needPriceBlockZOrder(true),
+          onEnter = @() needPriceBlockZOrder.set(true),
           function onAbort() {
-            needPriceBlockZOrder(false)
+            needPriceBlockZOrder.set(false)
             if (start > get_time_msec()) {
               start = get_time_msec()
               end = start + (1000 * aTimePriceStrike).tointeger()
@@ -143,7 +143,7 @@ function oldPriceBlock(child, animStartTime) {
         }
         { prop = AnimProp.translate, from = oldPriceTranslate, easing = InOutQuad, play = true,
           duration = aTimePriceMove, delay = animStartTime, trigger = ANIM_SKIP
-          onExit = @() needPriceBlockZOrder(false),
+          onExit = @() needPriceBlockZOrder.set(false),
         }
         { prop = AnimProp.translate, to = [0, hdpx(10)], easing = CosineFull, play = true,
           duration = aTimePriceBounce, delay = animStartTime + aTimePriceMove, trigger = ANIM_SKIP_DELAY }
@@ -501,18 +501,18 @@ function mkItemImpl(r, rStyle, start) {
     clickableInfo = loc("options/info")
     onClick = @() null
     function onElemState(sf) {
-      stateFlags(sf)
+      stateFlags.set(sf)
       if (r.rType != G_ITEM)
         return
       let isActive = (sf & S_ACTIVE) != 0
-      if (isActive != (activeItemId.value == itemId))
-        activeItemId(isActive ? itemId : null)
+      if (isActive != (activeItemId.get() == itemId))
+        activeItemId.set(isActive ? itemId : null)
     }
-    onDetach = @() activeItemId.value == itemId ? activeItemId(null) : null
+    onDetach = @() activeItemId.get() == itemId ? activeItemId.set(null) : null
     children = [
       mkRewardPlateBg(r, rStyle).__update({
-        picSaturate = stateFlags.value & S_ACTIVE ? 2
-          : stateFlags.value & S_HOVER ? 1.5
+        picSaturate = stateFlags.get() & S_ACTIVE ? 2
+          : stateFlags.get() & S_HOVER ? 1.5
           : 1
       })
       mkRewardPlateImage(r, rStyle)
@@ -568,7 +568,7 @@ let mkInfoText = @(text, appearDelay) {
   animations = opacityAnims(1.0, appearDelay)
 }.__update(fontTiny)
 
-let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
+let activeItemHint = @() activeItemId.get() == null ? { watch = activeItemId }
   : {
       watch = [activeItemId, eventSeason, allSpecialEvents]
       rendObj = ROBJ_IMAGE
@@ -580,9 +580,9 @@ let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = "\n".concat(
-          colorize(0xFFFFFFFF, loc($"item/{activeItemId.value}",
+          colorize(0xFFFFFFFF, loc($"item/{activeItemId.get()}",
             { name = getEventLoc(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()) })),
-          loc($"item/{activeItemId.value}/desc")
+          loc($"item/{activeItemId.get()}/desc")
         )
         color = 0xFFD0D0D0
       }.__update(fontTiny)

@@ -7,11 +7,11 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { formatText, selectorBtnW } = require("textFormatters.nut")
+let { formatText, selectorBtnW } = require("%rGui/news/textFormatters.nut")
 let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
   newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx,
   unreadArticles, markCurArticleSeen, closeNewsWnd
-} = require("newsState.nut")
+} = require("%rGui/news/newsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let textColor = 0xFFFFFFFF
@@ -40,26 +40,26 @@ function mkPage(startArticleIdx, isSelected) {
   let stateFlags = Watched(0)
   return @() {
     watch = [isSelected, stateFlags]
-    size = [isSelected.value ? pagesStripW : (0.5 * pagesStripW), pageH]
+    size = [isSelected.get() ? pagesStripW : (0.5 * pagesStripW), pageH]
     rendObj = ROBJ_SOLID
-    color = (isSelected.value || (stateFlags.value & S_HOVER)) ? 0xFFFFFFFF : 0xFFBEBEBE
+    color = (isSelected.get() || (stateFlags.get() & S_HOVER)) ? 0xFFFFFFFF : 0xFFBEBEBE
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.8, 0.8] : [1, 1] }
+    onElemState = @(sf) stateFlags.set(sf)
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.8, 0.8] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
     sound = { click  = "click" }
     function onClick() {
       markCurArticleSeen()
-      playerSelectedArticleId(newsfeed.value?[startArticleIdx].id)
+      playerSelectedArticleId.set(newsfeed.get()?[startArticleIdx].id)
     }
   }
 }
 
 function pagesStrip() {
   let children = []
-  for (local i = 0; i < pagesCount.value; i++) {
-    let startArticleIdx = i * articlesPerPage.value
-    let isSelected = Computed(@() curArticleIdx.value >= startArticleIdx && curArticleIdx.value < startArticleIdx + articlesPerPage.value)
+  for (local i = 0; i < pagesCount.get(); i++) {
+    let startArticleIdx = i * articlesPerPage.get()
+    let isSelected = Computed(@() curArticleIdx.get() >= startArticleIdx && curArticleIdx.get() < startArticleIdx + articlesPerPage.get())
     children.append(mkPage(startArticleIdx, isSelected))
   }
   return {
@@ -172,7 +172,7 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
           }.__update(fontTiny)
         ]
       }
-      @() { watch = isUnseen }.__update(isUnseen.value ? newMark : {})
+      @() { watch = isUnseen }.__update(isUnseen.get() ? newMark : {})
     ]
   }
 }
@@ -181,19 +181,19 @@ function articleTab(info) {
   let stateFlags = Watched(0)
   let { id } = info
   let isSelected = Computed(@() curArticleId.value == id)
-  let isUnseen = Computed(@() unreadArticles.value?[id] ?? false)
+  let isUnseen = Computed(@() unreadArticles.get()?[id] ?? false)
   return @() {
     watch = [isSelected, stateFlags]
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
+    onElemState = @(sf) stateFlags.set(sf)
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
     sound = { click  = "click" }
     function onClick() {
       markCurArticleSeen()
-      playerSelectedArticleId(id)
+      playerSelectedArticleId.set(id)
     }
-    children = articleTabBase(info, stateFlags.value, isSelected.value, isUnseen)
+    children = articleTabBase(info, stateFlags.get(), isSelected.get(), isUnseen)
   }
 }
 
@@ -206,17 +206,17 @@ let articleSelector = @() {
   size = [selectorBtnW + pagesStripGap + pagesStripW, flex()]
   flow = FLOW_HORIZONTAL
   gap = pagesStripGap
-  children = newsfeed.value.len() == 0 ? null : [
+  children = newsfeed.get().len() == 0 ? null : [
     {
       size = FLEX_V
       flow = FLOW_VERTICAL
-      gap = selectorBtnGap.value
-      children = newsfeed.value
-        .slice(curPageIdx.value * articlesPerPage.value, (curPageIdx.value + 1) * articlesPerPage.value)
+      gap = selectorBtnGap.get()
+      children = newsfeed.get()
+        .slice(curPageIdx.get() * articlesPerPage.get(), (curPageIdx.get() + 1) * articlesPerPage.get())
         .map(articleTab)
     }
-    newsfeed.value.len() <= articlesPerPage.value ? null : pagesStrip
-    !isGamepad.get() || newsfeed.value.len() <= 1 ? null : { hotkeys = tabsHotkeys }
+    newsfeed.get().len() <= articlesPerPage.get() ? null : pagesStrip
+    !isGamepad.get() || newsfeed.get().len() <= 1 ? null : { hotkeys = tabsHotkeys }
   ]
 }
 
@@ -232,7 +232,7 @@ let seeMoreUrl = {
 function scrollArticle() {  
   let element = scrollHandler.elem
   if (element != null)
-    scrollHandler.scrollToY(element.getScrollOffsY() + scrollWatch.value * scrollStep)
+    scrollHandler.scrollToY(element.getScrollOffsY() + scrollWatch.get() * scrollStep)
 }
 
 scrollWatch.subscribe(function(value) {
@@ -246,9 +246,9 @@ scrollWatch.subscribe(function(value) {
 
 let scrollArticleBtn = @(hotkey, watchValue) {
   behavior = Behaviors.Button
-  onElemState = @(sf) scrollWatch((sf & S_ACTIVE) ? watchValue : 0)
+  onElemState = @(sf) scrollWatch.set((sf & S_ACTIVE) ? watchValue : 0)
   hotkeys = [[hotkey]]
-  onDetach = @() scrollWatch(0)
+  onDetach = @() scrollWatch.set(0)
 }
 
 curArticleContent.subscribe(@(_) scrollHandler.scrollToY(0))
@@ -288,7 +288,7 @@ let articleContent = @() {
   color = contentBgColor
   children = curArticleContent.value == null ? articleLoading
     : [
-        scrollbar.makeSideScroll(mkContent(curArticleContent.value.content, curArticleContent.value.title), {
+        scrollbar.makeSideScroll(mkContent(curArticleContent.get().content, curArticleContent.get().title), {
           scrollHandler = scrollHandler
           joystickScroll = false
         })
@@ -317,10 +317,10 @@ let wndHeader = {
 
 function calcLayoutParams() {
   let selectorHeightPx = saSize[1] - calc_comp_size(wndHeader)[1] - wndHeaderGap
-  articlesPerPage(max(1, ((selectorHeightPx + selectorBtnMinGap) / (selectorBtnH + selectorBtnMinGap)).tointeger()))
-  let gapsCount = articlesPerPage.value - 1
-  selectorBtnGap(gapsCount > 0
-    ? max(selectorBtnMinGap, ((selectorHeightPx - (selectorBtnH * articlesPerPage.value)) / gapsCount).tointeger())
+  articlesPerPage.set(max(1, ((selectorHeightPx + selectorBtnMinGap) / (selectorBtnH + selectorBtnMinGap)).tointeger()))
+  let gapsCount = articlesPerPage.get() - 1
+  selectorBtnGap.set(gapsCount > 0
+    ? max(selectorBtnMinGap, ((selectorHeightPx - (selectorBtnH * articlesPerPage.get())) / gapsCount).tointeger())
     : 0)
 }
 calcLayoutParams()

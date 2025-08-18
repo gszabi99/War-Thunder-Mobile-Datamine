@@ -14,25 +14,25 @@ let campaignStatsRemap = {
 let selectedCampaign = sharedWatched("selectedCampaign", @() null) 
 let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
 let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) 
-let isAnyCampaignSelected = Computed(@() (selectedCampaign.value ?? savedCampaign.value) != null)
+let isAnyCampaignSelected = Computed(@() (selectedCampaign.get() ?? savedCampaign.get()) != null)
 
 let campaignsList = Computed(@() serverConfigs.get()?.circuit.campaigns.available ?? [ defaultCampaign ])
 
 let curCampaign = Computed(@()
-  campaignsList.value.contains(selectedCampaign.value) ? selectedCampaign.value
-    : campaignsList.value.contains(savedCampaign.value) ? savedCampaign.value
-    : campaignsList.value?[0])
+  campaignsList.get().contains(selectedCampaign.get()) ? selectedCampaign.get()
+    : campaignsList.get().contains(savedCampaign.get()) ? savedCampaign.get()
+    : campaignsList.get()?[0])
 
 let curCampaignBit = Computed(@() serverConfigs.get()?.campaignCfg[curCampaign.get()].bit ?? 0)
 
 function setCampaign(campaign) {
   selectedCampaign(campaign)
-  if (campaign != savedCampaign.value)
+  if (campaign != savedCampaign.get())
     set_current_campaign(campaign)
 }
 
 savedCampaign.subscribe(@(_)
-  resetTimeout(0.1, @() savedCampaign.value == selectedCampaign.value ? selectedCampaign(null) : null))
+  resetTimeout(0.1, @() savedCampaign.value == selectedCampaign.get() ? selectedCampaign(null) : null))
 
 function chooseByCampaign(res, key, campaign) {
   if (key in res)
@@ -139,7 +139,7 @@ let exportProfile = {
   blueprints = {}
   goodsLimitReset = {}
   lootboxes = {}
-}.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
+}.map(@(value, key) Computed(@() campProfile.get()?[key] ?? value))
 
 return exportProfile.__update({
   isProfileReceived = Computed(@() servProfile.get().len() > 0)

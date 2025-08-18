@@ -32,20 +32,20 @@ function mkSoundSlider(sndTypes, locId) {
   }
   let value = Watched(getSaved())
   function updateSaved() {
-    if (!isSettingsAvailable.value)
+    if (!isSettingsAvailable.get())
       return
-    if (setVolumes(sndTypes, value.value))
+    if (setVolumes(sndTypes, value.get()))
       eventbus_send("saveProfile", {})
   }
   updateSaved()
   isSettingsAvailable.subscribe(function(_) {
-    value(getSaved())
+    value.set(getSaved())
     updateSaved()
   })
   value.subscribe(@(_) updateSaved())
 
   optionsVersion.subscribe(function(_) {
-    value(getSaved())
+    value.set(getSaved())
     updateSaved()
   })
 

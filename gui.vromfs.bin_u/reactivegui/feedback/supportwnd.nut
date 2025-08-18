@@ -16,12 +16,12 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
 let { canUseZendeskApi, langCfg, getCategoryLocName, fieldCategory } = require("%rGui/feedback/supportState.nut")
-let { hasLogFile } = require("logFileAttachment.nut")
-let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
-let supportChooseCategory = require("supportChooseCategory.nut")
+let { hasLogFile } = require("%rGui/feedback/logFileAttachment.nut")
+let { requestState, submitSupportRequest, onRequestResultSeen } = require("%rGui/feedback/supportRequest.nut")
+let supportChooseCategory = require("%rGui/feedback/supportChooseCategory.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
-let onClose = @() isOpened(false)
+let onClose = @() isOpened.set(false)
 
 let fieldEmail = hardPersistWatched("fieldEmail", "")
 let fieldSubject = hardPersistWatched("fieldSubject", "")
@@ -43,7 +43,7 @@ function getFormValidationError() {
       err.append(loc("support/form/hint/fill_all_text_fields"))
       break
     }
-  if (fieldEmail.value != "" && !validateEmail(fieldEmail.value))
+  if (fieldEmail.get() != "" && !validateEmail(fieldEmail.get()))
     err.append(loc("support/form/hint/enter_valid_email"))
   return "\n".join(err)
 }
@@ -227,7 +227,7 @@ requestState.subscribe(function(v) {
 
 registerScene("supportWnd", supportWnd, onClose, isOpened)
 
-let openSupportTicketWnd = @() isOpened(true)
+let openSupportTicketWnd = @() isOpened.set(true)
 let openSupportTicketUrl = @() eventbus_send("openUrl", { baseUrl = loc("url/feedback/support") })
 let openSupportTicketWndOrUrl = @() canUseZendeskApi.get() ? openSupportTicketWnd() : openSupportTicketUrl()
 

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logM = log_with_prefix("[MSGBOX] ")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { addModalWindow, removeModalWindow, MWP_COMMON } = require("modalWindows.nut")
+let { addModalWindow, removeModalWindow, MWP_COMMON } = require("%rGui/components/modalWindows.nut")
 let { textButtonMultiline, buttonsHGap, mergeStyles, textButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")

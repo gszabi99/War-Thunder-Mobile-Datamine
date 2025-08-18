@@ -13,7 +13,7 @@ let excludedForSailBoat = [
 function subscribeDebuffWarning(watch, iconId, text) {
   let icon = $"ui/gameuiskin#{iconId}.svg"
   watch.subscribe(@(v) !v ? removeEvent({ id = iconId })
-    : isUnitDelayed.value || ((hudUnitType.get() == SAILBOAT) && excludedForSailBoat.contains(iconId)) ? null
+    : isUnitDelayed.get() || ((hudUnitType.get() == SAILBOAT) && excludedForSailBoat.contains(iconId)) ? null
     : addEvent({
         id = iconId,
         hType = "warningWithIcon"

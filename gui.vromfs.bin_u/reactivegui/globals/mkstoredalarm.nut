@@ -8,7 +8,7 @@ let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 return function mkStoredAlarm(persistId, period = 604800 ) {
   let isTimerPassed = Watched(false)
   let lastTime = Watched(-1)
-  let setTimerPassed = @() isTimerPassed(true)
+  let setTimerPassed = @() isTimerPassed.set(true)
   let storeId = $"{persistId}Time"
 
   lastTime.subscribe(function(value) {
@@ -21,13 +21,13 @@ return function mkStoredAlarm(persistId, period = 604800 ) {
   let loadStoredTime = @() lastTime.set(get_local_custom_settings_blk()?[storeId] ?? 0)
 
   function setLastTime(time) {
-    isTimerPassed(false)
-    lastTime(time)
-    get_local_custom_settings_blk()[storeId] = lastTime.value
+    isTimerPassed.set(false)
+    lastTime.set(time)
+    get_local_custom_settings_blk()[storeId] = lastTime.get()
     eventbus_send("saveProfile", {})
   }
 
-  if (isOnlineSettingsAvailable.value)
+  if (isOnlineSettingsAvailable.get())
     loadStoredTime()
   isOnlineSettingsAvailable.subscribe(@(v) v ? loadStoredTime() : null)
 

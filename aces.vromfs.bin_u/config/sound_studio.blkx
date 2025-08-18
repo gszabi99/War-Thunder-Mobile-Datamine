@@ -122,7 +122,7 @@
           "preload": false
         }
       },
-      "pkg_april_fools_event_2025": {
+      "pkg_lvl_hangar_bd": {
         "mobile_event.assets": {
           "async": true,
           "preload": false
@@ -8215,11 +8215,6 @@
     "naval_gun_reload": {
       "path": "naval/effects",
       "event": "reload_gun",
-      "time": 2.5
-    },
-    "naval_cannon_reload_muzzle": {
-      "path": "event/effects",
-      "event": "reload_cannon_muzzle",
       "time": 2.5
     }
   },

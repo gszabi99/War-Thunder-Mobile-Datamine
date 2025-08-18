@@ -23,9 +23,9 @@ let isUnitModsOpen = mkWatched(persist, "isUnitModsOpen", false)
 let curCategoryId = mkWatched(persist, "curCategoryId", "")
 let curModId = mkWatched(persist, "curModId", "")
 let unit = Computed(@() campMyUnits.get()?[hangarUnitName.get()])
-let unitName = Computed(@() unit.value?.name)
-let unitMods = Computed(@() unit.value?.mods)
-let unitModPreset = Computed(@() unit.value?.modPreset)
+let unitName = Computed(@() unit.get()?.name)
+let unitMods = Computed(@() unit.get()?.mods)
+let unitModPreset = Computed(@() unit.get()?.modPreset)
 
 isUnitModsOpen.subscribe(@(v) sendNewbieBqEvent(v ? "openUnitModificationsWnd" : "closeUnitModificationsWnd"))
 
@@ -42,7 +42,7 @@ let modsPresets = Computed(function() {
 
 let modsByCategory = Computed(function() {
   let result = {}
-  foreach(modName, mod in modsPresets.value?[unitModPreset.value] ?? {}) {
+  foreach(modName, mod in modsPresets.get()?[unitModPreset.get()] ?? {}) {
     if (mod?.isHidden)
       continue
     if (mod.group not in result)
@@ -52,31 +52,31 @@ let modsByCategory = Computed(function() {
   return result
 })
 
-let mods = Computed(@() modsPresets.value?[unitModPreset.value] ?? {})
-let modsCategories = Computed(@() modsByCategory.value.keys().sort(@(a, b) a <=> b) ?? [])
-let modsSorted = Computed(@() modsByCategory.value?[curCategoryId.value]?.values().sort(modsSort) ?? [])
-let curMod = Computed(@() mods.value?[curModId.value])
-let curModIndex = keepref(Computed(@() modsSorted.value.findindex(@(v) v?.name == curModId.value)))
-let isCurModPurchased = Computed(@() unitMods.value?[curModId.value] != null)
-let isCurModEnabled = Computed(@() unitMods.value?[curModId.value] == true)
-let isCurModLocked = Computed(@() (curMod.value?.reqLevel ?? 0) > (unit.value?.level ?? 0))
+let mods = Computed(@() modsPresets.get()?[unitModPreset.get()] ?? {})
+let modsCategories = Computed(@() modsByCategory.get().keys().sort(@(a, b) a <=> b) ?? [])
+let modsSorted = Computed(@() modsByCategory.get()?[curCategoryId.get()]?.values().sort(modsSort) ?? [])
+let curMod = Computed(@() mods.get()?[curModId.get()])
+let curModIndex = keepref(Computed(@() modsSorted.get().findindex(@(v) v?.name == curModId.get())))
+let isCurModPurchased = Computed(@() unitMods.get()?[curModId.get()] != null)
+let isCurModEnabled = Computed(@() unitMods.get()?[curModId.get()] == true)
+let isCurModLocked = Computed(@() (curMod.get()?.reqLevel ?? 0) > (unit.get()?.level ?? 0))
 
 let unseenModsByCategory = Computed(function() {
   let res = {}
-  foreach (cat, modsInCat in modsByCategory.value) {
+  foreach (cat, modsInCat in modsByCategory.get()) {
     res[cat] <- {}
     foreach (mod in modsInCat)
-      if (mod.name not in seenMods.value?[unitName.value]
-          && (mod.reqLevel ?? 0) <= (unit.value?.level ?? 0)
-          && mod.name not in unitMods.value)
+      if (mod.name not in seenMods.get()?[unitName.get()]
+          && (mod.reqLevel ?? 0) <= (unit.get()?.level ?? 0)
+          && mod.name not in unitMods.get())
         res[cat][mod.name] <- true
   }
   return res.filter(@(v) v.len() > 0)
 })
 
 function openUnitModsWnd() {
-  curCategoryId(modsCategories.value?[0])
-  isUnitModsOpen(true)
+  curCategoryId.set(modsCategories.get()?[0])
+  isUnitModsOpen.set(true)
 }
 
 let mkUnitAllModsCost = @(unitW) Computed(function() {
@@ -107,24 +107,24 @@ function hasEnoughCurrencies(mod, allModsCost, allBalance) {
 let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitAllModsCost.value))
 
 curCategoryId.subscribe(@(_)
-  curModId(modsSorted.value.findvalue(@(v) unitMods.value?[v.name] == true)?.name))
+  curModId.set(modsSorted.get().findvalue(@(v) unitMods.get()?[v.name] == true)?.name))
 
-let enableCurUnitMod = @() enable_unit_mod(unitName.value, curModId.value, true)
-let disableCurUnitMod = @() enable_unit_mod(unitName.value, curModId.value, false)
+let enableCurUnitMod = @() enable_unit_mod(unitName.get(), curModId.get(), true)
+let disableCurUnitMod = @() enable_unit_mod(unitName.get(), curModId.get(), false)
 
 function setCurUnitSeenMods(ids) {
-  if (!unitName.value)
+  if (!unitName.get())
     return
   seenMods.mutate(function(v) {
     foreach (id in ids) {
-      if (unitName.value not in v)
-        v[unitName.value] <- {}
-      v[unitName.value][id] <- true
+      if (unitName.get() not in v)
+        v[unitName.get()] <- {}
+      v[unitName.get()][id] <- true
     }
   })
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_MODS)
-  let blk = sBlk.addBlock(unitName.value)
-  foreach (id, isSeen in seenMods.value?[unitName.value] ?? {})
+  let blk = sBlk.addBlock(unitName.get())
+  foreach (id, isSeen in seenMods.get()?[unitName.get()] ?? {})
     if (isSeen)
       blk[id] = true
   eventbus_send("saveProfile", {})
@@ -137,7 +137,7 @@ function loadSeenMods() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_MODS]
   if (!isDataBlock(htBlk)) {
-    seenMods({})
+    seenMods.set({})
     return
   }
   let res = {}
@@ -147,31 +147,31 @@ function loadSeenMods() {
     if (unitSeenMods.len() > 0)
       res[unitId] <- unitSeenMods
   }
-  seenMods(res)
+  seenMods.set(res)
 }
 
-if (seenMods.value.len() == 0)
+if (seenMods.get().len() == 0)
   loadSeenMods()
 
 isSettingsAvailable.subscribe(@(_) loadSeenMods())
 
-let setCurUnitSeenModsCurrent = @() curCategoryId.value not in unseenModsByCategory.value ? null
-  : setCurUnitSeenMods(unseenModsByCategory.value?[curCategoryId.value].keys())
+let setCurUnitSeenModsCurrent = @() curCategoryId.get() not in unseenModsByCategory.get() ? null
+  : setCurUnitSeenMods(unseenModsByCategory.get()?[curCategoryId.get()].keys())
 
 function onTabChange(id) {
   setCurUnitSeenModsCurrent()
-  curCategoryId(id)
+  curCategoryId.set(id)
 }
 
 register_command(function() {
-  seenMods({})
+  seenMods.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_MODS)
   eventbus_send("saveProfile", {})
 }, "debug.reset_seen_mods")
 
 return {
   openUnitModsWnd
-  closeUnitModsWnd = @() isUnitModsOpen(false)
+  closeUnitModsWnd = @() isUnitModsOpen.set(false)
   isUnitModsOpen
   curCategoryId
   curMod

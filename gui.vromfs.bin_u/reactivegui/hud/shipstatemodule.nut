@@ -7,14 +7,14 @@ let { hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffG
 hasDebuffTorpedoes, maxHpToRepair } = require("%rGui/hud/shipState.nut")
 let { teamBlueLightColor } = require("%rGui/style/teamColors.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
-let { playHapticPattern, HAPT_DAMAGE } = require("hudHaptic.nut")
-let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
+let { playHapticPattern, HAPT_DAMAGE } = require("%rGui/hud/hudHaptic.nut")
+let { mkDebuffIcon, mkDebuffIconEditView } = require("%rGui/hud/components/debuffIcon.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isInZoom } = require("%rGui/hudState.nut")
-let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
-let damagePanelBacklight = require("components/damagePanelBacklight.nut")
+let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
+let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT } = require("%rGui/options/guiOptions.nut")
 let { tryPlaySound } = require("sound_wt")
 
@@ -29,7 +29,7 @@ let defHealthSize = [defHealthImageWidth, defHealthImageHeight]
 let calcCrewHealthWidth = @(width) (width * 0.7).tointeger()
 let crewHealthGap = hdpxi(17)
 
-let remainingHpPercent = Computed(@() maxHealth.value == 0 ? 1 : curRelativeHealth.value)
+let remainingHpPercent = Computed(@() maxHealth.value == 0 ? 1 : curRelativeHealth.get())
 
 let debuffsCfg = [
   { has = hasDebuffFire,         icon = "ui/gameuiskin#hud_debuff_fire.svg" }
@@ -54,7 +54,7 @@ let colorConfig = [
 ]
 
 let healthColor = Computed(function() {
-  let currConfig = colorConfig.findvalue(@(v) v.remainValue > remainingHpPercent.value)
+  let currConfig = colorConfig.findvalue(@(v) v.remainValue > remainingHpPercent.get())
   if (currConfig == null)
     return teamBlueLightColor
   if (currConfig?.showTeamColor ?? false)
@@ -70,8 +70,8 @@ remainingHpPercent.subscribe(function(value) {
 })
 
 let hpToRepairColor = 0xFFFF5D5D
-let isVisibleHpToRepair = Computed(@() maxHpToRepair.value > curRelativeHealth.value)
-let hpToRepairPercent = Computed(@() ((maxHpToRepair.value - curRelativeHealth.value + 0.005) * 100).tointeger())
+let isVisibleHpToRepair = Computed(@() maxHpToRepair.get() > curRelativeHealth.get())
+let hpToRepairPercent = Computed(@() ((maxHpToRepair.get() - curRelativeHealth.get() + 0.005) * 100).tointeger())
 
 let xrayDoll = @(size, stateFlags) {
   size
@@ -79,7 +79,7 @@ let xrayDoll = @(size, stateFlags) {
     damagePanelBacklight(stateFlags, size)
     @() {
       watch = healthColor
-      color = getHudConfigParameter("changeDmPanelColorDependingOnHp") ? healthColor.value : teamBlueLightColor
+      color = getHudConfigParameter("changeDmPanelColorDependingOnHp") ? healthColor.get() : teamBlueLightColor
       size = flex()
       transform = {
         rotate = 90
@@ -89,6 +89,7 @@ let xrayDoll = @(size, stateFlags) {
       drawOutlines = false
       drawSilhouette = true
       drawTargetingSightLine = true
+      limitSizeToRect = true
       modulateSilhouetteColor = true
     }
   ]
@@ -112,8 +113,8 @@ let mkDollCtor = @(rawSize) function(scale) {
     cameraControl = true
     touchMarginPriority = TOUCH_MINOR
     function onElemState(sf) {
-      let prevSf = stateFlagsExt.value
-      stateFlags(sf)
+      let prevSf = stateFlagsExt.get()
+      stateFlags.set(sf)
       let active = isActive(stateFlagsExt.get())
       if (active != isActive(prevSf))
         if (active)
@@ -201,8 +202,8 @@ let mkCrewHealthCtor = @(size, hasCrewWounded = true) function(scale) {
           @() {
             watch = [remainingHpPercent, healthColor]
             rendObj = ROBJ_TEXT
-            color = healthColor.value
-            text =  $"{((remainingHpPercent.value * 100)+ 0.5).tointeger()} %"
+            color = healthColor.get()
+            text =  $"{((remainingHpPercent.get() * 100)+ 0.5).tointeger()} %"
           }.__update(font)
         ]
       }
@@ -220,7 +221,7 @@ let mkCrewHealthCtor = @(size, hasCrewWounded = true) function(scale) {
                     watch = hpToRepairPercent
                     rendObj = ROBJ_TEXT
                     color = hpToRepairColor
-                    text =  $"{hpToRepairPercent.value} %"
+                    text =  $"{hpToRepairPercent.get()} %"
                   }.__update(font)
                 ]
           }

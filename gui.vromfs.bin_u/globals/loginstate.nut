@@ -59,7 +59,7 @@ let isPreviewIDFAShowed = sharedWatched("isPreviewIDFAShowed", @() false)
 let isReadyForShowPreviewIdfa = sharedWatched("isReadyForShowPreviewIdfa", @() false)
 
 function getLoginStateDebugStr(state = null) {
-  state = state ?? loginState.value
+  state = state ?? loginState.get()
   return ", ".join(
     (clone LOGIN_STATE).filter(@(bit) number_of_set_bits(bit) == 1 && (state & bit) != 0).keys())
 }
@@ -102,7 +102,7 @@ if (is_ios) {
     })
 }
 
-let isOnlineSettingsAvailable = Computed(@() (loginState.value & LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE) != 0)
+let isOnlineSettingsAvailable = Computed(@() (loginState.get() & LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE) != 0)
 
 return loginTypes.__merge(secondStepTypes, {
   LOGIN_STATE
@@ -124,21 +124,21 @@ return loginTypes.__merge(secondStepTypes, {
 
   CONSENT_OPTIONS_SAVE_ID = "consentManageOptions"
 
-  isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
-  isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)
+  isLoginStarted = Computed(@() (loginState.get() & LOGIN_STATE.LOGIN_STARTED) != 0)
+  isAuthorized = Computed(@() (loginState.get() & LOGIN_STATE.AUTHORIZED) != 0)
   isOnlineSettingsAvailable
-  isSettingsAvailable = Computed(@() isAppLoaded.value && (isOnlineSettingsAvailable.value || !isLoginRequired.value))
-  isMatchingConnected = Computed(@() (loginState.value & LOGIN_STATE.MATCHING_CONNECTED) != 0)
-  isProfileReceived = Computed(@() (loginState.value & LOGIN_STATE.PROFILE_RECEIVED) != 0)
-  isContactsLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
-  isOpenedLegalWnd = Computed(@() legalListForApprove.value.findvalue(@(v) v) != null)
-  isGameUpdatedOnLogin = Computed(@() (loginState.value & LOGIN_STATE.GAME_UPDATED) != 0)
+  isSettingsAvailable = Computed(@() isAppLoaded.value && (isOnlineSettingsAvailable.get() || !isLoginRequired.get()))
+  isMatchingConnected = Computed(@() (loginState.get() & LOGIN_STATE.MATCHING_CONNECTED) != 0)
+  isProfileReceived = Computed(@() (loginState.get() & LOGIN_STATE.PROFILE_RECEIVED) != 0)
+  isContactsLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
+  isOpenedLegalWnd = Computed(@() legalListForApprove.get().findvalue(@(v) v) != null)
+  isGameUpdatedOnLogin = Computed(@() (loginState.get() & LOGIN_STATE.GAME_UPDATED) != 0)
 
-  isLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
-  isAuthAndUpdated = Computed(@() (loginState.value & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)
-  isReadyToFullLoad = Computed(@() (loginState.value & LOGIN_STATE.READY_TO_FULL_LOAD) == LOGIN_STATE.READY_TO_FULL_LOAD)
-  isReadyForGoogleConsent = Computed(@() (loginState.value & LOGIN_STATE.READY_FOR_GOOGLE_CONSENT) == LOGIN_STATE.READY_FOR_GOOGLE_CONSENT)
-  isReadyForConsent = Computed(@() (loginState.value & LOGIN_STATE.READY_FOR_OUR_CONSENT) == LOGIN_STATE.READY_FOR_OUR_CONSENT)
+  isLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
+  isAuthAndUpdated = Computed(@() (loginState.get() & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)
+  isReadyToFullLoad = Computed(@() (loginState.get() & LOGIN_STATE.READY_TO_FULL_LOAD) == LOGIN_STATE.READY_TO_FULL_LOAD)
+  isReadyForGoogleConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_GOOGLE_CONSENT) == LOGIN_STATE.READY_FOR_GOOGLE_CONSENT)
+  isReadyForConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_OUR_CONSENT) == LOGIN_STATE.READY_FOR_OUR_CONSENT)
 
   getLoginStateDebugStr
 })

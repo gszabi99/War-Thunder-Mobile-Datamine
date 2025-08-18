@@ -657,9 +657,9 @@ let function mkUnitResearchPrice(researchStatus, ovr = {}) {
   }.__update(ovr)
 }
 
-let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul) @() {
-  watch = [canActivateDailyBonus, wpMul, expMul]
-  children = canActivateDailyBonus.get() ? dailyBonusTag(wpMul.get(), expMul.get()) : null
+let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul, hasSlots) @() {
+  watch = [canActivateDailyBonus, wpMul, expMul, hasSlots]
+  children = canActivateDailyBonus.get() ? dailyBonusTag(wpMul.get(), expMul.get(), hasSlots.get()) : null
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT
 }
@@ -680,7 +680,8 @@ function mkProfileUnitDailyBonus(unit) {
     && serverTimeDay.get() != getDay(unit.dailyBonusTime, dayOffset.get()))
   let wpMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.wpMul ?? 1)
   let expMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.expMul ?? 1)
-  return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul)
+  let hasSlots = Computed(@() (serverConfigs.get()?.campaignCfg[unit?.campaign].totalSlots ?? 0) > 0)
+  return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul, hasSlots)
 }
 
 return {

@@ -41,7 +41,7 @@ function updateUrls(isLoggedInVal) {
 isLoggedIn.subscribe(updateUrls)
 updateUrls(isLoggedIn.get())
 
-let supportUrl = Computed(@() loc(canUseZendeskSso.value ? "url/support" : "url/support/nologin"))
+let supportUrl = Computed(@() loc(canUseZendeskSso.get() ? "url/support" : "url/support/nologin"))
 
 let langCfg = {
   English = { locale = "en-US", lang = "english" }
@@ -68,7 +68,7 @@ return {
   zendeskApiUploadsUrl
   zendeskApiRequestsUrl
   canUseZendeskApi
-  openSuportWebsite = @() eventbus_send("openUrl", { baseUrl = supportUrl.value })
+  openSuportWebsite = @() eventbus_send("openUrl", { baseUrl = supportUrl.get() })
   langCfg
   categoryList
   getCategoryLocName

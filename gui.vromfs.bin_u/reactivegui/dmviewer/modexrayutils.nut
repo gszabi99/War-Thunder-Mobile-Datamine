@@ -9,7 +9,7 @@ let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, S_SUBMARINE
   mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType
 } = require("%globalScripts/modeXrayLib.nut")
 let { AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
-let sharedWatches = require("sharedWatches.nut")
+let sharedWatches = require("%rGui/dmViewer/sharedWatches.nut")
 let { getUnitStats } = require("%rGui/dmViewer/modeXrayAttr.nut")
 let { getCommonWeapons, getUnitWeaponsList, getWeaponNameByBlkPath, getWeaponLocNameCustom,
   getWeaponDescTextByWeaponInfoBlk, shouldShowAmmoAndShotFreq,

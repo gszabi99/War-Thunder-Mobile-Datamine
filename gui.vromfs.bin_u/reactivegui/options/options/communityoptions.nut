@@ -75,8 +75,8 @@ function mkNetworkItem(item){
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
     onClick = @() eventbus_send("openUrl", { baseUrl = url })
-    onElemState = @(v) stateFlags(v)
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
+    onElemState = @(v) stateFlags.set(v)
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click  = "click" }
     flow = FLOW_VERTICAL
@@ -105,8 +105,8 @@ function mkFeedBackButtons(item){
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
     onClick
-    onElemState = @(v) stateFlags(v)
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    onElemState = @(v) stateFlags.set(v)
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click  = "click" }
     flow = FLOW_HORIZONTAL

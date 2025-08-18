@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkLoadingTip } = require("mkLoadingTip.nut")
+let { mkLoadingTip } = require("%rGui/loading/mkLoadingTip.nut")
 let { locMissionName, locMissionDesc } = require("%rGui/globals/missionUtils.nut")
 let { isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")

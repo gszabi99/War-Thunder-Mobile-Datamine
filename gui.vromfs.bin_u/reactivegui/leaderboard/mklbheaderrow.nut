@@ -27,7 +27,7 @@ function headerIconButton(icon, contentCtor, hasHint) {
             size = [headerIconWidth, headerIconHeight]
             rendObj = ROBJ_IMAGE
             image = Picture($"{icon}:{headerIconWidth}:{headerIconHeight}:P")
-            color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+            color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
             keepAspect = true
           }
       !hasHint ? null
@@ -36,18 +36,18 @@ function headerIconButton(icon, contentCtor, hasHint) {
             size = hdpx(40)
             lineWidth = hdpx(2)
             fillColor = 0
-            color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+            color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
             commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = {
               rendObj = ROBJ_TEXT
               text = "?"
-              color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+              color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
             }.__update(fontTinyAccented)
           }
     ]
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }
 }

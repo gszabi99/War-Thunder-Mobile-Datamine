@@ -4,7 +4,7 @@ let { Point2 } = require("dagor.math")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
-let { isStickActiveByStick, stickDelta } = require("stickState.nut")
+let { isStickActiveByStick, stickDelta } = require("%rGui/hud/stickState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { IsTracked } = require("%rGui/hud/tankState.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
@@ -145,25 +145,25 @@ let tankMoveStickBase = @(zoneSize, scale) @() {
   maxValueRadius = zoneSize * zoneToBgRadius
   useCenteringOnTouchBegin = currentTankMoveCtrlType.value == "stick"
 
-  onChange = @(v) stickDelta(Point2(v.x, v.y))
+  onChange = @(v) stickDelta.set(Point2(v.x, v.y))
 
   function onTouchBegin() {
     setVirtualAxisValue("gm_brake_left", 0)
     setVirtualAxisValue("gm_brake_right", 0)
-    isStickActiveByStick(true)
+    isStickActiveByStick.set(true)
     setMoveControlByArrows(false)
   }
   function onTouchEnd() {
     setVirtualAxisValue("gm_brake_left", 1)
     setVirtualAxisValue("gm_brake_right", 1)
-    isStickActiveByStick(false)
+    isStickActiveByStick.set(false)
     setMoveControlByArrows(true)
   }
   function onDetach() {
     setVirtualAxisValue("gm_brake_left", 0)
     setVirtualAxisValue("gm_brake_right", 0)
     setVirtualAxisValue("gm_steering", 0)
-    isStickActiveByStick(false)
+    isStickActiveByStick.set(false)
     setMoveControlByArrows(true)
   }
   children = [
@@ -187,7 +187,7 @@ function tankMoveStick(scale) {
 function gamepadStick(scale) {
   let children = imgStick(scale)
   return function() {
-    let dir = Point2(stickDelta.value)
+    let dir = Point2(stickDelta.get())
     if (dir.lengthSq() > 1)
       dir.normalize()
     return {
@@ -203,18 +203,18 @@ function gamepadStick(scale) {
 
 let gamepadAxisListener = axisListener({
   [gm_steering] = function(v) {
-    stickDelta(Point2(-v, stickDelta.value.y))
+    stickDelta.set(Point2(-v, stickDelta.get().y))
     setVirtualAxisValue("gm_steering", -v)
   },
   [gm_throttle] = function(v) {
-    stickDelta(Point2(stickDelta.value.x, v))
+    stickDelta.set(Point2(stickDelta.get().x, v))
     setVirtualAxisValue("gm_throttle", v)
   },
   [gm_mouse_aim_x] = @(v) setVirtualAxisValue("gm_mouse_aim_x", v),
   [gm_mouse_aim_y] = @(v) setVirtualAxisValue("gm_mouse_aim_y", v),
 })
 
-let updateStickActive = @(delta) isStickActiveByStick(delta.lengthSq() > 0.04)
+let updateStickActive = @(delta) isStickActiveByStick.set(delta.lengthSq() > 0.04)
 
 let tankGamepadStick = @(scale) @(){
   key = {}
@@ -222,7 +222,7 @@ let tankGamepadStick = @(scale) @(){
   size = array(2, scaleEven(imgBgSize, scale))
   function onAttach() {
     stickDelta.subscribe(updateStickActive)
-    updateStickActive(stickDelta.value)
+    updateStickActive(stickDelta.get())
   }
   function onDetach() {
     stickDelta.unsubscribe(updateStickActive)

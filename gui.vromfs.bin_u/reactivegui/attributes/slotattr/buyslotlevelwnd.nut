@@ -25,7 +25,7 @@ let slot = Computed(@() curSlots.get()?[slotIndex.get()])
 let levelsToMax = Computed(@() (maxSlotLevels.get()?.len() ?? 0) - (slot.get()?.level ?? 0))
 let needShowWnd = keepref(Computed(@() levelsToMax.get() > 0 && slotIndex.get() != null))
 
-let close = @() slotIndex(null)
+let close = @() slotIndex.set(null)
 
 registerHandler("closeBuySlotLevelWnd", @(_) close())
 
@@ -94,4 +94,4 @@ if (needShowWnd.get())
   openImpl()
 needShowWnd.subscribe(@(v) v ? openImpl() : removeModalWindow(WND_UID))
 
-return @(idx) slotIndex(idx)
+return @(idx) slotIndex.set(idx)

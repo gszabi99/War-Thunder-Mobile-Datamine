@@ -4,16 +4,16 @@ let { INVALID_USER_ID } = require("matching.errors")
 let { register_command } = require("console")
 let logC = log_with_prefix("[CONTACTS] ")
 let { is_pc } = require("%sqstd/platform.nut")
-let { contactsLists } = require("contactLists.nut")
-let { updateContact, updateContactNames } = require("contact.nut")
+let { contactsLists } = require("%rGui/contacts/contactLists.nut")
+let { updateContact, updateContactNames } = require("%rGui/contacts/contact.nut")
 let { myUserIdStr, myInfo } = require("%appGlobals/profileStates.nut")
-let { presences, updatePresences } = require("contactPresence.nut")
+let { presences, updatePresences } = require("%rGui/contacts/contactPresence.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isContactsLoggedIn, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { contactsRequest, contactsRegisterHandler } = require("contactsClient.nut")
+let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/contactsClient.nut")
 let matching = require("%appGlobals/matching_api.nut")
 
 
@@ -34,7 +34,7 @@ let needFetchContactsInBattle = Watched(false)
 let canFetchContacts = Computed(@() isContactsLoggedIn.get()
   && isMatchingConnected.get()
   && (!isInBattle.get() || needFetchContactsInBattle.get()))
-let canRequestToContacts = Computed(@() isContactsLoggedIn.value && isMatchingConnected.value)
+let canRequestToContacts = Computed(@() isContactsLoggedIn.get() && isMatchingConnected.get())
 let isFetchDelayed = hardPersistWatched("contacts.isFetchDelayed", false)
 let isContactsReceived = hardPersistWatched("contacts.isContactsReceived", false)
 
@@ -42,14 +42,14 @@ isInBattle.subscribe(@(isBattle) isBattle && botRequests.mutate(@(v) v.clear()))
 isContactsLoggedIn.subscribe(@(v) v ? null : isContactsReceived.set(false))
 
 let searchContactsResult = Computed(function() {
-  let result = searchContactsResultRaw.value
+  let result = searchContactsResultRaw.get()
   if (result == null || !(result?.success ?? true))
     return {}
 
   let resContacts = {}
   foreach(uidStr, name in result) {
     if ((typeof name != "string")
-        || uidStr == myUserIdStr.value
+        || uidStr == myUserIdStr.get()
         || uidStr == "")
       continue
 
@@ -81,14 +81,14 @@ let fetchContactsImpl = @() eventbus_send("matchingCall",
   })
 
 function fetchContacts() {
-  if (canFetchContacts.value)
+  if (canFetchContacts.get())
     fetchContactsImpl()
   else
     isFetchDelayed(true)
 }
 
 function fetchIfNeed() {
-  if (!canFetchContacts.value || !isFetchDelayed.value)
+  if (!canFetchContacts.get() || !isFetchDelayed.get())
     return
   isFetchDelayed(false)
   fetchContactsImpl()
@@ -136,8 +136,8 @@ function onFetchContacts(result) {
     updateAllLists(result.groups)
   if ("presences" in result)
     updatePresencesByList(result.presences)
-  if (contactsInProgress.value.findindex(@(v) v))
-    contactsInProgress(contactsInProgress.value.filter(@(v) !v))
+  if (contactsInProgress.get().findindex(@(v) v))
+    contactsInProgress.set(contactsInProgress.get().filter(@(v) !v))
 }
 
 eventbus_subscribe(FETCH_CB, @(msg) onFetchContacts(msg.result))
@@ -146,10 +146,10 @@ matching.matching_subscribe("mpresence.notify_presence_update", @(r) onFetchCont
 matching.matching_subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
 
 contactsRegisterHandler("cln_find_users_by_nick_prefix_json", function(result, context) {
-  if (searchedNick.value != context?.nick)
+  if (searchedNick.get() != context?.nick)
     return
-  isSearchInProgress(false)
-  searchContactsResultRaw(result)
+  isSearchInProgress.set(false)
+  searchContactsResultRaw.set(result)
 })
 
 function searchContacts(nick) {
@@ -160,18 +160,18 @@ function searchContacts(nick) {
       ignoreCase = true
     }
   }
-  searchedNick(nick)
+  searchedNick.set(nick)
   logC(params)
-  isSearchInProgress(true)
+  isSearchInProgress.set(true)
   contactsRequest("cln_find_users_by_nick_prefix_json",
     params,
     { nick })
 }
 
 function clearSearchData() {
-  searchedNick(null)
-  searchContactsResultRaw(null)
-  isSearchInProgress(false)
+  searchedNick.set(null)
+  searchContactsResultRaw.set(null)
+  isSearchInProgress.set(false)
 }
 
 let errorHundlers = {
@@ -191,7 +191,7 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
     let isSuccess = result?.success ?? true
     logC($"request result {actionId}: ", result)
 
-    if (userId in contactsInProgress.value)
+    if (userId in contactsInProgress.get())
       contactsInProgress.mutate(function(v) {
         if (isSuccess)
           v[userId] = true
@@ -221,7 +221,7 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
       botActions[actionId](userId)
       return
     }
-    if (userId in contactsInProgress.value)
+    if (userId in contactsInProgress.get())
       return
     let data = mkData(userId)
     logC($"request {actionId}: ", data)
@@ -255,8 +255,8 @@ let removeFromBlackList = mkSimpleContactAction("cln_remove_from_blacklist_for_c
   @(userId) { requestorUid = userId, groupName = GAME_GROUP_NAME })
 
 function openContacts(tabId = null) {
-  contactsOpenTabId(tabId)
-  isContactsOpened(true)
+  contactsOpenTabId.set(tabId)
+  isContactsOpened.set(true)
 }
 
 
@@ -277,19 +277,19 @@ if (is_pc) {
         presences = { online = (i % 2) == 0 }
       })
     let startTime = get_time_msec()
-    fakeList(fake)
+    fakeList.set(fake)
     logC($"Friends update time: {get_time_msec() - startTime}")
   }
   register_command(genFake, "contacts.generate_fake")
 
   function changeFakePresence(count) {
-    if (fakeList.value.len() == 0) {
+    if (fakeList.get().len() == 0) {
       logC("No fake contacts yet. Generate them first")
       return
     }
     let startTime = get_time_msec()
     for(local i = 0; i < count; i++) {
-      let f = chooseRandom(fakeList.value)
+      let f = chooseRandom(fakeList.get())
       f.presences.online = !f.presences.online
       updatePresences({ [f.userId] = f.presences })
     }
@@ -299,13 +299,13 @@ if (is_pc) {
 }
 
 register_command(fetchContacts, "contacts.fetch")
-register_command(@() isContactsOpened(!isContactsOpened.value), "contacts.open")
+register_command(@() isContactsOpened.set(!isContactsOpened.get()), "contacts.open")
 
 return {
   searchContactsResult
   isSearchInProgress
   searchContacts
-  searchedNick = Computed(@() searchedNick.value)
+  searchedNick = Computed(@() searchedNick.get())
   clearSearchData
 
   openContacts

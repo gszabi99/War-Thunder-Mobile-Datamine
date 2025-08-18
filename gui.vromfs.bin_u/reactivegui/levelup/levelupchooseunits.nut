@@ -3,7 +3,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let Rand = require("%sqstd/rand.nut")
-let { closeLvlUpWnd, skipLevelUpUnitPurchase } = require("levelUpState.nut")
+let { closeLvlUpWnd, skipLevelUpUnitPurchase } = require("%rGui/levelUp/levelUpState.nut")
 let { unitInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { textButtonPrimary, textButtonPurchase, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
@@ -34,20 +34,20 @@ let unitPlateHeight = unitPlateWidth * unitPlateRatio
 
 let isAttached = Watched(false)
 
-let availableUnitsList = Computed(@() Rand.shuffle(buyUnitsData.value.canBuyOnLvlUp.values()))
+let availableUnitsList = Computed(@() Rand.shuffle(buyUnitsData.get().canBuyOnLvlUp.values()))
 let playerSelectedUnit = Watched(null)
 let curSelectedUnit = Computed(function() {
-  let list = availableUnitsList.value
+  let list = availableUnitsList.get()
   if (list.len() == 0)
     return null
-  if (playerSelectedUnit.value != null
-      && null != list.findvalue(@(u) u.name == playerSelectedUnit.value))
-    return playerSelectedUnit.value
+  if (playerSelectedUnit.get() != null
+      && null != list.findvalue(@(u) u.name == playerSelectedUnit.get()))
+    return playerSelectedUnit.get()
   return list[0].name
 })
 
-let needSkipBtn = Computed(@() buyUnitsData.value.canLevelUpWithoutBuy
-  && null == availableUnitsList.value.findvalue(@(u) getUnitAnyPrice(u, true, unitDiscounts.get())?.discount == 1))
+let needSkipBtn = Computed(@() buyUnitsData.get().canLevelUpWithoutBuy
+  && null == availableUnitsList.get().findvalue(@(u) getUnitAnyPrice(u, true, unitDiscounts.get())?.discount == 1))
 
 let nextFreeUnitLevel = Computed(function() {
   local res = 0
@@ -59,17 +59,17 @@ let nextFreeUnitLevel = Computed(function() {
 })
 
 function onBuyUnit() {
-  if (curSelectedUnit.value == null || unitInProgress.value != null)
+  if (curSelectedUnit.get() == null || unitInProgress.get() != null)
     return
-  let unit = campUnitsCfg.get()?[curSelectedUnit.value]
+  let unit = campUnitsCfg.get()?[curSelectedUnit.get()]
   if (unit == null)
     return
-  sendNewbieBqEvent("chooseUnitInLevelUpWnd", { status = curSelectedUnit.value })
+  sendNewbieBqEvent("chooseUnitInLevelUpWnd", { status = curSelectedUnit.get() })
   if ((unit?.upgradeCostGold ?? 0) > 0)
-    buyLevelUpUnitName.set(curSelectedUnit.value)
+    buyLevelUpUnitName.set(curSelectedUnit.get())
   else {
-    let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, curSelectedUnit.value)
-    purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
+    let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, curSelectedUnit.get())
+    purchaseUnit(curSelectedUnit.get(), bqPurchaseInfo)
   }
 }
 
@@ -79,12 +79,12 @@ function onSkipUnitPurchase() {
 }
 
 curSelectedUnit.subscribe(function(unitId) {
-  if (isAttached.value && unitId != null)
+  if (isAttached.get() && unitId != null)
     setHangarUnit(unitId)
 })
 isAttached.subscribe(function(v) {
-  if (v && curSelectedUnit.value != null)
-    setHangarUnit(curSelectedUnit.value)
+  if (v && curSelectedUnit.get() != null)
+    setHangarUnit(curSelectedUnit.get())
 })
 
 let textarea = @(text, override = {}) {
@@ -100,7 +100,7 @@ let textarea = @(text, override = {}) {
 }.__update(fontMedium, override)
 
 let unitActionButtons = function() {
-  let unit = buyUnitsData.value.canBuyOnLvlUp?[curSelectedUnit.value]
+  let unit = buyUnitsData.get().canBuyOnLvlUp?[curSelectedUnit.get()]
   let price = unit != null ? getUnitAnyPrice(unit, true, unitDiscounts.get()) : null
   let isFree = price != null && price.price == 0
   let isPaid = price != null && !isFree
@@ -112,7 +112,7 @@ let unitActionButtons = function() {
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     children = [
-      needSkipBtn.value ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), onSkipUnitPurchase, { hotkeys = ["^J:Y"] })
+      needSkipBtn.get() ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), onSkipUnitPurchase, { hotkeys = ["^J:Y"] })
         : null
       isPaid ? textButtonPurchase(utf8ToUpper(loc("msgbox/btn_purchase")), onBuyUnit, { hotkeys = ["^J:X"] })
         : isFree ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")), onBuyUnit, { hotkeys = ["^J:X"] })
@@ -121,7 +121,7 @@ let unitActionButtons = function() {
   }
 }
 
-let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
+let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.get() != null),
   unitActionButtons,
   {
     size = [SIZE_TO_CONTENT, defButtonHeight]
@@ -160,7 +160,7 @@ function mkUnitPlate(unit, onClick) {
   if (unit == null)
     return null
 
-  let isSelected = Computed(@() curSelectedUnit.value == unit.name)
+  let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let price = getUnitAnyPrice(unit, true, unitDiscounts.get())
 
   return {
@@ -205,14 +205,14 @@ let unitsBlock = @() {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
-  children = availableUnitsList.value.map(@(u) mkUnitPlate(u, @() playerSelectedUnit(u.name)))
+  children = availableUnitsList.get().map(@(u) mkUnitPlate(u, @() playerSelectedUnit.set(u.name)))
 }
 
-let nextFreeUnitText = @() nextFreeUnitLevel.value == 0 ? { watch = nextFreeUnitLevel }
+let nextFreeUnitText = @() nextFreeUnitLevel.get() == 0 ? { watch = nextFreeUnitLevel }
   : textarea(
       loc(
         curCampaign.value == "tanks" ? "levelUp/nextFreePlatoon" : "levelUp/nextFreeShip",
-        { level = nextFreeUnitLevel.value }),
+        { level = nextFreeUnitLevel.get() }),
       {
         watch = [ nextFreeUnitLevel, curCampaign ]
         pos = [ unitSelUnderlineFullSize, 0 ]
@@ -233,8 +233,8 @@ let chooseShipBlock = {
 
 return {
   key = {}
-  onAttach = @() isAttached(true)
-  onDetach = @() isAttached(false)
+  onAttach = @() isAttached.set(true)
+  onDetach = @() isAttached.set(false)
   size = flex()
   children = [
     @() textarea(loc(curCampaign.value == "tanks" ? "levelUp/selectPlatoon" : "levelUp/selectShip"),
@@ -246,7 +246,7 @@ return {
       hplace=ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
       touchMarginPriority = TOUCH_BACKGROUND
-      onClick = @() unitDetailsWnd({ name = curSelectedUnit.value })
+      onClick = @() unitDetailsWnd({ name = curSelectedUnit.get() })
     })
     chooseShipBlock
     navBarPlace

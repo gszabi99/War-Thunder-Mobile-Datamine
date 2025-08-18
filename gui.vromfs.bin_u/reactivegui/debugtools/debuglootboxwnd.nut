@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { lootboxesCfg, isOpened, selectedLootbox, allRewards } = require("debugLootboxState.nut")
+let { lootboxesCfg, isOpened, selectedLootbox, allRewards } = require("%rGui/debugTools/debugLootboxState.nut")
 let { mkRewardPlate, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
+let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
 let { registerScene } = require("%rGui/navState.nut")
 
 let close = @() isOpened.set(false)

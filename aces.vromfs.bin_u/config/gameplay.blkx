@@ -3840,14 +3840,37 @@
   },
   "pickUpPresets": {
     "allInOne": {
-      "fxName": "repair_ground",
+      "fxName": "smoke_point_circle_blue",
       "fxScale": 0.3,
+      "objectModelName": "br_pickup_rep_art_ammo",
+      "miniMapIconId": "iconPickupAllInOne",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
       "rewards": {
         "medical_kit_expendable": 1,
         "manual_extinguisher_expendable": 1,
         "artillery": 1,
         "ammo_percent": 100,
         "repair_percent": 100
+      }
+    },
+    "crewSkillUpgrade": {
+      "fxName": "smoke_point_circle_green",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_crew_upgrade",
+      "miniMapIconId": "iconPickupCrewSkill",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "rewards": {
+        "crew_skill_percent": 50
       }
     },
     "tankPvE": {

@@ -9,11 +9,11 @@ let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { loadedHangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, dmViewerUnitDataVer,
   isDebugMode, isDebugBatchExportProcess
-} = require("dmViewerState.nut")
+} = require("%rGui/dmViewer/dmViewerState.nut")
 let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode, collectArmorClassToSteelMuls
-} = require("modeXrayUtils.nut")
+} = require("%rGui/dmViewer/modeXrayUtils.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText
-} = require("dmViewerPkg.nut")
+} = require("%rGui/dmViewer/dmViewerPkg.nut")
 
 let isModeActive = Computed(@() dmViewerMode.get() == DM_VIEWER_XRAY)
 

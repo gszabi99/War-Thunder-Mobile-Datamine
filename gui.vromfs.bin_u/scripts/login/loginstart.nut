@@ -30,7 +30,7 @@ let canLogout = @() !disable_network()
 
 function startLogout() {
   logoutFB()
-  if (loginState.value == LOGIN_STATE.NOT_LOGGED_IN)
+  if (loginState.get() == LOGIN_STATE.NOT_LOGGED_IN)
     return
   forceSendBqQueue()
   if (!canLogout())
@@ -46,13 +46,13 @@ function startLogout() {
       destroy_session("on startLogout")
   }
 
-  if (shouldDisableMenu || isOnlineSettingsAvailable.value)
+  if (shouldDisableMenu || isOnlineSettingsAvailable.get())
     broadcastEvent("BeforeProfileInvalidation") 
 
   log("Start Logout")
   needLogoutAfterSession(false)
 
-  if (isLoggedIn.value) {
+  if (isLoggedIn.get()) {
     loginState(LOGIN_STATE.NOT_LOGGED_IN)
     curLoginType("")
     authTags([])
@@ -80,11 +80,11 @@ function startRelogin() {
 }
 
 eventbus_subscribe("doLogin", function(authOvr) {
-  if (isLoginStarted.value || isOfflineMenu)
+  if (isLoginStarted.get() || isOfflineMenu)
     return 
 
   authState.mutate(@(s) s.__update(authOvr))
-  loginState(loginState.value | LOGIN_STATE.LOGIN_STARTED)
+  loginState(loginState.get() | LOGIN_STATE.LOGIN_STARTED)
 })
 
 eventbus_subscribe("login.checkAutoStart", @(_) checkAutoStartLogin())

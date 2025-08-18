@@ -17,7 +17,7 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let invitationsBtn = require("%rGui/invitations/invitationsBtn.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let squadMemberInfoWnd = require("squadMemberInfoWnd.nut")
+let squadMemberInfoWnd = require("%rGui/squad/squadMemberInfoWnd.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 
@@ -34,7 +34,7 @@ let spinner = mkSpinner(evenPx(50))
 let statusSpinner = mkSpinner(statusSize)
 
 let squadInviteButton = framedImageBtn("ui/gameuiskin#btn_inc.svg",
-  @() openContacts(friendsUids.value.len() > 0 ? FRIENDS_TAB : SEARCH_TAB),
+  @() openContacts(friendsUids.get().len() > 0 ? FRIENDS_TAB : SEARCH_TAB),
     {
       sound = { click  = "meta_squad_button" }
       size = [memberSize, memberSize]
@@ -76,17 +76,17 @@ let mkStatus = @(image, color = 0xFFFFFFFF) {
 }
 
 let memberStatus = @(isLeader, state, onlineStatus) function() {
-  if (state.value == null)
+  if (state.get() == null)
     return { watch = state }
-  let isInBattle = state.value?.inBattle ?? false
-  let isWaitReadyCheck = squadLeaderReadyCheckTime.get() > (state.value?.readyCheckTime ?? 0)
+  let isInBattle = state.get()?.inBattle ?? false
+  let isWaitReadyCheck = squadLeaderReadyCheckTime.get() > (state.get()?.readyCheckTime ?? 0)
   return {
     watch = [isLeader, state, onlineStatus, squadLeaderReadyCheckTime]
     hplace = ALIGN_RIGHT
     vplace = ALIGN_TOP
     children = isInBattle ? mkStatus("in_battle.svg")
-      : isLeader.value ? mkStatus("icon_party_leader.svg", 0xFFFFFF00)
-      : state.value?.ready && !isWaitReadyCheck ? mkStatus("icon_party_ready.svg")
+      : isLeader.get() ? mkStatus("icon_party_leader.svg", 0xFFFFFF00)
+      : state.get()?.ready && !isWaitReadyCheck ? mkStatus("icon_party_ready.svg")
       : !onlineStatus.value ? mkStatus("icon_party_offline.svg")
       : !isWaitReadyCheck ? mkStatus("icon_party_not_ready.svg")
       : statusSpinner
@@ -97,7 +97,7 @@ let mkRank = @(rank) @() {
   watch = rank
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
-  children = (rank.value ?? 0) <= 0 ? null : mkGradRank(rank.value)
+  children = (rank.get() ?? 0) <= 0 ? null : mkGradRank(rank.get())
 }
 
 function mkMember(uid) {
@@ -105,8 +105,8 @@ function mkMember(uid) {
   let info = mkPublicInfo(userId)
   let state = Computed(@() squadMembers.get()?[uid])
   let isLeader = Computed(@() uid == squadId.get())
-  let isMe = Computed(@() uid == myUserId.value)
-  let isInvitee = Computed(@() state.value == null && uid in isInvitedToSquad.get())
+  let isMe = Computed(@() uid == myUserId.get())
+  let isInvitee = Computed(@() state.get() == null && uid in isInvitedToSquad.get())
   let onlineStatus = mkContactOnlineStatus(userId)
   let rank = Computed(@() getMemberMaxMRank(state.get(), squadLeaderCampaign.get(), serverConfigs.get()))
   let stateFlags = Watched(0)
@@ -117,14 +117,14 @@ function mkMember(uid) {
     size = [memberSize, memberSize]
     padding = 3 * borderWidth
     rendObj = ROBJ_SOLID
-    color = stateFlags.value & S_HOVER ? hoverColor
-      : isMe.value ? myBorderColor
+    color = stateFlags.get() & S_HOVER ? hoverColor
+      : isMe.get() ? myBorderColor
       : borderColor
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
 
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     clickableInfo = loc("squad/member_info")
     onClick = @(evt) squadMemberInfoWnd(uid, evt.targetRect)
     sound = { click  = "click" }
@@ -135,7 +135,7 @@ function mkMember(uid) {
       mkAvatar(info, onlineStatus, isInvitee.get())
       memberStatus(isLeader, state, onlineStatus)
       mkRank(rank)
-      isInvitee.value ? spinner : null
+      isInvitee.get() ? spinner : null
     ]
   }
 }
@@ -147,7 +147,7 @@ function refreshMembersInfo() {
 
 function squadMembersList() {
   let children = squadMembersOrder.get().map(mkMember)
-  for(local i = children.len(); i < maxSquadSize.value; i++)
+  for(local i = children.len(); i < maxSquadSize.get(); i++)
     children.append(squadInviteButton)
   return {
     watch = [maxSquadSize, squadMembersOrder]
@@ -183,7 +183,7 @@ return @() {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(7)
-  children = maxSquadSize.value <= 1 ? null
+  children = maxSquadSize.get() <= 1 ? null
     : [
         isInSquad.get() ? squadHeader : null
         buttonsRow(isInSquad.get())

@@ -30,7 +30,7 @@ let mkLoadingTip = @(ovr = {}) function() {
     behavior = Behaviors.TextArea
     text = " ".concat(icon, text)
     halign = ALIGN_CENTER
-    onAttach = @() enableTipsUpdate(unitTypeWeightsByCampaign?[curCampaign.value])
+    onAttach = @() enableTipsUpdate(unitTypeWeightsByCampaign?[curCampaign.get()])
     onDetach = disableTipsUpdate
   }.__update(fontSmall, ovr)
 }

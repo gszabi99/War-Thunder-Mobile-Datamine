@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let sharedWatches = require("sharedWatches.nut")
+let sharedWatches = require("%rGui/dmViewer/sharedWatches.nut")
 
 let unitsDataCollection = {}
 let dmViewerUnitDataVer = Watched(0)

@@ -12,12 +12,12 @@ function makeMenuBtn(onClick) {
     watch = stateFlags
     behavior = Behaviors.Button
     onClick = onClick
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     valign = ALIGN_CENTER
     size = [ menuButtonSize, menuButtonSize ]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_menu.svg:{menuButtonSize}:{menuButtonSize}")
-    color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+    color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
     sound = { click  = "menu_appear" }
     hotkeys = [["^J:Start", loc("mainmenu/menu")]]
   }
@@ -34,7 +34,7 @@ function closeWithCb(cb) {
 function textButton(text, onClick) {
   let stateFlags = Watched(0)
   return function() {
-    let sf = stateFlags.value
+    let sf = stateFlags.get()
     return {
       watch = stateFlags
       rendObj = ROBJ_SOLID
@@ -47,7 +47,7 @@ function textButton(text, onClick) {
       sound = {
         click  = "choose"
       }
-      onElemState = @(s) stateFlags(s)
+      onElemState = @(s) stateFlags.set(s)
       color = sf & S_HOVER ? Color(200, 200, 200) : Color(0, 0, 0, 0)
       children = {
         rendObj = ROBJ_TEXT

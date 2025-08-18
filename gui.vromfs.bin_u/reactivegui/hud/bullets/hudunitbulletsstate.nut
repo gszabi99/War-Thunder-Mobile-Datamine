@@ -29,26 +29,26 @@ let bulletsInfoSec = Computed(function() {
 let isSecondaryBulletsSame = Computed(function() {
   if ((playerUnitName.get() ?? "") == "" || bulletsInfo.get() == null || bulletsInfoSec.get() == null)
     return false
-  let secondaryOrder = loadUnitBulletsChoice(playerUnitName.value)?.commonWeapons.secondary.bulletsOrder
-  return secondaryOrder != null && isEqual(bulletsInfo.value.bulletsOrder, secondaryOrder)
+  let secondaryOrder = loadUnitBulletsChoice(playerUnitName.get())?.commonWeapons.secondary.bulletsOrder
+  return secondaryOrder != null && isEqual(bulletsInfo.get().bulletsOrder, secondaryOrder)
 })
 
 let bulletsNamePrim = Computed(function() {
-  let name = playerUnitName.value 
-  let upd = isUnitDelayed.value 
+  let name = playerUnitName.get() 
+  let upd = isUnitDelayed.get() 
   return array(3, TRIGGER_GROUP_PRIMARY).map(getBulletNameByType)
 })
 
 let bulletsNameSec = Computed(function() {
-  let name = playerUnitName.value 
-  let upd = isUnitDelayed.value 
+  let name = playerUnitName.get() 
+  let upd = isUnitDelayed.get() 
   return array(3, TRIGGER_GROUP_SECONDARY).map(getBulletNameByType)
 })
 
 let nextBulletName = Computed(@() bulletsNamePrim.get()?[nextBulletIdx.get()] ?? "")
 let currentBulletName = Computed(@() bulletsNamePrim.get()?[currentBulletIdxPrim.get()] ?? "")
-let mainBulletInfo = Computed(@() bulletsInfo.value?.bulletSets[bulletsNamePrim.get()[0]])
-let extraBulletInfo = Computed(@() bulletsInfo.value?.bulletSets[bulletsNamePrim.get()[1]])
+let mainBulletInfo = Computed(@() bulletsInfo.get()?.bulletSets[bulletsNamePrim.get()[0]])
+let extraBulletInfo = Computed(@() bulletsInfo.get()?.bulletSets[bulletsNamePrim.get()[1]])
 
 let mkUpdateBulletsCount = @(trigger, watch) function updateBulletsCount() {
   let newVal = array(3, trigger).map(getBulletCountByType)
@@ -67,22 +67,22 @@ isUnitDelayed.subscribe(@(_) updateAllBulletsCount())
 eventbus_subscribe("onBulletsAmountChanged", @(_) updateAllBulletsCount())
 
 primaryAction.subscribe(function(_) {
-  currentBulletIdxPrim(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
-  nextBulletIdx(getNextBulletType(TRIGGER_GROUP_PRIMARY))
+  currentBulletIdxPrim.set(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
+  nextBulletIdx.set(getNextBulletType(TRIGGER_GROUP_PRIMARY))
   deferOnce(updateBulletsCountPrim)
 })
-secondaryAction.subscribe(@(_) currentBulletIdxSec(getCurrentBulletType(TRIGGER_GROUP_SECONDARY)))
+secondaryAction.subscribe(@(_) currentBulletIdxSec.set(getCurrentBulletType(TRIGGER_GROUP_SECONDARY)))
 
 let MAX_BULLETS = 2
 function toggleNextBullet() {
   for (local offset = 1; offset < MAX_BULLETS; offset++) {
-    let idx = (nextBulletIdx.value + offset) % MAX_BULLETS
+    let idx = (nextBulletIdx.get() + offset) % MAX_BULLETS
     if (getBulletCountByType(TRIGGER_GROUP_PRIMARY, idx) <= 0)
       continue
     changeBulletType(TRIGGER_GROUP_PRIMARY, idx)
-    if (isSecondaryBulletsSame.value)
+    if (isSecondaryBulletsSame.get())
       setTimeout(0.1, @() changeBulletType(TRIGGER_GROUP_SECONDARY, idx)) 
-    nextBulletIdx(idx)
+    nextBulletIdx.set(idx)
     return true
   }
   return false

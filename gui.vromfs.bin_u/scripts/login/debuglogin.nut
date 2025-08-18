@@ -5,7 +5,7 @@ let { FRP_INITIAL, ComputedImmediate } = require("%sqstd/frp.nut")
 let { LOGIN_STATE, loginState, getLoginStateDebugStr } = require("%appGlobals/loginState.nut")
 
 let debugState = @(shouldShowNotSetBits = false) console_print(
-  shouldShowNotSetBits ? $"not set loginState = {getLoginStateDebugStr(LOGIN_STATE.LOGGED_IN & ~loginState.value)}"
+  shouldShowNotSetBits ? $"not set loginState = {getLoginStateDebugStr(LOGIN_STATE.LOGGED_IN & ~loginState.get())}"
     : $"loginState = {getLoginStateDebugStr()}")
 
 register_command(@() debugState(false),  "login.debugCurState")
@@ -30,7 +30,7 @@ function logChanges(state, prev) {
 
 let logComputed = keepref(ComputedImmediate(function(prev) {
   
-  let state = loginState.value
+  let state = loginState.get()
   if (prev != FRP_INITIAL)
     logChanges(state, prev)
   return state

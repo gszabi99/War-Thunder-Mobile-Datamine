@@ -10,7 +10,7 @@ let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let newbieModeStats = require("newbieModeStats.nut")
+let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 
 
 function findFitGameMode(list, gameModes, stats, maxMRank) {
@@ -58,7 +58,7 @@ let randomBattleMode = Computed(function() {
   local modes = allGameModes.get().filter(@(m) m?.displayType == "random_battle")
   if (modes.len() == 0) 
     modes = allGameModes.get()
-  let campaign = curCampaign.value
+  let campaign = curCampaign.get()
   let campaign2 = getCampaignPresentation(campaign).campaign
   return modes.findvalue(@(m) m?.campaign == campaign)
     ?? modes.findvalue(@(m) m?.campaign == campaign2)
@@ -70,17 +70,17 @@ let benchmarkGameModes = Computed(@() allGameModes.get().filter(@(m) m?.displayT
 
 let debugModes = Computed(@() allGameModes.get().filter(@(m, id) m?.displayType != "random_battle"
   && m?.displayType != "separate_event"
-  && id not in benchmarkGameModes.value))
+  && id not in benchmarkGameModes.get()))
 
 let maxSquadSize = Computed(@() allGameModes.get().reduce(@(res, m) max(res, m?.maxSquadSize ?? m?.minSquadSize ?? 1), 1))
 
 register_command(
-  @() log("curRandomBattleModeName = ", randomBattleMode.value?.name)
+  @() log("curRandomBattleModeName = ", randomBattleMode.get()?.name)
   "debug.getCurRandomBattleModeName")
 register_command(
   function(idx) {
-    forceNewbieModeIdx(idx)
-    log("curRandomBattleModeName = ", randomBattleMode.value?.name)
+    forceNewbieModeIdx.set(idx)
+    log("curRandomBattleModeName = ", randomBattleMode.get()?.name)
   }
   "debug.forceNewbieModeIdx")
 register_command(

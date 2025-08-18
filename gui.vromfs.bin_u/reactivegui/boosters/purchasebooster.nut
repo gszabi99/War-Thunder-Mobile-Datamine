@@ -5,7 +5,7 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 
 function purchaseBooster(id, localizedName, bqInfo) {
-  if (boosterInProgress.value != null)
+  if (boosterInProgress.get() != null)
     return
 
   let booster = campConfigs.get()?.allBoosters[id]

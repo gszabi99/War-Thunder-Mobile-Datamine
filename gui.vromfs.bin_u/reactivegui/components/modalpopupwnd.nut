@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
+let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let POPUP_PARAMS = {

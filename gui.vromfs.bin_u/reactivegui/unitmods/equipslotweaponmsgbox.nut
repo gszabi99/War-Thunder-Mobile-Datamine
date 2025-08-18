@@ -2,10 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { curSlotIdx, curWeapon, equippedWeaponsBySlots, equipCurWeapon, equipWeaponListWithMirrors
-  mirrorIdx, equipCurWeaponToWings, curUnit } = require("unitModsSlotsState.nut")
+  mirrorIdx, equipCurWeaponToWings, curUnit } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { getWeaponFullName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkSlotWeaponDesc } = require("unitModsSlotsDesc.nut")
+let { mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
 let { markTextColor, warningTextColor, textColor } = require("%rGui/style/stdColors.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { weaponSize, imgSize} = require("%rGui/respawn/respawnComps.nut")

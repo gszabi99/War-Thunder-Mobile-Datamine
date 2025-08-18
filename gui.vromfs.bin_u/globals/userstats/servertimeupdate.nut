@@ -5,8 +5,8 @@ let { gameStartServerTimeMsec, lastReceivedServerTime } = require("%appGlobals/u
 function serverTimeUpdate(timestampMsec, requestTimeMsec) {
   if (timestampMsec <= 0)
     return
-  gameStartServerTimeMsec(timestampMsec - (3 * get_time_msec() - requestTimeMsec) / 2)
-  lastReceivedServerTime(timestampMsec / 1000)
+  gameStartServerTimeMsec.set(timestampMsec - (3 * get_time_msec() - requestTimeMsec) / 2)
+  lastReceivedServerTime.set(timestampMsec / 1000)
 }
 
 return serverTimeUpdate

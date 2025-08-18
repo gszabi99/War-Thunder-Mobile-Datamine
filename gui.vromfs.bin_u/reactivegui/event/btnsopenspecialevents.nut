@@ -31,7 +31,7 @@ function btnsOpenSpecialEvents() {
         hplace = ALIGN_RIGHT
         pos = [hdpx(4), hdpx(-4)]
         children = (unseenLootboxes.get()?[evt.eventName].len() ?? 0) > 0
-          || unseenLootboxesShowOnce.value.findindex(@(l) l == evt.eventName) != null
+          || unseenLootboxesShowOnce.get().findindex(@(l) l == evt.eventName) != null
               ? priorityUnseenMark
             : null
       }
@@ -42,7 +42,7 @@ function btnsOpenSpecialEvents() {
       @() openQuestsWndOnTab(evt.eventId)
       @(_) statusMark(evt.eventId)
     )))
-  gmEventsList.get().each(function(id) {
+  gmEventsList.get().keys().each(function(id) {
     if (canOpenGmEventWnd(id, hasFinishedFirstBattle.get()))
       children.append(translucentButton(gmEventPresentation(id).image,
       "",

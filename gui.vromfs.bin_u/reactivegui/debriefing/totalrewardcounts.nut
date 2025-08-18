@@ -9,7 +9,7 @@ let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/c
 let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
 let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitsSet, getUnitRewards, getSlotExpByUnit
-} = require("debrUtils.nut")
+} = require("%rGui/debriefing/debrUtils.nut")
 
 let REWARDS_SCORES = "wp"
 let REWARDS_CAMPAIGN = "campaign"

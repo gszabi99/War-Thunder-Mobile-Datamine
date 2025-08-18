@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { fabs } = require("math")
-let { capZones, capZonesCount } = require("capZonesState.nut")
+let { capZones, capZonesCount } = require("%rGui/hud/capZones/capZonesState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { ECT_CAPTURE_INDIVIDUAL } = require("guiMission")
@@ -43,14 +43,14 @@ function mkCapZone(idx, zoneSize) {
   let zone = Computed(@() capZones.get()?[idx])
   return function() {
     local res = { watch = [zone, localMPlayerTeam] }
-    if (zone.value == null)
+    if (zone.get() == null)
       return res
-    let { iconIdx, watchedHeroInZone } = zone.value
-    let isProgressMarker = watchedHeroInZone && zone.value.hasProgressMarker
-    if (!(zone.value.hasGeneralMarkers || isProgressMarker))
+    let { iconIdx, watchedHeroInZone } = zone.get()
+    let isProgressMarker = watchedHeroInZone && zone.get().hasProgressMarker
+    if (!(zone.get().hasGeneralMarkers || isProgressMarker))
       return res
     res.__update(
-      capZoneCtr(zone.value).__update({
+      capZoneCtr(zone.get()).__update({
         size = [zoneSize, zoneSize]
         image = getZoneIcon(iconIdx, zoneSize * bigZoneMul)
         transform = {
@@ -67,7 +67,7 @@ function capZonesList(scale) {
   return @() {
     key = "capture_zones"
     watch = capZonesCount
-    size = capZonesCount.value > 0 ? [SIZE_TO_CONTENT, zoneSize * bigZoneMul] : null
+    size = capZonesCount.get() > 0 ? [SIZE_TO_CONTENT, zoneSize * bigZoneMul] : null
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = array(capZonesCount.get()).map(@(_, i) mkCapZone(i, zoneSize))

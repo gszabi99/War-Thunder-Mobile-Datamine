@@ -3,32 +3,32 @@ let { setInterval, clearTimer, resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox, leftArrowPos, rightArrowPos
-} = require("tutorialWnd/tutorialUtils.nut")
-let { pointerArrow } = require("tutorialWnd/tutorialWndDefStyle.nut")
+} = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
+let { pointerArrow } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { register_command } = require("console")
-let { elements, sizeIncDef } = require("hudElementsCfg.nut")
+let { elements, sizeIncDef } = require("%rGui/tutorial/hudElementsCfg.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let isHudPointersAtached = Watched(false)
 let activeIds = mkWatched(persist, "activeIds", {})
-let nextExpire = keepref(Computed(@() activeIds.value.reduce(@(res, v) res == 0 ? v : min(res, v), 0)))
+let nextExpire = keepref(Computed(@() activeIds.get().reduce(@(res, v) res == 0 ? v : min(res, v), 0)))
 
-let curElements = Computed(@() activeIds.value.map(@(_, id) elements?[id])
+let curElements = Computed(@() activeIds.get().map(@(_, id) elements?[id])
   .filter(@(v) v != null))
 
-let isActive = Computed(@() isHudPointersAtached.value && curElements.value.len() > 0)
-let updateInterval = keepref(Computed(@() isActive.value ? 0.5 : 0))
+let isActive = Computed(@() isHudPointersAtached.get() && curElements.get().len() > 0)
+let updateInterval = keepref(Computed(@() isActive.get() ? 0.5 : 0))
 let curBoxes = Watched([])
 
-isInBattle.subscribe(@(_) activeIds({}))
+isInBattle.subscribe(@(_) activeIds.set({}))
 
 function updateExpires() {
-  if (activeIds.value.len() == 0)
+  if (activeIds.get().len() == 0)
     return
   let time = get_time_msec()
-  let newActive = activeIds.value.filter(@(t) t - time > 100)
-  if (newActive.len() != activeIds.value.len())
-    activeIds(newActive)
+  let newActive = activeIds.get().filter(@(t) t - time > 100)
+  if (newActive.len() != activeIds.get().len())
+    activeIds.set(newActive)
 }
 updateExpires()
 
@@ -41,7 +41,7 @@ startExpireTimer(nextExpire.value)
 
 function updateCurBoxes() {
   let boxes = []
-  foreach (key, configs in curElements.value)
+  foreach (key, configs in curElements.get())
     foreach (cfg in configs) {
       let { sizeInc = sizeIncDef, objs = null } = cfg
       local box = getBox(objs ?? cfg) 
@@ -55,8 +55,8 @@ function updateCurBoxes() {
       boxes.append(type(cfg) == "table" ? cfg.__merge(box) : box)
     }
 
-  if (!isEqual(curBoxes.value, boxes))
-    curBoxes(boxes)
+  if (!isEqual(curBoxes.get(), boxes))
+    curBoxes.set(boxes)
 }
 curElements.subscribe(@(_) updateCurBoxes())
 
@@ -111,9 +111,9 @@ let hudElementPointers = @() {
   watch = curBoxes
   key = pointersKey
   size = flex()
-  onAttach = @() isHudPointersAtached(true)
-  onDetach = @() isHudPointersAtached(false)
-  children = mkArrows(curBoxes.value)
+  onAttach = @() isHudPointersAtached.set(true)
+  onDetach = @() isHudPointersAtached.set(false)
+  children = mkArrows(curBoxes.get())
 }
 
 function addHudElementPointer(id, time) {
@@ -129,7 +129,7 @@ function addHudElementPointer(id, time) {
 }
 
 function removeHudElementPointer(id) {
-  if (id in activeIds.value ) {
+  if (id in activeIds.get() ) {
     activeIds.mutate(@(v) v.$rawdelete(id))
     return
   }

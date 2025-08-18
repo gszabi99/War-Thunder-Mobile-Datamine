@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { optionWidth } = require("hudTuningConsts.nut")
+let { optionWidth } = require("%rGui/hudTuning/hudTuningConsts.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { sliderWithButtons, sliderValueSound, sliderH, sliderBtnSize, sliderGap
 } = require("%rGui/components/slider.nut")

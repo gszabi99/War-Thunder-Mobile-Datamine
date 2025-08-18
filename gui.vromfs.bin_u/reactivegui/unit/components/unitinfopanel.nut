@@ -9,7 +9,7 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
   avgShellPenetrationMmByRank, addedFromSlot } = require("%rGui/unit/unitStats.nut")
 let { attrPresets, hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
-let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
+let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("%rGui/unit/components/unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgByCampaignOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
@@ -443,8 +443,8 @@ let getAttrLevels = @(unit) campConfigs.get()?.campaignCfg?.slotAttrPreset != ""
     : unit?.attrLevels ?? {}
 
 let getAttrPreset = @(unit) hasSlotAttrPreset.get()
-  ? attrPresets.value?[campConfigs.get()?.campaignCfg?.slotAttrPreset]
-  : attrPresets.value?[unit?.attrPreset]
+  ? attrPresets.get()?[campConfigs.get()?.campaignCfg?.slotAttrPreset]
+  : attrPresets.get()?[unit?.attrPreset]
 
 let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
 let notNumericToZero = @(v) isNumeric(v) ? v : 0
@@ -476,7 +476,7 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
         unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
           ? null
-          : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+          : unitRewardsBlock(unit.value.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium
           ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
@@ -530,7 +530,7 @@ let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
               unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
               unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
                 ? null
-                : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+                : unitRewardsBlock(unit.value.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
                   { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
               unit.get()?.isUpgraded || unit.get()?.isPremium
                 ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)

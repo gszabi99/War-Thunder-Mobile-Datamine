@@ -107,6 +107,6 @@ let legalWnd = bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-if (isOpenedLegalWnd.value)
+if (isOpenedLegalWnd.get())
   addModalWindow(legalWnd)
 isOpenedLegalWnd.subscribe(@(v) v ? addModalWindow(legalWnd) : removeModalWindow(WND_UID))

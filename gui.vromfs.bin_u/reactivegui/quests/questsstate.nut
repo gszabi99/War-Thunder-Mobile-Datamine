@@ -32,25 +32,25 @@ let SPEED_UP_AD_COST = 1
 let seenQuests = mkWatched(persist, SEEN_QUESTS, {})
 let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
 let rewardsList = Watched(null)
-let isRewardsListOpen = Computed(@() rewardsList.value != null)
+let isRewardsListOpen = Computed(@() rewardsList.get() != null)
 let curTabId = Watched(null)
 let curTabParams = Watched({})
 
 let tutorialSectionId = Watched(null)
 let isSameTutorialSectionId = Watched(false)
 
-let openRewardsList = @(rewards) rewardsList(rewards)
-let closeRewardsList = @() rewardsList(null)
+let openRewardsList = @(rewards) rewardsList.set(rewards)
+let closeRewardsList = @() rewardsList.set(null)
 
 let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFIX, day)
 
-let inactiveEventUnlocks = Computed(@() allUnlocksDesc.value
-  .filter(@(u) u?.meta.event_day != null && !(unlockTables.value?[u?.table] ?? false))
-  .map(@(u, id) u.__merge(unlockProgress.value?[id] ?? {})))
+let inactiveEventUnlocks = Computed(@() allUnlocksDesc.get()
+  .filter(@(u) u?.meta.event_day != null && !(unlockTables.get()?[u?.table] ?? false))
+  .map(@(u, id) u.__merge(unlockProgress.get()?[id] ?? {})))
 
 let eventUnlocksByDays = Computed(function() {
   let days = {}
-  let unlocks = {}.__merge(campaignActiveUnlocks.value, inactiveEventUnlocks.value)
+  let unlocks = {}.__merge(campaignActiveUnlocks.get(), inactiveEventUnlocks.get())
   foreach (name, u in unlocks) {
     let { event_day = null, event_id = null } = u?.meta
     if (!event_id || !event_day)
@@ -86,7 +86,7 @@ let questsCfg = Computed(@() {
   [PROMO_TAB] = ["promo_quest"],
   [EVENT_TAB] = eventSections.get()?[EVENT_TAB].map(@(v) v.name) ?? [EVENT_TAB],
   [ACHIEVEMENTS_TAB] = ["achievement"],
-}.__merge(specialEvents.value.reduce(@(res, v)
+}.__merge(specialEvents.get().reduce(@(res, v)
     res.__update({ [v.eventId] = eventSections.get()?[v.eventName].map(@(q) q.name) ?? [v.eventName] }), {})))
 
 let sectionsCfg = Computed(function() {
@@ -173,7 +173,7 @@ function saveSeenQuests(ids) {
   })
   let sBlk = get_local_custom_settings_blk()
   let blk = sBlk.addBlock(SEEN_QUESTS)
-  foreach (id, isSeen in seenQuests.value)
+  foreach (id, isSeen in seenQuests.get())
     if (isSeen)
       blk[id] = true
   eventbus_send("saveProfile", {})
@@ -185,36 +185,36 @@ function loadSeenQuests() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_QUESTS]
   if (!isDataBlock(htBlk)) {
-    seenQuests({})
+    seenQuests.set({})
     return
   }
   let res = {}
   eachParam(htBlk, @(isSeen, id) res[id] <- isSeen)
-  seenQuests(res)
+  seenQuests.set(res)
 }
 
-if (seenQuests.value.len() == 0)
+if (seenQuests.get().len() == 0)
   loadSeenQuests()
 
 isSettingsAvailable.subscribe(@(_) loadSeenQuests())
 
-let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
+let hasUnseenQuestsBySection = Computed(@() questsBySection.get().map(@(quests)
   null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && (id not in seenQuests.get() || v.hasReward))))
 
-let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.value?[sectionId] ? null
-  : saveSeenQuests(questsBySection.value?[sectionId].filter(@(v) !v.hasReward).keys())
+let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.get()?[sectionId] ? null
+  : saveSeenQuests(questsBySection.get()?[sectionId].filter(@(v) !v.hasReward).keys())
 
 function openQuestsWnd() {
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
   }
-  isQuestsOpen(true)
+  isQuestsOpen.set(true)
 }
 
 function openQuestsWndOnTab(tabId) {
-  isQuestsOpen(false)
-  curTabId(tabId)
+  isQuestsOpen.set(false)
+  curTabId.set(tabId)
   openQuestsWnd()
 }
 
@@ -253,7 +253,7 @@ eventbus_subscribe("adsRewardApply", function(data) {
 })
 
 register_command(function() {
-  seenQuests({})
+  seenQuests.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_QUESTS)
   eventbus_send("saveProfile", {})
 }, "debug.reset_seen_quests")

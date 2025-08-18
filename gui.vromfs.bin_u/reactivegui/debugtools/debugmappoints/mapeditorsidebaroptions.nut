@@ -2,11 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { isSidebarOptionsOpen, loadPreset, createPresetsByUnlocks, hasEventUnlocks
   presetMapSize, currentPresetId, savedPresets, addOrEditPreset, deletePreset
   presetBackground, isCurPresetChanged, saveCurrentPreset
-} = require("mapEditorState.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { removeModalWindow, addModalWindowWithHeader } = require("%rGui/components/modalWindows.nut")
-let { optionsBtnGap, btnBgColorDefault, optionBtnSize, btnBgColorNegative, btnBgColorPositive } = require("mapEditorConsts.nut")
-let { mkOptionBtn, mkTextOptionBtn, mkTextInputField, mkText, modalBg } = require("mapEditorComps.nut")
+let { optionsBtnGap, btnBgColorDefault, optionBtnSize, btnBgColorNegative, btnBgColorPositive } = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
+let { mkOptionBtn, mkTextOptionBtn, mkTextInputField, mkText, modalBg } = require("%rGui/debugTools/debugMapPoints/mapEditorComps.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 

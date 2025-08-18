@@ -14,14 +14,13 @@ let { hudUnitType, playerUnitName } = require("%rGui/hudState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { actionBarItems, updateActionBarDelayed, primaryAction, secondaryAction, actionItemsInCd
 } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { mkCircleProgressBg, mkBtnBorder, mkBtnImage, mkCircleGlare } = require("circleTouchHudButtons.nut")
-let { defShortcutOvr }  = require("hudButtonsPkg.nut")
-let { isAvailableActionItem } = require("actionButtonComps.nut")
+let { mkBigCircleBtnEditView, mkCircleProgressBg, mkBtnBorder, mkBtnImage, mkCircleGlare } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
+let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
+let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { borderColorPushed, borderNoAmmoColor, borderColor, btnBgColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletIdxPrim, currentBulletIdxSec, bulletsInfo, bulletsInfoSec, bulletsNamePrim, bulletsNameSec
 } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { mkBigCircleBtnEditView } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { isBulletsRight } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 

@@ -5,9 +5,9 @@ let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
 let previewLootboxId = mkWatched(persist, "previewLootboxId", null)
-let previewLootbox = Computed(@() serverConfigs.get()?.lootboxesCfg?[previewLootboxId.value])
+let previewLootbox = Computed(@() serverConfigs.get()?.lootboxesCfg?[previewLootboxId.get()])
 let eventWndLootboxId = mkWatched(persist, "eventWndLootboxId", null)
-let eventWndLootbox = Computed(@() serverConfigs.get()?.lootboxesCfg?[eventWndLootboxId.value])
+let eventWndLootbox = Computed(@() serverConfigs.get()?.lootboxesCfg?[eventWndLootboxId.get()])
 
 function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { rewardsCfg = null } = sConfigs

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { Contact } = require("%rGui/contacts/contact.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { markRead, onNotifyRemove, onNotifyApply } = require("invitationsState.nut")
+let { markRead, onNotifyRemove, onNotifyApply } = require("%rGui/invitations/invitationsState.nut")
 let { darkenBgColor, borderWidth, rowHeight, gap,
   contactNameBlock, contactAvatar, contactLevelBlock
 } = require("%rGui/contacts/contactInfoPkg.nut")
@@ -28,7 +28,7 @@ function mkTimeMark(notify) {
     watch = timeText
     rendObj = ROBJ_TEXT
     color = 0xFF808080
-    text = timeText.value
+    text = timeText.get()
     hplace = ALIGN_RIGHT
   }.__update(fontVeryTiny)
 }

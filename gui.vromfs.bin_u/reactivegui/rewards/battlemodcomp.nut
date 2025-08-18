@@ -45,7 +45,7 @@ let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {
 }
 
 function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots = 1) {
-  let eventEndsAt = Computed(@() allSpecialEvents.value.findvalue(@(event) event.eventName == battleMod.eventId)?.endsAt ?? -1)
+  let eventEndsAt = Computed(@() allSpecialEvents.get().findvalue(@(event) event.eventName == battleMod.eventId)?.endsAt ?? -1)
   let unit = battleMod.unitCtor()
 
   return @() {

@@ -42,13 +42,13 @@ function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
   let aTypesList = configsList.map(@(c) c.actionType)
   return {
     function ctor(scale) {
-      let aType = Computed(@() aTypesList.findvalue(@(t) t in actionBarItems.value) ?? aTypesList[0])
-      let action = Computed(@() actionBarItems.value?[aType.value])
-      let configW = Computed(@() configsList.findvalue(@(c) c.actionType == aType.value))
+      let aType = Computed(@() aTypesList.findvalue(@(t) t in actionBarItems.get()) ?? aTypesList[0])
+      let action = Computed(@() actionBarItems.get()?[aType.get()])
+      let configW = Computed(@() configsList.findvalue(@(c) c.actionType == aType.get()))
       return @() {
         watch = [action, configW]
-        children = action.value == null ? null
-          : weaponsButtonsView[configW.value.mkButtonFunction](configW.value, action.value, scale)
+        children = action.get() == null ? null
+          : weaponsButtonsView[configW.get().mkButtonFunction](configW.get(), action.get(), scale)
       }
     }
     editView = mkActionItemEditView(configsList[0].getImage(unitType))
@@ -58,16 +58,16 @@ function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
 
 let weaponryButtonDynamicCtor = @(idx, cfg) {
   function ctor(scale) {
-    let currentWeapon = Computed(@() visibleWeaponsDynamic.value?[idx])
-    let actionItem = Computed(@() currentWeapon.value?.actionItem)
-    let buttonConfig = Computed(@() currentWeapon.value?.buttonConfig)
-    let isVisibleInHudMode = Computed(@()(currentWeapon.value?.hudMode ?? HM_COMMON) & hudMode.value)
+    let currentWeapon = Computed(@() visibleWeaponsDynamic.get()?[idx])
+    let actionItem = Computed(@() currentWeapon.get()?.actionItem)
+    let buttonConfig = Computed(@() currentWeapon.get()?.buttonConfig)
+    let isVisibleInHudMode = Computed(@()(currentWeapon.get()?.hudMode ?? HM_COMMON) & hudMode.get())
     return @() {
       watch = [currentWeapon, actionItem, buttonConfig, isVisibleInHudMode]
-      children = !currentWeapon.value || !isVisibleInHudMode.value ? null
+      children = !currentWeapon.get() || !isVisibleInHudMode.get() ? null
         : weaponsButtonsView?[
-            buttonConfig.value?.mkButtonFunction ?? weaponsButtonsConfig?[currentWeapon.value?.id]?.mkButtonFunction
-          ] (buttonConfig.value ?? weaponsButtonsConfig?[currentWeapon.value?.id], actionItem.value, scale)
+            buttonConfig.get()?.mkButtonFunction ?? weaponsButtonsConfig?[currentWeapon.get()?.id]?.mkButtonFunction
+          ] (buttonConfig.get() ?? weaponsButtonsConfig?[currentWeapon.get()?.id], actionItem.get(), scale)
     }
   }
 }.__update({

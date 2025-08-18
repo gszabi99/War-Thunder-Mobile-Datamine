@@ -6,18 +6,18 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("platformGoods.nut")
+let { platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("%rGui/shop/platformGoods.nut")
 let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { activeOffers, curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { PURCHASING, DELAYED } = require("goodsStates.nut")
-let { getGoodsType } = require("shopCommon.nut")
+let { PURCHASING, DELAYED } = require("%rGui/shop/goodsStates.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 
 
 const REQUEST_TIMEOUT_MSEC = 300000 
 
 let attachedOfferPromo = Watched({})
 let blockRequestMsec = hardPersistWatched("offerState.lastOfferRequest", {})
-let isOfferPromoAttached = Computed(@() attachedOfferPromo.value.len() > 0)
+let isOfferPromoAttached = Computed(@() attachedOfferPromo.get().len() > 0)
 let isOfferOutdated = Watched(false)
 let nextOfferRequestInfo = keepref(Computed(function() {
   let campaign = isAnyCampaignSelected.get() ? curCampaign.get() : ""
@@ -79,17 +79,17 @@ let addGType = @(offer) offer == null ? null : offer.__merge({ gtype = getGoodsT
 let prevIfEqual = @(prev, new) isEqual(prev, new) ? prev : new
 let activeOffer = Computed(@(prev) prevIfEqual(prev,
   activeOffers.value == null ? null
-    : isGoodsOnlyInternalPurchase(activeOffers.value) ? addGType(activeOffers.value)
-    : addGType(platformOffer.value)))
-let visibleOffer = Computed(@() isOfferOutdated.value ? null : activeOffer.value)
+    : isGoodsOnlyInternalPurchase(activeOffers.get()) ? addGType(activeOffers.get())
+    : addGType(platformOffer.get())))
+let visibleOffer = Computed(@() isOfferOutdated.get() ? null : activeOffer.get())
 
 let offerPurchasingState = Computed(function() {
   local res = 0
-  let goods = activeOffers.value
+  let goods = activeOffers.get()
   if (goods == null)
     return 0
-  let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.value
-    : platformPurchaseInProgress.value
+  let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.get()
+    : platformPurchaseInProgress.get()
   if (idInProgress != null) {
     res = res | DELAYED
     if (idInProgress == goods.id)
@@ -104,6 +104,6 @@ return {
   offerPurchasingState
 
   onOfferPromoAttach = @(key) attachedOfferPromo.mutate(@(v) v.__update({ [key]  = true }))
-  onOfferPromoDetach = @(key) key not in attachedOfferPromo.value ? null
+  onOfferPromoDetach = @(key) key not in attachedOfferPromo.get() ? null
     : attachedOfferPromo.mutate(@(v) v.$rawdelete(key))
 }

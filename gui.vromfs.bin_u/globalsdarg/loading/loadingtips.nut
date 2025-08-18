@@ -19,7 +19,7 @@ let curTipInfo = mkWatched(persist, "curTipInfo", { locId = "", unitType = "", u
 let curUnitTypeWeights = mkWatched(persist, "curUnitTypeWeights", null)
 let isUpdatesEnabled = Watched(false)
 let lastTipTimeMsec = mkWatched(persist, "lastTipTimeMsec", 0)
-let nextTipTimeMsec = Computed(@() isUpdatesEnabled.value ? lastTipTimeMsec.value + TIP_LIFE_TIME_MSEC : 0)
+let nextTipTimeMsec = Computed(@() isUpdatesEnabled.get() ? lastTipTimeMsec.get() + TIP_LIFE_TIME_MSEC : 0)
 
 let unitTypeRemap = {
   [AIR] = "aircraft"
@@ -109,9 +109,9 @@ function genNewTip(unitTypeWeights, prevTipInfo) {
 }
 
 function updateCurTip() {
-  let tip = genNewTip(curUnitTypeWeights.value, curTipInfo.value)
-  curTipInfo(tip)
-  lastTipTimeMsec(get_time_msec())
+  let tip = genNewTip(curUnitTypeWeights.get(), curTipInfo.get())
+  curTipInfo.set(tip)
+  lastTipTimeMsec.set(get_time_msec())
 }
 
 nextTipTimeMsec.subscribe(@(v) v > 0 ? resetTimeout(max(0.01, 0.001 * (v - get_time_msec())), updateCurTip)
@@ -120,16 +120,16 @@ nextTipTimeMsec.subscribe(@(v) v > 0 ? resetTimeout(max(0.01, 0.001 * (v - get_t
 function enableTipsUpdate(unitTypeWeights = null) {
   loadTipsOnce()
   unitTypeWeights = unitTypeWeights ?? tipsLocId.map(@(_) 1.0)
-  if (!isEqual(curUnitTypeWeights.value, unitTypeWeights) || curTipInfo.value.locId == "") {
-    curUnitTypeWeights(unitTypeWeights)
+  if (!isEqual(curUnitTypeWeights.get(), unitTypeWeights) || curTipInfo.get().locId == "") {
+    curUnitTypeWeights.set(unitTypeWeights)
     updateCurTip()
   }
-  isUpdatesEnabled(true)
-  if (nextTipTimeMsec.value < get_time_msec())
+  isUpdatesEnabled.set(true)
+  if (nextTipTimeMsec.get() < get_time_msec())
     updateCurTip()
 }
 
-let disableTipsUpdate = @() isUpdatesEnabled(false)
+let disableTipsUpdate = @() isUpdatesEnabled.set(false)
 
 function getAllTips() {
   loadTipsOnce()

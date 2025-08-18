@@ -5,7 +5,7 @@ let io = require("io")
 let { object_to_json_string } = require("json")
 let { register_command } = require("console")
 let logBD = log_with_prefix("[HANGAR_BATTLE_DATA] ")
-let { mainHangarUnit } = require("hangarUnit.nut")
+let { mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
@@ -22,7 +22,7 @@ function setBattleDataToClientEcs(bd) {
     return
   local isFound = false
   battleDataQuery(function(_, c) {
-    if (c.server_player__userId != myUserId.value)
+    if (c.server_player__userId != myUserId.get())
       return
     logBD("Set battle data to client entity")
     c.hangarBattleData = bd
@@ -34,7 +34,7 @@ function setBattleDataToClientEcs(bd) {
 
   ecs.g_entity_mgr.createEntity("hangar_battle_data",
     {
-      server_player__userId = [myUserId.value, ecs.TYPE_UINT64]
+      server_player__userId = [myUserId.get(), ecs.TYPE_UINT64]
       isBattleDataReceived = true
       hangarBattleData = bd
     }, @(_e) logBD("Created wtm_server_player with battle data."))

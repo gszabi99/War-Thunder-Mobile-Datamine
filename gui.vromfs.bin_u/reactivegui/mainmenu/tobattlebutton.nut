@@ -41,32 +41,40 @@ let battleBtnOvr = {
   ovr = commonOvr
   hotkeys = hotkeyX
 }
-let battleBtnPenaltyOvr = @(campaign, ovr) {
-  ovr = commonOvr.__merge({ children = penaltyTimerIcon(campaign) })
+let battleBtnPenaltyOvr = @(campaign, missionName, ovr) {
+  ovr = commonOvr.__merge({ children = penaltyTimerIcon(campaign, missionName) })
   hotkeys = hotkeyX
 }.__update(ovr)
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
 
-let isNeedToDownloadAddonsForBattle = Computed(@()
-  getModeAddonsInfo(
-    randomBattleMode.get(),
-    allBattleUnits.get(),
-    serverConfigs.get(),
-    hasAddons.get(),
-    addonsExistInGameFolder.get(),
-    addonsVersions.get()
-  ).addonsToDownload.len() > 0
+let mkNeedToDownloadAddonsForBattle = @(battleMode) Computed(@() battleMode.get() != null
+  && getModeAddonsInfo(
+      battleMode.get(),
+      allBattleUnits.get(),
+      serverConfigs.get(),
+      hasAddons.get(),
+      addonsExistInGameFolder.get(),
+      addonsVersions.get()
+    ).addonsToDownload.len() > 0
 )
+
+let isNeedToDownloadAddonsForBattle = mkNeedToDownloadAddonsForBattle(randomBattleMode)
 let isNeedToDownloadAddonsForOfflineBattle = Computed(@()
   !curUnit.get()?.name || !curUnit.get()?.mRank ? false
     : getCampaignPkgsForNewbieSingle(curCampaign.get(), curUnit.get()?.mRank, [curUnit.get()?.name]).filter(@(v) !hasAddons.get()?[v]).len() > 0)
 
-let mkToBattleButton = @(toBattleFunc, campaign = null, ovr = {}) @() {
-  watch = isNeedToDownloadAddonsForBattle
-  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(
-    toBattleText,
-    toBattleFunc,
-    battleBtnPenaltyOvr(campaign, ovr))
+function mkToBattleButton(toBattleFunc, campaign = null, battleMode = null, ovr = {}) {
+  let needToDownloadAddons = battleMode == null ? isNeedToDownloadAddonsForBattle
+    : mkNeedToDownloadAddonsForBattle(battleMode)
+  let missionName = battleMode == null ? Watched("")
+    : Computed(@() battleMode.get()?.mission_decl.missions_list.findindex(@(_) true) ?? battleMode.get()?.name ?? "")
+  return @() {
+    watch = [needToDownloadAddons, missionName]
+    children = (needToDownloadAddons.get() ? textButtonCommon : textButtonBattle)(
+      toBattleText,
+      toBattleFunc,
+      battleBtnPenaltyOvr(campaign, missionName.get(), ovr))
+  }
 }
 
 function toRandomBattle() {
@@ -169,14 +177,13 @@ let toBattleButtonForRandomBattles = @() {
     : textButtonCommon(toBattleText, @() openMsgBox({ text = loc("msg/noGameModes") }), { hotkeys = hotkeyX })
 }
 
-let function mkToBattleButtonWithSquadManagement(toBattleFunc, toSquadBattleFunc = null) {
-  let toBattleButton = mkToBattleButton(toBattleFunc)
-  let toSquadBattleButton = toSquadBattleFunc != null ? mkToBattleButton(toSquadBattleFunc) : toBattleButton
+function mkToBattleButtonWithSquadManagement(toBattleFunc, battleMode = null) {
+  let toBattleButton = mkToBattleButton(toBattleFunc, null, battleMode)
   return @() {
     watch = [ needReadyCheckButton, isReadyCheckSuspended, isSquadLeader, isInSquad, isReady ]
     children = needReadyCheckButton.get() && isReadyCheckSuspended.get() ? readyCheckButtonInactive
       : needReadyCheckButton.get() ? readyCheckButton
-      : isSquadLeader.get() ? toSquadBattleButton
+      : isSquadLeader.get() ? toBattleButton
       : isInSquad.get() && !isReady.get() ? readyButton
       : isInSquad.get() && isReady.get() ? notReadyButton
       : toBattleButton

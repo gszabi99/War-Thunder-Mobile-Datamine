@@ -11,9 +11,9 @@ let { onlineBattlesCountForSession } = require("%rGui/onlineBattleCountState.nut
 let { registerAutoDownloadAddons } = require("%rGui/updater/updaterState.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { openGoodsPreviewInMenuOnly, getAddonsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
-let { featureGoodsToShow } = require("goodsAutoPreview.nut")
-let { offerToShow, offerShowedTime } = require("offerAutoPreview.nut")
-let { offersByGoodsToShow, offersByGoodsShowedState, showInRow } = require("offerByGoodsAutoPreview.nut")
+let { featureGoodsToShow } = require("%rGui/shop/goodsAutoPreview.nut")
+let { offerToShow, offerShowedTime } = require("%rGui/shop/offerAutoPreview.nut")
+let { offersByGoodsToShow, offersByGoodsShowedState, showInRow } = require("%rGui/shop/offerByGoodsAutoPreview.nut")
 
 
 let goodsToShowCfgIdx = Watched(null)
@@ -42,7 +42,8 @@ let previewCfg = [
     getGoods = @() offersByGoodsToShow.get()
   },
   {
-    cbOnPreview = @() sendOfferBqEvent("openInfoAutomatically", offerToShow.get().campaign),
+    cbOnPreview = @() offerToShow.get() == null ? null
+      : sendOfferBqEvent("openInfoAutomatically", offerToShow.get().campaign),
     priority = Computed(function() {
       let offer = offerToShow.get()
       let { allUnits = null } = serverConfigs.get()
@@ -53,7 +54,7 @@ let previewCfg = [
         : getAddonsToShowGoods(offer, allUnits, hasAddons.get()).len() > 0 ? 0
         : 3
     }),
-    getGoods = @() [offerToShow.get()]
+    getGoods = @() [offerToShow.get()].filter(@(v) v != null)
   },
   {
     priority = Computed(function() {

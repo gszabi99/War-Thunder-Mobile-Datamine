@@ -10,7 +10,7 @@ let { GO_WIN, GO_FAIL, GO_EARLY, GO_WAITING_FOR_RESULT, GO_NONE, MISSION_CAPTURI
 let { localMPlayerId, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { startMissionHintSeria, captureHintSeria } = require("missionNewbiesHints.nut")
+let { startMissionHintSeria, captureHintSeria } = require("%rGui/hudHints/missionNewbiesHints.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")

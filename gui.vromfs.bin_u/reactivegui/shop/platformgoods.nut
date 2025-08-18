@@ -9,17 +9,17 @@ let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPla
   platformPurchaseInProgress = Watched(null)
   changeSubscription = null 
   restorePurchases = null
-} = is_android && isHuaweiBuild ? require("byPlatform/goodsHuawei.nut")
-  : is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
-  : is_ios ? require("byPlatform/goodsIos.nut")
-  : is_nswitch ? require("byPlatform/goodsNSwitch.nut")
-  : require("byPlatform/goodsGaijin.nut")
-let { platformGoodsFromRussia = Watched(null) } = is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsGaijin.nut") : null
-let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("inAppPurchasesFromRussia.nut")
+} = is_android && isHuaweiBuild ? require("%rGui/shop/byPlatform/goodsHuawei.nut")
+  : is_android && isDownloadedFromGooglePlay() ? require("%rGui/shop/byPlatform/goodsAndroid.nut")
+  : is_ios ? require("%rGui/shop/byPlatform/goodsIos.nut")
+  : is_nswitch ? require("%rGui/shop/byPlatform/goodsNSwitch.nut")
+  : require("%rGui/shop/byPlatform/goodsGaijin.nut")
+let { platformGoodsFromRussia = Watched(null) } = is_android && isDownloadedFromGooglePlay() ? require("%rGui/shop/byPlatform/goodsGaijin.nut") : null
+let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("%rGui/shop/inAppPurchasesFromRussia.nut")
 let { has_payments_blocked_web_page, can_use_alternative_payment_ios_usa } = require("%appGlobals/permissions.nut")
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
-let goodsToPaySpecialWnd = require("platformGoodsSpecialWnd.nut")
+let goodsToPaySpecialWnd = require("%rGui/shop/platformGoodsSpecialWnd.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let listSpecialWndCountry = ["US"]

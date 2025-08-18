@@ -61,7 +61,7 @@ apendDbgRewards("unitUpgrade", [
 let dbgRewardsInfo = getRewardsViewInfo(dbgRewardsTbl).sort(sortRewardsViewInfo)
 
 let isOpened = mkWatched(persist, "isOpened", false)
-let close = @() isOpened(false)
+let close = @() isOpened.set(false)
 
 let opacityGradientSize = saBorders[1]
 let wndHeaderHeight = hdpx(60)
@@ -119,4 +119,4 @@ let mkDebugRewardPlateCompWnd = @() bgShaded.__merge({
 
 registerScene("debugRewardPlateCompWnd", mkDebugRewardPlateCompWnd, close, isOpened)
 
-register_command(@() isOpened(true), "ui.debug.reward_plate_comp")
+register_command(@() isOpened.set(true), "ui.debug.reward_plate_comp")

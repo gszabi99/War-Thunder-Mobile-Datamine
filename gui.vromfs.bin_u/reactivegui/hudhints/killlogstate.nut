@@ -7,7 +7,8 @@ let { get_mplayer_by_id } = require("mission")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
+let hudMessagesUnitTypesMap = require("%rGui/hudHints/hudMessagesUnitTypesMap.nut")
+let { isGtFFA } = require("%rGui/missionState.nut")
 
 let maxKillLogEvents = 5
 let state = require("%sqstd/mkEventLogState.nut")({
@@ -38,7 +39,7 @@ let getVictimUnitType = @(msg) hudMessagesUnitTypesMap?[msg.victimUnitType] ?? g
 let getUnitTypeSuffix = @(unitType) unitTypeSuffix?[unitType] ?? unitTypeSuffix[SHIP]
 
 let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
- : team == localMPlayerTeam.get() ? teamBlueLightColor
+ : team == localMPlayerTeam.get() && !isGtFFA.get() ? teamBlueLightColor
  : teamRedLightColor
 
 function getTargetName(player, unitNameLoc, team) {

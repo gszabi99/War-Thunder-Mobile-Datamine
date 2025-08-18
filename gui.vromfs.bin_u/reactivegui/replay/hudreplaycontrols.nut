@@ -13,11 +13,11 @@ let bltColorPressed = 0x4D4D4D4D
 let unitNameSize = hdpxi(600)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
-let watchedHero = Computed(@() get_mplayer_by_id(watchedHeroId.value))
-let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
+let watchedHero = Computed(@() get_mplayer_by_id(watchedHeroId.get()))
+let watchedHeroName = Computed(@() watchedHero.get() == null ? "" : watchedHero.get().name)
 let hasAncors = Watched(false)
 
-eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
+eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId.set(getSpectatorTargetId()))
 
 let namePlate = {
   children = [
@@ -27,7 +27,7 @@ let namePlate = {
       size = [unitNameSize, buttonSize]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      text = watchedHeroName.value
+      text = watchedHeroName.get()
       fontFxColor = 0xFF000000
     }.__update(fontMedium)
     {
@@ -47,7 +47,7 @@ function makeArrow(isLeft, shortcutId) {
     cameraControl = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onClick = @() toggleShortcut(shortcutId)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     children = @() {
       watch = stateFlags
       rendObj = ROBJ_IMAGE
@@ -57,7 +57,7 @@ function makeArrow(isLeft, shortcutId) {
       image = Picture($"ui/gameuiskin#hud_replay_switch_unit.svg:{buttonSize}:{buttonSize}")
       keepAspect = KEEP_ASPECT_FIT
       transform = { rotate = isLeft ? 0 : 180 }
-      color = stateFlags.value & S_ACTIVE ? bltColorPressed : btnColor
+      color = stateFlags.get() & S_ACTIVE ? bltColorPressed : btnColor
     }
   }
 }
@@ -91,7 +91,7 @@ function makeButton(label, shortcutId) {
     cameraControl = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onClick = @() toggleShortcut(shortcutId)
-    onElemState = @(v) stateFlags(v)
+    onElemState = @(v) stateFlags.set(v)
     children = [
       @() {
         watch = stateFlags
@@ -100,7 +100,7 @@ function makeButton(label, shortcutId) {
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         text = label
-        color = stateFlags.value & S_ACTIVE ? bltColorPressed : btnColor
+        color = stateFlags.get() & S_ACTIVE ? bltColorPressed : btnColor
       }.__update(fontMedium)
       @() {
         watch = stateFlags
@@ -109,7 +109,7 @@ function makeButton(label, shortcutId) {
         halign = ALIGN_RIGHT
         commands = [[VECTOR_POLY, 0, 0, 100, 0, 100, 100, 0, 100]]
         fillColor = 0x00000000
-        color = stateFlags.value & S_ACTIVE ? bltColorPressed : btnColor
+        color = stateFlags.get() & S_ACTIVE ? bltColorPressed : btnColor
       }
     ]
   }
@@ -150,9 +150,9 @@ let hudReplayControls = @() {
   function onAttach() {
     hasAncors(get_replay_anchors().len() > 0)
   }
-  children = isPlayingReplay.value
+  children = isPlayingReplay.get()
     ? [
-      hasAncors.value ? rewindControls : null
+      hasAncors.get() ? rewindControls : null
       heroControls
     ] : null
 }

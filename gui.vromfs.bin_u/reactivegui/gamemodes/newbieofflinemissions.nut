@@ -6,14 +6,14 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { endswith } = require("string")
 let logO = log_with_prefix("[OFFLINE_BATTLE] ")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, abTests } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let newbieModeStats = require("newbieModeStats.nut")
+let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { startOfflineBattle, startLocalMPBattle } = require("startOfflineMode.nut")
+let { startOfflineBattle, startLocalMPBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -25,27 +25,33 @@ let delayedRewards = hardPersistWatched("newbieOfflineMissions.delayedRewards", 
 let lastErrorTime = hardPersistWatched("newbieOfflineMissions.lastErrorTime", -1)
 let isRewardRequested = mkWatched(persist, "isRewardRequested", false)
 let curDelayedRewardId = Computed(function() {
-  let list = delayedRewards.value?[myUserId.value][curCampaign.value] ?? []
+  let list = delayedRewards.get()?[myUserId.get()][curCampaign.get()] ?? []
   return list?[list.len() - 1].rewardId ?? -1
 })
 let curProfileRewardId = Computed(@()
-  (campProfile.value?.lastReceivedFirstBattlesRewardIds[curCampaign.value] ?? -1))
-let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.value, curDelayedRewardId.value))
+  (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1))
+let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.get(), curDelayedRewardId.get()))
 let firstBattlesReward = Computed(@()
   serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()])
 
+let isDebugMode = hardPersistWatched("goodsAutoPreview.isDebugMode", false)
+let hasTankRestrictedOfflineMissionBase = Computed(@() (abTests.get()?.tankRestrictedOfflineMission ?? "false") == "true")
+let hasTankRestrictedOfflineMission = Computed(@() hasTankRestrictedOfflineMissionBase.get() != isDebugMode.get())
+
 let missionsList = Computed(function() {
-  let singleBattleCfg = newbieGameModesConfig?[curCampaign.value]
+  let singleBattleCfg = newbieGameModesConfig?[curCampaign.get()]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0
       && cfg.isFit(newbieModeStats.value, curUnit.get()?.mRank ?? 0))
-  let defaultMissions = singleBattleCfg?.offlineMissions
+  let defaultMissions = hasTankRestrictedOfflineMission.get() && singleBattleCfg?.abTestOfflineMissions
+    ? singleBattleCfg?.abTestOfflineMissions
+    : singleBattleCfg?.offlineMissions
 
   return defaultMissions
 })
 let newbieOfflineMissions = Computed(function() {
-  if (!firstBattlesReward.value?.allowOffline)
+  if (!firstBattlesReward.get()?.allowOffline)
     return null
-  let list = newbieGameModesConfig?[curCampaign.value]
+  let list = newbieGameModesConfig?[curCampaign.get()]
   if (list == null)
     return null
 
@@ -61,14 +67,14 @@ let newbieOfflineMissions = Computed(function() {
       return null
   }
 
-  return missionsList.value
+  return missionsList.get()
 })
 
 registerHandler("onNewbieOfflineMissionReward",
   function(res, context) {
-    isRewardRequested(false)
+    isRewardRequested.set(false)
     let { campaign, rewardId, userId } = context
-    let idx = delayedRewards.value?[userId][campaign].findindex(@(r) r.rewardId == rewardId)
+    let idx = delayedRewards.get()?[userId][campaign].findindex(@(r) r.rewardId == rewardId)
     if (idx == null) {
       logO($"Ignore reward {campaign}/{rewardId} callback cause not found in delayed")
       return
@@ -88,14 +94,14 @@ registerHandler("onNewbieOfflineMissionReward",
   })
 
 function tryApplyFirstBattleReward() {
-  if (isRewardRequested.value
-      || lastErrorTime.value + ERROR_REPEAT_TIME_MSEC / 2 > get_time_msec())
+  if (isRewardRequested.get()
+      || lastErrorTime.get() + ERROR_REPEAT_TIME_MSEC / 2 > get_time_msec())
     return
-  let rewards = delayedRewards.value?[myUserId.value] ?? {}
+  let rewards = delayedRewards.get()?[myUserId.get()] ?? {}
   if (rewards.len() == 0)
     return
 
-  local campaign = curCampaign.value
+  local campaign = curCampaign.get()
   local { rewardId = null, unitName = null, kills = 0 } = rewards?[campaign][0]
   if (rewardId == null)
     foreach(c, list in rewards)
@@ -108,9 +114,9 @@ function tryApplyFirstBattleReward() {
     return
 
   logO($"Request offline reward {campaign}/{rewardId} by battle result {unitName}")
-  isRewardRequested(true)
+  isRewardRequested.set(true)
   apply_first_battles_reward(campaign, unitName, rewardId, kills,
-    { id = "onNewbieOfflineMissionReward", campaign, unitName, rewardId, userId = myUserId.value })
+    { id = "onNewbieOfflineMissionReward", campaign, unitName, rewardId, userId = myUserId.get() })
 }
 delayedRewards.subscribe(@(_) tryApplyFirstBattleReward())
 
@@ -124,7 +130,7 @@ function restartErrorTimer(lastTime) {
   resetTimeout(0.001 * leftTime, tryApplyFirstBattleReward)
   return true
 }
-if (!restartErrorTimer(lastErrorTime.value))
+if (!restartErrorTimer(lastErrorTime.get()))
   tryApplyFirstBattleReward()
 lastErrorTime.subscribe(restartErrorTimer)
 myUserId.subscribe(function(_) {
@@ -135,10 +141,10 @@ myUserId.subscribe(function(_) {
 debriefingData.subscribe(function(data) {
   let { userId = null, campaign = null, predefinedId = null } = data
   
-  if (userId != myUserId.value || campaign == null || campaign != curCampaign.value || predefinedId != firstBattlesRewardId.value)
+  if (userId != myUserId.get() || campaign == null || campaign != curCampaign.get() || predefinedId != firstBattlesRewardId.get())
     return
   let unitName = data?.reward.unitName
-  let kills = data?.players[myUserId.value.tostring()].kills ?? 0
+  let kills = data?.players[myUserId.get().tostring()].kills ?? 0
   logO($"Queue offline reward {campaign}/{predefinedId} by battle result {unitName} (kills = {kills})")
   if (userId != null) {
     delayedRewards.mutate(function(dRewards) {
@@ -164,8 +170,8 @@ function mkCurRewardBattleData(reward, predefinedId, unit) {
   let expData = { baseExp, totalExp, premExp = totalExp - baseExp }
   let unitName = unit?.name ?? ""
   return {
-    campaign = curCampaign.value
-    userId = myUserId.value
+    campaign = curCampaign.get()
+    userId = myUserId.get()
     predefinedId
     player = { exp, level, nextLevelExp }
     reward = {
@@ -202,15 +208,15 @@ function startLocalMPMission(missions, reward, predefinedId) {
 }
 
 let startCurNewbieMission = @()
-  startNewbieMission(newbieOfflineMissions.value, firstBattlesReward.value, firstBattlesRewardId.value)
+  startNewbieMission(newbieOfflineMissions.get(), firstBattlesReward.get(), firstBattlesRewardId.get())
 let dbgCurrentNewbieMission = Computed(function() {
-  let { offlineMissions = [] } = newbieGameModesConfig?[curCampaign.value]
+  let { offlineMissions = [] } = newbieGameModesConfig?[curCampaign.get()]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0)
   return offlineMissions
 })
 let startDebugNewbieMission = @()
   startNewbieMission(
-    dbgCurrentNewbieMission.value
+    dbgCurrentNewbieMission.get()
     serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
     null
   )
@@ -225,6 +231,11 @@ let startLocalMultiplayerMission = function() {
 
 register_command(startDebugNewbieMission, "ui.startFirstBattlesOfflineMission")
 register_command(startLocalMultiplayerMission, "ui.startLocalMultiplayerMission")
+register_command(
+  function() {
+    isDebugMode.set(!isDebugMode.get())
+    console_print($"hasTankRestrictedOfflineMission = {hasTankRestrictedOfflineMission.get()}") 
+  }, "debug.toggleAbTest.restrictedMission")
 
 return {
   newbieOfflineMissions

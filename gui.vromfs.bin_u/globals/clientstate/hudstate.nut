@@ -12,7 +12,7 @@ let HUD_TYPE = {
 
 let curHudType = sharedWatched("curHudType", @() HUD_TYPE.HT_NONE)
 let debugHudType = sharedWatched("debugHudType", @() null)
-let viewHudType = Computed(@() debugHudType.value ?? curHudType.value)
+let viewHudType = Computed(@() debugHudType.get() ?? curHudType.get())
 
 return HUD_TYPE.__merge({
   curHudType

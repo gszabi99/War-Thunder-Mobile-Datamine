@@ -1,11 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openUnitModsWnd, modsCategories } = require("unitModsState.nut")
+let { unseenModsByCategory, openUnitModsWnd, modsCategories } = require("%rGui/unitMods/unitModsState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkCustomButton, buttonStyles, mergeStyles, textButtonUnseenMargin } = require("%rGui/components/textButton.nut")
-let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
-let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd, mkListUnseenMods } = require("unitModsSlotsState.nut")
+let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
 let arsenalIconSize = hdpxi(80)
 

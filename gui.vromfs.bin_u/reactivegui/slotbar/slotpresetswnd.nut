@@ -11,7 +11,7 @@ let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateSize } = require("slotBarConsts.nut")
+let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
 let { mkUnitBg, bgUnit, mkUnitImage, mkUnitTexts, mkUnitPlateBorder, mkUnitLock, mkUnitSelectedGlow
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { openEditTextWnd, closeEditTextWnd } = require("%rGui/components/editTextWnd.nut")
@@ -26,7 +26,7 @@ let { playerSelectedPresetIdx, playerSelectedSlotIdx, currentPresetName, savedSl
 } = require("%rGui/slotBar/slotPresetsState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBlocksContainer } = require("%rGui/components/verticalBlocks.nut")
-let { setSlots } = require("slotBarUpdater.nut")
+let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 
 
 let WND_UID = "SLOT_PRESET_WND"
@@ -222,7 +222,7 @@ let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
     size = unitPlateSize
     behavior = Behaviors.Button
     onClick
-    onElemState = @(s) stateFlags(s)
+    onElemState = @(s) stateFlags.set(s)
     clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click = "choose" }
     children = [

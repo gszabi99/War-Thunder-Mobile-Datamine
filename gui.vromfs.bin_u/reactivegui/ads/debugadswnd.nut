@@ -4,20 +4,20 @@ let { get_time_msec } = require("dagor.time")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { sin, cos, PI } = require("math")
 let { addDbgOverlay, removeDbgOverlay } = require("%rGui/components/debugOverlay.nut")
-let { debugAdsWndParams } = require("adsInternalState.nut")
+let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 
 
 let WND_UID = "debugAdsWnd"
-let isOpened = keepref(Computed(@() debugAdsWndParams.value != null))
+let isOpened = keepref(Computed(@() debugAdsWndParams.get() != null))
 function sendEnvet(evt) {
-  let evtId = debugAdsWndParams.value?[$"{evt}Event"]
+  let evtId = debugAdsWndParams.get()?[$"{evt}Event"]
   if (evtId != null)
-    eventbus_send(evtId, debugAdsWndParams.value?[$"{evt}Data"] ?? {})
+    eventbus_send(evtId, debugAdsWndParams.get()?[$"{evt}Data"] ?? {})
 }
 function close() {
   sendEnvet("finish")
-  debugAdsWndParams(null)
+  debugAdsWndParams.set(null)
 }
 
 let isRewardReceived = Watched(false)
@@ -89,7 +89,7 @@ let openScene = @() addDbgOverlay({
       watch = isRewardReceived
       pos = [0, sh(15)]
       rendObj = ROBJ_TEXT
-      text = isRewardReceived.value ? "Rewards received" : ""
+      text = isRewardReceived.get() ? "Rewards received" : ""
     }
     textButtonPrimary("Debug cancel", close, { ovr = { vplace = ALIGN_BOTTOM, hplace = ALIGN_RIGHT, margin = sh(5) } })
   ]

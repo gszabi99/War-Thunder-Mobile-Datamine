@@ -13,7 +13,7 @@ let colorInactive = 0x806D6D6D
 let imgSizeBase = (touchButtonSize * 0.8  + 0.5).tointeger()
 
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-let isFreeCameraAvailable = Computed(@() unitType.value == AIR || !isInZoom.value)
+let isFreeCameraAvailable = Computed(@() unitType.value == AIR || !isInZoom.get())
 
 let mkCameraButton = @(shortcutId, image) function(scale) {
   let stateFlags = Watched(0)
@@ -27,7 +27,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
     watch = stateFlags
     size = [bgSize, bgSize]
     rendObj = ROBJ_BOX
-    borderColor = isActive(stateFlags.value) ? null : colorInactive
+    borderColor = isActive(stateFlags.get()) ? null : colorInactive
     fillColor = btnBgColor.empty
     borderWidth
     valign = ALIGN_CENTER
@@ -41,7 +41,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
         size = [imgSize, imgSize]
         image = picture
         keepAspect = KEEP_ASPECT_FIT
-        color = isActive(stateFlags.value) ? colorActive : colorInactive
+        color = isActive(stateFlags.get()) ? colorActive : colorInactive
       }
       mkGamepadShortcutImage(shortcutId,
         { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
@@ -52,14 +52,14 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
 
 let mkFreeCameraButton = @(scale) @() {
   watch = [curFreeCamByTouchOption, unitType, currentAircraftCtrlType, isFreeCameraAvailable]
-  children = !isFreeCameraAvailable.value || (unitType.get() == AIR && curFreeCamByTouchOption.get() && (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"))
+  children = !isFreeCameraAvailable.get() || (unitType.get() == AIR && curFreeCamByTouchOption.get() && (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"))
     ? null
     : mkCameraButton("ID_CAMERA_NEUTRAL", "ui/gameuiskin#hud_free_camera.svg")(scale)
 }
 
 let mkViewBackButton = @(scale) @() {
   watch = isFreeCameraAvailable
-  children = isFreeCameraAvailable.value
+  children = isFreeCameraAvailable.get()
     ? mkCameraButton("ID_CAMERA_VIEW_BACK", "ui/gameuiskin#hud_look_back.svg")(scale)
     : null
 }

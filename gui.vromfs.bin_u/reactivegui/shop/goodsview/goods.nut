@@ -6,7 +6,7 @@ let { getLocNameWp, mkGoodsWp } = require("%rGui/shop/goodsView/goodsWp.nut")
 let { getLocNamePlatinum, mkGoodsPlatinum } = require("%rGui/shop/goodsView/goodsPlatinum.nut")
 let { getLocNamePremium, mkGoodsPremium } = require("%rGui/shop/goodsView/goodsPremium.nut")
 let { getLocNameUnit, mkGoodsUnit, getLocBlueprintUnit, getLocBranchUnits } = require("%rGui/shop/goodsView/goodsUnit.nut")
-let { mkGoodsSkin, getLocNameSkin } = require("goodsSkin.nut")
+let { mkGoodsSkin, getLocNameSkin } = require("%rGui/shop/goodsView/goodsSkin.nut")
 let { getLocNameConsumables, mkGoodsConsumables } = require("%rGui/shop/goodsView/goodsConsumables.nut")
 let { getLocNameLootbox, mkGoodsLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
 let { getLocNameBooster, mkGoodsBooster } = require("%rGui/shop/goodsView/goodsBooster.nut")
@@ -18,6 +18,8 @@ let { getLocNameDecorator, mkGoodsDecorator } = require("%rGui/shop/goodsView/go
 let customLocId = {
   battle_pass = "battlePass"
   battle_pass_vip = "battlePassVIP"
+  event_pass = "eventPass"
+  event_pass_vip = "eventPassVip"
 }
 
 let locNameGetters = {

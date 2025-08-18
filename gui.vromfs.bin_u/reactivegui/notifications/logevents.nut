@@ -27,9 +27,9 @@ const STATS_SENT = "statsSent"
 
 let firebaseAppInstanceId = mkWatched(persist, "firebaseAppInstanceId", getFirebaseAppInstanceId())
 let storedUserIdForFirebase = hardPersistWatched("storedUserIdForUserId", null)
-let readySendFirebaseBq = keepref(Computed(@() firebaseAppInstanceId.value!=null
-  && myUserId.value != INVALID_USER_ID
-  && storedUserIdForFirebase.value != myUserId.value))
+let readySendFirebaseBq = keepref(Computed(@() firebaseAppInstanceId.get()!=null
+  && myUserId.get() != INVALID_USER_ID
+  && storedUserIdForFirebase.get() != myUserId.get()))
 
 function convertToSha256Email(login) {
   
@@ -45,10 +45,10 @@ function convertToSha256Email(login) {
 }
 
 let function sendFirebaseAppInstanceBq() {
-  if (myUserId.value != storedUserIdForFirebase.value) {
-    storedUserIdForFirebase.set(myUserId.value)
+  if (myUserId.get() != storedUserIdForFirebase.get()) {
+    storedUserIdForFirebase.set(myUserId.get())
     sendCustomBqEvent("firebase_info_1", {
-      appInstanceId = firebaseAppInstanceId.value,
+      appInstanceId = firebaseAppInstanceId.get(),
       email = convertToSha256Email(getLogin())
     })
   }

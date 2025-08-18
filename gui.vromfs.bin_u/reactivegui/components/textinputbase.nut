@@ -184,7 +184,7 @@ function textInput(text_state, options = {}) {
     imeOpenJoyBtn
 
     children = (text_state.value?.len() ?? 0) == 0
-        && (showPlaceHolderOnFocus || !(stateFlags.value & S_KB_FOCUS))
+        && (showPlaceHolderOnFocus || !(stateFlags.get() & S_KB_FOCUS))
       ? placeholderObj
       : null
   }.__update(textStyle)
@@ -192,7 +192,7 @@ function textInput(text_state, options = {}) {
   return @() {
     watch = stateFlags
     size = FLEX_H
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
 
     rendObj = ROBJ_BOX
     fillColor = backGroundColor
@@ -202,7 +202,7 @@ function textInput(text_state, options = {}) {
     animations = [failAnim(text_state)]
     valign = ALIGN_CENTER
 
-    children = mkEditContent?(stateFlags.value, inputObj) ?? inputObj
+    children = mkEditContent?(stateFlags.get(), inputObj) ?? inputObj
   }.__update(ovr)
 }
 

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isContactOnline, onlineStatus } = require("contactPresence.nut")
+let { isContactOnline, onlineStatus } = require("%rGui/contacts/contactPresence.nut")
 
 let contactsListsMap = {
   friendsUids = "approved"

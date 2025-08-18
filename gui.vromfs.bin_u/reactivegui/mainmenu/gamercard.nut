@@ -13,11 +13,11 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
-let { mkCurrencyBalance } = require("balanceComps.nut")
+let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
+let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
@@ -53,7 +53,7 @@ let openCfg = {
 
 let openBuyCurrencyWnd = @(curId) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId)
 
-let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
+let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.get().findindex(@(category) category == true))
 
 let textParams = {
   rendObj = ROBJ_TEXT
@@ -122,14 +122,14 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           watch = levelStateFlags
           size = [levelHolderSize, levelHolderSize]
           pos = [-progresOffset, 0]
-          onElemState = @(sf) levelStateFlags(sf)
+          onElemState = @(sf) levelStateFlags.set(sf)
           behavior = onLevelClick != null ? Behaviors.Button : null
           onClick = onLevelClick
           sound = { click  = "meta_profile_button" }
-          color = levelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+          color = levelStateFlags.get() & S_HOVER ? 0xDD52C4E4 : 0xFF000000
           transform = {
             rotate = 45
-            scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+            scale = levelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
           }
         }
         childOvr = {
@@ -143,7 +143,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
               animations = isReadyForLevelUp && !isNextStarLevel ? levelUpReadyAnimsCur : null
               transform = {
                 rotate = -45
-                scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+                scale = levelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
               }
             })
             isReadyForLevelUp && !isNextStarLevel
@@ -174,13 +174,13 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
               size = [levelHolderSize, levelHolderSize]
               hplace = ALIGN_RIGHT
               pos = [progresOffset, 0]
-              onElemState = @(sf) nextLevelStateFlags(sf)
+              onElemState = @(sf) nextLevelStateFlags.set(sf)
               behavior = onLevelClick != null ? Behaviors.Button : null
               onClick = onLevelClick
-              color = nextLevelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+              color = nextLevelStateFlags.get() & S_HOVER ? 0xDD52C4E4 : 0xFF000000
               transform = {
                 rotate = 45
-                scale = nextLevelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+                scale = nextLevelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
               }
             }
             childOvr = {
@@ -196,7 +196,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
                   color = isReadyForLevelUp ? levelUpTextColor : nextLevelTextColor
                   transform = {
                     rotate = -45
-                    scale = nextLevelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+                    scale = nextLevelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
                   }
                 })
                 starLevelSmall(nextStarLevel, starLevelOvr)

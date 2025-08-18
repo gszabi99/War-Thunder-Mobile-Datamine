@@ -6,7 +6,7 @@ let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 
 let { rewardsToReceive, rewardUnitLevelInfo, isUnitRewardsModalOpen, closeUnitRewardsModal,
-  currentUnit, receiveUnitRewards } = require("unitLevelUpState.nut")
+  currentUnit, receiveUnitRewards } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { mkRewardPlate, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -18,7 +18,7 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { levelUpUnitFlag } = require("levelUpFlag.nut")
+let { levelUpUnitFlag } = require("%rGui/levelUp/levelUpFlag.nut")
 
 
 let WND_UID = "unit_levelup_rewards_wnd"

@@ -7,7 +7,7 @@ let { rnd_int } = require("dagor.random")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
-let { STICK } = require("stickState.nut")
+let { STICK } = require("%rGui/hud/stickState.nut")
 
 
 let stickHeadSize = evenPx(120)

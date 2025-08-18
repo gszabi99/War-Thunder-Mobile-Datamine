@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkTabs } = require("%rGui/components/tabs.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { hasUnseenGoodsByCategory, curCategoryId, onTabChange } = require("shopState.nut")
-let { iconSize, iconMarginW, tabW, tabH } = require("shopWndConst.nut")
+let { hasUnseenGoodsByCategory, curCategoryId, onTabChange } = require("%rGui/shop/shopState.nut")
+let { iconSize, iconMarginW, tabW, tabH } = require("%rGui/shop/shopWndConst.nut")
 
 
 function tabData(tab, campaign) {
@@ -30,7 +30,7 @@ function tabData(tab, campaign) {
           margin = hdpx(6)
           hplace = ALIGN_RIGHT
           vplace = ALIGN_TOP
-          children = id == curCategoryId.value || !hasUnseenGoodsByCategory.value?[id] ? null
+          children = id == curCategoryId.get() || !hasUnseenGoodsByCategory.get()?[id] ? null
             : priorityUnseenMark
         }
       ]

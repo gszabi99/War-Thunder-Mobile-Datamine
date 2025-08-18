@@ -52,7 +52,7 @@ let allPermissions = Computed(function() {
       logerr($"Permission ID with whitespace detected: \"{id}\"")
     res[id] <- true
   }
-  foreach(id, v in dbgPermissions.value)
+  foreach(id, v in dbgPermissions.get())
     if (v && (id in res))
       res[id] = !res[id]
   return res
@@ -61,4 +61,4 @@ let allPermissions = Computed(function() {
 return {
   allPermissions
   dbgPermissions
-}.__merge(defaults.map(@(_, key) Computed(@() allPermissions.value[key])))
+}.__merge(defaults.map(@(_, key) Computed(@() allPermissions.get()[key])))

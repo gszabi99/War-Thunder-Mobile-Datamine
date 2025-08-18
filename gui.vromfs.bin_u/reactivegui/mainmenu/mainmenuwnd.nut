@@ -11,11 +11,11 @@ let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
-let { isMainMenuAttached } = require("mainMenuState.nut")
+let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { chooseCampaignWnd } = require("chooseCampaignWnd.nut")
+let { chooseCampaignWnd } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
 let mkUnitPkgForBattleDownloadInfo = require("%rGui/unit/mkUnitPkgForBattleDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
@@ -33,6 +33,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { btnOpenQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { specialEventGamercardItems, openEventWnd } = require("%rGui/event/eventState.nut")
+let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
 let bpBanner = require("%rGui/battlePass/bpBanner.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
@@ -50,7 +51,7 @@ let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarMainMenuSize } = require("%rGui/slotBar/slotBar.nut")
-let { unseenCampaigns } = require("unseenCampaigns.nut")
+let { unseenCampaigns } = require("%rGui/mainMenu/unseenCampaigns.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
 
@@ -122,9 +123,9 @@ function unitNameBlock() {
 
 let campaignsBtn = @() {
   watch = [campaignsList, curCampaign, unseenCampaigns]
-  children = campaignsList.value.len() <= 1 || curCampaign.value == null  ? null
+  children = campaignsList.get().len() <= 1 || curCampaign.value == null  ? null
     : [
-        framedImageBtn(getCampaignPresentation(curCampaign.value).icon, chooseCampaignWnd,
+        framedImageBtn(getCampaignPresentation(curCampaign.get()).icon, chooseCampaignWnd,
           {
             padding = const [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
             size = SIZE_TO_CONTENT
@@ -262,7 +263,10 @@ let gamercardBattleItemsBalanceBtns = @(){
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName), CS_GAMERCARD))
+  children = specialEventGamercardItems.get()
+    .map(@(v) mkItemsBalance(v.itemId,
+      @() v.eventName in gmEventsList.get() ? openGmEventWnd(v.eventName) : openEventWnd(v.eventName),
+      CS_GAMERCARD))
     .extend(itemsOrder.get()
       .filter(@(v) hangarUnit.get()?.name == null || isItemAllowedForUnit(v, hangarUnit.get().name))
       .map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
@@ -350,8 +354,8 @@ return {
   touchMarginPriority = TOUCH_BACKGROUND
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  onAttach = @() isMainMenuAttached(true)
-  onDetach = @() isMainMenuAttached(false)
+  onAttach = @() isMainMenuAttached.set(true)
+  onDetach = @() isMainMenuAttached.set(false)
   children = [
     lqTexturesWarningHangar
     leftTopButtons

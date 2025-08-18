@@ -68,7 +68,7 @@ register_es("on_change_lastBailoutTime", {
     ],
     comps_ro = [["server_player__userId", TYPE_UINT64]]
   })
-eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
+eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo.set(s))
 
 function battleResume() {
   removeModalWindow(LEAVE_BATTLE_MSG_UID)
@@ -116,7 +116,7 @@ function openLeaveBattleMsg() {
       watch = [canDeserter, campaign]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = menuContent(canDeserter.get() && !isTutorial && (!is_ready_to_die() || isFreeSlotsAvailable), campaign.get())
+      children = menuContent(canDeserter.get() && !isTutorial && (isFreeSlotsAvailable || !is_ready_to_die()), campaign.get())
     }
     onClick = EMPTY_ACTION
   })

@@ -4,12 +4,12 @@ let { DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT, DEBR_TAB_MPSTATS
 } = require("%rGui/debriefing/debriefingState.nut")
 let { isDebrWithUnitsResearch } = require("%rGui/debriefing/debrUtils.nut")
 let { tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let mkDebriefingWndTabScores = require("debriefingWndTabScores.nut")
-let mkDebriefingWndTabCampaign = require("debriefingWndTabCampaign.nut")
-let mkDebriefingWndTabResearch = require("debriefingWndTabResearch.nut")
-let mkDebriefingWndTabUnit = require("debriefingWndTabUnit.nut")
-let mkDebriefingWndTabUnitSet = require("debriefingWndTabUnitSet.nut")
-let mkDebriefingWndTabMpStats = require("debriefingWndTabMpStats.nut")
+let mkDebriefingWndTabScores = require("%rGui/debriefing/debriefingWndTabScores.nut")
+let mkDebriefingWndTabCampaign = require("%rGui/debriefing/debriefingWndTabCampaign.nut")
+let mkDebriefingWndTabResearch = require("%rGui/debriefing/debriefingWndTabResearch.nut")
+let mkDebriefingWndTabUnit = require("%rGui/debriefing/debriefingWndTabUnit.nut")
+let mkDebriefingWndTabUnitSet = require("%rGui/debriefing/debriefingWndTabUnitSet.nut")
+let mkDebriefingWndTabMpStats = require("%rGui/debriefing/debriefingWndTabMpStats.nut")
 
 let tabsCfgOrdered = [
   {

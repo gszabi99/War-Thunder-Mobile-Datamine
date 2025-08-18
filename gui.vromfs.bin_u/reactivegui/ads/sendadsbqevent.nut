@@ -4,7 +4,7 @@ let { get_user_system_info } = require("sysinfo")
 let { getCountryCode } = require("auth_wt")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { rewardInfo } = require("adsInternalState.nut")
+let { rewardInfo } = require("%rGui/ads/adsInternalState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 function sendAdsBqEvent(status, provider, withReward = true) {
@@ -15,7 +15,7 @@ function sendAdsBqEvent(status, provider, withReward = true) {
     playerLevel = max(playerLevel, l.level)
 
   let { bqId = "unknown", bqParams = {}, cost = 0 } = !withReward ? { bqId = "" }
-    : rewardInfo.value
+    : rewardInfo.get()
 
   let count = adBudget?.common.count ?? 0
   let nextResetTime = adBudget?.common.nextResetTime ?? 0

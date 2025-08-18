@@ -15,14 +15,14 @@ let MIN_SESSIONS_TO_SHOW_ON_LOGIN = 3
 let isShowed = hardPersistWatched("allowPushNotificationsShowed", false)
 
 function show() {
-  if (!needAskPermissions || isShowed.value)
+  if (!needAskPermissions || isShowed.get())
     return
   isShowed(true)
   checkAndRequestPermission("","","", "android.permission.POST_NOTIFICATIONS")
 }
 
 function openAfterDebriefing() {
-  if (!isInQueue.value
+  if (!isInQueue.get()
       && isNoExtraScenesAfterDebriefing.get()
       && !needRateGame.get())
     show()
@@ -32,6 +32,6 @@ isInDebriefing.subscribe(@(v) v ? null : deferOnce(openAfterDebriefing))
 
 isLoggedIn.subscribe(function(v) {
   if (v
-      && (sharedStats.value?.sessionsCountPersist ?? 0) >= MIN_SESSIONS_TO_SHOW_ON_LOGIN)
+      && (sharedStats.get()?.sessionsCountPersist ?? 0) >= MIN_SESSIONS_TO_SHOW_ON_LOGIN)
     show()
 })

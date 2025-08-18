@@ -12,39 +12,39 @@ let { chooseRandom } = require("%sqstd/rand.nut")
 
 let updaterState = Watched(null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
-isAuthAndUpdated.subscribe(@(_) updaterState(null))
+isAuthAndUpdated.subscribe(@(_) updaterState.set(null))
 
 eventbus_subscribe(LOGIN_UPDATER_EVENT_ID,
   function(evt) {
-    if (!isDebugMode.value && (!isLoginStarted.value || isAuthAndUpdated.value))
+    if (!isDebugMode.get() && (!isLoginStarted.get() || isAuthAndUpdated.get()))
       return
 
     let { eventType } = evt
     if (eventType == UPDATER_EVENT_STAGE)
-      updaterState((updaterState.value ?? {}).__merge({ stage = evt?.stage }))
+      updaterState.set((updaterState.get() ?? {}).__merge({ stage = evt?.stage }))
     else if (eventType == UPDATER_EVENT_DOWNLOAD_SIZE)
-      updaterState((updaterState.value ?? {}).__merge({ toDownload = evt?.toDownload ?? 0 }))
+      updaterState.set((updaterState.get() ?? {}).__merge({ toDownload = evt?.toDownload ?? 0 }))
     else if (eventType == UPDATER_EVENT_PROGRESS)
-      updaterState((updaterState.value ?? {}).__merge({
+      updaterState.set((updaterState.get() ?? {}).__merge({
         percent = evt?.percent ?? 0
         dspeed  = evt?.dspeed ?? 0
         etaSec  = evt?.etaSec ?? 0
       }))
     else if (eventType == UPDATER_EVENT_FINISH)
-      updaterState((updaterState.value ?? {}).__merge({
+      updaterState.set((updaterState.get() ?? {}).__merge({
         percent = 100
         dspeed  = 0
         etaSec  = 0
       }))
     else if (eventType == UPDATER_EVENT_ERROR)
-      updaterState((updaterState.value ?? {}).__merge({ errorCode = evt?.error ?? UPDATER_ERROR }))
+      updaterState.set((updaterState.get() ?? {}).__merge({ errorCode = evt?.error ?? UPDATER_ERROR }))
   })
 
 let rndStages = [
   UPDATER_CHECKING, UPDATER_PURIFYING 
 ]
 function debugUpdate() {
-  let { stage = null, toDownload = null, percent = 0.0, dspeed = 0.0, etaSec = 0.0 } = updaterState.value
+  let { stage = null, toDownload = null, percent = 0.0, dspeed = 0.0, etaSec = 0.0 } = updaterState.get()
   eventbus_send(LOGIN_UPDATER_EVENT_ID, {
     eventType = UPDATER_EVENT_PROGRESS
     percent = (percent + (0.01 * rnd_int(0, 100))) % 100.0
@@ -67,19 +67,19 @@ function debugUpdate() {
 }
 
 isDebugMode.subscribe(@(v) v ? setInterval(0.1, debugUpdate) : clearTimer(debugUpdate))
-if (isDebugMode.value)
+if (isDebugMode.get())
   setInterval(0.1, debugUpdate)
 
 register_command(
   function() {
-    isDebugMode(!isDebugMode.value)
-    if (isDebugMode.value)
+    isDebugMode.set(!isDebugMode.get())
+    if (isDebugMode.get())
       eventbus_send("logOut", {})
   },
   "debug.loginUpdater")
 
 return {
-  isUpdateInProgress = Computed(@() isDebugMode.value
-    || (!isAuthAndUpdated.value && isLoginStarted.value && updaterState.value != null))
+  isUpdateInProgress = Computed(@() isDebugMode.get()
+    || (!isAuthAndUpdated.get() && isLoginStarted.get() && updaterState.get() != null))
   updaterState
 }

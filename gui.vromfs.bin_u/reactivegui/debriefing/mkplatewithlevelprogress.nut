@@ -10,7 +10,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, unitPlateRatio, plateTexts
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
 let { getLevelProgress, getNextUnitLevelWithRewards } = require("%rGui/debriefing/debrUtils.nut")
-let { mkTotalRewardCountsUnit } = require("totalRewardCounts.nut")
+let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let plateW = hdpx(350)

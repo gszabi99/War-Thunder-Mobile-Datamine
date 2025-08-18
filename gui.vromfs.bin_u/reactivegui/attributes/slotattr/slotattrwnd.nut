@@ -27,15 +27,15 @@ let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
   curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax,
   isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp,
   markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable
-} = require("slotAttrState.nut")
+} = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { mkSlotLevelBlock } = require("slotLevelComp.nut")
+let { mkSlotLevelBlock } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let buySlotLevelWnd = require("buySlotLevelWnd.nut")
+let buySlotLevelWnd = require("%rGui/attributes/slotAttr/buySlotLevelWnd.nut")
 let { tooltipBg } = require("%rGui/tooltip.nut")
 
 
@@ -53,7 +53,7 @@ let attrRowHighlightColor = 0x052E2E2E
 
 let isAttrDetailsVisible = Watched(false)
 let showAttrStateFlags = Watched(0)
-showAttrStateFlags.subscribe(@(sf) isAttrDetailsVisible(!!(sf & S_ACTIVE)))
+showAttrStateFlags.subscribe(@(sf) isAttrDetailsVisible.set(!!(sf & S_ACTIVE)))
 
 let txt = @(ovr) {
   rendObj = ROBJ_TEXT

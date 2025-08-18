@@ -26,7 +26,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { curLevelTags } = require("%rGui/unitCustom/unitSkins/levelSkinTags.nut")
 let { getSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
 let unitListScrollHandler = ScrollHandler()
@@ -39,7 +39,7 @@ let playerSelectedSlotIdx = mkWatched(persist, "playerSelectedSlotIdx", -1)
 let spawnUnitName = mkWatched(persist, "spawnUnitName", null)
 let selSlotContentGenId = Watched(0)
 let isBailoutDeserter = Watched(false)
-isRespawnStarted.subscribe(@(v) v ? null : spawnUnitName(null))
+isRespawnStarted.subscribe(@(v) v ? null : spawnUnitName.set(null))
 
 const SEEN_SHELLS = "SeenShells"
 
@@ -79,8 +79,8 @@ let respawnSlots = Computed(function() {
   let res = []
   if (respawnUnitInfo.get() == null)
     return res
-  let rMask = (readySlotsMask.value | spareSlotsMask.value) & ~disabledSlotsMask.value
-  let sMask = spareSlotsMask.value
+  let rMask = (readySlotsMask.get() | spareSlotsMask.get()) & ~disabledSlotsMask.get()
+  let sMask = spareSlotsMask.get()
   let defMods = respawnUnitItems.get()
   res.append(mkSlot(0, respawnUnitInfo.get(), defMods, rMask, sMask))
   if (!isSingleMissionOverrided.get()) {
@@ -103,22 +103,22 @@ let respawnSlots = Computed(function() {
   return res
 })
 
-let hasUnseenShellsBySlot = Computed(@() respawnSlots.value.map(function (slot) {
+let hasUnseenShellsBySlot = Computed(@() respawnSlots.get().map(function (slot) {
   if (!slot?.isLocked) {
     return slot.bullets.map(@(v, id) (id != "")
       && ((v?.reqLevel ?? 0) != 0)
       && (slot.level >= (v?.reqLevel ?? 0))
-      && !(seenShells.value?[slot.name][id] ?? false))
+      && !(seenShells.get()?[slot.name][id] ?? false))
   }
   return {}
 }))
 
 function saveSeenShells(unitName, ids) {
-  let filtered = ids.filter(@(id) hasUnseenShellsBySlot.value.findvalue(@(item) (item?[id] ?? false)))
-  let unitSeen = clone seenShells.value?[unitName] ?? {}
+  let filtered = ids.filter(@(id) hasUnseenShellsBySlot.get().findvalue(@(item) (item?[id] ?? false)))
+  let unitSeen = clone seenShells.get()?[unitName] ?? {}
   foreach (id in filtered)
     unitSeen[id] <- true
-  if (isEqual(unitSeen, seenShells.value?[unitName]))
+  if (isEqual(unitSeen, seenShells.get()?[unitName]))
     return
   seenShells.mutate(@(v) v[unitName] <- unitSeen)
 
@@ -137,7 +137,7 @@ function loadSeenShells() {
   let blk = get_local_custom_settings_blk()
   let shellsBlk = blk?[SEEN_SHELLS]
   if (!isDataBlock(shellsBlk)) {
-    seenShells({})
+    seenShells.set({})
     return
   }
   let res = {}
@@ -146,10 +146,10 @@ function loadSeenShells() {
     eachParam(unitBlk, @(value, item) items[item] <- value)
     res[name] <- items
   })
-  seenShells(res)
+  seenShells.set(res)
 }
 
-if (seenShells.value.len() == 0)
+if (seenShells.get().len() == 0)
   loadSeenShells()
 
 isSettingsAvailable.subscribe(@(_) loadSeenShells())
@@ -163,11 +163,11 @@ let needSpectatorMode = keepref(Computed(@() isInRespawn.get() && !hasAvailableS
 needSpectatorMode.subscribe(onSpectatorMode)
 
 let selSlot = Computed(function() {
-  let slot = respawnSlots.value?[playerSelectedSlotIdx.value]
+  let slot = respawnSlots.get()?[playerSelectedSlotIdx.get()]
   if (slot?.canSpawn ?? false)
     return slot
-  return respawnSlots.value.findvalue(@(s) s.isCurrent && s.canSpawn)
-    ?? respawnSlots.value.findvalue(@(s) s.canSpawn)
+  return respawnSlots.get().findvalue(@(s) s.isCurrent && s.canSpawn)
+    ?? respawnSlots.get().findvalue(@(s) s.canSpawn)
 })
 
 let hasSkins = Computed(@() (selSlot.get()?.skins.len() ?? 0) > 0)
@@ -178,11 +178,11 @@ let selSlotUnitType = Computed(@() "name" not in selSlot.get() ? null
 let respawnBases = Watched([])
 
 let availRespBases = Computed(function() {
-  let { name = null } = selSlot.value
+  let { name = null } = selSlot.get()
   if (name == null)
     return {}
   setSelectedUnitInfo(name, 0) 
-  let visible = respawnBases.value
+  let visible = respawnBases.get()
   let ret = getAvailableRespawnBases(getUnitTags(name).keys())
     .reduce(@(res, id) res.__update({ [id] = visible.findvalue(@(b) b.id == id) }), {})
     .filter(@(b) b != null)
@@ -190,25 +190,25 @@ let availRespBases = Computed(function() {
   return ret;
 })
 let playerSelectedRespBase = Watched(-1)
-let curRespBase = Computed(@() playerSelectedRespBase.value in availRespBases.value
-  ? playerSelectedRespBase.value : -1)
+let curRespBase = Computed(@() playerSelectedRespBase.get() in availRespBases.get()
+  ? playerSelectedRespBase.get() : -1)
 
-let updateRespawnBases = @() respawnBases(getFullRespawnBasesList())
+let updateRespawnBases = @() respawnBases.set(getFullRespawnBasesList())
 
 eventbus_subscribe("on_mission_changed", @(...) updateRespawnBases())
 isRespawnAttached.subscribe(function(v) {
   if (!v)
     return
   updateRespawnBases()
-  selectRespawnBase(curRespBase.value)
+  selectRespawnBase(curRespBase.get())
 })
-curRespBase.subscribe(@(v) isRespawnAttached.value ? selectRespawnBase(v) : null)
+curRespBase.subscribe(@(v) isRespawnAttached.get() ? selectRespawnBase(v) : null)
 isInBattle.subscribe( function (v) {
   isBailoutDeserter.set(false)
   if (v)
-    sparesNum(servProfile.value?.items[SPARE].count ?? 0)
+    sparesNum.set(servProfile.value?.items[SPARE].count ?? 0)
   else {
-    playerSelectedRespBase(-1)
+    playerSelectedRespBase.set(-1)
     selectedSkins.set({})
     playerSelectedSlotIdx.set(-1)
   }
@@ -230,10 +230,10 @@ function respawn(slot, bullets) {
   if (isRespawnStarted.get() || slot == null)
     return
   let { id, name, weapon, skin, mods } = slot
-  spawnUnitName(name)
-  local respBaseId = curRespBase.value
+  spawnUnitName.set(name)
+  local respBaseId = curRespBase.get()
   if (respBaseId == -1)
-    respBaseId = chooseRandom(availRespBases.value.keys()) ?? -1
+    respBaseId = chooseRandom(availRespBases.get().keys()) ?? -1
 
   local bulletsData = clone emptyBullets
   if (getUnitType(name) == AIR) {
@@ -271,7 +271,7 @@ function cancelRespawn() {
 }
 
 function tryAutospawn() {
-  let slot = respawnSlots.value?[0]
+  let slot = respawnSlots.get()?[0]
   if (slot == null) {
     logR("Skip auto spawn because respawnUnitInfo.get() is null")
     return
@@ -295,8 +295,8 @@ needAutospawn.subscribe(updateAutospawnTimer)
 
 function updateMasks() {
   readySlotsMask(getWasReadySlotsMask())
-  spareSlotsMask(getSpareSlotsMask())
-  disabledSlotsMask(getDisabledSlotsMask())
+  spareSlotsMask.set(getSpareSlotsMask())
+  disabledSlotsMask.set(getDisabledSlotsMask())
 }
 function onEnterRespawn() {
   updateMasks()
@@ -312,12 +312,12 @@ if (isInRespawn.get())
   onEnterRespawn()
 
 isInRespawn.subscribe(function(v) {
-  if (v && !hasAvailableSlot.value)
+  if (v && !hasAvailableSlot.get())
     logR($"On init respawn screen slots not available. respawns_left = {respawnsLeft.get()}, hasUnitToSpawn = {respawnUnitInfo.get() != null}")
 })
 
 register_command(function() {
-  seenShells({})
+  seenShells.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_SHELLS)
   eventbus_send("saveProfile", {})
 }, "debug.reset_seen_shells")

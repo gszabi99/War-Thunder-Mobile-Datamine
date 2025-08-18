@@ -190,3 +190,10 @@ struct EventZoneDamageMessage
 [cpp_event(unicast)]
 struct CmdSetScoreKillMult
   mult : float
+
+[cpp_event(unicast)]
+struct CmdBattleRoyalSetNewArea
+  x : int
+  y : int
+  shrinkTime : float
+  startDelay : float

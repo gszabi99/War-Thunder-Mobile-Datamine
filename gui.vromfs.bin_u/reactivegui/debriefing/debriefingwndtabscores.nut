@@ -2,12 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { can_write_replays } = require("%appGlobals/permissions.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
-let { mkDebriefingStats } = require("mkDebriefingStats.nut")
+let { mkDebriefingStats } = require("%rGui/debriefing/mkDebriefingStats.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let { mkMissionResultTitle, missionResultTitleAnimTime } = require("%rGui/debriefing/missionResultTitle.nut")
-let achievementsBlock = require("achievementsBlock.nut")
-let mkDebrQuestsProgress = require("mkDebrQuestsProgress.nut")
+let achievementsBlock = require("%rGui/debriefing/achievementsBlock.nut")
+let mkDebrQuestsProgress = require("%rGui/debriefing/mkDebrQuestsProgress.nut")
 let { mkTotalRewardCountsScores } = require("%rGui/debriefing/totalRewardCounts.nut")
 
 let rewardsAnimStartTime = 0.5

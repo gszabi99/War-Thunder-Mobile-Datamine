@@ -1,6 +1,7 @@
 let unknownIcon = "ui/gameuiskin#icon_primary_attention.svg"
 let statsImages = {
   battlepass_points            = "ui/gameuiskin#bp_exp_icon.avif"
+  eventpass_points             = "ui/gameuiskin#event_pass_exp_icon.avif"
 }
 
 function getStatsImageImpl(id) {

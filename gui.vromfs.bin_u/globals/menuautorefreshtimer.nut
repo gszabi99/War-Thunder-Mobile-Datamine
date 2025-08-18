@@ -38,7 +38,7 @@ function menuAutoRefreshTimer(
     setTimeout(refreshPeriod, function() {
       isAutorefreshTimerStarted = false
       readyRefreshTime = 0
-      if (windowActive.value)
+      if (windowActive.get())
         autoRefreshImpl()
     })
   }
@@ -61,7 +61,7 @@ function menuAutoRefreshTimer(
       readyRefreshTime = 0
       timeLeftToUpdate = repeatAmount
       refreshPeriod = refreshPeriodSec
-      if (windowActive.value)
+      if (windowActive.get())
         windowStateHandler(true)
     }
   }

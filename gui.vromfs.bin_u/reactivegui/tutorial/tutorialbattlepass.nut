@@ -17,9 +17,9 @@ let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection,
   progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { markTutorialCompleted,
-  isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("completedTutorials.nut")
-let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("tutorialConst.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
+  isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
+let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
+let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)

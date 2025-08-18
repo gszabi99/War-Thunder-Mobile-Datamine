@@ -12,10 +12,10 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { upgradeCommonUnitName, buyExpUnitName, buyLevelUpUnitName, isChosenUnitUpgarde } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding, offerCardHeight} = require("upgradeUnitWndPkg.nut")
-let mkBuyUpgardeUnit = require("mkBuyUpgardeUnit.nut")
-let mkBuyExpBtn = require("mkBuyExpBtn.nut")
-let mkBuyLevelupBtn = require("mkBuyLevelupBtn.nut")
+let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding, offerCardHeight} = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
+let mkBuyUpgardeUnit = require("%rGui/unit/upgradeUnitWnd/mkBuyUpgardeUnit.nut")
+let mkBuyExpBtn = require("%rGui/unit/upgradeUnitWnd/mkBuyExpBtn.nut")
+let mkBuyLevelupBtn = require("%rGui/unit/upgradeUnitWnd/mkBuyLevelupBtn.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -155,7 +155,7 @@ function offerCards() {
   let unit = campUnitsCfg.get()?[upgradeCommonUnitName.get() ?? buyExpUnitName.get() ?? buyLevelUpUnitName.get()]
   if (unit == null)
     return { watch }
-  let upgradedUnit = unit?.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+  let upgradedUnit = unit?.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
     { isUpgraded = true })
   return modalWndBg.__merge({
     flow = FLOW_VERTICAL

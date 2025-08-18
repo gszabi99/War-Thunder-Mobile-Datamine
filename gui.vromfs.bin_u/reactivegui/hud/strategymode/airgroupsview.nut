@@ -82,7 +82,7 @@ function mkPlaneUi(actionItem, airGroupIndex) {
         flow = FLOW_HORIZONTAL
         hplace = ALIGN_RIGHT
         gap = hdpx(7)
-        children = airGroupData.value ? mkStrategyCommandsUi(airGroupData.value) : null
+        children = airGroupData.get() ? mkStrategyCommandsUi(airGroupData.get()) : null
       }
     ]
   }
@@ -100,27 +100,27 @@ function mkPlaneDebugInfo(airGroupIndex) {
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"Beh={airGroupData.value?.behaviour}"
+        text = $"Beh={airGroupData.get()?.behaviour}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"ON_AIR={airGroupData.value?.groupSizeAlive}/{airGroupData.value?.groupSizeLaunched}, HP={airGroupData.value?.groupHealth}, CD={airGroupData.value?.cooldown}"
+        text = $"ON_AIR={airGroupData.get()?.groupSizeAlive}/{airGroupData.get()?.groupSizeLaunched}, HP={airGroupData.get()?.groupHealth}, CD={airGroupData.get()?.cooldown}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"BOMBS={airGroupData.value?.groupBombs}, TORPEDOS={airGroupData.value?.groupTorpedos}"
+        text = $"BOMBS={airGroupData.get()?.groupBombs}, TORPEDOS={airGroupData.get()?.groupTorpedos}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"BULLETS={airGroupData.value?.groupBullets}, ROCKETS={airGroupData.value?.groupRockets}"
+        text = $"BULLETS={airGroupData.get()?.groupBullets}, ROCKETS={airGroupData.get()?.groupRockets}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"DMG={airGroupData.value?.appliedDamage}, KILLS={airGroupData.value?.appliedKills}"
+        text = $"DMG={airGroupData.get()?.appliedDamage}, KILLS={airGroupData.get()?.appliedKills}"
       }
     ]
   }
@@ -178,13 +178,13 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
     size = [airGroupButtonWidth, SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
     hplace = ALIGN_RIGHT
-    borderColor = isSelected.value ? borderColor : 0x21212121
+    borderColor = isSelected.get() ? borderColor : 0x21212121
     borderWidth = border
-    fillColor = isSelected.value ? 0x20072224 : btnBgColor.empty
+    fillColor = isSelected.get() ? 0x20072224 : btnBgColor.empty
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick = @() canClick.get() ? curGroupIndex(selectableIndex) : null
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
       {
@@ -218,7 +218,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
                 halign = ALIGN_CENTER
                 valign = ALIGN_CENTER
                 borderWidth = borderWidth
-                borderColor = isSelected.value ? borderColor : 0x21212121
+                borderColor = isSelected.get() ? borderColor : 0x21212121
                 fillColor = actionItem == null ? btnBgColor.ready : btnBgColor.empty
                 children = [
                   {
@@ -283,9 +283,9 @@ let airGroupsUi = {
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   children = [
-    mkPlaneSelectable(0, Computed(@() actionBarItems.value?[AB_SUPPORT_PLANE]))
-    mkPlaneSelectable(1, Computed(@() actionBarItems.value?[AB_SUPPORT_PLANE_2]))
-    mkPlaneSelectable(2, Computed(@() actionBarItems.value?[AB_SUPPORT_PLANE_3]))
+    mkPlaneSelectable(0, Computed(@() actionBarItems.get()?[AB_SUPPORT_PLANE]))
+    mkPlaneSelectable(1, Computed(@() actionBarItems.get()?[AB_SUPPORT_PLANE_2]))
+    mkPlaneSelectable(2, Computed(@() actionBarItems.get()?[AB_SUPPORT_PLANE_3]))
     mkShipSelectable()
   ]
   function onAttach() {

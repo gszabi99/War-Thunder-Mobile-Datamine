@@ -14,8 +14,8 @@ let UNLOCK_STEP = 1.5
 let justUnlockedUnits = Watched(null)
 let justBoughtUnits = Watched(null)
 let isJustUnlockedUnitsOutdated = Watched(false)
-let hasJustUnlockedUnitsAnimation = Computed(@() !isJustUnlockedUnitsOutdated.value
-  && (justUnlockedUnits.value?.len() ?? 0) != 0)
+let hasJustUnlockedUnitsAnimation = Computed(@() !isJustUnlockedUnitsOutdated.get()
+  && (justUnlockedUnits.get()?.len() ?? 0) != 0)
 
 local prevCanBuyUnitsStatus = null
 
@@ -47,7 +47,7 @@ function updateJustUnlockedUnits() {
     return null
 
   if (unlockedUnits.len() == 0)
-    justUnlockedUnits(null)
+    justUnlockedUnits.set(null)
   else
     setOnlyNew(justUnlockedUnits, unlockedUnits.__merge(boughtUnits))
 
@@ -67,20 +67,20 @@ canBuyUnitsStatus.subscribe(@(_) updateJustUnlockedUnits())
 curCampaign.subscribe(@(_) resetJustUnlockedUnits())
 isLoggedIn.subscribe(@(_) resetJustUnlockedUnits())
 
-let deleteJustUnlockedUnit = @(name) name not in justUnlockedUnits.value ? null
+let deleteJustUnlockedUnit = @(name) name not in justUnlockedUnits.get() ? null
   : justUnlockedUnits.mutate(@(v) v.$rawdelete(name))
-let deleteJustBoughtUnit = @(name) name not in justBoughtUnits.value ? null
+let deleteJustBoughtUnit = @(name) name not in justBoughtUnits.get() ? null
   : justBoughtUnits.mutate(@(v) v.$rawdelete(name))
 
-let restartOutdateTimer = @() resetTimeout(15.0, @() isJustUnlockedUnitsOutdated(true))
-if (hasJustUnlockedUnitsAnimation.value)
+let restartOutdateTimer = @() resetTimeout(15.0, @() isJustUnlockedUnitsOutdated.set(true))
+if (hasJustUnlockedUnitsAnimation.get())
   restartOutdateTimer()
 justUnlockedUnits.subscribe(function(v) {
-  isJustUnlockedUnitsOutdated(false)
+  isJustUnlockedUnitsOutdated.set(false)
   if (v)
     restartOutdateTimer()
 })
-isUnitsWndAttached.subscribe(@(v) v ? null : isJustUnlockedUnitsOutdated(true))
+isUnitsWndAttached.subscribe(@(v) v ? null : isJustUnlockedUnitsOutdated.set(true))
 
 return {
   justBoughtUnits

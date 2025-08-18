@@ -3,7 +3,7 @@ let { WARBOND, NYBOND, APRILBOND } = require("%appGlobals/currenciesState.nut")
 let { opacityAnims, aTimeInfoItem } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkIcon } = require("%rGui/unit/components/unitPlateComp.nut")
-let { openRewardsList } = require("questsState.nut")
+let { openRewardsList } = require("%rGui/quests/questsState.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
@@ -85,8 +85,8 @@ function mkProgressBarReward(slots, children, onClick) {
     behavior = Behaviors.Button
     onClick
     clickableInfo = loc("btn/receive")
-    onElemState = @(sf) stateFlags(sf)
-    picSaturate = onClick != null && (stateFlags.value & S_ACTIVE) ? 2.0 : 1.0
+    onElemState = @(sf) stateFlags.set(sf)
+    picSaturate = onClick != null && (stateFlags.get() & S_ACTIVE) ? 2.0 : 1.0
     transitions = [{ prop = AnimProp.picSaturate, duration = 0.07, easing = Linear }]
     sound = { click = onClick != null ? "click" : null }
     children

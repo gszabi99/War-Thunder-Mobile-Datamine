@@ -3,7 +3,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { leaveSquad, isInSquad } = require("%rGui/squad/squadManager.nut")
 
 let notAvailableForSquadMsg = @(action, msg = null)
-  !isInSquad.value ? action()
+  !isInSquad.get() ? action()
     : openMsgBox({
         text = msg ?? loc("squad/gamemode_not_available_for_squad")
         buttons = [

@@ -18,7 +18,7 @@ let { slotUnitName, curCategory, slotAttributes, totalSlotSp,
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
-let buySlotLevelWnd = require("buySlotLevelWnd.nut")
+let buySlotLevelWnd = require("%rGui/attributes/slotAttr/buySlotLevelWnd.nut")
 
 
 function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {

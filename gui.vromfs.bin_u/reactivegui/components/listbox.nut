@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let listButton = require("listButton.nut")
+let listButton = require("%rGui/components/listButton.nut")
 
 let gapH = hdpx(20)
 let gapV = hdpx(10)

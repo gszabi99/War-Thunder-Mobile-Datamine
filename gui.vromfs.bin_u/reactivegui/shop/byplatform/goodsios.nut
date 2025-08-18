@@ -18,7 +18,7 @@ let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { object_to_json_string, parse_json } = require("json")
 let { logEvent } = require("appsFlyer")
-let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
+let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 let billingModule = require("ios.billing.appstore")
@@ -82,7 +82,7 @@ let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let restoreStatus = mkWatched(persist, "restoreStatus", RESTORE_NOT_STARTED)
 let availablePrices = Computed(function() {
   let res = {}
-  foreach (info in products.value) {
+  foreach (info in products.get()) {
     let { productId = null, price_currency = null, price = null, subscriptionPeriod = "" } = info
     if (productId == null || price == null || price_currency == null)
       continue
@@ -123,9 +123,9 @@ function sendLogPurchaseData(product_id,transaction_id) {
   local af = {
     af_order_id = transaction_id
     af_content_id = product_id
-    af_revenue = availablePrices.value?[product_id].price ?? -1
-    af_price = availablePrices.value?[product_id].price ?? -1
-    af_currency = availablePrices.value?[product_id].currencyId ?? "USD"
+    af_revenue = availablePrices.get()?[product_id].price ?? -1
+    af_price = availablePrices.get()?[product_id].price ?? -1
+    af_currency = availablePrices.get()?[product_id].currencyId ?? "USD"
   }
   logEvent("af_purchase", object_to_json_string(af, true))
 }
@@ -183,7 +183,7 @@ function registerNextTransaction() {
     register_apple_purchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
     sendLogPurchaseData(id, transaction_id)
   } else {
-    purchaseInProgress(null)
+    purchaseInProgress.set(null)
     if (status != AS_CANCELED) {
       local error_text = data ?? "fail"
       openFMsgBox({ text = loc($"msg/onApplePurchaseError/{error_text}") })
@@ -195,7 +195,7 @@ function registerNextTransaction() {
 }
 
 eventbus_subscribe("ios.billing.onConfirmPurchaseCallback", function(result) {
-  purchaseInProgress(null)
+  purchaseInProgress.set(null)
   if (result.status) {
     logG("onConfirmPurchaseCallback success")
     startSeveralCheckPurchases()
@@ -220,7 +220,7 @@ eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
     return
   }
 
-  purchaseInProgress(null)
+  purchaseInProgress.set(null)
   logG($"register_apple_purchase error={getYu2CodeName(status)}")
   if (status == YU2_WRONG_PAYMENT)
     showErrorMsg(loc("msg/errorPaymentDelayed"))
@@ -288,8 +288,8 @@ let getIosDiscount = @(goods) goods?.purchaseGuids.iOS.discountInPercent ?? 0
 
 let goodsIdByProductId = Computed(function() {
   let res = {}
-  foreach (id, goods in campConfigs.value?.allGoods ?? {})
-    if (can_debug_shop.value || !goods.isShowDebugOnly) {
+  foreach (id, goods in campConfigs.get()?.allGoods ?? {})
+    if (can_debug_shop.get() || !goods.isShowDebugOnly) {
       let productId = getProductId(goods)
       if (productId != null)
         res[productId] <- id
@@ -299,7 +299,7 @@ let goodsIdByProductId = Computed(function() {
 
 let subsIdByProductId = Computed(function() {
   let res = {}
-  foreach (id, subs in campConfigs.value?.subscriptionsCfg ?? {}) {
+  foreach (id, subs in campConfigs.get()?.subscriptionsCfg ?? {}) {
     let productId = getPlanId(subs)
     if (productId != null)
       res[productId] <- id
@@ -307,10 +307,10 @@ let subsIdByProductId = Computed(function() {
   return res
 })
 
-let offerProductId = Computed(@() getProductId(activeOffers.value))
+let offerProductId = Computed(@() getProductId(activeOffers.get()))
 
 let productsForRequest = keepref(Computed(function(prev) {
-  if (!isAuthorized.value)
+  if (!isAuthorized.get())
     return []
   let received = products.get()
   let res = goodsIdByProductId.get().filter(@(_, id) id not in received)
@@ -326,36 +326,36 @@ let productsForRequest = keepref(Computed(function(prev) {
 function refreshAvailableProducts() {
   if (productsForRequest.value.len() == 0)
     return
-  if (lastInitStatus.value != AS_OK)
+  if (lastInitStatus.get() != AS_OK)
     lastInitStatus(AS_NOT_INITED) 
   logG("initAndRequestData: ", productsForRequest.value)
   initAndRequestData(productsForRequest.value)
 }
 
 productsForRequest.subscribe(@(_) refreshAvailableProducts())
-if (lastInitStatus.value == AS_NOT_INITED)
+if (lastInitStatus.get() == AS_NOT_INITED)
   refreshAvailableProducts()
 
 let updateNextRefreshTime = @(status)
-  nextRefreshTime(status == AS_NOT_INITED || status == AS_OK ? -1 : get_time_msec() + REPEAT_ON_ERROR_MSEC)
-updateNextRefreshTime(lastInitStatus.value)
+  nextRefreshTime.set(status == AS_NOT_INITED || status == AS_OK ? -1 : get_time_msec() + REPEAT_ON_ERROR_MSEC)
+updateNextRefreshTime(lastInitStatus.get())
 lastInitStatus.subscribe(updateNextRefreshTime)
 
 function startRefreshTimer() {
-  if (isInBattle.get() || nextRefreshTime.value <= 0)
+  if (isInBattle.get() || nextRefreshTime.get() <= 0)
     clearTimer(refreshAvailableProducts)
   else
-    resetTimeout(max(0.1, 0.001 * (nextRefreshTime.value - get_time_msec())), refreshAvailableProducts)
+    resetTimeout(max(0.1, 0.001 * (nextRefreshTime.get() - get_time_msec())), refreshAvailableProducts)
 }
 startRefreshTimer()
 nextRefreshTime.subscribe(@(_) startRefreshTimer())
 isInBattle.subscribe(@(_) startRefreshTimer())
 
 let platformGoods = Computed(function() {
-  let allGoods = campConfigs.value?.allGoods ?? {}
-  let productToGoodsId = goodsIdByProductId.value
+  let allGoods = campConfigs.get()?.allGoods ?? {}
+  let productToGoodsId = goodsIdByProductId.get()
   let res = {}
-  foreach (productId, priceExt in availablePrices.value) {
+  foreach (productId, priceExt in availablePrices.get()) {
     let goodsId = productToGoodsId?[productId]
     let goods = allGoods?[goodsId]
     if (goods != null) {
@@ -382,7 +382,7 @@ let platformSubs = Computed(function() {
 
 let platformOffer = Computed(function() {
   let offer = activeOffers.get()
-  let priceExt = availablePrices.value?[getProductId(offer)]
+  let priceExt = availablePrices.get()?[getProductId(offer)]
   if (priceExt == null || offer == null)
     return null
   let platformDiscount = getIosDiscount(offer)
@@ -394,12 +394,12 @@ let platformOffer = Computed(function() {
 
 function buyPlatformGoods(goodsOrId) {
   let productId = getPlanId(platformSubs.get()?[goodsOrId] ?? goodsOrId)
-    ?? getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
+    ?? getProductId(platformGoods.get()?[goodsOrId] ?? goodsOrId)
   if (productId == null)
     return
   logG($"Buy {productId}")
   startPurchaseAsync(productId)
-  purchaseInProgress(productId)
+  purchaseInProgress.set(productId)
 }
 
 function changeSubscription(subsOrId, _) {

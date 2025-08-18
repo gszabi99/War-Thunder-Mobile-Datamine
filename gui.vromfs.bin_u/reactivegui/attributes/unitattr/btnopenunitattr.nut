@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { translucentButton, translucentIconButton } = require("%rGui/components/translucentButton.nut")
-let { openUnitAttrWnd, availableAttributes } = require("unitAttrState.nut")
+let { openUnitAttrWnd, availableAttributes } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let mkAvailAttrMark = require("%rGui/attributes/mkAvailAttrMark.nut")
 let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")

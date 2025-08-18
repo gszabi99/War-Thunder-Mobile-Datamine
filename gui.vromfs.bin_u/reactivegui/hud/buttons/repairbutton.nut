@@ -8,7 +8,7 @@ let { round } = require("math")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isAvailableActionItem, mkActionItemProgressByWatches, mkActionItemCount,
   countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
-} = require("actionButtonComps.nut")
+} = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { touchButtonSize, borderWidth, imageColor, imageDisabledColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")

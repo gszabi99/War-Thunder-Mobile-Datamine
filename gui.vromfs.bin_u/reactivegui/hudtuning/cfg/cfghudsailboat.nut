@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON } = require("%rGui/hud/actionBar/actionType.nut")
-let cfgHudCommon = require("cfgHudCommon.nut")
-let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
-let { Z_ORDER, mkRBPos, mkLBPos } = require("hudTuningPkg.nut")
-let { optBulletsRight } = require("cfgOptions.nut")
+let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
+let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
+let { Z_ORDER, mkRBPos, mkLBPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
+let { optBulletsRight } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
-let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
+let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { mkCircleZoomCtor, mkBigCircleBtnEditView } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { mkBroadsideButtonCtor, mkBroadsideButtonEditView } = require("%rGui/hud/buttons/sailboatGuns.nut")
 let { mkDollCtor, mkDollEditView, mkCrewHealthCtor, mkCrewHealthEditView, mkSailboatDebuffs, sailboatDebuffsEditView
@@ -50,7 +50,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), 0])
     editView = voiceMsgStickView
-    isVisibleInBattle = isInMpSession
+    isVisibleInBattle = isVoiceMsgStickVisibleInBattle
     priority = Z_ORDER.STICK
   }
 

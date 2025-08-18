@@ -6,7 +6,7 @@ let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { seenQuests, inactiveEventUnlocks } = require("%rGui/quests/questsState.nut")
-let { loadPresetOnce, updatePresetByUnlocks } = require("treeEventUtils.nut")
+let { loadPresetOnce, updatePresetByUnlocks } = require("%rGui/event/treeEvent/treeEventUtils.nut")
 
 
 let defaultMapSize = [2000, 1000]

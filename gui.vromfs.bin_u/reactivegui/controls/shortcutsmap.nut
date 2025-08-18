@@ -1,5 +1,5 @@
-from "shortcutConsts.nut" import *
-let { isReplayShortcuts } = require("shortcutFlags.nut")
+from "%rGui/controls/shortcutConsts.nut" import *
+let { isReplayShortcuts } = require("%rGui/controls/shortcutFlags.nut")
 
 let allShortcuts = isReplayShortcuts ? {}
 : {

@@ -13,6 +13,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
+let { check_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
@@ -86,6 +87,7 @@ function sendGiftsAnswer(giftId, action) {
     function(_) {
       requestGiftsInfo(true)
       logG($"Sending gift[{giftId}] answer[{action}] completed successfully")
+      check_purchases()
     },
     function(errData) {
       logG($"Error while sending gift[{giftId}] answer[{action}] - {errData?.error}")

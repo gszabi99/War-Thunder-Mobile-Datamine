@@ -4,9 +4,9 @@ let { isEventActive } = require("%rGui/event/eventState.nut")
 let { curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg, isLbWndOpened,
   isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress,
   minRatingBattles, bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
-} = require("lbState.nut")
-let { hasCurLbRewards, curLbRewards, curLbTimeRange } = require("lbRewardsState.nut")
-let { lbCfgOrdered } = require("lbConfig.nut")
+} = require("%rGui/leaderboard/lbState.nut")
+let { hasCurLbRewards, curLbRewards, curLbTimeRange } = require("%rGui/leaderboard/lbRewardsState.nut")
+let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
@@ -26,12 +26,12 @@ let { PRIMARY, defButtonHeight } = buttonStyles
 let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight,
   lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor,
   prizeIcons, getRowBgColor, lbRewardsBlockWidth, lbTabIconSize
-} = require("lbStyle.nut")
-let { RANK, NAME, PRIZE } = require("lbCategory.nut")
+} = require("%rGui/leaderboard/lbStyle.nut")
+let { RANK, NAME, PRIZE } = require("%rGui/leaderboard/lbCategory.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg.nut")
-let { mkLbHeaderRow, headerIconHeight } = require("mkLbHeaderRow.nut")
-let lbRewardsBlock = require("lbRewardsBlock.nut")
+let { mkLbHeaderRow, headerIconHeight } = require("%rGui/leaderboard/mkLbHeaderRow.nut")
+let lbRewardsBlock = require("%rGui/leaderboard/lbRewardsBlock.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
 let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -42,12 +42,12 @@ let nameGap = hdpx(10)
 let nameCellWidth = lbRowHeight + nameGap + nameWidth
 let defTxtColor = 0xFFD8D8D8
 
-let close = @() isLbWndOpened(false)
+let close = @() isLbWndOpened.set(false)
 
 isEventActive.subscribe(function(isActive) {
   if (isActive)
     return
-  isLbBestBattlesOpened(false)
+  isLbBestBattlesOpened.set(false)
   close()
 })
 
@@ -55,11 +55,11 @@ let lbTabs = @() {
   watch = curLbId
   flow = FLOW_HORIZONTAL
   gap = hdpx(40)
-  children = lbCfgOrdered.map(@(cfg) mkTab(cfg, curLbId.get() == cfg.id, @() curLbId(cfg.id)))
+  children = lbCfgOrdered.map(@(cfg) mkTab(cfg, curLbId.get() == cfg.id, @() curLbId.set(cfg.id)))
 }
 
 function rewardsTimer() {
-  let { start = null, end = null } = curLbTimeRange.value
+  let { start = null, end = null } = curLbTimeRange.get()
   if (start == null && end == null)
     return { watch = curLbTimeRange }
 
@@ -109,7 +109,7 @@ let header = @() {
             image = Picture($"ui/gameuiskin#menu_stats.svg:{lbTabIconSize}:{lbTabIconSize}:P")
             keepAspect = true
           },
-          @() isLbBestBattlesOpened(true),
+          @() isLbBestBattlesOpened.set(true),
           mergeStyles(PRIMARY,
           {
             ovr = { minWidth = defButtonHeight }
@@ -179,7 +179,7 @@ function mkPrizeCell(category, rowData) {
   let rewardIdx = Computed(function() {
     if (place < 0)
       return -1
-    return curLbRewards.value.findindex(@(r) r.progress == -1 ? true
+    return curLbRewards.get().findindex(@(r) r.progress == -1 ? true
       : r.rType == "tillPlaces" ? r.progress > place
       : r.rType == "tillPercent" && lbTotalPlaces.get() > 0 ? r.progress >= 100.0 * place / lbTotalPlaces.get()
       : false)
@@ -192,8 +192,8 @@ function mkPrizeCell(category, rowData) {
     children = {
       size = [headerIconHeight, headerIconHeight]
       rendObj = ROBJ_IMAGE
-      image = rewardIdx.value not in prizeIcons ? null
-        : Picture($"ui/gameuiskin#{prizeIcons[rewardIdx.value]}:{headerIconHeight}:{headerIconHeight}:P")
+      image = rewardIdx.get() not in prizeIcons ? null
+        : Picture($"ui/gameuiskin#{prizeIcons[rewardIdx.get()]}:{headerIconHeight}:{headerIconHeight}:P")
       keepAspect = true
     }
   }
@@ -385,18 +385,18 @@ function lbNoDataMsg() {
 let content = @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
   size = flex()
-  children = curLbCfg.get() != null && (curLbData.value?.len() ?? 0) > 0
-      ? lbTableFull(curLbCfg.get().categories, curLbData.value, curLbSelfRow.value)
-    : isLbRequestInProgress.value ? waitLeaderBoard
+  children = curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
+      ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get())
+    : isLbRequestInProgress.get() ? waitLeaderBoard
     : curLbErrName.value == null ? lbNoDataMsg
-    : lbErrorMsg(loc($"error/{curLbErrName.value}"))
+    : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
 }
 
-let needPaginator = Computed(@() (curLbData.value?.len() ?? 0) != 0)
+let needPaginator = Computed(@() (curLbData.get()?.len() ?? 0) != 0)
 let paginator = @() {
   watch = needPaginator
   size = FLEX_H
-  children = !needPaginator.value ? null
+  children = !needPaginator.get() ? null
     : mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
 }
 
@@ -407,13 +407,13 @@ let scene = bgShaded.__merge({
 
   function onAttach() {
     lbPage(0)
-    isRefreshLbEnabled(true)
+    isRefreshLbEnabled.set(true)
     actualizeStats()
     if (curLbId.get() == null)
-      curLbId(lbCfgOrdered.findvalue(@(c) c?.campaign == curCampaign.value)?.id
+      curLbId.set(lbCfgOrdered.findvalue(@(c) c?.campaign == curCampaign.get())?.id
         ?? lbCfgOrdered.findvalue(@(_) true)?.id)
   }
-  onDetach = @() isRefreshLbEnabled(false)
+  onDetach = @() isRefreshLbEnabled.set(false)
 
   flow = FLOW_VERTICAL
   gap = lbVGap
@@ -426,7 +426,7 @@ let scene = bgShaded.__merge({
       gap = lbVGap
       children = [
         content
-        hasCurLbRewards.value ? lbRewardsBlock : lbRewardsWarning
+        hasCurLbRewards.get() ? lbRewardsBlock : lbRewardsWarning
       ]
     }
     paginator

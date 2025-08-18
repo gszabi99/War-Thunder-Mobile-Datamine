@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow, MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
-let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
+let tutorialWndDefStyle = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
   nextStep, nextStepByDefaultHotkey, skipStep, getTimeAfterStepStart
-} = require("tutorialWndState.nut")
+} = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePosToBox,
   hasInteractions, getNotInterractPos, findGoodPosX
-} = require("tutorialUtils.nut")
+} = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 
 
 let charBestPosOffsetX = hdpxi(330)
 
 let boxUpdateCount = Watched(0)
-let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.get())
+let boxUpdateCountWithStep = Computed(@() boxUpdateCount.get() + stepIdx.get())
 
 
 let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {
@@ -203,8 +203,11 @@ function tutorialWnd() {
 
   if (text instanceof Watched) {
     watch.append(text)
-    text = text.value
+    text = text.get()
   }
+
+  if (nextStepAfter instanceof Watched)
+    nextStepAfter.subscribe(nextStepSubscription)
 
   let boxes = []
   local shouldBeBoxes = false
@@ -214,7 +217,7 @@ function tutorialWnd() {
     shouldBeBoxes = shouldBeBoxes || keys != null
     if (keys instanceof Watched) {
       watch.append(keys)
-      keys = keys.value
+      keys = keys.get()
     }
     local box = getBox(keys)
     if (box == null)
@@ -259,8 +262,7 @@ function tutorialWnd() {
         : {
             size = SIZE_TO_CONTENT
             key = $"nextStepAfter{stepIdx}"
-            onAttach = @() nextStepAfter.value ? nextStep()
-              : nextStepAfter.subscribe(nextStepSubscription)
+            onAttach = @() nextStepAfter.get() ? nextStep() : null
             onDetach = @() nextStepAfter.unsubscribe(nextStepSubscription)
           }
     ]
@@ -276,6 +278,6 @@ let open = @() addModalWindow({
   onClick = @() null
 })
 
-if (isTutorialActive.value)
+if (isTutorialActive.get())
   open()
 isTutorialActive.subscribe(@(v) v ? open() : close())

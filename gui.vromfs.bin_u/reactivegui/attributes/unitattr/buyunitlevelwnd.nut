@@ -24,7 +24,7 @@ let unit = Computed(@() campMyUnits.get()?[unitName.get()])
 let levelsToMax = Computed(@() (unit.get()?.levels.len() ?? 0) - (unit.get()?.level ?? 0))
 let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
 
-let close = @() unitName(null)
+let close = @() unitName.set(null)
 
 registerHandler("closeBuyUnitLevelWnd", @(_) close())
 
@@ -91,4 +91,4 @@ if (needShowWnd.get())
   openImpl()
 needShowWnd.subscribe(@(v) v ? openImpl() : removeModalWindow(WND_UID))
 
-return @(uName) unitName(uName)
+return @(uName) unitName.set(uName)

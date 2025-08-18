@@ -25,11 +25,11 @@ let tag = {
 }?[get_cur_circuit_name()]
 
 
-let actualGameVersion = hardPersistWatched("actualGameVersion.value")
+let actualGameVersion = hardPersistWatched("actualGameVersion.get()")
 let actualGameHash = hardPersistWatched("actualGameVersion.hash")
 let nextRequestTime = hardPersistWatched("actualGameVersion.nextTime")
-let needRequest = Watched(nextRequestTime.value <= get_time_msec())
-let allowRequest = Computed(@() needRequest.value && !isInBattle.get() && !isInLoadingScreen.get())
+let needRequest = Watched(nextRequestTime.get() <= get_time_msec())
+let allowRequest = Computed(@() needRequest.get() && !isInBattle.get() && !isInLoadingScreen.get())
 
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
@@ -44,9 +44,9 @@ let updateGameVersionImpl = proj == null ? @() null
     })
 
 function updateGameVersion() {
-  if (!allowRequest.value)
+  if (!allowRequest.get())
     return
-  needRequest(false)
+  needRequest.set(false)
   logUpdate("request")
   updateGameVersionImpl()
 }
@@ -68,14 +68,14 @@ eventbus_subscribe(ACTUAL_VERSION_ID, function(response) {
   logUpdate($"status = {status}, version = {result?.version}")
 })
 
-if (allowRequest.value)
+if (allowRequest.get())
   deferOnce(updateGameVersion)
 allowRequest.subscribe(@(v) v ? deferOnce(updateGameVersion) : null)
 
-let needRequestOn = @() needRequest(true)
+let needRequestOn = @() needRequest.set(true)
 function startTimer() {
-  if (!needRequest.value)
-    resetTimeout(max(0.1, 0.001 * (nextRequestTime.value - get_time_msec())), needRequestOn)
+  if (!needRequest.get())
+    resetTimeout(max(0.1, 0.001 * (nextRequestTime.get() - get_time_msec())), needRequestOn)
 }
 startTimer()
 nextRequestTime.subscribe(@(_) startTimer())

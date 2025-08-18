@@ -7,7 +7,7 @@ let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenTitle, allTitles, chosenNickFrame, availTitles,
   unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
-} = require("decoratorState.nut")
+} = require("%rGui/decorators/decoratorState.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -15,14 +15,13 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
+let { choosenMark, mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { choosenMark } = require("decoratorsPkg.nut")
-let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
+let { mkDecoratorUnlockProgress } = require("%rGui/decorators/mkDecoratorUnlockProgress.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let purchaseDecorator = require("purchaseDecorator.nut")
+let purchaseDecorator = require("%rGui/decorators/purchaseDecorator.nut")
 let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 
 
@@ -36,7 +35,7 @@ let bgColor = @(rowIdx) rowIdx % 2 == 0 ? 0x00000000 : 0x80323232
 let chosenTitleName = Computed(@() chosenTitle.get()?.name ?? "")
 let selectedTitleName = Watched(chosenTitleName.get())
 let visibleTitles = Computed(@() allTitles.get().filter(@(dec, id) !dec.isHidden || isShowAllDecorators.get() || (id in availTitles.get())))
-let hasVisibleTitles = Computed(@() visibleTitles.value.len() > 0)
+let hasVisibleTitles = Computed(@() visibleTitles.get().len() > 0)
 
 function applySelectedTitle() {
   let selTitle = selectedTitleName.get()
@@ -53,7 +52,7 @@ let header = {
     @() {
       watch = [myUserName, chosenNickFrame]
       rendObj = ROBJ_TEXT
-      text = frameNick(myUserName.value, chosenNickFrame.get()?.name)
+      text = frameNick(myUserName.get(), chosenNickFrame.get()?.name)
     }.__update(fontMedium)
     mkTitle(fontSmall)
   ]
@@ -71,12 +70,12 @@ function titleRow(name, locName, rowIdx) {
     behavior = Behaviors.Button
     sound = { click  = "meta_profile_elements" }
     valign = ALIGN_CENTER
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     function onClick() {
       markDecoratorSeen(name)
-      if (!isSelected.value)
+      if (!isSelected.get())
         selectedTitleName.set(name)
-      else if (isSelected.value && !isChoosen.value
+      else if (isSelected.get() && !isChoosen.get()
           && decoratorInProgress.get() != (name != "" ? name : "title"))
         applySelectedTitle()
     }
@@ -88,8 +87,8 @@ function titleRow(name, locName, rowIdx) {
       valign = ALIGN_CENTER
       size = flex()
       borderWidth = hdpx(2)
-      borderColor = stateFlags.value & S_HOVER ? hoverColor
-        : (stateFlags.value & S_ACTIVE) || isSelected.value ? 0xFFFFFFFF
+      borderColor = stateFlags.get() & S_HOVER ? hoverColor
+        : (stateFlags.get() & S_ACTIVE) || isSelected.get() ? 0xFFFFFFFF
         : 0x00000000
       children = [
         @() {
@@ -104,10 +103,10 @@ function titleRow(name, locName, rowIdx) {
                 color = 0xFFFFB70B
                 image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
               }
-            : isChoosen.value || isSelected.value
-              ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.value != null),
-                isChoosen.value ? choosenMark(hdpxi(45), { hplace = ALIGN_CENTER }) : null)
-            : isUnseen.value
+            : isChoosen.get() || isSelected.get()
+              ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.get() != null),
+                isChoosen.get() ? choosenMark(hdpxi(45), { hplace = ALIGN_CENTER }) : null)
+            : isUnseen.get()
               ? {
                   margin = const [hdpx(15), hdpx(20)]
                   children = priorityUnseenMark
@@ -116,10 +115,10 @@ function titleRow(name, locName, rowIdx) {
         }
         {
           rendObj = ROBJ_TEXT
-          color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+          color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
           text = locName
           transform = {
-            scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+            scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
           }
         }.__update(fontMedium)
       ]
@@ -162,7 +161,7 @@ let scrollHandler = ScrollHandler()
 let listKey = {}
 
 function titlesList() {
-  local total = max(visibleTitles.value.len() + 1, columns * minRows)
+  local total = max(visibleTitles.get().len() + 1, columns * minRows)
   let rows = ceil(total.tofloat() / columns).tointeger()
   total = rows * columns
 
@@ -220,7 +219,7 @@ let titlesScene = @() {
   maxWidth = hdpx(1800)
   onAttach = @() selectedTitleName.set(chosenTitleName.get())
   onDetach = @() markDecoratorsSeen(unseenDecorators.get().filter(@(_, id) id in availTitles.get()).keys())
-  children = hasVisibleTitles.value ? titleContent
+  children = hasVisibleTitles.get() ? titleContent
     : {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER

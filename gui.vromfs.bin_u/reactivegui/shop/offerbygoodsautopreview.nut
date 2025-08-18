@@ -3,7 +3,7 @@ let { register_command } = require("console")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
-let { activeOffersByGoods } = require("offerByGoodsState.nut")
+let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
 let { isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
 
 

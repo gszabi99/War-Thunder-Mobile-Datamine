@@ -11,16 +11,16 @@ let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientS
 const REQUEST_PERIOD_MSEC = 1800000
 let needSuggestToUpdate = hardPersistWatched("googlePlay.needSuggestToUpdate")
 let nextRequestTime = hardPersistWatched("googlePlay.needSuggestToUpdate.nextTime")
-let needRequest = Watched(nextRequestTime.value <= get_time_msec())
-let allowRequest = Computed(@() needRequest.value && !isInBattle.get() && !isInLoadingScreen.get())
+let needRequest = Watched(nextRequestTime.get() <= get_time_msec())
+let allowRequest = Computed(@() needRequest.get() && !isInBattle.get() && !isInLoadingScreen.get())
 
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
 
 function requestNeedUpdate() {
-  if (!allowRequest.value)
+  if (!allowRequest.get())
     return
-  needRequest(false)
+  needRequest.set(false)
   logUpdate("request")
   checkAppUpdateOnMarket()
 }
@@ -31,14 +31,14 @@ eventbus_subscribe("android.platform.onUpdateCheck", function(response) {
   needSuggestToUpdate.update(status)
 })
 
-if (allowRequest.value)
+if (allowRequest.get())
   deferOnce(requestNeedUpdate)
 allowRequest.subscribe(@(v) v ? deferOnce(requestNeedUpdate) : null)
 
-let needRequestOn = @() needRequest(true)
+let needRequestOn = @() needRequest.set(true)
 function startTimer() {
-  if (!needRequest.value)
-    resetTimeout(max(0.1, 0.001 * (nextRequestTime.value - get_time_msec())), needRequestOn)
+  if (!needRequest.get())
+    resetTimeout(max(0.1, 0.001 * (nextRequestTime.get() - get_time_msec())), needRequestOn)
 }
 startTimer()
 nextRequestTime.subscribe(@(_) startTimer())

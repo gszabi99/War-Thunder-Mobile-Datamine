@@ -37,7 +37,7 @@ let fakeUnseenPurchases = {
   }
 }
 
-let toggle = @() unseenPurchasesDebug(unseenPurchasesDebug.value == null ? fakeUnseenPurchases : null)
+let toggle = @() unseenPurchasesDebug.set(unseenPurchasesDebug.get() == null ? fakeUnseenPurchases : null)
 
 register_command(toggle, "ui.debug.unseenPurchasesFake")
 

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { buttonsShowTime } = require("debriefingWndConsts.nut")
+let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 
 let debriefingData = mkWatched(persist, "debriefingData", null)
 let isDebriefingAnimFinished = Watched(true)

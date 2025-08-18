@@ -7,6 +7,7 @@ let { playSound } = require("sound_wt")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { isGtFFA } = require("%rGui/missionState.nut")
 let { localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
@@ -41,7 +42,7 @@ let scoresGap = hdpx(100)
 let scoresTextWidth = (saSize[0] - scoresGap) / 2
 let scoresContentWidth = scoresTextWidth
 let missionResult = Watched(null)
-let needShowResultScreen = Computed(@() missionResult.value == GO_WIN || missionResult.value == GO_FAIL)
+let needShowResultScreen = Computed(@() missionResult.get() == GO_WIN || missionResult.get() == GO_FAIL)
 let streakSize = hdpx(70)
 
 let scoresByCampaign = {
@@ -73,10 +74,17 @@ let scoresByCampaign = {
   ]
 }
 
-let resultLocId = {
-  [GO_WIN] = "debriefing/victory",
-  [GO_FAIL] = "debriefing/defeat"
+let resultText = {
+  [GO_WIN]  = "".concat(loc("debriefing/victory"), "!"),
+  [GO_FAIL] = "".concat(loc("debriefing/defeat"), "!"),
 }
+let resultTextFFA = "".concat(loc("MISSION_FINISHED"), "!")
+
+let getResultText = @(resultNum, isFFA) resultNum == null
+    ? ""
+  : isFFA
+    ? resultTextFFA
+  : resultText[resultNum]
 
 let textBgColor = Watched(whiteBgColor)
 let showText = Watched(false)
@@ -86,7 +94,7 @@ let animatedTextBlock = @() {
   rendObj = ROBJ_9RECT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  color = textBgColor.value
+  color = textBgColor.get()
   image = gradTranspDoubleSideX
   texOffs = [0 , gradDoubleTexOffset]
   screenOffs = [0, hdpx(250)]
@@ -99,14 +107,14 @@ let animatedTextBlock = @() {
       easing = InQuad, play = true, delay = textBlockBounceDuration / 3 }
     { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.05, 1.2], duration = textBlockBounceDuration / 3,
       easing = CosineFull, play = true, delay = (textBlockBounceDuration / 3) * 2,
-      onFinish = @() textBgColor(missionResult.value == GO_FAIL ? failBgColor : winBgColor) }
+      onFinish = @() textBgColor.set(missionResult.get() == GO_WIN || isGtFFA.get() ? winBgColor : failBgColor) }
   ]
   children =
-    showText.value
+    showText.get()
       ? @() {
-        watch = missionResult
+        watch = [missionResult, isGtFFA]
         rendObj = ROBJ_TEXT
-        text = $"{loc(resultLocId?[missionResult.value] ?? "")}!"
+        text = getResultText(missionResult.get(), isGtFFA.get())
         transform = {}
         animations = opacityAnims(missionResultOpacityDuration, 0)
           .append({
@@ -125,7 +133,7 @@ let animatedTextBlock = @() {
         transform = { scale = [0.2, 1] }
         animations = [
           { prop = AnimProp.scale, to = [1, 1], duration = textAppearanceDuration,
-            easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText(true) }
+            easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText.set(true) }
         ]
       }
 }
@@ -135,7 +143,7 @@ let resultTextBlock = @() {
   rendObj = ROBJ_BOX
   children = animatedTextBlock
   size = const [flex(), hdpx(180)]
-  borderColor = textBgColor.value == whiteBgColor ? noBgColor : blackBgColor
+  borderColor = textBgColor.get() == whiteBgColor ? noBgColor : blackBgColor
   borderWidth = const [8, 0]
   transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
 }
@@ -195,16 +203,16 @@ let achievementsBlock = @() {
 
 function battleResultsShort() {
   let res = { watch = needShowResultScreen }
-  if (!needShowResultScreen.value)
+  if (!needShowResultScreen.get())
     return res
 
-  let children = !isPlaceVisible.value ? []
-                 : [ mkUserScores(mkPlaceIcon(myPlace.value), "debriefing/placeInMyTeam") ]
-                   .extend((scoresByCampaign?[battleCampaign.value] ?? [])
+  let children = !isPlaceVisible.get() ? []
+                 : [ mkUserScores(mkPlaceIcon(myPlace.get()), "debriefing/placeInMyTeam") ]
+                   .extend((scoresByCampaign?[battleCampaign.get()] ?? [])
                      .map(function(v) {
                        let mul = viewMuls?[v.name] ?? 1.0
-                       let score = localPlayerDamageStats.value?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
-                       return mkUserScores(mkImageWithCount(mul * score, icons?[v.name]), v.locId)
+                       let score = localPlayerDamageStats.get()?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
+                       return mkUserScores(mkImageWithCount(mul * score, icons?[v.name] ?? icons.score), v.locId)
                      }))
   children.append(achievementsBlock)
 
@@ -235,13 +243,13 @@ eventbus_subscribe("MissionResult", function(data) {
   let { resultNum } = data
   if (resultNum != GO_WIN && resultNum != GO_FAIL)
     return
-  let soundName = resultNum == GO_WIN ? "message_win" : "message_loose"
+  let soundName = resultNum == GO_WIN || isGtFFA.get() ? "message_win" : "message_loose"
   playSound(soundName)
-  missionResult(resultNum)
+  missionResult.set(resultNum)
 })
 
-isInBattle.subscribe(@(v) v ? missionResult(null) : null)
-isInDebriefing.subscribe(@(v) v ? missionResult(null) : null)
+isInBattle.subscribe(@(v) v ? missionResult.set(null) : null)
+isInDebriefing.subscribe(@(v) v ? missionResult.set(null) : null)
 needShowResultScreen.subscribe(@(v) !v ? resultsHintLogState.clearEvents() : null)
 
 return battleResultsShort

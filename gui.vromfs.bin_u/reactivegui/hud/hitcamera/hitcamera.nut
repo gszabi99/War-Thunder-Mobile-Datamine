@@ -6,19 +6,19 @@ let { isHcRender, shouldShowHc, isHcUnitHit, hcUnitType, hcFadeTime, hcResult, h
 } = require("%rGui/hud/hitCamera/hitCameraState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hitCameraRenderSize, hitResultStyle } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
-let hitCameraDmgPanel = require("hitCameraDmgPanel.nut")
-let hitCameraDebuffs = require("hitCameraDebuffs.nut")
-let { hitCameraResultPlate, hitResultPlateHeight } = require("hitCameraResultPlate.nut")
+let hitCameraDmgPanel = require("%rGui/hud/hitCamera/hitCameraDmgPanel.nut")
+let hitCameraDebuffs = require("%rGui/hud/hitCamera/hitCameraDebuffs.nut")
+let { hitCameraResultPlate, hitResultPlateHeight } = require("%rGui/hud/hitCamera/hitCameraResultPlate.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 let maxResultTextWidth = hdpx(330)
-let needShow = Watched(shouldShowHc.value)
+let needShow = Watched(shouldShowHc.get())
 
 
-shouldShowHc.subscribe(@(v) v ? defer(@() needShow(shouldShowHc.value)) : needShow(v))
+shouldShowHc.subscribe(@(v) v ? defer(@() needShow.set(shouldShowHc.get())) : needShow.set(v))
 
-let needShowImage = Computed(@() hcUnitType.value != "tank" || isHcUnitHit.value)
+let needShowImage = Computed(@() hcUnitType.get() != "tank" || isHcUnitHit.get())
 let useHitResultPlate = Computed(@() hcUnitType.value == "tank")
 
 let hitCamBgColor = {
@@ -33,7 +33,7 @@ function resultText(scale) {
   let padding = scaleArr([hdpx(4), hdpx(10)], scale)
   return function() {
     let res = { watch = hcResult }
-    let { locId = "", styleId = ""  } = hcResult.value
+    let { locId = "", styleId = ""  } = hcResult.get()
     let style = hitResultStyle?[styleId]
     if (style == null)
       return res
@@ -71,10 +71,10 @@ let mkHealthGrad = @(isLeft, color, part) {
 }
 
 function healthHiglight() {
-  let color = hcRelativeHealth.value >= 0.8 ? 0
-    : hcRelativeHealth.value >= 0.3 ? 0x80806000
+  let color = hcRelativeHealth.get() >= 0.8 ? 0
+    : hcRelativeHealth.get() >= 0.3 ? 0x80806000
     : 0XA0A03030
-  let part = (0.8 - hcRelativeHealth.value) / 0.8
+  let part = (0.8 - hcRelativeHealth.get()) / 0.8
   return {
     watch = hcRelativeHealth
     size = flex()
@@ -96,7 +96,7 @@ function imageBlock(needResultText, size, scale) {
     watch = hcUnitType
     size
     rendObj = ROBJ_SOLID
-    color = hitCamBgColor?[hcUnitType.value] ?? hitCamBgColor.ship
+    color = hitCamBgColor?[hcUnitType.get()] ?? hitCamBgColor.ship
     children = [
       healthHiglight
       {
@@ -120,7 +120,7 @@ function hitCameraBlock(scale) {
   return @() {
     watch = [ needShow, needShowImage, useHitResultPlate ]
     key = "hit_camera"
-    opacity = needShow.value ? 1.0 : 0.0
+    opacity = needShow.get() ? 1.0 : 0.0
     children = {
       flow = FLOW_VERTICAL
       children = [
@@ -130,7 +130,7 @@ function hitCameraBlock(scale) {
     }
 
     
-    transitions = [{ prop = AnimProp.opacity, duration = hcFadeTime.value }]
+    transitions = [{ prop = AnimProp.opacity, duration = hcFadeTime.get() }]
   }
 }
 

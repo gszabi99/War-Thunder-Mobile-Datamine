@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { defaultBtnsCfg, msgBoxText, mkCustomMsgBoxWnd, mkMsgBoxBtnsSet
 } = require("%rGui/components/msgBox.nut")
-let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
+let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { urlText } = require("%rGui/components/urlText.nut")
 
 let wndWidth = hdpx(1500)

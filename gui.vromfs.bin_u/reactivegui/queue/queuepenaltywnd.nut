@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_meta_mission_info_by_name } = require("guiMission")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
@@ -17,7 +18,13 @@ let { penalties } = require("%rGui/mainMenu/penaltyState.nut")
 
 let QUEUE_PENALTY_UID = "queue_penalty_box"
 
-function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb, cancelCb = null) {
+function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb, cancelCb = null, missionName = "") {
+  if (missionName != "") {
+    let mInfo = get_meta_mission_info_by_name(missionName)
+    if (mInfo?.gt_ffa)
+      return false
+  }
+
   let leftTime = Computed(@()
     max((penalties.get()?[campaign].penaltyEndTime ?? 0), (penalties.get()?[curCampaign.get()].penaltyEndTime ?? 0))
     - serverTime.get())

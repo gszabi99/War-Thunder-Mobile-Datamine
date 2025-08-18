@@ -35,7 +35,7 @@ let function valuesList(list, curValue, setValue) {
     return @() {
       watch = stateFlags
       behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       function onClick() {
         close()
         setValue(value)

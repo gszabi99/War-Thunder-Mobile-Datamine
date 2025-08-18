@@ -14,11 +14,11 @@ let { delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("%rGui/un
 let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { needDelayAnimation, isBuyUnitWndOpened, animExpPart,
   animUnitAfterResearch } = require("%rGui/unitsTree/animState.nut")
-let { markTutorialCompleted, isFinishedUnitsResearch } = require("completedTutorials.nut")
+let { markTutorialCompleted, isFinishedUnitsResearch } = require("%rGui/tutorial/completedTutorials.nut")
 let { nodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
-  activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
+  activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { setResearchUnit } = require("%rGui/unit/unitsWndActions.nut")
 let { PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
 let { setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
@@ -26,7 +26,7 @@ let { setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { TUTORIAL_UNITS_RESEARCH_ID } = require("tutorialConst.nut")
+let { TUTORIAL_UNITS_RESEARCH_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
 
@@ -69,16 +69,14 @@ shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function getObjectsForTutorial() {
   let availableSlotsForSelection = curSlots.get()
-    .map(@(_, idx) {
+    .map(@(slot, idx) slot.name != "" ? null : {
       keys = $"select_slot_{idx}"
       onClick = @() setUnitToSlot(idx)
     })
-    .slice(1)
+    .filter(@(s) s != null)
 
-  let currentUnitNode = nodes.get()[curSelectedUnit.get()]
   let availableResearchNodes = nodes.get()
-    .filter(@(node) node.y <= currentUnitNode.y
-      && node.reqUnits.findindex(@(v) v == curSelectedUnit.get()) != null)
+    .filter(@(node) node.reqUnits.findindex(@(v) v == curSelectedUnit.get()) != null)
     .map(@(unit) {
       keys = $"treeNodeUnitPlate:{unit.name}"
       onClick = @() curSelectedUnit.set(unit.name)

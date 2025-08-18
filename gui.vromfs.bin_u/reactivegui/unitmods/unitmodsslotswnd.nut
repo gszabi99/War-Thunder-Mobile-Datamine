@@ -13,16 +13,16 @@ let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlo
   curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt, curUnseenMods,
   chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
   isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx, weaponsScrollHandler
-} = require("unitModsSlotsState.nut")
+} = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { loadUnitWeaponSlots, mustSlotHaveDefault } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("equipSlotWeaponMsgBox.nut")
-let { getModCurrency, getModCost } = require("unitModsState.nut")
+let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
+let { getModCurrency, getModCost } = require("%rGui/unitMods/unitModsState.nut")
 let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, weaponTotalH, weaponGap,
   mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder
-} = require("slotWeaponCard.nut")
-let { mkBeltDesc, mkSlotWeaponDesc } = require("unitModsSlotsDesc.nut")
+} = require("%rGui/unitMods/slotWeaponCard.nut")
+let { mkBeltDesc, mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
 let { textButtonPrimary, textButtonPurchase, iconButtonPrimary, mkButtonTextMultiline
   mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
 } = require("%rGui/components/textButton.nut")
@@ -41,7 +41,7 @@ let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkUnseenModIndicator } = require("modsComps.nut")
+let { mkUnseenModIndicator } = require("%rGui/unitMods/modsComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")

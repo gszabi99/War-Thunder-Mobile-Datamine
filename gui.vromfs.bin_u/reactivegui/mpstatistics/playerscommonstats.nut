@@ -21,6 +21,6 @@ register_es("players_common_stats_es",
   })
 
 return {
-  playersCommonStats = Computed(@() playersCommonStats.value.__merge(dbgCommonStats.value))
+  playersCommonStats = Computed(@() playersCommonStats.get().__merge(dbgCommonStats.get()))
   dbgCommonStats
 }

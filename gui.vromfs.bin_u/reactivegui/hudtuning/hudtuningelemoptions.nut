@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-from "hudTuningConsts.nut" import *
+from "%rGui/hudTuning/hudTuningConsts.nut" import *
 let { deep_clone } = require("%sqstd/underscore.nut")
-let { cfgByUnitType } = require("cfgByUnitType.nut")
+let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { isElemHold, tuningState, setTuningState, tuningOptions, tuningTransform, tuningUnitType, selectedId,
   isAllElemsOptionsOpened
-} = require("hudTuningState.nut")
-let { tuningBtnGap, tuningBtnSize } = require("tuningBtn.nut")
-let { mkElemOption, mkAllElemsOption } = require("mkElemOption.nut")
-let { optScale, allElemOptionsList } = require("cfg/cfgOptions.nut")
+} = require("%rGui/hudTuning/hudTuningState.nut")
+let { tuningBtnGap, tuningBtnSize } = require("%rGui/hudTuning/tuningBtn.nut")
+let { mkElemOption, mkAllElemsOption } = require("%rGui/hudTuning/mkElemOption.nut")
+let { optScale, allElemOptionsList } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
 
 let offset = hdpx(20)

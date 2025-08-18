@@ -4,9 +4,9 @@ let { abs } = require("math")
 let { transformInProgress, applyTransformProgress, tuningPoints, tuningBgElems, selectedElem,
   ELEM_POINT, ELEM_BG, ELEM_LINE, ELEM_MIDPOINT, selectElem, getElemKey, presetLines,
   presetMapSize, isShiftPressed, selectedLineIdx, selectedLineMidpoints, scalableETypes
-} = require("mapEditorState.nut")
-let { INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD } = require("mapEditorConsts.nut")
-let { shiftActions } = require("comboActions.nut")
+} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
+let { INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD } = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
+let { shiftActions } = require("%rGui/debugTools/debugMapPoints/comboActions.nut")
 let { getClosestSegment, mkLineSplinePoints } = require("%rGui/event/treeEvent/segmentMath.nut")
 
 

@@ -5,13 +5,13 @@ let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
   bestCampLevel, curEventLootboxes, curEventLoc,
   curEvent, MAIN_EVENT_ID, curEventSeason, isCurEventActive,
-  curEventBg, curEventName, specialEventsWithTree
-} = require("eventState.nut")
+  curEventBg, curEventName, specialEventsWithTree, specialEventGamercardItems
+} = require("%rGui/event/eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight, leaderbordBtn, questsBtn
-} = require("eventPkg.nut")
+} = require("%rGui/event/eventPkg.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -46,7 +46,6 @@ let { customEventLootboxScale } = require("%appGlobals/config/lootboxPresentatio
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
-let { specialEventGamercardItems } = require("%rGui/event/eventState.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
@@ -77,7 +76,7 @@ function onPurchase(lootbox, price, currencyId, count = 1) {
     return
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
-  let errMsg = bestCampLevel.value < reqPlayerLevel
+  let errMsg = bestCampLevel.get() < reqPlayerLevel
       ? loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) })
     : start > serverTime.get()
       ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
@@ -105,7 +104,7 @@ let mkProgress = @(stepsToFixed) @() {
   watch = stepsToFixed
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null
+  children = stepsToFixed.get()[1] - stepsToFixed.get()[0] <= 0 ? null
     : [
         mkRow([
           smallChestIcon
@@ -116,10 +115,10 @@ let mkProgress = @(stepsToFixed) @() {
           }.__update(fontTinyShaded)
           {
             rendObj = ROBJ_TEXT
-            text = stepsToFixed.value[1] - stepsToFixed.value[0]
+            text = stepsToFixed.get()[1] - stepsToFixed.get()[0]
           }.__update(fontTinyShaded)
         ])
-        mkJackpotProgressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = const [hdpx(20), 0, hdpx(10), 0] })
+        mkJackpotProgressBar(stepsToFixed.get()[0], stepsToFixed.get()[1], { margin = const [hdpx(20), 0, hdpx(10), 0] })
       ]
 }
 
@@ -134,7 +133,7 @@ function mkLootboxBlock(lootbox, blockSize) {
   return @() {
     key = $"lootbox_{name}" 
     watch = stateFlags
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     size = [blockSize, SIZE_TO_CONTENT]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
@@ -155,13 +154,13 @@ function mkLootboxBlock(lootbox, blockSize) {
         hplace = ALIGN_CENTER
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        children = name in unseenLootboxes.value?[curEventName.value] || unseenLootboxesShowOnce.value?[name]
+        children = name in unseenLootboxes.get()?[curEventName.get()] || unseenLootboxesShowOnce.get()?[name]
             ? priorityUnseenMark
           : null
       }
 
       {
-        transform = { scale = (stateFlags.value & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }
+        transform = { scale = (stateFlags.get() & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }
         transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
         children = lootboxImage
       }
@@ -284,9 +283,9 @@ let eventGamercard = {
             @() {
               watch = curEventLoc
               rendObj = ROBJ_TEXT
-              text = curEventLoc.value
+              text = curEventLoc.get()
             }.__update(fontBig)
-            infoEllipseButton(@() openNewsWndTagged($"event_{curEventName.value}_{curEventSeason.value}"))
+            infoEllipseButton(@() openNewsWndTagged($"event_{curEventName.get()}_{curEventSeason.get()}"))
           ]
         }
 
@@ -294,8 +293,8 @@ let eventGamercard = {
           watch = [serverTime, curEventEndsAt]
           halign = ALIGN_CENTER
           valign = ALIGN_BOTTOM
-          children = !curEventEndsAt.value || (curEventEndsAt.value - serverTime.get() < 0) ? null
-            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.value - serverTime.get()),
+          children = !curEventEndsAt.get() || (curEventEndsAt.get() - serverTime.get() < 0) ? null
+            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.get() - serverTime.get()),
                 "quests/untilTheEnd",
                 { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
@@ -359,7 +358,7 @@ function mkLootboxPreviewContent() {
 }
 
 function eventWndContent() {
-  let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
+  let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.get().len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
   let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEventName.get()))
   let modeId = Computed(@() battleInfo.get()?.gameModeId)
   let battleCampaign = Computed(@() battleInfo.get()?.campaign)

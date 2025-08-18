@@ -11,7 +11,7 @@ let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, 
   mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn
 } = require("%rGui/components/movementArrows.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
-let { isStickActiveByArrows, stickDelta } = require("stickState.nut")
+let { isStickActiveByArrows, stickDelta } = require("%rGui/hud/stickState.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { currentGearDownOnStopButtonTouch } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
 let { Point2 } = require("dagor.math")
@@ -54,10 +54,10 @@ function axelerate(flipY) {
     diff = 2
   if (cruiseControl.value == CRUISE_CONTROL_MAX)
     diff = -2
-  prevCruiseControl = cruiseControl.value
+  prevCruiseControl = cruiseControl.get()
   changeCruiseControl(diff)
   if (diff > 0 && prevCruiseControl == CRUISE_CONTROL_N)
-    isStopButtonVisible(true)
+    isStopButtonVisible.set(true)
   return true
 }
 
@@ -65,29 +65,29 @@ function updateStickDelta(_) {
   let deltaY = cruiseControl.value == CRUISE_CONTROL_N ? 0
              : cruiseControl.value == CRUISE_CONTROL_R ? -1
              : 1
-  isStickActiveByArrows(deltaY != 0 || steerWatch.value != 0) 
+  isStickActiveByArrows.set(deltaY != 0 || steerWatch.get() != 0) 
   let multX = deltaY == 0 ? 1 : 0.5
-  stickDelta(Point2(steerWatch.value * multX, deltaY))
+  stickDelta.set(Point2(steerWatch.get() * multX, deltaY))
 }
 
 cruiseControl.subscribe(updateStickDelta)
 steerWatch.subscribe(updateStickDelta)
 
-let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.value)
+let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.get())
 
 function toNeutral() {
-  if (holdingForStopShowCount > 0 && !fullStopOnTouchButton.value) {
+  if (holdingForStopShowCount > 0 && !fullStopOnTouchButton.get()) {
     eventbus_send("hint:holding_for_stop:show", {})
     --holdingForStopShowCount
   }
   prevCruiseControl = CRUISE_CONTROL_UNDEF
-  changeCruiseControl(-cruiseControl.value)
+  changeCruiseControl(-cruiseControl.get())
 }
 
 function toReverse() {
   prevCruiseControl = CRUISE_CONTROL_N
   changeCruiseControl(CRUISE_CONTROL_R)
-  isStopButtonVisible(false)
+  isStopButtonVisible.set(false)
 }
 
 function setGmBrakeAxis(v) {
@@ -105,8 +105,8 @@ function updateAxeleration(flipY) {
 
 function steeringAxelerate(id, flipX) {
   curSteerValue = min(curSteerValue + deltaSteer, 1)
-  steerWatch(flipX ? -curSteerValue : curSteerValue)
-  setVirtualAxisValue(id, steerWatch.value)
+  steerWatch.set(flipX ? -curSteerValue : curSteerValue)
+  setVirtualAxisValue(id, steerWatch.get())
 }
 
 let steeringUpdate = [false, true]
@@ -134,15 +134,15 @@ function mkSteerParams(isRight, scale) {
       clearTimer(onTouchUpdate)
       setInterval(0.3, onTouchUpdate)
       playSound("steer")
-      if (!isTurnTypesCtrlShowed.value) {
+      if (!isTurnTypesCtrlShowed.get()) {
         eventbus_send("hint:turn_types_ctrl:show", {})
-        isTurnTypesCtrlShowed(true)
+        isTurnTypesCtrlShowed.set(true)
       }
     }
     function onTouchEnd() {
       clearTimer(onTouchUpdate)
       setVirtualAxisValue("gm_steering", 0)
-      steerWatch(0)
+      steerWatch.set(0)
       curSteerValue = minSteer
     }
   }
@@ -157,15 +157,15 @@ function mkStopParams(verSize) {
       setGmBrakeAxis(1)
       toNeutral()
       if (fullStopOnTouchButton.get())
-        isStopButtonVisible(false)
+        isStopButtonVisible.set(false)
       else
         resetTimeout(delayReverse, toReverse)
     }
     function onTouchEnd() {
-      if (!fullStopOnTouchButton.value)
+      if (!fullStopOnTouchButton.get())
         setGmBrakeAxis(0)
       clearTimer(toReverse)
-      isStopButtonVisible(false)
+      isStopButtonVisible.set(false)
     }
   }
 }
@@ -180,9 +180,9 @@ function mkEngineBtn(isBackward, id, verSize, children) {
       playHapticPattern(isBackward ? HAPT_BACKWARD : HAPT_FORWARD)
       if (axelerate(isBackward))
         resetTimeout(delayLow, onTouchUpdate)
-      if (!isMoveCtrlHitShowed.value) {
+      if (!isMoveCtrlHitShowed.get()) {
         eventbus_send("hint:dont_hold_ctrl_to_move_tank:show", {})
-        isMoveCtrlHitShowed(true)
+        isMoveCtrlHitShowed.set(true)
       }
     },
     function onTouchEnd() {
@@ -199,10 +199,10 @@ function mkEngineBtn(isBackward, id, verSize, children) {
 }
 
 function calcBackSpeedPart() {
-  if (speed.value >= 0)
+  if (speed.get() >= 0)
     return 0
-  let maxSpeed = maxSpeedBySteps.value?[ - 1] ?? 0
-  return maxSpeed < 0 ? clamp(speed.value / maxSpeed.tofloat(), 0.0, 1.0) : 0
+  let maxSpeed = maxSpeedBySteps.get()?[ - 1] ?? 0
+  return maxSpeed < 0 ? clamp(speed.get() / maxSpeed.tofloat(), 0.0, 1.0) : 0
 }
 
 let backwardArrow = @(verSize) mkEngineBtn(true, "ID_TRANS_GEAR_DOWN", verSize,
@@ -215,17 +215,17 @@ let backwardArrow = @(verSize) mkEngineBtn(true, "ID_TRANS_GEAR_DOWN", verSize,
   ])
 
 function calcForwSpeedPart() {
-  if (speed.value <= 0)
+  if (speed.get() <= 0)
     return 0
-  let maxSpeed = maxSpeedBySteps.value?[1] ?? 0
-  return maxSpeed > 0 ? clamp(speed.value / maxSpeed.tofloat(), 0.0, 1.0) : 0
+  let maxSpeed = maxSpeedBySteps.get()?[1] ?? 0
+  return maxSpeed > 0 ? clamp(speed.get() / maxSpeed.tofloat(), 0.0, 1.0) : 0
 }
 
 function calcForwSpeedPart2() {
-  let minSpeed = maxSpeedBySteps.value?[1] ?? 0
-  if (speed.value <= minSpeed)
+  let minSpeed = maxSpeedBySteps.get()?[1] ?? 0
+  if (speed.get() <= minSpeed)
     return 0.0
-  let res = lerpClamped(minSpeed.tofloat(), (maxSpeedBySteps.value?[2] ?? 0).tofloat(), 0.0, 1.0, speed.value)
+  let res = lerpClamped(minSpeed.tofloat(), (maxSpeedBySteps.get()?[2] ?? 0).tofloat(), 0.0, 1.0, speed.get())
   return res
 }
 
@@ -235,7 +235,7 @@ let forwardArrow = @(verSize) mkEngineBtn(false, "ID_TRANS_GEAR_UP", verSize,
     mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize)
     mkMoveVertBtnOutline(false, verSize)
     mkMoveVertBtnCorner(false,
-      Computed(@() cruiseControl.value in fwdControl ? fillMoveColorDef : 0xFFFFFFFF),
+      Computed(@() cruiseControl.get() in fwdControl ? fillMoveColorDef : 0xFFFFFFFF),
       verSize)
     mkMoveVertBtn2step(calcForwSpeedPart2,
       Computed(@() cruiseControl.value == CRUISE_CONTROL_MAX ? fillMoveColorDef : 0x00000000),
@@ -259,7 +259,7 @@ return function(scale) {
           forwardArrow(verSize)
           @() {
             watch = isStopButtonVisible
-            children = isStopButtonVisible.value ? mkStopBtn(mkStopParams(verSize)) : backwardArrow(verSize)
+            children = isStopButtonVisible.get() ? mkStopBtn(mkStopParams(verSize)) : backwardArrow(verSize)
           }
         ]
       }

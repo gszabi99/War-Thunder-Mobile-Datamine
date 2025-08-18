@@ -110,7 +110,7 @@ function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = c
     hplace = ALIGN_LEFT
     children = @() {
       watch = nextAnimation
-      children = nextAnimation.value == null ? null : mkConsumableAnimation(nextAnimation.value, start, finish, onDecrement)
+      children = nextAnimation.get() == null ? null : mkConsumableAnimation(nextAnimation.get(), start, finish, onDecrement)
     }
   }
 }

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { startswith } = require("string")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkBtnImageComp } = require("gamepadImgByKey.nut")
-let { btnA, clickButtons, EMPTY_ACTION } = require("gpActBtn.nut")
+let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
+let { btnA, clickButtons, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { cursorPresent, cursorOverStickScroll, cursorOverClickable, hoveredClickableInfo } = gui_scene
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -28,7 +28,7 @@ let defaultJoyAHint = loc("ui/cursor.activate")
 
 gui_scene.setHotkeysNavHandler(function(state) {
   navState.value = state
-  navStateGen(navStateGen.value + 1)
+  navStateGen.set(navStateGen.get() + 1)
 })
 
 let btnAnimataions = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.15, easing = InQuad, play = true }]
@@ -79,7 +79,7 @@ function combineHotkeys(data) {
 }
 
 let isPanelVisible = Computed(@() cursorPresent.value && isGamepad.get()
-  && (!isHudAttached.value || hasModalWindows.get()))
+  && (!isHudAttached.get() || hasModalWindows.get()))
 
 let joyAHint = Computed(function() {
   local hotkeyAText = defaultJoyAHint
@@ -90,7 +90,7 @@ let joyAHint = Computed(function() {
   if (hoveredClickableInfo.value?.skipDescription ?? false)
     return null
 
-  foreach (k in getNavState(navStateGen.value))
+  foreach (k in getNavState(navStateGen.get()))
     if (isActivateKey(k)) {
       let { description = null } = k
       if (description == null || type(description) == "string")
@@ -125,7 +125,7 @@ let cursorTips = @() {
   valign = ALIGN_CENTER
   children = [
     manualHint(["J:L.Thumb.hv", "dirpad"], loc("ui/cursor.navigation"))
-    cursorOverClickable.value && joyAHint.value ? manualHint(clickImageIds, joyAHint.value, { minWidth = minClickHintSize[0] })
+    cursorOverClickable.value && joyAHint.get() ? manualHint(clickImageIds, joyAHint.get(), { minWidth = minClickHintSize[0] })
       : { size = minClickHintSize, key = {} }
     !cursorOverStickScroll.value ? null
       : manualHint(["J:R.Thumb.hv"], loc("ui/cursor.scroll"))
@@ -136,11 +136,11 @@ let mainTips = @() {
   watch = [isPanelVisible, navStateGen]
   gap
   flow = FLOW_HORIZONTAL
-  children = !isPanelVisible.value ? null
-    : combineHotkeys(getNavState(navStateGen.value)).map(mkNavBtn)
+  children = !isPanelVisible.get() ? null
+    : combineHotkeys(getNavState(navStateGen.get())).map(mkNavBtn)
 }
 
-let hotkeysButtonsBar = @() !isPanelVisible.value ? { watch = isPanelVisible }
+let hotkeysButtonsBar = @() !isPanelVisible.get() ? { watch = isPanelVisible }
   : {
       watch = isPanelVisible
       zOrder = Layers.Upper

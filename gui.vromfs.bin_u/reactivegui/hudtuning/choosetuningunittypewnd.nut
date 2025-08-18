@@ -3,9 +3,9 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonBright } = require("%rGui/components/textButton.nut")
-let { cfgByUnitType } = require("cfgByUnitType.nut")
+let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { unitTypeOrder } = require("%appGlobals/unitConst.nut")
-let { tuningUnitType, isCurPresetChanged, saveCurrentTransform } = require("hudTuningState.nut")
+let { tuningUnitType, isCurPresetChanged, saveCurrentTransform } = require("%rGui/hudTuning/hudTuningState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
@@ -19,24 +19,24 @@ let gap = hdpx(10)
 
 function changeUnitType(unitType) {
   close()
-  if (unitType == tuningUnitType.value)
+  if (unitType == tuningUnitType.get())
     return
-  if (!isCurPresetChanged.value) {
-    tuningUnitType(unitType)
+  if (!isCurPresetChanged.get()) {
+    tuningUnitType.set(unitType)
     return
   }
   openMsgBox({
     text = loc("hudTuning/apply"),
     buttons = [
       { id = "cancel", isCancel = true }
-      { id = "reset", cb = @() tuningUnitType(unitType) }
+      { id = "reset", cb = @() tuningUnitType.set(unitType) }
       {
         text = loc("filesystem/btnSave")
         styleId = "PRIMARY"
         isDefault = true
         cb = function() {
           saveCurrentTransform()
-          tuningUnitType(unitType)
+          tuningUnitType.set(unitType)
         }
       }
     ]
@@ -50,7 +50,7 @@ let content = @() {
   flow = FLOW_VERTICAL
   gap
   children = [].extend(unitTypes, unitTypesByEvent.get()).map(@(ut)
-    (ut == tuningUnitType.value ? textButtonCommon : textButtonBright)(
+    (ut == tuningUnitType.get() ? textButtonCommon : textButtonBright)(
       loc($"mainmenu/type_{ut}"),
       @() changeUnitType(ut),
       { ovr = { size = const [flex(), hdpx(100)] } })

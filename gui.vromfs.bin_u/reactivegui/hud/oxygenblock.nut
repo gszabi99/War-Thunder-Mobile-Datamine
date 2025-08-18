@@ -10,14 +10,14 @@ let depthHeight = hdpxi(105)
 let oxigenProgressSize = [hdpx(108), hdpx(10)]
 let oxigenBlockSize = [oxigenProgressSize[0], hdpx(70)]
 
-let zeroOxygen = Computed(@() oxygen.value.tointeger() == 0)
-let depthText = Computed(@() zeroOxygen.value ? loc("controls/lack_of_oxygen")
-  : waterDist.value.tointeger() == 0 ? loc("controls/submarine_on_water")
-  : waterDist.value.tointeger() <= periscopeDepthCtrl.value.tointeger() ? loc("controls/submarine_depth_periscope")
+let zeroOxygen = Computed(@() oxygen.get().tointeger() == 0)
+let depthText = Computed(@() zeroOxygen.get() ? loc("controls/lack_of_oxygen")
+  : waterDist.get().tointeger() == 0 ? loc("controls/submarine_on_water")
+  : waterDist.get().tointeger() <= periscopeDepthCtrl.get().tointeger() ? loc("controls/submarine_depth_periscope")
   : loc("controls/submarine_depth")
 )
 
-depthText.subscribe(@(_) zeroOxygen.value
+depthText.subscribe(@(_) zeroOxygen.get()
   ? anim_start("depth_oxygen_highlight")
   : anim_start("depth_status_highlight")
 )
@@ -52,7 +52,7 @@ function depthControl(scale) {
       @() {
         watch = waterDist
         rendObj = ROBJ_TEXT
-        text = $"{waterDist.value.tointeger()} {mText}"
+        text = $"{waterDist.get().tointeger()} {mText}"
         padding = [0, textPadding, 0, 0]
       }.__update(font1)
       {
@@ -83,7 +83,7 @@ function depthControl(scale) {
           size = FLEX_H
           halign = ALIGN_RIGHT
           behavior = [Behaviors.TextArea]
-          text = depthText.value
+          text = depthText.get()
         }.__update(font2)
       }
     ]
@@ -133,7 +133,7 @@ let oxygenLevel = @(scale) {
           rendObj = ROBJ_SOLID
           color = Color(44, 253, 255)
           size = flex()
-          transform = { pivot = [0, 1], scale = [oxygen.value / 100.0, 1] }
+          transform = { pivot = [0, 1], scale = [oxygen.get() / 100.0, 1] }
           transitions = [{ prop = AnimProp.scale, duration = 0.5 }]
         }
       ]

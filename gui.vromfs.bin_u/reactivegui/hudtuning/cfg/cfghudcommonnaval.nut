@@ -5,12 +5,15 @@ let { mkDollCtor, mkDollEditView, mkShipDebuffs, shipDebuffsEditView, mkCrewHeal
   defHealthSize
 } = require("%rGui/hud/shipStateModule.nut")
 let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
-let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
+let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkMyPlace, mkMyPlaceUi, mkMyDamage, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
+let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
+
+let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 
 return {
   hitCamera = {
@@ -32,6 +35,7 @@ return {
     defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
     editView = mkMyPlace(1)
     hideForDelayed = false
+    isVisibleInBattle = hasMyScores
   }
 
   myDamage = {

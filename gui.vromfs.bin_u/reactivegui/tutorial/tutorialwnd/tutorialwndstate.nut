@@ -54,8 +54,8 @@ let state = Watched({
   step = 0
 })
 
-let tutorialConfigVersion = Computed(@() state.value.version)
-let stepIdx = Computed(@() state.value.step)
+let tutorialConfigVersion = Computed(@() state.get().version)
+let stepIdx = Computed(@() state.get().step)
 
 local stepStartTime = 0
 state.subscribe(function(_) { stepStartTime = get_time_msec() })
@@ -63,13 +63,13 @@ state.subscribe(function(_) { stepStartTime = get_time_msec() })
 let sendCurStepBq = @(status) "id" not in tutorialConfig ? null
   : sendUiBqEvent("ui_tutorial", {
       id = tutorialConfig.id
-      step = tutorialConfig?.steps[stepIdx.value].id ?? stepIdx.value
+      step = tutorialConfig?.steps[stepIdx.get()].id ?? stepIdx.get()
       status = status
     })
 
 function onStepStatus(status) {
   sendCurStepBq(status)
-  tutorialConfig?.onStepStatus(tutorialConfig?.steps[stepIdx.value].id ?? stepIdx.value, status)
+  tutorialConfig?.onStepStatus(tutorialConfig?.steps[stepIdx.get()].id ?? stepIdx.get(), status)
 }
 
 function tryCallWithRes(action, actionId) {
@@ -98,8 +98,8 @@ function setTutorialConfig(config) {
   onStepStatus("tutorial_finished")
 
   tutorialConfig = config
-  state({
-    version = state.value.version + 1
+  state.set({
+    version = state.get().version + 1
     step = 0
   })
 
@@ -115,7 +115,7 @@ function goToStep(idxOrId) {
   let { steps = [] } = tutorialConfig
   let idx = type(idxOrId) == "integer" ? idxOrId
     : (steps.findindex(@(s) s?.id == idxOrId) ?? -1)
-  if (!tryCall(steps?[stepIdx.value].onFinish, "onFinish"))
+  if (!tryCall(steps?[stepIdx.get()].onFinish, "onFinish"))
     return
 
   if (idx in steps) { 
@@ -130,10 +130,10 @@ function goToStep(idxOrId) {
   finishTutorial()
 }
 
-let nextStep = @() goToStep(stepIdx.value + 1)
+let nextStep = @() goToStep(stepIdx.get() + 1)
 
 function skipStepImpl() {
-  let step = tutorialConfig?.steps[stepIdx.value]
+  let step = tutorialConfig?.steps[stepIdx.get()]
   let onNextKey = step?.onNextKey ?? step?.objects[0].onClick
   if (!tryCallWithRes(onNextKey, "onNextKey"))
     nextStep()
@@ -146,7 +146,7 @@ function nextStepByDefaultHotkey() {
 
 function skipStep() {
   onStepStatus("skip_step")
-  let step = tutorialConfig?.steps[stepIdx.value]
+  let step = tutorialConfig?.steps[stepIdx.get()]
   let onSkip = step?.onSkip ?? step?.onNextKey ?? step?.objects[0].onClick
   if (!tryCallWithRes(onSkip, "onSkip"))
     nextStep()
@@ -155,8 +155,8 @@ function skipStep() {
 register_command(finishTutorial, "tutorial.closeCurrentTutorial")
 
 return {
-  isTutorialActive = Computed(@() tutorialConfigVersion.value > 0 && tutorialConfig != null)
-  activeTutorialId = Computed(@() tutorialConfigVersion.value > 0 && tutorialConfig != null ? tutorialConfig.id : null)
+  isTutorialActive = Computed(@() tutorialConfigVersion.get() > 0 && tutorialConfig != null)
+  activeTutorialId = Computed(@() tutorialConfigVersion.get() > 0 && tutorialConfig != null ? tutorialConfig.id : null)
   tutorialConfigVersion
   getTutorialConfig = @() tutorialConfig != null ? freeze(tutorialConfig) : null
   setTutorialConfig

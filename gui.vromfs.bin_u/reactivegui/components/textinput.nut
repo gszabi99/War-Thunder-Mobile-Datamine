@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let textInput = require("textInputBase.nut")
+let textInput = require("%rGui/components/textInputBase.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 
 let paddingY = (0.3 * defButtonHeight).tointeger()

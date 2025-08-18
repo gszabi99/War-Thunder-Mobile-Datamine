@@ -18,16 +18,16 @@ let progress = Watched({
   etaSec = get_eta()
   dspeed = get_download_speed()
 })
-let progressPercent = Computed(@() progress.value.percent)
+let progressPercent = Computed(@() progress.get().percent)
 let updaterError = Watched(null)
 let needUpdateMsg = mkWatched(persist, "needUpdateMsg", false)
 let needRestartMsg = mkWatched(persist, "needRestartMsg", false)
 let needDownloadAcceptMsg = mkWatched(persist, "needDownloadAcceptMsg", false)
 
-let statusText = Computed(@() updaterError.value != null ? loc($"updater/error/{updaterError.value}")
-  : updaterStage.value != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
+let statusText = Computed(@() updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
+  : updaterStage.get() != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
   : "".concat(loc("updater/downloading"), colon,
-      getDownloadInfoText(totalSizeBytes.value, progress.value.etaSec, progress.value.dspeed))
+      getDownloadInfoText(totalSizeBytes.get(), progress.get().etaSec, progress.get().dspeed))
 )
 
 let updaterEvents = {

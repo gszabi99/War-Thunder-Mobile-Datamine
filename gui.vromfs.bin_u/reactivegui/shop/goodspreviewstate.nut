@@ -2,12 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
-let { activeOffer } = require("offerState.nut")
-let { activeOffersByGoods } = require("offerByGoodsState.nut")
-let { shopGoodsAllCampaigns, saveSeenGoods } = require("shopState.nut")
+let { activeOffer } = require("%rGui/shop/offerState.nut")
+let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
+let { shopGoodsAllCampaigns, saveSeenGoods } = require("%rGui/shop/shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, validate_active_offer } = require("%appGlobals/pServer/pServerApi.nut")
-let { platformPurchaseInProgress } = require("platformGoods.nut")
+let { platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
@@ -29,7 +29,7 @@ let HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
 
 let openedUnitFromTree = mkWatched(persist, "openedUnitFromTree", null)
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
-let closeGoodsPreview = @() openedGoodsId(null)
+let closeGoodsPreview = @() openedGoodsId.set(null)
 let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 let openedSubsId = mkWatched(persist, "openedSubsId", null)
 
@@ -70,8 +70,8 @@ function openGoodsPreview(id) {
     return
   }
 
-  openedGoodsId(id)
-  openPreviewCount(openPreviewCount.value + 1)
+  openedGoodsId.set(id)
+  openPreviewCount.set(openPreviewCount.get() + 1)
   saveSeenGoods([id])
 }
 
@@ -86,8 +86,8 @@ function openGoodsPreviewInMenuOnly(id) {
   if (!isInMenuNoModals.get())
     return false
 
-  openedGoodsId(id)
-  openPreviewCount(openPreviewCount.value + 1)
+  openedGoodsId.set(id)
+  openPreviewCount.set(openPreviewCount.get() + 1)
   saveSeenGoods([id])
   return true
 }
@@ -107,9 +107,9 @@ let getPreviewType = @(goods, goodsUnit) (goods?.slotsPreset ?? "") != "" ? GPT_
   : null
 let previewType = Computed(@() getPreviewType(previewGoods.get(), previewGoodsUnit.get()))
 
-let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
-  && (previewGoods.value.id == shopPurchaseInProgress.value
-    || previewGoods.value.id == platformPurchaseInProgress.value))
+let isPreviewGoodsPurchasing = Computed(@() previewGoods.get()?.id != null
+  && (previewGoods.get().id == shopPurchaseInProgress.get()
+    || previewGoods.get().id == platformPurchaseInProgress.get()))
 
 isPreviewGoodsPurchasing.subscribe(function(v) {
   if (v || previewGoods.get() == null)
@@ -124,11 +124,11 @@ isPreviewGoodsPurchasing.subscribe(function(v) {
 eventbus_subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
 eventbus_subscribe("openGoodsPreviewInMenuNoModals", @(msg) openGoodsPreviewInMenuOnly(msg.id))
 
-let offerUnitName = keepref(Computed(@() activeOffer.value?.id == openedGoodsId.value ? previewGoodsUnit.value?.name
+let offerUnitName = keepref(Computed(@() activeOffer.get()?.id == openedGoodsId.get() ? previewGoodsUnit.get()?.name
   : previewGoods.get()?.skins.keys()[0]))
 local offerPrevUnitName = offerUnitName.value
 offerUnitName.subscribe(function(v) {
-  if (offerPrevUnitName != null && (v != null || activeOffer.value?.id == openedGoodsId.value))
+  if (offerPrevUnitName != null && (v != null || activeOffer.get()?.id == openedGoodsId.get()))
     defer(closeGoodsPreview)
   offerPrevUnitName = v
 })

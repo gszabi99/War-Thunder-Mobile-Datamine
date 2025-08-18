@@ -8,8 +8,8 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { isUnitsTreeOpen, isUnitsTreeAttached } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
-} = require("tutorialWnd/tutorialWndState.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
+} = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { markTutorialCompleted, mkIsTutorialCompleted } = require("%rGui/tutorial/completedTutorials.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
@@ -33,9 +33,9 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && !hasBattles.get())
 let canStartTutorial = Computed(@() isUnitsTreeAttached.get()
   && !hasModalWindows.get()
-  && !isTutorialActive.value)
-let showTutorial = keepref(Computed(@() canStartTutorial.value
-  && (needShowTutorial.value || isDebugMode.value)))
+  && !isTutorialActive.get())
+let showTutorial = keepref(Computed(@() canStartTutorial.get()
+  && (needShowTutorial.get() || isDebugMode.get())))
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.value == TUTORIAL_ID
   && !isMainMenuAttached.get()
@@ -61,9 +61,9 @@ function startTutorial() {
         id = "s1_units_wnd_animation"
         function beforeStart() {
           animationStartTime = get_time_msec()
-          resetTimeout(3.0, @() unitsListShowEnough(true)) 
+          resetTimeout(3.0, @() unitsListShowEnough.set(true)) 
         }
-        nextStepAfter = Computed(@() unitsListShowEnough.value || !hasJustUnlockedUnitsAnimation.get())
+        nextStepAfter = Computed(@() unitsListShowEnough.get() || !hasJustUnlockedUnitsAnimation.get())
         objects = [{
           keys = "sceneRoot"
           onClick = @() animationStartTime + 1000 <= get_time_msec()
@@ -76,7 +76,7 @@ function startTutorial() {
           keys = "backButton"
           sizeIncAdd = hdpx(20)
           needArrow = true
-          onClick = @() isUnitsTreeOpen(false)
+          onClick = @() isUnitsTreeOpen.set(false)
           hotkeys = [btnBEsc]
         }]
       }
@@ -90,12 +90,12 @@ function startTutorial() {
           keys = "toBattleButton"
           function onClick() {
             if (newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get()) {
-              sendNewbieBqEvent("pressToBattleFromUITutor", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.value) })
+              sendNewbieBqEvent("pressToBattleFromUITutor", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.get()) })
               startCurNewbieMission()
             }
             else {
-              sendNewbieBqEvent("pressToBattleFromUITutor", { status = "online_battle", params = randomBattleMode.value?.name ?? "" })
-              eventbus_send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
+              sendNewbieBqEvent("pressToBattleFromUITutor", { status = "online_battle", params = randomBattleMode.get()?.name ?? "" })
+              eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
             }
           }
           needArrow = true
@@ -112,13 +112,13 @@ let startTutorialDelayed = @() deferOnce(function() {
   if (!showTutorial.value)
     return
   startTutorial()
-  isDebugMode(false)
+  isDebugMode.set(false)
 })
 
 startTutorialDelayed()
 showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
 
 register_command(
-  @() activeTutorialId.value != TUTORIAL_ID ? isDebugMode(true)
+  @() activeTutorialId.get() != TUTORIAL_ID ? isDebugMode.set(true)
     : finishTutorial(),
   "debug.first_battle_ui_tutorial")

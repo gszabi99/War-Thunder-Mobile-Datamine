@@ -26,7 +26,7 @@ let fullAnimTime = visibleAnimTime + opacityAnimTime
 
 registerInteropFunc("hudDmgInfoUpdate", function(dmg, dmgType) {
   gui_scene.resetTimeout(fullAnimTime, clearLog)
-  let dmgLog = dmgType in visibleLog.value ? clone visibleLog.value[dmgType] : []
+  let dmgLog = dmgType in visibleLog.get() ? clone visibleLog.get()[dmgType] : []
   if (dmgLog.len() > 0 && dmgLog.top() == dmg)  
     return
   dmgLog.append(dmg)
@@ -39,12 +39,12 @@ let textStyle = {
 
 function damageLogUi() {
   let resObj = { watch = visibleLog, size = [shHud(50), hdpx(50)] }
-  if (visibleLog.value.len() == 0)
+  if (visibleLog.get().len() == 0)
     return resObj
 
   local damageCount = 0
   local damageTypes = ""
-  foreach (dmgType, dmgCounts in visibleLog.value) {
+  foreach (dmgType, dmgCounts in visibleLog.get()) {
     damageTypes = $"{damageTypes} {dmgTypeIcons?[dmgType] ?? dmgTypeIcons[0]}"
     damageCount = (dmgCounts.reduce(@(res, v) max(res, v), damageCount) + 0.5).tointeger()
   }
@@ -57,7 +57,7 @@ function damageLogUi() {
       size = flex()
       flow = FLOW_HORIZONTAL
       gap = shHud(5)
-      key = $"damageLog_{visibleLog.value}"
+      key = $"damageLog_{visibleLog.get()}"
       opacity = 0.0
       animations = [
         { prop = AnimProp.opacity, from = 1.0, to = 1.0, duration = visibleAnimTime, easing = Linear,

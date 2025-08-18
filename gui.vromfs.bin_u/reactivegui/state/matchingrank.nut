@@ -8,7 +8,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 let curUnitMRankRange = Computed(function() {
-  let mRank = maxSquadMRank.value ?? battleUnitsMaxMRank.get()
+  let mRank = maxSquadMRank.get() ?? battleUnitsMaxMRank.get()
   let campaign = squadLeaderCampaign.get() ?? curCampaign.get()
   if (mRank == null || campaign == null)
     return null
@@ -19,10 +19,10 @@ let curUnitMRankRange = Computed(function() {
 })
 
 function rankRangeFill() {
-  if (curUnitMRankRange.value == null)
+  if (curUnitMRankRange.get() == null)
     return null
-  let minRank = curUnitMRankRange.value.minMRank
-  let maxRank = curUnitMRankRange.value.maxMRank
+  let minRank = curUnitMRankRange.get().minMRank
+  let maxRank = curUnitMRankRange.get().maxMRank
   let mkText = @(text) { rendObj = ROBJ_TEXT, text}.__update(fontTinyAccented)
   local replaceTable = {
     ["{range1}"] = [mkGradRank(minRank), mkText("-"), mkGradRank(minRank + 1)],

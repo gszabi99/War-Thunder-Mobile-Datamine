@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { getModCurrency, getModCost } = require("unitModsSlotsState.nut")
-let { contentMargin } = require("unitModsConst.nut")
+let { getModCurrency, getModCost } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { contentMargin } = require("%rGui/unitMods/unitModsConst.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 

@@ -33,9 +33,9 @@ function controlsTypesButton(content, isSelectedW, onClick) {
     watch = [isSelectedW, stateFlags]
     size = FLEX_H
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
-    children = btnBase(content, stateFlags.value, isSelectedW.value)
+    children = btnBase(content, stateFlags.get(), isSelectedW.value)
   }
 }
 

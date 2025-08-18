@@ -47,12 +47,12 @@ let curUnitClass = Computed(@() battleUnitClasses.get()?[playerUnitName.get()] ?
 let viewScoreKey = Computed(@() getViewScoreKey(battleCampaign.get(), curUnitClass.get(), hudScoreTank.get()))
 
 let myPlace = Computed(function() {
-  let key = scoreKey.value
-  let myValue = localPlayerDamageStats.value?[key] ?? 0
+  let key = scoreKey.get()
+  let myValue = localPlayerDamageStats.get()?[key] ?? 0
   if (myValue <= 0)
     return -1
   local res = 1
-  foreach(data in playerTeamDamageStats.value)
+  foreach(data in playerTeamDamageStats.get())
     if ((data?[key] ?? 0) > myValue)
       res++
   return res
@@ -135,8 +135,8 @@ function mkMyPlaceUi(scale) {
 }
 
 function updateLocalMPlayerForScore() {
-  if (viewScoreKey.value != "score" && viewScoreKey.value != "damage")
-    localMPlayer(get_local_mplayer())
+  if (viewScoreKey.get() != "score" && viewScoreKey.get() != "damage")
+    localMPlayer.set(get_local_mplayer())
 }
 
 let mkMyScoresUi = @(scale) function() {

@@ -7,7 +7,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
-let { squadAddons } = require("squadAddons.nut")
+let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { addonsSizes } = require("%appGlobals/updater/addonsState.nut")
 
@@ -17,7 +17,7 @@ subscribeFMsgBtns({
     let campaign = squadLeaderCampaign.get()
     if (curCampaign.value == campaign)
       return
-    if (!campaignsList.value.contains(campaign)) {
+    if (!campaignsList.get().contains(campaign)) {
       openFMsgBox({ text = loc("squad/cant_ready/leader_campaign_invalid") })
       return
     }
@@ -30,7 +30,7 @@ subscribeFMsgBtns({
 })
 
 function showChangeCampaignMsg() {
-  if (!campaignsList.value.contains(squadLeaderCampaign.get())) {
+  if (!campaignsList.get().contains(squadLeaderCampaign.get())) {
     openFMsgBox({ text = loc("squad/cant_ready/leader_campaign_invalid") })
     return
   }
@@ -49,16 +49,16 @@ function setReady(ready) {
   if (ready == isReady.get() || !isInSquad.get() || isSquadLeader.get())
     return
   if (!ready) {
-    isReady(false)
+    isReady.set(false)
     return
   }
-  if (curCampaign.value != squadLeaderCampaign.get()) {
+  if (curCampaign.get() != squadLeaderCampaign.get()) {
     showChangeCampaignMsg()
     return
   }
 
-  if (squadAddons.value.len() > 0) {
-    let addonsArr = squadAddons.value.keys()
+  if (squadAddons.get().len() > 0) {
+    let addonsArr = squadAddons.get().keys()
     let locs = localizeAddons(addonsArr)
     log($"[ADDONS] Ask update addons on try to set ready in the squad:", addonsArr)
     openFMsgBox({
@@ -80,7 +80,7 @@ function setReady(ready) {
     return
   }
 
-  isReady(true)
+  isReady.set(true)
 }
 
 subscribeFMsgBtns({

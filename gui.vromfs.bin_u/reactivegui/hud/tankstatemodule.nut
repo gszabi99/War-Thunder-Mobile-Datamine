@@ -5,14 +5,14 @@ let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, speed,
   hasDebuffDriver, hasDebuffGunner, hasDebuffLoader, hasDebuffFireExternal
 } = require("%rGui/hud/tankState.nut")
-let { isStickActive, stickDelta } = require("stickState.nut")
-let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
+let { isStickActive, stickDelta } = require("%rGui/hud/stickState.nut")
+let { mkDebuffIcon, mkDebuffIconEditView } = require("%rGui/hud/components/debuffIcon.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
+let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isInZoom } = require("%rGui/hudState.nut")
-let damagePanelBacklight = require("components/damagePanelBacklight.nut")
+let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
 
 let damagePanelSize = hdpxi(175)
 let moveTypeImageSize = hdpxi(50)
@@ -36,8 +36,8 @@ let techDebuffsCfg = [
 ]
 
 let moveType = Computed(function() {
-  let sd = stickDelta.value
-  if (!isStickActive.value || (sd.x == 0 && sd.y == 0))
+  let sd = stickDelta.get()
+  if (!isStickActive.get() || (sd.x == 0 && sd.y == 0))
     return null
 
   let isForward = sd.y >= 0
@@ -51,17 +51,17 @@ let moveType = Computed(function() {
   return { image, isForward, isRight }
 })
 
-let moveTypeImage = @(size) @() moveType.value == null ? { watch = moveType }
+let moveTypeImage = @(size) @() moveType.get() == null ? { watch = moveType }
   : {
       watch = moveType
       size = [size, size]
       hplace = ALIGN_CENTER
-      pos = moveType.value.isForward ? [0, -size] : [0, ph(100)]
+      pos = moveType.get().isForward ? [0, -size] : [0, ph(100)]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
-      image = Picture($"{moveType.value.image}:{size}:{size}:P")
-      flipX = !moveType.value.isRight
-      flipY = !moveType.value.isForward
+      image = Picture($"{moveType.get().image}:{size}:{size}:P")
+      flipX = !moveType.get().isRight
+      flipY = !moveType.get().isForward
     }
 
 let mkDebuffsRowCtor = @(debuffsCfg) function(scale) {
@@ -185,9 +185,9 @@ function mkDoll(scale) {
     cameraControl = true
     touchMarginPriority = TOUCH_MINOR
     function onElemState(sf) {
-      let prevSf = stateFlags.value
-      stateFlags(sf)
-      let active = isActive(sf) && !isInZoom.value
+      let prevSf = stateFlags.get()
+      stateFlags.set(sf)
+      let active = isActive(sf) && !isInZoom.get()
 
       if (active != isActive(prevSf))
         if (active)
@@ -201,7 +201,7 @@ function mkDoll(scale) {
     }
     hotkeys = mkGamepadHotkey(shortcutId)
     children = [
-      xrayDoll(isInZoom.value ? null : stateFlags, moveChild, size)
+      xrayDoll(isInZoom.get() ? null : stateFlags, moveChild, size)
       shortcutImage
     ]
   }

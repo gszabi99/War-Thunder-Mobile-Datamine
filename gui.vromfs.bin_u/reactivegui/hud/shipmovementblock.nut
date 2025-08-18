@@ -35,9 +35,9 @@ let speedImagePadding = hdpxi(10)
 
 let isMoveCtrlHitShowed = Watched(false)
 function showCtrlHint() {
-  if (!isMoveCtrlHitShowed.value) {
+  if (!isMoveCtrlHitShowed.get()) {
     eventbus_send("hint:dont_hold_ctrl_to_move_ship:show", {})
-    isMoveCtrlHitShowed(true)
+    isMoveCtrlHitShowed.set(true)
   }
 }
 
@@ -53,12 +53,12 @@ let maxSpeedBySteps = Computed(function() {
 let isControlsBlocked = Computed(@() hasDebuffMoveControl.get() || currentMaxThrottle.get() == 0.0)
 
 let outlineColor = Computed(@()
-  isControlsBlocked.value ? fillMoveColorBlocked
-  : hasDebuffEngines.value || currentMaxThrottle.value < 1.0 ? btnBgColor.broken
+  isControlsBlocked.get() ? fillMoveColorBlocked
+  : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgColor.broken
   : 0x4D4D4D4D)
 let fillColor = Computed(@()
-  isControlsBlocked.value ? fillMoveColorBlocked
-  : hasDebuffEngines.value || currentMaxThrottle.value < 1.0 ? btnBgColor.broken
+  isControlsBlocked.get() ? fillMoveColorBlocked
+  : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgColor.broken
   : fillMoveColorDef)
 
 let mkSteerParams = @(id, disableId, scale) {
@@ -67,7 +67,7 @@ let mkSteerParams = @(id, disableId, scale) {
   shortcutId = id
   outlineColor
   function onTouchBegin() {
-    if (!isControlsBlocked.value) {
+    if (!isControlsBlocked.get()) {
       setShortcutOn(id)
       playSound("steer")
     }
@@ -77,10 +77,10 @@ let mkSteerParams = @(id, disableId, scale) {
 }
 
 function calcBackSpeedPart() {
-  if (speed.value >= 0)
+  if (speed.get() >= 0)
     return 0
-  let maxSpeed = maxSpeedBySteps.value?[ - 1] ?? 0
-  return maxSpeed < 0 ? clamp(speed.value / maxSpeed, 0.0, 1.0) : 0
+  let maxSpeed = maxSpeedBySteps.get()?[ - 1] ?? 0
+  return maxSpeed < 0 ? clamp(speed.get() / maxSpeed, 0.0, 1.0) : 0
 }
 let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
@@ -104,7 +104,7 @@ let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
             mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize, fillColor)
             mkMoveVertBtnOutline(true, verSize, outlineColor)
             mkMoveVertBtnCorner(true,
-              Computed(@() averageSpeedDirection.value == "back" ? fillColor.value : 0xFFFFFFFF),
+              Computed(@() averageSpeedDirection.get() == "back" ? fillColor.get() : 0xFFFFFFFF),
               verSize)
             mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, scale)
           ]
@@ -112,17 +112,17 @@ let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   })
 
 function calcForwSpeedPart() {
-  if (speed.value <= 0)
+  if (speed.get() <= 0)
     return 0
-  let maxSpeed = maxSpeedBySteps.value?[1] ?? 0
-  return maxSpeed > 0 ? clamp(speed.value / maxSpeed, 0.0, 1.0) : 0
+  let maxSpeed = maxSpeedBySteps.get()?[1] ?? 0
+  return maxSpeed > 0 ? clamp(speed.get() / maxSpeed, 0.0, 1.0) : 0
 }
 
 function calcForwSpeedPart2() {
-  let minSpeed = maxSpeedBySteps.value?[1] ?? 0
-  if (speed.value <= minSpeed)
+  let minSpeed = maxSpeedBySteps.get()?[1] ?? 0
+  if (speed.get() <= minSpeed)
     return 0
-  return lerpClamped(minSpeed, maxSpeedBySteps.value?[2] ?? 0, 0.0, 1.0, speed.value)
+  return lerpClamped(minSpeed, maxSpeedBySteps.get()?[2] ?? 0, 0.0, 1.0, speed.get())
 }
 
 let fwdDirections = { forward = true, forward2 = true }
@@ -147,10 +147,10 @@ let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
             mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize, fillColor)
             mkMoveVertBtnOutline(false, verSize, outlineColor)
             mkMoveVertBtnCorner(false,
-              Computed(@() averageSpeedDirection.value in fwdDirections ? fillColor.value : 0xFFFFFFFF),
+              Computed(@() averageSpeedDirection.get() in fwdDirections ? fillColor.get() : 0xFFFFFFFF),
               verSize)
             mkMoveVertBtn2step(calcForwSpeedPart2,
-              Computed(@() averageSpeedDirection.value == "forward2" ? fillColor.value : 0x00000000),
+              Computed(@() averageSpeedDirection.get() == "forward2" ? fillColor.get() : 0x00000000),
               verSize,
               fillColor)
             mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] }, scale)
@@ -234,7 +234,7 @@ function movementBlock(unitType, scale) {
   return @() {
     watch = [isUnitDelayed, isGamepad, isPieMenuActive]
     flow = FLOW_HORIZONTAL
-    children = isUnitDelayed.value ? null
+    children = isUnitDelayed.get() ? null
       : [
           leftArrow
           {

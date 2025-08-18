@@ -4,7 +4,7 @@ let { textButtonMultiline, mergeStyles, mkCustomButton, mkImageTextContent } = r
 let { COMMON, PRIMARY, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { friendsUids } = require("contactLists.nut")
+let { friendsUids } = require("%rGui/contacts/contactLists.nut")
 
 let neverInProgress = Watched(false)
 

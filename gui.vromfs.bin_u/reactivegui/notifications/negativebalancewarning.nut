@@ -8,7 +8,7 @@ let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let MSG_ID = "negativeBalanceWarning"
 
 function showNegativeBalanceWarning() {
-  if (!isLoggedIn.value)
+  if (!isLoggedIn.get())
     return
 
   openMsgBox({

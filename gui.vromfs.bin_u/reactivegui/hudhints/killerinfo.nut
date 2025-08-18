@@ -9,9 +9,9 @@ let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
-let { mkGradientBlock, failBgColor } = require("hintCtors.nut")
+let { mkGradientBlock, failBgColor } = require("%rGui/hudHints/hintCtors.nut")
 let { mkSingleUnitPlate, unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
-let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
+let hudMessagesUnitTypesMap = require("%rGui/hudHints/hudMessagesUnitTypesMap.nut")
 let unitFake = require("%rGui/unit/unitFake.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 
@@ -19,7 +19,7 @@ let premIconSize = hdpxi(56)
 let gradPadding = hdpx(100)
 
 let killData = mkWatched(persist, "killData", null)
-isUnitAlive.subscribe(@(v) v ? killData(null) : null)
+isUnitAlive.subscribe(@(v) v ? killData.set(null) : null)
 
 let mkFakeUnitCfg = @(name, hudMsgUnitType, country) unitFake.__merge({
   name
@@ -31,9 +31,9 @@ let mkFakeUnitCfg = @(name, hudMsgUnitType, country) unitFake.__merge({
 })
 
 let info = Computed(function() {
-  if (killData.value == null)
+  if (killData.get() == null)
     return null
-  let { killer, unitName, unitType } = killData.value
+  let { killer, unitName, unitType } = killData.get()
   if (unitName == "")
     return 
   local unitCfg = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get())
@@ -44,7 +44,7 @@ let info = Computed(function() {
   let cStats = killer.isBot ? genBotCommonStats(killer.name, unitName, unitCfg, 0)
     : playersCommonStats.get()?[killer.userId.tointeger()]
   let { hasPremium = false, decorators = null, units = null, hasVip = false, hasPrem = false } = cStats
-  return killData.value.__merge({
+  return killData.get().__merge({
     killerHasPremium = hasPremium || hasPrem || hasVip
     killerAvatar = decorators?.avatar
     killerUnit = unitCfg.__merge(units?[unitName] ?? {})
@@ -117,10 +117,10 @@ function hintContent(infoV) {
 
 let key = {}
 function killerInfo() {
-  if (info.value == null)
+  if (info.get() == null)
     return { watch = info }
 
-  let content = hintContent(info.value)
+  let content = hintContent(info.get())
   return {
     watch = info
     key

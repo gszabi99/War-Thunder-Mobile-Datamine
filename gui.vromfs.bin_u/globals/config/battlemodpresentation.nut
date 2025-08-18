@@ -15,11 +15,14 @@ let battleModsForOffer = {
   }
 }
 
-let eventUnitMods = ["pony_fighter", "pony_minigun_fighter", "pony_rocket_fighter", "pony_jet_fighter", "pony_assault", "pony_bomber"]
-  .reduce(@(res, id) res.$rawset(id, {
-    id,
+let eventUnitMods = {
+  anniversary_BR_unit_1 = "us_m56_scorpion_event"
+  anniversary_BR_unit_2 = "germ_pzkpfw_VI_ausf_b_tiger_IIp_event"
+  anniversary_BR_unit_3 = "us_t26e5_event"
+}.reduce(@(res, id, modeId) res.$rawset(modeId, {
+    id = modeId,
     viewType = "eventUnit"
-    eventId = "event_april_2024"
+    eventId = "anniversary_2025"
     unitCtor = @() mkUnitData(id)
   }),
 {})

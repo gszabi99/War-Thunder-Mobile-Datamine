@@ -7,14 +7,14 @@ let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCou
 let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice, aTimePriceFull,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
   aTimePriceStrike, opacityAnims, colorAnims, oldPriceBlock
-} = require("goodsPreviewPkg.nut")
+} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { gradRadial } = require("%rGui/style/gradients.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let { mkSparks } = require("%rGui/effects/sparks.nut")
 let { playSound } = require("sound_wt")
 let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
 let { mkLensFlare, aTimeFlareMiddle } = require("%rGui/effects/mkLensFlare.nut")
-let skipOfferBtn = require("skipOfferBtn.nut")
+let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
 
 let openCount = Computed(@() previewType.get() == GPT_CURRENCY ? openPreviewCount.get() : 0)
 let imageHeight = hdpx(450)

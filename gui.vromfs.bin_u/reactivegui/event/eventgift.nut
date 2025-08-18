@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
-let { SEND_GIFT_URL } = require("%appGlobals/commonUrl.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { specialEvents } = require("eventState.nut")
+let { getGiftPresentation, availableGifts } = require("%appGlobals/config/eventsGiftPresentation.nut")
+let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { specialEvents } = require("%rGui/event/eventState.nut")
 let { offerH } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 
@@ -15,19 +15,20 @@ let campaignGiftImg = {
   ships = "event_christmas_gift_tag_ships"
 }
 
-function mkGiftBtn() {
+function mkGiftBtn(eventId) {
   let stateFlags = Watched(0)
+  let gift = getGiftPresentation(eventId)
   return @() {
     watch = stateFlags
     size = boxSize
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    onClick = @() eventbus_send("openUrl", { baseUrl = SEND_GIFT_URL })
+    onClick = @() eventbus_send("openUrl", { baseUrl = gift?.link ?? "" })
     children = [
       {
         size = flex()
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#event_christmas_gift_box.avif:{boxSize[0]}:{boxSize[1]}:P")
+        image = Picture($"ui/gameuiskin#{gift?.icon}:{boxSize[0]}:{boxSize[1]}:P")
         keepAspect = KEEP_ASPECT_FIT
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
@@ -37,7 +38,7 @@ function mkGiftBtn() {
         size = tagSize
         pos = [-hdpx(10), hdpx(25)]
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{campaignGiftImg[curCampaign.get()]}.avif:{tagSize[0]}:{tagSize[1]}:P")
+        image = Picture($"ui/gameuiskin#{campaignGiftImg[getCampaignStatsId(curCampaign.get())]}.avif:{tagSize[0]}:{tagSize[1]}:P")
         keepAspect = KEEP_ASPECT_FIT
       }
       {
@@ -47,7 +48,7 @@ function mkGiftBtn() {
         hplace = ALIGN_CENTER
         vplace = ALIGN_BOTTOM
         rendObj = ROBJ_TEXTAREA
-        text = loc("mainmenu/btnSendGift")
+        text = loc(gift?.locId ?? "")
       }.__update(fontTinyAccentedShaded)
     ]
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
@@ -55,10 +56,13 @@ function mkGiftBtn() {
   }
 }
 
-let eventGift = @() {
-  watch = specialEvents
-  children = specialEvents.get().findvalue(@(e) e.eventName == "event_new_year") == null ? null
-    : mkGiftBtn()
+function eventGift() {
+  let eventId = specialEvents.get().findvalue(@(e) e.eventName in availableGifts)?.eventName
+  return {
+    watch = specialEvents
+    children = eventId == null ? null
+      : mkGiftBtn(eventId)
+    }
 }
 
 return {

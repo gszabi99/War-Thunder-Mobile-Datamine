@@ -23,28 +23,28 @@ let attrUnitLevelsToMax = Computed(@() (attrUnitData.get().unit?.levels.len() ??
 
 function resetAttrState() {
   selAttributes({})
-  curCategoryId(attrUnitData.get().preset?[0].id)
+  curCategoryId.set(attrUnitData.get().preset?[0].id)
 }
 resetAttrState()
 attrUnitName.subscribe(@(_) resetAttrState())
 
-let curCategory = Computed(@() attrUnitData.get().preset.findvalue(@(p) p.id == curCategoryId.value))
+let curCategory = Computed(@() attrUnitData.get().preset.findvalue(@(p) p.id == curCategoryId.get()))
 
 let selAttrSpCost = Computed(function() {
   local res = 0
-  let { unit, preset } = attrUnitData.value
+  let { unit, preset } = attrUnitData.get()
   if (unit == null)
     return 0
   foreach (cat in preset)
     foreach (attr in cat.attrList)
-      res += sumCost(attr.levelCost, unit.attrLevels?[cat.id][attr.id] ?? 0, selAttributes.value?[cat.id][attr.id])
+      res += sumCost(attr.levelCost, unit.attrLevels?[cat.id][attr.id] ?? 0, selAttributes.get()?[cat.id][attr.id])
   return res
 })
 
-let totalUnitSp = Computed(@() attrUnitData.value.unit?.sp ?? 0)
-let leftUnitSp = Computed(@() totalUnitSp.value - selAttrSpCost.value)
+let totalUnitSp = Computed(@() attrUnitData.get().unit?.sp ?? 0)
+let leftUnitSp = Computed(@() totalUnitSp.get() - selAttrSpCost.get())
 let isUnitMaxSkills = Computed(function() {
-  let { unit, preset } = attrUnitData.value
+  let { unit, preset } = attrUnitData.get()
   if (unit == null)
     return false
   return null == preset.findvalue(@(cat)
@@ -52,12 +52,12 @@ let isUnitMaxSkills = Computed(function() {
 })
 
 let availableAttributes = Computed(function() {
-  let { unit = null, preset = null } = attrUnitData.value
+  let { unit = null, preset = null } = attrUnitData.get()
   let { attrLevels = null } = unit
-  let leftSp = leftUnitSp.value
+  let leftSp = leftUnitSp.get()
   if (attrLevels == null || preset == null || leftSp <= 0 || isUnitMaxSkills.get())
     return { status = -1, statusByCat = [] }
-  let selAttr = selAttributes.value
+  let selAttr = selAttributes.get()
   let avail = array(MAX_AVAIL_STATUS, 0)
   let availCats = []
   foreach (cat in preset) {
@@ -88,15 +88,15 @@ let availableAttributes = Computed(function() {
 })
 
 function applyAttributes() {
-  if (selAttrSpCost.value <= 0)
+  if (selAttrSpCost.get() <= 0)
     return
-  add_unit_attributes(attrUnitName.value, selAttributes.value, selAttrSpCost.value)
+  add_unit_attributes(attrUnitName.get(), selAttributes.get(), selAttrSpCost.get())
 }
 
 
 
 return {
-  openUnitAttrWnd = @() isUnitAttrOpened(true)
+  openUnitAttrWnd = @() isUnitAttrOpened.set(true)
   isUnitAttrOpened
 
   attrUnitData

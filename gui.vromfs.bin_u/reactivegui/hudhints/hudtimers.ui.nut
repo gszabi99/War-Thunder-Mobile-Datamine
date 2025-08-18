@@ -3,7 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 let { register_command } = require("console")
 let { lerp, lerpClamped } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { activeTimers, timersVisibility, removeTimer, getTimerCountdownSec } = require("hudTimersState.nut")
+let { activeTimers, timersVisibility, removeTimer, getTimerCountdownSec } = require("%rGui/hudHints/hudTimersState.nut")
 let { get_time_msec } = require("dagor.time")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
@@ -133,7 +133,7 @@ function progressCircle(timer) {
 
 let timerIcon = @(timerCfg, timer) function() {
   let res = { watch = playerUnitName }
-  let icon = timerCfg.icon(playerUnitName.value)
+  let icon = timerCfg.icon(playerUnitName.get())
   if (icon == null)
     return res
   let { winkPeriod = 0 } = timer
@@ -187,7 +187,7 @@ function timerPlace(timerCfg, idx, total) {
     watch = timer
     size = [timerSize, timerSize]
     key = timerCfg
-    children = timer.value == null ? null : timerVisual(timerCfg, timer.value)
+    children = timer.get() == null ? null : timerVisual(timerCfg, timer.get())
 
     transform = { translate = [lerp(-1.0, 1.0, -timerSize, timerSize, -0.5 * total + idx), 0] }
     transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = OutQuad }]
