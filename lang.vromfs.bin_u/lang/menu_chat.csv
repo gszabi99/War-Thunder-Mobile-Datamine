@@ -119,45 +119,43 @@ Coba lagi nanti.";"คุณเพิ่งทำการตรวจสอบ�
 请\t稍\t后\t再\t进\t行\t查\t验。";"分隊の\tランクを\t確認したばかりです。\t
 後でもう\t一度お\t試しください。";"你\t剛\t查\t看\t過\t小\t隊\t的\t階\t級。
 請\t稍\t後\t再\t試。";;
-"squad/requestAddonsDownload";"Request download";"Request download";"Request download";"Request download";"Request download";"Запросить скачивание";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";"Request download";;
+"squad/requestAddonsDownload";"Request download";"Demander le téléchargement";"Download richiesto";"Download anfragen";"Solicitar descarga";"Запросить скачивание";"Запит на завантаження";"Poproś o pobranie";"Solicitar transferência";"İndirme iste";"Žádost o stažení";"Request download";"Minta pengunduhan";"Request download";"다운로드 요청";"请\t求\t下\t载";"ダウンロードを\tリクエスト";"請\t求\t下\t載";;
 "msg/squadAddons/checkInCooldown";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"Вы только что запрашивали скачивание ресурсов.
-Попробуйте позднее.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";"You just requested to download resources.
-Try again later.";;
+Try again later.";"Vous venez de demander le téléchargement des ressources.
+Veuillez réessayer plus tard.";"Hai appena richiesto di scaricare le risorse.
+Riprova più tardi.";"Du hast gerade angefragt, Ressourcen herunterzuladen.
+Versuche es später noch einmal.";"Acabas de solicitar la descarga de recursos.
+Vuelve a intentarlo más tarde.";"Вы только что запрашивали скачивание ресурсов.
+Попробуйте позднее.";"Ви щойно надіслали запит на завантаження ресурсів.
+Спробуйте ще раз пізніше.";"Właśnie poprosiłeś o pobranie zasobów.
+Spróbuj ponownie później.";"Acabou de solicitar a transferência de recursos.
+Tente novamente mais tarde.";"Kaynakları indirmek için talepte bulundunuz.
+Daha sonra tekrar deneyin.";"Právě jsi požádal o stažení zdrojů.
+Zkus to znovu později.";"You just requested to download resources.
+Try again later.";"Kamu baru saja meminta pengunduhan sumber daya.
+Coba lagi nanti.";"You just requested to download resources.
+Try again later.";"조금 전에 다운로드를 요청했습니다.
+잠시 후 다시 시도해 주십시오.";"您\t刚\t刚\t已\t经\t提\t交\t过\t下\t载\t申\t请。
+请\t稍\t后\t重\t试。";"資源の\tダウンロードを\tリクエストしました。\t
+後でもう\t一度お\t試しください。";"您\t剛\t剛\t發\t起\t請\t求\t下\t載\t游\t戲\t資\t源。
+請\t稍\t後\t再\t試。";;
 "msg/squadAddons/askDownload";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
+{addon} ({size})";"Pour jouer en mode {modeName}, le chef d'escouade doit vous demander de télécharger un/des {count=add-on/add-ons}:{addon} ({size})";"Per gicare nella modalità {modeName}, il capo plotone ti chiede di scaricare {count=add-on/add-on}: {addon} ({size})";"Um im Modus {modeName} zu spielen, fordert dich der Truppführer auf, {count=add-on/add-ons} herunterzuladen:
+{addon} ({size})";"Para jugar en el modo {modeName}, el líder del escuadrón te pide que descargues {count=add-on/add-ons}:
 {addon} ({size})";"Для игры в режим {modeName} лидер отряд просит вас скачать {count=дополнение/дополнения/дополнений}:
+{addon} ({size})";"Для гри в режимі {modeName} командир загону просить вас завантажити {count=доповнення/доповнення/доповнень}:
+{addon} ({size})";"Aby grać w trybie {modeName}, dowódca oddziału prosi Cię o pobranie {count=dodatku/dodatków/dodatków}:
+{addon} ({size})";"Para jogar no modo {modeName}, o líder do esquadrão pede-lhe para transferir {count=suplemento/suplementos}:
+{addon} ({size})";"{modeName} modunda oynamak için manga lideri {count=eklentiyi/eklentileri} indirmenizi istiyor:
+{addon} ({size})";"Chceš-li hrát v režimu {modeName}, velitel jednotky tě požádá o stažení {count=add-onu/add-onů/add-onů}:
 {addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
+{addon} ({size})";"Untuk bermain dalam mode {modeName}, pemimpin skuad memintamu untuk mengunduh {count=fitur tambahan}:
 {addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
-{addon} ({size})";;
+{addon} ({size})";"{modeName} 모드를 플레이하기 위해선 애드온을 다운받아야 합니다:
+{addon} ({size})";"游\t玩 {modeName} 模\t式\t需\t要\t额\t外\t下\t载 {count=\t附\t件}：
+{addon}\t（{size}）";"{modeName}モードで\tプレイするために、\t分隊長があなたに{count=アドオン}の\tダウンロードを\t求めています：\t
+{addon} ({size})";"遊\t玩 {modeName} 模\t式\t需\t要\t額\t外\t下\t載 {count=\t附\t件}：
+{addon}\t（{size}）";;
 "squad/invite/desc";"Invites you to join his squad";"Vous invite à rejoindre son escouade";"Ti invita ad unirti al suo plotone";"Lädt Dich ein, seiner Staffel beizutreten";"Te invita a unirte a su escuadrón";"Приглашает вас в свой отряд";"Запрошує вас до своєї ланки";"Zaprasza cię do swojego oddziału";"Convite para você entrar no seu pelotão";"Sizi takımına katılmaya davet ediyor";"Tě zve k připojení do jeho skupiny";"Σας προσκαλεί να γίνετε μέλος της ομάδας του";"Mengundangmu untuk bergabung dengan skuadnya";"เชิญคุณเข้าร่วมหมู่ของเขา";"님이 편대에 초대하였습니다";"邀\t请\t加\t入\t对\t方\t小\t队";"あなたを\t分隊に\t招待しています";"邀\t請\t加\t入\t對\t方\t小\t隊";;
 "squad/invite/reject";"Rejected the invitation to the squad.";"A rejeté l'invitation à l'escouade.";"Invito al plotone rifiutato.";"Einladung zum Beitritt in die Staffel abgelehnt.";"Rechazó la invitación al escuadrón.";"Отказался вступить в отряд.";"Відхилено запрошення в ланку.";"Odrzucił zaproszenie do drużyny.";"Rejeitou o convite para o pelotão.";"Takıma katılma davetini reddetti.";"Odmítl pozvání do skupiny.";"Απέρριψε την πρόσκληση στην ομάδα.";"Menolak undangan untuk masuk ke dalam skuad.";"ปฏิเสธคำเชิญเข้าร่วมหมู่";"님이 편대 초대를 거절했습니다.";"拒\t绝\t了\t组\t队\t邀\t请。";"分隊への\t招待を\t拒否しました。";"拒\t絕\t了\t組\t隊\t邀\t請。";;
 "squad/only_leader_can_queue";"Only the squad leader can queue for a battle.";"Seul le chef d'escouade peut mettre une bataille en file d'attente.";"Solo il comandante del plotone può entrare in coda per la battaglia.";"Nur der Staffelführer kann die Staffel in die Warteschlange für eine Zufallsschlacht einreihen.";"Solo el líder del escuadrón puede ponerse a la cola de una batalla.";"Только лидер отряда может записать в очередь на бой.";"Тільки лідер загону може записати в чергу на бій.";"Tylko dowódca oddziału może kolejkować bitwę.";"Apenas o líder da esquadrilha pode selecionar batalha na fila de espera.";"Sadece takım lideri savaş için sıraya girebilir.";"Pouze velitel skupiny ji může zařadit do fronty na bitvu";"Μόνο ο αρχηγός της ομάδας μπορεί να μπει στην ουρά για μια μάχη.";"Hanya pemimpin skuad yang bisa mengantre untuk bertempur.";"หัวหน้าหมู่เท่านั้นที่สามารถเริ่มคิวร่วมการต่อสู้ได้";"편대장만이 편대 전체를 대기열에 입장시킬 수 있습니다.";"只\t有\t小\t队\t长\t能\t决\t定\t何\t时\t“加\t入\t战\t斗”";"出撃命令は\t分隊長のみが\t下せます。";"只\t有\t小\t隊\t長\t能\t決\t定\t何\t時\t“加\t入\t戰\t鬥”。";;
