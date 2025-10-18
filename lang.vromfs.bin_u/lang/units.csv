@@ -1052,6 +1052,7 @@
 "g5n1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"G5N1";"深\t山";"十三試大型陸上攻撃機";"深\t山";;
 "a6m3_mod22ko_zero";"A6M3 mod. 22Ko";"A6M3 mle. 22 Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 мод. 22Ко";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 mod. 22Ko";"A6M3 22형갑";"零\t战\t二\t二\t型\t甲";"零式艦上戦闘機二二型 甲";"零\t戰\t二\t二\t型\t甲";;
 "a6m5_zero";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"A6M5";"零\t战\t五\t二\t型";"零式艦上戦闘機五二型";"零\t戰\t五\t二\t型";;
+"a6m6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"A6M6c";"零\t战\t五\t三\t型";"A6M6c";"零\t戰\t五\t三\t型 丙";;
 "ki_61_2_early";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Ocu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II Otsu Kai";"Ki-61-II을 개량형";"三\t式\t战\t二\t型";"三式戦闘機二型 乙改";"三\t式\t戰\t二\t型\t乙 改";;
 "ki_100_early";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"五\t式\t战\t一\t型";"五式戦闘機一型";"五\t式\t戰\t二\t型";;
 "ki_67_1_ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I Ko";"Ki-67-I갑";"四\t式\t重\t爆\t甲\t型";"四式重爆一型 甲";"四\t式\t重\t爆\t一\t型\t甲";;
@@ -1259,5 +1260,5 @@
 "germ_leopard_1a5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"Leopard 1A5";"레오파르트 1A5";"豹 1A5";"レオパルト 1A5";"豹 1A5";;
 "germ_marder_clovis";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";"CLOVIS";;
 "uk_frigate_rckt_leander";"HMS Type 12I";"HMS Type 12I";"HMS Tipo 12I";"HMS Type 12I";"HMS Tipo 12I";"HMS Type 12I";"HMS тип 12I";"HMS Typ 12I";"HMS Type 12I";"HMS Type 12I";"HMS Typ 12I";"HMS Type 12I";"HMS Type 12I";"HMS Type 12I";"HMS 12I 형";"12I 型";"イギリス\t海軍 12I\t型";"HMS 12I 型";;
-"uk_battlecruiser_tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";;
+"uk_battlecruiser_tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS Tiger";"HMS 타이거";"虎 (C20)";"イギリス\t海軍 タイガー";"虎 (C20)";;
 "SHIPS_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";
