@@ -963,24 +963,6 @@ Kamu ingin menjalankan peluncur untuk memeriksa pembaruan?";"โปรดทร�
 ランチャーで\t最新版を\tチェックしますか?";"注\t意！\t直\t接\t啟\t動\t遊\t戲\t程\t式\t可\t能\t導\t致\t遊\t戲\t版\t本\t不\t符。
 要\t運\t行\t啟\t動\t器\t檢\t查\t可\t用\t更\t新\t嗎？";;
 "launcher/update_header";"Error";"Erreur";"Errore";"Fehler";"Error";"Ошибка";"Помилка";"Błąd";"Erro";"Hata";"Chyba";"Σφάλμα";"Terjadi kesalahan";"ข้อผิดพลาด";"오류";"错\t误";"エラー";"錯\t誤";;
-"video/ati_aa";"Antialiasing is enabled in the Catalyst Control Center. This may cause graphic artifacts.
-Would you like to continue?";"L'anticrénelage est activé dans le Catalyst Control Center. Cela peut causer des artefacts graphiques.
-Voulez-vous continuer ?";"Antialiasing attivo in Catalyst Control Center. Questo potrebbe provocare artefatti grafici.
-Continuare comunque?";"Antialiasing ist im Catalyst Control Center aktiviert. Dies kann zu Grafikproblemen führen.
-Willst du fortfahren?";"El suavizado de contorno está habilitado en Catalyst Control Center. Como resultado, pueden producirse anomalías gráficas.
-¿Quieres continuar?";"Сглаживание включено через Catalyst Control Center, что может привести к графическим ошибкам.
-Продолжить?";"Згладжування увікнено через Catalyst Control Center, що може призвести до графічних помилок.
-Продовжити?";"W Catalyst Control Center uruchomiono antyaliasing. Może to spowodować powstawanie błędów graficznych. Czy chcesz kontynuować?";"O Antialiasing encontra-se activado no Catalyst Control Center. Poderá causar artefactos gráficos.
-Deseja continuar?";"Afet Kontrol Merkezinde Hata Düzeltme etkinleştirildi. Bu grafik oluşumlarına neden olabilir.
-Devam etmek ister misin?";"V programu Catalyst Control Center je aktivováno vyhlazování hran, což může způsobovat grafické artefakty. Chceš pokračovat?";"Η εξομάλυνση είναι ενεργοποιημένη στο Κέντρο Ελέγχου Καταλύτη. Αυτό μπορεί να προκαλέσει artifacts γραφικών.
-Θέλετε να συνεχίσετε;";"Antialiasing diaktifkan di Catalyst Control Center. Ini bisa menyebabkan artefak grafis.
-Kamu ingin lanjut?";"เปิดใช้งาน Antialiasing โดย Catalyst Control Center อาจทำให้เกิดตำหนิในกราฟิกได้
-ต้องการดำเนินการต่อหรือไม่?";"Catalyst Control Center에서 안티앨리어싱 기능을 활성화했습니다. 이로 인해 그래픽 결함이 발생할 수 있습니다.
-계속하시겠습니까?";"催\t化\t剂\t控\t制\t中\t心\t已\t启\t用\t了\t反\t锯\t齿\t设\t定，\t可\t能\t会\t导\t致\t图\t像\t失\t真。
-是\t否\t继\t续?";"アンチエイリアスは、\tカタリストコントロールセンターで\t有効にできますが、\tこの\t操作により、\tグラフィックに\t悪影響が\t起こる\t場合があります。\t
-続行しますか？";"Catalyst Control Center 已\t啟\t用\t了\t反\t鋸\t齒\t設\t定，\t可\t能\t會\t導\t致\t圖\t像\t失\t真。
-是\t否\t繼\t續?";;
-"video/ati_aa_hdr";"Antialiasing";"Anticrénelage";"Anti-aliasing";"Antialiasing";"Antialiasing";"Сглаживание";"Згладжування";"Antyaliasing";"Antialising";"Hata Düzeltme";"Vyhlazování hran";"Εξομάλυνση";"Antialiasing";"Antialiasing";"안티앨리어싱";"抗\t锯\t齿";"アンチエリアス\t処理";"抗\t鋸\t齒";;
 "video/ati_crossfire";"CrossFireX is enabled in the Catalyst Control Center. This may cause graphic artifacts.
 Do you wish to continue?";"CrossFireX est activé dans le Catalyst Control Center. Cela peut causer des artefacts graphiques.
 Voulez-vous continuer ?";"CrossFireX attivo in Catalyst Control Center. Questo potrebbe provocare artefatti grafici.
