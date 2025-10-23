@@ -46,4 +46,6 @@
 "naval_japan/desc";;;;;;;;;;;;;;;;;;;;
 "container_port/name";"Cargo Port";"Port de fret";"Porto Merci";"Frachthafen";"Puerto de Carga";"Морской терминал";"Морський термінал";"Port przeładunkowy";"Porto de carga";"Kargo Limanı";"Nákladní přístav";"Cargo Port";"Cargo Port";"Cargo Port";"카고 포트";"货\t运\t港\t口";"貨物港";"貨\t運\t港\t口";;
 "container_port/desc";;;;;;;;;;;;;;;;;;;;
+"alaska_town/name";"Alaska";"Alaska";"Alaska";"Alaska";"Alaska";"Аляска";"Аляска";"Alaska";"Alasca";"Alaska";"Aljaška";"Alaska";"Alaska";"Alaska";"알래스카";"阿\t拉\t斯\t加";"アラスカ";"阿\t拉\t斯\t加";;
+"alaska_town/desc";;;;;;;;;;;;;;;;;;;;
 "LOC_NAMES_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";
