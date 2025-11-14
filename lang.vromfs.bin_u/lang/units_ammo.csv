@@ -1545,12 +1545,13 @@
 "105mm_slpprj_m66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"slpprj m/66";"m/66 曳\t光\t穿\t甲\t弹";"slpprj m/66";"m/66 曳\t光\t穿\t甲\t彈";;
 "105mm_imi_m426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";"M426";;
 "125mm_tapna";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";"TAPNA";;
-"ahead_tank/name/short";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"ВПЕРЕД";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"前進";"AHEAD";;
-"30mm_173_AHEAD/name";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"ВПЕРЕД";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"前進";"AHEAD";;
+"ahead_tank/name/short";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"前進";"AHEAD";;
+"30mm_173_AHEAD/name";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"AHEAD";"前進";"AHEAD";;
 "152mm_3of25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3ОФ25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";"3OF25";;
 "152mm_3of45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3ОФ45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";"3OF45";;
 "152mm_3of45_vt";"3OF45 (PF)";"3OF45 (FP)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3ОФ45 (РВ)";"3OF45";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (PF)";"3OF45 (近\t炸\t引\t信)";"3OF45 (PF)";"3OF45 (近\t發\t引\t信)";;
 "30mm_ussr_AP/name";"HVAP-T";"APCR-T";"HVAP-T";"HVAP-T";"HVAP-T";"БПТ";"БПТ";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";"HVAP-T";;
 "30mm_ussr_HE/name";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"ОЗТ";"ОЗТ";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";"FI-T";;
 "152mm_3of25_vt";"3OF25 (PF)";"3OF25 (FP)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3ОФ25 (РВ)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (PF)";"3OF25 (近\t炸\t引\t信)";"3OF25 (PF)";"3OF25 (近\t發\t引\t信)";;
+"30mm_2a72_AP/name";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"БТ";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";"AP-T";;
 "UNITS_AMMO_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";
