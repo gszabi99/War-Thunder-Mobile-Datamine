@@ -6,10 +6,11 @@ let { unseenPurchases, lootboxes } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { G_STAT, G_MEDAL } = require("%appGlobals/rewardType.nut")
 let unseenPurchasesDebug = require("%rGui/shop/unseenPurchasesDebug.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
-let invisibleGoodsTypes = ["stat", "medal"] 
+let invisibleGoodsTypes = [G_STAT, G_MEDAL] 
   .reduce(@(res, v) res.$rawset(v, true), {})
 
 let ignoreUnseen = Watched({}) 
@@ -23,7 +24,7 @@ let seenPurchasesNoNeedToShow = Computed(function() {
   return unseenPurchases.get()
     .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, serverConfigs.get(), lboxes)) == null)
 })
-let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
+let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.get()
   ?? (isShowDelayed.get() ? {}
     : unseenPurchases.get().filter(@(_, id) id not in ignoreUnseen.get()
         && id not in seenPurchasesNoNeedToShow.get())))
@@ -58,8 +59,8 @@ let activeUnseenPurchasesGroup = Computed(function() {
 })
 
 function markPurchasesSeen(seenIds) {
-  if (unseenPurchasesDebug.value != null)
-    return unseenPurchasesDebug(null)
+  if (unseenPurchasesDebug.get() != null)
+    return unseenPurchasesDebug.set(null)
 
   let hasNotIgnore = seenIds.findvalue(@(id) id not in ignoreUnseen.get()) != null
   if (!hasNotIgnore)

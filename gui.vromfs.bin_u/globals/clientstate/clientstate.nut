@@ -33,7 +33,7 @@ let isSingleMissionOverrided = sharedWatched("isSingleMissionOverrided", @() fal
 
 eventbus_subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()
-  battleSessionId(sessionId)
+  battleSessionId.set(sessionId)
   isInMpSession.set(sessionId != -1)
 })
 

@@ -6,16 +6,16 @@ let { TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS } = requ
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
-let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip } = require("%rGui/state/profilePremium.nut")
-let { premiumTextColor, goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
+let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip, havePremiumDeprecated } = require("%rGui/state/profilePremium.nut")
+let { premiumTextColor, goodTextColor2, badTextColor2, hoverColor } = require("%rGui/style/stdColors.nut")
 let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
 let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { CS_GAMERCARD, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
+let { CS_GAMERCARD } = require("%rGui/components/currencyComp.nut")
 
-let premIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
+let premIconH = hdpxi(50)
 let highlightTrigger = {}
 
 let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.get() ?? -1)
@@ -23,8 +23,8 @@ let changeOrders = hardPersistWatched("premium.changeOrders", [])
 let nextChange = Computed(@() changeOrders.get()?[0])
 
 isProfileReceived.subscribe(function(_) {
-  visibleEndsAt(premiumEndsAt.get())
-  changeOrders([])
+  visibleEndsAt.set(premiumEndsAt.get())
+  changeOrders.set([])
 })
 premiumEndsAt.subscribe(function(endsAt) {
   if (endsAt == visibleEndsAt.get() && changeOrders.get().len() == 0)
@@ -36,24 +36,30 @@ premiumEndsAt.subscribe(function(endsAt) {
   changeOrders.mutate(@(v) v.append({ cur = endsAt, diff }))
 })
 
-let premImageMain = @() mkSubsIcon(
-  !havePremium.get() ? "prem_inactive"
-    : !hasPremiumSubs.get() ? "prem_deprecated"
-    : hasVip.get() ? "vip"
-    : "prem",
-  premIconH
-).__merge({
-  watch = [havePremium, hasPremiumSubs, hasVip]
-  children = hasPremiumSubs.get() ? null
-    : {
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        pos = [pw(30), ph(30)]
-        rendObj = ROBJ_TEXT
-        color = 0xFFFFFFFF
-        text = "+"
-      }.__update(fontBigShaded)
-})
+let premImageMain = @() {
+  watch = [havePremium, hasPremiumSubs, hasVip, havePremiumDeprecated]
+  pos = [0, -hdpx(5)]
+  children = [
+    mkSubsIcon(
+      !havePremium.get() ? "prem_inactive"
+        : !hasPremiumSubs.get() ? "prem_deprecated"
+        : hasVip.get() ? "vip"
+        : "prem",
+      premIconH,
+      {pos = [0, havePremiumDeprecated.get() ? hdpx(10) : hdpx(0) ]}
+    )
+    hasPremiumSubs.get() ? null
+      : {
+          vplace = ALIGN_CENTER
+          hplace = ALIGN_CENTER
+          pos = [pw(25), ph(25)]
+          rendObj = ROBJ_TEXT
+          color = 0xFFFFFFFF
+          text = "+"
+        }.__update(fontBigShaded)
+  ]
+}
+
 
 function premiumTime(style = CS_GAMERCARD) {
   local timeLeft = max(0, visibleEndsAt.get() - serverTime.get())
@@ -89,7 +95,7 @@ function premiumTime(style = CS_GAMERCARD) {
 function onChangeAnimFinish(change) {
   if (change != changeOrders.get()?[0])
     return
-  visibleEndsAt(change.cur)
+  visibleEndsAt.set(change.cur)
   changeOrders.mutate(@(v) v.remove(0))
   anim_start(highlightTrigger)
 }
@@ -119,7 +125,7 @@ function mkChangeView(change) {
 let hoverBg = {
   size = const [pw(150), flex()]
   hplace = ALIGN_CENTER
-  color = 0x8052C4E4
+  color = hoverColor
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   screenOffs = hdpx(100)

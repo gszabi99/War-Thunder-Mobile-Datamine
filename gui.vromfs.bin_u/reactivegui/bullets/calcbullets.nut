@@ -6,10 +6,10 @@ let { ammoReductionFactorsByIdx } = require("%rGui/bullets/bulletsConst.nut")
 
 let calcBulletStep = @(bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)
 let calcLeftSteps = @(bStep, bTotalSteps, bullets) bullets.reduce(@(res, bData) res - bData.count / bStep, bTotalSteps)
-let calcVisibleBullets = @(bInfo, respawnUItems) (bInfo?.bulletSets ?? {}).reduce(function(res, _, name) {
+let calcVisibleBullets = @(bInfo, mods) (bInfo?.bulletSets ?? {}).reduce(function(res, _, name) {
   let { reqModification = "", isHidden = false } = bInfo?.fromUnitTags[name]
-  return ((reqModification == "" || (respawnUItems?[reqModification] ?? 0) > 0)) && !isHidden ? res.$rawset(name, true)
-    : res
+  let reqModAmount = mods?[reqModification] ?? 0
+  return isHidden || (reqModification != "" && reqModAmount <= 0) ? res : res.$rawset(name, true)
 }, {})
 
 function calcMaxBullets(bTotalSteps, bInfo, bTotalCount, bSlots) {
@@ -94,10 +94,19 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
   return res
 }
 
+let mkVisibleBulletsList = @(bulletsOrder, unitTags, visibleBullets, openedSlot)
+  bulletsOrder.filter(function(name) {
+    let { isExternalAmmo = false } = unitTags?[name]
+    let isVisible = visibleBullets?[name] ?? false
+    return openedSlot == 0 ? isVisible && !isExternalAmmo : isVisible
+  })
+
 return {
   calcBulletStep
   calcLeftSteps
   calcVisibleBullets
   calcMaxBullets
   calcChosenBullets
+
+  mkVisibleBulletsList
 }

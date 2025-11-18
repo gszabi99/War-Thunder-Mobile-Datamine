@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
-let { hangar_enable_controls, hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR
+let { hangar_enable_controls, hangar_focus_model, hangar_set_dm_viewer_mode,
+  DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY
 } = require("hangar")
 let { set_dm_viewer_pointer_screenpos } = require("hangarEventCommand")
 let { deferOnce } = require("dagor.workcycle")
 let { allow_dm_viewer } = require("%appGlobals/permissions.nut")
 let { needCursorForActiveInputDevice } = require("%appGlobals/activeControls.nut")
-let { isHangarUnitLoaded, hasNotDownloadedPkgForHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { isHangarUnitLoaded, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let { getDmViewerUnitData, dmViewerUnitDataVer, clearDmViewerUnitDataCollection
 } = require("%rGui/dmViewer/unitDataCollection.nut")
 
 let dmViewerMode = mkWatched(persist, "dmViewerMode", DM_VIEWER_NONE)
 let dmViewerUnitReady = mkWatched(persist, "dmViewerUnitReady", false)
 
-let needDmViewerPointerControl = Computed(
-  @() !needCursorForActiveInputDevice.get() && dmViewerMode.get() != DM_VIEWER_NONE)
+let needDmViewerPointerControl = Computed(@() [ DM_VIEWER_ARMOR, DM_VIEWER_XRAY ].contains(dmViewerMode.get()))
 let pointerScreenX = Watched(0)
 let pointerScreenY = Watched(0)
 
@@ -39,11 +39,11 @@ dmViewerMode.subscribe(onDmViewerModeChanged)
 if (dmViewerMode.get() != DM_VIEWER_NONE)
   onDmViewerModeChanged(dmViewerMode.get())
 
-let updateUnitReady = @() dmViewerUnitReady.set(isHangarUnitLoaded.get() && !hasNotDownloadedPkgForHangarUnit.get())
+let updateUnitReady = @() dmViewerUnitReady.set(isHangarUnitLoaded.get() && hasHangarUnitResources.get())
 let updateUnitReadyDelayed = @() deferOnce(updateUnitReady)
 let setUnitNotReady = @() dmViewerUnitReady.set(false)
 isHangarUnitLoaded.subscribe(@(v) v ? updateUnitReadyDelayed() : setUnitNotReady())
-hasNotDownloadedPkgForHangarUnit.subscribe(@(v) !v ? updateUnitReadyDelayed() : setUnitNotReady())
+hasHangarUnitResources.subscribe(@(v) v ? updateUnitReadyDelayed() : setUnitNotReady())
 local prevMode = dmViewerMode.get()
 dmViewerMode.subscribe(function(v) {
   let isActivate = prevMode == DM_VIEWER_NONE
@@ -74,7 +74,7 @@ function onNeedUnhoverUnit(_) {
 }
 dmViewerMode.subscribe(onNeedUnhoverUnit)
 isHangarUnitLoaded.subscribe(onNeedUnhoverUnit)
-hasNotDownloadedPkgForHangarUnit.subscribe(onNeedUnhoverUnit)
+hasHangarUnitResources.subscribe(onNeedUnhoverUnit)
 
 register_command(@() isDebugMode.set(!isDebugMode.get()), "ui.debug.dm_viewer")
 

@@ -57,7 +57,7 @@ function pictureButton(params) {
 
       children = picCmp(params)
       onClick = params?.action
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.set(sf)
     }
   }
 }

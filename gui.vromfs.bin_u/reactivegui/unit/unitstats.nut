@@ -170,6 +170,8 @@ let statsShip = {
         list.append(loc("stats/mine"))
       if (weapons.findvalue(@(w) w?.wtype == "bomb"))
         list.append(loc("stats/bomb"))
+      if (weapons.findvalue(@(w) w?.wtype == "rockets" && w?.antiSubRocket))
+        list.append(loc("stats/asm/short"))
       if (ecmType != "")
         list.append(loc($"stats/{ecmType}/short"))
       if (supportPlane != "")
@@ -352,13 +354,17 @@ let weaponsCfgShip = {
     mkWeapStat("rockets", {
       getValue = @(s) s?.damage ?? 0,
       valueToText = @(_, s) mkDamageText(s?.damage ?? 0, s?.shotFreq ?? 0, s?.reloadTime ?? 0)
+      getHeader = @(s, _) loc($"stats/{s?.antiSubRocket ? "asm" : "rockets"}", { caliber = roundCaliber(s?.caliber ?? 0) })
     })
     mkWeapStat("torpedo")
     mkWeapStat("mine")
     mkWeapStat("bomb")
   ]
   short = [
-    mkWeapStat("rockets", { valueToText = @(_, s) dpsText(calcSalvoRocketDamage(s)) })
+    mkWeapStat("rockets", {
+      valueToText = @(_, s) dpsText(calcSalvoRocketDamage(s))
+      getHeader = @(s, _) loc($"stats/{s?.antiSubRocket ? "asm" : "rockets"}", { caliber = roundCaliber(s?.caliber ?? 0) })
+    })
     mkWeapStat("torpedo", { valueToText = @(_, s) dpsText((s?.damage ?? 0) * (s?.shotFreq ?? 0)) })
   ]
 }
@@ -630,7 +636,7 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
 
     foreach (weapListIdx, weap in list) {
       if (!sortedUnitTypesByWeapDmg?[unit.unitType])
-        weap.sort(@(a, b) a.damage < b.damage)
+        weap.sort(@(a, b) b.damage <=> a.damage)
       foreach (i, wCfg in weap)
         mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
           mkUnitStat(unit, stat, wCfg, $"{stat.id}{list.len() == 1 ? i : $"{weapListIdx}{i}"}"))

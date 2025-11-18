@@ -10,7 +10,7 @@ let presentations = {
   season_12 = { color = 0xFFFF8000 }
   season_13 = { color = 0xFF2E87D9 }
   season_14 = { color = 0xFF00A556 }
-  season_15 = { color = 0xFF5C67FB, imageSizeMul = 2}
+  season_15 = { color = 0xFF5C67FB, imageSizeMul = 2 }
   season_16 = { color = 0xFF85C523 }
   season_17 = { color = 0xB3E50606 }
   season_18 = { color = 0xFFFFBB10 }
@@ -19,29 +19,39 @@ let presentations = {
   season_21 = { color = 0xFFFE6F71 }
   season_22 = { color = 0xFFE9AB11, imageSizeMul = 1.8 }
   season_23 = { color = 0xFFBC0022 }
+  season_24 = { color = 0xFFFC7724 }
+  season_25 = { color = 0xFFADDB76 }
+  season_26 = { color = 0xFFC3EBFF }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
-  event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif" }
-  event_lunar_ny_season        = { icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg", bg = "ui/images/event_bg_lunar.avif" }
+  event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif",
+                                   gamercardItems = [ "firework_kit" ] }
+  event_lunar_ny_season        = { icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg", bg = "ui/images/event_bg_lunar.avif",
+                                   gamercardItems = [ "firework_kit" ] }
   event_patrick_day            = { icon = "ui/gameuiskin#icon_event_patrick_day2.svg" }
   event_patrick_daily          = { icon = "ui/gameuiskin#icon_event_patrick_day.svg" }
   event_april_2025             = { icon = "ui/gameuiskin#icon_event_april_2025.svg", bg = "ui/images/event_bg_event_april_2025.avif" }
   hot_may                      = { icon = "ui/gameuiskin#icon_event_hot_may.svg", bg = "ui/images/event_bg_season_20.avif" }
   hotmaybond                   = { bg = "ui/images/event_bg_season_20.avif" }
   independencebond             = { bg = "ui/images/event_bg_event_independence_day.avif" }
-  anniversary_2025             = { bg = "ui/images/event_bg_anniversary_2025.avif" }
+  anniversary_2025             = { bg = "ui/images/event_bg_anniversary_2025.avif", gamercardItems = [ "firework_kit" ] }
   anniversarybond              = { bg = "ui/images/event_bg_anniversary_2025.avif" }
+  halloween_2025               = { bg = "ui/images/event_bg_halloween_2025.avif", gamercardItems = [ "firework_kit" ] }
+  halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
+  event_leyte_battle           = { imageSizeMul = 1.4 }
 }
 
 let genParams = {
   name = @(name) name
+  locId = @(name) $"events/name/{name}"
   icon = @(name) $"ui/gameuiskin#icon_event_{name}.svg"
   image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
   color = @(_) 0xA5FF2B00
   imageOffset = @(_) [0, 0]
-  imageSizeMul = @(_) 1.2
+  imageSizeMul = @(_) 1.0
   imageTabOffset = @(_) [0, 0]
   bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
+  gamercardItems = @(_) []
 }
 
 function mkEventPresentation(name) {

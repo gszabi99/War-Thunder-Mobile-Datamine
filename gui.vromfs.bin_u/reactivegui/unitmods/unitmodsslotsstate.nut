@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { round_by_value, fabs } = require("%sqstd/math.nut")
+let { isStringInteger } = require("%sqstd/string.nut")
 let { loadUnitWeaponSlots, loadUnitSlotsParams, loadUnitReqModifications
 } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { hangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -33,11 +34,8 @@ let curBeltIdx = mkWatched(persist, "curBeltIdx", 0)
 let slotBeltKey = @(idx) $"unit_mods_slot_belt_{idx}"
 let slotWeaponKey = @(idx) $"unit_mods_slot_weapon_{idx}"
 
-let weaponsScrollHandler = ScrollHandler()
-
 let curUnit = Computed(@() campMyUnits.get()?[openedUnitId.get()] || campUnitsCfg.get()?[openedUnitId.get()])
 let isOwn = Computed(@() openedUnitId.get() in campMyUnits.get())
-let isHangarUnitHasWeaponSlots = Computed(@() isLoggedIn.get() && loadUnitWeaponSlots(hangarUnitName.get()).len() > 0)
 
 let weaponSlots = Computed(@() openedUnitId.get() == null ? [] : loadUnitWeaponSlots(openedUnitId.get()))
 let curSlot = Computed(@() weaponSlots.get()?[curSlotIdx.get()])
@@ -105,6 +103,10 @@ let curWeaponsOrdered = Computed(function() {
 let curWeapon = Computed(@() curWeaponsOrdered.get()?[curWeaponIdx.get()])
 let curBeltWeapon = Computed(@() beltWeapons.get()?[curBeltsWeaponIdx.get()])
 
+let mkHasUnitWeaponSlots = @(unit) Computed(@() unit.get()?.name != null
+  && isLoggedIn.get()
+  && loadUnitWeaponSlots(unit.get().name).len() > 0)
+
 function mkWeaponBelts(unitName, weapon) {
   if (weapon == null || unitName == null)
     return {}
@@ -118,18 +120,25 @@ function mkWeaponBelts(unitName, weapon) {
 let allWeaponBelts = Computed(@() beltWeapons.get().map(@(weapon) mkWeaponBelts(openedUnitId.get(), weapon)))
 let curWeaponBelts = Computed(@() allWeaponBelts.get()?[curBeltsWeaponIdx.get()] ?? {})
 
+let getReqModificationLvl = memoize(function getReqModificationLvlImpl(modName) {
+  let lvlString = modName.split("_").top()
+
+  return isStringInteger(lvlString) ? lvlString.tointeger() : 0
+})
+
 let curWeaponBeltsOrdered = Computed(function() {
   if (curWeaponBelts.get().len() == 0)
     return []
   let bulletsOrder = getUnitTagsCfg(openedUnitId.get())?.bulletsOrder[curBeltWeapon.get()?.weaponId] ?? [""]
   return bulletsOrder.map(@(id) curWeaponBelts.get()?[id])
     .filter(@(v) v != null)
+    .sort(@(a, b) getReqModificationLvl(a?.reqModification ?? "") <=> getReqModificationLvl(b?.reqModification ?? ""))
 })
 
 let curBelt = Computed(@() curWeaponBeltsOrdered.get()?[curBeltIdx.get()])
 
 let curMods = Computed(@() campConfigs.get()?.unitModPresets[curUnit.get()?.modPreset])
-let curUnitAllModsCost = mkUnitAllModsCost(curUnit)
+let curUnitAllModsSlotsCost = mkUnitAllModsCost(curUnit)
 
 let { weaponPreset, setWeaponPreset } = mkWeaponPreset(openedUnitId)
 
@@ -240,6 +249,16 @@ function fixCurPresetOverload() {
     return
   let preset = getEqippedWithoutOverload(openedUnitId.get(), equippedWeaponsBySlots.get())
     .map(@(v) v?.name ?? "")
+  setWeaponPreset(preset)
+}
+
+let isEmptyBomber = Computed(@() curUnit.get()?.unitClass == "bomber"
+  && equippedWeaponsBySlots.get().filter(@(s, idx) s != null && idx != 0).len() == 0) 
+
+function setDefaultSecondaryWeapon() {
+  let preset = equippedWeaponsBySlots.get().map(
+    @(equippedWeapon, idx) equippedWeapon != null ? equippedWeapon.name
+      : (weaponSlots.get()[idx].wPresets.findvalue(@(w) w.isDefault)?.name ?? ""))
   setWeaponPreset(preset)
 }
 
@@ -490,7 +509,7 @@ function setAllSeenMods() {
   let seenMods = {}
   foreach (modName, data in unitModPreset)
     if (data?.reqLevel && level && data.reqLevel <= level && modName not in mods)
-      seenMods[modName] <- hasEnoughCurrencies(data, curUnitAllModsCost.get(), balance.get())
+      seenMods[modName] <- hasEnoughCurrencies(data, curUnitAllModsSlotsCost.get(), balance.get())
 
   setSeenUnitMods(seenMods)
 }
@@ -566,7 +585,7 @@ return {
   openUnitModsSlotsWndByName
   closeUnitModsSlotsWnd
   unitModSlotsOpenCount
-  isHangarUnitHasWeaponSlots
+  isHangarUnitHasWeaponSlots = mkHasUnitWeaponSlots(hangarUnit)
   isOwn
 
   curUnit
@@ -590,6 +609,7 @@ return {
   equippedWeaponsBySlots
   equippedWeaponIdCount
   overloadInfo
+  isEmptyBomber
   curBeltWeapon
   curWeaponBelts
   curWeaponBeltsOrdered
@@ -601,7 +621,7 @@ return {
   mkWeaponBelts
   isBeltWeapon
 
-  curUnitAllModsCost
+  curUnitAllModsSlotsCost
   getModCurrency
   getModCost
   mkWeaponStates
@@ -619,7 +639,9 @@ return {
   getUnitBeltsNonUpdatable
   calcOverloadInfo
   fixCurPresetOverload
+  setDefaultSecondaryWeapon
   mkListUnseenMods
+  mkHasUnitWeaponSlots
   groupedCurUnseenMods
   curUnseenMods
   setCurSlotIdx
@@ -629,8 +651,6 @@ return {
   slotBeltKey
   slotWeaponKey
   mirrorIdx
-
-  weaponsScrollHandler
 
   findSlotWeaponsToBuyNonUpdatable
 }

@@ -17,6 +17,15 @@ let levelBg = {
 
 let getSlotLevelIcon = @(level) format("ui/gameuiskin#slot_rank_%02d.svg", (level / STEP_ICON_COUNT) + 1)
 
+let mkSlotLevelIcon = @(level, imageSize, ovr = {}) {
+  size = [imageSize, imageSize]
+  rendObj = ROBJ_IMAGE
+  hplace = ALIGN_LEFT
+  color = slotExpColor
+  image = Picture($"{getSlotLevelIcon(level)}:{imageSize}:{imageSize}:P")
+  keepAspect = true
+}.__update(ovr)
+
 let mkSlotLevel = @(level, imageSize, ovr = {}, bgOvr = {}) {
   size = levelHolderSize
   pos = [-levelProgressBorderWidth / 2, 0]
@@ -24,15 +33,7 @@ let mkSlotLevel = @(level, imageSize, ovr = {}, bgOvr = {}) {
     padding = const [0, hdpx(10)]
     valign = ALIGN_CENTER
     children = [
-      {
-        size = [imageSize, imageSize]
-        pos = [hdpx(10), 0]
-        rendObj = ROBJ_IMAGE
-        hplace = ALIGN_LEFT
-        color = slotExpColor
-        image = Picture($"{getSlotLevelIcon(level)}:{imageSize}:{imageSize}:P")
-        keepAspect = true
-      }
+      mkSlotLevelIcon(level, imageSize, { pos = [hdpx(10), 0] })
       {
         hplace = ALIGN_RIGHT
         rendObj = ROBJ_TEXT
@@ -78,5 +79,6 @@ return {
   mkSlotLevel
   mkSlotLevelBlock
   getSlotLevelIcon
+  mkSlotLevelIcon
   levelHolderSize
 }

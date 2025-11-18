@@ -16,8 +16,9 @@ let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
+let { hudMediumGrayColor, hudCoralRedColor, hudVeilGrayColorFade } = require("%rGui/style/hudColors.nut")
 
-let crosshairReadyColor = Color(232, 75, 60)
+let crosshairReadyColor = hudCoralRedColor
 let crosshairSize = evenPx(38)
 let crosshairReadySize = (1.7 * crosshairSize).tointeger()
 let readyImage = getSvgImage("reload_indication_in_zoom", crosshairReadySize)
@@ -27,8 +28,8 @@ let halfCrosshairLineHeight = (0.5 * crosshairLineHeight).tointeger()
 let sizeAim = [crosshairLineWidth, crosshairLineHeight]
 let sizeAimRv = [sizeAim[1], sizeAim[0]]
 
-let hasNoPenetrationState = Computed(@() tankCrosshairDmTestResult.value == DM_TEST_NOT_PENETRATE ||
-                                         tankCrosshairDmTestResult.value == DM_TEST_RICOCHET)
+let hasNoPenetrationState = Computed(@() tankCrosshairDmTestResult.get() == DM_TEST_NOT_PENETRATE ||
+                                         tankCrosshairDmTestResult.get() == DM_TEST_RICOCHET)
 
 let crosshairAmount = Computed(@() crosshairScreenPosition.get().len())
 
@@ -138,7 +139,7 @@ let circle = @(color, width) {
 }
 
 function mkCircleGunPosition(index) {
-  let color = index == 0 ? Color(150, 150, 150, 150) : Color(200, 200, 200, 200)
+  let color = index == 0 ? hudVeilGrayColorFade : hudMediumGrayColor
   let isVisible = Computed(@() index < crosshairScreenPosition.get().len() &&
     crosshairScreenPosition.get()[index][0] > 0 && crosshairScreenPosition.get()[index][1] > 0)
   return @() !isVisible.get() ? { watch = isVisible } : {

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let INDICATOR_TYPE = {
   PLAYER_CHAT_BUBBLE = 1
@@ -15,7 +16,7 @@ let mkHudIndicatorIcon = @(id, icon, size, ovr) {
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{icon}:{size}:{size}:P")
   keepAspect = true
-  color = 0xFFFFFFFF
+  color = hudWhiteColor
 }.__update(ovr)
 
 let isDuplicate_OnePerPlayer = @(p1, p2) p1.playerId == p2.playerId

@@ -16,7 +16,7 @@ function blockWindow(flag) {
   if (flag in windowInactiveFlags.get())
     return
   if (needDebug)
-    logW($"block by {flag}. {windowActive.value ? "Set window to inactive" : ""}")
+    logW($"block by {flag}. {windowActive.get() ? "Set window to inactive" : ""}")
   windowInactiveFlags.mutate(@(v) v[flag] <- true)
 }
 

@@ -21,8 +21,8 @@ function mkContactActionBtn(actionCfg, userId, btnStyle = {}) {
   let isInProgress = mkIsInProgress?(userId) ?? neverInProgress
   return @() {
     watch = [isVisible, isInProgress]
-    children = !isVisible.value ? null
-      : isInProgress.value ? progressWait
+    children = !isVisible.get() ? null
+      : isInProgress.get() ? progressWait
       : textButtonMultiline(utf8ToUpper(loc(locId)), @() action(userId), mergeStyles(COMMON, btnStyle))
   }
 }
@@ -35,8 +35,8 @@ function mkExtContactActionBtn(cfg, userId) {
   let isInProgress = mkIsInProgress?(userId) ?? neverInProgress
   return @() {
     watch = [isVisible, isInProgress, friendsUids]
-    children = !isVisible.value ? null
-      : isInProgress.value ? progressWait
+    children = !isVisible.get() ? null
+      : isInProgress.get() ? progressWait
       : mkCustomButton(
           mkImageTextContent(cfg.icon, CS_COMMON.iconSize, utf8ToUpper(loc(locId))),
           @() action(userId),

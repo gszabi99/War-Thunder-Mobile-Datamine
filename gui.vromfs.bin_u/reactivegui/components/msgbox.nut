@@ -84,7 +84,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__m
 },
   ovr)
 
-let defaultBtnsCfg = freeze([ { id = "ok", styleId = "PRIMARY", isDefault = true } ])
+let defaultBtnsCfg = freeze([ { id = "ok", styleId = "COMMON", isDefault = true } ])
 function closeMsgBox(uid) {
   if (removeModalWindow(uid))
     logM($"close '{uid}'")

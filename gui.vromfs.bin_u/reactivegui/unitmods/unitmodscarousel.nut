@@ -1,38 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("%rGui/unitMods/unitModsState.nut")
+let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp, iconCfg, isOwn, slotModKey
+} = require("%rGui/unitMods/unitModsState.nut")
+let { unseenCampUnitMods, markUnitModsSeen } = require("%rGui/unitMods/unseenMods.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModImage } = require("%rGui/unitMods/modsComps.nut")
-let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
-let { defer } = require("dagor.workcycle")
+let { mkLevelLock, mkNotPurchasedShade, mkModImage, mkEquippedFrame, mkUnseenModIndicator
+} = require("%rGui/unitMods/modsComps.nut")
+let { startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
+let { modH, modW, modsGap, activeColor } = require("%rGui/unitMods/unitModsConst.nut")
+let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
+let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 
-let modsGap = hdpx(10)
-let selLineGap = hdpx(14)
+
 let bgColor = 0x990C1113
-let activeBgColor = 0xFF52C4E4
 let contentMargin = [hdpx(10), hdpx(15)]
-let modH = hdpx(170)
-let modW = hdpx(440)
-let equippedColor = 0xFF50C0FF
-let equippedFrameWidth = hdpx(4)
-let modTotalH = modH + selLineSize + selLineGap
-
-let iconTankSize = [hdpxi(95), hdpxi(41)]
-let iconShipSize = [hdpxi(44), hdpxi(51)]
-let iconsCfg = {
-  tank = {
-    img = "selected_icon_tank.svg"
-    size = iconTankSize
-  }
-  ship = {
-    img = "selected_icon.svg"
-    size = iconShipSize
-  }
-}
 
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
-  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
+  mkGradientCtorRadial(activeColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
 
 let mkModContent = @(content, isActive, isHover) {
   size = [SIZE_TO_CONTENT, modH]
@@ -58,46 +43,46 @@ let mkModContent = @(content, isActive, isHover) {
   ].append(content)
 }
 
-let mkEquippedFrame = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
-  : {
-      watch = isEquipped
-      size = [modW, modH]
-      rendObj = ROBJ_FRAME
-      borderWidth = equippedFrameWidth
-      color = equippedColor
-    }
-
-function mkEquippedIcon(isEquipped) {
-  let icon = Computed(@() iconsCfg?[unit.get()?.unitType] ?? iconsCfg.tank)
-
-  return @() !isEquipped.get() ? { watch = [unit, isEquipped] }
-    : {
-        watch = [unit, isEquipped]
-        margin = contentMargin
-        hplace = ALIGN_RIGHT
-        vplace = ALIGN_BOTTOM
-        size = icon.get().size
-        rendObj = ROBJ_IMAGE
-        color = equippedColor
-        keepAspect = KEEP_ASPECT_FIT
-        image = Picture($"ui/gameuiskin#{icon.get().img}:{icon.get().size[0]}:{icon.get().size[1]}:P")
-      }
+let mkIcon = @(icon, size) {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FIT
+  image = Picture($"ui/gameuiskin#{icon}:{size[0]}:{size[1]}:P")
 }
 
-function modData(mod) {
+let mkEquippedIcon = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
+  : {
+      watch = [iconCfg, isEquipped]
+      pos = [0, iconCfg.get().size[1] / 2]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_BOTTOM
+      size = iconCfg.get().size
+      children = [
+        mkIcon(iconCfg.get().imgOutline, iconCfg.get().size)
+        mkIcon(iconCfg.get().img, iconCfg.get().size).__update({ color = 0xFF000000 })
+      ]
+    }
+
+function mkModContentData(mod, idx) {
+  let stateFlags = Watched(0)
   let id = mod?.name
   let locId = $"modification/{id}"
   let reqLevel = mod?.reqLevel ?? 0
   let currency = getModCurrency(mod)
   let cost = mkCurUnitModCostComp(mod)
-  let isLocked = Computed(@() reqLevel > (unit.get()?.level ?? 0))
-  let isPurchased = Computed(@() unitMods.get()?[id] != null)
+  let isDisplayedAsPurchased = Computed(@() unit.get()?.isPremium || unit.get()?.isUpgraded)
+  let isLocked = Computed(@() reqLevel > (unit.get()?.level ?? 0) && !isDisplayedAsPurchased.get())
+  let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get() == 0)
+  let isPurchased = Computed(@() isDisplayedAsPurchased.get() || unitMods.get()?[id] != null)
   let isEquipped = Computed(@() unitMods.get()?[id])
-  let textSize = calc_str_box(loc(locId), fontSmallShaded)[0]
+  let isActive = Computed(@() curModId.get() == id || (stateFlags.get() & S_ACTIVE) != 0)
+  let textSize = calc_str_box(loc(locId), fontVeryTinyAccentedShaded)[0]
 
   return {
     id
+    stateFlags
     content = {
+      key = slotModKey(idx)
       size = [modW, modH]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -113,10 +98,10 @@ function modData(mod) {
           behavior = Behaviors.Marquee
           delay = defMarqueeDelay
           speed = hdpx(50)
-        }.__update(fontTinyShaded)
+        }.__update(fontVeryTinyAccentedShaded)
 
-        mkNotPurchasedShade(isPurchased)
-        mkEquippedFrame(isEquipped)
+        mkNotPurchasedShade(Computed(@() isPurchased.get() || hasModNotOwn.get()))
+        mkEquippedFrame(isEquipped, isActive)
         mkEquippedIcon(isEquipped)
         @() {
           watch = isLocked
@@ -126,55 +111,57 @@ function modData(mod) {
           children = isLocked.get() ? mkLevelLock(reqLevel) : null
         }
         @() {
-          watch = [isPurchased, isLocked, cost]
-          children = isPurchased.get() || isLocked.get() ? null : mkCurrencyComp(cost.value, currency)
+          watch = [isPurchased, isLocked, hasModNotOwn, cost]
+          children = isPurchased.get() || isLocked.get() || hasModNotOwn.get() ? null : mkCurrencyComp(cost.get(), currency, CS_SMALL)
         }
+        mkUnseenModIndicator(Computed(@() id in unseenCampUnitMods.get()?[unit.get()?.name]))
       ]
     }
   }
 }
 
-function mkMod(id, content, scrollToMod) {
-  let xmbNode = XmbNode()
-  let stateFlags = Watched(0)
-  let isActive = Computed (@() curModId.get() == id || (stateFlags.get() & S_ACTIVE) != 0)
-  let isHover = Computed (@() stateFlags.get() & S_HOVER)
+function mkMod(id, content, stateFlags, idx) {
+  let isActive = Computed(@() curModId.get() == id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isHover = Computed(@() stateFlags.get() & S_HOVER)
 
   return {
+    key = isActive
     size = FLEX_V
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    xmbNode
     function onClick() {
-      curModId(id)
-      defer(@() gui_scene.setXmbFocus(xmbNode))
+      markUnitModsSeen(unit.get()?.name, [id])
+      curModId.set(id)
+      startCarouselAnimScroll(getCarouselPosX(idx))
     }
-    onAttach = @() isActive.get() ? scrollToMod() : null
+    onAttach = @() isActive.get() ? carouselScrollHandler.scrollToX(getCarouselPosX(idx)) : null
     sound = { click = "choose" }
     flow = FLOW_VERTICAL
-    gap = selLineGap
-
     children = [
+      selectedLineHorSolid(isActive)
       mkModContent(content, isActive, isHover)
-      selectedLineHor(isActive)
     ]
   }
 }
 
-let mkMods = @(modsSorted, scrollToMod) {
+let mkMods = @(modsSorted) {
   size = FLEX_V
   flow = FLOW_HORIZONTAL
   gap = modsGap
   children = modsSorted
-    .map(@(v) modData(v))
-    .map(@(mod) mkMod(mod.id, mod.content, scrollToMod))
+    .map(function(mod, idx) {
+       let { id, content, stateFlags } = mkModContentData(mod, idx)
+       return mkMod(id, content, stateFlags, idx)
+    })
 }
 
 return {
   mkMods
-  modH
-  modW
-  modsGap
-  modTotalH
+
+  contentMargin
+  bgColor
+  bgGradient
+
+  mkEquippedIcon
 }

@@ -262,7 +262,7 @@
       "speed": 900.0,
       "maxDistance": 4000.0,
       "selfDestructionInAir": true,
-      "hitPowerMult": 1.5,
+      "hitPowerMult": 15.0,
       "nearHitPower": [
         1.0,
         50.0
@@ -675,7 +675,7 @@
         "speed": 900.0,
         "maxDistance": 4000.0,
         "selfDestructionInAir": true,
-        "hitPowerMult": 1.5,
+        "hitPowerMult": 15.0,
         "nearHitPower": [
           1.0,
           50.0
@@ -1085,7 +1085,7 @@
         "speed": 900.0,
         "maxDistance": 4000.0,
         "selfDestructionInAir": true,
-        "hitPowerMult": 1.5,
+        "hitPowerMult": 15.0,
         "nearHitPower": [
           1.0,
           50.0
@@ -1907,7 +1907,7 @@
         "speed": 900.0,
         "maxDistance": 4000.0,
         "selfDestructionInAir": true,
-        "hitPowerMult": 1.5,
+        "hitPowerMult": 15.0,
         "nearHitPower": [
           1.0,
           50.0
@@ -2117,7 +2117,7 @@
         "speed": 900.0,
         "maxDistance": 4000.0,
         "selfDestructionInAir": true,
-        "hitPowerMult": 1.5,
+        "hitPowerMult": 15.0,
         "nearHitPower": [
           1.0,
           50.0
@@ -2323,7 +2323,7 @@
         "speed": 900.0,
         "maxDistance": 4000.0,
         "selfDestructionInAir": true,
-        "hitPowerMult": 1.5,
+        "hitPowerMult": 15.0,
         "nearHitPower": [
           1.0,
           50.0
@@ -2529,7 +2529,7 @@
         "speed": 900.0,
         "maxDistance": 4000.0,
         "selfDestructionInAir": true,
-        "hitPowerMult": 1.5,
+        "hitPowerMult": 15.0,
         "nearHitPower": [
           1.0,
           50.0

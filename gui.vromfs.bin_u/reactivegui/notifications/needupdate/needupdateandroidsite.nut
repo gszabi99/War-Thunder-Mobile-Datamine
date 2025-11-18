@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let logUpdate = log_with_prefix("[UPDATE] androidSite: ")
+let logUpdate = log_with_prefix("[UPDATE]: ")
 let { eventbus_subscribe } = require("eventbus")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { parse_json } = require("json")
@@ -32,9 +32,9 @@ let needRequest = Watched(nextRequestTime.get() <= get_time_msec())
 let allowRequest = Computed(@() needRequest.get() && !isInBattle.get() && !isInLoadingScreen.get())
 
 needRequest.subscribe(@(v) v ? null
-  : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
+  : nextRequestTime.set(get_time_msec() + REQUEST_PERIOD_MSEC))
 
-let getApkLinkWithCash = @(gameHash) $"https://gdn.gaijin.net/apk/download?proj={proj}&tag={tag}&hash={gameHash}"
+let getApkLinkWithHash = @(gameHash) $"https://gdn.gaijin.net/apk/download?proj={proj}&tag={tag}&hash={gameHash}"
 
 let updateGameVersionImpl = proj == null ? @() null
   : @() httpRequest({
@@ -62,8 +62,8 @@ eventbus_subscribe(ACTUAL_VERSION_ID, function(response) {
   }
   catch(e) {}
   if (result?.status == "OK") {
-    actualGameVersion(result?.version)
-    actualGameHash(result?.hash)
+    actualGameVersion.set(result?.version)
+    actualGameHash.set(result?.hash)
   }
   logUpdate($"status = {status}, version = {result?.version}")
 })
@@ -91,6 +91,6 @@ let needSuggestToUpdate = Computed(function() {
 return {
   actualGameVersion
   actualGameHash
-  getApkLinkWithCash
+  getApkLinkWithHash
   needSuggestToUpdate
 }

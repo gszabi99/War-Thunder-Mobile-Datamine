@@ -4,6 +4,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let stateFlags = Watched(0)
 
@@ -23,7 +24,7 @@ let hoverBg = {
   size = [pw(150), boostersHeight]
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
-  color = 0x4052C4E4
+  color = hoverColor
   screenOffs = hdpx(100)
   texOffs = gradCircCornerOffset
   hplace = ALIGN_CENTER

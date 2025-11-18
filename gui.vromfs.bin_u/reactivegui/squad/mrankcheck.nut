@@ -19,9 +19,9 @@ let MSG_UID = "mRankCheck"
 let CAN_REPEAT_SEC = 15
 let mRankCheckTime = hardPersistWatched("mRankCheckTime", 0)
 let isMRankCheckSuspended = Watched(false)
-isInSquad.subscribe(@(_) mRankCheckTime(isSquadLeader.get() ? 0 : serverTime.get()))
+isInSquad.subscribe(@(_) mRankCheckTime.set(isSquadLeader.get() ? 0 : serverTime.get()))
 isSquadLeader.subscribe(@(v) !isInSquad.get() ? null
-  : mRankCheckTime(v ? 0 : serverTime.get()))
+  : mRankCheckTime.set(v ? 0 : serverTime.get()))
 
 let needMRankCheckMsg = Computed(@() isInSquad.get()
   && !isSquadLeader.get()
@@ -39,19 +39,19 @@ function initiateMRankCheck() {
     openMsgBox({ text = loc("msg/bigRankDiff/checkInCooldown") })
     return
   }
-  mRankCheckTime(serverTime.get())
+  mRankCheckTime.set(serverTime.get())
   isMRankCheckSuspended.set(true)
   resetTimeout(CAN_REPEAT_SEC, @() isMRankCheckSuspended.set(false))
 }
 
 function showMRankCheck() {
-  if (!shouldShowMsg.value)
+  if (!shouldShowMsg.get())
     return
 
   let leaderMRank = getMemberMaxMRank(squadLeaderState.get(), squadLeaderCampaign.get(), serverConfigs.get())
   let myMRank = getMemberMaxMRank(squadMembers.get()?[myUserId.get()], squadLeaderCampaign.get(), serverConfigs.get())
   if (leaderMRank == myMRank) {
-    mRankCheckTime(serverTime.get())
+    mRankCheckTime.set(serverTime.get())
     return
   }
 
@@ -61,7 +61,7 @@ function showMRankCheck() {
     uid = MSG_UID
     text = loc("msg/bigRankDiff/askChange",
       { rankText = colorize("@mark", rankText) })
-    buttons = [{ id = "ok", styleId = "PRIMARY", isDefault = true, cb = @() mRankCheckTime(serverTime.get()) }]
+    buttons = [{ id = "ok", styleId = "PRIMARY", isDefault = true, cb = @() mRankCheckTime.set(serverTime.get()) }]
   })
 }
 

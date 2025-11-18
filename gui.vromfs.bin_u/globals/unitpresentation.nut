@@ -15,7 +15,12 @@ let unitClassFontIcons = {
   submarine     = "\u2412"
   fighter       = "\u25A5"
   bomber        = "\u25A2"
-  assault      = "\u25A3"
+  assault       = "\u25A3"
+  light_tank    = "\u252A"
+  medium_tank   = "\u252C"
+  heavy_tank    = "\u2528"
+  SPAA          = "\u2530"
+  tank_destroyer = "\u2534"
 }
 
 let unitTypeFontIcons = {
@@ -29,9 +34,9 @@ let unitTypeFontIcons = {
 let unitTypeColors = {
   [AIR]         = 0xFFECBC51, 
   [TANK]        = 0xFF99D752, 
-  [SHIP]        = 0xFF00D5E2, 
+  [SHIP]        = 0xFF7FAEFF, 
   [HELICOPTER]  = 0xFFECBC51, 
-  [BOAT]        = 0xFF00D5E2, 
+  [BOAT]        = 0xFF7FAEFF, 
 }
 
 let defaults = {
@@ -95,17 +100,6 @@ let overrides = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
@@ -139,6 +133,7 @@ function getUnitPresentationByName(unitName) {
 
 let getUnitPresentation = @(unitOrName) getUnitPresentationByName(unitOrName?.name ?? unitOrName)
 let getUnitLocId = @(u) getUnitPresentation(u).locId
+let getUnitName = @(u, loc) loc(getUnitLocId(u))
 let getPlatoonName = @(unitName, loc) unitName in platoonNames ? loc(platoonNames[unitName])
   : loc("platoon/name", { name = loc(getUnitLocId(unitName)) })
 
@@ -149,8 +144,9 @@ return {
   getUnitPresentation
   getUnitLocId
   getUnitClassFontIcon = @(u) unitClassFontIcons?[u?.unitClass] ?? ""
+  getUnitName
   getPlatoonName
   getPlatoonOrUnitName = @(unit, loc) (unit?.platoonUnits.len() ?? 0) > 0
     ? getPlatoonName(unit?.name ?? "", loc)
-    : loc(getUnitLocId(unit?.name ?? ""))
+    : getUnitName(unit?.name ?? "", loc)
 }

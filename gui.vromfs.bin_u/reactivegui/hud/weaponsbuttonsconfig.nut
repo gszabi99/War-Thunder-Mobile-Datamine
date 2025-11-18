@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 from "blkGetters" import get_current_mission_info_cached
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
-  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL,
-  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE
+  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL, AB_SPECIAL_FIGHTER,
+  AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE, AB_ACOUSTIC_DECOY
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
 
@@ -62,8 +62,8 @@ let actionBarItemsConfig = {
       : unitType == TANK ? "ID_SMOKE_SCREEN_GENERATOR"
       : "ID_SHIP_SMOKE_SCREEN_GENERATOR"
     getImage = @(unitType) unitType == TANK
-      ? "!ui/gameuiskin#hud_smoke_grenade_tank.svg"
-      : "!ui/gameuiskin#hud_consumable_smoke.svg"
+      ? "ui/gameuiskin#hud_smoke_grenade_tank.svg"
+      : "ui/gameuiskin#hud_consumable_smoke.svg"
     actionType = AB_SMOKE_SCREEN
     mkButtonFunction = "mkActionItem"
     haptPatternId = HAPT_SMOKE
@@ -77,7 +77,7 @@ let actionBarItemsConfig = {
     mkButtonFunction = "mkCountermeasureItem"
     haptPatternId = HAPT_IRCM
     getAnimationKey = @(_) "ircm_kit"
-  }
+  },
   EII_ELECTRONIC_WARFARE = {
     getShortcut = @(_, __) "ID_ELECTRONIC_WARFARE"
     getImage = @(_) "ui/gameuiskin#icon_capture_blocker.svg"
@@ -85,16 +85,22 @@ let actionBarItemsConfig = {
     actionType = AB_ELECTRONIC_WARFARE
     mkButtonFunction = "mkCountermeasureItem"
     haptPatternId = HAPT_IRCM
-  }
+  },
   EII_SMOKE_GRENADE = {
     getShortcut = @(unitType, __) unitType == TANK ? "ID_SMOKE_SCREEN" : "ID_SHIP_SMOKE_GRENADE"
     getImage = @(unitType) unitType == TANK
-      ? "!ui/gameuiskin#hud_smoke_grenade_tank.svg"
-      : "!ui/gameuiskin#hud_consumable_smoke.svg"
+      ? "ui/gameuiskin#hud_smoke_grenade_tank.svg"
+      : "ui/gameuiskin#hud_consumable_smoke.svg"
     actionType = AB_SMOKE_GRENADE
     mkButtonFunction = "mkActionItem"
     haptPatternId = HAPT_SMOKE
-  }
+  },
+  EII_ACOUSTIC_DECOY = {
+    getShortcut = @(_, __) "ID_SUBMARINE_ACOUSTIC_DECOY"
+    getImage = @(_) "ui/gameuiskin#icon_ircm.svg"
+    actionType = AB_ACOUSTIC_DECOY
+    mkButtonFunction = "mkCountermeasureItem"
+  },
   EII_MEDICALKIT = {
     getShortcut = getActionBarShortcut
     getImage = @(_) "ui/gameuiskin#hud_consumable_medicalkit.svg"

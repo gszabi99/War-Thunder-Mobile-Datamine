@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { needDmViewerPointerControl, pointerScreenX, pointerScreenY } = require("%rGui/dmViewer/dmViewerState.nut")
+from "%appGlobals/activeControls.nut" import needCursorForActiveInputDevice
+from "%rGui/dmViewer/dmViewerState.nut" import needDmViewerPointerControl, pointerScreenX, pointerScreenY
 
-let DEV_GAMEPAD = 3
+let DEV_ID_MOUSE = 2
+let DEV_ID_GAMEPAD = 3
 
 let defProcessorState = {
   devId = null
@@ -21,6 +23,8 @@ function dmViewerTouchPartSelector() {
   let processorState = Watched(clone defProcessorState)
 
   function onPointerPress(evt) {
+    if (needCursorForActiveInputDevice.get())
+      return 0
     if (evt.accumRes & R_PROCESSED)
       return 0
     if (!evt.hit)
@@ -39,6 +43,8 @@ function dmViewerTouchPartSelector() {
   }
 
   function onPointerRelease(evt) {
+    if (needCursorForActiveInputDevice.get())
+      return 0
     let { x, y, devId, btnId, pointerId } = processorState.get()
     if (evt.devId != devId || evt.btnId != btnId || evt.pointerId != pointerId)
       return 0
@@ -50,12 +56,17 @@ function dmViewerTouchPartSelector() {
 
   function onPointerMove(evt) {
     let { devId, btnId, pointerId } = processorState.get()
-    if ((evt.devId != devId || evt.btnId != btnId || evt.pointerId != pointerId)
-      && evt.devId != DEV_GAMEPAD)
+    let { x, y } = evt
+    if (evt.devId == DEV_ID_GAMEPAD || evt.devId == DEV_ID_MOUSE) {
+      pointerScreenX.set(x)
+      pointerScreenY.set(y)
+      return
+    }
+    if (evt.devId != devId || evt.btnId != btnId || evt.pointerId != pointerId)
       return
     processorState.mutate(function(v) {
-      v.x = evt.x
-      v.y = evt.y
+      v.x = x
+      v.y = y
     })
   }
 

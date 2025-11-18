@@ -1,4 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout } = require("dagor.workcycle")
+
+let fallbackLoadingImage = "!ui/title.avif"
 
 let shadePw = 33.3
 let defAnimTime = 15.0
@@ -8,6 +11,24 @@ let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
 let toSize = @(sizePx) type(sizePx) != "array" ? sizePx
   : [ isNumeric(sizePx[0]) ? pw(100.0 * sizePx[0].tofloat() / animBgSizePx[0]) : sizePx[0],
       isNumeric(sizePx[1]) ? ph(100.0 * sizePx[1].tofloat() / animBgSizePx[1]) : sizePx[1] ]
+
+let hasFallbackByImage = Watched({})
+
+function mkBgImageWithFallback(image) {
+  let hasFallbackImg = Computed(@() hasFallbackByImage.get()?[image])
+  return @() {
+    watch = hasFallbackImg
+    key = image
+    size = flex()
+    rendObj = ROBJ_IMAGE
+    fallbackImage = hasFallbackImg.get() ? Picture(fallbackLoadingImage) : null
+    image = Picture(image)
+    color = 0xFFFFFFFF
+    keepAspect = true
+    onAttach = @() resetTimeout(1.0, @() hasFallbackByImage.mutate(@(v) v[image] <- true))
+    onDetach = @() hasFallbackByImage.mutate(@(v) v.$rawdelete(image))
+  }
+}
 
 let mkBgImageByPx = @(image, sizePx = flex(), posPx = null, ovr = {}) {
   size = toSize(sizePx)
@@ -32,7 +53,7 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
   }
 }
 
-let mkAnimBg = @(layersCfg, fbImage = null, animTime = defAnimTime) {
+let mkAnimBg = @(layersCfg, animTime = defAnimTime) {
   key = layersCfg
   size = const [sw(100), sh(100)]
   rendObj = ROBJ_SOLID
@@ -42,12 +63,6 @@ let mkAnimBg = @(layersCfg, fbImage = null, animTime = defAnimTime) {
   children = { 
     size = const [sh(250), sh(100)]
     children = [
-      {
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = Picture(fbImage)
-        animations = appearAnim(0.25, 0.3) 
-      }
       {
         size = flex()
         children = layersCfg.map(@(l) mkAnimBgLayer(l, animTime))
@@ -74,4 +89,5 @@ return {
   mkAnimBg
   mkAnimBgLayer
   mkBgImageByPx
+  mkBgImageWithFallback
 }

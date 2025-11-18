@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let { G_CURRENCY, G_PREMIUM } = require("%appGlobals/rewardType.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -34,20 +34,35 @@ let btnsList = [
   }
 ]
 
-function getBonusDesc(id) {
-  local res = ""
-  let goods = campConfigs.get()?.allGoods[id]
-  if (!goods)
-    return res
-  if (goods.currencies?.gold)
-    res = loc("onlineShop/gaijinBonusGold")
-  if (goods.premiumDays > 0) {
-    let premDaysWithBonus = campConfigs.get()?.allGoods[goods.relatedGaijinId].premiumDays ?? goods.premiumDays
-    let amount = premDaysWithBonus - goods.premiumDays
-    if (amount != 0)
-      res = loc("onlineShop/gaijinBonusPrem", { amount })
+function getBonusDesc(goodId) {
+  let goods = campConfigs.get()?.allGoods[goodId]
+  let relatedGoods = campConfigs.get()?.allGoods[goods?.relatedGaijinId]
+  if (!goods || !relatedGoods)
+    return ""
+
+  if ("rewards" in goods) {
+    let { gType, id } = goods.rewards[0]
+    if (gType != relatedGoods.rewards[0].gType
+        || id != relatedGoods.rewards[0].id)
+      return ""
+    let amount = relatedGoods.rewards[0].count - goods.rewards[0].count
+    if (amount > 0)
+      if (gType == G_CURRENCY)
+        return loc($"onlineShop/gaijinBonus/{id}", { amount })
+      else if (gType == G_PREMIUM)
+        return loc("onlineShop/gaijinBonus/premium", { amount })
+    return ""
   }
-  return res
+
+  
+  if (goods.currencies?.gold)
+    return loc("onlineShop/gaijinBonus/gold")
+  if (goods.premiumDays > 0) {
+    let amount = relatedGoods.premiumDays - goods.premiumDays
+    if (amount != 0)
+      return loc("onlineShop/gaijinBonus/premium", { amount })
+  }
+  return ""
 }
 
 let close = @() goodsToPaySpecialWnd.set(null)

@@ -42,7 +42,7 @@
     "maxDeltaAngleVertical": 2.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -57,6 +57,8 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
     "dragCx": 0.027,
     "explosionEffect": "smoke_shell_explosion",
     "defFxScale": [
@@ -135,6 +137,34 @@
         30.0,
         0.99
       ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 30.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "expl": 0.1,
+            "fire": 0.9,
+            "damage": 5.0
+          },
+          {
+            "expl": 0.2,
+            "fire": 0.8,
+            "damage": 15.0
+          }
+        ],
+        "onKill": {
+          "expl": 0.4,
+          "fire": 0.6
+        }
+      }
     },
     "collisions": {
       "steel": {

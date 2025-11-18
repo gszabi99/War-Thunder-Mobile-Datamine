@@ -3,23 +3,22 @@ let { Point2, Point3 } = require("dagor.math")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { fabs } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { touchButtonSize, borderWidth, btnBgColor, borderColor, borderNoAmmoColor,
-      imageDisabledColor, imageColor
-    } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { textButtonBright, textButtonPrimary, textButtonSecondary
-    } = require("%rGui/components/textButton.nut")
+let { touchButtonSize, borderWidth, btnBgStyle, borderColor, borderNoAmmoColor,
+  imageDisabledColor, imageColor
+} = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { textButtonPrimary, textButtonSecondary } = require("%rGui/components/textButton.nut")
 let { getSelectionPos2d, nodeAdd, nodeInsert, nodeClear, nodeEdit, launchPlane, launchShip
-      setSelection, setSelectionRect, NODE_INVALID, NODE_SELF, NODE_ORDER_RETURN,
-      NODE_ORDER_POINT, NODE_ORDER_ATTACK, NODE_ORDER_DEFEND, NODE_ORDER_HUNT
-    } = require("guiStrategyMode")
+  setSelection, setSelectionRect, NODE_INVALID, NODE_SELF, NODE_ORDER_RETURN,
+  NODE_ORDER_POINT, NODE_ORDER_ATTACK, NODE_ORDER_DEFEND, NODE_ORDER_HUNT
+} = require("guiStrategyMode")
 let { showHint } = require("%rGui/tooltip.nut")
 let { strategyDataCur, curGroupIndex, curAirGroupIsLaunched, curAirGroupPathLength,
-      curAirGroupIsReturning, curAirGroupType, curAirGroupCanAttackAir, curAirGroupCanAttackGround,
-      curAirGroupCanDefend, curAirGroupCanHunt, updateStrategyDataCur, optDebugDraw
-    } = require("%rGui/hud/strategyMode/strategyState.nut")
+  curAirGroupIsReturning, curAirGroupType, curAirGroupCanAttackAir, curAirGroupCanAttackGround,
+  curAirGroupCanDefend, curAirGroupCanHunt, updateStrategyDataCur, optDebugDraw
+} = require("%rGui/hud/strategyMode/strategyState.nut")
 let { getNodeStyle, edgeColorDefault, edgeColorPending, edgeButtonColor, airGroupAttackIcons,
-      iconInsert, iconClear, debugIconWarning, airGroupIcons, debugTextColor
-    } = require("%rGui/hud/strategyMode/style.nut")
+  iconInsert, iconClear, debugIconWarning, airGroupIcons, debugTextColor
+} = require("%rGui/hud/strategyMode/style.nut")
 
 const iconEdge = "ui/gameuiskin#blink_sharp.svg"
 const iconSelectedUnit = "ui/gameuiskin#crew_gunner_indicator.svg"
@@ -217,8 +216,8 @@ function mkSelfNode(nodePos) {
 }
 
 function onPathNodeHold() {
-  movingNodeId(holdedNodeId)
-  movingNodeOffset(movingNodeOffset.value)
+  movingNodeId.set(holdedNodeId)
+  movingNodeOffset.set(movingNodeOffset.get())
 }
 
 function mkWarningNode(nodeId, nodePos, nodeSize, hintStr) {
@@ -240,11 +239,11 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
   local { icon, size, padding, color, valign, border, rotate, opacity } = getNodeStyle(nodeType)
   let iconSize = (size * 0.85).tointeger()
   let warningSize = (size * 0.45).tointeger()
-  let isMoving = Computed(@() nodeId != -1 && nodeId == movingNodeId.value)
+  let isMoving = Computed(@() nodeId != -1 && nodeId == movingNodeId.get())
   let isSelected = Computed(@() nodeId != -1 && nodeId == selectedNodeId.get() && !isMoving.get())
 
   return @() {
-    watch = [isSelected, isMoving]
+    watch = [isSelected, isMoving, btnBgStyle]
     size = 0
     padding = padding
     pos = [nodePos.x, nodePos.y]
@@ -272,7 +271,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
           else
             movingNodeAlignOffset.y = 0
 
-          movingNodeOffset(Point2(clickOffsetX, clickOffsetY) + movingNodeAlignOffset)
+          movingNodeOffset.set(Point2(clickOffsetX, clickOffsetY) + movingNodeAlignOffset)
 
           holdedNodeId = nodeId
           resetTimeout(0.5, onPathNodeHold)
@@ -282,8 +281,8 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
           if(fabs(dx) > 0 || fabs(dy) > 0) {
             clearTimer(onPathNodeHold)
             if (nodeId == holdedNodeId) {
-              movingNodeOffset(movingNodeOffset.value + Point2(dx, dy))
-              movingNodeId(nodeId)
+              movingNodeOffset.set(movingNodeOffset.get() + Point2(dx, dy))
+              movingNodeId.set(nodeId)
             }
           }
           return null
@@ -291,11 +290,11 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
 
         function onMoveResizeFinished() {
           onNodeClick(nodeType, nodeId, -1, nodePos)
-          if(movingNodeId.value == nodeId) {
+          if(movingNodeId.get() == nodeId) {
             onNodeMove(nodeType, nodeId, nodePos)
             pathRefreshUi()
           }
-          movingNodeId(-1)
+          movingNodeId.set(-1)
           clearTimer(onPathNodeHold)
           holdedNodeId = -1
         }
@@ -304,7 +303,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
           {
             rendObj = ROBJ_BOX
             size = flex()
-            fillColor = isSelected.get() ? btnBgColor.ready : 0
+            fillColor = isSelected.get() ? btnBgStyle.get().ready : 0
             borderWidth = (isSelected.get() || border) ? borderWidth : 0
             borderColor = borderColor
             transform = { rotate }
@@ -347,7 +346,7 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
   let imgSizeInner = (btnSize * 0.65).tointeger()
   let isSelected = Computed(@() edgeId != -1 && selectedEdgeId.get() == edgeId)
   return @() {
-    watch = isSelected
+    watch = [isSelected, btnBgStyle]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = 0
@@ -356,7 +355,7 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
       {
         rendObj = ROBJ_BOX
         size = [btnSize, btnSize]
-        fillColor = isSelected.get() ? btnBgColor.ready : 0
+        fillColor = isSelected.get() ? btnBgStyle.get().ready : 0
         borderWidth = isSelected.get() ? borderWidth : 0
         borderColor = borderColor
         behavior = Behaviors.Button
@@ -388,8 +387,8 @@ function mkNodesUi(data) {
   local attackNodesCount = 0
 
   foreach(node in data.nodes) {
-    local nodePos = (movingNodeId.value != -1 && node.id == movingNodeId.value)
-      ? node.pos2 + movingNodeOffset.value
+    local nodePos = (movingNodeId.get() != -1 && node.id == movingNodeId.get())
+      ? node.pos2 + movingNodeOffset.get()
       : node.pos2
 
     local ui = null
@@ -446,7 +445,7 @@ function mkNodesUi(data) {
     i++
   }
 
-  if (movingNodeId.value == -1 && (selectedPosIsValid.get() || selectedUnitId.get() != -1)) {
+  if (movingNodeId.get() == -1 && (selectedPosIsValid.get() || selectedUnitId.get() != -1)) {
     let pendingDstPos = getSelectionPos2d(selectedPos.get(), selectedUnitId.get())
     let pendingSrcPos = (selectedPosIsValid.get()) ? edgePrevPos : getSelectionPos2d(selectedPos.get(), -1)
     let pendingIcon = (selectedUnitId.get() != -1) ? iconSelectedUnit : iconPointPending
@@ -484,10 +483,10 @@ function mkNodesUi(data) {
 
 function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
   let stateFlags = Watched(0)
-  let isActive = Computed(@() isAllowed.value && (stateFlags.get() & S_ACTIVE))
+  let isActive = Computed(@() isAllowed.get() && (stateFlags.get() & S_ACTIVE))
   let iconSize = (touchButtonSize * 0.55).tointeger()
   return @() {
-    watch = [stateFlags, isActive, isAllowed, isEnabled]
+    watch = [stateFlags, isActive, isAllowed, isEnabled, btnBgStyle]
     rendObj = ROBJ_BOX
     size = [touchButtonSize, touchButtonSize]
     flow = FLOW_VERTICAL
@@ -498,11 +497,11 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
     padding = hdpx(10)
     gap = hdpx(5)
     borderWidth = borderWidth
-    borderColor = (isEnabled.value && isAllowed.value) ? borderColor : borderNoAmmoColor
-    fillColor = (isEnabled.value && isAllowed.value) ? btnBgColor.ready : btnBgColor.empty
+    borderColor = (isEnabled.get() && isAllowed.get()) ? borderColor : borderNoAmmoColor
+    fillColor = (isEnabled.get() && isAllowed.get()) ? btnBgStyle.get().ready : btnBgStyle.get().empty
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
-    onClick = (isEnabled.value && isAllowed.value) ? onClick : null
+    onClick = (isEnabled.get() && isAllowed.get()) ? onClick : null
     transform = { scale = isActive.get() ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
@@ -511,14 +510,14 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
         size = [iconSize, iconSize]
         image = Picture($"{img}:{iconSize}:{iconSize}:P")
         keepAspect = KEEP_ASPECT_FIT
-        color = isEnabled.value ? imageColor : imageDisabledColor
+        color = isEnabled.get() ? imageColor : imageDisabledColor
       }
       {
         rendObj = ROBJ_TEXT
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
-        color = isEnabled.value ? imageColor : imageDisabledColor
+        color = isEnabled.get() ? imageColor : imageDisabledColor
         text = text
       }
     ]
@@ -586,9 +585,6 @@ function textButtonDisabled(label, hintStr) {
     ovr = {
       fillColor = 0xFF323232
     }
-    gradientOvr = {
-      color = 0xFF323232
-    }
     childOvr = {
       color = 0xFF505050
     }
@@ -615,7 +611,7 @@ let pathCommandsUi = @() {
         : curAirGroupPathLength.get() > 1
           ? textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")), onPathLaunch)
         : textButtonDisabled(utf8ToUpper(loc("strategyMode/launch")), loc("strategyMode/empty_path"))
-        textButtonBright(utf8ToUpper(loc("strategyMode/abort_mission")), onPathAbort)
+        textButtonPrimary(utf8ToUpper(loc("strategyMode/abort_mission")), onPathAbort)
       ]
     }
   ]

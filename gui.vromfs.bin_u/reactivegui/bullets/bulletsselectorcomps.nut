@@ -5,13 +5,15 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText } = require("%rGui/weaponry/weaponsVisual.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { saveSeenShells } = require("%rGui/respawn/respawnState.nut")
+let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { markShellsSeenInBattle } = require("%rGui/respawn/respawnState.nut")
 let getBulletStats = require("%rGui/bullets/bulletStats.nut")
 let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
+let { mkVisibleBulletsList } = require("calcBullets.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 
-let bgSlotColor = 0xFF51C1D1
+let bgSlotColor = selectColor
 let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize, mkGradientCtorRadial(bgSlotColor, 0 , 20, 55, 35, 0))
 
 let bulletSlotSize = [hdpxi(350), hdpxi(105)]
@@ -20,9 +22,7 @@ let minBulletWidth = max(bulletSlotSize[0], hdpx(150))
 let bulletHeight = bulletSlotSize[1]
 let statRowHeight = hdpx(28)
 let lockedColor = 0xFFF04005
-let lineColor = 0xFF75D0E7
 let transDuration = 0.3
-let lineGradient = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
 let maxColumns = 2
@@ -110,7 +110,7 @@ let mkCurListBulletInfo = @(bInfo, curSlotName, selSlot) function() {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       color = 0xFFFFFFFF
-      text = loc($"bulletNameWithCaliber", {caliber, bulletName})
+      text = loc($"bulletNameWithCaliber", { caliber, bulletName })
     }.__update(fontTiny)
     mkStatTextarea(getAmmoTypeText(bSet))
     adviceText != "" ? mkStatTextarea(adviceText) : null
@@ -142,8 +142,8 @@ let mkBulletButton = kwarg(function mkBtn(
   curSlotName,
   onClick
 ) {
-  let isCurrent = Computed(@() name == curSlotName.value)
-  let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0))
+  let isCurrent = Computed(@() name == curSlotName.get())
+  let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.get()?.level ?? 0))
   let hasUnseenBullets = Computed(@() hasUnseenShells.get()?[selSlot.get()?.id ?? 0][name])
   let children = [
     @() {
@@ -164,13 +164,13 @@ let mkBulletButton = kwarg(function mkBtn(
           })
         @() {
           watch = isCurrent
-          size = const [hdpx(9), flex()]
-          rendObj = ROBJ_IMAGE
-          image = lineGradient()
+          size = const [hdpx(7), flex()]
+          rendObj = ROBJ_BOX
+          fillColor = selectColor
           opacity = isCurrent.get() ? 1 : 0
           transitions = opacityTransition
           hplace = id % 2 != 0 ? ALIGN_RIGHT : ALIGN_LEFT
-          pos = [id % 2 != 0 ? hdpx(15) : hdpx(-15), 0]
+          pos = [id % 2 != 0 ? hdpx(7) : hdpx(-7), 0]
         }
         isLockedSlot.get()
           ? {
@@ -213,11 +213,7 @@ let mkBulletsList = @(bInfo, visibleBullets, chosenBullets, openedSlot, selSlot,
     return { watch = bInfo }
 
   let { bulletSets, bulletsOrder, fromUnitTags } = bInfo.get()
-  let visibleBulletsList = bulletsOrder.filter(function(name) {
-    let { isExternalAmmo = false } = fromUnitTags?[name]
-    let isVisible = visibleBullets.get()?[name] ?? false
-    return openedSlot.get() == 0 ? isVisible && !isExternalAmmo : isVisible
-  })
+  let visibleBulletsList = mkVisibleBulletsList(bulletsOrder, fromUnitTags, visibleBullets.get(), openedSlot.get())
   let numberBullets = visibleBulletsList.len()
   let columns = bulletsColumnsCount(numberBullets)
   let rows = ceil(numberBullets.tofloat() / columns)
@@ -248,8 +244,8 @@ let mkBulletsList = @(bInfo, visibleBullets, chosenBullets, openedSlot, selSlot,
       key = "saveSection"
       size = flex()
       function onDetach() {
-        if (selSlot.get()?.name != null)
-          saveSeenShells(selSlot.get().name, visibleBulletsList.map(@(name) name))
+        if (selSlot.get()?.name)
+          markShellsSeenInBattle(selSlot.get().name, visibleBulletsList)
       }
     })
   }
@@ -258,4 +254,5 @@ let mkBulletsList = @(bInfo, visibleBullets, chosenBullets, openedSlot, selSlot,
 return {
   mkBulletsList = kwarg(mkBulletsList)
   mkCurListBulletInfo
+  mkShellVideo
 }

@@ -17,6 +17,8 @@ let headerMargin = 2 * blockInterval
 let urlLineWidth = hdpx(1)
 let borderWidth = hdpx(1)
 
+let listInnerMargin = hdpx(25)
+
 let spoilerWidth = saSize[0] - saBordersRv[0]*2 - selectorBtnW - hdpx(124)
 let contentBackground = 0x66000000
 
@@ -32,26 +34,29 @@ let urlHoverColor = 0xFF84E0FA
 let separatorColor = 0x33333333
 let accentDefaultColor = locColorTable.info
 
-let h1Style = { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(fontBig)
-let h2Style = { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(fontMedium)
-let h3Style = { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(fontSmallAccented)
 let emphasisStyle = { color = activeTextColor, margin = [headerMargin, 0] }
 let noteStyle = { color = 0xFF808080 }.__update(fontTiny)
 
 let openUrl = @(url) eventbus_send("openUrl", { baseUrl = urlAliases?[url] ?? url })
 
-let textArea = @(params) {
+let getFontByType = @(style, t)
+  t == "h1" ? { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(style?.h1Font ?? fontBig)
+    : t == "h2" ? { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(style?.h2Font ?? fontMedium)
+    : t == "h3" ? { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(style?.h3Font ?? fontSmallAccented)
+    : style?.font ?? fontSmall
+
+let textArea = @(params, style) {
   size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   text = wordHyphenation((params?.v == "" && params?.t == "paragraph" ? "\n" : params?.v) ?? "")
   behavior = Behaviors.TextArea
   color = commonTextColor
   colorTable = locColorTable
-}.__update(fontSmall, params)
+}.__update(getFontByType(style, params?.t), params)
 
-function url(data, _, __) {
+function url(data, _, style) {
   if (data?.url == null)
-    return textArea(data)
+    return textArea(data, style)
   let stateFlags = Watched(0)
   let onClick = @() openUrl(data.url)
   return function() {
@@ -72,51 +77,97 @@ function url(data, _, __) {
         rendObj = ROBJ_SOLID
         color
       }
-    }.__update(fontSmall, data)
+    }.__update(style?.font ?? fontSmall, data)
   }
 }
 
-let mkUlElement = @(bullet) function(elem, level = 0) {
-  local indent = hdpx(level * 50)
-  if (elem == null)
-    return null
-  let children = [bullet]
-  if (type(elem) == "array")
-    children.extend(elem)
-  else
-    children.append(elem)
-  return {
-    size = FLEX_H
-    flow = FLOW_HORIZONTAL
-    margin = [0, 0, 0, indent]
-    children
-  }
-}
-
-function objListToArrayWithLevels(x, level = 0) {
+function objUListToArrayWithLevels(obj, txtFmt, ulElement) {
   let result = []
-  foreach (e in x.v) {
-    if (type(e) == "string") {
-      result.append({ text = e, level = level })
-    } else if (type(e) == "table" && "v" in e) {
-      let subResult = objListToArrayWithLevels(e, level + 1)
-      result.extend(subResult)
+  foreach (elem in obj.v) {
+    if (type(elem) == "string") {
+      let txtElem = txtFmt(elem)
+      if (txtElem == null)
+        continue
+      result.append({
+        size = FLEX_H
+        flow = FLOW_HORIZONTAL
+        children = [ulElement, txtElem]
+      })
+    } else if (type(elem) == "table" && "v" in elem) {
+      let contentElem = txtFmt(elem)
+      result.append({
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        margin = [0, 0, 0, listInnerMargin]
+        children = contentElem
+      })
     }
   }
   return result
 }
 
-let mkList = @(elemFunc) @(obj, formatTextFunc, _) {
-    flow = FLOW_VERTICAL
-    size = FLEX_H
-    children = objListToArrayWithLevels(obj).map(@(e) elemFunc(formatTextFunc(e.text), e.level))
-  }
+let mkUList = @(ulElement) @(obj, formatTextFunc, style) {
+  flow = FLOW_VERTICAL
+  size = FLEX_H
+  children = objUListToArrayWithLevels(obj, formatTextFunc, ulElement.__update(style?.font ?? fontSmall))
+}
 
-let ulBullet = { rendObj = ROBJ_TEXT, text = " • " }.__update(fontSmall)
+function objOListToArrayWithLevels(obj, fmtFunc, style, parentOrder = "") {
+  let result = []
+  local order = obj?.start ?? 1
+  foreach (elem in obj.v) {
+    if (type(elem) == "string") {
+      let elemTxt = fmtFunc(elem)
+      if (elemTxt == null)
+        continue
+      let elemOrder = {
+        rendObj = ROBJ_TEXT
+        text = $"{parentOrder}{order++}."
+      }.__update(style?.font ?? fontSmall)
+      result.append({
+        size = FLEX_H
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(10)
+        children = [elemOrder, elemTxt]
+      })
+    }
+    else if (elem?.t == "olist" || elem?.type == "olist") { 
+      result.append({
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        margin = [0, 0, 0, listInnerMargin]
+        children = objOListToArrayWithLevels(elem, fmtFunc, style, $"{parentOrder}{order - 1}.")
+      })
+    }
+    else if (type(elem) == "table" && "v" in elem) {
+      let elemContent = fmtFunc(elem)
+      if (elem == null)
+        continue
+      result.append({
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        margin = [0, 0, 0, listInnerMargin]
+        children = elemContent
+      })
+    }
+  }
+  return result
+}
+
+let mkOList = @(obj, formatTextFunc, style) {
+  flow = FLOW_VERTICAL
+  size = FLEX_H
+  children = objOListToArrayWithLevels(obj, formatTextFunc, style)
+}
+
+let ulBullet = { rendObj = ROBJ_TEXT, text = " • " }
 let ulNoBullet = ulBullet.__merge({ text = "   " })
 let hangingIndent = calc_comp_size(ulNoBullet)[0]
-let bullets = mkList(mkUlElement(ulBullet))
-let indent = mkList(mkUlElement(ulNoBullet))
+let bullets = mkUList(ulBullet)
+let numeric = mkOList
+let indent = mkUList(ulNoBullet)
+
+let list = @(obj, formatTextFunc, style) obj?.type == "olist" ? numeric(obj, formatTextFunc, style) : bullets(obj, formatTextFunc, style)
 
 let separator = {
   size = [flex(), urlLineWidth]
@@ -124,7 +175,7 @@ let separator = {
   rendObj = ROBJ_SOLID
   color = separatorColor
 }
-let textParsed = @(text) text == "----" ? separator : textArea({ text })
+let textParsed = @(text, style) text == "----" ? separator : textArea({ text }, style)
 
 let formatList = @(v, formatTextFunc) type(v) != "array" ? formatTextFunc(v)
   : v.map(@(elem) formatTextFunc(elem))
@@ -239,7 +290,7 @@ let image = @(obj, _, style = {}) {
   }
 }.__update(obj, style)
 
-function spoiler(obj, formatTextFunc, __) {
+function spoiler(obj, formatTextFunc, style) {
   let isExpanded = Watched(false)
   let isHover = Watched(false)
   let contentHeight = Watched(0)
@@ -272,7 +323,7 @@ function spoiler(obj, formatTextFunc, __) {
         behavior = Behaviors.TextArea
         text = obj.summary
         color = isExpanded.get() ? activeTextColor : commonTextColor
-      }.__update(fontSmall)
+      }.__update(style?.font ?? fontSmall)
       expandArrow(isExpanded, defaultExpandAnimationDuration)
     ]
   }
@@ -287,12 +338,12 @@ function spoiler(obj, formatTextFunc, __) {
     fillColor = contentBackground
     clipChildren = true
     children = formatList(obj.v, formatTextFunc)
+    opacity = isExpanded.get() ? 1 : 0
     transform = {translate = [0, (!isExpanded.get() ? -contentHeight.get() : 0)]}
-    transitions = [{
-      prop = AnimProp.translate
-      from = [0, -contentHeight.get()], to = [0, 0]
-      duration = defaultExpandAnimationDuration
-    }]
+    transitions = [
+      { prop = AnimProp.translate, duration = defaultExpandAnimationDuration }
+      { prop = AnimProp.opacity, duration = defaultExpandAnimationDuration }
+    ]
   }
 
   contentHeight.set(calc_comp_size(content)[1])
@@ -318,7 +369,7 @@ function spoiler(obj, formatTextFunc, __) {
   }
 }
 
-function tabs(obj, formatTextFunc, __) {
+function tabs(obj, formatTextFunc, style) {
   let currentTab = Watched(obj.v?[0])
   function createCaptionBtn(tab) {
     let stateFlags = Watched(0)
@@ -342,7 +393,7 @@ function tabs(obj, formatTextFunc, __) {
           rendObj = ROBJ_TEXT
           text = tab?.header ?? "untitled"
           color = currentTab.get()?.header == tab?.header ? activeTextColor : commonTextColor
-        }.__update(fontSmall)
+        }.__update(style?.font ?? fontSmall)
       }
     }
   }
@@ -374,21 +425,21 @@ function tabs(obj, formatTextFunc, __) {
   }
 }
 
-let textAreaFormatter = @(obj, _ = null, __ = null) textArea(obj)
-let mkTextFormatter = @(ovr) @(obj, _ = null, __ = null) textArea(obj.__merge(ovr))
+let textAreaFormatter = @(obj, _ = null, style = null) textArea(obj, style)
+let mkTextFormatter = @(ovr) @(obj, _ = null, style = null) textArea(obj.__merge(ovr), style)
 let formatters = {
   def = textAreaFormatter
   textArea = textAreaFormatter
   text = textAreaFormatter
   paragraph = textAreaFormatter
 
-  string = @(text, _ = null, __ = null) textParsed(text),
-  textParsed = @(obj, _ = null, __ = null) textParsed(obj?.v)
+  string = @(text, _ = null, style = null) textParsed(text, style),
+  textParsed = @(obj, _ = null, style = null) textParsed(obj?.v, style)
 
   hangingText = mkTextFormatter({ hangingIndent })
-  h1 = mkTextFormatter(h1Style)
-  h2 = mkTextFormatter(h2Style)
-  h3 = mkTextFormatter(h3Style)
+  h1 = textAreaFormatter
+  h2 = textAreaFormatter
+  h3 = textAreaFormatter
   emphasis = mkTextFormatter(emphasisStyle)
   note = mkTextFormatter(noteStyle)
   preformat = mkTextFormatter({ preformatted = FMT_KEEP_SPACES | FMT_NO_WRAP })
@@ -399,7 +450,8 @@ let formatters = {
   video
 
   bullets
-  list = bullets
+  olist = numeric
+  list
   indent
   columns
   column = vertical
@@ -416,5 +468,6 @@ let filterFormat = @(o) o?.platform != null
 return {
   formatText = mkFormatAst({ formatters, style = { lineGaps = hdpx(5) }, filter = filterFormat })
   formatters
+  filterFormat
   selectorBtnW
 }

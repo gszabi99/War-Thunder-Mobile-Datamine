@@ -3,9 +3,11 @@ let { deferOnce, resetTimeout, clearTimer } = require("dagor.workcycle")
 let logFB = log_with_prefix("[TUTOR_UNITS_RESEARCH] ")
 let { register_command } = require("console")
 
+let { balance } = require("%appGlobals/currenciesState.nut")
 let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { isCampaignWithUnitsResearch, curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots, isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
+let { curSlots, isCampaignWithSlots, curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
+let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
@@ -15,20 +17,20 @@ let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rG
 let { needDelayAnimation, isBuyUnitWndOpened, animExpPart,
   animUnitAfterResearch } = require("%rGui/unitsTree/animState.nut")
 let { markTutorialCompleted, isFinishedUnitsResearch } = require("%rGui/tutorial/completedTutorials.nut")
-let { nodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { scrollToUnitGroupBottom, calcAreaSize } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
+let { visibleNodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
   activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { setResearchUnit } = require("%rGui/unit/unitsWndActions.nut")
-let { PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
+let { closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
 let { setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
   selectedUnitToSlot, closeSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
-let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { btnBEsc, btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
@@ -36,13 +38,13 @@ let STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 
-let curResearchingUnitId = Computed(@() servProfile.get()?.levelInfo[curCampaign.get()].lastResearchedUnit ?? "")
-let isFirstPredifinedReward = Computed(@()
-  (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1) == 0)
-let curResearchUnitStatus = Computed(@() unitsResearchStatus.get()?[curResearchingUnitId.get()] ?? {})
+let lastResearchedUnit = Computed(@() servProfile.get()?.levelInfo[curCampaign.get()].lastResearchedUnit ?? "")
+let hasGotFirstPredifinedReward = Computed(@()
+  (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1) >= 0)
+let curResearchUnitStatus = Computed(@() unitsResearchStatus.get()?[lastResearchedUnit.get()])
 
 let canBuyCurResearchUnit = Computed(function() {
-  let unitFromCanBuyUnits = canBuyUnits.get()?[curResearchingUnitId.get()]
+  let unitFromCanBuyUnits = canBuyUnits.get()?[lastResearchedUnit.get()]
   let canBuyUnit = unitFromCanBuyUnits != null
   let { isResearched = false, canBuy = false } = curResearchUnitStatus.get()
   return canBuyUnit || (isResearched && !canBuy)
@@ -51,7 +53,7 @@ let canBuyCurResearchUnit = Computed(function() {
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinishedUnitsResearch.get()
   && isCampaignWithUnitsResearch.get()
-  && isFirstPredifinedReward.get()
+  && hasGotFirstPredifinedReward.get()
   && curResearchUnitStatus.get()
   && canBuyCurResearchUnit.get()
   && currentResearch.get() == null)
@@ -67,24 +69,6 @@ let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TU
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
-function getObjectsForTutorial() {
-  let availableSlotsForSelection = curSlots.get()
-    .map(@(slot, idx) slot.name != "" ? null : {
-      keys = $"select_slot_{idx}"
-      onClick = @() setUnitToSlot(idx)
-    })
-    .filter(@(s) s != null)
-
-  let availableResearchNodes = nodes.get()
-    .filter(@(node) node.reqUnits.findindex(@(v) v == curSelectedUnit.get()) != null)
-    .map(@(unit) {
-      keys = $"treeNodeUnitPlate:{unit.name}"
-      onClick = @() curSelectedUnit.set(unit.name)
-    })
-
-  return { availableSlotsForSelection, availableResearchNodes }
-}
-
 function forcedUnitPurchaseSkip() {
   if (!isBuyUnitWndOpened.get() || animUnitAfterResearch.get() == null || !animExpPart.get()) {
     closeSelectUnitToSlotWnd()
@@ -95,9 +79,36 @@ function forcedUnitPurchaseSkip() {
 }
 
 function startTutorial() {
-  if (curSelectedUnit.get() != curResearchingUnitId.get())
-    curSelectedUnit.set(curResearchingUnitId.get())
-  let { availableSlotsForSelection, availableResearchNodes } = getObjectsForTutorial()
+  if (lastResearchedUnit.get() != "" && curSelectedUnit.get() != lastResearchedUnit.get())
+    curSelectedUnit.set(lastResearchedUnit.get())
+
+  let availableResearchNodesObjects = []
+  let availableSelectSlotsObjects = []
+  let purchaseBtnObjects = [{
+    keys = "purchase_tutor_btn"
+    needArrow = true
+    function onClick() {
+      if (!unitInProgress.get()) {
+        let { unitId = "", currencyId = "", price = "" } = delayedPurchaseUnitData.get()
+        if (unitId != "" && currencyId != "" && price != "" && unitId not in servProfile.get()?.units)
+          buy_unit(unitId, currencyId, price, { id = "onUnitPurchaseResult", unitId })
+      }
+      return true
+    }
+    hotkeys = [btnAUp]
+  }]
+  if ((curCampaignSlotUnits.get()?.len() ?? 0) > 1 || (campUnitsCfg.get()?[curSelectedUnit.get()].mRank ?? 0) > 2)
+    purchaseBtnObjects.append({
+      keys = "purchase_cancel_btn"
+      needArrow = true
+      onClick = @() deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
+      hotkeys = [btnBEsc]
+    })
+
+  let hasScrollAnimDone = Watched(false)
+
+  needSaveUnitDataForTutorial.set(false)
+  canOpenSelectUnitWithModal.set(false)
   needDelayAnimation.set(true)
 
   setTutorialConfig({
@@ -128,34 +139,36 @@ function startTutorial() {
         function beforeStart() {
           clearTimer(forcedUnitPurchaseSkip)
           moveModalToTop(WND_UID)
+          let { currencyId = "", price = 0 } = delayedPurchaseUnitData.get()
+          if ((balance.get()?[currencyId] ?? 0) < price) {
+            closePurchaseAndBalanceBoxes()
+            deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
+          }
         }
         text = loc("tutorial_purchase_researched_unit")
         charId = "mary_points"
         nextStepAfter = Computed(@() !isBuyUnitWndOpened.get()
           && (selectedUnitToSlot.get() != null || !isCampaignWithSlots.get()))
-        objects = [{
-          keys = "purchase_tutor_btn"
-          needArrow = true
-          function onClick() {
-            if (!unitInProgress.get()) {
-              let { unitId = "", currencyId = "", price = "" } = delayedPurchaseUnitData.get()
-              if (unitId != "" && currencyId != "" && price != "" && unitId not in servProfile.get()?.units)
-                buy_unit(unitId, currencyId, price, { id = "onUnitPurchaseResult", unitId })
-            }
-            return true
-          }
-          hotkeys = ["^J:A"]
-        }]
+        objects = purchaseBtnObjects
       }
       {
         id = "s4_units_wnd_animation"
         isOnlyWithSlots = true
         nextStepAfter = slotBarSelectWndAttached
         function beforeStart() {
-          canOpenSelectUnitWithModal.set(true)
           needSaveUnitDataForTutorial.set(false)
-          closeMsgBox(PURCHASE_BOX_UID)
+          closePurchaseAndBalanceBoxes()
           triggerAnim()
+          availableSelectSlotsObjects.extend(curSlots.get()
+            .map(@(slot, idx) slot.name != "" ? null : {
+              keys = $"select_slot_{idx}"
+              onClick = @() setUnitToSlot(idx)
+            })
+            .filter(@(s) s != null))
+          if (availableSelectSlotsObjects.len() == 0)
+            deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
+          else
+            canOpenSelectUnitWithModal.set(true)
         }
         objects = [{ keys = "sceneRoot", onClick = @() true }]
       }
@@ -163,31 +176,49 @@ function startTutorial() {
         id = "s5_set_purchased_unit_to_slot"
         isOnlyWithSlots = true
         function beforeStart() {
-          if(availableSlotsForSelection.len() == 0 || !slotBarSelectWndAttached.get())
+          if (availableSelectSlotsObjects.len() == 0 || !slotBarSelectWndAttached.get())
             deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
           moveModalToTop(WND_UID)
         }
         text = loc("tutorial_set_purchased_unit_to_slot")
-        objects = availableSlotsForSelection
+        objects = availableSelectSlotsObjects
       }
       {
         id = STEP_SELECT_NEXT_RESEARCH_DESCRIPTION
         function beforeStart() {
           canOpenSelectUnitWithModal.set(false)
+          closePurchaseAndBalanceBoxes()
+          let availableResearchNodes = visibleNodes.get().filter(@(node) unitsResearchStatus.get()?[node.name].canResearch
+            && !unitsResearchStatus.get()?[node.name].isResearched
+            && null != node.reqUnits.findindex(@(v) v == curSelectedUnit.get()))
+          availableResearchNodesObjects.extend(availableResearchNodes.keys().map(@(name) {
+            keys = $"treeNodeUnitPlate:{name}"
+            onClick = @() curSelectedUnit.set(name)
+          }))
           curSelectedUnit.set(null)
-          closeMsgBox(PURCHASE_BOX_UID)
+          if (availableResearchNodes.len() == 0)
+            deferOnce(@() goToStep(STEP_PARTING_WORDS))
+          else {
+            scrollToUnitGroupBottom(
+              availableResearchNodes.keys(),
+              availableResearchNodes,
+              Computed(@() calcAreaSize(isCampaignWithSlots.get())),
+              true)
+            resetTimeout(0.5, @() hasScrollAnimDone.set(true))
+          }
         }
         text = loc("tutorial_select_next_research_description")
-        hasNextKey = true
+        nextStepAfter = hasScrollAnimDone
+        objects = [{ keys = "sceneRoot", onClick = @() true }]
       }
       {
         id = "s7_select_next_research_unit"
         function beforeStart() {
-          if(availableResearchNodes.len() == 0)
+          if (availableResearchNodesObjects.len() == 0)
             deferOnce(@() goToStep(STEP_PARTING_WORDS))
         }
         text = loc("tutorial_select_next_research_unit")
-        objects = availableResearchNodes
+        objects = availableResearchNodesObjects
       }
       {
         id = "s8_confirm_research_unit"

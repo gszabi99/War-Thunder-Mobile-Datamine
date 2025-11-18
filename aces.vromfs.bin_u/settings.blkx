@@ -114,6 +114,10 @@
       "forSource": "../../prog/1stPartyLibs/daScript/daslib",
       "forVromfs": "daslib"
     },
+    "%gameLibs": {
+      "forSource": "../../prog/gameLibs",
+      "forVromfs": "gameLibs"
+    },
     "%dasGameLibs": {
       "forSource": "../../prog/gameLibs/das",
       "forVromfs": "das"
@@ -174,12 +178,7 @@
         "src": "../../skyquake/prog/gamebase_wtm/mis_vrom"
       },
       {
-        "vrom": "regional.vromfs.bin",
-        "vromOptional": true,
-        "cacheOnly": true
-      },
-      {
-        "vrom": "wwdata.vromfs.bin",
+        "vrom": "dldata.production.vromfs.bin",
         "vromOptional": true
       },
       {
@@ -246,6 +245,7 @@
   },
   "addons": {
     "modelsPatchFolder": "content/pkg_models",
+    "createAddonsByYupWithPrefix": "pkg_level_",
     "pkg_models_min": {
       "contentForAllPackages": true,
       "hq": false,
@@ -271,6 +271,7 @@
     "pkg_secondary": {
       "base": true,
       "hq": false,
+      "modelsPatch": false,
       "conditions": {
         "isDownloadFirst": true
       }
@@ -284,1399 +285,51 @@
       }
     },
     "pkg_dev": {},
-    "pkg_common": {
-      "conditions": [
-        {
-          "campaign": "air"
-        },
-        {
-          "campaign": "ships"
-        },
-        {
-          "campaign": "tanks"
-        }
-      ]
-    },
-    "pkg_ground": {
-      "conditions": {
-        "campaign": "tanks"
-      }
-    },
-    "pkg_naval": {
-      "conditions": {
-        "campaign": "ships"
-      }
-    },
-    "pkg_battle_royale_event": {},
-    "pkg_lvl_hangar_bd": {
-      "hangarPath": "config/hangar_field_birthday.blk"
-    },
-    "pkg_tier_1_naval": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 1
-      }
-    },
-    "pkg_tier_2_naval": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_tier_3_naval": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_tier_4_naval": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_tier_5_naval": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 5
-      }
-    },
-    "pkg_tier_1_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 1
-      }
-    },
-    "pkg_tier_2_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 2
-      }
-    },
-    "pkg_tier_3_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_tier_4_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 4
-      }
-    },
-    "pkg_tier_5_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_tier_6_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_tier_7_ground": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_tier_1_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 1
-      }
-    },
-    "pkg_tier_2_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 2
-      }
-    },
-    "pkg_tier_3_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 3
-      }
-    },
-    "pkg_tier_4_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 4
-      }
-    },
-    "pkg_tier_5_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 5
-      }
-    },
-    "pkg_tier_6_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 6
-      }
-    },
-    "pkg_tier_7_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 7
-      }
-    },
-    "pkg_tier_8_aircraft": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 8
-      }
-    },
-    "pkg_common_1_aircraft": {
-      "conditions": [
-        {
-          "campaign": "air",
-          "mRank": 1
-        },
-        {
-          "campaign": "ships",
-          "mRank": 2
-        },
-        {
-          "campaign": "tanks",
-          "mRank": 2
-        }
-      ]
-    },
-    "pkg_common_2_aircraft": {
-      "conditions": [
-        {
-          "campaign": "air",
-          "mRank": 2
-        },
-        {
-          "campaign": "ships",
-          "mRank": 2
-        },
-        {
-          "campaign": "tanks",
-          "mRank": 2
-        }
-      ]
-    },
-    "pkg_common_3_aircraft": {
-      "conditions": [
-        {
-          "campaign": "air",
-          "mRank": 3
-        },
-        {
-          "campaign": "ships",
-          "mRank": 3
-        },
-        {
-          "campaign": "tanks",
-          "mRank": 3
-        }
-      ]
-    },
-    "pkg_common_4_aircraft": {
-      "conditions": [
-        {
-          "campaign": "air",
-          "mRank": 4
-        },
-        {
-          "campaign": "ships",
-          "mRank": 4
-        },
-        {
-          "campaign": "tanks",
-          "mRank": 4
-        }
-      ]
-    },
-    "pkg_common_5_aircraft": {
-      "conditions": [
-        {
-          "campaign": "air",
-          "mRank": 5
-        },
-        {
-          "campaign": "ships",
-          "mRank": 5
-        },
-        {
-          "campaign": "tanks",
-          "mRank": 5
-        }
-      ]
-    },
-    "pkg_extended_strv103": {
+    "pkg_downloadable": {},
+    "pkg_hangar_event": {
       "hq": false,
-      "conditions": {
-        "isExtendedSound": true
-      }
-    },
-    "pkg_extended_105mm_l74": {
-      "hq": false,
-      "conditions": {
-        "isExtendedSound": true
-      }
-    },
-    "pkg_extended_t34": {
-      "hq": false,
-      "conditions": {
-        "isExtendedSound": true
-      }
-    },
-    "pkg_extended_76mm_l11": {
-      "hq": false,
-      "conditions": {
-        "isExtendedSound": true
-      }
-    },
-    "pkg_extended_panzer4": {
-      "hq": false,
-      "conditions": {
-        "isExtendedSound": true
-      }
-    },
-    "pkg_extended_75mm_kwk40": {
-      "hq": false,
-      "conditions": {
-        "isExtendedSound": true
-      }
-    },
-    "pkg_lvl_vietnam_hills": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_lvl_rheinland": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_lvl_normandy": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_lvl_africa_desert": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_lvl_container_port": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_lvl_white_rocks": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_lvl_greece": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_lvl_air_locations": {
-      "conditions": {
-        "campaign": "air"
-      }
-    },
-    "pkg_lvl_air_hurtgen_africa": {
-      "conditions": {
-        "campaign": "air"
-      }
-    },
-    "pkg_lvl_air_grand_canyon": {
-      "conditions": {
-        "campaign": "air"
-      }
-    },
-    "pkg_germ_battlecruiser_von_der_tann": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_jp_battleship_yamato": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 5
-      }
-    },
-    "pkg_germ_battleship_bismarck": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 5
-      }
-    },
-    "pkg_us_battleship_arkansas": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_germ_battleship_westfalen": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_germ_destroyer_rckt_hamburg": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_cruiser_chapayev": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_us_cruiser_rckt_belknap": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_us_battleship_texas": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_jp_destroyer_rckt_takatsuki": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_battleship_marat": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_jp_battlecruiser_kongo": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_jp_battleship_mutsu": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_uk_sub_valiant": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_us_cruiser_pensacola_class": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_us_battleship_mississippi": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_ussr_desroyer_rckt_pr57bis": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_uk_battleship_colossus": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_ussr_sub_l3": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_uk_destroyer_rckt_type23": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_battleship_novorossiysk": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_jp_cruiser_mogami": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_fr_cruiser_emile_bertin": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_uk_cruiser_dido": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_jp_battleship_yamashiro": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_us_cruiser_baltimore_class": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_us_cruiser_rckt_truxtun": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_uk_battlecruiser_glorious": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_fr_destroyer_aigle_class_aigle": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 1
-      }
-    },
-    "pkg_us_cruiser_brooklyn_class_helena": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_germ_battleship_bayern": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_germ_frigate_rckt_bremen": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_cruiser_maxim_gorky": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_ussr_cruiser_rckt_pr58": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_fr_battleship_courbet_class_courbet": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_uk_battleship_marlborough": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_uk_destroyer_rckt_devonshire": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_cruiser_agano": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_uk_battleship_orion": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_germ_destroyer_class1936c_z47": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 1
-      }
-    },
-    "pkg_germ_frigate_rckt_brandenburg": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_battlecruiser_amagi": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 5
-      }
-    },
-    "pkg_germ_cruiser_koln": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_us_battleship_nevada": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_ussr_destroyer_rckt_pr1155": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_cruiser_myoko": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_uk_sub_m1": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_fr_cruiser_suffren_class_dupleix": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_uk_battleship_centurion": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_us_battleship_tennessee": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_jp_destroyer_rckt_hatsuyuki": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_cruiser_sendai": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_it_cruiser_zara_class": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_us_destroyer_gearing": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 1
-      }
-    },
-    "pkg_germ_battlecruiser_derfflinger": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_uk_battlecruiser_renown": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_us_cruiser_rckt_virginia": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_it_battleship_francesco_caracciolo": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_uk_battleship_q_elizabet_class_barham": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_jp_sub_asashio": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 5
-      }
-    },
-    "pkg_germ_sub_type_212": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_battleship_ise": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_germ_cruiser_emden_1944": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_ussr_battleship_arhangelsk": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_ussr_battlecruiser_izmail": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_uk_battlecruiser_hood": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_ussr_1124_rct": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 1
-      }
-    },
-    "pkg_jp_destroyer_rckt_hatakaze": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_germ_battlecruiser_ersatz_yorck": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_uk_destroyer_rckt_type42": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_uk_battleship_rodney": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 5
-      }
-    },
-    "pkg_ussr_destroyer_rckt_pr956": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_us_cruiser_rckt_albany": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_fr_battleship_dunkerque": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_ussr_sub_pr885": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_uk_sub_swiftsure": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_germ_frigate_rckt_sachsen": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_uk_destroyer_rckt_type45": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_it_battleship_caio_duilio": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_us_battleship_colorado_class_colorado": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_germ_frigate_rckt_baden_wurttemberg": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_sub_yushio": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_it_battleship_leonardo_da_vinci": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
-      }
-    },
-    "pkg_ussr_ekranoplan_lun": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_kv_122": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 4
-      }
-    },
-    "pkg_us_t29": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_cn_ztz_88a": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_jp_st_b1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_uk_centurion_action_x": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_object_120": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_ussr_t_34_1941_57": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_fr_amx_30_b2_brenus": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_us_m46_patton_73_armor_bat": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_it_oto_r3_t20_fa": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 4
-      }
-    },
-    "pkg_it_of_40_mk_2a": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_germ_ru251": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_cn_t_34_85_d_5t": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 4
-      }
-    },
-    "pkg_uk_chieftain_mk_3": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_ussr_btr_80a": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_il_magach_6r": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_germ_kv_1_kwk_40": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_it_vcc_80_hitfist_60": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_fr_amx_13_hot": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_germ_panzerbefelhswagen_p": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 4
-      }
-    },
-    "pkg_uk_chieftain_mk_10": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_ussr_is_6": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_us_m56_scorpion": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_ussr_bmp_1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_sw_strv_105": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_cn_type_69_2a": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_fr_amx_10rc": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_ussr_object_248": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_cn_ztz_96": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_ussr_t_55_amd_1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_germ_pzkpfw_v_ersatz_m10": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_us_t95e1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_it_zrinyi_1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 2
-      }
-    },
-    "pkg_fr_lorraine_40t": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_type_74g_kai": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_germ_leopard_a1a1_120": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_us_mbt_70": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_ussr_t_72a": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_il_merkava_mk_1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_germ_panzerbefelhswagen_jagdpanther": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_cn_object_122tm": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_germ_leopard_2k": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_us_t54e2": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_uk_g6_spg": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_sw_k9_vidar": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_uk_challenger_1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_fr_amx_32": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_jp_type_5_ho_ri_production": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_us_m60a3_slep": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_germ_sturmpanzer_iv_brummbar": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 2
-      }
-    },
-    "pkg_ussr_t_72b_1989": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_us_xm1_chrysler": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_it_fiat_6614_106sr": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_germ_leopard_2av": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_ussr_kv_1s": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 2
-      }
-    },
-    "pkg_uk_centurion_mk_5_avre_era": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_fr_amx_40": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_cn_ztz_96a": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_ussr_object_775": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_cn_type_64": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_germ_leopard_2a4": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_it_pzh_2000_hu": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_fr_amx_50_foch": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_uk_khalid": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_uk_valentine_mk_9": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 1
-      }
-    },
-    "pkg_us_m1_abrams": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_ussr_object_140": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_cn_type_62": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_il_merkava_mk_2b_early": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_ussr_rbt_5": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 1
-      }
-    },
-    "pkg_sw_strv_121": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_germ_spz_oerlikon_raketenautomat": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_uk_centurion_mk_5_raac": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_us_xm1_gm": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_ussr_t_80u": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 11
-      }
-    },
-    "pkg_jp_type_16_mod": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_sw_bkan_1c": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_cn_type_69_2g": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 8
-      }
-    },
-    "pkg_uk_challenger_2_tes": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 11
-      }
-    },
-    "pkg_uk_shir_2": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_il_sholef": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_ussr_t_72av_turms": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_cn_al_khalid_1": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_us_m1a1_hc_abrams": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 11
-      }
-    },
-    "pkg_germ_vt_1_2": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 7
-      }
-    },
-    "pkg_it_oto_r3_106sr": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 6
-      }
-    },
-    "pkg_jp_type_10_prototype": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 11
-      }
-    },
-    "pkg_ussr_t_72m2_moderna": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_fr_lorraine_100": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 5
-      }
-    },
-    "pkg_il_merkava_mk_2d": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
-    "pkg_uk_tog_2": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 3
-      }
-    },
-    "pkg_uk_t_90s_bheeshma": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 10
-      }
-    },
-    "pkg_environment_uhq": {
-      "base": false,
-      "hq": false,
-      "uhq": true,
       "modelsPatch": false
     },
-    "pkg_ground_uhq": {
-      "base": false,
+    "pkg_sound_common": {
       "hq": false,
-      "uhq": true,
-      "modelsPatch": false
+      "modelsPatch": false,
+      "conditions": [
+        {
+          "campaign": "air",
+          "isDownloadFirst": true
+        },
+        {
+          "campaign": "tanks",
+          "isDownloadFirst": true
+        },
+        {
+          "campaign": "ships",
+          "isDownloadFirst": true
+        }
+      ]
     },
-    "pkg_naval_uhq": {
-      "base": false,
+    "pkg_sound_naval": {
       "hq": false,
-      "uhq": true,
-      "modelsPatch": false
+      "modelsPatch": false,
+      "conditions": {
+        "campaign": "ships",
+        "isDownloadFirst": true
+      }
+    },
+    "pkg_sound_ground": {
+      "hq": false,
+      "modelsPatch": false,
+      "conditions": {
+        "campaign": "tanks",
+        "isDownloadFirst": true
+      }
+    },
+    "pkg_sound_event": {
+      "hq": false,
+      "modelsPatch": false,
+      "conditions": {
+        "isDownloadFirst": true
+      }
     }
   },
   "video": {
@@ -1725,6 +378,7 @@
     "compatibilityRendinstDistMul": 1.0,
     "advancedShore": true,
     "oneShoreForAllUnits": true,
+    "shoreWaveThreshold": 0.0,
     "lenseFlares": true,
     "anisotropy": 8,
     "forceAlphatestAnisotropy": 1,
@@ -1738,7 +392,6 @@
     "ssaa": 1.0,
     "waterQuality": "high",
     "waterGeomQuality": 1,
-    "clipmapScale": 1.0,
     "physicsQuality": 5,
     "giQuality": "low",
     "skyQuality": 1,
@@ -1795,8 +448,9 @@
     "blendedAirplanesSkies": true,
     "lmeshAsyncCulling": false,
     "allowETC2": true,
-    "heightmapFlowmapDepthUsePointFilter": true,
+    "varyingTexFilterSupportForcePointFilter": true,
     "riexCanIncreaseRenderBuffer": false,
+    "riExMinSizeForHeighmap": 2.5,
     "riMaxModelsPerLevel": 1024,
     "riAllowGenJobsQueueReorder": true,
     "taaSigmaScaleMin": 1.5,
@@ -1804,7 +458,8 @@
     "taaSigmaScaleMax": 2.5,
     "taaSigmaScaleMaxHangar": 7.5,
     "taaMotionScale": 2500.0,
-    "volumetricAfterBurner": false,
+    "shouldRenderLerxVapor": true,
+    "volumetricAfterBurner": true,
     "backbufferHolderReadable": false,
     "useUnderwaterFogPrepassPlane": true,
     "csmAllowDynrendPrepareJobsInThreads": false,
@@ -1826,13 +481,24 @@
     "useGlowLights": false,
     "anchorStaticShadowsToUnitInHangar": true,
     "allowAnimatedDay": false,
-    "usePrecalculatedHarmonics": true,
+    "usePrecalculatedHarmonics": false,
     "harmonicsSimilarityEps": 0.05,
     "listAllAaOptions": true,
     "mobile_demonpostfx": true,
     "enableWaterPresetInterpolation": false,
+    "occlusionNeedsPlayerDepth": false,
+    "vaporStepSize": 0.4,
+    "vaporCalcSunTransmittance": false,
+    "replaceEnviProbeWithLocal": true,
+    "allowRIsInDynamicCube": false,
+    "guiHdrTonemap": [
+      1.25,
+      1.2
+    ],
+    "tiledRenderLights": false,
+    "highPrecisionShoreDistField": true,
     "raytraced_shadows": {
-      "maxBlasBuildsPerFrame": 30,
+      "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,
       "geometryLimit": 1024,
       "shoulRebuildSkinnedElems": false
@@ -1926,6 +592,8 @@
     "verifyDynrendContexts": true,
     "logMissingResources": false,
     "verifyDynmodelMaterials": true,
+    "verifyRendinstMaterials": true,
+    "verifyNoTranspRendinstMaterials": true,
     "benchFirstFramesToSkip": 100,
     "unsupportedVfxShaders": {
       "shader": [
@@ -1995,7 +663,7 @@
     "virtualTextureAnisotropy": 1,
     "cachesCount": 2,
     "buffersCount": 2,
-    "growTexSizeWithRenderingResolution": true,
+    "growTexSizeWithRenderingResolution": false,
     "shaderlodMode": "always_high",
     "updateFeedbackSameThread": true,
     "dynamicDDScaleTarget": 0.75,
@@ -2158,7 +826,7 @@
     "enabled": false
   },
   "unitedVdata.dynModel": {
-    "use": false,
+    "use": true,
     "canRebuild": false,
     "common": {
       "exactSize": true,
@@ -2246,6 +914,7 @@
       "shouldReportIncompatibleVersion": true,
       "startMetric": "addons_update_start",
       "stopMetric": "addons_update_stop",
+      "package": "pkg_hangar_event",
       "flag": [
         "--clear",
         "--onlypacks"
@@ -2268,6 +937,7 @@
       "disableFastVersionCheck": true,
       "flag": [
         "--verbose",
+        "--clear",
         "--onlypacks",
         "--seed"
       ]
@@ -2287,11 +957,19 @@
       "cascadeTransition": false,
       "cascade0Dist": 800.0,
       "minHeight": -20.0,
-      "maxHeight": 100.0,
-      "maxHeightRange": 150.0,
+      "maxHeight": 300.0,
+      "maxHeightRange": 350.0,
       "riExLod0InCascade0": true,
       "maxUpdateTexelPart": 0.005,
       "minSizeForRiextraCascade1": 10.0,
+      "small_ship": {
+        "maxHeight": 100.0,
+        "maxHeightRange": 150.0
+      },
+      "big_ship": {
+        "maxHeight": 100.0,
+        "maxHeightRange": 150.0
+      },
       "aircraft": {
         "maxDist": 2000.0,
         "depthBias": 0.00025,
@@ -2301,6 +979,8 @@
         "maxHeightRange": 4550.0
       },
       "tank": {
+        "maxHeight": 100.0,
+        "maxHeightRange": 150.0,
         "maxDist": 2000.0,
         "depthBias": 0.005,
         "depthBiasForCascade0": 0.0005,
@@ -2591,29 +1271,48 @@
     },
     "fps_limiter": {
       "codename": [
-        "iPad Pro 3 11 inch",
-        "iPad Pro 3 12.9 inch",
-        "iPad Pro 4 11 inch",
-        "iPad Pro 4 12.9 inch",
-        "iPad Pro 5 11 inch",
-        "iPad Pro 5 12.9 inch",
-        "iPad Pro 6 11 inch",
-        "iPad Pro 6 12.9 inch",
-        "iPad Pro 7 11 inch",
-        "iPad Pro 7 12.9 inch",
-        "iPad15,",
-        "iPad16,",
-        "iPad17,",
-        "iPad18,",
-        "iPhone 15 Pro",
-        "iPhone 15 Pro Max",
-        "iPhone16,",
-        "iPhone17,",
-        "iPhone18,",
-        "iPhone19,"
+        "iPhone 8",
+        "iPhone 8 Plus",
+        "iPhone X",
+        "iPhone XS",
+        "iPhone XS Max",
+        "iPhone XR",
+        "iPhone 11",
+        "iPhone 11 Pro",
+        "iPhone 11 Pro Max",
+        "iPhone 12 Mini",
+        "iPhone 12",
+        "iPhone 12 Pro",
+        "iPhone 12 Pro Max",
+        "iPhone 13 Pro",
+        "iPhone 13 Pro Max",
+        "iPhone 13 Mini",
+        "iPhone 13",
+        "iPhone 14",
+        "iPhone 14 Plus",
+        "iPhone 14 Pro",
+        "iPhone 14 Pro Max",
+        "iPhone SE 2nd Gen",
+        "iPhone SE 3rd Gen",
+        "iPad 5",
+        "iPad 6",
+        "iPad 7",
+        "iPad 8",
+        "iPad 9",
+        "iPad Pro 9.7 inch",
+        "iPad Pro 12.9 inch",
+        "iPad Pro 2",
+        "iPad Pro 2 10.5 inch",
+        "iPad Mini 5",
+        "iPad Mini 6",
+        "iPad Air 3",
+        "iPad Air 4",
+        "iPad Air 5",
+        "iPad Air 6 11 inch",
+        "iPad Air 6 13 inch"
       ],
       "video": {
-        "fpsLimit": 60
+        "fpsLimit": 30
       }
     },
     "texture_uhq": {
@@ -2639,14 +1338,8 @@
     },
     "tex_quality_limit": {
       "codename": [
-        "iPod 7th Gen",
-        "iPhone 6S",
-        "iPhone 6S Plus",
-        "iPhone 7",
-        "iPhone 7 Plus",
         "iPhone 8",
         "iPhone 8 Plus",
-        "iPhone SE 1st Gen",
         "iPhone SE 2nd Gen",
         "iPhone X",
         "iPad 5",
@@ -2654,31 +1347,13 @@
         "iPad 7",
         "iPad 8",
         "iPad 9",
-        "iPad Air 2",
         "iPad Air 3",
-        "iPad Mini 4",
         "iPad Mini 5",
         "iPad Pro 9.7 inch"
       ],
       "graphics": {
         "memoryToLimitTexQuality": 3072,
         "maxTexQuality": "medium"
-      }
-    },
-    "apple_a8": {
-      "codename": [
-        "iPad Mini 4",
-        "iPad Air 2"
-      ],
-      "graphics": {
-        "shaderlod": "low",
-        "underwaterFogUseSimple": true,
-        "enableWaterReflections": false,
-        "forceLowPreset": true
-      },
-      "clipmap": {
-        "hwfeedback": false,
-        "texTileSize": 128
       }
     },
     "unisoc_devices": {
@@ -2688,7 +1363,8 @@
         "T612",
         "T615",
         "T616",
-        "T618"
+        "T618",
+        "Exynos 850"
       ],
       "graphics": {
         "fallbackFxaaLowToBilinear": true
@@ -2702,6 +1378,32 @@
             "sceneResolutionPreset": "low"
           }
         }
+      }
+    },
+    "xiaomi_memory_leaks_debug": {
+      "codename": [
+        "23046RP50C",
+        "23013RK75C",
+        "23049PCD8G"
+      ],
+      "vulkan": {
+        "useCustomAllocationCallbacks": true,
+        "resetCommandsReleasesToSystem": true
+      },
+      "android": {
+        "checkMemoryLeaksMb": 500
+      }
+    },
+    "broken_lights": {
+      "codename": [
+        "iPad Pro 2",
+        "iPad Pro 2 10.5 inch",
+        "iPad 5",
+        "iPad 6",
+        "iPad 7"
+      ],
+      "graphics": {
+        "tiledRenderLights": false
       }
     }
   },
@@ -2871,7 +1573,9 @@
         "volumeCloudsQuality": 4,
         "applyCloudsShadow": false,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": false
+        "underwaterCausticsEnabled": false,
+        "useVapor": false,
+        "planarReflectionTexDiv": 8
       },
       "render": {
         "grassInCompatibility": false
@@ -2888,6 +1592,7 @@
         "swFeedbackInnerMipTiles": 2,
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 1,
+        "virtualTextureAnisotropyGroundVehicle": 1,
         "texelSizeMul": 2.0,
         "hwfeedback": false,
         "cachesCount": 1,
@@ -2953,23 +1658,26 @@
         "volumeCloudsQuality": 3,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": false
+        "underwaterCausticsEnabled": false,
+        "useVapor": false,
+        "planarReflectionTexDiv": 6
       },
       "render": {
         "grassInCompatibility": true
       },
       "clipmap": {
         "texSize": [
-          3072,
-          3072
+          2048,
+          4096
         ],
-        "texTileSize": 256,
+        "texTileSize": 128,
         "swFeedbackMipTiles0": 6,
         "swFeedbackMipTiles1": 6,
         "swFeedbackMipTiles2": 4,
         "swFeedbackInnerMipTiles": 2,
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 2,
+        "virtualTextureAnisotropyGroundVehicle": 4,
         "texelSizeMul": 1.0,
         "hwfeedback": true,
         "cachesCount": 2,
@@ -3035,7 +1743,9 @@
         "volumeCloudsQuality": 1,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": true
+        "underwaterCausticsEnabled": true,
+        "useVapor": true,
+        "planarReflectionTexDiv": 4
       },
       "render": {
         "grassInCompatibility": true
@@ -3043,15 +1753,16 @@
       "clipmap": {
         "texSize": [
           3072,
-          4096
+          3072
         ],
-        "texTileSize": 256,
+        "texTileSize": 192,
         "swFeedbackMipTiles0": 10,
         "swFeedbackMipTiles1": 8,
         "swFeedbackMipTiles2": 4,
         "swFeedbackInnerMipTiles": 4,
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 4,
+        "virtualTextureAnisotropyGroundVehicle": 4,
         "texelSizeMul": 1.0,
         "hwfeedback": true,
         "cachesCount": 2,
@@ -3117,7 +1828,9 @@
         "volumeCloudsQuality": 1,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": true
+        "underwaterCausticsEnabled": true,
+        "useVapor": true,
+        "planarReflectionTexDiv": 4
       },
       "render": {
         "grassInCompatibility": true
@@ -3134,6 +1847,7 @@
         "swFeedbackInnerMipTiles": 4,
         "swFeedbackOuterMipTiles": 6,
         "virtualTextureAnisotropy": 4,
+        "virtualTextureAnisotropyGroundVehicle": 8,
         "texelSizeMul": 1.0,
         "hwfeedback": true,
         "cachesCount": 2,
@@ -3199,7 +1913,9 @@
         "volumeCloudsQuality": 1,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": true
+        "underwaterCausticsEnabled": true,
+        "useVapor": true,
+        "planarReflectionTexDiv": 4
       },
       "render": {
         "grassInCompatibility": true
@@ -3215,7 +1931,8 @@
         "swFeedbackMipTiles2": 6,
         "swFeedbackInnerMipTiles": 4,
         "swFeedbackOuterMipTiles": 6,
-        "virtualTextureAnisotropy": -1,
+        "virtualTextureAnisotropy": 16,
+        "virtualTextureAnisotropyGroundVehicle": 16,
         "texelSizeMul": 0.5,
         "hwfeedback": true,
         "cachesCount": 2,
@@ -3278,14 +1995,16 @@
         "volumeCloudsQuality": 3,
         "applyCloudsShadow": false,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": false
+        "underwaterCausticsEnabled": false,
+        "useVapor": false,
+        "planarReflectionTexDiv": 4
       },
       "clipmap": {
         "texSize": [
-          3072,
-          2048
+          2048,
+          3072
         ],
-        "texTileSize": 256,
+        "texTileSize": 128,
         "swFeedbackMipTiles0": 4,
         "swFeedbackMipTiles1": 4,
         "swFeedbackMipTiles2": 4,
@@ -3349,12 +2068,14 @@
         "volumeCloudsQuality": 1,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": false
+        "underwaterCausticsEnabled": false,
+        "useVapor": true,
+        "planarReflectionTexDiv": 4
       },
       "clipmap": {
         "texSize": [
-          4096,
-          4096
+          3072,
+          3072
         ],
         "swFeedbackMipTiles0": 12,
         "swFeedbackMipTiles1": 10,
@@ -3364,7 +2085,7 @@
         "texelSizeMul": 1.0,
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
-        "texTileSize": 256,
+        "texTileSize": 192,
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
@@ -3377,7 +2098,7 @@
     "high": {
       "graphics": {
         "sceneResolutionPreset": "medium",
-        "defaultPresetAA": "high_fxaa",
+        "defaultPresetAA": "mobile_taa",
         "fxDensityMul": 1.0,
         "shadowQuality": "high",
         "hangarShadowQuality": "high",
@@ -3420,12 +2141,14 @@
         "volumeCloudsQuality": 1,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": true
+        "underwaterCausticsEnabled": true,
+        "useVapor": true,
+        "planarReflectionTexDiv": 4
       },
       "clipmap": {
         "texSize": [
-          4096,
-          4096
+          3072,
+          3072
         ],
         "swFeedbackMipTiles0": 12,
         "swFeedbackMipTiles1": 10,
@@ -3435,7 +2158,7 @@
         "texelSizeMul": 1.0,
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
-        "texTileSize": 256,
+        "texTileSize": 192,
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
@@ -3491,7 +2214,9 @@
         "volumeCloudsQuality": 1,
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
-        "underwaterCausticsEnabled": true
+        "underwaterCausticsEnabled": true,
+        "useVapor": true,
+        "planarReflectionTexDiv": 4
       },
       "clipmap": {
         "texSize": [
@@ -3591,13 +2316,25 @@
             ]
           },
           "brokenSubpasses": {
-            "entry": {
-              "driverMaxVer0": 512,
-              "driverMaxVer1": 420,
-              "data": {
-                "affected": true
+            "entry": [
+              {
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 420,
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": "620",
+                "driverMinVer0": 512,
+                "driverMinVer1": 444,
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 445,
+                "data": {
+                  "affected": true
+                }
               }
-            }
+            ]
           },
           "hasFloatClearBug": {
             "entry": {
@@ -3667,6 +2404,17 @@
                 "affected": true
               }
             }
+          },
+          "pipelineCompiler": {
+            "entry": {
+              "driverMinVer0": 49,
+              "driverMinVer1": 1,
+              "gpu": "G925",
+              "data": {
+                "maxSecondaryThreads": 0,
+                "usePipelineCacheMutex": true
+              }
+            }
           }
         }
       },
@@ -3696,10 +2444,17 @@
             "useSharedFenceWait": false,
             "waitApp": false,
             "waitWorker": false
+          },
+          "brokenUAVOnlyPasses": {
+            "affected": true
           }
         }
       }
     }
+  },
+  "metal": {
+    "enable_manual_hazard_tracking": false,
+    "enable_postmortem": true
   },
   "win64": {
     "debug": {
@@ -3727,5 +2482,8 @@
     "debug": {
       "showFreeMemThresholdMb": 0
     }
+  },
+  "stcode": {
+    "tag": "$version"
   }
 }

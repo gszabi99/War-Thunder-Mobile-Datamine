@@ -1912,6 +1912,26 @@
           "to": "75mm_c*"
         }
       ]
+    },
+    "bat": {
+      "replace_tex": [
+        {
+          "from": "hs_129b_2_c*",
+          "to": "hs_129b_2_bat_c*"
+        },
+        {
+          "from": "hs_129b_2_n*",
+          "to": "hs_129b_2_bat_n*"
+        },
+        {
+          "from": "37mm_c*",
+          "to": "37mm_bat_c*"
+        },
+        {
+          "from": "75mm_c*",
+          "to": "75mm_bat_c*"
+        }
+      ]
     }
   }
 }

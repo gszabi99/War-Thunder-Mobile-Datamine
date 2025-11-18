@@ -1,6 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
+let { number_of_set_bits, is_bit_set } = require("%sqstd/math.nut")
+let { OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK } = require("%rGui/options/optCtrlType.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
+let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
+let { mkOvrTooltipContent } = require("%rGui/options/tooltipCtors.nut")
 
 let textColor = 0xFFFFFFFF
 let inactiveTextColor = 0xFF808080
@@ -13,10 +16,11 @@ let inputPadding = [hdpx(10), hdpx(20)]
 let checkIconSize = hdpxi(60)
 let closeIconSize = hdpxi(80)
 let clearIconSize = hdpxi(50)
-let leftColWidth = hdpx(1000)
+let MAX_CHECK_BUTTONS_IN_ROW = 15
+let leftColWidth = (ctrlHeight + hGap) * MAX_CHECK_BUTTONS_IN_ROW - hGap
 
 let mkCheckIcon = @(isChecked, isActive, opacity, inBoxValue) {
-  size = array(2, ctrlHeight)
+  size = ctrlHeight
   rendObj = ROBJ_BOX
   opacity = isActive && isChecked ? 1.0 : 0.5
   borderColor = checkBorderColor
@@ -74,6 +78,7 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
     onClick
     onElemState = @(s) stateFlags.set(s)
     halign = ALIGN_CENTER
+    vplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     children = [
@@ -84,10 +89,49 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
         color = hasValues ? textColor : inactiveTextColor
         text
       }.__update(fontTiny)
-      customValue
-          ? mkCustomCheck(isChecked, hasValues, customValue)
+      customValue ? mkCustomCheck(isChecked, hasValues, customValue)
         : mkCheckIcon(isChecked, hasValues, stateFlags.get() & S_ACTIVE ? 0.5 : 1.0, inBoxValue)
     ]
+  }
+}
+
+function allToggleBtn(allValues, activeFiltersW, handleClick) {
+  let stateFlags = Watched(0)
+
+  let needMakeAllDisabled = Computed(function() {
+    let total = allValues.len()
+    let active = activeFiltersW.get()?.len() ?? allValues.len()
+    let halfOfTotal = (total / 2).tointeger()
+
+    return active > halfOfTotal
+  })
+
+  return @() {
+    watch = [stateFlags, needMakeAllDisabled]
+    behavior = Behaviors.Button
+    onClick = @() handleClick(needMakeAllDisabled.get())
+    onElemState = @(s) stateFlags.set(s)
+    opacity = needMakeAllDisabled.get() ? 0.5 : 1
+    children = {
+      size = ctrlHeight
+      rendObj = ROBJ_BOX
+      borderColor = checkBorderColor
+      borderWidth = hdpx(3)
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      padding = inputPadding
+      children = {
+        size = [checkIconSize, checkIconSize]
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#icon_filter_all.svg:{checkIconSize}:{checkIconSize}:P")
+        keepAspect = true
+      }
+      transform = {
+        scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+      }
+    }
   }
 }
 
@@ -111,8 +155,27 @@ let filterCtors = {
         @() filter.toggleValue(v, !isChecked),
         filter?.customValue(v),
         filter?.inBoxValue(v))
-    }),
+    }).append(filter?.useAllToggle
+        ? allToggleBtn(filter.allValuesV, filter.value, @(v) filter.toggleAllValues(v))
+        : null),
     { width, hGap, vGap }),
+
+  [OCT_MULTISELECT_MASK] = function(filter, width) {
+    let res = []
+    for (local i = 0; (1 << i) <= filter.allValuesV; i++) {
+      if (is_bit_set(filter.allValuesV, i)) {
+        let curBit = 1 << i
+        let isChecked = filter.valueV == null || ((curBit & filter.valueV) != 0x0)
+        res.append(mkCheckBtn(filter?.valToString(curBit) ?? curBit,
+          isChecked,
+          (curBit & filter.hasValues) != 0x0,
+          @() filter.toggleValue(curBit, !isChecked),
+          filter?.customValue(curBit),
+          filter?.inBoxValue(curBit)))
+      }
+    }
+    return wrap(res, { width, hGap, vGap })
+  }
 }
 
 let mkFilter = @(filter) {
@@ -121,43 +184,53 @@ let mkFilter = @(filter) {
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   children = [
-    !filter.locId ? null : {
-      rendObj = ROBJ_TEXT
-      color = textColor
-      text = loc(filter.locId)
-    }.__update(fontTiny)
+    {
+      valign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(20)
+      children = [
+        !filter?.locId ? null
+          : {
+              rendObj = ROBJ_TEXT
+              color = textColor
+              text = loc(filter.locId)
+            }.__update(fontTiny)
+        !filter?.tooltipCtorId ? null
+          : infoTooltipButton(mkOvrTooltipContent(filter.tooltipCtorId, filter.allValues),
+              { flowOffset = hdpx(100) },
+              { margin = [0, 0, hdpx(15), 0] })
+      ]
+    }
     filterCtors?[filter.ctrlType](filter, leftColWidth)
   ]
 }
 
-let arrToTbl = @(list) list.reduce(function(res, v) {
-  res[v] <- true
-  return res
-}, {})
-
-function mkUnitsFilter(options, allUnits, closeFilters, clearFilters) {
+function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilters) {
   local watch = [allUnits]
   foreach (o in options)
     watch.append(o?.value, o?.allValues)
   watch = watch.filter(@(w) w != null)
 
   return function() {
-    local filtered = allUnits.value
+    local filtered = allUnits.get()
     let filters = []
     foreach (opt in options) {
-      if (opt.ctrlType == OCT_MULTISELECT && opt.allValues.value.len() < 2)
+      if (opt.ctrlType == OCT_MULTISELECT && opt.allValues.get().len() < 2)
+        continue
+      if (opt.ctrlType == OCT_MULTISELECT_MASK && number_of_set_bits(opt.allValues.get()) < 2)
         continue
 
       let hasValues = "getUnitValue" not in opt ? null
-        : arrToTbl(filtered.map(opt.getUnitValue))
+        : opt.ctrlType == OCT_MULTISELECT_MASK ? filtered.reduce(@(res, u) res | opt.getUnitValue(u), 0)
+        : filtered.reduce(@(res, u) res.$rawset(opt.getUnitValue(u), true), {})
 
-      let value = opt.value.value
+      let value = opt.value.get()
       if (value != null)
         filtered = filtered.filter(@(u) opt.isFit(u, value))
 
       filters.append(opt.__merge({
         valueV = value
-        allValuesV = opt?.allValues.value
+        allValuesV = opt?.allValues.get()
         hasValues
       }))
     }
@@ -186,6 +259,12 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters) {
             mkFilterIcon(closeFilters, closeIconSize, "btn_close.svg")
 
             { size = flex() }
+
+            {
+              rendObj = ROBJ_TEXT
+              text = loc("options/none")
+            }.__update(fontTiny)
+            mkFilterIcon(@() fillFilters(filters), clearIconSize, "btn_trash_return.svg")
 
             {
               rendObj = ROBJ_TEXT

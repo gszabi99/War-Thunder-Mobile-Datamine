@@ -32,7 +32,7 @@ let techDebuffsCfg = [
   mkDebuffCfg(hasDebuffEngine, "engine_state_indicator.svg")
   mkDebuffCfg(hasDebuffTracks, "track_state_indicator.svg")
   mkDebuffCfg(hasDebuffFire, "fire_indicator.svg")
-  mkDebuffCfg(hasDebuffFireExternal, "fire_indicator.svg")
+  mkDebuffCfg(hasDebuffFireExternal, "fire_external_indicator.svg")
 ]
 
 let moveType = Computed(function() {
@@ -196,7 +196,7 @@ function mkDoll(scale) {
           setShortcutOff(shortcutId)
     }
     function onDetach() {
-      stateFlags(0)
+      stateFlags.set(0)
       setShortcutOff(shortcutId)
     }
     hotkeys = mkGamepadHotkey(shortcutId)

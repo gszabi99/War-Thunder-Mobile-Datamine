@@ -378,6 +378,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -395,6 +396,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -455,6 +457,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -472,6 +475,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -545,6 +549,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -686,6 +691,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -693,6 +699,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -700,6 +707,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -787,6 +795,58 @@
       0.1,
       0.85,
       0.05
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2450,6 +2510,12 @@
       "fricFrontal": [
         1.0,
         0.8
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2462,11 +2528,11 @@
       "minRPM": 650.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.407,
       "mainGearRatio": 0.95,
       "sideGearRatio": 14.69,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -1.27,
@@ -2519,7 +2585,6 @@
     "detectionHeight": 2.64
   },
   "modifications": {
-    "tank_additional_armor": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
@@ -2598,51 +2663,66 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
-    },
-    "forest": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
     }
   },
-  "default_skin": {
-    "set_tex": [
-      {
-        "from": "kv_1s_body_c*",
-        "to": "kv_1s_skin_body_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "kv_1s_turret_c*",
-        "to": "kv_1s_skin_turret_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "kv_1s_gun_c*",
-        "to": "kv_1s_skin_gun_c*",
-        "param": "camo_skin_tex"
-      }
-    ]
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_forest_01*"
+    }
   },
-  "vehicleSkins": {
-    "forest": {
-      "set_tex": [
-        {
-          "from": "kv_1s_body_c*",
-          "to": "kv_1s_noskin_body_c*",
-          "param": "camo_skin_tex"
-        },
-        {
-          "from": "kv_1s_turret_c*",
-          "to": "kv_1s_noskin_turret_c*",
-          "param": "camo_skin_tex"
-        },
-        {
-          "from": "kv_1s_gun_c*",
-          "to": "kv_1s_noskin_gun_c*",
-          "param": "camo_skin_tex"
-        }
-      ]
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        4.23199,
+        -1.60199e-7,
+        0.76356,
+        -1.72446
+      ],
+      "decal0Line1": [
+        0.205301,
+        -4.14196,
+        -1.13787,
+        8.0494
+      ],
+      "decal0Line2": [
+        -4.23199,
+        -1.52189e-7,
+        0.763561,
+        2.72473
+      ],
+      "decal0Line3": [
+        0.205302,
+        -4.14196,
+        1.13787,
+        8.04982
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.17102,
+        0.268874,
+        -0.947871,
+        -1.46524
+      ],
+      "decal0CPNormDepth1": [
+        0.17102,
+        0.268874,
+        0.947871,
+        -1.4649
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.232541
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.245827,
+      "decal0Tex": "back_19"
     }
   },
   "battleHideNodes": {
@@ -2650,7 +2730,14 @@
       "details",
       "details_01",
       "details_02",
-      "details_03"
+      "details_03",
+      "details_04",
+      "details_05",
+      "details_06",
+      "details_07",
+      "details_08",
+      "details_09",
+      "details_10"
     ]
   }
 }

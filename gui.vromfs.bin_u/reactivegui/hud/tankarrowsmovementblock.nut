@@ -8,7 +8,7 @@ let { speed, cruiseControl } = require("%rGui/hud/tankState.nut")
 let { playSound } = require("sound_wt")
 let { setInterval, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, arrowsVerSize,
-  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn
+  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn, outlineColorDef
 } = require("%rGui/components/movementArrows.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { isStickActiveByArrows, stickDelta } = require("%rGui/hud/stickState.nut")
@@ -16,6 +16,7 @@ let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/
 let { currentGearDownOnStopButtonTouch } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
 let { Point2 } = require("dagor.math")
 let { eventbus_send } = require("eventbus")
+let { hudWhiteColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
 
 let HAPT_FORWARD = registerHapticPattern("Forward",
   { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -42,17 +43,17 @@ local prevCruiseControl = CRUISE_CONTROL_UNDEF
 let isTurnTypesCtrlShowed = Watched(false)
 let isStopButtonVisible = Watched(false)
 
-let maxSpeedBySteps = Computed(@() playerUnitName.value == "" ? {} : getHeroTankMaxSpeedBySteps())
+let maxSpeedBySteps = Computed(@() playerUnitName.get() == "" ? {} : getHeroTankMaxSpeedBySteps())
 
 function axelerate(flipY) {
-  if ((prevCruiseControl == CRUISE_CONTROL_1 && cruiseControl.value == CRUISE_CONTROL_N) ||
-      (cruiseControl.value == CRUISE_CONTROL_R && flipY))
+  if ((prevCruiseControl == CRUISE_CONTROL_1 && cruiseControl.get() == CRUISE_CONTROL_N) ||
+      (cruiseControl.get() == CRUISE_CONTROL_R && flipY))
     return false
 
   local diff = flipY ? -1 : 1
-  if (cruiseControl.value == CRUISE_CONTROL_1 && !flipY)
+  if (cruiseControl.get() == CRUISE_CONTROL_1 && !flipY)
     diff = 2
-  if (cruiseControl.value == CRUISE_CONTROL_MAX)
+  if (cruiseControl.get() == CRUISE_CONTROL_MAX)
     diff = -2
   prevCruiseControl = cruiseControl.get()
   changeCruiseControl(diff)
@@ -62,8 +63,8 @@ function axelerate(flipY) {
 }
 
 function updateStickDelta(_) {
-  let deltaY = cruiseControl.value == CRUISE_CONTROL_N ? 0
-             : cruiseControl.value == CRUISE_CONTROL_R ? -1
+  let deltaY = cruiseControl.get() == CRUISE_CONTROL_N ? 0
+             : cruiseControl.get() == CRUISE_CONTROL_R ? -1
              : 1
   isStickActiveByArrows.set(deltaY != 0 || steerWatch.get() != 0) 
   let multX = deltaY == 0 ? 1 : 0.5
@@ -73,7 +74,7 @@ function updateStickDelta(_) {
 cruiseControl.subscribe(updateStickDelta)
 steerWatch.subscribe(updateStickDelta)
 
-let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.get())
+let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.get() == "arrows" && currentGearDownOnStopButtonTouch.get())
 
 function toNeutral() {
   if (holdingForStopShowCount > 0 && !fullStopOnTouchButton.get()) {
@@ -128,7 +129,7 @@ function mkSteerParams(isRight, scale) {
     shortcutId
     function onTouchBegin() {
       setGmBrakeAxis(0)
-      if (cruiseControl.value == 0)
+      if (cruiseControl.get() == 0)
         curSteerValue = 1
       steeringAxelerate("gm_steering", isRight)
       clearTimer(onTouchUpdate)
@@ -210,7 +211,7 @@ let backwardArrow = @(verSize) mkEngineBtn(true, "ID_TRANS_GEAR_DOWN", verSize,
     mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize)
     mkMoveVertBtnOutline(true, verSize)
     mkMoveVertBtnCorner(true,
-      Computed(@() cruiseControl.value == CRUISE_CONTROL_R ? fillMoveColorDef : 0xFFFFFFFF),
+      Computed(@() cruiseControl.get() == CRUISE_CONTROL_R ? hudWhiteColor: outlineColorDef.get()),
       verSize)
   ])
 
@@ -235,10 +236,10 @@ let forwardArrow = @(verSize) mkEngineBtn(false, "ID_TRANS_GEAR_UP", verSize,
     mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize)
     mkMoveVertBtnOutline(false, verSize)
     mkMoveVertBtnCorner(false,
-      Computed(@() cruiseControl.get() in fwdControl ? fillMoveColorDef : 0xFFFFFFFF),
+      Computed(@() cruiseControl.get() in fwdControl ? hudWhiteColor : outlineColorDef.get()),
       verSize)
     mkMoveVertBtn2step(calcForwSpeedPart2,
-      Computed(@() cruiseControl.value == CRUISE_CONTROL_MAX ? fillMoveColorDef : 0x00000000),
+      Computed(@() cruiseControl.get() == CRUISE_CONTROL_MAX ? fillMoveColorDef : hudTransparentColor),
       verSize)
   ])
 

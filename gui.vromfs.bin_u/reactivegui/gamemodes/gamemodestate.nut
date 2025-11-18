@@ -13,9 +13,9 @@ let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentati
 let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 
 
-function findFitGameMode(list, gameModes, stats, maxMRank) {
+function findFitGameMode(list, gameModes, stats, maxMRank, abTestsV) {
   foreach (cfg in list)
-    if (cfg.isFit(stats, maxMRank)) {
+    if (cfg.isFit(stats, maxMRank, abTestsV)) {
       let gameMode = gameModes.findvalue(@(gm) gm?.name == cfg.gmName)
       if (gameMode != null)
         return { gameMode, cfg }
@@ -29,7 +29,7 @@ let curABTestOnlineTutorialMode = Computed(function() {
   if (!((abTestStatus == "true") != isDebugABTest.get()))
     return null
   let { gameMode = null, cfg = null } = findFitGameMode(newbieGameModesConfig?[curCampaign.get()], allGameModes.get(),
-    newbieModeStats.get(), battleUnitsMaxMRank.get())
+    newbieModeStats.get(), battleUnitsMaxMRank.get(), abTests.get())
   return cfg?.abTest ? gameMode : null
 })
 
@@ -40,18 +40,12 @@ let curNewbieMode = Computed(function() {
   let forceIdx = forceNewbieModeIdx.get()
   let list = newbieGameModesConfig?[curCampaign.get()]
   return list == null ? null
-    : forceIdx < 0 ? findFitGameMode(list, gameModes, newbieModeStats.get(), battleUnitsMaxMRank.get())?.gameMode
+    : forceIdx < 0 ? findFitGameMode(list, gameModes, newbieModeStats.get(), battleUnitsMaxMRank.get(), abTests.get())?.gameMode
     : list?[forceIdx].gmName == null ? null
     : gameModes.findvalue(@(gm) gm?.name == list[forceIdx].gmName)
 })
 
-let randomBattleMode = Computed(function() {
-  if (!isInSquad.get()) {
-    if (curABTestOnlineTutorialMode.get() != null)
-      return curABTestOnlineTutorialMode.get()
-    if (curNewbieMode.get() != null)
-      return curNewbieMode.get()
-  }
+let randomBattleModeCore = Computed(function() {
   if (allGameModes.get().len() == 0)
     return null
 
@@ -63,6 +57,16 @@ let randomBattleMode = Computed(function() {
   return modes.findvalue(@(m) m?.campaign == campaign)
     ?? modes.findvalue(@(m) m?.campaign == campaign2)
     ?? modes.findvalue(@(_) true)
+})
+
+let randomBattleMode = Computed(function() {
+  if (!isInSquad.get()) {
+    if (curABTestOnlineTutorialMode.get() != null)
+      return curABTestOnlineTutorialMode.get()
+    if (curNewbieMode.get() != null)
+      return curNewbieMode.get()
+  }
+  return randomBattleModeCore.get()
 })
 
 let benchmarkGameModes = Computed(@() allGameModes.get().filter(@(m) m?.displayType != "random_battle"
@@ -103,12 +107,17 @@ let separateEventModes = Computed(function() {
   return res
 })
 
+let ovrUnitsGameModes = Computed(@() allGameModes.get()
+  .filter(@(m) (m?.only_override_units ?? false) || m?.mission_decl.customRules.customBots != null))
+
 registerHandler("queueToGameMode",
   @(res, context) res?.error == null ? eventbus_send("queueToGameMode", { modeId = context.modeId }) : null)
 
 return {
   allGameModes
   randomBattleMode
+  randomBattleModeCore
+  ovrUnitsGameModes
   shouldStartNewbieSingleOnline = Computed(@() curABTestOnlineTutorialMode.get() != null)
   isRandomBattleNewbie = Computed(@() isNewbieMode(randomBattleMode.get()?.name))
   isRandomBattleNewbieSingle = Computed(@() isNewbieModeSingle(randomBattleMode.get()?.name))

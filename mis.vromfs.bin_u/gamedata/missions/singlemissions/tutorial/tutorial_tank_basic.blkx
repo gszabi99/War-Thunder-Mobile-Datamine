@@ -5740,7 +5740,8 @@
             "ID_TRANS_GEAR_DOWN",
             "ID_TRANS_GEAR_NEUTRAL",
             "ID_FIRE_GM_MACHINE_GUN",
-            "ID_ACTION_BAR_ITEM_10"
+            "ID_ACTION_BAR_ITEM_10",
+            "ID_SMOKE_SCREEN"
           ]
         },
         "unitSetProperties": [
@@ -5790,7 +5791,8 @@
             "ID_ACTION_BAR_ITEM_5",
             "ID_ZOOM_TOGGLE",
             "ID_FIRE_GM_MACHINE_GUN",
-            "ID_ACTION_BAR_ITEM_10"
+            "ID_ACTION_BAR_ITEM_10",
+            "ID_SMOKE_SCREEN"
           ]
         }
       },
@@ -5822,7 +5824,8 @@
               "ID_ACTION_BAR_ITEM_4",
               "ID_ACTION_BAR_ITEM_5",
               "ID_FIRE_GM_MACHINE_GUN",
-              "ID_ACTION_BAR_ITEM_10"
+              "ID_ACTION_BAR_ITEM_10",
+              "ID_SMOKE_SCREEN"
             ]
           },
           {
@@ -5880,7 +5883,8 @@
               "ID_ACTION_BAR_ITEM_4",
               "ID_ACTION_BAR_ITEM_5",
               "ID_FIRE_GM_MACHINE_GUN",
-              "ID_ACTION_BAR_ITEM_10"
+              "ID_ACTION_BAR_ITEM_10",
+              "ID_SMOKE_SCREEN"
             ]
           },
           {

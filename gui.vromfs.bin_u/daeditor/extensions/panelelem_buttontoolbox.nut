@@ -21,7 +21,7 @@ function setToolboxState(key, val) {
 
 function runToolboxCmd(cmd, cmd2 = null, key = null, val = null) {
   if (cmd2 == "close")
-    toolboxShown(false)
+    toolboxShown.set(false)
   console_command(cmd)
   if (cmd2 != null && cmd2 != "close")
     console_command(cmd2)

@@ -39,7 +39,7 @@
     "maxDistance": 10000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
-    "groundRicochetPreset": "ap",
+    "groundRicochetPreset": "ap_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -213,12 +213,14 @@
       "mass": 25.0,
       "explosiveType": "tnt",
       "explosiveMass": 3.6,
+      "rendinstDamageRadius": 5.0,
       "caliber": 0.122,
-      "speed": 800.0,
+      "speed": 795.0,
+      "Cx": 0.30689,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -236,6 +238,9 @@
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "122mm_of_471",
       "hitPowerMult": 40.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -260,6 +265,24 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "hitpower": {
         "HitPower0m": [
@@ -476,7 +499,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
-      "groundRicochetPreset": "apbc",
+      "groundRicochetPreset": "apbc_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -657,7 +680,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
-      "groundRicochetPreset": "apbc",
+      "groundRicochetPreset": "apbc_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,

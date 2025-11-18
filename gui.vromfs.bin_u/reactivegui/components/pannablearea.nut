@@ -58,11 +58,11 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
       size = [flex(), height]
       pos = [0, -scrollOffset[0]]
       rendObj = ROBJ_MASK
-      image = pageMask()
       clipChildren = true
     }.__update(rootOvr)
     return @() isMoveByKeys.get()
       ? root.__merge({
+          image = pageMask()
           children = {
             key
             size = root.size
@@ -73,6 +73,7 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
           }
         })
       : root.__merge({
+          image = pageMask()
           children = { 
             key
             size = root.size
@@ -125,11 +126,11 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
       size = [width, flex()]
       pos = [-scrollOffset[0], 0]
       rendObj = ROBJ_MASK
-      image = pageMask()
       clipChildren = true
     }.__update(rootOvr)
     return @() isMoveByKeys.get()
       ? root.__merge({
+          image = pageMask()
           children = {
             key
             size = root.size
@@ -140,6 +141,7 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
           }
         })
       : root.__merge({
+          image = pageMask()
           children = { 
             key
             size = root.size

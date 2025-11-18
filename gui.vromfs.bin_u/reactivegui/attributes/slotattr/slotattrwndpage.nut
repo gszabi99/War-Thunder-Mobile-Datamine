@@ -4,12 +4,12 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 
 let { selAttributes, curCategoryId, getMaxAttrLevelData } = require("%rGui/attributes/attrState.nut")
 let { applyAttrRowChange, lastClickTime, boost_cooldown, rowHeight, progressBtnGap,
-  mkProgressBtnContentDec, mkRowProgressBar, mkRowLabel, mkRowValue, startIncBtnGlare,
+  mkProgressBtnContentDec, mkProgressBarSlider, mkRowLabel, mkRowValue, startIncBtnGlare,
   mkProgressBtnContentInc, mkNextIncCost, mkProgressBtn, incBtnAnimRepeat
 } = require("%rGui/attributes/attrBlockComp.nut")
 let { getAttrLabelText, getAttrValData } = require("%rGui/attributes/attrValues.nut")
@@ -17,8 +17,8 @@ let { slotUnitName, curCategory, slotAttributes, totalSlotSp,
   leftSlotSp } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 let buySlotLevelWnd = require("%rGui/attributes/slotAttr/buySlotLevelWnd.nut")
+let { attrUnitType } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 
 
 function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
@@ -41,12 +41,13 @@ function mkAttrRow(unitName, catId, attr, idx) {
   let nextIncCost = Computed(@() attr.levelCost?[selLevel.get()] ?? 0)
   let canDec = Computed(@() selLevel.get() > minLevel.get())
   let canInc = Computed(@() selLevel.get() < maxLevel.get())
-  let attrLocName = getAttrLabelText(curCampaign.get(), attr.id)
+  let attrLocName = getAttrLabelText(attrUnitType.get(), attr.id)
   let mkBtnOnClick = @(diff) @() applyAttrRowChangeOrBoost(catId, attr, selLevel.get() + diff, selLevel, minLevel, maxLevel)
-  let mkCellOnClick = @(val) applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
-  let curValueData = Computed(@() getAttrValData(curCampaign.get(), attr, minLevel.get(), shopCfg, serverConfigs.get(), unitMods.get()))
+  let mkCellOnClick = @(val) @() applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
+  let unitMods = Computed(@() campMyUnits.get()?[unitName].mods ?? {})
+  let curValueData = Computed(@() getAttrValData(attrUnitType.get(), attr, minLevel.get(), shopCfg, serverConfigs.get(), unitMods.get()))
   let selValueData = Computed(@() selLevel.get() > minLevel.get()
-    ? getAttrValData(curCampaign.get(), attr, selLevel.get(), shopCfg, serverConfigs.get(), unitMods.get())
+    ? getAttrValData(attrUnitType.get(), attr, selLevel.get(), shopCfg, serverConfigs.get(), unitMods.get())
     : [])
   let hasSp = Computed(@() totalSlotSp.get() > 0 )
 
@@ -71,7 +72,7 @@ function mkAttrRow(unitName, catId, attr, idx) {
               mkRowValue(curValueData, selValueData)
             ]
           }
-          mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
+          mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
         ]
       }
       {

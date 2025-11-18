@@ -13,6 +13,9 @@ let unitStatusTextMaxWidth = hdpx(600)
 let accentColor = 0xFFFFFF80
 let hintBgColor = 0xC0181818
 
+let hitProbPossibleColor = 0xFFFFE000
+let hitProbMinorColor = 0xFF808080
+
 function toggleSubscription(event, func, isEnable) {
   let toggleFunc = isEnable ? eventbus_subscribe : eventbus_unsubscribe
   toggleFunc(event, func)
@@ -68,4 +71,6 @@ return {
   mkHintDescText
   mkUnitStatusText
   accentColor
+  hitProbPossibleColor
+  hitProbMinorColor
 }

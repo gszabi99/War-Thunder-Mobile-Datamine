@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { genBotDecorators } = require("%appGlobals/botUtils.nut")
-let { sortAndFillPlayerPlaces, sortAndFillPlayerPlacesByFFA } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { getSortAndFillPlayerPlacesFunc } = require("%rGui/mpStatistics/playersSortFunc.nut")
 
 function mkPlayersByTeam(debrData) {
   let { gameType = 0, campaign = "", localTeam = 0, isSeparateSlots = false,
@@ -66,7 +66,7 @@ function mkPlayersByTeam(debrData) {
   let playersByTeam = isFFA
     ? [ mplayersList ]
     : teamsOrder.map(@(team) mplayersList.filter(@(v) v.team == team))
-  let sortFunc = isFFA ? sortAndFillPlayerPlacesByFFA : sortAndFillPlayerPlaces
+  let sortFunc = getSortAndFillPlayerPlacesFunc(gameType)
   playersByTeam.each(@(list) sortFunc(campaign, list))
   return playersByTeam
 }

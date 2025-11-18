@@ -1,6 +1,6 @@
 from "%globalScripts/logs.nut" import *
-import regexp2
-import utf8
+import "regexp2"
+import "utf8"
 from "string" import format
 from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage
@@ -30,6 +30,7 @@ let dict = {
   fouldata        = null
   badphrases      = null
   forbiddennames  = null
+  allowednames    = null
   badcombination  = null
 }
 
@@ -312,6 +313,9 @@ function checkWordInternal(word, isName) {
     foreach (section in dict.excludesdata)
       if (section.key == fl)
         status = checkRegexps(word, section.arr, false)
+
+  if (!status && isName)
+    status = checkRegexps(word, dict.allowednames, false)
 
   return status
 }

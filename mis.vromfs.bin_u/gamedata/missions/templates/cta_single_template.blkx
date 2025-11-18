@@ -606,7 +606,7 @@
             "from": 1,
             "to_not_including": 3
           },
-          "missionBattleArea": [
+          "__missionBattleArea": [
             {
               "air": false,
               "ground": true,
@@ -726,6 +726,24 @@
             "place_to_respawn": "@t1_spawn_player_name",
             "cycle_respawn": true
           },
+          "varAddString": [
+            {
+              "value": "spawn side: ",
+              "digits": 0,
+              "var": "bq_spawn_side"
+            },
+            {
+              "value": "",
+              "digits": 1,
+              "var": "bq_spawn_side",
+              "input_var": "spawn_side"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_spawn_side",
+            "name": ""
+          },
           "triggerEnable": {
             "target": "bots_properties"
           }
@@ -811,6 +829,24 @@
             "object_name": "@t1_player_name",
             "place_to_respawn": "@t1_spawn_player_name",
             "cycle_respawn": true
+          },
+          "varAddString": [
+            {
+              "value": "spawn side: ",
+              "digits": 0,
+              "var": "bq_spawn_side"
+            },
+            {
+              "value": "",
+              "digits": 1,
+              "var": "bq_spawn_side",
+              "input_var": "spawn_side"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_spawn_side",
+            "name": ""
           },
           "triggerEnable": {
             "target": "bots_properties"
@@ -2089,9 +2125,21 @@
               "var": "bq_record"
             },
             {
-              "value": "1",
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "player_death_count"
+            },
+            {
+              "value": " on point time: ",
               "digits": 0,
               "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "bq_on_point_time"
             }
           ],
           "bigQueryAddRecord": {
@@ -5451,6 +5499,7 @@
     "bq_point_first_enter_record": "",
     "bq_player_not_shooting": 0,
     "bq_not_shooting_record": "",
+    "bq_spawn_side": "",
     "autostart_single": true
   },
   "dialogs": {},

@@ -130,6 +130,7 @@ let DEF_SIDE_SCROLL_OPTIONS = defStyle.__merge({
   outsideOffset = defStyle.scrollbarWidth 
   clipChildren  = true
   joystickScroll = true
+  xmbNode = null
 })
 
 function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
@@ -137,7 +138,7 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
   let scrollHandler = options?.scrollHandler ?? ScrollHandler()
   let { rootBase, size, orientation, joystickScroll, maxHeight, maxWidth, clipChildren,
-    isBarOutside, outsideOffset, scrollbarWidth, scrollAlign
+    isBarOutside, outsideOffset, scrollbarWidth, scrollAlign, xmbNode
   } = options
   let isVertical = orientation == O_VERTICAL
 
@@ -155,6 +156,7 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
     joystickScroll
     maxHeight
     maxWidth
+    xmbNode
     children = content
   })
 

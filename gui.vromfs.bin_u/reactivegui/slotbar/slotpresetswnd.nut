@@ -31,7 +31,7 @@ let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 
 let WND_UID = "SLOT_PRESET_WND"
 
-let MAX_TEXT_LENGTH_DEFAULT = 16
+let MAX_TEXT_LENGTH_DEFAULT = 32
 let MAX_SAVED_PRESET = 5
 let btnWidth = hdpx(250)
 let btnIconSize = hdpx(70)
@@ -289,6 +289,10 @@ let mkBlockContent = @(preset, pIdx, activePresetIdx, activeSlotIdx) @() {
   children = [
     {
       rendObj = ROBJ_TEXT
+      behavior = Behaviors.Marquee
+      delay = defMarqueeDelay
+      speed = hdpx(30)
+      maxWidth = pw(100)
       margin = const [0, 0, 0, hdpx(4)]
       text = $"{preset.name}{!(isEqual(preset.presetUnits, currentPresetUnits.get())) ? "" : $" ({loc("presets/current")})"}"
     }.__update(fontTinyShaded)

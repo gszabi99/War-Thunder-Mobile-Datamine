@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { ceil } = require("%sqstd/math.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { sliderWithButtons, sliderValueSound } = require("%rGui/components/slider.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { infoGreyButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { resetTimeout } = require("dagor.workcycle")
+let { mkOvrTooltipContent } = require("%rGui/options/tooltipCtors.nut")
 
 
 let listMinWidth = hdpx(200)
@@ -45,12 +47,13 @@ let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
   type(desc) == "function" ? desc() : desc
 )
 
-let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
+let optBlock = @(header, content, openInfo, desc, locId, tooltipCtorId, ovr = {}) {
   size = FLEX_H
   flow = FLOW_VERTICAL
   children = [
     mkHeader(header,
-      openInfo != null ? infoGreyButton(openInfo, {size = [evenPx(50), evenPx(50)], color = 0x80000000})
+      openInfo != null ? infoGreyButton(openInfo, { size = [evenPx(50), evenPx(50)], color = 0x80000000 })
+        : tooltipCtorId != null ? infoTooltipButton(mkOvrTooltipContent(tooltipCtorId), { flowOffset = hdpx(100) })
         : desc != "" ? infoTooltipButton(mkTooltipContentCtor(loc(locId), desc), { flowOffset = hdpx(100) })
         : null)
     content
@@ -70,6 +73,7 @@ let optionCtors = {
       ? { watch = isVisibleW }
       : {
           watch = isVisibleW
+          padding = [0, 0, hdpx(20)]
           children = sliderWithButtons(value, loc(locId),
             setValue == null && onChangeValue == null ? ctrlOverride
               : ctrlOverride.__merge({
@@ -82,13 +86,13 @@ let optionCtors = {
                   resetTimeout(1, sendChangeValue)
                }
              }),
-            valToString)
+            valToString).__update({minHeight = 0})
         }
   },
 
   [OCT_LIST] = function(opt) {
     let { value = null, setValue = null, onChangeValue = null, locId = "", list = [], valToString = @(v) v, openInfo = null,
-      description = "", mkContentCtor = null, columnsMaxCustom = columnsMax, visible = null } = opt
+      description = "", mkContentCtor = null, columnsMaxCustom = columnsMax, visible = null, tooltipCtorId = null } = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
@@ -111,7 +115,7 @@ let optionCtors = {
             columns = clamp(listW.get().len(), columnsMin, columnsMaxCustom),
             mkContentCtor
           }),
-          openInfo, description, locId,
+          openInfo, description, locId, tooltipCtorId,
           { watch })
   },
 
@@ -121,12 +125,12 @@ let optionCtors = {
       logerr($"Options: Missing locId or onClick for button option {locId}")
       return null
     }
-    return textButtonCommon(loc(locId), onClick,
-      { ovr = { hplace = ALIGN_LEFT, margin = const [hdpx(30), 0] } })
+    return textButtonCommon(utf8ToUpper(loc(locId)), onClick,
+      { ovr = { hplace = ALIGN_LEFT, margin = const [hdpx(30), 0] } childOvr = {size = [hdpx(430), SIZE_TO_CONTENT]} })
   }
 }
 
-function mkOption(opt) {
+function mkOptionImpl(opt) {
   let { ctrlType = null, comp = null } = opt
   if (comp != null)
     return comp
@@ -135,6 +139,16 @@ function mkOption(opt) {
   if (ctor == null)
     logerr($"Options: No creator for option ctrlType = {ctrlType}, comp = {comp}")
   return ctor?(opt)
+}
+
+function mkOption(opt) {
+  if (type(opt) == "array")
+    return {
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(30)
+      children = opt.map(mkOptionImpl)
+    }
+  return mkOptionImpl(opt)
 }
 
 return mkOption

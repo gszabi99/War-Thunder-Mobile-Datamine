@@ -18,7 +18,7 @@ let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { fullTabW, shopGap, titleH, titleGap, goodsH, goodsPerRow, goodsGap, categoryGap } = require("%rGui/shop/shopWndConst.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 
 
 let gapFromGamercard = hdpx(20)

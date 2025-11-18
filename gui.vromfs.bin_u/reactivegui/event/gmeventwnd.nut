@@ -10,7 +10,8 @@ let { userstatStats, userstatSetStat, userstatRegisterExecutor, statsInProgress
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -244,13 +245,11 @@ let footer = @() {
                     sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
                     let modeId = curGmList.get()[0].gameModeId
                     let campaign = curGmList.get()[0].campaign
-                    let name = curGmList.get()[0]?.mission_decl.missions_list.findindex(@(_) true) ?? curGmList.get()[0]?.name ?? ""
-                    if (tryOpenQueuePenaltyWnd(campaign, { id = "queueToGameMode", modeId }, null, name))
+                    if (tryOpenQueuePenaltyWnd(campaign, curGmList.get()[0], { id = "queueToGameMode", modeId }))
                       return
                     eventbus_send("queueToGameMode", { modeId })
                   },
-                  Watched(null)
-                )
+                  Computed(@() curGmList.get()?[0]))
               ]
             : [
                 toBattleHint(loc($"{openedGmEventId.get()}/requireAccess"))

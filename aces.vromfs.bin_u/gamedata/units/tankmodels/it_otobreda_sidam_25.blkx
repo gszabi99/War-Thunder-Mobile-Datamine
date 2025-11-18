@@ -1726,7 +1726,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -1832,7 +1831,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -1936,7 +1934,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2042,7 +2039,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2244,6 +2240,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2261,6 +2258,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2321,6 +2319,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2338,6 +2337,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2411,6 +2411,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2552,6 +2553,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2559,6 +2561,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2566,6 +2569,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2666,15 +2670,73 @@
     "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
-    "machinegun_belt_ap": {},
-    "machinegun_belt_tracer": {},
-    "machinegun_belt_stealth": {},
     "art_support_smoke": {},
     "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
-    "tank_smoke_screen_low_cooldown": {},
-    "tank_smoke_screen_long_duration": {}
+    "art_support_highcaliber": {}
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        8.31448e-8,
+        -8.31448e-8,
+        2.78988,
+        -1.21542
+      ],
+      "decal0Line1": [
+        1.97274,
+        -1.97274,
+        -1.21949e-7,
+        -0.30443
+      ],
+      "decal0Line2": [
+        8.31448e-8,
+        -8.31448e-8,
+        -2.78988,
+        2.21542
+      ],
+      "decal0Line3": [
+        1.97274,
+        -1.97274,
+        1.21949e-7,
+        -0.30443
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.707107,
+        0.707107,
+        0.0,
+        -2.38934
+      ],
+      "decal0CPNormDepth1": [
+        -0.707107,
+        -0.707107,
+        -0.0,
+        2.34158
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358439
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.200331,
+      "decal0Tex": "flag_italy"
+    }
   },
   "upgraded_skin": {
     "replace_tex": {
@@ -2734,6 +2796,20 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.200331,
       "decal0Tex": "flag_italy"
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_green*"
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_modern_three_color*"
+      }
     }
   },
   "battleHideNodes": {

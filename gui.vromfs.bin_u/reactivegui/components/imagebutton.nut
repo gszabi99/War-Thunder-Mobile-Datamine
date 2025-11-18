@@ -48,7 +48,7 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
 let hoverBg = {
   vplace = ALIGN_CENTER
   size = flex()
-  color = 0x8052C4E4
+  color = hoverColor
   opacity =  0.5
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners

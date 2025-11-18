@@ -17,8 +17,8 @@ subscribeDedicLogerr(function(text) {
 ecs.register_es("debug_dedic_logerrs_es",
   {
     [["onInit", "onChange"]] = function(_eid, comp) {
-      if (can_receive_dedic_logerr.value && is_multiplayer() 
-          && myUserId.value == comp.server_player__userId)
+      if (can_receive_dedic_logerr.get() && is_multiplayer() 
+          && myUserId.get() == comp.server_player__userId)
         resetTimeout(1.0, @() enableDedicLogerr(true)) 
     },
   },

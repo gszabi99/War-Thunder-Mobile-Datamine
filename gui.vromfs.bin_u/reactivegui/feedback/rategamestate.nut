@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logR = log_with_prefix("[Review] ")
 let { eventbus_send, eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -19,6 +20,7 @@ let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { appStoreProdVersion } = require("%rGui/appStoreVersion.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
+let hasAndroidStore = is_android && (isHuaweiBuild || isDownloadedFromGooglePlay())
 
 let {
   storeId = "",
@@ -31,7 +33,7 @@ let {
           || appStoreProdVersion.get() == ""
           || check_version($">{appStoreProdVersion.get()}", get_base_game_version_str())
       }
-  : is_android && (isDownloadedFromGooglePlay() || isHuaweiBuild)
+  : hasAndroidStore
     ? { storeId = isHuaweiBuild ? "appgallery" : "google"
         showAppReview = require("android.platform").showAppReview
       }
@@ -51,8 +53,10 @@ let SAVE_ID_BATTLES = $"{SAVE_ID_BLK}/battles"
 
 let REVIEW_IS_AVAILABLE = !is_nswitch 
 
-let userFeedbackTube = "user_feedback"
-let pollId = "review_que"
+let showAppBqAnswer = is_ios ? "open_external_apple"
+  : !hasAndroidStore ? null
+  : isHuaweiBuild ? "open_external_gallery"
+  : "open_external_google"
 
 let isRateGameSeen = hardPersistWatched("rateGameState.isRateGameSeen", false)
 let isHuaweiRateInProgress = hardPersistWatched("rateGameState.isHuaweiRateInProgress", false)
@@ -63,9 +67,11 @@ let savedRating = Watched(0)
 let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
 let canRateGameByCurTime = Watched(false)
+let canUpgradeRateByCurTime = Watched(false)
+let canUpdate = Computed(@() isServerTimeValid.get() && isOnlineSettingsAvailable.get())
 
 function updateCanRateByTime() {
-  if (!isServerTimeValid.get()) {
+  if (!canUpdate.get()) {
     canRateGameByCurTime.set(false)
     return
   }
@@ -75,8 +81,25 @@ function updateCanRateByTime() {
     resetTimeout(timeLeft, updateCanRateByTime)
 }
 updateCanRateByTime()
-isServerTimeValid.subscribe(@(_) updateCanRateByTime())
 lastSeenDate.subscribe(@(_) updateCanRateByTime())
+
+function updateCanUpgradeRateByTime() {
+  if (!canUpdate.get()) {
+    canUpgradeRateByCurTime.set(false)
+    return
+  }
+  let timeLeft = lastSeenDate.get() + (SKIP_HOURS_WHEN_REJECTED * 3600 * 30) - serverTime.get()
+  canUpgradeRateByCurTime.set(timeLeft <= 0)
+  if (timeLeft > 0)
+    resetTimeout(timeLeft, updateCanUpgradeRateByTime)
+}
+updateCanUpgradeRateByTime()
+lastSeenDate.subscribe(@(_) updateCanUpgradeRateByTime())
+
+canUpdate.subscribe(function(_) {
+  updateCanRateByTime()
+  updateCanUpgradeRateByTime()
+})
 
 function initSavedData() {
   if (!isOnlineSettingsAvailable.get())
@@ -93,6 +116,8 @@ initSavedData()
 let showAfterBattlesCount = Computed(@() lastSeenDate.get() == 0 ? 0
   : (lastSeenBattles.get() + SKIP_BATTLES_WHEN_REJECTED)
 )
+
+let needUpgradeGameRate = Computed(@() savedRating.get() > 0 && savedRating.get() != 5)
 
 let isGameUnrated = Computed(@()
   ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.get()) || savedRating.get() == 0)) 
@@ -113,26 +138,26 @@ function needRateGameByDebriefing(dData) {
 
 let needRateGame = Computed(@() allow_review_cue.get()
   && REVIEW_IS_AVAILABLE 
-  && isGameUnrated.get()
-  && !isRateGameSeen.get()
+  && ((isGameUnrated.get() && !isRateGameSeen.get()) || needUpgradeGameRate.get())
   && lastBattles.get().len() >= showAfterBattlesCount.get()
-  && canRateGameByCurTime.get()
+  && (canRateGameByCurTime.get() || canUpgradeRateByCurTime.get())
   && needRateGameByDebriefing(debriefingData.get())
   && !isHuaweiRateInProgress.get()
 )
+
+let sendRatingBqEvent = @(question, answer) sendCustomBqEvent("user_feedback", {
+  poll = "review_que"
+  question
+  answer
+  gameVersion = get_game_version_str()
+})
 
 function sendGameRating(rating, comment) {
   let questions = [
     { id = "rating", val = rating }
     { id = "comment", val = comment }
   ].filter(@(q) q.val != "")
-  questions.each(@(q) sendCustomBqEvent(userFeedbackTube, {
-    poll = pollId
-    question = q.id
-    answer = q.val.tostring()
-    gameVersion = get_game_version_str()
-  }))
-
+  questions.each(@(q) sendRatingBqEvent(q.id, q.val.tostring()))
   savedRating.set(rating)
   if (isOnlineSettingsAvailable.get()) {
     let blk = get_local_custom_settings_blk()
@@ -141,12 +166,10 @@ function sendGameRating(rating, comment) {
   }
 }
 
-let sendRateWndEvent = @(eventId) sendCustomBqEvent(userFeedbackTube, {
-  poll = pollId
-  question = "window"
-  answer = eventId
-  gameVersion = get_game_version_str()
-})
+function showAppReviewWithBQ() {
+  showAppReview()
+  sendRatingBqEvent("window", showAppBqAnswer)
+}
 
 function stopWatchHuaweiReview(handler) {
   eventbus_unsubscribe("app.onAppReview", handler)
@@ -163,7 +186,7 @@ function huaweiAppReviewHundler(response) {
   else {
     huaweiRateTriesCount.set(huaweiRateTriesCount.get() + 1)
     if (huaweiRateTriesCount.get() < MAX_HUAWEI_REVIEW_TRIES)
-      showAppReview()
+      showAppReviewWithBQ()
     else
       stopWatchHuaweiReview(huaweiAppReviewHundler)
   }
@@ -178,10 +201,11 @@ function tryToShowAppReview() {
   resetTimeout(TIME_TO_FAIL_HUAWEI_REVIEW, @() isHuaweiRateInProgress.get()
     ? stopWatchHuaweiReview(huaweiAppReviewHundler)
     : null)
-  showAppReview()
+  showAppReviewWithBQ()
 }
 
 function platformAppReview(isRatedExcellent) {
+  logR($" Start Review {isRatedExcellent}")
   if (!IS_PLATFORM_STORE_AVAILABLE)
     return
   isRatedOnStore.set(true)
@@ -190,11 +214,13 @@ function platformAppReview(isRatedExcellent) {
     setBlkValueByPath(blk, SAVE_ID_STORE, isRatedOnStore.get())
     eventbus_send("saveProfile", {})
   }
-  if (needShowAppReview(isRatedExcellent))
+  if (needShowAppReview(isRatedExcellent)) {
+    logR($" review is starting")
     if (isHuaweiBuild)
       tryToShowAppReview()
     else
-      showAppReview()
+      showAppReviewWithBQ()
+  }
 }
 
 isRateGameSeen.subscribe(function(val) {
@@ -217,13 +243,13 @@ register_command(function() {
   blk.removeBlock(SAVE_ID_BLK)
   eventbus_send("saveProfile", {})
   initSavedData()
-  isRateGameSeen(false)
+  isRateGameSeen.set(false)
 }, "ui.debug.review_cue.reset")
 
 return {
   needRateGame
   sendGameRating
-  sendRateWndEvent
+  sendRateWndEvent = @(eventId) sendRatingBqEvent("window", eventId)
   platformAppReview
   isRateGameSeen
 }

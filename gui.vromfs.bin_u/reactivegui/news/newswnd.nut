@@ -7,12 +7,13 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { formatText, selectorBtnW } = require("%rGui/news/textFormatters.nut")
+let { formatText, selectorBtnW, formatters, filterFormat } = require("%rGui/news/textFormatters.nut")
 let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
   newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx,
-  unreadArticles, markCurArticleSeen, closeNewsWnd
+  unreadArticles, markCurArticleSeen, closeNewsWnd, curNewsStyle, fontsCfg
 } = require("%rGui/news/newsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 
 let textColor = 0xFFFFFFFF
 let contentBgColor = 0x990C1113
@@ -180,7 +181,7 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
 function articleTab(info) {
   let stateFlags = Watched(0)
   let { id } = info
-  let isSelected = Computed(@() curArticleId.value == id)
+  let isSelected = Computed(@() curArticleId.get() == id)
   let isUnseen = Computed(@() unreadArticles.get()?[id] ?? false)
   return @() {
     watch = [isSelected, stateFlags]
@@ -264,7 +265,7 @@ let articleLoading = freeze({
     spinner
   ]
 })
-
+let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
 let mkArticleTitle = @(title) {
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA
@@ -274,21 +275,21 @@ let mkArticleTitle = @(title) {
   margin = const [0, 0, hdpx(15), 0]
 }.__update(fontLarge)
 
-let mkContent = @(content, title) {
+let mkContent = @(content, title, formatter) {
   size = FLEX_H
   padding = const [hdpx(30), hdpx(75)]
-  children = formatText(content.len() == 0 ? missedArticleText
+  children = formatter(content.len() == 0 ? missedArticleText
     : [mkArticleTitle(title)].extend(content).append(seeMoreUrl))
 }
 
 let articleContent = @() {
-  watch = curArticleContent
+  watch = [curArticleContent, curNewsStyle]
   size = flex()
   rendObj = ROBJ_SOLID
   color = contentBgColor
-  children = curArticleContent.value == null ? articleLoading
+  children = curArticleContent.get() == null ? articleLoading
     : [
-        scrollbar.makeSideScroll(mkContent(curArticleContent.get().content, curArticleContent.get().title), {
+        scrollbar.makeSideScroll(mkContent(curArticleContent.get().content, curArticleContent.get().title, mkFormatAst({formatters, filter = filterFormat, style = curNewsStyle.get()})), {
           scrollHandler = scrollHandler
           joystickScroll = false
         })
@@ -297,9 +298,12 @@ let articleContent = @() {
       ]
 }
 let wndHeaderGap = hdpx(30)
+
 let wndHeader = {
   size = FLEX_H
   valign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  padding = [0, pagesStripGap + pagesStripW, 0, 0]
   children = [
     backButton(function() {
       closeNewsWnd()
@@ -307,11 +311,15 @@ let wndHeader = {
     {
       rendObj = ROBJ_TEXT
       size = FLEX_H
-      halign = ALIGN_CENTER
+      halign = ALIGN_LEFT
       color = textColor
       text = loc("newsWnd/header")
       margin = const [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
+    mkDropMenuBtn(@() [fontsCfg],
+      Watched(0),
+      "ui/gameuiskin#icon_menu_settings.svg",
+      hdpx(65))
   ]
 }
 

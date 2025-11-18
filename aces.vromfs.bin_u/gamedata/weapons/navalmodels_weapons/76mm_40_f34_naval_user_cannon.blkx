@@ -33,7 +33,7 @@
     "maxDistance": 15000.0,
     "normalizationPreset": "apbc",
     "ricochetPreset": "apbc",
-    "groundRicochetPreset": "apbc",
+    "groundRicochetPreset": "apbc_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,

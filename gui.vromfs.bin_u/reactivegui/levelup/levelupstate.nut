@@ -26,7 +26,7 @@ let upgradeUnitName = mkWatched(persist, "upgradeUnitName", null)
 let openLvlUpWnd = @() isLvlUpOpened.set(true)
 let openRewardsModal = @() isRewardsModalOpen.set(true)
 
-isLvlUpOpened.subscribe(@(v) v ? isSeen(true) : null)
+isLvlUpOpened.subscribe(@(v) v ? isSeen.set(true) : null)
 isInDebriefing.subscribe(function(v) {
   if (!v)
     return
@@ -41,7 +41,7 @@ isInDebriefing.subscribe(function(v) {
     break
   }
   if (hasBalanceForLevelUpUnit)
-    isSeen(false)
+    isSeen.set(false)
 })
 isLvlUpOpened.subscribe(@(_) upgradeUnitName.set(null))
 
@@ -71,7 +71,7 @@ let hasDataForLevelWnd = Computed(@() playerLevelInfo.get().isReadyForLevelUp ||
 hasDataForLevelWnd.subscribe(function(v) {
   if (v)
     return
-  isSeen(false)
+  isSeen.set(false)
   isRewardsModalOpen.set(false)
   isLvlUpOpened.set(false)
 })

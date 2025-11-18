@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let darkBorderWidth = hdpx(2)
 let lightBorderWidth = hdpx(3)
 let levelBorder = darkBorderWidth + lightBorderWidth
 let levelBgColor = Color(51, 54, 58)
 let playerExpColor = 0xFFFFB70B
-let unitExpColor = 0xFF7EE2FF
+let unitExpColor = selectColor
 let slotExpColor = 0xFF65BC82
 let maxLevelStarChar = "\u2605"
 

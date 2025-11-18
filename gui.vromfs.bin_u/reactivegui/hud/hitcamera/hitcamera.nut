@@ -11,6 +11,7 @@ let hitCameraDebuffs = require("%rGui/hud/hitCamera/hitCameraDebuffs.nut")
 let { hitCameraResultPlate, hitResultPlateHeight } = require("%rGui/hud/hitCamera/hitCameraResultPlate.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { hudTransparentBlackColor } = require("%rGui/style/hudColors.nut")
 
 let maxResultTextWidth = hdpx(330)
 let needShow = Watched(shouldShowHc.get())
@@ -19,7 +20,7 @@ let needShow = Watched(shouldShowHc.get())
 shouldShowHc.subscribe(@(v) v ? defer(@() needShow.set(shouldShowHc.get())) : needShow.set(v))
 
 let needShowImage = Computed(@() hcUnitType.get() != "tank" || isHcUnitHit.get())
-let useHitResultPlate = Computed(@() hcUnitType.value == "tank")
+let useHitResultPlate = Computed(@() hcUnitType.get() == "tank")
 
 let hitCamBgColor = {
   ship = 0x44000000
@@ -45,7 +46,7 @@ function resultText(scale) {
         image = gradCircularSqCorners
         texOffs = [gradCircCornerOffset, gradCircCornerOffset]
         screenOffs = array(2, height / 2)
-        color = 0x40000000
+        color = hudTransparentBlackColor
         padding
 
         children = {

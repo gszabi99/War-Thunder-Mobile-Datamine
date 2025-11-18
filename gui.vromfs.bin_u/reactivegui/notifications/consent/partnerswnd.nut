@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -11,13 +12,13 @@ let { isOpenedPartners } = require("%rGui/notifications/consent/consentState.nut
 let key = "consentPartners"
 let close = @() isOpenedPartners.set(false)
 
-let partners = ["google", "meta", "unity"]
+let partners = ["google", "meta", "unity", "applovin", "pangle", "ironsource"]
 
 let pointSize = [hdpx(3), hdpx(3)]
 
 let partnerRow = @(p){
   size = FLEX_H
-  padding = const [hdpx(20),hdpx(70)]
+  padding = const [hdpx(10),hdpx(70)]
   flow = FLOW_VERTICAL
   children = [
     {
@@ -55,11 +56,11 @@ let closeBtn = {
   padding = const [hdpx(20), 0]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_CENTER
-  children = textButtonPrimary(loc("msgbox/btn_ok"), close)
+  children = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_ok")), close)
 }
 
 let content = modalWndBg.__merge({
-  size = hdpx(700)
+  size = hdpx(800)
   flow = FLOW_VERTICAL
   children = [
     modalWndHeaderWithClose(loc("consentWnd/main/partners"), close)

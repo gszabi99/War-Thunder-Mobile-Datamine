@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 
 let { applyAttrRowChange, lastClickTime, boost_cooldown, rowHeight, progressBtnGap, mkProgressBtn,
@@ -12,7 +13,6 @@ let { selAttributes, curCategoryId, getMaxAttrLevelData } = require("%rGui/attri
 let { getAttrLabelText, getAttrValData } = require("%rGui/attributes/attrValues.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 let { attrUnitName, attrUnitType, curCategory, unitAttributes, totalUnitSp,
   leftUnitSp } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 
@@ -40,6 +40,7 @@ function mkAttrRow(attr) {
   let attrLocName = getAttrLabelText(attrUnitType.get(), attr.id)
   let mkBtnOnClick = @(diff) @() applyAttrRowChangeOrBoost(catId, attr, selLevel.get() + diff, selLevel, minLevel, maxLevel)
   let mkCellOnClick = @(val) @() applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
+  let unitMods = Computed(@() campMyUnits.get()?[attrUnitName.get()].mods ?? {})
   let curValueData = Computed(@() getAttrValData(attrUnitType.get(), attr, minLevel.get(), shopCfg, serverConfigs.get(), unitMods.get()))
   let selValueData = Computed(@() selLevel.get() > minLevel.get()
     ? getAttrValData(attrUnitType.get(), attr, selLevel.get(), shopCfg, serverConfigs.get(), unitMods.get())

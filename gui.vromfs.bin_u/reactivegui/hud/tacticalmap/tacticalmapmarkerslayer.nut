@@ -4,6 +4,7 @@ let { get_time_msec } = require("dagor.time")
 let { setTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { getPlayerMapPos, worldPosToMapPos } = require("guiTacticalMap")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let MARKER_TYPE = {
   RADIO_SPEAKER = 1
@@ -49,7 +50,7 @@ function ctorMarkAttention(size, data) {
     size = [size, size]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#map_mark_attention.svg:{size}:{size}:P")
-    color = 0xFFFFFFFF
+    color = hudWhiteColor
     animations = [
       { prop = AnimProp.rotate, from = 0 to = 360, duration = 3.0,
           play = true, easing = InOutQuad, delay = startDelay, loop = true }

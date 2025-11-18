@@ -5,7 +5,8 @@ let { parse_json } = require("json")
 let { doesLocTextExist } = require("dagor.localize")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { ComputedImmediate } = require("%sqstd/frp.nut")
-let { rewardTypeByValue } = require("%appGlobals/rewardType.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE } = require("%appGlobals/rewardType.nut")
 let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -17,7 +18,7 @@ let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView,
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { lootboxes, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { lootboxes, curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
@@ -37,7 +38,6 @@ let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
 let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
@@ -65,6 +65,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { isDisabledGoods } = require("%rGui/shop/shopState.nut")
 let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkGradText } =  require("%rGui/unitCustom/unitCustomComps.nut")
+let { mkDecalIcon, mkDecalText } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
 
 
 let wndWidth = saSize[0]
@@ -72,12 +73,12 @@ let contentPaddingX = hdpx(20)
 let maxWndHeight = saSize[1]
 let rewBlockWidth = hdpx(340)
 let rewBlocksVGap = hdpx(60)
-let rewIconsPerRow = (wndWidth / rewBlockWidth).tointeger()
 let rewIconSize = hdpxi(200)
 let rewIconToTextGap = hdpx(29)
+let rewIconsPerRow = (wndWidth / (rewBlockWidth + rewIconToTextGap)).tointeger()
 let rewTextMaxWidth = rewBlockWidth - hdpx(10)
 let unitPlatesGap = hdpx(40)
-let unitsPerRow = ((wndWidth + unitPlatesGap) / (unitPlateWidth + unitPlatesGap)).tointeger()
+let unitsPerRow = (wndWidth / (unitPlateWidth + unitPlatesGap)).tointeger()
 
 let textColor = 0xFFE0E0E0
 let ANIM_SKIP = {}
@@ -126,6 +127,8 @@ let stackData = Computed(function() {
   let stackRaw = {}
   local convertions = []
   let lboxes = lootboxes.get()
+  let serverCfg = serverConfigs.get()
+  let { allUnits = {} } = serverCfg
   foreach (purch in activeUnseenPurchasesGroup.get().list) {
     convertions.extend(purch?.conversions ?? [])
     let conversionList = []
@@ -133,6 +136,10 @@ let stackData = Computed(function() {
       conversionList.append(c.to, c.from)
     foreach (data in purch.goods) {
       let { id, gType, count, subId = ""} = data
+
+      if ((gType == G_UNIT || gType == G_UNIT_UPGRADE) && !campaignsList.get().contains(allUnits?[id].campaign))
+        continue
+
       let rewId = gType in ignoreSubIdRTypes ? id : "".concat(id, subId)
 
       let convIdx = conversionList.findindex(@(c) isEqual(data, c))
@@ -141,7 +148,7 @@ let stackData = Computed(function() {
         continue
       }
 
-      if (!isUnseenGoodsVisible(data, purch.source, serverConfigs.get(), lboxes))
+      if (!isUnseenGoodsVisible(data, purch.source, serverCfg, lboxes))
         continue
 
       if (gType not in stackRaw)
@@ -179,8 +186,9 @@ let stackData = Computed(function() {
     prizeTicket = []
     lootbox = []
     discount = []
+    decal = []
   } = stacksSorted
-  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket)
+  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket, decal)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -216,8 +224,7 @@ let needShow = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
   && isInMenu.get()
   && isLoggedIn.get()
   && !isTutorialActive.get()
-  && !isInQueue.get()
-  && !hasJustUnlockedUnitsAnimation.get()))
+  && !isInQueue.get()))
 
 let WND_UID = "unseenPurchaseWindow"
 
@@ -457,16 +464,17 @@ function mkSkinEquipButton(unitName, skinName) {
 
   return @() {
     watch = [currentSkin, unit]
+    size = FLEX_H
     children = !unit.get() ? null
       : currentSkin.get() == skinName
-        ? mkGradText(loc("skins/applied")).__update({ size = SIZE_TO_CONTENT, padding = hdpx(10) })
-      : textButtonPrimary(loc("mainmenu/btnApply"),
+        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = [flex(), hdpx(70)], minWidth = 0, padding = hdpx(10) })
+      : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
           function() {
             enable_unit_skin(unitName, unitName, skinName)
             if (skinName != "")
               sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
           },
-          { ovr = { size = [flex(), hdpx(70)] }, hasPattern = false })
+          { ovr = { size = [flex(), hdpx(70)], minWidth = 0 } })
   }
 }
 
@@ -619,7 +627,7 @@ let rewardCtors = {
   skin = {
     mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
     mkText = @(rewardInfo) {
-      size = [rewTextMaxWidth, SIZE_TO_CONTENT]
+      size = [rewBlockWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       gap = hdpx(10)
@@ -654,6 +662,10 @@ let rewardCtors = {
     mkIcon = @(rewardInfo) mkDiscountIcon(rewardInfo, REWARD_STYLE_MEDIUM)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay, loc("discounts/title"), fontSmall)
   }
+  decal = {
+    mkIcon = @(rewardInfo) mkDecalIcon(rewardInfo.id)
+    mkText = @(_) mkDecalText(loc("reward/decal"), fontTinyAccented)
+  }
 }
 
 function mkRewardIconComp(rewardInfo) {
@@ -683,6 +695,7 @@ let mkRewardIconsBlock = @(rewards) rewards.len() == 0 ? null : {
   children = arrayByRows(rewards, rewIconsPerRow)
     .map(@(row) {
         flow = FLOW_HORIZONTAL
+        gap = rewIconToTextGap
         children = row.map(mkRewardIconComp)
     })
 }
@@ -729,16 +742,16 @@ function mkUnitPlate(unitInfo) {
 function mkUnitButton(unitInfo, myUnits, cUnitInProgress, cSlots, cCampaignSlots) {
   if (unitInfo?.unit == null)
     return null
-  let btnOvr = {ovr = { size = [unitPlateWidth, hdpx(70)], margin = const [hdpx(10),0,0,0]}, hasPattern = false}
+  let btnOvr = { ovr = { size = [unitPlateWidth, hdpx(70)], margin = const [hdpx(10),0,0,0] } }
   if (cCampaignSlots != null) {
     let onClick = @() openSelectUnitToSlotWnd(unitInfo.id, unseenPurchaseUnitPlateKey(unitInfo.id))
     return cSlots.findindex(@(slot) slot.name == unitInfo.id) == null
-      ? textButtonPrimary(loc("mainmenu/btnEquip"), onClick, btnOvr)
-      : textButtonCommon(loc("mainmenu/btnEquipped"), null, btnOvr)
+      ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnEquip")), onClick, btnOvr)
+      : textButtonCommon(utf8ToUpper(loc("mainmenu/btnEquipped")), null, btnOvr)
   }
 
   return cUnitInProgress == null && unitInfo.id in myUnits && !myUnits[unitInfo.id].isCurrent
-    ? textButtonPrimary(loc("mainmenu/btnEquip"), @() setCurrentUnit(unitInfo.id), btnOvr)
+    ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnEquip")), @() setCurrentUnit(unitInfo.id), btnOvr)
     : null
 }
 
@@ -746,22 +759,18 @@ function mkBattleModEventUnitPlate(bmp, reward) {
   let unit = bmp.unitCtor()
   let { startDelay } = reward
   return {
-    size = [ unitPlateWidth, unitPlateHeight ]
+    size = [unitPlateWidth, unitPlateHeight]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
       mkHighlight(startDelay, aUnitPlateFlareScale)
       {
-        size = [ unitPlateWidth, unitPlateHeight ]
-        children = {
-          size = [ unitPlateWidth, unitPlateHeight ]
-          vplace = ALIGN_BOTTOM
-          children = [
-            mkUnitBg(unit)
-            mkUnitImage(unit)
-            mkBattleModEventUnitText(bmp, REWARD_STYLE_MEDIUM, 2)
-          ]
-        }
+        size = flex()
+        children = [
+          mkUnitBg(unit)
+          mkUnitImage(unit)
+          mkBattleModEventUnitText(bmp, REWARD_STYLE_MEDIUM, 2)
+        ]
       }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
     ]
   }
@@ -1001,8 +1010,10 @@ function mkLeaderboardRewardTitle(startDelay, activeGroup) {
 function getCustomTexts(activeGroup) {
   let { sourcePostfix = "", list } = activeGroup
   let { source = "", paramInt = 0 } = list.findvalue(@(_) true)
-  let id = sourcePostfix == "" ? source : source.slice(0, -sourcePostfix.len())
-  let titleLocId = $"reward/{id}/title"
+  let idList = (sourcePostfix == "" ? source : source.slice(0, -sourcePostfix.len())).split("&")
+  let id = idList[0]
+  let titleId = idList?[1] ?? id
+  let titleLocId = $"reward/{titleId}/title"
   return {
     title = doesLocTextExist(titleLocId) ? loc(titleLocId) : loc("mainmenu/you_received")
     infoText = id in infoTextBySource ? infoTextBySource[id](paramInt) : defaultInfoText(id, paramInt)
@@ -1096,9 +1107,9 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
   let title = titleCtors?[style](outroDelay, purchGroup) ?? modalWndHeader(loc("mainmenu/you_received"))
   let size = [
     max(
-      min(unitPlates.len(), rewIconsPerRow) * unitPlateWidth,
-      min(battleMod.len(), rewIconsPerRow) * unitPlateWidth,
-      min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth
+      min(unitPlates.len(), unitsPerRow) * (unitPlateWidth + unitPlatesGap),
+      min(battleMod.len(), unitsPerRow) * (unitPlateWidth + unitPlatesGap),
+      min(rewardIcons.len(), rewIconsPerRow) * (rewBlockWidth + rewIconToTextGap)
     ),
     SIZE_TO_CONTENT
   ]
@@ -1219,6 +1230,6 @@ stackData.subscribe(function(v) {
     removeModalWindow($"{WND_UID}_add")
 })
 
-if (needShow.value)
+if (needShow.get())
   showMessage()
 needShow.subscribe(@(v) v ? showMessage() : close())

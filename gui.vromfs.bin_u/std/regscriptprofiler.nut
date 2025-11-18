@@ -25,7 +25,7 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
     local ret
     if (newVal == isProfileOn.get())
       ret = "already"
-    isProfileOn(newVal ?? !isProfileOn.get())
+    isProfileOn.set(newVal ?? !isProfileOn.get())
     if (isProfileOn.get())
       ret = "on"
     else
@@ -56,7 +56,7 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
     profiler_reset()
   }
   function toggleSpikesProfiler(){
-    isSpikesProfileOn(!isSpikesProfileOn.get())
+    isSpikesProfileOn.set(!isSpikesProfileOn.get())
     if (isSpikesProfileOn.get()){
       logRes("starting spikes profiler with threshold {0}ms".subst(spikesThresholdMs.get()))
       clearTimer(profileSpikes)
@@ -70,7 +70,7 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
     }
   }
   function setSpikesThreshold(val){
-    spikesThresholdMs(val.tofloat())
+    spikesThresholdMs.set(val.tofloat())
     logRes("set spikes threshold to {0} ms".subst(spikesThresholdMs.get()))
   }
 

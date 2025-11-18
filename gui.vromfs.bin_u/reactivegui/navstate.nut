@@ -103,7 +103,7 @@ function registerScene(id, scene, onClearScenes = null, openedCounterWatch = nul
 
 function clearScenes() {
   let prev = clone scenesOrder.get() 
-  scenesOrderSaved([])
+  scenesOrderSaved.set([])
   foreach (id in prev)
     scenes?[id].onClearScenes()
 }

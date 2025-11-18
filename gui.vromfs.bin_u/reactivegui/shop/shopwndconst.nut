@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { selLineGap, selLineSize } = require("%rGui/components/tabs.nut")
+let { selLineSize } = require("%rGui/components/tabs.nut")
 
 
 let goodsGap = hdpx(20)
@@ -8,7 +8,7 @@ let goodsPerRow = 3
 let iconSize = hdpxi(106)
 let iconMarginW = hdpx(16)
 let tabW = iconSize + iconMarginW * 2
-let fullTabW = tabW + selLineGap + selLineSize
+let fullTabW = tabW + selLineSize
 
 
 return {

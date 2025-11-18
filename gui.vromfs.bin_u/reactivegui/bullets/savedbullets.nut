@@ -4,6 +4,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let { isDataBlock } = require("%sqstd/datablock.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
 
@@ -12,11 +13,12 @@ const SAVE_ID = "bullets"
 
 let savedBullets = Watched(null)
 
-function loadSavedBullets(name) {
-  if (name == null)
+function loadSavedBullets(realUnitName) {
+  if (realUnitName == null)
     return null
+  let unitName = getTagsUnitName(realUnitName)
   let sBlk = get_local_custom_settings_blk()
-  let res = getBlkValueByPath(sBlk, $"{SAVE_ID}/{name}")
+  let res = getBlkValueByPath(sBlk, $"{SAVE_ID}/{unitName}")
   if (!isDataBlock(res))
     return null
   let resExt = DataBlock()
@@ -27,9 +29,12 @@ let applySavedBullets = @(name) savedBullets.set(loadSavedBullets(name))
 
 isOnlineSettingsAvailable.subscribe(@(_) savedBullets.set(null)) 
 
-function saveBullets(name, blk) {
+function saveBullets(realUnitName, blk) {
+  if (realUnitName == null)
+    return null
+  let unitName = getTagsUnitName(realUnitName)
   let sBlk = get_local_custom_settings_blk()
-  setBlkValueByPath(sBlk, $"{SAVE_ID}/{name}", blk)
+  setBlkValueByPath(sBlk, $"{SAVE_ID}/{unitName}", blk)
   eventbus_send("saveProfile", {})
 }
 

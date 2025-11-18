@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { CatmullRomSplineBuilder2D } = require("dagor.math")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let { mkLineSplinePoints } = require("%rGui/event/treeEvent/segmentMath.nut")
@@ -8,7 +7,7 @@ let { getMapPointsPresentation } = require("%appGlobals/config/mapPointsPresenta
 let { mkCompletedPrevElem, selectedElemId, curEventUnlocks, selectedPointId, pointsStatusesByPresets,
   presetsStatuses, treeEventPresets
 } = require("%rGui/event/treeEvent/treeEventState.nut")
-let { saveSeenQuests } = require("%rGui/quests/questsState.nut")
+let { saveSeenQuests, mkHasReceivedAllRewards } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMarkLight } = require("%rGui/components/unseenMark.nut")
 let { mkRewardsPreview, questItemsGap, getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { exploreRewardMsgBox, mkQuestBtn } = require("%rGui/quests/questsWndPage.nut")
@@ -370,6 +369,8 @@ function mkEventInfoPanelContent(id) {
   let rewardsPreview = Computed(@() getRewardsPreviewInfo(unlock.get(), serverConfigs.get()))
   let eventCurrencyReward = Computed(@() getEventCurrencyReward(rewardsPreview.get()))
 
+  let hasReceivedAllRewards = mkHasReceivedAllRewards(unlock, rewardsPreview)
+
   return {
     stopMouse = true
     rendObj = ROBJ_SOLID
@@ -414,10 +415,10 @@ function mkEventInfoPanelContent(id) {
             : null
         }
         @() {
-          watch = [unlock, eventCurrencyReward, rewardsPreview, servProfile, isAvailable]
+          watch = [unlock, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards, isAvailable]
           hplace = ALIGN_CENTER
           children = isAvailable.get()
-            ? mkQuestBtn(unlock.get(), eventCurrencyReward.get(), rewardsPreview.get(), servProfile.get())
+            ? mkQuestBtn(unlock.get(), eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get())
             : {
               size = btnSize
               halign = ALIGN_CENTER

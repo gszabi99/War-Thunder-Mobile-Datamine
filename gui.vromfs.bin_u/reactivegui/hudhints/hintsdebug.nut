@@ -95,18 +95,25 @@ register_command(
   "hud.debug.killMessage")
 
 register_command(
-  @() eventbus_send("HudMessage", {
-    type = HUD_MSG_STREAK_EX
-    playerId = localMPlayerId.get()
-    unlockId = ((get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? [])[rnd_int(0, 40)].id
-    stage = rnd_int(1, 3)
-    wp = 100
-  }),
+  function() {
+    let { id = "" } = chooseRandom((get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? [])
+    if (id == "") {
+      console_print("Unable to show hud streak, because of no unlockable streaks in blk") 
+      return
+    }
+    eventbus_send("HudMessage", {
+      type = HUD_MSG_STREAK_EX
+      playerId = localMPlayerId.get()
+      unlockId = id
+      stage = rnd_int(1, 3)
+      wp = 100
+    })
+  },
   "hud.debug.streak")
 
 register_command(
   function() {
-    if (debugHudType.value == HT_CUTSCENE) {
+    if (debugHudType.get() == HT_CUTSCENE) {
       debugHudType.set(null)
       return
     }

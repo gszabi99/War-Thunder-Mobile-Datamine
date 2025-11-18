@@ -3,6 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { G_PREMIUM, G_CURRENCY, G_ITEM } = require("%appGlobals/rewardType.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks, subsByCategory, subsGroups
 } = require("%rGui/shop/shopState.nut")
@@ -28,7 +29,8 @@ let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
-let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
@@ -48,8 +50,9 @@ let tabTranslateWithOpacitySwitchAnim = [
   { prop = AnimProp.translate, from = [0, 0], to = [50, 0], duration = 0.1, easing = OutQuad, playFadeOut = true }
 ]
 
-let positive = @(id, value) value > 0 ? { id, value } : null
-let goodsCompareCfg = [
+let positive = @(id, count) count > 0 ? { id, count } : null
+let allowedCompare = [G_PREMIUM, G_CURRENCY, G_ITEM].totable()
+let goodsCompareCfg = [ 
   @(g) g.units.len() > 0 || (g?.unitUpgrades.len() ?? 0) > 0 ? { canCompare = false } : null,
   @(g) positive("premiumDays", g.premiumDays),
   function(g) {
@@ -68,8 +71,25 @@ let goodsCompareCfg = [
   }
 ]
 
-let function goodsNotAvailToPurch(goods){
-  if ("ircm_kit" in goods.items && goods.items.len() == 1 && goods.gtype == SGT_CONSUMABLES){
+function openGoodsNotAvailToPurchMsg(goods) {
+  if ("rewards" in goods) {
+    if (goods.rewards.len() == 1 && goods.rewards[0].id == "ircm_kit" && goods.rewards[0].gType == G_ITEM) {
+      local canBuyCountermeasure = false
+      foreach(unit in campMyUnits.get())
+        if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null) {
+          canBuyCountermeasure = true
+          break
+        }
+      if (!canBuyCountermeasure) {
+        openMsgBox({ text = msgBoxText(loc("shop/cantBuyCountermeasure")) })
+        return true
+      }
+    }
+    return false
+  }
+
+  
+  if ("ircm_kit" in goods.items && goods.items.len() == 1 && goods.gtype == SGT_CONSUMABLES) {
     local canBuyCountermeasure = false
     foreach(unit in campMyUnits.get()){
       if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null){
@@ -88,7 +108,7 @@ let function goodsNotAvailToPurch(goods){
 }
 
 let function purchaseFunc(goods) {
-  if (goodsNotAvailToPurch(goods))
+  if (openGoodsNotAvailToPurchMsg(goods))
     return
   if (goods.price.price > 0 && goods.price.currencyId != "")
     return purchaseGoods(goods.id)
@@ -113,6 +133,12 @@ let mkGoodsState = @(goods) Computed(function() {
 })
 
 function getGoodsCompareData(goods) {
+  if ("rewards" in goods)
+    return goods.rewards.len() == 1 && goods.rewards[0].gType in allowedCompare
+      ? goods.rewards[0]
+      : null
+
+  
   local res = null
   foreach (calc in goodsCompareCfg) {
     let data = calc(goods)
@@ -134,10 +160,10 @@ function mkGoodsListWithBaseValue(goodsListBase) {
     let data = getGoodsCompareData(goods)
     if (data == null)
       continue
-    let { id, value } = data
-    if (value == 0)
+    let { id, count } = data
+    if (count == 0)
       continue
-    goodsCompares[id] <- (goodsCompares?[id] ?? []).append({ goods, baseValue = data.value })
+    goodsCompares[id] <- (goodsCompares?[id] ?? []).append({ goods, baseValue = count })
   }
 
   foreach (list in goodsCompares) {
@@ -175,17 +201,20 @@ function onGoodsClick(goods) {
     purchaseFunc(goods)
 }
 
-let gamercardShopItemsBalanceBtns = @(items) {
+let gamercardShopItemsBalanceBtns = @(items, goodsByCat) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = items.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
+  children = items.map(@(id) mkItemsBalance(id, function() {
+    let category = goodsByCat.findindex(@(goods) goods.findvalue(@(g) id in g.items))
+    openShopWnd(category ?? SC_CONSUMABLES)
+  }))
 }
 
-let mkShopGamercard = @(onClose) function(){
+let mkShopGamercard = @(onClose) function() {
   let currencies = {}
   let items = {}
-  local premiumDays = 0
+  local needShowPremium = false
   foreach (goods in personalGoodsByShopCategory.get()?[curCategoryId.get()] ?? []) {
     if (goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
@@ -193,6 +222,20 @@ let mkShopGamercard = @(onClose) function(){
       currencies[goods.varId] <- true
   }
   foreach (goods in goodsByCategory.get()?[curCategoryId.get()] ?? []) {
+    if ("rewards" in goods) {
+      if (goods.rewards.len() != 1)
+        continue 
+      let { gType, id } = goods.rewards[0]
+      if (gType == G_PREMIUM)
+        needShowPremium = true
+      else if (gType == G_ITEM)
+        items[id] <- true
+      else if (gType == G_CURRENCY)
+        currencies[id] <- true
+      continue
+    }
+
+    
     if(goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
     currencies.__update(goods.currencies)
@@ -201,7 +244,8 @@ let mkShopGamercard = @(onClose) function(){
       && goods.blueprints.len() == 0
       && goods.lootboxes.len() == 0)
         items.__update(goods.items)
-    premiumDays += goods.premiumDays
+    if (goods.premiumDays > 0)
+      needShowPremium = true
   }
   let orderItems = items.keys().sort(@(a,b)
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
@@ -214,8 +258,8 @@ let mkShopGamercard = @(onClose) function(){
     children = [
       mkLeftBlock(onClose)
       {size = flex()}
-      premiumDays > 0 ? premIconWithTimeOnChange : null
-      gamercardShopItemsBalanceBtns(orderItems)
+      needShowPremium ? premIconWithTimeOnChange : null
+      gamercardShopItemsBalanceBtns(orderItems, goodsByCategory.get())
       mkCurrenciesBtns(currencies.keys().sort(sortByCurrencyId))
         .__update({ size = SIZE_TO_CONTENT })
     ]

@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import save_common_local_settings, save_profile
 from "%scripts/dagui_library.nut" import *
 
 let logP = log_with_prefix("[SAVE_PROFILE] ")
+let { save_profile, save_common_local_settings } = require("chard")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -28,18 +28,18 @@ function onSaveProfileTimer() {
     return
   }
   clearTimer(saveProfileImpl)
-  saveProfileImpl(isOnlineSettingsAvailable.value)
+  saveProfileImpl(isOnlineSettingsAvailable.get())
 }
 
 function startTimer() {
   let timeout = 0.001 * (saveRequired.time - get_time_msec())
-  logP($"Schedule profile save after {(timeout + 0.5).tointeger()} sec (isOnlineSettingsAvailable = {isOnlineSettingsAvailable.value})")
+  logP($"Schedule profile save after {(timeout + 0.5).tointeger()} sec (isOnlineSettingsAvailable = {isOnlineSettingsAvailable.get()})")
   resetTimeout(timeout, onSaveProfileTimer)
 }
 
 if (saveRequired.time > 0)
   if (saveRequired.time <= get_time_msec())
-    saveProfileImpl(isOnlineSettingsAvailable.value)
+    saveProfileImpl(isOnlineSettingsAvailable.get())
   else
     startTimer()
 
@@ -60,7 +60,7 @@ function startSaveTimer(timeout) {
 
 function forceSaveProfile() {
   clearTimer(onSaveProfileTimer)
-  saveProfileImpl(isOnlineSettingsAvailable.value)
+  saveProfileImpl(isOnlineSettingsAvailable.get())
 }
 let saveProfile = @() startSaveTimer(SAVE_TIMEOUT)
 

@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isEqual } = require("%sqstd/underscore.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let { isInSquad } = require("%appGlobals/squadState.nut")
 let { curCampaign, isAnyCampaignSelected, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { set_research_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { set_research_unit, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -13,8 +14,8 @@ let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut")
-let { selectedLineHor } = require("%rGui/components/selectedLine.nut")
-let { unitsResearchStatus, currentResearch, selectedCountry, nodes, countryPriority, blockedCountries
+let { selectedLineHorSolid } = require("%rGui/components/selectedLine.nut")
+let { unitsResearchStatus, currentResearch, selectedCountry, visibleNodes, mkResearchableCountries
 } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -22,6 +23,8 @@ let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
+let { rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
 
 
 let WND_UID = "chooseResearch"
@@ -37,7 +40,7 @@ let flagGap = hdpx(20)
 
 
 let flagBgColor = 0xFF000000
-let flagBgColorSelected = 0x80296272
+let flagBgColorSelected = 0x99405780
 
 let needSelectResearch = keepref(Computed(@() isAnyCampaignSelected.get()
   && isCampaignWithUnitsResearch.get()
@@ -52,18 +55,6 @@ function closeSelectResearch() {
 
 let gradient = mkBitmapPictureLazy(gradTexSize / 4, gradTexSize,
   mkGradientCtorRadial(0xFFFFFFFF, 0, gradTexSize / 2, gradTexSize / 2, 0, 0))
-
-let mkResearchableCountries = @(nodeList) Computed(function(prev) {
-  let resTbl = {}
-  let status = unitsResearchStatus.get()
-  foreach (node in nodeList.get())
-    if ((status?[node.name].canResearch ?? false) && node.country not in blockedCountries.get())
-      resTbl[node.country] <- true
-  let res = resTbl.keys()
-    .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
-      || a <=> b)
-  return isEqual(res, prev) ? prev : res
-})
 
 let mkSmallText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
@@ -112,7 +103,7 @@ let mkFlowLine = @(line, size = flex()) {
 let function unitsBlock(startUnit) {
   let childUnits = Computed(function() {
     local childUnits = {}
-    foreach(key, value in nodes.get())
+    foreach(key, value in visibleNodes.get())
       foreach(unit in value.reqUnits) {
         if (unit not in childUnits)
           childUnits[unit] <- []
@@ -144,7 +135,7 @@ let function unitsBlock(startUnit) {
       .filter(@(unit) (serverConfigs.get()?.allUnits[unit].mRank ?? 0) >= maxMRank - 1)
       .sort(@(a, b) serverConfigs.get()?.allUnits[b].mRank <=> serverConfigs.get()?.allUnits[a].mRank)
       .slice(0, maxAmountOfUnitsOnScreen)
-      .sort(@(a, b) nodes.get()[a].y <=> nodes.get()[b].y)
+      .sort(@(a, b) visibleNodes.get()[a].y <=> visibleNodes.get()[b].y)
   })
   return @() {
     watch = [serverConfigs, childUnits, startUnit]
@@ -208,7 +199,7 @@ let function mkFlag(country, curCountry) {
     sound = { click = "choose" }
     children = [
       flagBg(isSelected)
-      selectedLineHor(isSelected)
+      selectedLineHorSolid(isSelected)
       mkFlagImage(country, flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
     ]
   }
@@ -226,25 +217,25 @@ let wndContent = @(startUnit, allCountries, curCountry) {
       children = allCountries.get()
         .map(@(country) mkFlag(country, curCountry))
     }
-    mkSmallText(loc("unitsTree/startUnit"), { color = 0xFF5CBEF7 })
+    mkSmallText(loc("unitsTree/startUnit"), { color = selectColor })
     unitsBlock(startUnit)
   ]
 }
 
 function acceptChooseResearch(unitId) {
   sendUiBqEvent("first_country_choice", { id = selectedCountry.get() })
-  set_research_unit(curCampaign.get(), unitId)
+  set_research_unit(curCampaign.get(), unitId, isInSquad.get() ? "onSetResearchUnitInSquad"  : null)
 }
 
 function openImpl() {
   sendUiBqEvent("first_country_choice", { id = "start_select_research" })
 
-  let allCountries = mkResearchableCountries(nodes)
+  let allCountries = mkResearchableCountries(visibleNodes)
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()
     : allCountries.get()?[0])
   let startUnitName = Computed(@() unitsResearchStatus.get()
-    .findindex(@(r) r.canResearch && nodes.get()?[r.name].country == curCountry.get()))
+    .findindex(@(r) r.canResearch && visibleNodes.get()?[r.name].country == curCountry.get()))
   let startUnit = Computed(@() serverConfigs.get()?.allUnits[startUnitName.get()])
   return addModalWindow(bgShaded.__merge({
     key = WND_UID
@@ -266,8 +257,8 @@ function openImpl() {
           halign = ALIGN_CENTER
         })
         mkSpinnerHideBlock(unitInProgress,
-          textButtonBattle(loc("unitsTree/chooseResearch/accept"),
-            @() acceptChooseResearch(startUnit.get()?.name), { childOvr = fontTiny, hotkeys = ["^J:X"] }))
+          textButtonBattle(utf8ToUpper(loc("unitsTree/chooseResearch/accept")),
+            @() acceptChooseResearch(startUnit.get()?.name), { childOvr = fontTinyAccentedShadedBold, hotkeys = ["^J:X"] }))
       ]
     })
     animations = wndSwitchAnim
@@ -282,7 +273,8 @@ function tryOpenWnd() {
 tryOpenWnd()
 needSelectResearch.subscribe(@(v) v ? tryOpenWnd() : closeSelectResearch())
 
+registerHandler("onSetResearchUnitInSquad", @(_) rewardTutorialMission(curCampaign.get()))
+
 return {
-  tryOpenWnd
   needSelectResearch
 }

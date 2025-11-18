@@ -48,6 +48,12 @@ let ctors = {
   }
 }
 
+function registerFMsgCreator(id, ctor) {
+  if (id in ctors)
+    logerr($"Duplicate fMsg ctro id: {id}")
+  ctors[id] <- ctor
+}
+
 function open(msg) {
   let { isPersist = false, viewType = "", canShowOverHud = false } = msg
   let canShowNow = canShowOverHud || !isHudAttached.get()
@@ -71,7 +77,7 @@ function restorePersist() {
   if (persistMsgBoxes.get().len() == 0)
     return
   let msgs = persistMsgBoxes.get()
-  persistMsgBoxes([])
+  persistMsgBoxes.set([])
   msgs.each(open)
 }
 restorePersist()
@@ -93,3 +99,8 @@ isHudAttached.subscribe(function(v) {
 
 eventbus_subscribe("fMsgBox.open", open)
 eventbus_subscribe("fMsgBox.close", close)
+
+return {
+  getFMsgButtons = getButtons
+  registerFMsgCreator
+}

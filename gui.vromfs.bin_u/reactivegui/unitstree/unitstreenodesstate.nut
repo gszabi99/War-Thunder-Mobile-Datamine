@@ -3,7 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 
-let { isEqual } = require("%sqstd/underscore.nut")
+let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -14,7 +14,7 @@ let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { activeBattleMods, blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 
 let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
 
@@ -25,14 +25,18 @@ let countryPriority = {
 }
 
 let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()] ?? {})
+
+let visibleNodes = Computed(@()
+  needToShowHiddenUnitsDebug.get() ? nodes.get()
+    : nodes.get().filter(@(v) (!campUnitsCfg.get()?[v.name].isHidden && v.name not in unreleasedUnits.get())
+      || v.name in campMyUnits.get()))
+
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
 let seenResearchedUnits = mkWatched(persist, SEEN_RESEARCHED_UNITS, {})
 let unitInfoToScroll = Watched(null)
 let unitToScroll = Computed(@() unitInfoToScroll.get()?.name)
 let blockedCountries = Computed(@() blockedResearchByBattleMods.get()?[curCampaign.get()]
   .filter(@(battleMod) battleMod not in activeBattleMods.get()) ?? {})
-
-let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
 let unitsResearchStatus = Computed(function(prev) {
   let list = {}
@@ -44,6 +48,8 @@ let unitsResearchStatus = Computed(function(prev) {
   let { unitsResearch = {} } = servProfile.get()
   foreach (unitName, reqExp in unitResearchExp) {
     if (unitName in campMyUnits.get() || unitName not in campUnitsCfg.get())
+      continue
+    if (!needToShowHiddenUnitsDebug.get() && unitName in unreleasedUnits.get())
       continue
     let { reqUnits = [] , country = "" } = nodes.get()?[unitName]
     let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false } = unitsResearch?[unitName]
@@ -85,27 +91,31 @@ let mkCountries = @(nodeList) Computed(function(prev) {
   let res = resTbl.keys()
     .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
       || a <=> b)
-  return isEqual(res, prev) ? prev : res
+  return prevIfEqual(prev, res)
 })
 
-let mkVisibleNodes = @() Computed(@()
-  needToShowHiddenUnitsDebug.get() ? nodes.get()
-    : nodes.get().filter(@(v) (!campUnitsCfg.get()?[v.name].isHidden && v.name in releasedUnits.get())
-      || v.name in campMyUnits.get()))
-
-let mkFilteredNodes = @(nodeList) Computed(@()
-  filterGenId.get() == 0 ? nodeList.get()
-    : nodeList.get()
-      .filter(function(node) {
-        if(!campUnitsCfg.get()?[node.name])
+function mkFilteredNodes(nodeList) {
+  let res = Computed(@() filterGenId.get() == 0 ? nodeList.get()
+    : nodeList.get().filter(function(node) {
+        let unit = campUnitsCfg.get()?[node.name]
+        if (!unit)
           return false
         foreach (f in filters) {
           let value = f.value.get()
-          if (value != null && !f.isFit(campUnitsCfg.get()[node.name], value))
+          if (value != null && !f.isFit(unit, value))
             return false
         }
         return true
       }))
+  foreach (f in filters) {
+    let { allValues = null, valueWatch = null } = f
+    if (allValues != null)
+      res._noComputeErrorFor(allValues) 
+    if (valueWatch != null)
+      res._noComputeErrorFor(valueWatch) 
+  }
+  return res
+}
 
 function sumRemap(has) {
   let res = []
@@ -118,8 +128,13 @@ function sumRemap(has) {
   return res
 }
 
-let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
-  let nodeList = allNodes.get().filter(@(n) n.country == curCountry.get())
+function getArraySubArray(mainArr, idx) {
+  for (local i = mainArr.len(); i <= idx; i++)
+    mainArr.append([])
+  return mainArr[idx]
+}
+
+function remapNodesPositions(nodeList) {
   let xHas = []
   let yHas = []
   foreach (node in nodeList) {
@@ -133,12 +148,61 @@ let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
   }
   let xRemap = sumRemap(xHas)
   let yRemap = sumRemap(yHas)
-  let res = {
+  return {
     xMax = xRemap?[xRemap.len() - 1] ?? 0
     yMax = yRemap?[yRemap.len() - 1] ?? 0
     nodes = nodeList.map(@(n) n.__merge({ x = xRemap[n.x], y = yRemap[n.y] }))
   }
-  return isEqual(res, prev) ? prev : res
+}
+
+function remapLegacyNodesPositions(nodeList, serverConfigsV) {
+  let { allUnits = {} } = serverConfigsV
+  let nodesMap = [] 
+  let yHas = []
+  foreach (node in nodeList) {
+    let { y, name } = node
+    if (yHas.len() <= y)
+      yHas.resize(y + 1, 0)
+    yHas[y] = 1
+    let { mRank = 1 } = allUnits?[name]
+    getArraySubArray(getArraySubArray(nodesMap, mRank - 1), y)
+      .append(node)
+  }
+
+  let offsetsX = []
+  foreach (r, rankRows in nodesMap) {
+    if (offsetsX.len() <= r)
+      offsetsX.resize(r + 1, 0)
+    foreach (list in rankRows)
+      offsetsX[r] = max(offsetsX[r], list.len())
+  }
+  for (local i = 0; i < offsetsX.len(); i++)
+    offsetsX[i] += (offsetsX?[i - 1] ?? 0)
+
+  let yRemap = sumRemap(yHas)
+  let resNodes = {}
+  foreach (r, rankRows in nodesMap)
+    foreach (list in rankRows) {
+      let x = (offsetsX?[r - 1] ?? 0) + 1 
+      list.sort(@(a, b) a.x <=> b.x)
+      foreach (i, node in list) {
+        let { name, y } = node
+        resNodes[name] <- node.__merge({ x = x + i, y = yRemap[y] })
+      }
+    }
+
+  return {
+    xMax = offsetsX?[offsetsX.len() - 1] ?? 0
+    yMax = yRemap?[yRemap.len() - 1] ?? 0
+    nodes = resNodes
+  }
+}
+
+let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
+  let nodeList = allNodes.get().filter(@(n) n.country == curCountry.get())
+  let res = curCountry.get() == "legacy" ? remapLegacyNodesPositions(nodeList, serverConfigs.get())
+    : remapNodesPositions(nodeList)
+  return prevIfEqual(prev, res)
 })
 
 let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
@@ -178,9 +242,9 @@ let unseenResearchedUnits = Computed(function() {
   if (!isCampaignWithUnitsResearch.get())
     return res
 
-  let { unitTreeNodes, unitResearchExp = {} } = serverConfigs.get()
+  let { unitTreeNodes = {}, unitResearchExp = {} } = serverConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
-  let curCampaignUnits = unitTreeNodes[curCampaign.get()]
+  let curCampaignUnits = unitTreeNodes?[curCampaign.get()] ?? {}
   let blueprints = availableBlueprints.get()
   let bCounts = blueprintCounts.get()
   let seenUnits = seenResearchedUnits.get()
@@ -214,6 +278,21 @@ let unseenResearchedUnits = Computed(function() {
   }
 
   return res
+})
+
+function getResearchableCountries(nodeList, uResearchStatus, countriesToBlock) {
+  let resTbl = {}
+  foreach (node in nodeList)
+    if ((uResearchStatus?[node.name].canResearch ?? false) && node.country not in countriesToBlock)
+      resTbl[node.country] <- true
+  return resTbl.keys()
+    .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
+      || a <=> b)
+}
+
+let mkResearchableCountries = @(nodeList) Computed(function(prev) {
+  let res = getResearchableCountries(nodeList.get(), unitsResearchStatus.get(), blockedCountries.get())
+  return prevIfEqual(prev, res)
 })
 
 unitToScroll.subscribe(function(v) {
@@ -263,13 +342,12 @@ register_command(function() {
 }, "debug.reset_seen_researched_units")
 
 return {
-  nodes
+  visibleNodes
   selectedCountry
   unitToScroll
   unitInfoToScroll
   setUnitToScroll = @(name, isAnimated = false) unitInfoToScroll.set({ name, isAnimated })
   mkCountries
-  mkVisibleNodes
   mkFilteredNodes
   mkCountryNodesCfg
   unitsResearchStatus
@@ -278,6 +356,8 @@ return {
   blueprintUnitsStatus
   unseenResearchedUnits
   setResearchedUnitsSeen
+  getResearchableCountries
+  mkResearchableCountries
 
   countryPriority
   blockedCountries

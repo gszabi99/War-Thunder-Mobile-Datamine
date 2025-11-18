@@ -23,6 +23,7 @@ let iconsScale = {
   hotmaybond = 1.4
   independencebond = 1.4
   ircm_kit = 1.4
+  platinum = 1.2
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
 
@@ -42,7 +43,7 @@ let icons = {
   aprilMapPiece = "ui/gameuiskin#warbond_icon_aprilmappiece.svg"
   aprilDoublon = "ui/gameuiskin#warbond_icon_aprildoublon.svg"
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond_2025.avif"
-  halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
+  halloweenbond = "ui/gameuiskin#warbond_icon_halloweenbond_2025.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
   hotmaybond = "ui/gameuiskin#warbond_icon_hotmaybond.avif"
   independencebond = "ui/gameuiskin#warbond_icon_independencebond.avif"
@@ -65,11 +66,11 @@ let bigIcons = {
   aprilbond = "ui/gameuiskin#warbond_april_01.avif"
   aprilMapPiece = "ui/gameuiskin#aprilmappiece_goods_01.avif"
   aprilDoublon = "ui/gameuiskin#aprildoublon_goods_01.avif"
-  halloweenbond = "ui/gameuiskin#halloweenbond_goods_01.avif"
   blackfridaybond = "ui/gameuiskin#blackfridaybond_goods_01.avif"
   hotmaybond = "ui/gameuiskin#hotmaybond_goods_01.avif"
   independencebond = "ui/gameuiskin#independencebond_goods_01.avif"
   anniversarybond = "ui/gameuiskin#anniversarybond_goods_2025_01.avif"
+  halloweenbond = "ui/gameuiskin#halloweenbond_goods_2025_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
@@ -81,7 +82,7 @@ let seasonIcons = {
 
 let currencyIconsColor = {
   playerExp = 0xFFFFB70B
-  unitExp = 0xFF7EE2FF
+  unitExp = 0xFF7FAEFF
   slotExp = 0xFF009900
 }
 
@@ -96,6 +97,7 @@ let currencyEventDescriptions = {
   hotmaybond      = convertsToGold
   independencebond      = convertsToGold
   anniversarybond      = convertsToGold
+  halloweenbond      = convertsToGold
 }
 
 let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {

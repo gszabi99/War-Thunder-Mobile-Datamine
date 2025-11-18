@@ -7,6 +7,7 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
+let { G_CURRENCY, G_ITEM, G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
   offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime, goodsBgH
@@ -36,7 +37,7 @@ let unitImgScaleWithConsumableByType = {
 }
 
 let consumablesOnGoodsPlate = [ SPARE ]
-let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ]
+let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ].totable()
 
 let bgHiglight = {
   size = flex()
@@ -151,13 +152,13 @@ let mkConsumableIcons = @(items) {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
   children = items?.map(@(item)
-    mkCurrencyImage(item[0], consumableSize, {
+    mkCurrencyImage(item.id, consumableSize, {
       children = {
         pos = [-consumableSize * 0.9, -consumableSize * 0.1]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         rendObj = ROBJ_TEXT
-        text = "".concat("+", item[1])
+        text = "".concat("+", item.count)
         color = premiumTextColor
       }.__update(fontSmallAccentedShaded)
     }))
@@ -186,7 +187,10 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   }
 
   let ovrState = Computed(@() state.get() | (isPurchased ? ALL_PURCHASED : 0))
-  let consumableItems = consumablesOnGoodsPlate.map(@(id) [ id, goods?.items[id] ?? 0 ]).filter(@(v) v[1] > 0)
+  let { rewards = null, items = {} } = goods
+  let consumableItems = rewards != null
+    ? consumablesOnGoodsPlate.map(@(id) rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM)).filter(@(v) v != null)
+    : consumablesOnGoodsPlate.map(@(id) { id, count = items?[id] ?? 0 }).filter(@(v) v.count > 0) 
   let unitImg = getGoodsAsOfferIcon(goods.id)
     ?? (unit?.isUpgraded ? p.upgradedImage : p.image)
   let unitImgScale = consumableItems.len() == 0 ? unitImgScaleDefault
@@ -221,14 +225,25 @@ let mkCurrencyIcon = @(currencyId, amount) {
   keepAspect = true
 }
 
+function getCurrencyOnOfferBanner(goods) {
+  let { rewards = null, currencies = {} } = goods
+  if (rewards != null) {
+    let r = rewards.findvalue(@(r) r.gType == G_CURRENCY && r.id in currenciesOnOfferBanner)
+    return { currencyId = r?.id, currencyAmount = r?.count ?? 0 }
+  }
+  
+  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  return { currencyId, currencyAmount = currencies?[currencyId] ?? 0 }
+}
+
 function mkOfferUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, currencies = {}, offerClass = null } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false, offerClass = null } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
     : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
-  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let { currencyId = null, currencyAmount = 0 } = getCurrencyOnOfferBanner(goods)
   let image = mkFitCenterImg(
     getGoodsAsOfferIcon(goods.id)
       ?? (unit?.isUpgraded ? p.upgradedImage : p.image),
@@ -240,7 +255,7 @@ function mkOfferUnit(goods, onClick, state) {
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
+      currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)), goods)
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
@@ -273,12 +288,12 @@ function mkOfferBlueprint(goods, onClick, state){
 
 function mkOfferBranchUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, currencies = {}, offerClass = null } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false, offerClass = null } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
     : unit?.unitType == TANK ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
-  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let { currencyId = null, currencyAmount = 0 } = getCurrencyOnOfferBanner(goods)
   let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
     branchOfferImageOvr)
   let imageOffset = currencyId == null || unit?.unitType == TANK ? 0
@@ -288,7 +303,7 @@ function mkOfferBranchUnit(goods, onClick, state) {
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
+      currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkAirBranchOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
         utf8ToUpper(loc("offer/airBranch")), goods)
@@ -298,16 +313,18 @@ function mkOfferBranchUnit(goods, onClick, state) {
 
 function mkOfferBattleMode(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, currencies = {}, battleMods = {} } = goods
-  let bgImg = getBattleModPresentationForOffer(battleMods.findindex(@(_) true))?.bannerImg ?? "ui/gameuiskin#offer_bg_green.avif"
-  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let { discountInPercent = 0, isShowDebugOnly = false, battleMods = {}, rewards = [] } = goods
+  let battleMode = rewards.findvalue(@(r) r.gType == G_BATTLE_MOD)?.id
+    ?? battleMods.findindex(@(_) true) 
+  let bgImg = getBattleModPresentationForOffer(battleMode)?.bannerImg ?? "ui/gameuiskin#offer_bg_green.avif"
+  let { currencyId = null, currencyAmount = 0 } = getCurrencyOnOfferBanner(goods)
   let image = mkFitCenterImg(getUnitPresentation(unit)?.image, branchOfferImageOvr)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
+      currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       image
       mkOfferTexts(loc("offer/earlyAccess"), goods)
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })

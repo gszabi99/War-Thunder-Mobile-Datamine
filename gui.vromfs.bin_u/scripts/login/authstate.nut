@@ -1,6 +1,5 @@
-from "%scripts/dagui_natives.nut" import get_login_pass
-
 from "%scripts/dagui_library.nut" import *
+let { getLoginPass } = require("auth_wt")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { LT_GAIJIN, SST_UNKNOWN } = require("%appGlobals/loginState.nut")
 let { getAutologinType } = require("autoLogin.nut")
@@ -23,7 +22,7 @@ function resetAuthState() {
   if (isInLoadingScreen.get()) 
     return
 
-  let lp = get_login_pass()
+  let lp = getLoginPass()
   authState.mutate(function(s) {
     s.loginType = getAutologinType()
     s.loginName = lp.login

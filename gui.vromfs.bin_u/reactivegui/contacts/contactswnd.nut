@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids, myBlacklistUids
 } = require("%rGui/contacts/contactLists.nut")
-let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
+let { mkOptionsScene, topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
 let { isContactsOpened, SEARCH_TAB, FRIENDS_TAB, contactsOpenTabId } = require("%rGui/contacts/contactsState.nut")
 let searchContactsScene = require("%rGui/contacts/searchContactsScene.nut")
 let mkContactListScene = require("%rGui/contacts/mkContactListScene.nut")
@@ -11,6 +11,9 @@ let { CANCEL_INVITE, APPROVE_INVITE, REJECT_INVITE, REMOVE_FROM_FRIENDS,
 } = require("%rGui/contacts/contactActions.nut")
 let { UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let friendRequestToMeResponse = require("%rGui/contacts/mkContactResponse.nut")
+let { tabW } = require("%rGui/options/optionsStyle.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+
 
 let tabs = [
   {
@@ -34,7 +37,7 @@ let tabs = [
   }
   {
     locId = "contacts/requestsToMe"
-    image = "ui/gameuiskin#icon_contacts.svg"
+    image = "ui/gameuiskin#icon_add_contacts.svg"
     content = mkContactListScene(requestsToMeUids, @(userId) [
       mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })
       mkContactActionBtn(ADD_TO_BLACKLIST, userId, { hotkeys = ["^J:RT"] })
@@ -84,4 +87,5 @@ let tabs = [
   }
 ]
 
-mkOptionsScene("contactsScene", tabs, isContactsOpened, contactsOpenTabId)
+mkOptionsScene("contactsScene", tabs, isContactsOpened, contactsOpenTabId, null,
+  { size = [tabW + hdpx(25), sh(100) - topAreaSize - defButtonHeight] })

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin} = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize} = require("%rGui/rewards/rewardPlateComp.nut")
 let { textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
@@ -46,7 +47,7 @@ function mkCard(stageInfo, idx) {
       }
       canBuyLevel && bpLevelPrice.get() != null && bpLevelPrice.get().price > 0
         ? mkSpinnerHideBlock(isBPLevelPurchaseInProgress,
-            textButtonPricePurchaseLow(loc("battlepass/buyLevel"),
+            textButtonPricePurchaseLow(utf8ToUpper(loc("battlepass/buyLevel")),
               mkCurrencyComp(bpLevelPrice.get().price, bpLevelPrice.get().currency),
               @() buyBPLevelMsg(bpLevelPrice.get(), stageInfo),
               { hotkeys = ["^J:X"]
@@ -56,7 +57,7 @@ function mkCard(stageInfo, idx) {
                       }
               }),
             { hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, purchBtnHeight] })
-        : null
+        : { size = [SIZE_TO_CONTENT, purchBtnHeight] }
     ]
   }
 }

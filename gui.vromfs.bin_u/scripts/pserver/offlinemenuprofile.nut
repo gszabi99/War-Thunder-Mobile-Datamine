@@ -97,12 +97,12 @@ let offlineActions = {
   }
 
   function set_current_unit(p) {
-    let newUnit = units.value?[p?.unitName]
+    let newUnit = units.get()?[p?.unitName]
     if (newUnit == null)
       return { error = $"Not found unit {p?.unitName}" }
 
     let res = { units = {} }
-    let selUnit = units.value.findvalue(@(u) u?.isCurrent ?? false)
+    let selUnit = units.get().findvalue(@(u) u?.isCurrent ?? false)
     if (selUnit != null)
       res.units[selUnit.name] <- selUnit.__merge({ isCurrent = false })
     res.units[newUnit.name] <- newUnit.__merge({ isCurrent = true })

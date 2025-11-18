@@ -5,7 +5,7 @@ let serverConfigs = hardPersistWatched("pserver.config", {})
 function updateAllConfigs(newValue) {
   let configs = newValue?.configs
   if (configs != null)
-    serverConfigs(freeze(configs))
+    serverConfigs.set(freeze(configs))
 }
 serverConfigs.whiteListMutatorClosure(updateAllConfigs)
 

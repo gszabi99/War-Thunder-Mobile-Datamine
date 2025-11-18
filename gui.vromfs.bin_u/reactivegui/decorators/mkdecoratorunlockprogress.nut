@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { activeUnlocks, unlockInProgress, receiveUnlockRewards } = require("%rGui/unlocks/unlocks.nut")
 let { mkQuestBar } = require("%rGui/quests/questBar.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
 let { G_DECORATOR } = require("%appGlobals/rewardType.nut")
 let { questsBySection, questsCfg } = require("%rGui/quests/questsState.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonInactive, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -24,12 +25,12 @@ function mkReceiveButton(unlock) {
 
   if (unlock?.hasReward)
     children = textButtonPrimary(
-      loc("btn/receive"),
+      utf8ToUpper(loc("btn/receive")),
       @() receiveReward(unlock),
       btnStyleSound)
   else {
-    children = textButtonCommon(
-      loc("btn/receive"),
+    children = textButtonInactive(
+      utf8ToUpper(loc("btn/receive")),
       @() anim_start($"unfilledBarEffect_{name}"))
   }
   return {

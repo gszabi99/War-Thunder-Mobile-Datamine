@@ -44,7 +44,7 @@ let wndUid = "debugCommandsWnd"
 let close = @() removeModalWindow(wndUid)
 
 registerHandler("sceenlogResult", @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR"))
-let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] } })
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] }, useFlexText = true })
 let withClose = @(action) function() {
   close()
   action()
@@ -195,8 +195,7 @@ let consoleTextInput = {
       onChange = @(value) consoleText.set(value)
       onReturn = consoleExecute
     })
-    textButtonCommon("Enter", consoleExecute,
-      { ovr = { minWidth = hdpx(150), size = [hdpx(150), defButtonHeight] } })
+    textButtonCommon("Enter", consoleExecute, { ovr = { minWidth = hdpx(170), size = [hdpx(170), defButtonHeight] } })
   ]
 }
 

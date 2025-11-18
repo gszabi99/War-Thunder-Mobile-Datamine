@@ -18,7 +18,8 @@
       "timeLimit": 20,
       "allowEmptyTeams": true,
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 21
+      "skiesInitialRandomSeed": 21,
+      "mobileFpsLimit": 0
     }
   },
   "imports": {},

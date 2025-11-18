@@ -211,7 +211,7 @@ let unitsBlock = @() {
 let nextFreeUnitText = @() nextFreeUnitLevel.get() == 0 ? { watch = nextFreeUnitLevel }
   : textarea(
       loc(
-        curCampaign.value == "tanks" ? "levelUp/nextFreePlatoon" : "levelUp/nextFreeShip",
+        curCampaign.get() == "tanks" ? "levelUp/nextFreePlatoon" : "levelUp/nextFreeShip",
         { level = nextFreeUnitLevel.get() }),
       {
         watch = [ nextFreeUnitLevel, curCampaign ]
@@ -237,7 +237,7 @@ return {
   onDetach = @() isAttached.set(false)
   size = flex()
   children = [
-    @() textarea(loc(curCampaign.value == "tanks" ? "levelUp/selectPlatoon" : "levelUp/selectShip"),
+    @() textarea(loc(curCampaign.get() == "tanks" ? "levelUp/selectPlatoon" : "levelUp/selectShip"),
       {
         watch = curCampaign
         hplace=ALIGN_CENTER

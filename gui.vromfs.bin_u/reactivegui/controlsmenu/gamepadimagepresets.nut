@@ -66,6 +66,14 @@ let xone = {
   heightMuls = commonHeightMuls.__merge({
     BTN_LS = 1.2
     BTN_RS = 1.2
+    BTN_LT = 1
+    BTN_LT_PRESSED = 1
+    BTN_RT = 1
+    BTN_RT_PRESSED = 1
+    BTN_LB = 1
+    BTN_LB_PRESSED = 1
+    BTN_RB = 1
+    BTN_RB_PRESSED = 1
   })
 }
 

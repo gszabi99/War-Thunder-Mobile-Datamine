@@ -16,10 +16,12 @@ const PROGRESS_SHOP = "ShopPurchaseInProgress"
 const PROGRESS_SHOP_SLOT = "ShopGenSlotInProgress"
 const PROGRESS_DECORATORS = "DecoratorInProgress"
 const PROGRESS_SCH_REWARD = "SchRewardInProgress"
+const PROGRESS_FIRST_REWARD = "FirstRewardInProgress"
 const PROGRESS_LOOTBOX = "LootboxInProgress"
 const PROGRESS_LEVEL = "LevelInProgress"
 const PROGRESS_MODS = "ModsInProgress"
 const PROGRESS_SKINS = "SkinsInProgress"
+const PROGRESS_DECALS = "DecalsInProgress"
 const PROGRESS_BOOSTER = "BoosterInProgress"
 const PROGRESS_SLOT = "SlotInProgress"
 const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
@@ -27,6 +29,7 @@ const PROGRESS_CAMPAIGN = "CampaignInProgress"
 const PROGRESS_PREM_BONUS = "PremBonusInProgress"
 const PROGRESS_QUEUE_PENALTY = "QueuePenaltyInProgress"
 const PROGRESS_SLOTS_UNITS = "CampaignSlotsInProgress"
+const PROGRESS_AD_BUDGET = "AdBudgetInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -83,13 +86,13 @@ function handleMessages(msg) {
       log("Full servProfile received")
       if ("removed" in result)
         logerr($"Not empty removed field on full profile update on '{msg?.method}'")
-      servProfile(result)
+      servProfile.set(result)
       lastProfileKeysUpdated.set(result
         .map(@(v, k) type(v) == "table" && k != "configs")
         .filter(@(v) v))
     }
     else {
-      let newProfile = clone servProfile.value
+      let newProfile = clone servProfile.get()
       let updatedKeys = {}
       foreach (k, v in result)
         if (type(v) != "table" || k == "configs" || k == "removed" || k == "custom_info")
@@ -114,7 +117,7 @@ function handleMessages(msg) {
           updatedKeys[k] <- true
         }
       if (updatedKeys.len() != 0) {
-        servProfile(newProfile)
+        servProfile.set(newProfile)
         lastProfileKeysUpdated.set(updatedKeys)
       }
     }
@@ -242,10 +245,12 @@ return {
   shopGenSlotInProgress = mkProgress(PROGRESS_SHOP_SLOT)
   decoratorInProgress = mkProgress(PROGRESS_DECORATORS)
   schRewardInProgress = mkMultiProgress(PROGRESS_SCH_REWARD)
+  firstRewardInProgress = mkProgress(PROGRESS_FIRST_REWARD)
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
   levelInProgress = mkProgress(PROGRESS_LEVEL)
   modsInProgress = mkProgress(PROGRESS_MODS)
   skinsInProgress = mkProgress(PROGRESS_SKINS)
+  decalsInProgress = mkProgress(PROGRESS_DECALS)
   boosterInProgress = mkProgress(PROGRESS_BOOSTER)
   slotInProgress = mkProgress(PROGRESS_SLOT)
   personalGoodsInProgress = mkProgress(PROGRESS_PERSONAL_GOODS)
@@ -253,6 +258,7 @@ return {
   isPremBonusInProgress = mkProgress(PROGRESS_PREM_BONUS, false)
   isQueuePenaltyInProgress = mkProgress(PROGRESS_QUEUE_PENALTY, false)
   campaignSlotsInProgress = mkProgress(PROGRESS_SLOTS_UNITS)
+  adBudgetInProgress = mkProgress(PROGRESS_AD_BUDGET)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -267,9 +273,14 @@ return {
   unlock_all_common_units = @(cb = null) request({ method = "unlock_all_common_units" }, cb)
   unlock_all_premium_units = @(cb = null) request({ method = "unlock_all_premium_units" }, cb)
   unlock_all_units = @(cb = null) request({ method = "unlock_all_units" }, cb)
+  unlock_all_units_and_upgrade = @(cb = null) request({ method = "unlock_all_units_and_upgrade" }, cb)
+  unlock_all_unreleased_units = @(cb = null) request({ method = "unlock_all_unreleased_units" }, cb)
   royal_beta_units_unlock = @(cb = null) request({ method = "royal_beta_units_unlock" }, cb)
   generate_full_offline_profile = @(cb = null) request({ method = "generate_full_offline_profile" }, cb)
   process_currency_write_off = @(cb = null) request({ method = "process_currency_write_off" }, cb)
+  add_all_decals = @(cb = null) request({ method = "add_all_decals" }, cb)
+  remove_all_decals = @(cb = null) request({ method = "remove_all_decals" }, cb)
+  get_campaign_copy_exceptions = @(cb = null) request({ method = "get_campaign_copy_exceptions" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -286,12 +297,12 @@ return {
   }, cb)
 
   add_player_exp = @(campaign, playerExp, cb = null) request({
-    method = "add_player_exp"
+    method = "add_player_exp_common"
     params = { campaign, playerExp }
   }, cb)
 
   add_decorator = @(name, cb = null) request({
-    method = "add_decorator"
+    method = "add_decorator_common"
     params = { name }
   }, cb)
 
@@ -303,7 +314,7 @@ return {
   }, cb)
 
   remove_decorator = @(name, cb = null) request({
-    method = "remove_decorator"
+    method = "remove_decorator_common"
     params = { name }
   }, cb)
 
@@ -344,7 +355,7 @@ return {
   }, cb)
 
   add_unit_exp = @(unitName, exp, cb = null) request({
-    method = "add_unit_exp"
+    method = "add_unit_exp_common"
     params = { unitName, exp }
   }, cb)
 
@@ -373,7 +384,7 @@ return {
   }, cb)
 
   add_slot_exp = @(campaign, slotIdx, exp, cb = null) request({
-    method = "add_slot_exp"
+    method = "add_slot_exp_common"
     params = { campaign, slotIdx, exp }
   }, cb)
 
@@ -399,7 +410,7 @@ return {
   }, cb)
 
   halt_unit_purchase = @(unitName, cb = null) request({
-    method = "halt_unit_purchase"
+    method = "halt_unit_purchase_common"
     params = { unitName }
   }, cb)
 
@@ -411,28 +422,28 @@ return {
   }, cb)
 
   add_unit = @(unitName, cb = null) request({
-    method = "add_unit"
+    method = "add_unit_common"
     params = { unitName }
     progressId = PROGRESS_UNIT
     progressValue = unitName
   }, cb)
 
   remove_unit = @(unitName, cb = null) request({
-    method = "remove_unit"
+    method = "remove_unit_common"
     params = { unitName }
     progressId = PROGRESS_UNIT
     progressValue = unitName
   }, cb)
 
   upgrade_unit = @(unitName, cb = null) request({
-    method = "upgrade_unit"
+    method = "upgrade_unit_common"
     params = { unitName }
     progressId = PROGRESS_UNIT
     progressValue = unitName
   }, cb)
 
   downgrade_unit = @(unitName, cb = null) request({
-    method = "downgrade_unit"
+    method = "downgrade_unit_common"
     params = { unitName }
     progressId = PROGRESS_UNIT
     progressValue = unitName
@@ -495,6 +506,11 @@ return {
     params = { duration }
   }, cb)
 
+  set_session_id_for_premium_bonus = @(sessionId, cb = null) request({
+    method = "set_session_id_for_premium_bonus"
+    params = { sessionId }
+  }, cb)
+
   buy_player_level = @(campaign, curLevel, expLeft, price, cb = null) request({
     method = "buy_player_level"
     params = { campaign, curLevel, expLeft, price }
@@ -510,7 +526,7 @@ return {
   }, cb)
 
   add_shop_goods = @(shopId, cb = null) request({
-    method = "add_shop_goods"
+    method = "add_shop_goods_common"
     params = { shopId }
   }, cb)
 
@@ -522,7 +538,7 @@ return {
   }, cb)
 
   halt_goods_purchase = @(shopId, cb = null) request({
-    method = "halt_goods_purchase"
+    method = "halt_goods_purchase_common"
     params = { shopId }
   }, cb)
 
@@ -555,7 +571,7 @@ return {
   }, cb)
 
   change_item_count = @(name, count, cb = null) request({
-    method = "change_item_count"
+    method = "change_item_count_common"
     params = { name, count }
   }, cb)
 
@@ -582,6 +598,8 @@ return {
   apply_first_battles_reward = @(campaign, unitName, rewardId, kills, cb = null) request({
     method = "apply_first_battles_reward_v2"
     params = { campaign, unitName, rewardId, kills }
+    progressId = PROGRESS_FIRST_REWARD
+    progressValue = rewardId
   }, cb)
 
   apply_scheduled_reward = @(rewardId, cb = null) request({
@@ -606,7 +624,7 @@ return {
   }, cb)
 
   set_purch_player_type = @(playerType, cb = null) request({
-    method = "set_purch_player_type"
+    method = "set_purch_player_type_common"
     params = { playerType }
   }, cb)
 
@@ -708,11 +726,15 @@ return {
   renew_ad_budget = @(cb = null) request({
     method = "renew_ad_budget"
     params = {}
+    progressId = PROGRESS_AD_BUDGET
+    progressValue = ""
   }, cb)
 
   speed_up_unlock_progress = @(id, cb = null) request({
     method = "speed_up_unlock_progress"
     params = { id }
+    progressId = PROGRESS_AD_BUDGET
+    progressValue = ""
   }, cb)
 
   enable_unit_skin = @(unitName, vehicleName, skinName, cb = null) request({
@@ -778,7 +800,7 @@ return {
   }, cb)
 
   add_blueprints = @(name, count, cb = null) request({
-    method = "add_blueprints"
+    method = "add_blueprints_common"
     params = { name, count }
     progressId = PROGRESS_UNIT
     progressValue = name
@@ -876,7 +898,7 @@ return {
   }, cb)
 
   authorize_deeplink_reward = @(id, cb = null) request({
-    method = "authorize_deeplink_reward"
+    method = "authorize_deeplink_reward_common"
     params = { id }
   }, cb)
 
@@ -901,5 +923,38 @@ return {
   debug_apply_deserter_lock_time = @(sessionId, campaign, timestamp, cb = null) request({
     method = "debug_apply_deserter_lock_time"
     params = { sessionId, campaign, timestamp }
+  }, cb)
+
+  buy_decal = @(decalName, currencyId, price, cb = null) request({
+    method = "buy_decal"
+    params = { decalName, currencyId, price }
+    progressId = PROGRESS_DECALS
+    progressValue = decalName
+  }, cb)
+
+  add_decal_by_name = @(decalName, cb = null) request({
+    method = "add_decal_by_name_common"
+    params = { decalName }
+    progressId = PROGRESS_DECALS
+    progressValue = decalName
+  }, cb)
+
+  remove_decal_by_name = @(decalName, cb = null) request({
+    method = "remove_decal_by_name_common"
+    params = { decalName }
+    progressId = PROGRESS_DECALS
+    progressValue = decalName
+  }, cb)
+
+  mark_offer_seen = @(campaign, offerId, cb = null) request({
+    method = "mark_offer_seen"
+    params = { campaign, offerId }
+  }, cb)
+
+  buy_slots_exp = @(campaign, currencyId, expList, cb = null) request({
+    method = "buy_slots_exp"
+    params = { campaign, currencyId, expList }
+    progressId = PROGRESS_SLOT
+    progressValue = -1
   }, cb)
 }

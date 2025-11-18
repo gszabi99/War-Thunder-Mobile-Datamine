@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { TouchScreenButton } = require("wt.behaviors")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { mkContinuousButtonParams, mkGamepadShortcutImage
-} = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { hudLightBlackColor, hudDarkGrayColor, hudRedColor, hudWhiteColor, hudAshGrayColor } = require("%rGui/style/hudColors.nut")
+let { mkContinuousButtonParams, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
 
 let toInt = @(list) list.map(@(v) v.tointeger())
@@ -19,12 +19,12 @@ let horSizeAir = toInt([shHud(9), shHud(12)])
 let verSizeAir = toInt([shHud(12), shHud(10)])
 
 let animTime = 0.3
-let bgColor = 0x28000000
-let bgColorPushed = 0x28282828
-let fillMoveColorDef = 0xFF00DEFF
-let fillMoveColorBlocked = 0xFFFF4338
+let bgColor = hudLightBlackColor
+let bgColorPushed = hudDarkGrayColor
+let fillMoveColorDef = hudWhiteColor
+let fillMoveColorBlocked = hudRedColor
 
-let outlineColorDef = Watched(0xFFFFFFFF)
+let outlineColorDef = Watched(hudAshGrayColor)
 let fillColorDef = Watched(fillMoveColorDef)
 let isActiveWithPieMenu = Computed(@() !isGamepad.get() || !isPieMenuActive.get())
 
@@ -56,7 +56,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
         color = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
         flipX
       }
-    ].extend(isDisabled.value ? []
+    ].extend(isDisabled.get() ? []
       : [
           @() {
             watch = [stateFlags, isActiveWithPieMenu]
@@ -78,15 +78,17 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
             rendObj = ROBJ_IMAGE
             size
             image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{size[0]}:{size[1]}")
-            color = outlineColor.value
+            color = outlineColor.get()
             flipX
           }
-          {
+          @() {
+            watch = [outlineColor, stateFlags]
             rendObj = ROBJ_IMAGE
             size = horAnimSize
             image = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
             hplace = flipX ? ALIGN_RIGHT : ALIGN_LEFT
             vplace = ALIGN_CENTER
+            color = (stateFlags.get() & S_ACTIVE) != 0 ? fillColorDef.get() : outlineColor.get()
             margin = [0, cornerOffset]
             flipX
           }
@@ -134,7 +136,7 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
         keepAspect = true
         size = stopSize
         image = Picture($"ui/gameuiskin#hud_movement_stop2_outline.svg:{stopSize[0]}:{stopSize[1]}")
-        color = outlineColor.value
+        color = outlineColor.get()
       }
     ]
   }, ovr)
@@ -152,7 +154,7 @@ let mkMoveVertBtnAnimBg = @(flipY, calcPart = @() 1.0, size = verSize, fillColor
     transform = { pivot = [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
     behavior = Behaviors.RtPropUpdate
-    color = fillColor.value
+    color = fillColor.get()
     update = @() { transform = { scale = [1, calcPart()] } }
   }
 }
@@ -162,11 +164,11 @@ let mkMoveVertBtnOutline = @(flipY, size = verSize, outlineColor = outlineColorD
   rendObj = ROBJ_IMAGE
   size
   image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_outline.svg:{size[0]}:{size[1]}")
-  color = outlineColor.value
+  color = outlineColor.get()
   flipY
 }
 
-function mkMoveVertBtnCorner(flipY, cornerColor = Watched(0xFFFFFFFF), btnSize = verSize) {
+function mkMoveVertBtnCorner(flipY, cornerColor = Watched(hudAshGrayColor), btnSize = verSize) {
   let verCornerSize = verCornerSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
   let cornerOffset = (0.3 * verCornerSize[1]).tointeger()
   return @() {
@@ -177,7 +179,7 @@ function mkMoveVertBtnCorner(flipY, cornerColor = Watched(0xFFFFFFFF), btnSize =
     vplace = flipY ? ALIGN_BOTTOM : ALIGN_TOP
     hplace = ALIGN_CENTER
     margin = [flipY ? 0 : cornerOffset, 0, flipY ? cornerOffset : 0, 0]
-    color = cornerColor.value
+    color = cornerColor.get()
     transitions = [{ prop = AnimProp.color, duration = animTime }]
     flipY
   }
@@ -197,7 +199,7 @@ function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
   }, ovr)
 }
 
-function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF),
+function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(hudAshGrayColor),
   btnSize = verSize, fillColor = fillColorDef
 ) {
   let size = ver2stepSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
@@ -215,7 +217,7 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF
         image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
         vplace = ALIGN_TOP
         hplace = ALIGN_CENTER
-        color = cornerColor.value
+        color = cornerColor.get()
         transitions = [{ prop = AnimProp.color, duration = animTime }]
       }
       {
@@ -229,7 +231,7 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF
           transform = { pivot = [1, 1] }
           transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
           behavior = Behaviors.RtPropUpdate
-          color = fillColor.value
+          color = fillColor.get()
           update = @() { transform = { scale = [1, calcPart()] } }
         }
       }
@@ -262,6 +264,7 @@ function mkMoveHorView(flipX, viewSize = horSize) {
         image = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
         hplace = flipX ? ALIGN_RIGHT : ALIGN_LEFT
         vplace = ALIGN_CENTER
+        color = hudAshGrayColor
         margin = [0, cornerOffset]
         flipX
       }
@@ -294,6 +297,7 @@ function mkMoveVertView(flipY, viewSize = verSize) {
         image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
         vplace = flipY ? ALIGN_BOTTOM : ALIGN_TOP
         hplace = ALIGN_CENTER
+        color = hudAshGrayColor
         margin = [flipY ? 0 : cornerOffset, 0, flipY ? cornerOffset : 0, 0]
         transitions = [{ prop = AnimProp.color, duration = animTime }]
         flipY
@@ -361,6 +365,7 @@ return {
   mkMoveVertBtn2step
   mkStopBtn
 
+  outlineColorDef
   fillMoveColorDef
   fillMoveColorBlocked
 

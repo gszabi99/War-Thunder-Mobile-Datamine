@@ -10,7 +10,7 @@ let { mkContactActionBtnPrimary, mkContactActionBtn } = require("%rGui/contacts/
 let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,
   INVITE_TO_SQUAD, REVOKE_INVITE, PROFILE_VIEW
 } = require("%rGui/contacts/contactActions.nut")
-let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
@@ -42,7 +42,7 @@ let searchIcon = {
 }
 
 let nameInput = floatingTextInput(searchName, {
-  ovr = { size = [hdpx(750), floatingTextInputHeight] }
+  ovr = { size = [flex(), floatingTextInputHeight] }
   onReturn = startSearch
   mkEditContent = @(_, inputComp) {
     size = flex()
@@ -79,7 +79,7 @@ let searchBlock = {
 }
 
 let pannableTopOffset = gap
-let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - floatingTextInputHeight,
+let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - floatingTextInputHeight - defButtonHeight - gap * 2,
   [pannableTopOffset, gradientHeightBottom])
 let scrollHandler = ScrollHandler()
 
@@ -135,9 +135,10 @@ let contactsBlock = @() {
 
 let buttons = @() {
   watch = selectedUserId
-  size = [defButtonMinWidth, flex()]
-  flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
+  size = [saSize[0], SIZE_TO_CONTENT]
+  hplace = ALIGN_RIGHT
+  halign = ALIGN_RIGHT
+  flow = FLOW_HORIZONTAL
   gap
   children = selectedUserId.get() == null ? null
     : [
@@ -159,14 +160,7 @@ return {
   gap
   children = [
     searchBlock
-    {
-      size = flex()
-      flow = FLOW_HORIZONTAL
-      gap
-      children = [
-        contactsBlock
-        buttons
-      ]
-    }
+    contactsBlock
+    buttons
   ]
 }

@@ -12,7 +12,8 @@ let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight, leaderbordBtn, questsBtn
 } = require("%rGui/event/eventPkg.nut")
-let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -42,7 +43,7 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
-let { customEventLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxSizeMulBySlot } = require("%appGlobals/config/lootboxPresentation.nut")
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
@@ -64,12 +65,6 @@ let contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
 let wndHeaderHeight = hdpx(110)
-
-let sizeMulBySlot = {
-  ["0"] = 0.6,
-  ["1"] = 0.8,
-  ["2"] = 0.9,
-}
 
 function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())
@@ -124,10 +119,10 @@ let mkProgress = @(stepsToFixed) @() {
 
 function mkLootboxBlock(lootbox, blockSize) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
-  let sizeMul = customEventLootboxScale?[name] ?? sizeMulBySlot?[lootbox.meta?.event_slot] ?? 1.0
+  let sizeMul = getLootboxSizeMulBySlot(name, lootbox.meta?.event_slot ?? "")
   let stateFlags = Watched(0)
   let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul)
-  let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.value))
+  let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get()))
   let info = lootboxInfo(lootbox, stateFlags)
 
   return @() {
@@ -150,7 +145,7 @@ function mkLootboxBlock(lootbox, blockSize) {
       @() {
         watch = [unseenLootboxes, unseenLootboxesShowOnce, curEventName]
         size = 0
-        transform = { translate = [-0.8 * lootboxHeight * sizeMul, max(0, lootboxHeight * (1.0 - sizeMul) / 2)] }
+        transform = { translate = [-blockSize / 3, max(0, lootboxHeight * (1.0 - sizeMul) / 2)] }
         hplace = ALIGN_CENTER
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -255,12 +250,14 @@ let toBattleHint = @(battleCampaign, itemsByGameMode, eventName) battleCampaign 
   ]
 }
 
-let mkToBattleButton = @(modeId, modeName, campaign) mkToBattleButtonWithSquadManagement(function() {
-  sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = modeName })
-  if (tryOpenQueuePenaltyWnd(campaign, { id = "queueToGameMode", modeId }))
-    return
-  eventbus_send("queueToGameMode", { modeId })
-})
+let mkToBattleButton = @(gameMode, modeName, campaign) mkToBattleButtonWithSquadManagement(
+  function() {
+    sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = modeName })
+    if (tryOpenQueuePenaltyWnd(campaign, gameMode, { id = "queueToGameMode", modeId = gameMode.gameModeId }))
+      return
+    eventbus_send("queueToGameMode", { modeId = gameMode.gameModeId })
+  },
+  gameMode)
 
 let eventGamercard = {
   size = [saSize[0], gamercardHeight]
@@ -317,7 +314,7 @@ let scrollArrowsBlock = {
 
 function mkLootboxPreviewContent() {
   let progressInfo = mkJackpotProgress(
-    Computed(@() getStepsToNextFixed(eventWndLootbox.get(), serverConfigs.get(), servProfile.value)))
+    Computed(@() getStepsToNextFixed(eventWndLootbox.get(), serverConfigs.get(), servProfile.get())))
   return {
     size = flex()
     padding = const [hdpx(40), 0, 0, 0]
@@ -360,13 +357,12 @@ function mkLootboxPreviewContent() {
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.get().len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
   let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEventName.get()))
-  let modeId = Computed(@() battleInfo.get()?.gameModeId)
-  let battleCampaign = Computed(@() battleInfo.get()?.campaign)
+  let battleCampaign = Computed(@() battleInfo.get()?.campaign ?? curCampaign.get())
   let itemsByGameMode = Computed(@() {
     [SPARE] = battleInfo.get()?.mission_decl.allowSpare ?? true
   })
   return @() {
-    watch = [isEventWndLootboxOpen, modeId, battleCampaign, itemsByGameMode]
+    watch = [isEventWndLootboxOpen, battleInfo, battleCampaign, itemsByGameMode]
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
@@ -419,7 +415,7 @@ function eventWndContent() {
                       ]
                     }
                     
-                    !modeId.get() ? null : {
+                    !battleInfo.get() ? null : {
                       hplace = ALIGN_CENTER
                       vplace = ALIGN_BOTTOM
                       halign = ALIGN_CENTER
@@ -427,7 +423,7 @@ function eventWndContent() {
                       children = squadPanel
                     }
                     
-                    !modeId.get() ? null : @() {
+                    !battleInfo.get() ? null : @() {
                       watch = curEventName
                       hplace = ALIGN_RIGHT
                       vplace = ALIGN_BOTTOM
@@ -437,7 +433,7 @@ function eventWndContent() {
                       gap = hdpx(10)
                       children = [
                         toBattleHint(battleCampaign.get(), itemsByGameMode.get(), curEventName.get())
-                        mkToBattleButton(modeId.get(), curEventName.get(), battleCampaign.get())
+                        mkToBattleButton(battleInfo.get(), curEventName.get(), battleCampaign.get())
                       ]
                     }
                   ]

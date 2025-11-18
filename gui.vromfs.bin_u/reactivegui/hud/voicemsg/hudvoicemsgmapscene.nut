@@ -18,6 +18,7 @@ let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tactica
 let { capZones } = require("%rGui/hud/capZones/capZonesState.nut")
 let { sendVoiceMsgById } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { markMinimapVoiceMsgFeatureKnown } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapHint.nut")
+let { hudWhiteColor, hudBlackColor, hudTransparentBlackColor, hudBlueColor } = require("%rGui/style/hudColors.nut")
 
 enum MAP_OBJ_TYPE {
   NONE
@@ -71,7 +72,7 @@ let actionBtnsCtors = {
         text
       }.__update(fontSmallAccentedShaded))[0] + defButtonHeight)
     let btnWidth = max(defButtonMinWidth, btnTxtWidths[0], btnTxtWidths[1])
-    let btnStyleOvr = { ovr = { size = [btnWidth, defButtonHeight] } }
+    let btnStyleOvr = { ovr = { size = [btnWidth, defButtonHeight] }, useFlexText = true }
     return [
       attackBtnCtor(attackText, @() sendMsgAndClose(attackMsgId, relPosToWorldPos(mapPos)), btnStyleOvr)
       defendBtnCtor(defendText, @() sendMsgAndClose(defendMsgId, relPosToWorldPos(mapPos)), btnStyleOvr)
@@ -127,10 +128,10 @@ let txtAreaBase = {
   size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  color = 0xFFFFFFFF
+  color = hudWhiteColor
   fontFx = FFT_GLOW
   fontFxFactor = hdpx(32)
-  fontFxColor = 0xFF000000
+  fontFxColor = hudBlackColor
 }.__update(fontSmall)
 
 let wndTitle = txtAreaBase.__merge(fontBig, {
@@ -166,10 +167,10 @@ function crosshairDrawing() {
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = 0
     commands = [].extend(
-      mkCommandsFunc(0x40000000, pointerLineWidth + hdpx(6)),
-      mkCommandsFunc(0x40000000, pointerLineWidth + hdpx(4)),
-      mkCommandsFunc(0xFF000000, pointerLineWidth + hdpx(2)),
-      mkCommandsFunc(0xFF00c6ff, pointerLineWidth))
+      mkCommandsFunc(hudTransparentBlackColor, pointerLineWidth + hdpx(6)),
+      mkCommandsFunc(hudTransparentBlackColor, pointerLineWidth + hdpx(4)),
+      mkCommandsFunc(hudBlackColor, pointerLineWidth + hdpx(2)),
+      mkCommandsFunc(hudBlueColor, pointerLineWidth))
   }
 }
 

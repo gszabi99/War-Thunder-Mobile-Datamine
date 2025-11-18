@@ -15,13 +15,14 @@ let { mkBlocksContainer } = require("%rGui/components/verticalBlocks.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { mkWeaponPreset, mkChosenBelts, mkSavedWeaponPresets } = require("%rGui/unit/unitSettings.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 
-let MAX_PRESET_NAME_LENGTH = 16
+let MAX_PRESET_NAME_LENGTH = 32
 let MAX_SAVED_PRESET = 5
 let SLOTS_IN_ROW = 5
 let SLOTS_IN_PRESET_ROW = 6
-let activeBorderColor = 0xC07BFFFF
+let activeBorderColor = selectColor
 let cardBgColor = 0xFF45545D
 let presetBorderWidth = hdpx(3)
 let cellGap = hdpx(12)
@@ -371,6 +372,10 @@ let mkBlockContent = @(preset, idx) @(){
   children = [
     {
       rendObj = ROBJ_TEXT
+      behavior = Behaviors.Marquee
+      delay = defMarqueeDelay
+      speed = hdpx(30)
+      maxWidth = pw(100)
       text = $"{preset.name}{!(preset?.isCurrent ?? false) ? "" : $" ({loc("presets/current")})"}"
     }.__update(fontTinyShaded)
     @() mkPresetSlots(preset)

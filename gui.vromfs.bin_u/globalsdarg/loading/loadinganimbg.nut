@@ -3,7 +3,7 @@ let { setTimeout, resetTimeout, setInterval, clearTimer } = require("dagor.workc
 let { get_time_msec } = require("dagor.time")
 let random_pick = require("%sqstd/random_pick.nut")
 let { mkAnimBg } = require("%globalsDarg/components/mkAnimBg.nut")
-let { fallbackLoadingImage, screensList } = require("loadingScreensCfg.nut")
+let { screensList } = require("loadingScreensCfg.nut")
 
 let curScreenId = mkWatched(persist, "curScreenId", null)
 let lastAttachedTime = mkWatched(persist, "lastAttachedTime", -1000000)
@@ -33,6 +33,8 @@ screenWeights.subscribe(function(_) {
 isBgAttached.subscribe(function(v) {
   clearTimer(chooseRandomScreen)
   if (v) {
+    if (curScreenId.get() == null)
+      chooseRandomScreen()
     lastAttachedTime.set(get_time_msec())
     setInterval(17.0, chooseRandomScreen)
   }
@@ -47,7 +49,7 @@ let loadingAnimBg = @() {
   size = flex()
   onAttach = @() isBgAttached.set(true)
   onDetach = @() isBgAttached.set(false)
-  children = mkAnimBg(screensList?[curScreenId.get()].mkLayers() ?? [], fallbackLoadingImage)
+  children = mkAnimBg(screensList?[curScreenId.get()].mkLayers() ?? [])
 }
 
 return {

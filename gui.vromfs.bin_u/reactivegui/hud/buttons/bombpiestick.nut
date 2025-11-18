@@ -11,7 +11,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { BombsState, hasBombs } = require("%rGui/hud/airState.nut")
 let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
 let { mkCircleProgressBgWeapon, mkBorderPlane, mkCircleGlare, mkBtnImage, mkCountTextLeft, mkCircleBg,
-  circleBtnPlaneEditViewCtor
+  circleBtnPlaneEditViewCtor, mkBtnBg
 }  = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { allShortcutsUp } = require("%rGui/controls/shortcutsMap.nut")
@@ -20,20 +20,23 @@ let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiO
 let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { emptyWithBackground, ready, noAmmo, background } = btnBgColor
+let { btnBgStyle, imageColor, imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
+let { hudWhiteColor, hudSmokyGreyColor, hudVeilGrayColorFade, hudDarkGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
 
 
 let BOMB_STICK_HOLDING = 0x01
 let BOMB_STICK_ACTIVE = 0x02
+let emptyWithBackground = hudVeilGrayColorFade
+let background = hudDarkGrayColor
 
 let touchMargin = sh(2.5).tointeger()
 let squareLimitCalcError = hdpx(1)
 let buttonSize = hdpxi(120)
 let buttonSizeRadius = buttonSize / 2
 let buttonImgSize = (0.65 * buttonSize + 0.5).tointeger()
-let disabledColor = 0x4D4D4D4D
+let disabledColor = hudSmokyGreyColor
 let HOLDING_ANIM_DURATION = 0.1
 
 let oneBombShortcutId = "ID_BOMBS"
@@ -91,11 +94,11 @@ function mkCircleProgressHolding(size, id, isSeriesBtnHolding, isOnSeries) {
       isSeriesBtnHolding.set(false)
     }
   }
-  return @() mkCircleBg(size).__update({
-    watch = isOnSeries
+  return mkCircleBg(size, {
+    watch = [isOnSeries, btnBgStyle, isHudPrimaryStyle]
     key = $"action_bg_{id}"
-    fgColor = isOnSeries.get() ? emptyWithBackground : ready
-    bgColor = ready
+    fgColor = isOnSeries.get() ? emptyWithBackground : btnBgStyle.get().ready
+    bgColor = btnBgStyle.get().empty
     onAttach = @() isOnSeries.subscribe(subscription)
     onDetach = @() isOnSeries.unsubscribe(subscription)
     animations
@@ -107,16 +110,15 @@ let mkCircleProgressOneBomb = @(isAvailable, isOnOneBomb, isSeriesBtnHolding, ha
     let isBombStickHolding = bombStickState.get() & BOMB_STICK_HOLDING
     let isReady = isAvailable.get() && (isOnOneBomb.get() || isSeriesBtnHolding.get() || !isBombStickHolding)
     return {
-      watch = [BombsState, isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState]
+      watch = [BombsState, isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, btnBgStyle]
       size = flex()
       children = mkCircleProgressBgWeapon(scaledButtonSize, oneBombShortcutId, BombsState.get(),
         isReady,
         @() playSound("weapon_primary_ready"),
         {
-          bgColor = hasAmmo.get() ? emptyWithBackground : noAmmo
-          fgColor = isReady ? ready
+          fgColor = isReady ? btnBgStyle.get().ready
             : hasAmmo.get() ? emptyWithBackground
-            : noAmmo
+            : btnBgStyle.get().noAmmo
         })
     }
   }
@@ -175,7 +177,7 @@ function stickControl(scale) {
   })
 
   let mkBombCounter = @() { watch = [BombsState, isAvailable] }.__update(BombsState.get().count < 0 ? {}
-    : mkCountTextLeft(BombsState.get().count, isAvailable.get() ? 0xFFFFFFFF : disabledColor, scale))
+    : mkCountTextLeft(BombsState.get().count, isAvailable.get() ? hudWhiteColor : disabledColor, scale))
 
   function onAppearBombPieStick() {
     bombStickState.set(bombStickState.get() | BOMB_STICK_ACTIVE)
@@ -277,8 +279,10 @@ function stickControl(scale) {
                 size = [scaledButtonSize, scaledButtonSize]
                 children = [
                   mkBombCounter
+                  mkBtnBg(scaledButtonSize, hudLightBlackColor)
                   mkCircleProgressHolding(scaledButtonSize, seriesBombShortcutId, isSeriesBtnHolding, isOnSeries)
-                  mkBtnImage(scaledButtonImgSize, seriesBombImg)
+                  mkBorderPlane(scaledButtonSize, isAvailable.get(), stateFlags, scale)
+                  mkBtnImage(scaledButtonImgSize, seriesBombImg, isAvailable.get() && hasAmmo.get() ? imageColor : imageDisabledColor)
                   mkCircleGlare(scaledButtonSize, seriesBombShortcutId)
                 ]
               }
@@ -289,11 +293,12 @@ function stickControl(scale) {
             size = [scaledButtonSize, scaledButtonSize]
             hplace = ALIGN_CENTER
             vplace = ALIGN_CENTER
-            color = 0xFFFFFFFF
+            color = hudWhiteColor
             children = [
+              mkBtnBg(scaledButtonSize, hudLightBlackColor)
               mkCircleProgressOneBomb(isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, scaledButtonSize)
               mkBorderPlane(scaledButtonSize, isAvailable.get(), stateFlags, scale)
-              mkBtnImage(scaledButtonImgSize, oneBombImg)
+              mkBtnImage(scaledButtonImgSize, oneBombImg, isAvailable.get() && hasAmmo.get() ? imageColor : imageDisabledColor)
               mkBombCounter
               mkCircleGlare(scaledButtonSize, oneBombShortcutId)
               mkGamepadShortcutImage(oneBombShortcutId, defShortcutOvr, scale)

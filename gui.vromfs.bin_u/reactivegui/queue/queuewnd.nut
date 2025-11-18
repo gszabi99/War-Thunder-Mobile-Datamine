@@ -24,10 +24,10 @@ let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
 let helpEventBattleRoyale = require("%rGui/loading/complexScreens/helpEventBattleRoyale.nut")
 let helpEventChristmas = require("%rGui/loading/complexScreens/helpEventChristmas.nut")
 let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
+let helpEventHalloween = require("%rGui/loading/complexScreens/helpEventHalloween.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
+let { mkMRankRange, curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -63,20 +63,30 @@ let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode
   ? "air"
   : campaignByMode.get() ?? curCampaign.get())
 
+let curQueueGMName = Computed(@() curQueue.get()?.params.mode)
+let isQueueAnyRank = Computed(@() curQueueGMName.get() == null ? false
+  : allGameModes.get().findvalue(@(m) m.name == curQueueGMName.get())?.balancerMode == "team_size")
+
 let playersCountInQueue = Computed(function() {
-  if (curQueue.value == null || queueInfo.value == null)
+  if (curQueue.get() == null || queueInfo.get() == null)
     return null
-  let unitInfo = curQueue.get()?.unitInfo
-  let unitName = type(unitInfo) == "array" ? unitInfo?[0] : unitInfo
-  let { rank = null } = campUnitsCfg.get()?[unitName] ?? curUnit.get() 
-  if (rank == null)
-    return null
-  let rankStr = rank.tostring()
-  local res = 0
+  local res = 1 
+
+  if (isQueueAnyRank.get()) {
+    foreach (clusterStats in queueInfo.get())
+      foreach (qStats in clusterStats)
+        res = max(res, qStats.reduce(@(r, v) r + v, 0))
+    return res
+  }
+
+  let { minMRank, maxMRank } = curUnitMRankRange.get()
+  let pairs = minMRank >= maxMRank ? [[minMRank.tostring()]]
+    : array(maxMRank - minMRank).map(@(_, i) [(minMRank + i).tostring(), (minMRank + i + 1).tostring()])
   foreach (clusterStats in queueInfo.get())
     foreach (qStats in clusterStats)
-      res += qStats?[rankStr] ?? 0
-  return max(1, res) 
+      foreach (p in pairs)
+        res = max(res, p.reduce(@(r, id) r + (qStats?[id] ?? 0), 0))
+  return res
 })
 
 let isOnlyOverrideUnits = Computed(@() allGameModes.get().findvalue(@(mode) mode.name == curQueue.get()?.params.mode)?.only_override_units ?? false)
@@ -125,8 +135,8 @@ let waitingBlock = @() {
   gap = spinnerGap
   children = [
     textParams.__merge({
-      text = curQueueState.value == QS_ACTUALIZE ? loc("wait/actualizeProfile")
-        : curQueueState.value == QS_ACTUALIZE_SQUAD ? loc("wait/actualizeSquadMembersProfile")
+      text = curQueueState.get() == QS_ACTUALIZE ? loc("wait/actualizeProfile")
+        : curQueueState.get() == QS_ACTUALIZE_SQUAD ? loc("wait/actualizeSquadMembersProfile")
         : loc("yn1/waiting_time")
       color = textColor
     }, fontMedium)
@@ -174,7 +184,7 @@ function leaveQueue() {
   })
 }
 
-let isCancelInProgress = Computed(@() curQueueState.value == QS_LEAVING)
+let isCancelInProgress = Computed(@() curQueueState.get() == QS_LEAVING)
 let cancelQueueButton = @(isOnlyOverride) {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
@@ -265,6 +275,7 @@ let mkBgImageByGameMode = {
   tank_event_ny_ctf_mode = @() helpEventChristmas
   event_1_april_pirates = @() helpEventPirates
   tank_event_battle_royale = @() helpEventBattleRoyale
+  plane_event_halloween_po2_race = @() helpEventHalloween
 }
 
 let bgImage = @() {

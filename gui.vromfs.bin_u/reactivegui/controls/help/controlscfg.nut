@@ -18,7 +18,7 @@ let shortcutsByUnitTypes = {
       "ID_SHIP_WEAPON_TORPEDOES", "ID_SHIP_SMOKE_SCREEN_GENERATOR", "ID_WTM_LAUNCH_AIRCRAFT",
       "ID_SHIP_WEAPON_MINE", "ID_SHIP_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
       "ID_SHIP_STRATEGY_MODE_TOGGLE", "ID_SHIP_WEAPON_ROCKETS", "ID_SHIP_WEAPON_ROCKETS_SECONDARY",
-      "ID_SHIP_MANUAL_ANTIAIR_TOGGLE"
+      "ID_SHIP_MANUAL_ANTIAIR_TOGGLE", "ID_SHIP_ROCKET_ASW"
     ]
       .extend(sameLoc("hotkeys/steering", ["ship_steering_rangeMin", "ship_steering_rangeMax"]))
     axes = sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["ship_mouse_aim_x", "ship_mouse_aim_y"])
@@ -33,6 +33,7 @@ let shortcutsByUnitTypes = {
       "ID_SUBMARINE_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
       cLoc("hotkeys/submarine_depth_rangeInc", "submarine_depth_inc"),
       cLoc("hotkeys/submarine_depth_rangeDec", "submarine_depth_dec"),
+      "ID_SUBMARINE_ACOUSTIC_DECOY",
     ]
       .extend(sameLoc("hotkeys/steering", ["ship_steering_rangeMin", "ship_steering_rangeMax"]))
     axes = sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["submarine_mouse_aim_x", "submarine_mouse_aim_y"])
@@ -59,7 +60,7 @@ let shortcutsByUnitTypes = {
       "ID_FIRE_GM", "ID_FIRE_GM_SECONDARY_GUN", "ID_FIRE_GM_SPECIAL_GUN", "ID_FIRE_GM_MACHINE_GUN",
       "ID_ACTION_BAR_ITEM_5", "ID_ACTION_BAR_ITEM_7", "ID_ACTION_BAR_ITEM_9", "ID_ACTION_BAR_ITEM_6",
       "ID_ACTION_BAR_ITEM_10", "ID_SMOKE_SCREEN_GENERATOR", "ID_SMOKE_SCREEN", "ID_SHOW_HERO_MODULES",
-      "ID_CAMERA_NEUTRAL", "ID_TOGGLE_TARGET_TRACKING", "ID_NEXT_BULLET_TYPE",
+      "ID_CAMERA_NEUTRAL", "ID_TOGGLE_TARGET_TRACKING", "ID_NEXT_BULLET_TYPE", "ID_ACTION_BAR_ITEM_40",
       cLoc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11", "ID_ACTION_BAR_ITEM_11"),
     ]
     axes = ["gm_throttle", "gm_steering"]

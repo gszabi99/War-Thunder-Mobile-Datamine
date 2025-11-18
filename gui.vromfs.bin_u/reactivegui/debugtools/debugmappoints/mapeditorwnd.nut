@@ -9,7 +9,7 @@ let { isEventMapEditorOpened, closeEventMapEditor, selectedPointId, presetMapSiz
   scalableETypes
 } = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
 let { shiftActions } = require("%rGui/debugTools/debugMapPoints/comboActions.nut")
-let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkText } = require("%rGui/debugTools/debugMapPoints/mapEditorComps.nut")

@@ -2,26 +2,36 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let DataBlock = require("DataBlock")
-let { set_weapon_visual_custom_blk } = require("unitCustomization")
+let { set_weapon_visual_custom_blk, apply_skin_decals_blk, set_default_skin_decals } = require("unitCustomization")
 let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
   change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list,
-  hangar_force_reload_model
+  hangar_force_reload_model, set_allowed_decals_count
 } = require("hangar")
+let { prevIfEqual, isEqual } = require("%sqstd/underscore.nut")
+let { decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
+let { myUserId } = require("%appGlobals/profileStates.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
+let { mkHasUnitsResources } = require("%appGlobals/updater/addonsState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
+let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
+let { mkWeaponPreset, mkDecalsPresets, getDecalsPresets } = require("%rGui/unit/unitSettings.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
+let { havePremium } = require("%rGui/state/profilePremium.nut")
+
+const MAX_DECAL_SLOTS_COUNT = 4
+
+let hasBgUnitsByCamp = {
+  tanks = true
+  tanks_new = true
+}
 
 let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 let loadedInfo = Watched({
@@ -32,29 +42,21 @@ let loadedHangarUnitName = Computed(@() loadedInfo.get().name)
 let hangarUnitData = mkWatched(persist, "hangarUnitData", null)
 let hangarUnitDataBackup = mkWatched(persist, "hangarUnitDataBackup", null)
 let hangarUnitName = Computed(@() hangarUnitData.get()?.name ?? loadedHangarUnitName.get() ?? "")
+let lastHangarUnitBattleData = mkWatched(persist, "hangarUnitBattleData", null)
+let isCustomHangarUnitData = Computed(@() hangarUnitData.get()?.custom != null)
 local wasLoadBgModelsAfterLoading = false
 
 let mainHangarUnit = Computed(function() {
   let { name = loadedHangarUnitName.get(), custom = null } = hangarUnitData.get()
-  if (custom != null) {
-    if (custom.name not in campUnitsCfg.get()) {
-      let mainName = allMainUnitsByPlatoon.get()?[custom.name].name
-      if (mainName != null)
-        return custom.__merge({ name = mainName })
-    }
-    return custom
-  }
+  if (custom == null)
+    return campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name]
 
-  local unit = campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name]
-  if (unit != null || name == "")
-    return unit
-
-  foreach (src in [ campMyUnits, campUnitsCfg ]) {
-    unit = src.get().findvalue(@(u) u.platoonUnits.findvalue(@(pu) pu.name == name) != null)
-    if (unit != null)
-      return unit
+  if (custom.name not in campUnitsCfg.get()) {
+    let mainName = allMainUnitsByPlatoon.get()?[custom.name].name
+    if (mainName != null)
+      return custom.__merge({ name = mainName })
   }
-  return null
+  return custom
 })
 
 let mainHangarUnitName = Computed(@() mainHangarUnit.get()?.name)
@@ -80,15 +82,31 @@ let hangarUnit = Computed(function() {
   return mainUnit.__merge(mainUnit.platoonUnits.findvalue(@(pu) pu.name == name) ?? {})
 })
 
-let nameAndSkin = @(name, skin, currentSkins, defSkin) { name, skin = skin ?? currentSkins?[name] ?? defSkin }
+let nameAndSkin = @(name, skin, currentSkins, defSkin) {
+  name = getTagsUnitName(name)
+  skin = skin ?? currentSkins?[name] ?? defSkin
+}
 
 let hangarBgUnits = Computed(function(prevC) {
-  if (hangarUnit.get() == null || (hangarUnit.get()?.platoonUnits.len() ?? 0) == 0)
+  let hUnit = hangarUnit.get()
+  if (hUnit == null || !hasBgUnitsByCamp?[hUnit.campaign])
     return []
+
+  if ((hUnit?.platoonUnits.len() ?? 0) == 0)
+    return isCustomHangarUnitData.get() || curSlots.get().findvalue(@(v) v.name == hUnit.name) == null
+      ? []
+      : curSlots.get().reduce(function(res, v) {
+          if (v.name == "" || v.name == hUnit.name)
+            return res
+          let unit = campMyUnits.get()?[v.name] ?? campUnitsCfg.get()?[v.name]
+          return unit == null ? res
+            : res.append(nameAndSkin(unit.name, unit?.skin, unit?.currentSkins, unit?.isUpgraded ? "upgraded" : ""))
+        }, [])
+
   let skin = hangarUnitData.get()?.skin
   let { platoonUnits, currentSkins = {}, isUpgraded = false } = mainHangarUnit.get()
   let mainName = mainHangarUnit.get().name
-  let fgName = hangarUnit.get().name
+  let fgName = hUnit.name
   let allNames = platoonUnits.reduce(@(res, p) res.$rawset(p.name, true), { [mainName] = true })
   let defSkin = isUpgraded ? "upgraded" : ""
 
@@ -129,11 +147,22 @@ let hangarUnitSkin = Computed(@() hangarUnitData.get()?.skin
   ?? hangarUnit.get()?.currentSkins[hangarUnit.get()?.name]
   ?? (hangarUnit.get()?.isUpgraded ? "upgraded" : ""))
 
-let hangarUnitReqPkg  = Computed(@() hangarUnitName.get() == null || !isReadyToFullLoad.get() ? []
-  : getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).filter(@(a) !hasAddons.value?[a]))
+let downloadUnitNames = Computed(@() hangarUnit.get() == null ? []
+  : [hangarUnit.get().name].extend(hangarBgUnits.get().map(@(s) (s.name))))
+let hasHangarUnitResources = mkHasUnitsResources(downloadUnitNames)
+let canReloadModel = keepref(Computed(@() !isInBattle.get() && !isInLoadingScreen.get()))
 
-let hasNotDownloadedPkgForHangarUnit = Computed(@() hangarUnitReqPkg .get().findvalue(@(a) !hasAddons.value?[a]) != null)
-let canReloadModel = keepref(Computed(@() !hasNotDownloadedPkgForHangarUnit.get() && !isInBattle.get() && !isInLoadingScreen.get()))
+let { decalsPresets } = mkDecalsPresets(hangarUnitName)
+let hangarUnitDecalPreset = Computed(@() decalsPresets.get()?[hangarUnitSkin.get()])
+
+let hangarUnitDecalSlotsCount = Computed(function() {
+  if (hangarUnit.get() == null)
+    return MAX_DECAL_SLOTS_COUNT
+  let { isUpgraded = false, isPremium = false, decalSlotsCount = 2 } = hangarUnit.get()
+  return isUpgraded || isPremium || havePremium.get() ? MAX_DECAL_SLOTS_COUNT : decalSlotsCount
+})
+
+let hangarUnitHasLockedPremDecals = Computed(@() hangarUnitDecalSlotsCount.get() < MAX_DECAL_SLOTS_COUNT)
 
 function setHangarUnitWeaponPreset(unitName, preset) {
   if (unitName == null)
@@ -150,7 +179,13 @@ function setHangarUnitWeaponPreset(unitName, preset) {
   set_weapon_visual_custom_blk(getTagsUnitName(unitName), blk)
 }
 
-function loadModel(unitName, skin, weapPreset) {
+function setHangarUnitDecalPreset(unitName, skin, preset) {
+  if (unitName == null)
+    return
+  apply_skin_decals_blk(unitName, skin, decalTblToBlk(preset))
+}
+
+function loadModel(unitName, skin, weapPreset, decalPreset, availableDecalSlotsCount) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
     
     unitName = (campMyUnits.get().findvalue(@(_) true) ?? campUnitsCfg.get().findvalue(@(_) true))?.name
@@ -158,21 +193,33 @@ function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "")
     return
 
-  if (hasNotDownloadedPkgForHangarUnit.get() && !isOfflineMenu) {
+  if (!hasHangarUnitResources.get() && !isOfflineMenu) {
     hangar_move_cam_to_unit_place(getTagsUnitName(unitName))
     return
   }
+
+  let preset = decalPreset ?? getDecalsPresets(getTagsUnitName(unitName))?[skin]
+  if (preset != null)
+    setHangarUnitDecalPreset(getTagsUnitName(unitName), skin, preset)
+  else
+    set_default_skin_decals(true)
+
+  set_allowed_decals_count(availableDecalSlotsCount)
 
   hangar_load_model_with_skin(getTagsUnitName(unitName), skin)
   if (weapPreset != null)
     setHangarUnitWeaponPreset(unitName, weapPreset)
 }
 
-let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.get(), hangarUnitSkin.get(), hangarUnitPreset.get())
+let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.get(), hangarUnitSkin.get(), hangarUnitPreset.get(),
+  hangarUnitDecalPreset.get(), hangarUnitDecalSlotsCount.get())
+
 loadCurrentHangarUnitModel()
-hangarUnitName.subscribe(@(_) loadCurrentHangarUnitModel())
-hangarUnitSkin.subscribe(@(_) loadCurrentHangarUnitModel())
-hangarUnitPreset.subscribe(@(_) loadCurrentHangarUnitModel())
+hangarUnitName.subscribe(@(_) deferOnce(loadCurrentHangarUnitModel))
+hangarUnitSkin.subscribe(@(_) deferOnce(loadCurrentHangarUnitModel))
+hangarUnitPreset.subscribe(@(_) deferOnce(loadCurrentHangarUnitModel))
+hangarUnitDecalPreset.subscribe(@(_) deferOnce(loadCurrentHangarUnitModel))
+hangarUnitDecalSlotsCount.subscribe(@(_) deferOnce(loadCurrentHangarUnitModel))
 
 isInMpSession.subscribe(function(v) {
   if (v || !isInMenu.get() || hangar_get_current_unit_name() == loadedInfo.get().name)
@@ -185,17 +232,18 @@ isInMpSession.subscribe(function(v) {
 })
 
 function reloadAllBgModels() {
-  if (!hasNotDownloadedPkgForHangarUnit.get())
-    change_background_models_list_with_skin(hangarUnitName.get(), hangarBgUnits.get())
+  change_background_models_list_with_skin(getTagsUnitName(hangarUnitName.get()),
+    hasHangarUnitResources.get() ? hangarBgUnits.get() : [])
 }
 
 function loadBGModels() {
   let bgUnits = hangarBgUnits.get()
-  if (bgUnits.len() == 0)
-    return
   let { name, skin } = loadedInfo.get()
-  if (name == null || name != hangarUnitName.get() || skin != hangarUnitSkin.get())
+  if (name == null || name != getTagsUnitName(hangarUnitName.get()) || skin != hangarUnitSkin.get()) {
+    if (!hasHangarUnitResources.get())
+      reloadAllBgModels() 
     return 
+  }
 
   if (!wasLoadBgModelsAfterLoading) {
     reloadAllBgModels()
@@ -252,18 +300,52 @@ function resetCustomHangarUnit() {
   }
 }
 
-let hangarUnitMods = keepref(Computed(@() mainHangarUnit.get()?.mods))
-local lastMods = null
-local lastModsUnitName = null
-hangarUnitMods.subscribe(function(mods) {
-  let unitName = mainHangarUnit.get()?.name
-  let needReload = unitName != null && unitName == lastModsUnitName
-    && hangarUnitData.get()?.name == loadedHangarUnitName.get()
-    && !isEqual((mods ?? {}).filter(@(v) v), (lastMods ?? {}).filter(@(v) v))
-  lastMods = clone mods
-  lastModsUnitName = unitName
-  if (needReload)
+let hangarBattleData = Computed(function(prev) {
+  if (mainHangarUnit.get() == null)
+    return null
+  let { country = "", unitType = "", mods = null, modPreset = "",
+    isUpgraded = false, isPremium = false, platoonUnits = []
+  } = mainHangarUnit.get()
+
+  let name = getTagsUnitName(mainHangarUnit.get().name)
+  let cfgMods = serverConfigs.get()?.unitModPresets[modPreset] ?? {}
+  let modifications = mods != null
+      ? mods.filter(@(has, id) has && id in cfgMods)
+          .map(@(_) 1)
+    : isPremium || isUpgraded
+      ? cfgMods.map(@(_) 1) 
+    : {}
+  return prevIfEqual(prev, {
+    userId = myUserId.get()
+    items = modifications 
+    modifications
+    unit = {
+      name
+      country
+      unitType
+      isUpgraded
+      isPremium = isPremium || isUpgraded
+      weapons = { [$"{name}_default"] = true }
+      attributes = {} 
+      platoonUnits = platoonUnits.map(@(p) {
+        name = p.name
+        weapons = { [$"{p.name}_default"] = true }
+      })
+    }
+  })
+})
+
+hangarBattleData.subscribe(function(bd) {
+  let { name = null } = bd?.unit
+  let lastName = lastHangarUnitBattleData.get()?.unit.name ?? name
+  let hangarUnitDataName = hangarUnitData.get()?.name != null ? getTagsUnitName(hangarUnitData.get().name) : loadedHangarUnitName.get()
+  let needReload = name != null && name == lastName
+    && hangarUnitDataName == loadedHangarUnitName.get()
+    && !isEqual(bd, lastHangarUnitBattleData.get())
+  if (needReload) {
+    log("[HANGAR_BATTLE_DATA] request hangar_force_reload_model on battle data change")
     hangar_force_reload_model()
+  }
 })
 
 function onReloadModel() {
@@ -273,13 +355,14 @@ function onReloadModel() {
   reloadAllBgModels()
 }
 canReloadModel.subscribe(@(_) deferOnce(onReloadModel))
+hasHangarUnitResources.subscribe(@(_) deferOnce(onReloadModel))
 
 eventbus_subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded.set(false))
 
 eventbus_subscribe("onHangarModelLoaded", function(_) {
-  isHangarUnitLoaded.set(true)
   if (hangar_get_loaded_unit_name() != hangar_get_current_unit_name())
     return
+  isHangarUnitLoaded.set(true)
   let lInfo = {
     name = hangar_get_current_unit_name()
     skin = hangar_get_current_unit_skin()
@@ -308,7 +391,13 @@ return {
 
   mainHangarUnit
   mainHangarUnitName
+  lastHangarUnitBattleData
+  hangarBattleData
 
-  hangarUnitReqPkg
-  hasNotDownloadedPkgForHangarUnit
+  hasHangarUnitResources
+  hasBgUnitsByCamp
+
+  MAX_DECAL_SLOTS_COUNT
+  hangarUnitDecalSlotsCount
+  hangarUnitHasLockedPremDecals
 }

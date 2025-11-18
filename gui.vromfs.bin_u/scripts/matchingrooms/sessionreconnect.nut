@@ -5,11 +5,13 @@ let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenu, isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
-let { hasAddons, addonsExistInGameFolder, addonsVersions } = require("%appGlobals/updater/addonsState.nut")
+let { hasAddons, addonsExistInGameFolder, addonsVersions, unitSizes
+} = require("%appGlobals/updater/addonsState.nut")
 let { joinRoom, lastRoomId } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { getModeAddonsInfo, getModeAddonsDbgString } = require("%appGlobals/updater/gameModeAddons.nut")
+let { getModeAddonsInfo, getModeAddonsDbgString, missingUnitResourcesByRank, maxReleasedUnitRanks
+} = require("%appGlobals/updater/gameModeAddons.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -42,32 +44,36 @@ function getMaxRankUnitName() {
   return resUnit?.name
 }
 
-function getAddonsToDownload(attribs) {
+function getDownloadLists(attribs) {
   let { game_mode_id = null } = attribs
   let mode = allGameModes.get()?[game_mode_id]
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
   log("[ADDONS] getModeAddonsInfo at sessionReconnect for unit: ", unitName)
   log("modeInfo = ", getModeAddonsDbgString(mode))
-  return getModeAddonsInfo(
+
+  return getModeAddonsInfo({
     mode,
-    [unitName],
-    serverConfigs.get(),
-    hasAddons.get(),
-    addonsExistInGameFolder.get(),
-    addonsVersions.get()
-  ).addonsToDownload
+    unitNames = [unitName],
+    serverConfigsV = serverConfigs.get(),
+    hasAddonsV = hasAddons.get(),
+    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
+    addonsVersionsV = addonsVersions.get(),
+    missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
+    maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
+    unitSizesV = unitSizes.get(),
+  })
 }
 
 function reconnect(roomId, attribs) {
-  let addonsToDownload = getAddonsToDownload(attribs)
-  if (addonsToDownload.len() == 0 || lastRoomId.get() == roomId) {
+  let { addonsToDownload, unitsToDownload } = getDownloadLists(attribs)
+  if (addonsToDownload.len() + unitsToDownload.len() == 0 || lastRoomId.get() == roomId) {
     joinRoom(roomId)
     return
   }
 
-  log("[ADDONS] Required addons for reconnect = ", addonsToDownload)
+  log("[ADDONS] Required addons for reconnect = ", addonsToDownload, unitsToDownload)
   eventbus_send("openDownloadAddonsWnd",
-    { addons = addonsToDownload, successEventId = "reconnectAfterAddons", context = { roomId },
+    { addons = addonsToDownload, units = unitsToDownload, successEventId = "reconnectAfterAddons", context = { roomId },
       bqSource = "sessionReconnect", bqParams = { paramStr1 = getAttribUnitName(attribs) ?? getMaxRankUnitName() }
     })
 }
@@ -79,7 +85,7 @@ subscribeFMsgBtns({
       return
     let { roomId, attribs = null } = reconnectData.get()
     reconnect(roomId, attribs)
-    reconnectData(null)
+    reconnectData.set(null)
   }
   function reconnectReject(_) {
     logR($"Reject")
@@ -118,10 +124,10 @@ function onCheckReconnect(resp, cb) {
   logR($"onCheckReconnect resp?.roomId = {resp?.roomId}\n")
   if (hasRoomToJoin) {
     isDisconnected.set(false)
-    reconnectData(resp)
+    reconnectData.set(resp)
     return
   }
-  reconnectData(null)
+  reconnectData.set(null)
   cb()
 }
 

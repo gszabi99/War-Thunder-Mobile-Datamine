@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import set_login_pass
 from "%scripts/dagui_library.nut" import *
 
+let { setLoginPass } = require("auth_wt")
 let { LOGIN_STATE, LOGIN_UPDATER_EVENT_ID } = require("%appGlobals/loginState.nut")
 let { setAutologinType, setAutologinEnabled } = require("%scripts/login/autoLogin.nut")
 let { authState } = require("%scripts/login/authState.nut")
@@ -18,7 +18,7 @@ let finish = onlyActiveStageCb(function() {
   send_counter("sq.updater.done", 1)
 
   let as = authState.get()
-  set_login_pass(as.loginName.tostring(), as.loginPas, AUTO_SAVE_FLG_LOGIN | AUTO_SAVE_FLG_PASS)
+  setLoginPass(as.loginName.tostring(), as.loginPas, AUTO_SAVE_FLG_LOGIN | AUTO_SAVE_FLG_PASS)
   setAutologinType(as.loginType)
   setAutologinEnabled(true)
   finalizeStage()

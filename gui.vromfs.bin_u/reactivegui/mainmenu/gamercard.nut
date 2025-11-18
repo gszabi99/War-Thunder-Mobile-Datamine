@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
@@ -15,7 +15,7 @@ let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgr
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { textColor, premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
@@ -26,7 +26,7 @@ let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
@@ -54,6 +54,7 @@ let openCfg = {
 let openBuyCurrencyWnd = @(curId) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId)
 
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.get().findindex(@(category) category == true))
+let ownHangarUnit = Computed(@() hangarUnit.get()?.__merge(campMyUnits.get()?[hangarUnit.get()?.name] ?? {}))
 
 let textParams = {
   rendObj = ROBJ_TEXT
@@ -94,13 +95,13 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
   let progresOffset = levelHolderSize * rotateCompensate
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
     : !isMaxLevel && !isCampaignWithUnitsResearch.get()
-        && canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), releasedUnits.get())
+        && canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), unreleasedUnits.get())
       ? openExpWnd
     : null
   let showStarLevel = max(starLevel, historyStarLevel)
   let nextStarLevel = isStarProgress ? starLevel + 1 : 0
   return {
-    watch = [playerLevelInfo, isCampaignWithUnitsResearch, buyUnitsData, releasedUnits]
+    watch = [playerLevelInfo, isCampaignWithUnitsResearch, buyUnitsData, unreleasedUnits]
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     padding = [0, progresOffset]
@@ -126,7 +127,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           behavior = onLevelClick != null ? Behaviors.Button : null
           onClick = onLevelClick
           sound = { click  = "meta_profile_button" }
-          color = levelStateFlags.get() & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+          color = levelStateFlags.get() & S_HOVER ? hoverColor : 0xFF000000
           transform = {
             rotate = 45
             scale = levelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
@@ -177,7 +178,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
               onElemState = @(sf) nextLevelStateFlags.set(sf)
               behavior = onLevelClick != null ? Behaviors.Button : null
               onClick = onLevelClick
-              color = nextLevelStateFlags.get() & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+              color = nextLevelStateFlags.get() & S_HOVER ? hoverColor : 0xFF000000
               transform = {
                 rotate = 45
                 scale = nextLevelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
@@ -217,7 +218,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
 
 let hoverBg = {
   size = const [pw(120), flex()]
-  color = 0x8052C4E4
+  color = hoverColor
   opacity = 1
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
@@ -316,18 +317,19 @@ let gamercardUnitLevelLine = @(unit, keyHintText){
   ]
 }
 
-let mkLeftBlock = @(backCb) {
+let mkLeftBlock = @(backCb, menuBtn = null) {
   size = [ SIZE_TO_CONTENT, gamercardHeight ]
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_LEFT
   gap = gamercardGap
   children = [
     backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
+    menuBtn
     gamercardProfile
   ]
 }
 
-let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) @() {
+let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = ownHangarUnit, backBtnOvr = {}) @() {
   watch = unit
   size = [ SIZE_TO_CONTENT, gamercardHeight ]
   flow = FLOW_HORIZONTAL
@@ -335,7 +337,7 @@ let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) @() {
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = [
-    backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
+    backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }.__update(backBtnOvr)) : null
     unit.get() == null ? null : gamercardUnitLevelLine(unit.get(), keyHintText)
   ]
 }
@@ -395,7 +397,7 @@ let mkGamercard = @(menuBtn, backCb = null) {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
   children = [
-    mkLeftBlock(backCb)
+    mkLeftBlock(backCb, menuBtn)
     {
       size = [ SIZE_TO_CONTENT, avatarSize ]
       flow = FLOW_HORIZONTAL
@@ -408,10 +410,6 @@ let mkGamercard = @(menuBtn, backCb = null) {
         mkCurrencyBalance(WP, openBuyCurrencyWnd(WP))
         mkCurrencyBalance(GOLD, openBuyCurrencyWnd(GOLD))
         mkCurrencyBalance(PLATINUM, openBuyCurrencyWnd(PLATINUM))
-        {
-          margin = const [0, 0, 0, hdpx(20)]
-          children = menuBtn
-        }
       ]
     }
   ]
@@ -436,7 +434,7 @@ let gamercardWithoutLevelBlock = {
     }
 }
 
-let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) {
+let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = ownHangarUnit) {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
   children = [
@@ -466,7 +464,6 @@ return {
   gamercardWithoutLevelBlock
   mkGamercard
   mkGamercardUnitCampaign
-  gamercardHeight
   gamercardBalanceBtns
   mkCurrenciesBtns
 }

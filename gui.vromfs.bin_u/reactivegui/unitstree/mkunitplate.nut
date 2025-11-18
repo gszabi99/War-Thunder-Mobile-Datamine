@@ -5,10 +5,10 @@ let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
-  mkUnitSelectedGlow, mkUnitEquippedIcon, mkPlateText, plateTextsSmallPad, unitPlateTiny,
+  mkUnitSelectedGlow, mkUnitEquippedIcon, plateTextsSmallPad, unitPlateTiny,
   bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
@@ -17,11 +17,8 @@ let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature, priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { hasDataForLevelWnd, isSeen, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
+let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlockedUnits.nut")
-let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { ceil } = require("math")
 let { nodeToScroll } = require("%rGui/unitsTree/unitsTreeScroll.nut")
 let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus,
@@ -71,13 +68,18 @@ function triggerAnim() {
   isBuyUnitWndOpened.set(false)
 }
 
-function openBuyUnitWnd(name) {
+function openBuyUnitWnd(name, price) {
   let researchStatus = unitsResearchStatus.get()?[name]
   let blueprintStatus = blueprintUnitsStatus.get()?[name]
   if (researchStatus?.canBuy || blueprintStatus?.canBuy) {
     let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, name)
-    purchaseUnit(name, bqPurchaseInfo, null, null, unitBuyWnd(name), loc("unitsTree/researchCompleted"),
-      @() triggerAnim())
+    purchaseUnit({
+      unitId = name,
+      bqInfo = bqPurchaseInfo,
+      price,
+      content = unitBuyWnd(name),
+      title = loc("unitsTree/researchCompleted"),
+      onCancel = @() triggerAnim()})
   } else
     triggerAnim()
 }
@@ -88,31 +90,19 @@ function mkPlatoonPlates(unit) {
   let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.get())
-  let justBoughtDelay = Computed(@() justBoughtUnits.get()?[unit.name] != null ? 0.5 : null)
 
   return @() {
-    watch = [isSelected, isLocked, justBoughtDelay]
+    watch = [isSelected, isLocked]
     size = flex()
     children = platoonUnits?.map(@(_, idx) {
       size = flex()
       transform = {
-        translate = bgPlatesTranslate(platoonSize, idx, isSelected.get() || (justBoughtDelay.get() != null), framesGapMul)
+        translate = bgPlatesTranslate(platoonSize, idx, isSelected.get(), framesGapMul)
       }
       transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
-      animations = raisePlatesAnimation(justBoughtDelay.get(),
-        bgPlatesTranslate(platoonSize, idx, isSelected.get() || (justBoughtDelay.get() != null), framesGapMul), idx,
-          platoonSize, @() deleteJustBoughtUnit(unit.name))
       children = [
         mkUnitBg(unit, isLocked.get())
         mkPlatoonPlateFrame(unit, isEquipped, isSelected)
-        !justBoughtDelay.get() ? null : mkPlateText(loc(getUnitPresentation(platoonUnits?[platoonSize - idx - 1]).locId),
-          {
-            vplace = ALIGN_TOP
-            hplace = ALIGN_RIGHT
-            padding = plateTextsSmallPad
-            animations = revealAnimation()
-            maxWidth = unitPlateSize[0]
-          })
       ]
     })
   }
@@ -136,17 +126,9 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
     || unit.name in unseenSkins.get()
     || hasUnseenRewards.get())
-  let justUnlockedDelay = Computed(@() hasModalWindows.get() && canBuyForLvlUp.get()
-      ? 1000000.0
-    : canBuyForLvlUp.get()
-        && hasDataForLevelWnd.get()
-        && !hasModalWindows.get()
-        && !isSeen.get()
-      ? 1.0
-    : null)
 
   return @() {
-    watch = [isSelected, isLocked, canPurchase, justUnlockedDelay]
+    watch = [isSelected, isLocked, canPurchase]
     size = unitPlateSize
     behavior = Behaviors.Button
     function onClick() {
@@ -165,15 +147,15 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     sound = { click = "choose" }
     children = [
       mkPlatoonPlates(unit)
-      mkUnitBg(unit, isLocked.get(), justUnlockedDelay.get())
-      mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)), justUnlockedDelay.get())
+      mkUnitBg(unit, isLocked.get())
+      mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
       mkUnitBlueprintMark(unit, {
         pos = [0, -plateBarHeight]
         padding = hdpx(7)
       })
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
-      mkUnitLock(unit, isLocked.get(), justUnlockedDelay.get())
+      mkUnitLock(unit, isLocked.get())
       mkPlateBlueprintBar(unit, {
         pos = [0, 0]
       })
@@ -186,13 +168,13 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
         children = [
           discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
           price.get() != null && price.get().price > 0
-              ? mkUnitsTreePrice(price.get(), justUnlockedDelay.get())
+              ? mkUnitsTreePrice(price.get())
             : null
         ]
       }
       mkProfileUnitDailyBonus(unit)
-      mkPlatoonPlateFrame(unit, isEquipped, isSelected, justUnlockedDelay.get())
-      mkUnitEquippedIcon(unit, isEquipped, justUnlockedDelay.get())
+      mkPlatoonPlateFrame(unit, isEquipped, isSelected)
+      mkUnitEquippedIcon(unit, isEquipped)
       unit.platoonUnits.len() == 0 ?{
         size = flex()
         valign = ALIGN_TOP
@@ -270,7 +252,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
                       needShowPriceUnit.set(false)
                       resetTimeout(0.1, function() {
                         isBuyUnitWndOpened.set(true)
-                        openBuyUnitWnd(unit.name)
+                        openBuyUnitWnd(unit.name, price.get())
                       })
                       unitsForExpAnim.mutate(@(v) v.$rawdelete(unit.name))
                       if(unit.name in serverConfigs.get()?.allBlueprints)
@@ -402,7 +384,7 @@ function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
     key = treeNodeUnitPlateKey(unit.name)
     xmbNode
     children = [
-      mkUnitBg(unit, isLocked.get(), null,
+      mkUnitBg(unit, isLocked.get(),
         !isLocked.get() || (researchStatus.get()?.canResearch ?? false) || (researchStatus.get()?.isResearched ?? false))
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
@@ -490,7 +472,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
       xmbNode
       sound = { click  = "choose" }
       children = [
-        mkUnitBg(unit, isLocked.get(), null,
+        mkUnitBg(unit, isLocked.get(),
           !isLocked.get() || (researchStatus.get()?.canResearch ?? false) || (researchStatus.get()?.isResearched ?? false))
         mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
         needToShowHighlight.get()
@@ -523,7 +505,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           children = !price.get() ? null : [
             discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
             price.get() != null && price.get().price > 0
-                ? mkUnitsTreePrice(price.get(), null, canPurchase.get())
+                ? mkUnitsTreePrice(price.get(), canPurchase.get())
               : null
           ]
           transform = {}

@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { WP } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -23,7 +24,7 @@ let { mkGradText, mkGradGlowText, mkGradGlowMultiLine } = require("%rGui/compone
 let { withGlareEffect } = require("%rGui/components/glare.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { goodsSmallSizeW, goodsH, goodsGap } = require("%rGui/shop/shopWndConst.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
+let { hasVip, vipBonuses } = require("%rGui/state/profilePremium.nut")
 
 let goodsW = hdpxi(555)
 let goodsSmallSize = [goodsSmallSizeW, goodsH]
@@ -297,61 +298,107 @@ function mkGoodsNewPopularMark(goods, state) {
   }
 }
 
-let firstPurchMarkH = hdpxi(60)
-let firstPurchMarkTexOffs = [ 0, firstPurchMarkH / 10, 0, firstPurchMarkH / 2 ]
-let firstPurchBonusCurrencyIcoSize = hdpx(48)
-let firstPurchLabelMaxWidth = goodsW - hdpx(230)
+let purchBonusMarkH = hdpxi(60)
+let purchBonusMarkTexOffs = [0, purchBonusMarkH / 10, 0, purchBonusMarkH / 2]
+let purchBonusCurrencyIcoSize = hdpx(48)
+let purchBonusLabelMaxWidth = goodsW - hdpx(230)
 
-let firstPurchBonusBg = {
-  size  = [ SIZE_TO_CONTENT, firstPurchMarkH ]
+let purchBonusBg = {
+  size  = [ SIZE_TO_CONTENT, purchBonusMarkH ]
   hplace = ALIGN_BOTTOM
   vplace = ALIGN_RIGHT
   valign = ALIGN_CENTER
   rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{firstPurchMarkH}:{firstPurchMarkH}")
+  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{purchBonusMarkH}:{purchBonusMarkH}")
   keepAspect = KEEP_ASPECT_NONE
-  screenOffs = firstPurchMarkTexOffs
-  texOffs = firstPurchMarkTexOffs
+  screenOffs = purchBonusMarkTexOffs
+  texOffs = purchBonusMarkTexOffs
   color = tagRedColor
   padding = const [ 0, hdpx(12), 0, hdpx(40) ]
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
 }
 
-let firstPurchTxt = @(ovr) txtBase.__merge({
+let purchBonusTxt = @(ovr) txtBase.__merge({
   font = Fonts.wtfont
   fontSize = hdpxi(28)
 }, ovr, shadeTiny)
 
-let firstPurchLabel = firstPurchTxt({ text = utf8ToUpper(loc("shop/item/first_purchase/short")) })
-firstPurchLabel.fontSize = getFontSizeToFitWidth(firstPurchLabel, firstPurchLabelMaxWidth, fontVeryVeryTiny.fontSize)
+let firstPurchLabel = purchBonusTxt({ text = utf8ToUpper(loc("shop/item/first_purchase/short")) })
+firstPurchLabel.fontSize = getFontSizeToFitWidth(firstPurchLabel, purchBonusLabelMaxWidth, fontVeryVeryTiny.fontSize)
 
-let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus.len() ?? 0) == 0 || "premiumDays" in goods?.firstPurchaseBonus
+let vipBonusPurchLabel = purchBonusTxt({ text = utf8ToUpper(loc("shop/item/vip_bonus/short")) })
+vipBonusPurchLabel.fontSize = getFontSizeToFitWidth(vipBonusPurchLabel, purchBonusLabelMaxWidth, fontVeryVeryTiny.fontSize)
+
+function mkFirstPurchBonusMark(goods, state) {
+  local { id = null, gType = null, count = 0 } = goods?.firstPurchaseRewards
+  if (gType == null && ("firstPurchaseBonus" in goods)) { 
+    id = goods.firstPurchaseBonus.findindex(@(_, k) k != "premiumDays")
+    if (id != null) {
+      gType = G_CURRENCY
+      count = goods.firstPurchaseBonus?[id] ?? 0
+    }
+  }
+  return gType == null ? null
+    : function() {
+        let res = { watch = state }
+        if (state.get() & HAS_PURCHASES)
+          return res
+        let bonusComp = gType != G_CURRENCY
+          ? purchBonusTxt({ text = "????????" })
+          : {
+              valign = ALIGN_CENTER
+              flow = FLOW_HORIZONTAL
+              gap = hdpx(10)
+              children = [
+                purchBonusTxt({ text = numberToTextForWtFont("".concat("+", count)) })
+                mkCurrencyImage(id, purchBonusCurrencyIcoSize)
+              ]
+            }
+        return res.__merge(purchBonusBg, {
+          children = [
+            bonusComp
+            firstPurchLabel
+          ]
+        })
+      }
+}
+
+let mkVipPurchBonusMark = @(goods) (goods?.isFreeReward || goods?.isPopular || "priceText" not in goods?.priceExt)
   ? null
   : function() {
-      let res = { watch = state }
-      if (state.get() & HAS_PURCHASES)
+      let res = { watch = vipBonuses }
+      let extPurchaseGold = vipBonuses.get()?.extPurchaseGold ?? 0
+
+      if (extPurchaseGold == 0)
         return res
-      local currencyId = goods.firstPurchaseBonus.findindex(@(_) true)
-      local value = goods.firstPurchaseBonus?[currencyId] ?? 0
-      let bonusComp = value <= 0
-        ? firstPurchTxt({ text = "????????" })
-        : {
+
+      return res.__merge(purchBonusBg, {
+        children = [
+          {
             valign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = hdpx(10)
             children = [
-              firstPurchTxt({ text = numberToTextForWtFont("".concat("+", value)) })
-              mkCurrencyImage(currencyId, firstPurchBonusCurrencyIcoSize)
+              purchBonusTxt({ text = numberToTextForWtFont("".concat("+", extPurchaseGold)) })
+              mkCurrencyImage(GOLD, purchBonusCurrencyIcoSize)
             ]
           }
-      return res.__merge(firstPurchBonusBg, {
-        children = [
-          bonusComp
-          firstPurchLabel
+          vipBonusPurchLabel
         ]
       })
     }
+
+let mkPurchBonuses = @(goods, state) {
+  flow = FLOW_VERTICAL
+  hplace = ALIGN_BOTTOM
+  vplace = ALIGN_RIGHT
+  gap = hdpx(8)
+  children = [
+    mkVipPurchBonusMark(goods)
+    mkFirstPurchBonusMark(goods, state)
+  ]
+}
 
 function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
   let { discountInPercent, priceExt = null } = goods
@@ -687,14 +734,14 @@ function mkFreeAdsGoodsTimeProgress(goods) {
 
 let mkGoodsCommonParts = @(goods, state) [
   mkGoodsNewPopularMark(goods, state)
-  mkFirstPurchBonusMark(goods, state)
-  mkWaitDimmingSpinner(Computed(@() (state.value & PURCHASING) != 0))
+  mkPurchBonuses(goods, state)
+  mkWaitDimmingSpinner(Computed(@() (state.get() & PURCHASING) != 0))
   mkFreeAdsGoodsTimeProgress(goods)
   mkDailyLimitGoodsTimeProgress(goods)
 ]
 
 let mkOfferCommonParts = @(goods, state) [
-  mkWaitDimmingSpinner(Computed(@() (state.value & PURCHASING) != 0))
+  mkWaitDimmingSpinner(Computed(@() (state.get() & PURCHASING) != 0))
   mkFreeAdsGoodsTimeProgress(goods)
   mkDailyLimitGoodsTimeProgress(goods)
 ]
@@ -840,14 +887,16 @@ function mkEndTimeImpl(goods, ovr = {}) {
 
 let mkEndTime = @(goods, ovr = {}) mkEndTimeImpl(goods,
   {
-    pos = (goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset,
+    pos = (goods?.firstPurchaseRewards.len() ?? goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null 
+      : firstPuchaseBottomOffset,
     margin = bottomPad
   }.__update(ovr))
 
 let mkGoodsLimitAndEndTime = @(goods) {
   size = FLEX_H
   margin = bottomPad
-  pos = (goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
+  pos = (goods?.firstPurchaseRewards.len() ?? goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null 
+    : firstPuchaseBottomOffset
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
@@ -910,6 +959,7 @@ return {
   mkCanPurchase
   skipPurchasedPlate
   mkCanShowTimeProgress
+  mkDiscountCorner
 
   goodsGlareAnimDuration
   mkBgParticles

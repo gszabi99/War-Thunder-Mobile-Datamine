@@ -33,7 +33,7 @@ let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { textButtonPricePurchase, buttonsHGap, buttonStyles } = require("%rGui/components/textButton.nut")
+let { textButtonPricePurchase, buttonsHGap, buttonStyles, buttonTextWidth } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PRIMARY } = buttonStyles
 let { getSlotsPreviewBg, getSlotsTexts } = require("%appGlobals/config/goodsPresentation.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -69,6 +69,9 @@ let rerollUnitAnim = [{
 let rerollButtonStyle = PRIMARY.__merge({
   ovr = PRIMARY.ovr.__merge({ animations = rerollUnitAnim, transform = {} })
 })
+
+let buyText = utf8ToUpper(loc("btn/buySelected"))
+let rerollText = utf8ToUpper(loc("btn/rerollItems"))
 
 
 let isAttached = Watched(false)
@@ -330,15 +333,16 @@ function tryOpenPurchSlotMsgBox(goodsId, price, currencyId) {
     mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, $"{goodsId}:{gType}/{id}x{count}"))
 }
 
-function purchaseSlotBtn(id, priceCfg, toFullId) {
+function purchaseSlotBtn(id, priceCfg, toFullId, ovr) {
   let { price = 0, currencyId = "" } = priceCfg
   if (price <= 0 || currencyId == "")
     return null
 
   let currencyFullId = toFullId?[currencyId] ?? currencyId
-  return textButtonPricePurchase(utf8ToUpper(loc("btn/buySelected")),
+  return textButtonPricePurchase(buyText,
     mkCurrencyComp(price, currencyFullId),
-    @() tryOpenPurchSlotMsgBox(id, price, currencyFullId))
+    @() tryOpenPurchSlotMsgBox(id, price, currencyFullId)
+    {childOvr = ovr})
 }
 
 function rerollBtn(id, priceCfg, toFullId, styleOvr) {
@@ -347,7 +351,7 @@ function rerollBtn(id, priceCfg, toFullId, styleOvr) {
     return null
 
   let currencyFullId = toFullId?[currencyId] ?? currencyId
-  return textButtonPricePurchase(utf8ToUpper(loc("btn/rerollItems")),
+  return textButtonPricePurchase(rerollText,
     mkCurrencyComp(price, currencyFullId),
     @() openSelGoodsMsgBoxPurch(loc("shop/needMoneyQuestion_reroll"),
       price, currencyFullId, rerollSlots,
@@ -363,7 +367,8 @@ let buttons = @(hasRerollAnim) function() {
   }
   if (previewGoodsWithUpdatedPrice.get() == null)
     return res
-
+  let maxTextSize = max(calc_str_box(rerollText, fontTinyShadedBold)[0], calc_str_box(buyText, fontTinyShadedBold)[0])
+  let fontOvr = maxTextSize < buttonTextWidth ? fontTinyShadedBold : fontVeryTinyShadedBold
   let { id, price } = previewGoodsWithUpdatedPrice.get()
   return res.__update({
     flow = FLOW_HORIZONTAL
@@ -372,13 +377,13 @@ let buttons = @(hasRerollAnim) function() {
     children = shopGenSlotInProgress.get() == id ? null
       : shopPurchaseInProgress.get() ? spinner
       : [
-          rerollBtn(id, rerollCost.get(), currencyToFullId.get(), hasRerollAnim ? rerollButtonStyle : PRIMARY)
+          rerollBtn(id, rerollCost.get(), currencyToFullId.get(), (hasRerollAnim ? rerollButtonStyle : PRIMARY).__merge({childOvr = fontOvr}))
           {
             flow = FLOW_VERTICAL
             halign = ALIGN_CENTER
             children = [
               timer
-              purchaseSlotBtn(id, price, currencyToFullId.get())
+              purchaseSlotBtn(id, price, currencyToFullId.get(), fontOvr)
             ]
           }
         ]

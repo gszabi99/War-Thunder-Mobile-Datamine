@@ -9,17 +9,17 @@ let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { mkCurrencyComp, CS_GAMERCARD } = require("%rGui/components/currencyComp.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
+let { goodTextColor2, badTextColor2, hoverColor } = require("%rGui/style/stdColors.nut")
 let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { isAdsVisible } = require("%rGui/ads/adsState.nut")
 let { GPT_PREMIUM } = require("%rGui/shop/goodsPreviewState.nut")
 
 let visibleBalance = hardPersistWatched("balance.visibleBalance", {})
 let changeOrders = hardPersistWatched("balance.changeOrders", {})
-let items = Computed(@() servProfile.value?.items ?? {})
+let items = Computed(@() servProfile.get()?.items ?? {})
 isAuthorized.subscribe(function(_) {
-  visibleBalance({})
-  changeOrders({})
+  visibleBalance.set({})
+  changeOrders.set({})
 })
 
 let incomeSounds = {
@@ -32,7 +32,7 @@ let incomeSounds = {
 
 let hoverBg = {
   size = const [pw(120), flex()]
-  color = 0x8052C4E4
+  color = hoverColor
   opacity = 1
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
@@ -74,7 +74,7 @@ balance.subscribe(function(b) {
   prevBalance = clone balance.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
-    visibleBalance(visibleBalance.get().__merge(visBalanceApply))
+    visibleBalance.set(visibleBalance.get().__merge(visBalanceApply))
 })
 
 local prevItems = clone items.get()
@@ -94,14 +94,18 @@ items.subscribe(function(it) {
   prevItems = clone items.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
-    visibleBalance(visibleBalance.get().__merge(visBalanceApply))
+    visibleBalance.set(visibleBalance.get().__merge(visBalanceApply))
 })
 
 function onChangeAnimFinish(id, change) {
   if (change != changeOrders.get()?[id][0] || id not in visibleBalance.get())
     return
   visibleBalance.mutate(@(v) v[id] = change.cur)
-  changeOrders.mutate(@(v) v[id].remove(0))
+  changeOrders.mutate(function(v) {
+    let list = clone v[id]
+    list.remove(0)
+    v[id] = list
+  })
   anim_start($"balance_{id}")
 }
 

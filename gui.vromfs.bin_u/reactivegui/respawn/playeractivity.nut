@@ -22,7 +22,7 @@ if(isDebugActive.get())
   setInterval(10.0, sendPlayerActivityToServer)
 
 function blockInactivityKickToggle() {
-  isDebugActive(!isDebugActive.get())
+  isDebugActive.set(!isDebugActive.get())
   log("Block inactivity kick from respawn: ", isDebugActive.get())
 
   if (isDebugActive.get())

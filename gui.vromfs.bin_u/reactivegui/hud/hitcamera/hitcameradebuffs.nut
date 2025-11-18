@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { SHIP, BOAT } = require("%appGlobals/unitConst.nut")
 let { hcUnitType, hcInfo, hcDamageStatus } = require("%rGui/hud/hitCamera/hitCameraState.nut")
+let { hudWhiteColor, hudCoralRedColor, hudGoldColor } = require("%rGui/style/hudColors.nut")
 
 let iconSize = hdpxi(30)
 
@@ -14,15 +15,15 @@ let OFF = 4
 
 let defIconColor = 0xA0A0A0A0
 let iconColor = {
-  [KILLED] = 0xFFFF4040,
+  [KILLED] = hudCoralRedColor,
   [OFF] = 0x500C0E11,
 }
 
-let defTextColor = 0xFFFFFFFF
+let defTextColor = hudWhiteColor
 let textColor = {
   [HEALTHY] = 0xFFA0A0A0,
-  [CRITICAL] = 0xFFFFC000,
-  [KILLED] = 0XFFFF4040,
+  [CRITICAL] = hudGoldColor,
+  [KILLED] = hudCoralRedColor,
   [OFF] = 0x500C0E11,
 }
 
@@ -38,19 +39,19 @@ function mkCommonDebuff(icon, scale, textW, stateW) {
     watch = stateW
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
-    children = stateW.value == HIDDEN ? null
+    children = stateW.get() == HIDDEN ? null
       : [
           {
             size = [size, size]
             rendObj = ROBJ_IMAGE
             image = Picture($"{icon}:{size}:{size}")
-            color = iconColor?[stateW.value] ?? defIconColor
+            color = iconColor?[stateW.get()] ?? defIconColor
           }
           @() {
             watch = textW
             rendObj = ROBJ_TEXT
-            color = textColor?[stateW.value] ?? defTextColor
-            text = textW.value
+            color = textColor?[stateW.get()] ?? defTextColor
+            text = textW.get()
           }.__update(font)
         ]
   }

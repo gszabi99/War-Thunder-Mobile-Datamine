@@ -57,7 +57,7 @@
   "periscopeDepth": 5.0,
   "safeUnderwaterTime": -1.0,
   "isDeeperThanPeriscopeVarName": "periscope_drive",
-  "addTorpedoesCountPack": 8,
+  "addTorpedoesCountPack": 6,
   "explosionFx": [
     "explosion_ship_small",
     "underwater_explosion"
@@ -412,7 +412,7 @@
           "action": {
             "type": "forcedExplosion",
             "probability": 1.0,
-            "relativeDamage": 0.2,
+            "relativeDamage": 0.3,
             "damageType": "explosion",
             "fxEvent": "ammo_expl",
             "parts": {
@@ -430,7 +430,7 @@
           "action": {
             "type": "forcedExplosion",
             "probability": 1.0,
-            "relativeDamage": 0.2,
+            "relativeDamage": 0.3,
             "damageType": "explosion",
             "fxEvent": "ammo_expl",
             "parts": {
@@ -717,8 +717,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -774,8 +773,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -831,8 +829,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -888,8 +885,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -898,7 +894,7 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
         "emitter": "bone_torpedo_01",
-        "bullets": 46,
+        "bullets": 42,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
           4.0,
@@ -907,7 +903,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 360.0,
+        "allowableDelta": 180.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -943,7 +939,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 360.0,
+        "allowableDelta": 180.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -979,7 +975,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 360.0,
+        "allowableDelta": 180.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1015,7 +1011,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 360.0,
+        "allowableDelta": 180.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1051,7 +1047,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 360.0,
+        "allowableDelta": 180.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1087,7 +1083,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 360.0,
+        "allowableDelta": 180.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1179,8 +1175,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1236,8 +1231,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1293,8 +1287,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1350,8 +1343,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1360,7 +1352,7 @@
               "external": true,
               "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
               "emitter": "bone_torpedo_01",
-              "bullets": 46,
+              "bullets": 42,
               "startFx": "underwater_start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1369,7 +1361,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 360.0,
+              "allowableDelta": 180.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1405,7 +1397,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 360.0,
+              "allowableDelta": 180.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1441,7 +1433,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 360.0,
+              "allowableDelta": 180.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1477,7 +1469,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 360.0,
+              "allowableDelta": 180.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1513,7 +1505,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 360.0,
+              "allowableDelta": 180.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1549,7 +1541,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 360.0,
+              "allowableDelta": 180.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,

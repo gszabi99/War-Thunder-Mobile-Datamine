@@ -12,7 +12,7 @@ let mkStatus = @(statusW) @() {
   margin = [contentMargin, contentMargin]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
-  children = mkAvailAttrMark(statusW.value)
+  children = mkAvailAttrMark(statusW.get())
 }
 
 function tabData(tab) {

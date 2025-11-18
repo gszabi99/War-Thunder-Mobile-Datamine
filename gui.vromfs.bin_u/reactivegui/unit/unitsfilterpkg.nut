@@ -1,21 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { optName, optCountry, optMRank, optStatus, optUnitClass, clearFilters
+let { optName, optCountry, optMRank, optStatus, optUnitClass, optType, clearFilters, fillFilters
 } = require("%rGui/unit/unitsFilterState.nut")
 let mkUnitsFilter = require("%rGui/unit/mkUnitsFilter.nut")
 let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
+let { visibleUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let isFiltersVisible = Watched(false)
-let filters = [optName, optStatus, optUnitClass, optMRank, optCountry]
-let filtersTreeNodes = [optName, optStatus, optUnitClass, optMRank]
+let filters = [optName, optStatus, optUnitClass, optMRank, optCountry, optType]
+let defFilters = [optName, optStatus, optUnitClass, optMRank]
+let filtersByCampaign = {
+  tanks = filters
+  tanks_new = filters
+}
 let activeFilters = Watched(0)
 let filterGenId = Watched(0)
 
 const FILTER_UID = "units_filter"
 let closeFilters = @() modalPopupWnd.remove(FILTER_UID)
-let openFilters = @(event, isTreeNodes, ovr = {})
+let openFilters = @(event, campaign, ovr = {})
   modalPopupWnd.add(event.targetRect, {
     uid = FILTER_UID
     rendObj = ROBJ_BOX
@@ -25,7 +29,7 @@ let openFilters = @(event, isTreeNodes, ovr = {})
     padding = hdpx(20)
     popupValign = ALIGN_BOTTOM
     popupHalign = ALIGN_LEFT
-    children = mkUnitsFilter(isTreeNodes ? filtersTreeNodes : filters, availableUnitsList, closeFilters, clearFilters)
+    children = mkUnitsFilter(filtersByCampaign?[campaign] ?? defFilters, visibleUnitsList, closeFilters, clearFilters, fillFilters)
     
     popupOffset = hdpx(20)
     hotkeys = [[btnBEscUp, closeFilters]]
@@ -40,9 +44,9 @@ let getFiltersText = @(count) count <= 0 ? loc("showFilters") : loc("activeFilte
 function countActiveFilters() {
   filterGenId.set(filterGenId.get() + 1)
   return activeFilters.set(filters.reduce(function(res, f) {
-    let { value } = f.value
+    let value = f.value.get()
     if (value != null && value != ""
-        && (type(value) != "table" || value.len() < f.allValues.value.len()))
+        && (type(value) != "table" || value.len() < f.allValues.get().len()))
       res++
     return res
   }, 0))

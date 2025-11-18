@@ -18,10 +18,13 @@ let allTypes = {
   G_PRIZE_TICKET = "prizeTicket"
   G_RESEARCH_EXP = "researchExp"
   G_DISCOUNT = "discount"
+  G_DECAL = "decal"
 }
 
 let rewardTypeByValue = allTypes.reduce(@(res, v, k) res.$rawset(v, k), {})
+let unitRewardTypes = [allTypes.G_UNIT, allTypes.G_UNIT_UPGRADE, allTypes.G_BLUEPRINT].totable()
 
 return allTypes.__merge({
   rewardTypeByValue
+  unitRewardTypes
 })

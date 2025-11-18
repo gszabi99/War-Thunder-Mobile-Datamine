@@ -282,15 +282,17 @@ let footer = {
                 "quests/untilTheEnd",
                 { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
-        mkToBattleButtonWithSquadManagement(function() {
-          if (curGmList.get().len() == 0)
-            return
-          sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedTreeEventId.get() })
-          let modeId = curGmList.get()[0].gameModeId
-          if (tryOpenQueuePenaltyWnd(curGmList.get()[0].campaign, { id = "queueToGameMode", modeId }))
-            return
-          eventbus_send("queueToGameMode", { modeId })
-        })
+        mkToBattleButtonWithSquadManagement(
+          function() {
+            if (curGmList.get().len() == 0)
+              return
+            sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedTreeEventId.get() })
+            let modeId = curGmList.get()[0].gameModeId
+            if (tryOpenQueuePenaltyWnd(curGmList.get()[0].campaign, curGmList.get()[0], { id = "queueToGameMode", modeId }))
+              return
+            eventbus_send("queueToGameMode", { modeId })
+          },
+          Computed(@() curGmList.get()?[0]))
       ]
     }
   ]

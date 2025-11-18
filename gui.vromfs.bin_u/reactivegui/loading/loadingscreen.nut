@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { wndSwitchAnim, wndSwitchTrigger } = require("%rGui/style/stdAnimations.nut")
 let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
 let { loadingAnimBg, isLoadinAnimBgAttached, curScreenId, screenWeights
@@ -20,9 +21,12 @@ function setMissionLoadingScreen(screen) {
   missionScreenIdx.set(missionScreenIdx.get() + 1)
 }
 
-let updateWeights = @(campaign) screenWeights(screensList
-  .filter(@(v) campaign == null || (v?.camp.contains(campaign) ?? true))
-  .map(@(s) s.weight))
+function updateWeights(campaign) {
+  let commonCamp = getCampaignPresentation(campaign).campaign
+  return screenWeights.set(screensList
+    .filter(@(v) campaign == null || (v?.camp.contains(commonCamp) ?? true))
+    .map(@(s) s.weight))
+}
 updateWeights(curCampaign.get())
 curCampaign.subscribe(updateWeights)
 
@@ -52,14 +56,14 @@ isLoadinAnimBgAttached.subscribe(function(v) {
 let ordered = screensList.keys()
 ordered.sort()
 register_command(function() {
-  let idx = ordered.indexof(curScreenId.value) ?? -1
-  curScreenId(ordered[(idx + 1) % ordered.len()])
-  log($"Set to loading screen '{curScreenId.value}'")
+  let idx = ordered.indexof(curScreenId.get()) ?? -1
+  curScreenId.set(ordered[(idx + 1) % ordered.len()])
+  log($"Set to loading screen '{curScreenId.get()}'")
 }, "ui.debug.loadingNext")
 register_command(function(id) {
   if (id not in screensList)
     return log($"Loading screen '{id}' does not exists")
-  curScreenId(id)
+  curScreenId.set(id)
   return log($"Set to loading screen '{id}'")
 }, "ui.debug.loadingSet")
 register_command(@() isInLoadingScreen.set(!isInLoadingScreen.get()), "ui.debug.loadingScreen")

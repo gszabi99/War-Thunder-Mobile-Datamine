@@ -53,7 +53,7 @@
     "explosiveMass": 0.5,
     "normalizationPreset": "default",
     "ricochetPreset": "apds_fs_long",
-    "groundRicochetPreset": "apds_fs_long",
+    "groundRicochetPreset": "apds_fs_ground",
     "secondaryShattersPreset": "apds_fs_long",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,

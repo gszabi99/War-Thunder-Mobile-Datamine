@@ -147,13 +147,13 @@ skusInfo.subscribe(@(v) logG($"available skus: ", v.keys()))
 isAuthorized.subscribe(function(v) {
   if (v)
     return
-  lastInitStatus(GP_NOT_INITED)
-  skusInfo({})
+  lastInitStatus.set(GP_NOT_INITED)
+  skusInfo.set({})
 })
 
 eventbus_subscribe("android.billing.googleplay.onInitAndDataRequested", function(result) {
   let { status, value = null } = result
-  lastInitStatus(status)
+  lastInitStatus.set(status)
   if (status != GP_OK)
     return
   let info = parse_json(value)
@@ -221,12 +221,12 @@ let skusForRequest = keepref(Computed(function() {
 }))
 
 function refreshAvailableSkus() {
-  if (skusForRequest.value.len() == 0)
+  if (skusForRequest.get().len() == 0)
     return
   if (lastInitStatus.get() != GP_OK)
-    lastInitStatus(GP_NOT_INITED) 
-  logG("initAndRequestData: ", skusForRequest.value)
-  initAndRequestData(skusForRequest.value)
+    lastInitStatus.set(GP_NOT_INITED) 
+  logG("initAndRequestData: ", skusForRequest.get())
+  initAndRequestData(skusForRequest.get())
 }
 
 skusForRequest.subscribe(@(_) refreshAvailableSkus())

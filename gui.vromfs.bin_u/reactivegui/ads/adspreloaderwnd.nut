@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { isLoaded } = require("%rGui/ads/adsState.nut")
 let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
@@ -61,7 +62,7 @@ let content = @()
             size = [SIZE_TO_CONTENT, defButtonHeight]
             vplace = ALIGN_BOTTOM
             hplace = ALIGN_CENTER
-            children = canClosePreloader.get() ? textButtonPrimary(loc("msgbox/btn_cancel"), closeAdsPreloader) : null
+            children = canClosePreloader.get() ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_cancel")), closeAdsPreloader) : null
           }
         ]
       }

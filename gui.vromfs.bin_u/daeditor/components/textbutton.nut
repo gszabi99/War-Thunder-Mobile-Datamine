@@ -80,10 +80,10 @@ function textButton(text, handler, params = {}){
       rendObj = ROBJ_BOX
     }.__update(boxNormal, boxS, {
       watch = [stateFlags, disabled]
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       behavior = Behaviors.Button
       hotkeys = params?.hotkeys
-      onClick = handler
+      onClick = disabled?.get() ? null : handler
       onHover = params?.onHover
       children = {rendObj = ROBJ_TEXT text}.__update(textNormal, textS)
     })

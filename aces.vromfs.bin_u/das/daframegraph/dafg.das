@@ -208,6 +208,7 @@ def create(var self : Registry; name : string; history : History) : VirtualResou
   let nameId = self.registry.knownNames |> addNameId`ResNameId(nodeNsId, name)
   self.registry.resources |> get(nameId) <| $(var res : ResourceData&)
     res.history = history
+    res.createdResData |> emplace_some
 
   self.registry.nodes[self.nodeId].createdResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
@@ -316,7 +317,8 @@ def texture(var self : VirtualResourceCreationSemiRequest; info : Texture2dCreat
         desc.height = info.resolution as res.y
       res |> setDescription(desc)
 
-    res.resType = ResourceType.Texture
+    assume createdResData = res.createdResData as some
+    createdResData.resType = ResourceType.Texture
 
   return <- VirtualTextureRequest(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid)
 
@@ -335,7 +337,8 @@ def buffer(var self : VirtualResourceCreationSemiRequest; info : BufferCreateInf
       desc.activation = ResourceActivationAction.DISCARD_AS_UAV
       res |> setDescription(desc)
 
-    res.resType = ResourceType.Buffer
+    assume createdResData = res.createdResData as some
+    createdResData.resType = ResourceType.Buffer
 
   return <- VirtualBufferRequest(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid)
 
@@ -522,7 +525,8 @@ class BlobMacro : AstCallMacro
                 res |> overrideCtor(getTypeInfo(type<$t(blobType)>), ctor);
               }
 
-              res.resType = ResourceType.Blob;
+              assume createdResData = res.createdResData as some
+              createdResData.resType = ResourceType.Blob;
             } |> invoke(self.registry.resources |> get(self.resUid.nameId));
             self |> modifyRequest() <| $(var request : ResourceRequest&) {
               request |> markWithTag($v(mangledBlobTypeName));

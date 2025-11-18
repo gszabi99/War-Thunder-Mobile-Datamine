@@ -117,13 +117,13 @@ skusInfo.subscribe(@(v) logG($"available skus: ", v.keys()))
 isAuthorized.subscribe(function(v) {
   if (v)
     return
-  lastInitStatus(HMS_ORDER_STATE_DEFAULT_CODE)
-  skusInfo({})
+  lastInitStatus.set(HMS_ORDER_STATE_DEFAULT_CODE)
+  skusInfo.set({})
 })
 
 eventbus_subscribe("android.billing.huawei.onInitAndDataRequested", function(result) {
   let { status, value = null } = result
-  lastInitStatus(status)
+  lastInitStatus.set(status)
   if (status != HMS_ORDER_STATE_SUCCESS)
     return
   let info = parse_json(value)
@@ -185,12 +185,12 @@ let skusForRequest = keepref(Computed(function() {
 }))
 
 function refreshAvailableSkus() {
-  if (skusForRequest.value.len() == 0)
+  if (skusForRequest.get().len() == 0)
     return
   if (lastInitStatus.get() != HMS_ORDER_STATE_SUCCESS)
-    lastInitStatus(HMS_ORDER_STATE_DEFAULT_CODE) 
-  logG("initAndRequestData: ", skusForRequest.value)
-  initAndRequestData(skusForRequest.value)
+    lastInitStatus.set(HMS_ORDER_STATE_DEFAULT_CODE) 
+  logG("initAndRequestData: ", skusForRequest.get())
+  initAndRequestData(skusForRequest.get())
 }
 
 skusForRequest.subscribe(@(_) refreshAvailableSkus())

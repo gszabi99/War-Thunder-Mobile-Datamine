@@ -9,7 +9,7 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
-let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
+let { CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel, eventSeason, curEvent } = require("%rGui/event/eventState.nut")
 let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
@@ -19,7 +19,7 @@ let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
-let { getLootboxImage, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxImage, lootboxFallbackPicture, customEventLootboxShiftPos } = require("%appGlobals/config/lootboxPresentation.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -123,6 +123,7 @@ let mkEventLoootboxImage = @(id, size = null, ovr = {}) @() {
 
 function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul = 1.0) {
   let imageSize = [width, lootboxHeight].map(@(v) (v * sizeMul + 0.5).tointeger())
+  let pos = customEventLootboxShiftPos?[name].map(@(v, idx) imageSize[idx] * v)
   let blockSize = [width, lootboxHeight]
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.get() >= reqPlayerLevel
@@ -137,6 +138,7 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
   return @() {
     watch = isActive
     size = blockSize
+    pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -153,7 +155,7 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
         behavior = Behaviors.TextArea
         halign = ALIGN_CENTER
         text = timeText.get()
-      }.__update(fontTiny)
+      }.__update(fontTinyShaded)
     ]
   }
 }
@@ -208,21 +210,21 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
 let leaderbordBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#prizes_icon.svg", loc("mainmenu/titleLeaderboards")),
   openLbWnd,
-  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
+  buttonStyles.COMMON.__merge({ hotkeys = ["^J:X"] }))
 
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
   @() openEventQuestsWnd(curEvent.get()),
-  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:Y"] }))
+  buttonStyles.COMMON.__merge({ hotkeys = ["^J:Y"] }))
 
-let mkCurrencyComp = @(value, currencyId) {
+let mkCurrencyComp = @(value, currencyId, isInactive) {
   size = [SIZE_TO_CONTENT, iconSize]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(20)
   children = [
     mkCurrencyImage(currencyId, iconSize)
-    mkCurrencyText(value, iconStyle)
+    mkCurrencyText(value, isInactive ? iconStyle.__merge(CS_INACTIVE_ICON) : iconStyle)
   ]
 }
 
@@ -237,15 +239,20 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
   let canOpenX10 = Computed(function(){
     let stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
-    if(stepsToFixed[1] == 0)
+    if (stepsToFixed[1] == 0)
       return true
-    if(stepsToFixed[1] - stepsToFixed[0] <= 10)
+    if (stepsToFixed[1] - stepsToFixed[0] <= 10)
       return false
     return true
   })
+  let isInactive = Computed(@() !isActive.get()
+    || (balance.get()?[currencyFullId.get()] ?? 0) < price)
+  let isInactiveX10 = Computed(@() !isActive.get()
+    || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10
+    || !canOpenX10.get())
 
   return @() {
-    watch = [isActive, balance, adReward, currencyFullId, canOpenX10]
+    watch = [isInactive, isInactiveX10, adReward, currencyFullId, canOpenX10]
     key = name
     flow = FLOW_HORIZONTAL
     gap = hdpx(40)
@@ -253,16 +260,14 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     children = [
       adReward.get() != null ? mkAdsBtn(reqPlayerLevel, adReward.get()) : null
       textButtonPricePurchase(hasBulkPurchase ? utf8ToUpper(loc("events/oneReward")) : null,
-        mkCurrencyComp(price, currencyFullId.get()),
+        mkCurrencyComp(price, currencyFullId.get(), isInactive.get()),
         @() onPurchase(lootbox, price, currencyFullId.get()),
-        (!isActive.get() || (balance.get()?[currencyFullId.get()] ?? 0) < price ? buttonStyles.COMMON : {})
-          .__merge({ hotkeys = ["^J:X"] }))
+        (isInactive.get() ? buttonStyles.INACTIVE : {}).__merge({ hotkeys = ["^J:X"] }))
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
-            mkCurrencyComp(price * 10, currencyFullId.get()),
+            mkCurrencyComp(price * 10, currencyFullId.get(), isInactiveX10.get()),
             @() !canOpenX10.get() ? null : onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
-            (!isActive.get() || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10
-              || !canOpenX10.get() ? buttonStyles.COMMON : {})
+            (isInactiveX10.get() ? buttonStyles.INACTIVE : {})
               .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() !canOpenX10.get() ? loc("x10Btn/desc") : null,
                 repayTime = 0 }))
     ]

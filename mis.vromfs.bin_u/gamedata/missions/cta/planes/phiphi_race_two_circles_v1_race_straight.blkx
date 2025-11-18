@@ -1,0 +1,6307 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "entities": "gameData/scenes/air_race_phi_phi_lights_short.blk",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32",
+        "t2_player33"
+      ]
+    },
+    "mission": {
+      "level": "levels/air_race_phiphi_islands.bin",
+      "type": "domination",
+      "environment": "5",
+      "weather": "cloudy",
+      "killLimit": 10,
+      "lapTimeFast": 330.0,
+      "lapTimeFaster": 300.0,
+      "lapTimeFastest": 255.0,
+      "locName": "phiphi_race_two_circles/name;missions/_v1_race_straight",
+      "locDesc": "phiphi_race_two_circles/desc;missions/_v1_race_straight/desc",
+      "gt_ffa": true,
+      "gt_race": true,
+      "openDiffLevels": true,
+      "timeLimit": 10,
+      "postfix": "_v1_race_straight",
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "raceLaps": 1,
+      "raceWinners": 1,
+      "raceForceCannotShoot": true,
+      "restoreType": "attempts",
+      "difficulty": "",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/planes/phiphi_race_two_circles.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "boosters_all_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 119,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": "booster_all_squad",
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_01_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_004",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.6
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 12,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_01_01",
+            "speed_boost_01_02",
+            "speed_boost_01_03",
+            "speed_boost_01_04",
+            "speed_boost_01_05",
+            "speed_boost_01_06",
+            "speed_boost_01_07",
+            "speed_boost_01_08",
+            "speed_boost_01_09",
+            "speed_boost_01_10",
+            "speed_boost_01_11",
+            "speed_boost_01_12"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_03_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_013",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 6,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_03_01",
+            "speed_boost_03_02",
+            "speed_boost_03_03",
+            "speed_boost_03_04",
+            "speed_boost_03_05",
+            "speed_boost_03_06"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_04_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_039",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.6
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 7,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_04_01",
+            "speed_boost_04_02",
+            "speed_boost_04_03",
+            "speed_boost_04_04",
+            "speed_boost_04_05",
+            "speed_boost_04_06",
+            "speed_boost_04_07"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_05_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_032",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.6
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 5,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_05_01",
+            "speed_boost_05_02",
+            "speed_boost_05_03",
+            "speed_boost_05_04",
+            "speed_boost_05_05"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_06_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_042",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.6
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 7,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_06_01",
+            "speed_boost_06_02",
+            "speed_boost_06_03",
+            "speed_boost_06_04",
+            "speed_boost_06_05",
+            "speed_boost_06_06",
+            "speed_boost_06_07"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_07_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_049.13",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.6
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 5,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_07_01",
+            "speed_boost_07_02",
+            "speed_boost_07_03",
+            "speed_boost_07_04",
+            "speed_boost_07_05"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_08_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_049.06",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 6,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_08_01",
+            "speed_boost_08_02",
+            "speed_boost_08_03",
+            "speed_boost_08_04",
+            "speed_boost_08_05",
+            "speed_boost_08_06"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_09_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_052",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 4,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_09_01",
+            "speed_boost_09_02",
+            "speed_boost_09_03",
+            "speed_boost_09_04"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_10_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_056",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 6,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_10_01",
+            "speed_boost_10_02",
+            "speed_boost_10_03",
+            "speed_boost_10_04",
+            "speed_boost_10_05",
+            "speed_boost_10_06"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_11_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_063",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 7,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_11_01",
+            "speed_boost_11_02",
+            "speed_boost_11_03",
+            "speed_boost_11_04",
+            "speed_boost_11_05",
+            "speed_boost_11_06",
+            "speed_boost_11_07"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_12_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_071",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 7,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_12_01",
+            "speed_boost_12_02",
+            "speed_boost_12_03",
+            "speed_boost_12_04",
+            "speed_boost_12_05",
+            "speed_boost_12_06",
+            "speed_boost_12_07"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_13_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_074",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 3,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_13_01",
+            "speed_boost_13_02",
+            "speed_boost_13_03",
+            "speed_boost_13_04"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "boosters_14_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_082",
+          "numPlayers": 1
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "missionCreatePickUps": {
+          "preset": "airSpeedBoost",
+          "count": 6,
+          "minDistanceFromBattleAreaEdge": 1.0,
+          "target": [
+            "speed_boost_14_01",
+            "speed_boost_14_02",
+            "speed_boost_14_03",
+            "speed_boost_14_04",
+            "speed_boost_14_05",
+            "speed_boost_14_06"
+          ],
+          "ignoreBattleArea": true
+        }
+      },
+      "else_actions": {}
+    },
+    "booster_lap_restart": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "racePointGetNumPlayersPassed": {
+          "areaName": "race_wp_v1_91",
+          "numPlayers": 1
+        }
+      },
+      "actions": {},
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": {
+      "name": "booster_all_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          499.45,
+          0.0,
+          2972.0
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "speed_boost_all_01",
+          "speed_boost_all_02",
+          "speed_boost_all_03",
+          "speed_boost_all_04",
+          "speed_boost_all_05",
+          "speed_boost_all_06",
+          "speed_boost_all_07",
+          "speed_boost_all_08",
+          "speed_boost_all_09",
+          "speed_boost_all_10",
+          "speed_boost_all_11",
+          "speed_boost_all_12",
+          "speed_boost_all_13",
+          "speed_boost_all_14",
+          "speed_boost_all_15",
+          "speed_boost_all_16",
+          "speed_boost_all_17",
+          "speed_boost_all_18",
+          "speed_boost_all_19",
+          "speed_boost_all_20",
+          "speed_boost_all_21",
+          "speed_boost_all_22",
+          "speed_boost_all_23",
+          "speed_boost_all_24",
+          "speed_boost_all_25",
+          "speed_boost_all_26",
+          "speed_boost_all_27",
+          "speed_boost_all_28",
+          "speed_boost_all_29",
+          "speed_boost_all_30",
+          "speed_boost_all_31",
+          "speed_boost_all_32",
+          "speed_boost_all_33",
+          "speed_boost_all_34",
+          "speed_boost_all_35",
+          "speed_boost_all_36",
+          "speed_boost_all_37",
+          "speed_boost_all_38",
+          "speed_boost_all_43",
+          "speed_boost_all_44",
+          "speed_boost_all_45",
+          "speed_boost_all_46",
+          "speed_boost_all_47",
+          "speed_boost_all_48",
+          "speed_boost_all_49",
+          "speed_boost_all_50",
+          "speed_boost_all_51",
+          "speed_boost_all_52",
+          "speed_boost_all_53",
+          "speed_boost_all_54",
+          "speed_boost_all_55",
+          "speed_boost_all_56",
+          "speed_boost_all_57",
+          "speed_boost_all_58",
+          "speed_boost_all_59",
+          "speed_boost_all_60",
+          "speed_boost_all_61",
+          "speed_boost_all_62",
+          "speed_boost_all_63",
+          "speed_boost_all_64",
+          "speed_boost_all_65",
+          "speed_boost_all_66",
+          "speed_boost_all_67",
+          "speed_boost_all_68",
+          "speed_boost_all_69",
+          "speed_boost_all_70",
+          "speed_boost_all_71",
+          "speed_boost_all_72",
+          "speed_boost_all_73",
+          "speed_boost_all_74",
+          "speed_boost_all_75",
+          "speed_boost_all_76",
+          "speed_boost_all_77",
+          "speed_boost_all_78",
+          "speed_boost_all_79",
+          "speed_boost_all_80",
+          "speed_boost_all_81",
+          "speed_boost_all_82",
+          "speed_boost_all_83",
+          "speed_boost_all_84",
+          "speed_boost_all_85",
+          "speed_boost_all_86",
+          "speed_boost_all_87",
+          "speed_boost_all_88",
+          "speed_boost_all_89",
+          "speed_boost_all_90",
+          "speed_boost_all_91",
+          "speed_boost_all_92",
+          "speed_boost_all_93",
+          "speed_boost_all_94",
+          "speed_boost_all_95",
+          "speed_boost_all_96",
+          "speed_boost_all_97",
+          "speed_boost_all_98",
+          "speed_boost_all_99",
+          "speed_boost_all_100",
+          "speed_boost_all_101",
+          "speed_boost_all_102",
+          "speed_boost_all_103",
+          "speed_boost_all_104",
+          "speed_boost_all_105",
+          "speed_boost_all_106",
+          "speed_boost_all_107",
+          "speed_boost_all_108",
+          "speed_boost_all_109",
+          "speed_boost_all_110",
+          "speed_boost_all_111",
+          "speed_boost_all_112",
+          "speed_boost_all_113",
+          "speed_boost_all_114",
+          "speed_boost_all_115",
+          "speed_boost_all_116",
+          "speed_boost_all_117",
+          "speed_boost_all_118",
+          "speed_boost_all_119"
+        ]
+      }
+    }
+  },
+  "areas": {
+    "speed_boost_01_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.81397,
+          0.0,
+          -1.7152
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.7152,
+          0.0,
+          -7.81397
+        ],
+        [
+          1342.04,
+          75.2,
+          1881.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.69172,
+          0.0,
+          -2.19943
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          2.19943,
+          0.0,
+          -7.69172
+        ],
+        [
+          1347.39,
+          75.2,
+          1858.24
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.76605,
+          0.0,
+          -1.92055
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.92055,
+          0.0,
+          -7.76605
+        ],
+        [
+          1357.62,
+          75.2,
+          1831.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1368.08,
+          72.05,
+          1809.41
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_09_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          8.0
+        ],
+        [
+          -397.55,
+          108.55,
+          -771.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_09_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          8.0
+        ],
+        [
+          -429.5,
+          99.3,
+          -770.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_09_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          8.0
+        ],
+        [
+          -460.6,
+          113.7,
+          -767.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_09_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          8.0
+        ],
+        [
+          -494.3,
+          137.3,
+          -768.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_10_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.73612,
+          0.0,
+          4.31564
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -4.31564,
+          0.0,
+          6.73612
+        ],
+        [
+          -660.45,
+          249.35,
+          -1871.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_10_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.82062,
+          0.0,
+          4.18081
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -4.18081,
+          0.0,
+          6.82062
+        ],
+        [
+          -634.8,
+          254.45,
+          -1911.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_10_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.79246,
+          0.0,
+          4.22641
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -4.22641,
+          0.0,
+          6.79246
+        ],
+        [
+          -658.1,
+          289.6,
+          -1870.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_10_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.87667,
+          0.0,
+          4.08796
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -4.08796,
+          0.0,
+          6.87667
+        ],
+        [
+          -684.35,
+          251.2,
+          -1830.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.84601,
+          0.0,
+          1.56209
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.56209,
+          0.0,
+          7.84601
+        ],
+        [
+          -1993.56,
+          182.9,
+          -2737.74
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.81276,
+          0.0,
+          1.72069
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.72069,
+          0.0,
+          7.81276
+        ],
+        [
+          -1986.73,
+          208.07,
+          -2751.07
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.82411,
+          0.0,
+          1.66832
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.66832,
+          0.0,
+          7.82411
+        ],
+        [
+          -1979.38,
+          182.9,
+          -2789.09
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.78938,
+          0.0,
+          1.8236
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.8236,
+          0.0,
+          7.78938
+        ],
+        [
+          -1986.64,
+          182.899,
+          -2763.03
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_13_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.01559,
+          0.0,
+          -7.93528
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.93528,
+          0.0,
+          -1.01559
+        ],
+        [
+          -3470.0,
+          216.5,
+          1541.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_13_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.854642,
+          0.0,
+          -7.95422
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.95422,
+          0.0,
+          -0.854642
+        ],
+        [
+          -3454.8,
+          200.8,
+          1545.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_13_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.907912,
+          0.0,
+          -7.94831
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.94831,
+          0.0,
+          -0.907912
+        ],
+        [
+          -3485.5,
+          188.0,
+          1558.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_13_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.749648,
+          0.0,
+          -7.9648
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.9648,
+          0.0,
+          -0.749648
+        ],
+        [
+          -3471.8,
+          171.05,
+          1549.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_14_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.99729,
+          0.0,
+          0.208292
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -0.208292,
+          0.0,
+          -7.99729
+        ],
+        [
+          -2244.19,
+          137.0,
+          1732.03
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_14_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.99987,
+          0.0,
+          0.0462566
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -0.0462566,
+          0.0,
+          -7.99987
+        ],
+        [
+          -2240.55,
+          131.245,
+          1705.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_14_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.99938,
+          0.0,
+          0.0998482
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -0.0998482,
+          0.0,
+          -7.99938
+        ],
+        [
+          -2238.53,
+          109.626,
+          1739.58
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_14_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.99978,
+          0.0,
+          -0.0592695
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.0592695,
+          0.0,
+          -7.99978
+        ],
+        [
+          -2241.73,
+          108.1,
+          1707.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_15_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.34857,
+          0.0,
+          -1.47694
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.47694,
+          0.0,
+          -1.34857
+        ],
+        [
+          -309.0,
+          69.4,
+          1639.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_15_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.30654,
+          0.0,
+          -1.51424
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.51424,
+          0.0,
+          -1.30654
+        ],
+        [
+          -270.3,
+          94.05,
+          1630.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_15_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.30467,
+          0.0,
+          -1.51586
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.51586,
+          0.0,
+          -1.30467
+        ],
+        [
+          -342.15,
+          69.45,
+          1657.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_15_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.68692,
+          0.0,
+          -1.07438
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.07438,
+          0.0,
+          -1.68692
+        ],
+        [
+          -260.6,
+          73.85,
+          1580.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_110": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1482.2,
+          100.3,
+          834.966
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_03_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.04465,
+          0.0,
+          -6.20899
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.20899,
+          0.0,
+          5.04465
+        ],
+        [
+          1802.73,
+          108.7,
+          -23.1029
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_03_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.42225,
+          0.0,
+          -5.88211
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.88211,
+          0.0,
+          5.42225
+        ],
+        [
+          1834.77,
+          108.7,
+          -4.53572
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_03_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.20655,
+          0.0,
+          -6.07387
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.07387,
+          0.0,
+          5.20655
+        ],
+        [
+          1802.73,
+          90.0999,
+          -23.1029
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_03_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.51731,
+          0.0,
+          -4.63947
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.63947,
+          0.0,
+          6.51731
+        ],
+        [
+          1834.77,
+          90.1,
+          -4.53566
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.196646,
+          0.0,
+          -7.99758
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99758,
+          0.0,
+          0.196646
+        ],
+        [
+          1285.53,
+          188.864,
+          -1705.03
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.695292,
+          0.0,
+          -7.96973
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.96973,
+          0.0,
+          0.695292
+        ],
+        [
+          1247.23,
+          191.764,
+          -1705.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.407361,
+          0.0,
+          -7.98962
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.98962,
+          0.0,
+          0.407361
+        ],
+        [
+          1256.55,
+          174.25,
+          -1706.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0552628,
+          0.0,
+          -7.99981
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99981,
+          0.0,
+          0.0552628
+        ],
+        [
+          1265.55,
+          191.164,
+          -1706.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_05_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -3.39608,
+          0.0,
+          -7.24338
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.24338,
+          0.0,
+          -3.39608
+        ],
+        [
+          3411.7,
+          -55.1045,
+          -633.505
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_05_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.93751,
+          0.0,
+          -7.44117
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.44117,
+          0.0,
+          -2.93751
+        ],
+        [
+          3443.45,
+          -54.7803,
+          -672.005
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_05_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -3.204,
+          0.0,
+          -7.33037
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.33037,
+          0.0,
+          -3.204
+        ],
+        [
+          3461.6,
+          -54.6572,
+          -684.005
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_05_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -3.52358,
+          0.0,
+          -7.18223
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.18223,
+          0.0,
+          -3.52358
+        ],
+        [
+          3453.6,
+          -54.7129,
+          -678.605
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.96428,
+          0.0,
+          -0.755127
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.755127,
+          0.0,
+          7.96428
+        ],
+        [
+          595.865,
+          73.1433,
+          -3346.29
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.99588,
+          0.0,
+          -0.256716
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.256716,
+          0.0,
+          7.99588
+        ],
+        [
+          595.682,
+          73.1433,
+          -3318.99
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.98142,
+          0.0,
+          -0.544937
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.544937,
+          0.0,
+          7.98142
+        ],
+        [
+          596.084,
+          73.1433,
+          -3290.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.94969,
+          0.0,
+          -0.895762
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.895762,
+          0.0,
+          7.94969
+        ],
+        [
+          597.314,
+          73.1433,
+          -3264.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_07_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.99729,
+          0.0,
+          -5.29457
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.29457,
+          0.0,
+          5.99729
+        ],
+        [
+          352.25,
+          204.661,
+          -1603.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_07_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.31598,
+          0.0,
+          -4.91003
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.91003,
+          0.0,
+          6.31598
+        ],
+        [
+          352.586,
+          186.15,
+          -1603.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_07_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.13475,
+          0.0,
+          -5.13467
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.13467,
+          0.0,
+          6.13475
+        ],
+        [
+          372.708,
+          171.25,
+          -1593.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_07_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.90278,
+          0.0,
+          -5.39974
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.39974,
+          0.0,
+          5.90278
+        ],
+        [
+          372.221,
+          194.1,
+          -1593.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_08_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.971,
+          0.0,
+          -0.680588
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.680588,
+          0.0,
+          -7.971
+        ],
+        [
+          1000.64,
+          -444.816,
+          -3988.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_08_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.913,
+          0.0,
+          -1.17663
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.17663,
+          0.0,
+          -7.913
+        ],
+        [
+          988.29,
+          -415.516,
+          -4022.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_08_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.95029,
+          0.0,
+          -0.890441
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.890441,
+          0.0,
+          -7.95029
+        ],
+        [
+          996.29,
+          -437.616,
+          -4051.99
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_08_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.98178,
+          0.0,
+          -0.539603
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.539603,
+          0.0,
+          -7.98178
+        ],
+        [
+          981.94,
+          -416.866,
+          -4079.09
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.39428,
+          0.0,
+          -5.90777
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.90777,
+          0.0,
+          -5.39428
+        ],
+        [
+          675.45,
+          44.8,
+          1932.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.22618,
+          0.0,
+          -6.05698
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.05698,
+          0.0,
+          -5.22618
+        ],
+        [
+          3451.06,
+          -54.9766,
+          -636.796
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.21868,
+          0.0,
+          -6.06344
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.06344,
+          0.0,
+          -5.21868
+        ],
+        [
+          3441.16,
+          -55.0645,
+          -626.846
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          3426.36,
+          -55.25,
+          -603.246
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          3446.36,
+          -55.0635,
+          -624.696
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          3434.96,
+          -55.1348,
+          -618.246
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          3438.06,
+          -55.082,
+          -625.396
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.68824,
+          0.0,
+          -2.21156
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          2.21156,
+          0.0,
+          -7.68824
+        ],
+        [
+          672.716,
+          99.4525,
+          1913.21
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.68824,
+          0.0,
+          -2.21156
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          2.21156,
+          0.0,
+          -7.68824
+        ],
+        [
+          692.484,
+          99.2525,
+          1929.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.68824,
+          0.0,
+          -2.21156
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          2.21156,
+          0.0,
+          -7.68824
+        ],
+        [
+          741.371,
+          -2.25252,
+          1982.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.68824,
+          0.0,
+          -2.21156
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          2.21156,
+          0.0,
+          -7.68824
+        ],
+        [
+          683.18,
+          122.306,
+          1921.73
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          3402.87,
+          -52.1992,
+          -568.188
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          686.35,
+          137.25,
+          1918.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          3341.61,
+          -44.6729,
+          -569.088
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          670.081,
+          80.0,
+          1918.22
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          689.336,
+          60.2222,
+          1935.63
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          668.458,
+          60.22,
+          1920.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          691.366,
+          80.0,
+          1934.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.74769,
+          0.0,
+          -4.29752
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.29752,
+          0.0,
+          -6.74769
+        ],
+        [
+          616.064,
+          -33.7239,
+          1926.23
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1224.71,
+          55.3362,
+          -2905.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_21": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1239.67,
+          55.3362,
+          -2907.32
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_22": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1254.61,
+          55.3362,
+          -2909.41
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_23": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1269.56,
+          55.3362,
+          -2911.48
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_24": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1218.58,
+          45.9574,
+          -2903.61
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_25": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1233.53,
+          45.9574,
+          -2905.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_26": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1248.47,
+          45.9574,
+          -2907.76
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_27": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1263.43,
+          45.9574,
+          -2909.84
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_28": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4.74933,
+          0.0,
+          -6.4377
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.4377,
+          0.0,
+          -4.74933
+        ],
+        [
+          1278.38,
+          45.9574,
+          -2911.92
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_29": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3479.14,
+          -54.5098,
+          -700.253
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_30": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3485.21,
+          -54.2783,
+          -735.173
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_31": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3489.36,
+          -54.0742,
+          -766.533
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_32": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3492.9,
+          -53.8848,
+          -795.763
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_33": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3489.36,
+          -54.0742,
+          -766.533
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_34": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3487.5,
+          -54.2598,
+          -737.213
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_35": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3485.21,
+          -54.2783,
+          -735.173
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_36": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3491.66,
+          -54.0713,
+          -765.923
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_37": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3426.52,
+          -45.6348,
+          -773.353
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_38": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          3425.75,
+          -46.1436,
+          -770.353
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_43": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.00000150828,
+          8.0,
+          7.63575e-7
+        ],
+        [
+          -0.00000989437,
+          0.0,
+          8.0
+        ],
+        [
+          1242.15,
+          246.18,
+          -1016.77
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_44": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          1.35525e-20
+        ],
+        [
+          -0.00000111379,
+          8.0,
+          2.38419e-7
+        ],
+        [
+          -0.00000556963,
+          -0.00000333786,
+          8.0
+        ],
+        [
+          1242.15,
+          232.05,
+          -1016.77
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_45": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.00000150819,
+          8.0,
+          7.63407e-7
+        ],
+        [
+          -0.00000989439,
+          1.92756e-10,
+          8.0
+        ],
+        [
+          1255.38,
+          260.32,
+          -1020.48
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_46": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          6.77626e-21
+        ],
+        [
+          -0.00000150826,
+          8.0,
+          7.63576e-7
+        ],
+        [
+          6.29757e-14,
+          0.0,
+          8.0
+        ],
+        [
+          1255.91,
+          246.183,
+          -1020.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_47": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          -4.33681e-19,
+          0.0
+        ],
+        [
+          -0.00000127708,
+          8.0,
+          0.00000122708
+        ],
+        [
+          7.10543e-15,
+          2.09045e-11,
+          8.0
+        ],
+        [
+          1256.44,
+          232.054,
+          -1020.29
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_48": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.00000108658,
+          8.00001,
+          -1.19209e-7
+        ],
+        [
+          -0.00000557436,
+          0.00000631809,
+          8.0
+        ],
+        [
+          1256.97,
+          217.931,
+          -1020.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_49": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.00000108658,
+          8.00001,
+          -1.19209e-7
+        ],
+        [
+          -0.00000557436,
+          0.00000631809,
+          8.0
+        ],
+        [
+          1257.5,
+          203.795,
+          -1020.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_50": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          3.24393e-16,
+          0.0
+        ],
+        [
+          -0.00000119958,
+          8.00001,
+          0.00000125722
+        ],
+        [
+          -0.00000155265,
+          2.27374e-13,
+          8.0
+        ],
+        [
+          1242.15,
+          217.93,
+          -1016.77
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_51": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8.0,
+          -9.02087e-16,
+          0.0
+        ],
+        [
+          -0.0000012652,
+          8.0,
+          -0.0000032559
+        ],
+        [
+          -0.00000518548,
+          -1.19247e-9,
+          8.0
+        ],
+        [
+          1242.2,
+          203.79,
+          -1016.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_52": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          272.775,
+          87.6918,
+          -2435.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_53": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          283.213,
+          100.33,
+          -2434.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_54": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          261.203,
+          100.33,
+          -2436.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_55": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          282.626,
+          151.4,
+          -2426.77
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_56": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          269.581,
+          151.4,
+          -2426.96
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_57": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          256.457,
+          151.4,
+          -2427.18
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_58": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          146.338,
+          141.71,
+          -779.357
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_59": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          112.825,
+          151.455,
+          -776.194
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_60": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          174.587,
+          141.71,
+          -781.876
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_61": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          205.054,
+          156.003,
+          -785.226
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_62": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          112.914,
+          183.976,
+          -775.538
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_63": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          146.338,
+          169.73,
+          -779.357
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_64": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          174.587,
+          170.018,
+          -781.876
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_65": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          205.054,
+          182.466,
+          -785.226
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_66": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1216.61,
+          282.208,
+          -2548.18
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_67": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1224.0,
+          288.633,
+          -2525.93
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_68": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1207.7,
+          274.834,
+          -2572.46
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_69": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1215.65,
+          253.24,
+          -2564.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_70": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1224.55,
+          261.866,
+          -2540.32
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_71": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1231.94,
+          268.531,
+          -2518.07
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_72": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1224.0,
+          247.369,
+          -2525.93
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_73": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1216.61,
+          240.272,
+          -2548.18
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_74": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -1207.7,
+          230.325,
+          -2572.46
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_75": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2644.78,
+          134.228,
+          -2014.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_76": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2639.64,
+          134.228,
+          -1997.29
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_77": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2638.58,
+          134.228,
+          -1979.73
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_78": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2634.87,
+          134.228,
+          -1962.23
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_79": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2642.86,
+          119.391,
+          -2006.42
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_80": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2637.83,
+          119.391,
+          -1988.87
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_81": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2634.26,
+          119.391,
+          -1969.51
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_82": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6.38098,
+          0.0,
+          -4.82526
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          4.82526,
+          0.0,
+          -6.38098
+        ],
+        [
+          -2628.2,
+          119.391,
+          -1952.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_83": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3342.0,
+          20.0,
+          147.074
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_84": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3327.26,
+          20.0,
+          150.354
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_85": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3312.52,
+          20.0,
+          153.635
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_86": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3297.79,
+          20.0,
+          156.915
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_87": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3283.05,
+          20.0,
+          160.196
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_88": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3268.31,
+          20.0,
+          163.476
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_89": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3253.58,
+          20.0,
+          166.757
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_90": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -3238.84,
+          20.0,
+          170.037
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_91": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -2607.99,
+          140.3,
+          1733.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_92": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -2609.88,
+          140.3,
+          1714.97
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_93": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -2609.88,
+          123.604,
+          1714.97
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_94": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -2607.99,
+          123.792,
+          1733.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_95": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -2608.18,
+          108.274,
+          1723.78
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_96": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1385.87,
+          93.283,
+          2288.88
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_97": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1385.87,
+          111.459,
+          2288.88
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_98": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1385.87,
+          127.7,
+          2288.88
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_99": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1385.87,
+          145.49,
+          2288.88
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_100": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1394.65,
+          158.6,
+          2299.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_101": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1399.87,
+          185.351,
+          2308.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_102": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1405.14,
+          180.645,
+          2325.11
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_103": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -1018.45,
+          198.45,
+          2699.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_104": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -638.906,
+          55.4999,
+          2929.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_105": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -638.232,
+          55.4999,
+          2914.72
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_106": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -637.981,
+          55.4999,
+          2900.49
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_107": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -639.243,
+          55.4999,
+          2942.92
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_108": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -637.212,
+          55.4999,
+          2872.47
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_109": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -5.93615,
+          0.0,
+          -5.36304
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.36304,
+          0.0,
+          -5.93615
+        ],
+        [
+          -637.013,
+          55.4999,
+          2858.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_111": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1465.08,
+          100.3,
+          831.838
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_112": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1447.96,
+          100.3,
+          828.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_113": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1430.83,
+          100.3,
+          825.582
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_114": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1413.71,
+          100.3,
+          822.454
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_115": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1403.98,
+          119.687,
+          820.573
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_116": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1421.93,
+          119.687,
+          824.008
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_117": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1440.08,
+          119.687,
+          827.476
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_118": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1458.24,
+          119.687,
+          830.945
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_all_119": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.39192,
+          0.0,
+          7.63405
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -7.63405,
+          0.0,
+          -2.39192
+        ],
+        [
+          1476.19,
+          119.687,
+          834.379
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1368.08,
+          93.8778,
+          1809.41
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1359.99,
+          97.0527,
+          1831.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1350.45,
+          97.0527,
+          1859.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1343.41,
+          97.0527,
+          1881.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1368.08,
+          106.814,
+          1809.41
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1359.99,
+          109.988,
+          1831.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1350.45,
+          109.988,
+          1859.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_01_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.84306,
+          0.0,
+          -1.57682
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.57682,
+          0.0,
+          -7.84306
+        ],
+        [
+          1343.41,
+          109.988,
+          1881.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_03_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.42225,
+          0.0,
+          -5.88211
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.88211,
+          0.0,
+          5.42225
+        ],
+        [
+          1834.77,
+          130.2,
+          -4.5338
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_03_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.04465,
+          0.0,
+          -6.20899
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          6.20899,
+          0.0,
+          5.04465
+        ],
+        [
+          1802.73,
+          130.199,
+          -23.0967
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0552628,
+          0.0,
+          -7.99981
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99981,
+          0.0,
+          0.0552628
+        ],
+        [
+          1275.92,
+          207.282,
+          -1706.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.695292,
+          0.0,
+          -7.96973
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.96973,
+          0.0,
+          0.695292
+        ],
+        [
+          1257.61,
+          208.435,
+          -1705.07
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_05_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.93751,
+          0.0,
+          -7.44117
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.44117,
+          0.0,
+          -2.93751
+        ],
+        [
+          3449.75,
+          -54.7744,
+          -670.165
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.99588,
+          0.0,
+          -0.256716
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.256716,
+          0.0,
+          7.99588
+        ],
+        [
+          597.32,
+          94.1733,
+          -3330.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.98142,
+          0.0,
+          -0.544937
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.544937,
+          0.0,
+          7.98142
+        ],
+        [
+          598.247,
+          94.1733,
+          -3278.63
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_06_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.98142,
+          0.0,
+          -0.544937
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          0.544937,
+          0.0,
+          7.98142
+        ],
+        [
+          597.758,
+          94.1733,
+          -3305.21
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_08_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.913,
+          0.0,
+          -1.17663
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.17663,
+          0.0,
+          -7.913
+        ],
+        [
+          992.931,
+          -379.024,
+          -4005.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_08_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.913,
+          0.0,
+          -1.17663
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          1.17663,
+          0.0,
+          -7.913
+        ],
+        [
+          992.645,
+          -379.024,
+          -4048.59
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_07_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5.90278,
+          0.0,
+          -5.39974
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          5.39974,
+          0.0,
+          5.90278
+        ],
+        [
+          372.221,
+          216.748,
+          -1593.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_10_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.79246,
+          0.0,
+          4.22641
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -4.22641,
+          0.0,
+          6.79246
+        ],
+        [
+          -677.76,
+          289.6,
+          -1838.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_10_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6.79246,
+          0.0,
+          4.22641
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -4.22641,
+          0.0,
+          6.79246
+        ],
+        [
+          -638.066,
+          289.6,
+          -1903.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.81276,
+          0.0,
+          1.72069
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.72069,
+          0.0,
+          7.81276
+        ],
+        [
+          -1980.22,
+          208.071,
+          -2773.69
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.81276,
+          0.0,
+          1.72069
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.72069,
+          0.0,
+          7.81276
+        ],
+        [
+          -1986.73,
+          161.606,
+          -2751.07
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_11_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.81276,
+          0.0,
+          1.72069
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -1.72069,
+          0.0,
+          7.81276
+        ],
+        [
+          -1977.33,
+          161.606,
+          -2776.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.175914,
+          0.0,
+          -7.99807
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99807,
+          0.0,
+          0.175914
+        ],
+        [
+          -3040.54,
+          165.977,
+          -993.916
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.337878,
+          0.0,
+          -7.99286
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99286,
+          0.0,
+          0.337878
+        ],
+        [
+          -3054.86,
+          191.147,
+          -998.322
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.284333,
+          0.0,
+          -7.99495
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99495,
+          0.0,
+          0.284333
+        ],
+        [
+          -3093.57,
+          165.977,
+          -998.957
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.443285,
+          0.0,
+          -7.98771
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.98771,
+          0.0,
+          0.443285
+        ],
+        [
+          -3066.65,
+          165.976,
+          -996.34
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.337878,
+          0.0,
+          -7.99286
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99286,
+          0.0,
+          0.337878
+        ],
+        [
+          -3078.26,
+          191.148,
+          -1000.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.337878,
+          0.0,
+          -7.99286
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99286,
+          0.0,
+          0.337878
+        ],
+        [
+          -3054.86,
+          144.683,
+          -998.322
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_12_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.337878,
+          0.0,
+          -7.99286
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.99286,
+          0.0,
+          0.337878
+        ],
+        [
+          -3081.55,
+          144.683,
+          -1003.16
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_14_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.99987,
+          0.0,
+          0.0462566
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -0.0462566,
+          0.0,
+          -7.99987
+        ],
+        [
+          -2240.55,
+          155.739,
+          1705.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_14_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.99729,
+          0.0,
+          0.208292
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -0.208292,
+          0.0,
+          -7.99729
+        ],
+        [
+          -2246.87,
+          157.005,
+          1730.48
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "speed_boost_04_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.407361,
+          0.0,
+          -7.98962
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          7.98962,
+          0.0,
+          0.407361
+        ],
+        [
+          1274.4,
+          174.5,
+          -1705.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

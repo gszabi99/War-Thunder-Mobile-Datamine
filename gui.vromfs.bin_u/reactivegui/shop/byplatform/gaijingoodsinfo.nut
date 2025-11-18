@@ -21,7 +21,7 @@ let lastUpdateTime = hardPersistWatched("goodsGaijin.lastUpdateTime", 0)
 let needForceUpdate = Watched(false)
 let needRetry = Computed(@() lastError.get() != null && !isInBattle.get() && !isGoodsRequested.get())
 
-let resetRequestedFlag = @() isGoodsRequested(false)
+let resetRequestedFlag = @() isGoodsRequested.set(false)
 isGoodsRequested.subscribe(@(_) resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag))
 if (isGoodsRequested.get())
   resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag)
@@ -35,24 +35,24 @@ let guidsForRequest = keepref(Computed(function(prev) {
 }))
 
 function refreshAvailableGuids() {
-  if (guidsForRequest.value.len() == 0)
+  if (guidsForRequest.get().len() == 0)
     return
-  logG("requestData: ", guidsForRequest.value)
-  isGoodsRequested(true)
+  logG("requestData: ", guidsForRequest.get())
+  isGoodsRequested.set(true)
   requestData(
     "https://api.gaijinent.com/item_info.php",
-    createGuidsRequestParams(guidsForRequest.value),
+    createGuidsRequestParams(guidsForRequest.get()),
     function(data) {
-      isGoodsRequested(false)
-      lastError(null)
-      lastUpdateTime(serverTime.get())
+      isGoodsRequested.set(false)
+      lastError.set(null)
+      lastUpdateTime.set(serverTime.get())
       let list = data?.items
       if (type(list) == "table" && list.len() > 0)
         goodsInfo.mutate(@(v) v.__update(list))
     },
     function(errData) {
-      isGoodsRequested(false)
-      lastError(errData)
+      isGoodsRequested.set(false)
+      lastError.set(errData)
     }
   )
 }
@@ -82,7 +82,7 @@ function addGoodsInfoGuids(guids) {
   foreach(guid in guids)
     newGuids[guid] <- true
   if (newGuids.len() != allGuids.get().len())
-    allGuids(newGuids)
+    allGuids.set(newGuids)
 }
 
 let addGoodsInfoGuid = @(guid) guid in allGuids.get() ? null

@@ -40,7 +40,7 @@ ecs.register_es("maxHpToRepairTracker", {
     nominalHpToRepair.set(comp.meta_parts_hp_repair__speed * comp.meta_parts_hp_repair__duration)
   },
   function onDestroy() {
-    maxHpToRepair(1.)
+    maxHpToRepair.set(1.)
   }
 },
 {

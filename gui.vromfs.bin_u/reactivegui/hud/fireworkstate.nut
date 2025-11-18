@@ -7,6 +7,6 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 return {
   fwVisibleInEditor = Computed(@() isInBattle.get()
                         ? (actionBarItems.get()?[AB_FIREWORK].count ?? 0) > 0
-                        : (servProfile.value?.items["firework_kit"].count ?? 0) > 0)
+                        : (servProfile.get()?.items["firework_kit"].count ?? 0) > 0)
   fwVisibleInBattle = Computed(@() (actionBarItems.get()?[AB_FIREWORK].count ?? 0) > 0)
 }

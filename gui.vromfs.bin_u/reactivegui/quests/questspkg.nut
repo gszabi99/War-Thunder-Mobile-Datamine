@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { onWatchQuestAd, SPEED_UP_AD_COST } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
@@ -14,10 +13,13 @@ let { sendBqQuestsSpeedUp } = require("%rGui/quests/bqQuests.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { unlockProgress } = require("%rGui/unlocks/unlocks.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
+let { opacityTransition } = require("%rGui/components/selectedLine.nut")
 
-let SECTION_OPACITY = 0.3
+
 let bgGradColor = 0x990C1113
-let gradColor = 0xFF52C4E4
 let newMarkH = hdpxi(50)
 let newMarkTexOffs = [0, newMarkH / 2, 0, newMarkH / 10]
 let sectionBtnHeight = hdpx(70)
@@ -28,12 +30,15 @@ let linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
 let headerLineGap = isWidescreen ? hdpx(20) : hdpx(8)
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
-let childOvr = isWidescreen ? {} : fontSmallShaded
+let childOvr = (isWidescreen ? {} : fontSmallShadedBold)
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
 let btnGap = hdpx(10)
 let vipIconW = CS_INCREASED_ICON.iconSize
 let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
+
+let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(selectColor, 0, 35, 20, 30, -35))
 
 let newMark = {
   size  = [SIZE_TO_CONTENT, newMarkH]
@@ -52,7 +57,6 @@ let newMark = {
 
 let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
   size = [flex(), sectionBtnHeight]
-  maxWidth = sectionBtnMaxWidth
   behavior = Behaviors.Button
   onClick
   sound = { click = "choose" }
@@ -68,10 +72,11 @@ let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
       watch = isSelected
       size = flex()
       rendObj = ROBJ_IMAGE
-      image = gradTranspDoubleSideX
-      color = gradColor
+      image = btnGradient()
+      flipY = true
+      keepAspect = KEEP_ASPECT_FILL
       opacity = isSelected.get() ? 1 : 0
-      transitions = [{ prop = AnimProp.opacity, duration = SECTION_OPACITY, easing = InOutQuad }]
+      transitions = opacityTransition
     }
 
     {
@@ -104,7 +109,8 @@ let allQuestsCompleted = {
 
 function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeMul = 1) {
   let stateFlags = Watched(0)
-  let headerIconSize = (linkToEventIconSize * imageSizeMul).tointeger()
+  let headerIconH = (linkToEventIconSize * imageSizeMul).tointeger()
+  let headerIconW = 2 * headerIconH
   return @() {
     watch = stateFlags
     size = [linkToEventWidth, progressBarRewardSize]
@@ -129,9 +135,9 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
             children = @() {
               margin = const [hdpx(5), 0, 0, 0]
               watch = iconWatch
-              size = [headerIconSize, headerIconSize]
+              size = [headerIconW, headerIconH]
               rendObj = ROBJ_IMAGE
-              image = Picture($"{iconWatch.get()}:{headerIconSize}:{headerIconSize}:P")
+              image = Picture($"{iconWatch.get()}:{headerIconW}:{headerIconH}:P")
               keepAspect = KEEP_ASPECT_FIT
             }
           }
@@ -157,7 +163,7 @@ function mkAdsBtn(unlock) {
   }
 
   return @() {
-    watch = [hasAdBudget, isProviderInited]
+    watch = [hasAdBudget, isProviderInited, adBudget, hasVip]
     children = mkCustomButton(
       {
         size = flex()
@@ -166,14 +172,15 @@ function mkAdsBtn(unlock) {
         flow = FLOW_HORIZONTAL
         gap = btnGap
         children = [
-          !hasAdBudget.get() ? null : {
-            size = !hasVip.get() ? [iconSize, iconSize] : [vipIconW, vipIconH]
-            rendObj = ROBJ_IMAGE
-            keepAspect = KEEP_ASPECT_FILL
-            image = !hasVip.get()
-              ? Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
-              : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
-          }
+          !hasAdBudget.get() ? null
+            : {
+                size = !hasVip.get() ? [iconSize, iconSize] : [vipIconW, vipIconH]
+                rendObj = ROBJ_IMAGE
+                keepAspect = KEEP_ASPECT_FILL
+                image = !hasVip.get()
+                  ? Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
+                  : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
+              }
           {
             maxWidth = hasAdBudget.get() ? (btnSize[0] - iconSize - btnGap) : btnSize[0]
             rendObj = ROBJ_TEXTAREA
@@ -182,7 +189,7 @@ function mkAdsBtn(unlock) {
             text = utf8ToUpper(hasAdBudget.get()
               ? loc(!hasVip.get() ? "quests/addProgress" : "quests/addProgress_budget", { num = adBudget.get() })
               : loc("btn/adsLimitReached"))
-          }.__update(fontVeryTinyAccentedShaded, adsButtonCounter)
+          }.__update(fontVeryTinyShadedBold, adsButtonCounter)
         ]
       },
       onClick,
@@ -229,8 +236,8 @@ function mkQuestText(item, ovr = {}) {
         ]
       }
 
-
       {
+        size = FLEX_H
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         maxWidth = pw(100)

@@ -57,11 +57,13 @@ let currencyWndOpenCount = Computed(function(prev) {
   return type(prev) == "integer" ? prev + 1 : 1
 })
 
-let isGoodsFit = @(goods, cId) (goods.currencies?[cId] ?? 0) > 0
-  && goods.currencies.len() == 1
-  && goods.units.len() == 0
-  && goods.unitUpgrades.len() == 0
-  && goods.items.len() == 0
+let isGoodsFit = @(goods, cId) "rewards" in goods
+  ? goods.rewards.len() == 1 && goods.rewards[0].gType == G_CURRENCY && goods.rewards[0].id == cId
+  : (goods.currencies?[cId] ?? 0) > 0 
+      && goods.currencies.len() == 1
+      && goods.units.len() == 0
+      && goods.unitUpgrades.len() == 0
+      && goods.items.len() == 0
 
 let eventCurrenciesGoods = Computed(function() {
   if (currencyId.get() == null)

@@ -31,8 +31,11 @@ let fakeUnseenPurchases = {
       { id = "playerExp", gType = "booster", count = 2 },
       { id = "germ_ru251", subId = "fiction", gType = "skin", count = 0 },
       { id = "uk_destroyer_tribal", subId = "upgraded", gType = "skin", count = 0 },
-      { id = "pony_fighter", gType = "battleMod", count = 36000 },
       { id = "air_cbt_access", gType = "battleMod", count = 36000 },
+      { id = "japan_branch_access", gType = "battleMod", count = 36000 },
+      { id = "anniversary_BR_unit_1", gType = "battleMod", count = 36000 },
+      { id = "anniversary_BR_unit_2", gType = "battleMod", count = 36000 },
+      { id = "anniversary_BR_unit_3", gType = "battleMod", count = 36000 },
     ]
   }
 }

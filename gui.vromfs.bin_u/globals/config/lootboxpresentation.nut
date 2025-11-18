@@ -51,6 +51,22 @@ let customLootboxImages = {
   event_air_medium_subbox_box_season_23     = "lucky_box.avif"
   event_air_big_subbox_box_season_23        = "lucky_box.avif"
   event_ships_big_subbox_box_season_23      = "lucky_box.avif"
+  event_ships_medium_subbox_box_season_24   = "lucky_box.avif"
+  event_air_medium_subbox_box_season_24     = "lucky_box.avif"
+  event_air_big_subbox_box_season_24        = "lucky_box.avif"
+  event_ships_big_subbox_box_season_24      = "lucky_box.avif"
+  event_tanks_medium_subbox_box_season_25   = "lucky_box.avif"
+  event_ships_medium_subbox_box_season_25   = "lucky_box.avif"
+  event_air_medium_subbox_box_season_25     = "lucky_box.avif"
+  event_tanks_big_subbox_box_season_25      = "lucky_box.avif"
+  event_ships_big_subbox_box_season_25      = "lucky_box.avif"
+  event_air_big_subbox_box_season_25        = "lucky_box.avif"
+  event_tanks_medium_subbox_box_season_26   = "lucky_box.avif"
+  event_ships_medium_subbox_box_season_26   = "lucky_box.avif"
+  event_air_medium_subbox_box_season_26     = "lucky_box.avif"
+  event_tanks_big_subbox_box_season_26      = "lucky_box.avif"
+  event_ships_big_subbox_box_season_26      = "lucky_box.avif"
+  event_air_big_subbox_box_season_26        = "lucky_box.avif"
 
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
@@ -88,6 +104,18 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
   past_events_box_ships_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
   past_events_box_air_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
+  past_events_box_tanks_seasons_1_to_20 = "past_events_box_seasons_1_to_20.avif"
+  past_events_box_ships_seasons_1_to_20 = "past_events_box_seasons_1_to_20.avif"
+  past_events_box_air_seasons_1_to_20 = "past_events_box_seasons_1_to_20.avif"
+  past_events_box_tanks_seasons_1_to_21 = "past_events_box_seasons_1_to_21.avif"
+  past_events_box_ships_seasons_1_to_21 = "past_events_box_seasons_1_to_21.avif"
+  past_events_box_air_seasons_1_to_21 = "past_events_box_seasons_1_to_21.avif"
+  past_events_box_tanks_seasons_1_to_22 = "past_events_box_seasons_1_to_22.avif"
+  past_events_box_ships_seasons_1_to_22 = "past_events_box_seasons_1_to_22.avif"
+  past_events_box_air_seasons_1_to_22 = "past_events_box_seasons_1_to_22.avif"
+  past_events_box_tanks_seasons_1_to_23 = "past_events_box_seasons_1_to_23.avif"
+  past_events_box_ships_seasons_1_to_23 = "past_events_box_seasons_1_to_23.avif"
+  past_events_box_air_seasons_1_to_23 = "past_events_box_seasons_1_to_23.avif"
 }
 
 let customRouletteImages = {
@@ -130,6 +158,22 @@ let lootboxPreviewBg = {
   event_ships_medium_subbox_box_season_23        = "ui/images/event_bg_season_23.avif"
   event_air_medium_subbox_box_season_23          = "ui/images/event_bg_season_23.avif"
   event_air_big_subbox_box_season_23             = "ui/images/event_bg_season_23.avif"
+  event_ships_big_subbox_box_season_24           = "ui/images/event_bg_season_24.avif"
+  event_ships_medium_subbox_box_season_24        = "ui/images/event_bg_season_24.avif"
+  event_air_medium_subbox_box_season_24          = "ui/images/event_bg_season_24.avif"
+  event_air_big_subbox_box_season_24             = "ui/images/event_bg_season_24.avif"
+  event_tanks_big_subbox_box_season_25           = "ui/images/event_bg_season_25.avif"
+  event_tanks_medium_subbox_box_season_25        = "ui/images/event_bg_season_25.avif"
+  event_ships_big_subbox_box_season_25           = "ui/images/event_bg_season_25.avif"
+  event_ships_medium_subbox_box_season_25        = "ui/images/event_bg_season_25.avif"
+  event_air_medium_subbox_box_season_25          = "ui/images/event_bg_season_25.avif"
+  event_air_big_subbox_box_season_25             = "ui/images/event_bg_season_25.avif"
+  event_tanks_big_subbox_box_season_26           = "ui/images/event_bg_season_26.avif"
+  event_tanks_medium_subbox_box_season_26        = "ui/images/event_bg_season_26.avif"
+  event_ships_big_subbox_box_season_26           = "ui/images/event_bg_season_26.avif"
+  event_ships_medium_subbox_box_season_26        = "ui/images/event_bg_season_26.avif"
+  event_air_medium_subbox_box_season_26          = "ui/images/event_bg_season_26.avif"
+  event_air_big_subbox_box_season_26             = "ui/images/event_bg_season_26.avif"
 
   event_special_tanks_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
   event_special_ships_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
@@ -140,9 +184,24 @@ let lootboxPreviewBg = {
   event_special_gift_air_anniversary_2025           = "ui/images/event_bg_anniversary_2025.avif"
 }
 
+let defEventLootboxScaleBySlot = {
+  ["0"] = 0.6,
+  ["1"] = 0.8,
+  ["2"] = 0.9,
+}
+
 let customEventLootboxScale = {
   event_special_tanks_anniversary_2024 = 1.2
   event_special_ships_anniversary_2024 = 1.2
+  event_tanks_big_season_25 = 1.2
+  event_ships_big_season_25 = 1.2
+  event_air_big_season_25 = 1.2
+}
+
+let customEventLootboxShiftPos = {
+  event_tanks_big_season_25 = [0, -0.15]
+  event_ships_big_season_25 = [0, -0.15]
+  event_air_big_season_25 = [0, -0.15]
 }
 
 let customGoodsLootboxScale = {
@@ -240,13 +299,17 @@ let getLootboxName = memoize(function parseString(id) {
   return loc($"lootbox/{id}")
 })
 
+let getLootboxSizeMulBySlot = @(name, eventSlot) customEventLootboxScale?[name]
+  ?? defEventLootboxScaleBySlot?[eventSlot] ?? 1.0
+
 return {
   getLootboxImage
   getRouletteImage
   lootboxFallbackPicture
   mkLoootboxImage
   getLootboxName
-  customEventLootboxScale
+  getLootboxSizeMulBySlot
   customGoodsLootboxScale
+  customEventLootboxShiftPos
   lootboxPreviewBg
 }

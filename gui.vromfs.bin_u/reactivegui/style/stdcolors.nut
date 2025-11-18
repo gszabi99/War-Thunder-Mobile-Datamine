@@ -7,7 +7,7 @@ return {
   premiumTextColor = 0xFFFFC000
   collectibleTextColor = 0xFFDAABFE
   userlogTextColor = 0xFFF9DB78
-  hoverColor = 0xC07BFFFF
+  hoverColor = 0xFF7FAEFF
   hoverColorDark = 0xC062CCCC
   warningTextColor = 0xFFE66464
 
@@ -28,9 +28,11 @@ return {
   memberNotReadyColor = 0xFFFF4020
   memberReadyColor = 0xFF20E040
 
-  markTextColor = 0xFFFFB70B
-  darkenTextColor = 0xFF8898CC
+  markTextColor
+  darkenTextColor
   highlightTextColor = 0xFFF0F0F0
+
+  selectColor = 0xFF7FAEFF  
 
   locColorTable = {
     mark = markTextColor

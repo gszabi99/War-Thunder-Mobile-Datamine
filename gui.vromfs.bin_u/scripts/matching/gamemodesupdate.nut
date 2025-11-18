@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let logGM = log_with_prefix("[GAME_MODES] ")
 let { rnd_int } = require("dagor.random")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { isMatchingConnected } = require("%appGlobals/loginState.nut")
+let { isMatchingConnected, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { gameModesRaw } = require("%appGlobals/gameModes/gameModes.nut")
 let { startLogout } = require("%scripts/login/loginStart.nut")
@@ -111,13 +111,8 @@ function updateChangedModes() {
 }
 updateChangedModes()
 
-isMatchingConnected.subscribe(function(v) {
-  if (v)
-    fetchGameModesDigest()
-  else
-    gameModesRaw({})
-})
-
+isMatchingConnected.subscribe(@(v) v ? fetchGameModesDigest() : null)
+isLoggedIn.subscribe(@(v) v ? null : gameModesRaw.set({}))
 isInBattle.subscribe(@(v) v ? null : updateChangedModes())
 
 matching_subscribe("match.notify_game_modes_changed", function(modes) {

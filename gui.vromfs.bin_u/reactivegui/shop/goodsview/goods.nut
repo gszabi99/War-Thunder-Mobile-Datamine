@@ -20,6 +20,8 @@ let customLocId = {
   battle_pass_vip = "battlePassVIP"
   event_pass = "eventPass"
   event_pass_vip = "eventPassVip"
+  operation_pass = "operationPass"
+  operation_pass_vip = "operationPassVIP"
 }
 
 let locNameGetters = {
@@ -56,9 +58,9 @@ let constructors = {
 
 let getCustomName = @(goods) goods.meta.findindex(@(_, i) i in customLocId)
 
-let function getGoodsLocName(goods){
+function getGoodsLocName(goods, locParam = null){
   let customName = getCustomName(goods)
-  return customName ? loc(customLocId[customName])
+  return customName ? loc(customLocId[customName], { name = locParam })
     : (locNameGetters?[goods.gtype] ?? locNameGetters[SGT_UNKNOWN])(goods)
 }
 let mkGoods = @(goods, onClick, state, animParams = null, addChildren = [])

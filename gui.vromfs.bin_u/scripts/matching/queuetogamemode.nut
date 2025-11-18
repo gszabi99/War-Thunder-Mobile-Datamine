@@ -2,20 +2,23 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { setTimeout, resetTimeout } = require("dagor.workcycle")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
-let { sendUiBqEvent, sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { downloadInProgress, getDownloadLeftMbNotUpdatable } = require("%appGlobals/clientState/downloadState.nut")
+let { sendUiBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
-let { localizeAddons, getAddonsSize, mbToString, MB } = require("%appGlobals/updater/addons.nut")
-let { addonsSizes, addonsVersions, hasAddons, addonsExistInGameFolder } = require("%appGlobals/updater/addonsState.nut")
-let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getModeAddonsInfo, getModeAddonsDbgString, allBattleUnits } = require("%appGlobals/updater/gameModeAddons.nut")
-let { balanceGold } = require("%appGlobals/currenciesState.nut")
+let { localizeAddons } = require("%appGlobals/updater/addons.nut")
+let { localizeUnitsResources, getCampaignOrig } = require("%appGlobals/updater/campaignAddons.nut")
+let { addonsVersions, hasAddons, addonsExistInGameFolder, unitSizes
+} = require("%appGlobals/updater/addonsState.nut")
+let { curCampaign, setCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { getModeAddonsInfo, getModeAddonsDbgString, allBattleUnits, missingUnitResourcesByRank,
+  allUnitsRanks, maxReleasedUnitRanks
+} = require("%appGlobals/updater/gameModeAddons.nut")
+let { onlineBattleBlockCurrencyId } = require("%appGlobals/currenciesState.nut")
 let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOnline,
   MAX_SQUAD_MRANK_DIFF, squadLeaderCampaign, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
@@ -31,7 +34,7 @@ let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentati
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
 let maxSquadRankDiff = mkWatched(persist, "minSquadRankDiff", MAX_SQUAD_MRANK_DIFF)
 
-isInSquad.subscribe(@(_) maxSquadRankDiff(MAX_SQUAD_MRANK_DIFF))
+isInSquad.subscribe(@(_) maxSquadRankDiff.set(MAX_SQUAD_MRANK_DIFF))
 
 function msgBoxWithFalse(params) {
   openFMsgBox(params)
@@ -50,7 +53,7 @@ function showReqBattleModeMsg(msgLocId, reqBMods, msgParams = {}) {
 }
 
 function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
-  let { minSquadSize = 1, only_override_units = false } = mode
+  let { minSquadSize = 1, only_override_units = false, gameModeId } = mode
   if (!isInSquad.get()) {
     if (minSquadSize > 1)
       return msgBoxWithFalse({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
@@ -86,17 +89,39 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
     }
   }
 
+  if (only_override_units || mode?.mission_decl.customRules.customBots) {
+    local hasAllResources = true
+    foreach(uid, member in squadMembers.get())
+      if (uid != squadId.get() && !member?.readyOvrGameModes[gameModeId.tostring()]) {
+        hasAllResources = false
+        break
+      }
+    if (!hasAllResources)
+      return msgBoxWithFalse({
+        text = loc("squad/not_all_has_packs")
+        buttons = [
+          { id = "cancel", isCancel = true }
+          { text = loc("squad/requestAddonsDownload")
+            styleId = "PRIMARY"
+            eventId = "initiateSquadAddonsDownload"
+            context = { modeId = gameModeId }
+          }
+        ]
+      })
+  }
+
   if (!only_override_units) {
+    let campaign = squadLeaderCampaign.get()
     local rankMin = curUnit.get()?.mRank ?? 0
     local rankMax = rankMin
     foreach(m in squadMembers.get()) {
-      let mRank = getMemberMaxMRank(m, squadLeaderCampaign.get(), serverConfigs.get())
+      let mRank = getMemberMaxMRank(m, campaign, serverConfigs.get())
       if (mRank == null)
         continue
       rankMin = min(rankMin, mRank)
       rankMax = max(rankMax, mRank)
     }
-    if (rankMax - rankMin > maxSquadRankDiff.value)
+    if (rankMax - rankMin > maxSquadRankDiff.get())
       return msgBoxWithFalse({
         text = loc("msg/bigRankDiff/toBattle", {
           rankMin = colorize("@mark", getRomanNumeral(rankMin)),
@@ -110,12 +135,26 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
           }
           { text = loc("mainmenu/toBattle/short")
             eventId = "incMaxSquadRankDiffAndQueue"
-            context = { diff = rankMax - rankMin, modeId = mode.gameModeId }
+            context = { diff = rankMax - rankMin, modeId = gameModeId }
             styleId = "BATTLE"
             isDefault = true
           }
         ]
       })
+
+    foreach(m in squadMembers.get())
+      if ((m?.readyBattleRanks[getCampaignOrig(campaign)] ?? 0) < rankMax + 1)
+        return msgBoxWithFalse({
+          text = loc("squad/not_all_has_packs")
+          buttons = [
+            { id = "cancel", isCancel = true }
+            { text = loc("squad/requestAddonsDownload")
+              styleId = "PRIMARY"
+              eventId = "initiateSquadAddonsDownload"
+              context = { modeId = gameModeId }
+            }
+          ]
+        })
   }
 
   local hasAllAddons = true
@@ -135,14 +174,14 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
 }
 
 function queueToGameModeImpl(mode) {
-  if (isInQueue.value)
+  if (isInQueue.get())
     return
-  if (balanceGold.value < 0) {
+  if (onlineBattleBlockCurrencyId.get() != null) {
     eventbus_send("showNegativeBalanceWarning", {})
     return
   }
 
-  let { reqBattleMod = "" } = mode
+  let { reqBattleMod = "", campaign = null, only_override_units = false } = mode
   let reqBMods = reqBattleMod.split(";").filter(@(v) v != "")
   if (reqBMods.len() > 0 && !reqBMods.findvalue(@(v) !!activeBattleMods.get()?[v])) {
     showReqBattleModeMsg("msg/needBattleMode", reqBMods)
@@ -151,39 +190,46 @@ function queueToGameModeImpl(mode) {
 
   log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", allBattleUnits.get())
   log("modeInfo = ", getModeAddonsDbgString(mode))
-  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode,
-    allBattleUnits.get(),
-    serverConfigs.get(),
-    hasAddons.get(),
-    addonsExistInGameFolder.get(),
-    addonsVersions.get())
+  let { addonsToDownload, updateDiff, allReqAddons, unitsToDownload } = getModeAddonsInfo({
+    mode,
+    unitNames = allBattleUnits.get(),
+    serverConfigsV = serverConfigs.get(),
+    hasAddonsV = hasAddons.get(),
+    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
+    addonsVersionsV = addonsVersions.get(),
+    missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
+    maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
+    unitSizesV = unitSizes.get(),
+  })
   if (!isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods))
     return
 
-  if (addonsToDownload.len() > 0 && !canBattleWithoutAddons.get()) {
+  if (addonsToDownload.len() + unitsToDownload.len() > 0 && !canBattleWithoutAddons.get()) {
     let isUpdate = updateDiff >= 0
     let locs = localizeAddons(addonsToDownload)
+    if (unitsToDownload.len() > 0) {
+      let unitLocs = localizeUnitsResources(unitsToDownload, allUnitsRanks.get(), campaign ?? curCampaign.get())
+      locs.extend(unitLocs)
+      log($"[ADDONS] Ask download units on try to join queue {unitsToDownload.len()}", unitLocs)
+    }
     addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{addonsVersions.get()?[a] ?? "-"}')"))
 
-    let isAlreadyInProgress = isEqual(downloadInProgress.get(), addonsToDownload.reduce(@(res, v) res.$rawset(v, true), {}))
-    local sizeMb = isAlreadyInProgress ? getDownloadLeftMbNotUpdatable() : 0
-    if (sizeMb <= 0)
-      sizeMb = (getAddonsSize(addonsToDownload, addonsSizes.get()) + (MB / 2)) / MB
-
-    sendLoadingAddonsBqEvent(isUpdate ? "msg_update_addons_for_queue" : "msg_download_addons_for_queue", addonsToDownload,
-      { sizeMb, source = mode.name, unit = ";".join(allBattleUnits.get()) })
-
     openFMsgBox({
+      viewType = "downloadMsg"
+      addons = addonsToDownload
+      units = unitsToDownload
+      bqAction = isUpdate ? "msg_update_addons_for_queue" : "msg_download_addons_for_queue"
+      bqData = { source = mode.name, unit = ";".join(allBattleUnits.get()) }
+
       text = loc(isUpdate ? "msg/needUpdateAddonToPlayGameMode" : "msg/needAddonToPlayGameMode",
         { count = locs.len(),
           addon = ", ".join(locs.map(@(t) colorize(0xFFFFB70B, t)))
-          size = mbToString((sizeMb + 0.5).tointeger())
         })
       buttons = [
         { id = "cancel", isCancel = true }
         { text = loc(isUpdate ? "ugm/btnUpdate" : "msgbox/btn_download")
           eventId = "downloadAddonsForQueue"
-          context = { addons = addonsToDownload, modeId = mode.gameModeId, modeName = mode.name }
+          context = { addons = addonsToDownload, units = unitsToDownload, modeId = mode.gameModeId, modeName = mode.name }
           styleId = "PRIMARY"
           isDefault = true
         }
@@ -192,14 +238,15 @@ function queueToGameModeImpl(mode) {
     return
   }
 
-  if (addonsToDownload.len())
-    log("[ADDONS] Queue game mode while missing addons: ", addonsToDownload)
+  if (addonsToDownload.len() + unitsToDownload.len() != 0)
+    log("[ADDONS] Queue game mode while missing addons: ", addonsToDownload, unitsToDownload)
 
-  let { campaign = null, only_override_units = false } = mode
   if (campaign != null
       && !only_override_units
       && (campaign != curCampaign.get() && campaign != getCampaignPresentation(curCampaign.get()).campaign)) {
-    setCampaign(campaign)
+    let campToSet = campaignsList.get().findvalue(@(c) c == campaign || getCampaignPresentation(c).campaign == campaign)
+      ?? campaign
+    setCampaign(campToSet)
     resetTimeout(0.1, @() eventbus_send("queueToGameMode", { modeId = mode.gameModeId }))
     return
   }
@@ -233,7 +280,7 @@ function queueModeOnRandomUnit(mode) {
 }
 
 function tryQueueToGameMode(modeId) {
-  if (!isMatchingOnline.value) {
+  if (!isMatchingOnline.get()) {
     showMatchingConnectProgress()
     startBattleDelayed.modeId = modeId
     return
@@ -241,7 +288,7 @@ function tryQueueToGameMode(modeId) {
 
   let mode = allGameModes.get()?[modeId]
   if (mode == null) {
-    logerr($"Not found mode with id {modeId} to start battle")
+    logerr($"Not found mode with id /*{modeId}*/ to start battle")
     return
   }
 
@@ -263,11 +310,22 @@ function queueToGameModeAfterAddons(modeId) {
   let mode = allGameModes.get()?[modeId]
   if (mode == null)
     return 
-  let { addonsToDownload } = getModeAddonsInfo(mode, allBattleUnits.get(), serverConfigs.get(), hasAddons.get(), addonsExistInGameFolder.get(), addonsVersions.get())
-  if (addonsToDownload.len() == 0)
+  let { addonsToDownload, unitsToDownload } = getModeAddonsInfo({
+    mode,
+    unitNames = allBattleUnits.get(),
+    serverConfigsV = serverConfigs.get(),
+    hasAddonsV = hasAddons.get(),
+    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
+    addonsVersionsV = addonsVersions.get(),
+    missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
+    maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
+    unitSizesV = unitSizes.get(),
+  })
+  if (addonsToDownload.len() + unitsToDownload.len() == 0)
     queueToGameMode(modeId)
   else {
-    log("[ADDONS] failed to load addons at queueToGameMode (", allBattleUnits.get(), "): ", addonsToDownload)
+    log("[ADDONS] failed to load addons at queueToGameMode (", allBattleUnits.get(), "): ", addonsToDownload, unitsToDownload)
+    sendErrorLocIdBqEvent("msg/unableToUpadateAddons")
     openFMsgBox({ text = loc("msg/unableToUpadateAddons") })
   }
 }
@@ -280,10 +338,8 @@ function requeueToDelayedMode() {
   queueToGameMode(modeId)
 }
 
-isMatchingOnline.subscribe(function(v) {
-  if (v)
-    requeueToDelayedMode()
-})
+isMatchingOnline.subscribe(@(v) v ? requeueToDelayedMode() : null)
+isLoggedIn.subscribe(@(v) v ? null : startBattleDelayed.$rawset("modeId", null))
 
 eventbus_subscribe("queueToGameMode", @(msg) queueToGameMode(msg.modeId))
 eventbus_subscribe("queueToGameModeAfterAddons", @(msg) queueToGameModeAfterAddons(msg.modeId))
@@ -298,7 +354,7 @@ subscribeFMsgBtns({
   function downloadAddonsForQueue(p) {
     sendBqIfNeed(p)
     eventbus_send("openDownloadAddonsWnd",
-      { addons = p.addons, successEventId = "queueToGameModeAfterAddons", context = { modeId = p.modeId },
+      { addons = p.addons, units = p?.units ?? [], successEventId = "queueToGameModeAfterAddons", context = { modeId = p.modeId },
         bqSource = "applyDownloadAddonsForQueue", bqParams = { paramStr1 = p.modeName }
       })
   }
@@ -307,7 +363,7 @@ subscribeFMsgBtns({
     queueToGameMode(p.modeId)
   }
   function incMaxSquadRankDiffAndQueue(p) {
-    maxSquadRankDiff(p.diff)
+    maxSquadRankDiff.set(p.diff)
     queueToGameMode(p.modeId)
   }
 })

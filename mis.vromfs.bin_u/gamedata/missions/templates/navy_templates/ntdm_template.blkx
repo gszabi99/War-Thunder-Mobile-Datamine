@@ -1043,23 +1043,9 @@
               "var": "t2_players_max"
             },
             {
-              "operator": "add",
-              "value": 0.0,
-              "var": "t1_players_alive",
-              "use_variable": true,
-              "var_value": "t1_players_planes"
-            },
-            {
               "operator": "divAB",
               "value": 2.0,
               "var": "t1_players_alive"
-            },
-            {
-              "operator": "add",
-              "value": 0.0,
-              "var": "t2_players_alive",
-              "use_variable": true,
-              "var_value": "t2_players_planes"
             },
             {
               "operator": "divAB",

@@ -144,6 +144,22 @@ let nickFrames = {
   drums = @(n) $"⛪{n}⛫"
   snail_cake = @(n) $"⛬{n}⛭"
   wreath_2 = @(n) $"⛮{n}⛮"
+  eclipse = @(n) $"⛯{n}⛯"
+  arms = @(n) $"⛰{n}⛱"
+  boxing_gloves = @(n) $"⛴{n}⛵"
+  meteors = @(n) $"⛲{n}⛳"
+  wing_star = @(n) $"⛶{n}⛷"
+  double_tanks = @(n) $"⛸{n}⛹"
+  horizon = @(n) $"⛺{n}⛺"
+  shield_reflect = @(n) $"⛻{n}⛼"
+  shield_old_new = @(n) $"⛽{n}⛾"
+  ship_gun = @(n) $"♡{n}♢"
+  yak_air = @(n) $"⛿{n}✁"
+  arrow_wing = @(n) $"✂{n}✃"
+  arrow_ray = @(n) $"✄{n}✅"
+  spear = @(n) $"✆{n}✇"
+  bats = @(n) $"✈{n}✉"
+  hands_grave = @(n) $"✊{n}✋"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

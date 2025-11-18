@@ -13,9 +13,9 @@ let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
 let { speed, hasDebuffEngines, hasDebuffMoveControl, currentMaxThrottle } = require("%rGui/hud/shipState.nut")
 let { playSound } = require("sound_wt")
-let { btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnAnimBg, mkMoveVertBtnOutline,
-  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, fillMoveColorBlocked, arrowsVerSize
+  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, fillMoveColorBlocked, arrowsVerSize, outlineColorDef
 } = require("%rGui/components/movementArrows.nut")
 let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
@@ -24,6 +24,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { eventbus_send } = require("eventbus")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
+let { hudWhiteColor, hudSmokyGreyColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
 
 let HAPT_FORWARD = registerHapticPattern("Forward", { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -44,7 +45,7 @@ function showCtrlHint() {
 let averageSpeedDirection = Computed(@() machineSpeedDirection[averageSpeed.get()])
 
 let maxSpeedBySteps = Computed(function() {
-  if (playerUnitName.value == "")
+  if (playerUnitName.get() == "")
     return {}
 
   return getHeroShipMaxSpeedBySteps()
@@ -54,11 +55,11 @@ let isControlsBlocked = Computed(@() hasDebuffMoveControl.get() || currentMaxThr
 
 let outlineColor = Computed(@()
   isControlsBlocked.get() ? fillMoveColorBlocked
-  : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgColor.broken
-  : 0x4D4D4D4D)
+  : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgStyle.get().broken
+  : hudSmokyGreyColor)
 let fillColor = Computed(@()
   isControlsBlocked.get() ? fillMoveColorBlocked
-  : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgColor.broken
+  : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgStyle.get().broken
   : fillMoveColorDef)
 
 let mkSteerParams = @(id, disableId, scale) {
@@ -99,12 +100,12 @@ let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
     children = @() {
       watch = isEngineDisabled
       size = flex()
-      children = isEngineDisabled.value ? null
+      children = isEngineDisabled.get() ? null
         : [
             mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize, fillColor)
             mkMoveVertBtnOutline(true, verSize, outlineColor)
             mkMoveVertBtnCorner(true,
-              Computed(@() averageSpeedDirection.get() == "back" ? fillColor.get() : 0xFFFFFFFF),
+              Computed(@() averageSpeedDirection.get() == "back" ? hudWhiteColor : outlineColorDef.get()),
               verSize)
             mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, scale)
           ]
@@ -142,15 +143,15 @@ let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
     children = @() {
       watch = isEngineDisabled
       size = flex()
-      children = isEngineDisabled.value ? null
+      children = isEngineDisabled.get() ? null
         : [
             mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize, fillColor)
             mkMoveVertBtnOutline(false, verSize, outlineColor)
             mkMoveVertBtnCorner(false,
-              Computed(@() averageSpeedDirection.get() in fwdDirections ? fillColor.get() : 0xFFFFFFFF),
+              Computed(@() averageSpeedDirection.get() in fwdDirections ? hudWhiteColor : outlineColorDef.get()),
               verSize)
             mkMoveVertBtn2step(calcForwSpeedPart2,
-              Computed(@() averageSpeedDirection.get() == "forward2" ? fillColor.get() : 0x00000000),
+              Computed(@() averageSpeedDirection.get() == "forward2" ? fillColor.get() : hudTransparentColor),
               verSize,
               fillColor)
             mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] }, scale)

@@ -4,6 +4,7 @@ let { fabs } = require("math")
 let { cameraGetZoom, cameraSetZoom, cameraAddOffset } = require("guiStrategyMode")
 let { pathSelectPoint, pathSelectZone, pathRefreshUi } = require("%rGui/hud/strategyMode/strategyPathView.nut")
 let { optMoveCameraByDrag } = require("%rGui/hud/strategyMode/strategyState.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 const zoomMin = 0.1
 const zoomMax = 1.0
@@ -41,15 +42,15 @@ function onZoneSelectionMove(x0, y0, x1, y1) {
 }
 
 function onZoneSelectionEnd() {
-  if (!zoneSelectionState.value.active)
+  if (!zoneSelectionState.get().active)
     return
 
   zoneSelectionState.mutate(function(v) { v.active = false })
   pathSelectZone(
-    zoneSelectionState.value.pos0.x,
-    zoneSelectionState.value.pos0.y,
-    zoneSelectionState.value.pos1.x,
-    zoneSelectionState.value.pos1.y)
+    zoneSelectionState.get().pos0.x,
+    zoneSelectionState.get().pos0.y,
+    zoneSelectionState.get().pos1.x,
+    zoneSelectionState.get().pos1.y)
 }
 
 function onPointerPress(evt) {
@@ -151,7 +152,7 @@ function mkSelectionZone(x0, y0, x1, y1) {
     size = [x1 - x0, y1 - y0]
     opacity = 0.5
     borderWidth = 1
-    borderColor = Color(255, 255, 255)
+    borderColor = hudWhiteColor
   }
 }
 
@@ -176,12 +177,12 @@ let pathInputUi = {
     @() {
       size = flex()
       watch = zoneSelectionState
-      children = !zoneSelectionState.value.active ? null
+      children = !zoneSelectionState.get().active ? null
       : mkSelectionZone(
-        zoneSelectionState.value.pos0.x,
-        zoneSelectionState.value.pos0.y,
-        zoneSelectionState.value.pos1.x,
-        zoneSelectionState.value.pos1.y
+        zoneSelectionState.get().pos0.x,
+        zoneSelectionState.get().pos0.y,
+        zoneSelectionState.get().pos1.x,
+        zoneSelectionState.get().pos1.y
       )
     }
   ]

@@ -14,6 +14,7 @@ let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { hudUnitType } = require("%rGui/hudState.nut")
+let { isGtRace } = require("%rGui/missionState.nut")
 
 
 const SAVE_ID = "hudTuning"
@@ -47,6 +48,8 @@ let history = mkWatched(persist, "history", [])
 let curHistoryIdx = Computed(@() history.get().findindex(@(h) h.ts == tuningState.get()))
 
 let canShowRadar = mkWatched(persist, "canShowRadar", true)
+let shouldShowAirTacticalMap = isGtRace
+let shouldShowRadar = Computed(@() canShowRadar.get() && !shouldShowAirTacticalMap.get())
 
 let mkEmptyTuningState = @() { transforms = {}, options = {} }
 
@@ -184,6 +187,8 @@ return {
   curHistoryIdx
   isCurPresetChanged
   canShowRadar
+  shouldShowRadar
+  shouldShowAirTacticalMap
 
   openTuning = @(unitType) tuningUnitType.set(unitType)
   openTuningRecommended

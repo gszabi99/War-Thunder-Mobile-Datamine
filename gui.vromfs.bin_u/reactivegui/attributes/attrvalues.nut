@@ -23,9 +23,6 @@ let categoryImages = {
   tank_fire_power = "ui/gameuiskin/upgrades_tank_firepower_icon.avif"
   tank_crew = "ui/gameuiskin/upgrades_tank_crew_icon.avif"
   tank_protection = "ui/gameuiskin/upgrades_tools_icon.avif"
-  plane_flight_performance = "ui/gameuiskin/upgrades_flight_performance.avif"
-  plane_crew = "ui/gameuiskin/upgrades_plane_crew.avif"
-  plane_weapon = "ui/gameuiskin/upgrades_plane_weapon.avif"
 }
 
 let tankAttrToTankCrewParamsMap = {
@@ -284,7 +281,8 @@ function mkAttrFromMinus0prcUp(attrId, roundBy = 0.1) {
 let tankAttrs = {
   loading_time_mult = mkAttrFromMinus0prcUp("loading_time_mult")
     .__update({
-      updateStats = @(stats, mul) stats.weapons.each(@(el) mulStat(el, "reloadTime", attrRangesTank["loading_time_mult"].begin - mul))
+      updateStats = @(stats, mul) stats.weapons.each(@(el) el?.autoLoader ? null
+        : mulStat(el, "reloadTime", attrRangesTank["loading_time_mult"].begin - mul))
     })
   tracking = mkAttrUpTo100prc("tracking")
     .__update({

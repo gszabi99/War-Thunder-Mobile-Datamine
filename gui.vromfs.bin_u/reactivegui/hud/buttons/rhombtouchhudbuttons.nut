@@ -7,7 +7,7 @@ let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { updateActionBarDelayed, actionBarItems, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { touchButtonSize, touchSizeForRhombButton, imageColor, imageDisabledColor, borderWidth, btnBgColor,
+let { touchButtonSize, touchSizeForRhombButton, imageColor, imageDisabledColor, borderWidth, btnBgStyle,
   borderColorPushed, borderColor, borderNoAmmoColor, textColor, textDisabledColor,
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { canZoom, isInZoom, groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir, isInAntiairMode
@@ -18,6 +18,8 @@ let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortc
 let { mkActionBtnGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
+let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
+let { hudLightBlackColor } = require("%rGui/style/hudColors.nut")
 
 
 let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
@@ -37,39 +39,47 @@ let mkAmmoCount = @(count, scale, isAvailable = true) count < 0 ? null
       text = count
     }.__update(getScaledFont(fontVeryTinyShaded, scale))
 
-function mkRhombBtnBg(isAvailable, actionItem, scale, onFinishExt = null) {
+function mkRhombBtnBg(isAvailable, actionItem, scale, isPrimaryStyle, btnStyle, onFinishExt = null) {
   let misTime = get_mission_time()
   let { available = true, cooldownEndTime = 0, cooldownTime = 1, id = null } = actionItem
   let hasCooldown = available && cooldownEndTime > misTime
   let cooldownLeft = hasCooldown ? (cooldownEndTime - misTime) : 0
   let cooldown = hasCooldown ? (1 - (cooldownLeft / max(cooldownTime, 1))) : 1
-  let { empty, ready, broken, noAmmo } = btnBgColor
+  let { empty, ready, broken, noAmmo } = btnStyle
   let trigger = $"action_cd_finish_{id}"
   let size = scaleEven(cooldownImgSize, scale)
   let item = {
-    size = [size, size]
-    rendObj = ROBJ_PROGRESS_CIRCULAR
+    size
+    rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_weapon_bg.svg:{size}:{size}:P")
-    fgColor = !isAvailable ? noAmmo
-      : (actionItem?.broken ?? false) ? broken
-      : ready
-    bgColor = empty
-    fValue = 1.0
-    key = $"action_bg_{id}_{cooldownEndTime}"
-    transform = {}
-    animations = [
-      { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownLeft, play = true,
-        function onFinish() {
-          onFinishExt?()
-          if (available)
-            anim_start(trigger)
+    color = hudLightBlackColor
+    children = {
+      key = $"action_bg_{id}_{cooldownEndTime}"
+      size
+      rendObj = ROBJ_PROGRESS_CIRCULAR
+      image = isPrimaryStyle
+        ? Picture($"ui/gameuiskin#hud_weapon_bg_loading.svg:{size}:{size}:P")
+        : Picture($"ui/gameuiskin#hud_weapon_bg.svg:{size}:{size}:P")
+      fgColor = !isAvailable ? noAmmo
+        : (actionItem?.broken ?? false) ? broken
+        : ready
+      bgColor = empty
+      fValue = isPrimaryStyle ? 0 : 1.0
+      transform = {}
+      animations = [
+        { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownLeft, play = true,
+          function onFinish() {
+            onFinishExt?()
+            if (available)
+              anim_start(trigger)
+          }
         }
-      }
-      {
-        prop = AnimProp.scale, duration = 0.2,
-        from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger
-      }
-    ]
+        {
+          prop = AnimProp.scale, duration = 0.2,
+          from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger
+        }
+      ]
+    }
   }
   return mkItemWithCooldownText(id, item, [size, size], hasCooldown, cooldownEndTime)
 }
@@ -96,24 +106,24 @@ function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale) {
   let btnTouchSize = scaleEven(touchSizeForRhombButton, scale)
   let imgSize = scaleEven(defImageSize, scale)
   return @() {
-    watch = isDisabled
+    watch = [isDisabled, isHudPrimaryStyle, btnBgStyle]
     key = shortcutId
     size = [btnSize, btnSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      mkRhombBtnBg(!isDisabled.get(), actionItem, scale)
+      mkRhombBtnBg(!isDisabled.get(), actionItem, scale, isHudPrimaryStyle.get(), btnBgStyle.get())
       mkRhombBtnBorder(stateFlags, !isDisabled.get(), scale)
       {
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
         image = Picture($"{image}:{imgSize}:{imgSize}:P")
         keepAspect = true
-        color = isDisabled.value ? imageDisabledColor : imageColor
+        color = isDisabled.get() ? imageDisabledColor : imageColor
       }
       mkActionBtnGlare(actionItem, btnSize)
       mkAmmoCount(actionItem.count, scale, !isDisabled.get())
-      isDisabled.value ? null
+      isDisabled.get() ? null
         : mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
       {
         size = [btnTouchSize, btnTouchSize]
@@ -169,14 +179,14 @@ function mkRhombZoomButton(scale) {
     halign = ALIGN_CENTER
     children = [
       @() {
-        watch = [stateFlags, isDisabled, isInZoom, hasAimingModeForWeapon]
+        watch = [stateFlags, isDisabled, isInZoom, hasAimingModeForWeapon, btnBgStyle]
         size = flex()
         rendObj = ROBJ_BOX
         borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed
-          : (canZoom.get() && !isDisabled.value && (isInZoom.get() || hasAimingModeForWeapon.get())) ? borderColor
+          : (canZoom.get() && !isDisabled.get() && (isInZoom.get() || hasAimingModeForWeapon.get())) ? borderColor
           : borderNoAmmoColor
         borderWidth = borderW
-        fillColor = btnBgColor.empty
+        fillColor = hudLightBlackColor
         transform = { rotate = 45 }
       }
       {
@@ -185,11 +195,11 @@ function mkRhombZoomButton(scale) {
         image = isInZoom.get() ? Picture($"ui/gameuiskin#hud_binoculars_zoom.svg:{btnSize}:{btnSize}:P")
           : Picture($"ui/gameuiskin#hud_binoculars.svg:{btnSize}:{btnSize}:P")
         keepAspect = KEEP_ASPECT_FIT
-        color = (canZoom.get() && !isDisabled.value && (isInZoom.get() || hasAimingModeForWeapon.get()))
+        color = (canZoom.get() && !isDisabled.get() && (isInZoom.get() || hasAimingModeForWeapon.get()))
           ? imageColor
           : imageDisabledColor
       }
-      isDisabled.value ? null
+      isDisabled.get() ? null
         : mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
       {
         size = [btnTouchSize, btnTouchSize]
@@ -198,7 +208,7 @@ function mkRhombZoomButton(scale) {
         hotkeys = mkGamepadHotkey(shortcutId)
         onElemState = @(v) stateFlags.set(v)
         function onClick() {
-          if (isDisabled.value)
+          if (isDisabled.get())
             return
           if (canZoom.get() && ((hasAimingModeForWeapon.get()) ||
               (isInZoom.get() && !hasAimingModeForWeapon.get()))) {
@@ -233,7 +243,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
   let groupImgSize = scaleEven(defImageSize * 1.15, scale)
 
   return function() {
-    let watch = [actionItem, isGroupInAir, isOnCd]
+    let watch = [actionItem, isGroupInAir, isOnCd, isHudPrimaryStyle, btnBgStyle]
     if (actionItem.get() == null)
       return { watch }
     let isAvailable = isOnCd.get() || isAvailableActionItem(actionItem.get())
@@ -243,7 +253,8 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
-        mkRhombBtnBg(isAvailable, actionItem.get(), scale, @() playSound("weapon_secondary_ready"))
+        mkRhombBtnBg(isAvailable, actionItem.get(), scale, isHudPrimaryStyle.get(), btnBgStyle.get(),
+          @() playSound("weapon_secondary_ready"))
         mkRhombBtnBorder(stateFlags, isAvailable, scale)
         isGroupInAir.get()
           ? {

@@ -12,7 +12,7 @@ let { attrPresets, hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut
 let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("%rGui/unit/components/unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgByCampaignOrdered } = require("%appGlobals/itemsState.nut")
-let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
+let { getUnitTagsShop, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -24,6 +24,7 @@ let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
+let { mkFlagImage } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let statsWidth = hdpx(495)
 let textColor = 0xFFFFFFFF
@@ -240,7 +241,7 @@ function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
     let totalW = width - 2 * progressBorderW
     let minGap = hdpx(10)
     foreach (idx, v in cfg) {
-      let barW = round(v.value * totalW)
+      let barW = round(v.get() * totalW)
       let barX = cfg.reduce(@(sum, vv, i) (i < idx) ? (sum + vv.barW) : sum, 0)
       let labelW = calc_comp_size(v.labelElem)[0]
       let labelX = barX + (barW - labelW) / 2
@@ -366,9 +367,47 @@ let unitConsumablesBlock = @(unit, itemsList) {
       mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }
 
-function unitMRankBlock(mRank) {
+let unitClassBlock = @(unit) {
+  size = [statsWidth, SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  children = [
+    {
+      size = FLEX_H
+      children = {
+        rendObj = ROBJ_TEXT
+        text = loc("attrib_section/unit_type")
+      }.__update(fontVeryTinyAccented)
+    }
+    {
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      gap = hdpx(6)
+      children = [
+        unit?.unitClass != null
+          ? {
+              rendObj = ROBJ_TEXT
+              text = loc($"type/{unit.unitClass}")
+            }.__update(fontVeryTinyAccented)
+          : null
+        {
+          rendObj = ROBJ_TEXT
+          text = getUnitClassFontIcon(unit)
+          color = textColor
+          fontFx = FFT_GLOW
+          fontFxFactor = 64
+          fontFxColor = 0xFF000000
+        }.__update(fontSmallAccented)
+      ]
+    }
+  ]
+}
+
+function unitMRankBlock(unit) {
+  let { mRank = null, name = "", country = "" } = unit
   if (!mRank || mRank <= 0)
     return null
+  let countryId = getUnitTagsCfg(name)?.operatorCountry ?? country
 
   return {
     size = [statsWidth, SIZE_TO_CONTENT]
@@ -376,10 +415,18 @@ function unitMRankBlock(mRank) {
     valign = ALIGN_CENTER
     children = [
       {
-        rendObj = ROBJ_TEXT
-        text = loc("attrib_section/mRank")
         size = FLEX_H
-      }.__update(fontVeryTinyAccented)
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = hdpx(10)
+        children = [
+          countryId ? mkFlagImage(countryId, hdpxi(30)) : null
+          {
+            rendObj = ROBJ_TEXT
+            text = loc("attrib_section/mRank")
+          }.__update(fontVeryTinyAccented)
+        ]
+      }
       mkGradRank(mRank)
     ]
   }
@@ -458,7 +505,7 @@ function calcPadding(c) {
 
 let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, bg = panelBg)
   function() {
-    if (unit.value == null)
+    if (unit.get() == null)
       return { watch = unit }
 
     let prevStats = lastUnitStats
@@ -470,19 +517,20 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
       flow = FLOW_VERTICAL
       halign = ALIGN_RIGHT
       children = [
-        unitHeaderBlock(unit.value, headerCtor)
+        unitHeaderBlock(unit.get(), headerCtor)
         { size = const [0, hdpx(15)] }
-        unitMRankBlock(unit.value?.mRank)
-        unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
+        unitClassBlock(unit.get())
+        unitMRankBlock(unit.get())
+        unitRewardsBlock(unit.get(), loc("attrib_section/battleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
           ? null
-          : unitRewardsBlock(unit.value.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
+          : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium
           ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
           : null
         unitStatsBlock(unitStats, prevStats)
-        unitArmorBlock(unit.value, false)
+        unitArmorBlock(unit.get(), false)
         unitPriceBlock(unit.get())
       ]
     }
@@ -490,7 +538,6 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
     let res = bg.__merge(
       {
         watch = [unit, attrPresets]
-        stopMouse = true
         children = children
       },
       ovr)
@@ -498,19 +545,25 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
     let maxHeight = ovr?.maxHeight ?? bg?.maxHeight
     if (isNumeric(maxHeight)) {
       let height = calc_comp_size(res.__merge({ maxHeight = null }))[1]
-      if (height > maxHeight)
-        res.children = makeVertScroll(children,
+      if (height > maxHeight) {
+        let { onClick = null, behavior = null } = ovr
+        res.children = makeVertScroll(
+          children.__merge((onClick != null && behavior != null)
+            ? { onClick, behavior }
+            : {}),
           {
             size = [SIZE_TO_CONTENT, maxHeight - calcPadding(res)],
             isBarOutside = true
           })
+        res.stopMouse <- true
+      }
     }
 
     return res
   }
 
 let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
-  if (unit.value == null)
+  if (unit.get() == null)
     return { watch = unit }
 
   let prevStats = lastUnitStats
@@ -521,22 +574,23 @@ let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
   return {
     watch = [ unit, itemsCfgByCampaignOrdered, attrPresets ]
     size = FLEX_V
-    children = unit.value == null ? null
+    children = unit.get() == null ? null
       : makeVertScroll(
           {
             flow = FLOW_VERTICAL
             children = [
-              unitMRankBlock(unit.value?.mRank)
-              unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
+              unitClassBlock(unit.get())
+              unitMRankBlock(unit.get())
+              unitRewardsBlock(unit.get(), loc("attrib_section/battleRewards"))
               unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
                 ? null
-                : unitRewardsBlock(unit.value.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
+                : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
                   { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
               unit.get()?.isUpgraded || unit.get()?.isPremium
                 ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
                 : null
               unitStatsBlock(unitStats, prevStats)
-              unitArmorBlock(unit.value, false)
+              unitArmorBlock(unit.get(), false)
               unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
             ]
           },

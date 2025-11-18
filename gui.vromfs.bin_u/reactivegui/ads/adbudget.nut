@@ -5,13 +5,13 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 
 let isAdBudgetPastReset = Watched(false)
-let adBudget = Computed(@() max(servProfile.value?.adBudget.common.count ?? 0, isAdBudgetPastReset.get() ? 10 : 0))
-let nextResetTime = keepref(Computed(@() servProfile.value?.adBudget.common.nextResetTime ?? 0))
+let adBudget = Computed(@() max(servProfile.get()?.adBudget.common.count ?? 0, isAdBudgetPastReset.get() ? 10 : 0))
+let nextResetTime = keepref(Computed(@() servProfile.get()?.adBudget.common.nextResetTime ?? 0))
 
 function adBudgetClientUpdate() {
-  isAdBudgetPastReset.set(serverTime.get() >= nextResetTime.value)
+  isAdBudgetPastReset.set(serverTime.get() >= nextResetTime.get())
   if (!isAdBudgetPastReset.get())
-    resetTimeout(nextResetTime.value - serverTime.get(), adBudgetClientUpdate)
+    resetTimeout(nextResetTime.get() - serverTime.get(), adBudgetClientUpdate)
 }
 adBudgetClientUpdate()
 nextResetTime.subscribe(@(_) adBudgetClientUpdate())

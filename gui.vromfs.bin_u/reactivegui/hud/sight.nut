@@ -11,12 +11,14 @@ let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
 let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
 let { isHrosshairVisibile, aimModulePos } = require("%rGui/hud/shipState.nut")
+let { hudBlueColor, hudBlueDeepColor, hudGrayColor, hudMediumGrayColor, hudTransparentColor
+} = require("%rGui/style/hudColors.nut")
 
-let crosshairColorFire = Color(70, 70, 70)
-let reloadColorPrimary = 0xCC23CACC
-let reloadColorSecondary = 0xCC3C70BF
+let crosshairColorFire = hudGrayColor
+let reloadColorPrimary = hudBlueColor
+let reloadColorSecondary = hudBlueDeepColor
 let crosshairLineWidth = hdpx(2)
-let sightColor = Color(160, 160, 160, 200)
+let sightColor = hudMediumGrayColor
 let cancelShootSize = hdpxi(70)
 
 let crosshairLineHeight = evenPx(10)
@@ -62,7 +64,7 @@ function mkReloadPartData(action, color) {
       rendObj = ROBJ_PROGRESS_CIRCULAR
       image = reloadImageInZoom
       fgColor = color
-      bgColor = Color(0, 0, 0, 0)
+      bgColor = hudTransparentColor
       opacity = 0.0
       bValue = 1.0
       fValue = 1.0

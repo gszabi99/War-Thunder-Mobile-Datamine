@@ -238,6 +238,9 @@ function respawnAirWeaponry(selSlot) {
         key = secondaryTitleKey
       }))
 
+    if (rows.len() == 0)
+      return { watch = [weaponPreset, chosenBelts, isBattleDataFake] }
+
     return {
       watch = [weaponPreset, chosenBelts, isBattleDataFake]
       size = [weaponGroupWidth + bulletsBlockMargin, SIZE_TO_CONTENT]

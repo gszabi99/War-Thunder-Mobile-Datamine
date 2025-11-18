@@ -1132,6 +1132,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -1149,6 +1150,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -1209,6 +1211,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1226,6 +1229,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -1299,6 +1303,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1440,6 +1445,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1447,6 +1453,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1454,6 +1461,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2804,7 +2812,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -3092,7 +3099,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [

@@ -7,6 +7,7 @@ let { register_command } = require("console")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { orderByItems } = require("%appGlobals/itemsState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
@@ -18,6 +19,7 @@ let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { G_PREMIUM, G_ITEM } = require("%appGlobals/rewardType.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("%rGui/shop/schRewardsState.nut")
@@ -44,18 +46,32 @@ let categoryByCurrency = {
   [PLATINUM] = SC_PLATINUM
 }
 
-let sortCurrency = @(a, b) (a.currencies?.platinum ?? 0) <=> (b.currencies?.platinum ?? 0)
+let sortCurrencyDeprecated = @(a, b) (a.currencies?.platinum ?? 0) <=> (b.currencies?.platinum ?? 0)  
   || (a.currencies?.gold ?? 0) <=> (b.currencies?.gold ?? 0)
   || (a.currencies?.wp ?? 0) <=> (b.currencies?.wp ?? 0)
+
+let sortGoodsDeprecated = @(a, b) sortCurrencyDeprecated(a, b) 
+  || a.premiumDays <=> b.premiumDays
+
+let sortByGType = {
+  [G_ITEM] = @(a, b) (orderByItems?[a.id] ?? 1000) <=> (orderByItems?[b.id] ?? 1000),
+}
+
+let sortGoodsByReward = @(a, b) (b == null) <=> (a == null)
+  || (a == null ? 0
+    : a.gType <=> b.gType
+        || (sortByGType?[a.gType](a, b) ?? 0)
+        || (a.id == b.id ? (a.count <=> b.count) : 0))
 
 let sortGoods = @(a, b)
   b.meta?.eventId <=> a.meta?.eventId
   || b.meta?.order <=> a.meta?.order
+  || b.slotsPreset <=> a.slotsPreset
   || sortByCurrencyId(a.price.currencyId, b.price.currencyId)
   || a.gtype <=> b.gtype
-  || sortCurrency(a, b)
+  || ("rewards" not in a ? sortGoodsDeprecated(a, b) 
+    : sortGoodsByReward(a.rewards?[0], b.rewards?[0]))
   || a.price.price <=> b.price.price
-  || a.premiumDays <=> b.premiumDays
   || a.id <=> b.id
 
 let goodsWithTimers = Computed(@() (campConfigs.get()?.allGoods ?? {})
@@ -160,7 +176,9 @@ goodsWithTimers.subscribe(@(_) updateGoodsTimers())
 isServerTimeValid.subscribe(@(_) updateGoodsTimers())
 todayPurchasesCount.subscribe(@(_ ) updateGoodsTimers())
 
-let allowWithSubs = @(goods) goods.premiumDays == 0
+let allowWithSubs = @(goods) "rewards" in goods
+  ? null == goods.rewards.findvalue(@(r) r.gType == G_PREMIUM)
+  : goods.premiumDays == 0 
 
 function calculateNewGoodsDiscount(discountedPrice = 0, originalPercent = 0, newPrice = 0) {
   if (originalPercent >= 100.0)
@@ -470,6 +488,8 @@ register_command(function() {
   eventbus_send("saveProfile", {})
   log("Success")
 }, "debug.reset_seen_goods")
+
+register_command(@() console_print(shopSeenGoods.get()), "debug.log_seen_goods") 
 
 return {
   openShopWnd

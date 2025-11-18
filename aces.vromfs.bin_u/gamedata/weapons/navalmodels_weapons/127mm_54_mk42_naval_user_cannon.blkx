@@ -32,7 +32,7 @@
     "maxDistance": 50000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.4,
     "stabilityCaliberToArmorThreshold": 10.0,
@@ -46,7 +46,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
-    "shellAnimation": "video/shells_animations/he_vt.ivf",
+    "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
     "bulletName": "127mm_54_vt_hc_mk41",
     "selfDestructionFx": [
       "explosion_air_selfexplosion_big",
@@ -253,7 +253,7 @@
       "maxDistance": 50000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.4,
       "stabilityCaliberToArmorThreshold": 10.0,
@@ -267,7 +267,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_vt.ivf",
+      "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
       "bulletName": "127mm_54_vt_hc_mk41",
       "selfDestructionFx": [
         "explosion_air_selfexplosion_big",

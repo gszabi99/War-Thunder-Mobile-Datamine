@@ -2,55 +2,85 @@ from "%globalsDarg/darg_library.nut" import *
 
 let defButtonHeight = hdpxi(109)
 let defButtonMinWidth = hdpxi(368)
+let defButtonBorderWidth = hdpx(3)
+let defBorderGradient = {
+  rendObj = ROBJ_9RECT
+  image = Picture($"ui/gameuiskin#gradient_button.svg")
+  padding = defButtonBorderWidth
+  color = 0xFFEEEEEE
+}
 
 return freeze({
   defButtonHeight
   defButtonMinWidth
+  defButtonBorderWidth
+  defBorderGradient
 
   PRIMARY = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
-      fillColor = Color(5, 147, 173)
-      borderColor = Color(35, 109, 181)
     }
-    gradientOvr = {
-      color = Color(22, 178, 233)
+    childOvr = fontTinyAccentedShadedBold
+    gradientOvr = { color = 0xFF7395CF }
+    gradientContainerOvr = { fillColor = 0xFF3A5D91 }
+    borderGradientOvr = defBorderGradient
+  }
+  COMMON = { 
+    ovr = {
+      size = [SIZE_TO_CONTENT, defButtonHeight]
+      minWidth = defButtonMinWidth
     }
+    childOvr = fontTinyAccentedShadedBold
+    gradientOvr = { color = 0xFF57595B }
+    gradientContainerOvr = { fillColor = 0xFF191616 }
+    borderGradientOvr = defBorderGradient
+  }
+  SECONDARY = { 
+    ovr = {
+      size = [SIZE_TO_CONTENT, defButtonHeight]
+      minWidth = defButtonMinWidth
+    }
+    childOvr = fontTinyAccentedShadedBold
+    gradientOvr = { color = 0xFF65C99E }
+    gradientContainerOvr = { fillColor = 0xFF32946A }
+    borderGradientOvr = defBorderGradient
+  }
+  INACTIVE = { 
+    ovr = {
+      size = [SIZE_TO_CONTENT, defButtonHeight]
+      minWidth = defButtonMinWidth
+      borderColor = 0x80777777
+      borderWidth = defButtonBorderWidth
+      padding = defButtonBorderWidth
+    }
+    childOvr = fontTinyAccentedShadedBold.__merge({
+      color = 0x80808080
+    })
+    gradientOvr = { color = 0x80808080 }
+    gradientContainerOvr = { fillColor = 0x80000000 }
+    borderGradientOvr = { color = null }
   }
   PURCHASE = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
-      fillColor = Color(170, 114, 5)
-      borderColor = Color(179, 181, 35)
     }
-    gradientOvr = {
-      color = Color(233, 184, 22)
-    }
+    childOvr = fontTinyAccentedShadedBold
+    gradientOvr = { color = 0xFFFFB92D }
+    gradientContainerOvr = { fillColor = 0xFFC88704 }
+    borderGradientOvr = defBorderGradient
   }
   BATTLE = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
-      fillColor = Color(140, 18, 8)
-      borderColor = Color(159, 71, 43)
     }
-    gradientOvr = {
-      color = Color(220, 18, 8)
-    }
-  }
-  BRIGHT = { 
-    ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
-      minWidth = defButtonMinWidth
-      fillColor = Color(216, 216, 216)
-      borderColor = Color(184, 184, 155)
-    }
-    childOvr = {
-      color = Color(0, 0, 0)
-      fontFxFactor = 0
-    }
+    childOvr = fontTinyAccentedShadedBold
+    hasPattern = true
+    gradientOvr = { color = 0xFFDC1208 }
+    gradientContainerOvr = { fillColor = 0xFF8C1208 }
+    borderGradientOvr = defBorderGradient
   }
   HUAWEI = { 
     ovr = {
@@ -59,32 +89,9 @@ return freeze({
       fillColor = Color(255, 255, 255)
       borderColor = Color(184, 184, 155)
     }
-    childOvr = {
+    childOvr = fontTinyAccentedShadedBold.__merge({
       color = Color(0, 0, 0)
       fontFxFactor = 0
-    }
-    hasPattern = false
-  }
-  COMMON = { 
-    ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
-      minWidth = defButtonMinWidth
-      fillColor = Color(100, 100, 100)
-      borderColor = Color(74, 74, 74)
-    }
-    gradientOvr = {
-      color = Color(132, 132, 132)
-    }
-  }
-  SECONDARY = { 
-    ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
-      minWidth = defButtonMinWidth
-      fillColor = Color(46, 193, 129)
-      borderColor = Color(74, 74, 74)
-    }
-    gradientOvr = {
-      color = Color(66, 199, 141)
-    }
+    })
   }
 })

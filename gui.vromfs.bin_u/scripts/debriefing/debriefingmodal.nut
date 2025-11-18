@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
@@ -38,12 +37,11 @@ eventbus_subscribe("gui_start_debriefing", function gui_start_debriefing(...) {
      return
   }
 
-  set_presence_to_player("menu")
-  isInDebriefing(true)
+  isInDebriefing.set(true)
 })
 
 function closeDebriefing() {
-  isInDebriefing(false)
+  isInDebriefing.set(false)
   loadRootScreen()
 }
 
@@ -68,9 +66,9 @@ function loadDebriefing(fileName) {
   if (data == null)
     return console_print($"Can not load file {fileName}")
 
-  debugBattleResult(data)
+  debugBattleResult.set(data)
   
-  resetTimeout(0.2, @() isInDebriefing(true))
+  resetTimeout(0.2, @() isInDebriefing.set(true))
   return true
 }
 

@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let regexp2 = require("regexp2")
 let { roundToDigits } = require("%sqstd/math.nut")
+let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor, collectibleTextColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -14,6 +15,7 @@ let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { backButtonWidth } = require("%rGui/components/backButton.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { raceTotalLaps, raceTotalCheckpoints } = require("%rGui/hud/raceState.nut")
 
 
 let STICKY_UPPER = 0x01
@@ -21,8 +23,8 @@ let STICKY_BELOW = 0x02
 
 let cellTextColor = Color(255, 255, 255)
 let unitDeadTextColor = Color(56, 56, 56, 56)
-let rowBgLocalPlayerColor = Color(40, 96, 128, 128)
-let rowStickyBgLocalPlayerColor = 0XFF227087
+let rowBgLocalPlayerColor = selectColor
+let rowStickyBgLocalPlayerColor = selectColor
 let rowBgOddColor = Color(20, 20, 20, 20)
 let rowBgEvenColor = Color(0, 0, 0, 0)
 
@@ -31,6 +33,8 @@ let rowHeadIconSize = hdpx(44)
 let avatarHeight = rowHeight - hdpx(2)
 let squadLabelWidth = hdpx(34)
 let squadLabelHeight = hdpx(41)
+
+let notAvailableTxt = loc("ui/mdash")
 
 let cellTextProps = {
   rendObj = ROBJ_TEXT
@@ -44,7 +48,7 @@ let mkCellIcon = @(icon) {
   size = [ rowHeadIconSize, rowHeadIconSize ]
   rendObj = ROBJ_IMAGE
   keepAspect = true
-  image = Picture($"{icon}:{rowHeadIconSize}:{rowHeadIconSize}")
+  image = Picture($"{icon}:{rowHeadIconSize}:{rowHeadIconSize}:P")
 }
 
 let mkCellFontIcon = @(icon) {
@@ -56,7 +60,7 @@ let mkCellFontIcon = @(icon) {
 }.__update(fontMedium)
 
 
-let premIconSize = fontTinyAccented.fontSize
+let premIconSize = hdpx(30)
 let premiumMark = @(player) !player.hasPremium ? null
   : mkSubsIcon(
     player.hasVip ? "vip"
@@ -221,7 +225,7 @@ let columnsByCampaign = {
   tanks = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
-    { width = hdpx(120), valign = ALIGN_CENTER, headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
@@ -244,28 +248,49 @@ let ffaColumns = [
   { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = @(p, _, _) mkAvatar(p) }
   { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkPlayerName }
   { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = @(p, _, h) mkUnitName(p, h) }
-  { width = hdpx(120), valign = ALIGN_CENTER,
-    headerIcon = "ui/gameuiskin#score_icon.svg",getText = @(p) decimalFormat((100 * p.score).tointeger()) }
-  { width = hdpx(120), valign = ALIGN_CENTER,
-    headerIcon = "ui/gameuiskin#timer_icon.svg", getText = @(p) decimalFormat(p?.missionAliveTime ?? 0) }
-  { width = hdpx(120), valign = ALIGN_CENTER,
-    headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
 ]
 
-let getColumnsByCampaign = @(campaign, missionName, isGT_FFA = false)
-  mkColumnsCfg(((isGT_FFA ? ffaColumns : columnsByCampaign?[campaign])
+let columnsByGameType = {
+  [GT_RACE] = (clone ffaColumns).append(
+    { width = hdpx(160), valign = ALIGN_CENTER, headerIcon = "ui/gameuiskin#icon_checkpoints_percent.svg",
+      function getText(p) {
+        let { raceFinishTime = -1.0, raceLap = 0, raceLastCheckpoint = 0 } = p
+        if (raceFinishTime > 0)
+          return preciseSecondsToString(raceFinishTime, false)
+        let total = raceTotalLaps.get() * raceTotalCheckpoints.get()
+        if (total == 0)
+          return notAvailableTxt
+        let passed = max(0, raceLap - 1) * raceTotalCheckpoints.get() + raceLastCheckpoint
+        return $"{(100 * passed / total).tointeger()}%"
+      }
+    }),
+  [GT_LAST_MAN_STANDING] = (clone ffaColumns).append(
+    { width = hdpx(120), valign = ALIGN_CENTER,
+      headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) },
+    { width = hdpx(120), valign = ALIGN_CENTER,
+      headerIcon = "ui/gameuiskin#timer_icon.svg", getText = @(p) decimalFormat(p?.missionAliveTime ?? 0) },
+    { width = hdpx(120), valign = ALIGN_CENTER,
+      headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) })
+}
+
+let gtCfgMask = columnsByGameType.reduce(@(res, _, gt) res | gt, 0)
+let getColumnsByCampaign = @(campaign, missionName, gt)
+  mkColumnsCfg((columnsByGameType?[gt & gtCfgMask]
+    ?? columnsByCampaign?[campaign]
     ?? columnsByCampaign?[getCampaignPresentation(campaign).campaign]
     ?? columnsByCampaign.air
   ).filter(@(c) c?.isVisible(missionName) ?? true))
 
-function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null) {
+function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr = {}) {
   let { columns, rowOvr = {} } = columnCfg
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
-  return {
+  let isCurrent = Computed(@() player != null && selectedPlayerForInfo.get()?.player.userId == player?.userId)
+  return @() {
+    watch = isCurrent
     size = [ flex(), rowHeight ]
     rendObj = ROBJ_SOLID
-    color = player == selectedPlayerForInfo.get() ? 0xA0000000
+    color = isCurrent.get() ? 0xA0000000
       : bgColorOvr != null ? bgColorOvr
       : (player?.isLocal ?? false) ? rowBgLocalPlayerColor
       : idx % 2 != 0 ? rowBgOddColor
@@ -273,12 +298,13 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null) {
     children = {
       key = player?.userId
       behavior = Behaviors.Button
-      onClick = function() {
-        if (selectedPlayerForInfo.get() == player)
-          selectedPlayerForInfo.set(null)
-        else
-          selectedPlayerForInfo.set({player, campaign = curCampaign.get()})
-      }
+      onClick = player == null ? null
+        : function() {
+            if (isCurrent.get())
+              selectedPlayerForInfo.set(null)
+            else
+              selectedPlayerForInfo.set({player, campaign = curCampaign.get()})
+          }
       sound = { click = "click" }
       size = [ flex(), rowHeight ]
       flow = FLOW_HORIZONTAL
@@ -294,7 +320,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null) {
         }
       })
     }
-  }.__update(rowOvr)
+  }.__update(rowOvr, ovr)
 }
 
 function mkTeamHeaderRow(columnCfg) {
@@ -327,7 +353,7 @@ let mkMpStatsTable = @(columnsCfg, teams, statsWithScrollHeight = null) {
     let teamColor = teams.len() > 1 && teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
     let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]
     let headerRow = mkTeamHeaderRow(columnCfg)
-    let playerRows = team.map(@(player, idx) @() mkPlayerRow(columnCfg, player, teamColor, idx))
+    let playerRows = team.map(@(player, idx) mkPlayerRow(columnCfg, player, teamColor, idx))
     if (statsWithScrollHeight == null)
       return {
         size = FLEX_H
@@ -343,7 +369,6 @@ let mkMpStatsTable = @(columnsCfg, teams, statsWithScrollHeight = null) {
         : curY + statsWithScrollHeight - rowHeight < localPlayerPosY + rowHeight ? STICKY_BELOW
         : 0
     })
-    let localPlayerRow = mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx, rowStickyBgLocalPlayerColor)
     return {
       size = [flex(), statsWithScrollHeight]
       padding = [0, saBorders[0] + backButtonWidth]
@@ -362,16 +387,19 @@ let mkMpStatsTable = @(columnsCfg, teams, statsWithScrollHeight = null) {
               { isBarOutside = true, scrollHandler })
           ]
         }
-        @() {
-          watch = localPosState
-          size = [flex(), SIZE_TO_CONTENT]
-          pos = [0, rowHeight]
-          children = localPosState.get() & STICKY_UPPER
-              ? @() localPlayerRow.__update({ pos = [0, 0]})
-            : localPosState.get() & STICKY_BELOW
-              ? @() localPlayerRow.__update({ pos = [0, statsWithScrollHeight - rowHeight * 2]})
-            : null
-        }
+        localPlayerIdx not in team ? null
+          : @() {
+              watch = localPosState
+              size = [flex(), SIZE_TO_CONTENT]
+              pos = [0, rowHeight]
+              children = localPosState.get() & STICKY_UPPER
+                  ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx,
+                      rowStickyBgLocalPlayerColor, { pos = [0, 0] })
+                : localPosState.get() & STICKY_BELOW
+                  ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx,
+                      rowStickyBgLocalPlayerColor, { pos = [0, statsWithScrollHeight - rowHeight * 2] })
+                : null
+            }
       ]
     }
   })

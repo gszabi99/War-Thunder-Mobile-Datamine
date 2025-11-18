@@ -925,7 +925,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apds",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apds_ground",
         "secondaryShattersPreset": "apds",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -940,7 +940,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/apds.ivf",
+        "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
         "breakingArmorThickness": [
@@ -1186,7 +1186,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apds",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apds_ground",
         "secondaryShattersPreset": "apds",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1201,7 +1201,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/apds.ivf",
+        "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
         "breakingArmorThickness": [
@@ -1447,7 +1447,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apds",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apds_ground",
         "secondaryShattersPreset": "apds",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1462,7 +1462,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/apds.ivf",
+        "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
         "breakingArmorThickness": [
@@ -1876,7 +1876,7 @@
         "maxDistance": 7000.0,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apds",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apds_ground",
         "secondaryShattersPreset": "apds",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1891,7 +1891,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/apds.ivf",
+        "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
         "breakingArmorThickness": [

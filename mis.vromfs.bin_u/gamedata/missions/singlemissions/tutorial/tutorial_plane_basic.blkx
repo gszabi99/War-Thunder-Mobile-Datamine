@@ -2925,10 +2925,22 @@
               "target_var_comp_op": "equal",
               "target_var_value": 0,
               "object": "target_plane01",
-              "move_type": "zigzag_move",
+              "move_type": "move",
               "speed": 300.0
             }
           ],
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "target_plane01",
+            "speed": 300.0,
+            "lockSpeed": true
+          },
+          "comment": {
+            "value": ""
+          },
           "unitSetControls": {
             "controls": "power",
             "value": 1.0,
@@ -6039,10 +6051,19 @@
               "target_var_comp_op": "equal",
               "target_var_value": 0,
               "object": "target_plane01",
-              "move_type": "zigzag_move",
+              "move_type": "move",
               "speed": 300.0
             }
           ],
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "target_plane01",
+            "speed": 300.0,
+            "lockSpeed": true
+          },
           "playerLockTarget": {
             "target": "target_plane01"
           },
@@ -6329,13 +6350,19 @@
               "move_type": "move"
             }
           ],
-          "unitSetControls": {
-            "controls": "power",
-            "value": 1.0,
-            "force": true,
-            "objects": "player"
-          },
           "unitSetProperties": [
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "target_plane02",
+                "target_plane03"
+              ],
+              "speed": 300.0,
+              "lockSpeed": true
+            },
             {
               "object_marking": 0,
               "object_var_name": "",
@@ -6360,6 +6387,12 @@
               "speed": 350.0
             }
           ],
+          "unitSetControls": {
+            "controls": "power",
+            "value": 1.0,
+            "force": true,
+            "objects": "player"
+          },
           "unitForceRearmSpeed": {
             "rearmSpeedK": 30.0,
             "target": "player"

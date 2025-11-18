@@ -39,8 +39,8 @@ let matching = require("%appGlobals/matching_api.nut")
 
 function is_my_userid(user_id) {
   if (type(user_id) == "string")
-    return user_id == myUserId.value.tostring()
-  return user_id == myUserId.value
+    return user_id == myUserId.get().tostring()
+  return user_id == myUserId.get()
 }
 
 
@@ -170,7 +170,7 @@ function notify_room_invite(params) {
   log("notify_room_invite")
   
 
-  if (!isInMenu.get() && isLoggedIn.value) {
+  if (!isInMenu.get() && isLoggedIn.get()) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false
   }
@@ -322,7 +322,7 @@ SessionLobby = {
       _settings.mission[key] <- isDataBlock(value) ? convertBlk(value) : value
     }
 
-    _settings.creator <- myUserName.value
+    _settings.creator <- myUserName.get()
     _settings.mission.originalMissionName <- getTblValue("name", _settings.mission, "")
     if ("postfix" in _settings.mission && _settings.mission.postfix) {
       let ending = "_tm"
@@ -499,7 +499,7 @@ SessionLobby = {
 
     let wasStatus = SessionLobbyState.status
     SessionLobbyState.status = v_status  
-    sessionLobbyStatus(v_status)
+    sessionLobbyStatus.set(v_status)
 
     if (SessionLobbyState.status == lobbyStates.NOT_IN_ROOM || SessionLobbyState.status == lobbyStates.IN_DEBRIEFING)
       this.setReady(false, true)
@@ -779,7 +779,7 @@ SessionLobby = {
     if (SessionLobbyState.roomId == v_roomId && this.isInRoom())
       return
 
-    if (!isLoggedIn.value || this.isInRoom()) {
+    if (!isLoggedIn.get() || this.isInRoom()) {
       delayedJoinRoomFunc = @() SessionLobby.joinRoom(v_roomId, senderId, v_password, cb)
 
       if (this.isInRoom())
@@ -1032,7 +1032,7 @@ isMatchingOnline.subscribe(@(_) SessionLobby.leaveRoom())
 isInDebriefing.subscribe(@(v) v ? SessionLobby.checkLeaveRoomInDebriefing() : null)
 
 let setHostCb = @() set_host_cb(null, @(p) SessionLobby.hostCb(p))
-if (isLoggedIn.value)
+if (isLoggedIn.get())
   setHostCb()
 isLoggedIn.subscribe(function(v) {
   if (!v)

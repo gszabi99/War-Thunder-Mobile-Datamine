@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import disable_network, sign_out
+from "%scripts/dagui_natives.nut" import disable_network
 from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
@@ -12,7 +12,7 @@ let { openUrl } = require("%scripts/url.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isAutologinUsed, setAutologinEnabled, isAutologinEnabled } = require("autoLogin.nut")
-let { resetLoginPass } = require("auth_wt")
+let { resetLoginPass, signOut } = require("auth_wt")
 let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
 let { isInFlight } = require("gameplayBinding")
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
@@ -38,7 +38,7 @@ function startLogout() {
 
   if (is_multiplayer()) { 
     if (isInFlight()) {
-      needLogoutAfterSession(true)
+      needLogoutAfterSession.set(true)
       eventbus_send("quitMission", null)
       return
     }
@@ -50,13 +50,13 @@ function startLogout() {
     broadcastEvent("BeforeProfileInvalidation") 
 
   log("Start Logout")
-  needLogoutAfterSession(false)
+  needLogoutAfterSession.set(false)
 
   if (isLoggedIn.get()) {
-    loginState(LOGIN_STATE.NOT_LOGGED_IN)
-    curLoginType("")
-    authTags([])
-    sign_out()
+    loginState.set(LOGIN_STATE.NOT_LOGGED_IN)
+    curLoginType.set("")
+    authTags.set([])
+    signOut()
   }
   else
     eventbus_send("login.interrupt", {})
@@ -84,7 +84,7 @@ eventbus_subscribe("doLogin", function(authOvr) {
     return 
 
   authState.mutate(@(s) s.__update(authOvr))
-  loginState(loginState.get() | LOGIN_STATE.LOGIN_STARTED)
+  loginState.set(loginState.get() | LOGIN_STATE.LOGIN_STARTED)
 })
 
 eventbus_subscribe("login.checkAutoStart", @(_) checkAutoStartLogin())

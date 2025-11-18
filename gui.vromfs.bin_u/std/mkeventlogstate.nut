@@ -87,7 +87,7 @@ function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEq
     startRemoveTimer(curEvents.get()[idx])
   }
 
-  let clearEvents = @() curEvents([])
+  let clearEvents = @() curEvents.set([])
 
   foreach(func in [addEvent, modifyOrAddEvent, removeEvent, clearEvents])
     curEvents.whiteListMutatorClosure(func)

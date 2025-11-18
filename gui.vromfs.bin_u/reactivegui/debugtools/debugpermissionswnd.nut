@@ -6,7 +6,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { textButtonCommon, textButtonBright } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 
 
 let wndWidth = sh(130)
@@ -15,7 +15,7 @@ let gap = hdpx(10)
 let wndUid = "permissionsWnd"
 let close = @() removeModalWindow(wndUid)
 
-let mkBtn = @(label, isActive, func) (isActive ? textButtonBright : textButtonCommon)(
+let mkBtn = @(label, isActive, func) (isActive ? textButtonPrimary : textButtonCommon)(
   label, func, { ovr = { size = const [flex(), hdpx(100)] } })
 
 function permissionsList() {

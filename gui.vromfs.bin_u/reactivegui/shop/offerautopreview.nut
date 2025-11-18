@@ -12,7 +12,7 @@ let offerToShow = Computed(@() !hasSavedDeepLink.get() ? visibleOffer.get() : nu
 let isVisiblePreviewOpened = keepref(Computed(@() visibleOffer.get() != null
   && previewGoods.get()?.id == visibleOffer.get()?.id))
 
-isVisiblePreviewOpened.subscribe(@(v) !v ? null
+isVisiblePreviewOpened.subscribe(@(v) !v || visibleOffer.get() == null ? null
   : offerShowedTime.mutate(@(val) val[visibleOffer.get().campaign] <- visibleOffer.get().endTime))
 
 return {

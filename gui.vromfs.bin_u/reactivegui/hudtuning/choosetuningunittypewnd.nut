@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonCommon, textButtonBright } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { unitTypeOrder } = require("%appGlobals/unitConst.nut")
 let { tuningUnitType, isCurPresetChanged, saveCurrentTransform } = require("%rGui/hudTuning/hudTuningState.nut")
@@ -50,8 +51,8 @@ let content = @() {
   flow = FLOW_VERTICAL
   gap
   children = [].extend(unitTypes, unitTypesByEvent.get()).map(@(ut)
-    (ut == tuningUnitType.get() ? textButtonCommon : textButtonBright)(
-      loc($"mainmenu/type_{ut}"),
+    (ut == tuningUnitType.get() ? textButtonCommon : textButtonPrimary)(
+      utf8ToUpper(loc($"mainmenu/type_{ut}")),
       @() changeUnitType(ut),
       { ovr = { size = const [flex(), hdpx(100)] } })
   )

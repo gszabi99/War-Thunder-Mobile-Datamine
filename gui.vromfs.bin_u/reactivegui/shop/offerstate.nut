@@ -58,6 +58,7 @@ nextOfferRequestInfo.subscribe(@(_) deferOnce(checkNewOfferIfNeed))
 
 isInBattle.subscribe(@(v) v ? null : blockRequestMsec.set({}))
 isLoggedIn.subscribe(@(v) v ? null : blockRequestMsec.set({}))
+activeOffers.subscribe(@(_) blockRequestMsec.set({}))
 
 function updateBlockRequestTimer() {
   let timerCount = blockRequestMsec.get().len()
@@ -78,7 +79,7 @@ blockRequestMsec.subscribe(@(_) deferOnce(updateBlockRequestTimer))
 let addGType = @(offer) offer == null ? null : offer.__merge({ gtype = getGoodsType(offer) })
 let prevIfEqual = @(prev, new) isEqual(prev, new) ? prev : new
 let activeOffer = Computed(@(prev) prevIfEqual(prev,
-  activeOffers.value == null ? null
+  activeOffers.get() == null ? null
     : isGoodsOnlyInternalPurchase(activeOffers.get()) ? addGType(activeOffers.get())
     : addGType(platformOffer.get())))
 let visibleOffer = Computed(@() isOfferOutdated.get() ? null : activeOffer.get())

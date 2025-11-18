@@ -16,7 +16,7 @@ let { curStage } = require("%rGui/battlePass/battlePassState.nut")
 
 let tutorialResultEvent = keepref(Computed(function() {
   let mission = tutorialMissions.get()?[firstBattleTutor.get()]
-  let typeId = curCampaign.value == "ships" ? "ship" : "tank"
+  let typeId = curCampaign.get() == "ships" ? "ship" : "tank"
   return mission == null || debriefingData.get()?.mission != mission ? null
     : (debriefingData.get()?.isFinished ?? false) ? $"battle_tutorial_{typeId}_complete"
     : $"battle_tutorial_{typeId}_skip"
@@ -28,7 +28,7 @@ tutorialResultEvent.subscribe(function(name) {
 })
 
 function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
-  local prev = watch.value
+  local prev = watch.get()
   watch.subscribe(function(v) {
     if (prev != notInitedValue && v == valueToSend)
       sendAppsFlyerEvent(eventId)
@@ -78,18 +78,13 @@ function saveAndSendBattlesCount() {
     sendAppsFlyerEvent($"battles_{closestCount}_1")
   }
 }
-totalProfileBattles.subscribe(@(v) battlesListCountToSend.contains(v) ? saveAndSendBattlesCount() : null)
+totalProfileBattles.subscribe(@(_) saveAndSendBattlesCount())
 
 let level = keepref(Computed(@() playerLevelInfo.get().level))
 sendEventByValue("level_3", level, 3, 1)
 sendEventByValue("level_10", level, 10, 1)
 
-isLoggedIn.subscribe(function(v) {
-  if (v) {
-    sendAppsFlyerEvent("login")
-    saveAndSendBattlesCount()
-  }
-})
+isLoggedIn.subscribe(@(v) v ? sendAppsFlyerEvent("login") : null)
 
 let loginCount = keepref(Computed(@() sharedStats.get()?.loginDaysCount ?? 0))
 loginCount.subscribe(function(count) {

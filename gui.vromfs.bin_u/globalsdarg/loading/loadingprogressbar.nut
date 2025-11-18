@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defaultProgressColor = 0xFFE8E8E8
-let progressbarBgColor = 0xFF827A7A
-let progressbarHeight = hdpx(15)
-let progressbarGap = hdpx(15)
+const defaultProgressColor = 0xFFE8E8E8
+const progressbarBgColor = 0xFF827A7A
+const progressbarHeight = hdpx(15)
+const progressbarGap = hdpx(15)
 
 let mkProgressStatusText = @(statusText, addStatusComp = null) @() {
   size = FLEX_H

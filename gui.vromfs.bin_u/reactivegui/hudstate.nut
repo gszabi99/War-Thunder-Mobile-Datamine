@@ -20,6 +20,7 @@ let hudStateNative = {
   isInArtilleryMap = false
   isInStrategyMode = false
   isInAntiairMode = false
+  isVisibleOnHud = false
   hasTarget = false
   hasTargetCandidate = false
   groupAttack = false
@@ -44,6 +45,7 @@ let hudStateNative = {
   group3IsInAir = false
   group4IsInAir = false
   threatRockets = []
+  threatTorpedos = []
   hasCountermeasures = false
   repairAssistAllow = 0
 }.map(@(val, key) mkWatched(persist, key, val))

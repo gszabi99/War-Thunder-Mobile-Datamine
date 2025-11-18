@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { NODE_SELF, NODE_ORDER_RETURN, NODE_ORDER_POINT, NODE_ORDER_ATTACK,
-  NODE_ORDER_DEFEND, NODE_ORDER_HUNT
+  NODE_ORDER_DEFEND, NODE_ORDER_HUNT, NODE_ORDER_ORBIT
 } = require("guiStrategyMode")
 let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
 
@@ -107,6 +107,18 @@ let nodesStyle = {
   },
   [NODE_ORDER_HUNT] = {
     icon = iconHunt
+    color = 0xFFF0C080
+    size = hdpx(100)
+    padding = hdpx(5)
+    border = false
+    rotate = 0
+    opacity = 0.75
+    edgeColor = 0xC0402000
+    edgeColorSelected = 0xC0603000
+    valign = ALIGN_TOP
+  },
+  [NODE_ORDER_ORBIT] = {
+    icon = iconPoint
     color = 0xFFF0C080
     size = hdpx(100)
     padding = hdpx(5)

@@ -17,7 +17,7 @@ let textColor = 0xFFE0E0E0
 
 let key = {}
 let mkLoadingTip = @(ovr = {}) function() {
-  let { locId, unitType } = curTipInfo.value
+  let { locId, unitType } = curTipInfo.get()
   let iconColor = unitTypeColors?[unitType] ?? iconColorDefault
   let icon = colorize(iconColor, unitTypeFontIcons?[unitType] ?? "")
   let text = loc(locId)

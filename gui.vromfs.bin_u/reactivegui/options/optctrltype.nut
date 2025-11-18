@@ -4,5 +4,6 @@ return {
   OCT_TOGGLE = "toggle"
   OCT_TEXTINPUT = "textInput"
   OCT_MULTISELECT = "multiselect"
+  OCT_MULTISELECT_MASK = "multiselect_mask"
   OCT_BUTTON = "button"
 }

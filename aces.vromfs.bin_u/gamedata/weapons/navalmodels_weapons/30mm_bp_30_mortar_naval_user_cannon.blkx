@@ -31,7 +31,7 @@
     "maxDistance": 1700.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -45,12 +45,16 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "30mm_vog_17a",
     "dynamicKv": true,
     "explodeTreshold": 0.1,
     "fuseDelayDist": 0.0,
-    "fuseOnWater": true,
     "explosionEffect": "hit_39_58mm_metal_he",
     "groundCollisionEffect": "hit_39_58mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -239,7 +243,7 @@
       "maxDistance": 1700.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -253,12 +257,16 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": 1.0,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "30mm_vog_17a",
       "dynamicKv": true,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
-      "fuseOnWater": true,
       "explosionEffect": "hit_39_58mm_metal_he",
       "groundCollisionEffect": "hit_39_58mm_dirt_he",
       "ricochetEffect": "hit_59_80mm_metal_ap",

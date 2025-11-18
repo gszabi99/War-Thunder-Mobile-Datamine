@@ -3,6 +3,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { premium, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let dailyCounter = require("%appGlobals/pServer/dailyCounter.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let havePremiumDeprecated = Watched(false)
 let premiumEndsAt = Computed(@() (premium.get()?.premium_data.endsAtMs ?? 0) / 1000)
@@ -12,6 +13,7 @@ let hasPremiumSubs = Computed(@() hasPrem.get() || hasVip.get())
 let havePremium = Computed(@() havePremiumDeprecated.get() || hasPremiumSubs.get())
 let hasPremDailyBonus = Computed(@() (dailyCounter.get()?.daily_prem_gold ?? 0) == 0)
 let canReceivePremDailyBonus = Computed(@() hasPremDailyBonus.get() && hasPremiumSubs.get())
+let vipBonuses = Computed(@() hasVip.get() ? serverConfigs.get()?.gameProfile.vipBonuses : null)
 
 let nextUpdate = Watched({ time = 0 }) 
 
@@ -36,10 +38,12 @@ resetUpdateTimer()
 nextUpdate.subscribe(@(_) resetUpdateTimer())
 
 return {
+  havePremiumDeprecated
   havePremium
   premiumEndsAt
   hasPremiumSubs
   hasVip
   hasPremDailyBonus
+  vipBonuses
   canReceivePremDailyBonus
 }

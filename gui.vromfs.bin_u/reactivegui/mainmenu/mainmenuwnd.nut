@@ -1,12 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import exitGame
 let { HangarCameraControl } = require("wt.behaviors")
+let { prevIfEqual } = require("%sqstd/underscore.nut")
+let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
 let { translucentButtonsVGap, translucentButton } = require("%rGui/components/translucentButton.nut")
 let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { hangarUnit, setHangarUnit, hasBgUnitsByCamp } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -16,10 +21,10 @@ let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { chooseCampaignWnd } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
-let mkUnitPkgForBattleDownloadInfo = require("%rGui/unit/mkUnitPkgForBattleDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { hoverColor, textColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
+let { registerAutoDownloadUnits } = require("%rGui/updater/updaterState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info, allow_subscriptions } = require("%appGlobals/permissions.nut")
@@ -36,14 +41,16 @@ let { specialEventGamercardItems, openEventWnd } = require("%rGui/event/eventSta
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
 let bpBanner = require("%rGui/battlePass/bpBanner.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
+let { openShopWnd, goodsByCategory } = require("%rGui/shop/shopState.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let premDailyBonusWnd = require("%rGui/shop/premDailyBonusWnd.nut")
 let btnOpenUnitsTree = require("%rGui/unitsTree/btnOpenUnitsTree.nut")
+let { unitsResearchStatus, visibleNodes, selectedCountry, blockedCountries, getResearchableCountries
+} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.nut")
+let { toBattleButtonForRandomBattles, randomBattleButtonDownloading } = require("%rGui/mainMenu/toBattleButton.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { boostersListActive, boostersHeight } = require("%rGui/boosters/boostersListActive.nut")
@@ -51,9 +58,11 @@ let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarMainMenuSize } = require("%rGui/slotBar/slotBar.nut")
+let { slotBarMaxWidth } = require("%rGui/slotBar/slotBarConsts.nut")
 let { unseenCampaigns } = require("%rGui/mainMenu/unseenCampaigns.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
+
 
 let unitNameStateFlags = Watched(0)
 
@@ -65,18 +74,42 @@ let centerBlockBottomMargin = defButtonHeight + battleInfoBlockMinHeight
 let unitNameBlockHeight = hdpx(60)
 let unitNameBgColor = 0x90000000
 
-let mainMenuUnitToShow = keepref(Computed(function() {
+let mainMenuUnitToShow = Computed(function() {
   if (!isMainMenuAttached.get())
     return null
-  return curUnit.get()?.name
-    ?? campUnitsCfg.get().reduce(@(res, unit) res == null || res.rank > unit.rank ? unit : res)?.name
-}))
+  if (curUnit.get() != null)
+    return curUnit.get()
+  let allCountries = getResearchableCountries(visibleNodes.get(), unitsResearchStatus.get(), blockedCountries.get())
+  let curCountry = allCountries.contains(selectedCountry.get()) ? selectedCountry.get() : allCountries?[0]
+  return campUnitsCfg.get()?[unitsResearchStatus.get().findindex(@(r) r.canResearch && visibleNodes.get()?[r.name].country == curCountry)]
+    ?? campUnitsCfg.get().reduce(@(res, unit) res == null || res.rank > unit.rank ? unit : res)
+})
 
-mainMenuUnitToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
+let mainMenuUnitNameToShow = keepref(Computed(@() mainMenuUnitToShow.get()?.name))
+
+mainMenuUnitNameToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
+
+registerAutoDownloadUnits(Computed(function(prev) {
+  if (!isReadyToFullLoad.get() || mainMenuUnitToShow.get() == null)
+    return prevIfEqual(prev, {})
+
+  let { name, platoonUnits = [] } = mainMenuUnitToShow.get()
+  let res = {}
+  res[getTagsUnitName(name)] <- true
+  foreach (p in platoonUnits)
+    res[getTagsUnitName(p.name)] <- true
+
+  if (hasBgUnitsByCamp?[curCampaign.get()] && platoonUnits.len() == 0)
+    foreach (s in curSlots.get())
+      if (s.name != "" && s.name != name)
+        res[getTagsUnitName(s.name)] <- true
+
+  let sizes = unitSizes.get()
+  return prevIfEqual(prev, res.filter(@(_, u) (sizes?[u] ?? -1) != 0))
+}))
 
 let mkUnitName = @(unit, sf) {
   vplace = ALIGN_CENTER
-  margin = const [0, hdpx(20)]
   flow = FLOW_HORIZONTAL
   gap = hdpx(24)
   children = [
@@ -96,6 +129,7 @@ function unitNameBlock() {
       behavior = Behaviors.Button
       onElemState = @(sf) unitNameStateFlags.set(sf)
       onClick = @() unitDetailsWnd({ name = hangarUnit.get().name })
+      gap = hdpx(20)
       children = [
         {
           size = unitNameBlockHeight
@@ -105,14 +139,14 @@ function unitNameBlock() {
           borderColor = 0xFFA0A0A0
           children = [
             {
-            rendObj = ROBJ_TEXT
-            vplace = ALIGN_CENTER
-            hplace = ALIGN_CENTER
-            text = "i"
-          }.__update(fontSmallShaded)
-          hangarUnit.get().name not in unseenSkins.get() ? null
-            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
-        ]
+              rendObj = ROBJ_TEXT
+              vplace = ALIGN_CENTER
+              hplace = ALIGN_CENTER
+              text = "i"
+            }.__update(fontSmallShaded)
+            hangarUnit.get().name not in unseenSkins.get() ? null
+              : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
+          ]
         }
         mkUnitName(hangarUnit.get(), unitNameStateFlags.get())
       ]
@@ -123,7 +157,7 @@ function unitNameBlock() {
 
 let campaignsBtn = @() {
   watch = [campaignsList, curCampaign, unseenCampaigns]
-  children = campaignsList.get().len() <= 1 || curCampaign.value == null  ? null
+  children = campaignsList.get().len() <= 1 || curCampaign.get() == null  ? null
     : [
         framedImageBtn(getCampaignPresentation(curCampaign.get()).icon, chooseCampaignWnd,
           {
@@ -143,7 +177,7 @@ let campaignsBtn = @() {
             fontFx = FFT_GLOW
             fontFxFactor = 64
             fontFxColor = Color(0, 0, 0)
-          }.__update(fontTinyAccented))
+          }.__update(fontTinyAccentedShadedBold))
         unseenCampaigns.get().len() == 0 ? null
           : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
       ]
@@ -210,14 +244,7 @@ let leftTopButtons = {
       {
         size = FLEX_H
         children = [
-          {
-            hplace = ALIGN_LEFT
-            gap = translucentButtonsVGap
-            flow = FLOW_HORIZONTAL
-            children = [
-              campaignsBtn
-            ]
-          }
+          campaignsBtn
           {
             size = 0
             hplace = ALIGN_RIGHT
@@ -232,7 +259,6 @@ let leftTopButtons = {
           bpBanner
           btnHorRow([
             btnOpenQuests
-            btnPremDailyBonus
             btnsOpenSpecialEvents
           ])
         ])
@@ -246,11 +272,13 @@ let leftTopButtons = {
           btnHorRow([
             btnOpenUnitsTree
             @() {
-              watch = curCampaignSlots
+              watch = [curCampaignSlots, curCampaign]
               children = !curCampaignSlots.get()
                 ? null
-                : translucentButton("ui/gameuiskin#icon_slot_preset.svg", "", openSlotPresetWnd)
+                : translucentButton(getCampaignPresentation(curCampaign.get()).slotsPresetBtnIcon,
+                     "", openSlotPresetWnd)
             }
+            btnPremDailyBonus
           ])
         ])
       ])
@@ -265,7 +293,15 @@ let gamercardBattleItemsBalanceBtns = @(){
   gap = gamercardGap
   children = specialEventGamercardItems.get()
     .map(@(v) mkItemsBalance(v.itemId,
-      @() v.eventName in gmEventsList.get() ? openGmEventWnd(v.eventName) : openEventWnd(v.eventName),
+      function() {
+        let category = goodsByCategory.get().findindex(@(goods) goods.findvalue(@(g) v.itemId in g.items))
+        if (category != null)
+          openShopWnd(category)
+        else if (v.eventName in gmEventsList.get())
+          openGmEventWnd(v.eventName)
+        else
+          openEventWnd(v.eventName)
+      },
       CS_GAMERCARD))
     .extend(itemsOrder.get()
       .filter(@(v) hangarUnit.get()?.name == null || isItemAllowedForUnit(v, hangarUnit.get().name))
@@ -292,6 +328,7 @@ let toBattleButtonPlace = {
       ]
     }
     {
+      maxWidth = saSize[0] - slotBarMaxWidth
       minHeight = battleInfoBlockMinHeight
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
@@ -303,8 +340,8 @@ let toBattleButtonPlace = {
       halign = ALIGN_RIGHT
       children = [
         onlineInfo
-        unitNameBlock
         gamercardBattleItemsBalanceBtns
+        unitNameBlock
         mkMRankRange
       ]
     }
@@ -320,15 +357,34 @@ let exitMsgBox = @() openMsgBox({
   ]
 })
 
-let centerTopBlock = {
+let textArea = @(text) {
+  rendObj = ROBJ_9RECT
+  image = gradTranspDoubleSideX
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = [0, hdpx(50)]
+  color = 0x90000000
+  padding = const [hdpx(5), hdpx(20)]
+  gap = hdpx(20)
+  children = @() {
+    size = [saSize[0] - 2 * statsWidth, SIZE_TO_CONTENT]
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    color = textColor
+    halign = ALIGN_CENTER
+    text
+    fontFxColor = Color(0, 0, 0, 255)
+    fontFxFactor = 50
+    fontFx = FFT_GLOW
+  }.__update(fontTinyShaded)
+}
+
+let centerTopBlock = @() {
+  watch = randomBattleButtonDownloading
   rendObj = ROBJ_BOX
   size = [centerBlockWidth, SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = centerBlockGap
-  children = [
-    mkUnitPkgForBattleDownloadInfo()
-  ]
+  children = randomBattleButtonDownloading.get().len() > 0 ? textArea(loc("msg/downloadPackToUseUnitOnline")) : null
 }
 
 let centerBottomBlock = {

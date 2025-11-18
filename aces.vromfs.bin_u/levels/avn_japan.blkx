@@ -1,0 +1,127 @@
+{
+  "z_far": 35000.0,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "gridSteps": [
+    2000.0,
+    2000.0
+  ],
+  "vsmAngleThreshold": 0.0,
+  "wind_scale": 1.2,
+  "max_wind_strength": 6.5,
+  "water_level": 0.0,
+  "harmonicsType": "blue",
+  "mapCoord0": [
+    -940.0,
+    -5656.0
+  ],
+  "mapCoord1": [
+    7252.0,
+    2536.0
+  ],
+  "minAreaSize": [
+    8192.0,
+    8192.0
+  ],
+  "aiMapCoord0": [
+    -90068.0,
+    -90068.0
+  ],
+  "aiMapCoord1": [
+    90068.0,
+    90068.0
+  ],
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "shader_vars": {
+    "shore__waves_dist": [
+      -20.0,
+      40.0,
+      0.0,
+      50.0
+    ],
+    "shore_amplitude_to_length": 180.0,
+    "shore_artistic_max_wave_height": 0.25,
+    "max_river_width": 0.0,
+    "ocean_density": 0.4,
+    "river_density": 2.0,
+    "water_color_noise_size": 1737.0,
+    "shore_depth_scale": 0.07,
+    "ocean0": [
+      0.57,
+      0.908,
+      0.998,
+      0.0
+    ],
+    "ocean1": [
+      0.34,
+      0.802,
+      0.962,
+      0.0
+    ]
+  },
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": true,
+    "riExtraMinSizeForReflection": 100.0,
+    "riExToHeightmap": true
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_gravel_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_fabric_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_concrete_b_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11
+  },
+  "technicsSkins": {},
+  "overrideRiLodRange": {
+    "wr_big_island_a": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_big_island_b": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_big_island_c": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_formation_a": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_formation_b": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_formation_c": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_sand_island_b": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    }
+  }
+}

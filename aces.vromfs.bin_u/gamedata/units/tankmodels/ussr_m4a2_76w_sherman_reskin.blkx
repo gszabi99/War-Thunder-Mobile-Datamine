@@ -1835,7 +1835,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 0.7,
           "verticalSpeedLimitKPH": 24.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -1972,12 +1971,12 @@
       ],
       "CenterOfGravity": [
         0.2,
-        0.8,
+        0.4,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 1250.0
@@ -1995,6 +1994,12 @@
       "fricFrontal": [
         1.0,
         0.8
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        0.9,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2011,6 +2016,7 @@
       "driveGearRadius": 0.305,
       "mainGearRatio": 3.615,
       "sideGearRatio": 2.74,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -5.64,
@@ -2237,6 +2243,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2254,6 +2261,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2314,6 +2322,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2331,6 +2340,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2404,6 +2414,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2545,6 +2556,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2552,6 +2564,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2559,6 +2572,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2892,6 +2906,58 @@
       0.1,
       0.05,
       0.85
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "modifications": {

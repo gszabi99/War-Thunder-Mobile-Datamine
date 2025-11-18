@@ -7,7 +7,6 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { unseenPurchasesExt, isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let lootboxOpenRouletteConfig = require("%rGui/shop/lootboxOpenRouletteConfig.nut")
 
 let ERROR_UPDATE_DELAY = 60
@@ -17,7 +16,7 @@ let lootboxes = Computed(function() {
   let { lootboxesCfg = {} } = serverConfigs.get()
   let roulette = {}
   let silent = {}
-  foreach(id, v in servProfile.value?.lootboxes ?? {}) {
+  foreach(id, v in servProfile.get()?.lootboxes ?? {}) {
     if (v == 0 || id not in lootboxesCfg)
       continue
     let { openType = "" } = lootboxesCfg[id]
@@ -29,21 +28,20 @@ let lootboxes = Computed(function() {
   return { roulette, silent }
 })
 
-let canOpenSilent = Computed(@() !isInBattle.get() && lootboxInProgress.value == null && !wasErrorSoon.get())
+let canOpenSilent = Computed(@() !isInBattle.get() && lootboxInProgress.get() == null && !wasErrorSoon.get())
 let canOpenWithWindow = Computed(@() canOpenSilent.get()
   && isLoggedIn.get()
   && unseenPurchasesExt.get().len() == 0
   && !isShowUnseenDelayed.get()
-  && !isTutorialActive.get()
-  && !hasJustUnlockedUnitsAnimation.get())
+  && !isTutorialActive.get())
 
 let idToSilentOpen = keepref(Computed(@() canOpenSilent.get() ? lootboxes.get().silent.findindex(@(_) true) : null))
 
 registerHandler("onAutoOpenLootbox", @(res) res?.error == null ? null : wasErrorSoon.set(true))
 
 function tryOpen() {
-  if (idToSilentOpen.value != null)
-    open_lootbox_several(idToSilentOpen.value, lootboxes.get().silent?[idToSilentOpen.value] ?? 1, "onAutoOpenLootbox")
+  if (idToSilentOpen.get() != null)
+    open_lootbox_several(idToSilentOpen.get(), lootboxes.get().silent?[idToSilentOpen.get()] ?? 1, "onAutoOpenLootbox")
 }
 tryOpen()
 idToSilentOpen.subscribe(@(_) deferOnce(tryOpen))

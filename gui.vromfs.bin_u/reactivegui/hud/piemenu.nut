@@ -3,6 +3,7 @@ let { sqrt, pow, fabs, sin, cos, atan2, PI } = require("math")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { STICK } = require("%rGui/hud/stickState.nut")
+let { hudWhiteColor, hudBlackColor } = require("%rGui/style/hudColors.nut")
 
 let RAD_TO_DEG = 180.0 / PI
 let DEG_TO_RAD = PI / 180.0
@@ -38,7 +39,7 @@ function getPieMenuSelectedIdx(menuItemsCount, stickDeltaV) {
 }
 
 function mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul) {
-  let { icon, iconScale = 1.0, iconColor = 0xFFFFFFFF } = c
+  let { icon, iconScale = 1.0, iconColor = hudWhiteColor } = c
   if ((icon ?? "") == "")
     return null
   let iconSize = (pieRadius * pieIconSizeMul + 0.5).tointeger()
@@ -60,7 +61,7 @@ function mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul) {
 let mkPieMenuItemText = @(c) {
   rendObj = ROBJ_TEXT
   text = c.label
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 
 
@@ -74,26 +75,26 @@ let mkPieMenuItemText = @(c) {
 function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
   let { pieRadius, piePosOffset, pieIconSizeMul, pieActiveStick = STICK.LEFT } = params
   let pieSize = [pieRadius * 2, pieRadius * 2]
-  let degPerItem = Computed(@() 360.0 / (menuCfg.get().len() || 1))
+  let degPerItem = Computed(@() 360.0 / max(menuCfg.get().len(), 1))
 
   let pieBg = {
     size = pieSize
     rendObj = ROBJ_MASK
     image = Picture($"ui/gameuiskin/pie_menu_bg.svg:{pieSize[0]}:{pieSize[1]}:P")
-    color = 0xFF000000
+    color = hudBlackColor
     onAttach = @() isPieMenuActive.set(true)
     onDetach = @() isPieMenuActive.set(false)
     children = [
       {
         size = pieSize
         rendObj = ROBJ_SOLID
-        color = 0xFF000000
+        color = hudBlackColor
       }
       @() (menuCfg.get()?[selIdx.get()].icon ?? "") == "" ? { watch = [menuCfg, selIdx] } : {
         watch = [menuCfg, selIdx, degPerItem]
         size = pieSize
         rendObj = ROBJ_VECTOR_CANVAS
-        color = 0xFFFFFFFF
+        color = hudWhiteColor
         commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90 - (degPerItem.get() * 0.5), -90 + (degPerItem.get() * 0.5)]]
         transform = {
           pivot = [0.5, 0.5]

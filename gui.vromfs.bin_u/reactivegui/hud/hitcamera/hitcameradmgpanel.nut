@@ -6,6 +6,7 @@ let { hcUnitType, hcDamageStatus, hcDmgPartsInfo, isHcUnitKilled, hcRelativeHeal
 } = require("%rGui/hud/hitCamera/hitCameraState.nut")
 let { hudUnitType } = require("%rGui/hudState.nut")
 let { isTargetRepair, targetHp } = require("%rGui/hud/shipState.nut")
+let { hudWhiteColor, hudBlackColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 
 let iconBgSizeBase = evenPx(44)
 let iconSizeBase = evenPx(30)
@@ -25,11 +26,11 @@ let colors = {
   [NONE] = 0xFF728188,
   [MINOR] = 0xFFE2AE00,
   [MODERATE] = 0xFFFF7F27,
-  [MAJOR] = 0xFFFFFFFF,
-  [CRITICAL] = 0xFFFF4338,
-  [FATAL] = 0xFF000000,
-  [BROKEN] = 0xFFFF4338,
-  [KILLED] = 0xFFFF4338,
+  [MAJOR] = hudWhiteColor,
+  [CRITICAL] = hudCoralRedColor,
+  [FATAL] = hudBlackColor,
+  [BROKEN] = hudCoralRedColor,
+  [KILLED] = hudCoralRedColor,
 }
 
 let currentTargetHp = Computed(@() targetHp.get() < 0 ? hcRelativeHealth.get() : targetHp.get())
@@ -142,14 +143,14 @@ function mkTextPart(icon, iconRepair, scale, textW, colorW, isRepairW) {
         watch = isRepairW
         size = [bigIconSize, bigIconSize]
         rendObj = ROBJ_IMAGE
-        image = Picture($"{isRepairW.value ? iconRepair : icon}:{bigIconSize}:{bigIconSize}:P")
-        color = colorW.value
+        image = Picture($"{isRepairW.get() ? iconRepair : icon}:{bigIconSize}:{bigIconSize}:P")
+        color = colorW.get()
       }
       @() {
         watch = textW
         rendObj = ROBJ_TEXT
-        color = colorW.value
-        text = textW.value
+        color = colorW.get()
+        text = textW.get()
       }.__update(font)
     ]
   }
@@ -159,7 +160,7 @@ function mkDmgPart(icon, iconSize, iconBgSize, status) {
   let picture = Picture($"{icon}:{iconSize}:{iconSize}")
   return function() {
     let res = { watch = status }
-    return status.value == HIDDEN ? res : res.__update({
+    return status.get() == HIDDEN ? res : res.__update({
         size = [flex(), iconBgSize]
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
@@ -168,19 +169,19 @@ function mkDmgPart(icon, iconSize, iconBgSize, status) {
             size = [iconBgSize, iconBgSize]
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{iconBgSize}:{iconBgSize}:P")
-            color = status.value == NONE ? 0x33000000
-              : status.value == KILLED ? 0XFF541613
+            color = status.get() == NONE ? 0x33000000
+              : status.get() == KILLED ? 0XFF541613
               : 0xAA000000
           }
           {
             size = [iconSize, iconSize]
             rendObj = ROBJ_IMAGE
             image = picture
-            color = colors?[status.value] ?? 0xFFFFFFFF
+            color = colors?[status.get()] ?? hudWhiteColor
           }
         ]
       },
-      status.value == KILLED ? iconAnim : {}
+      status.get() == KILLED ? iconAnim : {}
     )
   }
 }
@@ -201,9 +202,9 @@ function sailboatDmgPanelChildrenCtor(scale) {
       Computed(@() (hcDamageStatus.get()?.hasBreach ?? false) ? CRITICAL : NONE))
     mkTextPart("ui/gameuiskin#ship_crew.svg","ui/gameuiskin#hud_crew_wounded.svg", scale,
       Computed(@() $"{(100 * currentTargetHp.get() + 0.5).tointeger()}%"),
-      Computed(@() currentTargetHp.get() > 0.505 ? 0xFFFFFFFF
+      Computed(@() currentTargetHp.get() > 0.505 ? hudWhiteColor
         : currentTargetHp.get() > 0.005 ? 0xFFFFC000
-        : 0XFFFF4040), isTargetRepair)
+        : hudCoralRedColor), isTargetRepair)
   ]
 }
 
@@ -225,9 +226,9 @@ function shipDmgPanelChildrenCtor(scale) {
       Computed(@() (hcDamageStatus.get()?.hasBreach ?? false) ? CRITICAL : NONE))
     mkTextPart("ui/gameuiskin#ship_crew.svg","ui/gameuiskin#hud_crew_wounded.svg", scale,
       Computed(@() $"{(100 * currentTargetHp.get() + 0.5).tointeger()}%"),
-      Computed(@() currentTargetHp.get() > 0.505 ? 0xFFFFFFFF
+      Computed(@() currentTargetHp.get() > 0.505 ? hudWhiteColor
         : currentTargetHp.get() > 0.005 ? 0xFFFFC000
-        : 0XFFFF4040), isTargetRepair)
+        : hudCoralRedColor), isTargetRepair)
   ]
 }
 

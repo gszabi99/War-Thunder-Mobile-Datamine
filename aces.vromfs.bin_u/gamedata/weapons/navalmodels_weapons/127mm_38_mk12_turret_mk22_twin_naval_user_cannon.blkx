@@ -36,7 +36,7 @@
     "maxDistance": 50000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
-    "groundRicochetPreset": "ap",
+    "groundRicochetPreset": "ap_ground",
     "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -49,6 +49,11 @@
       0.1,
       2.0
     ],
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "127mm_mk32_common",
     "dynamicKv": true,
@@ -60,7 +65,6 @@
     "explodeTreshold": 5.0,
     "fuseDelayDist": 10.0,
     "hpThresholdForFuse": 0.000001,
-    "fuseOnWater": true,
     "explosionEffect": "hit_133_160mm_metal_ap",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_133_160mm_metal_ap",
@@ -237,7 +241,7 @@
       "maxDistance": 50000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
-      "groundRicochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -250,6 +254,11 @@
         0.1,
         2.0
       ],
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": 1.0,
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "127mm_mk32_common",
       "dynamicKv": true,
@@ -261,7 +270,6 @@
       "explodeTreshold": 5.0,
       "fuseDelayDist": 10.0,
       "hpThresholdForFuse": 0.000001,
-      "fuseOnWater": true,
       "explosionEffect": "hit_133_160mm_metal_ap",
       "groundCollisionEffect": "hit_133_160mm_dirt_ap",
       "ricochetEffect": "hit_133_160mm_metal_ap",
@@ -437,7 +445,7 @@
       "maxDistance": 50000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
-      "groundRicochetPreset": "apbc",
+      "groundRicochetPreset": "apbc_ground",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -651,7 +659,7 @@
       "maxDistance": 50000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.4,
       "stabilityCaliberToArmorThreshold": 10.0,
@@ -665,7 +673,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_vt.ivf",
+      "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
       "bulletName": "127mm_aa_mk31_mod1",
       "selfDestructionFx": [
         "explosion_air_selfexplosion_big",

@@ -97,7 +97,7 @@ let receivedRewardsAll = Computed(function() {
 
 let receivedRewardsCur = Computed(@() receivedRewardsAll.get()?[rouletteOpenIdx.get()])
 let rouletteOpenCount = Computed(@() receivedRewardsCur.get()?.openCount
-    ?? ((servProfile.value?.lootboxStats[rouletteOpenId.get()].opened ?? 0) + 1))
+    ?? ((servProfile.get()?.lootboxStats[rouletteOpenId.get()].opened ?? 0) + 1))
 
 let rouletteFixedRewards = Computed(function() {
   let res = []
@@ -123,7 +123,7 @@ let nextFixedReward = Computed(function() {
   foreach(r in rouletteFixedRewards.get()) {
     let isJackpot = r.viewInfo?[0].rType == "lootbox"
     let compareCount = isJackpot ? openConfig.get().finalOpenCount + 1 : rouletteOpenCount.get()
-    if (r.count >= compareCount && !isViewInfoRewardEmpty(r.viewInfo, servProfile.value))
+    if (r.count >= compareCount && !isViewInfoRewardEmpty(r.viewInfo, servProfile.get()))
       return {
         viewInfo = r.viewInfo
         total = r.count
@@ -277,14 +277,14 @@ let openDelayed = @() deferOnce(function() {
     return
 
   let id = nextOpenId.get()
-  let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.value, serverConfigs.get())
+  let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.get(), serverConfigs.get())
   if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { 
     open_lootbox_several(id, nextOpenCount.get())
     return
   }
 
-  let jackpots = calcJackpotOpens(id, nextOpenCount.get(), servProfile.value, serverConfigs.get())
-    .map(@(j) j.__update(calcOpenInfo(j.jackpotId, servProfile.value, serverConfigs.get())))
+  let jackpots = calcJackpotOpens(id, nextOpenCount.get(), servProfile.get(), serverConfigs.get())
+    .map(@(j) j.__update(calcOpenInfo(j.jackpotId, servProfile.get(), serverConfigs.get())))
 
   log($"[ROULETTE] Open lootbox = {id} x{nextOpenCount.get()}, jackpots count = {jackpots.len()}")
 
@@ -295,7 +295,7 @@ let openDelayed = @() deferOnce(function() {
     lastReward
     jackpots
     openCountAtOnce = nextOpenCount.get()
-    finalOpenCount = (servProfile.value?.lootboxStats[id].opened ?? 0) + nextOpenCount.get()
+    finalOpenCount = (servProfile.get()?.lootboxStats[id].opened ?? 0) + nextOpenCount.get()
   })
 })
 if (needOpen.get())
@@ -305,7 +305,7 @@ needOpen.subscribe(@(v) v ? openDelayed() : null)
 openConfig.subscribe(@(_) rouletteOpenIdx.set(0))
 
 function closeRoulette() {
-  openConfig(null)
+  openConfig.set(null)
   rouletteOpenResultFull.set(null)
 }
 

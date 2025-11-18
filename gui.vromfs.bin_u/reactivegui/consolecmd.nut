@@ -54,3 +54,4 @@ let printSorted = @(tbl) console_print(
 register_command(@() printSorted(balance.get()), "debug.balance_full")
 register_command(@() printSorted(balance.get().filter(@(v) v != 0)), "debug.balance_not_empty")
 register_command(@() printSorted(curSeasons.get().map(@(s) s.idx)), "debug.current_seasons")
+

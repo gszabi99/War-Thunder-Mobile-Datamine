@@ -7,7 +7,7 @@ let gapV = hdpx(10)
 
 
 function listbox(value, list, columns = null, valToString = @(v) v, setValue = null, mkContentCtor = null) {
-  setValue = setValue ?? @(v) value(v)
+  setValue = setValue ?? @(v) value.set(v)
   let colCount = columns ?? list.len()
   let rows = arrayByRows(
     list.map(@(v)

@@ -75,7 +75,7 @@ function onLoginResult(result) {
     return
   }
 
-  rightsError(null)
+  rightsError.set(null)
   applyRights(result)
   setChardToken(result?.chardToken ?? 0)
   finalizeStage()

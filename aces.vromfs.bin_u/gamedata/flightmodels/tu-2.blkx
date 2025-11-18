@@ -2657,7 +2657,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "fab250_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -2677,7 +2677,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_high_drag",
+            "iconType": "bomb_25kg",
             "name": "brab250_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -2697,7 +2697,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bomb_500kg",
             "name": "fab500_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -2717,7 +2717,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_50kg",
             "name": "brab500_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -2737,7 +2737,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "fab1000_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -2757,7 +2757,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_high_drag",
+            "iconType": "bomb_1500kg",
             "name": "brab1000_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -2785,8 +2785,9 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle_group_x8",
+            "iconType": "bomb_100kg_group",
             "name": "fab100_internal",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2854,7 +2855,7 @@
             ]
           },
           {
-            "iconType": "bombs_large_group_x2",
+            "iconType": "bomb_250kg_group",
             "name": "fab250_x2",
             "reqModification": "der_19pk",
             "Weapon": [
@@ -2877,7 +2878,7 @@
             ]
           },
           {
-            "iconType": "bombs_middle_high_drag_group_x2",
+            "iconType": "bomb_25kg_group",
             "name": "brab250_x2",
             "reqModification": "der_19pk",
             "Weapon": [
@@ -2900,7 +2901,7 @@
             ]
           },
           {
-            "iconType": "bombs_large_group_x4",
+            "iconType": "bomb_250kg_group",
             "name": "fab250_x4",
             "reqModification": "der_19pk",
             "Weapon": [
@@ -2939,7 +2940,7 @@
             ]
           },
           {
-            "iconType": "bombs_middle_high_drag_group_x4",
+            "iconType": "bomb_25kg_group",
             "name": "brab250_x4",
             "reqModification": "der_19pk",
             "Weapon": [
@@ -2978,7 +2979,7 @@
             ]
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bomb_500kg",
             "name": "fab500_internal",
             "reqModification": "der_19pk",
             "Weapon": {
@@ -2991,7 +2992,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_50kg",
             "name": "brab500_internal",
             "reqModification": "der_19pk",
             "Weapon": {
@@ -3004,7 +3005,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "fab1000_internal",
             "reqModification": "der_19pk",
             "Weapon": {
@@ -3017,7 +3018,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_high_drag",
+            "iconType": "bomb_1500kg",
             "name": "brab1000_internal",
             "reqModification": "der_19pk",
             "Weapon": {
@@ -3037,7 +3038,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "fab250_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -3057,7 +3058,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_high_drag",
+            "iconType": "bomb_25kg",
             "name": "brab250_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -3077,7 +3078,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bomb_500kg",
             "name": "fab500_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -3097,7 +3098,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_50kg",
             "name": "brab500_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -3117,7 +3118,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "fab1000_external",
             "reqModification": "der_19pk",
             "ShowNodes": {
@@ -3137,7 +3138,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_high_drag",
+            "iconType": "bomb_1500kg",
             "name": "brab1000_external",
             "reqModification": "der_19pk",
             "ShowNodes": {

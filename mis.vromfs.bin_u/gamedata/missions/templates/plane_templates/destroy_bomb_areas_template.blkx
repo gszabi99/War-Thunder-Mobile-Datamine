@@ -1384,6 +1384,7 @@
           "value": -9,
           "valueSystem": "percentage",
           "changeReason": "bombing_zone_died",
+          "ignoreSingleMissions": false,
           "team": "A"
         },
         "playHint": [
@@ -1628,6 +1629,7 @@
           "value": -9,
           "valueSystem": "percentage",
           "changeReason": "bombing_zone_died",
+          "ignoreSingleMissions": false,
           "team": "B"
         },
         "playHint": [

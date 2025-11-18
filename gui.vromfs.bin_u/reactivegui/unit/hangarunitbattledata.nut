@@ -5,9 +5,8 @@ let io = require("io")
 let { object_to_json_string } = require("json")
 let { register_command } = require("console")
 let logBD = log_with_prefix("[HANGAR_BATTLE_DATA] ")
-let { mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { hangarBattleData, lastHangarUnitBattleData } = require("%rGui/unit/hangarUnit.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
 let battleDataQuery = ecs.SqQuery("hangarBattleDataQuery",
@@ -18,8 +17,10 @@ let battleDataQuery = ecs.SqQuery("hangarBattleDataQuery",
 
 
 function setBattleDataToClientEcs(bd) {
-  if (bd == null)
+  if (bd == null) {
+    logBD("Ignore set battle data to client entity because it empty")
     return
+  }
   local isFound = false
   battleDataQuery(function(_, c) {
     if (c.server_player__userId != myUserId.get())
@@ -38,48 +39,17 @@ function setBattleDataToClientEcs(bd) {
       isBattleDataReceived = true
       hangarBattleData = bd
     }, @(_e) logBD("Created wtm_server_player with battle data."))
+
+  lastHangarUnitBattleData.set(bd)
 }
 
-function mkHangarBattleData() {
-  if (mainHangarUnit.get() == null)
-    return null
-  let { name, country = "", unitType = "", mods = null, modPreset = "",
-    isUpgraded = false, isPremium = false, platoonUnits = []
-  } = mainHangarUnit.get()
-
-  let cfgMods = serverConfigs.get()?.unitModPresets[modPreset] ?? {}
-  let items = mods != null
-      ? mods.filter(@(has, id) has && id in cfgMods)
-          .map(@(_) 1)
-    : isPremium || isUpgraded
-      ? cfgMods.map(@(_) 1) 
-    : {}
-  return {
-    userId = myUserId.value
-    items
-    unit = {
-      name
-      country
-      unitType
-      isUpgraded
-      isPremium = isPremium || isUpgraded
-      weapons = { [$"{name}_default"] = true }
-      attributes = {} 
-      platoonUnits = platoonUnits.map(@(p) {
-        name = p.name
-        weapons = { [$"{p.name}_default"] = true }
-      })
-    }
-  }
-}
-
-registerRespondent("create_battle_data_for_hangar", @() setBattleDataToClientEcs(mkHangarBattleData()))
+registerRespondent("create_battle_data_for_hangar", @() setBattleDataToClientEcs(hangarBattleData.get()))
 
 register_command(
   function() {
     const fileName = "wtmHangarBattleData.json"
     let file = io.file(fileName, "wt+")
-    file.writestring(object_to_json_string(mkHangarBattleData(), true))
+    file.writestring(object_to_json_string(hangarBattleData.get(), true))
     file.close()
     log($"Saved json hangar battle data to {fileName}")
   }

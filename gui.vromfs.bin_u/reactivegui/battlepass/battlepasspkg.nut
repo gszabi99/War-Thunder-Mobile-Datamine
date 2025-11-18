@@ -2,6 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 
 let progressIconSize = [evenPx(54), hdpxi(58)]
+let tabSize = [hdpx(140), hdpx(92)]
+let sideTabPadding = [saBorders[1], hdpx(5), 0, saBorders[0]]
 let bpLineFillColor = 0xFF191919
 let bpBorderColor = 0xFF7C7C7C
 
@@ -59,4 +61,10 @@ return {
   bpProgressbarFull = bpProgress(fullLineBP)
 
   progressIconSize
+
+  tabSize
+  tabIconSize = hdpx(70)
+  sideTabPadding
+  sideTabWidth = saBorders[0] + tabSize[0] + sideTabPadding[1]
+  vGradientGapSize = [hdpx(4), sh(100)]
 }

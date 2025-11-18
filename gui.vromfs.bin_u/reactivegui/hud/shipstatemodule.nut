@@ -17,6 +17,7 @@ let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut
 let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT } = require("%rGui/options/guiOptions.nut")
 let { tryPlaySound } = require("sound_wt")
+let { hudRedColor, hudOrangeColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 
 let iconSize = shHud(3.5)
 let crewIconSize = shHud(4.0)
@@ -29,7 +30,7 @@ let defHealthSize = [defHealthImageWidth, defHealthImageHeight]
 let calcCrewHealthWidth = @(width) (width * 0.7).tointeger()
 let crewHealthGap = hdpxi(17)
 
-let remainingHpPercent = Computed(@() maxHealth.value == 0 ? 1 : curRelativeHealth.get())
+let remainingHpPercent = Computed(@() maxHealth.get() == 0 ? 1 : curRelativeHealth.get())
 
 let debuffsCfg = [
   { has = hasDebuffFire,         icon = "ui/gameuiskin#hud_debuff_fire.svg" }
@@ -48,8 +49,8 @@ let debuffsCfgSailboat = debuffsCfg.map(@(c) c.has not in sailboatIconRemap ? c
 
 local prevHpPercent = 1.0
 let colorConfig = [
-  { remainValue = 0.25, color = Color(253, 0, 1)     }
-  { remainValue = 0.5,  color = Color(246, 178, 54)  }
+  { remainValue = 0.25, color = hudRedColor     }
+  { remainValue = 0.5,  color = hudOrangeColor  }
   { remainValue = 1.0,  showTeamColor = true }
 ]
 
@@ -69,7 +70,7 @@ remainingHpPercent.subscribe(function(value) {
   prevHpPercent = value
 })
 
-let hpToRepairColor = 0xFFFF5D5D
+let hpToRepairColor = hudCoralRedColor
 let isVisibleHpToRepair = Computed(@() maxHpToRepair.get() > curRelativeHealth.get())
 let hpToRepairPercent = Computed(@() ((maxHpToRepair.get() - curRelativeHealth.get() + 0.005) * 100).tointeger())
 
@@ -113,7 +114,7 @@ let mkDollCtor = @(rawSize) function(scale) {
     cameraControl = true
     touchMarginPriority = TOUCH_MINOR
     function onElemState(sf) {
-      let prevSf = stateFlagsExt.get()
+      let prevSf = stateFlags.get()
       stateFlags.set(sf)
       let active = isActive(stateFlagsExt.get())
       if (active != isActive(prevSf))
@@ -123,7 +124,7 @@ let mkDollCtor = @(rawSize) function(scale) {
           setShortcutOff(shortcutId)
     }
     function onDetach() {
-      stateFlags(0)
+      stateFlags.set(0)
       setShortcutOff(shortcutId)
     }
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -155,7 +156,7 @@ function mkDebuff(watch, imageId, size) {
   return @() {
     watch
     size = [size, size]
-    children = watch.value ? icon : null
+    children = watch.get() ? icon : null
   }
 }
 

@@ -33,12 +33,12 @@ let presenceDiff = keepref(Computed(function(prev) {
 }))
 
 function sendPresenceDiff() {
-  if ((presenceDiff.value?.len() ?? 0) == 0)
+  if ((presenceDiff.get()?.len() ?? 0) == 0)
     return
   eventbus_send("matchingCall",
     {
       action = "mpresence.set_presence"
-      params = presenceDiff.value
+      params = presenceDiff.get()
     })
 }
 deferOnce(sendPresenceDiff)
@@ -49,7 +49,7 @@ function setMyPresence(diff) {
   if (badIndex != null)
     logerr($"Try to change presence field {badIndex}")
   else
-    localPresence(localPresence.get().__merge(diff))
+    localPresence.set(localPresence.get().__merge(diff))
 }
 
 let setBattleUnit = @(battleUnit) setMyPresence({ battleUnit })

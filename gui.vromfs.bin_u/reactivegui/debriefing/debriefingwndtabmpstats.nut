@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
 
-let topMargin = hdpx(20)
+const topMargin = hdpx(20)
 
 function alignTeamLengths(playersByTeam) {
   let maxTeamSize = playersByTeam.reduce(@(maxSize, t) max(maxSize, t.len()), 0)
@@ -21,9 +21,10 @@ function mkDebriefingWndTabMpStats(debrData, params) {
   let tableHeight = contentHeight - topMargin
   let comp = {
     size = const [sw(100), flex()]
+    pos = [0, topMargin]
     hplace = ALIGN_CENTER
-    margin = const [topMargin, 0, 0, 0]
-    children = mkMpStatsTable(getColumnsByCampaign(campaign, mission, isFFA),
+    valign = ALIGN_CENTER
+    children = mkMpStatsTable(getColumnsByCampaign(campaign, mission, gameType),
       playersByTeamAligned,
       isFFA ? tableHeight : null)
   }

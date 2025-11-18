@@ -29,7 +29,7 @@ let animUnitSlot  = @(unit) [
     prop = AnimProp.scale, from = [1, 1] to = [1.15, 1.15], duration = scaleUnitAnimDuration, delay = scaleUnitAnimDelay,
     trigger = $"anim_{unit}", easing = CosineFull, play = true,
     function onFinish() {
-      needShowPriceUnit(true)
+      needShowPriceUnit.set(true)
       anim_start("startWpAnim")
     }
   }

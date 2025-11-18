@@ -12,7 +12,7 @@ let fingerW = round(hdpx(0.87 * animSize))
 let fingerH = round(fingerW * 0.92)
 let fingerX = round(fingerW * -0.38)
 let fingerY = round(fingerH * 0.19)
-let fingerOpacity = 0.25
+let fingerOpacity = 0.4
 
 let { stickBgComp, stickHeadComp } = mkStickWidgetComps(stickSize)
 let { arrowsWidgetComp, arrowsWidgetParts } = mkArrowsWidgetComps(arrowsSize)

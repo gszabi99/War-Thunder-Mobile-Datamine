@@ -234,7 +234,7 @@
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/he_ball.ivf",
       "bulletName": "i_ball_mdz",
-      "hitPowerMult": 1.0,
+      "hitPowerMult": 15.0,
       "nearHitPower": [
         1.0,
         50.0

@@ -11,7 +11,7 @@ let { applyRights } = require("%scripts/login/applyRights.nut")
 const UPDATE_TIMEOUT = 300 
 
 function updateRightsImpl() {
-  if (!isContactsLoggedIn.value)
+  if (!isContactsLoggedIn.get())
     return
 
   let rqData = {
@@ -20,16 +20,16 @@ function updateRightsImpl() {
   }
 
   client.request(rqData, function(result) {
-    if (!isContactsLoggedIn.value)
+    if (!isContactsLoggedIn.get())
       return
     let errorStr = result?.error ?? result?.result.error
     if (errorStr != null) {
       log("ERROR: invalid cln_get_user_rights result:", errorStr)
-      rightsError(errorStr)
+      rightsError.set(errorStr)
       return
     }
 
-    rightsError(null)
+    rightsError.set(null)
     applyRights(result)
   })
 }
@@ -41,7 +41,7 @@ isContactsLoggedIn.subscribe(function(val) {
     setInterval(UPDATE_TIMEOUT, updateRightsImpl)
   }
   else {
-    rights({})
+    rights.set({})
   }
 })
 

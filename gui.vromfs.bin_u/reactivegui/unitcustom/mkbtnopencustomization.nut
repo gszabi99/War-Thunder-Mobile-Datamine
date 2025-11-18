@@ -1,5 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_subscribe } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
+let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { openUnitCustom } = require("%rGui/unitCustom/unitCustomState.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
@@ -14,7 +18,7 @@ let customizationBtnContent = {
   gap = hdpx(20)
   children = [
     {
-      size = [iconSize, iconSize]
+      size = iconSize
       rendObj = ROBJ_IMAGE
       keepAspect = true
       image = Picture($"ui/gameuiskin#skin_selection_icon.svg:{iconSize}:{iconSize}:P")
@@ -22,15 +26,19 @@ let customizationBtnContent = {
     {
       rendObj = ROBJ_TEXT
       text = utf8ToUpper(loc("unit/customization"))
-    }.__update(fontSmallShaded)
+    }.__update(fontTinyAccentedShadedBold)
   ]
 }
 
-let mkBtnStyle = @(minWidth) mergeStyles(buttonStyles.PRIMARY, { ovr = { minWidth } })
+let mkBtnStyle = @(minWidth) mergeStyles(buttonStyles.COMMON, { ovr = { minWidth } })
 
-let mkBtnOpenCustomization = @(unitW, minWidth) {
-  children = [
-    mkCustomButton(customizationBtnContent, openUnitCustom, mkBtnStyle(minWidth))
+let mkBtnOpenCustomization = @(unitW, minWidth) @() {
+  watch = unitW
+  children = !unitW.get() ? null : [
+    mkCustomButton(customizationBtnContent,
+      @() (unitSizes.get()?[getTagsUnitName(unitW.get().name)] ?? 0) == 0 ? openUnitCustom()
+        : openDownloadAddonsWnd([], [getTagsUnitName(unitW.get().name)], "unitDownloadInfoBlock", {}, "openUnitCustom"),
+      mkBtnStyle(minWidth))
     @() {
       watch = [unitW, unseenSkins]
       margin = hdpx(10)
@@ -39,5 +47,7 @@ let mkBtnOpenCustomization = @(unitW, minWidth) {
     }
   ]
 }
+
+eventbus_subscribe("openUnitCustom", @(_) openUnitCustom())
 
 return mkBtnOpenCustomization

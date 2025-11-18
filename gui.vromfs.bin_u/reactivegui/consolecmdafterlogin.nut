@@ -17,7 +17,7 @@ register_command(function() {
   "ui.allow_battle_no_addons")
 
 register_command(function() {
-  let { allUnits } = serverConfigs.get()
+  let { allUnits = {} } = serverConfigs.get()
   let tagsBlk = get_unittags_blk()
   let list = []
   eachBlock(tagsBlk, function(blk) {

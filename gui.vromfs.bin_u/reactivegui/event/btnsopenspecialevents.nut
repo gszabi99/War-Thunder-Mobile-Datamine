@@ -34,13 +34,15 @@ function btnsOpenSpecialEvents() {
           || unseenLootboxesShowOnce.get().findindex(@(l) l == evt.eventName) != null
               ? priorityUnseenMark
             : null
-      }
+      },
+      { iconMul = getEventPresentation(evt.eventName).imageSizeMul }
     )))
   specialEventsLootboxesState.get().withoutLootboxes.each(@(evt)
     children.append(translucentButton(getEventPresentation(evt.eventName).icon,
       "",
       @() openQuestsWndOnTab(evt.eventId)
       @(_) statusMark(evt.eventId)
+      { iconMul = getEventPresentation(evt.eventName).imageSizeMul }
     )))
   gmEventsList.get().keys().each(function(id) {
     if (canOpenGmEventWnd(id, hasFinishedFirstBattle.get()))

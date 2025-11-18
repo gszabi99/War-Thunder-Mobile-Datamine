@@ -1875,7 +1875,7 @@
       }
     },
     "tank_crew": {
-      "crewTankHearingDistance": 215.0,
+      "crewTankHearingDistance": 100.0,
       "crewTankHearingSpottingDistance": 27.0,
       "crewTankVisionDistance": 523.0,
       "crewTankVisionSpottingDistance": 320.0,

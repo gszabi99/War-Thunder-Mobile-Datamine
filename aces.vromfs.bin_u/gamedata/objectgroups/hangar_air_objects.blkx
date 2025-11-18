@@ -7,7 +7,7 @@
   "node": [
     {
       "type": "rendInst",
-      "name": "%major_banner_wall_b",
+      "name": "%major_banner_wall_a",
       "tm": [
         [
           -0.000769659,
@@ -22,7 +22,7 @@
         [
           0.87,
           0.0,
-          -0.000669603
+          -0.000669602
         ],
         [
           0.0,
@@ -34,7 +34,7 @@
     },
     {
       "type": "rendInst",
-      "name": "%major_banner_wall_b",
+      "name": "%major_banner_wall_a",
       "tm": [
         [
           -0.00472834,
@@ -61,7 +61,7 @@
     },
     {
       "type": "rendInst",
-      "name": "%major_banner_wall_b",
+      "name": "%major_banner_wall_a",
       "tm": [
         [
           0.00584367,

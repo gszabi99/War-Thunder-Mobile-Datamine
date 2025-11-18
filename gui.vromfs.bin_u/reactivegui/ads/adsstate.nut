@@ -13,7 +13,7 @@ let {
   : is_android || is_pc ? require("%rGui/ads/byPlatform/adsAndroid.nut") 
   : null
 
-isInMenu.subscribe(@(_) isAdsVisible(false)) 
+isInMenu.subscribe(@(_) isAdsVisible.set(false)) 
 
 let changeAttachedAdsButtons = @(v) attachedAdsButtons.set(attachedAdsButtons.get() + v)
 

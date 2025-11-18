@@ -39,7 +39,7 @@ let bottomBlock = {
   gap = progressbarGap
   children = [
     mkProgressStatusText(statusText)
-    mkProgressbar(progressPercent, 0xFF00FDFF)
+    mkProgressbar(progressPercent, 0xFF7FAEFF)
   ]
 }
 

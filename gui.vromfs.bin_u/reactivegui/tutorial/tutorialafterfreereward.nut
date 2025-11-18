@@ -81,7 +81,7 @@ function startTutorial() {
 }
 
 let startTutorialDelayed = @() deferOnce(function() {
-  if (!showTutorial.value)
+  if (!showTutorial.get())
     return
   startTutorial()
   isDebugMode.set(false)

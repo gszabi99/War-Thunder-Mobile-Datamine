@@ -9,7 +9,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 function sendAdsBqEvent(status, provider, withReward = true) {
   let { platform = "" } = get_user_system_info()
-  let { levelInfo = {}, adBudget = {} } = servProfile.value
+  let { levelInfo = {}, adBudget = {} } = servProfile.get()
   local playerLevel = 0
   foreach (l in levelInfo)
     playerLevel = max(playerLevel, l.level)

@@ -1,41 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId, mkHasConflicts,
-  curMods, curUnitAllModsCost, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
+  curMods, curUnitAllModsSlotsCost, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
   curWeaponBeltsOrdered, curBeltIdx, equippedBeltId, curSlotIdx, curUnseenMods,
   slotBeltKey, slotWeaponKey
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator } = require("%rGui/unitMods/modsComps.nut")
-let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
+let { mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator, mkEquippedFrame } = require("%rGui/unitMods/modsComps.nut")
+let { startCarouselAnimScroll, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
+let { selectedLineHorSolid, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
 let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
-let { contentMargin } = require("%rGui/unitMods/unitModsConst.nut")
+let { modContentMargin, modW, modH, modsGap, activeColor } = require("%rGui/unitMods/unitModsConst.nut")
 let { warningTextColor } = require("%rGui/style/stdColors.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
 let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in campMyUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
 
-let weaponGap = hdpx(10)
-let selLineGap = hdpx(14)
+let weaponGap = modsGap
 let bgColor = 0x990C1113
-let activeBgColor = 0xFF52C4E4
-let beltImgSize = evenPx(120)
-let weaponIconHeight = evenPx(140)
-let weaponIconWidth = hdpxi(210)
-let weaponH = weaponIconHeight + 2 * contentMargin
-let weaponW = hdpx(440)
-let equippedColor = 0xFF50C0FF
-let equippedFrameWidth = hdpx(4)
-let weaponTotalH = weaponH + selLineSize + selLineGap
 let eqIconSize = [hdpxi(63), hdpxi(50)]
+let weaponTotalH = modH + selLineSize + eqIconSize[1] / 2
 
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
-  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
+  mkGradientCtorRadial(activeColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
 
 let mkContentBlock = @(content, isActive, isHover) {
-  size = [SIZE_TO_CONTENT, weaponH]
+  size = [SIZE_TO_CONTENT, modH]
 
   children = [
     @() {
@@ -58,36 +49,34 @@ let mkContentBlock = @(content, isActive, isHover) {
   ].append(content)
 }
 
-let mkEquippedFrame = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
-  : {
-      watch = isEquipped
-      size = [weaponW, weaponH]
-      rendObj = ROBJ_FRAME
-      borderWidth = equippedFrameWidth
-      color = equippedColor
-    }
+let mkIcon = @(icon, size) {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{icon}:{size[0]}:{size[1]}:P")
+  keepAspect = KEEP_ASPECT_FIT
+}
 
 let mkEquippedIcon = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
   : {
       watch = isEquipped
+      pos = [0, eqIconSize[1] / 2]
       size = eqIconSize
-      margin = contentMargin
-      hplace = ALIGN_RIGHT
+      hplace = ALIGN_CENTER
       vplace = ALIGN_BOTTOM
-      rendObj = ROBJ_IMAGE
-      color = equippedColor
-      keepAspect = KEEP_ASPECT_FIT
-      image = Picture($"ui/gameuiskin#unit_air.svg:{eqIconSize[0]}:{eqIconSize[1]}:P")
+      children = [
+        mkIcon("ui/gameuiskin#selected_icon_plane_outline.svg", eqIconSize)
+        mkIcon("ui/gameuiskin#selected_icon_plane.svg", eqIconSize).__update({ color = 0xFF000000 })
+      ]
     }
 
 let mkSlotText = @(text, ovr = {}) {
   size = FLEX_H
-  margin = contentMargin
+  margin = modContentMargin
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_RIGHT
   text
-}.__update(fontTinyShaded, ovr)
+}.__update(fontVeryTinyAccentedShaded, ovr)
 
 let mkWeaponDesc = @(weapon) @() mkSlotText(
   "\n".join(getWeaponShortNamesList(weapon.get()?.weapons ?? [])),
@@ -97,14 +86,14 @@ let mkWeaponImage = @(weapon) function() {
   if (weapon.get() == null)
     return { watch = weapon }
   let { iconType = "" } = weapon.get()
-  let fallbackImage = Picture($"ui/gameuiskin#icon_primary_attention.svg:{weaponIconWidth}:{weaponIconHeight}:P")
+  let fallbackImage = Picture($"ui/gameuiskin#icon_primary_attention.svg:{modW}:{modH}:P")
   return {
     watch = weapon
-    size = [weaponIconWidth, weaponIconHeight]
-    margin = contentMargin
+    size = [modW, modH]
+    margin = modContentMargin
     rendObj = ROBJ_IMAGE
     image = iconType == "" ? fallbackImage
-      : Picture($"ui/gameuiskin#{iconType}.avif:{weaponIconWidth}:{weaponIconHeight}:P")
+      : Picture($"ui/gameuiskin#{iconType}.avif:{modW}:{modH}:P")
     fallbackImage
     keepAspect = true
     imageHalign = ALIGN_LEFT
@@ -124,7 +113,7 @@ let mkEmptyText = @(weapon) function() {
 
 let mkLevelLockInfo = @(isLocked, reqLevel) @() {
   watch = [isLocked, reqLevel]
-  margin = contentMargin
+  margin = modContentMargin
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   children = !isLocked.get() ? null
@@ -146,22 +135,23 @@ let mkConflictsBorder = @(hasConflicts) @() !hasConflicts.get() ? { watch = hasC
       borderWidth = hdpx(3)
     }
 
-function mkSlotWeaponContent(idx) {
+function mkSlotWeaponContent(idx, isActive) {
   let weapon = Computed(@() curWeaponsOrdered.get()?[idx])
   let id = Computed(@() weapon.get()?.name)
   let { mod, reqLevel, isLocked, isPurchased } = mkWeaponStates(weapon, curMods, curUnit)
   let isEquipped = Computed(@() equippedWeaponId.get() == id.get())
   return @() {
     watch = unitUpgOrPremNotInMyHangar
-    size = [weaponW, weaponH]
+    key = slotWeaponKey(idx)
+    size = [modW, modH]
     children = [
       mkWeaponImage(weapon)
       mkWeaponDesc(weapon)
       unitUpgOrPremNotInMyHangar.get() ? null : mkNotPurchasedShade(isPurchased)
-      mkEquippedFrame(isEquipped)
+      mkEquippedFrame(isEquipped, isActive)
       mkEquippedIcon(isEquipped)
       unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
-      mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost)
+      mkModCost(isPurchased, isLocked, mod, curUnitAllModsSlotsCost)
       mkUnseenModIndicator(Computed(@() id.get() in curUnseenMods.get()?[curSlotIdx.get()]))
       mkConflictsBorder(mkHasConflicts(weapon, equippedWeaponsBySlots))
     ]
@@ -169,30 +159,25 @@ function mkSlotWeaponContent(idx) {
 }
 
 function mkSlotWeapon(idx, scrollToWeapon) {
-  let xmbNode = XmbNode()
   let stateFlags = Watched(0)
   let isActive = Computed (@() curWeaponIdx.get() == idx || (stateFlags.get() & S_ACTIVE) != 0)
   let isHover = Computed (@() stateFlags.get() & S_HOVER)
 
   return {
-    key = slotWeaponKey(idx)
     size = FLEX_V
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    xmbNode
     function onClick() {
-      curWeaponIdx(idx)
-      defer(@() gui_scene.setXmbFocus(xmbNode))
+      curWeaponIdx.set(idx)
+      startCarouselAnimScroll(getCarouselPosX(idx))
     }
     onAttach = @() isActive.get() ? scrollToWeapon() : null
     sound = { click = "choose" }
     flow = FLOW_VERTICAL
-    gap = selLineGap
-
     children = [
-      mkContentBlock(mkSlotWeaponContent(idx), isActive, isHover)
-      selectedLineHor(isActive)
+      selectedLineHorSolid(isActive)
+      mkContentBlock(mkSlotWeaponContent(idx, isActive), isActive, isHover)
     ]
   }
 }
@@ -203,27 +188,27 @@ function mkBeltImage(bullets) {
   let list = array(TOTAL_VIEW_BULLETS).map(@(_, i) bullets[i % bullets.len()])
 
   let bulletBeltImage = [{
-    size = [beltImgSize, beltImgSize]
+    size = [modH, modH]
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#shadow.avif:{beltImgSize}:{beltImgSize}:P")
+    image = Picture($"ui/gameuiskin#shadow.avif:{modH}:{modH}:P")
     keepAspect = true
   }].extend(list.map(@(name, idx) {
-    size = [beltImgSize, beltImgSize]
+    size = [modH, modH]
     rendObj = ROBJ_IMAGE
-    image = Picture($"{getBulletBeltImage(name, idx)}:{beltImgSize}:{beltImgSize}:P")
+    image = Picture($"{getBulletBeltImage(name, idx)}:{modH}:{modH}:P")
     keepAspect = true
   }))
   return {
     size = flex()
     valign = ALIGN_BOTTOM
     children = {
-      size = [beltImgSize, beltImgSize]
+      size = [modH, modH]
       children = bulletBeltImage
     }
   }
 }
 
-function mkSlotBeltContent(idx) {
+function mkSlotBeltContent(idx, isActive) {
   let belt = Computed(@() curWeaponBeltsOrdered.get()?[idx])
   let id = Computed(@() belt.get()?.id)
   let { mod, reqLevel, isLocked, isPurchased } = mkWeaponStates(belt, curMods, curUnit)
@@ -232,45 +217,41 @@ function mkSlotBeltContent(idx) {
   let isUnseen = Computed(@() id.get() in curUnseenMods.get()?[curBeltsWeaponIdx.get()])
   return @() {
     watch = [belt, unitUpgOrPremNotInMyHangar]
-    size = [weaponW, weaponH]
+    key = slotBeltKey(idx)
+    size = [modW, modH]
     children = belt.get() == null ? null
       : [
           mkBeltImage(belt.get().bullets)
           mkSlotText(getBulletBeltShortName(belt.get().id))
           unitUpgOrPremNotInMyHangar.get() ? null : mkNotPurchasedShade(isPurchased)
-          mkEquippedFrame(isEquipped)
+          mkEquippedFrame(isEquipped, isActive)
           mkEquippedIcon(isEquipped)
           unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
-          mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost)
+          mkModCost(isPurchased, isLocked, mod, curUnitAllModsSlotsCost)
           mkUnseenModIndicator(isUnseen)
         ]
   }
 }
 
 function mkSlotBelt(idx, scrollToWeapon) {
-  let xmbNode = XmbNode()
   let stateFlags = Watched(0)
   let isActive = Computed(@() curBeltIdx.get() == idx || (stateFlags.get() & S_ACTIVE) != 0)
   let isHover = Computed(@() stateFlags.get() & S_HOVER)
   return {
-    key = slotBeltKey(idx)
     size = FLEX_V
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    xmbNode
     function onClick() {
       curBeltIdx.set(idx)
-      defer(@() gui_scene.setXmbFocus(xmbNode))
+      startCarouselAnimScroll(getCarouselPosX(idx))
     }
     onAttach = @() isActive.get() ? scrollToWeapon() : null
     sound = { click = "choose" }
     flow = FLOW_VERTICAL
-    gap = selLineGap
-
     children = [
-      mkContentBlock(mkSlotBeltContent(idx), isActive, isHover)
-      selectedLineHor(isActive)
+      selectedLineHorSolid(isActive)
+      mkContentBlock(mkSlotBeltContent(idx, isActive), isActive, isHover)
     ]
   }
 }
@@ -280,10 +261,9 @@ return {
   mkWeaponImage
   mkWeaponDesc
   mkEmptyText
-  weaponH
-  weaponW
   weaponGap
   weaponTotalH
+  eqIconSize
 
   mkSlotText
   mkBeltImage

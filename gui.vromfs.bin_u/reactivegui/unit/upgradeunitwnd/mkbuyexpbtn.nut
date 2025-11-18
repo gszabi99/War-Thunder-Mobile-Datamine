@@ -9,7 +9,7 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { registerHandler, buy_player_level, buy_unit} = require("%appGlobals/pServer/pServerApi.nut")
-let { infoBlueButton, infoGoldButton } = require("%rGui/components/infoButton.nut")
+let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { buyExpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { GOLD, WP } = require("%appGlobals/currenciesState.nut")
@@ -50,23 +50,23 @@ registerHandler("onLvlPurchase",
       close()
       return
     }
-    let { unit } = context
+    let { unit, price } = context
     close()
     buy_unit(
       unit.name
       unit?.isUpgraded ? GOLD : WP
-      unit?.isUpgraded ? unit.upgradeCostGold : applyDiscount(unit.costWp, unit.levelUpDiscount)
+      unit?.isUpgraded ? price : applyDiscount(unit.costWp, unit.levelUpDiscount)
       { id = "onUnitPurchaseWithLevel", unitId = unit.name }
     )
   }
 )
 
 
-function mkPriceParameters(unit) {
+function mkPriceParameters(unit, price) {
   let unitCurrency = unit?.isUpgraded ? GOLD : WP
   if (unitCurrency == GOLD) {
     let unitPriceParameters = {}
-    unitPriceParameters.price <- unit.upgradeCostGold + lvlUpCost.get()
+    unitPriceParameters.price <- price + lvlUpCost.get()
     unitPriceParameters.currencyId <- GOLD
     return unitPriceParameters
   }
@@ -86,32 +86,32 @@ function mkPriceParameters(unit) {
   return itemsToBuy
 }
 
-function purchase(unit) {
+function purchase(unit, price) {
   let { level, nextLevelExp, exp } = playerLevelInfo.get()
   buy_player_level(
     curCampaign.get()
     level
     nextLevelExp - exp
     lvlUpCost.get()
-    { id = "onLvlPurchase", unit }
+    { id = "onLvlPurchase", unit, price }
   )
 }
 
-function openConfirmationWnd(unit){
+function openConfirmationWnd(unit, price){
   return openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor
         $"{loc(getUnitPresentation(unit).locId)}") })
-    price = mkPriceParameters(unit)
-    purchase = @() purchase(unit)
+    price = mkPriceParameters(unit, price)
+    purchase = @() purchase(unit, price)
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (playerLevelInfo.get().level + 1).tostring())
     onGoToShop = close
   })
 }
 
-function mkPriceComp(unit) {
+function mkPriceComp(unit, price) {
   if (unit?.isUpgraded)
-    return mkCurrencyComp(unit.upgradeCostGold + lvlUpCost.get(), GOLD)
+    return mkCurrencyComp(price + lvlUpCost.get(), GOLD)
   let wpPrice = applyDiscount(unit.costWp, unit.levelUpDiscount)
   return {
     flow = FLOW_HORIZONTAL
@@ -129,15 +129,15 @@ function mkBuyExpBtn(unit) {
     gap = hdpx(10)
     halign = ALIGN_LEFT
     children = [
-      (unit?.isUpgraded ? infoGoldButton : infoBlueButton)(
+      infoCommonButton(
           @() unitDetailsWnd(unit),
           {
             size = [buttonStyles.defButtonHeight, buttonStyles.defButtonHeight]
             hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
           }
           { text = fontIconPreview }.__merge(fontBigShaded))
-      mkCustomButton( mkPriceComp(unit),
-        @() openConfirmationWnd(unit),
+      mkCustomButton(mkPriceComp(unit, unit.upgradeCostGold),
+        @() openConfirmationWnd(unit, unit.upgradeCostGold),
         mergeStyles(!unit?.isUpgraded ? buttonStyles.PRIMARY : buttonStyles.PURCHASE, { ovr = ovrBuyBtn }))
     ]
   }

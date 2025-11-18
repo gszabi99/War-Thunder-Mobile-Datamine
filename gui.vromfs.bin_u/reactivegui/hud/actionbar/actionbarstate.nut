@@ -46,15 +46,15 @@ local actionBarItems = Computed(function(prev) {
 })
 
 let curActionBarTypes = Computed(function(prev) {
-  let types = actionBarItems.value.map(@(_) true)
+  let types = actionBarItems.get().map(@(_) true)
   return isEqual(prev, types) ? prev : types
 })
 
 let updateActionBar = @() actionBar.set(getActionBarItems())
 let updateActionBarDelayed = @() gui_scene.resetTimeout(0.1, @() updateActionBar())
 
-let primaryAction = Computed(@() actionBarItems.value?[AB_PRIMARY_WEAPON])
-let secondaryAction = keepref(Computed(@() actionBarItems.value?[AB_SECONDARY_WEAPON]))
+let primaryAction = Computed(@() actionBarItems.get()?[AB_PRIMARY_WEAPON])
+let secondaryAction = keepref(Computed(@() actionBarItems.get()?[AB_SECONDARY_WEAPON]))
 
 let startActionBarUpdate = @(id) id in actionBarUpdaters.get() ? null
   : actionBarUpdaters.mutate(@(v) v[id] <- true)

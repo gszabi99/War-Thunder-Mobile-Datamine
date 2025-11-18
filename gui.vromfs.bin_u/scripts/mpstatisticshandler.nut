@@ -18,7 +18,7 @@ eventbus_subscribe("gui_start_flight_menu_stat", cbOpenMpStatistics)
 
 eventbus_subscribe("toggleMpstatscreen", @(_) isMpStatisticsActive.set(!isMpStatisticsActive.get()))
 
-eventbus_subscribe("MpStatistics_CloseInDagui", @(_) isMpStatisticsActive(false))
+eventbus_subscribe("MpStatistics_CloseInDagui", @(_) isMpStatisticsActive.set(false))
 eventbus_subscribe("MpStatistics_GetInitialData",
   @(_) eventbus_send("MpStatistics_InitialData", { missionName = locCurrentMissionName() }))
 

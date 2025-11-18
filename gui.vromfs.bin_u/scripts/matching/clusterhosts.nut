@@ -14,7 +14,7 @@ const OUT_OF_RETRIES_DELAY_SEC = 300
 
 let clusterHosts = hardPersistWatched("clusterHosts", {})
 let clusterHostsChangePending = hardPersistWatched("clusterHostsChangePending", {})
-let canFetchHosts = Computed(@() isMatchingOnline.value && !isInBattle.get())
+let canFetchHosts = Computed(@() isMatchingOnline.get() && !isInBattle.get())
 
 let reIP = regexp2(@"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$")
 
@@ -42,18 +42,18 @@ let tryFetchHosts = @() !canFetchHosts.get() || clusterHosts.get().len() != 0 ? 
 canFetchHosts.subscribe(@(_) tryFetchHosts())
 
 function tryApplyChangedHosts() {
-  if (isInBattle.get() || clusterHostsChangePending.value.len() == 0)
+  if (isInBattle.get() || clusterHostsChangePending.get().len() == 0)
     return
   logCH($"Applying changed hosts")
-  clusterHosts(clusterHostsChangePending.value)
-  clusterHostsChangePending({})
+  clusterHosts.set(clusterHostsChangePending.get())
+  clusterHostsChangePending.set({})
 }
 
 isInBattle.subscribe(@(_) tryApplyChangedHosts())
 
 matching_subscribe("hmanager.notify_hosts_list_changed", function(result) {
   logCH($"Changed hosts:", result)
-  clusterHostsChangePending(getValidHosts(result))
+  clusterHostsChangePending.set(getValidHosts(result))
   tryApplyChangedHosts()
 })
 

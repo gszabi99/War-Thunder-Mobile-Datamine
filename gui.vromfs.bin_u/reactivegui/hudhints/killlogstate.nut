@@ -81,7 +81,7 @@ eventbus_subscribe("HudMessage", function(data) {
   let victim = get_mplayer_by_id(victimPlayerId)
   let what = getActionTextIconic(data)
   let whom = getTargetName(victim, victimUnitNameLoc, victimTeam)
-  let text = action == "crash" || action == "exit"
+  let text = action == "crash" || action == "exit" || (!killer && action == "artillery")
     ? " ".concat(whom, what)
     : " ".concat(getTargetName(killer, unitNameLoc, team), what, whom)
   addEventOrMergeWithSimilar(text, state.curEvents.get())

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { set_hud_show_unit_model_name_online } = require("gameOptions")
-let { can_view_jip_setting } = require("%appGlobals/permissions.nut")
-let { USEROPT_ALLOW_JIP, mkOptionValue, OPT_HUD_SHOW_UNIT_MODEL_NAME_ONLINE } = require("%rGui/options/guiOptions.nut")
+let { can_view_jip_setting, has_decals } = require("%appGlobals/permissions.nut")
+let { USEROPT_ALLOW_JIP, mkOptionValue, OPT_HUD_SHOW_UNIT_MODEL_NAME_ONLINE, USEROPT_IS_ORIGINAL_DECALS } = require("%rGui/options/guiOptions.nut")
 
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
@@ -32,10 +32,25 @@ let showUnitModelNameSetting = {
   description = loc("options/desc/hud_show_unit_model_name_online")
 }
 
+let originalDecalsList = [false, true]
+let isOriginalDecalsEnabled = mkOptionValue(USEROPT_IS_ORIGINAL_DECALS, false, @(v) validate(v, originalDecalsList))
+
+let isOriginalDecaSetting = {
+  ctrlType = OCT_LIST
+  value = isOriginalDecalsEnabled
+  list = Computed(@() has_decals.get() ? originalDecalsList : [])
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  locId = "options/hud_show_original_decals"
+  description = loc("options/desc/hud_show_original_decals", {
+    optionName = colorize("@mark", loc("options/hud_show_original_decals"))
+    optionValue = colorize("@mark", loc("options/enable"))
+  })
+}
 
 return {
   gameOptions = [
     allowJipSetting
     showUnitModelNameSetting
+    isOriginalDecaSetting
   ]
 }

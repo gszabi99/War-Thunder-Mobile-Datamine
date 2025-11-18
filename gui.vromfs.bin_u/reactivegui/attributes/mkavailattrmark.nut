@@ -22,11 +22,11 @@ let defCfg = {
 let cfgByStatus = [
   {}
   {
-    bgColor = 0xBF08A7BF  
+    bgColor = 0xBF5F83BF  
   }
   {
-    bgColor = 0xBF08A7BF  
-    bgAnim = mkBgAnim(3.0, 0xFF0BDFFF, 0xA50790A5) 
+    bgColor = 0xBF5F83BF  
+    bgAnim = mkBgAnim(3.0, 0xFF7FAEFF, 0xA65371A6) 
     iconAnim = mkIconAnim(3.0)
   }
   {

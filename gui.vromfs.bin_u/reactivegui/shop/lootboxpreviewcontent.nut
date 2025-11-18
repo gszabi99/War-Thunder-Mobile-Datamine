@@ -661,7 +661,7 @@ let mkJackpotProgress = @(stepsToFixed) @() {
   key = "jackpot_progress" 
   watch = stepsToFixed
   flow = FLOW_VERTICAL
-  children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
+  children = stepsToFixed.get()[1] - stepsToFixed.get()[0] <= 0 ? null : [
     mkRow([
       {
         rendObj = ROBJ_TEXT
@@ -669,10 +669,10 @@ let mkJackpotProgress = @(stepsToFixed) @() {
       }.__update(fontVeryTinyAccented)
       {
         rendObj = ROBJ_TEXT
-        text = stepsToFixed.value[1] - stepsToFixed.value[0]
+        text = stepsToFixed.get()[1] - stepsToFixed.get()[0]
       }.__update(fontVeryTinyAccented)
     ])
-    mkJackpotProgressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = const [hdpx(10), 0] })
+    mkJackpotProgressBar(stepsToFixed.get()[0], stepsToFixed.get()[1], { margin = const [hdpx(10), 0] })
     mkRow([
       {
         maxWidth = hdpx(400)

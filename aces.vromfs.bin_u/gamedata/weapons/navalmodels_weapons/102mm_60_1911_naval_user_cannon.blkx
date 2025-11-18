@@ -33,7 +33,7 @@
     "maxDistance": 40000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -47,6 +47,11 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "102mm_mod1915_navy_HE",
     "dynamicKv": true,
@@ -57,7 +62,6 @@
     "explodeTreshold": 5.0,
     "fuseDelayDist": 10.0,
     "hpThresholdForFuse": 0.000001,
-    "fuseOnWater": true,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -241,7 +245,7 @@
       "maxDistance": 40000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -255,6 +259,11 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": 1.0,
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "102mm_mod1915_navy_HE",
       "dynamicKv": true,
@@ -265,7 +274,6 @@
       "explodeTreshold": 5.0,
       "fuseDelayDist": 10.0,
       "hpThresholdForFuse": 0.000001,
-      "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",

@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
-let { split_by_chars, startswith } = require("string")
+let { split_by_chars } = require("string")
 let { frnd } = require("dagor.random")
 let { getCurrentSteamLanguage } = require("%scripts/language.nut")
 let userstat = require("userstat")
@@ -19,9 +19,15 @@ const STATS_UPDATE_INTERVAL = 60000
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 const MAX_CONFIGS_UPDATE_DELAY = 10 
 
+const GET_STATS_FILTER = {
+  tables = ["global", "daily", "ships_event_leaderboard", "tanks_event_leaderboard", "air_event_leaderboard", "wp_event_leaderboard"],
+  modes = ["meta_common", "battle_common", "ships", "tanks", "air"],
+}
 
-let isReadyToConnect = Computed(@() isProfileReceived.value && isMatchingConnected.value)
+
+let isReadyToConnect = Computed(@() isProfileReceived.get() && isMatchingConnected.get())
 let needConfigsUpdate = mkWatched(persist, "needConfigsUpdate", false)
+let hasStatsFilter = mkWatched(persist, "hasStatsFilter", true)
 
 let { request, registerHandler } = charClientEvent("userStats", userstat)
 
@@ -40,17 +46,17 @@ function mkDataWatched(key, defValue = null, evtName = null) {
   return res
 }
 
-function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefreshRequests = []) {
+function makeUpdatable(persistName, refreshAction, getRefreshParams = null, customRefreshRequests = []) {
   let defValue = {}
   let data = mkDataWatched($"userstat.{persistName}", defValue, $"userstat.update.{persistName}")
   let lastTime = mkDataWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
-  let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
-    && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
+  let isRequestInProgress = @() lastTime.get().request > lastTime.get().update
+    && lastTime.get().request + STATS_REQUEST_TIMEOUT > get_time_msec()
   let canRefresh = @() !isRequestInProgress()
-    && (!lastTime.value.update || (lastTime.value.update + STATS_UPDATE_INTERVAL < get_time_msec()))
+    && (!lastTime.get().update || (lastTime.get().update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
   function onRefresh(result, context) {
-    data(result?.error ? defValue : (result?.response ?? defValue))
+    data.set(result?.error ? defValue : (result?.response ?? defValue))
     lastTime.mutate(@(v) v.update = get_time_msec())
     if (context?.needPrint)
       console_print(result?.error ? result : result?.response)
@@ -61,13 +67,13 @@ function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefr
     registerHandler(actionId, function(result, _) {
       if (result?.error || result?.response == null)
         return
-      data(result.response)
+      data.set(result.response)
       lastTime.mutate(@(v) v.update = get_time_msec())
     })
 
   let prepareToRequest = @() lastTime.mutate(@(v) v.request = get_time_msec())
   function refresh(context = null) {
-    if (!isReadyToConnect.value) {
+    if (!isReadyToConnect.get()) {
       onRefresh({ error = "not logged in" }, context)
       return
     }
@@ -75,7 +81,7 @@ function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefr
       return
 
     prepareToRequest()
-    request(refreshAction, { headers = getHeaders?() ?? {} }, context)
+    request(refreshAction, getRefreshParams?() ?? {}, context)
   }
 
   function forceRefresh(context = null) {
@@ -83,13 +89,13 @@ function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefr
     refresh(context)
   }
 
-  isReadyToConnect.subscribe(@(v) v ? forceRefresh() : data(defValue))
+  isReadyToConnect.subscribe(@(v) v ? forceRefresh() : data.set(defValue))
 
-  if (isReadyToConnect.value && lastTime.value.update <= 0 && lastTime.value.request <= 0)
+  if (isReadyToConnect.get() && lastTime.get().update <= 0 && lastTime.get().request <= 0)
     refresh()
 
   register_command(@() forceRefresh({ needPrint = true }), $"userstat.get.{persistName}")
-  register_command(@() debugTableData(data.value) ?? console_print("Done"), $"userstat.debug.{persistName}")
+  register_command(@() debugTableData(data.get()) ?? console_print("Done"), $"userstat.debug.{persistName}")
   eventbus_subscribe($"userstat.{persistName}.forceRefresh", @(_) forceRefresh())
   eventbus_subscribe($"userstat.{persistName}.refresh", @(_) refresh())
 
@@ -98,14 +104,16 @@ function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefr
     data
     refresh
     forceRefresh
-    lastUpdateTime = Computed(@() lastTime.value.update)
+    lastUpdateTime = Computed(@() lastTime.get().update)
   }
 }
 
 let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
-  @() { language = getCurrentSteamLanguage() })
-let statsUpdatable = makeUpdatable("stats", "GetStats")
-let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks", null, ["GrantRewards"])
+  @() { headers = { language = getCurrentSteamLanguage() } })
+let statsUpdatable = makeUpdatable("stats", "GetStats",
+  @() { data = hasStatsFilter.get() ? GET_STATS_FILTER : {} })
+let statsTablesUpdatable = makeUpdatable("statsTables", "GetStats:tables", @() { data = { skip = "allStats" } })
+let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks", null, ["GrantRewards", "BuyUnlockReroll"])
 let infoTablesUpdatable = makeUpdatable("infoTables", "GetTablesInfo")
 
 let userstatUnlocks = unlocksUpdatable.data
@@ -114,22 +122,24 @@ let userstatStats = statsUpdatable.data
 let userstatInfoTables = infoTablesUpdatable.data
 
 function validateUserstatData() {
-  if (unlocksUpdatable.data.value.len() == 0)
+  if (unlocksUpdatable.data.get().len() == 0)
     unlocksUpdatable.refresh()
-  if (descListUpdatable.data.value.len() == 0)
+  if (descListUpdatable.data.get().len() == 0)
     descListUpdatable.refresh()
-  if (statsUpdatable.data.value.len() == 0)
+  if (statsUpdatable.data.get().len() == 0)
     statsUpdatable.refresh()
+  if (statsTablesUpdatable.data.get().len() == 0)
+    statsTablesUpdatable.refresh()
   if (infoTablesUpdatable.data.get().len() == 0)
     infoTablesUpdatable.refresh()
 }
 
-let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
-  || userstatDescList.value.len() == 0
-  || userstatStats.value.len() == 0
+let isUserstatMissingData = Computed(@() userstatUnlocks.get().len() == 0
+  || userstatDescList.get().len() == 0
+  || userstatStats.get().len() == 0
   || userstatInfoTables.get().len() == 0)
 let needValidateMissingData = keepref(Computed(@()
-  isUserstatMissingData.value && isReadyToConnect.value && !isInBattle.get()))
+  isUserstatMissingData.get() && isReadyToConnect.get() && !isInBattle.get()))
 
 function updateValidationTimer(needValidate) {
   if (!needValidate) {
@@ -139,7 +149,7 @@ function updateValidationTimer(needValidate) {
   validateUserstatData()
   setInterval(FREQUENCY_MISSING_STATS_UPDATE_SEC, validateUserstatData)
 }
-updateValidationTimer(needValidateMissingData.value)
+updateValidationTimer(needValidateMissingData.get())
 needValidateMissingData.subscribe(updateValidationTimer)
 
 function onChangeStats(result) {
@@ -156,7 +166,7 @@ registerHandler("ClnChangeStats", onChangeStats)
 function getDebugSimilarStatsText(stat) {
   let similar = []
   let parts = split_by_chars(stat, "_", true)
-  foreach (s, _v in userstatDescList.value?.stats ?? {})
+  foreach (s, _v in userstatDescList.get()?.stats ?? {})
     foreach (part in parts)
       if (s.indexof(part) != null) {
         similar.append(s)
@@ -166,22 +176,23 @@ function getDebugSimilarStatsText(stat) {
 }
 
 function changeStat(stat, mode, amount, shouldSet) {
-  local errorText = null
-  if (type(amount) != "integer" && type(amount) != "float")
-    errorText = $"Amount must be numeric (current = {amount})"
-  else if (userstatDescList.value?.stats[stat] == null)
-    errorText = $"Stat {stat} does not exist.\n  {getDebugSimilarStatsText(stat)}"
-
-  if (errorText != null) {
+  let stats = stat.split(";")
+  let missingStat = stats.findvalue(@(s) userstatDescList.get()?.stats[s] == null)
+  local errorText = stats.len() == 0 ? "Empty stat"
+    : (type(amount) != "integer" && type(amount) != "float")
+      ? $"Amount must be numeric (current = {amount})"
+    : missingStat != null ? $"Stat {missingStat} does not exist.\n  {getDebugSimilarStatsText(missingStat)}"
+    : ""
+  if (errorText != "") {
     console_print({ error = errorText })
     return
   }
 
+  let value = shouldSet ? { "$set" : amount } : amount
   request("ChangeStats",
-    { data = {
-      [stat] = shouldSet ? { "$set" : amount } : amount,
-      ["$mode"] = mode
-    } })
+    { data = stats.reduce(@(res, s) res.$rawset(s, value), {})
+        .__update({ ["$mode"] = mode })
+    })
 }
 
 let addStat = @(stat, mode, amount)
@@ -203,6 +214,7 @@ function updateConfigsIfNeed() {
   descListUpdatable.forceRefresh()
   unlocksUpdatable.forceRefresh()
   infoTablesUpdatable.forceRefresh()
+  statsTablesUpdatable.forceRefresh()
 }
 updateConfigsIfNeed()
 needConfigsUpdate.subscribe(@(_) isInBattle.get() ? null
@@ -211,13 +223,13 @@ isInBattle.subscribe(@(v) v ? updateConfigsIfNeed() : null)
 
 
 function debugStatValues(stat) {
-  if (userstatDescList.value?.stats[stat] == null)
+  if (userstatDescList.get()?.stats[stat] == null)
     return console_print($"Stat {stat} does not exist.\n  {getDebugSimilarStatsText(stat)}")
 
   let rows = []
-  foreach(tblId, tbl in userstatStats.value?.stats ?? {})
+  foreach(tblId, tbl in userstatStats.get()?.stats ?? {})
     foreach(modeId, mode in tbl)
-      if (!startswith(modeId, "$"))
+      if (type(mode) == "table" && modeId != "ratingSessions")
         rows.append($"{tblId}/{modeId} = {mode?[stat]}")
 
   return console_print("\n".join(rows))
@@ -225,26 +237,34 @@ function debugStatValues(stat) {
 
 register_command(debugStatValues, $"userstat.debugStatValues")
 
-let registered = {}
-function registerOnce(func, id) {
-  if (id in registered)
+let registeredMods = {}
+function registerModCmdOnce(modeId) {
+  if (modeId in registeredMods)
     return
-  register_command(func, id)
-  registered[id] <- true
+  registeredMods[modeId] <- true
+  register_command(@(stat, value) addStat(stat, modeId, value), $"userstat.addStat.{modeId}")
+  register_command(@(stat, value) setStat(stat, modeId, value), $"userstat.setStat.{modeId}")
 }
+foreach (modeId in GET_STATS_FILTER.modes)
+  registerModCmdOnce(modeId)
 
 function registerStatsCommands(uStats) {
   let { stats = null } = uStats
   if (stats == null)
     return
-  stats.each(@(tbl, tblId)
+  stats.each(@(tbl)
     tbl.each(function(list, modeId) {
-      if (type(list) != "table")
+      if (type(list) != "table" || modeId == "ratingSessions")
         return
-      registerOnce(@() console_print(userstatStats.value?.stats[tblId][modeId]), $"userstat.stats.{tblId}.{modeId}.get")
-      registerOnce(@(stat, value) addStat(stat, modeId, value), $"userstat.addStat.{modeId}")
-      registerOnce(@(stat, value) setStat(stat, modeId, value), $"userstat.setStat.{modeId}")
+      registerModCmdOnce(modeId)
     }))
 }
-registerStatsCommands(userstatStats.value)
+registerStatsCommands(userstatStats.get())
 userstatStats.subscribe(registerStatsCommands)
+
+register_command(function() {
+    hasStatsFilter.set(!hasStatsFilter.get())
+    console_print($"Stats filter {hasStatsFilter.get() ? "on" : "off"}")
+    statsUpdatable.forceRefresh()
+  },
+  $"userstat.toggleStatsFilter")

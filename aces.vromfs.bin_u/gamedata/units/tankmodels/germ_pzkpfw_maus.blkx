@@ -2370,6 +2370,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2387,6 +2388,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2447,6 +2449,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2464,6 +2467,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2537,6 +2541,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2678,6 +2683,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2685,6 +2691,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2692,6 +2699,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -3027,96 +3035,14 @@
   "default_skin": {
     "replace_tex": {
       "from": "ger_camo_dunkelgelb*",
-      "to": "ger_camo_dunkelgelb_green*"
+      "to": "ger_camo_dunkelgelb*"
     }
   },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
-      "camo_rotation": -12.0,
-      "decal0Line0": [
-        2.05606,
-        -3.20225e-8,
-        0.0000319816,
-        3.26318
-      ],
-      "decal0Line1": [
-        0.0000160236,
-        -1.77859,
-        -1.03151,
-        4.19821
-      ],
-      "decal0Line2": [
-        -2.05606,
-        -6.01095e-8,
-        0.0000322263,
-        -2.26318
-      ],
-      "decal0Line3": [
-        0.0000162033,
-        -1.77859,
-        1.03151,
-        4.19821
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.0000135132,
-        0.501689,
-        -0.865048,
-        -2.42349
-      ],
-      "decal0CPNormDepth1": [
-        0.0000135132,
-        0.501689,
-        0.865048,
-        -2.42349
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.486366
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.2,
-      "decal0Tex": "back_16"
-    }
-  },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    },
-    "desert": {
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_tiger*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    },
-    "winter": {
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

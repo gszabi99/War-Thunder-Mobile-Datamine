@@ -6,6 +6,7 @@ let isBatleDataRequired = sharedWatched("isBatleDataRequired", @() false)
 let respawnsLeft = sharedWatched("respawnsLeft", @() -1)
 let respawnUnitInfo = sharedWatched("respawnUnitInfo", @() null)
 let respawnUnitItems = sharedWatched("respawnUnitItems", @() null)
+let respawnUnitMods = sharedWatched("respawnUnitMods", @() null)
 let respawnUnitSkins = sharedWatched("respawnUnitSkins", @() null)
 let isRespawnStarted = sharedWatched("isRespawnStarted", @() false)
 let isRespawnDataInProgress = sharedWatched("isRespawnDataInProgress", @() false)
@@ -23,6 +24,7 @@ return {
   respawnsLeft
   respawnUnitInfo
   respawnUnitItems
+  respawnUnitMods
   respawnUnitSkins
   isRespawnStarted
   isRespawnDataInProgress

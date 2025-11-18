@@ -22,14 +22,14 @@ let versionsFallback = {
 }
 
 let acceptedVersions = Watched(null)
-let isLoginAllowed = Computed(@() legalToApprove.findvalue(@(_, id) id in acceptedVersions.value) != null)
+let isLoginAllowed = Computed(@() legalToApprove.findvalue(@(_, id) id in acceptedVersions.get()) != null)
 let requiredVersionsRaw = hardPersistWatched("requiredVersionsRaw")
 let lastVersionsError = hardPersistWatched("lastVersionsError")
-let isFailedToGetLegalVersions = Computed(@() requiredVersionsRaw.value == null && lastVersionsError.value != null)
-let requiredVersions = Computed(@() isFailedToGetLegalVersions.value ? versionsFallback : requiredVersionsRaw.value)
-let needApprove = Computed(@() !isOnlineSettingsAvailable.value ? {}
-  : legalToApprove.map(@(_, id) id in requiredVersions.value
-      && (id not in acceptedVersions.value || requiredVersions.value[id] > acceptedVersions.value[id])))
+let isFailedToGetLegalVersions = Computed(@() requiredVersionsRaw.get() == null && lastVersionsError.get() != null)
+let requiredVersions = Computed(@() isFailedToGetLegalVersions.get() ? versionsFallback : requiredVersionsRaw.get())
+let needApprove = Computed(@() !isOnlineSettingsAvailable.get() ? {}
+  : legalToApprove.map(@(_, id) id in requiredVersions.get()
+      && (id not in acceptedVersions.get() || requiredVersions.get()[id] > acceptedVersions.get()[id])))
 
 function loadAcceptedVersions() {
   let blk = get_local_custom_settings_blk()
@@ -37,62 +37,71 @@ function loadAcceptedVersions() {
   let res = {}
   if (isDataBlock(versionsBlk))
     eachParam(versionsBlk, @(v, k) res[k] <- v)
-  acceptedVersions(res)
+  acceptedVersions.set(res)
 }
 
 function saveAcceptedVersions() {
-  if (acceptedVersions.value == null) 
+  if (acceptedVersions.get() == null) 
     return
   let blk = get_local_custom_settings_blk()
   let versionsBlk = DataBlock()
-  foreach(k, v in acceptedVersions.value)
+  foreach(k, v in acceptedVersions.get())
     versionsBlk[k] <- v
   blk[VERSIONS_ID] = versionsBlk
   saveProfile()
 }
 
-if (isOnlineSettingsAvailable.value)
+if (isOnlineSettingsAvailable.get())
   loadAcceptedVersions()
-isOnlineSettingsAvailable.subscribe(@(v) v ? loadAcceptedVersions() : acceptedVersions(null))
+isOnlineSettingsAvailable.subscribe(@(v) v ? loadAcceptedVersions() : acceptedVersions.set(null))
 
-if (!isEqual(needApprove.value, legalListForApprove.value))
-  legalListForApprove(needApprove.value)
-needApprove.subscribe(@(v) legalListForApprove(v))
+if (!isEqual(needApprove.get(), legalListForApprove.get()))
+  legalListForApprove.set(needApprove.get())
+needApprove.subscribe(@(v) legalListForApprove.set(v))
 
 eventbus_subscribe("acceptAllLegals", function(_) {
-  if (!isOnlineSettingsAvailable.value || acceptedVersions.value == null)
+  if (!isOnlineSettingsAvailable.get() || acceptedVersions.get() == null)
     return
-  let versions = clone acceptedVersions.value
-  foreach(id, need in needApprove.value)
-    if (need && id in requiredVersions.value)
-      versions[id] <- requiredVersions.value[id]
-  acceptedVersions(versions)
+  let versions = clone acceptedVersions.get()
+  foreach(id, need in needApprove.get())
+    if (need && id in requiredVersions.get())
+      versions[id] <- requiredVersions.get()[id]
+  acceptedVersions.set(versions)
   saveAcceptedVersions()
 })
 
+local isBadPageLogged = false
 eventbus_subscribe(VERSIONS_RESP_ID, function(response) {
   let { status = -1, http_code = -1, body = null } = response
   let hasError = status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code
   if (hasError || body == null) {
-    if (requiredVersionsRaw.value == null)
-      lastVersionsError({ status, http_code })
+    if (requiredVersionsRaw.get() == null)
+      lastVersionsError.set({ status, http_code })
     return
   }
   local result = null
   let bodyStr = body.as_string()
+  if (bodyStr.startswith("<")) { 
+    if (!isBadPageLogged)
+      log($"LegalState: Request versions result is html page instead of data:\n{bodyStr}")
+    isBadPageLogged = true
+    lastVersionsError.set({ status = "Page instead of versions", isParsingError = true })
+    return
+  }
+
   try {
     result = body != null ? parse_json(bodyStr) : null
   }
   catch(e) {}
   if (result?.status == "OK") {
-    requiredVersionsRaw(result?.result)
-    lastVersionsError(null)
+    requiredVersionsRaw.set(result?.result)
+    lastVersionsError.set(null)
   } else
-    lastVersionsError({ status = result?.status, isParsingError = true })
+    lastVersionsError.set({ status = result?.status, isParsingError = true })
 })
 
 function requestVersionsOnce() {
-  if (requiredVersionsRaw.value != null)
+  if (requiredVersionsRaw.get() != null)
     return
   httpRequest({
     method = "GET"
@@ -100,19 +109,19 @@ function requestVersionsOnce() {
     respEventId = VERSIONS_RESP_ID
   })
 }
-if (isAuthorized.value)
+if (isAuthorized.get())
   requestVersionsOnce()
 isAuthorized.subscribe(@(v) v ? requestVersionsOnce() : null)
 
 register_command(
   function() {
-    if (!isOnlineSettingsAvailable.value)
+    if (!isOnlineSettingsAvailable.get())
       return console_print("Unable to reset while online settings is not available")
     let blk = get_local_custom_settings_blk()
     if (VERSIONS_ID not in blk)
       return console_print("Already empty")
     blk.removeBlock(VERSIONS_ID)
-    acceptedVersions({})
+    acceptedVersions.set({})
     saveProfile()
     return console_print("Success")
   }

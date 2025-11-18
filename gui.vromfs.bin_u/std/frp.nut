@@ -21,7 +21,7 @@ let isObservable = @(v) isWatched(v) || isComputed(v)
 
 function watchedTable2TableOfWatched(state, fieldsList = null) {
   assert(isObservable(state), "state has to be Watched")
-  let list = fieldsList ?? state.value
+  let list = fieldsList ?? state.get()
   assert(type(list) == "table", "fieldsList should be provided as table")
   return list.map(@(_, key) Computed(@() state.get()[key]))
 }
@@ -145,7 +145,7 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
             storage[eid] <- Watched(val)
           }
           else {
-            storage[eid].update(val)
+            storage[eid].set(val)
           }
           eidToUpdate[eid] <- val
           triggerableObservable.subscribe_with_nasty_disregard_of_frp_update(update)
@@ -157,7 +157,7 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
             triggerableObservable.subscribe_with_nasty_disregard_of_frp_update(update)
           }
           else
-            storage[eid].update(val)
+            storage[eid].set(val)
         }
     function getWatchedByEid(eid){
       return storage?[eid]

@@ -12,12 +12,16 @@ struct EventOnHitEntity
   impactRes : int
   offender : EntityId
   bullet : EntityId
+  gunEid : EntityId
   packedProjPropsId : uint
   pos : float3
   dir : float3
   norm : float3
+  vel : float3
   distance : float
   piercingShift : float
+  startPos : float3
+  startVel : float3
   collNodeId : int
 
 [cpp_event(unicast, with_scheme)]
@@ -28,6 +32,7 @@ struct EventSplashHitEntity
   shatterDamage : float
   pos : float3
   dir : float3
+  isAircraftExplosion : bool
 
 [cpp_event(unicast, with_scheme)]
 struct EventMeleeHitEntity

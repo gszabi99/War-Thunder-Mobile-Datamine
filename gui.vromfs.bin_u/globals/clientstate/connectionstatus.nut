@@ -15,6 +15,6 @@ return {
   CON_UNKNOWN
 
   connectionStatus
-  isConnectionLimited = Computed(@() connectionStatus.value == CON_LIMITED)
+  isConnectionLimited = Computed(@() connectionStatus.get() == CON_LIMITED)
   hasConnection = Computed(@() connectionStatus.get() != CON_NO_CONNECTION)
 }

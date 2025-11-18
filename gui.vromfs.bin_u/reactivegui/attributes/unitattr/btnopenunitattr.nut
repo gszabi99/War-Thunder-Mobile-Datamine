@@ -2,9 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton, translucentIconButton } = require("%rGui/components/translucentButton.nut")
 let { openUnitAttrWnd, availableAttributes } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let mkAvailAttrMark = require("%rGui/attributes/mkAvailAttrMark.nut")
-let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
-let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
+let { setHangarUnit, hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
+
 
 let function onClick() {
   if (baseUnit.get())
@@ -14,7 +15,7 @@ let function onClick() {
 
 let statusUnitAttr = keepref(Computed(function() {
   local res = availableAttributes.get().status
-  if (res == -1 && unseenModsByCategory.get().len() > 0)
+  if (res == -1 && (hangarUnitName.get() in unseenCampUnitMods.get()))
     res = 0
   return res
 }))

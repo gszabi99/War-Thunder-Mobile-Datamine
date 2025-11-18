@@ -4,7 +4,7 @@
     "name": "units",
     "size": [
       2048,
-      1024
+      2048
     ],
     "lazyAlloc": true,
     "maxAllowedPicSz": [

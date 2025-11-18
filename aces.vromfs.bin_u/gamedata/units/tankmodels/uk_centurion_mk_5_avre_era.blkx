@@ -2296,6 +2296,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2313,6 +2314,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2373,6 +2375,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2390,6 +2393,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2463,6 +2467,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2604,6 +2609,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2611,6 +2617,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2618,6 +2625,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2899,7 +2907,7 @@
     "art_support_smoke": {},
     "art_support_mortars": {},
     "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
+    "tank_additional_armor": {},
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
@@ -3291,193 +3299,99 @@
       "camo_scale": 0.0,
       "camo_rotation": 0.0,
       "decal0Line0": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0Line1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0Line2": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0Line3": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0HaveCP": false,
-      "decal0CPNormDepth": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0CPNormDepth1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0RotScale": [
-        1.5708,
-        1.0
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.0,
-      "decal0Tex": "",
-      "decal1Line0": [
         2.01695,
         -8.81635e-8,
         1.1465e-13,
         -4.43286
       ],
-      "decal1Line1": [
+      "decal0Line1": [
         -8.81635e-8,
         -2.01695,
         0.00000134679,
         2.81199
       ],
-      "decal1Line2": [
+      "decal0Line2": [
         -2.01695,
         -8.81635e-8,
         -1.1465e-13,
         5.43286
       ],
-      "decal1Line3": [
+      "decal0Line3": [
         8.81635e-8,
         -2.01695,
         -0.00000134679,
         2.81199
       ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
         -2.84217e-14,
         -6.67737e-7,
         -1.0,
         -1.79561
       ],
-      "decal1CPNormDepth1": [
+      "decal0CPNormDepth1": [
         -2.84217e-14,
         -6.67737e-7,
         1.0,
         -1.79561
       ],
-      "decal1RotScale": [
+      "decal0RotScale": [
         1.5708,
         0.495799
       ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.2,
-      "decal1Tex": "uk_79_armoured_division",
-      "decal2Line0": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal2Line1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal2Line2": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal2Line3": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal2HaveCP": false,
-      "decal2CPNormDepth": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal2CPNormDepth1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal2RotScale": [
-        1.5708,
-        1.0
-      ],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2OppositeMirrored": false,
-      "decal2WidthBox": 0.0,
-      "decal2Tex": "",
-      "decal3Line0": [
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "uk_79_armoured_division",
+      "decal1Line0": [
         1.0,
         -4.37114e-8,
         -2.27374e-13,
         1.06567
       ],
-      "decal3Line1": [
+      "decal1Line1": [
         -4.37114e-8,
         -1.0,
         -0.00000240661,
         1.47187
       ],
-      "decal3Line2": [
+      "decal1Line2": [
         -1.0,
         -4.37114e-8,
         2.27374e-13,
         -0.0656674
       ],
-      "decal3Line3": [
+      "decal1Line3": [
         4.37114e-8,
         -1.0,
         0.00000240661,
         1.47187
       ],
-      "decal3HaveCP": true,
-      "decal3CPNormDepth": [
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
         -2.84218e-14,
         0.00000240661,
         -1.0,
         -1.75104
       ],
-      "decal3CPNormDepth1": [
+      "decal1CPNormDepth1": [
         -2.84218e-14,
         0.00000240661,
         1.0,
         -1.75104
       ],
-      "decal3RotScale": [
+      "decal1RotScale": [
         1.5708,
         1.0
       ],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": true,
-      "decal3OppositeMirrored": false,
-      "decal3WidthBox": 0.200001,
-      "decal3Tex": "usa_commander_a_co"
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": true,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.200001,
+      "decal1Tex": "usa_commander_a_co"
     },
     "winter": {
       "skin_condition": 100.0,
@@ -3510,7 +3424,14 @@
       "details",
       "details_01",
       "details_02",
-      "details_03"
+      "details_03",
+      "details_04",
+      "details_05",
+      "details_06",
+      "details_07",
+      "details_08",
+      "details_09",
+      "details_10"
     ]
   }
 }

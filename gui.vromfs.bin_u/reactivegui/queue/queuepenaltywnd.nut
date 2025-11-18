@@ -18,7 +18,8 @@ let { penalties } = require("%rGui/mainMenu/penaltyState.nut")
 
 let QUEUE_PENALTY_UID = "queue_penalty_box"
 
-function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb, cancelCb = null, missionName = "") {
+function tryOpenQueuePenaltyWnd(campaign, mGMode, resetPenaltyCb, cancelCb = null) {
+  let missionName = mGMode?.mission_decl.missions_list.findindex(@(_) true) ?? ""
   if (missionName != "") {
     let mInfo = get_meta_mission_info_by_name(missionName)
     if (mInfo?.gt_ffa)
@@ -39,6 +40,8 @@ function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb, cancelCb = null, missi
   let priceComp = mkCurrencyComp(decimalFormat(price), currencyId, CS_INCREASED_ICON)
 
   let subscribtion = @(v) v <= 0 ? removeModalWindow(QUEUE_PENALTY_UID) : null
+  let penaltyCb = type(resetPenaltyCb) == "table" ? resetPenaltyCb.__merge({ mGMode }) : { id = resetPenaltyCb, mGMode }
+
   openMsgBox({
     uid = QUEUE_PENALTY_UID
     text = {
@@ -71,7 +74,7 @@ function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb, cancelCb = null, missi
           if (!isQueuePenaltyInProgress.get() && !showNoBalanceMsgIfNeed(price, currencyId, bqInfo)) {
             let camp = (penalties.get()?[campaign].penaltyEndTime ?? 0) > (penalties.get()?[curCampaign.get()].penaltyEndTime ?? 0)
               ? campaign : curCampaign.get()
-            reset_queue_penalty(camp, price, currencyId, resetPenaltyCb)
+            reset_queue_penalty(camp, price, currencyId, penaltyCb)
           }
         }
       }

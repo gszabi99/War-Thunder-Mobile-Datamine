@@ -21,6 +21,7 @@
       "userstat_stat_id": "last_kill",
       "mode": {
         "type": "finalBlow",
+        "includeAI": false,
         "condition": {
           "type": "online"
         }
@@ -921,9 +922,9 @@
         "type": "killedGroundTimed",
         "num": 100,
         "delay": [
-          5,
-          5,
-          5
+          10,
+          10,
+          10
         ],
         "isShip": true,
         "condition": {
@@ -1722,11 +1723,8 @@
             "type": "gameModeInfoString",
             "name": "name",
             "exactName": true,
-            "value": [
-              "ship_new_players_battle_single",
-              "ship_new_players_battle_coop",
-              "ship_event_in_random_battles_arcade"
-            ]
+            "allowed": false,
+            "value": "event_1_april_pirates"
           }
         ]
       }
@@ -1850,11 +1848,8 @@
             "type": "gameModeInfoString",
             "name": "name",
             "exactName": true,
-            "value": [
-              "ship_new_players_battle_single",
-              "ship_new_players_battle_coop",
-              "ship_event_in_random_battles_arcade"
-            ]
+            "allowed": false,
+            "value": "event_1_april_pirates"
           }
         ]
       }
@@ -1973,11 +1968,8 @@
             "type": "gameModeInfoString",
             "name": "name",
             "exactName": true,
-            "value": [
-              "ship_new_players_battle_single",
-              "ship_new_players_battle_coop",
-              "ship_event_in_random_battles_arcade"
-            ]
+            "allowed": false,
+            "value": "event_1_april_pirates"
           }
         ]
       }
@@ -2105,11 +2097,8 @@
             "type": "gameModeInfoString",
             "name": "name",
             "exactName": true,
-            "value": [
-              "ship_new_players_battle_single",
-              "ship_new_players_battle_coop",
-              "ship_event_in_random_battles_arcade"
-            ]
+            "allowed": false,
+            "value": "event_1_april_pirates"
           }
         ]
       }
@@ -2175,7 +2164,7 @@
       }
     },
     {
-      "id": "streak_firework_anniversary",
+      "id": "streak_firework_halloween",
       "type": "streak",
       "amount_warpoints": 10000,
       "exclude_from_rating": true,

@@ -138,7 +138,7 @@ let openConflictsMsgBox = @(slotIdx, weapon, conflicts, equipWeaponListFunc)
     title = loc("weapons/hasConflictWeapons")
     text = mkConflictsMsgContent(weapon, conflicts)
     buttons = [
-      { id = "cancel", isCancel = true, styleId = "BRIGHT" }
+      { id = "cancel", isCancel = true, styleId = "COMMON" }
       { text = loc("mod/enable"), styleId = "PRIMARY", isDefault = true,
         eventId = "equipWithConflictsResolve",
         cb = @() equipWeaponListFunc(conflicts

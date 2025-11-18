@@ -85,9 +85,9 @@
       "_template": "backmodel_spawn_point",
       "transform": [
         [
-          0.770958,
+          0.978113,
           0.0,
-          -0.636886
+          -0.208075
         ],
         [
           0.0,
@@ -95,14 +95,14 @@
           0.0
         ],
         [
-          0.636886,
+          0.208075,
           0.0,
-          0.770958
+          0.978113
         ],
         [
-          1436.78,
-          9.11842,
-          1493.74
+          444.264,
+          139.6,
+          3598.6
         ]
       ],
       "spawnPointType": "tank",
@@ -112,9 +112,9 @@
       "_template": "backmodel_spawn_point",
       "transform": [
         [
-          0.73854,
+          0.839296,
           0.0,
-          -0.67421
+          -0.543675
         ],
         [
           0.0,
@@ -122,14 +122,14 @@
           0.0
         ],
         [
-          0.67421,
+          0.543675,
           0.0,
-          0.73854
+          0.839296
         ],
         [
-          1446.68,
-          9.11842,
-          1498.9
+          456.119,
+          139.6,
+          3624.89
         ]
       ],
       "spawnPointType": "tank",
@@ -139,9 +139,9 @@
       "_template": "backmodel_spawn_point",
       "transform": [
         [
-          0.676976,
+          0.90902,
           0.0,
-          -0.736005
+          -0.416751
         ],
         [
           0.0,
@@ -149,14 +149,14 @@
           0.0
         ],
         [
-          0.736005,
+          0.416751,
           0.0,
-          0.676976
+          0.90902
         ],
         [
-          1455.29,
-          9.11842,
-          1504.15
+          449.221,
+          139.6,
+          3612.68
         ]
       ],
       "spawnPointType": "tank",
@@ -187,474 +187,6 @@
         ]
       ],
       "ecs_fx__res": "fire_ground_medium_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1453.9,
-          9.3,
-          1497.45
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1454.5,
-          9.3,
-          1497.8
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1461.55,
-          9.45,
-          1501.8
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1461.78,
-          9.45,
-          1502.45
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1464.45,
-          9.45,
-          1501.4
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1465.14,
-          9.45,
-          1501.39
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1466.9,
-          9.35,
-          1502.0
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1467.33,
-          9.35,
-          1502.55
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1462.6,
-          9.2,
-          1503.15
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1462.98,
-          9.2,
-          1502.57
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1446.1,
-          9.2,
-          1481.15
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1446.44,
-          9.2,
-          1481.75
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1448.9,
-          9.65,
-          1469.55
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1448.48,
-          9.65,
-          1470.1
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1449.25,
-          9.3,
-          1468.15
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1449.48,
-          9.3,
-          1467.49
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1445.8,
-          9.3,
-          1470.2
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1446.45,
-          9.3,
-          1470.44
-        ]
-      ],
-      "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1559,12 +1091,12 @@
           0.0
         ],
         [
-          1485.2,
-          11.1,
-          1517.0
+          2972.9,
+          10.2,
+          -2778.5
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_ground_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1585,12 +1117,12 @@
           0.0
         ],
         [
-          1467.1,
-          11.1,
-          1521.7
+          3029.9,
+          10.2,
+          -2794.9
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_ground_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1611,12 +1143,12 @@
           0.0
         ],
         [
-          1448.8,
-          11.1,
-          1513.0
+          3098.1,
+          10.2,
+          -2561.6
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_ground_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1637,12 +1169,12 @@
           0.0
         ],
         [
-          1420.7,
-          11.1,
-          1508.9
+          3041.2,
+          10.2,
+          -2544.9
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_ground_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1663,12 +1195,12 @@
           0.0
         ],
         [
-          1422.2,
-          11.1,
-          1486.6
+          2920.0,
+          10.2,
+          -2981.4
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_ground_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1689,12 +1221,12 @@
           0.0
         ],
         [
-          1416.1,
-          11.1,
-          1472.4
+          2976.8,
+          10.2,
+          -2998.2
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_ground_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1715,12 +1247,12 @@
           0.0
         ],
         [
-          1433.7,
-          11.1,
-          1471.2
+          478.5,
+          140.7,
+          3622.35
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1741,12 +1273,12 @@
           0.0
         ],
         [
-          1440.8,
-          11.1,
-          1458.4
+          459.75,
+          140.8,
+          3632.65
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1767,12 +1299,12 @@
           0.0
         ],
         [
-          1467.9,
-          11.1,
-          1459.0
+          450.2,
+          140.75,
+          3589.95
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1793,12 +1325,12 @@
           0.0
         ],
         [
-          1482.7,
-          11.1,
-          1454.1
+          472.3,
+          140.65,
+          3582.65
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+      "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
       "_template": "ecs_fx",
@@ -1819,186 +1351,12 @@
           0.0
         ],
         [
-          1488.6,
-          11.1,
-          1472.3
+          490.55,
+          140.65,
+          3611.8
         ]
       ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1492.5,
-          11.1,
-          1488.3
-        ]
-      ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1480.8,
-          11.1,
-          1496.9
-        ]
-      ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1455.7,
-          11.1,
-          1533.9
-        ]
-      ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
-    },
-    {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          1421.0,
-          11.1,
-          1528.3
-        ]
-      ],
-      "ecs_fx__res": "fire_base_tiny_cmps_fx"
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "objectGroups",
-      "setting__playerNo": -1,
-      "setting__unit_class": "hangar_objects_hallowen",
-      "setting__name": "test_bridge",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 2,
-      "setting__count": 1,
-      "setting__active": true,
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1454.1,
-          8.07138,
-          1498.2
-        ]
-      ]
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "objectGroups",
-      "setting__playerNo": -1,
-      "setting__unit_class": "hangar_water_objects_hallowen",
-      "setting__name": "test_bridge",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 2,
-      "setting__count": 1,
-      "setting__active": true,
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          0.979691,
-          0.0,
-          0.20051
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.20051,
-          0.0,
-          0.979691
-        ],
-        [
-          2104.9,
-          13.0408,
-          -2308.8
-        ]
-      ]
+      "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
       "_template": "unit_loader",
@@ -2029,9 +1387,9 @@
           1.0
         ],
         [
-          1675.2,
-          7.0,
-          -2355.9
+          2932.2,
+          3.5,
+          -2266.4
         ]
       ]
     },
@@ -2039,7 +1397,7 @@
       "_template": "unit_loader",
       "setting__unitType": "objectGroups",
       "setting__playerNo": -1,
-      "setting__unit_class": "hangar_major_flags_air_hallowen",
+      "setting__unit_class": "hangar_objects",
       "setting__name": "test_bridge",
       "setting__weapons": "",
       "setting__skin": "",
@@ -2064,44 +1422,9 @@
           1.0
         ],
         [
-          3786.4,
-          23.7745,
-          3555.1
-        ]
-      ]
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "objectGroups",
-      "setting__playerNo": -1,
-      "setting__unit_class": "hangar_air_objects_hallowen",
-      "setting__name": "test_bridge",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 2,
-      "setting__count": 1,
-      "setting__active": true,
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          3650.65,
-          23.7666,
-          3631.9
+          433.677,
+          139.21,
+          3663.34
         ]
       ]
     },
@@ -2144,7 +1467,7 @@
       "_template": "unit_loader",
       "setting__unitType": "objectGroups",
       "setting__playerNo": -1,
-      "setting__unit_class": "hangar_major_flags_hallowen",
+      "setting__unit_class": "hangar_air_objects_hallowen",
       "setting__name": "test_bridge",
       "setting__weapons": "",
       "setting__skin": "",
@@ -2169,9 +1492,9 @@
           1.0
         ],
         [
-          1430.05,
-          8.07079,
-          1522.15
+          3650.65,
+          23.7666,
+          3631.9
         ]
       ]
     },
@@ -2190,9 +1513,9 @@
       "setting__loadSound": false,
       "setting__tm": [
         [
-          1.0,
+          0.90381,
           0.0,
-          0.0
+          -0.427935
         ],
         [
           0.0,
@@ -2200,14 +1523,14 @@
           0.0
         ],
         [
+          0.427935,
           0.0,
-          0.0,
-          1.0
+          0.90381
         ],
         [
-          2197.6,
-          8.13,
-          1887.4
+          379.229,
+          140.087,
+          3689.11
         ]
       ]
     },
@@ -2227,9 +1550,9 @@
       "setting__loadSound": false,
       "setting__tm": [
         [
-          1.0,
+          0.90381,
           0.0,
-          0.0
+          -0.427935
         ],
         [
           0.0,
@@ -2237,14 +1560,14 @@
           0.0
         ],
         [
+          0.427935,
           0.0,
-          0.0,
-          1.0
+          0.90381
         ],
         [
-          2217.6,
-          8.13,
-          1887.4
+          364.689,
+          140.087,
+          3684.491
         ]
       ]
     },
@@ -2263,9 +1586,9 @@
       "setting__loadSound": false,
       "setting__tm": [
         [
-          1.0,
+          0.994509,
           0.0,
-          0.0
+          0.104648
         ],
         [
           0.0,
@@ -2273,14 +1596,14 @@
           0.0
         ],
         [
+          -0.104648,
           0.0,
-          0.0,
-          1.0
+          0.994509
         ],
         [
-          2131.7,
-          8.13,
-          1909.8
+          3597.3,
+          23.8002,
+          3732.96
         ]
       ]
     },
@@ -2300,9 +1623,9 @@
       "setting__loadSound": false,
       "setting__tm": [
         [
-          1.0,
+          0.994509,
           0.0,
-          0.0
+          0.104648
         ],
         [
           0.0,
@@ -2310,14 +1633,87 @@
           0.0
         ],
         [
+          -0.104648,
           0.0,
-          0.0,
-          1.0
+          0.994509
         ],
         [
-          2157.7,
-          8.13,
-          1909.8
+          3623.16,
+          23.8002,
+          3735.68
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "aircraft",
+      "setting__playerNo": -1,
+      "setting__className": "fw_190a_1",
+      "setting__unit_class": "fw_190a_1",
+      "setting__name": "armada_33",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          0.994509,
+          0.0,
+          0.104648
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.104648,
+          0.0,
+          0.994509
+        ],
+        [
+          363.0,
+          139.262,
+          3521.65
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "aircraft",
+      "setting__playerNo": -1,
+      "setting__className": "fw_190a_1",
+      "setting__unit_class": "fw_190a_1",
+      "setting__name": "armada_34",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__isDead": true,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          0.994509,
+          0.0,
+          0.104648
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.104648,
+          0.0,
+          0.994509
+        ],
+        [
+          346.45,
+          139.9,
+          3528.3
         ]
       ]
     },
@@ -2327,7 +1723,7 @@
       "setting__playerNo": -1,
       "setting__className": "ships/us_destroyer_fletcher",
       "setting__unit_class": "us_destroyer_fletcher",
-      "setting__name": "armada_33",
+      "setting__name": "armada_35",
       "setting__weapons": "",
       "setting__skin": "",
       "setting__army": 1,
@@ -2354,6 +1750,2918 @@
           2908.1,
           8.13,
           -2939.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          1.3766,
+          0.0,
+          0.442854
+        ],
+        [
+          0.0,
+          1.44608,
+          0.0
+        ],
+        [
+          -0.442854,
+          0.0,
+          1.3766
+        ],
+        [
+          489.7,
+          139.1,
+          3572.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "st_patrick_saltwood_castle_b",
+      "transform": [
+        [
+          7.11817,
+          0.0,
+          -1.90731
+        ],
+        [
+          0.0,
+          7.36928,
+          0.0
+        ],
+        [
+          1.90731,
+          0.0,
+          7.11817
+        ],
+        [
+          -810.9,
+          160.2,
+          3591.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "st_patrick_saltwood_castle_b",
+      "transform": [
+        [
+          -1.14024,
+          0.0,
+          6.46663
+        ],
+        [
+          0.0,
+          6.56639,
+          0.0
+        ],
+        [
+          -6.46663,
+          0.0,
+          -1.14024
+        ],
+        [
+          1921.86,
+          -56.6654,
+          -3085.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          32.2657,
+          0.0,
+          -20.5555
+        ],
+        [
+          0.0,
+          39.8662,
+          0.0
+        ],
+        [
+          20.5555,
+          0.0,
+          32.2657
+        ],
+        [
+          4227.16,
+          -84.2104,
+          -4550.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          0.00000287663,
+          0.0,
+          38.1021
+        ],
+        [
+          0.0,
+          38.1021,
+          0.0
+        ],
+        [
+          -38.1021,
+          0.0,
+          0.00000287663
+        ],
+        [
+          5185.57,
+          -50.501,
+          -2515.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          -8.65928,
+          0.0,
+          27.4637
+        ],
+        [
+          0.0,
+          28.7965,
+          0.0
+        ],
+        [
+          -27.4637,
+          0.0,
+          -8.65928
+        ],
+        [
+          6263.94,
+          -50.5009,
+          -1954.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          5.92941,
+          0.0,
+          -67.7735
+        ],
+        [
+          0.0,
+          74.574,
+          0.0
+        ],
+        [
+          67.7735,
+          0.0,
+          5.92941
+        ],
+        [
+          -4137.41,
+          -104.412,
+          2692.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          45.9734,
+          0.0,
+          -65.6569
+        ],
+        [
+          0.0,
+          94.0454,
+          0.0
+        ],
+        [
+          65.6569,
+          0.0,
+          45.9734
+        ],
+        [
+          -3578.32,
+          -94.7595,
+          6767.37
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          40.7414,
+          0.0,
+          -16.8756
+        ],
+        [
+          0.0,
+          44.0981,
+          0.0
+        ],
+        [
+          16.8756,
+          0.0,
+          40.7414
+        ],
+        [
+          4903.23,
+          -169.842,
+          -3413.91
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          54.9386,
+          0.0,
+          -59.9549
+        ],
+        [
+          0.0,
+          63.018,
+          0.0
+        ],
+        [
+          59.9549,
+          0.0,
+          54.9386
+        ],
+        [
+          -4784.54,
+          -112.221,
+          1130.26
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          105.413,
+          0.0,
+          49.1549
+        ],
+        [
+          0.0,
+          127.495,
+          0.0
+        ],
+        [
+          -49.1549,
+          0.0,
+          105.413
+        ],
+        [
+          -7571.05,
+          -104.412,
+          4849.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_mountain",
+      "transform": [
+        [
+          82.2438,
+          0.0,
+          82.2439
+        ],
+        [
+          0.0,
+          127.495,
+          0.0
+        ],
+        [
+          -82.2439,
+          0.0,
+          82.2438
+        ],
+        [
+          8413.3,
+          -263.5,
+          8029.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_a_floating",
+      "transform": [
+        [
+          2.55949,
+          0.0,
+          8.11765
+        ],
+        [
+          0.0,
+          8.5116,
+          0.0
+        ],
+        [
+          -8.11765,
+          0.0,
+          2.55949
+        ],
+        [
+          2257.95,
+          8.40005,
+          -2604.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_b_floating",
+      "transform": [
+        [
+          3.59716,
+          0.0,
+          7.71413
+        ],
+        [
+          0.0,
+          8.5116,
+          0.0
+        ],
+        [
+          -7.71413,
+          0.0,
+          3.59716
+        ],
+        [
+          2223.75,
+          8.39999,
+          -2258.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_c_floating",
+      "transform": [
+        [
+          -1.47802,
+          0.0,
+          8.38229
+        ],
+        [
+          0.0,
+          8.5116,
+          0.0
+        ],
+        [
+          -8.38229,
+          0.0,
+          -1.47802
+        ],
+        [
+          2065.05,
+          8.40005,
+          -3367.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "headstone_b",
+      "transform": [
+        [
+          1.53578,
+          0.0,
+          -0.636143
+        ],
+        [
+          0.0,
+          1.66232,
+          0.0
+        ],
+        [
+          0.636143,
+          0.0,
+          1.53578
+        ],
+        [
+          480.55,
+          139.3,
+          3557.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "headstone_c",
+      "transform": [
+        [
+          1.76429,
+          0.0,
+          -0.730792
+        ],
+        [
+          0.0,
+          1.90965,
+          0.0
+        ],
+        [
+          0.730792,
+          0.0,
+          1.76429
+        ],
+        [
+          484.6,
+          139.35,
+          3561.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "headstone_a",
+      "transform": [
+        [
+          1.35927,
+          0.0,
+          -0.563027
+        ],
+        [
+          0.0,
+          1.47126,
+          0.0
+        ],
+        [
+          0.563027,
+          0.0,
+          1.35927
+        ],
+        [
+          499.55,
+          139.3,
+          3597.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_a_floating",
+      "transform": [
+        [
+          -8.72994,
+          0.0,
+          -49.51
+        ],
+        [
+          0.0,
+          50.2737,
+          0.0
+        ],
+        [
+          49.51,
+          0.0,
+          -8.72994
+        ],
+        [
+          6887.05,
+          -50.5009,
+          1362.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_b_floating",
+      "transform": [
+        [
+          -17.7698,
+          0.0,
+          -66.3178
+        ],
+        [
+          0.0,
+          68.6573,
+          0.0
+        ],
+        [
+          66.3178,
+          0.0,
+          -17.7698
+        ],
+        [
+          7755.1,
+          -50.5007,
+          191.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_c_floating",
+      "transform": [
+        [
+          -14.6686,
+          0.0,
+          -40.3016
+        ],
+        [
+          0.0,
+          42.8881,
+          0.0
+        ],
+        [
+          40.3016,
+          0.0,
+          -14.6686
+        ],
+        [
+          6785.7,
+          -50.5007,
+          -320.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "headstone_a",
+      "transform": [
+        [
+          1.12315,
+          0.0,
+          1.763
+        ],
+        [
+          0.0,
+          2.09037,
+          0.0
+        ],
+        [
+          -1.763,
+          0.0,
+          1.12315
+        ],
+        [
+          489.159,
+          139.3,
+          3649.58
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "headstone_b",
+      "transform": [
+        [
+          1.12315,
+          0.0,
+          1.763
+        ],
+        [
+          0.0,
+          2.09037,
+          0.0
+        ],
+        [
+          -1.763,
+          0.0,
+          1.12315
+        ],
+        [
+          480.95,
+          139.3,
+          3649.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          2.55706,
+          0.0,
+          -0.0974276
+        ],
+        [
+          0.0,
+          2.57596,
+          0.0
+        ],
+        [
+          0.0974276,
+          0.0,
+          2.55706
+        ],
+        [
+          3068.65,
+          7.4635,
+          -2546.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          1.87555,
+          0.0,
+          -1.08512
+        ],
+        [
+          0.0,
+          2.18127,
+          0.0
+        ],
+        [
+          1.08512,
+          0.0,
+          1.87555
+        ],
+        [
+          3064.4,
+          7.4635,
+          -2547.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -1.11426,
+          0.0,
+          -0.794269
+        ],
+        [
+          0.0,
+          1.36837,
+          0.0
+        ],
+        [
+          0.798522,
+          0.0,
+          -1.12023
+        ],
+        [
+          489.95,
+          139.3,
+          3572.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          0.763787,
+          0.0,
+          0.734597
+        ],
+        [
+          0.0,
+          1.05972,
+          0.0
+        ],
+        [
+          -0.738531,
+          0.0,
+          0.767878
+        ],
+        [
+          400.45,
+          139.6,
+          3614.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -0.00000309944,
+          0.0,
+          -3.22253
+        ],
+        [
+          0.0,
+          3.22253,
+          0.0
+        ],
+        [
+          3.22253,
+          0.0,
+          -0.00000309944
+        ],
+        [
+          2994.15,
+          8.23491,
+          -3002.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          2.79079,
+          0.0,
+          1.61126
+        ],
+        [
+          0.0,
+          3.22253,
+          0.0
+        ],
+        [
+          -1.61126,
+          0.0,
+          2.79079
+        ],
+        [
+          3044.9,
+          8.23491,
+          -2802.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tentacle_plywood_e_floating",
+      "transform": [
+        [
+          7.90056,
+          0.0,
+          3.16678
+        ],
+        [
+          0.0,
+          8.5116,
+          0.0
+        ],
+        [
+          -3.16678,
+          0.0,
+          7.90056
+        ],
+        [
+          2571.05,
+          8.40015,
+          -1393.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          1.37384,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.37384,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.37384
+        ],
+        [
+          477.624,
+          139.41,
+          3634.11
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          0.81179,
+          0.0,
+          0.681178
+        ],
+        [
+          0.0,
+          1.05972,
+          0.0
+        ],
+        [
+          -0.684828,
+          0.0,
+          0.816141
+        ],
+        [
+          422.64,
+          139.568,
+          3589.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          1.15631,
+          0.0,
+          -2.00279
+        ],
+        [
+          0.0,
+          2.31262,
+          0.0
+        ],
+        [
+          2.00279,
+          0.0,
+          1.15631
+        ],
+        [
+          2900.65,
+          8.23491,
+          -2973.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          4.92436,
+          0.0,
+          2.56346
+        ],
+        [
+          0.0,
+          5.55163,
+          0.0
+        ],
+        [
+          -2.56346,
+          0.0,
+          4.92436
+        ],
+        [
+          3314.51,
+          36.3506,
+          -2808.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -0.223022,
+          0.0,
+          -2.54918
+        ],
+        [
+          0.0,
+          2.57596,
+          0.0
+        ],
+        [
+          2.54918,
+          0.0,
+          -0.223022
+        ],
+        [
+          3136.6,
+          7.46349,
+          -2565.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          4.49704,
+          -0.51024,
+          10.7986
+        ],
+        [
+          -0.275954,
+          11.6864,
+          0.667109
+        ],
+        [
+          -10.8071,
+          -0.510725,
+          4.47645
+        ],
+        [
+          2044.37,
+          24.2169,
+          -3099.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          9.12385,
+          -0.411806,
+          2.42611
+        ],
+        [
+          0.29157,
+          9.43191,
+          0.504459
+        ],
+        [
+          -2.44348,
+          -0.412199,
+          9.1192
+        ],
+        [
+          1987.7,
+          19.6088,
+          -3000.36
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -1.35569,
+          0.0,
+          -1.04025
+        ],
+        [
+          0.0,
+          1.70881,
+          0.0
+        ],
+        [
+          1.04025,
+          0.0,
+          -1.35569
+        ],
+        [
+          2963.36,
+          8.18789,
+          -2769.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          0.0462281,
+          0.0,
+          -1.05871
+        ],
+        [
+          0.0,
+          1.05972,
+          0.0
+        ],
+        [
+          1.06438,
+          0.0,
+          0.0464757
+        ],
+        [
+          468.618,
+          139.381,
+          3573.57
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -0.169148,
+          0.0,
+          -0.959288
+        ],
+        [
+          0.0,
+          0.974087,
+          0.0
+        ],
+        [
+          0.959288,
+          0.0,
+          -0.169148
+        ],
+        [
+          498.35,
+          139.35,
+          3630.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          0.989408,
+          0.0,
+          0.379573
+        ],
+        [
+          0.0,
+          1.05972,
+          0.0
+        ],
+        [
+          -0.381606,
+          0.0,
+          0.994707
+        ],
+        [
+          392.0,
+          139.6,
+          3610.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -0.314679,
+          0.0,
+          -1.02993
+        ],
+        [
+          0.0,
+          1.07693,
+          0.0
+        ],
+        [
+          1.02993,
+          0.0,
+          -0.314679
+        ],
+        [
+          471.1,
+          139.5,
+          3649.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -0.890963,
+          0.0,
+          -0.604953
+        ],
+        [
+          0.0,
+          1.07693,
+          0.0
+        ],
+        [
+          0.604953,
+          0.0,
+          -0.890963
+        ],
+        [
+          432.35,
+          139.5,
+          3634.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          0.94563,
+          0.0,
+          0.515332
+        ],
+        [
+          0.0,
+          1.07693,
+          0.0
+        ],
+        [
+          -0.515332,
+          0.0,
+          0.94563
+        ],
+        [
+          439.8,
+          139.5,
+          3645.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          0.638875,
+          0.0,
+          0.614131
+        ],
+        [
+          0.0,
+          0.886182,
+          0.0
+        ],
+        [
+          -0.614131,
+          0.0,
+          0.638875
+        ],
+        [
+          441.45,
+          139.5,
+          3645.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          1.37031,
+          0.0,
+          -0.222053
+        ],
+        [
+          0.0,
+          1.38819,
+          0.0
+        ],
+        [
+          0.222053,
+          0.0,
+          1.37031
+        ],
+        [
+          458.55,
+          139.5,
+          3651.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.73848,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.73848,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.73848
+        ],
+        [
+          459.437,
+          139.524,
+          3632.71
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.73848,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.73848,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.73848
+        ],
+        [
+          460.133,
+          139.524,
+          3632.89
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          -0.612274,
+          0.0,
+          1.45984
+        ],
+        [
+          0.0,
+          1.58304,
+          0.0
+        ],
+        [
+          -1.45984,
+          0.0,
+          -0.612274
+        ],
+        [
+          459.68,
+          139.524,
+          3633.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          -1.00862,
+          0.0,
+          1.41598
+        ],
+        [
+          0.0,
+          1.73848,
+          0.0
+        ],
+        [
+          -1.41598,
+          0.0,
+          -1.00862
+        ],
+        [
+          459.631,
+          139.524,
+          3632.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          -1.00862,
+          0.0,
+          1.41598
+        ],
+        [
+          0.0,
+          1.73848,
+          0.0
+        ],
+        [
+          -1.41598,
+          0.0,
+          -1.00862
+        ],
+        [
+          460.102,
+          139.524,
+          3632.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.16567,
+          0.0,
+          1.4005
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -1.4005,
+          0.0,
+          1.16567
+        ],
+        [
+          478.47,
+          139.392,
+          3621.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          0.46441,
+          0.0,
+          -1.76196
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          1.76196,
+          0.0,
+          0.46441
+        ],
+        [
+          478.608,
+          139.392,
+          3622.71
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          0.46441,
+          0.0,
+          -1.76196
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          1.76196,
+          0.0,
+          0.46441
+        ],
+        [
+          478.964,
+          139.392,
+          3622.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.316,
+          0.0,
+          1.01052
+        ],
+        [
+          0.0,
+          1.65922,
+          0.0
+        ],
+        [
+          -1.01052,
+          0.0,
+          1.316
+        ],
+        [
+          478.95,
+          139.392,
+          3622.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.16567,
+          0.0,
+          1.4005
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -1.4005,
+          0.0,
+          1.16567
+        ],
+        [
+          478.262,
+          139.392,
+          3622.41
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.16567,
+          0.0,
+          1.4005
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -1.4005,
+          0.0,
+          1.16567
+        ],
+        [
+          490.005,
+          139.392,
+          3611.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.316,
+          0.0,
+          1.01052
+        ],
+        [
+          0.0,
+          1.65922,
+          0.0
+        ],
+        [
+          -1.01052,
+          0.0,
+          1.316
+        ],
+        [
+          490.694,
+          139.392,
+          3612.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          0.46441,
+          0.0,
+          -1.76196
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          1.76196,
+          0.0,
+          0.46441
+        ],
+        [
+          490.707,
+          139.392,
+          3611.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          0.46441,
+          0.0,
+          -1.76196
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          1.76196,
+          0.0,
+          0.46441
+        ],
+        [
+          490.351,
+          139.392,
+          3612.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.16567,
+          0.0,
+          1.4005
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -1.4005,
+          0.0,
+          1.16567
+        ],
+        [
+          490.213,
+          139.392,
+          3611.52
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          0.420447,
+          0.0,
+          -1.77297
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          1.77297,
+          0.0,
+          0.420447
+        ],
+        [
+          472.767,
+          139.392,
+          3583.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          0.0182996,
+          0.0,
+          -1.65912
+        ],
+        [
+          0.0,
+          1.65922,
+          0.0
+        ],
+        [
+          1.65912,
+          0.0,
+          0.0182996
+        ],
+        [
+          472.459,
+          139.392,
+          3582.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          -1.688,
+          0.0,
+          0.686174
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -0.686174,
+          0.0,
+          -1.688
+        ],
+        [
+          472.078,
+          139.392,
+          3582.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          -1.688,
+          0.0,
+          0.686174
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -0.686174,
+          0.0,
+          -1.688
+        ],
+        [
+          472.792,
+          139.392,
+          3582.57
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          0.420447,
+          0.0,
+          -1.77297
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          1.77297,
+          0.0,
+          0.420447
+        ],
+        [
+          472.297,
+          139.392,
+          3583.12
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          -1.38457,
+          0.0,
+          1.18455
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -1.18455,
+          0.0,
+          -1.38457
+        ],
+        [
+          450.074,
+          139.392,
+          3589.47
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          -0.992588,
+          0.0,
+          1.32958
+        ],
+        [
+          0.0,
+          1.65922,
+          0.0
+        ],
+        [
+          -1.32958,
+          0.0,
+          -0.992588
+        ],
+        [
+          449.951,
+          139.392,
+          3590.16
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.7681,
+          0.0,
+          0.440484
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -0.440484,
+          0.0,
+          1.7681
+        ],
+        [
+          450.417,
+          139.392,
+          3590.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.7681,
+          0.0,
+          0.440484
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -0.440484,
+          0.0,
+          1.7681
+        ],
+        [
+          449.787,
+          139.392,
+          3589.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          -1.38457,
+          0.0,
+          1.18455
+        ],
+        [
+          0.0,
+          1.82214,
+          0.0
+        ],
+        [
+          -1.18455,
+          0.0,
+          -1.38457
+        ],
+        [
+          450.508,
+          139.392,
+          3589.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          -2.22132,
+          0.0,
+          1.90041
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -1.90041,
+          0.0,
+          -2.22132
+        ],
+        [
+          3029.75,
+          8.2,
+          -2795.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          -1.59244,
+          0.0,
+          2.13309
+        ],
+        [
+          0.0,
+          2.66194,
+          0.0
+        ],
+        [
+          -2.13309,
+          0.0,
+          -1.59244
+        ],
+        [
+          3029.55,
+          8.2,
+          -2794.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          2.83662,
+          0.0,
+          0.706684
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -0.706684,
+          0.0,
+          2.83662
+        ],
+        [
+          3030.2,
+          8.2,
+          -2794.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          2.83662,
+          0.0,
+          0.706684
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -0.706684,
+          0.0,
+          2.83662
+        ],
+        [
+          3029.33,
+          8.2,
+          -2794.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          -2.22132,
+          0.0,
+          1.90041
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -1.90041,
+          0.0,
+          -2.22132
+        ],
+        [
+          3030.3,
+          8.2,
+          -2794.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.5341,
+          0.0,
+          -2.48844
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.48844,
+          0.0,
+          1.5341
+        ],
+        [
+          2973.3,
+          8.2,
+          -2777.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          0.864204,
+          0.0,
+          -2.51776
+        ],
+        [
+          0.0,
+          2.66194,
+          0.0
+        ],
+        [
+          2.51776,
+          0.0,
+          0.864204
+        ],
+        [
+          2973.12,
+          8.2,
+          -2778.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          -2.91686,
+          0.0,
+          0.19421
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -0.19421,
+          0.0,
+          -2.91686
+        ],
+        [
+          2972.49,
+          8.2,
+          -2778.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          -2.91686,
+          0.0,
+          0.19421
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -0.19421,
+          0.0,
+          -2.91686
+        ],
+        [
+          2973.53,
+          8.2,
+          -2778.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.5341,
+          0.0,
+          -2.48844
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.48844,
+          0.0,
+          1.5341
+        ],
+        [
+          2972.59,
+          8.2,
+          -2777.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.5341,
+          0.0,
+          -2.48844
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.48844,
+          0.0,
+          1.5341
+        ],
+        [
+          2920.35,
+          8.19999,
+          -2980.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          0.864204,
+          0.0,
+          -2.51776
+        ],
+        [
+          0.0,
+          2.66194,
+          0.0
+        ],
+        [
+          2.51776,
+          0.0,
+          0.864204
+        ],
+        [
+          2920.17,
+          8.19999,
+          -2982.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          -2.91686,
+          0.0,
+          0.19421
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -0.19421,
+          0.0,
+          -2.91686
+        ],
+        [
+          2919.54,
+          8.19999,
+          -2981.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          -2.91686,
+          0.0,
+          0.19421
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -0.19421,
+          0.0,
+          -2.91686
+        ],
+        [
+          2920.58,
+          8.19999,
+          -2981.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.5341,
+          0.0,
+          -2.48844
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.48844,
+          0.0,
+          1.5341
+        ],
+        [
+          2919.64,
+          8.19999,
+          -2981.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.02019,
+          0.0,
+          2.73953
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -2.73953,
+          0.0,
+          1.02019
+        ],
+        [
+          2976.15,
+          8.19997,
+          -2998.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.45502,
+          0.0,
+          2.2291
+        ],
+        [
+          0.0,
+          2.66194,
+          0.0
+        ],
+        [
+          -2.2291,
+          0.0,
+          1.45502
+        ],
+        [
+          2977.21,
+          8.19997,
+          -2997.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.63945,
+          0.0,
+          -2.42034
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.42034,
+          0.0,
+          1.63945
+        ],
+        [
+          2977.48,
+          8.19997,
+          -2998.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.63945,
+          0.0,
+          -2.42034
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.42034,
+          0.0,
+          1.63945
+        ],
+        [
+          2976.52,
+          8.19997,
+          -2997.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.02019,
+          0.0,
+          2.73953
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -2.73953,
+          0.0,
+          1.02019
+        ],
+        [
+          2976.9,
+          8.19997,
+          -2998.56
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.02019,
+          0.0,
+          2.73953
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -2.73953,
+          0.0,
+          1.02019
+        ],
+        [
+          3040.65,
+          8.19994,
+          -2545.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.45502,
+          0.0,
+          2.2291
+        ],
+        [
+          0.0,
+          2.66194,
+          0.0
+        ],
+        [
+          -2.2291,
+          0.0,
+          1.45502
+        ],
+        [
+          3041.71,
+          8.19994,
+          -2544.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.63945,
+          0.0,
+          -2.42034
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.42034,
+          0.0,
+          1.63945
+        ],
+        [
+          3041.98,
+          8.19994,
+          -2545.14
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.63945,
+          0.0,
+          -2.42034
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.42034,
+          0.0,
+          1.63945
+        ],
+        [
+          3041.02,
+          8.19994,
+          -2544.57
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.02019,
+          0.0,
+          2.73953
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -2.73953,
+          0.0,
+          1.02019
+        ],
+        [
+          3041.4,
+          8.19994,
+          -2545.46
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.02019,
+          0.0,
+          2.73953
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -2.73953,
+          0.0,
+          1.02019
+        ],
+        [
+          3097.5,
+          8.19994,
+          -2561.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.45502,
+          0.0,
+          2.2291
+        ],
+        [
+          0.0,
+          2.66194,
+          0.0
+        ],
+        [
+          -2.2291,
+          0.0,
+          1.45502
+        ],
+        [
+          3098.56,
+          8.19994,
+          -2560.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_c",
+      "transform": [
+        [
+          1.63945,
+          0.0,
+          -2.42034
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.42034,
+          0.0,
+          1.63945
+        ],
+        [
+          3098.83,
+          8.19994,
+          -2561.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_b",
+      "transform": [
+        [
+          1.63945,
+          0.0,
+          -2.42034
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          2.42034,
+          0.0,
+          1.63945
+        ],
+        [
+          3097.87,
+          8.19994,
+          -2560.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "candle_a",
+      "transform": [
+        [
+          1.02019,
+          0.0,
+          2.73953
+        ],
+        [
+          0.0,
+          2.92332,
+          0.0
+        ],
+        [
+          -2.73953,
+          0.0,
+          1.02019
+        ],
+        [
+          3098.25,
+          8.19994,
+          -2561.81
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          1.16316,
+          0.0,
+          -2.42318
+        ],
+        [
+          0.0,
+          2.68789,
+          0.0
+        ],
+        [
+          2.42318,
+          0.0,
+          1.16316
+        ],
+        [
+          3205.0,
+          15.0,
+          -2749.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          0.587502,
+          0.0,
+          -3.21318
+        ],
+        [
+          0.0,
+          3.26645,
+          0.0
+        ],
+        [
+          3.21318,
+          0.0,
+          0.587502
+        ],
+        [
+          3203.55,
+          15.0,
+          -2744.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -2.60699,
+          0.0,
+          -2.96198
+        ],
+        [
+          0.0,
+          3.94585,
+          0.0
+        ],
+        [
+          2.96198,
+          0.0,
+          -2.60699
+        ],
+        [
+          3196.55,
+          14.75,
+          -2800.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -2.36265,
+          0.0,
+          1.94099
+        ],
+        [
+          0.0,
+          3.0577,
+          0.0
+        ],
+        [
+          -1.94099,
+          0.0,
+          -2.36265
+        ],
+        [
+          3176.2,
+          14.95,
+          -2829.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -0.414823,
+          0.0,
+          3.06987
+        ],
+        [
+          0.0,
+          3.09777,
+          0.0
+        ],
+        [
+          -3.06987,
+          0.0,
+          -0.414823
+        ],
+        [
+          3182.7,
+          14.95,
+          -2712.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          1.10384,
+          0.0,
+          3.03204
+        ],
+        [
+          0.0,
+          3.22673,
+          0.0
+        ],
+        [
+          -3.03204,
+          0.0,
+          1.10384
+        ],
+        [
+          3158.55,
+          14.95,
+          -2946.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin",
+      "transform": [
+        [
+          -1.17595,
+          0.0,
+          3.00481
+        ],
+        [
+          0.0,
+          3.22673,
+          0.0
+        ],
+        [
+          -3.00481,
+          0.0,
+          -1.17595
+        ],
+        [
+          3082.3,
+          14.95,
+          -3043.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -3.62889,
+          0.0,
+          -1.54949
+        ],
+        [
+          0.0,
+          3.94585,
+          0.0
+        ],
+        [
+          1.54949,
+          0.0,
+          -3.62889
+        ],
+        [
+          3116.35,
+          14.75,
+          -3029.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -2.59405,
+          0.0,
+          -2.14142
+        ],
+        [
+          0.0,
+          3.36375,
+          0.0
+        ],
+        [
+          2.14142,
+          0.0,
+          -2.59405
+        ],
+        [
+          3155.85,
+          15.0,
+          -2986.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -1.09983,
+          0.0,
+          -2.54006
+        ],
+        [
+          0.0,
+          2.76795,
+          0.0
+        ],
+        [
+          2.54006,
+          0.0,
+          -1.09983
+        ],
+        [
+          3152.95,
+          15.0,
+          -2990.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -1.29173,
+          0.0,
+          -1.46804
+        ],
+        [
+          0.0,
+          1.95543,
+          0.0
+        ],
+        [
+          1.46804,
+          0.0,
+          -1.29173
+        ],
+        [
+          3151.8,
+          15.0,
+          -2986.55
         ]
       ]
     }

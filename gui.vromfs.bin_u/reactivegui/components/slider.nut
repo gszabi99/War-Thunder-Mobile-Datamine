@@ -3,11 +3,11 @@ let { playSound } = require("sound_wt")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let textColor = 0xFFFFFFFF
 let borderColor = 0xFF9FA7AF
 let sliderBgColor = 0xFF000000
-let sliderFgColor = 0xFF4089B2
 let sliderValueSound = @() playSound("choose")
 
 let knobSize = evenPx(68)
@@ -21,7 +21,6 @@ let sliderGap = sliderBtnSize / 2
 let firstTick = 0.3
 let btnRepeatTick = 0.025
 let btnRepeatTime = [firstTick, 0.25, 0.2, 0.15, 0.1, 0.075, 0.05, btnRepeatTick]
-let hoverColor = 0x8052C4E4
 let maxValueWidth = calc_str_box("288% ", fontSmall)[0]
 
 let transTime = 0.05
@@ -63,13 +62,13 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
   let onChange = override?.onChange
     ?? function onChange(value) {
          sliderValueSound()
-         valueWatch(value)
+         valueWatch.set(value)
        }
 
   let stateFlags = Watched(0)
   let minV = override?.min ?? 0
   let maxV = override?.max ?? 100
-  let relValue = Computed(@() lerpClamped(minV, maxV, 0.0, 1.0, valueWatch.value))
+  let relValue = Computed(@() lerpClamped(minV, maxV, 0.0, 1.0, valueWatch.get()))
   let size = override?.size ?? [sliderW, sliderH]
   let knob = knobCtor(relValue, stateFlags, size[0])
 
@@ -87,7 +86,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         min = 0
         max = 100
         unit = 1
-        fValue = valueWatch.value
+        fValue = valueWatch.get()
       }.__update(override)
       {
         size = [flex(), sliderVisibleH]
@@ -98,7 +97,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         watch = relValue
         size = [flex(), sliderVisibleH]
         rendObj = ROBJ_SOLID
-        color = sliderFgColor
+        color = selectColor
 
         transform = {
           pivot = [0, 0]
@@ -131,7 +130,7 @@ let sliderHeader = @(text, valueTextWatch, override = {}) {
       rendObj = ROBJ_TEXT
       color = textColor
       minWidth = maxValueWidth
-      text = valueTextWatch.value
+      text = valueTextWatch.get()
     }.__update(fontSmall)
   ]
 }.__update(override)
@@ -178,7 +177,7 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
   }
 
   let bg = btnBg.__merge({ key = {} }) 
-  return @() bg.__merge(bgOvrW.value, {
+  return @() bg.__merge(bgOvrW.get(), {
     watch = [stateFlags, bgOvrW]
     behavior = Behaviors.Button
     xmbNode = {}
@@ -204,39 +203,41 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
 }
 
 function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString = null) {
-  let valueTextWatch = valToString == null ? valueWatch : Computed(@() valToString(valueWatch.value))
-  let { unit = 1,
+  let valueTextWatch = valToString == null ? valueWatch : Computed(@() valToString(valueWatch.get()))
+  let {
+    unit = 1,
     onChange = function(v) {
       sliderValueSound()
-      valueWatch(v)
+      valueWatch.set(v)
     }
   } = sliderOverride
   let minV = sliderOverride?.min ?? 0
   let maxV = sliderOverride?.max ?? 100
 
   let mkOnClick = @(diff) function onClick() {
-    let value = clamp(valueWatch.value + diff, minV, maxV)
-    if (value != valueWatch.value)
+    let value = clamp(valueWatch.get() + diff, minV, maxV)
+    if (value != valueWatch.get())
       onChange(value)
   }
 
   return {
-    minHeight = sliderBlockH
+    minHeight = header == null ? sliderH : sliderBlockH
     flow = FLOW_HORIZONTAL
     gap = sliderGap
     valign = ALIGN_BOTTOM
     children = [
-      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec),
+      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = selectColor }) : btnTextDec),
         mkOnClick(-unit))
       {
         flow = FLOW_VERTICAL
         padding = [0, 0, (sliderBtnSize - knobSize - sliderVisibleH) / 2, 0]
+        gap = hdpx(10)
         children = [
-          sliderHeader(header, valueTextWatch)
+          header == null ? null : sliderHeader(header, valueTextWatch)
           slider(valueWatch, sliderOverride)
         ]
       }
-      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc),
+      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextInc.__merge({ color = selectColor }) : btnTextInc),
         mkOnClick(unit))
     ]
   }

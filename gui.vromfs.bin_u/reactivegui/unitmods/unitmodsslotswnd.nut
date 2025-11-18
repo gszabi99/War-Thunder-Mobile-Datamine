@@ -5,29 +5,29 @@ let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentati
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkGamercardUnitCampaign, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlotIdx, curWeapons,
   curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId, setCurSlotIdx, setCurBeltsWeaponIdx,
   curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
-  unequipCurWeapon, unequipCurWeaponFromWings, curUnitAllModsCost, beltWeapons, curBeltsWeaponIdx, isOwn, getConflictsList,
+  unequipCurWeapon, unequipCurWeaponFromWings, curUnitAllModsSlotsCost, beltWeapons, curBeltsWeaponIdx, isOwn, getConflictsList,
   curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt, curUnseenMods,
   chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
-  isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx, weaponsScrollHandler
+  isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx,
+  isEmptyBomber, setDefaultSecondaryWeapon
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { loadUnitWeaponSlots, mustSlotHaveDefault } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
 let { getModCurrency, getModCost } = require("%rGui/unitMods/unitModsState.nut")
 let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
 } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, weaponTotalH, weaponGap,
-  mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder
+let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponTotalH, weaponGap,
+  mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder, eqIconSize
 } = require("%rGui/unitMods/slotWeaponCard.nut")
 let { mkBeltDesc, mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
-let { textButtonPrimary, textButtonPurchase, iconButtonPrimary, mkButtonTextMultiline
-  mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
+let { textButtonPrimary, textButtonCommon, textButtonPurchase, iconButtonCommon
 } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { defButtonMinWidth, defButtonHeight, PRIMARY } = require("%rGui/components/buttonStyles.nut")
+let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { tabsGap, bgColor, tabExtraWidth, mkTabs } = require("%rGui/components/tabs.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
@@ -37,56 +37,81 @@ let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
 let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { userlogTextColor, badTextColor2, commonTextColor } = require("%rGui/style/stdColors.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
+let { mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY } = require("%rGui/style/gradients.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkUnseenModIndicator } = require("%rGui/unitMods/modsComps.nut")
+let { mkUnseenModIndicator, mkVerticalPannableArea, verticalGradientLine,
+  mkCarouselPannableArea, mkLevelUpRewardBtnChildren, catsPanelBg
+} = require("%rGui/unitMods/modsComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
+let { blocksLineSize, blocksPadding, blocksGap, tabW, tabH, contentGamercardGap, slotsBlockMargin, catsBlockHeight
+} = require("%rGui/unitMods/unitModsConst.nut")
 
-let blocksGap = hdpx(60)
-let slotW = weaponW + hdpx(20)
+
 let slotPadding = [hdpx(10), hdpx(30)]
-let slotsBlockMargin = hdpx(24)
-let slotsBlockHeight = saSize[1] - gamercardHeight - slotsBlockMargin
 let headerHeight = hdpx(70)
 let headerHeightWithGap = headerHeight + tabsGap
-let weaponHWithGap = weaponH + tabsGap
-let maxSlotsNoScroll = ((slotsBlockHeight - tabsGap - 2 * headerHeightWithGap) / weaponHWithGap).tointeger()
+let weaponHWithGap = tabH + tabsGap
+let maxSlotsNoScroll = ((catsBlockHeight - tabsGap - 2 * headerHeightWithGap) / weaponHWithGap).tointeger()
 let descWidth = hdpx(600)
-let maxOverloadInfoWidth = min(hdpx(1650), saSize[0] - descWidth - weaponW - tabExtraWidth - 4 * panelBg.padding - 2 * blocksGap)
+let maxOverloadInfoWidth = min(hdpx(1650), saSize[0] - descWidth - tabW - tabExtraWidth - 4 * panelBg.padding - 2 * blocksGap - blocksLineSize)
 
 let vertIndent = hdpx(100)
 let vertIndentThroughHeader = vertIndent + headerHeight / 2
 
-let pageWidth = saSize[0] + saBorders[0] - slotW
-let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
+let pageWidth = saSize[0] + saBorders[0] - tabW - blocksLineSize - blocksGap
+let pageScrollXMiddle = blocksGap / pageWidth
+let pageScrollYMiddle = slotsBlockMargin / catsBlockHeight
+let pageMaskX = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, pageScrollXMiddle))
+let pageMaskY = mkBitmapPictureLazy(2, (catsBlockHeight / 10).tointeger(), mkGradientCtorDoubleSideY(0, 0xFFFFFFFF, pageScrollYMiddle))
 
 let slotsScrollHandler = ScrollHandler()
 
-function actionWithOverloadWarning(actionFn) {
+function actionWithChecking(actionFn) {
   let { overloads = [] } = overloadInfo.get()
-  if (overloads.len() == 0) {
-    actionFn()
-    return
-  }
-  openMsgBox({
-    text = loc("weapons/pilonsRemoveWarning", {
-      warnings = colorize(badTextColor2, "\n".join(overloads))
+  if (overloads.len() != 0)
+    return openMsgBox({
+      text = loc("weapons/pilonsRemoveWarning", {
+        warnings = colorize(badTextColor2, "\n".join(overloads))
+      })
+      buttons = [
+        { text = loc("btn/autoRemovePilons"),
+          function cb() {
+            fixCurPresetOverload()
+            actionFn()
+          },
+          multiLine = true
+        }
+        { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true, multiLine = true }
+      ]
     })
-    buttons = [
-      { text = loc("btn/autoRemovePilons"),
-        function cb() {
-          fixCurPresetOverload()
-          actionFn()
-        },
-        multiLine = true
-      }
-      { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true, multiLine = true }
-    ]
-  })
+
+  if (isEmptyBomber.get())
+    return openMsgBox({
+      text = loc("weapons/secondaryWeaponNotSet")
+      buttons = [
+        { text = loc("btn/doNotSet"),
+          function cb() {
+            actionFn()
+          },
+          isCancel = true
+          multiLine = true
+        }
+        {
+          text = loc("btn/setDefault"),
+          function cb() {
+            setDefaultSecondaryWeapon()
+            actionFn()
+          }
+          styleId = "PRIMARY",
+          multiLine = true }
+      ]
+    })
+
+  actionFn()
 }
 
 registerHandler("onPurchasedMod", function equipOnPurchase(_, context) {
@@ -107,9 +132,9 @@ registerHandler("onPurchasedMod", function equipOnPurchase(_, context) {
 
 function scrollToWeapon() {
   let idx = curWeaponBeltsOrdered.get().len() > 0 ? curBeltIdx.get() : curWeaponIdx.get()
-  let { elem } = weaponsScrollHandler
+  let { elem } = carouselScrollHandler
   if (elem != null)
-    weaponsScrollHandler.scrollToX(idx * (weaponW + weaponGap) - (elem.getWidth() - weaponW) / 2)
+    carouselScrollHandler.scrollToX(idx * (tabW + weaponGap) - (elem.getWidth() - tabW) / 2)
 }
 
 function scrollToSlot() {
@@ -148,8 +173,8 @@ function scrollToSlot() {
   let ident = isFirstAfterHeader ? vertIndentThroughHeader : vertIndent
   if (top - ident < elem.getScrollOffsY())
     slotsScrollHandler.scrollToY(top - ident)
-  else if (top + weaponH + ident > elem.getScrollOffsY() + elem.getHeight())
-    slotsScrollHandler.scrollToY(top + weaponH + ident - elem.getHeight())
+  else if (top + tabH + ident > elem.getScrollOffsY() + elem.getHeight())
+    slotsScrollHandler.scrollToY(top + tabH + ident - elem.getHeight())
 }
 
 curSlotIdx.subscribe(function(_) {
@@ -162,41 +187,6 @@ curBeltsWeaponIdx.subscribe(function(_) {
   deferOnce(scrollToSlot)
 })
 
-let mkVerticalPannableArea = @(content) {
-  clipChildren = true
-  size = [slotW, flex()]
-  children = {
-    size = flex()
-    behavior = Behaviors.Pannable
-    touchMarginPriority = TOUCH_BACKGROUND
-    scrollHandler = slotsScrollHandler
-    flow = FLOW_VERTICAL
-    gap = tabsGap
-    children = content
-    xmbNode = XmbContainer()
-  }
-}
-
-let mkHorizontalPannableArea = @(content) {
-  rendObj = ROBJ_MASK
-  image = pageMask()
-  clipChildren = true
-  size = [flex(), weaponTotalH]
-  flow = FLOW_HORIZONTAL
-  children = [
-    { size = [blocksGap, flex()] }
-    {
-      size = flex()
-      padding = [0, saBorders[0], 0, 0]
-      behavior = Behaviors.Pannable
-      touchMarginPriority = TOUCH_BACKGROUND
-      scrollHandler = weaponsScrollHandler
-      children = content
-      xmbNode = XmbContainer({ scrollSpeed = 2.0 })
-    }
-  ]
-}
-
 let mkIsSelWeaponConflict = @(slotIdx, weapon)
   Computed(@() curWeapon.get()?.banPresets[slotIdx][weapon.get()?.name] ?? false)
 
@@ -206,7 +196,7 @@ function mkSlotContent(idx) {
     .findindex(@(_, mod) mod in (weaponSlots.get()?[idx].wPresets ?? {})) != null)
 
   return {
-    size = [flex(), weaponH]
+    size = [flex(), tabH]
     children = [
       mkWeaponImage(weapon)
       mkWeaponDesc(weapon)
@@ -218,7 +208,7 @@ function mkSlotContent(idx) {
         rendObj = ROBJ_TEXT
         text = $"#{idx}"
         color = 0xFFC0C0C0
-      }.__update(fontTinyShaded)
+      }.__update(fontVeryTinyAccentedShaded)
       mkConflictsBorder(mkIsSelWeaponConflict(idx, weapon))
       mkUnseenModIndicator(isUnseen)
     ]
@@ -247,13 +237,13 @@ function mkBeltSlotContent(weapon, idx) {
     .findindex(@(_, mod) mod in (beltWeapons.get()?[idx].bulletSets ?? {})) != null)
   return @() {
     watch = [beltId, gunCount, isUnseen]
-    size = [flex(), weaponH]
+    size = [flex(), tabH]
     opacity = gunCount.get() == 0 ? 0.5 : 1.0
     children = beltId.get() == null ? null
       : [
           mkBeltImage(weapon.bulletSets?[beltId.get()].bullets ?? [])
           mkSlotText(getWeaponShortNameWithCount(weapon.__merge({ count = gunCount.get() })))
-          mkSlotText(getBulletBeltShortName(beltId.get()), { vplace = ALIGN_BOTTOM })
+          mkSlotText(getBulletBeltShortName(beltId.get()), { vplace = ALIGN_BOTTOM, halign = ALIGN_LEFT })
           mkUnseenModIndicator(isUnseen)
         ]
   }
@@ -273,13 +263,13 @@ function beltsList(weapons, filter) {
 
 let mkBlock = @(text, child) child == null ? null
   : {
-      size = [slotW, SIZE_TO_CONTENT]
+      size = [tabW, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       gap = tabsGap
       children = [
         {
           margin = [0, 0, 0, tabExtraWidth]
-          size = [slotW - tabExtraWidth, headerHeight]
+          size = [tabW - tabExtraWidth, headerHeight]
           padding = hdpx(10)
           rendObj = ROBJ_SOLID
           color = bgColor
@@ -290,7 +280,7 @@ let mkBlock = @(text, child) child == null ? null
             behavior = Behaviors.TextArea
             text
             color = 0xFFA0A0A0
-          }.__update(fontTinyAccented)
+          }.__update(fontTinyShaded)
         }
         child
       ]
@@ -305,20 +295,22 @@ function slotsBlock() {
   ]
     .filter(@(v) v != null)
   let cardsCount = weaponSlots.get().len() - 1 + beltWeapons.get().len()
-  return {
+  return catsPanelBg.__merge({
     watch = [beltWeapons, weaponSlots]
-    size = [slotW, flex()]
-    margin = [slotsBlockMargin, 0, 0, 0]
-    flow = FLOW_VERTICAL
-    gap = tabsGap
-    children = cardsCount > maxSlotsNoScroll ? mkVerticalPannableArea(children)
-      : children.append({
-          margin = [0, 0, 0, tabExtraWidth]
-          size = [slotW - tabExtraWidth, flex()]
-          rendObj = ROBJ_SOLID
-          color = bgColor
-        })
-  }
+    size = [saBorders[0] + tabW + blocksPadding, flex()]
+    padding = [0, blocksPadding, 0, 0]
+    margin = [contentGamercardGap, 0, 0, 0]
+    halign = ALIGN_RIGHT
+    children = cardsCount > maxSlotsNoScroll ? mkVerticalPannableArea(children, tabW, pageMaskY())
+      : {
+          size = flex()
+          padding = [slotsBlockMargin, 0, 0, 0]
+          flow = FLOW_VERTICAL
+          gap = tabsGap
+          halign = ALIGN_RIGHT
+          children
+        }
+  })
 }
 
 let notUsedCurGunInfo = panelBg.__merge({
@@ -333,7 +325,7 @@ let notUsedCurGunInfo = panelBg.__merge({
           loc("weaponry/hint/needToInstallSecondaryGun")
         )
      color = commonTextColor
-  }.__update(fontTiny)
+  }.__update(fontVeryTinyAccentedShaded)
 })
 
 let weaponsCount = Computed(@() curWeapons.get().len())
@@ -379,7 +371,7 @@ function overloadInfoBlock() {
       behavior = Behaviors.TextArea
       color = commonTextColor
       text = "\n".join([massInfo, overText], true)
-    }.__update(fontTiny)
+    }.__update(fontVeryTinyAccentedShaded)
   })
 }
 
@@ -396,7 +388,7 @@ function onPurchaseMod() {
   let modName = curWeaponModName.get()
   if (unitName == null || mod == null || modName == null)
     return
-  let price = getModCost(mod, curUnitAllModsCost.get())
+  let price = getModCost(mod, curUnitAllModsSlotsCost.get())
   let currencyId = getModCurrency(mod)
   let weaponName = curBelt.get() != null
     ? getBulletBeltShortName(curBelt.get().id)
@@ -438,22 +430,11 @@ let slotPresetButtons = @() {
   gap = hdpx(20)
   children = [
     isNotAvailableForUse.get() || !hasUnseenRewards.get() ? null
-      : {
-          children = [
-            mkCustomButton(
-              mkFrameImg(mkButtonTextMultiline(loc("unitLevelUp/rewardBtn")), "laurels", hdpxi(50)),
-              @() openUnitRewardsModal(curUnit.get()),
-              mergeStyles(PRIMARY, { hotkeys = ["^J:LB"] }))
-            {
-              margin = textButtonUnseenMargin
-              children = priorityUnseenMark
-            }
-          ]
-        }
+      : { children = mkLevelUpRewardBtnChildren(curUnit.get()) }
     isNotAvailableForUse.get() ? null
       : modsInProgress.get() != null ? spinner
-      : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg",
-        @() actionWithOverloadWarning(@() openUnitWeaponPresetWnd(curUnit.get())),
+      : iconButtonCommon("ui/gameuiskin#icon_weapon_preset.svg",
+        @() actionWithChecking(@() openUnitWeaponPresetWnd(curUnit.get())),
         { ovr = { size = isGamepad.get() ? [defButtonHeight*2, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight },
         hotkeys = ["^J:X | Enter"]
       })
@@ -461,16 +442,16 @@ let slotPresetButtons = @() {
       : modsInProgress.get() != null ? spinner
       : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
         ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),
-          @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] })
+          @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] }.__merge({textOvr = fontTinyShadedBold}))
       : curWeaponIsLocked.get() ? null
       : !curWeaponIsPurchased.get()
-        ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }, hotkeys = ["^J:Y"] })
+        ? textButtonPurchase(utf8ToUpper(loc("mainmenu/btnBuy")), onPurchaseMod, { ovr = { key = "arsenal_purchase_btn" }, hotkeys = ["^J:Y"] })
       : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
-        ? textButtonPrimary(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), equipCurWeaponMsg)
+        ? textButtonPrimary(utf8ToUpper(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}")), equipCurWeaponMsg)
       : curWeapon.get() != null && !mustSlotHaveDefault(curUnit.get()?.name, curSlotIdx.get())
-        ? textButtonPrimary(loc($"mod/disable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), mirrorIdx.get() != -1 ? unequipCurWeaponFromWings : unequipCurWeapon)
+        ? textButtonCommon(utf8ToUpper(loc($"mod/disable{mirrorIdx.get() != -1 ? "/both_wings" : ""}")), mirrorIdx.get() != -1 ? unequipCurWeaponFromWings : unequipCurWeapon)
       : curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
-        ? textButtonPrimary(loc("mod/enable"), equipCurBelt)
+        ? textButtonPrimary(utf8ToUpper(loc("mod/enable")), equipCurBelt)
       : null
   ]
 }
@@ -478,39 +459,42 @@ let slotPresetButtons = @() {
 let unitModsWnd = {
   key = {}
   size = flex()
-  padding = saBordersRv
+  padding = [saBordersRv[0], 0, 0, 0]
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
   onAttach = @() isUnitModSlotsAttached.set(true)
   onDetach = @() isUnitModSlotsAttached.set(false)
   children = [
-    @(){
+    @() {
       watch = curCampaign
-      children = mkGamercardUnitCampaign(@() actionWithOverloadWarning(closeUnitModsSlotsWnd),
+      padding = [0, 0, 0, saBorders[0]]
+      children = mkGamercardUnitCampaign(@() actionWithChecking(closeUnitModsSlotsWnd),
         getCampaignPresentation(curCampaign.get()).levelUnitModLocId,
         curUnit)
     }
     {
-      size = [saSize[0] + saBorders[0], flex()]
+      size = flex()
       flow = FLOW_HORIZONTAL
       children = [
         slotsBlock
-        {
+        verticalGradientLine
+        @() {
           size = flex()
           flow = FLOW_VERTICAL
+          padding = [0, 0, saBorders[1] - eqIconSize[1] / 2, 0]
           halign = ALIGN_RIGHT
           children = [
             {
               size = flex()
-              padding = [hdpx(25), saBorders[0], hdpx(25), blocksGap]
+              padding = [contentGamercardGap, saBorders[0], contentGamercardGap, blocksGap]
               children = [
                 overloadInfoBlock
                 slotPresetInfo
                 slotPresetButtons
               ]
             }
-            mkHorizontalPannableArea(slotWeaponsBlock)
+            mkCarouselPannableArea(slotWeaponsBlock, weaponTotalH, pageMaskX())
           ]
         }
       ]

@@ -19,7 +19,7 @@ let mkGradText = @(text) doubleSideGradient.__merge({
 })
 
 let lockIcon = {
-  size = [iconSize, iconSize]
+  size = iconSize
   margin
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#lock_icon.svg:{iconSize}:{iconSize}:P")
@@ -27,7 +27,7 @@ let lockIcon = {
 }
 
 let checkIcon = {
-  size = [iconSize, iconSize]
+  size = iconSize
   margin
   rendObj = ROBJ_IMAGE
   color = 0xFF78FA78

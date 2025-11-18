@@ -52,7 +52,7 @@ function clearAll() {
     let onRemove = subscriptions?[notify.actionsGroup].onRemove
     onRemove?(notify)
   }
-  invitations(invitations.get().filter(@(n) !list.contains(n)))
+  invitations.set(invitations.get().filter(@(n) !list.contains(n)))
 }
 
 let NOTIFICATION_PARAMS = {
@@ -72,7 +72,7 @@ function pushNotification(notify = NOTIFICATION_PARAMS) {
     removeNotifyById(notify.id)
   else {
     notify.id = $"_{counter.get()}"
-    counter(counter.get() + 1)
+    counter.set(counter.get() + 1)
   }
 
   invitations.mutate(@(v) v.append(notify))

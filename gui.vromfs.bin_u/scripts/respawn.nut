@@ -16,44 +16,48 @@ let { MISSION_STATUS_RUNNING, quit_to_debriefing, get_respawns_left,
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived, isSeparateSlots, unitsAvgCostWp, battleData
 } = require("%scripts/battleData/battleData.nut")
+let { decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInBattle, isLocalMultiplayer } = require("%appGlobals/clientState/clientState.nut")
 let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRespawn, isRespawnInProgress,
   isRespawnDataInProgress, isBatleDataRequired, respawnsLeft, respawnUnitSkins, hasRespawnSeparateSlots, curUnitsAvgCostWp,
-  isBattleDataFake, hasPredefinedReward, dailyBonus
+  isBattleDataFake, hasPredefinedReward, dailyBonus, respawnUnitMods
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 
 let isFake = keepref(Computed(@() battleData.get()?.isFake))
 let predefinedReward = keepref(Computed(@() battleData.get()?.predefinedReward))
 let dailyUnitBonus = keepref(Computed(@() battleData.get()?.dailyUnitBonus))
-let unitToSpawn = Computed(@() !isBatleDataRequired.get() || isBattleDataReceived.value || isLocalMultiplayer.get()
-  ? curBattleUnit.value : null)
+let curBattleMods = Computed(@() battleData.get()?.modifications ?? battleData.get()?.items) 
+let unitToSpawn = Computed(@() !isBatleDataRequired.get() || isBattleDataReceived.get() || isLocalMultiplayer.get()
+  ? curBattleUnit.get() : null)
 let respawnData = mkWatched(persist, "respawnData", null)
 let wantedRespawnData = mkWatched(persist, "wantedRespawnData", null)
-let isRespawnDataActual = Computed(@() isEqual(respawnData.value, wantedRespawnData.value))
+let isRespawnDataActual = Computed(@() isEqual(respawnData.get(), wantedRespawnData.get()))
 
-isInBattle.subscribe(@(v) v ? null : isInRespawn(false))
+isInBattle.subscribe(@(v) v ? null : isInRespawn.set(false))
 
 function updateRespawnUnitInfo() {
-  respawnUnitInfo(unitToSpawn.get())
-  respawnUnitItems(curBattleItems.get())
-  respawnUnitSkins(curBattleSkins.get())
+  respawnUnitInfo.set(unitToSpawn.get())
+  respawnUnitItems.set(curBattleItems.get())
+  respawnUnitMods.set(curBattleMods.get())
+  respawnUnitSkins.set(curBattleSkins.get())
 }
 
 isInRespawn.subscribe(function(v) {
-  isRespawnInProgress(false)
-  isRespawnStarted(false)
-  isRespawnDataInProgress(false)
-  wantedRespawnData(null)
-  respawnData(null)
+  isRespawnInProgress.set(false)
+  isRespawnStarted.set(false)
+  isRespawnDataInProgress.set(false)
+  wantedRespawnData.set(null)
+  respawnData.set(null)
   if (!v)
     return
   disableFlightMenu(true)
   updateRespawnUnitInfo()
 })
-unitToSpawn.subscribe(@(v) isInRespawn.get() ? respawnUnitInfo(v) : null)
-curBattleItems.subscribe(@(v) isInRespawn.get() ? respawnUnitItems(v) : null)
-curBattleSkins.subscribe(@(v) isInRespawn.get() ? respawnUnitSkins(v) : null)
+unitToSpawn.subscribe(@(v) isInRespawn.get() ? respawnUnitInfo.set(v) : null)
+curBattleItems.subscribe(@(v) isInRespawn.get() ? respawnUnitItems.set(v) : null)
+curBattleMods.subscribe(@(v) isInRespawn.get() ? respawnUnitMods.set(v) : null)
+curBattleSkins.subscribe(@(v) isInRespawn.get() ? respawnUnitSkins.set(v) : null)
 isSeparateSlots.subscribe(@(v) hasRespawnSeparateSlots.set(v))
 unitsAvgCostWp.subscribe(@(v) isInRespawn.get() ? curUnitsAvgCostWp.set(v) : null)
 isFake.subscribe(@(v) isBattleDataFake.set(v))
@@ -62,7 +66,7 @@ dailyUnitBonus.subscribe(@(v) dailyBonus.set(v))
 
 hasPredefinedReward.set(predefinedReward.get() != null)
 dailyBonus.set(dailyUnitBonus.get())
-if (isInRespawn.get() && unitToSpawn.value != null)
+if (isInRespawn.get() && unitToSpawn.get() != null)
   updateRespawnUnitInfo()
 
 eventbus_subscribe("getLocalPlayerSpawnInfo",
@@ -75,13 +79,13 @@ eventbus_subscribe("getLocalPlayerSpawnInfo",
 function applyRespawnDataCb(result) {
   if (!isRespawnDataInProgress.get())
     return
-  isRespawnDataInProgress(false)
+  isRespawnDataInProgress.set(false)
   if (result == ERR_ACCEPT)
     return
 
-  let rd = respawnData.value
-  respawnData(null)
-  isRespawnStarted(false)
+  let rd = respawnData.get()
+  respawnData.set(null)
+  isRespawnStarted.set(false)
 
   if (result == ERR_REJECT_SESSION_FINISHED || result == ERR_REJECT_DISCONNECTED)
     return
@@ -95,7 +99,7 @@ set_aircraft_accepted_cb({}, applyRespawnDataCb)
 function applyRespawnData() {
   if (isRespawnDataInProgress.get())
     return
-  let { idInCountry, respBaseId, weaponPreset = {} } = wantedRespawnData.value
+  let { idInCountry, respBaseId, weaponPreset = {}, skinDecalsTable = {} } = wantedRespawnData.get()
   let wBlk = DataBlock()
   foreach(slotId, presetId in weaponPreset) {
     let blk = DataBlock()
@@ -103,13 +107,13 @@ function applyRespawnData() {
     blk.preset = presetId
     wBlk.Weapon <- blk
   }
-  if (requestAircraftAndWeaponWithSlots(wantedRespawnData.value, idInCountry, respBaseId, "", wBlk) < 0) {
-    isRespawnStarted(false)
+  if (requestAircraftAndWeaponWithSlots(wantedRespawnData.get(), idInCountry, respBaseId, "", wBlk, decalTblToBlk(skinDecalsTable)) < 0) {
+    isRespawnStarted.set(false)
     return
   }
 
-  isRespawnDataInProgress(true)
-  respawnData(wantedRespawnData.value)
+  isRespawnDataInProgress.set(true)
+  respawnData.set(wantedRespawnData.get())
 }
 
 function tryRespawn() {
@@ -121,15 +125,15 @@ function tryRespawn() {
   hud_request_hud_crew_state()
   hud_request_hud_ship_debuffs_state()
   logR("Call doRespawnPlayer")
-  isRespawnInProgress(doRespawnPlayer())
+  isRespawnInProgress.set(doRespawnPlayer())
   if (!isRespawnInProgress.get()) {
-    isRespawnStarted(false)
+    isRespawnStarted.set(false)
     openFMsgBox({ text = loc("msg/error_when_try_to_respawn"), uid = "error_when_try_to_respawn" })
   }
 }
 
 function onCountdownTimer() {
-  timeToRespawn(get_mp_respawn_countdown())
+  timeToRespawn.set(get_mp_respawn_countdown())
   if (!isRespawnStarted.get())
     clearTimer(onCountdownTimer)
   else
@@ -145,14 +149,16 @@ function updateRespawnStep() {
 
   if (isRespawnDataInProgress.get())
     return
-  if (!isRespawnDataActual.value) {
+  if (!isRespawnDataActual.get()) {
     if (canRequestAircraftNow()) {
       applyRespawnData()
-      if (isLocalMultiplayer.get())
+      if (isLocalMultiplayer.get()) {
+        clearTimer(onCountdownTimer)
         setInterval(2.0, onCountdownTimer) 
+      }
     }
     else
-      resetTimeout(1.0,  updateRespawnStep) 
+      resetTimeout(1.0, updateRespawnStep) 
     return
   }
 
@@ -173,19 +179,19 @@ eventbus_subscribe("requestRespawn", function(data) {
   if (isRespawnInProgress.get() || !isInRespawn.get())
     return
   logR("requestRespawn: ", data)
-  wantedRespawnData(data)
-  isRespawnStarted(true)
+  wantedRespawnData.set(data)
+  isRespawnStarted.set(true)
 })
 
 eventbus_subscribe("cancelRespawn", function(_) {
   if (!isRespawnInProgress.get())
-    isRespawnStarted(false)
+    isRespawnStarted.set(false)
 })
 
 eventbus_subscribe("gui_start_respawn", function gui_start_respawn(...) {
   logR($"gui_start_respawn {isRespawnScreen()}")
-  respawnsLeft(get_respawns_left())
-  isBatleDataRequired((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
+  respawnsLeft.set(get_respawns_left())
+  isBatleDataRequired.set((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
     && get_game_mode() != GM_SINGLE_MISSION)
-  isInRespawn(isRespawnScreen()) 
+  isInRespawn.set(isRespawnScreen()) 
 })

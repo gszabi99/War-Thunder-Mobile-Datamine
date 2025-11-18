@@ -1,17 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { selectedLineVert, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
+let { selectedLineVertSolid, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
+let { simpleHorGradInv } = require("%rGui/style/gradients.nut")
 
 let tabsGap = hdpx(10)
-let selLineGap = hdpx(10)
-let tabExtraWidth = selLineSize + selLineGap
+let tabExtraWidth = selLineSize
 
 let bgColor = 0x990C1113
-let activeBgColor = 0xFF52C4E4
-
-let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
-  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 4, gradTexSize * 6 / 16, gradTexSize * 3 / 16, gradTexSize * 3 / 8))
 
 let mkTabContent = @(content, isActive, tabOverride, isHover) {
   size = FLEX_H
@@ -28,8 +23,9 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
       watch = [isActive, isHover]
       size = flex()
       rendObj = ROBJ_IMAGE
-      image = bgGradient()
-      opacity = isActive.get() ? 1
+      image = simpleHorGradInv
+      color = selectColor
+      opacity = isActive.get() ? 0.9
         : isHover.get() ? 0.5
         : 0
       transitions = opacityTransition
@@ -37,27 +33,36 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
   ].append(content)
 }.__merge(tabOverride)
 
-function mkTab(id, content, curTabId, tabOverride, onClick = null) {
+function mkTab(id, content, curTabId, tabOverride, onClick = null, extraContent = null) {
   let stateFlags = Watched(0)
-  let isActive = Computed (@() curTabId.value == id || (stateFlags.get() & S_ACTIVE) != 0)
-  let isHover = Computed (@() stateFlags.get() & S_HOVER)
+  let isActive = Computed(@() curTabId.get() == id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isHover = Computed(@() stateFlags.get() & S_HOVER)
 
-  return {
+  let mainBlock = {
     size = FLEX_H
     behavior = Behaviors.Button
     xmbNode = {}
     onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    onClick = onClick ?? @() curTabId(id)
+    onClick = onClick ?? @() curTabId.set(id)
     sound = { click = "choose" }
     flow = FLOW_HORIZONTAL
-    gap = selLineGap
 
     children = [
-      selectedLineVert(isActive)
+      selectedLineVertSolid(isActive)
       mkTabContent(content, isActive, tabOverride, isHover)
     ]
   }
+
+  return extraContent == null ? mainBlock
+    : {
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        children = [
+          mainBlock
+          extraContent
+        ]
+      }
 }
 
 let tabsRoot = {
@@ -72,7 +77,7 @@ function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
     return tabsRoot.__merge(
       {
         children = tabsData.map(@(tab)
-          mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}, onClick ? @() onClick(tab.id) : null))
+          mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}, onClick ? @() onClick(tab.id) : null, tab?.extraContent))
       },
       ovr)
 
@@ -80,8 +85,8 @@ function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
     {
       watch
       children = tabsData
-        .filter(@(tab) tab?.isVisible.value ?? true)
-        .map(@(tab) mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}, onClick ? @() onClick(tab.id) : null))
+        .filter(@(tab) tab?.isVisible.get() ?? true)
+        .map(@(tab) mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}, onClick ? @() onClick(tab.id) : null, tab?.extraContent))
     },
     ovr)
 }
@@ -91,6 +96,5 @@ return {
   mkTabs
   tabsGap
   bgColor
-  selLineGap
   selLineSize
 }

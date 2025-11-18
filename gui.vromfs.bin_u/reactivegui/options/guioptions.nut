@@ -18,6 +18,7 @@ let optListNative = [
   "OPT_TARGET_TRACKING"
   "OPT_SHOW_RETICLE"
   "USEROPT_ENABLE_AUTO_HEALING"
+  "USEROPT_IS_ORIGINAL_DECALS"
 ]
 
 let optListLocalNative = [
@@ -26,6 +27,7 @@ let optListLocalNative = [
   "OPT_RAYTRACING"
   "OPT_GRAPHICS_SCENE_RESOLUTION"
   "OPT_AA"
+  "OPT_HDR"
 ]
 
 let optListScriptOnly = [
@@ -71,7 +73,7 @@ let optListScriptOnly = [
   "USEROPT_QUIT_ZOOM_AFTER_KILL"
   "OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH"
   "USEROPT_ALLOW_JIP"
-  "OPT_SOUND_USE_EXTENDED"
+  "OPT_HUD_RELOAD_STYLE"
 ]
 
 let optListLocalScriptOnly = [

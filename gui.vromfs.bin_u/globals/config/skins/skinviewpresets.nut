@@ -101,6 +101,8 @@ let skinsByTag = {
     "jp_camo_modern_bicolor"
     "ussr_modern_green"
     "uk_camo_tog"
+    "camo_leo_can"
+    "ussr_kv_7_u_13_halloween"
   ],
 
   [DESERT] = [
@@ -308,9 +310,12 @@ let skinsByTag = {
     "ussr_1114_rct"
     "camo_yellow"
     "gev_ann_camo"
+    "camo_hw_25"
   ],
 
   [AIR] = [
+    "ger_me262a_1_u4_halloween"
+    "ger_hs_129b_2_bat"
     "germ_190a_5_u14"
     "germ_bf_109a"
     "germ_bf_109b_2"
@@ -334,6 +339,7 @@ let skinsByTag = {
     "germ_ger_bv_238"
     "germ_ger_bv_238_red"
     "germ_do335a_1"
+    "germ_do335b_2_camo"
     "germ_do_217m_1"
     "germ_do_217m_1_prem"
     "germ_dornier_do_17e_1"
@@ -350,6 +356,7 @@ let skinsByTag = {
     "germ_fw_190a_5_white"
     "germ_fw_190a_5_holland"
     "germ_fw-190d-9"
+    "germ_fw_190d_13"
     "germ_he51b1_spanish_trop"
     "germ_he_111h_16_a_winter"
     "germ_he_112b_0"
@@ -360,6 +367,7 @@ let skinsByTag = {
     "germ_hs_129b_2_bloody_c"
     "germ_hs_129b_2_africa_c"
     "germ_ju_188a_2_3color"
+    "germ_me262a_2a"
     "germ_me_410a_1"
     "germ_me_410a_1_grey"
     "germ_me_410b_6_re"
@@ -431,12 +439,15 @@ let skinsByTag = {
     "ussr_la_11_standard_red"
     "ussr_lagg_3_series_8_winter"
     "ussr_lagg_3_series_11"
+    "ussr_po_2_hw_a"
+    "ussr_po_2_a"
     "ussr_p_39n_su"
     "ussr_p_47d_ussr"
     "ussr_pe_8_m82"
     "ussr_sb_2m_100"
     "ussr_tandem_mai"
     "ussr_tu_1_prem"
+    "ussr_tu2_a"
     "ussr_yak_1_early_green"
     "ussr_yak_2_kabb"
     "ussr_yak_3"

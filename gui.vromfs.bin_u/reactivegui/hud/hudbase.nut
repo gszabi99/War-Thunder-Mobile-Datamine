@@ -23,6 +23,7 @@ let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, isHudAttached
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let battleResultsShort = require("%rGui/hud/battleResultsShort.ui.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
+let { mkLtButtonListener } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 
 let hudByUnitType = {
@@ -61,6 +62,7 @@ let hudByType = {
     hudElementBlink
     hudElementPointers
     hudTutorElems
+    mkLtButtonListener
   ]
     .extend(hudOverShade?[unitTypeV] ?? [])
     .append(voiceMsgPie),

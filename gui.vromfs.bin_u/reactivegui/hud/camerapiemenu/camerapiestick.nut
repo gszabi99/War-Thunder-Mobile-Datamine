@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
 let { isCameraPieStickActive, cameraPieStickDelta, isCameraPieItemsEnabled } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
 let { STICK } = require("%rGui/hud/stickState.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let stickHeadIconSize = 2 * (stickHeadSize * 0.38 + 0.5).tointeger()
 
@@ -14,7 +15,7 @@ function stickHeadIcon(scale, isEnabled) {
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#icon_pie_view_menu.svg:{size}:{size}:P")
     keepAspect = true
-    color = 0xFFFFFFFF
+    color = hudWhiteColor
     opacity = isEnabled ? 1.0 : 0.5
   }
 }

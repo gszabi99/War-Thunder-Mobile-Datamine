@@ -26,11 +26,12 @@ function mkUserstatWatch(id, defValue = {}) {
 let userstatDescList = mkUserstatWatch("descList")
 let userstatUnlocks = mkUserstatWatch("unlocks")
 let userstatStats = mkUserstatWatch("stats")
+let userstatStatsTables = mkUserstatWatch("statsTables")
 let userstatInfoTables = mkUserstatWatch("infoTables")
 let statsInProgress = mkWatched(persist, "statsInProgress", {})
 let tablesActivityOvr = Watched({}) 
 
-let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.get()
+let getStatsActualTimeLeft = @() (userstatStats.get()?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.get()
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
 userstatStats.subscribe(function(_) {
   let timeLeft = getStatsActualTimeLeft()
@@ -40,14 +41,15 @@ userstatStats.subscribe(function(_) {
 })
 
 let isStatsActualByBattle = hardPersistWatched("userstats.actualByBattle", true)
-isInBattle.subscribe(@(_) isStatsActualByBattle(false))
+isInBattle.subscribe(@(_) isStatsActualByBattle.set(false))
 
 let isStatsActual = Computed(@() isStatsActualByTime.get() && isStatsActualByBattle.get())
 
-let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
-  || userstatDescList.value.len() == 0
-  || userstatStats.value.len() == 0
-  || userstatInfoTables.value.len() == 0)
+let isUserstatMissingData = Computed(@() userstatUnlocks.get().len() == 0
+  || userstatDescList.get().len() == 0
+  || userstatStats.get().len() == 0
+  || userstatStatsTables.get().len() == 0
+  || userstatInfoTables.get().len() == 0)
 
 function actualizeStats() {
   if (isStatsActual.get())
@@ -143,7 +145,7 @@ nextUpdateIntervals.subscribe(@(_) resetUpdateTimer())
 function updateTableActivityTimer() {
   if (!isServerTimeValid.get())
     return
-  let stats = userstatStats.get()
+  let stats = userstatStatsTables.get()
   let curTime = serverTime.get()
   local nextTime = null
   local needRefreshStats = false
@@ -153,7 +155,7 @@ function updateTableActivityTimer() {
     if (time <= 0)
       continue
     if (time <= curTime) {
-      activityOvr[tblId] <- false
+      activityOvr[tblId] <- -1
       needRefreshStats = true
     }
     else
@@ -165,7 +167,7 @@ function updateTableActivityTimer() {
     if (start > curTime)
       nextTime = min(nextTime ?? start, start)
     else if (end > curTime) {
-      activityOvr[tblId] <- true
+      activityOvr[tblId] <- 10000000 
       needRefreshStats = true
     }
   }
@@ -177,12 +179,16 @@ function updateTableActivityTimer() {
   if (needRefreshStats) {
     logU("Deactualize stats by tables time range")
     isStatsActualByTime.set(false)
-    resetTimeout(rnd_float(0.001, 1.0) * MAX_TABLES_UPDATE_DELAY, actualizeStats)
+    resetTimeout(rnd_float(0.001, 1.0) * MAX_TABLES_UPDATE_DELAY,
+      function() {
+        eventbus_send($"userstat.statsTables.refresh", {})
+        eventbus_send($"userstat.descList.refresh", {})
+      })
   }
 }
 updateTableActivityTimer()
 isServerTimeValid.subscribe(@(_) updateTableActivityTimer())
-userstatStats.subscribe(@(_) updateTableActivityTimer())
+userstatStatsTables.subscribe(@(_) updateTableActivityTimer())
 updateDebugDelay()
 debugDelay.subscribe(@(_) updateDebugDelay())
 
@@ -194,6 +200,7 @@ return {
   userstatDescList
   userstatUnlocks
   userstatStats
+  userstatStatsTables
   tablesActivityOvr
   isStatsActual
   actualizeStats

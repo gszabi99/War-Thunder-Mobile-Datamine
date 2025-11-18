@@ -9,12 +9,13 @@ let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { G_SKIN, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 
 let { unseenSkins, markAllUnitSkinsSeen, markSkinSeen } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { mkGradText, lockIcon, checkIcon, iconSize } =  require("%rGui/unitCustom/unitCustomComps.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, openBattlePassWnd, battlePassGoods
+let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods
 } = require("%rGui/battlePass/battlePassState.nut")
 let { unitSkins, selectedSkin, currentSkin, availableSkins, selectedSkinCfg, hasTagsChoice
 } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
@@ -30,8 +31,9 @@ let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetails
 let { mkIsAutoSkin, mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { userlogTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
+let { userlogTextColor, markTextColor, selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
+let { shopGoods, openShopWndByGoods } = require("%rGui/shop/shopState.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
@@ -39,8 +41,8 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { shopGoods, openShopWndByGoods } = require("%rGui/shop/shopState.nut")
 let listbox = require("%rGui/components/listbox.nut")
+let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
 
 
 let appsFlyerSaveId = "DefaultSkinWasReplaced"
@@ -54,7 +56,6 @@ let skinsRowWidth = skinSize * SKINS_IN_ROW + skinGap * (SKINS_IN_ROW - 1)
 let skinsRowWidthWithTags = (skinSize + skinGap) * SKINS_IN_ROW_TAGS + tagNameSize + doubleSideGradientPaddingX * 2
 let rowHeight = skinSize + skinGap
 let aTimeSelected = 0.2
-let selectedColor = 0x8052C4E4
 let rowBgEvenColor = 0xD0000000
 let rowBgOddColor = 0x70000000
 
@@ -105,15 +106,28 @@ let mkInfoTextarea = @(text, ovr = {}) doubleSideGradient.__merge({
   }.__update(fontTiny)
 }.__update(ovr))
 
-let calcAmountOfRewards = @(g) g.units.len() + g.unitUpgrades.len() + g.skins.len() + g.items.len() + g.decorators.len()
+let calcAmountOfRewards = @(g) "rewards" in g
+  ? g.rewards.len()
+    
+  : g.units.len() + g.unitUpgrades.len() + g.skins.len() + g.items.len() + g.decorators.len()
 
 function findShopSkinGoods(unitName, skinName, allGoods) {
   local res = null
-  foreach(g in allGoods)
-    foreach(u, s in g.skins)
-      if (u == unitName && s == skinName && !g?.isHidden
-          && (res == null || (calcAmountOfRewards(g) <= calcAmountOfRewards(res))))
-        res = g
+  foreach(g in allGoods) {
+    if (g.isHidden)
+      continue
+
+    let { rewards = null, skins = {} } = g
+    if (rewards != null) {
+      if (null == rewards.findvalue(@(r) r.id == unitName && r.subId == skinName && r.gType == G_SKIN))
+        continue
+    }
+    else if (skins?[unitName] != skinName)
+      continue
+
+    if (res == null || (calcAmountOfRewards(g) <= calcAmountOfRewards(res)))
+      res = g
+  }
   return res
 }
 
@@ -128,7 +142,7 @@ function skinBtn(skinPresentation) {
 
   return @() {
     watch = [stateFlags, isLocked]
-    size = [skinSize, skinSize]
+    size = skinSize
     rendObj = ROBJ_BOX
     fillColor = isLocked.get() ? 0xFF909090 : 0xFFFFFFFF
     borderRadius = skinBorderRadius
@@ -149,7 +163,7 @@ function skinBtn(skinPresentation) {
         size = flex()
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
-        color = isSelected.get() ? selectedColor : 0
+        color = isSelected.get() ? selectColor : 0
         transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
       }
       @() {
@@ -157,7 +171,7 @@ function skinBtn(skinPresentation) {
         size = flex()
         rendObj = ROBJ_BOX
         image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-        fillColor = stateFlags.get() & S_HOVER ? selectedColor : 0
+        fillColor = stateFlags.get() & S_HOVER ? hoverColor : 0
         borderRadius = skinBorderRadius
         transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
         transform = { rotate = 180 }
@@ -182,7 +196,7 @@ function skinBtn(skinPresentation) {
       @() !canChangeTags.get() ? { watch = canChangeTags }
         : {
             watch = canChangeTags
-            size = [iconSize, iconSize]
+            size = iconSize
             margin = hdpx(10)
             hplace = ALIGN_RIGHT
             rendObj = ROBJ_IMAGE
@@ -352,17 +366,27 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     })
 
   let goodsByLootboxId = {}
-  foreach(goods in shopGoods.get())
-    foreach(id, _ in goods.lootboxes)
-      goodsByLootboxId[id] <- (id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[id], goods)
+  foreach (goods in shopGoods.get()) {
+    let { rewards = null, lootboxes = {} } = goods
+    if (rewards != null) {
+      foreach (r in rewards)
+        if (r.gType == G_LOOTBOX)
+          goodsByLootboxId[r.id] <- (r.id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[r.id], goods)
+    }
+    else 
+      foreach (id, _ in lootboxes)
+        goodsByLootboxId[id] <- (id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[id], goods)
+  }
 
   let lootbox = findLootboxWithReward(goodsByLootboxId.keys().extend(eventLootboxesRaw.get().values()),
     serverConfigs.get(),
     @(r) (null != r.findvalue(@(g) g.gType == "skin" && g.id == unitName && g.subId == skinName)))
 
   let goods = goodsByLootboxId?[lootbox]
-  if (goods != null) {
-    let lootboxTbl = serverConfigs.get().lootboxesCfg[lootbox]
+  let lootboxTbl = goods != null
+    ? serverConfigs.get()?.lootboxesCfg[lootbox]
+    : null
+  if (lootboxTbl) {
     return res.__update({
       children = [
         @() mkInfoTextarea(loc("canReceive/inShopLootbox", { name = colorize(markTextColor, getLootboxName(lootboxTbl.name)) }))
@@ -386,14 +410,17 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 
   let bpUnlock = findUnlockWithReward([bpFreeRewardsUnlock.get(), bpPaidRewardsUnlock.get(), bpPurchasedUnlock.get()],
     serverConfigs.get(),
-    @(r) (null != r.findvalue(@(g) g.gType == "skin" && g.id == unitName && g.subId == skinName)))
-  let isBpGoods = battlePassGoods.get().findindex(@(v) v != null && v.skins?[unitName] == skinName) != null
+    @(r) (null != r.findvalue(@(g) g.gType == G_SKIN && g.id == unitName && g.subId == skinName)))
+  let isBpGoods = null != battlePassGoods.get()
+    .findindex(@(v) v != null
+      && (null != v?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName && r.subId == skinName)
+        || v?.skins[unitName] == skinName)) 
 
   if (bpUnlock != null || isBpGoods)
     return res.__update({
       children = [
         mkInfoTextarea(loc("canReceive/inBattlePass"))
-        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), openBattlePassWnd, { hplace = ALIGN_CENTER })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openPassScene(BATTLE_PASS), { hplace = ALIGN_CENTER })
       ]
     })
 

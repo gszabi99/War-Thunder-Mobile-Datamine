@@ -9,7 +9,6 @@ let { debounce } = require("%sqstd/timers.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { myUserId, myUserRealName } = require("%appGlobals/profileStates.nut")
-let { isValidBalance } = require("%appGlobals/currenciesState.nut")
 let { isMatchingOnline, isContactsLoggedIn } = require("%appGlobals/loginState.nut")
 let { pushNotification, removeNotifyById, subscribeGroup
 } = require("%rGui/invitations/invitationsState.nut")
@@ -25,6 +24,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let matching = require("%appGlobals/matching_api.nut")
+let showNegativeBalanceWarning = require("%rGui/notifications/negativeBalanceWarning.nut")
 
 
 const INVITE_ACTION_ID = "squad_invite_action"
@@ -44,7 +44,7 @@ let myDataLocal = Watched({})
 let canFetchSquad = keepref(Computed(@() isMatchingOnline.get() && isContactsLoggedIn.get()))
 
 
-squadId.subscribe(@(_) isSquadDataInited(false))
+squadId.subscribe(@(_) isSquadDataInited.set(false))
 isInSquad.subscribe(@(v) v ? squadJoinTime.set(get_time_msec()) : null)
 squadMembers.subscribe(@(list) validateNickNames(list.keys()))
 isInvitedToSquad.subscribe(@(list) validateNickNames(list.keys()))
@@ -54,7 +54,7 @@ function setReadyRaw(ready) {
     isReady.set(ready)
 }
 squadLeaderCampaign.subscribe(@(_) setReadyRaw(false))
-curCampaign.subscribe(@(v) v != squadLeaderCampaign.value ? setReadyRaw(false) : null)
+curCampaign.subscribe(@(v) v != squadLeaderCampaign.get() ? setReadyRaw(false) : null)
 isInBattle.subscribe(@(_) setReadyRaw(false))
 
 let localMemberDecoratorHashes = squadMembers.get().map(@(data) data?.chosenDecoratorsHash)
@@ -100,7 +100,7 @@ let matchingCall = @(action, params = null, cb = LOG_ERROR)
   eventbus_send("matchingCall", { action, params, cb })
 
 function setOnlineBySquad(uid, online) {
-  if (squadOnline.value?[uid] != online)
+  if (squadOnline.get()?[uid] != online)
     squadOnline.mutate(function(v) {
       if (online == null)
         v.$rawdelete(uid)
@@ -111,7 +111,7 @@ function setOnlineBySquad(uid, online) {
 }
 
 let updateMyData = debounce(function updateMyDataImpl() {
-  if (squadMyState.value == null)
+  if (squadMyState.get() == null)
     return 
 
   let needSend = myDataLocal.get().findindex(@(value, key) !isEqualWithFloat(myDataRemote.get()?[key], value)) != null
@@ -125,15 +125,15 @@ foreach (w in [squadMyState, myDataLocal, myDataRemote])
   w.subscribe(@(_) updateMyData())
 
 squadLeaderQueueDataCheckTime.subscribe(function(_) {
-  if (!isInSquad.value || isSquadLeader.value || squadJoinTime.get() + 1000 > get_time_msec())
+  if (!isInSquad.get() || isSquadLeader.get() || squadJoinTime.get() + 1000 > get_time_msec())
     return
   logS("update my data by squad leader queueData request: ", myDataLocal.get())
   matchingCall("msquad.set_member_data", myDataLocal.get())
 })
 
 function linkVarToMsquad(name, var) {
-  myDataLocal.mutate(@(v) v[name] <- var.value)
-  var.subscribe(@(_val) myDataLocal.mutate(@(v) v[name] <- var.value))
+  myDataLocal.mutate(@(v) v[name] <- var.get())
+  var.subscribe(@(_val) myDataLocal.mutate(@(v) v[name] <- var.get()))
 }
 
 let bindSquadROVar = linkVarToMsquad
@@ -147,42 +147,42 @@ bindSquadROVar("name", myUserRealName)
 bindSquadRWVar("ready", isReady)
 
 function setSelfRemoteData(member_data) {
-  myDataRemote(clone member_data)
+  myDataRemote.set(clone member_data)
   foreach (k, v in member_data)
     if (k in myExtDataRW)
-      myExtDataRW[k](v)
+      myExtDataRW[k].set(v)
 }
 
 function reset() {
-  squadId(null)
-  isInvitedToSquad({})
+  squadId.set(null)
+  isInvitedToSquad.set({})
   userInProgress.set({})
 
-  foreach (userId, _ in squadMembers.value)
+  foreach (userId, _ in squadMembers.get())
     setOnlineBySquad(userId, null)
-  squadMembers({})
+  squadMembers.set({})
   delayedInvites.set({})
 
-  isReady(false)
-  myDataRemote({})
+  isReady.set(false)
+  myDataRemote.set({})
 }
 
 function removeInvitedSquadmate(userId) {
-  if (!(userId in isInvitedToSquad.value))
+  if (!(userId in isInvitedToSquad.get()))
     return false
   isInvitedToSquad.mutate(@(value) value.$rawdelete(userId))
   return true
 }
 
 function addInvited(userId) {
-  if (userId in isInvitedToSquad.value)
+  if (userId in isInvitedToSquad.get())
     return false
   isInvitedToSquad.mutate(@(value) value[userId] <- true)
   return true
 }
 
 function checkDisbandEmptySquad() {
-  if (squadMembers.value.len() == 1 && !isInvitedToSquad.value.len())
+  if (squadMembers.get().len() == 1 && !isInvitedToSquad.get().len())
     matchingCall("msquad.disband_squad")
 }
 
@@ -194,7 +194,7 @@ function revokeSquadInvite(userId) {
 }
 
 function revokeAllSquadInvites() {
-  foreach (uid, _ in isInvitedToSquad.value)
+  foreach (uid, _ in isInvitedToSquad.get())
     revokeSquadInvite(uid)
 }
 
@@ -205,19 +205,19 @@ eventbus_subscribe("squad.onLeaveSquad", function(msg) {
 })
 
 function leaveSquad(cbExt = null) {
-  if (!isInSquad.value) {
+  if (!isInSquad.get()) {
     callCb(cbExt, {})
     return
   }
 
-  if (isSquadLeader.value && squadMembers.value.len() == 1)
+  if (isSquadLeader.get() && squadMembers.get().len() == 1)
     revokeAllSquadInvites()
 
   matchingCall("msquad.leave_squad", null, { id = "squad.onLeaveSquad", cbExt })
 }
 
 function applyRemoteDataToSquadMember(uid, msquad_data) {
-  let member = squadMembers.value?[uid]
+  let member = squadMembers.get()?[uid]
   if (member == null)
     return
 
@@ -249,13 +249,13 @@ let requestMemberData = @(userId)
   matchingCall("msquad.get_member_data", { userId }, { id = "squad.onGetMemberData", userId })
 
 function updateSquadInfo(squad_info) {
-  if (squadId.value != squad_info.id)
+  if (squadId.get() != squad_info.id)
     return
 
   let { members, invites = [] } = squad_info
 
   foreach (uid in members) {
-    if (uid not in squadMembers.value) {
+    if (uid not in squadMembers.get()) {
       squadMembers.mutate(@(m) m[uid] <- {})  
       removeInvitedSquadmate(uid)
     }
@@ -265,7 +265,7 @@ function updateSquadInfo(squad_info) {
   foreach (uid in invites)
     addInvited(uid)
 
-  isSquadDataInited(true)
+  isSquadDataInited.set(true)
 }
 
 function addInvite(inviterUid) {
@@ -279,7 +279,7 @@ function addInvite(inviterUid) {
   }
 
   
-  if (isInSquad.value && squadId.value == inviterUid)
+  if (isInSquad.get() && squadId.get() == inviterUid)
     return
 
   pushNotification({
@@ -293,7 +293,7 @@ function addInvite(inviterUid) {
 }
 
 function onInviteRevoked(inviterSquadId, invitedMemberId) {
-  if (inviterSquadId == squadId.value)
+  if (inviterSquadId == squadId.get())
     removeInvitedSquadmate(invitedMemberId)
   else
     removeNotifyById(getSquadInviteUid(inviterSquadId))
@@ -333,7 +333,7 @@ eventbus_subscribe("squad.onGetInfo", function(msg) {
   let { result, context = null } = msg
   if (logSquadError(result)) {
     if (result?.error_id == "NOT_SQUAD_MEMBER")
-      squadId(null)
+      squadId.set(null)
     delayedInvites.set({})
     callCb(context?.cbExt, result)
     return
@@ -341,7 +341,7 @@ eventbus_subscribe("squad.onGetInfo", function(msg) {
 
   let { squad = null, invites = [] } = result
   if (squad != null) {
-    squadId(squad.id)
+    squadId.set(squad.id)
     updateSquadInfo(squad)
   }
 
@@ -369,7 +369,7 @@ eventbus_subscribe("squad.onAcceptInvite", function(msg) {
     return
   }
   if ("squadId" in context)
-    squadId(context.squadId)
+    squadId.set(context.squadId)
   fetchSquadInfo()
 })
 
@@ -391,11 +391,9 @@ subscribeFMsgBtns({
 
 subscribeGroup(INVITE_ACTION_ID, {
   function onApply(notify) {
-    if (!isValidBalance.get()) {
-      openFMsgBox({ text = loc("gameMode/negativeBalance") })
+    if (showNegativeBalanceWarning())
       return
-    }
-    if (!isInSquad.value) {
+    if (!isInSquad.get()) {
       acceptInviteImpl(notify.playerUid)
       removeNotifyById(notify.id)
       return
@@ -421,10 +419,10 @@ function addMember(member) {
   setOnlineBySquad(userId, true)
   removeInvitedSquadmate(userId)
 
-  if (userId not in squadMembers.value)
+  if (userId not in squadMembers.get())
     squadMembers.mutate(@(val) val[userId] <- {})
 
-  if (squadMembers.value.len() == maxSquadSize.get() && isInvitedToSquad.value.len() > 0 && isSquadLeader.value)
+  if (squadMembers.get().len() == maxSquadSize.get() && isInvitedToSquad.get().len() > 0 && isSquadLeader.get())
     revokeAllSquadInvites()
 }
 
@@ -434,7 +432,7 @@ function removeMember(member) {
     openFMsgBox({ text = loc("squad/kickedMsgbox") })
     reset()
   }
-  else if (userId in squadMembers.value) {
+  else if (userId in squadMembers.get()) {
     squadMembers.mutate(@(v) v.$rawdelete(userId))
     setOnlineBySquad(userId, null)
     checkDisbandEmptySquad()
@@ -455,7 +453,7 @@ let leaveSquadMessage = @(cb = null) openFMsgBox({
 })
 
 function dismissSquadMember(userId) {
-  if (userId not in squadMembers.value)
+  if (userId not in squadMembers.get())
     return
   openFMsgBox({
     text = loc("squad/ask/remove", { name = getContactNick(allContacts.get()?[userId.tostring()]) })
@@ -467,9 +465,9 @@ function dismissSquadMember(userId) {
 }
 
 function dismissAllOfflineSquadmates() {
-  if (!isSquadLeader.value)
+  if (!isSquadLeader.get())
     return
-  foreach (userId, _ in squadMembers.value)
+  foreach (userId, _ in squadMembers.get())
     if (!isContactOnline(userId.tostring(), onlineStatus.get()))
       matchingCall("msquad.dismiss_member", { userId })
 }
@@ -477,7 +475,7 @@ function dismissAllOfflineSquadmates() {
 eventbus_subscribe("squad.onTransferSquad", function(msg) {
   let { result, context } = msg
   if (!logSquadError(result))
-    squadId(context.userId)
+    squadId.set(context.userId)
 })
 
 let transferSquad = @(userId)
@@ -491,17 +489,17 @@ eventbus_subscribe("squad.onCreate", function(msg) {
 })
 
 function createSquad() {
-  if (!isInSquad.value)
+  if (!isInSquad.get())
     matchingCall("msquad.create_squad", null, "squad.onCreate")
 }
 
 function inviteToSquad(userId) {
-  if (!isValidBalance.get()) {
+  if (showNegativeBalanceWarning()) {
     logS($"Invite: member {userId}: negative balance")
-    return openFMsgBox({ text = loc("gameMode/negativeBalance") })
+    return
   }
 
-  if (!isInSquad.value) {
+  if (!isInSquad.get()) {
     delayedInvites.mutate(@(v) v[userId] <- true)
     if (delayedInvites.get().len() == 1) {
       logS($"Invite: Create squad for invited member {userId}")
@@ -512,17 +510,17 @@ function inviteToSquad(userId) {
     return
   }
 
-  if (userId in squadMembers.value) {
+  if (userId in squadMembers.get()) {
     logS($"Invite: member {userId}: already in squad")
     return
   }
 
-  if (squadMembers.value.len() >= maxSquadSize.get()) {
+  if (squadMembers.get().len() >= maxSquadSize.get()) {
     logS($"Invite: member {userId}: squad already full")
     return openFMsgBox({ text = loc("matching/SQUAD_FULL") })
   }
 
-  if (squadMembers.value.len() + isInvitedToSquad.value.len() >= maxSquadSize.get()) {
+  if (squadMembers.get().len() + isInvitedToSquad.get().len() >= maxSquadSize.get()) {
     logS($"Invite: member {userId}: too many invites")
     return openFMsgBox({ text = loc("squad/popup/tooManyInvited") })
   }
@@ -534,10 +532,10 @@ isInvitedToSquad.subscribe(@(invited) invited.each(
   @(_, userId) userInProgress.mutate(@(v) v.$rawdelete(userId))))
 
 function recalcSquadOrder(_) {
-  let prev = squadMembersOrder.value
-  if (squadId.value == null) {
+  let prev = squadMembersOrder.get()
+  if (squadId.get() == null) {
     if (prev.len() != 0)
-      squadMembersOrder([])
+      squadMembersOrder.set([])
     return
   }
 
@@ -550,20 +548,20 @@ function recalcSquadOrder(_) {
     usedUids[uid] <- true
   }
 
-  addUid(squadId.value)
+  addUid(squadId.get())
   foreach(uid in prev)
-    if (uid in squadMembers.value)
+    if (uid in squadMembers.get())
       addUid(uid)
-  foreach(uid, __ in squadMembers.value)
+  foreach(uid, __ in squadMembers.get())
     addUid(uid)
   foreach(uid in prev)
-    if (uid in isInvitedToSquad.value)
+    if (uid in isInvitedToSquad.get())
       addUid(uid)
-  foreach(uid, __ in isInvitedToSquad.value)
+  foreach(uid, __ in isInvitedToSquad.get())
     addUid(uid)
 
   if (!isEqual(prev, res))
-    squadMembersOrder(res)
+    squadMembersOrder.set(res)
 }
 squadMembers.subscribe(recalcSquadOrder)
 isInvitedToSquad.subscribe(recalcSquadOrder)
@@ -576,7 +574,7 @@ let msubscribes = {
       onInviteRevoked(p.squad.id, p.invite.id)
   },
   ["msquad.notify_invite_rejected"] = function(p) {
-    if (!isSquadLeader.value)
+    if (!isSquadLeader.get())
       return
     removeInvitedSquadmate(p.invite.id)
     pushNotification({ playerUid = p.invite.id, text = loc("squad/invite/reject") })
@@ -584,29 +582,29 @@ let msubscribes = {
   },
   ["msquad.notify_invite_expired"] = @(p) removeInvitedSquadmate(p.invite.id),
   ["msquad.notify_disbanded"] = function(_) {
-    if (!isSquadLeader.value)
+    if (!isSquadLeader.get())
       openFMsgBox({ text = loc("squad/msgbox_disbanded") })
     reset()
   },
   ["msquad.notify_member_joined"] = addMember,
   ["msquad.notify_member_leaved"] = removeMember,
-  ["msquad.notify_leader_changed"] = @(p) squadId(p.userId),
+  ["msquad.notify_leader_changed"] = @(p) squadId.set(p.userId),
   ["msquad.notify_data_changed"] = function(_) {
-    if (isInSquad.value)
+    if (isInSquad.get())
       fetchSquadInfo()
   },
   ["msquad.notify_member_data_changed"] = @(p) requestMemberData(p.userId),
   ["msquad.notify_member_logout"] = function(p) {
     let { userId } = p
-    if (userId not in squadMembers.value)
+    if (userId not in squadMembers.get())
       return
     setOnlineBySquad(userId, false)
-    if (squadMembers.value[userId]?.ready != false)
+    if (squadMembers.get()[userId]?.ready != false)
       squadMembers.mutate(@(s) s[userId] <- s[userId].__merge({ ready = false }))
   },
   ["msquad.notify_member_login"] = function(p) {
     let { userId } = p
-    if (userId not in squadMembers.value)
+    if (userId not in squadMembers.get())
       return
     logS($"member {userId} going to online")
     setOnlineBySquad(userId, true)

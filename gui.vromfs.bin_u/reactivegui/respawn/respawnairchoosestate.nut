@@ -54,6 +54,16 @@ function fixCurPresetOverload() {
   setWeaponPreset(preset)
 }
 
+let isEmptyBomber = Computed(@() curUnit.get()?.unitClass == "bomber"
+  && equippedWeaponsBySlots.get().filter(@(s, idx) s != null && idx != 0).len() == 0) 
+
+function setDefaultSecondaryWeapon() {
+  let preset = equippedWeaponsBySlots.get().map(
+    @(equippedWeapon, idx) equippedWeapon != null ? equippedWeapon.name
+      : (allWSlots.get()[idx].wPresets.findvalue(@(w) w.isDefault)?.name ?? ""))
+  setWeaponPreset(preset)
+}
+
 let sortByCaliber = @(a, b) b.caliber <=> a.caliber
 
 let beltSlotsByGroup = Computed(function() {
@@ -253,6 +263,8 @@ return {
   equippedWeaponsBySlots
   overloadInfo
   fixCurPresetOverload
+  isEmptyBomber
+  setDefaultSecondaryWeapon
   beltSlots
   courseBeltSlots
   turretBeltSlots

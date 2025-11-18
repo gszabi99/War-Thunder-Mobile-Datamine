@@ -99,7 +99,7 @@ function statusBlock(uid) {
   let view = Computed(@() squadId.get() == uid ? statusView.leader
     : squadMembers.get()?[uid].ready ? statusView.memberReady
     : isInvitedToSquad.get()?[uid] ? statusView.invitee
-    : onlineStatus.value == false ? statusView.memberOffline
+    : onlineStatus.get() == false ? statusView.memberOffline
     : squadLeaderReadyCheckTime.get() > (squadMembers.get()?[uid].readyCheckTime ?? 0) ? statusView.memberReadyCheck
     : uid in squadMembers.get() ? statusView.memberNotReady
     : null)
@@ -115,7 +115,7 @@ function inBattleBlock(uid) {
 
 let unitInfo = @(unitW) function() {
   let res = { watch = unitW }
-  let unit = unitW.value
+  let unit = unitW.get()
   if (unit == null)
     return res
 
@@ -155,9 +155,9 @@ function memberInfo(uid) {
     flow = FLOW_HORIZONTAL
     gap
     children = [
-      contactLevelBlock(info.value)
-      contactAvatar(info.value, avatarSize)
-      contactNameBlock(contact.value, info.value, [status, battleStatus])
+      contactLevelBlock(info.get())
+      contactAvatar(info.get(), avatarSize)
+      contactNameBlock(contact.get(), info.get(), [status, battleStatus])
         .__update({ padding = const [hdpx(40), 0], size = flex()})
       unitInfo(bestUnit)
     ]

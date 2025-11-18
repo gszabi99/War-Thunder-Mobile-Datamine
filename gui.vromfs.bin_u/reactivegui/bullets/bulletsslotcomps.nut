@@ -7,14 +7,13 @@ let { bg, bulletsBlockWidth, headerSlotHeight } = require("%rGui/respawn/respawn
 let { bulletsAABB } = require("%rGui/respawn/respawnAnimState.nut")
 let { showRespChooseWnd } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
 let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
-
+let { hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
 
 let padding = hdpx(8)
 let btnSize = evenPx(80)
 let knobSize = evenPx(50)
 let sliderGap = knobSize / 2 + (0.1 * btnSize).tointeger()
-let sliderSize = [bulletsBlockWidth - 2 * (btnSize + sliderGap + padding), evenPx(80)]
-let hoverColor = 0x8052C4E4
+let sliderWidth = bulletsBlockWidth - 2 * (btnSize + sliderGap + padding)
 let arrowSize = [hdpxi(50), hdpxi(50)]
 
 let arrowBtnImage = @(isOpened) {
@@ -72,11 +71,9 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
             openedSlot.get() < 0 || idx != openedSlot.get()), @() onHeaderClick(key, idx),
             {
               ovr = {
-                size = [flex(),  headerSlotHeight]
-                fillColor = 0xFF0593AD
-                borderColor = 0xFF236DB5
+                size = [flex(), headerSlotHeight]
+                fillColor = selectColor
               }
-              gradientOvr = { color = 0xFF16B2E9 }
             })
           mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = hdpx(7) })
         ]
@@ -92,22 +89,33 @@ let mkBtnTextCtor = @(override) @(ovrW) @(sf) @() {
   watch = ovrW
   rendObj = ROBJ_TEXT
   color = sf & S_HOVER ? hoverColor : 0xFFFFFFFF
-}.__update(fontMedium, override, ovrW.value)
+}.__update(fontMedium, override, ovrW.get())
 let btnTextDec = mkBtnTextCtor({ text = "-", pos = [0, -hdpx(4)] })
 let btnTextInc = mkBtnTextCtor({ text = "+" })
 
-let knobCtor = @(relValue, stateFlags, fullW)
-  mkSliderKnob(relValue, stateFlags, fullW, { size = [knobSize, knobSize] })
+let mkKnobCtor = @(sliderKnobSize) @(relValue, stateFlags, fullW)
+  mkSliderKnob(relValue, stateFlags, fullW, { size = [sliderKnobSize, sliderKnobSize] })
 
-function bulletSlider(bSlot, maxCount, maxBullets, withExtraBullets, bStep, bLeftSteps, cardStyle, onChangeSlider) {
+let mkBulletSlider = @(size, count, unitValue, maxValue, onChange) @() {
+  watch = [unitValue, maxValue]
+  children = slider(count,
+    {
+      size
+      unit = unitValue.get()
+      min = 0
+      max = maxValue.get()
+      onChange
+    },
+    mkKnobCtor(size[1])
+  ).__update({ vplace = ALIGN_TOP })
+}
+
+function mkBulletSliderWithBtns(bSlot, maxCount, maxBullets, withExtraBullets, bStep, bLeftSteps, cardStyle, onChangeSlider) {
   let count = Computed(@() bSlot.get()?.count ?? 0)
+  let unitValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : bStep.get())
+  let maxValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : maxCount.get() * bStep.get())
   let minOvr = Computed(@() count.get() == 0 ? inactiveBtnOvr : {})
-  let maxOvr = Computed(@() (bLeftSteps.get() == 0
-    || count.get() >= (withExtraBullets.get()
-        ? maxBullets.get()
-        : (maxCount.get() * bStep.get())))
-      ? inactiveBtnOvr
-      : {})
+  let maxOvr = Computed(@() (bLeftSteps.get() == 0 || count.get() >= maxValue.get()) ? inactiveBtnOvr : {})
   function onChange(value) {
     if (bSlot.get() == null)
       return
@@ -121,7 +129,7 @@ function bulletSlider(bSlot, maxCount, maxBullets, withExtraBullets, bStep, bLef
     onChangeSlider(idx, name, newVal)
   }
   return @() bg.__merge({
-    watch = [ maxCount, bStep, withExtraBullets, maxBullets, cardStyle ]
+    watch = cardStyle
     size = [ flex(), cardStyle.get().slotSliderHeight ]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -132,15 +140,7 @@ function bulletSlider(bSlot, maxCount, maxBullets, withExtraBullets, bStep, bLef
       sliderBtn(btnTextDec(minOvr),
         @() onChange(count.get() - bStep.get()),
         Computed(@() btnBgOvr.__merge(minOvr.get())))
-      slider(count,
-        {
-          size = [sliderSize[0], knobSize]
-          unit = withExtraBullets.get() ? maxBullets.get() : bStep.get()
-          min = 0
-          max = withExtraBullets.get() ? maxBullets.get() : maxCount.get() * bStep.get()
-          onChange
-        },
-        knobCtor).__update({ vplace = ALIGN_TOP })
+      mkBulletSlider([sliderWidth, knobSize], count, unitValue, maxValue, onChange)
       sliderBtn(btnTextInc(maxOvr),
         @() onChange(count.get() + bStep.get()),
         Computed(@() btnBgOvr.__merge(maxOvr.get())))
@@ -166,7 +166,8 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
         children = [
           bulletHeader(selSlot, bSlot, bSet, bInfo, bullets, hasUnseenShells, openedSlot)
           bTotalSteps.get() <= 1 ? null
-            : bulletSlider(bSlot, maxCount, maxBulletsWithExtraCount, withExtraBullets, bStep, bLeftSteps, cardStyle, onChangeSlider)
+            : mkBulletSliderWithBtns(bSlot, maxCount, maxBulletsWithExtraCount, withExtraBullets,
+                bStep, bLeftSteps, cardStyle, onChangeSlider)
           bg.__merge({
             size = [flex(), bTotalSteps.get() <= 1 ? SIZE_TO_CONTENT : 0]
             children = @() {
@@ -186,4 +187,5 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
 
 return {
   mkBulletSliderSlot = kwarg(mkBulletSliderSlot)
+  mkBulletSlider
 }

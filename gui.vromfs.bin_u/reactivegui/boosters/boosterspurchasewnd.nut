@@ -7,7 +7,7 @@ let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { infoGreyButton } = require("%rGui/components/infoButton.nut")
+let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -19,6 +19,8 @@ let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pServer/pServerApi.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
+let { mkBgParticles } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let close = @() isOpenedBoosterWnd.set(false)
 
@@ -59,7 +61,12 @@ function mkPricePlate(bst) {
     rendObj = ROBJ_IMAGE
     image = priceBgGrad
     picSaturate = isDelayed.get() ? 0 : 1.0
-    children = bst.price > 0 ? mkCurrencyComp(bst.price, bst.currencyId) : null
+    children = bst.price > 0
+      ? textButtonPricePurchase(null,
+        mkCurrencyComp(bst.price, bst.currencyId),
+        @() null,
+        { ovr = { size = flex(), minWidth = 0, behavior = null } })
+      : null
     transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
   }
 }
@@ -73,7 +80,7 @@ let gamercardPannel = {
   ]
 }
 
-let infoBtn = @(id) infoGreyButton(
+let infoBtn = @(id) infoCommonButton(
   @() boosterDesc(id),
   {
     size = [evenPx(60), evenPx(60)]
@@ -109,8 +116,12 @@ let cardHeader = @(id) {
 let boosterSlot = @(bst, sf) {
   rendObj = ROBJ_SOLID
   color = 0xFF645858
+  borderColor = 0x40FFFFFF
+  borderWidth = hdpx(2)
+  padding = hdpx(2)
   children = [
     sf & S_HOVER ? bgHiglight : null
+    mkBgParticles(bgSize)
     {
       rendObj = ROBJ_IMAGE
       size = bgSize
@@ -150,6 +161,11 @@ let boosterSlot = @(bst, sf) {
 
 let textBase = @(battlesLeft) {
   rendObj = ROBJ_TEXT
+  size = FLEX_H
+  padding = [0, hdpx(10)]
+  halign = ALIGN_CENTER
+  behavior = Behaviors.Marquee
+  delay = defMarqueeDelay
   hplace = ALIGN_CENTER
   opacity = battlesLeft <= 0 ? 0.5 : 1
 }.__update(fontTinyAccented)
@@ -160,6 +176,7 @@ let battlesLeftTitle = @(bst, sf, battlesLeft, isDisabled) {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
+  clipChildren = true
   children = [
     textBase(battlesLeft).__merge({
       text = isDisabled || battlesLeft <= 0 ? loc("booster/use") : loc("booster/using")
@@ -196,6 +213,7 @@ let function boosterCard(bst) {
         onElemState = @(sf) stateFlags.set(sf)
         onClick = @() purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
           mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst.id))
+        gap = -hdpx(2)
         children = [
           {
             children = [

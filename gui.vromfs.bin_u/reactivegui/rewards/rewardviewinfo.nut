@@ -79,12 +79,16 @@ let getRewardsViewInfo = @(data, multiply = 1)
   (data ?? []).map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
 
 function shopGoodsToRewardsViewInfo(data, multiply = 1) {
-  let res = []
   let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},
     decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {},
-    battleMods = {}
+    battleMods = {}, decals = [], rewards = null
   } = data
 
+  if (rewards != null)
+    return getRewardsViewInfo(rewards).filter(@(r) r.rType != G_STAT || hasStatsImage(r.id, r.subId))
+
+  
+  let res = []
   foreach (id in unitUpgrades)
     res.append(mkViewInfo(id, G_UNIT_UPGRADE))
   foreach (id in units)
@@ -110,17 +114,20 @@ function shopGoodsToRewardsViewInfo(data, multiply = 1) {
     res.append(mkViewInfo(unitName, G_SKIN, 0, skinName))
   foreach (id, count in battleMods)
     res.append(mkViewInfo(id, G_BATTLE_MOD, count))
+  foreach (id in decals)
+    res.append(mkViewInfo(id, G_DECAL))
   return res
 }
 
 function getStatsRewardsViewInfo(unlockStage) {
   let res = []
   foreach(stat in unlockStage?.updStats ?? {})
-    if (hasStatsImage(stat.name) && stat.value.tointeger() > 0)
+    if (hasStatsImage(stat.name, stat.mode) && stat.value.tointeger() > 0)
       res.append({
         rType = "stat"
         count = stat.value.tointeger()
         id = stat.name
+        subId = stat.mode
         slots = 1
       })
   return res
@@ -333,19 +340,20 @@ let receivedGoodsToViewInfo = @(rGoods)
   mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")
 
 let isEmptyByRType = {
-  [G_DECORATOR] = @(value, _, profile) value in profile?.decorators,
-  [G_UNIT] = @(value, _, profile) value in profile?.units,
-  [G_UNIT_UPGRADE] = @(value, _, profile) profile?.units[value].isUpgraded,
-  [G_SKIN] = @(unitName, skinName, profile) skinName in profile?.skins[unitName],
-  [G_BLUEPRINT] = @(value, _, profile) value in profile?.units
-    || (profile?.blueprints?[value] ?? 0) >= (serverConfigs.get()?.allBlueprints[value].targetCount ?? 0),
-  [G_LOOTBOX] = @(value, _, profile) value in profile?.lootboxes
+  [G_DECORATOR] = @(value, _, profile, __) value in profile?.decorators,
+  [G_UNIT] = @(value, _, profile, __) value in profile?.units,
+  [G_UNIT_UPGRADE] = @(value, _, profile, __) profile?.units[value].isUpgraded,
+  [G_SKIN] = @(unitName, skinName, profile, _) skinName in profile?.skins[unitName],
+  [G_BLUEPRINT] = @(value, _, profile, configs) value in profile?.units
+    || (profile?.blueprints?[value] ?? 0) >= (configs?.allBlueprints[value].targetCount ?? 0),
+  [G_LOOTBOX] = @(value, _, profile, _) value in profile?.lootboxes,
+  [G_DECAL] = @(id, _, profile, _) id in profile?.decals,
 }
 
 function isRewardEmpty(reward, profile) {
   local res = true
   foreach(r in reward)
-    if (!(isEmptyByRType?[r.gType](r.id, r.subId, profile) ?? false)) {
+    if (!(isEmptyByRType?[r.gType](r.id, r.subId, profile, serverConfigs.get()) ?? false)) {
       res = false
       break
     }
@@ -354,7 +362,7 @@ function isRewardEmpty(reward, profile) {
 
 function isSingleViewInfoRewardEmpty(reward, profile) {
   let { id, rType, subId = "" } = reward
-  return isEmptyByRType?[rType](id, subId, profile) ?? false
+  return isEmptyByRType?[rType](id, subId, profile, serverConfigs.get()) ?? false
 }
 
 function isViewInfoRewardEmpty(reward, profile) {
@@ -429,6 +437,7 @@ function fillRewardsCounts(rewards, profile, configs) {
 return {
   NO_DROP_LIMIT
   ignoreSubIdRTypes
+  isEmptyByRType
 
   getRewardsViewInfo
   shopGoodsToRewardsViewInfo

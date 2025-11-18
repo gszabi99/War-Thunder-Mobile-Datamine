@@ -1,4 +1,6 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
+let logUpdate = log_with_prefix("[UPDATE]: ")
+let { get_all_library_versions } = require("contentUpdater")
 let { get_base_game_version_str } = require("app")
 let { eventbus_send } = require("eventbus")
 let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
@@ -16,7 +18,9 @@ let { needSuggestToUpdate } = isHuaweiBuild ? require("%rGui/notifications/needU
   : require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
 let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("%rGui/notifications/updateClientBySite.nut")
 
+
 const SUGGEST_UPDATE = "suggest_update_msg"
+logUpdate($"all library versions = {", ".join(get_all_library_versions())}")
 
 let needExitToUpdate = Computed(function() {
   let { reqVersion = "" } = campConfigs.get()?.circuit
@@ -62,7 +66,7 @@ needShowExitToUpdate.subscribe(function(v) {
 })
 
 subscribeFMsgBtns({
-  markSuggestUpdateSeen = @(_) isSuggested(true)
+  markSuggestUpdateSeen = @(_) isSuggested.set(true)
 })
 
 function showMsg(isActive) {

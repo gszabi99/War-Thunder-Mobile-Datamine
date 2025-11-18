@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
+let { G_ITEM } = require("%appGlobals/rewardType.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
+let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
   mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
@@ -15,6 +16,18 @@ let icons = {
   tank_extinguisher = "ui/gameuiskin/shop_consumables_tank_extinguisher.avif"
   spare = "ui/gameuiskin/shop_consumables_tank_cards.avif"
   ircm_kit = "ui/gameuiskin/shop_consumables_ircm.avif"
+  firework_kit = "ui/gameuiskin/icon_fireworks.avif"
+}
+
+let imgCustomCfg = {
+  firework_kit = {
+    scale = 0.4
+    ovr = {
+      pos = [0, 0]
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+    }
+  }
 }
 
 let imgSize = hdpx(500)
@@ -47,14 +60,20 @@ let itemImageOptionsStack = [
   ]
 ]
 
-let mkImg = @(id, size, pos, sortOrder = null) id not in icons ? null : {
-  key = sortOrder
-  size
-  pos
-  sortOrder
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{icons[id]}:{size}:{size}:P")
-  keepAspect = true
+function mkImg(id, baseSize, pos, sortOrder = null) {
+  if (id not in icons)
+    return null
+  let { scale = 1, ovr = {} } = imgCustomCfg?[id]
+  let size = (baseSize * scale).tointeger()
+  return {
+    key = sortOrder
+    size
+    pos
+    sortOrder
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{icons[id]}:{size}:{size}:P")
+    keepAspect = true
+  }.__update(ovr)
 }
 
 let mkImgs = @(ids, imageOptions) {
@@ -64,23 +83,18 @@ let mkImgs = @(ids, imageOptions) {
 }
 
 function getConsumablesInfo(goods) {
-  let { items } = goods
-  let data = []
-
-  foreach (id, count in items) {
-    data.append({ id, amount = count })
-  }
-
+  let { rewards = null, items = {} } = goods
+  let data = rewards?.filter(@(r) r.gType == G_ITEM) ?? []
+  if (rewards == null) 
+    foreach (id, count in items)
+      data.append({ id, count })
   return data.sort(@(a, b) (orderByItems?[a.id] ?? 0) <=> (orderByItems?[b.id] ?? 0))
 }
 
 function getLocNameConsumables(goods) {
-  let data = getConsumablesInfo(goods)
-  let amount = data?[0].amount ?? 0
-
-  return data.len() != 1
-    ? loc($"goods/{goods.id}")
-    : loc($"consumable/amount/{data[0].id}", { amountTxt = decimalFormat(amount), amount })
+  let { id = "", count = 0 } = getConsumablesInfo(goods)?[0]
+  return id == "" ? loc($"goods/{goods.id}")
+    : loc($"consumable/amount/{id}", { amountTxt = decimalFormat(count), amount = count })
 }
 
 function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
@@ -103,7 +117,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
         padding = const [hdpx(20), 0]
-        children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGradConsumables, nameConsumable)
+        children = mkCurrencyAmountTitle(data.map(@(item) item.count), viewBaseValue, titleFontGradConsumables, nameConsumable)
       })
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),

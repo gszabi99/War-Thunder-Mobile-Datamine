@@ -7,6 +7,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { is_pc } = require("%appGlobals/clientState/platform.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { hudWhiteColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 
 const BATTERY_UPDATE_TIMEOUT_SEC = 10.0
 const UPDATE_STATUS_STRING_EVENT_ID = "updateStatusString"
@@ -21,8 +22,8 @@ let maxPingVal = 999
 let maxPlVal = 100
 let textsFont = fontTinyAccentedShaded
 let textsFontMono = fontMonoTinyAccentedShaded
-let defaultColor = 0xFFFFFFFF
-let badQualityColor = 0xFFFF5D5D
+let defaultColor = hudWhiteColor
+let badQualityColor = hudCoralRedColor
 
 let BATTERY_BG_NORMAL = "icon_battery"
 let BATTERY_BG_CHARGING = "icon_battery_charging"
@@ -183,7 +184,7 @@ let deviceStateArea = {
   size = [ SIZE_TO_CONTENT, saBorders[1] ]
   margin = [ 0, saBorders[0], 0, 0]
   flow = FLOW_HORIZONTAL
-  gap = hdpx(30)
+  gap = hdpx(10)
   children = [
     fpsComp
     pingComp

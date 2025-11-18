@@ -78,16 +78,16 @@ function combineHotkeys(data) {
   return hotkeys
 }
 
-let isPanelVisible = Computed(@() cursorPresent.value && isGamepad.get()
+let isPanelVisible = Computed(@() cursorPresent.get() && isGamepad.get()
   && (!isHudAttached.get() || hasModalWindows.get()))
 
 let joyAHint = Computed(function() {
   local hotkeyAText = defaultJoyAHint
   if (!isGamepad.get())
     return hotkeyAText
-  if (type(hoveredClickableInfo.value) == "string")
-    return hoveredClickableInfo.value
-  if (hoveredClickableInfo.value?.skipDescription ?? false)
+  if (type(hoveredClickableInfo.get()) == "string")
+    return hoveredClickableInfo.get()
+  if (hoveredClickableInfo.get()?.skipDescription ?? false)
     return null
 
   foreach (k in getNavState(navStateGen.get()))
@@ -125,9 +125,9 @@ let cursorTips = @() {
   valign = ALIGN_CENTER
   children = [
     manualHint(["J:L.Thumb.hv", "dirpad"], loc("ui/cursor.navigation"))
-    cursorOverClickable.value && joyAHint.get() ? manualHint(clickImageIds, joyAHint.get(), { minWidth = minClickHintSize[0] })
+    cursorOverClickable.get() && joyAHint.get() ? manualHint(clickImageIds, joyAHint.get(), { minWidth = minClickHintSize[0] })
       : { size = minClickHintSize, key = {} }
-    !cursorOverStickScroll.value ? null
+    !cursorOverStickScroll.get() ? null
       : manualHint(["J:R.Thumb.hv"], loc("ui/cursor.scroll"))
   ]
 }

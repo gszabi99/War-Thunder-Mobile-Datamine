@@ -17,11 +17,11 @@ let { allShopGoods, calculateNewGoodsDiscount } = require("%rGui/shop/shopState.
 let { discountTag } = require("%rGui/components/discountTag.nut")
 
 
-let textColor = 0xFFE0E0E0
+const textColor = 0xFFE0E0E0
 
-let padding = hdpx(50)
-let minWidthWnd = hdpx(900)
-let maxHeightContent = hdpx(400)
+const padding = hdpx(50)
+const minWidthWnd = hdpx(900)
+const maxHeightContent = hdpx(400)
 
 
 let mkTapToContinueText = @() {

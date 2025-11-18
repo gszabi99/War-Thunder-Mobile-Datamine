@@ -3,7 +3,8 @@ let { register_command } = require("console")
 let { hide_unit, show_unit, play_fx_on_unit,
   enable_scene_camera, disable_scene_camera, reset_camera_pos_dir,
 } = require("hangar")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -52,7 +53,7 @@ let getEffectCfg = @(unitName) effectsCfg?[getUnitType(unitName)] ?? defEffectCf
 let getPurchaseSound = @() unitToShow.get()?.isUpgraded || unitToShow.get()?.isPremium ? "unit_buy_prem" : "unit_buy"
 let playPurchSound = @() playSound(getPurchaseSound())
 
-canShowEffect.subscribe(function(_) {
+function showEffect() {
   if (!canShowEffect.get())
     return
   let { play, timeToShowUnit, timeTotal } = getEffectCfg(unitToShow.get().name)
@@ -62,7 +63,9 @@ canShowEffect.subscribe(function(_) {
   resetTimeout(timeToShowUnit, show_unit)
   resetTimeout(timeToShowUnit, playPurchSound)
   resetTimeout(timeTotal, close)
-})
+}
+
+canShowEffect.subscribe(@(v) v ? deferOnce(showEffect) : null)
 needOpen.subscribe(@(v) v ? null : isOpened.set(false))
 shouldOpen.subscribe(@(v) v ? isOpened.set(true) : null)
 
@@ -98,6 +101,14 @@ let unitEffectScene = @() {
 registerScene("unitPurchaseEffectScene", unitEffectScene, close, isOpened, true)
 
 register_command(@() unitToShow.set(hangarUnit.get()), "ui.debug.unitPurchaseEffect")
+register_command(
+  function(name) {
+    let unit = serverConfigs.get()?.allUnits[name]
+    if (unit == null)
+      return console_print("Unit not found") 
+    unitToShow.set(unit)
+  },
+  "ui.debug.unitPurchaseEffectOnUnit")
 
 return {
   isPurchEffectVisible = isOpened

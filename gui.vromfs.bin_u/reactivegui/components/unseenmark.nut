@@ -121,12 +121,12 @@ let markByPriority = {
 
 let mkUnseenMark = @(priorirty, ovr = {}) @() {
   watch = priorirty
-  children = markByPriority?[priorirty.value]
+  children = markByPriority?[priorirty.get()]
 }.__update(ovr)
 
 let mkPriorityUnseenMarkWatch = @(watch, ovr = {}) @() {
   watch
-  children = watch.value ? priorityUnseenMark : null
+  children = watch.get() ? priorityUnseenMark : null
 }.__update(ovr)
 
 return {

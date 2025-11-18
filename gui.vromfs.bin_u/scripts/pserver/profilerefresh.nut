@@ -29,12 +29,12 @@ let hasLastBattleReward = Computed(@() (battleResult.get()?.reward.playerExp.tot
   || (battleResult.get()?.reward.unitExp.totalExp ?? 0) != 0 
 )
 let isWaitProfile = keepref(Computed(@()
-  !isInBattle.get() && hasLastBattleReward.value && !isProfileReceivedAfterBattle.value))
+  !isInBattle.get() && hasLastBattleReward.get() && !isProfileReceivedAfterBattle.get()))
 
 function checkUpdateProfile() {
   if (isInBattle.get()) {
     logPR("Delay update profile because in the battle")
-    isProfileChanged(true)
+    isProfileChanged.set(true)
     return
   }
   if (!isLoggedIn.get()) {
@@ -43,22 +43,22 @@ function checkUpdateProfile() {
     return
   }
 
-  logPR($"Update profile: isProfileChanged = {isProfileChanged.value}, isConfigsChanged = {isConfigsChanged.value}")
-  if (isConfigsChanged.value)
+  logPR($"Update profile: isProfileChanged = {isProfileChanged.get()}, isConfigsChanged = {isConfigsChanged.get()}")
+  if (isConfigsChanged.get())
     get_all_configs("onConfigsResfresh")
   get_profile({}, "onProfileRefresh")
-  isProfileRequestedAfterBattle(true)
-  isProfileChanged(false)
-  isConfigsChanged(false)
+  isProfileRequestedAfterBattle.set(true)
+  isProfileChanged.set(false)
+  isConfigsChanged.set(false)
 }
 
 registerHandler("onProfileRefresh",
   function(res) {
-    if (!isLoggedIn.value)
+    if (!isLoggedIn.get())
       return
-    lastProfileError(res?.error)
-    isProfileReceivedAfterBattle(lastProfileError.value == null)
-    if (lastProfileError.value == null)
+    lastProfileError.set(res?.error)
+    isProfileReceivedAfterBattle.set(lastProfileError.get() == null)
+    if (lastProfileError.get() == null)
       return
     logPR($"Queue profile to update in {RETRY_UPDATE_PROFILE_TIME} sec, because of error on update profile")
     resetTimeout(RETRY_UPDATE_PROFILE_TIME, checkUpdateProfile)
@@ -66,35 +66,35 @@ registerHandler("onProfileRefresh",
 
 registerHandler("onConfigsResfresh",
   function(res) {
-    if (!isLoggedIn.value)
+    if (!isLoggedIn.get())
       return
-    lastConfigsError(res?.error)
-    if (lastConfigsError.value == null)
+    lastConfigsError.set(res?.error)
+    if (lastConfigsError.get() == null)
       return
     logPR("Mark configs changed by error")
-    isConfigsChanged(true) 
+    isConfigsChanged.set(true) 
   })
 
 isInBattle.subscribe(function(v) {
   if (v) {
-    isProfileRequestedAfterBattle(false)
-    isProfileReceivedAfterBattle(false)
+    isProfileRequestedAfterBattle.set(false)
+    isProfileReceivedAfterBattle.set(false)
     return
   }
-  logPR($"Leave battle: isProfileChanged = {isProfileChanged.value}")
-  if (isProfileChanged.value)
+  logPR($"Leave battle: isProfileChanged = {isProfileChanged.get()}")
+  if (isProfileChanged.get())
     checkUpdateProfile()
 })
 
 isInDebriefing.subscribe(function(v) {
-  if (!v && !isProfileRequestedAfterBattle.value && hasLastBattleReward.value) {
+  if (!v && !isProfileRequestedAfterBattle.get() && hasLastBattleReward.get()) {
     logPR("Request update profile after debriefigng, because no event from matching")
     checkUpdateProfile()
   }
 })
 
 function sendBqNotReceivedProfile() {
-  if (!isWaitProfile.value)
+  if (!isWaitProfile.get())
     return
   if (isInDebriefing.get()) {
     
@@ -103,7 +103,7 @@ function sendBqNotReceivedProfile() {
   }
   sendUiBqEvent("profileUpdateError", {
     id = $"not updated for {SEND_BQ_NOT_RECEIVED_TIME}sec after the battle",
-    status = object_to_json_string(lastProfileError.value?.error)
+    status = object_to_json_string(lastProfileError.get()?.error)
   })
 }
 
@@ -115,7 +115,7 @@ isWaitProfile.subscribe(function(v) {
 })
 
 function updateConfigsTimer() {
-  if (isConfigsChanged.value)
+  if (isConfigsChanged.get())
     resetTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, checkUpdateProfile)
   else
     clearTimer(checkUpdateProfile)
@@ -124,15 +124,15 @@ updateConfigsTimer()
 isConfigsChanged.subscribe(@(_) updateConfigsTimer())
 
 isLoggedIn.subscribe(function(v) {
-  isProfileRequestedAfterBattle(true)
-  isProfileReceivedAfterBattle(true)
+  isProfileRequestedAfterBattle.set(true)
+  isProfileReceivedAfterBattle.set(true)
   if (v)
     return
-  isProfileChanged(false)
-  isConfigsChanged(false)
-  lastProfileError(null)
-  lastConfigsError(null)
+  isProfileChanged.set(false)
+  isConfigsChanged.set(false)
+  lastProfileError.set(null)
+  lastConfigsError.set(null)
 })
 
 mnGenericSubscribe("profile",
-  @(ev) ev?.func == "updateConfig" ? isConfigsChanged(true) : checkUpdateProfile())
+  @(ev) ev?.func == "updateConfig" ? isConfigsChanged.set(true) : checkUpdateProfile())

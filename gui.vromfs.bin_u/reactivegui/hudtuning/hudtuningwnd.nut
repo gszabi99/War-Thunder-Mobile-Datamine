@@ -56,10 +56,10 @@ let selectBorder = {
 
 function mkHudTuningElem(cfg) {
   let { id, editView, editViewKey, defTransform = {}, isVisibleInEditor = null, isVisible = null, hasScale } = cfg
-  let transform = Computed(@() (selectedId.value == id ? transformInProgress.get() : null)
+  let transform = Computed(@() (selectedId.get() == id ? transformInProgress.get() : null)
     ?? tuningTransform.get()?[id]
     ?? defTransform)
-  let isSelected = Computed(@() selectedId.value == id)
+  let isSelected = Computed(@() selectedId.get() == id)
 
   let viewWithBorder = type(editView) == "function"
     ? @() {

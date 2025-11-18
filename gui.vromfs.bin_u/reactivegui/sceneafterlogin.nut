@@ -5,10 +5,12 @@ require("%rGui/debriefing/debriefingWnd.nut")
 require("%rGui/levelUp/levelUpWnd.nut")
 require("%rGui/attributes/unitAttr/unitAttrWnd.nut")
 require("%rGui/attributes/slotAttr/slotAttrWnd.nut")
+require("%rGui/attributes/slotAttr/slotExpWnd.nut")
 require("%rGui/unitMods/unitModsWnd.nut")
 require("%rGui/unitMods/unitModsSlotsWnd.nut")
 require("%rGui/unitsTree/unitsTreeWnd.nut")
 require("%rGui/unitCustom/unitCustomWnd.nut")
+require("%rGui/unitCustom/unitCustomWndNew.nut")
 require("%rGui/slotBar/selectUnitToSlotWnd.nut")
 require("%rGui/slotBar/slotPresetsWnd.nut")
 require("%rGui/quests/questsWnd.nut")
@@ -39,7 +41,7 @@ require("%rGui/hudHints/leaveZoneTimer.nut")
 require("%rGui/hudHints/debuffWarnngs.nut")
 require("%rGui/hudHints/killStreakHint.nut")
 require("%rGui/hudHints/streakHint.nut")
-require("%rGui/hudHints/battleRoyaleMsg.nut")
+require("%rGui/hudHints/pickUpItemMsg.nut")
 require("%rGui/hudTuning/hudTuningWnd.nut")
 require("%rGui/tutorial/tutorialWnd/tutorialWnd.nut")
 require("%rGui/tutorial/tutorialAfterFreeReward.nut")
@@ -47,14 +49,15 @@ require("%rGui/tutorial/tutorialUnitsResearch.nut")
 require("%rGui/tutorial/tutorialArsenal.nut")
 require("%rGui/tutorial/tutorialBattlePass.nut")
 require("%rGui/tutorial/tutorialMainEvent.nut")
-require("%rGui/tutorial/startFirstBattleTutorial.nut")
 require("%rGui/tutorial/choosingShellsTutorial.nut")
 require("%rGui/tutorial/tutorialSlotAttributes.nut")
 require("%rGui/tutorial/tutorTreeEvent.nut")
 require("%rGui/feedback/rateGameState.nut")
 require("%rGui/updater/downloadAddonsWnd.nut")
+require("%rGui/updater/downloadMsgCtor.nut")
 require("%rGui/report/reportPlayerWnd.nut")
 require("%rGui/weaponry/debugBullets.nut")
+require("%rGui/unitCustom/unitDecals/debugDecals.nut")
 require("%rGui/shop/unseenPurchaseMessage.nut")
 require("%rGui/shop/checkPurchases.nut")
 require("%rGui/shop/goodsPreview/goodsUnitPreviewWnd.nut")
@@ -80,10 +83,11 @@ require("%rGui/debugTools/debugStreakWnd.nut")
 require("%rGui/debugTools/debugFontsWnd.nut")
 require("%rGui/debugTools/debugSkins/debugTuneSkinsWnd.nut")
 require("%rGui/debugTools/debugMapPoints/mapEditorWnd.nut")
-require("%rGui/debugTools/debugOfflineBattleWnd.nut")
+require("%rGui/gameModes/offlineBattlesWnd.nut")
 require("%rGui/debugTools/debugLootboxWnd.nut")
 require("%rGui/debugTools/localAutoTests.nut")
 require("%rGui/unlocks/loginAwardWnd.nut")
+require("%rGui/unlocks/achievementsHandler.nut")
 require("%rGui/unit/hangarUnitBattleData.nut")
 require("%rGui/mainMenu/experienceWnd.nut")
 require("%rGui/decorators/decoratorsScene.nut")
@@ -118,10 +122,15 @@ require("%rGui/levelUp/unitLevelUpRewards.nut")
 require("%rGui/consoleCmdAfterLogin.nut")
 require("%rGui/hud/indicators/missionIndicatorsMgr.nut")
 require("%rGui/unit/upgradeUnitWnd/unitUpgradeWnd.nut")
+require("%rGui/dmViewer/protAnalysisOptionsWnd.nut")
+require("%rGui/dmViewer/protAnalysisSimulationWnd.nut")
 require("%rGui/dmViewer/modeXrayDebugExport.nut")
 require("%rGui/syncCurrencies.nut")
 require("%rGui/battlePass/eventPassWnd.nut")
 require("%rGui/battlePass/eventPassPurchaseWnd.nut")
+require("%rGui/battlePass/passScene.nut")
+require("%rGui/battlePass/operationPassPurchaseWnd.nut")
+
 
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
@@ -137,6 +146,7 @@ let respawnWnd = require("%rGui/respawn/respawnWnd.nut")
 let hudSpectator = require("%rGui/hud/hudSpectator.nut")
 let hudArtilleryMap = require("%rGui/hud/hudArtilleryMap.nut")
 let { isVoiceMsgMapSceneOpened, voiceMsgMapScene } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
+let { isTacticalMapSceneOpened, tacticalMapScene } = require("%rGui/hud/tacticalMap/hudTacticalMapScene.nut")
 let flightMenu = require("%rGui/flightMenu/flightMenu.nut")
 let mpStatisticsWnd = require("%rGui/mpStatistics/mpStatisticsWnd.nut")
 let hudBase = require("%rGui/hud/hudBase.nut")
@@ -146,7 +156,8 @@ isInBattle.subscribe(@(v)
   sendNewbieBqEvent(v ? "enterBattle" : "leaveBattle", { status = isInMpSession.get() ? "online" : "offline" }))
 
 let battleScene = @() {
-  watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive, isVoiceMsgMapSceneOpened]
+  watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive,
+    isVoiceMsgMapSceneOpened, isTacticalMapSceneOpened]
   key = {}
   size = flex()
   children = isInFlightMenu.get() ? flightMenu
@@ -155,6 +166,7 @@ let battleScene = @() {
     : isInRespawn.get() ? respawnWnd
     : isInArtilleryMap.get() ? hudArtilleryMap
     : isVoiceMsgMapSceneOpened.get() ? voiceMsgMapScene
+    : isTacticalMapSceneOpened.get() ? tacticalMapScene
     : hudBase
 }
 

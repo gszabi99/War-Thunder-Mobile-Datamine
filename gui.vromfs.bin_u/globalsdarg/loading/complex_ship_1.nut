@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
+let { mkBgImageByPx, mkBgImageWithFallback } = require("%globalsDarg/components/mkAnimBg.nut")
 
 return @() [
   {
     moveX = sh(6)
-    children = mkBgImageByPx("ui/bkg/login_layer_testloading_0.avif")
+    children = mkBgImageWithFallback("ui/bkg/login_layer_testloading_0.avif")
   }
   {
     moveX = sh(-3)

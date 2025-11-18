@@ -70,11 +70,11 @@ let curAction = keepref(Computed(function() {
     return ACTION.SEND_OVR_MISSION
   }
 
-  if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataActual.value) 
+  if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataActual.get()) 
     return ACTION.SET_AND_SEND_DEFAULT
 
   if (data == null
-      && (!isBattleDataActual.value || !isUnitsInfoSame(battleData.get()?.unitsInfo, isSlots, slots)))
+      && (!isBattleDataActual.get() || !isUnitsInfoSame(battleData.get()?.unitsInfo, isSlots, slots)))
     return ACTION.ACTUALIZE
   return ACTION.SET_AND_SEND
 }))
@@ -83,33 +83,33 @@ let actions = {
   [ACTION.ACTUALIZE] = @() actualizeBattleData(state.get().isSlots ? state.get().slots : state.get().slots[0]),
   [ACTION.ACTUALIZE_OVR_MISSION] = @() actualizeBattleDataOvrMission(state.get()?.ovrUnitUpgradesPreset ?? "", state.get()?.slots ?? []),
   [ACTION.SET_AND_SEND] = function() {
-    let { payload, jwt } = battleData.value
+    let { payload, jwt } = battleData.get()
     state.mutate(@(v) v.data <- payload)
-    if (myUserId.value != payload?.userId)
-      logerr($"[BATTLE_DATA] token userId ({payload?.userId}) does not same with my user id ({myUserId.value}). Will be ignored on dedicated.")
-    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
+    if (myUserId.get() != payload?.userId)
+      logerr($"[BATTLE_DATA] token userId ({payload?.userId}) does not same with my user id ({myUserId.get()}). Will be ignored on dedicated.")
+    ecs.client_request_unicast_net_sqevent(state.get().eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
   },
   [ACTION.SET_AND_SEND_DEFAULT] = function() {
-    let unitName = state.value.slots?[0] ?? ""
+    let unitName = state.get().slots?[0] ?? ""
     state.mutate(@(v) v.data <- getDefaultBattleData(unitName, myUserId.get()))
-    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetDefaultBattleData({ dataId = unitName }))
+    ecs.client_request_unicast_net_sqevent(state.get().eid, mkCmdSetDefaultBattleData({ dataId = unitName }))
   },
   [ACTION.SEND_OVR_MISSION] = function() {
-    let { payload, jwt } = battleDataOvrMission.value
-    if (myUserId.value != payload?.userId)
-      logerr($"[BATTLE_DATA] token userId ({payload?.userId}) does not same with my user id ({myUserId.value}). Will be ignored on dedicated.")
-    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
+    let { payload, jwt } = battleDataOvrMission.get()
+    if (myUserId.get() != payload?.userId)
+      logerr($"[BATTLE_DATA] token userId ({payload?.userId}) does not same with my user id ({myUserId.get()}). Will be ignored on dedicated.")
+    ecs.client_request_unicast_net_sqevent(state.get().eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
   },
   [ACTION.REQUEST] = @()
-    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdGetMyBattleData({ a = "" })),  
+    ecs.client_request_unicast_net_sqevent(state.get().eid, mkCmdGetMyBattleData({ a = "" })),  
 }
 
 function onChangeSlots(eid, comp) {
   let userId = comp.server_player__userId
-  if (userId != myUserId.value || !is_multiplayer())
+  if (userId != myUserId.get() || !is_multiplayer())
     return
-  if (get_mp_session_id_str() == state.value?.sessionId
-      && (state.value?.slots.len() ?? 0) > 0) {
+  if (get_mp_session_id_str() == state.get()?.sessionId
+      && (state.get()?.slots.len() ?? 0) > 0) {
     logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived},",
       $"isUnitsOverrided = {comp.isUnitsOverrided}, ovrUnitUpgradesPreset = {comp.ovrUnitUpgradesPreset}")
     state.mutate(function(v) {
@@ -132,7 +132,7 @@ function onChangeSlots(eid, comp) {
     $"isUnitsOverrided = {comp.isUnitsOverrided}, ovrUnitUpgradesPreset = {comp.ovrUnitUpgradesPreset}, isSlots = {isSlots},",
     "slots = ",
     slots)
-  state({ eid, sessionId = get_mp_session_id_str(), isSlots, slots,
+  state.set({ eid, sessionId = get_mp_session_id_str(), isSlots, slots,
     isBattleDataReceived = comp.isBattleDataReceived,
     isUnitsOverrided = comp.isUnitsOverrided,
     ovrUnitUpgradesPreset = comp.ovrUnitUpgradesPreset,
@@ -141,10 +141,10 @@ function onChangeSlots(eid, comp) {
 
 function onDestroySlots(_eid, comp) {
   let userId = comp.server_player__userId
-  if (userId != myUserId.value)
+  if (userId != myUserId.get())
     return
   logBD("Destroy slots")
-  if (state.value != null)
+  if (state.get() != null)
     state.mutate(function(v) {
       v.isBattleDataReceived <- null
       v.isUnitsOverrided <- null
@@ -154,7 +154,7 @@ function onDestroySlots(_eid, comp) {
 local isDebugMyBattleData = false
 function onSetMyBattleData(evt, _eid, comp) {
   let userId = comp.server_player__userId
-  if (userId != myUserId.value || state.value == null)
+  if (userId != myUserId.get() || state.get() == null)
     return
   logBD("Receive my battle data from dedicated")
   if (isDebugMyBattleData) {
@@ -189,9 +189,9 @@ function applyAction(actionId) {
   logBD($"Apply action {actionId}")
   actions[actionId]()
 }
-applyAction(curAction.value)
+applyAction(curAction.get())
 curAction.subscribe(@(actionId) defer(function() { 
-  if (actionId == curAction.value)
+  if (actionId == curAction.get())
     applyAction(actionId)
 }))
 
@@ -210,13 +210,13 @@ function setBattleDataToClientEcs(bd) {
     return
   local isFound = false
   battleDataQuery(function(_, c) {
-    if (c.server_player__userId != myUserId.value)
+    if (c.server_player__userId != myUserId.get())
       return
     logBD("Set my battle data to client entity ", bd?.unit.name)
     c.battleData = bd
     isFound = true
-    lastClientBattleData(bd)
-    isBattleDataApplied(true)
+    lastClientBattleData.set(bd)
+    isBattleDataApplied.set(true)
   })
 
   if (isFound)
@@ -228,14 +228,14 @@ function setBattleDataToClientEcs(bd) {
 
   ecs.g_entity_mgr.createEntity("wtm_server_player",
     {
-      server_player__userId = [myUserId.value, ecs.TYPE_UINT64]
+      server_player__userId = [myUserId.get(), ecs.TYPE_UINT64]
       isBattleDataReceived = true
       battleData = bd
     },
     function(_e) {
       logBD("Created wtm_server_player with battle data for not multiplayer battle. ", bd?.unit.name)
-      lastClientBattleData(bd)
-      isBattleDataApplied(true)
+      lastClientBattleData.set(bd)
+      isBattleDataApplied.set(true)
     })
 }
 
@@ -262,14 +262,14 @@ function createBattleDataForLocalMP() {
 }
 
 let onCreateBattleDataForClient = @() is_local_multiplayer() ? createBattleDataForLocalMP()
-  : is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
-  : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
+  : is_multiplayer() ? setBattleDataToClientEcs(state.get()?.data)
+  : isBattleDataActual.get() ? setBattleDataToClientEcs(battleData.get()?.payload)
   : logBD("Ignore set battle data to client because of not actual")
 
 registerRespondent("create_battle_data_for_client", onCreateBattleDataForClient)
 
 let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.get() || !is_multiplayer() ? null
-  : state.value?.data))
+  : state.get()?.data))
 mpBattleDataForClientEcs.subscribe(@(v) setBattleDataToClientEcs(v))
 
 realBattleData.subscribe(function(v) {
@@ -283,20 +283,20 @@ isInBattle.subscribe(function(v) {
   if (v) {
     if (!isBattleDataApplied.get())
       battleCampaign.set("")
-    wasBattleDataApplied(isBattleDataApplied.get())
+    wasBattleDataApplied.set(isBattleDataApplied.get())
   }
   else {
-    isBattleDataApplied(false)
+    isBattleDataApplied.set(false)
     isSingleMissionOverrided.set(false)
   }
 })
-isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied(v) : null)
+isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied.set(v) : null)
 
-let battleUnitName = keepref(Computed(@() !isInBattle.get() ? null : state.value?.slots[0]))
-battleUnitName.subscribe(@(v) mainBattleUnitName(v))
+let battleUnitName = keepref(Computed(@() !isInBattle.get() ? null : state.get()?.slots[0]))
+battleUnitName.subscribe(@(v) mainBattleUnitName.set(v))
 
 register_command(function() {
-  if (state.value == null)
+  if (state.get() == null)
     return console_print("No info about battle data")
   isDebugMyBattleData = true
   applyAction(ACTION.REQUEST)

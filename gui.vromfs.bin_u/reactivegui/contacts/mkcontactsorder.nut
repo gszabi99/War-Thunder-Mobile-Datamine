@@ -9,7 +9,7 @@ let priorityByStatus = {
 }
 
 let mkContactsOrderImpl = @(uids) Computed(function(prev) {
-  let uidsArr = type(uids.value) == "table" ? uids.value.keys() : uids.value
+  let uidsArr = type(uids.get()) == "table" ? uids.get().keys() : uids.get()
   let priorities = {}
   foreach(uid in uidsArr)
     priorities[uid] <- priorityByStatus?[onlineStatus.get()?[uid]] ?? -1

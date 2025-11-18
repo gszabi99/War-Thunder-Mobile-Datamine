@@ -7,7 +7,7 @@ let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentati
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 
 let bgByHangar = {
   tanks = {
@@ -38,7 +38,7 @@ let mkAllTreeUnits = @() Computed(@() needToShowHiddenUnitsDebug.get()
   ? campUnitsCfg.get()
     .map(@(u, id) campMyUnits.get()?[id] ?? u)
   : campUnitsCfg.get()
-    .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get())
+    .filter(@(u) (!u?.isHidden && u.name not in unreleasedUnits.get())
       || u.name in campMyUnits.get()
       || (blueprints.get()?[u.name] ?? 0) > 0)
     .map(@(u, id) campMyUnits.get()?[id] ?? u))

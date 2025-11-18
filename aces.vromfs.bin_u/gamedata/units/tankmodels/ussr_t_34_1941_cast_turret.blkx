@@ -1068,7 +1068,13 @@
     "tracks": {
       "animationMultiplier": 0.68,
       "height": 0.04,
-      "width": 0.55
+      "width": 0.55,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.2,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1081,12 +1087,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.317,
       "mainGearRatio": 1.02,
       "sideGearRatio": 5.7,
       "minGearChangeTime": 0.0,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
           -5.35,
@@ -1211,6 +1217,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -1228,6 +1235,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -1288,6 +1296,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1305,6 +1314,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -1378,6 +1388,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1519,6 +1530,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1526,6 +1538,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1533,6 +1546,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -1983,6 +1997,58 @@
       0.15,
       0.35,
       0.5
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2716,9 +2782,7 @@
     "art_support_smoke": {},
     "art_support_mortars": {},
     "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
-    "tank_smoke_screen_low_cooldown": {},
-    "tank_smoke_screen_long_duration": {}
+    "tank_smoke_screen_smoke_shell": {}
   },
   "default_skin": {
     "replace_tex": {
@@ -2732,99 +2796,52 @@
       "camo_scale": -50.0,
       "camo_rotation": -56.0,
       "decal0Line0": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0Line1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0Line2": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0Line3": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0HaveCP": false,
-      "decal0CPNormDepth": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0CPNormDepth1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "decal0RotScale": [
-        1.5708,
-        1.0
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.0,
-      "decal0Tex": "",
-      "decal1Line0": [
         2.49505,
         -1.52471e-7,
         0.564139,
         -1.59018
       ],
-      "decal1Line1": [
+      "decal0Line1": [
         0.295487,
         -2.17906,
         -1.30687,
         3.50256
       ],
-      "decal1Line2": [
+      "decal0Line2": [
         -2.49505,
         -1.52471e-7,
         0.564139,
         2.59018
       ],
-      "decal1Line3": [
+      "decal0Line3": [
         0.295487,
         -2.17906,
         1.30687,
         3.50256
       ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
         0.187864,
         0.523784,
         -0.830877,
         -1.69224
       ],
-      "decal1CPNormDepth1": [
+      "decal0CPNormDepth1": [
         0.187864,
         0.523784,
         0.830877,
         -1.69224
       ],
-      "decal1RotScale": [
+      "decal0RotScale": [
         1.5708,
         0.390926
       ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.203894,
-      "decal1Tex": "ussr_1gv_tank_brigade_emblem_light"
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.203894,
+      "decal0Tex": "ussr_1gv_tank_brigade_emblem_light"
     }
   },
   "vehicleSkins": {

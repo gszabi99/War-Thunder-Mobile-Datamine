@@ -31,24 +31,24 @@ let statusText = Computed(@() updaterError.get() != null ? loc($"updater/error/{
 )
 
 let updaterEvents = {
-  [UPDATER_EVENT_STAGE]         = @(evt) updaterStage(evt.stage),
+  [UPDATER_EVENT_STAGE]         = @(evt) updaterStage.set(evt.stage),
   [UPDATER_EVENT_DOWNLOAD_SIZE] = function (evt) {
-    totalSizeBytes(evt.toDownload)
+    totalSizeBytes.set(evt.toDownload)
     local showWarning = evt?.showWarning ?? false
     if (is_ios && evt.toDownload > 0 && showWarning) {
       logU($"Download size: {evt.toDownload}, waiting for user accept on iOS")
-      needDownloadAcceptMsg(true)
+      needDownloadAcceptMsg.set(true)
     } else {
       set_accept_user_react()
     }
   },
-  [UPDATER_EVENT_PROGRESS]      = @(evt) progress({
+  [UPDATER_EVENT_PROGRESS]      = @(evt) progress.set({
     percent = evt.percent
     etaSec = evt.etaSec
     dspeed = evt.dspeed
   }),
-  [UPDATER_EVENT_ERROR]         = @(evt) updaterError(evt.error),
-  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg(true) : needRestartMsg(true),
+  [UPDATER_EVENT_ERROR]         = @(evt) updaterError.set(evt.error),
+  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg.set(true) : needRestartMsg.set(true),
 }
 
 let stageNames = {}

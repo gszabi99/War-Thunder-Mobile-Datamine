@@ -34,7 +34,7 @@ register_command(function() {
   local status = connectionStatusAnd.get() + 1
   if (status > CONN_LIMITED)
     status = CONN_NO_CONNECTION
-  debugStatus(status == connectionStatusAndRaw.get() ? null : status)
+  debugStatus.set(status == connectionStatusAndRaw.get() ? null : status)
   eventbus_send("android.network.onConnectionStatusChange", { status })
   console_print($"Connection status changed to {connectionStatusMap[status]}") 
 }, "debug.ui.connectionStatusToggle")

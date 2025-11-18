@@ -198,7 +198,7 @@ let mkProgressBar = @(animId, curLevelIdxWatch, levelUpsArray, lineColor) functi
             play = true
           }
           {
-            prop = AnimProp.scale, from = [curExpWidth.tofloat() / (receivedExpWidth || 1), 1.0],
+            prop = AnimProp.scale, from = [curExpWidth.tofloat() / max(receivedExpWidth, 1), 1.0],
             to = [1.0, 1.0], duration = stepAnimTime, delay = stepAnimDelay,
             easing = InOutQuart, play = true,
             onStart = @() levelLineSound(stepAnimTime),

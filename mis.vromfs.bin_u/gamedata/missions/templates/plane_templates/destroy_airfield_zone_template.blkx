@@ -229,6 +229,7 @@
           "value": -3,
           "valueSystem": "percentage",
           "changeReason": "airport_died",
+          "ignoreSingleMissions": false,
           "team": "A"
         }
       },
@@ -259,6 +260,7 @@
           "value": -3,
           "valueSystem": "percentage",
           "changeReason": "airport_died",
+          "ignoreSingleMissions": false,
           "team": "B"
         }
       },

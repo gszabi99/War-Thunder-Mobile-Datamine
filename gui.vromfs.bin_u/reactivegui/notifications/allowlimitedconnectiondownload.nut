@@ -21,7 +21,7 @@ let needShowMessage = keepref(Computed(@() !isAsked.get()
   && isDownloadPausedByConnection.get()))
 
 function openMessageIfNeed() {
-  if (!needShowMessage.value)
+  if (!needShowMessage.get())
     return
   openMsgBox({
     text = loc("msg/allowMobileNetworkDownload")
@@ -29,7 +29,7 @@ function openMessageIfNeed() {
       { id = "cancel", isCancel = true, cb = @() isAsked.set(true) }
       { id = "download", styleId = "PRIMARY", isDefault = true,
         function cb() {
-          isAsked(true)
+          isAsked.set(true)
           allowLimitedDownload.set(true)
         }
       }

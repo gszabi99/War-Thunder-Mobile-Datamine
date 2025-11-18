@@ -62,13 +62,13 @@ function buyPlatformGoodsExt(goodsOrId) {
     })
     return
   }
-  let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.value?[goodsOrId]
+  let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.get()?[goodsOrId]
   if (is_android && !isHuaweiBuild && isForbiddenPlatformPurchaseFromRussia(goods)) {
     if(has_payments_blocked_web_page.get())
       openMsgBoxInAppPurchasesFromRussia(goods)
     else{
-      local goodsRuss = platformGoodsFromRussia.value?[goodsOrId] ??
-        platformGoodsFromRussia.value?[goods.relatedGaijinId]
+      local goodsRuss = platformGoodsFromRussia.get()?[goodsOrId] ??
+        platformGoodsFromRussia.get()?[goods.relatedGaijinId]
       local baseUrl = goodsRuss?.purchaseUrl
       if (baseUrl == null)
         return

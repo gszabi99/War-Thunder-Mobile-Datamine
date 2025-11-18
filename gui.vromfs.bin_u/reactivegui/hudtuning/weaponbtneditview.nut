@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { btnBgColor, borderColor, borderWidth, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { borderColor, borderWidth, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { defImageSize } = require("%rGui/hud/weaponsButtonsView.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
+let { hudWhiteColor, hudBlackColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
 
 let weaponNumberSize = (0.3 * touchButtonSize).tointeger()
-let weaponNumberColor = 0xFF000000
+let weaponNumberColor = hudBlackColor
 
 let mkWeaponNumber = @(weaponNumber, isRoman = true) weaponNumber == 0 ? null : {
   pos = [pw(30), 0]
@@ -16,7 +17,7 @@ let mkWeaponNumber = @(weaponNumber, isRoman = true) weaponNumber == 0 ? null : 
     {
       size = [weaponNumberSize, weaponNumberSize]
       rendObj = ROBJ_BOX
-      fillColor = 0xFFFFFFFF
+      fillColor = hudWhiteColor
       transform = { rotate = 45 }
     }
     {
@@ -37,7 +38,7 @@ let weaponBtnEditViewCtor = @(size, imgSize) function(image, relImageSize = 1, o
       {
         rendObj = ROBJ_SOLID
         size = [size, size]
-        color = btnBgColor.empty
+        color = hudTransparentColor
         transform = { rotate = 45 }
       }
       {

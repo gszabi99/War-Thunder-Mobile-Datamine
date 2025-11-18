@@ -3,7 +3,7 @@ let { approveFriendRequest, rejectFriendRequest } = require("%rGui/contacts/cont
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { gap } = require("%rGui/contacts/contactInfoPkg.nut")
 
-let btnDefOvr = { size = [evenPx(100), evenPx(55)], vplace = ALIGN_CENTER }
+let btnDefOvr = { size = [evenPx(65), evenPx(65)], vplace = ALIGN_CENTER }
 let mkContactResponse = @(uid) @() {
   size = FLEX_V
   flow = FLOW_HORIZONTAL

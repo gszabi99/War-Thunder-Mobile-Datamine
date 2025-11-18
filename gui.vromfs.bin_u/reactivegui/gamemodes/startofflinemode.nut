@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 let logO = log_with_prefix("[OFFLINE_MISSION] ")
-let { eventbus_send } = require("eventbus")
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { getMissionUnitsAndAddons, getCommonBots, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { soloNewbieByCampaign } = require("%appGlobals/updater/addons.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { missingUnitResourcesByRank, getMissingUnitsForRank } = require("%appGlobals/updater/gameModeAddons.nut")
+let { getCampaignRankAddons, getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
 
 
 let defTestFlight = "testFlight_destroyer_usa_tfs"
@@ -23,37 +23,32 @@ let testFlightByUnitType = {
   [TANK]            = "testFlight_ussr_tft",
 }
 
-function downloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
-  let { mRank = 1 } = serverConfigs.get()?.allUnits[unitName]
-  let pkgs = getUnitPkgs(unitName, mRank)
-    .extend(extAddons)
-    .filter(@(v) !hasAddons.get()?[v])
-  if (pkgs.len() == 0)
-    eventbus_send(eventId, params)
-  else
-    openDownloadAddonsWnd(pkgs, eventId, { paramStr1 = unitName, paramInt1 = mRank, unit = unitName },
-      eventId, params)
-}
+let getBulletsForTestFlight = @(unitName, level = 1000) getDefaultBulletsForSpawn(unitName, level, campMyUnits.get()?[unitName].mods)
 
-let getBulletsForTestFlight = @(unitName) getDefaultBulletsForSpawn(unitName, 1000, campMyUnits.get()?[unitName].mods)
-
-function startTestFlightImpl(unitName, missionName, skin) {
+function startTestFlightImpl(unitName, missionNameExt, skin) {
   if (unitName == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
 
   let unitType = getUnitType(unitName)
-  let params = {
+  let missionName = missionNameExt ?? testFlightByUnitType?[unitType] ?? defTestFlight
+  let evtParams = {
     unitName
     skin
-    missionName = missionName ?? testFlightByUnitType?[unitType] ?? defTestFlight
+    missionName
     bullets = getBulletsForTestFlight(unitName)
     weaponPreset = getUnitSlotsPresetNonUpdatable(unitName, campMyUnits.get()?[unitName].mods)
       .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
   }
-  logO("downloadUnitPacksAndSend startTestFlight")
-  downloadUnitPacksAndSend(unitName, [], "startTestFlight", params)
+  logO("openDownloadAddonsWnd startTestFlight")
+  let { mRank = 1 } = serverConfigs.get()?.allUnits[unitName]
+  let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
+  let units = { [getTagsUnitName(unitName)] = true }.__update(misUnits)
+  openDownloadAddonsWnd(getCampaignRankAddons(curCampaign.get(), 1).extend(misAddons.keys()),
+    addSupportUnits(units).keys(),
+    "startTestFlight", { paramStr1 = unitName, paramInt1 = mRank, unit = unitName },
+    "startTestFlight", evtParams)
 }
 
 let getUnitSkin = @(unit) unit?.currentSkins[unit.name] ?? ""
@@ -64,18 +59,24 @@ let startTestFlightByName = @(unitName, missionName = null, skin = "")
 let startTestFlight = @(unit, missionName = null)
   startTestFlightByName(unit.name, missionName, getUnitSkin(unit))
 
-function startOfflineBattle(unit, missionName) {
+function startNewbieOfflineBattle(unit, missionName) {
   if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  logO("downloadUnitPacksAndSend startTraining")
-  downloadUnitPacksAndSend(unit.name, soloNewbieByCampaign?[curCampaign.get()] ?? [], "startTraining",
+  logO("openDownloadAddonsWnd startTraining")
+  let { mRank = 1 } = serverConfigs.get()?.allUnits[unit.name]
+  let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
+  let units = { [getTagsUnitName(unit.name)] = true }.__update(misUnits)
+  openDownloadAddonsWnd(getCampaignPkgsForNewbieSingle(curCampaign.get()).extend(misAddons.keys()),
+    addSupportUnits(units).keys(),
+    "startTraining", { paramStr1 = unit.name, paramInt1 = mRank, unit = unit.name },
+    "startTraining",
     {
       unitName = unit.name
       skin = getUnitSkin(unit)
       missionName
-      bullets = getBulletsForTestFlight(unit.name)
+      bullets = getBulletsForTestFlight(unit.name, unit?.level ?? 1000)
       weaponPreset = getUnitSlotsPresetNonUpdatable(unit.name, unit?.mods)
         .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
     })
@@ -95,8 +96,15 @@ function startLocalMPBattle(unit, missionName, presetOvrMis = null, misBlkParams
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  logO("downloadUnitPacksAndSend startLocalMP")
-  downloadUnitPacksAndSend(unit.name, [], "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
+  logO("openDownloadAddonsWnd startLocalMP")
+  let { mRank = 1, campaign = "" } = serverConfigs.get()?.allUnits[unit.name]
+  let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
+  let units = getMissingUnitsForRank(campaign, mRank, missingUnitResourcesByRank.get())
+    .__merge(misUnits, getCommonBots(campaign, mRank, mRank))
+  openDownloadAddonsWnd(getCampaignRankAddons(campaign, mRank).extend(misAddons.keys()),
+    addSupportUnits(units).keys(),
+    "startLocalMP", { paramStr1 = unit.name, paramInt1 = mRank, unit = unit.name },
+    "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
 }
 
 function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = null, misBlkParams = {}) {
@@ -104,14 +112,21 @@ function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = nul
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  logO("downloadUnitPacksAndSend startLocalMPWithoutGM")
-  downloadUnitPacksAndSend(unit.name, [], "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
+  logO("openDownloadAddonsWnd startLocalMPWithoutGM")
+  let { mRank = 1, campaign = "" } = serverConfigs.get()?.allUnits[unit.name]
+  let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
+  let units = getMissingUnitsForRank(campaign, mRank, missingUnitResourcesByRank.get())
+    .__merge(misUnits, getCommonBots(campaign, mRank, mRank))
+  openDownloadAddonsWnd(getCampaignRankAddons(campaign, mRank).extend(misAddons.keys()),
+    addSupportUnits(units).keys(),
+    "startLocalMPWithoutGM", { paramStr1 = unit.name, paramInt1 = mRank, unit = unit.name },
+    "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
 }
 
 return {
   startTestFlight
   startTestFlightByName
-  startOfflineBattle
+  startNewbieOfflineBattle
   startLocalMPBattle
   startLocalMPBattleWithoutGamemode
 }

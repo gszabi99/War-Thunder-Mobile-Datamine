@@ -40,14 +40,14 @@ foreach (key in [ "gpu", "preset", "sessionId", "latency", "latencyA", "latencyR
 let { gpu, preset, sessionId, latency, latencyA, latencyR } = comps
 
 let graphicsText = Computed(@() !(hasAddons.get()?.pkg_secondary_hq ?? true)  ? "Low Quality Textures"
-  : preset.value != "" ? $"Graphics: {capitalize(preset.value)}"
+  : preset.get() != "" ? $"Graphics: {capitalize(preset.get())}"
   : "")
 
-let latencyText = Computed(@() latency.value < 0 ? ""
-  : latencyA.value >= 0 && latencyR.value >= 0
+let latencyText = Computed(@() latency.get() < 0 ? ""
+  : latencyA.get() >= 0 && latencyR.get() >= 0
     ? format("%s:%5.1fms (A:%5.1fms R:%5.1fms)", loc("latency", "Latency"),
-      latency.value, latencyA.value, latencyR.value)
-  : format("%s:%5.1fms", loc("latency", "Latency"), latency.value)
+      latency.get(), latencyA.get(), latencyR.get())
+  : format("%s:%5.1fms", loc("latency", "Latency"), latency.get())
 )
 
 let gap = hdpx(10)
@@ -83,7 +83,7 @@ let gpuBigComp = @() textStyle.__merge({
 
 let sessionComp = @() textStyle.__merge({
   watch = sessionId
-  text = sessionId.value
+  text = sessionId.get()
 })
 
 let versionComp = @() textStyle.__merge({

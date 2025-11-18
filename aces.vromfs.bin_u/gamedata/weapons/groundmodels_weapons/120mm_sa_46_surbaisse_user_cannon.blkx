@@ -38,7 +38,7 @@
     "maxDistance": 10000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
-    "groundRicochetPreset": "ap",
+    "groundRicochetPreset": "ap_ground",
     "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -204,7 +204,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
-      "groundRicochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -367,12 +367,13 @@
       "mass": 22.84,
       "explosiveType": "comp_b",
       "explosiveMass": 3.55,
+      "rendinstDamageRadius": 5.0,
       "caliber": 0.12,
       "speed": 762.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -390,8 +391,11 @@
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "120mm_obus_explosif",
       "hitPowerMult": 40.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.3,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -414,6 +418,24 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "hitpower": {
         "HitPower0m": [

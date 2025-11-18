@@ -34,6 +34,7 @@ let TurretsEmpty = Watched(array(NUM_TURRETS_MAX, false))
 let activeCameraView = Watched(null)
 let isActiveTurretCamera = Computed(@() activeCameraView.get() == TURRET)
 let DmStateMask    = Watched(0)
+let isTorpedoReady = Watched(false)
 
 let airState = {
   TrtMode0
@@ -69,6 +70,7 @@ let airState = {
 
   TargetLockTime = Watched(0)
   DmStateMask
+  isTorpedoReady
 }
 
 interopGen({
@@ -88,12 +90,13 @@ interopGen({
   postfix = "Update"
 })
 
-registerInteropFunc("updateCannonsArray", function(index, count, _seconds, _selected, time, endTime, _mode) {
+registerInteropFunc("updateCannonsArray", function(tb) {
+  let { index, count, time, endTime } = tb
   if (index != 0)
     return
   let p = Cannon0.get()
   if (p.count != count || p.time != time || p.endTime != endTime)
-    Cannon0.set({ count, time, endTime })
+    Cannon0.set(tb)
 })
 
 registerInteropFunc("updateGunsOverheat", function(cannons_overheat, mguns_overheat, addguns_overheat) {
@@ -105,28 +108,27 @@ registerInteropFunc("updateGunsOverheat", function(cannons_overheat, mguns_overh
     addgunsOverheat.set(addguns_overheat)
 })
 
-registerInteropFunc("updateMachineGunsArray", function(index, count, _seconds, _selected, time, endTime, _mode) {
+registerInteropFunc("updateMachineGunsArray", function(tb) {
+  let { index, count, time, endTime } = tb
   if (index != 0)
     return
   let p = MGun0.get()
   if (p.count != count || p.time != time || p.endTime != endTime)
-    MGun0.set({ count, time, endTime })
+    MGun0.set(tb)
 })
 
-registerInteropFunc("updateAdditionalCannons", function(count, _seconds, _mode, _selected, time, endTime) {
+registerInteropFunc("updateAdditionalCannons", function(tb) {
+  let { count, time, endTime } = tb
   let guns = AddGun.get()
   if (guns.count != count || guns.time != time || guns.endTime != endTime)
-    AddGun.set(AddGun.get().__merge({ count, time, endTime }))
+    AddGun.set(AddGun.get().__merge(tb))
 })
 
-registerInteropFunc("updateBombs", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  BombsState.set({ count, time, endTime }))
+registerInteropFunc("updateBombs", @(tb) BombsState.set(tb))
 
-registerInteropFunc("updateRockets", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  RocketsState.set({ count, time, endTime }))
+registerInteropFunc("updateRockets", @(tb) RocketsState.set(tb))
 
-registerInteropFunc("updateTorpedoes", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  TorpedoesState.set({ count, time, endTime }))
+registerInteropFunc("updateTorpedoes", @(tb) TorpedoesState.set(tb))
 
 registerInteropFunc("updateEnginesThrottle", function(mode, trt, _state, index) {
   if (index != 0)

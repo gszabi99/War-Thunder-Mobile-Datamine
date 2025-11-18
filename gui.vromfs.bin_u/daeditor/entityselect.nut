@@ -1,11 +1,12 @@
-import "entity_editor" as entity_editor
 from "string" import format
 from "%darg/ui_imports.nut" import *
 from "%sqstd/ecs.nut" import *
 from "components/style.nut" import colors
 from "%darg/laconic.nut" import *
 from "%sqstd/underscore.nut" import partition, flatten
-let { EntitySelectWndId, selectedEntities, markedScenes, de4workMode } = require("state.nut")
+
+let entity_editor = require_optional("entity_editor")
+let { EntitySelectWndId, selectedEntities, markedScenes, de4workMode, allScenesWatcher, getAllScenes } = require("state.nut")
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let { setTooltip } = require("components/cursors.nut")
@@ -21,7 +22,6 @@ let filterString = mkWatched(persist, "filterString", "")
 let filterEntitiesByMarkedScenes = mkWatched(persist, "filterEntitiesByMarkedScenes", true)
 let scrollHandler = ScrollHandler()
 let allEntities = mkWatched(persist, "allEntities", [])
-let allScenes = mkWatched(persist, "allScenes", [])
 let allSceneIndices = mkWatched(persist, "allSceneIndices", [])
 
 let statusAnimTrigger = { lastN = null }
@@ -40,6 +40,7 @@ let numSelectedEntities = Computed(function() {
   return nSel
 })
 
+allScenesWatcher.subscribe_with_nasty_disregard_of_frp_update(@(v) allSceneIndices.set(getSceneIndicies(v)))
 
 function matchEntityByText(eid, text) {
   if (text==null || text=="" || eid.tostring().indexof(text)!=null)
@@ -102,7 +103,7 @@ function scrollBySelection() {
 function doSelect() {
   let eids = []
   foreach (k, v in selectionState.get()) if (v) eids.append(k)
-  entity_editor.get_instance().selectEntities(eids)
+  entity_editor?.get_instance().selectEntities(eids)
   gui_scene.resetTimeout(0.1, function() {
     selectedEntities.trigger()
     selectionState.trigger()
@@ -113,8 +114,8 @@ function doSelect() {
 function doLocate() {
   let eids = []
   foreach (k, v in selectionState.get()) if (v) eids.append(k)
-  entity_editor.get_instance().selectEntities(eids)
-  entity_editor.get_instance().zoomAndCenter()
+  entity_editor?.get_instance().selectEntities(eids)
+  entity_editor?.get_instance().zoomAndCenter()
 }
 
 function statusLine() {
@@ -154,7 +155,7 @@ let filter = nameFilter(filterString, {
   placeholder = "Filter by name"
 
   function onChange(text) {
-    filterString(text)
+    filterString.set(text)
   }
 
   function onEscape() {
@@ -166,7 +167,7 @@ let filter = nameFilter(filterString, {
   }
 
   function onClear() {
-    filterString.update("")
+    filterString.set("")
     set_kb_focus(null)
   }
 })
@@ -182,7 +183,7 @@ function doSelectEid(eid, mod) {
   }
   if (!found)
     eids.append(eid)
-  entity_editor.get_instance().selectEntities(eids)
+  entity_editor?.get_instance().selectEntities(eids)
   gui_scene.resetTimeout(0.1, @() selectionState.trigger())
 }
 
@@ -196,7 +197,7 @@ function mkEntitySceneTooltip(loadType, index) {
     local idSeparator = ""
     local indexText = ""
     local loadTypeIndex = allSceneIndices.get()[loadType]
-    local sceneInfo = allScenes.get()[loadTypeIndex + index]
+    local sceneInfo = getAllScenes()[loadTypeIndex + index]
     if (sceneInfo.importDepth != 0) {
       loadTypeText = getSceneLoadTypeText(sceneInfo)
       idSeparator = ":"
@@ -234,14 +235,14 @@ function listRow(eid, idx) {
     let name = removeSelectedByEditorTemplate(tplName)
     let div = (tplName != name) ? "•" : "|"
 
-    local loadTypeVal = entity_editor.get_instance()?.getEntityRecordLoadType(eid) ?? 0
-    local indexVal = entity_editor.get_instance()?.getEntityRecordIndex(eid) ?? -1
+    local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid) ?? 0
+    local indexVal = entity_editor?.get_instance().getEntityRecordIndex(eid) ?? -1
     local loadType = "MAIN"
     local idSeparator = ""
     local index = ""
     if (loadTypeVal > 0 && indexVal >= 0) {
       local loadTypeIndex = allSceneIndices.get()[loadTypeVal]
-      local scene = allScenes.get()[loadTypeIndex + indexVal]
+      local scene = getAllScenes()[loadTypeIndex + indexVal]
       if (scene.importDepth != 0) {
         loadType = getSceneLoadTypeText(scene)
         idSeparator = ":"
@@ -347,15 +348,13 @@ function listRowMoreLeft(num, idx) {
 
 
 function initEntitiesList() {
-  local scenes = entity_editor.get_instance()?.getSceneImports() ?? []
-  allScenes(scenes)
-  allSceneIndices(getSceneIndicies(scenes))
-  let entities = entity_editor.get_instance()?.getEntities(selectedGroup.get()) ?? []
+  allSceneIndices.set(getSceneIndicies(getAllScenes()))
+  let entities = entity_editor?.get_instance().getEntities(selectedGroup.get()) ?? []
   foreach (eid in entities) {
     let isSelected = selectedEntities.get()?[eid] ?? false
     selectionState.get()[eid] <- isSelected
   }
-  allEntities(entities)
+  allEntities.set(entities)
   selectionState.trigger()
 }
 
@@ -375,7 +374,7 @@ function entitySceneFilterCheckbox() {
   let hoverFlag = Computed(@() stateFlags.get() & S_HOVER)
 
   function onClick() {
-    filterEntitiesByMarkedScenes.update(!filterEntitiesByMarkedScenes.get())
+    filterEntitiesByMarkedScenes.set(!filterEntitiesByMarkedScenes.get())
     return
   }
 
@@ -411,7 +410,7 @@ function entitySceneFilterCheckbox() {
 
           children = mark
 
-          onElemState = @(sf) stateFlags.update(sf)
+          onElemState = @(sf) stateFlags.set(sf)
 
           onClick
         }
@@ -428,7 +427,7 @@ function entitySceneFilterCheckbox() {
 }
 
 function mkEntitySelect() {
-  let templatesGroups = ["(all workset entities)"].extend(entity_editor.get_instance().getEcsTemplatesGroups())
+  let templatesGroups = ["(all workset entities)"].extend(entity_editor?.get_instance().getEcsTemplatesGroups())
 
   function listContent() {
     const maxVisibleItems = 500
@@ -484,7 +483,7 @@ function mkEntitySelect() {
   return @() {
     flow = FLOW_VERTICAL
     gap = fsh(0.5)
-    watch = const [allEntities, selectedEntities]
+    watch = [allEntities, selectedEntities]
     size = flex()
     children = [
       {

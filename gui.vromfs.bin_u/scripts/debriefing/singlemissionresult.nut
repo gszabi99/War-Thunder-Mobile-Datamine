@@ -74,7 +74,7 @@ function getSingleMissionResult(rewardData) {
     res.reward <- { unitName }
 
   if (!isTutorial && offlineKills.get() > 0)
-    res.players <- { [myUserId.value.tostring()] = { kills = offlineKills.get() } }
+    res.players <- { [myUserId.get().tostring()] = { kills = offlineKills.get() } }
 
   return res
 }

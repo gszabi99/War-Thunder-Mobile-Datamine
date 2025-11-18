@@ -11,14 +11,17 @@ let { viewStats, mkStatRow, mkMarqueeRow, mkMarqueeText } = require("%rGui/mpSta
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
-
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { backButtonHeight } = require("%rGui/components/backButton.nut")
 
 let infoBlockPadding = [hdpx(10), hdpx(50)]
 let scrollMedalsPadding = [hdpx(20), hdpx(20), 0, hdpx(10)]
 let medalsGap = hdpx(25)
 let infoBlockPartsGap = hdpx(50)
 let infoBlockParts = 3
+let gapBackButton = hdpx(50)
 
 let medalsBlockWidth = (contentWidthFull - infoBlockPadding[1] * 2 - ((infoBlockParts - 1) * infoBlockPartsGap)) / infoBlockParts
 let scrollPaddingsWidth = scrollMedalsPadding[1] + scrollMedalsPadding[3]
@@ -26,6 +29,10 @@ let scrollPaddingsWidth = scrollMedalsPadding[1] + scrollMedalsPadding[3]
 let minMedalsInRow = 4
 let columns = max(((medalsBlockWidth - scrollPaddingsWidth) / (medalsGap + levelHolderSize)).tointeger(), minMedalsInRow)
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
+
+let pannableArea = verticalPannableAreaCtor(sh(100) - backButtonHeight - gapBackButton,
+  [hdpx(50), hdpx(50)])
+let scrollHandler = ScrollHandler()
 
 let mkMedals = @(selCampaign) function() {
   let children = []
@@ -71,6 +78,7 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
   size = FLEX_H
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
+  stopMouse = false
   children = [
     modalWndHeader(loc(getCampaignPresentation(campaign).headerLocId),
       { size = FLEX_H, padding = hdpx(5) })
@@ -137,7 +145,7 @@ return function() {
 
     foreach (id, v in allUnits) {
       let { levelPreset = "0", campaign = "", isHidden = false, isPremium = false, costWp = 0 } = v
-      if (id not in releasedUnits.get())
+      if (id in unreleasedUnits.get())
         continue
       if (campaign not in all)
         all[campaign] <- { prem = 0, wp = 0 }
@@ -167,12 +175,26 @@ return function() {
   return {
     onAttach = actualizeStats
     watch = campaignsList
-    minWidth = SIZE_TO_CONTENT
-    size = FLEX_H
-    padding = const [0, 0, hdpx(40), 0]
-    flow = FLOW_VERTICAL
-    gap = hdpx(20)
-    children = campaignsList.get()
-      .map(@(v) mkInfo(v, unitsStats))
+    size = flex()
+    children = [
+      pannableArea(
+        {
+          flow = FLOW_VERTICAL
+          size = FLEX_H
+          gap = hdpx(20)
+          children = campaignsList.get()
+            .map(@(v) mkInfo(v, unitsStats))},
+        {},
+        { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler }
+      )
+      {
+        size = flex()
+        hplace = ALIGN_CENTER
+        children = [
+          mkScrollArrow(scrollHandler, MR_T, scrollArrowImageSmall)
+          mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
+        ]
+      }
+    ]
   }
 }

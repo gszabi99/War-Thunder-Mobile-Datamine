@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
 let { selSlot, cancelRespawn } = require("%rGui/respawn/respawnState.nut")
-let { respawnUnitItems } = require("%appGlobals/clientState/respawnStateBase.nut")
+let { respawnUnitInfo, respawnUnitMods } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { register_command } = require("console")
 let { setUnitBullets, setOrSwapUnitBullet, resetSavedBullets, applySavedBullets, savedBullets
@@ -42,8 +42,19 @@ let bulletSecTotalSteps = Computed(@() ceil(bulletSecTotalCount.get() / bulletSe
 let hasExtraBullets = Computed(@() bulletStep.get() * bulletTotalSteps.get() > bulletTotalCount.get())
 let hasExtraBulletsSec = Computed(@() bulletSecStep.get() * bulletSecTotalSteps.get() > bulletSecTotalCount.get())
 
-let visibleBullets = Computed(@() calcVisibleBullets(bulletsInfo.get(), respawnUnitItems.get()))
-let visibleBulletsSec = Computed(@() calcVisibleBullets(bulletsSecInfo.get(), respawnUnitItems.get()))
+let mods = Computed(function() {
+  let curUnitName = unitName.get()
+  let unitInfo = respawnUnitInfo.get()
+  let defUnitMods = respawnUnitMods.get()
+  if (unitInfo == null || curUnitName == null)
+    return defUnitMods
+  let unitData = unitInfo?.name == curUnitName ? unitInfo
+    : unitInfo?.platoonUnits.findvalue(@(v) v.name == curUnitName)
+  return unitData?.modifications ?? unitData?.items ?? defUnitMods 
+})
+
+let visibleBullets = Computed(@() calcVisibleBullets(bulletsInfo.get(), mods.get()))
+let visibleBulletsSec = Computed(@() calcVisibleBullets(bulletsSecInfo.get(), mods.get()))
 
 let maxBulletsCountForExtraAmmo = Computed(@() !hasExtraBullets.get() ? {}
   : calcMaxBullets(bulletTotalSteps.get(), bulletsInfo.get(), bulletTotalCount.get(), BULLETS_PRIM_SLOTS))

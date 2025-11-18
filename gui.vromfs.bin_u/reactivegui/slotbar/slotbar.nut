@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { balance, GOLD } = require("%appGlobals/currenciesState.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
   COMMADN_STATE
@@ -15,16 +16,18 @@ let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setUnitToSlot, buyUnitSlot, newSlotPriceGold, slotsNeedAddAnim, visibleNewModsSlots, selectedTreeSlotIdx,
   getSlotAnimTrigger, onFinishSlotAnim, selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, slotBarSelectWndAttached,
-  selectedUnitToSlot
+  selectedUnitToSlot, attachedSlotBarArsenalIdx
 } = require("%rGui/slotBar/slotBarState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { slotBarTreeHeight, unitPlateSize, unitPlateHeader } = require("%rGui/slotBar/slotBarConsts.nut")
+let { slotBarTreeHeight, unitPlateSize, unitPlateHeader, slotsGap } = require("%rGui/slotBar/slotBarConsts.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { openUnitModsSlotsWnd, mkListUnseenMods, mkHasUnitWeaponSlots } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { openUnitModsWnd, modsPresets, mkUnitAllModsCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
+let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
+let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
 let { mkSlotLevel, levelHolderSize } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
 let { levelProgressBorderWidth } = require("%rGui/components/levelBlockPkg.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
@@ -36,7 +39,6 @@ let { draggedData, dropUnitToSlot, dropZoneSlotIdx } = require("%rGui/slotBar/dr
 let { notActualSlotsByUnit } = require("%rGui/slotBar/slotBarUpdater.nut")
 
 
-let slotsGap = hdpx(4)
 let marginVert = hdpx(5)
 let buyIconSize = hdpxi(40)
 let actionBtnSize = slotBtnSize
@@ -198,23 +200,10 @@ let mkMark = {
   hplace = ALIGN_CENTER
 }
 
-function statusAttrMark(idx) {
-  let unseenAttr = mkUnseenSlotAttrByIdx(idx)
-  return @() {
-    watch = unseenAttr
-    children = unseenAttr.get().isUnseen ? priorityUnseenMark : null
-  }.__update(mkMark)
-}
-
-function statusArsenalMark(unit) {
-  let unseenMods = mkListUnseenMods(unit)
-  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
-  let hasUnseenMarker = Computed(@() hasUnseenRewards.get() || unseenMods.get().len() > 0)
-  return @() {
-    watch = hasUnseenMarker
-    children = hasUnseenMarker.get() ? priorityUnseenMark : null
-  }.__update(mkMark)
-}
+let statusUnseenMark = @(hasUnseenMark) @() {
+  watch = hasUnseenMark
+  children = hasUnseenMark.get() ? priorityUnseenMark : null
+}.__update(mkMark)
 
 let slotIndicatorSize = hdpx(16)
 
@@ -246,22 +235,20 @@ let mkSlotHeaderTitle = @(text, isSelected) {
   text
 }.__update(fontVeryTinyAccented)
 
-function mkSlotHeaderIndicator(unit, idx, isSelected) {
-  let unseenMods = mkListUnseenMods(unit)
-  let unseenAttr = mkUnseenSlotAttrByIdx(idx)
-  let hasUnseenMods = Computed(@() unseenMods.get().len() > 0)
-  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
+function mkSlotHeaderIndicator(unit, hasUnseenMods, hasUnseenMarker, idx, isSelected) {
   let mutateSlots = @(v) visibleNewModsSlots.mutate(@(nms) v ? nms.$rawset(idx, unit.get()?.name ?? "") : nms.$rawdelete(idx))
   return @() {
-    watch = [hasUnseenMods, unseenAttr, isSelected, hasUnseenRewards]
-    key = hasUnseenMods
+    watch = [hasUnseenMarker, isSelected]
+    key = mutateSlots
     function onAttach() {
       mutateSlots(hasUnseenMods.get())
       hasUnseenMods.subscribe(mutateSlots)
     }
-    onDetach = @() mutateSlots(hasUnseenMods.get())
-    children = isSelected.get() || (!hasUnseenMods.get() && !unseenAttr.get().isUnseen && !hasUnseenRewards.get()) ? null
-      : mkUnseenIndicator({ pos = [-hdpx(27), hdpx(1)], key = {} })
+    function onDetach() {
+      mutateSlots(hasUnseenMods.get())
+      hasUnseenMods.unsubscribe(mutateSlots)
+    }
+    children = isSelected.get() || !hasUnseenMarker.get() ? null : mkUnseenIndicator({ pos = [-hdpx(27), hdpx(1)], key = {} })
   }
 }
 
@@ -351,10 +338,11 @@ let function mkUnitSlot(unit, idx, onClick, isSelected) {
   }
 }
 
-let function actionBtns(unit, idx) {
+function actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSlots, idx) {
   let showBtns = Computed(@() selectedSlotIdx.get() == idx)
+  let hasUnit = Computed(@() unit.get() != null)
   return @() {
-    watch = showBtns
+    watch = [showBtns, hasUnit, hasUnitWeaponSlots]
     size = actionBtnsBlockSize
     pos = [lineWidth / 2, 0]
     margin = [0, 0, marginVert, 0]
@@ -369,13 +357,19 @@ let function actionBtns(unit, idx) {
           commands = getBorderCommand(COMMADN_STATE.LEFT),
           animations = changeBtnAnimation
         })
-      !unit.get()
+      !hasUnit.get()
         ? translucentSlotButton("ui/gameuiskin#arsenal.svg", @() null, null,
             { fillColor = 0x9F000000, watch = null })
-        : translucentSlotButton("ui/gameuiskin#arsenal.svg", openUnitModsSlotsWnd, statusArsenalMark(unit), { key = slotBarArsenalKey })
+        : translucentSlotButton("ui/gameuiskin#arsenal.svg",
+            hasUnitWeaponSlots.get() ? openUnitModsSlotsWnd : openUnitModsWnd, statusUnseenMark(hasUnseenArsenal),
+            {
+              key = slotBarArsenalKey,
+              onAttach = @() attachedSlotBarArsenalIdx.set(idx),
+              onDetach = @() attachedSlotBarArsenalIdx.set(null)
+            })
       translucentSlotButton("ui/gameuiskin#slot_crew.svg",
         openSlotAttrWnd,
-        statusAttrMark(idx),
+        statusUnseenMark(hasUnseenAttributes),
         {
           key = "slot_crew_btn" 
           commands = getBorderCommand(COMMADN_STATE.RIGHT)
@@ -404,14 +398,47 @@ let function mkSlotWithButtons(slot, idx) {
   let isSelected = Computed(@() selectedSlotIdx.get() == idx)
   let needTargetMarker = Computed(@() draggedData.get() != null && needClearDropZone.get())
   let needShowDefEmptySlot = Computed(@() needHideDraggableUnit.get() || isDraggedUnit.get())
+
+  let unseenMods = mkListUnseenMods(unit)
+  let hasUnitWeaponSlots = mkHasUnitWeaponSlots(unit)
+  let hasUnseenMods = Computed(@() hasUnitWeaponSlots.get() ? unseenMods.get().len() > 0
+    : slot?.name in unseenCampUnitMods.get())
+
+  let unitAllModsCost = mkUnitAllModsCost(unit)
+  let hasUnseenModsForTutorial = Computed(function() {
+    if (hasUnitWeaponSlots.get())
+      return unseenMods.get().len() > 0
+    let unseenUnitMods = unseenCampUnitMods.get()?[slot?.name] ?? {}
+    if (unseenUnitMods.len() == 0)
+      return false
+    let mods = modsPresets.get()?[unit.get()?.modPreset] ?? {}
+    return null != unseenUnitMods.findvalue(@(_, k) hasEnoughCurrencies(mods?[k], unitAllModsCost.get(), balance.get()))
+  })
+
+  let slotUnseenBullets = mkUnseenUnitBullets(Watched(slot?.name))
+  let hasUnseenBullets = Computed(function() {
+    if (hasUnitWeaponSlots.get())
+      return false
+    let { primary, secondary } = slotUnseenBullets.get()
+    return primary.len() > 0 || secondary.len() > 0
+  })
+
+  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
+
+  let hasUnseenArsenal = Computed(@() hasUnseenMods.get() || hasUnseenBullets.get() || hasUnseenRewards.get())
+
+  let unseenAttr = mkUnseenSlotAttrByIdx(idx)
+  let hasUnseenAttributes = Computed(@() unseenAttr.get().isUnseen)
+  let hasUnseenMarker = Computed(@() hasUnseenArsenal.get() || hasUnseenAttributes.get())
   return @() {
-    watch = [unit, curSlots, needShowDefEmptySlot, needClearDropZone, needTargetMarker]
+    watch = needTargetMarker
     flow = FLOW_VERTICAL
     children = [
-      actionBtns(unit, idx)
+      actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSlots, idx)
       {
         children = [
-          {
+          @() {
+            watch = [unit, needShowDefEmptySlot, needClearDropZone]
             key = slotBarSlotKey(idx) 
             flow = FLOW_VERTICAL
             children = [
@@ -421,7 +448,7 @@ let function mkSlotWithButtons(slot, idx) {
                   {
                     pos = [-levelHolderSize[0] / 2 - levelProgressBorderWidth * 2, 0]
                     hplace = ALIGN_RIGHT
-                    children = mkSlotHeaderIndicator(unit, idx, isSelected)
+                    children = mkSlotHeaderIndicator(unit, hasUnseenModsForTutorial, hasUnseenMarker, idx, isSelected)
                   }
                 ]
               }

@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonCommon, textButtonBright } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let wndUid = "chooseSkinsUnitType"
@@ -15,8 +16,8 @@ let content = @(unitTypes, curUnitType, onChange) {
   flow = FLOW_VERTICAL
   gap
   children = unitTypes.map(@(ut)
-    (ut == curUnitType ? textButtonCommon : textButtonBright)(
-      loc($"mainmenu/type_{ut}"),
+    (ut == curUnitType ? textButtonCommon : textButtonPrimary)(
+      utf8ToUpper(loc($"mainmenu/type_{ut}")),
       function() {
         close()
         onChange(ut)

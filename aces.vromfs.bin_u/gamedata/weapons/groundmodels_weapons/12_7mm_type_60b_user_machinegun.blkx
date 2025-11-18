@@ -46,7 +46,7 @@
     "shellAnimation": "video/shells_animations/he_ball.ivf",
     "bulletName": "t_ball_M48A2",
     "maxDistance": 2000.0,
-    "hitPowerMult": 1.0,
+    "hitPowerMult": 15.0,
     "onHitChanceMultFire": 2.0,
     "nearHitPower": [
       1.0,

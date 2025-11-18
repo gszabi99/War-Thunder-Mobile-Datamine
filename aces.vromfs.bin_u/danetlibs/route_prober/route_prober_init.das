@@ -1,9 +1,7 @@
 options no_aot
 
-require app
 require ecs.fs
 require ECSGlobalTags
-
 
 [export]
 def load_route_prober(base_path : string) : bool

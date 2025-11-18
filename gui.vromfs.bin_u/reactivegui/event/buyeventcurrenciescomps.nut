@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkCurrencyFullId, currencyToFullId, sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCurrencyDescription } = require("%appGlobals/config/currencyPresentation.nut")
+let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventId, parentEventLoc,
   buyCurrencyWndGamercardCurrencies
 } = require("%rGui/event/buyEventCurrenciesState.nut")
@@ -8,6 +9,7 @@ let { mkGoodsWrap, mkSlotBgImg, mkCurrencyAmountTitle, mkGoodsImg, mkPricePlate,
   txt, mkGoodsLimitAndEndTime, goodsGlareAnimDuration } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { onGoodsClick, mkGoodsListWithBaseValue, mkGoodsState } = require("%rGui/shop/shopWndPage.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
@@ -107,13 +109,19 @@ function mkTimeTextComputed(goods) {
 }
 
 function mkGoods(goods, onClick, state, animParams) {
-  local cId = goods.currencies.findindex(@(v) v > 0) ?? ""
-  local amount = goods.currencies?[cId] ?? 0
+  let { viewBaseValue = 0, rewards = [], currencies = null } = goods
+  local { id = null, count = 0 } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
+  if (currencies != null) { 
+    id = currencies.findindex(@(v) v > 0)
+    count = currencies?[id] ?? 0
+  }
+  if (id == null)
+    return null
+
   let bgParticles = mkBgParticles(goodsBgSize)
   let timeText = mkTimeTextComputed(goods)
-
   let isAvailable = Computed(@() timeText.get() == null)
-  let fullId = mkCurrencyFullId(cId)
+  let fullId = mkCurrencyFullId(id)
   return @() {
     watch = [isAvailable, fullId]
     children = [
@@ -124,8 +132,8 @@ function mkGoods(goods, onClick, state, animParams) {
           mkSlotBgImg()
           bgParticles
           sf & S_HOVER ? bgHiglight : null
-          getImgByAmount(fullId.get(), amount)
-          mkCurrencyAmountTitle(amount, goods?.viewBaseValue ?? 0, titleFontGrad)
+          getImgByAmount(fullId.get(), count)
+          mkCurrencyAmountTitle(count, viewBaseValue, titleFontGrad)
           mkGoodsLimitAndEndTime(goods)
         ].extend(mkGoodsCommonParts(goods, state)),
         mkPricePlate(goods, state, animParams),
@@ -190,7 +198,7 @@ function mkEventCurrenciesGoods() {
   let cId = currencyToFullId.get()?[currencyId.get()] ?? currencyId.get()
   let showQuestsLink = Computed(@()
     getQuestCurrenciesInTab(parentEventId.get(), questsCfg.get(), questsBySection.get(),
-      progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get())
+      progressUnlockBySection.get(), progressUnlockByTab.get(), userstatStatsTables.get(), serverConfigs.get())
         .findindex(@(v) v == cId) != null)
   let needUseScroll = Computed(@() (eventCurrenciesGoods.get().len()) + (showQuestsLink.get() ? 1 : 0) > maxColumns)
 

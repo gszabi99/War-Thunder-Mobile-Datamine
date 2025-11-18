@@ -10,11 +10,12 @@ let { isUnitsTreeOpen, closeUnitsTreeWnd, mkAllTreeUnits, countriesCfg, countrie
 let { levelInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { playerLevelInfo, campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkTreeRankProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
   blockSize, flagTreeOffset, gamercardOverlap, infoPanelWidth,
@@ -22,7 +23,7 @@ let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkT
 } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { curSelectedUnit, sizePlatoon, curUnitName,availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
+let { curSelectedUnit, sizePlatoon, curUnitName, visibleUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
@@ -61,8 +62,7 @@ let isTreeAttached = Watched(false)
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
 let hasSelectedUnit = Computed(@() curSelectedUnit.get() != null)
 
-let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
-  popupOffset = levelMarkSize + hdpx(10)
+let openFiltersPopup = @(e) openFilters(e, curCampaign.get(), {
   popupValign = ALIGN_TOP
   popupHalign = ALIGN_CENTER
 })
@@ -100,7 +100,7 @@ function mkNeedArrows(columnsCfg) {
     let res = {}
     if (!isUnitsTreeOpen.get() || (unseenUnits.get().len() == 0 && unseenSkins.get().len() == 0))
       return res
-    foreach(unit in availableUnitsList.get()) {
+    foreach(unit in visibleUnitsList.get()) {
       if ((unit.name in unseenUnitLvlRewardsList.get() || unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
         && unit.rank in columnsCfg.get())
           res[unit.name] <- columnsCfg.get()[unit.rank]
@@ -200,7 +200,7 @@ let clearFiltersButton = @() {
   }
 }
 
-let mkTreeBg = @(isVisible) @() !isVisible.value ? { watch = isVisible } : {
+let mkTreeBg = @(isVisible) @() !isVisible.get() ? { watch = isVisible } : {
   watch = [unitsTreeBg, isVisible]
   size = flex()
   rendObj = ROBJ_IMAGE
@@ -392,12 +392,12 @@ let unitsTreeGamercard = {
     }.__update(isWidescreen ? fontMedium : fontSmall)
 
     @() {
-      watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated, isTreeNodes, levelInProgress, releasedUnits, buyUnitsData]
+      watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated, isTreeNodes, levelInProgress, unreleasedUnits, buyUnitsData]
       children = isTreeNodes.get() ? null
         : levelInProgress.get() ? spinner
         : playerLevelInfo.get().isReadyForLevelUp
           ? levelUpBtn(isLvlUpAnimated.get() ? null : openLvlUpWndIfCan)
-        : canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), releasedUnits.get())
+        : canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), unreleasedUnits.get())
           ? speedUpBtn(isLvlUpAnimated.get() ? null : openExpWnd,
               lvlUpCost.get(),
               playerLevelInfo.get().level,
@@ -429,8 +429,8 @@ function mkHasUnitActions(withTreeNodes) {
 }
 
 let mkBottomInfoPanel = {
+  size = FLEX_H
   rendObj = ROBJ_BOX
-  hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -454,8 +454,7 @@ function infoPanel() {
     children = hasSelectedUnit.get()
         ? panelBg.__merge({
             size = [infoPanelWidth, infoPanelHeight]
-            padding = [infoPannelPadding, saBorders[0], saBorders[1], infoPannelPadding]
-            stopMouse = true
+            padding = [infoPannelPadding, saBorders[0], saBorders[1], infoPannelPadding * 2]
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
             valign = ALIGN_BOTTOM
@@ -463,7 +462,6 @@ function infoPanel() {
             children = [
               unitInfoPanel(
                 {
-                  size = FLEX_H
                   maxHeight = maxInfoPanelHeight
                   halign = ALIGN_RIGHT
                   hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
@@ -477,14 +475,14 @@ function infoPanel() {
                 watch = hangarUnit
                 flow = FLOW_VERTICAL
                 gap = infoPanelFooterGap
-                hplace = ALIGN_RIGHT
-                halign = ALIGN_RIGHT
                 children = [
                   needShowBlueprintDescr.get() ? mkBarText(loc("blueprints/fullDescription")) : null
                   isBlockedUnit.get() ? mkBarText(loc("unitsTree/needAccessHint")) : null
                   researchBlock(hangarUnit.get())
                   @() {
                     watch = hasUnitActions
+                    size = FLEX_H
+                    stopMouse = true
                     children = hasUnitActions.get() ? mkBottomInfoPanel : null
                   }
                 ]

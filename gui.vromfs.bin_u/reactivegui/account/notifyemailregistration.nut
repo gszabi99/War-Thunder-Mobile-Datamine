@@ -41,7 +41,7 @@ let isVerifyMsgShowed = hardPersistWatched("isVerifyMsgShowed", false)
 
 let isVerifyMsgTimerPassed = hardPersistWatched("isVerifyMsgTimerPassed", false)
 let lastVerifyMsgTime = Watched(0)
-function setVerifyMsgTimerPassed() {isVerifyMsgTimerPassed(true)}
+function setVerifyMsgTimerPassed() {isVerifyMsgTimerPassed.set(true)}
 lastVerifyMsgTime.subscribe(function(value) {
   if (serverTime.get() > value + NOTIFY_PERIOD)
     setVerifyMsgTimerPassed()
@@ -90,7 +90,7 @@ needShowGuestMsg.subscribe(@(_) openGuestMsgDelayed())
 isGuestLogin.subscribe(@(v) v ? null : closeMsgBox(GUEST_MSG_UID))
 
 function saveVerifyMsgTime() {
-  isVerifyMsgTimerPassed(false)
+  isVerifyMsgTimerPassed.set(false)
   lastVerifyMsgTime.set(serverTime.get())
   get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.get()
   eventbus_send("saveProfile", {})
@@ -105,13 +105,13 @@ function openVerifyMsg() {
     buttons = [
       { id = "later", isCancel = true,
         function cb() {
-          isVerifyMsgShowed(true)
+          isVerifyMsgShowed.set(true)
           saveVerifyMsgTime()
         }
       }
       { id = "verify", styleId = "PRIMARY", isDefault = true,
         function cb() {
-          isVerifyMsgShowed(true)
+          isVerifyMsgShowed.set(true)
           openVerifyEmail()
           saveVerifyMsgTime()
         }
@@ -127,11 +127,11 @@ needShowVerifyMsg.subscribe(@(_) openVerifyMsgDelayed())
 
 needVerifyEmail.subscribe(@(v) v ? null : closeMsgBox(VERIFY_MSG_UID))
 
-register_command(@() isGuestMsgShowed(false), "debug.reset_guest_msg_showed")
+register_command(@() isGuestMsgShowed.set(false), "debug.reset_guest_msg_showed")
 register_command(function() {
   lastVerifyMsgTime.set(0)
   get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.get()
   eventbus_send("saveProfile", {})
-  isVerifyMsgShowed(false)
+  isVerifyMsgShowed.set(false)
 }, "debug.reset_verify_msg_timer")
 

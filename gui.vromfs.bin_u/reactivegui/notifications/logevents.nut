@@ -54,7 +54,7 @@ let function sendFirebaseAppInstanceBq() {
   }
 }
 
-if (readySendFirebaseBq.value) {
+if (readySendFirebaseBq.get()) {
   sendFirebaseAppInstanceBq()
 }
 

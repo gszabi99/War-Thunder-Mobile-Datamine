@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { set_session_id_for_premium_bonus } = require("%appGlobals/pServer/pServerApi.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
@@ -78,14 +79,18 @@ let glare = @() !isDebriefingAnimFinished.get() ? { watch = isDebriefingAnimFini
   }]
 }
 
-function mkTryPremiumButton(mulComps) {
+function mkTryPremiumButton(mulComps, sessionId = null) {
   let stateFlags = Watched(0)
   return @() havePremium.get() ? { watch = havePremium } : {
     watch = [havePremium, stateFlags]
     size = [btnW, btnH]
 
     behavior = Behaviors.Button
-    onClick = @() openShopWnd(SC_PREMIUM)
+    function onClick() {
+      if (sessionId)
+        set_session_id_for_premium_bonus(sessionId)
+      openShopWnd(SC_PREMIUM)
+    }
     onElemState = @(v) stateFlags.set(v)
     transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]

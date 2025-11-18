@@ -5,7 +5,7 @@ let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 let visibleLog = Watched({})
 
 function clearLog() {
-  visibleLog({})
+  visibleLog.set({})
 }
 
 let dmgTypeIcons = [

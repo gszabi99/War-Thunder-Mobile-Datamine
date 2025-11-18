@@ -44,8 +44,8 @@ let proceedAuthByResult = {
   [YU2_OK] = function(loginType) {
     send_counter("sq.app.stage", 1, { stage = "auth_done" })
     sendLoadingStageBqEvent("auth_done")
-    curLoginType(loginType)
-    authTags(get_player_tags())
+    curLoginType.set(loginType)
+    authTags.set(get_player_tags())
     finalizeStage()
   },
 

@@ -48,7 +48,7 @@ function setSuggested(suggested) {
 }
 
 function openMsg() {
-  if (!needShow.value)
+  if (!needShow.get())
     return
 
   openMsgBox({
@@ -71,7 +71,7 @@ function openMsg() {
 }
 
 let openMsgDelayed = @() resetTimeout(0.5, openMsg)
-if (needShow.value)
+if (needShow.get())
   openMsgDelayed()
 needShow.subscribe(@(_) openMsgDelayed())
 

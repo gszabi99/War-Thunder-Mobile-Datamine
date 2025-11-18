@@ -16,6 +16,8 @@ function mkRewardStyle(boxSize, style, styleSmall) {
     textStyle = style
     textStyleSmall = styleSmall
     labelHeight
+    pointsSize = 2 * (boxSize * 0.06).tointeger()
+    pointsGap = (boxSize * 0.09).tointeger()
   }
 }
 
@@ -32,6 +34,7 @@ return {
   progressBarHeight
   rewardTicketDefaultSlots
 
+  REWARD_STYLE_VERY_TINY = mkRewardStyle(evenPx(90), fontVeryTiny, fontVeryVeryTiny)
   REWARD_STYLE_TINY_SMALL_GAP = mkRewardStyleSmallGap(evenPx(104), fontVeryTiny, fontVeryVeryTiny)
   REWARD_STYLE_TINY = mkRewardStyle(evenPx(104), fontVeryTiny, fontVeryVeryTiny)
   REWARD_STYLE_SMALL = mkRewardStyle(evenPx(114), fontVeryTiny, fontVeryVeryTiny)

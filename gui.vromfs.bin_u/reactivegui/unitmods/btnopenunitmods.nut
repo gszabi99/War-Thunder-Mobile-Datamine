@@ -1,10 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { unseenModsByCategory, openUnitModsWnd, modsCategories } = require("%rGui/unitMods/unitModsState.nut")
+let { openUnitModsWnd, mkMods } = require("%rGui/unitMods/unitModsState.nut")
+let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
+let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkCustomButton, buttonStyles, mergeStyles, textButtonUnseenMargin } = require("%rGui/components/textButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
 let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+
 
 let arsenalIconSize = hdpxi(80)
 
@@ -22,23 +26,33 @@ let mkArsenalBtnContent = {
     {
       rendObj = ROBJ_TEXT
       text = utf8ToUpper(loc("mainmenu/btnArsenal"))
-    }.__update(fontSmallShaded)
+    }.__update(fontTinyAccentedShadedBold)
   ]
 }
 
 return function(unit, styleOvr) {
   let unseenMods = mkListUnseenMods(unit)
-  let hasUnseenMarker = Computed(@() isHangarUnitHasWeaponSlots.get() ? unseenMods.get().len() > 0
-    : unseenModsByCategory.get().len() > 0)
+  let mods = mkMods(unit)
+  let hasButton = Computed(@() null != mods.get().findvalue(@(v) !v?.isHidden))
+  let unseenUnitBullets = mkUnseenUnitBullets(hangarUnitName)
+  let hasUnseenMarker = Computed(function() {
+    let uName = hangarUnitName.get()
+    if (isHangarUnitHasWeaponSlots.get())
+      return unseenMods.get().len() > 0
+    if (uName in unseenCampUnitMods.get())
+      return true
+    let { primary, secondary } = unseenUnitBullets.get()
+    return primary.len() > 0 || secondary.len() > 0
+  })
   let unseenMargin = Computed(@() isHangarUnitHasWeaponSlots.get() ? textButtonUnseenMargin
     : [textButtonUnseenMargin, textButtonUnseenMargin + contentMargin])
   return @() {
-    watch = [modsCategories, isHangarUnitHasWeaponSlots]
-    children = modsCategories.get().len() == 0 && !isHangarUnitHasWeaponSlots.get() ? null
+    watch = [hasButton, isHangarUnitHasWeaponSlots]
+    children = !hasButton.get() ? null
       : [
           mkCustomButton(mkArsenalBtnContent,
             isHangarUnitHasWeaponSlots.get() ? openUnitModsSlotsWnd : openUnitModsWnd,
-            mergeStyles(buttonStyles.PRIMARY, styleOvr))
+            mergeStyles(buttonStyles.COMMON, styleOvr))
           @() {
             watch = [hasUnseenMarker, unseenMargin]
             margin = unseenMargin.get()

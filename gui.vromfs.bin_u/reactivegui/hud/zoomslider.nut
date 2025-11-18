@@ -1,13 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout } = require("dagor.workcycle")
 let { setZoomMult } = require("controls")
 let { isInZoom, zoomMult } = require("%rGui/hudState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { allShortcutsUp } = require("%rGui/controls/shortcutsMap.nut")
-let { defShortcutOvr} = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { hudPearlGrayColorFade } = require("%rGui/style/hudColors.nut")
 
 
 let stepZoom = 0.01
+let knobColor = hudPearlGrayColorFade
+let zoomRepeatTimes = [0.3, 0.15, 0.15, 0.07, 0.07, 0.05]
+
+let isZoomIncPushed = Watched(false)
+let isZoomDecPushed = Watched(false)
+let zoomChangeDir = Computed(@() isZoomIncPushed.get() == isZoomDecPushed.get() ? 0
+  : isZoomIncPushed.get() ? 0.1
+  : -0.1)
 
 function calcSizes(scale) {
   let height = hdpxi(270 * scale)
@@ -26,8 +34,6 @@ function calcSizes(scale) {
   }
 }
 
-let knobColor = Color(230, 230, 230, 230)
-
 let mkZoomScale = @(scaleWidth, lineWidth) {
   size = [scaleWidth * 2, flex()]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -45,7 +51,8 @@ let mkZoomScale = @(scaleWidth, lineWidth) {
   ]
 }
 
-let zoomShortcutId = "ID_CHANGE_ZOOM"
+let zoomShortcutIncId = "ID_CHANGE_ZOOM_INC"
+let zoomShortcutDecId = "ID_CHANGE_ZOOM_DEC"
 let zoomBgrImage = Picture("!ui/gameuiskin#hud_plane_slider.avif")
 
 function changeZoomValue(val) {
@@ -53,28 +60,46 @@ function changeZoomValue(val) {
   setZoomMult(1.0 - val)
 }
 
-function mkGamepadZoomHotkeyButton(scale) {
-  let imageComp = mkGamepadShortcutImage(zoomShortcutId, defShortcutOvr, scale)
-  let sf = Watched(0)
-  let isActive = Computed(@() (sf.get() & S_ACTIVE) != 0)
-  let btn = {
-    key = zoomShortcutId
-    behavior = Behaviors.Button
-    onElemState = @(v) sf.set(v)
-    onClick = @() setZoomMult(zoomMult.get() == 1 ? 0 : 1)
-    hotkeys = [allShortcutsUp[zoomShortcutId]]
+local updateCount = 0
+function zoomUpdate() {
+  if (zoomChangeDir.get() == 0) {
+    updateCount = 0
+    return
   }
-
-  return @() {
-    watch = [isGamepad, isActive]
-    key = imageComp
-    hplace = ALIGN_RIGHT
-    pos = [pw(90), 0]
-    children = [isGamepad.get() ? imageComp : null, btn]
-    transform = { scale = isActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }
+  changeZoomValue(1 - zoomMult.get() + zoomChangeDir.get())
+  resetTimeout(zoomRepeatTimes?[updateCount++] ?? zoomRepeatTimes.top(), zoomUpdate)
 }
+
+zoomChangeDir.subscribe(@(_) zoomUpdate())
+
+function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, scale, ovr) {
+  let imageComp = mkGamepadShortcutImage(shortcutId, {}, scale)
+  let stateFlags = Watched(0)
+  let res = mkContinuousButtonParams(@() isPushed.set(true), @() isPushed.set(false), shortcutId, stateFlags)
+    .__update(ovr)
+  let watch = [isVisible, isGamepad, stateFlags]
+  return @() !isGamepad.get() ? { watch }
+    : res.__update({
+        watch
+        key = imageComp
+        vplace = ALIGN_CENTER
+        children = isVisible.get() && isGamepad.get() ? imageComp : null
+        transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1.0, 1.0] }
+        transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+      })
+}
+
+let btnImageZoomInc = @(scale) mkGamepadShortcutImg(zoomShortcutIncId,
+  isZoomIncPushed,
+  Computed(@() zoomMult.get() > 0),
+  scale,
+  { hplace = ALIGN_RIGHT, pos = [pw(-50), ph(40)] })
+
+let btnImageZoomDec = @(scale) mkGamepadShortcutImg(zoomShortcutDecId,
+  isZoomDecPushed,
+  Computed(@() zoomMult.get() < 1),
+  scale,
+  { hplace = ALIGN_RIGHT, pos = [pw(-50), ph(-40)] })
 
 function mkZoomSliderImpl(scale) {
   let { height, scaleWidth, knobSize, knobPadding, sliderPadding, fullWidth, zoomScaleHeight, lineWidth
@@ -95,6 +120,8 @@ function mkZoomSliderImpl(scale) {
   }
 
   let zoomScale = mkZoomScale(scaleWidth, lineWidth)
+  let inc = btnImageZoomInc(scale)
+  let dec = btnImageZoomDec(scale)
 
   return @() {
     watch = zoomMult
@@ -108,6 +135,7 @@ function mkZoomSliderImpl(scale) {
     unit = stepZoom
     orientation = O_VERTICAL
     children = [
+      inc
       {
         flow = FLOW_HORIZONTAL
         vplace = ALIGN_CENTER
@@ -122,7 +150,7 @@ function mkZoomSliderImpl(scale) {
         ]
       }
       knob.__merge({ pos = [0, ((1.0 - zoomMult.get()) * zoomScaleHeight).tointeger() - knobPadding] })
-      mkGamepadZoomHotkeyButton(scale)
+      dec
     ]
     onChange = changeZoomValue
   }

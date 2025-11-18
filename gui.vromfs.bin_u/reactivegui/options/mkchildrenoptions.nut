@@ -6,6 +6,7 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let contentWidth = saSize[0] - tabW - saBorders[0]
 let pannableAreaWidth = saSize[0] - tabW + saBorders[0]
@@ -51,7 +52,9 @@ function mkChildrenOptions(tabs) {
             padding = [0, saBorders[0]]
             key = tab
             flow = FLOW_VERTICAL
-            halign = ALIGN_LEFT
+            halign = ALIGN_CENTER
+            hplace = ALIGN_CENTER
+            gap = hdpx(20)
             children = tab?.options.filter(@(v) v != null).map(mkOption)
             animations = wndSwitchAnim
           },
@@ -71,9 +74,24 @@ function mkChildrenOptions(tabs) {
     children = {
       size = [contentWidth, flex()]
       flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      rendObj = ROBJ_SOLID
+      color = 0x990C1113
+      margin = [0, 0, 0, saBorders[0]]
       gap
       children = [
-        mkHorizontalTabs(tabs, curTabIdx).__update({ padding = [0, 0, 0, saBorders[0]] })
+        {
+          size = [contentWidth, SIZE_TO_CONTENT]
+          flow = FLOW_VERTICAL
+          children = [
+            mkHorizontalTabs(tabs, curTabIdx)
+            {
+              size = [flex(), hdpx(4)]
+              rendObj = ROBJ_SOLID
+              color = selectColor
+            }
+          ]
+        }
         curOptionsContent
       ]
     }

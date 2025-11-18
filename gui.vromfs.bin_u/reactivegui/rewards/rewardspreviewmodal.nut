@@ -19,7 +19,7 @@ let openRewardsPreviewModal = @(content, title, onClick = null)
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = modalWndBg.__merge({
-      minWidth = hdpx(800)
+      minWidth = SIZE_TO_CONTENT
       flow = FLOW_VERTICAL
       valign = ALIGN_TOP
       halign = ALIGN_CENTER
@@ -29,7 +29,8 @@ let openRewardsPreviewModal = @(content, title, onClick = null)
           function() {
             closeRewardsPreviewModal()
             onClick?()
-          })
+          },
+          { minWidth = SIZE_TO_CONTENT })
         content
       ]
     })

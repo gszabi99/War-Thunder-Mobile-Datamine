@@ -8,11 +8,11 @@ let { darkenBgColor, borderWidth, rowHeight, gap,
   contactNameBlock, contactAvatar, contactLevelBlock
 } = require("%rGui/contacts/contactInfoPkg.nut")
 let { isInSquad, squadId, isInvitedToSquad, squadMembers } = require("%appGlobals/squadState.nut")
-let { onlineColor, offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
+let { onlineColor, offlineColor, leaderColor, memberNotReadyColor, memberReadyColor, selectColor } = require("%rGui/style/stdColors.nut")
 
 function onlineBlock(uid, onlineStatus, battleUnit) {
-  let onlineText = Computed(@() onlineStatus.value == null ? ""
-    : !onlineStatus.value ? colorize(offlineColor, loc("contacts/offline"))
+  let onlineText = Computed(@() onlineStatus.get() == null ? ""
+    : !onlineStatus.get() ? colorize(offlineColor, loc("contacts/offline"))
     : battleUnit.get() != null
       ? "\n".concat(loc("status/in_battle"), loc(getCampaignPresentation(battleUnit.get()?.campaign).headerLocId))
     : colorize(onlineColor, loc("contacts/online")))
@@ -24,8 +24,9 @@ function onlineBlock(uid, onlineStatus, battleUnit) {
     : "")
   return @() {
     watch = [onlineText, squadText]
+    margin = [0, hdpx(10), 0, 0]
     valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
+    halign = ALIGN_RIGHT
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     text = "\n".join([squadText.get(), onlineText.get()], true)
@@ -47,8 +48,8 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
     padding = borderWidth
     rendObj = ROBJ_BOX
     fillColor = (rowIdx % 2) ? 0 : darkenBgColor
-    borderWidth = isSelected.value || isHovered.get() ? borderWidth : 0
-    borderColor = isSelected.value ? 0xFF52C7E4 : 0xFF3E95AB
+    borderWidth = isSelected.get() || isHovered.get() ? borderWidth : 0
+    borderColor = isSelected.get() ? selectColor : 0xFF3E95AB
 
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
@@ -61,9 +62,9 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
     gap
 
     children = [
-      contactLevelBlock(info.value)
-      contactAvatar(info.value)
-      contactNameBlock(contact.value, info.value)
+      contactLevelBlock(info.get())
+      contactAvatar(info.get())
+      contactNameBlock(contact.get(), info.get())
       {
         size = flex()
       }

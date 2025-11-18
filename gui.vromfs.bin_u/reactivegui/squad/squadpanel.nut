@@ -63,7 +63,7 @@ let mkAvatar = @(info, onlineStatus, isInviteeV) function() {
     image = Picture($"{getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
     picSaturate = isInviteeV ? 0.3 : 1.0
     brightness = isInviteeV ? 0.5
-      : !onlineStatus.value ? 0.6
+      : !onlineStatus.get() ? 0.6
       : 1.0
   }
 }
@@ -87,7 +87,7 @@ let memberStatus = @(isLeader, state, onlineStatus) function() {
     children = isInBattle ? mkStatus("in_battle.svg")
       : isLeader.get() ? mkStatus("icon_party_leader.svg", 0xFFFFFF00)
       : state.get()?.ready && !isWaitReadyCheck ? mkStatus("icon_party_ready.svg")
-      : !onlineStatus.value ? mkStatus("icon_party_offline.svg")
+      : !onlineStatus.get() ? mkStatus("icon_party_offline.svg")
       : !isWaitReadyCheck ? mkStatus("icon_party_not_ready.svg")
       : statusSpinner
   }

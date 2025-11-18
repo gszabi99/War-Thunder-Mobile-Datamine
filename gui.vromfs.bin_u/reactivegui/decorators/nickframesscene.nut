@@ -84,6 +84,7 @@ function tagBtn(item) {
     watch = stateFlags
     rendObj = ROBJ_SOLID
     color = 0xAA000000
+    xmbNode = {}
     behavior = Behaviors.Button
     sound = { click  = "meta_profile_elements" }
     onElemState = @(sf) stateFlags.set(sf)
@@ -122,7 +123,7 @@ function tagBtn(item) {
           : 0xFF4F4F4F
         children = !isAvailable.get()
           ? {
-              size =const [hdpx(25),hdpx(32)]
+              size = const [hdpx(25),hdpx(32)]
               margin = const [hdpx(10),hdpx(15)]
               rendObj = ROBJ_IMAGE
               color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFAA1111
@@ -165,7 +166,7 @@ function footer() {
     children = [
       isCurrent ? null
         : canEquip
-          ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedDecorator,
+          ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnEquip")), applySelectedDecorator,
             { hotkeys = ["^J:X | Enter"] })
         : canBuy
           ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
@@ -223,7 +224,7 @@ let decorationNameWnd = {
   onDetach = @() markDecoratorsSeen(unseenDecorators.get().filter(@(_, id) id in availNickFrames.get()).keys())
   children = [
     header
-    makeVertScroll(framesList, { scrollHandler })
+    makeVertScroll(framesList, { scrollHandler, xmbNode = XmbContainer({ scrollToEdge = true }) })
     footer
   ]
   animations = wndSwitchAnim

@@ -5,6 +5,8 @@ let { defer, resetTimeout } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
 let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
+let { mark_offer_seen } = require("%appGlobals/pServer/pServerApi.nut")
+let { unitRewardTypes, G_UNIT_UPGRADE, G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
@@ -17,7 +19,7 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
+let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, SUBMARINE_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
   hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
@@ -34,6 +36,7 @@ let { unitPlatesGap, unitPlateSmall, mkUnitInfo,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
 let { get_settings_blk } = require("blkGetters")
@@ -66,11 +69,16 @@ let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
 let openCount = Computed(@() previewType.get() == GPT_UNIT || previewType.get() == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
-let needScroll = Computed(@() (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8)
+let needScroll = Computed(@() previewGoods.get() == null ? false
+  : "rewards" in previewGoods.get()
+    ? previewGoods.get().rewards.reduce(@(res, r) r.gType in unitRewardTypes ? res + 1 : res, 0) > 8
+  : (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8) 
 let goodsBattleMode = Computed(function() {
   let { campaign = "", country = "" } = previewGoodsUnit.get()
   let battleMode = blockedResearchByBattleMods.get()?[campaign][country] ?? ""
-  if (battleMode in previewGoods.get()?.battleMods)
+  if (battleMode in previewGoods.get()?.battleMods) 
+    return battleMode
+  if (null != previewGoods.get()?.rewards.findvalue(@(r) r.id == battleMode && r.gType == G_BATTLE_MOD))
     return battleMode
   return null
 })
@@ -98,6 +106,7 @@ isWindowAttached.subscribe(function(v) {
     unhideModals(HIDE_PREVIEW_MODALS_ID)
     if (openCount.get() != 0 && needShowUi.get())
       skipAnimsOnce.set(true)
+    needShowUi.set(false)
     return
   }
 
@@ -161,24 +170,24 @@ let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
 eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene.set(false))
 eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene.set(true))
 
-let needShowCutscene = keepref(Computed(@() unitForShow.value != null
-  && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.value?.name ?? "")
+let needShowCutscene = keepref(Computed(@() unitForShow.get() != null
+  && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.get()?.name ?? "")
   && readyToShowCutScene.get() ))
 
 function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
   else if (!needShowUi.get() && !skipAnimsOnce.get()) {
-    if (unitForShow.get()?.name == "ussr_ekranoplan_lun") {
-      needShowUi.set(true)
-      return
-    }
-    let unitType = unitForShow.value?.unitType ?? ""
+    let unitType = unitForShow.get()?.unitType ?? ""
     local presetType = TANK_PRESET_TYPE
-    if (unitType == SHIP)
-      presetType = SHIP_PRESET_TYPE
+    let tags = getUnitTags(unitForShow.get().name)
+    if (unitType == SHIP) {
+      if  (tags?.submarine == true)
+        presetType = SUBMARINE_PRESET_TYPE
+      else
+        presetType = SHIP_PRESET_TYPE
+    }
     else if (unitType == AIR) {
-      let tags = getUnitTags(unitForShow.value.name)
       if (tags?.type_fighter == true || tags?.type_strike_aircraft == true)
         presetType = AIR_FIGHTER_PRESET_TYPE
       else
@@ -189,13 +198,13 @@ function showCutscene(v) {
       start_prem_cutscene(presetIds[rnd_int(0, presetIds.len()-1)])
   }
 }
-showCutscene(needShowCutscene.value)
+showCutscene(needShowCutscene.get())
 needShowCutscene.subscribe(showCutscene)
 
 function openDetailsWnd() {
-  hangarUnitDataBackup({
-    name = unitForShow.value.name,
-    custom = unitForShow.value,
+  hangarUnitDataBackup.set({
+    name = unitForShow.get().name,
+    custom = unitForShow.get(),
   })
   let cfg = {
     name = unitForShow.get()?.name
@@ -351,15 +360,8 @@ let singleUnitBlock = @() {
     : mkUnitPlate(0, previewGoodsUnit.get(), { name = previewGoodsUnit.get().name, reqLevel = 0 })
 }
 
-function branchUnitsBlock(unitName) {
-  let unit = Computed(@() campUnitsCfg.get()?[unitName])
-  return @() {
-    watch = unit
-    children = unit.get() == null ? null
-      : mkAirBranchUnitPlate(unit.get(), { name = unitName, reqLevel = 0 },
-          @() curSelectedUnitId.set(unitName))
-  }
-}
+let branchUnitsBlock = @(unit)
+  mkAirBranchUnitPlate(unit, { name = unit.name, reqLevel = 0 }, @() curSelectedUnitId.set(unit.name))
 
 let mkHeader = @() mkPreviewHeader(
   Computed(@() goodsBattleMode.get() != null ? loc("offer/earlyAccess")
@@ -381,7 +383,7 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
     @() {
       watch = previewGoods
       flow = FLOW_HORIZONTAL
-      children = mkPreviewItems(previewGoods.get().__merge({ battleMods = {} }), aTimePackInfoStart + aTimeFirstItemOfset)
+      children = mkPreviewItems(previewGoods.get(), aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]
@@ -421,9 +423,12 @@ let itemsDescText = {
   animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
 }.__update(fontSmall)
 
-let itemsDesc = @() previewGoods.get().items.len() < 1 && previewGoods.get().decorators.len() < 1
-  ? { watch = previewGoods }
-  : itemsDescText.__update({ watch = previewGoods })
+function itemsDesc() {
+  let { items = {}, decorators = [], rewards = null } = previewGoods.get()
+  let hasOtherRewards = rewards != null ? null != rewards.findvalue(@(r) r.gType not in unitRewardTypes)
+    : items.len() + decorators.len() > 0 
+  return hasOtherRewards ? itemsDescText.__update({ watch = previewGoods }) : { watch = previewGoods }
+}
 
 let earlyAccessImageBlock = @(img) img == null ? null
   : {
@@ -535,13 +540,31 @@ function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
   }
 }
 
-let sortedBranchUnits = Computed(function(){
-  let units = clone previewGoods.get()?.units
-  if (units)
-    return units
-      .filter(@(u) u not in campMyUnits.get())
-      .sort(@(a,b) (campUnitsCfg.get()?[b].mRank ?? 0) <=> (campUnitsCfg.get()?[a].mRank ?? 0))
+let sortedUnits = Computed(function() {
+  if (previewGoods.get() == null)
+    return []
+  let { units = [], unitUpgrades = [], rewards = null } = previewGoods.get()
+  if (rewards != null) {
+    let res = []
+    let configs = serverConfigs.get()
+    let profile = servProfile.get()
+    foreach (r in rewards) {
+      if (r.gType not in unitRewardTypes || isEmptyByRType?[r.gType](r.id, r.subId, profile, configs))
+        continue
+      let unit = campUnitsCfg.get()?[r.id]
+      if (unit != null)
+        res.append(r.gType != G_UNIT_UPGRADE ? unit : unit.__merge({ isUpgraded = true }))
+    }
+    return res
+  }
+
+  
+  return unitUpgrades.map(@(u) campUnitsCfg.get()?[u].__merge({ isUpgraded = true }))
+    .extend(units.map(@(u) campUnitsCfg.get()?[u]))
+    .filter(@(u) u != null && u.name not in campMyUnits.get())
+    .sort(@(a, b) b.mRank <=> a.mRank)
 })
+let totalUnits = Computed(@() sortedUnits.get().len())
 
 let pannableArea = verticalPannableAreaCtor(sh(100) - saBorders[1] * 2 - backButtonHeight - 2*verticalGap, [verticalGap, saBorders[1]*3])
 let scrollHandler = ScrollHandler()
@@ -558,17 +581,15 @@ let scrollArrowsBlock = {
 }
 
 let leftBlockUnits = @() {
-  watch = [previewGoodsUnit, schRewards, previewGoods, goodsBattleMode]
-  size = (previewGoods.get()?.units.len() ?? 0) > 1
-    ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT]
-    : flex()
+  watch = [totalUnits, previewGoodsUnit, schRewards, goodsBattleMode]
+  size = totalUnits.get() > 1 ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT] : flex()
   halign = ALIGN_LEFT
-  children = (previewGoods.get()?.units.len() ?? 0) > 1
+  children = totalUnits.get() > 1
     ? @() {
-        watch = sortedBranchUnits
+        watch = sortedUnits
         flow = FLOW_VERTICAL
         gap = gapForBranch
-        children = arrayByRows((sortedBranchUnits.get() ?? []).map(@(u) branchUnitsBlock(u)), 2)
+        children = arrayByRows(sortedUnits.get().map(branchUnitsBlock), 2)
           .map(@(u)
             {
               flow = FLOW_HORIZONTAL
@@ -629,6 +650,8 @@ let previewWnd = @() {
       else
         closeBlackOverlay()
     }
+    if (activeOffer.get()?.id != null && activeOffer.get()?.id == previewGoods.get()?.id)
+      mark_offer_seen(activeOffer.get().campaign, activeOffer.get().id)
   }
 
   function onDetach() {

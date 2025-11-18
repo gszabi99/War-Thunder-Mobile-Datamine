@@ -11,13 +11,13 @@ eventbus_subscribe("onShowReturnToMapMessage", @(data) isPlayerOutOfMap.set(data
 
 let needVignetteOutOfMap = Computed(@() isGtBattleRoyale.get() && isPlayerOutOfMap.get())
 
-let stripeColor = 0xDDE15403
-let gradColor = 0x94973802
-let dangerLineScrollTime = 0.5
-let dangerLineFadeTime = 0.2
+const stripeColor = 0xDDE15403
+const gradColor = 0x94973802
+const dangerLineScrollTime = 0.5
+const dangerLineFadeTime = 0.2
 
-let dangerLineH = hdpxi(100)
-let stripeImgH = dangerLineH
+const dangerLineH = hdpxi(100)
+const stripeImgH = dangerLineH
 let stripeImgW = round(stripeImgH / 805.0 * 609).tointeger()
 let stripeImgGap = round(dangerLineH * 0.56).tointeger()
 
@@ -25,7 +25,7 @@ let stripeW = stripeImgW + stripeImgGap
 let stripesTotal = ceil(sw(100) / stripeW).tointeger() + 1
 
 let stripeImg = {
-  size = const [stripeImgW, stripeImgH]
+  size = static [stripeImgW, stripeImgH]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin/danger_line_mask.svg:{stripeImgW}:{stripeImgH}:P")
   keepAspect = true
@@ -51,7 +51,7 @@ let mkDangerLine = @(isTop) {
       duration = dangerLineFadeTime, easing = OutQuad, playFadeOut = true }
   ]
   children = {
-    size = const [stripesTotal * stripeW, dangerLineH]
+    size = static [stripesTotal * stripeW, dangerLineH]
     flow = FLOW_HORIZONTAL
     gap = stripeImgGap
     transform = {}

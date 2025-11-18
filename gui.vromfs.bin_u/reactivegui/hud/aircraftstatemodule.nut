@@ -9,9 +9,11 @@ let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut
 let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { DmStateMask } = require("%rGui/hud/airState.nut")
+let { hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 
 let iconSize = hdpx(60).tointeger()
 let iconColumnCount = 5
+let red = hudCoralRedColor
 
 let dmModulesSize = [iconSize * iconColumnCount, SIZE_TO_CONTENT]
 let xrayDollSize = hdpx(150)
@@ -61,7 +63,7 @@ let xrayModel = @(scale) @() {
         setShortcutOff(shortcutId)
   }
   function onDetach() {
-    stateFlags(0)
+    stateFlags.set(0)
     setShortcutOff(shortcutId)
   }
   hotkeys = mkGamepadHotkey(shortcutId)
@@ -77,8 +79,6 @@ let mkIcon = @(iconCfg, size = iconSize) {
   image = Picture($"ui/gameuiskin#{iconCfg.icon}:{size}:{size}")
   color = iconCfg?.color
 }
-
-let red = 0xFFE95E5E
 
 let dmIcons = [
   { icon = "dmg_air_altitude_control.svg" }

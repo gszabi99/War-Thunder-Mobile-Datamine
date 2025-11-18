@@ -16,7 +16,7 @@ let { HudTextId } = require("hudTexts")
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { isGtFFA } = require("%rGui/missionState.nut")
-
+let { get_game_type } = require("mission")
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "commonHintLogState"
@@ -48,12 +48,12 @@ let addCommonHint = @(text, evId = "", evType = "simpleTextTiny") addEvent({ id 
 let addCommonHintWithTtl = @(text, ttl, evId = "", evType = "simpleTextTiny")
   addEvent({ id = evId, hType = evType, text, ttl })
 
-const CANNON_ID = "reload_cannons"
-const M_GUN_ID = "reload_m_guns"
-isCannonReloading.subscribe(@(v) !v ? removeEvent({ id = CANNON_ID })
-  : addCommonHintWithTtl(loc("hints/reloading/cannons"), Cannon0.get().time, CANNON_ID, "simpleTextTinyGrad"))
-isMGunReloading.subscribe(@(v) !v ? removeEvent({ id = M_GUN_ID })
-  : addCommonHintWithTtl(loc("hints/reloading/guns"), MGun0.get().time, M_GUN_ID, "simpleTextTinyGrad"))
+const WEAPON_RELOAD_ID = "weapon_reload"
+
+isCannonReloading.subscribe(@(v) !v ? removeEvent({ id = WEAPON_RELOAD_ID })
+  : addCommonHintWithTtl(loc("hints/reloading/cannons"), Cannon0.get().time, WEAPON_RELOAD_ID, "simpleTextTinyGrad"))
+isMGunReloading.subscribe(@(v) !v ? removeEvent({ id = WEAPON_RELOAD_ID })
+  : addCommonHintWithTtl(loc("hints/reloading/guns"), MGun0.get().time, WEAPON_RELOAD_ID, "simpleTextTinyGrad"))
 
 eventbus_subscribe("hint:ui_message:show", function(data) {
   let { locId, param = null, paramTeamId = MP_TEAM_NEUTRAL, teamId = MP_TEAM_NEUTRAL } = data
@@ -336,7 +336,8 @@ eventbus_subscribe("hint:bailout:startBailout", function(data) {
 })
 
 eventbus_subscribe("hint:bailout:offerBailout", function(_) {
-  addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 10)
+  if (!(get_game_type() & GT_RACE))
+    addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 10)
 })
 
 eventbus_subscribe("hint:bailout:notBailouts", function(_) {

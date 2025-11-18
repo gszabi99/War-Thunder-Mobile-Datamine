@@ -27,7 +27,7 @@ let mkRespBase = @(rb) @() {
   size = 0
   translate = mapSizePx.get().map(@(v, axis) round(v * rb.mapPos[axis]))
   rendObj = ROBJ_SOLID
-  color = curRespBase.value == rb.id ? 0xFFFFFFFF : 0x80800000
+  color = curRespBase.get() == rb.id ? 0xFFFFFFFF : 0x80800000
   behavior = Behaviors.RtPropUpdate
   function update() {
     let newPos = getRespawnBasePos(rb.id)
@@ -61,7 +61,7 @@ let mkRespBase = @(rb) @() {
           behavior = Behaviors.Button
           function onClick() {
             sendPlayerActivityToServer()
-            if (curRespBase.value == rb.id)
+            if (curRespBase.get() == rb.id)
               playerSelectedRespBase.set(-1)
             else if (rb.id in availRespBases.get())
               playerSelectedRespBase.set(rb.id)
@@ -99,7 +99,7 @@ let respawnMap = {
     respawnBasesLayer
   ]
   function onAttach(elem) {
-    mapSizePx([elem.getWidth(), elem.getHeight()])
+    mapSizePx.set([elem.getWidth(), elem.getHeight()])
     deferOnce(refreshMapSize)
   }
 }

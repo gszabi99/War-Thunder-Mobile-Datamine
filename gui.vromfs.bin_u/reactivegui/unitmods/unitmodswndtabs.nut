@@ -2,18 +2,18 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkTabs, tabExtraWidth } = require("%rGui/components/tabs.nut")
 let getCatIcon = require("%appGlobals/config/modsPresentation.nut")
 let {
-  mods, unitMods, modsByCategory, unit, curCategoryId,
-  unseenModsByCategory, onTabChange, modsSort, getModCost, curUnitAllModsCost, getModCurrency
+  mods, unitMods, modsByCategory, unit, curModCategoryId,
+  unseenModsByCategory, onModTabChange, modsSort, getModCost, curUnitAllModsCost, getModCurrency, isOwn
 } = require("%rGui/unitMods/unitModsState.nut")
+let { tabW, tabH, tabContentMargin, tabsOvr } = require("%rGui/unitMods/unitModsConst.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkLevelLock, bgShade } = require("%rGui/unitMods/modsComps.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 
-let contentMargin = [hdpx(10), hdpx(30)]
+
 let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
-let tabH = hdpx(184)
-let tabW = hdpx(460)
 let tabContentW = tabW - tabExtraWidth
 let iconSize = hdpxi(60)
 
@@ -35,14 +35,20 @@ function tabData(tab, ovr = {}) {
   let tabModName = Computed(@() activeModName.get() ?? purchasedModName.get() ?? modsSorted.get()?[0]?.name)
   let tabMod = Computed(@() mods.get()?[tabModName.get()])
   let reqLevel = Computed(@() tabMod.get()?.reqLevel ?? 0)
-  let isLocked = Computed(@() reqLevel.get() > (unit.get()?.level ?? 0))
-  let isPurchased = Computed(@() unitMods.get()?[tabModName.get()] != null)
+  let isDisplayedAsPurchased = Computed(@() unit.get()?.isPremium || unit.get()?.isUpgraded)
+  let isLocked = Computed(@() reqLevel.get() > (unit.get()?.level ?? 0) && !isDisplayedAsPurchased.get())
   let hasInactiveMod = Computed(@() !activeModName.get() && purchasedModName.get() != null)
+
+  let cost = Computed(@() getModCost(tabMod.get(), curUnitAllModsCost.get()))
+  let currency = Computed(@() getModCurrency(tabMod.get()))
+
+  let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get() == 0)
+  let isPurchased = Computed(@() isDisplayedAsPurchased.get() || unitMods.get()?[tabModName.get()] != null)
 
   return {
     id
     content = {
-      size = [tabContentW, tabH]
+      size = [flex(), tabH]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
@@ -58,28 +64,28 @@ function tabData(tab, ovr = {}) {
         }
 
         {
-          maxWidth = tabContentW - contentMargin[1] * 2
+          maxWidth = tabContentW - tabContentMargin[1] * 2
           vplace = ALIGN_TOP
           hplace = ALIGN_RIGHT
-          margin = contentMargin
+          margin = tabContentMargin
           rendObj = ROBJ_TEXT
           text = loc(locId)
           behavior = Behaviors.Marquee
           delay = defMarqueeDelay
           speed = hdpx(50)
-        }.__update(fontTinyShaded)
+        }.__update(fontVeryTinyAccentedShaded)
 
         mkCatIcon(id)
 
         @() {
-          watch = [isLocked, isPurchased, tabMod, curUnitAllModsCost]
+          watch = [isLocked, hasModNotOwn, isPurchased, cost, currency]
           size = flex()
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [
-            !isPurchased.get() ? bgShade : null
-            isLocked.get() || isPurchased.get() ? null
-              : mkCurrencyComp(getModCost(tabMod.get(), curUnitAllModsCost.get()), getModCurrency(tabMod.get()))
+            !isPurchased.get() && !hasModNotOwn.get() ? bgShade : null
+            isLocked.get() || hasModNotOwn.get() || isPurchased.get() ? null
+              : mkCurrencyComp(cost.get(), currency.get(), CS_SMALL)
           ]
         }
 
@@ -97,15 +103,15 @@ function tabData(tab, ovr = {}) {
           text = hasInactiveMod.get() ? loc("mod/inactive") : null
           vplace = ALIGN_BOTTOM
           hplace = ALIGN_RIGHT
-          margin = contentMargin
-        }.__update(fontSmall)
+          margin = tabContentMargin
+        }.__update(fontTinyAccented)
 
         @() {
-          watch = [unseenModsByCategory, curCategoryId]
+          watch = [unseenModsByCategory, curModCategoryId]
           hplace = ALIGN_LEFT
           vplace = ALIGN_TOP
           margin = hdpx(20)
-          children = (unseenModsByCategory.get()?[id].len() ?? 0) > 0 && curCategoryId.get() != id ? priorityUnseenMark : null
+          children = (unseenModsByCategory.get()?[id].len() ?? 0) > 0 && curModCategoryId.get() != id ? priorityUnseenMark : null
         }
       ]
     }.__update(ovr)
@@ -113,7 +119,5 @@ function tabData(tab, ovr = {}) {
 }
 
 return {
-  mkModsCategories = @(tabs, curTabId) mkTabs(tabs.map(@(t) tabData(t)), curTabId, {}, onTabChange)
-  tabH
-  tabW
+  mkModsCategories = @(tabs, curTabId) mkTabs(tabs.map(@(t) tabData(t)), curTabId, tabsOvr, onModTabChange)
 }

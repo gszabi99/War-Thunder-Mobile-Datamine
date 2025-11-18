@@ -6,6 +6,8 @@ let { isVoiceMsgAllowedInMission, isVoiceMsgStickActive, voiceMsgStickDelta,
 } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { hudUnitType } = require("%rGui/hudState.nut")
 let { tuningUnitType } = require("%rGui/hudTuning/hudTuningState.nut")
+let { STICK } = require("%rGui/hud/stickState.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
 
@@ -21,7 +23,7 @@ function stickHeadIcon(scale, isEnabled) {
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#{icon.get()}:{size}:{size}:P")
     keepAspect = true
-    color = 0xFFFFFFFF
+    color = hudWhiteColor
     opacity = isEnabled ? 1.0 : 0.5
   }
 }
@@ -33,6 +35,7 @@ let { stickControl, stickView } = mkMiniStick({
   stickCooldownEndTime = voiceMsgCooldownEndTime
   stickCooldownTimeSec = Watched(COOLDOWN_TIME_SEC)
   isStickEnabled = isVoiceMsgEnabled
+  gamepadParams = {shortcutId = "ID_VOICE_MSG", activeStick = STICK.LEFT}
 })
 
 return {

@@ -33,7 +33,7 @@
     "maxDistance": 40000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -47,6 +47,11 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "100mm_1928_navy_HE",
     "dynamicKv": true,
@@ -56,7 +61,6 @@
     ],
     "explodeTreshold": 0.1,
     "fuseDelayDist": 0.0,
-    "fuseOnWater": true,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -232,7 +236,7 @@
       "maxDistance": 40000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -246,6 +250,11 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": 1.0,
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "100mm_1928_navy_HE",
       "dynamicKv": true,
@@ -255,7 +264,6 @@
       ],
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
-      "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -434,7 +442,7 @@
       "maxDistance": 40000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,

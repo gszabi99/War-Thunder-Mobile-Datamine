@@ -5666,6 +5666,20 @@
                 },
                 "removeGroupCurrentPlayerOrder": {}
               }
+            },
+            {
+              "not": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                }
+              },
+              "isPlayerOrderActive": {
+                "type": "orbit"
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
+              }
             }
           ],
           "isPlayerOrderActive": {
@@ -6104,6 +6118,20 @@
                 },
                 "removeGroupCurrentPlayerOrder": {}
               }
+            },
+            {
+              "not": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                }
+              },
+              "isPlayerOrderActive": {
+                "type": "orbit"
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
+              }
             }
           ],
           "isPlayerOrderActive": {
@@ -6533,6 +6561,20 @@
                   "varName": "playerTarget"
                 },
                 "removeGroupCurrentPlayerOrder": {}
+              }
+            },
+            {
+              "not": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                }
+              },
+              "isPlayerOrderActive": {
+                "type": "orbit"
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
               }
             }
           ],

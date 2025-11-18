@@ -11,6 +11,7 @@
     "replicate_early:tag": {}
   },
   "root": {
+    "_tracked": "active",
     "active": true
   },
   "daeditor_selected": {

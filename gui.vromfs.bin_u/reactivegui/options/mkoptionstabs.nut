@@ -9,20 +9,21 @@ let iconSizeDef = hdpxi(80)
 let textColor = 0xFFFFFFFF
 
 function mkTabImage(image, imageSizeMul, imageTabOffset) {
-  let size = (iconSizeDef * imageSizeMul + 0.5).tointeger()
-  let blockSize = max(iconSizeDef, size)
+  let h = (iconSizeDef * imageSizeMul + 0.5).tointeger()
+  let w = (1.5 * h + 0.5).tointeger()
+  let blockSize = max(iconSizeDef, h)
   return {
     size = [blockSize, blockSize]
     vplace = ALIGN_CENTER
     children = {
-      size = [size, size]
-      pos = [size * imageTabOffset[0], size * imageTabOffset[1]]
+      size = [w, h]
+      pos = [h * imageTabOffset[0], h * imageTabOffset[1]]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
-      image = Picture($"{image}:{size}:{size}:P")
+      image = Picture($"{image}:{w}:{h}:P")
       color = textColor
-      keepAspect = KEEP_ASPECT_FIT
+      keepAspect = true
     }
   }
 }
@@ -54,7 +55,7 @@ function tabData(tab, idx, curTabIdx) {
   let unseenMarkPos = [padding[1] + unseenSize[1] / 5, -padding[0] - unseenSize[1] / 5]
   local unseenMark = null
   if (unseen != null) {
-    let unseenExt = Computed(@() curTabIdx.value == idx ? SEEN : unseen.value)
+    let unseenExt = Computed(@() curTabIdx.get() == idx ? SEEN : unseen.get())
     unseenMark = mkUnseenMark(unseenExt, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, pos = unseenMarkPos })
   }
 

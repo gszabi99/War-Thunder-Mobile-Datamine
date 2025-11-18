@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { removefile, file } = require("io")
-let { scan_folder, read_text_from_file } = require("dagor.fs")
+let { file } = require("io")
+let { scan_folder, read_text_from_file, remove_file } = require("dagor.fs")
 let { register_command } = require("console")
 let { object_to_json_string, parse_json } = require("json")
 let { get_settings_blk } = require("blkGetters")
@@ -155,7 +155,7 @@ function writePresetToFile(id, preset) {
 
 function deleteFileByPresetId(id) {
   let path = $"{SAVE_PATH}/{id}{SAVE_EXT}"
-  let status = removefile(path)
+  let status = remove_file(path)
   if (status)
     dlog($"The file {id} has been deleted") 
   else

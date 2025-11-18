@@ -520,7 +520,8 @@ function loadUnitBulletsChoiceImpl(unitName) {
       .filter(@(d) d != null))
 }
 
-function loadUnitBulletsChoice(unitName) {
+function loadUnitBulletsChoice(realUnitName) {
+  let unitName = getTagsUnitName(realUnitName)
   if (unitName not in choiceCache)
     choiceCache[unitName] <- freeze(loadUnitBulletsChoiceImpl(unitName))
   return choiceCache[unitName]

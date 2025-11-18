@@ -9,7 +9,7 @@ let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirt
   setVirtualAxesAim =  null, setVirtualAxesAileronsAssist = null, setVirtualAxesDirectControl = null
 } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
-let { getSvgImage, borderColor, btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { getSvgImage, borderColor, btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let shortcutsMap = require("%rGui/controls/shortcutsMap.nut")
@@ -25,7 +25,7 @@ let { currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, curre
       currentAircraftCtrlType, currentThrottleStick, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner
+let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner, outlineColorDef
 } = require("%rGui/components/movementArrows.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
@@ -35,6 +35,8 @@ let { MechState, get_gears_current_state} = require("hudAircraftStates")
 let { ON } = MechState
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
+let { hudWhiteColor, hudCoralRedColor, hudSmokyGreyColor, hudRedColor, hudPearlGrayColor, hudTransparentColor
+} = require("%rGui/style/hudColors.nut")
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -46,8 +48,9 @@ let maxThrottleChangeSpeed = 50
 let throttleDeadZone = 0.7
 let throttlePerTick = throttleAxisUpdateTick * maxThrottleChangeSpeed
 
-let redColor = 0xFFFF5A52
-let neutralColor = 0xFFFFFFFF
+let redColor = hudCoralRedColor
+let neutralColor = hudWhiteColor
+let knobColor = hudPearlGrayColor
 
 let brakeBtnSize = [hdpx(90), hdpx(54)]
 
@@ -78,8 +81,6 @@ let isThrottleDisabled = mkIsControlDisabled("throttle")
 
 let throttleAxisVal = Watched(0)
 let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.get()) > throttleDeadZone))
-
-let knobColor = Color(230, 230, 230, 230)
 
 let sliderToThrottleAxisValue = @(sliderV) sliderV >= stepThrottle ? (maxThrottle - sliderV).tofloat() / maxThrottle
   : sliderV > sliderWepValue ? 1.0
@@ -156,19 +157,19 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
   return @() {
     watch = [isVisible, isGamepad, isActive]
     key = imageComp
-    children = isVisible.value && isGamepad.get() ? imageComp : null
-    transform = { scale = isActive.value ? [0.8, 0.8] : [1.0, 1.0] }
+    children = isVisible.get() && isGamepad.get() ? imageComp : null
+    transform = { scale = isActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }.__update(ovr)
 }
 
 let btnImageThrottleInc = mkGamepadHotkey(axisMinToHotkey(throttle_axis),
   Computed(@() sliderValue.get() > sliderWepValue),
-  Computed(@() isThrottleAxisActive.value && throttleAxisVal.get() > 0),
+  Computed(@() isThrottleAxisActive.get() && throttleAxisVal.get() > 0),
   { hplace = ALIGN_RIGHT, pos = [pw(90), 0] })
 let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
   Computed(@() sliderValue.get() < maxThrottle),
-  Computed(@() isThrottleAxisActive.value && throttleAxisVal.get() < 0),
+  Computed(@() isThrottleAxisActive.get() && throttleAxisVal.get() < 0),
   { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(90), 0] })
 
 let isStateVisible = @(state) state == ON
@@ -211,10 +212,10 @@ function brakeButtonImpl(scale) {
     size = scaleArr(brakeBtnSize, scale)
     children = [
       @() {
-        watch = wheelBrake
+        watch = [wheelBrake, btnBgStyle]
         size = flex()
         rendObj = ROBJ_SOLID
-        color =  wheelBrake.get() ? btnBgColor.ready : btnBgColor.empty
+        color =  wheelBrake.get() ? btnBgStyle.get().ready : btnBgStyle.get().empty
       }
       {
         size = flex()
@@ -247,7 +248,7 @@ let brakeButtonEditView = {
     {
       size = flex()
       rendObj = ROBJ_SOLID
-      color = btnBgColor.empty
+      color = hudTransparentColor
     }
     brakeBtnText(1)
   ]
@@ -282,7 +283,7 @@ let throttleSlider = kwarg(@(height, scaleWidth, knobSize, knobPadding, sliderPa
         pos = [-1.1 * knobSize, pw(-80)]
         hplace = ALIGN_RIGHT
         vplace = ALIGN_BOTTOM
-        color = IsTrtWep0.get() && !wheelBrake.get() ? 0xFFFF0000 : knobColor
+        color = IsTrtWep0.get() && !wheelBrake.get() ? hudRedColor : knobColor
         text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
           : IsTrtWep0.get() ? wepText
           : Trt0.get() >= maxThrottle ? maxThrottleText
@@ -530,7 +531,7 @@ function aircraftMoveStickBase(scale) {
     isForAircraft = true
     invertedX=true
     maxValueRadius
-    useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+    useCenteringOnTouchBegin = currentAircraftCtrlType.get() == "stick"
 
     function onAttach() {
       set_mouse_aim(false)
@@ -551,7 +552,7 @@ function aircraftMoveStickBase(scale) {
 let aircraftMoveStick = @(scale) @() {
   watch = currentAircraftCtrlType
   size = array(2, scaleEven(stickZoneSize, scale))
-  children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static"
+  children = currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"
     ? aircraftMoveStickBase(scale)
     : null
 }
@@ -572,7 +573,7 @@ function aircraftMoveSecondaryStickBase(scale) {
     isForAircraft = true
     invertedX=true
     maxValueRadius
-    useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+    useCenteringOnTouchBegin = currentAircraftCtrlType.get() == "stick"
 
     function onAttach() {
       set_mouse_aim(false)
@@ -606,7 +607,7 @@ function aircraftMoveRudderStickBase(scale) {
     isForAircraft = true
     invertedX=true
     maxValueRadius
-    useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+    useCenteringOnTouchBegin = currentAircraftCtrlType.get() == "stick"
 
     function onAttach() {
       set_mouse_aim(false)
@@ -645,7 +646,7 @@ let aircraftMoveStickView = {
 function mkGamepadAxisListener() {
   if (isActiveTurretCamera.get())
     return gamepadGunnerAxisListener
-  if (currentAircraftCtrlType.value == "mouse_aim")
+  if (currentAircraftCtrlType.get() == "mouse_aim")
     return gamepadMouseAimAxisListener
   return gamepadAxisListener
 }
@@ -820,7 +821,7 @@ let aircraftIndicatorsEditView = {
   ]
 }
 
-let outlineColor = Watched(0x4D4D4D4D)
+let outlineColor = Watched(hudSmokyGreyColor)
 let isAircraftMoveArrowsAvailable = Computed(@() currentAdditionalFlyControls.get())
 let toInt = @(list) list.map(@(v) v.tointeger())
 let horSize = toInt([shHud(9), shHud(12)])
@@ -838,9 +839,9 @@ let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection) mkMoveVertB
     flipY = upDirection
     children = @() {
       watch = isControlDisabled
-      children = isControlDisabled.value ? null
+      children = isControlDisabled.get() ? null
         : [
-            mkMoveVertBtnCorner(upDirection, Watched(0xFFFFFFFF), verSize)
+            mkMoveVertBtnCorner(upDirection, outlineColorDef, verSize)
             mkMoveVertBtnOutline(upDirection, verSize, outlineColor)
             mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, verSize)
           ]

@@ -22,7 +22,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { textButtonPurchase, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { defButtonMinWidth, defButtonHeight, PRIMARY } = require("%rGui/components/buttonStyles.nut")
+let { defButtonMinWidth, defButtonHeight, COMMON } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -103,22 +103,22 @@ let premiumRowsCfg = [
   }
   {
     name = "bonusPlayerExp"
-    bonus = @(cfg) bonusMultText(cfg?.expMul || 1.0)
+    bonus = @(cfg) bonusMultText(cfg?.expMul ?? 1.0)
     icon = mkBonusCurrencyIcon("playerExp")
   }
   {
     name = "bonusUnitExp"
-    bonus = @(cfg) bonusMultText(cfg?.expMul || 1.0)
+    bonus = @(cfg) bonusMultText(cfg?.expMul ?? 1.0)
     icon = mkBonusCurrencyIcon("unitExp")
   }
   {
     name = "bonusWp"
-    bonus = @(cfg) bonusMultText(cfg?.wpMul || 1.0)
+    bonus = @(cfg) bonusMultText(cfg?.wpMul ?? 1.0)
     icon = mkBonusCurrencyIcon("wp")
   }
   {
     name = "bonusGold"
-    bonus = @(cfg) bonusMultText(cfg?.goldMul || 1.0)
+    bonus = @(cfg) bonusMultText(cfg?.goldMul ?? 1.0)
     icon = mkBonusCurrencyIcon("gold")
   }
 ]
@@ -262,7 +262,7 @@ let toggleSubsBtn = @(subs, subsList) mkCustomButton(
     keepAspect = true
   },
   @() openSubsPreview(getNextFromList(subsList, subs.id)),
-  mergeStyles(PRIMARY, { ovr = { minWidth = defButtonHeight } }))
+  mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight } }))
 
 let btnRow = @(children) {
   size = [flex(), defButtonHeight]

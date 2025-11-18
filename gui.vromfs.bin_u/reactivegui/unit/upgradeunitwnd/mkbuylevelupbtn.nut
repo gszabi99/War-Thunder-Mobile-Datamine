@@ -8,7 +8,7 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_TYPE_UNIT, PURCH_SRC_LEVELUP, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { registerHandler, buy_unit} = require("%appGlobals/pServer/pServerApi.nut")
-let { infoBlueButton, infoGoldButton } = require("%rGui/components/infoButton.nut")
+let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { buyLevelUpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { curUnit, campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -46,13 +46,7 @@ function purchaseHandler(unit, price) {
   buy_unit(unit.name, price.currencyId, price.price, { id = "onPurchaseUnitInLevelUp", unitId = unit.name })
 }
 
-function openConfirmationWnd(unit){
-  let price = !unit?.isUpgraded
-    ? getUnitAnyPrice(unit, true, unitDiscounts.get())
-    : {
-        price = unit.upgradeCostGold
-        currencyId = GOLD
-      }
+function openConfirmationWnd(unit, price){
   if (price.price == 0) {
     purchaseHandler(unit, price)
     return
@@ -76,22 +70,29 @@ function mkPriceComp(unit) {
         unit.upgradeCostGold, GOLD, CS_INCREASED_ICON)
 }
 
-let mkBuyLevelupBtn = @(unit) {
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(10)
-  halign = ALIGN_LEFT
-  children = [
-    (unit?.isUpgraded ? infoGoldButton : infoBlueButton)(
-      @() unitDetailsWnd(unit),
-      {
-        size = [buttonStyles.defButtonHeight, buttonStyles.defButtonHeight]
-        hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+function mkBuyLevelupBtn(unit) {
+  let price = Computed(@() !unit?.isUpgraded ? getUnitAnyPrice(unit, true, unitDiscounts.get())
+    : { price = unit.upgradeCostGold, currencyId = GOLD})
+  return {
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    halign = ALIGN_LEFT
+    children = [
+      infoCommonButton(
+        @() unitDetailsWnd(unit),
+        {
+          size = [buttonStyles.defButtonHeight, buttonStyles.defButtonHeight]
+          hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+        }
+        { text = fontIconPreview }.__merge(fontBigShaded))
+      @() {
+        watch = price
+        children = mkCustomButton(mkPriceComp(unit),
+          @() openConfirmationWnd(unit, price.get()),
+          mergeStyles(!unit?.isUpgraded ? buttonStyles.PRIMARY : buttonStyles.PURCHASE, { ovr = ovrBuyBtn }))
       }
-      { text = fontIconPreview }.__merge(fontBigShaded))
-    mkCustomButton( mkPriceComp(unit),
-      @() openConfirmationWnd(unit),
-      mergeStyles(!unit?.isUpgraded ? buttonStyles.PRIMARY : buttonStyles.PURCHASE, { ovr = ovrBuyBtn }))
-  ]
+    ]
+  }
 }
 
 return mkBuyLevelupBtn

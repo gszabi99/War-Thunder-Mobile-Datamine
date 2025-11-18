@@ -3,6 +3,7 @@ let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
 let { selectedLineHorUnits } = require("%rGui/components/selectedLineUnits.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let contentGap = hdpx(20)
 
@@ -11,12 +12,12 @@ let contentBlockScrollHandler = ScrollHandler()
 let activeBlockBgGradient = mkBitmapPicture(
   gradTexSize,
   gradTexSize / 4,
-  mkGradientCtorRadial(0xFF50C0FF, 0, 20, 22, 31,-22))
+  mkGradientCtorRadial(selectColor, 0, 20, 22, 31,-22))
 
 let notActiveBlockBgGradient = mkBitmapPicture(
   gradTexSize,
   gradTexSize / 4,
-  mkGradientCtorRadial(0xFF50C0FF, 0, 5, 22, 31,-22))
+  mkGradientCtorRadial(selectColor, 0, 5, 22, 31,-22))
 
 let mkBlockRadialGradient = @(isActive) isActive ? activeBlockBgGradient : notActiveBlockBgGradient
 

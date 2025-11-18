@@ -124,7 +124,7 @@ eventbus_subscribe("ios.ads.onLoad",function (params) {
   loadedProvider.set(provider)
   isLoaded.set(status == ADS_STATUS_LOADED && isAdsLoaded())
   if (isLoaded.get()) {
-    failInARow(0)
+    failInARow.set(0)
     clearTimer(retryLoad)
     providersStatuses.clear()
     sendAdsBqEvent("loaded", provider, false)
@@ -139,7 +139,7 @@ eventbus_subscribe("ios.ads.onLoad",function (params) {
   if (needAdsLoad.get() && !isRetryQueued) {
     isRetryQueued = true
     resetTimeout(RETRY_LOAD_TIMEOUT + failInARow.get() * RETRY_INC_TIMEOUT, retryLoad)
-    failInARow(failInARow.get() + 1) 
+    failInARow.set(failInARow.get() + 1) 
   }
   if (isAllProvidersFailed(providerPriorities.get().providers, providersStatuses))
     hasAdsPreloadError.set(true)

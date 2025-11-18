@@ -38,7 +38,7 @@ function getUrlWithQrRedirect(url) {
 }
 
 let openUrlExternalImpl = @(url)
-  shell_launch(!isDebugSsoLogin.value ? url
+  shell_launch(!isDebugSsoLogin.get() ? url
     : url.replace("login.gaijin.net", "login-sso-test.gaijin.net"))
 
 function openUrlImpl(url, onCloseUrl) {
@@ -121,7 +121,7 @@ function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExter
     url = urlType.applyCurLang(url)
 
   let shouldLogin = isInArray(URL_TAG_AUTO_LOGIN, urlTags)
-  if (!isAlreadyAuthenticated && shouldLogin && isAuthorized.value) {
+  if (!isAlreadyAuthenticated && shouldLogin && isAuthorized.get()) {
     logUrl($"request to authenticate url {url} (base url = {baseUrl})")
     openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser)
   }
@@ -177,8 +177,8 @@ function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCl
 eventbus_subscribe("openUrl", kwarg(openUrl))
 
 register_command(function() {
-  isDebugSsoLogin(!isDebugSsoLogin.value)
-  dlog("isDebug mode ? ", isDebugSsoLogin.value) 
+  isDebugSsoLogin.set(!isDebugSsoLogin.get())
+  dlog("isDebug mode ? ", isDebugSsoLogin.get()) 
 }, "url.login-sso-test")
 
 return {

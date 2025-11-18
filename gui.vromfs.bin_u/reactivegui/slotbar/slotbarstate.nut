@@ -8,6 +8,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
 let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
@@ -18,13 +19,15 @@ let animTimeout = 5.0
 let visibleNewModsSlots = Watched({})
 let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
 let selectedTreeSlotIdx = mkWatched(persist, "selectedTreeSlotIdx", null)
+let attachedSlotBarArsenalIdx = mkWatched(persist, "selectedSlotBarArsenalIdx", null)
 let maxSlotLevels = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"])
-let slotIdxByHangarUnit = Computed(@() curSlots.get().findindex(@(s) s?.name == hangarUnit.get()?.name))
+let actualSlotIdx = Computed(@() curSlots.get().findindex(@(s) s?.name == curUnitName.get())
+  ?? curSlots.get().findindex(@(s) s?.name == hangarUnit.get()?.name))
 
 let slotBarArsenalKey = "slot_bar_arsenal"
 let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
 
-let selectSlotByHangarUnit = @() selectedSlotIdx.set(slotIdxByHangarUnit.get())
+let selectSlotByHangarUnit = @() selectedSlotIdx.set(actualSlotIdx.get())
 let selectTreeSlotByUnitName = @(unitName) selectedTreeSlotIdx.set(curSlots.get().findindex(@(s) s?.name == unitName))
 
 if (hangarUnit.get())
@@ -125,10 +128,11 @@ return {
 
   selectedSlotIdx
   selectedTreeSlotIdx
-  slotIdxByHangarUnit
+  actualSlotIdx
   selectTreeSlotByUnitName
   maxSlotLevels
 
+  attachedSlotBarArsenalIdx
   slotBarArsenalKey
   slotBarSlotKey
 

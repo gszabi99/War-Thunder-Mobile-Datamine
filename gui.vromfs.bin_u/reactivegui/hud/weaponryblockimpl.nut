@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { currentHoldWeaponName } = require("%rGui/hud/currentWeaponsStates.nut")
 let { scopeSize } = require("%rGui/hud/commonSight.nut")
+let { hudBlackColor, hudOceanMistColor } = require("%rGui/style/hudColors.nut")
 
 let halfScopeHeight = scopeSize[1] / 2
 
@@ -18,7 +19,7 @@ let mkWeaponNameText = @(text) {
     {
       rendObj = ROBJ_SOLID
       transform = { pivot = [0, 1] }
-      color = Color(11, 53, 54, 63)
+      color = hudOceanMistColor
       size = flex()
       animations = [
         { prop = AnimProp.scale, from = [0.0, 0.0], to = [0.0, 0.0], duration = 0.3, play = true }
@@ -30,7 +31,7 @@ let mkWeaponNameText = @(text) {
       rendObj = ROBJ_TEXTAREA
       margin = hdpx(5)
       behavior = [Behaviors.TextArea]
-      fontFxColor = Color(0, 0, 0, 255)
+      fontFxColor = hudBlackColor
       fontFxFactor = 50
       fontFx = FFT_GLOW
       text

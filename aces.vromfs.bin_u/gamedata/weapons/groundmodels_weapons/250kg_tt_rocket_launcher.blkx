@@ -1,7 +1,7 @@
 {
   "rocketGun": true,
   "preset_cost": 10,
-  "bullets": 1,
+  "bullets": -1,
   "shotFreq": 1.0,
   "sound_path": "tanks/weapon_tanks/rockets",
   "sound_pathStudio": "ground/weapon/rockets",
@@ -10,9 +10,9 @@
   "reload_sound_pathStudio": "ground/effects",
   "reload_sound": "reload_rocket",
   "isBulletBelt": false,
+  "bulletsCartridge": 2,
   "helicopterGroup": 2,
   "allowHumanReload": true,
-  "bulletsCartridge": 2,
   "mesh": "tt_250_rocket",
   "tags": {
     "antiTankRocket": true,
@@ -42,7 +42,7 @@
     "maxDeltaAngle": 0.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap_rocket",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,

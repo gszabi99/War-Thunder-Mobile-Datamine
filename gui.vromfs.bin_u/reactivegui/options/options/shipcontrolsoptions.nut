@@ -15,7 +15,7 @@ let sendChange = @(id, v) sendSettingChangeBqEvent(id, "ships", v)
 
 let autoZoomList = [false, true]
 let currentAutoZoom = mkOptionValue(OPT_AUTO_ZOOM_SHIP, true, @(v) validate(v, autoZoomList))
-set_auto_zoom(currentAutoZoom.value, true)
+set_auto_zoom(currentAutoZoom.get(), true)
 currentAutoZoom.subscribe(@(v) set_auto_zoom(v, true))
 let currentAutoZoomType = {
   locId = "options/auto_zoom"

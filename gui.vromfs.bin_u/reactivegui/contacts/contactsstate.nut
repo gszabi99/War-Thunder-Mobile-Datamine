@@ -84,13 +84,13 @@ function fetchContacts() {
   if (canFetchContacts.get())
     fetchContactsImpl()
   else
-    isFetchDelayed(true)
+    isFetchDelayed.set(true)
 }
 
 function fetchIfNeed() {
   if (!canFetchContacts.get() || !isFetchDelayed.get())
     return
-  isFetchDelayed(false)
+  isFetchDelayed.set(false)
   fetchContactsImpl()
 }
 fetchIfNeed()
@@ -114,13 +114,13 @@ function updateGroup(new_contacts, uids, groupName, contactNames) {
   foreach (member in members) {
     local { userId, nick } = member
     userId = userId.tostring()
-    hasChanges = hasChanges || userId not in uids.value
+    hasChanges = hasChanges || userId not in uids.get()
     contactNames[userId] <- nick
     newUids[userId] <- true
   }
 
-  if (hasChanges || uids.value.len() != newUids.len())
-    uids(newUids)
+  if (hasChanges || uids.get().len() != newUids.len())
+    uids.set(newUids)
 }
 
 function updateAllLists(new_contacts) {

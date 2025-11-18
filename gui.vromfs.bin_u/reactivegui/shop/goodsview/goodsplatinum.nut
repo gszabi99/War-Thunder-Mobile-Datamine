@@ -20,13 +20,15 @@ let getImgByAmount = @(amount)
   mkGoodsImg(getCurrencyGoodsPresentation(PLATINUM, amount).img, null, { keepAspect = KEEP_ASPECT_FILL })
 
 function getLocNamePlatinum(goods) {
-  let amount = goods?.currencies.platinum ?? 0
+  let amount = goods?.rewards[0].count
+    ?? goods?.currencies.platinum ?? 0 
   return loc("shop/item/platinum/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
 function mkGoodsPlatinum(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
-  let platinum = goods?.currencies.platinum ?? 0
+  let platinum = goods?.rewards[0].count
+    ?? goods?.currencies.platinum ?? 0 
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBgGold, isFreeReward, price?.currencyId)
 

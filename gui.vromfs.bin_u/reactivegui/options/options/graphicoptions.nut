@@ -4,15 +4,15 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_texture_uhq_supported, should_notify_about_restart,
   get_default_graphics_preset, is_metalfx_upscale_supported,
-  is_fxaa_high_broken, supports_deferred_msaa
+  is_fxaa_high_broken, supports_deferred_msaa, hdr_available
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
-let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, mkOptionValue
+let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, OPT_HDR, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let mkOptionDescFromValsList = require("%rGui/options/mkOptionDescFromValsList.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
-let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
+let { has_additional_graphics_content, allow_hdr_on_ios } = require("%appGlobals/permissions.nut")
 
 let qualitiesListDev = ["movie"]
 let minMemory = 4096
@@ -44,6 +44,7 @@ let aaList = ["low_fxaa"]
   .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["mobile_taa_low", "mobile_taa"])
   .extend(is_ios && is_metalfx_upscale_supported() ? ["metalfx_fxaa"] : [])
   .extend((is_android || is_pc) && (get_settings_blk()?.graphics.listAllAaOptions ?? false) ? ["sgsr", "sgsr2"] : [])
+  .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["smaa"])
 
 let validateAA = @(a) aaList.contains(a) ? a : aaList[0]
 function getAAByQuality(quality) {
@@ -127,8 +128,13 @@ let isUhqSupported = is_texture_uhq_supported()
 let needUhqTexturesRaw = Watched(isUhqSupported
   && !!get_common_local_settings_blk()?.uhqTextures) 
 
-let needShowRestartNotify = Watched(should_notify_about_restart())
-eventbus_subscribe("presets.restartNotifyChanged", @(params) needShowRestartNotify.set(params?.status ?? false))
+let needShowRestartNotifyList = mkWatched(persist, "needShowRestartNotifyList",
+  { onLoad = should_notify_about_restart() })
+let needShowRestartNotify = Computed(@() null != needShowRestartNotifyList.get().findvalue(@(v) v))
+
+eventbus_subscribe("presets.restartNotifyChanged", function(params) {
+  needShowRestartNotifyList.mutate(@(list) list.$rawset("code", params?.status ?? false))
+})
 
 let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNotify }
 : {
@@ -155,6 +161,25 @@ let optUhqTextures = {
   valToString = @(v) loc(v ? "msgbox/btn_download" : "options/off")
 }
 
+let hdrStateOnStart = get_settings_blk()?.video.enableHdr ?? false;
+let hdrSupported = hdr_available()
+let hdrValue = mkOptionValue(OPT_HDR, hdrStateOnStart);
+let disableHdrOnIosIfRequired = @(isAllowedHdrOnIos)
+  (hdrSupported && is_ios && !isAllowedHdrOnIos) ? hdrValue(false) : null
+allow_hdr_on_ios.subscribe(disableHdrOnIosIfRequired)
+disableHdrOnIosIfRequired(allow_hdr_on_ios.get())
+let optHDR = {
+  locId = "options/hdr"
+  ctrlType = OCT_LIST
+  value = hdrValue
+  list = Computed(@() !is_ios || allow_hdr_on_ios.get() ? [false, true] : [])
+  valToString = @(v) loc(v ? "options/on" : "options/off")
+  function setValue(v) {
+    hdrValue.set(v)
+    needShowRestartNotifyList.mutate(@(list) list.$rawset("hdr", v != hdrStateOnStart))
+  }
+}
+
 return {
   graphicOptions = [
     optQuality
@@ -163,6 +188,7 @@ return {
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null
+    hdrSupported ? optHDR : null
     optAntiAliasing
   ]
   isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.get())

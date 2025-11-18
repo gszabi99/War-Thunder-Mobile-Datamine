@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { arrayByRows } = require("%sqstd/underscore.nut")
 let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays,
   has_offline_battle_access
 } = require("%appGlobals/permissions.nut")
@@ -11,13 +12,11 @@ let optionsScene = require("%rGui/options/optionsScene.nut")
 let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
 let chooseBenchmarkWnd = require("%rGui/mainMenu/chooseBenchmarkWnd.nut")
 let replaysWnd = require("%rGui/replay/replaysWnd.nut")
-let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { openNewsWnd, isFeedReceived } = require("%rGui/news/newsState.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { startTestFlight, startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")
 let { isLoginAwardOpened, canShowLoginAwards } = require("%rGui/unlocks/loginAwardState.nut")
@@ -27,14 +26,15 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
-let { openOfflineBattleMenu } = require("%rGui/debugTools/debugOfflineBattleState.nut")
-let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { openOfflineBattleMenu } = require("%rGui/gameModes/offlineBattlesState.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
 let TF_SHIP_VS_PLANES_MISSION = "testFlight_ship_aaa_vs_planes"
 let TEST_AIR_BATTLE_MISSION = "abandoned_factory_single_AD"
 let TEST_AIR_BATTLE_UNIT = "fw_190a_1"
+
+let MAX_ROWS_COUNT = 10
 
 let openConfirmationTutorialMsg = @() openMsgBox({
   text = loc("tutorial/startConfirmation")
@@ -48,6 +48,7 @@ let openConfirmationTutorialMsg = @() openMsgBox({
 
 let OPTIONS = {
   name = loc("mainmenu/btnOptions")
+  icon = "ui/gameuiskin#icon_menu_settings.svg"
   cb = optionsScene
 }
 let TEST_FLIGHT = {
@@ -75,19 +76,22 @@ let BENCHMARK = {
 }
 let REPLAYS = {
   name = loc("mainmenu/btnReplays")
+  icon = "ui/gameuiskin#watch_ads.svg"
   cb = @() notAvailableForSquadMsg(replaysWnd)
 }
 let SAVE_LAST_REPLAY = {
   name = loc("mainmenu/btnSaveReplay")
+  icon = "ui/gameuiskin#icon_save.svg"
   cb = saveReplayWindow
 }
 let GAMEPAD_HELP = {
   name = loc("flightmenu/btnControlsHelp")
+  icon = "ui/gameuiskin#menu_game.svg"
   cb = controlsHelpWnd
 }
 let DEBUG_EVENTS = {
   name = "Debug Game Modes"
-  cb = @() notAvailableForSquadMsg(debugGameModes)
+  cb = debugGameModes
 }
 let DEBUG_CONFIGS = {
   name = "Debug Configs"
@@ -111,38 +115,33 @@ let DEBUG_SHOP = {
 }
 let NEWS = {
   name = loc("mainmenu/btnNews")
+  icon = "ui/gameuiskin#icon_menu_news.svg"
   cb = openNewsWnd
-}
-let STORE = {
-  name = loc("topmenu/store")
-  cb = openShopWnd
 }
 let LOGIN_AWARD = {
   name = loc("dailyRewards/header")
+  icon = "ui/gameuiskin#icon_menu_daily.svg"
   cb = @() canShowLoginAwards.get() ? isLoginAwardOpened.set(true)
     : openMsgBox({ text = loc("error/serverTemporaryUnavailable") })
 }
 let BUG_REPORT = {
   name = loc("mainmenu/btnBugReport")
+  icon = "ui/gameuiskin#icon_social_support.svg"
   cb = openBugReport
 }
 let TUTORIAL = {
   name = loc("mainmenu/btnTutorial")
+  icon = "ui/gameuiskin#icon_menu_tutorial.svg"
   cb = openConfirmationTutorialMsg
-}
-let UNITS = {
-  name = loc("mainmenu/btnUnits")
-  cb = unitsWnd
 }
 let OFFLINE_BATTLES = {
   name = loc("mainmenu/offlineBattles")
+  icon = "ui/gameuiskin#icon_minimap_attack.svg"
   cb = openOfflineBattleMenu
 }
 
 function getPublicButtons() {
-  let res = [OPTIONS, STORE]
-  if (!isCampaignWithUnitsResearch.get())
-    res.append(UNITS)
+  let res = [OPTIONS]
   if (isGamepad.get())
     res.append(GAMEPAD_HELP)
   if (isFeedReceived.get())
@@ -177,10 +176,9 @@ function getDevButtons() {
   return res
 }
 
-let getTopMenuButtons = @() [
-  getDevButtons()
-  getPublicButtons()
-]
+let getTopMenuButtons = @() []
+  .extend(arrayByRows(getPublicButtons(), MAX_ROWS_COUNT).map(@(columns) columns),
+    arrayByRows(getDevButtons(), MAX_ROWS_COUNT).map(@(columns) columns))
 
 let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   
