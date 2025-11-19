@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import restart_game, save_short_token, save_profile
+from "%scripts/dagui_natives.nut" import restart_game, save_short_token
 from "%scripts/dagui_library.nut" import *
 
+let { save_profile } = require("chard")
 let { eventbus_subscribe } = require("eventbus")
 
 eventbus_subscribe("prepareToRestartGame", function(_) {

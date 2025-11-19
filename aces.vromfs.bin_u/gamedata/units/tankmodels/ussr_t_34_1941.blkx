@@ -102,6 +102,58 @@
       ]
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1809,7 +1861,13 @@
     "tracks": {
       "animationMultiplier": 0.68,
       "height": 0.04,
-      "width": 0.55
+      "width": 0.55,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.2,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1822,12 +1880,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.317,
       "mainGearRatio": 1.02,
       "sideGearRatio": 5.7,
       "minGearChangeTime": 0.0,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
           -5.35,
@@ -1952,6 +2010,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -1969,6 +2028,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2029,6 +2089,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2046,6 +2107,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2119,6 +2181,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2260,6 +2323,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2267,6 +2331,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2274,6 +2339,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2505,9 +2571,6 @@
     "art_support_smoke": {},
     "art_support_mortars": {},
     "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
-    "tank_smoke_screen_low_cooldown": {},
-    "tank_smoke_screen_long_duration": {},
     "tank_additional_armor": {
       "invertEnableLogic": true,
       "turn_it_off": true,

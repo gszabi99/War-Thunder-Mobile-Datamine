@@ -10,6 +10,7 @@ let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { slotExpTanks } = require("%appGlobals/currenciesState.nut")
 let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { selAttributes, curCategoryId, attrPresets,
   calcStatus, sumCost, MAX_AVAIL_STATUS
@@ -18,6 +19,7 @@ let { selAttributes, curCategoryId, attrPresets,
 
 let isSlotAttrOpened = mkWatched(persist, "isSlotAttrOpened", false)
 let isSlotAttrAttached = mkWatched(persist, "isSlotAttrAttached", false)
+let isOpenedSlotExpWnd = mkWatched(persist, "isOpenedSlotExpWnd", false)
 
 let SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
 let seenSlotAttributes = mkWatched(persist, SEEN_SLOT_ATTRIBUTES, {})
@@ -65,6 +67,9 @@ let isSlotMaxSkills = Computed(function() {
     null != cat.attrList.findvalue(@(attr) attr.levelCost.len() > (slot.attrLevels?[cat.id][attr.id] ?? 0)))
 })
 
+let curCampaignSlotExp = Computed(@() curCampaign.get() == "tanks_new" ? slotExpTanks.get() : 0)
+let needDistributeCampaignSlotExp = Computed(@() curCampaignSlotExp.get() > 0 && slotLevelsToMax.get() > 0)
+
 function mkUnseenSlotAttrByIdx(idx) {
   let attrDataByIdx = Computed(function() {
     let slot = curSlots.get()?[idx]
@@ -101,8 +106,9 @@ function mkUnseenSlotAttrByIdx(idx) {
   return Computed(function() {
     let { slot = null, preset = null } = attrDataByIdx.get()
     let { attrLevels = null } = slot
+    let isUnseenByBalance = curCampaignSlotExp.get() > 0 && !isMaxSlotLevel.get()
     if (attrLevels == null || preset == null || leftSp.get() <= 0 || isMaxSkills.get())
-      return { status = -1, statusByCat = [], isUnseen = false }
+      return { status = -1, statusByCat = [], isUnseen = isUnseenByBalance }
     let selAttr = selAttributes.get()
     let avail = array(MAX_AVAIL_STATUS, 0)
     let availCats = []
@@ -130,11 +136,12 @@ function mkUnseenSlotAttrByIdx(idx) {
 
     let statusByCat = availCats.map(calcStatus)
     let seenSlotLevel = seenSlotAttributes.get()?[curCampaign.get()][idx]
+    let isUnseenByAttr = statusByCat.len() > 0
+      && (isMaxSlotLevel.get() || !seenSlotLevel || (slot?.level ?? 0) > seenSlotLevel)
     return {
       status = calcStatus(avail)
       statusByCat
-      isUnseen = statusByCat.len() > 0
-        && (isMaxSlotLevel.get() || !seenSlotLevel || (slot?.level ?? 0) > seenSlotLevel)
+      isUnseen = isUnseenByAttr || isUnseenByBalance
     }
   })
 }
@@ -195,6 +202,14 @@ if (seenSlotAttributes.get().len() == 0)
 
 isSettingsAvailable.subscribe(@(_) loadSeenSlotAttributes())
 
+let openSlotExpWnd = @() isOpenedSlotExpWnd.set(true)
+
+function openSlotAttrWnd() {
+  isSlotAttrOpened.set(true)
+  if (needDistributeCampaignSlotExp.get())
+    openSlotExpWnd()
+}
+
 register_command(function() {
   seenSlotAttributes.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_SLOT_ATTRIBUTES)
@@ -202,9 +217,11 @@ register_command(function() {
 }, "debug.reset_seen_slot_attributes")
 
 return {
-  openSlotAttrWnd = @() isSlotAttrOpened.set(true)
+  openSlotAttrWnd
+  openSlotExpWnd
   isSlotAttrOpened
   isSlotAttrAttached
+  isOpenedSlotExpWnd
 
   attrSlotData
   slotUnitName
@@ -222,4 +239,6 @@ return {
   slotLevelsToMax
   seenSlotAttributes
   markSlotAttributesSeen
+  curCampaignSlotExp
+  needDistributeCampaignSlotExp
 }

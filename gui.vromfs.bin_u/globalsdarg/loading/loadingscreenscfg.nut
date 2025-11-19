@@ -1,18 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
+let { mkBgImageWithFallback } = require("%globalsDarg/components/mkAnimBg.nut")
 let mkLayersComplexShip1 = require("complex_ship_1.nut")
 
 
-
-
-
-
-
-let fallbackLoadingImage = "ui/bkg/login_bkg_t_7.avif"
-
 let mkSingleImageLayers = @(image) [{
   moveX = sh(10)
-  children = mkBgImageByPx(image)
+  children = mkBgImageWithFallback(image)
 }]
 
 
@@ -138,7 +131,7 @@ let screensList = {
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_15.avif")
   }
   event_anniversary_2025 = {
-    weight = 2.0
+    weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_29.avif")
   }
   simple_tank_16 = {
@@ -203,6 +196,16 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_28.avif")
   }
+  simple_tank_26 = {
+    camp = [ "tanks" ]
+    weight = 1.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_30.avif")
+  }
+  simple_tank_27 = {
+    camp = [ "tanks" ]
+    weight = 1.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_31.avif")
+  }
   simple_airplane_1 = {
     camp = [ "air" ]
     weight = 1.0
@@ -228,10 +231,13 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_6.avif")
   }
-
+  simple_airplane_7 = {
+    camp = [ "air" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_7.avif")
+  }
 }
 
 return {
-  fallbackLoadingImage
   screensList
 }

@@ -3882,6 +3882,15 @@
         "ammo_percent": 100,
         "repair_percent": 100
       }
+    },
+    "airSpeedBoost": {
+      "fxName": "misc_markers_booster",
+      "fxScale": 1.0,
+      "pickupFxName": "misc_markers_pickup",
+      "pickupFxScale": 1.0,
+      "rewards": {
+        "air_speed_boost_percent": 600
+      }
     }
   },
   "markUnitPresets": {

@@ -4,6 +4,7 @@ let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isGtBattleRoyale } = require("%rGui/missionState.nut")
 let { crewState } = require("%rGui/hud/crewState.nut")
+let { hudGrassColor } = require("%rGui/style/hudColors.nut")
 
 
 let iconSize = evenPx(50)
@@ -33,7 +34,7 @@ function mkCrewRank(level, scale) {
       {
         size
         rendObj = ROBJ_IMAGE
-        color = 0xFF65BC82
+        color = hudGrassColor
         image = Picture($"{getCrewRankIcon(level)}:{size}:{size}:P")
         keepAspect = true
       }
@@ -62,7 +63,7 @@ let crewRankEditView = {
     {
       size = iconSize
       rendObj = ROBJ_IMAGE
-      color = 0xFF65BC82
+      color = hudGrassColor
       image = Picture($"{getCrewRankIcon(100)}:{iconSize}:{iconSize}:P")
       keepAspect = true
     }

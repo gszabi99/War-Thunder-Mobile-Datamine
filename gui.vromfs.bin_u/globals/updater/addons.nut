@@ -24,7 +24,6 @@ let comma = loc("ui/comma")
 let initialAddons = []
 let latestDownloadAddonsByCamp = {} 
 let latestDownloadAddons = []
-let extendedSoundAddons = []
 let commonUhqAddons = ["pkg_environment_uhq"]
 let ovrHangarAddon = {addons = [], hangarPath=""}
 
@@ -94,7 +93,7 @@ if (addonsBlk != null) {
     let allConditions = b % "conditions"
     foreach (conditions in allConditions) {
       let { campaign = null, mRank = null, isSoloNewbie = false, isCoopNewbie = false, isDownloadLast = false,
-        isDownloadFirst = false, isExtendedSound = false
+        isDownloadFirst = false
       } = conditions
       if (isDownloadFirst) {
         initialAddons.append(addon)
@@ -106,10 +105,6 @@ if (addonsBlk != null) {
         latestDownloadAddons.append(addon)
         if (hq)
           latestDownloadAddons.append(addonHq)
-        continue
-      }
-      if (isExtendedSound) {
-        extendedSoundAddons.append(addon)
         continue
       }
 
@@ -160,6 +155,11 @@ function getAddonNameImpl(addon) {
   local locId = addonLocId?[addon]
   if (locId != null)
     return locId == "" ? "" : loc(locId)
+
+  if (startswith(addon, "pkg_level_"))
+    return loc("addon/environment")
+  if (startswith(addon, "pkg_sound_") || startswith(addon, "pkg_extended_"))
+    return loc("options/sound")
 
   if (startswith(addon, "pkg_tier_") || startswith(addon, "pkg_common_")) {
     let list = addon.split("_")
@@ -215,8 +215,9 @@ let getAddonsSize = @(addons, addonSizesV)
   unique(addons).reduce(@(total, addon) total + (addonSizesV?[addon] ?? 0), 0)
 
 let mbToString = @(mb) "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
+let toMB = @(b) (b + (MB / 2)) / MB
 
-let getAddonsSizeInMb = @(addons, addonSizesV) (getAddonsSize(addons, addonSizesV) + (MB / 2)) / MB
+let getAddonsSizeInMb = @(addons, addonSizesV) toMB(getAddonsSize(addons, addonSizesV))
 let getAddonsSizeStr = @(addons, addonSizesV) mbToString(getAddonsSizeInMb(addons, addonSizesV))
 
 let gameModeAddonToAddonSetMap = {
@@ -237,7 +238,6 @@ return freeze({
   ovrHangarAddon
   soloNewbieByCampaign
   coopNewbieByCampaign
-  extendedSoundAddons
 
   gameModeAddonToAddonSetMap
 
@@ -245,6 +245,7 @@ return freeze({
   localizeAddonsLimited
 
   MB
+  toMB
   mbToString
   getAddonsSizeStr
   getAddonsSize

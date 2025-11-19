@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
@@ -16,7 +17,7 @@ let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getUnlockRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 
 let EVENT_PREFIX = "day"
 let SEEN_QUESTS = "seenQuests"
@@ -24,14 +25,17 @@ let COMMON_TAB = "common"
 let EVENT_TAB = MAIN_EVENT_ID
 let PROMO_TAB = "promo"
 let ACHIEVEMENTS_TAB = "achievements"
+let PERSONAL_TAB = "personal"
 let DAILY_SECTION = "daily_quest"
 let WEEKLY_SECTION = "weekly_quest"
+let PERSONAL_META_MARK = "personal"
 
 let SPEED_UP_AD_COST = 1
 
 let seenQuests = mkWatched(persist, SEEN_QUESTS, {})
 let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
 let rewardsList = Watched(null)
+let isRewardsQuestFinished = Watched(false)
 let isRewardsListOpen = Computed(@() rewardsList.get() != null)
 let curTabId = Watched(null)
 let curTabParams = Watched({})
@@ -39,8 +43,14 @@ let curTabParams = Watched({})
 let tutorialSectionId = Watched(null)
 let isSameTutorialSectionId = Watched(false)
 
-let openRewardsList = @(rewards) rewardsList.set(rewards)
-let closeRewardsList = @() rewardsList.set(null)
+function openRewardsList(rewards, isQuestFinished = false) {
+  rewardsList.set(rewards)
+  isRewardsQuestFinished.set(isQuestFinished)
+}
+function closeRewardsList() {
+  rewardsList.set(null)
+  isRewardsQuestFinished.set(false)
+}
 
 let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFIX, day)
 
@@ -79,13 +89,14 @@ let eventSections = Computed(function() {
   return res
 })
 
-let sectionMetaMarks = [DAILY_SECTION, WEEKLY_SECTION, "promo_quest", "achievement"]
+let sectionMetaMarks = [DAILY_SECTION, WEEKLY_SECTION, "promo_quest", "achievement", PERSONAL_META_MARK]
 
 let questsCfg = Computed(@() {
   [COMMON_TAB] = [DAILY_SECTION, WEEKLY_SECTION],
   [PROMO_TAB] = ["promo_quest"],
   [EVENT_TAB] = eventSections.get()?[EVENT_TAB].map(@(v) v.name) ?? [EVENT_TAB],
   [ACHIEVEMENTS_TAB] = ["achievement"],
+  [PERSONAL_TAB] = [PERSONAL_META_MARK]
 }.__merge(specialEvents.get().reduce(@(res, v)
     res.__update({ [v.eventId] = eventSections.get()?[v.eventName].map(@(q) q.name) ?? [v.eventName] }), {})))
 
@@ -145,13 +156,16 @@ let progressUnlockBySection = Computed(@() {
 let tutorialSectionIdWithReward = Computed(@() questsCfg.get()?[EVENT_TAB]
   .findvalue(@(section) null != questsBySection.get()?[section].findvalue(@(r) r.hasReward)))
 
-function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
+function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, statsTables, sConfigs) {
   let res = []
   foreach (idx, s in qCfg?[tabId] ?? []) {
     foreach (quest in qBySection[s].values().append(
       pUnlockBySection?[s],
       idx == 0 ? pUnlockByTab?[tabId] : null
     ).filter(@(v) v)) {
+      let { currency = null } = statsTables?.stats[quest.table].rerollPrice
+      if (currency != null && !res.contains(currency))
+        res.append(currency)
       let stage = quest.stages?[quest.stage] ?? quest.stages?[quest.stages.len() - 1]
       if (stage != null){
         if ((stage?.price ?? 0) > 0 && !res.contains(stage?.currencyCode) && !quest?.isCompleted)
@@ -165,6 +179,16 @@ function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnl
   }
   return res
 }
+
+let mkHasReceivedAllRewards = @(item, rewardsPreview) Computed(function() {
+  if (item.get()?.isFinished)
+    return true
+  let rPreview = rewardsPreview.get()
+  local countReceivedR = 0
+  foreach (r in rPreview)
+    countReceivedR += isSingleViewInfoRewardEmpty(r, servProfile.get()) ?  1 : 0
+  return countReceivedR == rPreview.len()
+})
 
 function saveSeenQuests(ids) {
   seenQuests.mutate(function(v) {
@@ -220,7 +244,7 @@ function openQuestsWndOnTab(tabId) {
 
 function onWatchQuestAd(unlock) {
   let { name, progressCorrectionStep = 0, isCompleted = false } = unlock
-  if (adBudget.value == 0) {
+  if (adBudget.get() < SPEED_UP_AD_COST) {
     openMsgBox({ text = loc("msg/adsLimitReached") })
     return false
   }
@@ -265,6 +289,7 @@ return {
   isQuestsOpen
 
   rewardsList
+  isRewardsQuestFinished
   isRewardsListOpen
   openRewardsList
   closeRewardsList
@@ -289,10 +314,13 @@ return {
   tutorialSectionId
   isSameTutorialSectionId
 
+  mkHasReceivedAllRewards
+
   COMMON_TAB
   EVENT_TAB
   PROMO_TAB
   ACHIEVEMENTS_TAB
+  PERSONAL_TAB
 
   DAILY_SECTION
 

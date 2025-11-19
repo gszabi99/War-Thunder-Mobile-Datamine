@@ -48,8 +48,11 @@ function mkStreakIcon(unlockId, mSize, numParam = null) {
   if (bgImage)
     children.append(mkImage(bgImage))
   children.extend(stackImages.map(@(imgData) mkStackImage(imgData)))
-  if (numParam != null && numberCtor)
-    children.append(mkStackImage(numberCtor(numParam)))
+  if (numParam != null && numberCtor) {
+    let numbersData = numberCtor(numParam)
+    foreach (data in numbersData)
+      children.append(mkStackImage(data))
+  }
   return @() {
     vplace = ALIGN_CENTER
     size = [mSize, mSize]

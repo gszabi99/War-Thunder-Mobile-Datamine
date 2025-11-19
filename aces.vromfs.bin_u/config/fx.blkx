@@ -1132,6 +1132,16 @@
   "misc_ecm_radius": {
     "fx": "misc_ecm_radius_cmps_fx"
   },
+  "misc_markers_booster": {
+    "fx": "misc_markers_booster_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "misc_markers_pickup": {
+    "fx": "misc_markers_pickup_cmps_fx",
+    "sfxPathStudio": "event/race_event",
+    "sfxEvent": "booster_up"
+  },
   "flare_fire": {
     "fx": "fires_flare_tail_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -3852,5 +3862,352 @@
     "fx": "hit_tiny_dirt_he_cmps_fx",
     "sfxPathStudio": "event/explosions",
     "sfxEvent": "impact_aa"
+  },
+  "aerobatics_smoke_fxs": {
+    "smoke_fx": [
+      {
+        "id": 1,
+        "rightwing": "aerobatics_smoke_wing_1",
+        "leftwing": "aerobatics_smoke_wing_1",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings1",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_1",
+          "leftwing": "longlife_aerobatics_smoke_wing_1",
+          "tail": ""
+        }
+      },
+      {
+        "id": 2,
+        "rightwing": "aerobatics_smoke_wing_2",
+        "leftwing": "aerobatics_smoke_wing_2",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings2",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_2",
+          "leftwing": "longlife_aerobatics_smoke_wing_2",
+          "tail": ""
+        }
+      },
+      {
+        "id": 3,
+        "rightwing": "aerobatics_smoke_wing_3",
+        "leftwing": "aerobatics_smoke_wing_3",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings3",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_3",
+          "leftwing": "longlife_aerobatics_smoke_wing_3",
+          "tail": ""
+        }
+      },
+      {
+        "id": 4,
+        "rightwing": "aerobatics_smoke_wing_4",
+        "leftwing": "aerobatics_smoke_wing_4",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings4",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_4",
+          "leftwing": "longlife_aerobatics_smoke_wing_4",
+          "tail": ""
+        }
+      },
+      {
+        "id": 5,
+        "rightwing": "aerobatics_smoke_wing_5",
+        "leftwing": "aerobatics_smoke_wing_5",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings5",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_5",
+          "leftwing": "longlife_aerobatics_smoke_wing_5",
+          "tail": ""
+        }
+      },
+      {
+        "id": 6,
+        "rightwing": "aerobatics_smoke_wing_6",
+        "leftwing": "aerobatics_smoke_wing_6",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings6",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_6",
+          "leftwing": "longlife_aerobatics_smoke_wing_6",
+          "tail": ""
+        }
+      },
+      {
+        "id": 7,
+        "rightwing": "aerobatics_smoke_wing_7",
+        "leftwing": "aerobatics_smoke_wing_7",
+        "tail": "",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeWings7",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_wing_7",
+          "leftwing": "longlife_aerobatics_smoke_wing_7",
+          "tail": ""
+        }
+      },
+      {
+        "id": 8,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_1",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter1",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_1"
+        }
+      },
+      {
+        "id": 9,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_2",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter2",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_2"
+        }
+      },
+      {
+        "id": 10,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_3",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter3",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_3"
+        }
+      },
+      {
+        "id": 11,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_4",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter4",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_4"
+        }
+      },
+      {
+        "id": 12,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_5",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter5",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_5"
+        }
+      },
+      {
+        "id": 13,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_6",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter6",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_6"
+        }
+      },
+      {
+        "id": 14,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "aerobatics_smoke_tail_7",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter7",
+        "alternative": {
+          "rightwing": "",
+          "leftwing": "",
+          "tail": "longlife_aerobatics_smoke_tail_7"
+        }
+      },
+      {
+        "id": 15,
+        "rightwing": "",
+        "leftwing": "",
+        "tail": "",
+        "unlockId": "",
+        "locId": "#options/aerobaticsSmokeTriple"
+      },
+      {
+        "id": 16,
+        "rightwing": "longlife_aerobatics_smoke_tail_2",
+        "leftwing": "longlife_aerobatics_smoke_tail_2",
+        "tail": "longlife_aerobatics_smoke_tail_2",
+        "unlockId": "",
+        "locId": "options/aerobaticsSmokeCenter3",
+        "alternative": {
+          "rightwing": "longlife_aerobatics_smoke_tail_2",
+          "leftwing": "longlife_aerobatics_smoke_tail_2",
+          "tail": "longlife_aerobatics_smoke_tail_2"
+        }
+      }
+    ]
+  },
+  "aerobatics_smoke_wing_1": {
+    "fx": "aerobatics_smoke_white_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_wing_2": {
+    "fx": "aerobatics_smoke_red_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_wing_3": {
+    "fx": "aerobatics_smoke_orange_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_wing_4": {
+    "fx": "aerobatics_smoke_yellow_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_wing_5": {
+    "fx": "aerobatics_smoke_green_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_wing_6": {
+    "fx": "aerobatics_smoke_blue_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_wing_7": {
+    "fx": "aerobatics_smoke_magenta_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_1": {
+    "fx": "aerobatics_smoke_white_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_2": {
+    "fx": "aerobatics_smoke_red_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_3": {
+    "fx": "aerobatics_smoke_orange_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_4": {
+    "fx": "aerobatics_smoke_yellow_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_5": {
+    "fx": "aerobatics_smoke_green_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_6": {
+    "fx": "aerobatics_smoke_blue_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aerobatics_smoke_tail_7": {
+    "fx": "aerobatics_smoke_magenta_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_1": {
+    "fx": "aerobatics_smoke_white_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_2": {
+    "fx": "aerobatics_smoke_red_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_3": {
+    "fx": "aerobatics_smoke_orange_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_4": {
+    "fx": "aerobatics_smoke_yellow_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_5": {
+    "fx": "aerobatics_smoke_green_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_6": {
+    "fx": "aerobatics_smoke_blue_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_wing_7": {
+    "fx": "aerobatics_smoke_magenta_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_1": {
+    "fx": "aerobatics_smoke_white_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_2": {
+    "fx": "aerobatics_smoke_red_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_3": {
+    "fx": "aerobatics_smoke_orange_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_4": {
+    "fx": "aerobatics_smoke_yellow_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_5": {
+    "fx": "aerobatics_smoke_green_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_6": {
+    "fx": "aerobatics_smoke_blue_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "longlife_aerobatics_smoke_tail_7": {
+    "fx": "aerobatics_smoke_magenta_longlife_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
   }
 }

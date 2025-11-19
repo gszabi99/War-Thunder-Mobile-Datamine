@@ -1,7 +1,7 @@
 from "%sqstd/ecs.nut" import *
 from "%darg/ui_imports.nut" import *
-import "entity_editor" as entity_editor
 
+let entity_editor = require_optional("entity_editor")
 let { selectedEntity, selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey,
       selectedCompName,
       markedScenes} = require("state.nut")
@@ -25,13 +25,13 @@ let {
 
 selectedEntities.subscribe_with_nasty_disregard_of_frp_update(function(val) {
   if (val.len() == 1)
-    selectedEntity(val.keys()[0])
+    selectedEntity.set(val.keys()[0])
   else
-    selectedEntity(INVALID_ENTITY_ID)
+    selectedEntity.set(INVALID_ENTITY_ID)
 })
 
 selectedEntity.subscribe_with_nasty_disregard_of_frp_update(function(_eid) {
-  selectedCompName(null)
+  selectedCompName.set(null)
 })
 
 register_es("update_selected_entities", {
@@ -115,13 +115,13 @@ function getNumMarkedScenes() {
 }
 
 function matchSceneEntity(eid, saved, generated) {
-  local isSaved = entity_editor.get_instance()?.isSceneEntity(eid)
+  local isSaved = entity_editor?.get_instance().isSceneEntity(eid)
   return (saved && isSaved) || (generated && !isSaved)
 }
 
 function matchEntityByScene(eid, saved, generated) {
-  local eLoadType = entity_editor.get_instance()?.getEntityRecordLoadType(eid)
-  local eIndex = entity_editor.get_instance()?.getEntityRecordIndex(eid)
+  local eLoadType = entity_editor?.get_instance().getEntityRecordLoadType(eid)
+  local eIndex = entity_editor?.get_instance().getEntityRecordIndex(eid)
   local sceneId = getSceneId(eLoadType, eIndex)
   if (markedScenes.get()?[sceneId])
     return true

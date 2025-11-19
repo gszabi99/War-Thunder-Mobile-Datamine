@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { touchButtonSize, btnBgColor, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { touchButtonSize, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
   mainBulletCount, extraBulletCount } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+let { hudVeilGrayColorFade, hudPearlGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
 
-let colorActive = 0xFFDADADA
-let colorInactive = 0x806D6D6D
+let colorActive = hudPearlGrayColor
+let colorInactive = hudVeilGrayColorFade
 let borderWidth = hdpxi(1)
 let borderWidthCurrent = hdpxi(3)
 let imgSizeBase = (touchButtonSize * 0.75).tointeger()
@@ -36,7 +37,7 @@ function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
     rendObj = ROBJ_BOX
     borderWidth = isCurrent ? borderWidthCurrent : borderWidth
     borderColor = stateFlags.get() & S_ACTIVE ? borderColorPushed : colorActive
-    fillColor = btnBgColor.empty
+    fillColor = hudLightBlackColor
     valign = ALIGN_TOP
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
@@ -81,11 +82,11 @@ let bulletStatus = @(isNext, isCurrent, scale) {
 }.__update(getScaledFont(bulletStatusFont, scale))
 
 function bulletButton(bulletInfo, bulletCount, scale) {
-  let name = Computed(@() bulletInfo.value?.bullets[0])
-  let id = Computed(@() bulletInfo.value?.id)
+  let name = Computed(@() bulletInfo.get()?.bullets[0])
+  let id = Computed(@() bulletInfo.get()?.id)
   let isNext = Computed(@() id.get() == nextBulletName.get())
   let isCurrent = Computed(@() id.get() == currentBulletName.get())
-  let isBulletBelt = Computed(@() bulletInfo.value?.isBulletBelt)
+  let isBulletBelt = Computed(@() bulletInfo.get()?.isBulletBelt)
   let btnSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
   return @() bulletCount.get() == 0 ? { watch = bulletCount } : {
@@ -102,7 +103,7 @@ function bulletButton(bulletInfo, bulletCount, scale) {
         watch = bulletCount
         padding = const [0, 0, 0, hdpx(4)]
         rendObj = ROBJ_TEXT
-        text = bulletCount.value
+        text = bulletCount.get()
       }.__update(getScaledFont(fontVeryTinyShaded, scale))
     ]
   }

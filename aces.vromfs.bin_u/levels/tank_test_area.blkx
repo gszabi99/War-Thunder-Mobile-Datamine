@@ -53,7 +53,7 @@
   "lastClip": true,
   "lastclip_horizon": true,
   "rendinstPreloadDistance": 8500.0,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "addLandToSky": true,
   "max_wind_strength": 3.0,
   "tank_z_far": 12000.0,

@@ -6,6 +6,7 @@ let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { hcResult } = require("%rGui/hud/hitCamera/hitCameraState.nut")
 let { hitCameraWidth, hitResultStyle } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let hitResultPlateHeight = evenPx(72)
 let hitResultPlateHPad = hdpxi(15)
@@ -26,7 +27,7 @@ let resultBlink = {
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#blink_sharp.svg:{blinkImgTexSize}:{blinkImgTexSize}:K:P")
-  color = 0xFFFFFFFF
+  color = hudWhiteColor
   opacity = 0
 
   key = {}

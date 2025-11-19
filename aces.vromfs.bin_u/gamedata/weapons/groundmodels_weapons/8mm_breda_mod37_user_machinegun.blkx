@@ -45,7 +45,7 @@
       "bulletType": "ap_i_t_ball",
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/ap_i_t_ball.ivf",
-      "hitPowerMult": 0.1,
+      "hitPowerMult": 2.9,
       "onHitChanceMultFire": 5.0,
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
@@ -439,7 +439,7 @@
       "bulletType": "i_t_ball",
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/i_t_ball.ivf",
-      "hitPowerMult": 0.1,
+      "hitPowerMult": 2.9,
       "onHitChanceMultFire": 5.0,
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [

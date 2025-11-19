@@ -2,7 +2,7 @@ from "dagor.system" import exit, get_arg_value_by_name
 from "%sqstd/string.nut" import tostring_r
 from "debug" import getstackinfos
 
-let knownProps = const (["size","rendObj","watch","behavior","halign","valign","flow","pos","hplace","vplace","padding", "margin", "eventHandlers", "hotkeys"].reduce(function(res, a) {res[a] <- a; return res}, {}))
+let knownProps = ["size","rendObj","watch","behavior","halign","valign","flow","pos","hplace","vplace","padding", "margin", "eventHandlers", "hotkeys"].totable()
 
 function checkIsUiComponent(table) {
   if (table.len()==0)

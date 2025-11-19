@@ -57,7 +57,7 @@ function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBi
   return @() arrowImageComp.__merge(posParams[align],
     {
       watch = isShow
-      opacity = isShow.value ? 0.7 : 0
+      opacity = isShow.get() ? 0.7 : 0
       transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = OutCubic }]
     },
     ovr)

@@ -109,8 +109,8 @@ products.subscribe(@(v) logG($"available products: ", v.keys()))
 isAuthorized.subscribe(function(v) {
   if (v)
     return
-  lastInitStatus(AS_NOT_INITED)
-  products({})
+  lastInitStatus.set(AS_NOT_INITED)
+  products.set({})
 })
 
 isLoggedIn.subscribe(function(v) {
@@ -264,7 +264,7 @@ eventbus_subscribe("ios.billing.onRestorePurchases", function(result) {
 
 eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
   let { status, value = null } = result
-  lastInitStatus(status)
+  lastInitStatus.set(status)
   if (status != AS_OK)
     return
   local items = value
@@ -324,12 +324,12 @@ let productsForRequest = keepref(Computed(function(prev) {
 }))
 
 function refreshAvailableProducts() {
-  if (productsForRequest.value.len() == 0)
+  if (productsForRequest.get().len() == 0)
     return
   if (lastInitStatus.get() != AS_OK)
-    lastInitStatus(AS_NOT_INITED) 
-  logG("initAndRequestData: ", productsForRequest.value)
-  initAndRequestData(productsForRequest.value)
+    lastInitStatus.set(AS_NOT_INITED) 
+  logG("initAndRequestData: ", productsForRequest.get())
+  initAndRequestData(productsForRequest.get())
 }
 
 productsForRequest.subscribe(@(_) refreshAvailableProducts())

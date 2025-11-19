@@ -13,6 +13,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { mkResearchingUnitForBattleData } = require("%appGlobals/data/battleDataExtras.nut")
+let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
@@ -25,6 +26,7 @@ let tutorialMissions = Computed(@() {
   tutorial_ships_1 = "tutorial_ship_basic"
   tutorial_ships_1_nc = "tutorial_ship_basic"
   tutorial_tanks_1 = (forceTutorTankMissionV2.get() ?? abTests.get()?.tutorialTankMissionV2) == "true" ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
+  tutorial_tanks_1_nc = "tutorial_tank_basic"
   tutorial_air_1   = "tutorial_plane_basic"
 })
 let isSkippedTutor = mkWatched(persist, "isSkippedFirstBattleTutor", {})
@@ -52,8 +54,8 @@ function needFirstBattleTutorForCampaign(campaign) {
   if (getFirstBattleTutor(campaign) not in missionsWithRewards.get())
     return false
   let sUnits = serverConfigs.get()?.allUnits ?? {}
-  let ownCampUnit = (servProfile.value?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
-  return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign[getCampaignStatsId(campaign)])
+  let ownCampUnit = (servProfile.get()?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
+  return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.get()?.sharedStatsByCampaign[getCampaignStatsId(campaign)])
 }
 
 function mkRewardBattleData(rewards) {
@@ -121,6 +123,8 @@ register_command(function() {
   )
   dlog("tutorialMissions", tutorialMissions.get()) 
 }, "debug.abTests.tutorialTankMission")
+
+subscribeResetProfile(@() isSkippedTutor.set({}))
 
 return {
   firstBattleTutor

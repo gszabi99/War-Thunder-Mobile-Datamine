@@ -8,7 +8,7 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { buy_upgrade_unit, registerHandler} = require("%appGlobals/pServer/pServerApi.nut")
-let { infoBlueButton, infoGoldButton } = require("%rGui/components/infoButton.nut")
+let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { upgradeCommonUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { ovrBuyBtn, fontIconPreview, offerCardWidth, cardHPadding } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
@@ -20,15 +20,15 @@ registerHandler("onUnitUpgradePurchase", function(res){
     close()
 })
 
-let openConfirmationWnd = @(unit) openMsgBoxPurchase({
+let openConfirmationWnd = @(unit, price) openMsgBoxPurchase({
   text = loc("shop/needMoneyQuestion",
     { item = colorize(userlogTextColor
       $"{loc(getUnitPresentation(unit).locId)}") })
   price = {
-    price = unit.upgradeCostGold
+    price = price
     currencyId = GOLD
   }
-  purchase = @() buy_upgrade_unit(unit.name, unit.upgradeCostGold, "onUnitUpgradePurchase")
+  purchase = @() buy_upgrade_unit(unit.name, price, "onUnitUpgradePurchase")
   bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT, unit.name)
   onGoToShop = close
 })
@@ -41,7 +41,7 @@ let mkBuyUpgardeUnit = @(unit) {
   gap = hdpx(10)
   halign = ALIGN_LEFT
   children = [
-    (unit?.isUpgraded ? infoGoldButton : infoBlueButton)(
+    infoCommonButton(
       @() unitDetailsWnd(unit),
       {
         size = [buttonStyles.defButtonHeight, buttonStyles.defButtonHeight]
@@ -52,9 +52,8 @@ let mkBuyUpgardeUnit = @(unit) {
       ? null
       : mkCustomButton(
           mkCurrencyComp(unit.upgradeCostGold , GOLD)
-          @() openConfirmationWnd(unit),
-          mergeStyles(buttonStyles.PURCHASE, { ovr = ovrBuyBtn })
-          )
+          @() openConfirmationWnd(unit, unit.upgradeCostGold),
+          mergeStyles(buttonStyles.PURCHASE, { ovr = ovrBuyBtn }))
   ]
 
 }

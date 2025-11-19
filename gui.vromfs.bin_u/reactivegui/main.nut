@@ -1,8 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+from "dagor.system" import DBGLEVEL
+from "%rGui/cursor.nut" import needShowCursor, cursor
+
 let { get_time_msec } = require("dagor.time")
 let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
-let setIsScriptsLoading = @(v) isScriptsLoading.set(v)
+let { markScriptsLoading } = require("%darg/helpers/bitmap.nut")
+function setIsScriptsLoading(v) {
+  markScriptsLoading(v)
+  isScriptsLoading.set(v)
+}
 isScriptsLoading.whiteListMutatorClosure(setIsScriptsLoading)
 
 log("LOAD RGUI SCRIPTS CORE")
@@ -36,9 +43,9 @@ require("%rGui/debugTools/debugSafeArea.nut")
 let { get_platform_string_id } = require("platform")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { modalWindowsComponent, closeAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { modalWindowsComponent, closeAllModalWindows } = require("%rGui/components/modalWindows.nut")
 let { dbgOverlayComponent } = require("%rGui/components/debugOverlay.nut")
-let { isInLoadingScreen, isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
+let { isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { isLoggedIn, isLoginRequired, isReadyToFullLoad, isLoginStarted
 } = require("%appGlobals/loginState.nut")
@@ -47,7 +54,6 @@ let sceneBeforeLogin = require("%rGui/login/sceneBeforeLogin.nut")
 let { register_command } = require("console")
 let fpsLineComp = require("%rGui/mainMenu/fpsLineComp.nut")
 let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { needCursorForActiveInputDevice, isGamepad } = require("%appGlobals/activeControls.nut")
 let { enableClickButtons }  = require("%rGui/controlsMenu/gpActBtn.nut")
 let hotkeysPanel = require("%rGui/controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, debugTouchesHandlerComp, isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
@@ -63,14 +69,6 @@ setIsScriptsLoading(false)
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
 
-let forceHideCursor = Watched(false)
-let needCursorInHud = Computed(@() !isGamepad.get() || !isHudAttached.get() || hasModalWindows.get())
-let needShowCursor  = Computed(@() !forceHideCursor.get()
-                                  && needCursorForActiveInputDevice.get()
-                                  && (!isInBattle.get() || (isHudVisible.get() && needCursorInHud.get())))
-
-register_command(@() forceHideCursor.set(!forceHideCursor.get()), "ui.force_hide_mouse_pointer")
-
 isHudAttached.subscribe(@(v) enableClickButtons(!v))
 enableClickButtons(!isHudAttached.get())
 
@@ -84,7 +82,7 @@ function loadAfterLoginImpl() {
   let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
   sceneAfterLogin = require("%rGui/sceneAfterLogin.nut")
-  isAllScriptsLoaded(true)
+  isAllScriptsLoaded.set(true)
   log($"DaRg scripts load after login {get_time_msec() - t} msec")
   setIsScriptsLoading(false)
   
@@ -128,13 +126,6 @@ let debugSafeArea = @() !debugSa.get() ? { watch = debugSa }
       borderColor = 0x800000FF
       borderWidth = 1
     }
-
-let cursorSize = hdpxi(32)
-let cursor = Cursor({
-  size = [cursorSize, cursorSize]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#cursor.svg:{cursorSize}:{cursorSize}")
-})
 
 let waitbox = @() {
   watch = waitboxes

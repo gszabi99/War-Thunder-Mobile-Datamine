@@ -2,10 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { G_ITEM } = require("%appGlobals/rewardType.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { itemsCfgOrdered, orderByItems } = require("%appGlobals/itemsState.nut")
-let { items } = require("%appGlobals/pServer/campaign.nut")
+let { items, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { textButtonBattle, mkCustomButton } = require("%rGui/components/textButton.nut")
@@ -25,8 +27,7 @@ let { CS_COMMON, CS_NO_BALANCE } = require("%rGui/components/currencyStyles.nut"
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitAttributes } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
-let { ceil } = require("%sqstd/math.nut")
-let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
+let { ceil, floor } = require("%sqstd/math.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -52,6 +53,15 @@ let close = @() removeModalWindow(WND_UID)
 let defaultPurchaseDesc = "msg/purchaseDesc/toolKit"
 
 let TIMERS_SHOWING_MISS_ITEMS = "timersShowingMissItemsWnd"
+
+let spawnsByCampaign = {
+  tanks_new = { maxSpawns = 3, maxSpawnsBySlot = 2 },
+  tanks = { maxSpawns = 3, maxSpawnsBySlot = 2 },
+  ships_new = { maxSpawns = 1, maxSpawnsBySlot = 1 },
+  air = { maxSpawns = 8, maxSpawnsBySlot = 2 },
+}
+
+let defSpawnCfg = { maxSpawns = 1, maxSpawnsBySlot = 1 }
 
 let itemShowCd = {
   spare = {
@@ -88,7 +98,8 @@ let titleWnd = @(unit, itemId){
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  text = loc($"header/notEnough/{itemId}", {unitName = getPlatoonOrUnitName(unit, loc)?? ""})
+  text = unit ? loc($"header/notEnough/{itemId}", {unitName = getPlatoonOrUnitName(unit, loc)?? ""})
+    : loc($"header/notEnough/common/{itemId}")
 }.__update(fontMedium)
 
 function getCheapestGoods(allGoods, isFit) {
@@ -106,69 +117,160 @@ function getCheapestGoods(allGoods, isFit) {
   return byCurrency?.wp ?? byCurrency.findvalue(@(_) true)
 }
 
-let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
+function shouldShowItem(name, hasBalance, timeWndShowing) {
+  if (name not in itemShowCd)
+    return true
+  let timeInterval = itemShowCd?[name][hasBalance ? "hasBalance" : "noBalance"] ?? 0
+  let lastTime = get_local_custom_settings_blk()?[TIMERS_SHOWING_MISS_ITEMS][name] ?? 0
+  return timeWndShowing - lastTime > timeInterval
+}
+
+function getItemGoodsInfo(name, neededCount) {
+  let goods = getCheapestGoods(shopGoods.get(),
+    @(g) "rewards" in g ? g.rewards.len() == 1 && g.rewards[0].id == name && g.rewards[0].gType == G_ITEM
+      : (g?.items[name] ?? 0) > 0 && g?.gtype == SGT_CONSUMABLES) 
+  if (goods == null)
+    return null
+  let count = "rewards" in goods ? goods.rewards[0].count
+    : goods.items[name] 
+  let neededCountOfGoods = ceil(neededCount.tofloat() / count)
+  let { price = 0, currencyId = "" } = goods?.price
+  let totalPrice = price * neededCountOfGoods
+  if (totalPrice <= 0)
+    return null
+  return { goods, price, currencyId, neededCountOfGoods, totalPrice }
+}
+
+function spareCalc(units, itemCfg, spawnCfg, hasItems, timeWndShowing) {
+  if (spawnCfg.maxSpawns == 1)
+    return null
+  let {name, battleLimit} = itemCfg
+  let spawnsBySpare = min(units.len(), (spawnCfg.maxSpawns / spawnCfg.maxSpawnsBySlot).tointeger())
+  if (spawnsBySpare < hasItems)
+    return null
+  let itemGoodsInfo = getItemGoodsInfo(name, spawnsBySpare - hasItems)
+
+  if (!itemGoodsInfo
+      || !shouldShowItem(name, itemGoodsInfo.totalPrice <= (balance.get()?[itemGoodsInfo.currencyId] ?? 0), timeWndShowing))
+    return null
+
+  return {
+    itemId = name,
+    reqItems = spawnsBySpare,
+    hasItems,
+    goods = itemGoodsInfo.goods,
+    hasUsing = hasItems / spawnsBySpare,
+    limitItems = battleLimit,
+    price = itemGoodsInfo.price,
+    currencyId = itemGoodsInfo.currencyId,
+    neededCountOfGoods = itemGoodsInfo.neededCountOfGoods,
+    totalPrice = itemGoodsInfo.totalPrice
+  }
+}
+
+let missingItemByType = {
+  spare = spareCalc
+}
+
+
+let mkMissingItemsComp = @(units, spawnCfg, timeWndShowing) Computed(function() {
   let res = []
-  let unitItemsPerUse = unit?.itemsPerUse ?? 0
-  foreach (cfg in itemsCfgOrdered.get().filter(@(v) isItemAllowedForUnit(v.name, unit.name))) {
+  foreach (cfg in itemsCfgOrdered.get()) {
     let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
+    let hasItems = items.get()?[name].count ?? 0
+
+    if (name in missingItemByType) {
+      let item = missingItemByType[name](units, cfg, spawnCfg, hasItems, timeWndShowing)
+      if (item)
+        res.append(item)
+      continue
+    }
+
     let { itemsByAttributes = [], itemsByModifications = [] } = serverConfigs.get()
     if (battleLimit <= 0)
       continue
-    let attributes = itemsByAttributes.filter(@(item) item.item == name)
-    let attrByModifications = itemsByModifications.filter(@(item) item.item == name)
-    local limitItems = battleLimit
-    foreach(attr in attributes){
-      let curLevel = unitAttributes.get()?[attr?.category][attr?.attribute] ?? 0
-      limitItems += attr?.battleLimitAdd?[curLevel - 1] ?? 0
+    let unitUsingItemsRaw = []
+    foreach(unit in units) {
+      if (!isItemAllowedForUnit(name, unit.name))
+        continue
+      local limitItems = battleLimit
+      let attributes = itemsByAttributes.filter(@(item) item.item == name)
+      let attrByModifications = itemsByModifications.filter(@(item) item.item == name)
+      foreach(attr in attributes) {
+        let curLevel = unitAttributes.get()?[attr?.category][attr?.attribute]
+          ?? curSlots.get().findvalue(@(s) s.name == unit.name)?.attrLevels[attr?.category][attr?.attribute]
+          ?? 0
+        limitItems += attr?.battleLimitAdd?[curLevel - 1] ?? 0
+      }
+      foreach(attr in attrByModifications)
+        if (unit?.mods[attr?.mod])
+          limitItems *= attr?.battleLimitMul ?? 1
+      let unitItemsPerUse = unit?.itemsPerUse ?? 0
+      let perUse = itemsPerUse <= 0 ? unitItemsPerUse : itemsPerUse
+      let reqItems = perUse * limitItems
+      unitUsingItemsRaw.resize(unitUsingItemsRaw.len() + spawnCfg.maxSpawnsBySlot,
+        {reqItems, perUse, limitItems, name, u = unit.name})
     }
-    foreach(attr in attrByModifications)
-      if (unitMods.get()?[attr?.mod])
-        limitItems *= attr?.battleLimitMul ?? 1
-    let perUse = itemsPerUse <= 0 ? unitItemsPerUse : itemsPerUse
-    let reqItems = perUse * limitItems
-    let hasItems = items.get()?[name].count ?? 0
+
+    local hasItemsTmp = hasItems
+
+    let {reqItems, limitItems, hasUsing} = unitUsingItemsRaw.sort(@(a,b) b.reqItems <=> a.reqItems)
+      .slice(0, spawnCfg.maxSpawns)
+      .reduce(function(prev, cur) {
+        let hasUsingTotal = prev.notEnough ? 0 : min(floor(hasItemsTmp/(cur.perUse == 0 ? 1 : cur.perUse)), cur.limitItems)
+        hasItemsTmp -= hasUsingTotal * cur.perUse
+        return {
+        reqItems = prev.reqItems + cur.reqItems,
+        limitItems = prev.limitItems + cur.limitItems,
+        hasUsing = hasUsingTotal + prev.hasUsing
+        notEnough = hasUsingTotal < cur.limitItems
+      }}, { reqItems = 0, limitItems = 0, hasUsing = 0, notEnough = false })
+
     if (reqItems <= hasItems)
       continue
-    let hasUsing = ceil(hasItems/(perUse == 0 ? 1 : perUse))
-    let goods = getCheapestGoods(shopGoods.get(),
-      @(g) (g?.items[name] ?? 0) > 0 && g?.gtype == SGT_CONSUMABLES && (g?.items.len() ?? 0) > 0)
-    if (goods == null)
+
+    let itemGoodsInfo = getItemGoodsInfo(name, reqItems - hasItems)
+    if (!itemGoodsInfo)
       continue
-    let neededCountOfGoods = ceil((reqItems - hasItems).tofloat() / goods.items[name])
-    let { price = 0, currencyId = ""} = goods?.price
-    let priceForGoods = price * neededCountOfGoods
-    let canBuyItem = priceForGoods <= (balance.get()?[goods?.price.currencyId] ?? 0)
-    let timeInterval = itemShowCd?[name][canBuyItem ? "hasBalance" : "noBalance"] ?? 0
-    if (priceForGoods <= 0)
-      continue
-    if (name in itemShowCd) {
-      let sBlk = get_local_custom_settings_blk()
-      let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
-      if (timeWndShowing - (blk?[name] ?? 0) <= timeInterval)
-        continue
-    }
-    res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems, price, currencyId, neededCountOfGoods})
+    res.append({
+      itemId = name,
+      reqItems,
+      hasItems,
+      goods = itemGoodsInfo.goods,
+      hasUsing,
+      limitItems,
+      price = itemGoodsInfo.price,
+      currencyId = itemGoodsInfo.currencyId,
+      neededCountOfGoods = itemGoodsInfo.neededCountOfGoods,
+      totalPrice = itemGoodsInfo.totalPrice})
   }
   return res
 })
 
+
 function mkItemsRewards(item) {
-  let goods = item.goods
-  if (goods.items.len() == 0)
-    return null
+  let { goods, neededCountOfGoods } = item
   let list = []
-  foreach (itemId, count in goods.items)
-    if (count > 0)
-      list.append({
-        itemId,
-        count = count * item.neededCountOfGoods,
-        order = orderByItems?[itemId] ?? orderByItems.len()
-      })
+  if ("rewards" in goods) {
+    foreach (r in goods.rewards)
+      if (r.gType == G_ITEM)
+        list.append(r.__merge({ count = r.count * neededCountOfGoods, order = orderByItems?[r.id] ?? orderByItems.len() }))
+  }
+  else 
+    foreach (itemId, count in goods.items)
+      if (count > 0)
+        list.append({
+          id = itemId,
+          count = count * neededCountOfGoods,
+          order = orderByItems?[itemId] ?? orderByItems.len()
+        })
+  if (list.len() == 0)
+    return null
   list.sort(@(a, b) a.order <=> b.order)
   return {
     flow = FLOW_HORIZONTAL
     gap = itemsGap
-    children = list.map(@(i) mkCurrencyComp(i.count, i.itemId, CS_INCREASED_ICON))
+    children = list.map(@(i) mkCurrencyComp(i.count, i.id, CS_INCREASED_ICON))
   }
 }
 
@@ -182,9 +284,8 @@ function saveTimeShowingWnd(itemId){
 }
 
 function mkPurchaseBtn(item, toBattle) {
-  let { goods, itemId, neededCountOfGoods } = item
-  let { currencyId, price } = goods.price
-  let totalPrice = price * neededCountOfGoods
+  let { goods, itemId, neededCountOfGoods, totalPrice } = item
+  let { currencyId } = goods.price
   let userBalance = currencyId == "wp" ? balanceWp : balanceGold
   let textStyle = userBalance.get() < totalPrice ? CS_NO_BALANCE : CS_COMMON
   return [
@@ -353,7 +454,7 @@ let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchLis
 
 
 function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
-  let itemToShow = Computed(@() missItems.value?[0])
+  let itemToShow = Computed(@() missItems.get()?[0])
   function content(){
     local needSwitchAnim = false
     return {
@@ -407,19 +508,24 @@ debriefingData.subscribe(function(_data) {
   }
 })
 
-function offerMissingUnitItemsMessage(unit, toBattle, onClose = @() null) {
-  if (unit == null) {
+function offerMissingUnitItemsMessage(units, toBattle, spawnCfg = null, onClose = @() null) {
+  if (units == null || units.len() == 0) {
     toBattle()
     return
   }
 
-  let missItems = mkMissingItemsComp(unit, serverTime.get())
-  if (missItems.value.len() == 0) {
+  let missItems = mkMissingItemsComp(
+    units,
+    spawnCfg ?? spawnsByCampaign?[curCampaign.get()] ?? defSpawnCfg,
+    serverTime.get())
+
+
+  if (missItems.get().len() == 0) {
     toBattle()
     return
   }
   missItems.subscribe(@(v) v.len() == 0 ? close() : null)
-  itemsPurchaseMessage(missItems, toBattle, unit, onClose)
+  itemsPurchaseMessage(missItems, toBattle, units.len() == 1 ? units[0] : null, onClose)
 }
 
 

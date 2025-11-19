@@ -647,6 +647,7 @@
     "unit__forceBailoutTimer": -1.0,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
+    "humanAdditionalCollisionChecks:tag": {},
     "unit_tag__tank:tag": {},
     "unit_tag__gm:tag": {},
     "mods:list<t>": {
@@ -727,6 +728,7 @@
     ],
     "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
+    "humanAdditionalCollisionChecks:tag": {},
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},

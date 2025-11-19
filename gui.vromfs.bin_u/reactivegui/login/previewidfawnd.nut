@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
@@ -57,7 +58,7 @@ let showPreviewWnd = @()
         {
           pos = [-hdpx(150), 0]
           vplace = ALIGN_BOTTOM
-          children = textButtonPrimary(loc("msgbox/btn_continue"), onSubmit)
+          children = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_continue")), onSubmit)
         }
       ]
     }

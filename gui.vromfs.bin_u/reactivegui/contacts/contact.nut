@@ -7,7 +7,6 @@ const NAME_CB_ID = "contacts.onReceiveNicknames"
 let invalidNickName = "????????"
 let allContacts = hardPersistWatched("allContacts", {})
 
-let isValidContactNick = @(c) c.value.realnick != invalidNickName
 let isValidUserIdNick = @(userId)
   (allContacts.get()?[userId.tostring()].realnick ?? invalidNickName) != invalidNickName
 
@@ -109,6 +108,5 @@ return {
   updateContact
   updateContactNames
   validateNickNames
-  isValidContactNick
   getContactNick
 }

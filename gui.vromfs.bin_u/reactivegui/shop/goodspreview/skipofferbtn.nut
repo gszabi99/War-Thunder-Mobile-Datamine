@@ -10,11 +10,12 @@ let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { PRIMARY,COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 
-let iconSize = 2 * (defButtonHeight * 0.3).tointeger()
+let iconSize = 2 * (defButtonHeight * 0.25).tointeger()
+let iconSizeBig = 2 * (defButtonHeight * 0.3).tointeger()
 
-let vipIconW = hdpxi(50)
-let vipIconH = hdpxi(30)
+let vipIconH = hdpxi(40)
 
 let clock = "▩"
 
@@ -75,14 +76,14 @@ let onClickNotVip = @() openMsgBox({
 })
 
 let skipsEnded = {
-  size = [ flex(), defButtonHeight]
+  size = [flex(), defButtonHeight]
   children = [
     {
-      size = [iconSize, iconSize]
+      size = [iconSizeBig, iconSizeBig]
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      image = Picture($"ui/gameuiskin#icon_repeatable.svg:{iconSize}:{iconSize}:P")
+      image = Picture($"ui/gameuiskin#icon_repeatable.svg:{iconSizeBig}:{iconSizeBig}:P")
       keepAspect = true
     }
     {
@@ -101,9 +102,9 @@ let contentVip = @(leftCount) leftCount < 1 ? skipsEnded : {
   gap = hdpx(-4)
   children = [
     {
-      size = [iconSize, iconSize]
+      size = [iconSizeBig, iconSizeBig]
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#icon_repeatable.svg:{iconSize}:{iconSize}:P")
+      image = Picture($"ui/gameuiskin#icon_repeatable.svg:{iconSizeBig}:{iconSizeBig}:P")
       keepAspect = KEEP_ASPECT_FIT
     }
     @() {
@@ -116,20 +117,18 @@ let contentVip = @(leftCount) leftCount < 1 ? skipsEnded : {
 }
 
 let contentCommon = @() {
-  size = [ flex(), defButtonHeight]
+  size = [flex(), defButtonHeight]
   children = [
     {
-      pos = [hdpx(5), hdpx(5)]
-      size = [vipIconW, vipIconH]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
-      keepAspect = KEEP_ASPECT_FIT
+      pos = [-hdpx(25), 0]
+      children = mkSubsIcon("vip", vipIconH)
     }
     {
       size = [iconSize, iconSize]
+      pos = [hdpx(10), -hdpx(8)]
       rendObj = ROBJ_IMAGE
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
       image = Picture($"ui/gameuiskin#icon_repeatable.svg:{iconSize}:{iconSize}:P")
       keepAspect = KEEP_ASPECT_FIT
     }

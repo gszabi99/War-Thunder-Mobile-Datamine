@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
+let { hudBlueColor, hudWhiteColor, hudVeilGrayColorFade, hudLightGreenColor, hudClassicRedColor, hudGrayColorFade
+} = require("%rGui/style/hudColors.nut")
 
 let tuningBtnSize = evenPx(70)
 let imgSize = evenPx(54)
 let tuningBtnGap = hdpx(30)
 
-let btnBgColorDefault = 0xFF00DEFF
-let btnBgColorPositive = 0xFF1FDA6A
-let btnBgColorNegative = 0xFFDA1F22
-let btnBgColorDisabled = 0x80202020
-let btnImgColor = 0xFFFFFFFF
-let btnImgColorDisabled = 0x80808080
+let btnBgColorDefault = hudBlueColor
+let btnBgColorPositive = hudLightGreenColor
+let btnBgColorNegative = hudClassicRedColor
+let btnBgColorDisabled = hudGrayColorFade
+let btnImgColor = hudWhiteColor
+let btnImgColorDisabled = hudVeilGrayColorFade
 
 let tuningBtnImg = @(image, ovr = {}) {
   size = [imgSize, imgSize]
@@ -53,7 +55,7 @@ let tuningBtnInactive = @(image, onClick, description)
 
 let tuningBtnWithActivity = @(isActive, image, onClick, description) @() {
   watch = isActive
-  children = (isActive.value ? tuningBtn : tuningBtnInactive)(image, onClick, description)
+  children = (isActive.get() ? tuningBtn : tuningBtnInactive)(image, onClick, description)
 }
 
 return {

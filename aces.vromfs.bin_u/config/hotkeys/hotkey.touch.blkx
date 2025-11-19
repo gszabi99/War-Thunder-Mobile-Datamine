@@ -120,6 +120,17 @@
         "nonlinearity": 3.0,
         "kMul": 0.5,
         "relSens": 0.49
+      },
+      "decal_rotate": {
+        "nonlinearity": 0.0,
+        "kMul": 1.0,
+        "innerDeadzone": 0.0
+      },
+      "decal_scale": {
+        "nonlinearity": 0.0,
+        "innerDeadzone": 0.0,
+        "rangeMin": 0.0,
+        "rangeMax": 1.0
       }
     }
   }

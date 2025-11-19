@@ -52,6 +52,18 @@
   "digForwardOffset": 1.7,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.25,
+      0.0,
+      0.75
+    ],
+    "armorThicknessSide": [
+      0.05,
+      0.0,
+      0.95
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -1859,7 +1871,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2022,7 +2033,16 @@
       }
     ],
     "hideNodes": {
-      "node": "ex_decor_01"
+      "node": [
+        "ex_decor_01",
+        "ex_armor_02",
+        "body_01",
+        "body_02",
+        "roll_01",
+        "roll_02",
+        "roll_03",
+        "roll_04"
+      ]
     }
   },
   "weapon_presets": {
@@ -2206,6 +2226,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2223,6 +2244,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2283,6 +2305,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2300,6 +2323,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2373,6 +2397,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2514,6 +2539,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2521,6 +2547,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2528,6 +2555,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2639,9 +2667,18 @@
     ]
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "modClass": "protection",
@@ -2721,7 +2758,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [
@@ -2937,7 +2973,16 @@
             }
           ],
           "hideNodes": {
-            "node": "ex_decor_01"
+            "node": [
+              "ex_decor_01",
+              "ex_armor_02",
+              "body_01",
+              "body_02",
+              "roll_01",
+              "roll_02",
+              "roll_03",
+              "roll_04"
+            ]
           }
         }
       }
@@ -3142,6 +3187,79 @@
           }
         }
       ]
+    }
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_bronzegruen*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_carc*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        3.25638,
+        -1.77372e-7,
+        2.26695,
+        -1.73828
+      ],
+      "decal0Line1": [
+        0.633874,
+        -3.80948,
+        -0.910534,
+        5.41149
+      ],
+      "decal0Line2": [
+        -3.25638,
+        -2.06934e-7,
+        2.26695,
+        2.73829
+      ],
+      "decal0Line3": [
+        0.633874,
+        -3.80948,
+        0.910533,
+        5.41149
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.548554,
+        0.279616,
+        -0.787974,
+        -2.08355
+      ],
+      "decal0CPNormDepth1": [
+        0.548554,
+        0.279616,
+        0.787974,
+        -2.08355
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.252032
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.207281,
+      "decal0Tex": "ge_1st_panzerdivision"
     }
   },
   "battleHideNodes": {

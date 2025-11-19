@@ -10,6 +10,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { arrayByRows, deep_clone } = require("%sqstd/underscore.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnitName, hangarUnitSkin, setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -49,7 +50,7 @@ let underlineSize = hdpx(5)
 let close = @() isOpened.set(false)
 
 function initSkinsWnd() {
-  savedUnitType(getUnitType(hangarUnitName.get()))
+  savedUnitType.set(getUnitType(hangarUnitName.get()))
   savedUnitName.set(hangarUnitName.get())
   savedUnitSkin.set(hangarUnitSkin.get())
 }
@@ -448,7 +449,7 @@ function mkDebugTuneSkinsWnd() {
     }
     return { name, skin, skinChoice, unitChoice }
   })
-  let curUnitName = Computed(@() curData.get().name)
+  let curUnitName = Computed(@() getTagsUnitName(curData.get().name))
   let curUnitSkin = Computed(@() curData.get().skin)
 
   let curSkinDefaultPreset = Computed(@() skinsView.get().byUnitType?[curUnitType.get()][curUnitSkin.get()]

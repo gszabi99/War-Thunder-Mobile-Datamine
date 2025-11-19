@@ -15,14 +15,15 @@ let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { currentAircraftCtrlType, curFreeCamByTouchOption } = require("%rGui/options/options/airControlsOptions.nut")
+let { hudBlueColor, hudExtraLightBlackColor, hudCoralRedColorFade } = require("%rGui/style/hudColors.nut")
 
 let circularIndSize = hdpx(74).tointeger()
 let progressImageRight = Picture($"ui/gameuiskin#air_reload_indicator_right.svg:{circularIndSize}:{circularIndSize}")
 let progressImageLeft = Picture($"ui/gameuiskin#air_reload_indicator_left.svg:{circularIndSize}:{circularIndSize}")
 
-let backGroundColor = Color(0, 0, 0, 20)
-let overheatColor = Color(255, 90, 82, 230)
-let reloadColor = 0xCC23CACC
+let backGroundColor = hudExtraLightBlackColor
+let overheatColor = hudCoralRedColorFade
+let reloadColor = hudBlueColor
 let ORIENT_RIGHT = 0
 let ORIENT_LEFT = 1
 

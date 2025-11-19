@@ -1150,6 +1150,273 @@
       "material": "metal"
     },
     {
+      "name": "american_road_sign_a",
+      "destroyedModelName": "american_road_sign_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_b",
+      "destroyedModelName": "american_road_sign_b_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_c",
+      "destroyedModelName": "american_road_sign_c_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_d",
+      "destroyedModelName": "american_road_sign_d_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_e",
+      "destroyedModelName": "american_road_sign_e_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_g",
+      "destroyedModelName": "american_road_sign_g_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_h",
+      "destroyedModelName": "american_road_sign_h_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_i",
+      "destroyedModelName": "american_road_sign_i_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_j",
+      "destroyedModelName": "american_road_sign_j_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_k",
+      "destroyedModelName": "american_road_sign_k_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_l",
+      "destroyedModelName": "american_road_sign_l_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_m",
+      "destroyedModelName": "american_road_sign_m_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_n",
+      "destroyedModelName": "american_road_sign_n_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_road_sign_o",
+      "destroyedModelName": "american_road_sign_o_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "american_wastebasket_a",
+      "destroyedModelName": "american_wastebasket_a_destr_phobj",
+      "destructionImpulse": 10000.0
+    },
+    {
+      "name": "american_lamp_post_high_a",
+      "destroyedModelName": "american_lamp_post_high_a_destr_phobj",
+      "debris": "american_lamp_post_high_a_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_high_a_damaged",
+      "destroyedModelName": "american_lamp_post_high_a_destr_phobj",
+      "debris": "american_lamp_post_high_a_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_high_a_on",
+      "destroyedModelName": "american_lamp_post_high_a_destr_phobj",
+      "debris": "american_lamp_post_high_a_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_low_a_double",
+      "destroyedModelName": "american_lamp_post_low_a_double_destr_phobj",
+      "debris": "american_lamp_post_low_a_double_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_low_a_double_damaged",
+      "destroyedModelName": "american_lamp_post_low_a_double_destr_phobj",
+      "debris": "american_lamp_post_low_a_double_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_low_a_double_on",
+      "destroyedModelName": "american_lamp_post_low_a_double_destr_phobj",
+      "debris": "american_lamp_post_low_a_double_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_low_a_single",
+      "destroyedModelName": "american_lamp_post_low_a_single_destr_phobj",
+      "debris": "american_lamp_post_low_a_single_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_low_a_single_damaged",
+      "destroyedModelName": "american_lamp_post_low_a_single_destr_phobj",
+      "debris": "american_lamp_post_low_a_single_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "american_lamp_post_low_a_single_on",
+      "destroyedModelName": "american_lamp_post_low_a_single_destr_phobj",
+      "debris": "american_lamp_post_low_a_single_dmg",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    {
+      "name": "flower_bed_a",
+      "destroyedModelName": "flower_bed_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_stucco",
+      "isParent": true
+    },
+    {
+      "name": "flower_bed_b",
+      "destroyedModelName": "flower_bed_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_stucco",
+      "isParent": true
+    },
+    {
+      "name": "flower_bed_c",
+      "destroyedModelName": "flower_bed_c_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_stucco",
+      "isParent": true
+    },
+    {
+      "name": "flower_bed_d",
+      "destroyedModelName": "flower_bed_d_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_stucco",
+      "isParent": true
+    },
+    {
+      "name": "flower_bed_a_flowers_a",
+      "destroyedModelName": "flower_bed_a_flowers_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco"
+    },
+    {
+      "name": "flower_bed_b_flowers_a",
+      "destroyedModelName": "flower_bed_b_flowers_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco"
+    },
+    {
+      "name": "flower_bed_c_flowers_a",
+      "destroyedModelName": "flower_bed_c_flowers_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco"
+    },
+    {
       "name": "construction_fence_a",
       "destroyedModelName": "construction_fence_a_destr_phobj",
       "destructionImpulse": 15000.0,
@@ -1350,6 +1617,39 @@
       "fx": "ad_metal_small",
       "fxScale": 1.0,
       "material": "transparentBeton"
+    },
+    {
+      "name": "sicily_benches_a",
+      "destroyedModelName": "sicily_benches_a_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "sicily_benches_b",
+      "destroyedModelName": "sicily_benches_b_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    {
+      "name": "sicily_benches_c",
+      "destroyedModelName": "sicily_benches_c_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "sicily_benches_d",
+      "destroyedModelName": "sicily_benches_d_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false
     },
     {
       "name": "oil_barrel_a",
@@ -2909,6 +3209,30 @@
       "isParent": true
     },
     {
+      "name": "road_barrier_a",
+      "destroyedModelName": "road_barrier_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "road_barrier_b",
+      "destroyedModelName": "road_barrier_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "road_barrier_c",
+      "destroyedModelName": "road_barrier_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
       "name": "road_barrier_d_a",
       "destroyedModelName": "road_barrier_d_a_destr_phobj",
       "destructionImpulse": 500.0,
@@ -2989,6 +3313,60 @@
       "fxScale": 1.0,
       "stopsBullets": false,
       "material": "metal"
+    },
+    {
+      "name": "american_gas_station_pump",
+      "destroyedModelName": "american_gas_station_pump_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_explosion_small"
+    },
+    {
+      "name": "debris_a",
+      "destroyedModelName": "debris_a_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_b",
+      "destroyedModelName": "debris_b_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_c",
+      "destroyedModelName": "debris_c_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_barrel_a",
+      "destroyedModelName": "debris_barrel_a_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "tyre_d",
+      "destroyedModelName": "tyre_d_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "tyre_e",
+      "destroyedModelName": "tyre_e_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "wood"
     },
     {
       "name": "iceberg_chunk_1a",
@@ -10673,6 +11051,83 @@
       "immortal": true
     },
     {
+      "name": "tree_maple_large_a",
+      "destructionImpulse": 35000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_maple_large_b",
+      "destructionImpulse": 35000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_autumn_large_a",
+      "destructionImpulse": 35000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.01,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_leaves_green_medium",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "tree_autumn_large_b",
+      "destructionImpulse": 35000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_autumn_large_c",
+      "destructionImpulse": 35000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_autumn_large_d",
+      "destructionImpulse": 35000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
       "name": "tree_populus_medium_a",
       "destructionImpulse": 20000.0,
       "canopyTriangle": false,
@@ -13516,11 +13971,19 @@
       "nextRes": "waste_container_a_dmg",
       "hp": 50.0,
       "impulseThreshold": 1.0,
+      "isParent": true,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
-    "abandoned_container_a": {
-      "nextRes": "abandoned_container_a_dmg",
+    "abandoned_container_a_dmg": {
+      "physRes": "abandoned_container_a_destr_phobj",
+      "hp": 500.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "waste_container_a_pile": {
+      "physRes": "waste_container_a_pile_destr_phobj",
       "hp": 50.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
@@ -15127,6 +15590,73 @@
       "apexDestructible": true,
       "apexDestructionOptionsPresetName": "apexWoodDmPreset",
       "isParent": true
+    },
+    "japan_pagoda_water_a": {
+      "physRes": "japan_pagoda_water_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "japan_pagoda_water_b": {
+      "physRes": "japan_pagoda_water_b_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "japan_pagoda_water_c": {
+      "physRes": "japan_pagoda_water_c_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "japan_pagoda_water_angle": {
+      "physRes": "japan_pagoda_water_angle_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "japan_pagoda_water_entrance": {
+      "physRes": "japan_pagoda_water_entrance_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "japan_pagoda_water_pantone": {
+      "physRes": "japan_pagoda_water_pantone_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "stone_bridge_korea_b": {
+      "physRes": "stone_bridge_korea_b_destr_phobj",
+      "hp": 200.0,
+      "impulseThreshold": 10.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.5
+    },
+    "japanese_junk_boat": {
+      "physRes": "japanese_junk_boat_destr_phobj",
+      "hp": 50.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_wood_big"
+    },
+    "japanese_pleasure_boat": {
+      "physRes": "japanese_pleasure_boat_destr_phobj",
+      "hp": 25.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_wood_big"
     },
     "korea_summerhouse_a": {
       "nextRes": "korea_summerhouse_a_dmg",
@@ -19200,6 +19730,22 @@
       "fxScale": 0.4,
       "material": "metal"
     },
+    "stone_bridge_fulda_fence_a": {
+      "nextRes": "stone_bridge_fulda_fence_a_dmg",
+      "physRes": "stone_bridge_fulda_fence_a_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.5,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    "stone_bridge_fulda_column_a": {
+      "nextRes": "stone_bridge_fulda_column_a_dmg",
+      "physRes": "stone_bridge_fulda_column_a_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.5,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
     "brick_fence_a": {
       "physRes": "brick_fence_a_destr_phobj",
       "hp": 12.0,
@@ -19314,6 +19860,12 @@
       "fx": "ad_metal",
       "fxScale": 3.0,
       "physRes": "highway_road_sign_b_oposite_destr_phobj"
+    },
+    "american_road_sign_f": {
+      "physRes": "american_road_sign_f_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal"
     },
     "greece_towns_building_pier": {
       "physRes": "greece_towns_building_pier_destr_phobj",
@@ -22484,6 +23036,13 @@
       "physRes": "alaska_signboard_g_destr_phobj",
       "hp": 10.0,
       "isParent": false,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "phonebooth_a": {
+      "physRes": "phonebooth_a_destr_phobj",
+      "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0

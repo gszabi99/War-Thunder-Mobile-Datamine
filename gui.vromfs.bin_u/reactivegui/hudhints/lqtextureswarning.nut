@@ -29,10 +29,10 @@ let blinkAnimation = [
 
 function lqTexturesWarning(wasShown, showWarning) {
   function hideWarning() {
-    showWarning(false)
-    wasShown(true)
+    showWarning.set(false)
+    wasShown.set(true)
   }
-  let updateShowWarning = @() showWarning(notUploadedHqTextures.get())
+  let updateShowWarning = @() showWarning.set(notUploadedHqTextures.get())
 
   return {
     watch = [showWarning, wasShown]
@@ -40,7 +40,7 @@ function lqTexturesWarning(wasShown, showWarning) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     pos = [0, sh(15)]
-    children = !showWarning.value || wasShown.value ? null
+    children = !showWarning.get() || wasShown.get() ? null
       : mkGradientBlock(
         bgColor
         {

@@ -23,18 +23,18 @@ let notifications = {
     }
     let { timestamp = null } = ev
     if (timestamp != null) {
-      if (timestamp < lastBalanceUpdate.value) {
+      if (timestamp < lastBalanceUpdate.get()) {
         logC("Ignore balance update because of old timestamp")
         return
       }
-      lastBalanceUpdate(timestamp)
+      lastBalanceUpdate.set(timestamp)
     }
 
     let newBalance = clone balance.get()
     foreach (k, v in ev.balance)
       newBalance[k] <- v?.value
     if (!isEqual(newBalance, balance.get()))
-      balance(newBalance)
+      balance.set(newBalance)
     isBalanceReceived.set(true)
   }
 }

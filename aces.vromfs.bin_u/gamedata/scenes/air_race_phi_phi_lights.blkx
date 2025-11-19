@@ -1,0 +1,9030 @@
+{
+  "entity": [
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          669.321,
+          70.5961,
+          1863.81
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          669.321,
+          100.596,
+          1863.81
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1022.17,
+          133.698,
+          1762.35
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1022.17,
+          163.698,
+          1762.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1408.7,
+          88.9076,
+          1793.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1408.7,
+          118.908,
+          1793.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1671.17,
+          18.9306,
+          1642.03
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1671.17,
+          48.9306,
+          1642.03
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          805.229,
+          89.2967,
+          1877.31
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          805.229,
+          119.297,
+          1877.31
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          827.163,
+          178.427,
+          1702.02
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          827.163,
+          208.427,
+          1702.02
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1266.05,
+          94.9332,
+          1660.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1266.05,
+          124.933,
+          1660.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1617.71,
+          50.8263,
+          1988.47
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1617.71,
+          80.8263,
+          1988.47
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1558.99,
+          90.442,
+          1544.37
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1558.99,
+          120.442,
+          1544.37
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1689.9,
+          71.6,
+          1462.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1689.9,
+          101.6,
+          1462.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1496.9,
+          99.5,
+          1298.7
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1496.9,
+          129.5,
+          1298.7
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1341.65,
+          85.392,
+          1104.55
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1341.65,
+          115.392,
+          1104.55
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1415.55,
+          85.392,
+          984.9
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1415.55,
+          115.392,
+          984.9
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1399.9,
+          99.4,
+          867.05
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1399.9,
+          129.4,
+          867.05
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1504.8,
+          89.05,
+          613.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1504.8,
+          119.05,
+          613.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1445.75,
+          84.15,
+          395.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1445.75,
+          114.15,
+          395.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1652.9,
+          26.1,
+          289.35
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1652.9,
+          56.1,
+          289.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1643.65,
+          44.642,
+          133.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1643.65,
+          74.642,
+          133.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1874.8,
+          26.2,
+          368.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1874.8,
+          56.2,
+          368.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2120.9,
+          66.4,
+          438.1
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2120.9,
+          96.4,
+          438.1
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2182.9,
+          93.1,
+          517.65
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2182.9,
+          123.1,
+          517.65
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2146.45,
+          21.942,
+          634.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2146.45,
+          51.942,
+          634.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2185.85,
+          87.9,
+          798.05
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2185.85,
+          117.9,
+          798.05
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2419.25,
+          66.15,
+          855.65
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2419.25,
+          96.15,
+          855.65
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2535.5,
+          68.75,
+          922.1
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2535.5,
+          98.75,
+          922.1
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2543.45,
+          84.85,
+          1030.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2543.45,
+          114.85,
+          1030.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.944387,
+          0.0,
+          0.328837
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.328837,
+          0.0,
+          0.944387
+        ],
+        [
+          2749.5,
+          79.85,
+          1115.65
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.944387,
+          0.0,
+          0.328837
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.328837,
+          0.0,
+          0.944387
+        ],
+        [
+          2749.5,
+          109.85,
+          1115.65
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2871.4,
+          44.65,
+          1071.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2871.4,
+          74.65,
+          1071.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2812.9,
+          109.25,
+          1198.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2812.9,
+          139.25,
+          1198.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2996.85,
+          101.65,
+          1338.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2996.85,
+          131.65,
+          1338.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2856.6,
+          93.55,
+          1487.95
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2856.6,
+          123.55,
+          1487.95
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2914.9,
+          95.0,
+          1559.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2914.9,
+          125.0,
+          1559.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3009.1,
+          138.5,
+          1617.55
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3009.1,
+          168.5,
+          1617.55
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.596543,
+          0.0,
+          -0.802581
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.802581,
+          0.0,
+          0.596543
+        ],
+        [
+          3866.15,
+          78.75,
+          1845.9
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.596543,
+          0.0,
+          -0.802581
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.802581,
+          0.0,
+          0.596543
+        ],
+        [
+          3866.15,
+          108.75,
+          1845.9
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4007.5,
+          112.7,
+          1805.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4007.5,
+          142.7,
+          1805.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4035.45,
+          134.1,
+          1639.5
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          4035.45,
+          164.1,
+          1639.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3944.6,
+          65.2,
+          887.2
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3944.6,
+          95.2,
+          887.2
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.973537,
+          0.0,
+          -0.22853
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.22853,
+          0.0,
+          0.973537
+        ],
+        [
+          4007.1,
+          73.35,
+          810.5
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.973537,
+          0.0,
+          -0.22853
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.22853,
+          0.0,
+          0.973537
+        ],
+        [
+          4007.1,
+          103.35,
+          810.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.997683,
+          0.0,
+          -0.0680341
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0680341,
+          0.0,
+          -0.997683
+        ],
+        [
+          3930.62,
+          75.75,
+          668.334
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.997683,
+          0.0,
+          -0.0680341
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0680341,
+          0.0,
+          -0.997683
+        ],
+        [
+          3930.62,
+          105.75,
+          668.334
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.840773,
+          0.0,
+          0.541387
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.541387,
+          0.0,
+          0.840773
+        ],
+        [
+          3996.6,
+          75.4,
+          549.55
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.840773,
+          0.0,
+          0.541387
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.541387,
+          0.0,
+          0.840773
+        ],
+        [
+          3996.6,
+          105.4,
+          549.55
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3947.65,
+          103.95,
+          492.45
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3947.65,
+          133.95,
+          492.45
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3938.45,
+          102.05,
+          346.7
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3938.45,
+          132.05,
+          346.7
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3942.95,
+          0.25,
+          18.95
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3942.95,
+          30.25,
+          18.95
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3857.95,
+          -0.1,
+          -601.35
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3857.95,
+          29.9,
+          -601.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3776.45,
+          5.95,
+          -1505.5
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3776.45,
+          35.95,
+          -1505.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3530.85,
+          196.3,
+          -1800.45
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3530.85,
+          226.3,
+          -1800.45
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3265.2,
+          162.45,
+          -1849.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3265.2,
+          192.45,
+          -1849.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3373.75,
+          170.45,
+          -2122.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3373.75,
+          200.45,
+          -2122.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3189.3,
+          151.4,
+          -2273.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3189.3,
+          181.4,
+          -2273.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3190.8,
+          140.75,
+          -2410.1
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3190.8,
+          170.75,
+          -2410.1
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3035.8,
+          151.6,
+          -2477.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3035.8,
+          181.6,
+          -2477.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3116.95,
+          176.35,
+          -2593.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3116.95,
+          206.35,
+          -2593.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3033.7,
+          264.0,
+          -2711.2
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3033.7,
+          294.0,
+          -2711.2
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3263.25,
+          224.0,
+          -2838.35
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3263.25,
+          254.0,
+          -2838.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3214.3,
+          253.55,
+          -2971.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3214.3,
+          283.55,
+          -2971.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3331.25,
+          268.4,
+          -3121.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3331.25,
+          298.4,
+          -3121.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3319.7,
+          277.05,
+          -3328.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3319.7,
+          307.05,
+          -3328.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3193.8,
+          296.4,
+          -3449.7
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3193.8,
+          326.4,
+          -3449.7
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3094.24,
+          241.05,
+          -3689.59
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3094.24,
+          271.05,
+          -3689.59
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2850.5,
+          243.95,
+          -3678.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2850.5,
+          273.95,
+          -3678.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2780.68,
+          271.709,
+          -3558.81
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2780.68,
+          301.709,
+          -3558.81
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.958979,
+          0.0,
+          0.283477
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.283477,
+          0.0,
+          0.958979
+        ],
+        [
+          2692.9,
+          284.85,
+          -3375.35
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.958979,
+          0.0,
+          0.283477
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.283477,
+          0.0,
+          0.958979
+        ],
+        [
+          2692.9,
+          314.85,
+          -3375.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2874.0,
+          283.9,
+          -3227.2
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2874.0,
+          313.9,
+          -3227.2
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2730.6,
+          265.75,
+          -3112.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2730.6,
+          295.75,
+          -3112.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2846.25,
+          273.9,
+          -2917.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2846.25,
+          303.9,
+          -2917.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2769.62,
+          211.6,
+          -2824.07
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2769.62,
+          241.6,
+          -2824.07
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2806.7,
+          204.4,
+          -2693.35
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2806.7,
+          234.4,
+          -2693.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2649.26,
+          175.1,
+          -2552.95
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2649.26,
+          205.1,
+          -2552.95
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2695.95,
+          182.45,
+          -2295.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2695.95,
+          212.45,
+          -2295.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2569.35,
+          180.7,
+          -2218.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2569.35,
+          210.7,
+          -2218.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2609.15,
+          216.4,
+          -2079.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2609.15,
+          246.4,
+          -2079.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2428.4,
+          203.05,
+          -1686.95
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2428.4,
+          233.05,
+          -1686.95
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.706131,
+          0.0,
+          0.708082
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.708082,
+          0.0,
+          0.706131
+        ],
+        [
+          3285.6,
+          0.0,
+          2150.85
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.706131,
+          0.0,
+          0.708082
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.708082,
+          0.0,
+          0.706131
+        ],
+        [
+          3285.6,
+          30.0,
+          2150.85
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          1321.1,
+          159.65,
+          -2908.05
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          1298.25,
+          12.35,
+          -3073.4
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          1298.25,
+          42.35,
+          -3073.4
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          1116.35,
+          45.4,
+          -3241.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          1116.35,
+          75.4,
+          -3241.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          933.5,
+          111.25,
+          -3232.55
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          933.5,
+          141.25,
+          -3232.55
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          786.0,
+          118.7,
+          -3361.85
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          786.0,
+          148.7,
+          -3361.85
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          585.8,
+          95.8,
+          -3363.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.990697,
+          0.0,
+          -0.136083
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.136083,
+          0.0,
+          0.990697
+        ],
+        [
+          585.8,
+          125.8,
+          -3363.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          403.65,
+          140.5,
+          -3089.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          403.65,
+          170.5,
+          -3089.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          255.95,
+          119.45,
+          -3277.05
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          255.95,
+          149.45,
+          -3277.05
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          229.95,
+          114.75,
+          -2984.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          229.95,
+          144.75,
+          -2984.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          343.4,
+          129.85,
+          -2740.4
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          343.4,
+          159.85,
+          -2740.4
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          207.7,
+          131.35,
+          -2643.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          207.7,
+          161.35,
+          -2643.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          310.55,
+          82.7,
+          -2489.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          310.55,
+          112.7,
+          -2489.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          220.55,
+          124.6,
+          -2288.85
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          220.55,
+          154.6,
+          -2288.85
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          366.45,
+          154.55,
+          -2068.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          366.45,
+          184.55,
+          -2068.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          339.05,
+          228.4,
+          -1843.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          339.05,
+          258.4,
+          -1843.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          452.35,
+          190.65,
+          -1710.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          452.35,
+          220.65,
+          -1710.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          277.9,
+          226.85,
+          -1554.45
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          277.9,
+          256.85,
+          -1554.45
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          232.35,
+          221.9,
+          -1309.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          232.35,
+          251.9,
+          -1309.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          3.3,
+          91.1,
+          -1046.05
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          3.3,
+          121.1,
+          -1046.05
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          235.25,
+          141.0,
+          -675.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          235.25,
+          171.0,
+          -675.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          -125.5,
+          70.6,
+          -469.9
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          -125.5,
+          100.6,
+          -469.9
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          -256.55,
+          155.9,
+          -645.5
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.119638,
+          0.0,
+          0.992818
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.992818,
+          0.0,
+          -0.119638
+        ],
+        [
+          -256.55,
+          185.9,
+          -645.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.951475,
+          0.0,
+          -0.307726
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.307726,
+          0.0,
+          -0.951475
+        ],
+        [
+          -549.05,
+          170.45,
+          -806.0
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.951475,
+          0.0,
+          -0.307726
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.307726,
+          0.0,
+          -0.951475
+        ],
+        [
+          -549.05,
+          200.45,
+          -806.0
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.951475,
+          0.0,
+          -0.307726
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.307726,
+          0.0,
+          -0.951475
+        ],
+        [
+          -604.05,
+          109.05,
+          -1111.95
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.951475,
+          0.0,
+          -0.307726
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.307726,
+          0.0,
+          -0.951475
+        ],
+        [
+          -604.05,
+          139.05,
+          -1111.95
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -484.25,
+          233.8,
+          -1374.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -484.25,
+          263.8,
+          -1374.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -545.3,
+          278.45,
+          -1695.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -545.3,
+          308.45,
+          -1695.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -724.753,
+          293.765,
+          -1997.63
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -724.753,
+          323.765,
+          -1997.63
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -965.15,
+          344.15,
+          -2099.8
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -965.15,
+          374.15,
+          -2099.8
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -1193.0,
+          311.6,
+          -2322.65
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.978794,
+          0.0,
+          0.204844
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.204844,
+          0.0,
+          0.978794
+        ],
+        [
+          -1193.0,
+          341.6,
+          -2322.65
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.315131,
+          0.0,
+          -0.949048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.949048,
+          0.0,
+          -0.315131
+        ],
+        [
+          -1028.39,
+          346.075,
+          -2610.99
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.315131,
+          0.0,
+          -0.949048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.949048,
+          0.0,
+          -0.315131
+        ],
+        [
+          -1028.39,
+          376.075,
+          -2610.99
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.315131,
+          0.0,
+          -0.949048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.949048,
+          0.0,
+          -0.315131
+        ],
+        [
+          -1368.88,
+          234.979,
+          -2525.2
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.315131,
+          0.0,
+          -0.949048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.949048,
+          0.0,
+          -0.315131
+        ],
+        [
+          -1368.88,
+          264.979,
+          -2525.2
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.315131,
+          0.0,
+          -0.949048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.949048,
+          0.0,
+          -0.315131
+        ],
+        [
+          -1654.7,
+          210.7,
+          -2880.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.315131,
+          0.0,
+          -0.949048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.949048,
+          0.0,
+          -0.315131
+        ],
+        [
+          -1654.7,
+          240.7,
+          -2880.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.10201,
+          0.0,
+          0.994783
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.994783,
+          0.0,
+          -0.10201
+        ],
+        [
+          -1995.95,
+          212.65,
+          -2663.65
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.10201,
+          0.0,
+          0.994783
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.994783,
+          0.0,
+          -0.10201
+        ],
+        [
+          -1995.95,
+          242.65,
+          -2663.65
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2317.7,
+          186.7,
+          -2845.7
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2317.7,
+          216.7,
+          -2845.7
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2549.6,
+          0.0,
+          -2540.85
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2549.6,
+          30.0,
+          -2540.85
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2514.0,
+          137.85,
+          -2209.85
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2514.0,
+          167.85,
+          -2209.85
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2504.4,
+          45.5,
+          -1902.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2504.4,
+          75.5,
+          -1902.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2707.55,
+          114.3,
+          -2041.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2707.55,
+          144.3,
+          -2041.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2855.6,
+          55.5,
+          -1717.6
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999462,
+          0.0,
+          -0.0327825
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0327825,
+          0.0,
+          -0.999462
+        ],
+        [
+          -2855.6,
+          85.5,
+          -1717.6
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.881302,
+          0.0,
+          0.472553
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.472553,
+          0.0,
+          -0.881302
+        ],
+        [
+          -3182.85,
+          105.05,
+          -1769.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.881302,
+          0.0,
+          0.472553
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.472553,
+          0.0,
+          -0.881302
+        ],
+        [
+          -3182.85,
+          135.05,
+          -1769.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.881302,
+          0.0,
+          0.472553
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.472553,
+          0.0,
+          -0.881302
+        ],
+        [
+          -3134.15,
+          131.225,
+          -1391.29
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.881302,
+          0.0,
+          0.472553
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.472553,
+          0.0,
+          -0.881302
+        ],
+        [
+          -3134.15,
+          161.225,
+          -1391.29
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.881302,
+          0.0,
+          0.472553
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.472553,
+          0.0,
+          -0.881302
+        ],
+        [
+          -2904.4,
+          203.2,
+          -1117.5
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.881302,
+          0.0,
+          0.472553
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.472553,
+          0.0,
+          -0.881302
+        ],
+        [
+          -2904.4,
+          233.2,
+          -1117.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.575235,
+          0.0,
+          0.817988
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.817988,
+          0.0,
+          0.575235
+        ],
+        [
+          63.4,
+          160.55,
+          -473.1
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.575235,
+          0.0,
+          0.817988
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.817988,
+          0.0,
+          0.575235
+        ],
+        [
+          63.4,
+          190.55,
+          -473.1
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.974987,
+          0.0,
+          0.222263
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.222263,
+          0.0,
+          -0.974987
+        ],
+        [
+          216.8,
+          84.55,
+          -82.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.974987,
+          0.0,
+          0.222263
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.222263,
+          0.0,
+          -0.974987
+        ],
+        [
+          216.8,
+          114.55,
+          -82.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.983761,
+          0.0,
+          -0.179483
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.179483,
+          0.0,
+          -0.983761
+        ],
+        [
+          88.2207,
+          82.6995,
+          603.236
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.983761,
+          0.0,
+          -0.179483
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.179483,
+          0.0,
+          -0.983761
+        ],
+        [
+          88.2207,
+          112.7,
+          603.236
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          657.837,
+          129.912,
+          2058.73
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          657.837,
+          159.912,
+          2058.73
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          327.628,
+          79.9617,
+          1863.93
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          327.628,
+          109.962,
+          1863.93
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          297.25,
+          67.1,
+          2144.25
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          297.25,
+          97.0995,
+          2144.25
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.824149,
+          0.0,
+          0.566374
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.566374,
+          0.0,
+          0.824149
+        ],
+        [
+          585.241,
+          50.8555,
+          2553.67
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.824149,
+          0.0,
+          0.566374
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.566374,
+          0.0,
+          0.824149
+        ],
+        [
+          585.241,
+          80.8555,
+          2553.67
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.824149,
+          0.0,
+          0.566374
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.566374,
+          0.0,
+          0.824149
+        ],
+        [
+          97.7415,
+          85.1046,
+          2544.33
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.824149,
+          0.0,
+          0.566374
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.566374,
+          0.0,
+          0.824149
+        ],
+        [
+          97.7415,
+          115.105,
+          2544.33
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.824149,
+          0.0,
+          0.566374
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.566374,
+          0.0,
+          0.824149
+        ],
+        [
+          174.23,
+          170.945,
+          2240.24
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.824149,
+          0.0,
+          0.566374
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.566374,
+          0.0,
+          0.824149
+        ],
+        [
+          174.23,
+          200.945,
+          2240.24
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -1527.89,
+          36.7097,
+          1809.12
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -1527.89,
+          66.7097,
+          1809.12
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -1988.39,
+          128.425,
+          1612.34
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -1988.39,
+          158.425,
+          1612.34
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2204.66,
+          138.107,
+          1783.48
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2204.66,
+          168.107,
+          1783.48
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2418.75,
+          108.224,
+          1648.49
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2418.75,
+          138.224,
+          1648.49
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2546.62,
+          136.117,
+          1777.77
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2546.62,
+          166.117,
+          1777.77
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2779.25,
+          182.45,
+          1750.7
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2779.25,
+          212.45,
+          1750.7
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2881.65,
+          156.3,
+          1955.55
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -2881.65,
+          186.3,
+          1955.55
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -3114.3,
+          219.3,
+          1979.15
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -3114.3,
+          249.3,
+          1979.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.54463,
+          0.0,
+          0.838677
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.838677,
+          0.0,
+          -0.54463
+        ],
+        [
+          -3263.2,
+          194.15,
+          2185.1
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.54463,
+          0.0,
+          0.838677
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.838677,
+          0.0,
+          -0.54463
+        ],
+        [
+          -3263.2,
+          224.15,
+          2185.1
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.54463,
+          0.0,
+          0.838677
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.838677,
+          0.0,
+          -0.54463
+        ],
+        [
+          -3474.88,
+          153.682,
+          2080.87
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.54463,
+          0.0,
+          0.838677
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.838677,
+          0.0,
+          -0.54463
+        ],
+        [
+          -3474.88,
+          183.682,
+          2080.87
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.955242,
+          0.0,
+          -0.295826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.295826,
+          0.0,
+          -0.955242
+        ],
+        [
+          -3452.05,
+          174.089,
+          1785.75
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.955242,
+          0.0,
+          -0.295826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.295826,
+          0.0,
+          -0.955242
+        ],
+        [
+          -3452.05,
+          204.089,
+          1785.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.955242,
+          0.0,
+          -0.295826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.295826,
+          0.0,
+          -0.955242
+        ],
+        [
+          -3518.27,
+          217.657,
+          1552.52
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.955242,
+          0.0,
+          -0.295826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.295826,
+          0.0,
+          -0.955242
+        ],
+        [
+          -3518.27,
+          247.657,
+          1552.52
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999143,
+          0.0,
+          0.0414026
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0414026,
+          0.0,
+          -0.999143
+        ],
+        [
+          -3526.37,
+          84.5558,
+          1373.87
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999143,
+          0.0,
+          0.0414026
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0414026,
+          0.0,
+          -0.999143
+        ],
+        [
+          -3526.37,
+          114.556,
+          1373.87
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999143,
+          0.0,
+          0.0414026
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0414026,
+          0.0,
+          -0.999143
+        ],
+        [
+          -3346.05,
+          146.922,
+          1166.77
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999143,
+          0.0,
+          0.0414026
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0414026,
+          0.0,
+          -0.999143
+        ],
+        [
+          -3346.05,
+          176.922,
+          1166.77
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.999143,
+          0.0,
+          0.0414026
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0414026,
+          0.0,
+          -0.999143
+        ],
+        [
+          -3481.44,
+          124.276,
+          797.014
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.999143,
+          0.0,
+          0.0414026
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0414026,
+          0.0,
+          -0.999143
+        ],
+        [
+          -3481.44,
+          154.276,
+          797.014
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -1712.63,
+          117.703,
+          2082.81
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.958028,
+          0.0,
+          0.286673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.286673,
+          0.0,
+          -0.958028
+        ],
+        [
+          -1712.63,
+          147.703,
+          2082.81
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -1405.19,
+          147.218,
+          2310.48
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -1405.19,
+          177.218,
+          2310.48
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -1102.55,
+          188.766,
+          2588.91
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -1102.55,
+          218.766,
+          2588.91
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -1138.18,
+          159.632,
+          2925.95
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -1138.18,
+          189.632,
+          2925.95
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -628.1,
+          37.8,
+          2887.45
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.984768,
+          0.0,
+          0.173872
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.173872,
+          0.0,
+          0.984768
+        ],
+        [
+          -628.1,
+          67.8,
+          2887.45
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          0.820825,
+          0.0,
+          0.571178
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.571178,
+          0.0,
+          0.820825
+        ],
+        [
+          -649.1,
+          200.95,
+          -1837.3
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          0.820825,
+          0.0,
+          0.571178
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.571178,
+          0.0,
+          0.820825
+        ],
+        [
+          -649.1,
+          230.95,
+          -1837.3
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_lighthouse_a",
+      "transform": [
+        [
+          -0.951475,
+          0.0,
+          -0.307726
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.307726,
+          0.0,
+          -0.951475
+        ],
+        [
+          -360.35,
+          75.45,
+          -812.85
+        ]
+      ]
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          -0.951475,
+          0.0,
+          -0.307726
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.307726,
+          0.0,
+          -0.951475
+        ],
+        [
+          -360.35,
+          105.45,
+          -812.85
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3500.0,
+      "light__radius_scale": 10.0,
+      "light__max_radius": 1500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    }
+  ]
+}

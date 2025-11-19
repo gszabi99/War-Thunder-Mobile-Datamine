@@ -49,7 +49,7 @@ let help = @(showHelp) function(){
     hplace = ALIGN_RIGHT
     size = SIZE_TO_CONTENT
     children = textButton("X", function() {
-      showHelp.update(false)
+      showHelp.set(false)
     }, {hotkeys = [["Esc"]]})
   }
 

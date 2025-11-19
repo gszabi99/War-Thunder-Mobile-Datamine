@@ -24,7 +24,7 @@ let modalWndHeaderBg = freeze({
   image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, hdpx(300)]
-  color = 0xFF4D88A4
+  color = 0x80505780
 })
 
 let modalWndHeader = @(text, ovr = {}) modalWndHeaderBg.__merge({

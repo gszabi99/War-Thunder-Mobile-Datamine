@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { prevIfEqual } = require("%sqstd/underscore.nut")
+let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
@@ -28,9 +29,13 @@ let aTimeHeaderStart = 0.5
 let aTimePriceStart = aTimeHeaderStart + 0.3
 
 let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
-let lootbox = Computed(@(prev)
-  prevIfEqual(prev, serverConfigs.get()?.lootboxesCfg[previewGoods.get()?.lootboxes.findindex(@(_) true)]))
-let lootboxAmount = Computed(@() previewGoods.get()?.lootboxes.findvalue(@(_) true))
+let lootbox = Computed(@(prev) prevIfEqual(prev,
+  serverConfigs.get()?.lootboxesCfg[
+    previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).id
+      ?? previewGoods.get()?.lootboxes.findindex(@(_) true) 
+  ]))
+let lootboxAmount = Computed(@() previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).count
+  ?? previewGoods.get()?.lootboxes.findvalue(@(_) true)) 
 let bgImage = keepref(Computed(@() lootboxPreviewBg?[lootbox.get()?.name]))
 
 

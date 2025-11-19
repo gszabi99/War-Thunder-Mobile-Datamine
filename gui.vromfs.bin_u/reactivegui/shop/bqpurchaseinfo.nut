@@ -23,12 +23,14 @@ let PURCH_SRC_SHOP = "shop"
 let PURCH_SRC_EVENT = "event"
 let PURCH_SRC_BATTLE_PASS = "battle_pass"
 let PURCH_SRC_EVENT_PASS = "event_pass"
+let PURCH_SRC_OPERATION_PASS = "operation_pass"
 let PURCH_SRC_SKINS = "skins"
 let PURCH_SRC_BOOSTERS = "boosters"
 let PURCH_SRC_SLOTBAR = "slotbar"
 let PURCH_SRC_SLOT_UPGRADES = "slot_upgrades"
 let PURCH_SRC_BLUEPRINTS = "blueprints"
 let PURCH_SRC_BRANCH = "branch"
+let PURCH_SRC_DECALS = "decals"
 
 let PURCH_TYPE_UNIT = "unit"
 let PURCH_TYPE_UNIT_MOD = "unit_mod"
@@ -36,6 +38,7 @@ let PURCH_TYPE_UNIT_LEVEL = "unit_level"
 let PURCH_TYPE_UNIT_EXP = "unit_exp"
 let PURCH_TYPE_BP_LEVEL = "bp_level"
 let PURCH_TYPE_EP_LEVEL = "ep_level"
+let PURCH_TYPE_OP_LEVEL = "ep_level"
 let PURCH_TYPE_CONSUMABLES = "consumables"
 let PURCH_TYPE_PLAYER_LEVEL = "player_level"
 let PURCH_TYPE_DECORATOR = "player_decorator"
@@ -53,6 +56,8 @@ let PURCH_TYPE_SLOT_LEVEL = "slot_level"
 let PURCH_TYPE_BLUEPRINTS = "blueprints"
 let PURCH_TYPE_BRANCH = "branch"
 let PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
+let PURCH_TYPE_DECAL = "decal"
+let PURCH_TYPE_QUEST_REROLL = "quest_reroll"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -103,12 +108,14 @@ return {
   PURCH_SRC_EVENT
   PURCH_SRC_BATTLE_PASS
   PURCH_SRC_EVENT_PASS
+  PURCH_SRC_OPERATION_PASS
   PURCH_SRC_SKINS
   PURCH_SRC_BOOSTERS
   PURCH_SRC_SLOTBAR
   PURCH_SRC_SLOT_UPGRADES
   PURCH_SRC_BLUEPRINTS
   PURCH_SRC_BRANCH
+  PURCH_SRC_DECALS
 
   PURCH_TYPE_UNIT
   PURCH_TYPE_UNIT_MOD
@@ -122,6 +129,7 @@ return {
   PURCH_TYPE_LOOTBOX
   PURCH_TYPE_BP_LEVEL
   PURCH_TYPE_EP_LEVEL
+  PURCH_TYPE_OP_LEVEL
   PURCH_TYPE_SKIN
   PURCH_TYPE_BOOSTERS
   PURCH_TYPE_MINI_EVENT
@@ -132,6 +140,8 @@ return {
   PURCH_TYPE_SLOT_LEVEL
   PURCH_TYPE_BLUEPRINTS
   PURCH_TYPE_QUEUE_PENALTY
+  PURCH_TYPE_DECAL
+  PURCH_TYPE_QUEST_REROLL
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

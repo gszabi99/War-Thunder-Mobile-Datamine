@@ -3,7 +3,7 @@ let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
-let battlePassSeason = @(text, seasonEndTime, children = null) doubleSideGradient.__merge({
+let battlePassSeason = @(text, seasonEndTime, children = null, ovr = {}) doubleSideGradient.__merge({
   padding = const [hdpx(20), hdpx(200), hdpx(17), hdpx(30) ]
   halign = ALIGN_LEFT
   flow = FLOW_VERTICAL
@@ -15,7 +15,7 @@ let battlePassSeason = @(text, seasonEndTime, children = null) doubleSideGradien
       halign = ALIGN_RIGHT
       valign = ALIGN_BOTTOM
       children = {
-        pos = const[ hdpx(70), 0 ]
+        pos = const [hdpx(70), 0]
         children
       }
     }.__update(fontMedium)
@@ -26,6 +26,6 @@ let battlePassSeason = @(text, seasonEndTime, children = null) doubleSideGradien
       text = loc("battlepass/endsin", { time = secondsToHoursLoc(seasonEndTime - serverTime.get())})
     }.__update(fontVeryTiny)
   ]
-}
+}.__update(ovr)
 )
 return battlePassSeason

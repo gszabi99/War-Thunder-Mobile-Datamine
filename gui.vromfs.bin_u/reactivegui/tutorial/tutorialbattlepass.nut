@@ -9,7 +9,7 @@ let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
-let { openBattlePassWnd, battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonActive
+let { battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
@@ -20,6 +20,7 @@ let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
 let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
 
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
@@ -191,7 +192,7 @@ function startTutorial() {
         text = loc("tutorial/battlePass/openBattlePassWnd")
         objects = [{
           keys = "quest_header_btn"
-          onClick = openBattlePassWnd
+          onClick = @() openPassScene(BATTLE_PASS)
           needArrow = true
         }]
         charId = "mary_points"

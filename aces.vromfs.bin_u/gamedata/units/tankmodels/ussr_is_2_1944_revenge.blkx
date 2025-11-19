@@ -45,6 +45,58 @@
   "destroysTrees": true,
   "type": "typeHeavyTank",
   "minRelativeTankCameraThreshold": 1.3,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "attachables": {
     "body_bottom_dm": [
       true,
@@ -327,6 +379,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -344,6 +397,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -404,6 +458,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -421,6 +476,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -494,6 +550,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -635,6 +692,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -642,6 +700,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -649,6 +708,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -1570,11 +1630,12 @@
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull": {
-      "body_front_dm": {
-        "armorThickness": 100.0
+      "turret_04_top_dm": {
+        "armorThickness": 30.0,
+        "variableThickness": true
       },
-      "body_top_dm": {
-        "armorThickness": 120.0
+      "body_side_dm": {
+        "armorThickness": 90.0
       },
       "superstructure_side_dm": {
         "armorThickness": 90.0
@@ -1586,70 +1647,80 @@
         "armorThickness": 30.0
       },
       "body_bottom_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 30.0,
+        "variableThickness": true
       },
       "superstructure_bottom_dm": {
         "armorThickness": 25.0
       },
-      "turret_01_bottom_dm": {
-        "armorThickness": 60.0
-      }
-    },
-    "turret": {
-      "armorClass": "CHA_tank",
-      "body_side_dm": {
-        "armorThickness": 90.0
+      "turret_02_side_dm": {
+        "armorThickness": 5.0
       },
-      "turret_01_back_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_01_side_dm": {
-        "armorThickness": 115.0
+      "turret_02_bottom_dm": {
+        "armorThickness": 10.0
       },
       "turret_01_top_dm": {
-        "armorThickness": 130.0
+        "armorThickness": 10.0
       },
-      "turret_side_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_front_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_commander_dm": {
-        "armorThickness": 90.0
+      "turret_03_top_dm": {
+        "armorThickness": 10.0
+      }
+    },
+    "hull_CHA": {
+      "armorClass": "CHA_tank",
+      "body_front_dm": {
+        "armorThickness": 100.0,
+        "variableThickness": true
       },
       "superstructure_front_dm": {
         "armorThickness": 100.0,
+        "variableThickness": true
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 60.0,
         "variableThickness": true
       }
     },
     "turret_RHA": {
       "armorClass": "RHA_tank",
-      "turret_01_front_dm": {
-        "armorThickness": 30.0
-      },
       "turret_top_dm": {
         "armorThickness": 30.0
       },
-      "turret_bottom_dm": {
-        "armorThickness": 100.0
+      "turret_02_top_dm": {
+        "armorThickness": 30.0
+      }
+    },
+    "turret_CHA": {
+      "armorClass": "CHA_tank",
+      "turret_01_front_dm": {
+        "armorThickness": 100.0,
+        "variableThickness": true
       },
-      "turret_04_top_dm": {
+      "turret_front_dm": {
+        "armorThickness": 100.0,
+        "variableThickness": true
+      },
+      "gun_mask_dm": {
+        "armorThickness": 100.0,
+        "variableThickness": true,
+        "minSolidArmorThickness": 10.0
+      },
+      "turret_bottom_dm": {
         "armorThickness": 30.0
       },
       "turret_03_front_dm": {
         "armorThickness": 45.0
       },
-      "turret_02_top_dm": {
-        "armorThickness": 30.0
-      },
-      "gun_mask_dm": {
-        "armorThickness": 100.0,
-        "hp": 10000.0,
-        "variableThickness": true
-      },
       "gun_barrel_armor_dm": {
         "armorThickness": 200.0
+      },
+      "gun_mask_01_dm": {
+        "armorThickness": 120.0,
+        "variableThickness": true
+      },
+      "turret_commander_dm": {
+        "armorThickness": 90.0,
+        "variableThickness": true
       }
     },
     "body_shields": {
@@ -2405,7 +2476,6 @@
     "art_support_smoke": {},
     "art_support_mortars": {},
     "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {}
   },

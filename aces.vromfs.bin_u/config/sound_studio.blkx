@@ -104,25 +104,25 @@
           "preload": false
         }
       },
-      "pkg_common": {
+      "pkg_sound_common": {
         "mobile.assets": {
           "async": true,
           "preload": false
         }
       },
-      "pkg_naval": {
+      "pkg_sound_naval": {
         "mobile_ships.assets": {
           "async": true,
           "preload": false
         }
       },
-      "pkg_ground": {
+      "pkg_sound_ground": {
         "mobile_tanks.assets": {
           "async": true,
           "preload": false
         }
       },
-      "pkg_lvl_hangar_bd": {
+      "pkg_sound_event": {
         "mobile_event.assets": {
           "async": true,
           "preload": false
@@ -185,12 +185,12 @@
         }
       },
       "pkg_extended_105mm_l74": {
-        "mobile_tanks_l7": {
+        "mobile_tanks_105mm_l7": {
           "async": true,
           "preload": false,
           "optional": true
         },
-        "mobile_tanks_l7.assets": {
+        "mobile_tanks_105mm_l7.assets": {
           "async": true,
           "preload": false,
           "optional": true
@@ -209,12 +209,12 @@
         }
       },
       "pkg_extended_76mm_l11": {
-        "mobile_tanks_l11": {
+        "mobile_tanks_76mm_l11": {
           "async": true,
           "preload": false,
           "optional": true
         },
-        "mobile_tanks_l11.assets": {
+        "mobile_tanks_76mm_l11.assets": {
           "async": true,
           "preload": false,
           "optional": true
@@ -233,12 +233,120 @@
         }
       },
       "pkg_extended_75mm_kwk40": {
-        "mobile_tanks_kwk40": {
+        "mobile_tanks_75mm_kwk40": {
           "async": true,
           "preload": false,
           "optional": true
         },
-        "mobile_tanks_kwk40.assets": {
+        "mobile_tanks_75mm_kwk40.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_sherman_m4a1": {
+        "mobile_tanks_sherman_m4a1": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_sherman_m4a1.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_76mm_m1": {
+        "mobile_tanks_76mm_m1": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_76mm_m1.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_comet": {
+        "mobile_tanks_comet": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_comet.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_76mm_qf17": {
+        "mobile_tanks_76mm_qf17": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_76mm_qf17.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_panzer6": {
+        "mobile_tanks_panzer6": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_panzer6.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_88mm_kwk36": {
+        "mobile_tanks_88mm_kwk36": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_88mm_kwk36.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_panther": {
+        "mobile_tanks_panther": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_panther.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_75mm_kwk42": {
+        "mobile_tanks_75mm_kwk42": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_75mm_kwk42.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_sherman_m4a3": {
+        "mobile_tanks_sherman_m4a3": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_sherman_m4a3.assets": {
           "async": true,
           "preload": false,
           "optional": true
@@ -330,7 +438,7 @@
       "Vietnamese": "vi",
       "TChinese": "zhtw",
       "HChinese": "zhhx",
-      "USA": "en"
+      "USA": "en_us"
     }
   },
   "budget": {
@@ -649,23 +757,6 @@
     "concrete_mid_apex": "concrete_mid_apex",
     "wood_mid_apex": "wood_mid_apex"
   },
-  "hud": {
-    "path": "naval/gui",
-    "alarm_incoming": "alarm_incoming",
-    "alarm_alt": "alarm_alt",
-    "ammo_reloading": "ammo_reloading",
-    "ammo_ready": "ammo_ready",
-    "no_bullets": "no_bullets",
-    "no_rockets": "no_rockets",
-    "gun_broken": "gun_broken",
-    "switch_weapon": "switch_weapon",
-    "change_cam": "change_cam",
-    "sound_zoom_in": "change_fov_on",
-    "sound_zoom_out": "change_fov_off",
-    "hit_indicator": "click",
-    "text_type": "text",
-    "enemy_damaged": "obj_complete"
-  },
   "gui": {
     "out_of_bombs": "out_of_bombs",
     "out_of_rockets": "out_of_rockets",
@@ -692,7 +783,11 @@
     "ew_our_ship_locked": "ew_our_ship_locked",
     "ew_blocking_end": "ew_blocking_end",
     "ew_blocking_successful": "ew_blocking_successful",
-    "ew_missile_suppressed": "ew_missile_suppressed"
+    "ew_missile_suppressed": "ew_missile_suppressed",
+    "hit_indicator": "click",
+    "enemy_damaged": "obj_complete",
+    "no_bullets": "no_bullets",
+    "obj_new3d": "obj_new3d"
   },
   "rocket_effects": {
     "hellfire": {
@@ -4493,6 +4588,36 @@
     "ai": {
       "outside": {
         "path": "ground/engines/ai/t34",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
+  "engine_m4a1": {
+    "outside": {
+      "path": "ground/engines/m4a1",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
+    },
+    "ai": {
+      "outside": {
+        "path": "ground/engines/ai/m4a1",
         "eventBack": "engine",
         "rpmSmooth": 1.0,
         "loadScale": 6.0,
@@ -9893,21 +10018,22 @@
       },
       "bulletTypeToEvent": {
         "apbc_tank": "loadBulletAP",
+        "apbc_usa_tank": "loadBulletAP",
         "apc_tank": "loadBulletAP",
         "aphe_tank": "loadBulletAP",
         "aphebc_tank": "loadBulletAP",
         "apcbc_tank": "loadBulletAP",
         "apcbc_solid_medium_caliber_tank": "loadBulletAP",
-        "apbc_usa_tank": "loadBulletAP",
         "apc_solid_medium_caliber_tank": "loadBulletAP",
         "ap_tank": "loadBulletAP",
         "ap_large_caliber_tank": "loadBulletAP",
         "shrapnel_tank": "loadBulletCanister",
         "he_frag_tank": "loadBulletHighExpl",
-        "he_frag_fs_tank": "loadBulletFrag",
+        "he_frag_fs_tank": "loadBulletHighExpl",
         "hesh_tank": "loadBulletHEP",
         "smoke_tank": "loadBulletSmoke",
         "he_grenade_tank": "loadBulletHighExpl",
+        "he_frag_dist_fuse": "loadBulletHighExpl",
         "heat_tank": "loadBulletCumulative",
         "heat_fs_tank": "loadBulletCumulative",
         "heat_fs_rocket": "loadBulletCumulative",
@@ -9919,11 +10045,12 @@
         "apds_l15_tank": "loadBulletAPDS",
         "apds_fs_tank": "loadBulletAPDS",
         "apds_fs_long_tank": "loadBulletAPDS",
-        "apds_fs_ld_30_tank": "loadBulletAPDS",
         "apds_fs_full_body_steel_tank": "loadBulletAPDS",
         "apds_fs_tungsten_small_core_tank": "loadBulletAPDS",
         "apds_fs_tungsten_l10_l15_tank": "loadBulletAPDS",
+        "apds_fs_long_l30_tank": "loadBulletSubCaliber",
         "atgm_tank": "loadBulletMissile",
+        "atgm_ke_tank": "loadBulletMissile",
         "rocket_tank": "loadBulletMissile"
       }
     },

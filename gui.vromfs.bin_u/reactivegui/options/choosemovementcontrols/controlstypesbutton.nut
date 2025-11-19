@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let bgColor = 0xC0262B33
+let bgColor = 0xC0313843
 let selBorderColor = 0xFFFFFFFF
 let hovBorderColor = 0xFF666666
 let selBorderWidth = hdpx(4)
@@ -35,7 +35,7 @@ function controlsTypesButton(content, isSelectedW, onClick) {
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick
-    children = btnBase(content, stateFlags.get(), isSelectedW.value)
+    children = btnBase(content, stateFlags.get(), isSelectedW.get())
   }
 }
 

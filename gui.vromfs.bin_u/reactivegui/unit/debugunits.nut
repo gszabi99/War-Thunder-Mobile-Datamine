@@ -35,7 +35,7 @@ let invalidStrParamMsg = "ERROR: Param {0} should be a non empty string in doubl
 function debug_show_unit(unitName) {
   if (!isFilledString(unitName))
     return console_print(invalidStrParamMsg.subst("unitName"))
-  hangar_load_model(unitName)
+  hangar_load_model(unitName, false)
 }
 
 function debug_start_testflight(unitName, missionName) {

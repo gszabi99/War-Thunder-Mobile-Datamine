@@ -14,11 +14,12 @@ let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { playerUnitName, isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
 let { imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { enabledControls, isAllControlsEnabled } = require("%rGui/controls/disabledControls.nut")
+let { hudWhiteColor, hudDarkOliveColor } = require("%rGui/style/hudColors.nut")
 
-let brokenIconColor = 0x99996203
+let brokenIconColor = hudDarkOliveColor
 
 let isStateVisible = @(state) state != UNDEF && state != NOT_INSTALLED
-let iconColorByState = @(state) state == IS_CUT_OFF || state == NO_CONTROL ? brokenIconColor : 0xFFFFFFFF
+let iconColorByState = @(state) state == IS_CUT_OFF || state == NO_CONTROL ? brokenIconColor : hudWhiteColor
 let isFlapsVisible = @(flapsState) flapsState != TXT_NO_FLAPS && flapsState != TXT_VOID
 
 let gearActionLocId = {
@@ -62,7 +63,7 @@ let ctrlPieCfgBase = [
         icon = "icon_pie_flaps.svg"
         iconColor =  !isEnabled ? imageDisabledColor
           : nextFlapsState == TXT_FLAPS_ARE_SNAPPED_OFF ? brokenIconColor
-          : 0xFFFFFFFF
+          : hudWhiteColor
       }
     }
     shortcutId = "ID_FLAPS"
@@ -87,7 +88,7 @@ let ctrlPieCfgBase = [
       return {
         label = loc("hotkeys/ID_RELOAD_GUNS")
         icon = "icon_pie_reload.svg"
-        iconColor = !isEnabled ? imageDisabledColor : 0xFFFFFFFF
+        iconColor = !isEnabled ? imageDisabledColor : hudWhiteColor
       }
     }
     shortcutId = "ID_RELOAD_GUNS"

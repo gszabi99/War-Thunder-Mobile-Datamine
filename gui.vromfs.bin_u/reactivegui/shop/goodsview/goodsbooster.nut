@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
+let { G_BOOSTER } = require("%appGlobals/rewardType.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitleArea, mkPricePlate, mkGoodsCommonParts,
   mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
   titleFontGradConsumables, mkBorderByCurrency
@@ -31,22 +32,30 @@ let boosterImage = @(id){
   image = Picture($"{getBoosterIcon(id)}:{iconSize}:{iconSize}:P")
 }
 
-let mkImgs = @(list){
+let mkImgs = @(list) {
   size = flex()
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = -hdpx(40)
-  children = list.map(@(_, id) boosterImage(id)).values()
+  children = list.map(@(b) boosterImage(b.id))
 }
 
-let getLocNameBooster = @(goods) comma.join(goods.boosters.keys().map(@(id) loc($"boosters/{id}")))
+let getLocNameBooster = @(goods) comma.join(
+  goods?.rewards.filter(@(r) r.gType == G_BOOSTER).map(@(r) loc($"boosters/{r.id}"))
+    ?? goods?.boosters.keys().map(@(id) loc($"boosters/{id}"))) 
+    ?? []
+
+let getBoostersList = @(goods)
+  goods?.rewards.filter(@(r) r.gType == G_BOOSTER)
+    ?? goods?.boosters.keys().map(@(id) { id, count = goods.boosters[id] }) 
+    ?? []
 
 function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let nameBooster = @(id) loc($"boosters/{id}")
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
-  let boostersList = goods.boosters
+  let boostersList = getBoostersList(goods)
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
   return mkGoodsWrap(
     goods,
@@ -61,11 +70,12 @@ function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
         padding = const [hdpx(20), 0]
-        children = boostersList.map(@(v, id)
-          mkCurrencyAmountTitleArea(v,
-            viewBaseValue,
-            titleFontGradConsumables,
-            nameBooster(id))).values()
+        children = boostersList
+          .map(@(b)
+            mkCurrencyAmountTitleArea(b.count,
+              viewBaseValue,
+              titleFontGradConsumables,
+              nameBooster(b.id)))
       })
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),

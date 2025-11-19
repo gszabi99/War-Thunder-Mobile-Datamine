@@ -107,7 +107,7 @@ let interactiveValidTypes = ["num","lat","integer","float"]
 function textInput(text_state, options={}, frameCtor=defaultFrame) {
   let group = ElemGroup()
   let {
-    setValue = @(v) text_state(v), inputType = null,
+    setValue = @(v) text_state.set(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
     title = null, font = null, fontSize = null, hotkeys = null,
     size = [flex(), fontH(100)], textmargin = [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
@@ -220,7 +220,7 @@ function textInput(text_state, options={}, frameCtor=defaultFrame) {
 
   return @() {
     watch = [stateFlags]
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) stateFlags.set(sf)
     margin
     padding
 

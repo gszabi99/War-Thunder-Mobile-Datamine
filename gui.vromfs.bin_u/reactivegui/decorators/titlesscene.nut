@@ -67,6 +67,7 @@ function titleRow(name, locName, rowIdx) {
     rendObj = ROBJ_SOLID
     size = [flex(), rowHeight]
     color = bgColor(rowIdx)
+    xmbNode = {}
     behavior = Behaviors.Button
     sound = { click  = "meta_profile_elements" }
     valign = ALIGN_CENTER
@@ -98,7 +99,7 @@ function titleRow(name, locName, rowIdx) {
           valign = ALIGN_CENTER
           children = name != "" && name not in availTitles.get()
             ? {
-                size =const [hdpx(35),hdpx(45)]
+                size = const [hdpx(35),hdpx(45)]
                 rendObj = ROBJ_IMAGE
                 color = 0xFFFFB70B
                 image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
@@ -147,7 +148,7 @@ function footer() {
     children = selectedTitleName.get() == chosenTitleName.get()
         ? null
       : selectedTitleName.get() in availTitles.get() || selectedTitleName.get() == ""
-        ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
+        ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnEquip")), applySelectedTitle,
           { hotkeys = ["^J:X | Enter"] })
       : (price?.price ?? 0) > 0
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
@@ -206,7 +207,7 @@ let titleContent = {
       text = loc("decorator/title/choose")
       padding = const [hdpx(40), 0,hdpx(40),0]
     }.__update(fontMedium)
-    makeVertScroll(titlesList, { scrollHandler })
+    makeVertScroll(titlesList, { scrollHandler, xmbNode = XmbContainer({ scrollToEdge = true }) })
     footer
   ]
   animations = wndSwitchAnim

@@ -3,12 +3,13 @@ let { AB_WINCH, AB_WINCH_ATTACH, AB_WINCH_DETACH, getActionType
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { btnBgColor, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { touchButtonSize, imageColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { hudPearlGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
 
 let borderWidth = hdpxi(1)
-let colorActive = 0xFFDADADA
-let colorInactive = 0x806D6D6D
+let colorActive = imageColor
+let colorInactive = hudPearlGrayColor
 
 let imgSizeBase = (touchButtonSize * 0.8  + 0.5).tointeger()
 
@@ -38,7 +39,7 @@ function winchButton(scale) {
       size = [bgSize, bgSize]
       rendObj = ROBJ_BOX
       borderColor = stateFlags.get() & S_ACTIVE ? 0 : color
-      fillColor = btnBgColor.empty
+      fillColor = hudLightBlackColor
       borderWidth
       behavior = Behaviors.Button
       cameraControl = true

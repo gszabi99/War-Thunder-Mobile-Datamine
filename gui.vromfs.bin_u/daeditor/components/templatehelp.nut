@@ -1,6 +1,7 @@
 import "ecs" as ecs
-import "entity_editor" as entity_editor
 from "%darg/ui_imports.nut" import *
+
+let entity_editor = require_optional("entity_editor")
 let txt = require("%daeditor/components/text.nut").dtext
 
 

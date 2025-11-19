@@ -10,6 +10,7 @@ let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCam
 let { mkMyPlace, mkMyPlaceUi, mkMyDamage, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView } = require("%rGui/hud/hudThreatRocketsBlock.nut")
+let { simpleThreatTorpedosIndicator, simpleThreatTorpedosIndicatorEditView } = require("%rGui/hud/hudThreatTorpedosBlock.nut")
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
@@ -81,4 +82,12 @@ return {
     editView = simpleThreatRocketsIndicatorEditView
     hideForDelayed = false
   }
+
+
+
+
+
+
+
+
 }.filter(@(v) v != null)

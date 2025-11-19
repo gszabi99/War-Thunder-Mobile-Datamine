@@ -16,7 +16,7 @@ userstatRegisterHandler("GetSeasonRewards", function(result) {
     log("GrantRewards result: ", result)
   else {
     log("GrantRewards result success")
-    seasonRewards(result?.response)
+    seasonRewards.set(result?.response)
   }
 })
 
@@ -26,12 +26,6 @@ userstatDescList.subscribe(function(v) {
   if (v.len() > 0)
     updateSeasonRewards()
 })
-
-function getSubArray(tbl, id) {
-  if (id not in tbl)
-    tbl[id] <- []
-  return tbl[id]
-}
 
 let lbRewards = Computed(function() {
   let res = {}

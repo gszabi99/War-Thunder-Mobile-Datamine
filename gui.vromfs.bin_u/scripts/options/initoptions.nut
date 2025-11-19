@@ -20,7 +20,7 @@ function initOptions() {
   if (failedLoadPreset.get() != null) {
     let preset = failedLoadPreset.get()
     let defPath = getDefaultPresetPath()
-    failedLoadPreset(null)
+    failedLoadPreset.set(null)
     if (preset == defPath)
       log("[SQ_CTRL] Ignore controls.presetLoadFailed because of failed to load default preset")
     else {
@@ -31,6 +31,6 @@ function initOptions() {
   }
 }
 
-eventbus_subscribe("controls.presetLoadFailed", @(p) failedLoadPreset(p.basePresetPath))
+eventbus_subscribe("controls.presetLoadFailed", @(p) failedLoadPreset.set(p.basePresetPath))
 
 return initOptions

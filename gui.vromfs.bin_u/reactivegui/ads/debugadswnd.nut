@@ -31,7 +31,7 @@ let movePeriodMsec = 11000
 let blockSize = [hdpx(900), hdpx(600)]
 
 function applyRewards() {
-  isRewardReceived(true)
+  isRewardReceived.set(true)
   sendEnvet("reward")
 }
 
@@ -70,7 +70,7 @@ let openScene = @() addDbgOverlay({
   color = 0xFF050520
   halign = ALIGN_CENTER
   function onAttach() {
-    isRewardReceived(false)
+    isRewardReceived.set(false)
     resetTimeout(REWARDS_TIME, applyRewards)
     resetTimeout(AUTO_FINISH_TIME, close)
   }

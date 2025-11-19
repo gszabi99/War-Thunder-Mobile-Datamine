@@ -9,13 +9,13 @@ let debugDelay = keepref(hardPersistWatched("contacts.debugDelay", 0.0))
 let { request, registerHandler } = charClientEventExt("contacts")
 local requestExt = request
 function updateDebugDelay() {
-  requestExt = (debugDelay.value <= 0) ? request
-    : @(a, p, c) setTimeout(debugDelay.value, @() request(a, p, c))
+  requestExt = (debugDelay.get() <= 0) ? request
+    : @(a, p, c) setTimeout(debugDelay.get(), @() request(a, p, c))
 }
 updateDebugDelay()
 debugDelay.subscribe(@(_) updateDebugDelay())
 
-register_command(@(delay) debugDelay(delay), "contacts.delay_requests")
+register_command(@(delay) debugDelay.set(delay), "contacts.delay_requests")
 
 return {
   contactsRequest = @(handler, params = {}, context = null) requestExt(handler, params, context)

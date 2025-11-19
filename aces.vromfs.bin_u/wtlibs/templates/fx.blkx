@@ -1,7 +1,10 @@
 {
   "import": "%wtlibs/templates/essentials.blk",
   "ecs_fx": {
-    "_use": "replicating",
+    "_use": [
+      "ecs_no_debug",
+      "replicating"
+    ],
     "_replicate": true,
     "transform": [
       [
@@ -41,6 +44,62 @@
     "ecs_fx__light_radius_mult": 1.0,
     "ecs_fx__with_sound": true,
     "ecs_fx__effect_ref": {
+      "_tags": "render"
+    }
+  },
+  "ground_effect": {
+    "_use": "replicating",
+    "_group": {
+      "_track": true,
+      "ground_effect__fx_name": "ground_sparkles_10m",
+      "ground_effect__biome_group_name": "",
+      "ground_effect__grid_cell_size": 1.0,
+      "ground_effect__grid_world_origin": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__vis_radius": 10.0,
+      "ground_effect__biome_weight_for_active_thr": 0.25,
+      "ground_effect__fx_radius": -1.0,
+      "ground_effect__rot_x": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__rot_y": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__rot_z": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__offset_x": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__offset_y": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__offset_z": [
+        0.0,
+        0.0
+      ],
+      "ground_effect__scale_x": [
+        1.0,
+        0.0
+      ],
+      "ground_effect__scale_y": [
+        1.0,
+        0.0
+      ],
+      "ground_effect__scale_z": [
+        1.0,
+        0.0
+      ],
+      "ground_effect__biome_ids:array": {}
+    },
+    "ground_effect__manager": {
       "_tags": "render"
     }
   },

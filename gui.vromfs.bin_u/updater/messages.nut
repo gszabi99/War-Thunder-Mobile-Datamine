@@ -21,6 +21,9 @@ let wndHeaderHeight = evenPx(76)
 let buttonHeight = hdpx(105)
 let buttonMinWidth = hdpx(370)
 let buttonsHGap = hdpx(64)
+let buttonBorderWidth = hdpx(3)
+let paddingX = hdpx(38)
+let buttonTextWidth = buttonMinWidth - 2 * paddingX
 
 let bgMessage = {
   rendObj = ROBJ_IMAGE
@@ -32,7 +35,7 @@ let bgHeader = {
   image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, hdpx(300)]
-  color = 0xFF4D88A4
+  color = 0x80505780
 }
 
 let msgBoxHeader = @(text) bgHeader.__merge({
@@ -78,54 +81,57 @@ let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
   ]
 })
 
-let patternImage = {
-  size = [ph(100), ph(100)]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#button_pattern.svg:{buttonHeight}:{buttonHeight}:P")
-  keepAspect = KEEP_ASPECT_NONE
-  color = Color(0, 0, 0, 35)
-}
-
-let pattern = {
-  size = flex()
-  clipChildren = true
-  flow = FLOW_HORIZONTAL
-  children = array(7, patternImage)
-}
-
 function mkButton(text, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
     size = [SIZE_TO_CONTENT, buttonHeight]
     minWidth = buttonMinWidth
-    fillColor = 0xFF0593AD
-    borderColor = 0xFF236DB5
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_BOX
+    fillColor = 0xFFB9B9B9
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags.set(v)
+    sound = { click = "click" }
     onClick
-    brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    onElemState = @(v) stateFlags.set(v)
+    brightness = stateFlags.get() & S_HOVER ? 1.25 : 1
+    transform = {
+      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+    }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-    children = [
-      pattern
-      {
+    children = {
+      size = flex()
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      rendObj = ROBJ_9RECT
+      image = Picture($"ui/gameuiskin#gradient_button.svg")
+      padding = buttonBorderWidth
+      color = 0xFFEEEEEE
+      children = {
         size = flex()
-        rendObj = ROBJ_9RECT
-        image = Picture($"ui/gameuiskin#gradient_button.svg")
-        color = 0xFF16B2E9
+        rendObj = ROBJ_BOX
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        clipChildren = true
+        fillColor = 0xFF3A5D91
+        children = [
+          {
+            size = flex()
+            rendObj = ROBJ_9RECT
+            color = 0xFF7395CF
+            image = Picture($"ui/gameuiskin#gradient_button.svg")
+          }
+          {
+            size = [buttonTextWidth, SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            text
+            halign = ALIGN_CENTER
+          }.__update(fontTinyShadedBold)
+        ]
       }
-      {
-        rendObj = ROBJ_TEXT
-        text
-        fontFx = FFT_GLOW
-        fontFxFactor = hdpx(64)
-        fontFxColor = 0xFF000000
-      }.__update(fontSmallAccented)
-    ]
+    }
   }
 }
 
@@ -156,14 +162,14 @@ let downloadMsg = @(bytes) mkMsgBox(loc("updater/downloadWarning/header"),
   loc("updater/downloadWarning/desc", { totalSizeBytes = totalSizeText(bytes) }),
   mkButton(utf8ToUpper(loc("msgbox/btn_confirm")),
     function() {
-      needDownloadAcceptMsg(false)
+      needDownloadAcceptMsg.set(false)
       closeDownloadWarning()
     }))
 
 
-register_command(@() needUpdateMsg(!needUpdateMsg.get()), "debug.updateMessage")
-register_command(@() needRestartMsg(!needRestartMsg.get()), "debug.restartMessage")
-register_command(@() needDownloadAcceptMsg(!needDownloadAcceptMsg.get()), "debug.downloadMessage")
+register_command(@() needUpdateMsg.set(!needUpdateMsg.get()), "debug.updateMessage")
+register_command(@() needRestartMsg.set(!needRestartMsg.get()), "debug.restartMessage")
+register_command(@() needDownloadAcceptMsg.set(!needDownloadAcceptMsg.get()), "debug.downloadMessage")
 
 return @() {
   watch = [needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes]

@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_mission_time } = require("mission")
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { touchButtonSize, borderWidth, btnBgColor, imageColor, imageDisabledColor,
+let { touchButtonSize, borderWidth, btnBgStyle, imageColor, imageDisabledColor,
   borderColor, borderColorPushed, borderNoAmmoColor, textColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { unitType } = require("%rGui/hudState.nut")
+let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
+let { hudTransparentColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
 
 
 let svgNullable = @(image, size) ((image ?? "") == "") ? null
@@ -17,7 +19,7 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 let isAvailableActionItem = @(actionItem) (actionItem?.available ?? true)
   && ((actionItem?.count ?? 0) != 0 || actionItem?.control)
 
-function mkActionItemProgress(actionItem, isAvailable) {
+function mkActionItemProgress(actionItem, isAvailable, isPrimaryStyle, btnSize) {
   let { cooldownEndTime = 0, cooldownTime = 1, blockedCooldownEndTime = 0, blockedCooldownTime = 1, id = null
   } = actionItem
   let isBlocked = blockedCooldownEndTime > 0 && cooldownEndTime == 0
@@ -28,22 +30,26 @@ function mkActionItemProgress(actionItem, isAvailable) {
   let cooldown = hasCooldown ? (1 - (cooldownDuration / max(time, 1))) : 1
   let trigger = $"action_cd_finish_{id}"
   let item = {
-    size = flex()
-    children = {
+    size = [btnSize, btnSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{btnSize}:{btnSize}:P")
+    color = hudLightBlackColor
+    children = @() {
+      watch = btnBgStyle
       size = flex()
       rendObj = ROBJ_PROGRESS_CIRCULAR
-      fgColor = !isAvailable ? btnBgColor.noAmmo
-        : (actionItem?.broken ?? false) ? btnBgColor.broken
-        : btnBgColor.ready
-      bgColor = btnBgColor.empty
-      fValue = 1.0
+      fgColor = !isAvailable ? btnBgStyle.get().noAmmo
+        : (actionItem?.broken ?? false) ? btnBgStyle.get().broken
+        : btnBgStyle.get().ready
+      bgColor = btnBgStyle.get().empty
+      fValue = isPrimaryStyle ? 0 : 1.0
       key = $"action_bg_{id}_{endTime}_{time}_{isAvailable}"
       animations = [
         { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownDuration, play = true
           onFinish = @() isAvailable ? anim_start(trigger) : null
         }
       ]
-    }
+    }.__update(isPrimaryStyle ? { image = Picture($"ui/gameuiskin#hud_movement_stop2_bg_loading.svg:P") } : {})
 
     transform = {}
     animations = [{ prop = AnimProp.scale, duration = 0.2,
@@ -52,12 +58,12 @@ function mkActionItemProgress(actionItem, isAvailable) {
   return mkItemWithCooldownText(id, item, flex(), hasCooldown, endTime)
 }
 
-let mkActionItemProgressByWatches = @(actionItem, isAvailable) @()
+let mkActionItemProgressByWatches = @(actionItem, isAvailable, btnSize) @()
   actionItem.get() == null ? { watch = actionItem }
     : {
-        watch = [actionItem, isAvailable]
+        watch = [actionItem, isAvailable, isHudPrimaryStyle]
         size = flex()
-        children = mkActionItemProgress(actionItem.get(), isAvailable.get())
+        children = mkActionItemProgress(actionItem.get(), isAvailable.get(), isHudPrimaryStyle.get(), btnSize)
       }
 
 let mkActionItemCount = @(count, scale = 1) {
@@ -95,7 +101,7 @@ let mkActionItemEditView = @(image) {
     {
       size = [touchButtonSize, touchButtonSize]
       rendObj = ROBJ_BOX
-      fillColor = btnBgColor.empty
+      fillColor = hudTransparentColor
       borderColor
       borderWidth
       valign = ALIGN_CENTER

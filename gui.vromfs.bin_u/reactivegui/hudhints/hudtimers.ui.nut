@@ -165,7 +165,7 @@ function timerText(id, timer) {
   return @() timerTextStyle.__merge({
     watch = timeLeft
     key = id
-    text = timeLeft.value == 0 ? "" : timeLeft.value
+    text = timeLeft.get() == 0 ? "" : timeLeft.get()
   })
 }
 

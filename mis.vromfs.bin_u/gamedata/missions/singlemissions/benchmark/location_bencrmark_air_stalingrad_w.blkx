@@ -18,7 +18,8 @@
       "attempts": true,
       "locName": "location/stalingrad_w",
       "restoreType": "attempts",
-      "optionalTakeOff": false
+      "optionalTakeOff": false,
+      "mobileFpsLimit": 0
     },
     "atmosphere": {
       "pressure": 760.0,

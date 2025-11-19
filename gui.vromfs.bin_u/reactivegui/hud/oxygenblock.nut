@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
 let { oxygen, waterDist, periscopeDepthCtrl } = require("%rGui/hud/shipState.nut")
+let { hudBlueColor, hudDarkGrayColor, hudTransparentColor, hudRedColorFade } = require("%rGui/style/hudColors.nut")
 
 
 let textPadding = hdpx(5)
@@ -63,15 +64,15 @@ function depthControl(scale) {
         animations = [
           {
             prop = AnimProp.color,
-            to = Color(44, 253, 255, 80),
+            to = hudBlueColor,
             duration = 1,
             easing = CosineFull,
             trigger = "depth_status_highlight"
           }
           {
             prop = AnimProp.color,
-            from = Color(0, 0, 0, 0),
-            to = Color(255, 1, 1, 80),
+            from = hudTransparentColor,
+            to = hudRedColorFade,
             duration = 1,
             easing = CosineFull,
             trigger = "depth_oxygen_highlight"
@@ -125,13 +126,13 @@ let oxygenLevel = @(scale) {
       children = [
         {
           rendObj = ROBJ_SOLID
-          color = Color(44, 44, 44, 200)
+          color = hudDarkGrayColor
           size = flex()
         },
         @() {
           watch = oxygen
           rendObj = ROBJ_SOLID
-          color = Color(44, 253, 255)
+          color = hudBlueColor
           size = flex()
           transform = { pivot = [0, 1], scale = [oxygen.get() / 100.0, 1] }
           transitions = [{ prop = AnimProp.scale, duration = 0.5 }]
@@ -153,7 +154,7 @@ let oxygenLevelEditView = {
       children = [
         {
           rendObj = ROBJ_SOLID
-          color = Color(44, 253, 255)
+          color = hudBlueColor
           size = flex()
         }
       ]

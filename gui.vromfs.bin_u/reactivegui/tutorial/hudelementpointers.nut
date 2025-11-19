@@ -37,7 +37,7 @@ function startExpireTimer(next) {
     resetTimeout(0.001 * (next - get_time_msec()), updateExpires)
 }
 nextExpire.subscribe(startExpireTimer)
-startExpireTimer(nextExpire.value)
+startExpireTimer(nextExpire.get())
 
 function updateCurBoxes() {
   let boxes = []
@@ -68,7 +68,7 @@ function updateBoxesTimers(interval) {
   setInterval(interval, updateCurBoxes)
 }
 updateInterval.subscribe(updateBoxesTimers)
-updateBoxesTimers(updateInterval.value)
+updateBoxesTimers(updateInterval.get())
 
 let arrowAnimations = [
   { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.2, easing = OutQuad, play = true }

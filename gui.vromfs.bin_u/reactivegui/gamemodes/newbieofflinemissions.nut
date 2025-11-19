@@ -13,7 +13,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { startOfflineBattle, startLocalMPBattle } = require("%rGui/gameModes/startOfflineMode.nut")
+let { startNewbieOfflineBattle, startLocalMPBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -41,7 +41,7 @@ let hasTankRestrictedOfflineMission = Computed(@() hasTankRestrictedOfflineMissi
 let missionsList = Computed(function() {
   let singleBattleCfg = newbieGameModesConfig?[curCampaign.get()]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0
-      && cfg.isFit(newbieModeStats.value, curUnit.get()?.mRank ?? 0))
+      && cfg.isFit(newbieModeStats.get(), curUnit.get()?.mRank ?? 0, abTests.get()))
   let defaultMissions = hasTankRestrictedOfflineMission.get() && singleBattleCfg?.abTestOfflineMissions
     ? singleBattleCfg?.abTestOfflineMissions
     : singleBattleCfg?.offlineMissions
@@ -90,7 +90,7 @@ registerHandler("onNewbieOfflineMissionReward",
       return
     }
     logO($"Receive reward {campaign}/{rewardId} failed, and will be requested again later. Error: ", res.error)
-    lastErrorTime(get_time_msec())
+    lastErrorTime.set(get_time_msec())
   })
 
 function tryApplyFirstBattleReward() {
@@ -193,7 +193,7 @@ function startNewbieMission(missions, reward, predefinedId) {
   let missionName = chooseRandom(missions)
   logO($"Start newbie battle. Unit = {unit?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
   eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, unit) })
-  startOfflineBattle(unit, missionName)
+  startNewbieOfflineBattle(unit, missionName)
 }
 
 function startLocalMPMission(missions, reward, predefinedId) {

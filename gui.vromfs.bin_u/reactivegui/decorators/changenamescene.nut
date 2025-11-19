@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { eventbus_send } = require("eventbus")
 
 let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
@@ -23,7 +24,7 @@ let changeNameScene = {
       halign = ALIGN_CENTER
       text = loc("mainmenu/questionChangeName")
     }.__update(fontMedium)
-    textButtonPrimary(loc("mainmenu/btnChangeName"), @() eventbus_send("changeName", {}))
+    textButtonCommon(utf8ToUpper(loc("mainmenu/btnChangeName")), @() eventbus_send("changeName", {}))
   ]
 }
 

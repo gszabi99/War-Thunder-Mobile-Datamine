@@ -2,10 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler, get_profile, get_all_configs
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
+let { G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
@@ -19,8 +23,28 @@ let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { SGT_EVT_CURRENCY } = require("%rGui/shop/shopConst.nut")
 let { markUnitsUnseen } = require("%rGui/unit/unseenUnits.nut")
+let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
+
 
 function getCantPurchaseReason(goods) {
+  if ("rewards" in goods) {
+    let units = []
+    foreach (r in goods.rewards)
+      if (r.gType in unitRewardTypes
+          && (isEmptyByRType?[r.gType](r.id, r.subId, servProfile.get(), serverConfigs.get()) ?? false))
+        units.append(r.id)
+    if (units.len() > 0)
+      return {
+        canPurchase = false
+        logText = $"ERROR: Units already received: {", ".join(units)}"
+        msgboxText = loc("trophy/prizeAlreadyReceived",
+          { prizeText = ", ".join(units.map(
+              @(unitName) colorize(userlogTextColor, loc(getUnitLocId(unitName))))) })
+      }
+    return null
+  }
+
+  
   let hasUnits = goods.units.filter(@(unitId) campMyUnits.get()?[unitId] != null)
   if (hasUnits.len())
     return {
@@ -44,10 +68,21 @@ function getCantPurchaseReason(goods) {
   return null
 }
 
+function onGoodsError(err) {
+  let errStr = type(err) == "string" ? err : err?.message ?? ""
+  if (errStr.startswith("Wrong pay data")) {
+    openMsgBox({ text = loc("error/Wrong pay data") })
+    get_profile()
+    get_all_configs()
+  }
+  else
+    openMsgBox({ text = loc("msgbox/internal_error_header") })
+}
+
 registerHandler("onShopGoodsPurchase",
   function(res) {
     if (res?.error != null)
-      openMsgBox({ text = loc("msgbox/internal_error_header") })
+      onGoodsError(res.error)
   })
 
 function purchaseGoodsImpl(goodsId, currencyId, price) {
@@ -60,7 +95,7 @@ function purchaseGoodsImpl(goodsId, currencyId, price) {
 registerHandler("onShopGoodsPurchaseSequence",
   function(result, context) {
     if (result?.error != null) {
-      openMsgBox({ text = loc("msgbox/internal_error_header") })
+      onGoodsError(result.error)
       return
     }
 
@@ -83,35 +118,57 @@ function purchaseGoodsSeqImpl(goodsList) {
   return ""
 }
 
+registerHandler("onOfferPurchase",
+  function(res, context) {
+    if (res?.error != null)
+      onGoodsError(res.error)
+    else
+      markUnitsUnseen(context.units)
+  })
+
 function purchaseOfferImpl(offer, currencyId, price) {
   if (shopPurchaseInProgress.get() != null)
     return "shopPurchaseInProgress"
-  buy_offer(offer.campaign, offer.id, currencyId, price, "onShopGoodsPurchase")
-  let unitUpgrades = clone offer.unitUpgrades
-  markUnitsUnseen(unitUpgrades.extend(offer.units))
+  local units = []
+  if ("rewards" in offer) {
+    foreach (r in offer.rewards)
+      if (r.gType == G_UNIT_UPGRADE || r.gType == G_UNIT)
+        units.append(r.id)
+  }
+  else 
+    units.extend(offer.unitUpgrades, offer.units)
+
+  buy_offer(offer.campaign, offer.id, currencyId, price,
+    { id = "onOfferPurchase", units })
   return ""
 }
 
-let mkCurrencyWithIcon = @(id, count) {
-  flow = FLOW_VERTICAL
-  size = FLEX_H
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  gap = hdpx(30)
-  children = [
-    msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
-    mkCurrencyComp(count, id, CS_INCREASED_ICON)
-    msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
-  ]
+let mkCurrencyWithIcon = @(goods) function() {
+  local { id = null, count = null } = goods?.rewards.findvalue(@(r) r.gType == G_CURRENCY)
+  if ("currencies" in goods) { 
+    id = goods.currencies.findindex(@(_) true) ?? ""
+    count =  goods.currencies?[id] ?? 0
+  }
+  return {
+    watch = currencyToFullId
+    flow = FLOW_VERTICAL
+    size = FLEX_H
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    gap = hdpx(30)
+    children = [
+      msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
+      mkCurrencyComp(count, currencyToFullId.get()?[id] ?? id, CS_INCREASED_ICON)
+      msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
+    ]
+  }
 }
 
 function startRemoveTimer(goods) {
   let { timeRanges = null } = goods
   let time = serverTime.get()
   local timeLeft = null
-  if (timeRanges == null) 
-    timeLeft = goods.timeRange.end - time
-  else
+  if (timeRanges != null) 
     foreach (tr in timeRanges)
       if (tr.end > time)
         timeLeft = min(timeLeft ?? tr.end, tr.end)
@@ -122,7 +179,7 @@ function startRemoveTimer(goods) {
     resetTimeout(timeLeft, closePurchaseAndBalanceBoxes)
 }
 
-function purchaseGoods(goodsId, description = "") {
+function purchaseGoods(goodsId, description = "", locParam = null) {
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.get() != null)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.get()}")
@@ -155,15 +212,10 @@ function purchaseGoods(goodsId, description = "") {
       tryResetToMainScene()
   }
 
-  let textItem = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp))
-
-  let goodsCurId = goods.currencies.findindex(@(_) true) ?? ""
-  let goodsCurrencyFullId = currencyToFullId.get()?[goodsCurId] ?? goodsCurId
-  let goodsCount = goods.currencies?[goodsCurId] ?? 0
+  let textItem = colorize(userlogTextColor, getGoodsLocName(goods, locParam).replace(" ", nbsp))
 
   openMsgBoxPurchase({
-    text = goods.gtype == SGT_EVT_CURRENCY
-        ? mkCurrencyWithIcon(goodsCurrencyFullId, goodsCount)
+    text = goods.gtype == SGT_EVT_CURRENCY ? mkCurrencyWithIcon(goods)
       : description != ""
         ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
       : loc("shop/needMoneyQuestion", { item = textItem }),

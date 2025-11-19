@@ -220,6 +220,10 @@ struct CmdActionInRespawn {}
 struct EventTryBuildObject {}
 
 [cpp_event(unicast, with_scheme)]
+struct EventToggleArtilleryView
+  enable : bool
+
+[cpp_event(unicast, with_scheme)]
 struct EventToggleBuildingPreview
   enable : bool
 

@@ -5,6 +5,7 @@ let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let missionScoreIconSize = [hdpxi(40), hdpxi(40)]
 let missionScoresTable = mkWatched(persist, "missionScoresTable", {})
@@ -36,7 +37,7 @@ function scoreLineCtr(data, scale) {
         rendObj = ROBJ_IMAGE
         size
         color = data.army == localMPlayerTeam.get() ? teamBlueColor
-          : data.army == 0 ? 0xFFFFFFFF
+          : data.army == 0 ? hudWhiteColor
           : teamRedColor
         image = Picture($"ui/gameuiskin#{data.icon}:{missionScoreIconSize[0]}:{missionScoreIconSize[1]}:P")
       }

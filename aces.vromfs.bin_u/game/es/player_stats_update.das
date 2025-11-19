@@ -14,7 +14,7 @@ def spawn_time_count_es(evt : EventOnPlayerSpawn;
     lastSpawnTime = float(get_total_time())
     lastBailoutTime = -1.0
     stats__spawns++
-    print("[SPAWN_INFO] EventOnPlayerSpawn player (userId = {server_player__userId})")
+    print("[SPAWN_INFO] EventOnPlayerSpawn player (userId = int({server_player__userId}))")
 
 
 [es(tag=server)]

@@ -15,6 +15,7 @@ let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
 let { markedScenes, markedScenesSetKeyVal, markedScenesDeleteKey } = mkFrameIncrementObservable({}, "markedScenes")
+let allScenesWatcher = mkWatched(persist, "allScenes", null)
 
 const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
 const SETTING_EDITOR_TPLGROUP = "daEditor/templatesGroup"
@@ -38,11 +39,11 @@ de4workMode.subscribe(function(v) {
 })
 
 let initWorkModes = function(modes, defMode=null) {
-  de4workModes(modes ?? [""])
+  de4workModes.set(modes ?? [""])
   let good_mode = modes.contains(defMode) ? defMode : modes?[0] ?? ""
   let last_mode = get_setting_by_blk_path?(SETTING_EDITOR_WORKMODE) ?? good_mode
   let mode_to_set = modes.contains(last_mode) ? last_mode : good_mode
-  de4workMode(mode_to_set)
+  de4workMode.set(mode_to_set)
 }
 
 let canChangeGizmoBasisType = function() {
@@ -74,7 +75,7 @@ let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText
     text = hasUnsavedChanges ? (unsavedText!=null ? unsavedText : "You have unsaved changes. How do you want to proceed?")
                              : (proceedText!=null ? proceedText : "No unsaved changes. Proceed?")
     buttons = hasUnsavedChanges ? [
-      { text = "Save changes",  isCurrent = true, action = function() { get_instance?().saveObjects(""); callback() }}
+      { text = "Save changes",  isCurrent = true, action = function() { get_instance()?.saveObjects("", true); callback() }}
       { text = "Ignore changes" action = callback }
       { text = "Cancel", isCancel = true }
     ] : [
@@ -95,17 +96,17 @@ editorTimeStop.subscribe(function(v) {
 let editorUnpauseData = {timerRunning = false}
 function editorUnpauseEnd() {
   editorUnpauseData.timerRunning = false
-  editorTimeStop(true)
+  editorTimeStop.set(true)
 }
 function editorUnpause(time) {
   if (time <= 0) {
-    editorTimeStop(false)
+    editorTimeStop.set(false)
     gui_scene.clearTimer(editorUnpauseEnd)
     editorUnpauseData.timerRunning = false
     return
   }
   if (editorTimeStop.get() || editorUnpauseData.timerRunning) {
-    editorTimeStop(false)
+    editorTimeStop.set(false)
     editorUnpauseData.timerRunning = true
     gui_scene.resetTimeout(time, editorUnpauseEnd)
   }
@@ -119,8 +120,8 @@ function setPointActionMode(actionType, actionName, cb) {
   hideAllWindows()
   setEditMode(DE4_MODE_POINT_ACTION)
   setPointActionPreview("", 0.0) 
-  typePointAction(actionType)
-  namePointAction(actionName)
+  typePointAction.set(actionType)
+  namePointAction.set(actionName)
   funcPointAction = cb
 }
 function updatePointActionPreview(shape, param) {
@@ -134,8 +135,8 @@ function resetPointActionMode() {
   if (getEditMode() == DE4_MODE_POINT_ACTION)
     setEditMode(DE4_MODE_SELECT)
   setPointActionPreview("", 0.0)
-  typePointAction("")
-  namePointAction("")
+  typePointAction.set("")
+  namePointAction.set("")
   funcPointAction = null
   if (funcFinish != null)
     funcFinish({ op = "finish" })
@@ -169,6 +170,18 @@ function handleEntityMoved(eid) {
   foreach (func in funcsEntityMoved) {
     func?(eid)
   }
+}
+
+function getAllScenes() {
+  if (allScenesWatcher.get() == null || allScenesWatcher.get().len() == 0) {
+    allScenesWatcher.set(get_instance()?.getSceneImports() ?? [])
+  }
+
+  return allScenesWatcher.get()
+}
+
+function updateAllScenes() {
+  allScenesWatcher.set(get_instance()?.getSceneImports() ?? [])
 }
 
 return {
@@ -228,4 +241,8 @@ return {
   handleEntityMoved
 
   wantOpenRISelect = Watched(false)
+
+  allScenesWatcher
+  getAllScenes
+  updateAllScenes
 }

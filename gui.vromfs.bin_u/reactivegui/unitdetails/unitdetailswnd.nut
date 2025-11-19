@@ -7,7 +7,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { unitInfoPanelFull, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonPrimary, mkButtonTextMultiline, mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
+let { textButtonCommon, mkButtonTextMultiline, mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
 } = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
@@ -16,7 +16,7 @@ let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { hasNotDownloadedPkgForHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
@@ -26,10 +26,12 @@ let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
 let { mkPlatoonUnitsBlock } = require("%rGui/unitDetails/unitDetailsComps.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
+let { hasAlwaysModsBtnByCamp } = require("%rGui/unitMods/unitModsConst.nut")
 let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { PRIMARY, defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { clearDmViewerUnitDataCollection } = require("%rGui/dmViewer/dmViewerState.nut")
+let { isProtectionAnalysisAvailable, openProtectionAnalysis } = require("%rGui/dmViewer/protectionAnalysisState.nut")
 let dmViewerBgComps = require("%rGui/dmViewer/dmViewerBgComps.nut")
 let dmViewerHintComps = require("%rGui/dmViewer/dmViewerHintComps.nut")
 let mkDmViewerSwitchComp = require("%rGui/dmViewer/mkDmViewerSwitchComp.nut")
@@ -48,6 +50,7 @@ let leftBtnSizeWithRewardBtn = [defButtonMinWidth + frameButtonIconSize * 2 + fr
 let defaultInfoPanelTopPad = hdpx(100)
 let infoPanelTopPadByCampaign = {
   tanks = 0
+  tanks_new = 0
 }
 let getInfoPanelTopPadByCampaign = @(campaign) (infoPanelTopPadByCampaign?[campaign] ?? defaultInfoPanelTopPad)
   - infoPanelOffsetY
@@ -86,7 +89,7 @@ let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
 let btnopenUnitCustomization = mkBtnOpenCustomization(baseUnit, statsWidth)
 
 let unitInfoPanelPlace = @() {
-  watch = [curCampaign, hasNotDownloadedPkgForHangarUnit]
+  watch = curCampaign
   size = FLEX_V
   pos = [0, infoPanelOffsetY]
   padding = [ getInfoPanelTopPadByCampaign(curCampaign.get()), 0, 0, 0 ]
@@ -100,7 +103,7 @@ let unitInfoPanelPlace = @() {
           touchMarginPriority = TOUCH_BACKGROUND
         })
       dmViewerSwitchComp
-      hasNotDownloadedPkgForHangarUnit.get() ? null : btnopenUnitCustomization
+      btnopenUnitCustomization
     ]
   })
 }
@@ -110,7 +113,10 @@ let rewardsButton = @() {
   children = !hasUnseenRewards.get() ? null
     : [
         mkCustomButton(
-          mkFrameImg(mkButtonTextMultiline(loc("unitLevelUp/rewardBtn")), "laurels", frameButtonIconSize),
+          mkFrameImg(
+            mkButtonTextMultiline(utf8ToUpper(loc("unitLevelUp/rewardBtn")),
+              { size = [hdpx(300), SIZE_TO_CONTENT]}),
+            "laurels", frameButtonIconSize),
           @() openUnitRewardsModal(baseUnit.get()),
           mergeStyles(PRIMARY, { hotkeys = ["^J:LB"] }))
         {
@@ -121,9 +127,9 @@ let rewardsButton = @() {
 }
 
 let testDriveButton = @() {
-  watch = [can_debug_units, hasNotDownloadedPkgForHangarUnit, hasUnseenRewards]
-  children = !can_debug_units.get() || hasNotDownloadedPkgForHangarUnit.get() ? null
-    : textButtonPrimary("TEST DRIVE",
+  watch = [can_debug_units, hasHangarUnitResources, hasUnseenRewards]
+  children = !can_debug_units.get() || !hasHangarUnitResources.get() ? null
+    : textButtonCommon("TEST DRIVE",
         @() startTestFlight(unitToShow.get()),
         { hotkeys = ["^J:X | Enter"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })
 }
@@ -134,6 +140,16 @@ let lvlUpButton = @() {
     : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
         nextLevelToUnlockUnit.get(),
         @() buyUnitLevelWnd(baseUnit.get()?.name), { hotkeys = ["^J:Y"] })
+}
+
+let protectionAnalysisButton = @() {
+  watch = [isProtectionAnalysisAvailable, hasHangarUnitResources, hasUnseenRewards]
+  children = !isProtectionAnalysisAvailable.get() || !hasHangarUnitResources.get()
+      || getCampaignPresentation(unitToShow.get()?.campaign ?? "").campaign != "tanks"
+    ? null
+    : textButtonCommon(utf8ToUpper(loc("mainmenu/btnProtectionAnalysis")),
+        @() openProtectionAnalysis(unitToShow.get(), baseUnit.get()),
+        { hotkeys = ["^J:RB"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })
 }
 
 function buttonsBlock() {
@@ -150,7 +166,7 @@ function buttonsBlock() {
       mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
       rewardsButton
       testDriveButton
-      !(curCampaign.get() == "air" || isOwnUnitPreview) ? null
+      !isOwnUnitPreview && !hasAlwaysModsBtnByCamp?[curCampaign.get()] ? null
         : {
             size = FLEX_H
             flow = FLOW_HORIZONTAL
@@ -168,6 +184,7 @@ function buttonsBlock() {
               isOwnUnitPreview ? lvlUpButton : null
             ]
           }
+      protectionAnalysisButton
     ]
   }
 }
@@ -206,7 +223,7 @@ let sceneRoot = {
   animations = wndSwitchAnim
 
   function onAttach() {
-    isWindowAttached(true)
+    isWindowAttached.set(true)
     sendNewbieBqEvent("openUnitDetails", { status = unitToShow.get()?.name ?? "" })
   }
   function onDetach() {

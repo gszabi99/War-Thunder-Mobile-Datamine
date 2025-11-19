@@ -51,7 +51,7 @@
   "lastClip": true,
   "lastclip_horizon": true,
   "rendinstPreloadDistance": 8500.0,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "addLandToSky": true,
   "max_wind_strength": 3.0,
   "rendinstMaxHeight": 2000.0,
@@ -111,6 +111,7 @@
   "water_level": 0.0,
   "soundAmbientPath": "sounds/ambient",
   "soundAmbientPathStudio": "aircraft/ambient",
+  "forceDisableRefraction": false,
   "render": {
     "lmesh": true,
     "onlyUnderwaterLmesh": false,

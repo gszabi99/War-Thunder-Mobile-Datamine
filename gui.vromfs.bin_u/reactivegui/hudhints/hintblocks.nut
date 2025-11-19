@@ -57,7 +57,7 @@ let mkHintsBlock = @(events, transOvr = {}, blockOvr = {}, fontStyle = {}, hints
   if (areHintsHidden.get())
     return { watch = [events, areHintsHidden] }
 
-  foreach (hint in events.value) {
+  foreach (hint in events.get()) {
     let { hType = null, uid, zOrder = null } = hint
     let ctor = hintCtors?[hType] ?? defaultHintCtor
     let hintComp = ctor(hint, fontStyle)

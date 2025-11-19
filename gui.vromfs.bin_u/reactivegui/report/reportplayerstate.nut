@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let utf8 = require("utf8")
+let { deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { getLocalLanguage } = require("language")
@@ -34,7 +35,7 @@ let SUCCESS_WND_UID = "successReportWindow"
 let REPORT_WND_UID = "playerReportWindow"
 let REJECT_WND_UID = "rejectReportWindow"
 
-let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL"]
+let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL", "SKIN"]
 
 let selectedPlayerForReport = Watched(null)
 let isReportStatusSuccessed = Watched(false)
@@ -57,12 +58,12 @@ selectedPlayerForReport.subscribe(function(_) {
 
 function resetForm() {
   foreach (field in [ fieldCategory, fieldMessage ])
-    field("")
+    field.set("")
 }
 
 function close() {
   selectedPlayerForReport.set(null)
-  resetForm()
+  deferOnce(resetForm)
 }
 
 function getFormValidationError() {

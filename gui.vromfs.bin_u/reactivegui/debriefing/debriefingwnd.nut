@@ -9,13 +9,12 @@ let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { curUnits, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonCommon, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { commonGlare } = require("%rGui/components/glare.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openUnitAttrWnd } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
@@ -50,11 +49,11 @@ let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setCurrentUnit, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
-let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
+let { runOfflineBattle, openOfflineBattleMenu } = require("%rGui/gameModes/offlineBattlesState.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { mkToBattleButton } = require("%rGui/mainMenu/toBattleButton.nut")
+let { mkToBattleButtonNoAddons } = require("%rGui/mainMenu/toBattleButton.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 
 let footerGap = hdpx(30)
@@ -124,9 +123,9 @@ let mkBtnAppearAnim = @(needBlink, needShowW, children) @() !needShowW.get() ? {
 }
 
 let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppearAnim(false, needShow,
-  (isMainBtn ? textButtonBattle : textButtonPrimary)(
+  (isMainBtn ? textButtonBattle : textButtonCommon)(
     utf8ToUpper(loc(unlockedReward.has && debrData?.isSeparateSlots ? $"return_to_hangar/lvlUnlocks/{unlockedReward.type}"
-      : debrData?.campaign != null ? getCampaignPresentation(debrData?.campaign).returnToHangarShortLocId
+      : (debrData?.campaign ?? "") != "" ? getCampaignPresentation(debrData.campaign).returnToHangarShortLocId
       : "return_to_hangar/short"
     )),
     function() {
@@ -142,6 +141,18 @@ let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppear
       openSpecialEvent()
     },
     { hotkeys = isMainBtn ? ["^J:X | Enter"] : [btnBEscUp] }))
+
+let mkBtnToOfflineBattles = @(needShow, debrData) mkBtnAppearAnim(false, needShow,
+  textButtonCommon(
+    utf8ToUpper(loc("return_to_offline_battles")),
+    function() {
+      isNoExtraScenesAfterDebriefing.set(true)
+      if (needRateGame.get())
+        requestShowRateGame()
+      closeDebriefing()
+      openOfflineBattleMenu(debrData)
+    },
+    { hotkeys = ["^J:Y"] }))
 
 let mkBtnLevelUp = @(needShow) mkBtnAppearAnim(true, needShow, textButtonBattle(
   utf8ToUpper(loc("msgbox/btn_get")),
@@ -168,12 +179,12 @@ let mkBtnNewUnitResearched = @(needShow, researchedUnit) mkBtnAppearAnim(true, n
 
 let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel, campaign) function() {
   let res = {
-    watch = [playerLevelInfo, lvlUpCost, serverConfigs, buyUnitsData, releasedUnits]
+    watch = [playerLevelInfo, lvlUpCost, serverConfigs, buyUnitsData, unreleasedUnits]
   }
   let { level, starLevel, isMaxLevel, isReadyForLevelUp } = playerLevelInfo.get()
   if (level > curPlayerLevel || isMaxLevel || isReadyForLevelUp
       || campaign in serverConfigs.get()?.unitTreeNodes
-      || !canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), releasedUnits.get()))
+      || !canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), unreleasedUnits.get()))
     return res
 
   let cost = { price = lvlUpCost.get(), currencyId = GOLD }
@@ -183,7 +194,7 @@ let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel, campaign) function() {
 }
 
 function toBattle(gmId) {
-  showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() startBattle(gmId)))
+  showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnits.get(), @() startBattle(gmId)))
   closeDebriefing()
 }
 
@@ -191,17 +202,16 @@ let cbId = "onResetPenaltyToBattleInDebriefing"
 registerHandler(cbId, @(res, context) res?.error == null ? toBattle(context.gmId) : null)
 
 let toBattleButton = @(gmId, campaign)
-  mkToBattleButton(function() {
+  mkToBattleButtonNoAddons(function() {
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
-    let nextAction = @() tryOpenQueuePenaltyWnd(campaign, { id = cbId, gmId }) ? null : toBattle(gmId)
+    let nextAction = @() tryOpenQueuePenaltyWnd(campaign, allGameModes.get()?[gmId], { id = cbId, gmId }) ? null : toBattle(gmId)
     if (needRateGame.get())
       requestShowRateGame(nextAction)
     else
       nextAction()
   },
-  campaign,
-  Computed(@() gmId == randomBattleMode.get()?.gameModeId ? randomBattleMode.get() : null),
+  Computed(@() allGameModes.get()?[gmId]),
   { hotkeys = ["^J:X | Enter"] })
 
 let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
@@ -251,10 +261,7 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
   },
   {
     hotkeys = [btnBEscUp]
-    ovr = {
-      children = commonGlare
-      clipChildren = true
-    }
+    hasGlare = true
   }
 ))
 
@@ -312,7 +319,7 @@ let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, need
 let btnSkip = function() {
   let res = { watch = [ isDebriefingAnimFinished, nextDebrTabId ] }
   return isDebriefingAnimFinished.get() || nextDebrTabId.get() == null ? res : res.__update({
-    children = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")),
+    children = textButtonCommon(utf8ToUpper(loc("msgbox/btn_skip")),
       function() {
         let nextTabId = nextDebrTabId.get()
         if (nextTabId != null)
@@ -325,7 +332,7 @@ let btnSkip = function() {
 function debriefingWnd() {
   let debrData = debriefingData.get()
   let { campaign = "", isWon = false, isTutorial = false, roomInfo = null, isSeparateSlots = false,
-    isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false
+    isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false, isCustomOfflineBattle = false
   } = debrData
   let unitName = getBestUnitName(debrData)
   let researchedUnit = getResearchedUnit(debrData)
@@ -416,7 +423,15 @@ function debriefingWnd() {
                 halign = ALIGN_LEFT
                 children = newPlatoonUnit != null || hasPlayerLevelUp || researchedUnit != null || needForceQuitToHangar ? null
                   : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
-                  : mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
+                  : {
+                      size = FLEX_H
+                      flow = FLOW_HORIZONTAL
+                      gap = buttonsHGap
+                      children = [
+                        mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
+                        isCustomOfflineBattle ? mkBtnToOfflineBattles(needShowBtns_Final, debrData) : null
+                      ]
+                    }
               }
               {
                 size = FLEX_H

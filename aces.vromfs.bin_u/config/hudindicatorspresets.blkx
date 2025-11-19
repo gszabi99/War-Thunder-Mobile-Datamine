@@ -2,9 +2,9 @@
   "indicatorsPresets": {
     "dark": {
       "fontColorFriend": [
-        176,
-        176,
-        52,
+        255,
+        174,
+        127,
         230
       ],
       "fontColorEnemy": [

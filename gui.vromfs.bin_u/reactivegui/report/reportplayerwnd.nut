@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let utf8 = require("utf8")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -112,8 +113,8 @@ let mkButtons = {
   gap = componentWidth - defButtonMinWidth * 2
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("msgbox/btn_cancel"), close, { size = [defButtonMinWidth, SIZE_TO_CONTENT] })
-    mkSpinnerHideBlock(isRequestInProgress, textButtonCommon(loc("contacts/report/short"), onSubmit), {
+    textButtonCommon(utf8ToUpper(loc("msgbox/btn_cancel")), close, { size = [defButtonMinWidth, SIZE_TO_CONTENT] })
+    mkSpinnerHideBlock(isRequestInProgress, textButtonCommon(utf8ToUpper(loc("contacts/report/short")), onSubmit), {
       size = [defButtonMinWidth, SIZE_TO_CONTENT]
       halign = ALIGN_CENTER
       vplace = ALIGN_CENTER

@@ -1,0 +1,120 @@
+{
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "clipmap_tex_mips": 6,
+  "volumeCloudsActive": true,
+  "z_far": 50000.0,
+  "addLandToSky": false,
+  "mapCoord0": [
+    -5460.0,
+    -5460.0
+  ],
+  "mapCoord1": [
+    5460.0,
+    5460.0
+  ],
+  "minAreaSize": [
+    1000.0,
+    1000.0
+  ],
+  "aiMapCoord0": [
+    -16192.0,
+    -16192.0
+  ],
+  "aiMapCoord1": [
+    16192.0,
+    16192.0
+  ],
+  "water_level": 0.0,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "mirrorShrinkXPos": 0.0,
+  "mirrorShrinkXNeg": 0.0,
+  "mirrorShrinkZPos": 0.0,
+  "mirrorShrinkZNeg": 0.0,
+  "gridSteps": [
+    3250.0,
+    3250.0
+  ],
+  "panoramaForced": true,
+  "forceOcclusionForAllUnits": true,
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types_halloween_race.blk",
+  "clipmap": {
+    "texelSize": 0.125,
+    "lastClipSize": 512
+  },
+  "render": {
+    "staticScene": true,
+    "useLmeshBoxForShore": false,
+    "riExToHeightmap": true
+  },
+  "stars": {
+    "latitude": 55.0,
+    "longitude": 37.0,
+    "year": 2025,
+    "month": 11,
+    "day": 6
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_gravel_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_a_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11
+  },
+  "shader_vars": {
+    "shore__waves_dist": [
+      0.0,
+      12.0,
+      0.0,
+      50.0
+    ],
+    "shore_depth_scale": 0.07,
+    "shore_amplitude_to_length": 390.0,
+    "shore_artistic_max_wave_height": 0.75,
+    "max_river_width": 0.0,
+    "ocean_density": 0.4,
+    "river_density": 2.0,
+    "ocean0": [
+      0.27,
+      0.52,
+      0.63,
+      0.0
+    ],
+    "ocean1": [
+      0.57,
+      0.61,
+      0.74,
+      0.0
+    ],
+    "river0": [
+      0.5,
+      0.35,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.36,
+      0.41,
+      0.17,
+      0.0
+    ],
+    "water_color_noise_size": 1737.0
+  },
+  "technicsSkins": {
+    "groundSkin": "sand"
+  }
+}

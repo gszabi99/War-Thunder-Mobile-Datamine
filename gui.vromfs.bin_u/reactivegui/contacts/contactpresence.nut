@@ -12,7 +12,7 @@ let onlineStatus = Computed(@() onlineStatusBase.get().__merge(squadStatus.get()
 let mkUpdatePresences = @(watch) function(newPresences) {
   if (newPresences.len() > 10) { 
     
-    watch(watch.value.__merge(newPresences).filter(@(p) p != null))
+    watch.set(watch.get().__merge(newPresences).filter(@(p) p != null))
     return
   }
 

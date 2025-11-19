@@ -37,7 +37,7 @@ let clusterStats = hardPersistWatched("clusterStats", [])
 let optimalClusters = hardPersistWatched("optimalClusters", [])
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
-let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.value)
+let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get())
 
 
 function writeInt64NetBytes(stream, i) {
@@ -119,10 +119,10 @@ let isNeedProbeHost = @(hostInfo, nowMs)
   hostInfo.isActive && (isHostNeedRegularUpdate(hostInfo, nowMs) || isHostNeedRetry(hostInfo, nowMs))
 
 function scheduleNextProbeTime(func) {
-  if (!isProbingActive.value)
+  if (!isProbingActive.get())
     return
   let nowMs = get_time_msec()
-  let needCheckForNewHosts = requestsCounter.value > 0
+  let needCheckForNewHosts = requestsCounter.get() > 0
   local earliestTimeMs = nowMs + (REGULAR_PROBE_INTERVAL_SEC * 1000)
   local hasNewHosts = false
   foreach (hostInfo in hostsCfg) {
@@ -151,7 +151,7 @@ function scheduleNextProbeTime(func) {
 }
 
 function tryProbeHosts() {
-  if (!isProbingActive.value)
+  if (!isProbingActive.get())
     return
   let nowMs = get_time_msec()
   hostsCfg.each(function(hostInfo) {
@@ -168,8 +168,8 @@ function tryProbeHosts() {
     scheduleNextProbeTime(callee())
     return
   }
-  requestsCounter(requestsCounter.value + 1)
-  let id = requestsCounter.value
+  requestsCounter.set(requestsCounter.get() + 1)
+  let id = requestsCounter.get()
   let data = mkRequestData(id)
   foreach (ip, hostInfo in hostsToProbe) {
     let { port } = hostInfo
@@ -283,22 +283,22 @@ function getOptimalClustersForSquad(squadMembersVal) {
 
 function onClustersRecalc() {
   let newClusterStats = getClusterStats()
-  if (!isEqual(newClusterStats, clusterStats.value))
-    clusterStats(newClusterStats)
+  if (!isEqual(newClusterStats, clusterStats.get()))
+    clusterStats.set(newClusterStats)
 }
 
 clusterStats.subscribe(function(val) {
   let newOptimalClusters = getOptimalClusters(val)
-  if (isEqual(newOptimalClusters, optimalClusters.value))
+  if (isEqual(newOptimalClusters, optimalClusters.get()))
     return
   logOC("Optimal clusters:", newOptimalClusters)
-  optimalClusters.update(newOptimalClusters)
+  optimalClusters.set(newOptimalClusters)
 })
 
 clusterStats.subscribe(function(val) {
   let newMyClustersRTT = val.filter(@(v) v.hostsRTT != null).map(@(v) [ v.clusterId, v.hostsRTT ]).totable()
   if (!isEqual(newMyClustersRTT, myClustersRTT.get()))
-    myClustersRTT(newMyClustersRTT)
+    myClustersRTT.set(newMyClustersRTT)
 })
 
 function logBadAnswer(evt, hostInfo, reason) {
@@ -371,7 +371,7 @@ function stopProbe() {
 }
 
 isProbingActive.subscribe(@(v) v? startProbe() : stopProbe())
-if (isProbingActive.value)
+if (isProbingActive.get())
   startProbe()
 
 return {

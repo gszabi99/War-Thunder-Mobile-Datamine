@@ -46,7 +46,7 @@ function closeFlightMenu() {
   inFlightMenu(false) 
   if (isGamePaused())
     pauseGame(false)
-  isInFlightMenu(false)
+  isInFlightMenu.set(false)
 }
 
 function quitToDebriefing() {
@@ -230,8 +230,8 @@ function gui_start_flight_menu(...) {
   eventbus_send("FlightMenu_UpdateButtonsList", {
     buttons = flightMenuButtons.filter(@(b) b.isVisible()).map(@(b) b.name)
   })
-  isInFlightMenu(true)
-  canBailoutFromFlightMenu(canBailout())
+  isInFlightMenu.set(true)
+  canBailoutFromFlightMenu.set(canBailout())
 }
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
 

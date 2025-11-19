@@ -48,6 +48,7 @@ registerHandler("onOfflineMissionUnitActualized", function(res, context) {
   misBlk["useTankBots"] = gmCfg.get()?.mission_decl.useTankBots ?? false
   misBlk["useShipBots"] = gmCfg.get()?.mission_decl.useShipBots ?? false
   misBlk["useHumanBots"] = gmCfg.get()?.mission_decl.useHumanBots ?? false
+  misBlk["keepDead"] = false
   let ranksBlk = DataBlock()
   ranksBlk["min"] = misBlkParams?.minRank ?? unit?.mRank ?? 6
   misBlk["ranks"] = ranksBlk

@@ -14,12 +14,14 @@
   "water_level": 0.0,
   "shader_vars": {
     "shore__waves_dist": [
-      0.0,
-      200.0,
+      -20.0,
+      40.0,
       0.0,
       50.0
     ],
-    "max_river_width": 1500.0,
+    "shore_amplitude_to_length": 180.0,
+    "shore_artistic_max_wave_height": 0.25,
+    "max_river_width": 0.0,
     "ocean_density": 0.4,
     "river_density": 2.0,
     "water_color_noise_size": 1737.0,

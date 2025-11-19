@@ -1,6 +1,7 @@
-import "entity_editor" as entity_editor
 import "daEditorEmbedded" as daEditor
 from "%darg/ui_imports.nut" import *
+
+let entity_editor = require_optional("entity_editor")
 let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback } = require("state.nut")
 let { colors } = require("components/style.nut")
 let txt = require("%daeditor/components/text.nut").dtext
@@ -41,10 +42,10 @@ function scrollBySelection() {
 }
 
 function doSelectTemplate(tpl_name) {
-  selectedItem(tpl_name)
+  selectedItem.set(tpl_name)
   if (selectedItem.get()) {
     let finalTemplateName = selectedItem.get() + templatePostfixText.get()
-    entity_editor.get_instance().selectEcsTemplate(finalTemplateName)
+    entity_editor?.get_instance().selectEcsTemplate(finalTemplateName)
   }
 }
 
@@ -52,7 +53,7 @@ let filter = nameFilter(filterText, {
   placeholder = "Filter by name"
 
   function onChange(text) {
-    filterText(text)
+    filterText.set(text)
 
     if (selectedItem.get() && text.len()>0 && selectedItem.get().tolower().contains(text.tolower()))
       scrollBySelection()
@@ -71,7 +72,7 @@ let filter = nameFilter(filterText, {
   }
 
   function onClear() {
-    filterText.update("")
+    filterText.set("")
     set_kb_focus(null)
   }
 })
@@ -80,7 +81,7 @@ let templPostfix = nameFilter(templatePostfixText, {
   placeholder = "Template postfix"
 
   function onChange(text) {
-    templatePostfixText(text)
+    templatePostfixText.set(text)
   }
 
   function onEscape() {
@@ -92,7 +93,7 @@ let templPostfix = nameFilter(templatePostfixText, {
   }
 
   function onClear() {
-    templatePostfixText.update("")
+    templatePostfixText.set("")
     set_kb_focus(null)
   }
 })
@@ -120,9 +121,9 @@ function listRow(tpl_name, idx) {
       tpl_name = tpl_name
 
       watch = stateFlags
-      onHover = @(on) templateTooltip(on ? mkTemplateTooltip(tpl_name) : null)
+      onHover = @(on) templateTooltip.set(on ? mkTemplateTooltip(tpl_name) : null)
       onClick = @() doSelectTemplate(tpl_name)
-      onElemState = @(sf) stateFlags.update(sf & S_TOP_HOVER)
+      onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
 
       children = {
         rendObj = ROBJ_TEXT
@@ -134,7 +135,8 @@ function listRow(tpl_name, idx) {
   }
 }
 
-let selectedGroupTemplates = Computed(@() editorIsActive.get() ? entity_editor.get_instance()?.getEcsTemplates(selectedTemplatesGroup.get()) ?? [] : [])
+let selectedGroupTemplates = Computed(@() editorIsActive.get()
+  ? entity_editor?.get_instance().getEcsTemplates(selectedTemplatesGroup.get()) ?? [] : [])
 
 let filteredTemplates = Computed(function() {
   let result = []
@@ -184,7 +186,7 @@ function doValidateTemplates(idx) {
     let tplName = selectedGroupTemplates.get()[idx]
     if (tplName > validateAfterName) {
       vlog($"Validating template {tplName}...")
-      selectedItem(tplName)
+      selectedItem.set(tplName)
       scrollBySelection()
       gui_scene.resetTimeout(0.01, function() {
         doSelectTemplate(tplName)
@@ -194,7 +196,7 @@ function doValidateTemplates(idx) {
     }
     vlog($"Skipping template {tplName}...")
     if (++skipped > 50) {
-      selectedItem(tplName)
+      selectedItem.set(tplName)
       scrollBySelection()
       gui_scene.resetTimeout(0.01, @() doRepeatValidateTemplates(idx+1))
       return
@@ -214,9 +216,9 @@ function sceneToText(scene) {
 }
 
 allScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  allSceneTexts(v.map(@(scene, _idx) sceneToText(scene)))
+  allSceneTexts.set(v.map(@(scene, _idx) sceneToText(scene)))
   allSceneTexts.get().append(noSceneSelected)
-  local scene = entity_editor.get_instance()?.getTargetScene()
+  local scene = entity_editor?.get_instance().getTargetScene()
   if (scene != null && ("loadType" in scene) && ("index" in scene)) {
     selectedScene.set(sceneToText(scene))
   } else {
@@ -235,17 +237,17 @@ selectedScene.subscribe(function(v) {
       index = scene.index
     }
   }
-  entity_editor.get_instance()?.setTargetScene(loadType, index)
+  entity_editor?.get_instance().setTargetScene(loadType, index)
 })
 
 
 function dialogRoot() {
-  let templatesGroups = entity_editor.get_instance().getEcsTemplatesGroups()
+  let templatesGroups = entity_editor?.get_instance().getEcsTemplatesGroups()
   let maxTemplatesInList = 1000
 
-  local scenes = entity_editor.get_instance().getSceneImports() ?? []
+  local scenes = entity_editor?.get_instance().getSceneImports() ?? []
   scenes.sort(defaultScenesSortMode.func)
-  allScenes(scenes)
+  allScenes.set(scenes)
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
   let sceneInfo = selectedSceneIndex != null ? scenes[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
@@ -307,15 +309,15 @@ function dialogRoot() {
 
 
   function doClose() {
-    showTemplateSelect(false)
-    filterText("")
+    showTemplateSelect.set(false)
+    filterText.set("")
     daEditor.setEditMode(DE4_MODE_SELECT)
   }
 
   function doCancel() {
     if (selectedItem.get() != null) {
-      selectedItem(null)
-      entity_editor.get_instance().selectEcsTemplate("")
+      selectedItem.set(null)
+      entity_editor?.get_instance().selectEcsTemplate("")
     }
     else
       doClose()

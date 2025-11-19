@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { bpCardStyle, bpCardPadding, bpCardGap, bpCardFooterHeight, bpCardHeight, bpCardMargin
 } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { mkRewardPlate, mkRewardPlateVip, mkRewardReceivedMark
@@ -8,6 +9,7 @@ let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 
 let rewardBoxSize = bpCardStyle.boxSize
 let emptySlot = { size = array(2, rewardBoxSize) }
@@ -57,8 +59,8 @@ let canReceiveMark = @(isBpRewardsInProgress) mkSpinnerHideBlock(isBpRewardsInPr
     utf8ToUpper(loc("btn/receive")),
     null,
     {
-      ovr = { size = flex(), minWidth = 0, behavior = null }
-      childOvr = fontTiny
+      ovr = { size = flex(), minWidth = null, behavior = null }
+      childOvr = fontVeryTiny
     }),
   { size = [flex(), bpCardFooterHeight], valign = ALIGN_CENTER, halign = ALIGN_CENTER })
 
@@ -78,8 +80,9 @@ let freeMark = {
 
 function cardContent(stageInfo, stateFlags, isRewardsInProgress) {
   let { canReceive, viewInfo, isPaid, isReceived, isVip = false } = stageInfo
+  let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
   return @() {
-    watch = stateFlags
+    watch = [stateFlags, isEmptyReward]
     padding = bpCardPadding
     flow = FLOW_VERTICAL
     gap = bpCardGap
@@ -92,7 +95,7 @@ function cardContent(stageInfo, stateFlags, isRewardsInProgress) {
           viewInfo == null ? emptySlot
             : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
             : mkRewardPlate(viewInfo, bpCardStyle)
-          isReceived ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
+          isReceived || isEmptyReward.get() ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
             : canReceive ? null
             : lockedMark
         ]

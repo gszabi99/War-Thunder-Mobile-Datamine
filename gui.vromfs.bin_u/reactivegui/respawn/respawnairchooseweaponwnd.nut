@@ -7,7 +7,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { textButtonPrimary, textButtonCommon, textButtonMultiline } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonInactive, textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { mkLevelLockSmall, mkNotPurchasedShade, mkModCost } = require("%rGui/unitMods/modsComps.nut")
 let { CS_TINY } = require("%rGui/components/currencyStyles.nut")
 let { selectedSlotWeaponName, equippedWeaponsBySlots, wCards, beltCards,
@@ -17,7 +17,7 @@ let { selectedSlotWeaponName, equippedWeaponsBySlots, wCards, beltCards,
   applyBelt, closeWnd, equipSelWeapon, unequipSelWeapon, equipWeaponListWithMirrors,
   selectWeaponSlot, selectBeltSlot, selectWeaponCard, selectBeltCard,
   overloadInfo, fixCurPresetOverload, courseBeltSlots, turretBeltSlots, mirrorIdx,
-  unequipSelWeaponFromWings, equipSelWeaponToWings
+  unequipSelWeaponFromWings, equipSelWeaponToWings, isEmptyBomber, setDefaultSecondaryWeapon
 } = require("%rGui/respawn/respawnAirChooseState.nut")
 let { mkWeaponStates, getConflictsList, mkHasConflicts } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
@@ -26,7 +26,7 @@ let { mkBeltDesc, mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc
 let { padding, weaponSize, smallGap, commonWeaponIcon, getWeaponTitle, mkBeltImage,
   header, headerText, caliberTitle, headerHeight, defPadding, imgSize
 } = require("%rGui/respawn/respawnComps.nut")
-let { badTextColor2, commonTextColor, warningTextColor } = require("%rGui/style/stdColors.nut")
+let { badTextColor2, commonTextColor, warningTextColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 
@@ -56,29 +56,52 @@ let contentType = Computed(@() selectedWSlotIdx.get() != null ? WEAPON
 let showAirRespChooseSecWnd = @(wSlotIdx) selectWeaponSlot(wSlotIdx)
 let showAirRespChooseBeltWnd = @(weaponId) selectBeltSlot(weaponId)
 
-function closeWithWarning() {
-  let { overloads = [] } = overloadInfo.get()
-  if (overloads.len() == 0) {
-    closeWnd()
-    return
-  }
+function closeWithChecking() {
   sendPlayerActivityToServer()
-  openMsgBox({
-    text = loc("weapons/pilonsRemoveWarning", {
-      warnings = colorize(badTextColor2, "\n".join(overloads))
-    })
-    buttons = [
-      { text = loc("btn/autoRemovePilons"),
-        function cb() {
-          fixCurPresetOverload()
-          closeWnd()
+  let { overloads = [] } = overloadInfo.get()
+  if (overloads.len() != 0)
+    return openMsgBox({
+      text = loc("weapons/pilonsRemoveWarning", {
+        warnings = colorize(badTextColor2, "\n".join(overloads))
+      })
+      buttons = [
+        { text = loc("btn/autoRemovePilons"),
+          function cb() {
+            fixCurPresetOverload()
+            closeWnd()
+          }
         }
-      }
-      { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true
-        cb = sendPlayerActivityToServer
-      }
-    ]
-  })
+        { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true
+          cb = sendPlayerActivityToServer
+        }
+      ]
+    })
+
+  if (isEmptyBomber.get())
+    return openMsgBox({
+      text = loc("weapons/secondaryWeaponNotSet")
+      buttons = [
+        { text = loc("btn/doNotSet"),
+          function cb() {
+            sendPlayerActivityToServer()
+            closeWnd()
+          },
+          isCancel = true
+          multiLine = true
+        }
+        {
+          text = loc("btn/setDefault"),
+          function cb() {
+            setDefaultSecondaryWeapon()
+            sendPlayerActivityToServer()
+            closeWnd()
+          }
+          styleId = "PRIMARY",
+          multiLine = true }
+      ]
+    })
+
+  closeWnd()
 }
 
 let mkCardBase = {
@@ -91,7 +114,7 @@ let mkCardBase = {
 }
 
 let mkSlotBase = @(isSelected) mkCardBase.__merge({
-  borderColor = isSelected ? 0xC07BFFFF : 0xFFFFFFFF
+  borderColor = isSelected ? selectColor : 0xFFFFFFFF
   borderWidth = isSelected ? hdpx(5) : hdpx(3)
   fillColor = cardBgColor
 })
@@ -151,7 +174,7 @@ function mkWeaponCard(w) {
   return @() mkCardBase.__merge({
     watch = [selectedWCardIdx, hasConflicts]
     fillColor = hasConflicts.get() ? cardBgConflictColor : cardBgColor
-    borderColor = w.slotIdx == selectedWCardIdx.get() ? 0xC07BFFFF : 0xFFFFFFFF
+    borderColor = w.slotIdx == selectedWCardIdx.get() ? selectColor : 0xFFFFFFFF
     borderWidth = w.slotIdx == selectedWCardIdx.get() ? hdpx(5) : hdpx(3)
     onClick = @() selectWeaponCard(w.slotIdx)
     sound = { click = "choose" }
@@ -194,7 +217,7 @@ function mkBeltCard(w) {
   let isSelected = Computed(@() w.slotIdx == selectedBeltCardIdx.get())
   return @() mkCardBase.__merge({
     watch = isSelected
-    borderColor = isSelected.get() ? 0xC07BFFFF : 0xFFFFFFFF
+    borderColor = isSelected.get() ? selectColor : 0xFFFFFFFF
     borderWidth = isSelected.get() ? padding : defPadding
     onClick = @() selectBeltCard(w.slotIdx)
     sound = { click = "choose" }
@@ -481,7 +504,7 @@ function mkBeltButtons() {
     halign = ALIGN_CENTER
     children = selectedBeltCard.get() == null || selectedBeltSlot.get()?.equipped.id == selectedBeltCard.get().id ? null
       : isLocked.get() || !isPurchased.get()
-    ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_choose")),
+    ? textButtonInactive(utf8ToUpper(loc("msgbox/btn_choose")),
         @() openMsgBox({ text = getRequirementsText(isLocked.get(), isPurchased.get(), reqLevel.get(), mod.get()) }))
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")),
           @() applyBelt(selectedBeltSlot.get().weaponId, selectedBeltCard.get().id))
@@ -493,7 +516,7 @@ let mkButtonsContent = mkContentByType(mkSecondaryButtons, mkBeltButtons)
 
 let chooseCardWnd = {
   size = [wndSizeWithPadding(CARDS_IN_ROW), infoBlockHeight]
-  borderColor = 0xC07BFFFF
+  borderColor = selectColor
   borderWidth = hdpx(6)
   stopMouse = true
   rendObj = ROBJ_BOX
@@ -511,7 +534,7 @@ let chooseCardWnd = {
 let linesBase = {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = connectingLineWidth
-  color = 0xC07BFFFF
+  color = selectColor
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   commands = [
@@ -604,7 +627,7 @@ let openImpl = @() addModalWindow({
   key = WND_UID
   size = flex()
   children = content
-  onClick = closeWithWarning
+  onClick = closeWithChecking
   stopMouse = true
 })
 

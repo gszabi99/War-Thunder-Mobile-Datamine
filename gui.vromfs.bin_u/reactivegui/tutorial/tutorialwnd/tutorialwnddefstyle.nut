@@ -184,7 +184,7 @@ let pointerArrow = {
 
 let mkPointerArrow = @(ovrW) {
   padding = pointerAnimOffset
-  children = @() pointerArrowContent.__merge({ watch = ovrW }, ovrW.value)
+  children = @() pointerArrowContent.__merge({ watch = ovrW }, ovrW.get())
 }
 
 function mkLinkArrow(boxFrom, boxTo) {

@@ -197,3 +197,21 @@ struct CmdBattleRoyalSetNewArea
   y : int
   shrinkTime : float
   startDelay : float
+
+
+[cpp_event(broadcast)]
+struct EventRacePlayerCheckpoint
+  playerId : int
+  checkpoint : int
+  lap : int
+  cpPerLap : int
+  totalLaps : int
+  time : float
+
+
+[cpp_event(broadcast)]
+struct EventRacePlayerFinish
+  playerId : int
+  place : int
+  isWinner : bool
+  totalTime : float

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { maxRewardLevelInfo, isLvlUpOpened, upgradeUnitName, closeLvlUpWnd } = require("%rGui/levelUp/levelUpState.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
@@ -12,9 +13,7 @@ let { mkLinearGradientImg } = require("%darg/helpers/mkGradientImg.nut")
 let levelUpChooseUnits = require("%rGui/levelUp/levelUpChooseUnits.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { hasAddons, addonsSizes } = require("%appGlobals/updater/addonsState.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
+let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -101,48 +100,44 @@ let headerPanel = @(hasLvlUpPkgs) @() {
   ]
 }
 
-let levelUpRequirePkgDownload = @(lvlUpUnitsPkgs) {
+let levelUpRequirePkgDownload = @(missingLvlUpUnits) {
   size = flex()
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = [
-    @() {
-      watch = addonsSizes
+    {
       size = const [hdpx(600), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
-      text = loc("msg/needDownloadPackForLevelUp", {
-        pkg = localizeAddons(lvlUpUnitsPkgs)?[0] ?? "???"
-        size = getAddonsSizeStr(lvlUpUnitsPkgs, addonsSizes.get())
-      })
+      text = loc("download/unitResources")
       fontFxColor = Color(0, 0, 0, 255)
       fontFxFactor = 50
       fontFx = FFT_GLOW
     }.__update(fontSmall)
     textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")),
-      @() openDownloadAddonsWnd(lvlUpUnitsPkgs, "level_up_wnd",
+      @() openDownloadAddonsWnd([], missingLvlUpUnits, "level_up_wnd",
         { paramInt1 = buyUnitsData.get().canBuyOnLvlUp.findvalue(@(_) true)?.mRank ?? 0 }))
   ]
 }
 
 function levelUpWnd() {
-  let lvlUpUnitsPkgs = buyUnitsData.get().canBuyOnLvlUp
+  let missingLvlUpUnits = buyUnitsData.get().canBuyOnLvlUp
     .reduce(function(res, u) {
-        let pkgs = getUnitPkgs(u.name, u.mRank)
-        foreach (pkg in pkgs)
-          res[pkg] <- true
+        res[getTagsUnitName(u.name)] <- true
+        foreach (p in u.platoonUnits)
+          res[getTagsUnitName(p.name)] <- true
         return res
       }, {})
     .keys()
-    .filter(@(v) !hasAddons.get()?[v])
-  let hasLvlUpPkgs = lvlUpUnitsPkgs.len() == 0
+    .filter(@(u) (unitSizes.get()?[u] ?? -1) != 0)
+  let hasLvlUpPkgs = missingLvlUpUnits.len() == 0
 
   return {
-    watch = [upgradeUnitName, buyUnitsData, hasAddons]
+    watch = [upgradeUnitName, buyUnitsData, unitSizes]
     key = isLvlUpOpened
     onAttach = @() sendNewbieBqEvent("openLevelUpWnd")
     onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
@@ -154,7 +149,7 @@ function levelUpWnd() {
     children = [
       headerPanel(hasLvlUpPkgs)
       hasLvlUpPkgs ? levelUpChooseUnits
-        : levelUpRequirePkgDownload(lvlUpUnitsPkgs)
+        : levelUpRequirePkgDownload(missingLvlUpUnits)
     ]
   }.__update(upgradeUnitName.get() != null ? bgShaded : {})
 }

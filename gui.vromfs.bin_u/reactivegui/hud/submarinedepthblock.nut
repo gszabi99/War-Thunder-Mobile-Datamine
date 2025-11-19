@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { fabs } = require("math")
+let { lerpClamped } = require("%sqstd/math.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -8,21 +9,19 @@ let { dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { setAxisValue, toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { wishDist, waterDist, periscopeDepthCtrl, deadZoneDepth, maxControlDepth } = require("%rGui/hud/shipState.nut")
-let { mkGamepadShortcutImage, mkContinuousButtonParams
-} = require("%rGui/controls/shortcutSimpleComps.nut")
+let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-
+let axisListener = require("%rGui/controls/axisListener.nut")
+let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
+let { hudPearlGrayColorFade } = require("%rGui/style/hudColors.nut")
 
 let markStep = 5
 let marksTextStep = 4
 let depthRepeatTimes = [0.3, 0.15, 0.15, 0.07, 0.07, 0.05]
-let knobColor = Color(230, 230, 230, 230)
+let knobColor = hudPearlGrayColorFade
+let axisDeadZone = 0.1
 
-let isDepthIncPushed = Watched(false)
-let isDepthDecPushed = Watched(false)
-let depthChangeDir = Computed(@() isDepthIncPushed.get() == isDepthDecPushed.get() ? 0
-  : isDepthIncPushed.get() ? 1
-  : -1)
+let submarineDepthAxisValue = Watched(0)
 
 let periscopSize = [hdpxi(70), hdpxi(50)]
 
@@ -38,12 +37,12 @@ function getSizes(scale) {
 
 local updateCount = 0
 function depthValueUpdate() {
-  if (depthChangeDir.get() == 0 || periscopeDepthCtrl.value == 0) {
+  if (submarineDepthAxisValue.get() == 0 || periscopeDepthCtrl.get() == 0) {
     updateCount = 0
     return
   }
   let curDepth = wishDist.get() * maxControlDepth.get()
-  let newDepth = clamp(curDepth + markStep * depthChangeDir.get(), periscopeDepthCtrl.get(), maxControlDepth.get())
+  let newDepth = clamp(curDepth + markStep * submarineDepthAxisValue.get(), periscopeDepthCtrl.get(), maxControlDepth.get())
   if (curDepth == newDepth) {
     updateCount = 0
     return
@@ -52,7 +51,7 @@ function depthValueUpdate() {
   resetTimeout(depthRepeatTimes?[updateCount++] ?? depthRepeatTimes.top(), depthValueUpdate)
 }
 
-depthChangeDir.subscribe(@(_) depthValueUpdate())
+submarineDepthAxisValue.subscribe(@(_) depthValueUpdate())
 
 let mkMarksOfDepth = @(countOfMarks, firstMark, scale) {
   size = [hdpx(20 * scale), flex()]
@@ -101,28 +100,25 @@ let isControlDepthAllowed = Computed(function(prev) {
 
 function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, scale, ovr) {
   let imageComp = mkGamepadShortcutImage(shortcutId, {}, scale)
-  let stateFlags = Watched(0)
-  let res = mkContinuousButtonParams(@() isPushed(true), @() isPushed(false), shortcutId, stateFlags)
-    .__update(ovr)
-  let watch = [isVisible, isGamepad, stateFlags]
+  let watch = [isVisible, isGamepad, isPushed]
   return @() !isGamepad.get() ? { watch }
-    : res.__update({
+    : {
         watch
         key = imageComp
         vplace = ALIGN_CENTER
-        children = isVisible.value && isGamepad.get() ? imageComp : null
-        transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1.0, 1.0] }
+        children = isVisible.get() && isGamepad.get() ? imageComp : null
+        transform = { scale = isPushed.get() ? [0.8, 0.8] : [1.0, 1.0] }
         transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-      })
+      }.__update(ovr)
 }
 
 let btnImageDepthInc = @(scale) mkGamepadShortcutImg("submarine_depth_inc",
-  isDepthIncPushed,
+  Computed(@() submarineDepthAxisValue.get() > 0),
   Computed(@() fabs(wishDist.get() - 1) > 0.01),
   scale,
   { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(50)] })
 let btnImageDepthDec = @(scale) mkGamepadShortcutImg("submarine_depth_dec",
-  isDepthDecPushed,
+  Computed(@() submarineDepthAxisValue.get() < 0)
   Computed(@() fabs(wishDist.get() * maxControlDepth.get() - periscopeDepthCtrl.get()) > 0.01),
   scale,
   { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(-50)] })
@@ -178,13 +174,17 @@ function mkDepthSlider(scale) {
             knob
             inc
             dec
+            axisListener({[gamepadAxes.submarine_depth] = function(v) {
+              let newVal = lerpClamped(axisDeadZone, 1, 0, 1, fabs(v))
+              submarineDepthAxisValue.set(v > 0 ? -newVal : newVal)
+            }})
           ]
         }
         mkMarksOfDepth(countOfMarks, firstMark, scale)
         mkMarksOfDepthTexts(countOfMarks, scale)
       ]
       onChange = function(val) {
-        if (!isDeeperThanPeriscopeDepth.get() && wishDist.value == 0) {
+        if (!isDeeperThanPeriscopeDepth.get() && wishDist.get() == 0) {
           toggleShortcut("ID_DIVING_LOCK")
           updateActionBarDelayed()
         } else {

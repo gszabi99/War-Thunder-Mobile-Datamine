@@ -7,27 +7,52 @@ from "json.nut" import saveJson
 function get_all_exports_for_file(fpath){
   return require(fpath)
 }
+function getClassOfInstanceName(v){
+  if (type(v)=="instance" && typeof(v)!="instance")
+    return typeof(v)
+  return v?.__name__ ?? v?.__name ?? v?.name ?? v?.getName()
+}
 
-function make_module_description(module){
+function isNativeClassOrInstance(v){
+  let tt = type(v)
+  return (tt=="instance" || tt=="class") && "__getTable" in v && "__setTable" in v
+}
+
+local make_module_description
+make_module_description = function(module, frozen=null){
   let t = type(module)
-  if (t != "table")
-    return t
-  if (module.is_frozen()) {
-    return module.$map(function(v) {
+  if (isNativeClassOrInstance(module))
+    return {"type":t, frozenable=true, name=getClassOfInstanceName(module)}
+  if (t != "table" && t !="array")
+    return {"type":t}
+  if (module.is_frozen() || frozen) {
+    return {
+      "type":t,
+      frozen = true
+      content = module.$map(function(v) {
+        let tt = type(v)
+        if (tt == "table" || tt == "array")
+          return {frozen=true, "type":tt, content = v.$map(@(i) make_module_description(i, true))}
+        if (tt=="class" || tt=="instance" )
+          return {frozen=true, "type":tt, name=getClassOfInstanceName(v)}
+        return {frozen=true, "type":tt}
+      })
+    }
+  }
+  return {
+    "type":t,
+    frozen = false
+    content = module.$map(function(v) {
       let tt = type(v)
-      if (tt == "table" || tt == "array" || t=="class" || t=="instance")
-        return "frozen"
-      return tt
+      if (isNativeClassOrInstance(v))
+        return {"type":tt, frozenable=true, name=getClassOfInstanceName(v)}
+      if (tt =="array" || tt=="table"){
+        frozen = frozen || v.is_frozen()
+        return {frozen, "type":tt}.__update( tt =="array" || tt=="table" ? {content = v.$map(@(i) make_module_description(i, frozen))} : {}, tt=="instance" ? {name=getClassOfInstanceName(v)} : {})
+      }
+      return {"type":tt}
     })
   }
-  return module.$map(function(v) {
-    let t = type(v)
-    if ((t =="array" || t=="table") && v.is_frozen())
-      return "frozen"
-    if ((t=="instance" || t=="class") && "__getTable" in v && "__setTable" in v)
-      return "frozenable"
-    return t
-  })
 }
 
 let __file__ = __filename__
@@ -37,7 +62,7 @@ function get_all_exports_in_folder(root = ".", res=null){
     local fpath = file.split("/")
     if (fpath[0]==".")
       fpath = fpath.slice(1)
-    let fname = fpath[fpath.len()-1]
+    
     fpath = "/".join(fpath)
     if (fpath in res || __file__.indexof(fpath)!=null)
       continue
@@ -68,7 +93,7 @@ if (__name__ == "__main__"){
       foreach (f, module_info in res) {
         let info = type(module_info) != "table"
           ? ""
-          : "  ".join(module_info.reduce(@(res, _, k) res.append($"{k}"), []))
+          : "  ".join(module_info.reduce(@(r, _, k) r.append($"{k}"), []))
         println($"File:'{f}'\n{info}\n")
       }
     }

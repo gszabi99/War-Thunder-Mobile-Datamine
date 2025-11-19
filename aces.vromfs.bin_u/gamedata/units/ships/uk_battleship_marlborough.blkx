@@ -977,8 +977,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1057,8 +1056,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1117,8 +1115,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1177,8 +1174,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1267,8 +1263,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1357,8 +1352,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1437,8 +1431,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1517,8 +1510,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1577,8 +1569,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1637,8 +1628,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1696,8 +1686,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1755,8 +1744,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1814,8 +1802,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1873,8 +1860,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1932,8 +1918,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1991,8 +1976,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2050,8 +2034,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2109,8 +2092,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2168,8 +2150,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2227,8 +2208,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2289,8 +2269,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2351,8 +2330,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2413,8 +2391,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2475,8 +2452,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2560,8 +2536,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2645,8 +2620,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -2899,8 +2873,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -2979,8 +2952,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3039,8 +3011,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3099,8 +3070,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3189,8 +3159,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3279,8 +3248,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3359,8 +3327,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3439,8 +3406,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3499,8 +3465,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3559,8 +3524,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3618,8 +3582,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3677,8 +3640,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3736,8 +3698,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3795,8 +3756,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3854,8 +3814,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3913,8 +3872,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -3972,8 +3930,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4031,8 +3988,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4090,8 +4046,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4149,8 +4104,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4211,8 +4165,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4273,8 +4226,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4335,8 +4287,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4397,8 +4348,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4482,8 +4432,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4567,8 +4516,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4818,8 +4766,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4898,8 +4845,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -4958,8 +4904,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5018,8 +4963,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5108,8 +5052,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5198,8 +5141,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5278,8 +5220,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5358,8 +5299,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5418,8 +5358,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5478,8 +5417,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5537,8 +5475,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5596,8 +5533,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5655,8 +5591,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5714,8 +5649,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5773,8 +5707,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5832,8 +5765,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5891,8 +5823,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -5950,8 +5881,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6009,8 +5939,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6068,8 +5997,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6130,8 +6058,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6192,8 +6119,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6254,8 +6180,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6316,8 +6241,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6401,8 +6325,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -6486,8 +6409,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {

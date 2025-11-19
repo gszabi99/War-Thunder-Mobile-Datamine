@@ -27,8 +27,8 @@ const RESPONSE_EVENT = "bq.requestResponse"
 const FILL_SERVER_TIME = "$fillServerTime"
 let queueByUserId = hardPersistWatched("bqQueue.queueByUserId", {})
 let queueByUserIdDelayed = hardPersistWatched("bqQueue.queueByUserIdDelayed", {})
-let queue = Computed(@() queueByUserId.value?[myUserId.value] ?? [])
-let queueBeforeLogin = Computed(@() queueByUserId.value?[INVALID_USER_ID] ?? [])
+let queue = Computed(@() queueByUserId.get()?[myUserId.get()] ?? [])
+let queueBeforeLogin = Computed(@() queueByUserId.get()?[INVALID_USER_ID] ?? [])
 let hasEventsToSend = Computed(@() queue.get().len() != 0 || queueBeforeLogin.get().len() != 0)
 let nextCanSendMsec = hardPersistWatched("bqQueue.nextCanSendMsec", -1)
 let currentUrlIndex = hardPersistWatched("bqQueue.currentUrlIndex", 0)
@@ -38,13 +38,13 @@ let urls = Watched([])
 let url = Computed(@() urls.get()?[currentUrlIndex.get()] ?? urls.get()?[0])
 
 function initUrl() {
-  urls(shuffle((get_cur_circuit_block()?.cloud_server.servers ?? DataBlock()) % "url"))
-  currentUrlIndex(0)
+  urls.set(shuffle((get_cur_circuit_block()?.cloud_server.servers ?? DataBlock()) % "url"))
+  currentUrlIndex.set(0)
 }
 
 initUrl()
 
-let changeUrl = @() currentUrlIndex((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
+let changeUrl = @() currentUrlIndex.set((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
 
 function sendAll() {
   if (!hasEventsToSend.get() || !hasConnection.get())
@@ -83,13 +83,13 @@ function sendAll() {
     return
 
   if (url.get() == null) {
-    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
+    nextCanSendMsec.set(get_time_msec() + RETRY_MSEC)
     logerr("[BQ] Miss bqServer url")
     initUrl()
     return
   }
 
-  nextCanSendMsec(max(nextCanSendMsec.value, get_time_msec() + MIN_TIME_BETWEEN_MSEC))
+  nextCanSendMsec.set(max(nextCanSendMsec.get(), get_time_msec() + MIN_TIME_BETWEEN_MSEC))
 
   let token = getPlayerToken()
   let headers = {
@@ -120,7 +120,7 @@ function sendAll() {
 function startSendTimer() {
   if (!hasEventsToSend.get() || !hasConnection.get())
     return
-  let timeLeft = nextCanSendMsec.value - get_time_msec()
+  let timeLeft = nextCanSendMsec.get() - get_time_msec()
   if (timeLeft > 0)
     resetTimeout(0.001 * timeLeft, sendAll)
   else
@@ -143,19 +143,19 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
 
   if (!hasConnection.get()) {
     logBQ($"(No connection) Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+    nextCanSendMsec.set(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
   }
-  else if (currentUrlIndex.value == 0) {
+  else if (currentUrlIndex.get() == 0) {
     logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_MSEC} sec")
     allUrlsFailsCount.set(allUrlsFailsCount.get() + 1)
     if (allUrlsFailsCount.get() == LOGERR_MIN_ERROR_LOOPS)
       logerr($"[BQ] Failed to send data. All servers down {LOGERR_MIN_ERROR_LOOPS} times.")
-    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
+    nextCanSendMsec.set(get_time_msec() + RETRY_MSEC)
     initUrl()
   }
   else {
     logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+    nextCanSendMsec.set(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
   }
 
   if (context != null) {

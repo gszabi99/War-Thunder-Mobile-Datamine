@@ -4,13 +4,12 @@ let { playSound } = require("sound_wt")
 let { debounceImmediate } = require("%sqstd/timers.nut")
 
 let { btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob, sliderValueSound } = require("%rGui/components/slider.nut")
-let { textColor, badTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
+let { textColor, badTextColor, hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { getSpCostText, setAttribute } = require("%rGui/attributes/attrState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 
-let MAX_ATTRIBUTE_INDICATORS = 5
 
 let progressBtnSize = evenPx(72)
 let progressBtnGap = hdpx(30)
@@ -28,11 +27,11 @@ let pageWidth = hdpx(855)
 let sliderWidth = pageWidth * 0.6
 
 let cellColorFilled = 0xFF10AFE2
-let cellColorNew    = 0xFF7FE5FF
+let cellColorNew    = selectColor
 let cellColorCanBuy = 0xFF476269
 let cellColorEmpty  = 0x00000000
 
-let newValueColor = 0xFF90FAFA
+let newValueColor = selectColor
 
 let glareWidth = hdpx(32)
 let incBtnAnimDuration = 0.3
@@ -255,7 +254,7 @@ function mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOn
         return
       }
       sliderValueSound()
-      mkCellOnClick(v)
+      mkCellOnClick(v)()
     }
   }
 
@@ -277,24 +276,22 @@ function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCe
 }
 
 let mkRowProgressBar = @(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
-  size = FLEX_H
+  size = [sliderWidth, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   gap = cellGap
-}.__update(totalLevels > MAX_ATTRIBUTE_INDICATORS
-  ? { children = mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) }
-  : {
-      size = [sliderWidth, SIZE_TO_CONTENT]
-      children = mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
-    })
+  children = mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
+}
 
 return {
   mkProgressBtnContentDec
   mkProgressBtnContentInc
+  mkProgressBarSlider
   mkRowProgressBar
   mkProgressBtn
   mkNextIncCost
   mkRowLabel
   mkRowValue
+  knobCtor
 
   applyAttrRowChange
   startIncBtnGlare
@@ -306,4 +303,5 @@ return {
   rowsPosPadR
   rowHeight
   pageWidth
+  progressBtnSize
 }

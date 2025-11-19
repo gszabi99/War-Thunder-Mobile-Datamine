@@ -33,7 +33,7 @@
     "maxDistance": 50000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -47,12 +47,16 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "127mm_type_0",
     "dynamicKv": true,
     "explodeTreshold": 0.1,
     "fuseDelayDist": 10.0,
-    "fuseOnWater": true,
     "hitPowerMult": 400.0,
     "relativeVelHitShift": [
       300.0,
@@ -270,7 +274,7 @@
       "maxDistance": 50000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -284,12 +288,16 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": 1.0,
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "127mm_type_0",
       "dynamicKv": true,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 10.0,
-      "fuseOnWater": true,
       "hitPowerMult": 400.0,
       "relativeVelHitShift": [
         300.0,
@@ -508,7 +516,7 @@
       "maxDistance": 50000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,

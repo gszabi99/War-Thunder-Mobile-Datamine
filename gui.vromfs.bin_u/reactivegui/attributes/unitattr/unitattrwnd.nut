@@ -9,8 +9,8 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { textButtonPrimary, buttonsHGap, paddingX, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { defButtonHeight, defButtonMinWidth, PRIMARY } = require("%rGui/components/buttonStyles.nut")
-let {isUnitAttrOpened, attrUnitData, attrUnitName, attrUnitLevelsToMax, curCategory, selAttrSpCost,
+let { defButtonHeight, defButtonMinWidth, COMMON } = require("%rGui/components/buttonStyles.nut")
+let { isUnitAttrOpened, attrUnitData, attrUnitName, attrUnitLevelsToMax, curCategory, selAttrSpCost,
   leftUnitSp, isUnitMaxSkills, availableAttributes, resetAttrState, applyAttributes,
 } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let { hasUpgradedAttrUnitNotUpdatable } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
@@ -204,7 +204,7 @@ let actionButtons = @() {
   gap = buttonsHGap * 0.5
   children = [
     mkCustomButton(mkMoreDetailBtn(utf8ToUpper(loc("terms_wnd/more_detailed"))), @() null,
-      mergeStyles(PRIMARY, { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags}))
+      mergeStyles(COMMON, { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags}))
     attrUnitLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
         (attrUnitData.get()?.unit.level ?? 0) + 1,

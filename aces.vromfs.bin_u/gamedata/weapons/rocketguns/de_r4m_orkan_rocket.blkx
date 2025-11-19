@@ -1,0 +1,216 @@
+{
+  "rocketGun": true,
+  "preset_cost": 25,
+  "mesh": "de_r4m_orkan_rocket",
+  "mesh_deployed": "de_r4m_orkan_rocket_deployed",
+  "helicopterGroup": 2,
+  "sound": "weapon.rocketgun_132",
+  "rocket": {
+    "bulletName": "de_r4m_orkan_rocket",
+    "caliber": 0.055,
+    "length": 0.812,
+    "explosiveType": "hta",
+    "explosiveMass": 0.52,
+    "mass": 3.85,
+    "massEnd": 3.035,
+    "statType": "hydra",
+    "explodeTreshold": 0.00001,
+    "explodeHitPower": 70.0,
+    "explodeArmorPower": 12.0,
+    "explodeRadius": [
+      0.3,
+      1.0
+    ],
+    "maxDistance": 6200.0,
+    "minDistance": 30.0,
+    "force": 2250.0,
+    "timeFire": 0.8,
+    "distFromCmToStab": 0.01,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "dragCx": 0.0012,
+    "CxK": 1.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 525.0,
+    "amountPerTier": 12.0,
+    "iconType": "rockets_he_small_group",
+    "maxDeltaAngle": 2.5,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "advancedMissiles": false,
+    "autoaimEnabled": false,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/rocket_he.ivf",
+    "explosionEffect": "explosion_midair_tiny",
+    "groundCollisionEffect": "hit_59_80mm_dirt_he",
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "hit_59_80mm_water",
+    "explosionPatchRadius": 3.4,
+    "fireEffect": "rocket_fire_short",
+    "smokeEffect": "",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "effectOffset": [
+      -0.6,
+      0.0,
+      0.0
+    ],
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
+      }
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_tiny"
+      },
+      "armor": {
+        "fx": "explosion_midair_tiny"
+      },
+      "buildings": {
+        "fx": "explosion_midair_tiny"
+      },
+      "wood": {
+        "fx": "explosion_midair_tiny"
+      }
+    }
+  }
+}

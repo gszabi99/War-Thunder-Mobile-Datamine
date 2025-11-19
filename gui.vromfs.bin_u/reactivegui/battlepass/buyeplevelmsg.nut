@@ -21,7 +21,7 @@ function purchaseContent(stageInfo) {
     gap = hdpx(10)
     halign = ALIGN_CENTER
     children = [
-      msgBoxText(utf8ToUpper(loc("battlepass/level_up")), textOvr.__merge(fontMedium))
+      msgBoxText(utf8ToUpper(loc("eventpass/level_up")), textOvr.__merge(fontMedium))
       msgBoxText(" ".join([loc("mainmenu/btnLevelBoost"), nextLevel.get()]), textOvr.__merge(fontSmall))
       needReward.get() ? msgBoxText(loc("mainmenu/rewardsList"), textOvr.__merge(fontTiny)) : null
       !needReward.get() || stageInfo.viewInfo == null ? null

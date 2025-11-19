@@ -148,7 +148,7 @@ let hudReplayControls = @() {
   watch = [ isPlayingReplay, watchedHero, hasAncors ]
   size = flex()
   function onAttach() {
-    hasAncors(get_replay_anchors().len() > 0)
+    hasAncors.set(get_replay_anchors().len() > 0)
   }
   children = isPlayingReplay.get()
     ? [

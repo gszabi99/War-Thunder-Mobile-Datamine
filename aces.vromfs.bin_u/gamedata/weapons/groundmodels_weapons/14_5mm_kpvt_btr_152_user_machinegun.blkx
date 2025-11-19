@@ -430,7 +430,7 @@
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/he_ball.ivf",
       "bulletName": "14mm_mdz",
-      "hitPowerMult": 1.0,
+      "hitPowerMult": 15.0,
       "onHitChanceMultFire": 3.0,
       "nearHitPower": [
         1.0,
@@ -1175,7 +1175,7 @@
         "slopeEffectPreset": "ap",
         "shellAnimation": "video/shells_animations/he_ball.ivf",
         "bulletName": "14mm_mdz",
-        "hitPowerMult": 1.0,
+        "hitPowerMult": 15.0,
         "onHitChanceMultFire": 3.0,
         "nearHitPower": [
           1.0,
@@ -1371,7 +1371,7 @@
         "slopeEffectPreset": "ap",
         "shellAnimation": "video/shells_animations/he_ball.ivf",
         "bulletName": "14mm_mdz",
-        "hitPowerMult": 1.0,
+        "hitPowerMult": 15.0,
         "onHitChanceMultFire": 3.0,
         "nearHitPower": [
           1.0,

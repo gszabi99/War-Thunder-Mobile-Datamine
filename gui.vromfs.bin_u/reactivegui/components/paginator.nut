@@ -95,18 +95,18 @@ let nextBtn = @(onClick) arrowBtn(onClick, 90)
 
 let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function() {
   let res = { watch = [curPage, lastPage, myPage] }.__update(ovr)
-  if (lastPage.value >= 0 && lastPage.value < 1)
+  if (lastPage.get() >= 0 && lastPage.get() < 1)
     return res
 
-  let cur = curPage.value
-  let my = myPage.value
-  let last = lastPage.value >= 0 ? lastPage.value : max(cur, 1) + 1
+  let cur = curPage.get()
+  let my = myPage.get()
+  let last = lastPage.get() >= 0 ? lastPage.get() : max(cur, 1) + 1
   let isMyPageListed = my <= last
 
-  let children = [cur > 0 ? prevBtn(@() curPage(cur - 1)) : emptyBtnPlace]
+  let children = [cur > 0 ? prevBtn(@() curPage.set(cur - 1)) : emptyBtnPlace]
   for (local i = 0; i <= last; i++) {
     let page = i
-    let onClick = @() curPage(page)
+    let onClick = @() curPage.set(page)
     if (i == cur)
       children.append(mkCurPage(i + 1))
     else if ((cur - 1 <= i && i <= cur + 1)       
@@ -125,7 +125,7 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
     }
   }
 
-  children.append(cur < last ? nextBtn(@() curPage(cur + 1)) : emptyBtnPlace)
+  children.append(cur < last ? nextBtn(@() curPage.set(cur + 1)) : emptyBtnPlace)
 
   return res.__update({
     size = [SIZE_TO_CONTENT, pageHeight]

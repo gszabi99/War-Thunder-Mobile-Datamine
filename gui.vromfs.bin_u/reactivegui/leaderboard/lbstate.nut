@@ -61,7 +61,7 @@ let requestDataInternal = keepref(Computed(function() {
   return newData
 }))
 
-setLbRequestData(requestDataInternal.value)
+setLbRequestData(requestDataInternal.get())
 requestDataInternal.subscribe(function(v) {
   setLbRequestData(v)
   if (isRefreshLbEnabled.get())

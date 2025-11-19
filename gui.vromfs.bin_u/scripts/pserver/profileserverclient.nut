@@ -21,7 +21,7 @@ const RESULT_ID = "pserver.requestResult"
 let debugDelay = hardPersistWatched("pserver.debugDelay", 0.0)
 let lastRequests = hardPersistWatched("pserver.lastRequests", [])
 let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) 
-let nextTimeout = keepref(Computed(@() progressTimeouts.value
+let nextTimeout = keepref(Computed(@() progressTimeouts.get()
   .reduce(@(res, v) res <= 0 ? v.timeout : min(res, v.timeout), 0)))
 
 let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressChange", { id, value, isInProgress })
@@ -53,9 +53,9 @@ function startProgress(id, value) {
 }
 
 function stopProgress(id) {
-  if (id not in progressTimeouts.value)
+  if (id not in progressTimeouts.get())
     return
-  let { value } = progressTimeouts.value[id]
+  let { value } = progressTimeouts.get()[id]
   progressTimeouts.mutate(@(v) v.$rawdelete(id))
   sendProgress(id, value, false)
 }
@@ -165,7 +165,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
 })
 
 function doRequestOnline(action, params, id, progressId) {
-  if (!isAuthAndUpdated.value) {
+  if (!isAuthAndUpdated.get()) {
     logPSC($"Skip action {action}, no token")
     sendResult({ error = "Not authorized" }, id, progressId, action)
     return
@@ -218,10 +218,10 @@ function requestImpl(msg) {
 
 local request = requestImpl
 function updateDebugDelay() {
-  request = (debugDelay.value <= 0) ? requestImpl
+  request = (debugDelay.get() <= 0) ? requestImpl
     : function(msg) {
         startProgress(msg.data?.progressId, msg.data?.progressValue)
-        setTimeout(max(0.2, frnd()) * debugDelay.value, @() requestImpl(msg))
+        setTimeout(max(0.2, frnd()) * debugDelay.get(), @() requestImpl(msg))
       }
 }
 updateDebugDelay()
@@ -229,26 +229,26 @@ debugDelay.subscribe(@(_) updateDebugDelay())
 
 function debugLastRequests() {
   log("lastRequests: ")
-  debugTableData(lastRequests.value, { recursionLevel = 7 })
+  debugTableData(lastRequests.get(), { recursionLevel = 7 })
 }
 
 function checkTimeouts() {
   let time = get_time_sec()
-  let finished = progressTimeouts.value.filter(@(v) v.timeout <= time)
+  let finished = progressTimeouts.get().filter(@(v) v.timeout <= time)
   if (finished.len() == 0)
     return
-  progressTimeouts(progressTimeouts.value.filter(@(_, id) id not in finished))
+  progressTimeouts.set(progressTimeouts.get().filter(@(_, id) id not in finished))
   finished.each(@(v, id) sendProgress(id, v.value, false))
 }
 checkTimeouts()
 let startNextTimer = @(t) t <= 0 ? null : resetTimeout(t - get_time_sec(), checkTimeouts)
-startNextTimer(nextTimeout.value)
+startNextTimer(nextTimeout.get())
 nextTimeout.subscribe(startNextTimer)
 
 eventbus_subscribe("profile_srv.request", @(msg) request(msg))
 eventbus_subscribe("profile_srv.debugLastRequests", debugLastRequests)
 
 
-register_command(@(delay) debugDelay(delay), "pserver.delay_requests")
+register_command(@(delay) debugDelay.set(delay), "pserver.delay_requests")
 register_command(debugLastRequests, "pserver.debug_last_requests")
 register_command(function(errId) { debugError = errId }, "pserver.debug_next_request_error")

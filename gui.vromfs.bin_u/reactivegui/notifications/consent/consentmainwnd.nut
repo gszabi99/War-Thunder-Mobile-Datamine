@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logC = log_with_prefix("[consent] ")
-
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
@@ -23,9 +23,9 @@ let mainButtons = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("consentWnd/btns/notConsent"), @() applyConsent(defaultPointsTable.map(@(_) false), {wnd="consentMain", action="dont_consent"}))
+    textButtonCommon(utf8ToUpper(loc("consentWnd/btns/notConsent")), @() applyConsent(defaultPointsTable.map(@(_) false), {wnd="consentMain", action="dont_consent"}))
     {size = flex()}
-    textButtonPrimary(loc("consentWnd/btns/consent"), @() applyConsent(defaultPointsTable, {wnd="consentMain", action="accept_all"}))
+    textButtonPrimary(utf8ToUpper(loc("consentWnd/btns/consent")), @() applyConsent(defaultPointsTable, {wnd="consentMain", action="accept_all"}))
   ]
 }
 

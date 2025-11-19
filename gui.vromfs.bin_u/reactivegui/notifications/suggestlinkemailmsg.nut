@@ -35,13 +35,13 @@ function openMsg() {
     buttons = [
       { id = "later", isCancel = true,
         function cb() {
-          isSuggested(true)
+          isSuggested.set(true)
           setLastTime(serverTime.get())
         }
       }
       { id = "linkEmail", styleId = "PRIMARY", isDefault = true,
         function cb() {
-          isSuggested(true)
+          isSuggested.set(true)
           eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL })
           setLastTime(serverTime.get())
         }
@@ -57,5 +57,5 @@ needShowMessage.subscribe(@(v) v ? openMsgDelayed() : closeMsgBox(SUGGEST_LINK_A
 
 register_command(function() {
   setLastTime(0)
-  isSuggested(false)
+  isSuggested.set(false)
 }, "debug.reset_link_email_timer")

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getBulletImage } = require("%appGlobals/config/bulletsPresentation.nut")
+let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsPresentation.nut")
 let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 
 let ICON_SIZE = hdpxi(80)
@@ -20,12 +20,12 @@ let mkSlotNumber = @(id, chosenBullets) @() {
   text = getSlotNumber(chosenBullets.get(), id)
 }.__update(fontTiny)
 
-let nameBullet = @(bulletInfo) {
+let nameBullet = @(bSet) {
   size = flex()
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   padding = hdpx(5)
-  text = getAmmoNameShortText(bulletInfo)
+  text = getAmmoNameShortText(bSet)
   maxWidth = pw(100)
   behavior = Behaviors.Marquee
   delay = defMarqueeDelay
@@ -41,18 +41,12 @@ let imageBullet = @(imageBulletName) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-function mkBulletSlot(chosenBullets, bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
-  if (bulletInfo == null)
+function mkBulletSlot(chosenBullets, bSet, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
+  if (bSet == null)
     return null
-  local { icon = null, image = null } = bInfoFromUnitTags
-  if (icon != null)
-    icon = $"{icon}.svg"
-  else
-    icon = (bulletInfo?.isBulletBelt ?? false) ? "hud_ammo_bullet_ap.svg" : "hud_ammo_ap1_he0.svg"
-  let imageBulletName = image != null
-    ? $"ui/gameuiskin#{image}.avif"
-    : getBulletImage(bulletInfo.bullets)
-  let nameText = getAmmoTypeShortText(bulletInfo.bullets?[0] ?? "" )
+  let icon = getBulletTypeIcon(bInfoFromUnitTags?.icon, bSet)
+  let imageBulletName = getBulletImage(bInfoFromUnitTags?.image, bSet?.bullets ?? [])
+  let nameText = getAmmoTypeShortText(bSet.bullets?[0] ?? "")
   return {
     flow = FLOW_HORIZONTAL
     children = [
@@ -63,8 +57,8 @@ function mkBulletSlot(chosenBullets, bulletInfo, bInfoFromUnitTags, ovrBulletIma
         hplace = ALIGN_CENTER
         children = [
           imageBullet(imageBulletName)
-          mkSlotNumber(bulletInfo.id, chosenBullets)
-          nameBullet(bulletInfo)
+          mkSlotNumber(bSet.id, chosenBullets)
+          nameBullet(bSet)
         ]
       }.__update(ovrBulletImage)
       {
@@ -78,7 +72,7 @@ function mkBulletSlot(chosenBullets, bulletInfo, bInfoFromUnitTags, ovrBulletIma
             size = [ICON_SIZE,ICON_SIZE]
             rendObj = ROBJ_IMAGE
             vplace = ALIGN_CENTER
-            image = Picture($"ui/gameuiskin#{icon}:{ICON_SIZE}:{ICON_SIZE}:P")
+            image = Picture($"{icon}:{ICON_SIZE}:{ICON_SIZE}:P")
             keepAspect = KEEP_ASPECT_FIT
           }
           {

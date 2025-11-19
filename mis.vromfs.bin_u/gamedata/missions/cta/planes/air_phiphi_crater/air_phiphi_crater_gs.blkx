@@ -55,7 +55,7 @@
       "openDiffLevels": true,
       "scoreLimit": 3800,
       "timeLimit": 15,
-      "deathPenaltyMul": 0.0,
+      "deathPenaltyMul": 0.2,
       "country_axis": "japan",
       "country_allies": "ussr",
       "restoreType": "attempts",

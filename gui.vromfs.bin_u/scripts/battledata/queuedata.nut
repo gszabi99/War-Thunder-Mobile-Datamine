@@ -21,16 +21,16 @@ let lastResult = mkWatched(persist, "lastResult", null)
 let successResult = mkWatched(persist, "lastSuccessResult", null)
 let needRefresh = mkWatched(persist, "needRefresh", false)
 let curUnitInfo = Computed(@() curCampaignSlotUnits.get() ?? curUnit.get()?.name)
-let isQueueDataActual = Computed(@() !needRefresh.value && isEqual(successResult.get()?.unitInfo, curUnitInfo.get()))
-let queueDataError = Computed(@() lastResult.value?.error)
+let isQueueDataActual = Computed(@() !needRefresh.get() && isEqual(successResult.get()?.unitInfo, curUnitInfo.get()))
+let queueDataError = Computed(@() lastResult.get()?.error)
 let needActualize = Computed(@() !isQueueDataActual.get() && isLoggedIn.get() && curUnitInfo.get() != null)
 let needDebugNewResult = Watched(false)
 let actualizeDelay = Computed(@() isInSquad.get() && !isSquadLeader.get() && isReady.get()
   ? SQUAD_ACTUALIZE_DELAY
   : SILENT_ACTUALIZE_DELAY)
 
-serverConfigs.subscribe(@(_) needRefresh(true))
-isInMpSession.subscribe(@(v) !v ? needRefresh(true) : null)
+serverConfigs.subscribe(@(_) needRefresh.set(true))
+isInMpSession.subscribe(@(v) !v ? needRefresh.set(true) : null)
 
 let profileKeysAffectQueue = {
   units = true
@@ -43,7 +43,7 @@ let profileKeysAffectQueue = {
 }
 lastProfileKeysUpdated.subscribe(function(list) {
   if (list.findvalue(@(_, k) profileKeysAffectQueue?[k]) != null)
-    needRefresh(true)
+    needRefresh.set(true)
 })
 
 function actualizeQueueData(executeAfter = null) {
@@ -65,34 +65,34 @@ registerHandler("onGetQueueData", function(res, context) {
     return
   }
   if (res?.error != null) {
-    lastResult(res.__merge({ unitInfo }))
+    lastResult.set(res.__merge({ unitInfo }))
     callHandler(extExecuteAfter, res)
     return
   }
 
   let result = decodeJwtAndHandleErrors(res).__update({ unitInfo })
-  lastResult(result)
+  lastResult.set(result)
   if ("error" not in result)
-    successResult(result)
-  needRefresh(false)
+    successResult.set(result)
+  needRefresh.set(false)
   callHandler(extExecuteAfter, result)
 })
 
 function actualizeIfNeed() {
-  if (needActualize.value)
+  if (needActualize.get())
     actualizeQueueData()
 }
 
 function delayedActualize() {
-  if (needActualize.value)
-    resetTimeout(actualizeDelay.value, actualizeIfNeed)
+  if (needActualize.get())
+    resetTimeout(actualizeDelay.get(), actualizeIfNeed)
 }
 delayedActualize()
 actualizeDelay.subscribe(@(_) delayedActualize())
 needActualize.subscribe(function(v) {
   if (!v)
     return
-  if (successResult.value == null)
+  if (successResult.get() == null)
     actualizeQueueData()
   else
     delayedActualize()
@@ -104,25 +104,25 @@ squadLeaderQueueDataCheckTime.subscribe(function(_) {
 })
 
 function printQueueDataResult() {
-  if ("jwt" in successResult.value)
-    saveJwtResultToJson(successResult.value.jwt, successResult.value.payload, "wtmQueueData")
-  console_print(successResult.value)
+  if ("jwt" in successResult.get())
+    saveJwtResultToJson(successResult.get().jwt, successResult.get().payload, "wtmQueueData")
+  console_print(successResult.get())
 }
 
 successResult.subscribe(function(_) {
-  if (!needDebugNewResult.value)
+  if (!needDebugNewResult.get())
     return
-  needDebugNewResult(false)
+  needDebugNewResult.set(false)
   printQueueDataResult()
 })
 
-let syncQueueToken = @() myQueueToken(successResult.value?.jwt ?? "")
+let syncQueueToken = @() myQueueToken.set(successResult.get()?.jwt ?? "")
 syncQueueToken()
 successResult.subscribe(@(_) syncQueueToken())
 
 register_command(function() {
-  if (needActualize.value) {
-    needDebugNewResult(true)
+  if (needActualize.get()) {
+    needDebugNewResult.set(true)
     actualizeQueueData()
     console_print("Actualize queue data")
   }
@@ -131,7 +131,7 @@ register_command(function() {
 }, "meta.debugCurUnitQueueData")
 
 return {
-  queueData = Computed(@() successResult.value)
+  queueData = Computed(@() successResult.get())
   isQueueDataActual
   queueDataError
   actualizeQueueData

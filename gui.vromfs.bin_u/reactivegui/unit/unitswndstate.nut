@@ -2,17 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
-let { sortUnits } = require("%rGui/unit/unitUtils.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 
 
-let availableUnitsList = Computed(@() campUnitsCfg.get()
-  .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in campMyUnits.get())
-  .map(@(u, id) campMyUnits.get()?[id] ?? u)
-  .values()
-  .sort(sortUnits))
+let visibleUnitsList = Computed(@() campUnitsCfg.get()
+  .filter(@(u) (!u?.isHidden && u.name not in unreleasedUnits.get()) || u.name in campMyUnits.get()))
 
-let sizePlatoon = Computed(@() (availableUnitsList.get()?[0].platoonUnits ?? []).len())
+let sizePlatoon = Computed(@() visibleUnitsList.get().findvalue(@(_) true)?.platoonUnits.len() ?? 0)
 
 let curSelectedUnit = Watched(null)
 let curUnitName = Computed(@() curUnit.get()?.name)
@@ -30,6 +26,6 @@ curCampaign.subscribe(function(_) {
 return {
   curSelectedUnit
   curUnitName
-  availableUnitsList
+  visibleUnitsList
   sizePlatoon
 }

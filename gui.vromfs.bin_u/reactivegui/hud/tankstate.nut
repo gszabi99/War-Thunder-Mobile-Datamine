@@ -35,15 +35,15 @@ let gunnerReady = Computed(@() crewGunnerState.get().state == "ok")
 let loaderReady = Computed(@() crewLoaderState.get().state == "ok")
 
 let export = tankStateNative.__merge({
-  hasDebuffGuns = Computed(@() !!hasDebuffGuns.value != ((debugDebuff.get() & 1) != 0))
-  hasDebuffTurretDrive = Computed(@() !!hasDebuffTurretDrive.value != ((debugDebuff.get() & 2) != 0))
-  hasDebuffEngine = Computed(@() !!hasDebuffEngine.value != ((debugDebuff.get() & 4) != 0))
-  hasDebuffTracks = Computed(@() !!hasDebuffTracks.value != ((debugDebuff.get() & 8) != 0))
-  hasDebuffFire = Computed(@()   !!hasDebuffFire.value != ((debugDebuff.get() & 16) != 0))
+  hasDebuffGuns = Computed(@() !!hasDebuffGuns.get() != ((debugDebuff.get() & 1) != 0))
+  hasDebuffTurretDrive = Computed(@() !!hasDebuffTurretDrive.get() != ((debugDebuff.get() & 2) != 0))
+  hasDebuffEngine = Computed(@() !!hasDebuffEngine.get() != ((debugDebuff.get() & 4) != 0))
+  hasDebuffTracks = Computed(@() !!hasDebuffTracks.get() != ((debugDebuff.get() & 8) != 0))
+  hasDebuffFire = Computed(@()   !!hasDebuffFire.get() != ((debugDebuff.get() & 16) != 0))
   hasDebuffDriver = Computed(@() !driverReady.get() != ((debugDebuff.get() & 32) != 0))
   hasDebuffGunner = Computed(@() !gunnerReady.get() != ((debugDebuff.get() & 64) != 0))
   hasDebuffLoader = Computed(@() !loaderReady.get() != ((debugDebuff.get() & 128) != 0))
-  hasDebuffFireExternal = Computed(@() !!hasDebuffFireExternal.value != ((debugDebuff.get() & 256) != 0))
+  hasDebuffFireExternal = Computed(@() !!hasDebuffFireExternal.get() != ((debugDebuff.get() & 256) != 0))
 })
 
 let maxDebugDebuff = 255

@@ -5,8 +5,9 @@ let { eventbus_subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName, hasTarget } = require("%rGui/hudState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
-let color = 0xFFFFFFFF
+let color = hudWhiteColor
 let cooldownColor = 0xFFB0B0B0
 
 let defTransform = {}

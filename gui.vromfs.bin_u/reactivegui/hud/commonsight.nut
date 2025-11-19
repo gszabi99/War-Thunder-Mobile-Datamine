@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
+let { hudWhiteColor, hudRedColor, hudGoldColor, hudLimeColor } = require("%rGui/style/hudColors.nut")
 
-let crosshairColor = Color(255, 255, 255)
-let crosshairNoPenetrationColor = 0xFFFF0000
-let crosshairPropablePenetrationColor = 0xFFFFCC00
-let crosshairPenetrationColor = 0xFF04F803
+let crosshairColor = hudWhiteColor
+let crosshairNoPenetrationColor = hudRedColor
+let crosshairPropablePenetrationColor = hudGoldColor
+let crosshairPenetrationColor = hudLimeColor
 
 let crosshairSimpleSize = evenPx(20)
 let reductionCoefficientSightSize = 0.85

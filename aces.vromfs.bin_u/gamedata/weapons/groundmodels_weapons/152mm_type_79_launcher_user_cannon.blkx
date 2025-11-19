@@ -726,7 +726,7 @@
     "bullet": {
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -740,7 +740,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_vt.ivf",
+      "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
       "bulletName": "type_79_atgm",
       "mass": 19.9,
       "caliber": 0.152,
@@ -775,7 +775,7 @@
         "explosiveMass": 2.3,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap_rocket",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -789,7 +789,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_vt.ivf",
+        "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,

@@ -127,7 +127,7 @@ return loginTypes.__merge(secondStepTypes, {
   isLoginStarted = Computed(@() (loginState.get() & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.get() & LOGIN_STATE.AUTHORIZED) != 0)
   isOnlineSettingsAvailable
-  isSettingsAvailable = Computed(@() isAppLoaded.value && (isOnlineSettingsAvailable.get() || !isLoginRequired.get()))
+  isSettingsAvailable = Computed(@() isAppLoaded.get() && (isOnlineSettingsAvailable.get() || !isLoginRequired.get()))
   isMatchingConnected = Computed(@() (loginState.get() & LOGIN_STATE.MATCHING_CONNECTED) != 0)
   isProfileReceived = Computed(@() (loginState.get() & LOGIN_STATE.PROFILE_RECEIVED) != 0)
   isContactsLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)

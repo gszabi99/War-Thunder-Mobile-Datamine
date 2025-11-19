@@ -68,7 +68,7 @@ let windowsStates = persist("windowStates", @() {})
 
 let mkWindow = kwarg(function(id, content=null, mkContent=null,
       onAttach=null, initialSize = const [sw(40), sh(65)], minSize = const [sw(14), sh(25)], maxSize = const [sw(80), sh(90)],
-      windowStyle = null, saveState=false
+      windowStyle = null, saveState=false, onClose = @() null
   ) {
   assert(content!=null || type(mkContent)=="function", "registerWindow should be called with 'content' or 'mkContent'")
   let initialState = {
@@ -117,7 +117,16 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
           key = id
           clipChildren = true
         }
-        @() {children = closeButton(@() hideWindow(id)) hplace = ALIGN_RIGHT pos = [fsh(1), -fsh(1)] transform={} key = id}
+        @() {
+          hplace = ALIGN_RIGHT
+          pos = [fsh(1), -fsh(1)]
+          transform={}
+          key = id
+          children = closeButton(function() {
+            hideWindow(id)
+            onClose()
+          })
+        }
       ]
     }.__update(windowStyle ?? {})
   }

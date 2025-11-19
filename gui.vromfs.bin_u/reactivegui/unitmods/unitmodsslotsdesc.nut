@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { commonTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { getBulletBeltFullName, getWeaponFullName, getBulletBeltDesc } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getTntEquivalentMass } = require("%rGui/weaponry/weaponryStatsCalculations.nut")
@@ -93,6 +94,18 @@ let weaponDescRowsCfg = [
   .map(@(r) rowCfgDefaults.__merge(r))
 
 
+let ignoreFields = ["blk", "weaponId", "bulletSets", "weaponBlkName"].totable()
+function isWeaponsCanCountAsSame(w1, w2) {
+  foreach (k, v in w1)
+    if (k not in ignoreFields && !isEqual(v, w2?[k]))
+      return false
+  foreach (id, bSet in w1.bulletSets)
+    foreach (k, v in bSet)
+      if (k not in ignoreFields && !isEqual(v, w2.bulletSets?[id][k]))
+        return false
+  return getWeaponFullName(w1, w1.bulletSets?[""]) == getWeaponFullName(w2, w2.bulletSets?[""])
+}
+
 function getDescRowsCfg(slotWeapon, conflictSlots) {
   let resArr = []
   let { weapons, mass, massLbs = 0 } = slotWeapon
@@ -103,13 +116,13 @@ function getDescRowsCfg(slotWeapon, conflictSlots) {
   local totalCount = 0
   local totalBulletsCount = 0
   local totalTurrets = 0
-  let fullList = {}
+  let fullList = { [wId]  = true }
   foreach(w in weapons) {
     let { weaponId, turrets, totalBullets, count = 1 } = w
-    fullList[weaponId] <- true
-    if (wId != weaponId)
+    if (wId != weaponId && !isWeaponsCanCountAsSame(weapons[0], w)) {
+      fullList[weaponId] <- true
       continue
-
+    }
     totalCount += max(turrets, 1) * count
     totalBulletsCount += totalBullets
     totalTurrets += turrets

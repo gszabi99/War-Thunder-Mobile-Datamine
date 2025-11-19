@@ -7,7 +7,7 @@ let { bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, setOrSwapCur
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary, textButtonInactive } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
@@ -30,7 +30,7 @@ let savedSlotName = Computed(function() {
 let wndAABB = Watched(null)
 
 function close(){
-  openedSlot(-1)
+  openedSlot.set(-1)
   openParams.set(null)
   sendPlayerActivityToServer()
 }
@@ -61,7 +61,7 @@ function applyButton() {
         close,
         { ovr = { key = "closeButton" }}) 
     : !isEnoughLevel
-      ? textButtonCommon(applyText,
+      ? textButtonInactive(applyText,
         @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }),
         { ovr = { key = "errorButton" }}) 
     : textButtonPrimary(applyText,
@@ -89,6 +89,7 @@ function bulletContent() {
     watch = [bInfo, visBullets, cBullets]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
+    gap = hdpx(5)
     children = [
       mkBulletsList({
         bInfo,

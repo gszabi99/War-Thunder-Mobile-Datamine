@@ -31,15 +31,16 @@
   "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 25,
-    "mass": 72.0,
+    "mass": 72.57478,
     "explosiveType": "rdx_pwx",
     "explosiveMass": 17.0,
     "caliber": 0.183,
     "speed": 716.0,
     "maxDistance": 10000.0,
+    "Cx": 0.48056,
     "normalizationPreset": "heat",
     "ricochetPreset": "hesh",
-    "groundRicochetPreset": "hesh",
+    "groundRicochetPreset": "hesh_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -56,6 +57,7 @@
     "cumulativeByNormal": true,
     "shellAnimation": "video/shells_animations/hesh.ivf",
     "bulletName": "183mm_hesh",
+    "rendinstDamageRadius": 9.0,
     "hitPowerMult": 20.0,
     "relativeVelHitShift": [
       300.0,
@@ -65,9 +67,12 @@
       200.0,
       1000.0
     ],
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
+    "ricochetTimeToLive": 0.085,
     "hitPower": 260.0,
-    "fuseDelayDist": 0.05,
-    "explodeTreshold": 0.1,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 4.0,
     "explosionEffect": "hit_161_205mm_metal_he",
     "groundCollisionEffect": "hit_161_205mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -114,11 +119,11 @@
     },
     "armorpower": {
       "ArmorPower0m": [
-        5.0,
+        8.0,
         10.0
       ],
       "ArmorPower10000m": [
-        4.0,
+        5.0,
         10000.0
       ]
     },
@@ -226,6 +231,9 @@
       "distance": 0.228,
       "damage": 800.0
     },
+    "splashDamage": {
+      "squashArmorThickness": 228.0
+    },
     "visual": {
       "range_percent_of_ammo": [
         100.0,
@@ -319,15 +327,16 @@
   "183mm_britain_HESH": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 72.0,
+      "mass": 72.57478,
       "explosiveType": "rdx_pwx",
       "explosiveMass": 17.0,
       "caliber": 0.183,
       "speed": 716.0,
       "maxDistance": 10000.0,
+      "Cx": 0.48056,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
-      "groundRicochetPreset": "hesh",
+      "groundRicochetPreset": "hesh_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -344,6 +353,7 @@
       "cumulativeByNormal": true,
       "shellAnimation": "video/shells_animations/hesh.ivf",
       "bulletName": "183mm_hesh",
+      "rendinstDamageRadius": 9.0,
       "hitPowerMult": 20.0,
       "relativeVelHitShift": [
         300.0,
@@ -353,9 +363,12 @@
         200.0,
         1000.0
       ],
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "hitPower": 260.0,
-      "fuseDelayDist": 0.05,
-      "explodeTreshold": 0.1,
+      "fuseDelayDist": 0.1,
+      "explodeTreshold": 4.0,
       "explosionEffect": "hit_161_205mm_metal_he",
       "groundCollisionEffect": "hit_161_205mm_dirt_he",
       "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -402,11 +415,11 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          5.0,
+          8.0,
           10.0
         ],
         "ArmorPower10000m": [
-          4.0,
+          5.0,
           10000.0
         ]
       },
@@ -513,6 +526,9 @@
         "armorPower": 228.0,
         "distance": 0.228,
         "damage": 800.0
+      },
+      "splashDamage": {
+        "squashArmorThickness": 228.0
       },
       "visual": {
         "range_percent_of_ammo": [

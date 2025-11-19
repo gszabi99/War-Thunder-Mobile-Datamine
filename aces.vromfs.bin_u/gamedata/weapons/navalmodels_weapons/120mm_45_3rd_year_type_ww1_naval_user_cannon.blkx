@@ -33,7 +33,7 @@
     "maxDistance": 50000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -47,6 +47,11 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "120mm_45_3rd_yt_he",
     "dynamicKv": true,
@@ -60,7 +65,6 @@
     ],
     "explodeTreshold": 0.1,
     "fuseDelayDist": 0.0,
-    "fuseOnWater": true,
     "explosionEffect": "hit_133_160mm_metal_ap",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_133_160mm_metal_ap",

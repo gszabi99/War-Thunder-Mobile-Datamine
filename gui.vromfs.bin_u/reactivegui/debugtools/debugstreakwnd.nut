@@ -40,8 +40,9 @@ let wndHeader = {
 }
 
 function mkList() {
-  let unlocks = (get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? []
-  unlocks.extend(multiStageUnlockIdConfig.reduce(@(res, val) res.append({ id = val[2], num = 2}, {id = val[3], num = 3}, {id = val.def, num = 9}), []))
+  let unlocks = multiStageUnlockIdConfig
+    .reduce(@(res, val) res.extend([2, 3, 9, 11, 99].map(@(num) { id = val?[num] ?? val.def, num } )), [])
+    .extend((get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? [])
   let rows = ceil(unlocks.len().tofloat() / columns).tointeger()
   return {
     size = FLEX_H
@@ -72,7 +73,7 @@ function mkList() {
                   rendObj = ROBJ_TEXTAREA
                   behavior = Behaviors.TextArea
                   halign = ALIGN_CENTER
-                  text = getUnlockLocText(item.id, repeatInARow)
+                  text = getUnlockLocText(item.id, item?.num ?? repeatInARow)
                 }
               ]
             }

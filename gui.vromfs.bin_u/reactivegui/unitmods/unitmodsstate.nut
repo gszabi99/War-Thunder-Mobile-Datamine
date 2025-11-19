@@ -1,36 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
 require("%rGui/onlyAfterLogin.nut")
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { hangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { iconsCfg } = require("%rGui/unitMods/unitModsConst.nut")
+let { unseenCampUnitMods, markUnitModsSeen } = require("%rGui/unitMods/unseenMods.nut")
+let { getUnseenUnitBulletsNonUpdatable, markShellsSeen } = require("%rGui/unitMods/unseenBullets.nut")
+let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 
-let SEEN_MODS = "seenMods"
-let seenMods = mkWatched(persist, "SEEN_MODS", {})
 
-let modsSort = @(a, b) a.reqLevel <=> b.reqLevel || a.name <=> b.name
+let slotModKey = @(idx) $"unit_mods_slot_mod_{idx}"
 
 let isUnitModsOpen = mkWatched(persist, "isUnitModsOpen", false)
-let curCategoryId = mkWatched(persist, "curCategoryId", "")
-let curModId = mkWatched(persist, "curModId", "")
-let unit = Computed(@() campMyUnits.get()?[hangarUnitName.get()])
+let isUnitModAttached = mkWatched(persist, "isUnitModAttached", false)
+let curModCategoryId = mkWatched(persist, "curModCategoryId", null)
+let curModId = mkWatched(persist, "curModId", null)
+let curBullet = mkWatched(persist, "curBullet", null)
+let curBulletCategoryId = mkWatched(persist, "curBulletCategoryId", null)
+
+let isOwn = Computed(@() hangarUnitName.get() in campMyUnits.get())
+let unit = Computed(@() !isUnitModsOpen.get() ? null
+  : (baseUnit.get() ?? campMyUnits.get()?[hangarUnit.get()?.name] ?? campUnitsCfg.get()?[hangarUnit.get()?.name]))
 let unitName = Computed(@() unit.get()?.name)
 let unitMods = Computed(@() unit.get()?.mods)
-let unitModPreset = Computed(@() unit.get()?.modPreset)
-
-isUnitModsOpen.subscribe(@(v) sendNewbieBqEvent(v ? "openUnitModificationsWnd" : "closeUnitModificationsWnd"))
 
 let modsPresets = Computed(function() {
-  let { unitModPresets = [] } = campConfigs.get()
+  let { unitModPresets = {} } = campConfigs.get()
   let result = {}
   foreach(presetName, preset in unitModPresets) {
     result[presetName] <- {}
@@ -40,9 +41,11 @@ let modsPresets = Computed(function() {
   return result
 })
 
+let mkMods = @(u) Computed(@() modsPresets.get()?[u.get()?.modPreset] ?? {})
+let mods = mkMods(unit)
 let modsByCategory = Computed(function() {
   let result = {}
-  foreach(modName, mod in modsPresets.get()?[unitModPreset.get()] ?? {}) {
+  foreach(modName, mod in mods.get()) {
     if (mod?.isHidden)
       continue
     if (mod.group not in result)
@@ -52,32 +55,28 @@ let modsByCategory = Computed(function() {
   return result
 })
 
-let mods = Computed(@() modsPresets.get()?[unitModPreset.get()] ?? {})
+let modsSort = @(a, b) a.reqLevel <=> b.reqLevel || a.name <=> b.name
+
 let modsCategories = Computed(@() modsByCategory.get().keys().sort(@(a, b) a <=> b) ?? [])
-let modsSorted = Computed(@() modsByCategory.get()?[curCategoryId.get()]?.values().sort(modsSort) ?? [])
+let modsSorted = Computed(@() modsByCategory.get()?[curModCategoryId.get()]?.values().sort(modsSort) ?? [])
 let curMod = Computed(@() mods.get()?[curModId.get()])
-let curModIndex = keepref(Computed(@() modsSorted.get().findindex(@(v) v?.name == curModId.get())))
 let isCurModPurchased = Computed(@() unitMods.get()?[curModId.get()] != null)
 let isCurModEnabled = Computed(@() unitMods.get()?[curModId.get()] == true)
 let isCurModLocked = Computed(@() (curMod.get()?.reqLevel ?? 0) > (unit.get()?.level ?? 0))
 
+let iconCfg = Computed(@() iconsCfg?[unit.get()?.unitType] ?? iconsCfg.tank)
+
 let unseenModsByCategory = Computed(function() {
   let res = {}
-  foreach (cat, modsInCat in modsByCategory.get()) {
-    res[cat] <- {}
+  let unseen = unseenCampUnitMods.get()?[unitName.get()]
+  if (unseen == null || !isUnitModsOpen.get())
+    return res
+  foreach (cat, modsInCat in modsByCategory.get())
     foreach (mod in modsInCat)
-      if (mod.name not in seenMods.get()?[unitName.get()]
-          && (mod.reqLevel ?? 0) <= (unit.get()?.level ?? 0)
-          && mod.name not in unitMods.get())
-        res[cat][mod.name] <- true
-  }
-  return res.filter(@(v) v.len() > 0)
+      if (mod.name in unseen)
+        getSubTable(res, cat)[mod.name] <- true
+  return res
 })
-
-function openUnitModsWnd() {
-  curCategoryId.set(modsCategories.get()?[0])
-  isUnitModsOpen.set(true)
-}
 
 let mkUnitAllModsCost = @(unitW) Computed(function() {
   let { costWp = 0, modCostPart = 0.0, campaign = "", rank = 0 } = unitW.get()
@@ -99,95 +98,82 @@ function getModCost(mod, allModsCost) {
 
 function hasEnoughCurrencies(mod, allModsCost, allBalance) {
   let { costWpWeight = 0, costGold = 0 } = mod
-  if (costWpWeight <= 0)
-    return costGold <= (allBalance?[GOLD] ?? 0)
-  return costWpWeight.tofloat() * allModsCost <= (allBalance?[WP] ?? 0)
+  return costWpWeight <= 0 ? costGold <= (allBalance?[GOLD] ?? 0)
+    : roundPrice(costWpWeight.tofloat() * allModsCost) <= (allBalance?[WP] ?? 0)
 }
 
-let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitAllModsCost.value))
-
-curCategoryId.subscribe(@(_)
-  curModId.set(modsSorted.get().findvalue(@(v) unitMods.get()?[v.name] == true)?.name))
+let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitAllModsCost.get()))
 
 let enableCurUnitMod = @() enable_unit_mod(unitName.get(), curModId.get(), true)
 let disableCurUnitMod = @() enable_unit_mod(unitName.get(), curModId.get(), false)
 
-function setCurUnitSeenMods(ids) {
-  if (!unitName.get())
-    return
-  seenMods.mutate(function(v) {
-    foreach (id in ids) {
-      if (unitName.get() not in v)
-        v[unitName.get()] <- {}
-      v[unitName.get()][id] <- true
-    }
-  })
-  let sBlk = get_local_custom_settings_blk().addBlock(SEEN_MODS)
-  let blk = sBlk.addBlock(unitName.get())
-  foreach (id, isSeen in seenMods.get()?[unitName.get()] ?? {})
-    if (isSeen)
-      blk[id] = true
-  eventbus_send("saveProfile", {})
+function changeModTabWithUnseenTrigger(id) {
+  if (unitName.get() != null && curModCategoryId.get() in unseenModsByCategory.get())
+    markUnitModsSeen(unitName.get(), unseenModsByCategory.get()?[curModCategoryId.get()].keys())
+  curModCategoryId.set(id)
 }
 
-
-function loadSeenMods() {
-  if (!isSettingsAvailable.get())
-    return seenMods.set({})
-  let blk = get_local_custom_settings_blk()
-  let htBlk = blk?[SEEN_MODS]
-  if (!isDataBlock(htBlk)) {
-    seenMods.set({})
-    return
+function changeBulletTabWithUnseenTrigger(id) {
+  let prevId = curBulletCategoryId.get()
+  if (id == null || (id < BULLETS_PRIM_SLOTS) != (prevId < BULLETS_PRIM_SLOTS)) {
+    let uName = unitName.get()
+    let { primary, secondary } = getUnseenUnitBulletsNonUpdatable(uName)
+    let unseenBullets = prevId < BULLETS_PRIM_SLOTS ? primary : secondary
+    if (unseenBullets.len() > 0)
+      markShellsSeen(uName, unseenBullets.keys())
   }
-  let res = {}
-  foreach (unitId, modsIds in htBlk) {
-    let unitSeenMods = {}
-    eachParam(modsIds, @(isSeen, id) unitSeenMods[id] <- isSeen)
-    if (unitSeenMods.len() > 0)
-      res[unitId] <- unitSeenMods
-  }
-  seenMods.set(res)
+  curBulletCategoryId.set(id)
 }
 
-if (seenMods.get().len() == 0)
-  loadSeenMods()
+let onModTabChange = @(id) changeModTabWithUnseenTrigger(id)
 
-isSettingsAvailable.subscribe(@(_) loadSeenMods())
-
-let setCurUnitSeenModsCurrent = @() curCategoryId.get() not in unseenModsByCategory.get() ? null
-  : setCurUnitSeenMods(unseenModsByCategory.get()?[curCategoryId.get()].keys())
-
-function onTabChange(id) {
-  setCurUnitSeenModsCurrent()
-  curCategoryId.set(id)
+function openUnitModsWnd() {
+  isUnitModsOpen.set(true)
 }
 
-register_command(function() {
-  seenMods.set({})
-  get_local_custom_settings_blk().removeBlock(SEEN_MODS)
-  eventbus_send("saveProfile", {})
-}, "debug.reset_seen_mods")
+function closeUnitModsWnd() {
+  changeModTabWithUnseenTrigger(null)
+  changeBulletTabWithUnseenTrigger(null)
+  isUnitModsOpen.set(false)
+}
+
+curModCategoryId.subscribe(function(v) {
+  if (v == null)
+    return
+  curBullet.set(null)
+  changeBulletTabWithUnseenTrigger(null)
+  curModId.set(modsSorted.get().findvalue(@(m) unitMods.get()?[m.name] == true)?.name)
+})
+
+isUnitModsOpen.subscribe(@(v) sendNewbieBqEvent(v ? "openUnitModificationsWnd" : "closeUnitModificationsWnd"))
 
 return {
   openUnitModsWnd
-  closeUnitModsWnd = @() isUnitModsOpen.set(false)
+  closeUnitModsWnd
   isUnitModsOpen
-  curCategoryId
+  isUnitModAttached
+  slotModKey
+
+  curModCategoryId
   curMod
   curModId
-  curModIndex
+  curBulletCategoryId
+  curBullet
   isCurModPurchased
   isCurModEnabled
   isCurModLocked
 
+  modsPresets
   mods
   modsSort
   modsSorted
+  mkMods
   modsCategories
   modsByCategory
   unit
+  unitName
   unitMods
+  isOwn
   curUnitAllModsCost
 
   enableCurUnitMod
@@ -198,8 +184,11 @@ return {
   getModCost
   mkCurUnitModCostComp
 
-  setCurUnitSeenModsCurrent
+  changeBulletTabWithUnseenTrigger
+  changeModTabWithUnseenTrigger
   unseenModsByCategory
-  onTabChange
+  onModTabChange
   hasEnoughCurrencies
+
+  iconCfg
 }

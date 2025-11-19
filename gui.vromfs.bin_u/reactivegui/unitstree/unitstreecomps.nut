@@ -9,11 +9,12 @@ let { mkFlagImage, mkPlayerLevel, unitPlateSmall } = require("%rGui/unit/compone
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { selectedLineVert } = require("%rGui/components/selectedLine.nut")
+let { selectedLineVertSolid } = require("%rGui/components/selectedLine.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature } = require("%rGui/components/unseenMark.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 
 let RGAP_HAS_GAP             = 0x01
@@ -21,6 +22,7 @@ let RGAP_HAS_NEXT_LEVEL      = 0x02
 let RGAP_RECEIVED_NEXT_LEVEL = 0x04
 
 let flagSize = evenPx(70)
+let flagSizeBig = evenPx(90)
 let flagGap = hdpx(5)
 let flagsWidth = flagSize * 2 + flagGap
 let levelMarkSize = hdpx(60)
@@ -38,7 +40,6 @@ let infoPanelWidth = hdpx(650)
 let aTimeBarFill = 0.8
 
 let flagBgColor = 0xFF000000
-let flagBgColorSelected = 0xFF296272
 
 let gradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, gradTexSize / 2, gradTexSize / 2, 0, 0))
@@ -64,7 +65,8 @@ let flagBg = @(isSelected) @() {
   size = flex()
   rendObj = ROBJ_IMAGE
   image = gradient()
-  color = isSelected.get() ? flagBgColorSelected : flagBgColor
+  color = isSelected.get() ? selectColor : flagBgColor
+  opacity = 0.7
   transform = {}
   transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
 }
@@ -79,7 +81,7 @@ let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMar
     sound = { click = "choose" }
     children = [
       flagBg(isSelected)
-      selectedLineVert(isSelected)
+      selectedLineVertSolid(isSelected)
       !needBlink.get() || isSelected.get() ? null
         : {
             key = {}
@@ -97,7 +99,7 @@ let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMar
               }
             ]
           }
-      mkFlagImage(country, flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
+      mkFlagImage(country, country == "legacy" ? flagSizeBig : flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
       curCampaignUnseenBranches.get()?[country] ? priorityUnseenMarkFeature.__update({ vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
         : mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
     ]
@@ -127,7 +129,7 @@ let speedUpBtn = @(onClick, cost, level, starLevel, isStarProgress) mkCustomButt
     valign = ALIGN_CENTER
     children = mkTextRow(
       loc("unitsTree/getLevel"),
-      @(text) { rendObj = ROBJ_TEXT, text = utf8ToUpper(text) }.__update(isWidescreen ? fontTinyAccented : fontTiny),
+      @(text) { rendObj = ROBJ_TEXT, text = utf8ToUpper(text) }.__update(isWidescreen ? fontTinyAccentedShaded : fontTinyShaded),
       {
         ["{level}"] = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0)), 
         ["{cost}"] = mkCurrencyComp(cost, "gold") 
@@ -194,7 +196,6 @@ return {
 
   mkFlags
   mkTreeNodesFlag
-  mkFlagImage
   flagSize
   flagsWidth
   levelMark

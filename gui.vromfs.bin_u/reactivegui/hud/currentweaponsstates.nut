@@ -58,7 +58,7 @@ let weaponsList = Computed(@() unitType.get() == AIR || unitType.get() == TANK ?
   : shipWeaponsList)
 
 let gunsList = Computed(function() {
-  if (unitType.value == AIR || unitType.value == TANK)
+  if (unitType.get() == AIR || unitType.get() == TANK)
     return null
 
   let actionsByTriggers = {}
@@ -162,7 +162,7 @@ local visibleWeaponsList = Computed(function(prev) {
 
 let visibleWeaponsMap = Computed(function() {
   let res = {}
-  foreach (item in visibleWeaponsList.value)
+  foreach (item in visibleWeaponsList.get())
     if ("viewCfg" in item)
       res[item.viewCfg.selShortcut] <- {
         actionItem = item.actionItem,
@@ -212,11 +212,11 @@ function unmarkWeapKeyHold(key) {
   selectActionBarAction("")
 }
 
-let defWeaponKey = Computed(@() unitType.value == AIR ? "ID_BOMBS" : TRIGGER_GROUP_PRIMARY)
+let defWeaponKey = Computed(@() unitType.get() == AIR ? "ID_BOMBS" : TRIGGER_GROUP_PRIMARY)
 let currentWeaponInfo = Computed(function() {
   let key = userHoldWeapKeys.get().findindex(@(v) v.isHold && !v.isOnlyHint)
     ?? defWeaponKey.get()
-  return visibleWeaponsList.value.findvalue(@(v) v.id == key)
+  return visibleWeaponsList.get().findvalue(@(v) v.id == key)
 })
 
 let currentWeaponKey = keepref(Computed(@() currentWeaponInfo.get()?.id))
@@ -259,9 +259,9 @@ ecs.register_es("on_support_unit_spawned", {
     selectActionByViewCfg(getViewCfg(currentWeaponInfo.get()))
 })
 
-let hasCrosshairForWeapon = Computed(@() unitType.value == TANK
+let hasCrosshairForWeapon = Computed(@() unitType.get() == TANK
   || (getViewCfg(currentWeaponInfo.get())?.hasCrosshair ?? false))
-let hasAimingModeForWeapon = Computed(@() unitType.value == TANK
+let hasAimingModeForWeapon = Computed(@() unitType.get() == TANK
   || (getViewCfg(currentWeaponInfo.get())?.hasAimingMode ?? true))
 let isCurHoldWeaponInCancelZone = Computed(@() !(userHoldWeapInside.get().findvalue(@(v) !v) ?? true))
 

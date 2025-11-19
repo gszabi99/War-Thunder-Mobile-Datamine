@@ -20,6 +20,7 @@ let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let logN = log_with_prefix("[NEWSFEED] ")
 
+let newsFontId = "NEWS_FONT_ID"
 const NEWSFEED_RECEIVED = "NewsFeedReceived"
 const ARTICLE_RECEIVED = "NewsArticleReceived"
 const SEEN_SAVE_ID = "news/lastSeenId"
@@ -46,6 +47,57 @@ let playerSelectedArticleId = Watched(null)
 let lastSeenId = Watched(-1)
 let articlesPerPage = Watched(8)
 let unreadArticles = hardPersistWatched("news.unreadArticles" {})
+let curNewsStyleId = hardPersistWatched("news.curNewsStyleId", 1)
+
+function saveCurNewsStyleId(id) {
+  curNewsStyleId.set(id)
+  let sBlk = get_local_custom_settings_blk()
+  setBlkValueByPath(sBlk, newsFontId, id)
+  eventbus_send("saveProfile", {})
+}
+
+let fontsCfg = [
+  {
+    name = $"{loc("options/fontSize")}: {loc("options/font/tiny")}"
+    style = {
+      font = fontTinyAccented
+      h1Font = fontMedium
+      h2Font = fontSmallAccented
+      h3Font = fontSmall
+    }
+  },
+  {
+    name = $"{loc("options/fontSize")}: {loc("options/font/small")}"
+    style = {
+      font = fontSmall
+      h1Font = fontBig
+      h2Font = fontMedium
+      h3Font = fontSmallAccented
+    }
+  },
+  {
+    name = $"{loc("options/fontSize")}: {loc("options/font/medium")}"
+    style = {
+      font = fontSmallAccented
+      h1Font = fontLarge
+      h2Font = fontBig
+      h3Font = fontMedium
+    }
+  },
+  {
+    name = $"{loc("options/fontSize")}: {loc("options/font/big")}"
+    style = {
+      font = fontMedium
+      h1Font = fontVeryLarge
+      h2Font = fontLarge
+      h3Font = fontBig
+    }
+  }
+].map(@(v, i) v.__update({
+  cb = @() saveCurNewsStyleId(i)
+}))
+
+let curNewsStyle = Computed(@() fontsCfg?[curNewsStyleId.get()].style ?? {})
 
 let updateUnreadArticles = @() unreadArticles.mutate(function(v) {
   let lastId = lastSeenId.get()
@@ -56,10 +108,10 @@ let updateUnreadArticles = @() unreadArticles.mutate(function(v) {
 })
 
 if (receivedNewsFeedLang.value != shortLang) {
-  receivedArticles({})
-  newsfeed([])
-  unreadArticles({})
-  requestMadeTime(0)
+  receivedArticles.set({})
+  newsfeed.set([])
+  unreadArticles.set({})
+  requestMadeTime.set(0)
 }
 
 let unseenArticleId = Computed(function() {
@@ -120,14 +172,15 @@ isNewsWndOpened.subscribe(function (v) {
     saveLastSeenId(newsfeed.get().reduce(@(res, val) max(res, val.id), lastSeenId.get()))
 })
 
-function loadLastSeenArticleId() {
+function loadNewsSettings() {
   let sBlk = get_local_custom_settings_blk()
   lastSeenId.set(getBlkValueByPath(sBlk, SEEN_SAVE_ID) ?? 0)
+  curNewsStyleId.set(getBlkValueByPath(sBlk, newsFontId) ?? 1)
   updateUnreadArticles()
 }
-isOnlineSettingsAvailable.subscribe(@(v) v ? loadLastSeenArticleId() : null)
+isOnlineSettingsAvailable.subscribe(@(v) v ? loadNewsSettings() : null)
 if (isOnlineSettingsAvailable.get())
-  loadLastSeenArticleId()
+  loadNewsSettings()
 
 function markArticleSeenById(id) {
   if (unreadArticles.get()?[id])
@@ -154,18 +207,23 @@ function mkInfo(v) {
 }
 
 eventbus_subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
-  let { status = -1, http_code = -1, context = "" } = response
+  let { status = -1, http_code = -1, context = "", body = null } = response
   if (context != shortLang)
     return 
 
-  if (status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
+  if (status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code || body == null) {
     logN($"Error getting feed response (http_code = {response?.http_code}, status = {status})")
     return
   }
 
   local result = null
+  let bodyStr = body.as_string()
+  if (bodyStr.startswith("<")) { 
+    logN($"Request versions result is html page instead of data:\n{bodyStr}")
+    return
+  }
   try {
-    result = parse_json(response.body.as_string()).result
+    result = parse_json(bodyStr).result
   }
   catch(e) {
     logN($"Error parsing JSON in feed response: {e}")
@@ -175,7 +233,7 @@ eventbus_subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
   logN($"Feed received successfully ({result.len()} items)")
   let arr = result.map(mkInfo).filter(@(v) v != null)
   arr.sort(sortNewsfeed)
-  newsfeed(arr)
+  newsfeed.set(arr)
   updateUnreadArticles()
   receivedNewsFeedLang.value = shortLang
 })
@@ -192,7 +250,7 @@ function requestNewsFeed() {
     context = shortLang
     respEventId = NEWSFEED_RECEIVED
   })
-  requestMadeTime(currTimeMsec)
+  requestMadeTime.set(currTimeMsec)
 }
 
 isMainMenuAttached.subscribe(@(v) v ? requestNewsFeed() : null)
@@ -306,4 +364,6 @@ return {
   curPageIdx
   nextArticle = @() changeArticle(1)
   prevArticle = @() changeArticle(-1)
+  curNewsStyle
+  fontsCfg
 }

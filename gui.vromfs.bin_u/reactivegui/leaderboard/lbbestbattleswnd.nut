@@ -112,7 +112,7 @@ function content() {
 
   let sortField = curLbCfg.get().sortBy.field
   let ratedCount = ratingBattlesCount.get()
-  let battles = (clone bestBattles.get())
+  let battles = (clone (bestBattles.get() ?? []))
     .sort(@(a, b) (b?.battle_common[sortField] ?? -1) <=> (a?.battle_common[sortField] ?? -1))
     .map(@(v, idx) (v?.battle_common ?? {})
       .__merge({ idx = idx >= ratedCount ? -1 : idx, timestamp = v?["$timestamp"] ?? -1 }))

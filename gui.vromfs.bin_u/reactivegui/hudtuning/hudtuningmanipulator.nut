@@ -54,7 +54,7 @@ pointer.subscribe(function(p) {
   if (p == null)
     return
   let { isInProgress, offset, aabb } = p
-  if (!isInProgress || (transformInProgress.value == null && offset[0] == 0 && offset[1] == 0))
+  if (!isInProgress || (transformInProgress.get() == null && offset[0] == 0 && offset[1] == 0))
     return
 
   let halfX = (aabb.r - aabb.l) / 2
@@ -137,7 +137,7 @@ let manipulator = {
     return 1
   }
   function onDetach() {
-    transformInProgress(null)
+    transformInProgress.set(null)
     pointer.set(null)
     isElemHold.set(false)
   }

@@ -15,17 +15,17 @@ let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
 let { secondsToHoursLoc, parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
-let { localPlayerColor } = require("%rGui/style/stdColors.nut")
+let { localPlayerColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkPaginator } = require("%rGui/components/paginator.nut")
 let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let { mkPlaceIconSmall } = require("%rGui/components/playerPlaceIcon.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
-let { PRIMARY, defButtonHeight } = buttonStyles
+let { COMMON, defButtonHeight } = buttonStyles
 let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight,
   lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor,
-  prizeIcons, getRowBgColor, lbRewardsBlockWidth, lbTabIconSize
+  prizeIcons, lbRewardsBlockWidth, lbTabIconSize
 } = require("%rGui/leaderboard/lbStyle.nut")
 let { RANK, NAME, PRIZE } = require("%rGui/leaderboard/lbCategory.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
@@ -37,9 +37,10 @@ let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
 let rankCellWidth = lbHeaderRowHeight * (isWidescreen ? 2.5 : 2.0)
-let nameWidth = calc_str_box("WWWWWWWWWWWWWWWWWW", isWidescreen ? fontTiny : fontVeryTiny)[0]
+let nameWidth = calc_str_box("WWWWWWWWWWWWWWWWWW", isWidescreen ? fontTinyShaded : fontVeryTinyShaded)[0]
 let nameGap = hdpx(10)
-let nameCellWidth = lbRowHeight + nameGap + nameWidth
+let premIconSize = hdpx(50)
+let nameCellWidth = lbRowHeight + nameGap + nameWidth + premIconSize
 let defTxtColor = 0xFFD8D8D8
 
 let close = @() isLbWndOpened.set(false)
@@ -110,7 +111,7 @@ let header = @() {
             keepAspect = true
           },
           @() isLbBestBattlesOpened.set(true),
-          mergeStyles(PRIMARY,
+          mergeStyles(COMMON,
           {
             ovr = { minWidth = defButtonHeight }
             hotkeys = ["^J:X | Enter"]
@@ -120,7 +121,7 @@ let header = @() {
 
 let styleByCategory = {
   [RANK] = { size = [rankCellWidth, SIZE_TO_CONTENT] },
-  [NAME] = { size = [nameCellWidth, SIZE_TO_CONTENT], halign = ALIGN_LEFT },
+  [NAME] = { size = [nameCellWidth, SIZE_TO_CONTENT] },
 }
 
 let mkLbCell = @(category, rowData) {
@@ -131,7 +132,7 @@ let mkLbCell = @(category, rowData) {
   vplace = ALIGN_CENTER
   text = category.getText(rowData)
 }.__update(
-  fontTiny,
+  fontTinyShaded,
   styleByCategory?[category] ?? {})
 
 function mkRankCell(category, rowData) {
@@ -154,8 +155,9 @@ function mkNameCell(category, rowData) {
     let { nickFrame = null } = info.get()?.decorators
     let visualName = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
     let nameFont = isWidescreen || calc_str_box(visualName, fontTiny)[0] <= nameWidth
-      ? fontTiny
-      : fontVeryTiny
+      ? fontTinyShaded
+      : fontVeryTinyShaded
+    let nameStyle = (rowData?.self ? {color = localPlayerColor} : {}).__merge(nameFont)
     return {
       watch = [info, myUserRealName, myUserName]
       key = userId
@@ -168,7 +170,7 @@ function mkNameCell(category, rowData) {
       onClick = @() viewProfile(userId, { isInvitesAllowed = false })
       children = [
         contactAvatar(info.get(), lbRowHeight - hdpx(2))
-        contactNameBlock({ realnick }, info.get(), [], { nameStyle = nameFont, titleStyle = fontVeryTiny })
+        contactNameBlock({ realnick }, info.get(), [], { nameStyle, titleStyle = fontVeryTinyShaded })
       ]
     }
   }
@@ -290,9 +292,11 @@ function lbTableFull(categories, lbData, selfRow) {
 
   let rowsChildren = rows.map(@(children, idx) {
     size = [flex(), children == dotsRow ? lbDotsRowHeight : lbRowHeight]
-    rendObj = ROBJ_SOLID
-    color = getRowBgColor(idx % 2, myRowIdx == idx)
+    rendObj = ROBJ_BOX
+    fillColor = (idx % 2) ? rowBgOddColor : rowBgEvenColor
     flow = FLOW_HORIZONTAL
+    borderColor = selectColor
+    borderWidth = [0, 0, 0, myRowIdx == idx ? hdpx(4) : 0]
     children
   })
 
@@ -388,7 +392,7 @@ let content = @() {
   children = curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
       ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get())
     : isLbRequestInProgress.get() ? waitLeaderBoard
-    : curLbErrName.value == null ? lbNoDataMsg
+    : curLbErrName.get() == null ? lbNoDataMsg
     : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
 }
 
@@ -406,7 +410,7 @@ let scene = bgShaded.__merge({
   padding = saBordersRv
 
   function onAttach() {
-    lbPage(0)
+    lbPage.set(0)
     isRefreshLbEnabled.set(true)
     actualizeStats()
     if (curLbId.get() == null)

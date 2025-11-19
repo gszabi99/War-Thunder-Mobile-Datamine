@@ -29,8 +29,6 @@
   },
   "_common": {
     "useTamVoice": true,
-    "vivoxServerURL": "not_used",
-    "vivoxEcho": "tamvchn://echo123",
     "skinsDecalsCacheSzPS4": 157286400,
     "skinsDecalsCacheUGC": "contentUGC",
     "eventLog": {
@@ -46,7 +44,7 @@
     "webVromfs": {
       "maxSize": 471859200,
       "timeoutSec": 10,
-      "mainThreadTimeoutSec": 10,
+      "mainThreadTimeoutSec": 30,
       "allowCacheVromFallback": true,
       "baseUrls": {
         "url": [
@@ -108,8 +106,6 @@
     "appPerm": 72,
     "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7852",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "circuitPostfix": "-wtm-dev",
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
@@ -133,12 +129,14 @@
       "APP_CMD_WINDOW_REDRAW_NEEDED": true
     },
     "contentUpdater": {
-      "enabled": true,
       "strictVersionCheck": false,
       "flag": [
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
-      ]
+      ],
+      "addons": {
+        "enabled": true
+      }
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -178,8 +176,6 @@
     "appPerm": 73,
     "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7853",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "circuitPostfix": "-wtm-stable",
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
@@ -192,12 +188,14 @@
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "contentUpdater": {
-      "enabled": true,
       "shouldLogToCrashlytics": true,
       "flag": [
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
       ],
+      "addons": {
+        "enabled": true
+      },
       "background_addons": {
         "requireSameGameVersion": false
       }
@@ -255,8 +253,6 @@
     "appPerm": 50074,
     "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7854",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "circuitPostfix": "-wtm-stable",
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
@@ -269,8 +265,10 @@
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "contentUpdater": {
-      "enabled": true,
       "shouldLogToCrashlytics": true,
+      "addons": {
+        "enabled": true
+      },
       "background_addons": {
         "requireSameGameVersion": false
       }
@@ -313,8 +311,6 @@
     "appPerm": 50102,
     "matchServer": "match-wtm-submission-sv-lx-01.warthunder.com:7854",
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "circuitPostfix": "-wtm-submission",
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
@@ -375,8 +371,6 @@
       "mgate-wtm-03.warthunder.com:7853"
     ],
     "useTamVoice": true,
-    "vivoxServerURL": "https://not.used",
-    "vivoxEcho": "tamvchn://echo123",
     "circuitPostfix": "-wtm-production",
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
@@ -446,6 +440,22 @@
           "https://cloud-production-02.gaijin.net/char"
         ]
       }
+    },
+    "skinsDecalsCDN": {
+      "replaceUrls": "wtm-production.skinsDecalsCDN.baseUrls",
+      "hashesReqUrl": "https://public-configs.warthunder.com/wtm-production/dldata.info"
     }
+  },
+  "wtm-production.skinsDecalsCDN.baseUrls": {
+    "url": [
+      {
+        "weight": 5.0,
+        "url": "https://dldata-wtmobile-aws.cdn.gaijin.net/wtm-production/"
+      },
+      {
+        "weight": 1.0,
+        "url": "https://dldata-wtmobile-aws.cdn.gaijin.net/wtm-production/"
+      }
+    ]
   }
 }

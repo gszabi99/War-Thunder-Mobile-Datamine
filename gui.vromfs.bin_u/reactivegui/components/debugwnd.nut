@@ -156,11 +156,11 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch) {
   if (!(dataWatch instanceof Watched))
     dataWatch = Watched(dataWatch)
   let recalcText = function() {
-    let filterArr = utf8ToLower(filterText.value).split("||").map(@(v) v.split("&&"))
+    let filterArr = utf8ToLower(filterText.get()).split("||").map(@(v) v.split("&&"))
     let rowFilterBase = curTabV?.rowFilter ?? defaultRowFilter
     let rowFilter = mkFilter(rowFilterBase, filterArr)
     let countLeft = Watched(curTabV?.maxItems ?? 100)
-    let resData = filterData(dataWatch.value, 0, curTabV?.recursionLevel ?? 0, rowFilter, countLeft)
+    let resData = filterData(dataWatch.get(), 0, curTabV?.recursionLevel ?? 0, rowFilter, countLeft)
     local resText = dataToText(resData)
     if (countLeft.get() < 0)
       resText = $"{resText}\n...... has more items ......"
@@ -214,8 +214,8 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
           placeholder = "filter..."
           textStyle = fontVeryTiny
           ovr = { padding = const [hdpx(5), hdpx(10)] }
-          onChange = @(value) filterText(value)
-          onEscape = @() filterText.value == "" ? close() : filterText("")
+          onChange = @(value) filterText.set(value)
+          onEscape = @() filterText.get() == "" ? close() : filterText.set("")
           hotkeys = [["L.Ctrl C", { action = @() set_clipboard_text(textWatch.get()) }]]
         }.__update(fontVeryTiny))
         closeButton(close)
@@ -241,7 +241,7 @@ function mkDebugScreen(tabs, close, rootOverride = {}, filterText = defFilterTex
   return @() {
     watch = tabs
     size = flex()
-    children = debugWndContent(tabs.value, curTab, filterText, close, textWatch)
+    children = debugWndContent(tabs.get(), curTab, filterText, close, textWatch)
     hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   }.__update(rootOverride)
 }
@@ -261,7 +261,7 @@ function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wndUid =
     children = @() {
       watch = tabs
       size = flex()
-      children = debugWndContent(tabs.value, curTab, filterText, close, textWatch, childrenOverTabs)
+      children = debugWndContent(tabs.get(), curTab, filterText, close, textWatch, childrenOverTabs)
     }
   }.__update(rootOverride))
 }

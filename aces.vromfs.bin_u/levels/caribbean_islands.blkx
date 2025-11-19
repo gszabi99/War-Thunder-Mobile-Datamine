@@ -14,7 +14,7 @@
   "water_level": 0.0,
   "precisionNotDetectedUnits": 200.0,
   "notDetectedUnitsSizeMul": 0.9,
-  "soundAmbientPathStudio": "event/ambience",
+  "soundAmbientPathStudio": "aircraft/ambient",
   "soundAmbientEvent": "global_amb",
   "clipmap_tex_mips": 6,
   "mapCoord0": [
@@ -45,12 +45,14 @@
   ],
   "shader_vars": {
     "shore__waves_dist": [
-      0.0,
-      200.0,
+      -20.0,
+      40.0,
       0.0,
       50.0
     ],
-    "max_river_width": 1500.0,
+    "shore_amplitude_to_length": 180.0,
+    "shore_artistic_max_wave_height": 0.25,
+    "max_river_width": 0.0,
     "ocean_density": 0.4,
     "river_density": 2.0,
     "water_color_noise_size": 1737.0,
@@ -112,89 +114,6 @@
     "tree_date_palm_small_c": {
       "lod0": 140.0,
       "lod1": 8000.0
-    }
-  },
-  "overloaded_sounds": {
-    "music": {
-      "eventShipsSuspense": {
-        "name": "ships_suspense_april_2025",
-        "path": "event/music"
-      },
-      "eventWin": {
-        "name": "win_battle_music_april_2025",
-        "path": "event/music"
-      },
-      "eventLoose": {
-        "name": "loose_battle_music_april_2025",
-        "path": "event/music"
-      }
-    },
-    "overload_lang": {
-      "ru": "ca",
-      "en": "ca",
-      "fr": "ca",
-      "de": "ca",
-      "jp": "ca",
-      "it": "ca"
-    },
-    "gui": {
-      "session_start": {
-        "name": "session_start",
-        "path": "event/effects"
-      },
-      "enemy_destr_by_ship": {
-        "name": "enemy_destroyed",
-        "path": "event/effects"
-      },
-      "weapon_primary_ready": {
-        "name": "weapon_primary_ready",
-        "path": "event/effects"
-      },
-      "weapon_secondary_ready": {
-        "name": "weapon_primary_ready",
-        "path": "event/effects"
-      },
-      "message_debuff_cant_shoot": {
-        "name": "message_debuff_cant_shoot",
-        "path": "event/messages"
-      },
-      "message_debuff_loosing_speed": {
-        "name": "message_debuff_loosing_speed",
-        "path": "event/messages"
-      }
-    },
-    "bullet_hits": {
-      "eventBulletHitShipBig": {
-        "name": "hit_cannon",
-        "path": "event/effects",
-        "path_ai": "event/effects/ai"
-      }
-    },
-    "sound_effect_events": {
-      "eventBulletPassBy": {
-        "name": "cannon_passby",
-        "path": "event/effects"
-      }
-    },
-    "gm_sound_effect_events": {
-      "eventTelegraph": {
-        "name": "bell_ring",
-        "path": "event/effects"
-      },
-      "eventShipCollisionUnit": {
-        "name": "collision_ship_wood",
-        "path": "naval/effects"
-      }
-    },
-    "various_effects": {
-      "eventAlarmDepth": {
-        "name": "alarm_depth",
-        "path": "event/effects"
-      },
-      "eventAlarmFire": {
-        "name": "alarm_depth",
-        "path": "event/effects"
-      }
     }
   }
 }

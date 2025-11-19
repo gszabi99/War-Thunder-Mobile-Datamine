@@ -39,7 +39,7 @@ let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
 let lastCluster = hardPersistWatched("lastCluster", "")
 curQueue.subscribe(@(v) (v?.joinedClusters ?? {}).len() == 0
   ? null
-  : lastCluster(",".join(v.joinedClusters.keys())))
+  : lastCluster.set(",".join(v.joinedClusters.keys())))
 
 const MEASURE_PING_INTERVAL_SEC = 15
 const PING_SAMPLES_MAX = 50
@@ -47,7 +47,7 @@ local pingMin = -1
 local pingMax = -1
 let pingSamples = persist("pingSamples", @() [])
 let deviceState = Watched(null)
-let updateDeviceState = @(state) deviceState(state)
+let updateDeviceState = @(state) deviceState.set(state)
 deviceState.subscribe(function(v) {
   let { ping = -1 } = v
   if (ping == -1)
@@ -56,7 +56,7 @@ deviceState.subscribe(function(v) {
   pingMax = max(pingMax, ping)
 })
 function onCollectPing() {
-  let { ping = -1 } = deviceState.value
+  let { ping = -1 } = deviceState.get()
   if (ping == -1)
     return
   if (pingSamples.len() == PING_SAMPLES_MAX)
@@ -128,8 +128,8 @@ function onFrameTimes(evt, _eid, _comp) {
   data.__update({
     platform = get_platform_string_id()
     country = getCountryCode()
-    cluster = lastCluster.value
-    clusters_rtt = ",".join(clusterStats.value.map(@(c)
+    cluster = lastCluster.get()
+    clusters_rtt = ",".join(clusterStats.get().map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
     campaign = !wasBattleDataApplied.get() ? ""
       : battleCampaign.get() != "" ? battleCampaign.get()

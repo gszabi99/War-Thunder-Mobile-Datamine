@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { queueInfo, isInQueue } = require("%appGlobals/queueState.nut")
 let matching = require("%appGlobals/matching_api.nut")
 
-isInQueue.subscribe(@(v) v ? null : queueInfo(null))
+isInQueue.subscribe(@(v) v ? null : queueInfo.set(null))
 
 
 function gatherStats(info) {
@@ -25,8 +25,8 @@ matching.subscribe("match.update_queue_info", function(info) {
   let { cluster = null, queueId = null } = info
   if (cluster == null || queueId == null)
     return
-  let qi = queueInfo.value ?? {}
-  queueInfo(qi.__merge({
+  let qi = queueInfo.get() ?? {}
+  queueInfo.set(qi.__merge({
     [cluster] = (qi?[cluster] ?? {})
       .__merge({ [queueId] = stats })
   }))

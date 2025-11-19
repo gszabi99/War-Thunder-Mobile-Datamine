@@ -206,7 +206,7 @@
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/i_ball.ivf",
       "bulletName": "i_ball_M1",
-      "hitPowerMult": 1.0,
+      "hitPowerMult": 15.0,
       "nearHitPower": [
         1.0,
         50.0

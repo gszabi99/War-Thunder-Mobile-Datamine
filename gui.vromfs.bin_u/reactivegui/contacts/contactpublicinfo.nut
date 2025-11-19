@@ -49,7 +49,7 @@ contactsRegisterHandler("get_public_users_info", function(result, context) {
   foreach(uid, _ in uids)
     upd[uid] <- (result?[uid] ?? {}).__merge(timeUpd)
   if (upd.len() != 0)
-    allPublicInfo(allPublicInfo.get().__merge(upd))
+    allPublicInfo.set(allPublicInfo.get().__merge(upd))
   requestPublicInfo()
 })
 
@@ -82,7 +82,7 @@ function deactualizePublicInfos(ids) {
   }
 
   if (updatedReceiveTime.len() > 0)
-    allPublicInfo(allPublicInfo.get().__merge(updatedReceiveTime))
+    allPublicInfo.set(allPublicInfo.get().__merge(updatedReceiveTime))
 }
 
 return {

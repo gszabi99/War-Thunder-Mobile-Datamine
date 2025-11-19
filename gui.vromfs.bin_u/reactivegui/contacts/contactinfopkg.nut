@@ -6,8 +6,9 @@ let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
-let nameColor = 0xFF00FCFF
+let nameColor = selectColor
 let titleColor = 0xFFFFFFFF
 let darkenBgColor = 0x80001521
 
@@ -16,7 +17,7 @@ let avatarSize = hdpxi(90)
 let contactLevelSize = avatarSize * 1.1
 let rowHeight = avatarSize + 2 * borderWidth
 let gap = hdpx(10)
-let premIconSize = hdpxi(50)
+let premIconSize = hdpxi(30)
 
 
 function contactNameBlock(contact, info, addChildren = [], styles = {}) {

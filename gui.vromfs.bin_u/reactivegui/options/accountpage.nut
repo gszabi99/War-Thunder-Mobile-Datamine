@@ -1,22 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { eventbus_send } = require("eventbus")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%appGlobals/loginState.nut")
-let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
+let { can_link_to_gaijin_account, allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { getSubsPresentation, getPremIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
-let { contentWidth } = require("%rGui/options/optionsStyle.nut")
-let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { buttonsVGap, mkCustomButton, mkButtonTextMultiline, textButtonPurchase, mergeStyles } = require("%rGui/components/textButton.nut")
+let { defButtonHeight, PRIMARY, COMMON } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { myUserId, myUserIdStr, myUserName } = require("%appGlobals/profileStates.nut")
-let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
+let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
@@ -30,6 +31,9 @@ let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 let { isGuestLogin, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
 let { hasRestorePurchases, restorePurchases, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
+let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+
 
 let urlColor = 0xFF17C0FC
 let urlHoverColor = 0xFF84E0FA
@@ -50,6 +54,7 @@ let borderColor = 0xFF000000
 let borderWidth = hdpx(1)
 let gap = hdpx(20)
 let lvlInfoWidth = sw(45)
+let premIconSize = [avatarSize, (avatarSize / 1.4).tointeger()]
 
 let unitsResearchInfo = @() {
   watch = curCampaign
@@ -169,19 +174,76 @@ function mkUserId() {
   }
 }
 
-let premiumAccountTxt = loc("charServer/entitlement/PremiumAccount")
-let mkPremiumTimeLeftText = function() {
-  let res = { watch = [ premiumEndsAt ] }
-  let timeLeft = max(0, premiumEndsAt.get() - serverTime.get())
-  if (timeLeft == 0)
-    return res.__update({ size = flex() })
-  res.watch.append(serverTime)
-  return res.__update({
-    padding = const [hdpx(40), 0, hdpx(25), 0]
-    rendObj = ROBJ_TEXT
-    text = "".concat(premiumAccountTxt, colon, secondsToHoursLoc(timeLeft))
-    color = premiumTextColor
-  }, fontTiny)
+let premDescByStatus = {
+  prem_inactive = loc("subscription/desc/inactive")
+  vip = loc("subscription/desc/vip/active")
+  prem = loc("subscription/desc/prem/active")
+}
+
+let premIconByStatus = {
+  prem_inactive = @(_) "subs_inactive.avif"
+  prem_deprecated = @(perm) getPremIcon(perm, "prem_deprecated")
+}
+
+function mkPremDescText(status) {
+  let text = premDescByStatus?[status]
+  let timeLeft = Computed(@() havePremium.get() && !hasPremiumSubs.get()
+    ? max(0, premiumEndsAt.get() - serverTime.get())
+    : 0)
+
+  return @() {
+    watch = timeLeft
+    children = {
+      rendObj = ROBJ_TEXT
+      text = text ?? "".concat(loc("charServer/entitlement/PremiumAccount"), colon, secondsToHoursLoc(timeLeft.get()))
+      color = premiumTextColor
+    }.__update(fontTiny)
+  }
+}
+
+let mkSubsIcon = @(status) @() {
+  watch = allow_subscriptions
+  size = premIconSize
+  rendObj = ROBJ_IMAGE
+  image = status in premIconByStatus
+    ? Picture($"ui/gameuiskin#{premIconByStatus[status](allow_subscriptions.get())}:{premIconSize[0]}:{premIconSize[1]}:P")
+    : Picture($"{getSubsPresentation(status).icon}:0:P")
+  color = 0xFFFFFFFF
+  keepAspect = true
+}
+
+let mkPremAction = @(status) status == "prem_deprecated" || status == "vip"
+  ? null
+  : textButtonPurchase(utf8ToUpper(loc($"subscription/{status == "prem_inactive" ? "activate" : "upgrade"}")),
+    @() openSubsPreview("vip"),
+    { hotkeys = [btnAUp], childOvr = fontTinyAccentedShadedBold })
+
+function mkPremiumDescription() {
+  let premStatus = Computed(@() !havePremium.get() ? "prem_inactive"
+    : !hasPremiumSubs.get() ? "prem_deprecated"
+    : hasVip.get() ? "vip"
+    : "prem")
+
+  return @() {
+    watch = [allow_subscriptions, premStatus]
+    size = FLEX_H
+    children = !allow_subscriptions.get() ? null
+      : {
+          size = FLEX_H
+          rendObj = ROBJ_SOLID
+          padding = [hdpx(10), hdpx(20)]
+          color = 0x70000000
+          margin = [hdpx(70), 0, 0, 0]
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = {size = flex()}
+          children = [
+            mkSubsIcon(premStatus.get())
+            mkPremDescText(premStatus.get())
+            mkPremAction(premStatus.get())
+          ]
+        }
+  }
 }
 
 let userInfoBlock = {
@@ -206,6 +268,8 @@ let buttonsWidthStyle = {
     minWidth = hdpx(550)
   }
 }
+
+let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontTinyAccentedShadedBold)
 
 let logoutMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangePlayer")
@@ -242,7 +306,7 @@ function mkLinkBtn(text, onClick) {
 let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
   : {
       flow = FLOW_HORIZONTAL
-      gap = buttonsHGap
+      gap = buttonsVGap
       children
     }
 
@@ -256,24 +320,36 @@ function buttons() {
   let rows = arrayByRows(
     [
       !canChangeAccount.get() ? null
-        : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
-      textButtonPrimary(loc("mainmenu/support"), openSupportTicketWndOrUrl, buttonsWidthStyle)
+        : mkCustomButton(
+            mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/btnChangePlayer")), multilineButtonOvrStyle),
+            logoutMsgBox,
+            mergeStyles(COMMON, buttonsWidthStyle))
+      mkCustomButton(
+        mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/support")), multilineButtonOvrStyle),
+        openSupportTicketWndOrUrl,
+        mergeStyles(PRIMARY, buttonsWidthStyle))
       canLinkToGaijinAccount.get()
-        ? textButtonPrimary(loc("msgbox/btn_linkEmail"),
+        ? mkCustomButton(
+            mkButtonTextMultiline(utf8ToUpper(loc("msgbox/btn_linkEmail")), multilineButtonOvrStyle),
             @() eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
-            buttonsWidthStyle)
+            mergeStyles(PRIMARY, buttonsWidthStyle))
         : canLinkToGaijinAccountForGuest.get()
-          ? textButtonPrimary(loc("msgbox/btn_linkEmail"),
+          ? mkCustomButton(
+              mkButtonTextMultiline(utf8ToUpper(loc("msgbox/btn_linkEmail")), multilineButtonOvrStyle),
               openGuestEmailRegistration,
-              buttonsWidthStyle)
+              mergeStyles(PRIMARY, buttonsWidthStyle))
         : null
       !canUsePromoCodes ? null
-        : textButtonPrimary(loc("mainmenu/btnActivateCode"),
+        : mkCustomButton(
+            mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/btnActivateCode")), multilineButtonOvrStyle),
             @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
-            buttonsWidthStyle)
+            mergeStyles(PRIMARY, buttonsWidthStyle))
       !hasRestorePurchases ? null
         : mkSpinnerHideBlock(Computed(@() platformPurchaseInProgress.get() != null),
-            textButtonPrimary(loc("restorePurchases"), restorePurchases, buttonsWidthStyle),
+            mkCustomButton(
+              mkButtonTextMultiline(utf8ToUpper(loc("restorePurchases")), multilineButtonOvrStyle),
+              restorePurchases,
+              mergeStyles(PRIMARY, buttonsWidthStyle)),
             {
               size = [ buttonsWidthStyle.ovr.minWidth, defButtonHeight ]
               halign = ALIGN_CENTER
@@ -285,7 +361,7 @@ function buttons() {
   return {
     watch = [canLinkToGaijinAccount, canLinkEmailForGaijinLogin, canChangeAccount, canLinkToGaijinAccountForGuest]
     flow = FLOW_VERTICAL
-    gap = buttonsHGap
+    gap = buttonsVGap
     children = rows.map(mkButtonRow)
       .append(mkLinksBlock([
         !canLinkEmailForGaijinLogin.get() ? null
@@ -295,12 +371,12 @@ function buttons() {
 }
 
 return {
-  size = [contentWidth, flex()]
+  size = FLEX_V
   padding = const [0, 0, hdpx(40), 0]
   flow = FLOW_VERTICAL
   children = [
     userInfoBlock
-    mkPremiumTimeLeftText
+    mkPremiumDescription()
     { size = flex() }
     buttons
   ]

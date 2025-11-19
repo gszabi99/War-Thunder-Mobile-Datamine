@@ -8,6 +8,7 @@ let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
 } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
+let { selectedId } = require("%rGui/hudTuning/hudTuningState.nut")
 
 
 let mkSetValue = @(key) function setValue(options, id, value) {
@@ -89,12 +90,16 @@ let fontsList = [
   { id = "medium", font = fontTinyShaded, isDefault = true }
   { id = "big", font = fontSmallShaded }
 ]
+let defFontByElemId = { raceLeadership = "small" }
 let defFontId = (fontsList.findvalue(@(f) f?.isDefault ?? false) ?? fontsList[0]).id
 let fontsById = fontsList.reduce(@(res, f) res.$rawset(f.id, f), {})
 
+defFontByElemId.each(@(fontId) fontId in fontsById ? null
+  : logerr($"Not found fontId {fontId} which listed in defFontByElemId"))
+
 function getElemFontId(options, elemId) {
   let id = options?.fontSize[elemId]
-  return id in fontsById ? id : defFontId
+  return id in fontsById ? id : (defFontByElemId?[elemId] ?? defFontId)
 }
 
 let getElemFont = @(options, id) fontsById[getElemFontId(options, id)].font
@@ -112,7 +117,10 @@ let optTankMoveControlType = {
   locId = "options/tank_movement_control"
   ctrlType = OCT_LIST
   value = currentTankMoveCtrlType
-  onChangeValue = @(v) sendSettingChangeBqEvent("tank_movement_control", "tanks", v)
+  function onChangeValue(v) {
+    selectedId.set(v == "arrows" ? "moveArrows" : "moveStick")
+    sendSettingChangeBqEvent("tank_movement_control", "tanks", v)
+  }
   list = tankMoveCtrlTypesList
   valToString = ctrlTypeToString
   openInfo = openChooseMovementControls

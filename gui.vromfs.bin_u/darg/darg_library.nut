@@ -41,7 +41,7 @@ function isDargComponent(comp) {
   if (c_type != "table" && c_type != "class")
     return false
   foreach(k, _val in c) {
-    if (k in const Set("size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"))
+    if (k in static ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"].totable())
       return true
   }
   return false
@@ -50,14 +50,12 @@ function isDargComponent(comp) {
 
 
 let hdpx = sh(100) <= sw(75)
-  ? @(pixels) sh(100.0 * pixels / 1080)
-  : @(pixels) sw(75.0 * pixels / 1080)
+  ? @[pure](pixels) sh(100.0 * pixels / 1080)
+  : @[pure](pixels) sw(75.0 * pixels / 1080)
 
-mark_pure(hdpx)
+let hdpxi = @[pure](pixels) hdpx(pixels).tointeger()
 
-let hdpxi = mark_pure(@(pixels) hdpx(pixels).tointeger())
-
-let fsh = mark_pure(sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v))
+let fsh = sh(100) <= sw(75) ? sh : @[pure](v) sw(0.75 * v)
 
 let numerics = Set("float", "integer")
 
@@ -138,20 +136,18 @@ function dump_observables() {
 }
 
 let colorPart = @(value) min(255, (value + 0.5).tointeger())
-function mul_color(color, mult, alpha_mult=1) {
+function [pure] mul_color(color, mult, alpha_mult=1) {
   return Color(  colorPart(((color >> 16) & 0xff) * mult),
                  colorPart(((color >>  8) & 0xff) * mult),
                  colorPart((color & 0xff) * mult),
                  colorPart(((color >> 24) & 0xff) * mult * alpha_mult))
 }
 
-mark_pure(mul_color)
-
-function XmbNode(params={}) {
+function [pure] XmbNode(params={}) {
   return clone params
 }
 
-function XmbContainer(params={}) {
+function [pure] XmbContainer(params={}) {
   return XmbNode({
     canFocus = false
   }.__merge(params))
@@ -165,20 +161,21 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
 }
 
 let FLEX_H = const [flex(), SIZE_TO_CONTENT]
-let flex_h = mark_pure(function(val=null) {
+let flex_h = function [pure] (val=null) {
   if (val == null)
     return FLEX_H
   assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
   return [flex(val), SIZE_TO_CONTENT]
-})
+}
 
 let FLEX_V = const [SIZE_TO_CONTENT, flex()]
-let flex_v = mark_pure(function(val=null) {
+let FLEX = const flex()
+let flex_v = function [pure] (val=null) {
   if (val == null)
     return FLEX_H
   assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
   return [SIZE_TO_CONTENT, flex(val)]
-})
+}
 
 return freeze(darg.__merge({
   mkWatched
@@ -198,6 +195,7 @@ return freeze(darg.__merge({
   Set
   FLEX_H
   FLEX_V
+  FLEX
   flex_h
   flex_v
 }))

@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { tankTagsOrder, getTagName } = require("%appGlobals/config/skins/skinTags.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
+
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { textButtonCommon, textButtonBright } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 let { mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -24,8 +27,8 @@ let content = @(curTag, setTag) @() {
   flow = FLOW_VERTICAL
   gap
   children = tankTagsOrder.map(@(tag)
-    (tag == curTag.get() ? textButtonCommon : textButtonBright)(
-      getTagName(tag),
+    (tag == curTag.get() ? textButtonCommon : textButtonPrimary)(
+      utf8ToUpper(getTagName(tag)),
       function() {
         close()
         setTag(tag)
@@ -33,7 +36,8 @@ let content = @(curTag, setTag) @() {
       { ovr = { size = const [flex(), hdpx(100)] } }))
 }
 
-function changeSkinTagWnd(unitName, skinName) {
+function changeSkinTagWnd(realUnitName, skinName) {
+  let unitName = getTagsUnitName(realUnitName)
   let { skinCustomTags, setSkinCustomTags } = mkSkinCustomTags(Watched(unitName))
   let { tag, image } = getSkinPresentation(unitName, skinName)
   let curTag = Computed(@() skinCustomTags.get()?[skinName] ?? tag)
@@ -64,7 +68,7 @@ function changeSkinTagWnd(unitName, skinName) {
           gap
           children = [
             {
-              size = [skinSize, skinSize]
+              size = skinSize
               rendObj = ROBJ_BOX
               fillColor = 0xFFFFFFFF
               borderRadius = skinBorderRadius

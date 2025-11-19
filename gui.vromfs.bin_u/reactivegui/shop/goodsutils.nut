@@ -1,4 +1,5 @@
 let { pow } = require("math")
+let { G_UNIT_UPGRADE, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 
 let chooseBestUnit = @(list, allUnits)
   list.reduce(@(res, name) (allUnits?[res].mRank ?? 0) >= (allUnits?[name].mRank ?? 0) ? res : name)
@@ -9,6 +10,16 @@ function getBestUnitByGoods(goods, sConfigs) {
   if (goods == null)
     return null
   let { allUnits = null } = sConfigs
+  if ("rewards" in goods) {
+    let r = goods.rewards.findvalue(@(r) r.gType in unitRewardTypes)
+    if (r == null)
+      return null
+    let unit = sConfigs?.allUnits[r.id]
+    return r.gType != G_UNIT_UPGRADE ? unit
+      : unit?.__merge({ isUpgraded = true }, sConfigs?.gameProfile.upgradeUnitBonus ?? {})
+  }
+
+  
   local unit = sConfigs?.allUnits[chooseBestUnit(goods.unitUpgrades, allUnits)]
   if (unit != null)
     return unit.__merge({ isUpgraded = true }, sConfigs?.gameProfile.upgradeUnitBonus ?? {})

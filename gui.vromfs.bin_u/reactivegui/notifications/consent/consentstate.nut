@@ -63,7 +63,7 @@ function setupAnalytics() {
   logC("analytics starting with consent:", v)
   setFirebaseConsent(object_to_json_string(v))
   setCollectionEnabled(true)
-  setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, !consentRequiredForCurrentRegion.get())
+  setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
 }
 

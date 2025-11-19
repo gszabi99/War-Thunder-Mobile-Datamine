@@ -4,13 +4,12 @@ let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE, REWARD_STYLE_MEDIUM } = require("%rG
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getPlatoonName, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { infoBlueButton } = require("%rGui/components/infoButton.nut")
+let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
@@ -36,16 +35,11 @@ let mkUnitPlate = @(unitId) function() {
         mkUnitImage(unit)
         mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
         mkUnitInfo(unit)
-        mkGradRankLarge(unit.mRank, {
-         padding = hdpx(10)
-         hplace = ALIGN_RIGHT
-         vplace = ALIGN_BOTTOM
-        })
         {
           hplace = ALIGN_LEFT
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
-          children = infoBlueButton(
+          children = infoCommonButton(
             @() unitDetailsWnd({ name = unit.name }),
             { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
           )
@@ -60,12 +54,14 @@ let locByTypesReward = {
   item = @(id) loc($"item/{id}")
   currency = @(id) loc($"battlepass/currency/{id}")
   premium =  @(_) loc($"battlepass/premium/header")
-  unit = @(id) getPlatoonName(id, loc)
-  unitUpgrade = @(id) getPlatoonName(id, loc)
+  unit = @(id) getPlatoonOrUnitName({ name = id }, loc)
+  unitUpgrade = @(id) getPlatoonOrUnitName({ name = id }, loc)
   skin = @(id) loc("reward/skin_for",
     { unitName = colorize(markTextColor, loc(getUnitLocId(id))) })
+  decal = @(id) loc($"decals/{id}")
   blueprint = @(_) loc("blueprints")
   lootbox = @(id) loc($"lootbox/{id}")
+  booster = @(_) loc($"debriefing/booster")
 }
 
 let mkDecoratorHeader = @(viewInfo) @() {
@@ -95,7 +91,7 @@ let receiveBtn = @(receive, isInProgress) mkSpinnerHideBlock(isInProgress,
 
 let rewardDesc = @(reward, curStage, lockText, paidText) @() {
   watch = curStage
-  size = const [flex(), hdpx(40)]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
@@ -115,6 +111,7 @@ let infoImageCtors = {
   unitUpgrade = unitImageCtor
   decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
   currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
+  booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
 }
 
 let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() {

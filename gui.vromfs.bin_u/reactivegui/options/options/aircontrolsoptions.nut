@@ -3,62 +3,33 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { setVirtualAxesAim, setVirtualAxesDirectControl } = require("%globalScripts/controls/shortcutActions.nut")
-let {
-  OPT_AIRCRAFT_FIXED_AIM_CURSOR,
-  OPT_CAMERA_SENSE_IN_ZOOM_PLANE,
-  OPT_CAMERA_SENSE_PLANE,
-  OPT_CAMERA_SENSE,
-  OPT_CAMERA_SENSE_IN_ZOOM,
-  OPT_FREE_CAMERA_PLANE,
-  OPT_CAMERA_VISC_PLANE,
-  OPT_CAMERA_VISC_IN_ZOOM_PLANE,
-  OPT_CAMERA_VISC_PLANE_STICK,
-  OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
-  OPT_AIRCRAFT_INVERTED_Y,
-  OPT_AIRCRAFT_MOVEMENT_CONTROL,
-  OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
-  OPT_AIRCRAFT_THROTTLE_STICK,
-  OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS,
-  OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
-  OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL,
-  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE,
-  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY,
-  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE,
-  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY,
-  OPT_TARGET_SELECTION_TYPE,
-  OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS,
-  OPT_AIRCRAFT_TARGET_FOLLOWER,
-  USEROPT_QUIT_ZOOM_AFTER_KILL,
-  OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH,
-  mkOptionValue,
-  optionValues,
-  getOptValue } = require("%rGui/options/guiOptions.nut")
-let {
-  set_aircraft_continuous_turn_mode,
-  set_aircraft_control_by_gyro,
-  set_aircraft_control_by_gyro_mode_param,
-  CBG_PARAM_DEAD_ZONE,
-  CBG_PARAM_SENSITIVITY,
-  set_aircraft_fixed_aim_cursor,
-  set_should_invert_camera,
-  set_camera_viscosity,
-  set_camera_viscosity_in_zoom,
-  set_target_selection_type,
-  set_aircraft_target_follower,
-  set_quit_zoom_after_kill,
-  set_mouse_aim,
-  CAM_TYPE_FREE_PLANE,
-  CAM_TYPE_NORMAL_PLANE,
-  CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { OPT_AIRCRAFT_FIXED_AIM_CURSOR, OPT_CAMERA_SENSE_IN_ZOOM_PLANE, OPT_CAMERA_SENSE_PLANE,
+  OPT_CAMERA_SENSE, OPT_CAMERA_SENSE_IN_ZOOM, OPT_FREE_CAMERA_PLANE, OPT_CAMERA_VISC_PLANE,
+  OPT_CAMERA_VISC_IN_ZOOM_PLANE, OPT_CAMERA_VISC_PLANE_STICK, OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
+  OPT_AIRCRAFT_INVERTED_Y, OPT_AIRCRAFT_MOVEMENT_CONTROL, OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
+  OPT_AIRCRAFT_THROTTLE_STICK, OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS, OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
+  OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE,
+  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE,
+  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY, OPT_TARGET_SELECTION_TYPE,
+  OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS, OPT_AIRCRAFT_TARGET_FOLLOWER, USEROPT_QUIT_ZOOM_AFTER_KILL,
+  OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH, mkOptionValue, optionValues, getOptValue
+} = require("%rGui/options/guiOptions.nut")
+let { set_aircraft_continuous_turn_mode, set_aircraft_control_by_gyro, set_aircraft_control_by_gyro_mode_param,
+  CBG_PARAM_DEAD_ZONE, CBG_PARAM_SENSITIVITY, set_aircraft_fixed_aim_cursor, set_should_invert_camera,
+  set_camera_viscosity, set_camera_viscosity_in_zoom, set_target_selection_type, set_aircraft_target_follower,
+  set_quit_zoom_after_kill, set_mouse_aim, CAM_TYPE_FREE_PLANE, CAM_TYPE_NORMAL_PLANE, CAM_TYPE_BINOCULAR_PLANE
+} = require("controlsOptions")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { crosshairOptions } = require("%rGui/options/options/crosshairOptions.nut")
+let { isGtRace } = require("%rGui/missionState.nut")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
 
 let fixedAimCursorList = [false, true]
 let currentFixedAimCursor = mkOptionValue(OPT_AIRCRAFT_FIXED_AIM_CURSOR, false, @(v) validate(v, fixedAimCursorList))
-set_aircraft_fixed_aim_cursor(currentFixedAimCursor.value)
+set_aircraft_fixed_aim_cursor(currentFixedAimCursor.get())
 currentFixedAimCursor.subscribe(@(v) set_aircraft_fixed_aim_cursor(v))
 let currentFixedAimCursorType = {
   locId = "options/fixed_aim_cursor"
@@ -84,7 +55,7 @@ let currentAdditionalFlyControlsType = {
 
 let invertedYList = [false, true]
 let currentinvertedYOption = mkOptionValue(OPT_AIRCRAFT_INVERTED_Y, false, @(v) validate(v, invertedYList))
-set_should_invert_camera(currentinvertedYOption.value)
+set_should_invert_camera(currentinvertedYOption.get())
 currentinvertedYOption.subscribe(@(v) set_should_invert_camera(v))
 let currentinvertedYOptionType = {
   locId = "options/inverted_y"
@@ -140,7 +111,7 @@ let continuousTurnModeList = [false, true]
 let optContinuousTurnMode = mkOptionValue(OPT_AIRCRAFT_CONTINUOUS_TURN_MODE, false, @(v) validate(v, continuousTurnModeList))
 let currentContinuousTurnMode = keepref(Computed( @() overridedOptions.get()?[OPT_AIRCRAFT_CONTINUOUS_TURN_MODE] ?? optContinuousTurnMode.get()))
 
-set_aircraft_continuous_turn_mode(currentContinuousTurnMode.value)
+set_aircraft_continuous_turn_mode(currentContinuousTurnMode.get())
 currentContinuousTurnMode.subscribe(@(v) set_aircraft_continuous_turn_mode(v))
 let currentContinuousTurnModeType = {
   locId = "options/continuous_turn_mode"
@@ -211,7 +182,7 @@ isAircraftControlByGyro.subscribe(@(_) updateAircraftControlByGyro())
 updateAircraftControlByGyro()
 
 let currentControlByGyroModeAileronsDeadZone = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE, 0.1)
-set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, currentControlByGyroModeAileronsDeadZone.value)
+set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, currentControlByGyroModeAileronsDeadZone.get())
 currentControlByGyroModeAileronsDeadZone.subscribe(@(v) set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, v))
 let controlByGyroModeAileronsDeadZoneSlider = {
   locId = "options/control_by_gyro_ailerons_dead_zone"
@@ -227,7 +198,7 @@ let controlByGyroModeAileronsDeadZoneSlider = {
 }
 
 let currentControlByGyroModeAileronsSensitivity = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY, 1.0)
-set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, currentControlByGyroModeAileronsSensitivity.value)
+set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, currentControlByGyroModeAileronsSensitivity.get())
 currentControlByGyroModeAileronsSensitivity.subscribe(@(v) set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, v))
 let controlByGyroModeAileronsSensitivitySlider = {
   locId = "options/control_by_gyro_ailerons_sensitivity"
@@ -274,9 +245,9 @@ function cameraViscositySlider(visibleWatch, inZoom, locId, optId, cur = 1.0, mi
   let value = mkOptionValue(optId, cur)
   if (visibleWatch.get())
     if (inZoom)
-      set_camera_viscosity_in_zoom(max(maxVal - value.value, minVal))
+      set_camera_viscosity_in_zoom(max(maxVal - value.get(), minVal))
     else
-      set_camera_viscosity(max(maxVal - value.value, minVal))
+      set_camera_viscosity(max(maxVal - value.get(), minVal))
   value.subscribe(@(v) inZoom ? set_camera_viscosity_in_zoom(max(maxVal - v, minVal)) : set_camera_viscosity(max(maxVal - v, minVal)))
   return {
     locId
@@ -316,17 +287,21 @@ currentAircraftCtrlType.subscribe( function(v) {
     set_camera_viscosity_in_zoom(max(limitsZoom[1] - optValueZoom.get(), limitsZoom[0]))
 })
 
-let targetSelectionList = ["manual_selection", "tap_selection", "auto_selection"]
+let targetSelectionList = Computed(@() isGtRace.get() && isInBattle.get() ? ["manual_selection"]
+  : ["manual_selection", "tap_selection", "auto_selection"])
 let currentTargetSelectionRaw = mkOptionValue(OPT_TARGET_SELECTION_TYPE)
 let currentTargetSelection = Computed(@()
-  validate(currentTargetSelectionRaw.get() ?? "auto_selection", targetSelectionList))
-set_target_selection_type(targetSelectionList.findindex(@(v) v == currentTargetSelection.get()) ?? 0)
-currentTargetSelection.subscribe(@(val) set_target_selection_type(targetSelectionList.findindex(@(v) v == val) ?? 0))
+  validate(currentTargetSelectionRaw.get() ?? "auto_selection", targetSelectionList.get()))
+let updateNativeTargetSelection = @()
+  set_target_selection_type(targetSelectionList.get().findindex(@(v) v == currentTargetSelection.get()) ?? 0)
+updateNativeTargetSelection()
+currentTargetSelection.subscribe(@(_) updateNativeTargetSelection())
+targetSelectionList.subscribe(@(_) updateNativeTargetSelection())
 let currentTargetSelectionType = {
   locId = "options/target_selection_type"
   ctrlType = OCT_LIST
   value = currentTargetSelection
-  setValue = @(v) currentTargetSelectionRaw(v)
+  setValue = @(v) currentTargetSelectionRaw.set(v)
   onChangeValue = @(v) sendChange("target_selection_type", v)
   list = targetSelectionList
   valToString = airCtrlTypeToString
@@ -336,7 +311,7 @@ let targetFollowerList = [false, true]
 let optTargetFollower = mkOptionValue(OPT_AIRCRAFT_TARGET_FOLLOWER, true, @(v) validate(v, targetFollowerList))
 let currentTargetFollower = keepref(Computed( @() overridedOptions.get()?[OPT_AIRCRAFT_TARGET_FOLLOWER] ?? optTargetFollower.get()))
 
-set_aircraft_target_follower(currentTargetFollower.value)
+set_aircraft_target_follower(currentTargetFollower.get())
 currentTargetFollower.subscribe(@(v) set_aircraft_target_follower(v))
 let currentTargetFollowerType = {
   locId = "options/target_follower"
@@ -350,7 +325,7 @@ let currentTargetFollowerType = {
 
 let quitZoomAfterKillList = [false, true]
 let currentQuitZoomSelection = mkOptionValue(USEROPT_QUIT_ZOOM_AFTER_KILL, false, @(v) validate(v, quitZoomAfterKillList))
-set_quit_zoom_after_kill(currentQuitZoomSelection.value)
+set_quit_zoom_after_kill(currentQuitZoomSelection.get())
 currentQuitZoomSelection.subscribe(@(v) set_quit_zoom_after_kill(v))
 let currentQuitZoomSelectionType = {
   locId = "options/quit_zoom_after_kill"

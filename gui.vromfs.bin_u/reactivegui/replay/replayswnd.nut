@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { on_view_replay, get_replays_list } = require("replays")
-let { format } =  require("string")
+let { format } = require("string")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { can_write_replays } = require("%appGlobals/permissions.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
@@ -68,7 +69,7 @@ function replaysList() {
   if (activeReplays.len() > 0)
     children.append(byRows(activeReplays.map(@(r)
       textButtonCommon(
-        r.name,
+        utf8ToUpper(r.name),
         function() {
           close()
           on_view_replay(r.path)

@@ -16,7 +16,7 @@
   "mirrorShrinkZNeg": 256.0,
   "lastClip": true,
   "lastclip_horizon": true,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "addLandToSky": true,
   "max_wind_strength": 3.0,
   "mapCoord0": [

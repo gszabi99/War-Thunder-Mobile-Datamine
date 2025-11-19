@@ -104,7 +104,7 @@
   "rocketIndicatorShowUnguided": false,
   "rocketIndicatorShowSelf": false,
   "rocketIndicatorLosCheck": true,
-  "forceShowDetectedOnce": true,
+  "forceShowDetectedOnceShips": true,
   "rearmSupportPlaneInAir": false,
   "deltaTimeMultCCIP": 1.0,
   "warningMessageForLWS": true,
@@ -118,14 +118,14 @@
     0.0,
     4.0
   ],
-  "allowPlayerSetDecals": false,
+  "needCheckPremiumDecals": false,
   "decalScaleRange": [
     0.1,
     3.0
   ],
   "decalScaleRangeShip": [
-    0.1,
-    5.0
+    1.0,
+    20.0
   ],
   "timeBeforeEngineNoticeFire": 0.5,
   "noAnimationForTankMisfire": true,
@@ -213,7 +213,7 @@
   "killDistFromBattleAreaForShips": 300.0,
   "safeUnderwaterTimeTanks": 7.0,
   "considerEnginePowerForHullAiming": true,
-  "dynamicCubeTexSize": 256,
+  "dynamicCubeTexSize": 32,
   "dynamicCubePos": [
     0.0,
     10.0,
@@ -267,10 +267,6 @@
   "maxTankInactiveTime": 10.0,
   "uniformSpawn": true,
   "syncGunRocketLaunch": true,
-  "cockpit_target_brightness_mul": 0.9,
-  "cockpit_adaptation_max_mul": 0.9,
-  "helicopter_target_brightness_mul": 0.8,
-  "helicopter_adaptation_max_mul": 0.6,
   "thresholdTimeForActivateDelayTimerInBombByDrop": 4.5,
   "supportUnitClassForTutorial": "structures/ussr_122mm_m30",
   "supportUnitTagForTutorial": "artillery",
@@ -382,7 +378,9 @@
   "isAdaptiveCamAngle": true,
   "adaptiveCamAngleMult": 1.0,
   "shiftUpSteerThreshold": 0.35,
+  "rtsModeForAircraftCarrier": true,
   "allowSpectatingEnemiesInLastManStanding": false,
+  "minTorpedoHitTimeThreatShow": 10.0,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -9054,6 +9052,7 @@
     "objectReflectionDistortion": 0.4,
     "waterReflectionZFar": 20000.0,
     "heightmapTexSize": 512,
+    "heightmapSize": -1,
     "foamTexWidth": 1024,
     "foamTexHeight": 1024,
     "waterSplitDist0": 1200.0,
@@ -15905,6 +15904,86 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "btr_80a_hungary"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "boxer_3105"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "boxer_cockerill_3105"
         }
       ]
     },
@@ -18264,15 +18343,6 @@
     ],
     "detail_bump_scale_mul": 0.25
   },
-  "airplane": {
-    "glowMul": 0.0,
-    "starGlowMul": 1.0
-  },
-  "tank": {
-    "glowMul": 0.7,
-    "starGlowMul": 0.5,
-    "adaptationMultiplierMul": 0.64
-  },
   "scene": {
     "z_near": 4.5,
     "z_far": 40000.0,
@@ -18506,7 +18576,8 @@
     "farEffect": 0.0
   },
   "picman": {
-    "searchBlkBeforeTaBin": true
+    "searchBlkBeforeTaBin": true,
+    "waitForTexLoading": false
   },
   "explosiveMassToTimeAssaultFuse": {
     "fuse_air_ab": {
@@ -18981,7 +19052,8 @@
       "extra_gun_4": true,
       "rockets": true,
       "rockets_secondary": true,
-      "machinegun": true
+      "machinegun": true,
+      "special": true
     },
     "ai": {
       "machinegun": true

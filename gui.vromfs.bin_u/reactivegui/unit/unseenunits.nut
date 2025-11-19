@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { register_command } = require("console")
@@ -11,8 +11,11 @@ let SEEN_UNIT = "seenUnit"
 let unseenUnits = Watched({})
 let maxTimeShowingUnseenMark = TIME_DAY_IN_SECONDS * 14
 
-let availableUnitsList = Computed(@() campUnitsCfg.get()
-  .filter(@(u) !u?.isHidden))
+let availableUnitsList = Computed(function() {
+  let my = campMyUnits.get()
+  return campUnitsCfg.get()
+    .filter(@(u) !u?.isHidden || u.name in my)
+})
 
 function loadUnseenUnits() {
   if (!isLoggedIn.get())

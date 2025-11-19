@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkUnitBonuses, mkBonusTiny } = require("%rGui/unit/components/unitInfoComps.nut")
 let { campConfigs, curCampaign} = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { premiumTextColor, userlogTextColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor, userlogTextColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts,
   mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -72,7 +72,7 @@ let mkLevelMark = @(unit) {
     childOvr = {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      borderColor = unit?.isUpgraded ? 0xFFFFB70B : 0xFF7EE2FF
+      borderColor = unit?.isUpgraded ? 0xFFFFB70B : selectColor
       children = {
         transform = { rotate = -45 }
         children = @() {

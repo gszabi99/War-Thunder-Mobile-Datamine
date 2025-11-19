@@ -1251,6 +1251,12 @@ function mkTankArmorPartDesc(partType, params, commonData) {
   if (info.titleLoc != "")
     partLocId = info.titleLoc
 
+  if (partName.startswith("firewall_armor")) {
+    let descLocId = "armor_class/desc/firewall_armor"
+    if (doesLocTextExist(descLocId))
+      desc.append(loc(descLocId))
+  }
+
   foreach (data in info.referenceProtectionArray) {
     if (isPoint2(data.angles))
       desc.append(loc("shop/armorThicknessEquivalent/angles",
@@ -1400,43 +1406,75 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
 
   local anglesFinder = false
   local iff = false
+
   local lookUp = false
   local lookDownHeadOn = false
   local lookDownHeadOnVelocity = false
   local lookDownAllAspects = false
+
+  local airSearch = false
+  local gmti = false
+  local gtm = false
+  local sea = false
+  local gtmAndSea = false
+
   let signalsBlk = sensorPropsBlk.getBlockByName("signals")
   for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++) {
     let signalBlk = signalsBlk.getBlock(s)
     if (isSearchRadar && signalBlk.getBool("track", false))
       continue
+
+    let aircraftAsTarget = signalBlk.getBool("aircraftAsTarget", true)
+    let groundVehiclesAsTarget = signalBlk.getBool("groundVehiclesAsTarget", false)
+    let shipsAsTarget = signalBlk.getBool("shipsAsTarget", false)
+
     anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
     iff = iff || signalBlk.getBool("friendFoeId", false)
     let groundClutter = signalBlk.getBool("groundClutter", false)
-    let distanceBlk = signalBlk.getBlockByName("distance")
-    let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
-    if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false)) {
-      let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
-      let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
-      if (( signalBlk.getBool("mainBeamDopplerSpeed", false) &&
-            !signalBlk.getBool("absDopplerSpeed", false) &&
-            dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25)) ||
-           groundClutter) {
-        if (!signalBlk.getBool("rangeFinder", true) && signalBlk.getBool("dopplerSpeedFinder", false) )
-          lookDownHeadOnVelocity = true
+
+    if (groundVehiclesAsTarget || shipsAsTarget) {
+      let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
+      if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false) && dopplerSpeedBlk.getReal("minValue", 0.0) > 0.2)
+        gmti = true
+      else if (groundVehiclesAsTarget != shipsAsTarget) {
+        if (groundVehiclesAsTarget)
+          gtm = true
         else
-          lookDownHeadOn = true
+          sea = true
       }
       else
-        lookDownAllAspects = true
+        gtmAndSea = true
     }
-    else if (distanceBlk && distanceBlk.getBool("presents", false))
-      lookUp = true
+    else if (aircraftAsTarget) {
+      airSearch = true
+      let distanceBlk = signalBlk.getBlockByName("distance")
+      let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
+      if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false)) {
+        let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
+        let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
+        if (( signalBlk.getBool("mainBeamDopplerSpeed", false) &&
+              !signalBlk.getBool("absDopplerSpeed", false) &&
+              dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25)) ||
+             groundClutter) {
+          if (!signalBlk.getBool("rangeFinder", true) && signalBlk.getBool("dopplerSpeedFinder", false) )
+            lookDownHeadOnVelocity = true
+          else
+            lookDownHeadOn = true
+        }
+        else
+          lookDownAllAspects = true
+      }
+      else if (distanceBlk && distanceBlk.getBool("presents", false))
+        lookUp = true
+    }
   }
+
+  let surfaceSearch = gtm || sea || gmti || gtmAndSea
 
   let hasRam = findBlockByName(sensorPropsBlk, "ram")
   let hasTwsEsa = !hasRam && findBlockByName(sensorPropsBlk, "addTargetTrack")
-  let hasTwsPlus = !hasTwsEsa && findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
-  let hasTws = !hasTwsPlus && findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
+  let hasTwsPlus = !hasRam && !hasTwsEsa && findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
+  let hasTws = !hasRam && !hasTwsEsa && !hasTwsPlus && findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
   let isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
   let hasSARH = findBlockByName(sensorPropsBlk, "setIllumination")
   let hasMG = findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
@@ -1508,20 +1546,37 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       round(searchZoneAzimuthWidth), unitsDeg, loc("ui/multiply"),
       round(searchZoneElevationWidth), unitsDeg))
 
-  if ([S_TANK, S_SHIP, S_BOAT].contains(simUnitType)) {
-    if (lookDownAllAspects)
-      desc.append("".concat(indent, loc("radar_ld")))
+  if (airSearch) {
+    local airSearchIndent = ""
+    if (surfaceSearch) {
+      desc.append("".concat(indent, loc("radar_air_search")))
+      airSearchIndent = "  "
+    }
+    if ([S_TANK, S_SHIP, S_BOAT].contains(simUnitType)) {
+      if (lookDownAllAspects)
+        desc.append("".concat(indent, airSearchIndent, loc("radar_ld")))
+    }
+    else if (lookDownHeadOn || lookDownHeadOnVelocity || lookDownAllAspects) {
+      desc.append("".concat(indent, airSearchIndent, loc("radar_ld"), colon))
+      if (lookDownHeadOn)
+        desc.append("".concat(indent, airSearchIndent, "  ", loc("radar_ld_head_on")))
+      if (lookDownHeadOnVelocity)
+        desc.append("".concat(indent, airSearchIndent, "  ", loc("radar_ld_head_on_velocity")))
+      if (lookDownAllAspects)
+        desc.append("".concat(indent, airSearchIndent, "  ", loc("radar_ld_all_aspects")))
+      if ((lookDownHeadOn || lookDownHeadOnVelocity || lookDownAllAspects) && lookUp)
+        desc.append("".concat(indent, airSearchIndent, loc("radar_lu")))
+    }
   }
-  else if (lookDownHeadOn || lookDownHeadOnVelocity || lookDownAllAspects) {
-    desc.append("".concat(indent, loc("radar_ld"), colon))
-    if (lookDownHeadOn)
-      desc.append("".concat(indent, "  ", loc("radar_ld_head_on")))
-    if (lookDownHeadOnVelocity)
-      desc.append("".concat(indent, "  ", loc("radar_ld_head_on_velocity")))
-    if (lookDownAllAspects)
-      desc.append("".concat(indent, "  ", loc("radar_ld_all_aspects")))
-    if ((lookDownHeadOn || lookDownHeadOnVelocity || lookDownAllAspects) && lookUp)
-      desc.append("".concat(indent, loc("radar_lu")))
+
+  if (surfaceSearch) {
+    desc.append("".concat(indent, loc("radar_surface_search")))
+    if (gtm)
+      desc.append("".concat(indent, "  ", loc("radar_gtm")))
+    if (sea)
+      desc.append("".concat(indent, "  ", loc("radar_sea")))
+    if (gmti)
+      desc.append("".concat(indent, "  ", loc("radar_gmti")))
   }
 
   if (iff)
@@ -2069,8 +2124,9 @@ function getFireControlWeaponNames(unitWeaponsList, fcBlk, getWeaponNameByBlkPat
 
 function getFireControlAccuracyPercent(fcBlk, shipDistancePrecisionErrorMult) {
   let accuracy = fcBlk?.measureAccuracy
+  let multiply = shipDistancePrecisionErrorMult == 0 ? 1 : shipDistancePrecisionErrorMult
   return accuracy
-    ? round(accuracy / (shipDistancePrecisionErrorMult || 1) * 100).tointeger()
+    ? round(accuracy / multiply * 100).tointeger()
     : -1
 }
 

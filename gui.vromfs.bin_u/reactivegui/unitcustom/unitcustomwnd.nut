@@ -3,6 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { getUnitPresentation, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { has_decals } = require("%appGlobals/permissions.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { skinActionBtn, skinsBlockNoTags, skinsBlockWithTags } = require("%rGui/unitCustom/unitSkins/unitSkinsComps.nut")
 let { hasTagsChoice } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
@@ -13,12 +14,15 @@ let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isCustomization
 } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
-let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { closeUnitCustom, unitCustomOpenCount } = require("%rGui/unitCustom/unitCustomState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { registerScene } = require("%rGui/navState.nut")
 
+
+let openCount = Computed(@() has_decals.get() ? 0 : unitCustomOpenCount.get())
 
 function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
@@ -133,4 +137,4 @@ let unitCustomWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("unitCustomWnd", unitCustomWnd, closeUnitCustom, unitCustomOpenCount)
+registerScene("unitCustomWnd", unitCustomWnd, closeUnitCustom, openCount)

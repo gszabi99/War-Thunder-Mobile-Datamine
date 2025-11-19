@@ -141,12 +141,11 @@ else if (regexp != null) {
     })
 }
 
-function isStringObviousString(str) {
+function [pure] isStringObviousString(str) {
   if (possibleNotStrRegExp != null)
     return !possibleNotStrRegExp.match(str)
   return false
 }
-mark_pure(isStringObviousString)
 
 let defTostringParams = freeze({
   maxdeeplevel = 4
@@ -309,7 +308,7 @@ function tostring_r(inp, params=defTostringParams) {
     if (typ == "array" && val.len() == 0)
       return [true, "[]"]
     if (typ == "instance") {
-      let str = val?.tostring?()
+      let str = val?.tostring()
       return [str != null && str.indexof("(instance : 0x") != 0, str]
     }
     return [false, null]
@@ -599,16 +598,15 @@ function trim(str) {
 
 
 
-function floatToStringRounded(value, presize) {
+function [pure] floatToStringRounded(value, presize) {
   if (presize >= 1) {
     local res = (value / presize + (value < 0 ? -0.5 : 0.5)).tointeger()
     return res == 0 ? "0" : "".join([res].extend(array(log10(presize).tointeger(), "0")))
   }
   return format("%.{0}f".subst(-log10(presize).tointeger()), value)
 }
-mark_pure(floatToStringRounded)
 
-function isStringInteger(str) {
+function [pure] isStringInteger(str) {
   if (type(str) == "integer")
     return true
   if (type(str) != "string")
@@ -626,9 +624,7 @@ function isStringInteger(str) {
   return true
 }
 
-mark_pure(isStringInteger)
-
-function isStringFloat(str, separator=".") {
+function [pure] isStringFloat(str, separator=".") {
   if (type(str) == "integer" || type(str) == "float")
     return true
   if (type(str) != "string")
@@ -671,9 +667,8 @@ function isStringFloat(str, separator=".") {
   }
   return true
 }
-mark_pure(isStringFloat)
 
-function toIntegerSafe(str, defValue = 0, needAssert = true) {
+function [pure] toIntegerSafe(str, defValue = 0, needAssert = true) {
   if (type(str) == "string")
     str = str.strip()
   if (isStringInteger(str))
@@ -683,25 +678,26 @@ function toIntegerSafe(str, defValue = 0, needAssert = true) {
   return defValue
 }
 
-mark_pure(toIntegerSafe)
 
 local utf8ToUpper
 local utf8ToLower
 local utf8Capitalize
+local utf8CapitalizeWords
 
 if (utf8 != null) {
-  utf8ToUpper = function utf8ToUpperImpl(str) {
+  utf8ToUpper = function [pure] utf8ToUpperImpl(str) {
     return utf8(str).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER)
   }
 
-  utf8ToLower = function utf8ToLowerImpl(str) {
+  utf8ToLower = function [pure] utf8ToLowerImpl(str) {
     return utf8(str).strtr(CASE_PAIR_UPPER, CASE_PAIR_LOWER)
   }
 
-  utf8Capitalize = function utf8CapitalizeImpl(str) {
-    local utf8Str = utf8(str)
+  utf8Capitalize = function [pure] utf8CapitalizeImpl(str) {
+    let utf8Str = utf8(str)
     return "".concat(utf8(utf8Str.slice(0, 1)).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER), utf8Str.slice(1))
   }
+  utf8CapitalizeWords = @[pure] utf8CapitalizeWordsImpl(str) " ".join(str.split(" ").map(utf8Capitalize))
 }
 else {
   function noUtf8Module(...) { assert("No 'utf8' module") }
@@ -710,7 +706,7 @@ else {
   utf8Capitalize = noUtf8Module
 }
 
-function intToUtf8Char(c) {
+function [pure] intToUtf8Char(c) {
   if (c <= 0x7F)
     return c.tochar()
   if (c <= 0x7FF)
@@ -730,7 +726,7 @@ let firstOctet = [
 ]
 let nextOctet = { ofs = 0x80, mask = 0x3F }
 
-function utf8CharToInt(str) {
+function [pure] utf8CharToInt(str) {
   let list = []
   foreach (i in str)
     list.append(i)
@@ -750,9 +746,7 @@ function utf8CharToInt(str) {
   return res
 }
 
-mark_pure(utf8CharToInt)
-
-function hexStringToInt(hexString) {
+function [pure] hexStringToInt(hexString) {
   
   if (hexString.len() >= 2 && hexString.slice(0, 2) == "0x")
     hexString = hexString.slice(2)
@@ -768,10 +762,9 @@ function hexStringToInt(hexString) {
 
   return res
 }
-mark_pure(hexStringToInt)
 
 
-function cutPrefix(id, prefix, defValue = null) {
+function [pure] cutPrefix(id, prefix, defValue = null) {
   if (!id)
     return defValue
 
@@ -781,7 +774,7 @@ function cutPrefix(id, prefix, defValue = null) {
   return defValue
 }
 
-function cutPostfix(id, postfix, defValue = null) {
+function [pure] cutPostfix(id, postfix, defValue = null) {
   if (!id)
     return defValue
 
@@ -791,10 +784,8 @@ function cutPostfix(id, postfix, defValue = null) {
     return id.slice(0, idLen - pLen)
   return defValue
 }
-mark_pure(cutPostfix)
-mark_pure(cutPrefix)
 
-function intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
+function [pure] intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
   local res = value.tointeger().tostring()
   local negativeSignCorrection = value < 0 ? 1 : 0
   local idx = res.len()
@@ -805,9 +796,8 @@ function intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
   return res
 }
 
-mark_pure(intToStrWithDelimiter)
 
-function stripTags(str) {
+function [pure] stripTags(str) {
   if (!str || !str.len())
     return ""
   if (stripTagsConfig == null)
@@ -817,7 +807,7 @@ function stripTags(str) {
   return str
 }
 
-function escape(str) {
+function [pure] escape(str) {
   if (type(str) != "string") {
     assert(false, @() $"wrong escape param type: {type(str)}")
     return ""
@@ -917,7 +907,7 @@ function clearBorderSymbolsMultiline(str) {
   return clearBorderSymbols(str, [" ", 0x0A.tochar(), 0x0D.tochar()])
 }
 
-function splitStringBySize(str, maxSize) {
+function [pure] splitStringBySize(str, maxSize) {
   if (maxSize <= 0) {
     assert(false, $"maxSize = {maxSize}")
     return [str]
@@ -932,8 +922,6 @@ function splitStringBySize(str, maxSize) {
   }
   return result
 }
-
-mark_pure(splitStringBySize)
 
 function obj2stringarray(obj, curpath = null){
   let res = []
@@ -981,6 +969,7 @@ return freeze(string.__merge({
   utf8Capitalize
   utf8ToUpper
   utf8ToLower
+  utf8CapitalizeWords
   hexStringToInt
   cutPrefix
   cutPostfix

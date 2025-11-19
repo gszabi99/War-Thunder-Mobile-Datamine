@@ -4,6 +4,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { get_mission_time } = require("mission")
 let { register_command } = require("console")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 
 let isDebugMode = hardPersistWatched("cooldownComps.isDebugMode", false)
@@ -40,7 +41,7 @@ function mkCooldownText(id, endTime) {
   return @() res.__update(cdLeft.get() <= 0.0 ? {} : {
     pos = [pw(50), pw(-15)]
     rendObj = ROBJ_TEXT
-    color = 0xFFFFFFFF
+    color = hudWhiteColor
     text = round_by_value(cdLeft.get(), cdLeft.get() >= 10 ? 1 : 0.1)
   })
 }

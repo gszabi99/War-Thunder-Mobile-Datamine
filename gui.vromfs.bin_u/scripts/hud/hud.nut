@@ -14,7 +14,7 @@ let updateClientStates = require("%scripts/clientState/updateClientStates.nut")
 let { is_benchmark_game_mode } = require("mission")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
-isHudVisible(is_hud_visible())
+isHudVisible.set(is_hud_visible())
 
 function getHudType() {
   if (!isHudVisible.get())
@@ -29,7 +29,7 @@ function getHudType() {
 }
 
 function updateHudType() {
-  curHudType(getHudType())
+  curHudType.set(getHudType())
 }
 
 if (isHudVisible.get()) {
@@ -56,7 +56,7 @@ function startHud(...) {
   updateClientStates()
   initHudOptionsOnce()
   updateHudType()
-  isInRespawn.update(false)
+  isInRespawn.set(false)
 }
 
 eventbus_subscribe("gui_start_hud", startHud)
@@ -65,7 +65,7 @@ eventbus_subscribe("preload_ingame_scenes", startHud)
 
 eventbus_subscribe("on_show_hud", function on_show_hud(payload) {
   let {show = true} = payload
-  isHudVisible(show)
+  isHudVisible.set(show)
   updateHudType()
   broadcastEvent("ShowHud", { show })
 })

@@ -16,6 +16,12 @@ let US_NOT_RESEARCHED = 5
 let US_NEED_BLUEPRINTS = 6
 let US_CAN_RESEARCH = 7
 
+let UG_COMMON = 0x01
+let UG_UPGRADED = 0x02
+let UG_PREMIUM = 0x04
+let UG_COLLECTIBLE = 0x08
+let UG_ALL = 0x0F
+
 let buyUnitsData = Computed(function() {
   let { level, isReadyForLevelUp } = playerLevelInfo.get()
   let { unitsResearch = {}, blueprints = {} } = servProfile.get()
@@ -93,6 +99,19 @@ function setCurrentUnit(unitName) {
   return ""
 }
 
+function getUnitGroupMask(unit) {
+  local mask = 0
+  if (unit?.isCollectible)
+    mask = mask | UG_COLLECTIBLE
+  else if (unit?.isPremium)
+    mask = mask | UG_PREMIUM
+  else
+    mask = mask | UG_COMMON
+  if (unit?.isUpgraded || campMyUnits.get()?[unit?.name].isUpgraded)
+    mask = mask | UG_UPGRADED
+  return mask
+}
+
 return {
   US_UNKNOWN
   US_OWN
@@ -102,6 +121,14 @@ return {
   US_NOT_RESEARCHED
   US_NEED_BLUEPRINTS
   US_CAN_RESEARCH
+
+  UG_COMMON
+  UG_UPGRADED
+  UG_PREMIUM
+  UG_COLLECTIBLE
+  UG_ALL
+
+  getUnitGroupMask
 
   buyUnitsData
   canBuyUnits

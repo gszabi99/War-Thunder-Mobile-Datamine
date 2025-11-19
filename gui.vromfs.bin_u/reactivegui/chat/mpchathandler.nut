@@ -12,7 +12,7 @@ let { MAX_LOG_SIZE, CMD_MSG_PREFIX, chatCmdHandlers, chatModes, curChatMode, cur
 
 let MP_TEAM_NEUTRAL = 0
 
-function onIncomingMessage(sender, msg, _enemy, mode, isAutomatic) {
+function onIncomingMessage(sender, msg, _enemy, mode, isAutomatic, _complaints) {
   let isCmdMessage = msg.startswith(CMD_MSG_PREFIX)
   let isUserGeneratedMessage = !isAutomatic && !isCmdMessage
   if (isUserGeneratedMessage && !allow_chat.get())
@@ -56,7 +56,7 @@ let clearLog = @() chatLog.set([])
 
 let chatHandler = {
   onIncomingMessage
-  onInternalMessage = @(str) onIncomingMessage("", str, false, CHAT_MODE_ALL, true)
+  onInternalMessage = @(str) onIncomingMessage("", str, false, CHAT_MODE_ALL, true, "")
   clearLog
   onChatClear = clearLog
   onModeChanged = @(mode, _privPlayer) curChatMode.set(mode)

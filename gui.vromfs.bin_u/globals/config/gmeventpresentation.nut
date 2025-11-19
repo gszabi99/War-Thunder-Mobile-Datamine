@@ -27,6 +27,11 @@ let allPresentations = {
     image = "ui/gameuiskin#icon_event_anniversary_2025.svg"
     bgImage = "ui/images/event_bg_anniversary_2025.avif"
   }
+
+  halloween_2025 = {
+    image = "ui/gameuiskin#icon_event_halloween_2025.svg"
+    bgImage = "ui/images/event_bg_halloween_2025.avif"
+  }
 }
   .map(@(cfg, id) defCfg.__merge(cfg, { id }))
 

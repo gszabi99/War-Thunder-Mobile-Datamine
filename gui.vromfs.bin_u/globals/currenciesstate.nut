@@ -6,6 +6,8 @@ let WP = "wp"
 let GOLD = "gold"
 let WARBOND = "warbond"
 let EVENT_KEY = "eventKey"
+let SLOT_EXP_TANKS = "slot_exp_tanks"
+
 let NYBOND = "nybond"
 let APRILBOND = "aprilbond"
 let PLATINUM = "platinum"
@@ -15,12 +17,12 @@ let APRILDOUBLON = "aprilDoublon"
 let HOTMAYBOND = "hotmaybond"
 let INDEPENDENCEBOND = "independencebond"
 let ANNIVERSARYBOND = "anniversarybond"
+let HALLOWEENBOND = "halloweenbond"
 
 let balance = sharedWatched("balance", @() {})
 let isBalanceReceived = sharedWatched("isBalanceReceived", @() false)
-let isValidBalance = Computed(@() balance.get().findindex(@(val) val < 0) == null)
 
-let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, NYBOND, APRILBOND, BLACK_FRIDAY_BOND, APRILMAPPIECE, APRILDOUBLON, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND]
+let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, SLOT_EXP_TANKS]
 let orderByCurrency = currencyOrder.reduce(@(res, c, i) res.$rawset(c, i + 1), {})
 
 let dbgCurrencyCount = {
@@ -29,12 +31,14 @@ let dbgCurrencyCount = {
 }
 let getDbgCurrencyCount = @(c) dbgCurrencyCount?[c] ?? 1000
 
-return {
+let currenciesRes = {
   WP
   PLATINUM
   GOLD
   WARBOND
   EVENT_KEY
+  SLOT_EXP_TANKS
+
   NYBOND
   APRILBOND
   APRILMAPPIECE
@@ -43,13 +47,23 @@ return {
   HOTMAYBOND
   INDEPENDENCEBOND
   ANNIVERSARYBOND
+  HALLOWEENBOND
+}
+
+let allCurrencies = currenciesRes.values()
+
+return currenciesRes.__update({
+  allCurrencies
 
   isBalanceReceived
   balance
   balanceWp = Computed(@() balance.get()?[WP] ?? 0)
   balanceGold = Computed(@() balance.get()?[GOLD] ?? 0)
-  isValidBalance
+  onlineBattleBlockCurrencyId = Computed(@() (balance.get()?[PLATINUM] ?? 0) < 0 ? PLATINUM
+    : (balance.get()?[GOLD] ?? 0) < 0 ? GOLD
+    : null)
+  slotExpTanks = Computed(@() balance.get()?[SLOT_EXP_TANKS] ?? 0)
   orderByCurrency
   currencyOrder
   getDbgCurrencyCount
-}
+})

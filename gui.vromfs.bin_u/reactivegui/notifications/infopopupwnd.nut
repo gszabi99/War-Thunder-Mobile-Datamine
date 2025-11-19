@@ -19,9 +19,9 @@ let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 const WND_UID = "infoPopupWnd"
-let contentWidth = hdpx(1200)
-let gap = hdpx(20)
-let wndWidth = contentWidth + 2 * gap
+const contentWidth = hdpx(1200)
+const gap = hdpx(40)
+const wndWidth = contentWidth + 2 * gap
 
 let needShow = keepref(Computed(@() popupToShow.get() != null
   && isInMenuNoModals.get()
@@ -52,6 +52,11 @@ function mkActionButton(popup) {
 function mkContent(popup) {
   let { descLocId, image, imageSize } = getInfoPopupPresentation(popup.id)
   let desc = doesLocTextExist(descLocId) ? loc(descLocId) : null
+  local descBox = msgBoxText(desc, { size = SIZE_TO_CONTENT, maxWidth = contentWidth, halign = ALIGN_LEFT }
+    .__update(fontTinyAccented))
+  if (calc_comp_size(descBox)[0] >= (contentWidth * (2.0 / 3.0)))
+    descBox = msgBoxText(desc, { size = [contentWidth, SIZE_TO_CONTENT], halign = ALIGN_LEFT }
+      .__update(fontTinyAccented))
   return {
     size = FLEX_H
     padding = gap
@@ -66,10 +71,7 @@ function mkContent(popup) {
             image = Picture(image)
             keepAspect = true
           }
-      desc == null ? null
-        : msgBoxText(desc,
-            { size = SIZE_TO_CONTENT, maxWidth = contentWidth, halign = ALIGN_LEFT }
-              .__update(fontTinyAccented))
+      desc == null ? null : descBox
       mkActionButton(popup)
     ]
   }

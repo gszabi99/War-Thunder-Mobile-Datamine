@@ -25,7 +25,7 @@ function mkHudTuningElem(cfg, transform, options) {
   let children = isVisibleInBattle == null ? ctorFinal()
     : @() {
         watch = isVisibleInBattle
-        children = isVisibleInBattle.value ? ctorFinal() : null
+        children = isVisibleInBattle.get() ? ctorFinal() : null
       }
   let res = {
     size = 0

@@ -136,7 +136,7 @@ let content = @() {
 let hudTuningOptions = @() {
   watch = transformInProgress
   size = FLEX_H
-  transform = { translate = [0, transformInProgress.value == null ? 0 : hdpx(-500)] }
+  transform = { translate = [0, transformInProgress.get() == null ? 0 : hdpx(-500)] }
   transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
   children = [
     @() {

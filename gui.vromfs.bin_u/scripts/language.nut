@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_language, set_language, get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
-
+let { reset_static_memos } = require("modules")
 let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
 let fonts = require("fonts")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
@@ -95,6 +95,7 @@ function setGameLocalization(langId, isForced = false) {
   setSystemConfigOption("language", langId)
   set_language(langId)
   saveLanguage(langId)
+  reset_static_memos()
   saveProfile()
   resetAddonNamesCache()
 }

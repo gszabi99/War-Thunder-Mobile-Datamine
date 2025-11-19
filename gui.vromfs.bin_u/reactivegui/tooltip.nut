@@ -72,7 +72,7 @@ function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
 }
 
 function hideTooltip() {
-  state(null)
+  state.set(null)
   curContent = null
   delayedTooltip = null
   clearTimer(hideTooltip)
@@ -129,7 +129,7 @@ function showHint(rectOrPos, params, showTime) {
 let withTooltipImpl = @(stateFlags, showFunc, hideFunc = hideTooltip) function(sf) {
   let hasHint = (stateFlags.get() & S_ACTIVE) != 0
   let needHint = (sf & S_ACTIVE) != 0
-  stateFlags(sf)
+  stateFlags.set(sf)
   if (hasHint == needHint)
     return
   if (needHint)

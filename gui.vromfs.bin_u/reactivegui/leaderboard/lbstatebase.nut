@@ -41,10 +41,10 @@ function setLbRequestData(requestData) {
     return
 
   if (!isEqual(mkSelfRequest(requestData), mkSelfRequest(curLbRequestData.get())))
-    curLbSelfRow(null)
-  curLbData(null) 
-  curLbErrName(null)
-  curLbRequestData(requestData)
+    curLbSelfRow.set(null)
+  curLbData.set(null) 
+  curLbErrName.set(null)
+  curLbRequestData.set(requestData)
 }
 
 function requestSelfRow() {
@@ -62,7 +62,7 @@ contactsRegisterHandler("cln_get_leaderboard_json:self", function(result, selfRe
 
   local newSelfRow = result.findvalue(@(v) v?._id == myUserId.get())
     ?.__merge({ name = myUserName.get() })
-  curLbSelfRow(newSelfRow)
+  curLbSelfRow.set(newSelfRow)
 })
 
 let canRefresh = @() !isLbRequestInProgress.get()
@@ -74,8 +74,8 @@ function refreshLbData() {
     return
   let requestData = curLbRequestData.get()
   if (requestData == null) {
-    curLbData([])
-    curLbErrName(null)
+    curLbData.set([])
+    curLbErrName.set(null)
     return
   }
   lastRequestTime.set(get_time_msec())
@@ -90,7 +90,7 @@ contactsRegisterHandler("cln_get_leaderboard_json", function(result, requestData
     return
   }
 
-  curLbErrName(result?.result.error)
+  curLbErrName.set(result?.result.error)
 
   let isSuccess = result?.result.success ?? true
   let lbTbl = isSuccess ? result : {}
@@ -108,8 +108,8 @@ contactsRegisterHandler("cln_get_leaderboard_json", function(result, requestData
     || (a?.idx ?? -1) <=> (b?.idx ?? -1))
 
   if (selfRow)
-    curLbSelfRow(selfRow)
-  curLbData(newLbData)
+    curLbSelfRow.set(selfRow)
+  curLbData.set(newLbData)
 })
 
 return {

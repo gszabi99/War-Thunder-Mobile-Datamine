@@ -9,6 +9,7 @@ let muller_regular = isJp ? Fonts.muller_regular_jp : Fonts.muller_regular
 let muller_medium = isJp ? Fonts.muller_medium_jp : Fonts.muller_medium
 let muller_mono_regular = Fonts.muller_mono_regular 
 let muller_mono_medium = Fonts.muller_mono_medium 
+let muller_bold = Fonts.muller_bold 
 let wtfont = Fonts.wtfont
 
 let shadeTiny = {
@@ -114,7 +115,13 @@ let fontVeryLargeShaded = fontVeryLarge.__merge(shade)
 
 let fontMonoVeryTiny = fontVeryTiny.__merge({ font = muller_mono_regular })
 let fontMonoTiny = fontTiny.__merge({ font = muller_mono_regular })
+let fontMonoSmall = fontSmall.__merge({ font = muller_mono_medium })
 let fontMonoMedium = fontMedium.__merge({ font = muller_mono_medium })
+
+let fontVeryTinyShadedBold = fontVeryTinyShaded.__merge({ font = muller_bold })
+let fontTinyShadedBold = fontTinyShaded.__merge({ font = muller_bold })
+let fontTinyAccentedShadedBold = fontTinyAccentedShaded.__merge({ font = muller_bold })
+let fontSmallShadedBold = fontSmallShaded.__merge({ font = muller_bold })
 
 let fontMonoVeryTinyShaded = fontVeryTiny.__merge({ font = muller_mono_regular }, shadeTiny)
 let fontMonoTinyShaded = fontTiny.__merge({ font = muller_mono_regular }, shadeTiny)
@@ -152,9 +159,16 @@ let fontsSets = {
     fontTinyAccentedShaded
     fontSmallAccentedShaded
   }
+  bold = {
+    fontVeryTinyShadedBold
+    fontTinyShadedBold
+    fontTinyAccentedShadedBold
+    fontSmallShadedBold
+  }
   monospace = {
     fontMonoVeryTiny
     fontMonoTiny
+    fontMonoSmall
     fontMonoMedium
   }
   monospaceShaded = {

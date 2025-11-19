@@ -10,6 +10,7 @@ let { mkpath, file_exists } = require("dagor.fs")
 let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonUnitCfg, allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 let { dmViewerMode, isDebugBatchExportProcess } = require("%rGui/dmViewer/dmViewerState.nut")
@@ -22,7 +23,7 @@ let onFinishActions = []
 let msToTimeStr = @(ms) format("%02dm%02ds", ms / 60000, (ms % 60000) / 1000)
 
 function collectItemInfo(unitName, partsWhitelist) {
-  let unit = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get())
+  let unit = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get(), curCampaign.get())
   if (unit == null)
     return null
   let unitData = mkUnitDataForXray(unitName, unit, null)
@@ -74,7 +75,7 @@ function loadNextItems() {
     let i = res.len()
     let prc = (100.0 * i / total).tointeger()
     let passedMs = get_time_msec() - exportStartTimeMs
-    let eta = msToTimeStr(max(0, (1.0 * passedMs / (i || 1) * total).tointeger() - passedMs))
+    let eta = msToTimeStr(max(0, (1.0 * passedMs / max(i, 1) * total).tointeger() - passedMs))
     command($"console.progress_indicator {progressId} {i}/{total}{nbsp}({prc}%),{nbsp}ETA:{nbsp}{eta}")
 
     let unitName = todo.pop()

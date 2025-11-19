@@ -222,6 +222,7 @@ let iconBooster = {
   [REWARDS_SCORES] = mkLabelIcon(getBoosterIcon("wp"), labelIconSize, labelIconSize),
   [REWARDS_CAMPAIGN] = mkLabelIcon(getBoosterIcon("playerExp"), labelIconSize, labelIconSize),
   [REWARDS_UNIT] = mkLabelIcon(getBoosterIcon("unitExp"), labelIconSize, labelIconSize),
+  slot = mkLabelIcon(getBoosterIcon("slotExp"), labelIconSize, labelIconSize),
 }
 
 let CS_DEBR_REWARD = CS_COMMON.__merge({ fontStyle = fontCommon })
@@ -277,7 +278,9 @@ let cfgRowBooster = {
   needShow = @(ri) ri.booster != 0
   getVal = @(ri) ri.booster
   getLabelText = @(_ri) loc("debriefing/rewards/booster")
-  getLabelIcon = @(ri) iconBooster[ri.preset]
+  getLabelIcon = @(ri) (ri.preset == REWARDS_UNIT && ri?.isSlot)
+    ? iconBooster.slot
+    : iconBooster[ri.preset]
 }
 
 let cfgRowStreaks = {
@@ -440,7 +443,7 @@ function mkTotalRewardCounts(preset, rewardsInfo, debrData, rewardsStartTime) {
   }
 
   local btnTryPremium = !rewardsInfo.isPremiumIncluded && rewardsInfo.totalWithPrem != 0
-    ? mkTryPremiumButton(mkPremBonusMulComps(debrData))
+    ? mkTryPremiumButton(mkPremBonusMulComps(debrData), debrData?.sessionId)
     : null
 
   return {

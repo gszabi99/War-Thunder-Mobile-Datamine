@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let { touchButtonSize, btnBgColor, borderColor, borderColorPushed, borderWidth
+let { touchButtonSize, btnBgStyle, borderColor, borderColorPushed, borderWidth
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
@@ -46,12 +46,12 @@ function mkSimpleSquareButton(shortcutId, img, scale) {
       hotkeys = mkGamepadHotkey(shortcutId)
       children = [
         @() {
-          watch = stateFlags
+          watch = [stateFlags, btnBgStyle]
           size = flex()
           rendObj = ROBJ_BOX
           borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed : borderColor
           borderWidth = borderW
-          fillColor = btnBgColor.empty
+          fillColor = btnBgStyle.get().empty
         }
         {
           rendObj = ROBJ_IMAGE
@@ -64,23 +64,25 @@ function mkSimpleSquareButton(shortcutId, img, scale) {
     }
 }
 
-function mkSquareButtonBg(actionItem, buttonBgSize = touchButtonSize, onFinishExt = null) {
+function mkSquareButtonBg(actionItem, isPrimaryStyle, btnStyle, buttonBgSize = touchButtonSize, onFinishExt = null) {
   let misTime = get_mission_time()
   let { available = true, cooldownEndTime = 0, cooldownTime = 1, id = null } = actionItem
   let hasCooldown = available && cooldownEndTime > misTime
   let cooldownLeft = hasCooldown ? (cooldownEndTime - misTime) : 0
   let cooldown = hasCooldown ? (1 - (cooldownLeft / max(cooldownTime, 1))) : 1
-  let { empty, ready, broken, noAmmo } = btnBgColor
+  let { empty, ready, broken, noAmmo } = btnStyle
   let trigger = $"action_cd_finish_{id}"
   let item = {
     size = [buttonBgSize, buttonBgSize]
     rendObj = ROBJ_PROGRESS_CIRCULAR
-    image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{buttonBgSize}:{buttonBgSize}:P")
+    image = isPrimaryStyle
+      ? Picture($"ui/gameuiskin#hud_movement_stop2_bg_loading.svg:{buttonBgSize}:{buttonBgSize}:P")
+      : Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{buttonBgSize}:{buttonBgSize}:P")
     fgColor = !available ? noAmmo
       : (actionItem?.broken ?? false) ? broken
       : ready
     bgColor = empty
-    fValue = 1.0
+    fValue = isPrimaryStyle ? 0 : 1.0
     key = $"action_bg_{id}_{cooldownEndTime}"
     transform = {}
     animations = [

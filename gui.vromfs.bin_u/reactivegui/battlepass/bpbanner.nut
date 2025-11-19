@@ -1,6 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { openBattlePassWnd, isBpSeasonActive, hasBpRewardsToReceive } = require("%rGui/battlePass/battlePassState.nut")
+let { seenPasses, isPassGoodsUnseen } = require("%rGui/battlePass/passState.nut")
+let { isBpSeasonActive, hasBpRewardsToReceive, battlePassGoods } = require("%rGui/battlePass/battlePassState.nut")
+let { isOPSeasonActive, hasOPRewardsToReceive, operationPassGoods } = require("%rGui/battlePass/operationPassState.nut")
+let { isEpSeasonActive, hasEpRewardsToReceive, eventPassGoods } = require("%rGui/battlePass/eventPassState.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_EVENT_ID, isEventActive,
   isFitSeasonRewardsRequirements
@@ -9,6 +12,7 @@ let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { openPassScene, BATTLE_PASS } = require("passState.nut")
 
 let bannerIconSize = [hdpxi(216), hdpxi(127)]
 let buttonSize = [translucentButtonsHeight * 1.5, translucentButtonsHeight]
@@ -30,13 +34,20 @@ let mainEventBtn = framedImageBtn($"ui/gameuiskin#icon_events.svg",
         : null
   })
 
+let isPassActive = Computed(@() isBpSeasonActive.get() || isOPSeasonActive.get() || isEpSeasonActive.get())
+let hasAnyPassRewards = Computed(@() hasBpRewardsToReceive.get() || hasOPRewardsToReceive.get() || hasEpRewardsToReceive.get())
+
+let hasAnyUnseenPass = Computed(@() isPassGoodsUnseen(battlePassGoods.get(), seenPasses.get())
+  || isPassGoodsUnseen(operationPassGoods.get(), seenPasses.get())
+  || isPassGoodsUnseen(eventPassGoods.get(), seenPasses.get()))
+
 return function () {
   let { color, image, imageOffset } = getEventPresentation(eventSeason.get())
   return {
-    watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive, eventSeason, isFitSeasonRewardsRequirements]
+    watch = [isPassActive, isEventActive, eventSeason, isFitSeasonRewardsRequirements]
     size = [bannerIconSize[0] * 2, SIZE_TO_CONTENT]
     children = !isFitSeasonRewardsRequirements.get() ? null
-      : isBpSeasonActive.get()
+      : isPassActive.get()
         ? {
             rendObj = ROBJ_9RECT
             image = gradTranspDoubleSideX
@@ -71,18 +82,19 @@ return function () {
                   }
                 ]
               }
-              {
+              @() {
+                watch = [isEventActive, hasAnyPassRewards, hasAnyUnseenPass]
                 flow = FLOW_HORIZONTAL
                 gap = hdpx(40)
                 children = [
                   isEventActive.get() ? mainEventBtn : null
                   framedImageBtn($"ui/gameuiskin#icon_bp.svg",
-                    openBattlePassWnd,
+                    @() openPassScene(BATTLE_PASS),
                     {
                       size = buttonSize
                       sound = { click = "click" }
                     },
-                    !hasBpRewardsToReceive.get() ? null
+                    !hasAnyPassRewards.get() && !hasAnyUnseenPass.get() ? null
                       : priorityUnseenMark.__merge({ pos = [0.5 * buttonSize[0], -0.5 * buttonSize[1]] })
                   )
                 ]

@@ -2,20 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let { optDoubleCourseGuns } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let {
-  aircraftMovement,
-  aircraftIndicators,
-  aircraftMovementEditView,
-  aircraftIndicatorsEditView,
-  aircraftMoveStick,
-  aircraftMoveSecondaryStick
-  aircraftMoveStickView,
-  aircraftMoveArrows,
-  isAircraftMoveArrowsAvailable,
-  brakeButton,
-  brakeButtonEditView
+let { aircraftMovement, aircraftIndicators, aircraftMovementEditView, aircraftIndicatorsEditView,
+  aircraftMoveStick, aircraftMoveSecondaryStick, aircraftMoveStickView, aircraftMoveArrows,
+  isAircraftMoveArrowsAvailable, brakeButton, brakeButtonEditView
 } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
+let { raceForceCannotShoot, notGtRace } = require("%rGui/missionState.nut")
 let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
 } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
@@ -26,6 +18,7 @@ let { bombPieStickBlockCtor, bombPieStickView } = require("%rGui/hud/buttons/bom
 let { airMapEditView, airMap } = require("%rGui/hud/airMap.nut")
 let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
+let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkAirMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
@@ -36,13 +29,14 @@ let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEd
   buttonAirImgSize, mkCircleSecondaryGuns
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera
-  hasBombs, RocketsState, hasRockets, TorpedoesState, hasTorpedos,
+  hasBombs, RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady
 } = require("%rGui/hud/airState.nut")
 let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
-let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
+let { shouldShowRadar, shouldShowAirTacticalMap } = require("%rGui/hudTuning/hudTuningState.nut")
 let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
+
 
 let returnToShipShortcutIds = {
   AB_SUPPORT_PLANE = "ID_WTM_LAUNCH_AIRCRAFT"
@@ -60,6 +54,7 @@ return cfgHudCommon.__merge({
     defTransform = mkLBPos([hdpx(100), hdpx(-365)])
     editView = zoomSliderEditView
     priority = Z_ORDER.SLIDER
+    isVisibleInBattle = notGtRace
   }
 
   bomb = {
@@ -71,7 +66,7 @@ return cfgHudCommon.__merge({
   }
 
   rocket = {
-    ctor = mkCircleWeaponryItemCtor("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", false)
+    ctor = mkCircleWeaponryItemCtor("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg")
     defTransform = mkLBPos([hdpx(285), hdpx(-148)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -79,7 +74,7 @@ return cfgHudCommon.__merge({
   }
 
   torpedo = {
-    ctor = mkCircleWeaponryItemCtor("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", false)
+    ctor = mkCircleWeaponryItemCtor("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", isTorpedoReady)
     defTransform = mkLBPos([hdpx(435), hdpx(-107)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -93,7 +88,7 @@ return cfgHudCommon.__merge({
     }
     defTransform = mkLBPos([hdpx(0), hdpx(-220)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_target_tracking_off.svg")
-    isVisibleInBattle = Computed(@() !isActiveTurretCamera.value)
+    isVisibleInBattle = Computed(@() !isActiveTurretCamera.get() && !raceForceCannotShoot.get())
   }
 
   zoom = {
@@ -101,6 +96,7 @@ return cfgHudCommon.__merge({
     defTransform = mkLBPos([hdpx(0), hdpx(-445)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
+    isVisibleInBattle = notGtRace
   }
 
 
@@ -144,12 +140,20 @@ return cfgHudCommon.__merge({
     priority = Z_ORDER.SUPERIOR
   }
 
+  tacticalMap = {
+    ctor = mkTacticalMapForHud
+    defTransform = mkLTPos([hdpx(155), 0])
+    editView = tacticalMapEditView
+    hideForDelayed = false
+    isVisibleInBattle = shouldShowAirTacticalMap
+  }
+
   radar = {
     ctor = airMap
     defTransform = mkLTPos([hdpx(120), 0])
     editView = airMapEditView
     hideForDelayed = false
-    isVisibleInBattle = canShowRadar
+    isVisibleInBattle = shouldShowRadar
   }
 
   myPlace = {

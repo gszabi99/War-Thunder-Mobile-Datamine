@@ -13,7 +13,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { actualGameVersion, actualGameHash, getApkLinkWithCash } = require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
+let { actualGameVersion, actualGameHash, getApkLinkWithHash } = require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
 let { get_base_game_version_str } = require("app")
 let { isConnectionLimited } = require("%appGlobals/clientState/connectionStatus.nut")
 let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateOption.nut")
@@ -134,7 +134,7 @@ function downloadAPK() {
 
   isDownloadInProgress.set(true)
 
-  let downloadId = enqueueDownload(getApkLinkWithCash(actualGameHash.get()), apkToInstall, "Download WTM RC", false, false)
+  let downloadId = enqueueDownload(getApkLinkWithHash(actualGameHash.get()), apkToInstall, "Download WTM RC", false, false)
   let status = queryDownloadStatus(downloadId)
 
   cachedDownloadId.set(downloadId)

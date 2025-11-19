@@ -47,6 +47,7 @@ let campagnImages = {
   ships = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
   ships_new = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
   tanks = { img = $"ui/bkg/login_bkg_t_2.avif", srcSize = [2700, 1080] }
+  tanks_new = { img = $"ui/bkg/login_bkg_t_2.avif", srcSize = [2700, 1080] }
   air   = { img = $"ui/bkg/login_bkg_a_2.avif", srcSize = [800, 600] }
 }
 
@@ -98,7 +99,7 @@ function onCampaignChange(campaign, onChangeCamp = null) {
       markUnitsSeen(unseenUnits.get())
   }
 
-  if(skipTutor.get()) {
+  if (skipTutor.get()) {
     setSkippedTutor(campaign)
     applyCampaign()
     return
@@ -342,7 +343,7 @@ let chooseCampaignScene = bgShaded.__merge({
 })
 registerScene("chooseCampaignWnd", chooseCampaignScene, close, isOpened)
 
-if (needToForceOpen.value)
+if (needToForceOpen.get())
   isOpened.set(true)
 needToForceOpen.subscribe(@(v) v ? isOpened.set(true) : null)
 

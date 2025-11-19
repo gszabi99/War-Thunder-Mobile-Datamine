@@ -16,7 +16,7 @@
   "mirrorShrinkZNeg": 256.0,
   "lastClip": true,
   "lastclip_horizon": true,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "addLandToSky": true,
   "max_wind_strength": 3.0,
   "mapCoord0": [
@@ -46,6 +46,11 @@
   "tankGridSize": [
     2048.0,
     2048.0
+  ],
+  "fixedLocalProbePos": [
+    2160.0,
+    50.0,
+    1947.0
   ],
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",

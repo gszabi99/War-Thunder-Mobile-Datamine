@@ -8,6 +8,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { STICK } = require("%rGui/hud/stickState.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 
 let stickHeadSize = evenPx(120)
@@ -27,7 +28,7 @@ function stickDragAreaBg(scale) {
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_voice_stick_bg.svg:{size}:{size}:P")
-    color = 0xFFFFFFFF
+    color = hudWhiteColor
   }
 }
 
@@ -39,7 +40,7 @@ function stickHeadBg(scale, ovr) {
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#joy_head.svg:{size}:{size}:P")
-    color = 0xFFFFFFFF
+    color = hudWhiteColor
   }.__update(ovr)
 }
 
@@ -82,10 +83,10 @@ let mkMiniStick = kwarg(function mkMiniStick(
 
   let gamepadAxisListener = axisListener({
     [activeStick == STICK.LEFT ? JOY_XBOX_REAL_AXIS_L_THUMB_H : JOY_XBOX_REAL_AXIS_R_THUMB_H] = function(v) {
-      stickDelta(Point2(-v, stickDelta.value.y))
+      stickDelta.set(Point2(-v, stickDelta.get().y))
     },
     [activeStick == STICK.LEFT ? JOY_XBOX_REAL_AXIS_L_THUMB_V : JOY_XBOX_REAL_AXIS_R_THUMB_V] = function(v) {
-      stickDelta(Point2(stickDelta.value.x, v))
+      stickDelta.set(Point2(stickDelta.get().x, v))
     },
   })
 
@@ -136,7 +137,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
             : {
                 watch = [stickCooldownEndTime, stickCooldownTimeSec]
                 rendObj = ROBJ_PROGRESS_CIRCULAR
-                fgColor = 0xFFFFFFFF
+                fgColor = hudWhiteColor
                 bgColor = 0
                 fValue = 1.0
                 key = $"{animUID}_{stickCooldownEndTime.get()}"

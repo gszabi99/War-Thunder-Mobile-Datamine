@@ -16,6 +16,8 @@ let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
 let { resultsHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
 let { mkStreakWithMultiplier, prepareStreaksArray } = require("%rGui/unlocks/streakPkg.nut")
+let { hudWhiteColor, hudBlackColor, hudTransparentColor, hudDarkRedFade, hudBurgundyFade
+} = require("%rGui/style/hudColors.nut")
 
 let changeTextBgColorDuration = 0.1
 let textBlockBounceDuration = 0.3
@@ -31,11 +33,11 @@ let earnedScoresOpacityDelay = placeInTeamTextOpacityDelay + 0.1
 let placeIconDelay = placeInTeamTextOpacityDelay + 0.5
 let placeIconDuration = 0.4
 
-let winBgColor = 0x66663900
-let failBgColor = 0x66550101
-let whiteBgColor = 0xFFFFFF
-let noBgColor = 0x00000000
-let blackBgColor = 0xFF000000
+let winBgColor = hudDarkRedFade
+let failBgColor = hudBurgundyFade
+let whiteBgColor = hudWhiteColor
+let noBgColor = hudTransparentColor
+let blackBgColor = hudBlackColor
 
 let gap = hdpx(10)
 let scoresGap = hdpx(100)

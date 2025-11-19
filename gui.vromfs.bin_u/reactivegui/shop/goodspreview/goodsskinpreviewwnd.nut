@@ -151,7 +151,7 @@ showCutscene(needShowCutscene.get())
 needShowCutscene.subscribe(showCutscene)
 
 function openDetailsWnd() {
-  hangarUnitDataBackup({
+  hangarUnitDataBackup.set({
     name = unitForShow.get().name,
     custom = unitForShow.get(),
   })
@@ -185,7 +185,7 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
     @() {
       watch = previewGoods
       flow = FLOW_HORIZONTAL
-      children = mkPreviewItems(previewGoods.get().__merge({ battleMods = {} }), aTimePackInfoStart + aTimeFirstItemOfset)
+      children = mkPreviewItems(previewGoods.get(), aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]
@@ -286,7 +286,7 @@ let previewWnd = @() {
   stopHotkeys = true
 
   function onAttach() {
-    isWindowAttached(true)
+    isWindowAttached.set(true)
     if (transitionThroughBlackScreen) {
       showBlackOverlay()
       if (!readyToShowCutScene.get())

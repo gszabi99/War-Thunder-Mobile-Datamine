@@ -1092,6 +1092,7 @@
       "driveGearRadius": 0.33,
       "mainGearRatio": 5.77,
       "sideGearRatio": 2.71,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -7.0,
@@ -1151,7 +1152,13 @@
     "tracks": {
       "animationMultiplier": -0.75,
       "width": 0.6,
-      "height": 0.13
+      "height": 0.13,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     }
   },
   "PhysSys": {
@@ -1185,6 +1192,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -1202,6 +1210,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -1262,6 +1271,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1279,6 +1289,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -1352,6 +1363,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1493,6 +1505,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1500,6 +1513,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1507,6 +1521,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -1594,6 +1609,58 @@
       0.45,
       0.45,
       0.1
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2464,7 +2531,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 0.7,
           "verticalSpeedLimitKPH": 10.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2608,6 +2674,7 @@
     "art_support_smoke": {},
     "art_support_mortars": {},
     "art_support_highcaliber": {},
+    "tank_additional_armor": {},
     "tank_smoke_screen_smoke_shell": {},
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {},
@@ -2724,7 +2791,6 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 0.7,
                 "verticalSpeedLimitKPH": 10.0,
-                "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
                     [

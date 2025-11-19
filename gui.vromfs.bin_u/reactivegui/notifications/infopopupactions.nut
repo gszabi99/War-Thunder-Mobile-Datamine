@@ -3,6 +3,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { openEventWnd, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
+let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 
 let actions = {
   open_event_lootbox = { 
@@ -14,6 +15,10 @@ let actions = {
       openEventWnd(lootbox?.meta.event_id ?? MAIN_EVENT_ID)
       openEventWndLootbox(lootbox.name)
     }
+  },
+  open_event_wnd = { 
+    mkHasAction = @(p) Computed(@() p?.event_id in gmEventsList.get())
+    exec = @(p) openGmEventWnd(p?.event_id)
   }
 }
 

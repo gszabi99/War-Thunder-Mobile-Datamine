@@ -51,11 +51,11 @@ function slider(orient, var, options={}) {
       group = group
       color = calcKnobColor(knobStateFlags.get())
       watch = knobStateFlags
-      onElemState = @(sf) knobStateFlags.update(sf)
+      onElemState = @(sf) knobStateFlags.set(sf)
     }
   }
 
-  let setValue = options?.setValue ?? @(v) var(v)
+  let setValue = options?.setValue ?? @(v) var.set(v)
   function onChange(factor){
     let value = scaling.from(factor, minval, maxval)
     setValue(value)
@@ -93,7 +93,7 @@ function slider(orient, var, options={}) {
       knob
 
       onChange = onChange
-      onElemState = @(sf) sliderStateFlags.update(sf)
+      onElemState = @(sf) sliderStateFlags.set(sf)
 
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL

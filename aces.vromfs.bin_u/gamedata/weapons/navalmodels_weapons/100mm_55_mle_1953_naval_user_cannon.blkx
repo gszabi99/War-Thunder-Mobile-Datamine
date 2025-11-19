@@ -34,7 +34,7 @@
     "maxDistance": 40000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -48,6 +48,11 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": [
+      true,
+      true
+    ],
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "100mm_oea_f1_he",
     "dynamicKv": true,
@@ -58,7 +63,6 @@
     "hitPowerMult": 400.0,
     "explodeTreshold": 0.1,
     "fuseDelayDist": 10.0,
-    "fuseOnWater": true,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -234,7 +238,7 @@
       "maxDistance": 40000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -472,7 +476,7 @@
       "maxDistance": 40000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.4,
       "stabilityCaliberToArmorThreshold": 10.0,
@@ -486,7 +490,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_vt.ivf",
+      "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
       "bulletName": "100mm_opf_f4_aavt",
       "selfDestructionFx": [
         "explosion_air_selfexplosion_big",
@@ -683,7 +687,7 @@
       "maxDistance": 40000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -697,6 +701,11 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": 1.0,
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "100mm_oea_f1_he",
       "dynamicKv": true,
@@ -707,7 +716,6 @@
       "hitPowerMult": 400.0,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 10.0,
-      "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",

@@ -19,15 +19,15 @@ let showChildrenInfo=persist("showChildrenInfo", @() Watched(false))
 
 let curData        = Computed(@() pickedList.get()?[viewIdx.get()])
 
-let fontSize = sh(1.5)
-let valColor = Color(155,255,50)
+const fontSize = sh(1.5)
+const valColor = Color(155,255,50)
 
 function inspectorToggle() {
   shown.modify(@(v) !v)
-  pickerActive(false)
-  pickedList([])
-  viewIdx(0)
-  highlight(null)
+  pickerActive.set(false)
+  pickedList.set([])
+  viewIdx.set(0)
+  highlight.set(null)
 }
 
 function textButton(text, action, isEnabled = true) {
@@ -70,12 +70,12 @@ function mkDirBtn(text, dir) {
   return @() {
     watch = [isVisible, isEnabled]
     children = !isVisible.get() ? null
-      : textButton(text, @() isEnabled.get() ? viewIdx(viewIdx.get() + dir) : null, isEnabled.get())
+      : textButton(text, @() isEnabled.get() ? viewIdx.set(viewIdx.get() + dir) : null, isEnabled.get())
   }
 }
 
 let gap = const { size = flex() }
-let pickBtn = textButton("Pick", @() pickerActive(true))
+let pickBtn = textButton("Pick", @() pickerActive.set(true))
 let prevBtn = mkDirBtn("Prev", -1)
 let nextBtn = mkDirBtn("Next", 1)
 let closeBtn = textButton("Close", inspectorToggle)
@@ -84,7 +84,7 @@ let invAlign = @(align) align == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
 
 function panelToolbar() {
   let alignBtn = textButton(wndHalign.get() == ALIGN_RIGHT ? "<|" : "|>",
-    @() wndHalign(invAlign(wndHalign.get())))
+    @() wndHalign.set(invAlign(wndHalign.get())))
   return {
     watch = wndHalign
     size = FLEX_H
@@ -199,7 +199,7 @@ function propPanel(desc) {
       watch = stateFlags
       size = FLEX_H
       behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags(sf)
+      onElemState = @(sf) stateFlags.set(sf)
       onClick = @() set_clipboard_text(getPropValueTexts(desc, k).text)
       children = mkPropContent(desc, k, stateFlags.get())
     }
@@ -216,13 +216,13 @@ function elemLocationText(elem, builder, builder_func_name) {
 }
 
 function updatePickedList(data) {
-  pickedList((data ?? [])
+  pickedList.set((data ?? [])
     .map(@(d) d.__merge({
       locationText = elemLocationText(d.elem, d.builder, d.builderFuncName)
     })))
-  viewIdx(0)
-  pickerActive(false)
-  animHighlight(null)
+  viewIdx.set(0)
+  pickerActive.set(false)
+  animHighlight.set(null)
 }
 
 let prepareCallstackText = @(text) 
@@ -235,11 +235,11 @@ function clickableText(labelText, valueText, onClick = null, highlightBB = null)
     rendObj = ROBJ_TEXTAREA
     behavior = const [Behaviors.TextArea, Behaviors.Button]
     function onElemState(sf) {
-      elemSF(sf)
+      elemSF.set(sf)
       if (highlightBB)
-        animHighlight(sf & S_HOVER ? highlightBB : null)
+        animHighlight.set(sf & S_HOVER ? highlightBB : null)
     }
-    onDetach = @() animHighlight(null)
+    onDetach = @() animHighlight.set(null)
     onClick = onClick ?? @() set_clipboard_text(valueText)
     fontSize
     color = textColor(elemSF.get())
@@ -259,7 +259,7 @@ function rootsPanel(roots) {
     flow = FLOW_VERTICAL
     gap = hdpx(2) 
     children = [
-      clickableText("---show roots---", showRootsInfo.get(), @() showRootsInfo(!showRootsInfo.get()))
+      clickableText("---show roots---", showRootsInfo.get(), @() showRootsInfo.set(!showRootsInfo.get()))
     ].extend(showRootsInfo.get() ? rootsList : [])
   }
 }
@@ -279,7 +279,7 @@ function childrenPanel(children) {
       clickableText(
         $"---show children ({childrenList.len()}) ---",
         showChildrenInfo.get(),
-        @() showChildrenInfo(!showChildrenInfo.get()))
+        @() showChildrenInfo.set(!showChildrenInfo.get()))
     ].extend(showChildrenInfo.get() ? childrenList : [])
   }
 }
@@ -299,7 +299,7 @@ function details() {
     size = flex()
     rendObj = ROBJ_TEXTAREA
     behavior = [Behaviors.TextArea, Behaviors.WheelScroll, Behaviors.Button]
-    onElemState = @(sf) summarySF(sf)
+    onElemState = @(sf) summarySF.set(sf)
     onClick = @() set_clipboard_text(sel.locationText)
     text = prepareCallstackText(sel.locationText)
     fontSize
@@ -402,7 +402,7 @@ let elementPicker = @() {
   rendObj = ROBJ_SOLID
   color = Color(20,0,0,20)
   onClick = updatePickedList
-  onChange = @(hl) highlight(hl)
+  onChange = @(hl) highlight.set(hl)
   children = highlightRect
 }
 
@@ -422,8 +422,8 @@ function inspectorRoot() {
         (pickerActive.get() ? elementPicker : inspectorPanel),
         animHighlightRect,
         { hotkeys = [
-          ["L.Ctrl L.Shift I", @() shown(false)],
-          ["L.Ctrl L.Shift P", @() pickerActive(!pickerActive.get())]
+          ["L.Ctrl L.Shift I", @() shown.set(false)],
+          ["L.Ctrl L.Shift P", @() pickerActive.set(!pickerActive.get())]
         ] }
       ]
     })

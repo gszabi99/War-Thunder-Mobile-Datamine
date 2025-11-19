@@ -222,7 +222,7 @@
       "speed": 900.0,
       "maxDistance": 4000.0,
       "selfDestructionInAir": true,
-      "hitPowerMult": 1.5,
+      "hitPowerMult": 15.0,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
       "explosionEffect": "hit_19_27mm_metal_he",

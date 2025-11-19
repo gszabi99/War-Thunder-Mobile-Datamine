@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { register_command } = require("console")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { 
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE, OPT_TANK_ALTERNATIVE_CONTROL_TYPE,
@@ -13,8 +11,7 @@ let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, se
 } = require("controlsOptions")
 let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { abTests, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
@@ -38,34 +35,17 @@ let tankMoveControlType = {
   openInfo = openChooseMovementControls
 }
 
-let isDebugTankAltControlType = hardPersistWatched("options.isDebugTankAltControlType", false)
-let tankAltControlTypeButtonList = [false, true]
-let tankAltControlTypeDefault = Computed(@()
-  (isDebugTankAltControlType.get() == ((abTests.get()?.tankAltControlType ?? "false") == "true"))
-    ? tankAltControlTypeButtonList[0]
-    : tankAltControlTypeButtonList[1])
-let currentTankAltControlTypeRaw = mkOptionValue(OPT_TANK_ALTERNATIVE_CONTROL_TYPE)
-let setDefaultValueTankAltControlType = @() currentTankAltControlTypeRaw.get() == null
-  ? currentTankAltControlTypeRaw.set(tankAltControlTypeDefault.get())
-  : null
-if (isLoggedIn.get())
-  setDefaultValueTankAltControlType()
-isLoggedIn.subscribe(@(v) v ? setDefaultValueTankAltControlType() : null)
-let currentTankAltControlType = Computed(@()
-  validate(currentTankAltControlTypeRaw.get() ?? tankAltControlTypeDefault.get(), tankAltControlTypeButtonList))
+let tankAltControlTypeList = [false, true]
+let currentTankAltControlType = mkOptionValue(OPT_TANK_ALTERNATIVE_CONTROL_TYPE, true, @(v) validate(v, tankAltControlTypeList))
 let tankAltControlType = {
   locId = "options/tank_alternative_control_type"
   ctrlType = OCT_LIST
   value = currentTankAltControlType
-  setValue = @(v) currentTankAltControlTypeRaw(v)
   onChangeValue = @(v) sendChange("tank_alternative_control_type", v)
-  list = tankAltControlTypeButtonList
+  list = tankAltControlTypeList
   valToString = @(v) loc(v ? "options/controlType/alternative" : "options/controlType/default")
   visible = has_option_tank_alternative_control
-  description = "\n".join([loc("options/desc/tank_alternative_control_type")].extend([
-    "us_m4a3e8_76w_sherman",
-    "germ_pzkpfw_V_ausf_d_panther",
-    "ussr_is_2_1943"].map(@(v) $"- {loc(v)}")))
+  description = loc($"options/desc/tank_alternative_control_type", { ranksRange = "1-4" })
 }
 
 let gearDownOnStopButtonTouch = {
@@ -80,7 +60,7 @@ let gearDownOnStopButtonTouch = {
 let showReticleButtonList = [false, true]
 let currentShowReticle =
   mkOptionValue(OPT_SHOW_RETICLE, false, @(v) validate(v, showReticleButtonList))
-set_show_reticle(currentShowReticle.value)
+set_show_reticle(currentShowReticle.get())
 currentShowReticle.subscribe(@(v) set_show_reticle(v))
 let showReticleButtonTouch = {
     locId = "options/show_reticle"
@@ -102,14 +82,14 @@ let showReticleButtonTouch = {
 
 let targetTrackingList = [false, true]
 let currentTargetTrackingType = mkOptionValue(OPT_TARGET_TRACKING, true, @(v) validate(v, targetTrackingList))
-set_should_target_tracking(currentTargetTrackingType.value)
+set_should_target_tracking(currentTargetTrackingType.get())
 currentTargetTrackingType.subscribe(@(v) set_should_target_tracking(v))
 let targetTrackingType = {
   locId = "options/target_tracking"
   ctrlType = OCT_LIST
   value = currentTargetTrackingType
   function setValue(v){
-    currentTargetTrackingType(v)
+    currentTargetTrackingType.set(v)
     sendChange("target_tracking", v)
   }
   list = targetTrackingList
@@ -127,7 +107,7 @@ let currentArmorPiercingType = {
   locId = "options/armor_piercing_fixed"
   ctrlType = OCT_LIST
   value = currentArmorPiercingFixed
-  setValue = @(v) currentArmorPiercingFixedRaw(v)
+  setValue = @(v) currentArmorPiercingFixedRaw.set(v)
   onChangeValue = @(v) sendChange("armor_piercing_fixed", v)
   list = armorPiercingFixedList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
@@ -138,7 +118,7 @@ let autoZoomList = [false, true]
 let autoZoomDefault = Computed(@() firstLoginTime.get() > autoZoomDefaultTrueStart)
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
 let currentAutoZoom = Computed(@()
-  validate(currentAutoZoomRaw.value
+  validate(currentAutoZoomRaw.get()
       ?? autoZoomDefault.get(),
     autoZoomList))
 set_auto_zoom(currentAutoZoom.get(), false)
@@ -147,7 +127,7 @@ let currentAutoZoomType = {
   locId = "options/auto_zoom"
   ctrlType = OCT_LIST
   value = currentAutoZoom
-  setValue = @(v) currentAutoZoomRaw(v)
+  setValue = @(v) currentAutoZoomRaw.set(v)
   onChangeValue = @(v) sendChange("auto_zoom", v)
   list = autoZoomList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
@@ -198,7 +178,7 @@ let optHudScoreTank = {
   locId = "options/tankHudScores"
   ctrlType = OCT_LIST
   value = hudScoreTank
-  setValue = @(v) hudScoreTankRaw(v)
+  setValue = @(v) hudScoreTankRaw.set(v)
   onChangeValue = @(v) sendChange("tankHudScores", v)
   list = hudScoreTankList
   valToString = @(v) loc($"multiplayer/{v}")
@@ -216,11 +196,6 @@ let enableCrewAutoHealingType = {
   list = enableCrewAutoHealingList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
-
-register_command(function() {
-  currentTankAltControlTypeRaw(null)
-  isDebugTankAltControlType.set(!isDebugTankAltControlType.get())
-}, "debug.toggleAbTest.tankAltControlType")
 
 return {
   currentTargetTrackingType

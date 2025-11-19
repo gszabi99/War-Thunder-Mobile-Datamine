@@ -7,6 +7,7 @@ let { progressBarRewardSize, questItemsGap, rewardProgressBarCtor, statsAnimatio
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { receiveUnlockRewards, unlockInProgress, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
+let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
@@ -16,6 +17,7 @@ let { sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { allShopGoods, isDisabledGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
+let { isAdsVisible } = require("%rGui/ads/adsState.nut")
 
 
 let questBarHeight = hdpx(28)
@@ -77,6 +79,8 @@ function recalcPrevUp() {
 recalcPrevUp()
 
 unlockProgress.subscribe(function(up) {
+  if (isUserstatMissingData.get())
+    return
   let changes = {}
   let visProgressApply = {}
   foreach (name, val in visibleProgress.get()) {
@@ -100,7 +104,11 @@ function onChangeAnimFinish(name, change) {
   if (change != changeOrders.get()?[name][0] || name not in visibleProgress.get())
     return
   visibleProgress.mutate(@(v) v[name] = change.cur)
-  changeOrders.mutate(@(v) v[name].remove(0))
+  changeOrders.mutate(function(v) {
+    let list = clone v[name]
+    list.remove(0)
+    v[name] = list
+  })
   anim_start($"quest_progress_{name}")
 }
 
@@ -167,7 +175,7 @@ let pannableArea = horizontalPannableAreaCtor(progressBarWidthFull, [fadeWidth, 
 
 function getCurStageIdx(unlock) {
   let { stages = [], current = 0 } = unlock
-  return stages.findindex(@(s) s.progress >= current) ?? stages.reduce(
+  return stages.findindex(@(s) s.progress > current ) ?? stages.reduce(
     @(res, s, idx) s.progress >= res.progress ? { idx, progress = s.progress } : res,
     { idx = null, progress = 0 }).idx
 }
@@ -214,8 +222,7 @@ let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
     size = 0 
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    children = nextChange.get() == null ? null
-      : mkChangeView(name, nextChange.get())
+    children = nextChange.get() == null ? null : mkChangeView(name, nextChange.get())
   }
   transform = {}
   animations = animHighlight(name)
@@ -235,8 +242,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
   let required = stages?[curStageIdx].progress
   let isRewardInProgress = Computed(@() name in unlockInProgress.get())
   let visProgress = Computed(@() visibleProgress.get()?[name] ?? unlockProgress.get()?[name].current ?? 0)
-  let nextChange = Computed(@() changeOrders.get()?[name][0])
-
+  let nextChange = Computed(@() isAdsVisible.get() ? null : changeOrders.get()?[name][0])
   return {
     key = name
     size = [SIZE_TO_CONTENT, progressBarRewardSize]
@@ -282,9 +288,11 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
                 size = [flex(), progressBarHeight]
                 children = [
                   {
-                    rendObj = ROBJ_SOLID
+                    rendObj = ROBJ_BOX
                     size = flex()
-                    color = bgColor
+                    fillColor = bgColor
+                    borderWidth = [borderWidth, 0]
+                    borderColor = barBorderColor
                   }
                   {
                     key = name
@@ -347,12 +355,12 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
     : {
         watch = [progressUnlock, hasScroll, headerChildWidth, progressBarWidth, minWidth, rewardsFullWidth]
-        size = [flex(), progressBarHeight]
+        size = FLEX_H
         padding = [0, 0, 0, starIconOffset]
         children = [
           !hasScroll.get()
             ? mkStages(progressUnlock.get(),
-                (progressBarWidth.get() - rewardsFullWidth.get() - firstProgressWider) / (progressUnlock.get()?.stages.len() || 1),
+                (progressBarWidth.get() - rewardsFullWidth.get() - firstProgressWider) / max(progressUnlock.get()?.stages.len() ?? 1, 1),
                 tabId, curSectionId)
             : {
                 key = hasScroll

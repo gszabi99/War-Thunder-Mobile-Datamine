@@ -36,21 +36,21 @@ let { get_gui_option, addUserOption } = require("guiOptions")
 let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
 let USEROPT_ALLOW_JIP = addUserOption("USEROPT_ALLOW_JIP")
 
-isInQueue.subscribe(@(_) isSquadActualizeSend(false))
+isInQueue.subscribe(@(_) isSquadActualizeSend.set(false))
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
 
 let setQueueState = @(state) curQueue.mutate(@(q) q.state = state)
-let destroyQueue = @() curQueue(null)
+let destroyQueue = @() curQueue.set(null)
 
 let writeJwtData = @() curQueue.mutate(function(q) {
-  let { payload = {}, jwt = "" } = queueData.value
+  let { payload = {}, jwt = "" } = queueData.get()
   let myParams = { profileJwt = jwt }
 
   q.state = QS_ACTUALIZE_SQUAD
   q.params = q.params.__merge({
-    players = { [myUserId.value.tostring()] = myParams }
+    players = { [myUserId.get().tostring()] = myParams }
   })
-  q.unitInfo <- queueData.value?.unitInfo
+  q.unitInfo <- queueData.get()?.unitInfo
   logQ($"Queue ", q.unitInfo, " params by token: ", payload)
 })
 
@@ -73,17 +73,17 @@ function hasPenaltyNonUpdatable() {
 }
 
 function actualizeSquadQueueOnce() {
-  if (isSquadActualizeSend.value)
+  if (isSquadActualizeSend.get())
     return
-  isSquadActualizeSend(true)
-  queueDataCheckTime(serverTime.get())
+  isSquadActualizeSend.set(true)
+  queueDataCheckTime.set(serverTime.get())
 }
 
 function tryWriteMembersData() {
   let playersUpd = {}
   let campaign = squadLeaderCampaign.get()
   foreach(uid, m in squadMembers.get()) {
-    if (uid == myUserId.value)
+    if (uid == myUserId.get())
       continue
     let { queueToken = "", units = {} } = m
     if (queueToken == "") {
@@ -125,8 +125,8 @@ function tryWriteMembersData() {
 
 registerHandler("onActiveQueueActualizeData",
   function(res) {
-    if (("error" in res) && curQueueState.value == QS_ACTUALIZE)
-      curQueue(null)
+    if (("error" in res) && curQueueState.get() == QS_ACTUALIZE)
+      curQueue.set(null)
   })
 
 let queueSteps = {
@@ -157,12 +157,12 @@ let queueSteps = {
   },
 
   [QS_JOINING] = @() matching.rpc_call("match.enqueue",
-    curQueue.value.params,
+    curQueue.get().params,
     function(response) {
-      if (!isInQueue.value)
+      if (!isInQueue.get())
         return
       if (showMatchingError(response))
-        curQueue(null)
+        curQueue.set(null)
       else
         setQueueState(QS_IN_QUEUE)
     }),
@@ -172,7 +172,7 @@ let queueSteps = {
   [QS_LEAVING] = @() matching.rpc_call("match.leave_queue",
     {},
     function(response) {
-      if (!isInQueue.value)
+      if (!isInQueue.get())
         return
       let errorId = response?.error
       if (errorId == SERVER_ERROR_REQUEST_REJECTED)
@@ -183,13 +183,13 @@ let queueSteps = {
     }),
 }
 
-let doStepAction = @() queueSteps?[curQueueState.value]()
+let doStepAction = @() queueSteps?[curQueueState.get()]()
 let doStepActionDelayed = @() deferOnce(doStepAction)
 doStepActionDelayed()
 
 curQueueState.subscribe(@(_) doStepActionDelayed())
 
-let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
+let leaveQueue = @() isInQueue.get() ? setQueueState(QS_LEAVING) : null
 
 isQueueDataActual.subscribe(function(v) {
   if (!v)
@@ -201,24 +201,24 @@ isQueueDataActual.subscribe(function(v) {
 })
 
 curUnitInfo.subscribe(function(_) {  
-  if (!isInQueue.value)
+  if (!isInQueue.get())
     return
   logQ("Leave queue by curUnitInfo change")
   leaveQueue()
 })
 
 squadMembers.subscribe(function(v) {
-  if (!isInQueue.value || !isSquadLeader.get())
+  if (!isInQueue.get() || !isSquadLeader.get())
     return
 
   foreach(uid, m in squadMembers.get())
-    if (uid != myUserId.value && !m?.ready) {
+    if (uid != myUserId.get() && !m?.ready) {
       logQ("Leave queue because member become not ready")
       leaveQueue()
       return
     }
 
-  if (curQueueState.value != QS_ACTUALIZE_SQUAD)
+  if (curQueueState.get() != QS_ACTUALIZE_SQUAD)
     return
   if (v.len() <= 1) 
     leaveQueue()
@@ -227,7 +227,7 @@ squadMembers.subscribe(function(v) {
 })
 
 function joinQueue(params) {
-  if (isInQueue.value) {
+  if (isInQueue.get()) {
     logerr("Try to join new queue while in queue")
     return
   }
@@ -237,16 +237,16 @@ function joinQueue(params) {
     jip = get_gui_option(USEROPT_ALLOW_JIP) ?? true
   }.__update(params)
   logQ("Request join queue: ", paramsExt)
-  curQueue({ state = QS_ACTUALIZE, params = paramsExt })
+  curQueue.set({ state = QS_ACTUALIZE, params = paramsExt })
 }
 
 matching.subscribe("match.notify_queue_join", function(params) {
   logQ("match.notify_queue_join ", params)
-  if (!isInQueue.value) {
-    curQueue({ state = QS_IN_QUEUE, params })
+  if (!isInQueue.get()) {
+    curQueue.set({ state = QS_IN_QUEUE, params })
     return
   }
-  if (curQueue.value.params?.mode != params?.mode)
+  if (curQueue.get().params?.mode != params?.mode)
     return
   curQueue.mutate(@(v) v.__update({
     state = QS_IN_QUEUE,
@@ -264,11 +264,11 @@ matching.subscribe("match.notify_queue_leave", function(params) {
     return
   }
 
-  if (curQueue.value.params?.mode != params?.mode)
+  if (curQueue.get().params?.mode != params?.mode)
     return
 
-  let { joinedClusters = {} } = curQueue.value
-  if (joinedClusters.len() == 0 && curQueue.value.params?.cluster == cluster) {
+  let { joinedClusters = {} } = curQueue.get()
+  if (joinedClusters.len() == 0 && curQueue.get().params?.cluster == cluster) {
     destroyQueue()
     return
   }

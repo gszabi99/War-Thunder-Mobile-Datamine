@@ -30,7 +30,7 @@ let RELOGIN_TIME_AFTER_INACTIVE = 30
 
 local needReloginOnWindowActivate = false
 
-isMatchingOnline(is_online_available())
+isMatchingOnline.set(is_online_available())
 
 subscribeFMsgBtns({
   matchingConnectCancel = @(_) openFMsgBox({
@@ -61,7 +61,7 @@ subscribeFMsgBtns({
 })
 
 function showMatchingConnectProgress() {
-  if (isMatchingOnline.value)
+  if (isMatchingOnline.get())
     return
   openFMsgBox({
     uid = "matching_connect_progressbox",
@@ -199,12 +199,12 @@ function exitForDownloadApkMsgBox(message) {
 
 eventbus_subscribe("on_online_unavailable", function(_) {
   logMC("on_online_unavailable")
-  isMatchingOnline(false)
+  isMatchingOnline.set(false)
 })
 
 eventbus_subscribe("on_online_available", function on_online_available(...) {
   logMC("on_online_available")
-  isMatchingOnline(true)
+  isMatchingOnline.set(true)
   destroyConnectProgressMessages()
   eventbus_send("onMatchingOnlineAvailable", null)
 })
@@ -212,11 +212,15 @@ eventbus_subscribe("on_online_available", function on_online_available(...) {
 eventbus_subscribe("logout_with_msgbox", @(params)
   logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false))
 
-eventbus_subscribe("exit_queue_with_msgbox", @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false))
-
 eventbus_subscribe("exit_with_msgbox", @(params)
   logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true))
+
+eventbus_subscribe("exit_queue_with_msgbox",
+  function(_) {
+    logMC("Leave queue on exit_queue_with_msgbox")
+    destroyConnectProgressMessages()
+    leaveQueueImpl()
+  })
 
 eventbus_subscribe("exit_for_download_apk", @(params) exitForDownloadApkMsgBox(params.message))
 

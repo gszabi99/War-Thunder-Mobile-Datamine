@@ -38,6 +38,7 @@ let highlightSize = hdpxi(550)
 let buttonHeight = evenPx(60)
 let checkSize = hdpxi(120)
 let dayTextHeight = hdpx(50)
+let borderWidth = hdpx(4)
 let debugAnimState = mkWatched(persist, "debugAnimState", null)
 
 local lastPeriodStartStage = null
@@ -109,13 +110,12 @@ let rewardBg = {
   rendObj = ROBJ_BOX
   fillColor = 0xFFB75114
   borderColor = 0xFFC07B44
-  borderWidth = hdpx(4)
-  padding = hdpx(4)
+  borderWidth
 }
 let canReceiveBgColor = 0xFF2F5086
 let hugeRewardBgColor = 0xFFC61EA4
 let rewardBgCanReceive = rewardBg.__merge({ fillColor = canReceiveBgColor })
-let rewardBgNextReceive = rewardBgCanReceive.__merge({ borderColor = 0xFFC2B152 })
+let rewardBgNextReceive = rewardBgCanReceive.__merge({ borderColor = 0xFFB9B9B9 })
 let rewardBgReceived = rewardBg.__merge({
   fillColor = 0xFF514F4E
   borderColor = 0xFF7B7979
@@ -147,6 +147,7 @@ let mkBigSlotImage = @(ovr) {
   rendObj = ROBJ_IMAGE
   image = Picture("ui/images/daily_slot_bg_art.avif")
   keepAspect = KEEP_ASPECT_FILL
+  margin = borderWidth
 }.__update(ovr)
 
 let checkImg = {
@@ -179,6 +180,7 @@ let mkDayText = @(text, isReceived) {
   valign = ALIGN_CENTER
   rendObj = ROBJ_SOLID
   color = 0x60000000
+  margin = borderWidth
   children = {
     rendObj = ROBJ_TEXT
     text
@@ -187,8 +189,15 @@ let mkDayText = @(text, isReceived) {
 }
 
 let btnStyle = {
-  ovr = { size = flex(), minWidth = 0, behavior = null, onElemState = null }
+  ovr = { size = flex(), minWidth = null, behavior = null, onElemState = null }
   childOvr = fontTiny
+}
+
+let mkBtnBackground = @(children) {
+  size = flex()
+  rendObj = ROBJ_BOX
+  fillColor = 0xFF514F4E
+  children
 }
 
 let receiveBtn = textButtonBattle(
@@ -208,9 +217,9 @@ let activePlateButtonBlock = function() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed]
     size = flex()
     children = isShowUnseenDelayed.get() ? null 
-      : loginAwardUnlock.get()?.hasReward ? receiveBtn
+      : loginAwardUnlock.get()?.hasReward ? mkBtnBackground(receiveBtn)
       : !hasLoginAwardByAds.get() ? null
-      : watchAdsBtn
+      : mkBtnBackground(watchAdsBtn)
   }
   let blockOvr = {
     size = [flex(), buttonHeight]
@@ -330,7 +339,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
       key = $"rewardImg_{needReceiveAnim}"
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = mkRewardImage(reward.value, slotType == SLOT_HUGE ? bigImageSize : imageSize)
+      children = mkRewardImage(reward.get(), slotType == SLOT_HUGE ? bigImageSize : imageSize)
       transform = {}
       animations = !needReceiveAnim ? null
         : [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], duration = receiveAnimItemTime,
@@ -354,13 +363,14 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
               ]
         }
     mkDayText(dayText, isReceived)
-    @() mkText(utf8ToUpper(getRewardName(reward.value)),
+    @() mkText(utf8ToUpper(getRewardName(reward.get())),
       {
         size = [flex(), buttonHeight]
         vplace = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         color = isReceived ? 0x80808080 : 0xFFFFFFFF
+        margin = borderWidth
       }.__update(fontVeryTiny))
     isCurrentActivePlate ? activePlateButtonBlock() : null
     isCurrentActivePlate ? activePlateHotkeyComp : null
@@ -377,18 +387,18 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
     children = bg.__merge({ children })
   }
   let isNonInteractive = !isCurrentActivePlate && !isPreviewable
-  let stateFlags = isNonInteractive ? null : Watched(0)
+  let stateFlags = Watched(0)
   let plateComp = isNonInteractive ? plateBase
     : @() (isShowUnseenDelayed.get() || (isPreviewable && loginAwardUnlock.get()?.hasReward))
       ? plateBase.__update({ watch = [ isShowUnseenDelayed, loginAwardUnlock ] })
       : plateBase.__update({
           watch = [ isShowUnseenDelayed, loginAwardUnlock, stateFlags ]
           behavior = Behaviors.Button
-          onElemState = @(sf) stateFlags?(sf)
+          onElemState = @(sf) stateFlags.set(sf)
           onClick = isCurrentActivePlate
             ? onActivePlateClick
-            : @() openPreview(reward.value)
-          transform = { scale = ((stateFlags?.value ?? 0) & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+            : @() openPreview(reward.get())
+          transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
           transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
           sound = { click  = "click" }
           hotkeys = isCurrentActivePlate ? activePlateHotkeys : null

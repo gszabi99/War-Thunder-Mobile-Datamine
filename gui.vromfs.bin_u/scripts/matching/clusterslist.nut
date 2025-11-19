@@ -11,7 +11,8 @@ let { optimalClusters } = require("%scripts/matching/optimalClusters.nut")
 let { matching_subscribe } = require("%appGlobals/matching_api.nut")
 let matchingRequestWithRetries = require("%scripts/matching/matchingRequestWithRetries.nut")
 
-let clusters = hardPersistWatched("matching.clusters", [])
+let clustersRaw = hardPersistWatched("matching.clusters", [])
+let clusters = Computed(@() clustersRaw.get().filter(@(c) c != "debug")) 
 
 function getValidClusters(clustersList) {
   let forbiddenClusters = getForbiddenClustersByCountry(getCountryCode())
@@ -27,7 +28,7 @@ let restartFetchClusters = @() matchingRequestWithRetries({
       if (type(result?.clusters) != "array")
         return
       let newClusters = getValidClusters(result.clusters)
-      clusters.set(newClusters.len() == 0 ? result.clusters : newClusters)
+      clustersRaw.set(newClusters.len() == 0 ? result.clusters : newClusters)
     }
     function onError(result) {
       showMatchingError(result)
@@ -37,7 +38,7 @@ let restartFetchClusters = @() matchingRequestWithRetries({
 
 function onClustersChanged(params) {
   logC("notify_clusters_changed")
-  let list = clone clusters.value
+  let list = clone clustersRaw.get()
 
   foreach (cluster in params?.removed ?? []) {
     let idx = list.indexof(cluster)
@@ -54,7 +55,7 @@ function onClustersChanged(params) {
     list.extend(added)
 
   logC("clusters list updated", list)
-  clusters(list)
+  clustersRaw.set(list)
 }
 
 let getClusterLocName = @(name) name.indexof("wthost") != null ? name
@@ -62,19 +63,19 @@ let getClusterLocName = @(name) name.indexof("wthost") != null ? name
 
 matching_subscribe("match.notify_clusters_changed", onClustersChanged)
 
-if (isMatchingConnected.get() && clusters.get().len() == 0)
+if (isMatchingConnected.get() && clustersRaw.get().len() == 0)
   restartFetchClusters()
 
 isMatchingConnected.subscribe(@(v) !v ? null : restartFetchClusters())
-isLoggedIn.subscribe(@(v) v ? null : clusters([]))
+isLoggedIn.subscribe(@(v) v ? null : clustersRaw.set([]))
 
 let selClusters = Computed(function() {
-  let fastest = optimalClusters.value.filter(@(c) clusters.value.contains(c))
+  let fastest = optimalClusters.get().filter(@(c) clusters.get().contains(c))
   if (fastest.len())
     return fastest
   let defaults = getClustersByCountry(getCountryCode())
-  let res = defaults.filter(@(c) clusters.value.contains(c))
-  return res.len() ? res : clusters.value
+  let res = defaults.filter(@(c) clusters.get().contains(c))
+  return res.len() ? res : clusters.get()
 })
 
 selClusters.subscribe(@(v) logC($"Country \"{getCountryCode()}\", selected clusters:", v))

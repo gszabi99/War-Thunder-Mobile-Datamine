@@ -39,7 +39,7 @@ let loginAwardUnlockByAds = Computed(function() {
     && isEqual(getStageReward(u), lastReward))
 })
 
-let openWnd = @() needShowLoginAwardWnd.value ? isLoginAwardOpened.set(true) : null
+let openWnd = @() needShowLoginAwardWnd.get() ? isLoginAwardOpened.set(true) : null
 needShowLoginAwardWnd.subscribe(@(v) v ? deferOnce(openWnd) : null)
 
 function delayUnseenAfterReward(stage) {

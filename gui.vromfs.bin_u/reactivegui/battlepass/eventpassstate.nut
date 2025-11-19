@@ -14,6 +14,7 @@ let { allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 
+let EVENT_PASS = "event_pass"
 let EVENTPASS_POINTS = "eventpass_points_for_stages"
 let curEventId = mkWatched(persist, "curEventId", "")
 
@@ -26,10 +27,11 @@ let eventPassTables = Computed(function() {
   return res
 })
 
+let getEventPassName = @(eventName) $"{EVENT_PASS}_{eventName}"
+
 let eventsPassList = Computed(@() allSpecialEvents.get().values().filter(@(v) eventPassTables.get().contains(v.tableId)))
 let curOpenEventPass = Computed(@() eventsPassList.get().findvalue(@(v) v.eventName == curEventId.get()))
 
-let BP_GOODS_ID = "event_pass"
 let epPrograssUnlockId = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) EVENTPASS_POINTS in unlock?.meta)?.name)
 
@@ -84,7 +86,7 @@ let isEpRewardsInProgress = Computed(@()
     || eventPurchasedUnlock.get()?.name in unlockInProgress.get())
 
 let eventPassGoods = Computed(@() {
-  [EP_COMMON] = shopGoods.get()?[BP_GOODS_ID],
+  [EP_COMMON] = shopGoods.get().findvalue(@(s) "event_pass" in s?.meta),
   [EP_VIP] = shopGoods.get().findvalue(@(s) "event_pass_vip" in s?.meta)
 })
 
@@ -105,7 +107,7 @@ let isEpPurchasedByType = Computed(function() {
   })
 })
 
-let purchasedEpRaw = Computed(@() !isEpPurchasedByType.get()[EP_COMMON] ? EP_NONE
+let purchasedEpRaw = Computed(@() !isEpPurchasedByType.get()?[EP_COMMON] ? EP_NONE
   : !isEpPurchasedByType.get()[EP_VIP] ? EP_COMMON
   : EP_VIP)
 let purchasedEp = Computed(@() debugBp.get() ?? purchasedEpRaw.get())
@@ -309,4 +311,7 @@ return {
   EP_NONE
   EP_COMMON
   EP_VIP
+
+  getEventPassName
+  EVENT_PASS
 }

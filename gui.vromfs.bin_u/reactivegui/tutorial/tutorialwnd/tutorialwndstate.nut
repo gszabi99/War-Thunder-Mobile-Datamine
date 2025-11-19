@@ -60,12 +60,14 @@ let stepIdx = Computed(@() state.get().step)
 local stepStartTime = 0
 state.subscribe(function(_) { stepStartTime = get_time_msec() })
 
-let sendCurStepBq = @(status) "id" not in tutorialConfig ? null
-  : sendUiBqEvent("ui_tutorial", {
-      id = tutorialConfig.id
-      step = tutorialConfig?.steps[stepIdx.get()].id ?? stepIdx.get()
-      status = status
-    })
+function sendCurStepBq(status) {
+  if ("id" not in tutorialConfig)
+    return
+  let id = tutorialConfig.id
+  let step = tutorialConfig?.steps[stepIdx.get()].id ?? stepIdx.get()
+  log($"[UI_TUTORIAL] id = {id}, step = {step}, status = {status}")
+  sendUiBqEvent("ui_tutorial", { id, step, status })
+}
 
 function onStepStatus(status) {
   sendCurStepBq(status)

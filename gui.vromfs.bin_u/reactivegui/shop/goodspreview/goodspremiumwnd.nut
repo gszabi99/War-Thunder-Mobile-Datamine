@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { G_PREMIUM } = require("%appGlobals/rewardType.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
@@ -26,12 +27,12 @@ let bonusMultText = @(v) $"{v}x"
 let infoText = Computed(function() {
   if (premiumBonusesCfg.get() == null)
     return null
-  let expMul = bonusMultText(premiumBonusesCfg.get()?.expMul || 1.0)
+  let expMul = bonusMultText(premiumBonusesCfg.get()?.expMul ?? 1.0)
   return loc("charServer/entitlement/PremiumAccount/desc", {
     bonusPlayerExp = expMul
-    bonusWp = bonusMultText(premiumBonusesCfg.get()?.wpMul || 1.0)
+    bonusWp = bonusMultText(premiumBonusesCfg.get()?.wpMul ?? 1.0)
     bonusUnitExp = expMul
-    bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul || 1.0)
+    bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul ?? 1.0)
   })
 })
 
@@ -43,20 +44,24 @@ let decorativeLine = {
   size = [ premiumDescriptionWidth, hdpx(6) ]
 }
 
-let premiumDescriptionHeader = @(){
-    watch = previewGoods
-    rendObj = ROBJ_IMAGE
-    image = gradTranspDoubleSideX
-    color = premiumDescriptionHeaderBg
-    size = [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    children = {
-      rendObj = ROBJ_TEXT
-      text = loc($"charServer/entitlement/PremiumAccount/header",
-        {days = previewGoods.get()?.premiumDays})
-    }.__update(fontMedium)
-  }
+let premiumDescriptionHeader = @() {
+  watch = previewGoods
+  rendObj = ROBJ_IMAGE
+  image = gradTranspDoubleSideX
+  color = premiumDescriptionHeaderBg
+  size = [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc($"charServer/entitlement/PremiumAccount/header",
+      {
+        days = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count
+          ?? previewGoods.get()?.premiumDays 
+          ?? 0
+      })
+  }.__update(fontMedium)
+}
 
 
 let pricePlate = @() {
@@ -142,7 +147,7 @@ let premiumDescriptionWnd = {
 }
 let openImpl = @() addModalWindow(premiumDescriptionWnd)
 
-if(isOpened.value)
+if(isOpened.get())
   openImpl()
 
 isOpened.subscribe( @(v) v ? openImpl() : removeModalWindow(premDescWndUid))

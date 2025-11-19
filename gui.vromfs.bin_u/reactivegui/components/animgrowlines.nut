@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { sqrt, lerp } = require("%sqstd/math.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 function mkAnimGrowLines(cfg, ovr = {}) {
   let { start, end, drawers } = cfg
@@ -12,7 +13,7 @@ function mkAnimGrowLines(cfg, ovr = {}) {
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(4)
-    color = 0xFF51C1DC
+    color = selectColor
     commands
     behavior = Behaviors.RtPropUpdate
     function update() {

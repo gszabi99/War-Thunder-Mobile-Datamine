@@ -4,6 +4,7 @@ from "%appGlobals/rewardType.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -22,7 +23,6 @@ let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButt
 let { rouletteOpenId, nextOpenId } = require("%rGui/shop/lootboxOpenRouletteState.nut")
 let { getRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -54,7 +54,7 @@ let prizeTicketId = Computed(@() !canSelectTicket.get() ? null
       && id not in notAppliedTickets.get()))
 
 let ticketToShow = Computed(@() prizeTicketId.get() != null
-  ? serverConfigs.get().prizeTicketsCfg[prizeTicketId.get()]
+  ? serverConfigs.get()?.prizeTicketsCfg[prizeTicketId.get()]
   : null)
 
 let canShowWithoutWindows = Computed(@() canSelectTicket.get()
@@ -62,8 +62,7 @@ let canShowWithoutWindows = Computed(@() canSelectTicket.get()
   && unseenPurchasesExt.get().len() == 0
   && isInMenuNoModals.get()
   && !isShowUnseenDelayed.get()
-  && !isTutorialActive.get()
-  && !hasJustUnlockedUnitsAnimation.get())
+  && !isTutorialActive.get())
 
 let needShowPrizeTickets = keepref(Computed(@() !rouletteOpenId.get()
   && !nextOpenId.get()
@@ -321,8 +320,8 @@ let mkContentChoose = @(rewards, lReward) @() {
       watch = [selIndexes, currentTicketCounts]
       children = ((currentTicketCounts.get().availableVariants > 0 && selIndexes.get().len() == currentTicketCounts.get().availableVariants)
         || (currentTicketCounts.get().availableVariants == 0 && currentTicketCounts.get().lastReward > 0))
-          ? mkSpinnerHideBlock(rewardInProgress, textButtonPrimary(loc("msgbox/btn_choose"), applyPrizeTickets))
-          : textButtonCommon(loc("msgbox/btn_choose"), @() openMsgBox({
+          ? mkSpinnerHideBlock(rewardInProgress, textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), applyPrizeTickets))
+          : textButtonCommon(utf8ToUpper(loc("msgbox/btn_choose")), @() openMsgBox({
               text = loc("events/warningSelectPrize")
               buttons = [{ id = "ok", isCancel = true }]
             }))

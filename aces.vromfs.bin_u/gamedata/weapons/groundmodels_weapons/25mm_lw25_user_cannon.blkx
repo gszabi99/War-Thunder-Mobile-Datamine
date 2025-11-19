@@ -27,7 +27,7 @@
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
-  "sound": "cannon_small",
+  "sound": "30mm_l21A1",
   "soundLoop": false,
   "sfxReloadBullet": "grd_cannon_belt_reload",
   "isBulletBelt": false,
@@ -56,7 +56,7 @@
     "maxDistance": 2500.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat",
-    "groundRicochetPreset": "heat",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.1,
     "stabilityCaliberToArmorThreshold": 100.0,
@@ -70,6 +70,7 @@
       0.1,
       2.0
     ],
+    "shellAnimation": "video/shells_animations/he_dp.ivf",
     "bulletName": "25mm_hedp",
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [

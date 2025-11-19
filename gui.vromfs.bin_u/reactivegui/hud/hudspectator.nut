@@ -8,7 +8,7 @@ let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { isGtLastManStanding } = require("%rGui/missionState.nut")
+let { isGtBattleRoyale } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
@@ -19,14 +19,15 @@ let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let { isInSpectatorMode } = require("%rGui/hudState.nut")
 let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
 let { playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
+let { hudWhiteColor, hudBlackColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor, hudAshGrayColor } = require("%rGui/style/hudColors.nut")
 
 
-let bgButtonColor = Color(32, 34, 38, 216)
-let bgButtonColorPushed = Color(16, 18, 22, 216)
-let borderColor = Color(192, 192, 192)
-let borderColorPushed = Color(129, 128, 128, 229)
-let textColor = Color(192, 192, 192)
-let textColorPushed = Color(129, 128, 128, 229)
+let bgButtonColor = hudGraphiteColor
+let bgButtonColorPushed = hudCharcoalColor
+let borderColor = hudPearlGrayColor
+let borderColorPushed = hudAshGrayColor
+let textColor = hudPearlGrayColor
+let textColorPushed = hudAshGrayColor
 
 let buttonHeight = hdpx(82)
 let buttonWidth = (1.5 * buttonHeight).tointeger()
@@ -42,7 +43,7 @@ eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() ? needShow
 
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
 let watchedHeroName = Computed(@() watchedHero.get() == null ? "" : watchedHero.get().name)
-let watchedHeroColor = Computed(@() watchedHero.get() == null ? 0xFFFFFFFF
+let watchedHeroColor = Computed(@() watchedHero.get() == null ? hudWhiteColor
   : watchedHero.get().team == localMPlayerTeam.get() ? teamBlueColor : teamRedColor)
 let hasTapHint = Computed(@() needShowTapHint.get() && (isPlaceVisible.get() || isScoreVisible.get()))
 
@@ -80,7 +81,7 @@ function mkTargetButton(isNext = false) {
       rendObj = ROBJ_IMAGE
       image = switchTargetImage
       color = isActive(stateFlags.get()) ? textColorPushed
-        : Color(255, 255, 255)
+        : hudWhiteColor
       transform = { rotate = isNext ? 90 : -90 }
     }
   }
@@ -121,7 +122,7 @@ let watchedHeroLabel = @() {
   color = watchedHeroColor.get()
   fontFx = FFT_GLOW
   fontFxFactor = hdpx(48)
-  fontFxColor = 0xFF000000
+  fontFxColor = hudBlackColor
 }.__update(fontSmall)
 
 let spectatorControlsBlock = {
@@ -133,10 +134,10 @@ let spectatorControlsBlock = {
   children = [
     watchedHeroLabel
     @() {
-      watch = isGtLastManStanding
+      watch = isGtBattleRoyale
       flow = FLOW_HORIZONTAL
       gap
-      children = get_game_params_blk()?.allowSpectatingEnemiesInLastManStanding == false && isGtLastManStanding.get() ? returnToHangarButton
+      children = get_game_params_blk()?.allowSpectatingEnemiesInLastManStanding == false && isGtBattleRoyale.get() ? returnToHangarButton
           : [
             prevTargetButton
             returnToHangarButton

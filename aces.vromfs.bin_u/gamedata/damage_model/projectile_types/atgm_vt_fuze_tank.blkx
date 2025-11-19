@@ -1,7 +1,7 @@
 {
   "normalizationPreset": "heat",
   "ricochetPreset": "he",
-  "groundRicochetPreset": "he",
+  "groundRicochetPreset": "he_ground",
   "secondaryShattersPreset": "ap_rocket",
   "stabilityThreshold": 0.5,
   "stabilityCaliberToArmorThreshold": 5.0,
@@ -15,7 +15,7 @@
     2.0
   ],
   "explodeOnRendinst": true,
-  "shellAnimation": "video/shells_animations/he_vt.ivf",
+  "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
   "stabilityRicochetModifier": {
     "mod1": [
       0.0,

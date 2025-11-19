@@ -13,7 +13,7 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitsResearchStatus, nodes } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unitsResearchStatus, visibleNodes } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { unitPlateWidth, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkTreeNodesUnitPlateSimple } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { mkCustomMsgBoxWnd, mkBtn } = require("%rGui/components/msgBox.nut")
@@ -53,7 +53,7 @@ function onClick(cost) {
 registerHandler("buyUnitResearch", function(res, context) {
   if (res?.error == null) {
     animUnitAfterResearch.set(context.unitName)
-    animNewUnitsAfterResearch.set(nodes.get()
+    animNewUnitsAfterResearch.set(visibleNodes.get()
       ?.filter(@(n) n.reqUnits.contains(context.unitName) && (unitsResearchStatus.get()?[n.name].canResearch ?? false))
       .map(@(n) n.name) ?? {})
   }

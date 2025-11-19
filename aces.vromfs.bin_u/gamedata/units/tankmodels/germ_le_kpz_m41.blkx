@@ -2304,6 +2304,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2321,6 +2322,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2381,6 +2383,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2398,6 +2401,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2471,6 +2475,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2612,6 +2617,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2619,6 +2625,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2626,6 +2633,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -3165,10 +3173,9 @@
     "tank_smoke_screen_system_mod": true
   },
   "default_skin": {
-    "set_tex": {
-      "from": "m41_bulldog_turret_c*",
-      "to": "m41_bulldog_skin_turret_c*",
-      "param": "camo_skin_tex"
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_bronzegruen*"
     }
   },
   "defaultDecals": {
@@ -3176,182 +3183,19 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
-    },
-    "forest": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [
-        2.72845,
-        -1.24734e-7,
-        -0.584011,
-        3.92579
-      ],
-      "decal0Line1": [
-        -0.283125,
-        -2.44044,
-        -1.32273,
-        4.59787
-      ],
-      "decal0Line2": [
-        -2.72845,
-        -1.24734e-7,
-        -0.584011,
-        -2.92579
-      ],
-      "decal0Line3": [
-        -0.283124,
-        -2.44044,
-        1.32273,
-        4.59787
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        -0.183063,
-        0.484793,
-        -0.855256,
-        -1.85863
-      ],
-      "decal0CPNormDepth1": [
-        -0.183063,
-        0.484793,
-        0.855256,
-        -1.85863
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.35839
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.286272,
-      "decal0Tex": "germany_numbers_2",
-      "decal1Line0": [
-        2.70006,
-        0.0000182956,
-        -0.704481,
-        3.07553
-      ],
-      "decal1Line1": [
-        -0.336575,
-        -2.45134,
-        -1.29005,
-        4.58352
-      ],
-      "decal1Line2": [
-        -2.70005,
-        0.0000183164,
-        -0.704501,
-        -2.07559
-      ],
-      "decal1Line3": [
-        -0.336616,
-        -2.45134,
-        1.29004,
-        4.58348
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        -0.221785,
-        0.477785,
-        -0.850019,
-        -1.8844
-      ],
-      "decal1CPNormDepth1": [
-        -0.221785,
-        0.477785,
-        0.850019,
-        -1.8844
-      ],
-      "decal1RotScale": [
-        1.57079,
-        0.358365
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.287863,
-      "decal1Tex": "germany_numbers_3",
-      "decal2Line0": [
-        5.37561,
-        0.264529,
-        -1.47583,
-        3.75095
-      ],
-      "decal2Line1": [
-        -0.199479,
-        -2.52142,
-        -1.17853,
-        4.94926
-      ],
-      "decal2Line2": [
-        -5.30437,
-        0.264529,
-        -1.71433,
-        -3.66411
-      ],
-      "decal2Line3": [
-        -0.479595,
-        -2.52142,
-        1.09486,
-        4.75478
-      ],
-      "decal2HaveCP": true,
-      "decal2CPNormDepth": [
-        -0.258976,
-        0.42573,
-        -0.866998,
-        -1.82169
-      ],
-      "decal2CPNormDepth1": [
-        -0.258976,
-        0.42573,
-        0.866998,
-        -1.82169
-      ],
-      "decal2RotScale": [
-        1.51839,
-        0.358372
-      ],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2OppositeMirrored": false,
-      "decal2WidthBox": 0.282457,
-      "decal2Tex": "germany_numbers_1"
-    },
-    "forest2": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
-    },
-    "winter": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
     }
   },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_carc*"
-      }
-    },
-    "forest2": {
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_bundeswehr_afgan*"
-      }
-    },
-    "winter": {
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_winter*"
-      }
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_bundeswehr_afgan*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

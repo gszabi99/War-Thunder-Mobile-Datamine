@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
 
 let textColor = 0xFFFFFFFF
-let slotOnColor = 0xFF4089B2
+let slotOnColor = selectColor
 let slotOffColor = 0xFF000000
 
 let knobSize = evenPx(68)
@@ -56,8 +56,8 @@ let toggle = @(valueW, sf) @() {
   borderRadius = toggleH / 2
   valign = ALIGN_CENTER
   children = [
-    toggleActiveBg(valueW.value)
-    toggleKnob(valueW.value, sf)
+    toggleActiveBg(valueW.get())
+    toggleKnob(valueW.get(), sf)
   ]
 }
 
@@ -66,7 +66,7 @@ let toggleWithLabel = @(stateFlags, valueW, children, ovr = {}) @() {
   behavior = Behaviors.Button
   onElemState = @(v) stateFlags.set(v)
   sound = { click  = "click" }
-  onClick = @() valueW(!valueW.get())
+  onClick = @() valueW.set(!valueW.get())
   valign = ALIGN_CENTER
   gap = hdpx(30)
   children

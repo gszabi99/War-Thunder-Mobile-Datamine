@@ -6,15 +6,16 @@ let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
-  userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
-  add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
-  apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances,
+  userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler, add_decal_by_name,
+  add_decorator, set_current_decorator, remove_decorator, unset_current_decorator, add_all_decals, remove_decal_by_name,
+  apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances, remove_all_decals,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase, add_shop_goods,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
-  check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, add_currency_no_popup_by_full_id
+  check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, add_currency_no_popup_by_full_id,
+  get_campaign_copy_exceptions, get_profile
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -27,7 +28,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
+let { allCurrencies, currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
 
 
 registerHandler("consolePrintResult",
@@ -84,6 +85,34 @@ registerHandler("onDebugCheckPurchases",
     })
   })
 
+registerHandler("onGetCopyExceptions",
+  function(res) {
+    let { copyExceptions = {} } = res
+    let textArr = []
+    let sortedList = copyExceptions.map(@(v, name) v.__merge({ name }))
+      .values()
+      .sort(@(a, b) a.name <=> b.name)
+    let upgradedMark = colorize("@mark", "(upgraded) ")
+    foreach(cfg in sortedList) {
+      let { name, targetName, skinsRemap, isOnlyForUpgraded = false } = cfg
+      textArr.append($"{name} {isOnlyForUpgraded ? upgradedMark : ""}=> {targetName}")
+      foreach (sFrom, sTo in skinsRemap)
+        textArr.append($"      {sFrom == "" ? "default" : sFrom} => {sTo}")
+    }
+    let text = "\n".join(textArr)
+    openMsgBox({
+      uid = "debug_check_purchases"
+      text = makeSideScroll(msgBoxText(text, infoTextOvr))
+      wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
+      buttons = [
+        { text = "COPY",
+          cb = @() set_clipboard_text(text.replace("<color=@mark>", "").replace("</color>", ""))
+        }
+        { id = "ok", styleId = "PRIMARY", isDefault = true }
+      ]
+    })
+  })
+
 registerHandler("upgradeUnit",
   @(res, context) res?.error != null ? console_print("FAILED") 
     : upgrade_unit(context.name, "consolePrintResult"))
@@ -103,7 +132,7 @@ register_command(function(exp) {
 
 register_command(@() resetCustomSettings(), "meta.reset_custom_settings")
 
-currencyOrder.each(@(c)
+allCurrencies.each(@(c)
   register_command(@(count) add_currency_no_popup(c, count, "consolePrintResult"), $"meta.add_{c}"))
 register_command(@(currencyId, count) add_currency_no_popup_by_full_id(currencyId, count, "consolePrintResult"),
     $"meta.add_currency_by_full_id")
@@ -164,6 +193,10 @@ register_command(@()
     !mainHangarUnit.get()?.isUpgraded ? "consolePrintResult"
       : { id = "downgradeUnit", name = mainHangarUnitName.get() })
   "meta.remove_all_skins_for_hangar_unit")
+register_command(@() add_all_decals("consolePrintResult"), "meta.add_all_decals")
+register_command(@(id) add_decal_by_name(id, "consolePrintResult"), "meta.add_decal_by_name")
+register_command(@() remove_all_decals("consolePrintResult"), "meta.remove_all_decals")
+register_command(@(id) remove_decal_by_name(id, "consolePrintResult"), "meta.remove_decal_by_name")
 
 register_command(function(count) {
   foreach(c in currencyOrder)
@@ -199,13 +232,14 @@ register_command(@() validate_active_offer(curCampaign.get()),
   "meta.validate_active_offer")
 
 foreach (cmd in ["get_all_configs", "reset_profile",
-  "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",
-  "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_all_unit_daily_bonus"
+  "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "unlock_all_units_and_upgrade", "unlock_all_unreleased_units",
+  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_all_unit_daily_bonus"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
 }
 
+register_command(@() get_profile({}, "consolePrintResult"), "meta.get_profile")
 register_command(@() check_purchases_debug("onDebugCheckPurchases"), $"meta.check_purchases_debug")
 
 register_command(function() {
@@ -257,3 +291,5 @@ register_command(
     console_print(mainHangarUnitName.get()) 
   },
   "meta.copy_hangar_unit_name_to_clipboard")
+
+register_command(@() get_campaign_copy_exceptions("onGetCopyExceptions"), "meta.get_campaign_copy_exceptions")

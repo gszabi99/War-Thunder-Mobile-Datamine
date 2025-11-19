@@ -1,0 +1,53 @@
+{
+  "balloonCollision": true,
+  "balloonRadius": 4.0,
+  "model": "air_race_obst_balloon_a",
+  "subclass": "barrageBalloon",
+  "dynCollisionGeom": true,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "useDestrPhysObj": false,
+  "expClass": [
+    "exp_zero",
+    "exp_zero"
+  ],
+  "balloonCxOnSq": 9000.0,
+  "liftForce": 100500.0,
+  "liftForceApproachMult": 10.0,
+  "deadLigtForceApproachMult": 1.0,
+  "ropeStiffness": 100000.0,
+  "mass": 2800.0,
+  "toGround": false,
+  "useOldExplosion": false,
+  "fireFx": "fire_ground_black_fx",
+  "DamageParts": {
+    "armor10": {
+      "body_dm": {
+        "hp": 200.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "fire": 1.0
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "partNo": 0,
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "smoke_ground_black_fx",
+      "explosionEffectName": "explosion_midair_medium",
+      "timeForPostEffect": 60.0,
+      "preScale": 1.0,
+      "postScale": 1.0
+    }
+  }
+}

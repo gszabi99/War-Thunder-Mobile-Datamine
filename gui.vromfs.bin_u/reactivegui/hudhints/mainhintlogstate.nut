@@ -32,9 +32,9 @@ local scoreToShow = mkWatched(persist, "scoreToShow", 0.0)
 
 isInBattle.subscribe(function(_) {
   clearEvents()
-  scoreAccumulated(0.0)
-  scoreShowed(0.0)
-  scoreToShow(0.0)
+  scoreAccumulated.set(0.0)
+  scoreShowed.set(0.0)
+  scoreToShow.set(0.0)
 })
 
 const MISSION_HINT = "mission_hint"
@@ -70,7 +70,7 @@ let addHudMessage = {
     let id = $"objective_{data.id}"
     if (data?.show ?? true) {
       data.__update({key = "mission_objective"})
-      if (unitType.value == TANK) {
+      if (unitType.get() == TANK) {
         startMissionHintSeria()
       }
       addEvent(data.__merge({ id, ttl = 8 }))
@@ -111,7 +111,7 @@ eventbus_subscribe("HudMessage", @(data) addHudMessage?[data.type](data))
 eventbus_subscribe("zoneCapturingEvent", function(data) {
   let { zoneName, isHeroAction, isMyTeam, eventId, text } = data
   let id = $"capture_event_{zoneName}"
-  if (isHeroAction && unitType.value == TANK)
+  if (isHeroAction && unitType.get() == TANK)
     captureHintSeria()
   modifyOrAddEvent(
     {
@@ -126,20 +126,20 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
 })
 
 function resetScore() {
-  scoreShowed(scoreShowed.value + scoreToShow.value)
-  scoreToShow(0.0)
+  scoreShowed.set(scoreShowed.get() + scoreToShow.get())
+  scoreToShow.set(0.0)
 }
 
 function showScore(score, isAirfield) {
   clearTimer(resetScore)
-  scoreAccumulated(scoreAccumulated.value + score)
-  scoreToShow((scoreAccumulated.value - scoreShowed.value).tointeger())
-  if (scoreToShow.value >= 1.0) {
+  scoreAccumulated.set(scoreAccumulated.get() + score)
+  scoreToShow.set((scoreAccumulated.get() - scoreShowed.get()).tointeger())
+  if (scoreToShow.get() >= 1.0) {
     modifyOrAddEvent({
       id = SCORE_HINT
       zOrder = Layers.Upper
       hType = "simpleTextWithIcon"
-      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreToShow.value}),
+      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreToShow.get()}),
       icon = $"ui/gameuiskin#score_icon.svg"
       ttl = 3
     }, @(ev) ev?.id == SCORE_HINT)
@@ -185,7 +185,7 @@ let expEventType = {
 
 eventbus_subscribe("ExpEvent", function(evt) {
   let msg = expEventType?[evt.messageCode];
-  if ((unitType.value == AIR || evt.messageCode == EXP_EVENT_ASSIST) && msg) {
+  if ((unitType.get() == AIR || evt.messageCode == EXP_EVENT_ASSIST) && msg) {
     modifyOrAddEvent({
       id = EXP_HINT
       zOrder = Layers.Upper

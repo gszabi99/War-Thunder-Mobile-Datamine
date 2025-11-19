@@ -45,7 +45,7 @@ return {
     toggleShortcut("ID_CONTINUE")
   }
   function onDetach() {
-    showSkipHint(false)
+    showSkipHint.set(false)
   }
   hotkeys = mkGamepadHotkey("ID_CONTINUE", @() toggleShortcut("ID_CONTINUE"))
   children = [

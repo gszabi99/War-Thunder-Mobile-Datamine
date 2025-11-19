@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { borderWidth, btnBgColor, borderColor, borderNoAmmoColor, imageColor
+let { borderWidth, btnBgStyle, borderColor, borderNoAmmoColor, imageColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkShipDebuffs, mkCrewHealthCtor, defHealthSize } = require("%rGui/hud/shipStateModule.nut")
 let { actionBarItems, startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
@@ -9,24 +9,27 @@ let { strategyDataRest, strategyDataShip, curGroupIndex, optDebugDraw } = requir
 let { getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
   iconShip, debugTextColor
 } = require("%rGui/hud/strategyMode/style.nut")
-let { NODE_SELF } = require("guiStrategyMode")
+let { onGroupSelected, NODE_SELF } = require("guiStrategyMode")
 let { mkSquareButtonBg } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkActionGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { playSound } = require("sound_wt")
+let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
+let { hudGrayColorFade, hudTealColorFade, hudBrownRedFade } = require("%rGui/style/hudColors.nut")
 
 local prevAirGroupHealth = {}
 
 function mkPathNodeSmall(nodeType, nodeSize, isActive) {
   let { icon, color } = getNodeStyle(nodeType)
   let iconSize = (nodeSize * 0.75).tointeger()
-  return {
+  return @() {
+    watch = btnBgStyle
     rendObj = ROBJ_BOX
     size = [nodeSize, nodeSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     borderColor = borderNoAmmoColor
     borderWidth = borderWidth
-    fillColor = isActive ? btnBgColor.broken : btnBgColor.ready
+    fillColor = isActive ? btnBgStyle.get().broken : btnBgStyle.get().ready
     children = [
       {
         rendObj = ROBJ_IMAGE
@@ -167,6 +170,11 @@ let shipUi = {
   ]
 }
 
+function selectGroup(selectableIndex) {
+  onGroupSelected(selectableIndex)
+  curGroupIndex.set(selectableIndex)
+}
+
 function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, trigger) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() curGroupIndex.get() == selectableIndex)
@@ -174,16 +182,16 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
   let buttonSize = airGroupButtonHeight
   let iconSize = (buttonSize * 0.65).tointeger()
   return @() {
-    watch = [isSelected, canClick, stateFlags, actionItem]
+    watch = [isSelected, canClick, stateFlags, actionItem, isHudPrimaryStyle, btnBgStyle]
     size = [airGroupButtonWidth, SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
     hplace = ALIGN_RIGHT
-    borderColor = isSelected.get() ? borderColor : 0x21212121
+    borderColor = isSelected.get() ? borderColor : hudGrayColorFade
     borderWidth = border
-    fillColor = isSelected.get() ? 0x20072224 : btnBgColor.empty
+    fillColor = isSelected.get() ? hudTealColorFade : btnBgStyle.get().empty
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    onClick = @() canClick.get() ? curGroupIndex(selectableIndex) : null
+    onClick = @() canClick.get() ? selectGroup(selectableIndex) : null
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
@@ -191,7 +199,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
         size = flex()
         rendObj = ROBJ_BOX
         fillColor = 0
-        animations = [{ prop = AnimProp.fillColor, from = Color(150, 50, 25, 150), duration = 1.5, easing = OutCubic, trigger }]
+        animations = [{ prop = AnimProp.fillColor, from = hudBrownRedFade, duration = 1.5, easing = OutCubic, trigger }]
       }
       {
         flow = FLOW_HORIZONTAL
@@ -206,9 +214,9 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = [
-              actionItem == null ? null : mkActionGlare(actionItem.value, buttonSize)
-              actionItem == null || actionItem.value?.count == 0 ? null
-                : mkSquareButtonBg(actionItem.get(), buttonSize, @() playSound("weapon_secondary_ready"))
+              actionItem == null ? null : mkActionGlare(actionItem.get(), buttonSize)
+              actionItem == null || actionItem.get()?.count == 0 ? null
+                : mkSquareButtonBg(actionItem.get(), buttonSize, btnBgStyle.get(), isHudPrimaryStyle.get(), @() playSound("weapon_secondary_ready"))
               {
                 size = flex()
                 padding = hdpx(5)
@@ -218,8 +226,8 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
                 halign = ALIGN_CENTER
                 valign = ALIGN_CENTER
                 borderWidth = borderWidth
-                borderColor = isSelected.get() ? borderColor : 0x21212121
-                fillColor = actionItem == null ? btnBgColor.ready : btnBgColor.empty
+                borderColor = isSelected.get() ? borderColor : hudGrayColorFade
+                fillColor = actionItem == null ? btnBgStyle.get().ready : btnBgStyle.get().empty
                 children = [
                   {
                     rendObj = ROBJ_IMAGE
@@ -233,7 +241,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
                     halign = ALIGN_CENTER
                     valign = ALIGN_BOTTOM
                     fillColor = borderColor
-                    text = $"{actionItem.value?.count}"
+                    text = $"{actionItem.get()?.count}"
                   }
                 ]
               }

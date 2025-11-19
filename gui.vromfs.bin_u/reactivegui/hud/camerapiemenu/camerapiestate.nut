@@ -8,19 +8,21 @@ let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { playerUnitName, isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
 let { imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { enabledControls, isAllControlsEnabled } = require("%rGui/controls/disabledControls.nut")
+let { hudWhiteColor, hudDarkOliveColor } = require("%rGui/style/hudColors.nut")
+let { notGtRace } = require("%rGui/missionState.nut")
 
-let selectedViewIconColor = 0x99996203
+let selectedViewIconColor = hudDarkOliveColor
 
 let actions = [
-  {shortcut = "ID_CAMERA_TPS", icon = "icon_pie_tps_view.svg", view = TPS}
-  {shortcut = "ID_CAMERA_VIRTUAL_FPS", icon = "icon_pie_virtual_fps_view.svg", view = VIRTUAL_FPS}
-  {shortcut = "ID_CAMERA_BOMBVIEW", icon = "icon_pie_bomber_view.svg", view = BOMBERVIEW}
-  {shortcut = "ID_CAMERA_GUNNER", icon = "icon_pie_turret_view.svg", view = TURRET}
+  { shortcut = "ID_CAMERA_TPS", icon = "icon_pie_tps_view.svg", view = TPS }
+  { shortcut = "ID_CAMERA_VIRTUAL_FPS", icon = "icon_pie_virtual_fps_view.svg", view = VIRTUAL_FPS }
+  { shortcut = "ID_CAMERA_BOMBVIEW", icon = "icon_pie_bomber_view.svg", view = BOMBERVIEW, isAllowed = notGtRace }
+  { shortcut = "ID_CAMERA_GUNNER", icon = "icon_pie_turret_view.svg", view = TURRET, isAllowed = notGtRace }
 ]
 
 let mkLabel = @(actionId) loc($"hotkeys/{actionId}")
 
-let mkPieCfgItem = @(a) {
+let mkPieCfgItem = @(a) a.__merge({
   action = @() toggleShortcut(a.shortcut)
   isVisibleByUnit = @() isCameraViewAvailable(a.view)
   mkView = @(isEnabled) {
@@ -28,10 +30,9 @@ let mkPieCfgItem = @(a) {
     icon = a.icon,
     iconColor = !isEnabled ? imageDisabledColor
       :(getCameraViewType() == a.view) ? selectedViewIconColor
-      : 0xFFFFFFFF
+      : hudWhiteColor
   }
-  shortcut = a.shortcut
-}
+})
 
 let cameraPieCfgBase = actions.map(@(action) mkPieCfgItem(action))
 let isCameraPieStickActive = Watched(false)
@@ -44,11 +45,14 @@ let isCameraPieItemsEnabled = Computed(@() null != cameraPieCfgBase.findvalue(@(
 )
 
 let updateVisibleByUnit = @() visibleByUnit.set(!isUnitAlive.get() || isUnitDelayed.get() ? []
-  : cameraPieCfgBase.map(@(c) c?.isVisibleByUnit() ?? true))
+  : cameraPieCfgBase.map(@(c) (c?.isAllowed.get() ?? true) && (c?.isVisibleByUnit() ?? true)))
 updateVisibleByUnit()
-playerUnitName.subscribe(@(_) deferOnce(updateVisibleByUnit))
-isUnitDelayed.subscribe(@(_) deferOnce(updateVisibleByUnit))
-isUnitAlive.subscribe(@(_) deferOnce(updateVisibleByUnit))
+let subsUpdateVisibleByUnit = @(_) deferOnce(updateVisibleByUnit)
+playerUnitName.subscribe(subsUpdateVisibleByUnit)
+isUnitDelayed.subscribe(subsUpdateVisibleByUnit)
+isUnitAlive.subscribe(subsUpdateVisibleByUnit)
+foreach (a in cameraPieCfgBase)
+  a?.isAllowed.subscribe(subsUpdateVisibleByUnit)
 
 function updatePieCfg() {
   if (!isCameraPieStickActive.get())

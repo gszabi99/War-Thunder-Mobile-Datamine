@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { mkVerticalPannableArea, topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
 let { isInvitationsOpened, invitations, markReadAll, clearAll } = require("%rGui/invitations/invitationsState.nut")
@@ -36,7 +37,7 @@ let buttons = @() {
   size = FLEX_V
   valign = ALIGN_BOTTOM
   children = !hasInvitations.get() ? null
-    : textButtonCommon(loc("invites/clearAll"), clearAll)
+    : textButtonCommon(utf8ToUpper(loc("invites/clearAll")), clearAll)
 }
 
 let scene = bgShaded.__merge({

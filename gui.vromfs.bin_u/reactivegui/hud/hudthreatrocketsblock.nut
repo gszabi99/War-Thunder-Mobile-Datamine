@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
+let { hudWhiteColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 
 let { threatRockets, hasCountermeasures } = require("%rGui/hudState.nut")
 let { round } = require("%sqstd/math.nut")
 
 let textPadding = hdpx(10)
 let imgSize = hdpx(40)
-let textColor = Color(255, 255, 255, 255)
-let warnColor = Color(255, 109, 108, 255)
+let textColor = hudWhiteColor
+let warnColor = hudCoralRedColor
 let rocketsPosX = hdpx(650)
 let blinkingTime = 4.0
 

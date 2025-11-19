@@ -3,13 +3,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
-let { selectedSlotIdx, slotIdxByHangarUnit, selectedUnitToSlot, setUnitToSlot } = require("%rGui/slotBar/slotBarState.nut")
+let { selectedSlotIdx, actualSlotIdx, selectedUnitToSlot, setUnitToSlot } = require("%rGui/slotBar/slotBarState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 
 let draggedData = Watched(null)
 let dropZoneSlotIdx = Watched(null)
-slotIdxByHangarUnit.subscribe(@(v) v != null ? selectedSlotIdx.set(v) : null)
+actualSlotIdx.subscribe(@(v) v != null ? selectedSlotIdx.set(v) : null)
 
 draggedData.subscribe(@(v) !v ? dropZoneSlotIdx.set(null) : null)
 

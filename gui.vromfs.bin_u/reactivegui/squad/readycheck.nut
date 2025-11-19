@@ -8,11 +8,12 @@ let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { curUnits } = require("%appGlobals/pServer/profile.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { battleBtnCampaign, penaltyTimerIcon } = require("%rGui/queue/penaltyComps.nut")
+let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 
 
 let MSG_UID = "readyCheck"
@@ -21,9 +22,9 @@ let readyCheckTime = hardPersistWatched("readyCheckTime", 0)
 let isReadyCheckSuspended = Watched(false)
 let needReadyCheckButton = Computed(@() isSquadLeader.get()
   && squadMembers.get().findvalue(@(m, uid) uid != squadId.get() && !m?.ready) != null)
-isInSquad.subscribe(@(_) readyCheckTime(isSquadLeader.get() ? 0 : serverTime.get()))
+isInSquad.subscribe(@(_) readyCheckTime.set(isSquadLeader.get() ? 0 : serverTime.get()))
 isSquadLeader.subscribe(@(v) !isInSquad.get() ? null
-  : readyCheckTime(v ? 0 : serverTime.get()))
+  : readyCheckTime.set(v ? 0 : serverTime.get()))
 
 let needReadyCheckMsg = Computed(@() isInSquad.get()
   && !isSquadLeader.get()
@@ -41,25 +42,25 @@ function initiateReadyCheck() {
     openMsgBox({ text = loc("squad/readyCheckInCooldownMsg") })
     return
   }
-  readyCheckTime(serverTime.get())
+  readyCheckTime.set(serverTime.get())
   isReadyCheckSuspended.set(true)
   resetTimeout(CAN_REPEAT_SEC, @() isReadyCheckSuspended.set(false))
 }
 
 function applyReadyCheckResult(newReady) {
   setReady(newReady)
-  readyCheckTime(max(serverTime.get(), squadLeaderReadyCheckTime.get()))
+  readyCheckTime.set(max(serverTime.get(), squadLeaderReadyCheckTime.get()))
 }
 
 let onSquadReady = @() showNoPremMessageIfNeed(@()
-  offerMissingUnitItemsMessage(curUnit.get(), @() applyReadyCheckResult(true), @() applyReadyCheckResult(false)))
+  offerMissingUnitItemsMessage(curUnits.get(), @() applyReadyCheckResult(true), null, @() applyReadyCheckResult(false)))
 let onSquadNotReady = @() applyReadyCheckResult(false)
 
 let cbReadyCheckId = "onResetPenaltyReadyCheck"
 registerHandler(cbReadyCheckId, @(res) res?.error == null ? onSquadReady() : null)
 
 function showReadyCheck() {
-  if (!shouldShowMsg.value)
+  if (!shouldShowMsg.get())
     return
   openMsgBox({
     uid = MSG_UID
@@ -68,7 +69,7 @@ function showReadyCheck() {
       { text = loc("status/squad_not_ready"), isCancel = true, cb = onSquadNotReady }
       { text = loc("status/squad_ready"), styleId = "PRIMARY", isDefault = true, addChild = penaltyTimerIcon()
         function cb() {
-          if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), cbReadyCheckId, onSquadNotReady))
+          if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), randomBattleMode.get(), cbReadyCheckId, onSquadNotReady))
             return
           onSquadReady()
         }

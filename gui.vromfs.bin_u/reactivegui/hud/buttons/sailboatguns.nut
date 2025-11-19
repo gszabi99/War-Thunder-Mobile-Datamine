@@ -17,12 +17,13 @@ let { actionBarItems, updateActionBarDelayed, primaryAction, secondaryAction, ac
 let { mkBigCircleBtnEditView, mkCircleProgressBg, mkBtnBorder, mkBtnImage, mkCircleGlare } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
 let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { borderColorPushed, borderNoAmmoColor, borderColor, btnBgColor
+let { borderColorPushed, borderNoAmmoColor, borderColor, btnBgStyle
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletIdxPrim, currentBulletIdxSec, bulletsInfo, bulletsInfoSec, bulletsNamePrim, bulletsNameSec
 } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { isBulletsRight } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
+let { hudSmokyGreyColor, hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 
 let bigButtonSize = evenPx(150)
@@ -35,7 +36,7 @@ let selBulletScale = 1.2
 let bulletBgPos = [-bulletsPosRaidus + 0.2 * bulletBgSize[0], -0.05 * bulletBgSize[1]]
 let bulletBorderWidthBase = 2
 let selBulletBorderWidthBase = 4
-let disabledColor = 0x4D4D4D4D
+let disabledColor = hudSmokyGreyColor
 
 let bulletsAngles = [-1.2 * PI, -0.95 * PI, -0.71 * PI]
 
@@ -148,7 +149,7 @@ function mkBulletToggle(scale, isRight, i, onClick, icon, isCurrent, cdInfo) {
   let pos = [cos(angle) * bulletsPosRaidus * scale * (isRight ? -1.0 : 1.0), sin(angle) * bulletsPosRaidus * scale]
   let btnSize = scaleEven(bulletsButtonSize, scale)
   return function() {
-    let color = !isAvailable.get() ? disabledColor : 0xFFFFFFFF
+    let color = !isAvailable.get() ? disabledColor : hudWhiteColor
     let scaleExt = scale * (isCurrent.get() ? selBulletScale : 1.0)
     let bgSize = scaleEven(bulletsButtonSize, scaleExt)
     let imgSize = scaleEven(bulletsImgSize, scaleExt)
@@ -252,7 +253,7 @@ let mkBroadsideButtonCtor = @(aType, shortcutId, isRight) function(scale, elemId
 
     let isAvailable = !isOnCd.get() && isAvailableActionItem(actionItem.get())
     let { aimReady } = actionItem.get()
-    let color = !isAvailable || !aimReady ? disabledColor : 0xFFFFFFFF
+    let color = !isAvailable || !aimReady ? disabledColor : hudWhiteColor
     return {
       watch = [actionItem, isOnCd]
       key = aType
@@ -284,15 +285,16 @@ function mkBulletEditView(i, icon, isRight) {
     size = [bgSize, bgSize]
     pos = [cos(angle) * bulletsPosRaidus * (isRight ? -1.0 : 1.0), sin(angle) * bulletsPosRaidus]
     children = [
-      {
+      @() {
+        watch = btnBgStyle
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpxi(i == 0 ? selBulletBorderWidthBase : bulletBorderWidthBase)
         color = borderColor
-        fillColor = btnBgColor.ready
+        fillColor = btnBgStyle.get().ready
         commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
       }
-      mkBtnImage(scaleEven(bulletsImgSize, scale), icon, 0xFFFFFFFF)
+      mkBtnImage(scaleEven(bulletsImgSize, scale), icon, hudWhiteColor)
     ]
   }
 }

@@ -1,11 +1,11 @@
 from "daRg" import *
 from "math" import max, min, clamp
-
 if (require_optional("json") != null) 
   require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let log = require("%globalScripts/logs.nut")
 let { loc } = require("dagor.localize")
 let dargBaseLib = require("%darg/darg_library.nut")
+let { getSubArray, getSubTable } = require("%sqstd/underscore.nut")
 let screenUnits = require("screenUnits.nut")
 let { safeAreaW, safeAreaH } = require("%appGlobals/safeArea.nut")
 let fontsStyle = require("fontsStyle.nut")
@@ -54,11 +54,14 @@ return dargBaseLib.__merge(
   min
   clamp
   loc
+  getSubArray
+  getSubTable
+
   
   colorArr
   appearAnim
   Layers
-  defMarqueeDelay = [5, 1]
+  defMarqueeDelay = [5, 0.3]
   defMarqueeDelayVert = [1, 2]
 
   

@@ -317,11 +317,11 @@ function send(action, onResponse=null) {
 function fetch(action, onChunkReceived, chunkSize = 20) {
   function onResponse(response, err) {
     
-    let entry = ((type(response) == "array") ? response?[0] : response) || {}
+    let entry = ((type(response) == "array") ? response?[0] : response) ?? {}
     let received = (getPreferredVersion() == 2)
-                   ? (entry?.nextOffset || entry?.totalItemCount)
-                   : (entry?.start||0) + (entry?.size||0)
-    let total = entry?.total_results || entry?.totalResults || entry?.totalItemCount || received
+                   ? (entry?.nextOffset ?? entry?.totalItemCount ?? 0)
+                   : (entry?.start ?? 0) + (entry?.size ?? 0)
+    let total = entry?.total_results ?? entry?.totalResults ?? entry?.totalItemCount ?? received
 
     if (err == null && received < total)
       send(makeIterable(action, received, chunkSize), callee())

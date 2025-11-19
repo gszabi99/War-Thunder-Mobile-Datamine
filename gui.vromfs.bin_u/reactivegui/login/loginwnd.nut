@@ -5,8 +5,8 @@ let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEB
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { defButtonHeight, BRIGHT, HUAWEI } = require("%rGui/components/buttonStyles.nut")
-let { mkCustomButton, textButtonBright, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { defButtonHeight, PRIMARY, HUAWEI } = require("%rGui/components/buttonStyles.nut")
+let { mkCustomButton, textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { urlText, urlLikeButton } = require("%rGui/components/urlText.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { optLang } = require("%rGui/options/options/langOptions.nut")
@@ -14,6 +14,7 @@ let mkOption = require("%rGui/options/mkOption.nut")
 let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { textColor } = require("%rGui/style/stdColors.nut")
 let { getCurrentLanguage } = require("dagor.localize")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
@@ -68,7 +69,7 @@ let refrIconSize = hdpxi(37)
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
 let urlColor = Color(0, 204, 255)
-let loginButtonStyle = isHMSAvailable() ? HUAWEI : BRIGHT
+let loginButtonStyle = isHMSAvailable() ? HUAWEI : PRIMARY
 let loginButtonsHGap = isHMSAvailable() ? hdpx(16) : buttonsHGap
 
 let resendTimeout = 30
@@ -157,8 +158,8 @@ let mkGaijinLogo = @() {
 
 let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch, {
   placeholder = nameText
-  onChange = @(value) textWatch(value)
-  onEscape = @() textWatch("")
+  onChange = @(value) textWatch.set(value)
+  onEscape = @() textWatch.set("")
 }.__update(options))
 
 let mkPasswordInputField = @() {
@@ -171,7 +172,7 @@ let mkPasswordInputField = @() {
       ? {
           rendObj = ROBJ_IMAGE
           size = showPasswordIconSize
-          image = Picture($"ui/gameuiskin#icon_password_hide.svg:{showPasswordIconSize[0]}:showPasswordIconSize[1]:P")
+          image = Picture($"ui/gameuiskin#icon_password_hide.svg:{showPasswordIconSize[0]}:{showPasswordIconSize[1]}:P")
           hplace = ALIGN_RIGHT
           pos = [-hdpx(16), 0]
           behavior = Behaviors.Button
@@ -194,7 +195,7 @@ function updateResendTimer() {
     resendTimer.set(v)
 }
 
-check2StepAuthCode.subscribe( function (v) { if (v) resendTimer(resendTimeout * timerMult) } )
+check2StepAuthCode.subscribe( function (v) { if (v) resendTimer.set(resendTimeout * timerMult) } )
 
 function doResendCode() {
   timerMult++
@@ -255,7 +256,7 @@ let gaijinAuthorization = @() {
       gap = buttonsHGap
       children = [
         textButtonCommon(cancelText, @() isLoginByGajin.set(false), { hotkeys = [btnBEscUp] })
-        textButtonBright(utf8ToUpper(loc("msgbox/btn_signIn")), doLoginGaijin, { hotkeys = ["^J:X"] })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_signIn")), doLoginGaijin, { hotkeys = ["^J:X"] })
       ]
     }
   ]
@@ -271,12 +272,12 @@ let appleLoginButtonContent = {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#apple_logo.svg:{appleLogoWidth}:{appleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = Color(0, 0, 0)
+      color = textColor
     }
     {
       rendObj = ROBJ_TEXT
       text = loc("mainmenu/AppleId")
-      color = Color(0, 0, 0)
+      color = textColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -289,7 +290,7 @@ let nswitchLoginButtonContent = {
     {
       rendObj = ROBJ_TEXT
       text = loc("mainmenu/nswitch")
-      color = Color(0, 0, 0)
+      color = textColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -304,12 +305,12 @@ let googleLoginButtonContent = {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#google_logo.svg:{googleLogoWidth}:{googleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = Color(0, 0, 0)
+      color = textColor
     }
     {
       rendObj = ROBJ_TEXT
       text = "Google"
-      color = Color(0, 0, 0)
+      color = textColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -329,7 +330,7 @@ let huaweiLoginButtonContent = {
     {
       rendObj = ROBJ_TEXT
       text = "Sign in with HUAWEI ID"
-      color = Color(0, 0, 0)
+      color = 0xFF000000
     }.__update(fontSmallAccented)
   ]
 }
@@ -344,12 +345,12 @@ let fbLoginButtonContent = {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#facebook_logo.svg:{googleLogoWidth}:{googleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = Color(0,0,0)
+      color = textColor
     }
     {
       rendObj = ROBJ_TEXT
       text = "Facebook"
-      color = Color(0,0,0)
+      color = textColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -364,12 +365,12 @@ let firebaseLoginButtonContent = freeze({
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#guest_login.svg:{googleLogoWidth}:{googleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = Color(0, 0, 0)
+      color = textColor
     }
     {
       rendObj = ROBJ_TEXT
       text = loc("authorization_method/guest")
-      color = Color(0, 0, 0)
+      color = isHMSAvailable() ? 0xFF000000 : textColor
     }.__update(fontSmallAccented)
   ]
 })
@@ -414,7 +415,7 @@ let mainAuthorizationButtons = {
       rendObj = ROBJ_TEXT
       halign = ALIGN_CENTER
       text = loc("choose_authorization_method")
-      color = Color(255, 255, 255)
+      color = textColor
       fontFx = FFT_GLOW
       fontFxFactor = 64
       fontFxColor = Color(0, 0, 0)

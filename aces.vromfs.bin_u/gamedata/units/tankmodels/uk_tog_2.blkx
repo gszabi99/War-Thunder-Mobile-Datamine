@@ -59,6 +59,58 @@
       0.4
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -587,46 +639,6 @@
       "ammo_body_03_dm": {},
       "ammo_body_04_dm": {},
       "ammo_body_05_dm": {},
-      "ammo_body_06_dm": {},
-      "ammo_body_07_dm": {},
-      "ammo_body_08_dm": {},
-      "ammo_body_09_dm": {},
-      "ammo_body_10_dm": {},
-      "ammo_body_11_dm": {},
-      "ammo_body_12_dm": {},
-      "ammo_body_13_dm": {},
-      "ammo_body_14_dm": {},
-      "ammo_body_15_dm": {},
-      "ammo_body_16_dm": {},
-      "ammo_body_17_dm": {},
-      "ammo_body_18_dm": {},
-      "ammo_body_19_dm": {},
-      "ammo_body_20_dm": {},
-      "ammo_body_21_dm": {},
-      "ammo_body_22_dm": {},
-      "ammo_body_23_dm": {},
-      "ammo_body_24_dm": {},
-      "ammo_body_25_dm": {},
-      "ammo_body_26_dm": {},
-      "ammo_body_27_dm": {},
-      "ammo_body_28_dm": {},
-      "ammo_body_29_dm": {},
-      "ammo_body_30_dm": {},
-      "ammo_body_31_dm": {},
-      "ammo_body_32_dm": {},
-      "ammo_body_33_dm": {},
-      "ammo_body_34_dm": {},
-      "ammo_body_35_dm": {},
-      "ammo_body_36_dm": {},
-      "ammo_body_37_dm": {},
-      "ammo_body_38_dm": {},
-      "ammo_body_39_dm": {},
-      "ammo_body_40_dm": {},
-      "ammo_body_41_dm": {},
-      "ammo_body_42_dm": {},
-      "ammo_body_43_dm": {},
-      "ammo_body_44_dm": {},
-      "ammo_body_45_dm": {},
       "ammo_body_46_dm": {},
       "ammo_body_47_dm": {},
       "ammo_body_48_dm": {},
@@ -1876,7 +1888,7 @@
         "speedYaw": 15.0,
         "speedPitch": 4.0,
         "fireConeAngle": 1.0,
-        "bullets": 45,
+        "bullets": 5,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2171,7 +2183,13 @@
     "tracks": {
       "animationMultiplier": -0.75,
       "width": 0.8,
-      "height": 0.11
+      "height": 0.11,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        0.4,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2187,12 +2205,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 400000.0,
       "driveGearRadius": 0.34,
       "mainGearRatio": 27.45,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 3.0,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -0.733,
@@ -2320,6 +2338,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2337,6 +2356,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2397,6 +2417,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2414,6 +2435,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2487,6 +2509,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2628,6 +2651,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2635,6 +2659,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2642,6 +2667,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2951,6 +2977,32 @@
           "count": 1
         }
       }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner2",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 1
+        },
+        "ammo_body_02_dm": {
+          "count": 1
+        },
+        "ammo_body_03_dm": {
+          "count": 1
+        },
+        "ammo_body_04_dm": {
+          "count": 1
+        },
+        "ammo_body_05_dm": {
+          "count": 1
+        }
+      }
     }
   },
   "modifications": {
@@ -3032,7 +3084,14 @@
       "details",
       "details_01",
       "details_02",
-      "details_03"
+      "details_03",
+      "details_04",
+      "details_05",
+      "details_06",
+      "details_07",
+      "details_08",
+      "details_09",
+      "details_10"
     ]
   }
 }

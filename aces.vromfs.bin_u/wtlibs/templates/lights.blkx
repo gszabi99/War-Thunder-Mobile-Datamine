@@ -1,5 +1,6 @@
 {
   "local_light": {
+    "_use": "ecs_no_debug",
     "transform": [
       [
         1.0,
@@ -111,6 +112,7 @@
   },
   "omni_light": {
     "_use": [
+      "ecs_no_debug",
       "local_omni_light",
       "replicating"
     ],

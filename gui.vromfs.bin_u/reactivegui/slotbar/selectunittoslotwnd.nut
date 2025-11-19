@@ -13,6 +13,7 @@ let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { mkTreeNodesUnitPlate } = require("%rGui/unitsTree/mkUnitPlate.nut")
+let { unitPlateWidth, unitPlateHeight, unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let WND_UID = "selectUnitToSlot"
 
@@ -41,6 +42,7 @@ function openImpl() {
   let rect = Watched(null)
   let xmbNode = XmbNode()
   let unit = Computed(@() campMyUnits.get()?[selectedUnitToSlot.get()] ?? campUnitsCfg.get()?[selectedUnitToSlot.get()])
+  let plateSize = Computed(@() canOpenSelectUnitWithModal.get() ? [unitPlateWidth, unitPlateHeight] : unitPlateTiny)
   function updateRect() {
     let new = gui_scene.getCompAABBbyKey(selectedUnitAABBKey.get())
     if (new != null && !isEqual(new, rect.get()))
@@ -55,7 +57,7 @@ function openImpl() {
     onClick = closeSelectUnitToSlotWnd
     children = [
       @() {
-        watch = [rect, unit]
+        watch = [rect, unit, plateSize]
         key = rect
         size = flex()
         onAttach = @() setInterval(0.05, updateRect)
@@ -64,7 +66,7 @@ function openImpl() {
           : [
               mkCutBg([rect.get()])
               mkTreeNodesUnitPlate(unit.get(), xmbNode,
-                { pos = [rect.get().l, rect.get().t], dragStartDelay = null, transform = {} })
+                { pos = [rect.get().l, rect.get().t], dragStartDelay = null, transform = {}, size = plateSize.get() })
               mkBgText(rect.get())
             ]
       }

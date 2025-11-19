@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { TANK } = require("%appGlobals/unitConst.nut")
+let { raceForceCannotShoot } = require("%rGui/missionState.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
@@ -47,7 +48,7 @@ let { isUnitAlive } = require("%rGui/hudState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
 
-let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
+let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.get() == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get()) && !isGamepad.get())
 let isTargetTracking = Computed(@() !currentTargetTrackingType.get())
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
@@ -123,7 +124,7 @@ return {
     defTransform = mkLBPos([hdpx(190), hdpx(-420)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_target_tracking.svg")
     isVisibleInEditor = isTargetTracking
-    isVisibleInBattle = isTargetTracking
+    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get())
     priority = Z_ORDER.BUTTON
   }
 

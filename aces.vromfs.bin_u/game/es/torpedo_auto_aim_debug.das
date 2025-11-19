@@ -3,10 +3,19 @@ require ecs
 require Unit
 require DagorMath
 require DagorDebug3D
+require DagorConsole
 require %game.utils.utils_common
 
+[console_cmd(name="torpedo.auto_aim_debug")]
+def torpedo_auto_aim_debug_toggle()
+  query() <| $ [es] (var torpedo_auto_aim__debug : bool&)
+    torpedo_auto_aim__debug = !torpedo_auto_aim__debug
+
 [es(tag=gameClient, REQUIRE=enableTorpedoAutoAim)]
-def torpedo_guns_to_target_debug(info : UpdateStageInfoRenderDebug; var unit__ref : UnitRef)
+def torpedo_guns_to_target_debug(info : UpdateStageInfoRenderDebug; var unit__ref : UnitRef, torpedo_auto_aim__debug : bool)
+  if !torpedo_auto_aim__debug
+    return
+
   var unit = unit__ref.unit
   begin_draw_cached_debug_lines(false, false, false)
 

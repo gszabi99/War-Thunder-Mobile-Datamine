@@ -5,7 +5,7 @@ let { getBulletNameByType, getBulletCountByType, getNextBulletType, getCurrentBu
 let { setTimeout, deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
+let { playerUnitName, isUnitDelayed, isVisibleOnHud } = require("%rGui/hudState.nut")
 let { primaryAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { eventbus_subscribe } = require("eventbus")
 
@@ -13,6 +13,8 @@ let nextBulletIdx = Watched(getNextBulletType(TRIGGER_GROUP_PRIMARY))
 let currentBulletIdxPrim = Watched(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
 let currentBulletIdxSec = Watched(getCurrentBulletType(TRIGGER_GROUP_SECONDARY))
 let bulletsCountPrim = Watched(array(3, 0))
+let bulletsNamePrim = Watched(array(3, TRIGGER_GROUP_PRIMARY).map(getBulletNameByType))
+let bulletsNameSec = Watched(array(3, TRIGGER_GROUP_SECONDARY).map(getBulletNameByType))
 let mainBulletCount = Computed(@() bulletsCountPrim.get()[0])
 let extraBulletCount = Computed(@() bulletsCountPrim.get()[1])
 
@@ -33,43 +35,42 @@ let isSecondaryBulletsSame = Computed(function() {
   return secondaryOrder != null && isEqual(bulletsInfo.get().bulletsOrder, secondaryOrder)
 })
 
-let bulletsNamePrim = Computed(function() {
-  let name = playerUnitName.get() 
-  let upd = isUnitDelayed.get() 
-  return array(3, TRIGGER_GROUP_PRIMARY).map(getBulletNameByType)
-})
-
-let bulletsNameSec = Computed(function() {
-  let name = playerUnitName.get() 
-  let upd = isUnitDelayed.get() 
-  return array(3, TRIGGER_GROUP_SECONDARY).map(getBulletNameByType)
-})
-
 let nextBulletName = Computed(@() bulletsNamePrim.get()?[nextBulletIdx.get()] ?? "")
 let currentBulletName = Computed(@() bulletsNamePrim.get()?[currentBulletIdxPrim.get()] ?? "")
 let mainBulletInfo = Computed(@() bulletsInfo.get()?.bulletSets[bulletsNamePrim.get()[0]])
 let extraBulletInfo = Computed(@() bulletsInfo.get()?.bulletSets[bulletsNamePrim.get()[1]])
 
-let mkUpdateBulletsCount = @(trigger, watch) function updateBulletsCount() {
-  let newVal = array(3, trigger).map(getBulletCountByType)
+let mkUpdateBulletsState = @(trigger, watch, getter) function updateBulletsState() {
+  let newVal = array(3, trigger).map(getter)
   if (!isEqual(newVal, watch.get()))
     watch.set(newVal)
 }
 
-let updateBulletsCountPrim = mkUpdateBulletsCount(TRIGGER_GROUP_PRIMARY, bulletsCountPrim)
+let updateBulletsCountPrim = mkUpdateBulletsState(TRIGGER_GROUP_PRIMARY, bulletsCountPrim, getBulletCountByType)
+let updateBulletsNamePrim = mkUpdateBulletsState(TRIGGER_GROUP_PRIMARY, bulletsNamePrim, getBulletNameByType)
+let updateBulletsNameSec = mkUpdateBulletsState(TRIGGER_GROUP_SECONDARY, bulletsNameSec, getBulletNameByType)
+
 updateBulletsCountPrim()
+updateBulletsNamePrim()
+updateBulletsNameSec()
 
 let updateAllBulletsCount = @() deferOnce(updateBulletsCountPrim)
+let updateAllBulletsState = @() deferOnce(function() {
+  updateBulletsCountPrim()
+  updateBulletsNamePrim()
+  updateBulletsNameSec()
+})
 
-playerUnitName.subscribe(@(_) updateAllBulletsCount())
-isUnitDelayed.subscribe(@(_) updateAllBulletsCount())
+playerUnitName.subscribe(@(_) updateAllBulletsState())
+isUnitDelayed.subscribe(@(_) updateAllBulletsState())
+isVisibleOnHud.subscribe(@(v) v ? updateAllBulletsState() : null)
 
 eventbus_subscribe("onBulletsAmountChanged", @(_) updateAllBulletsCount())
 
 primaryAction.subscribe(function(_) {
   currentBulletIdxPrim.set(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
   nextBulletIdx.set(getNextBulletType(TRIGGER_GROUP_PRIMARY))
-  deferOnce(updateBulletsCountPrim)
+  updateAllBulletsCount()
 })
 secondaryAction.subscribe(@(_) currentBulletIdxSec.set(getCurrentBulletType(TRIGGER_GROUP_SECONDARY)))
 

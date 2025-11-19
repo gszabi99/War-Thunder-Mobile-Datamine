@@ -12,7 +12,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campaignsLevelInfo, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
-let { userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
@@ -36,8 +36,8 @@ eventWndOpenCounter.subscribe(function(v) {
     closeEventWndLootbox()
 })
 
-let eventEndsAt = Computed(@() userstatStats.get()?.stats.season["$endsAt"] ?? 0)
-let eventSeasonIdx = Computed(@() userstatStats.get()?.stats.season["$index"] ?? 0)
+let eventEndsAt = Computed(@() userstatStatsTables.get()?.stats.season["$endsAt"] ?? 0)
+let eventSeasonIdx = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? 0)
 let eventSeason = Computed(@() getSeasonPrefix(eventSeasonIdx.get()))
 let isEventActive = Computed(@() unlockTables.get()?.season == true)
 
@@ -70,8 +70,8 @@ let eventsLists = Computed(function() {
     let tableId = unlock.table
     if (!unlockTables.get()?[tableId])
       continue
-    let endsAt = userstatStats.get()?.stats[tableId]["$endsAt"] ?? 0
-    let season = userstatStats.get()?.stats[tableId]["$index"] ?? 1
+    let endsAt = userstatStatsTables.get()?.stats[tableId]["$endsAt"] ?? 0
+    let season = userstatStatsTables.get()?.stats[tableId]["$index"] ?? 1
 
     let eventData = {
       eventName = event_id
@@ -134,7 +134,7 @@ function getEventLoc(eventId, eSeason, sEvents) {
 let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), allSpecialEvents.get()))
 
 let curEventSeason = Computed(@() curEvent.get() == MAIN_EVENT_ID
-    ? (userstatStats.get()?.stats.season["$index"] ?? 0)
+    ? (userstatStatsTables.get()?.stats.season["$index"] ?? 0)
   : specialEvents.get()?[curEvent.get()].season)
 
 let curEventEndsAt = Computed(@() curEvent.get() == MAIN_EVENT_ID
@@ -274,21 +274,13 @@ function openEventWnd(eventName = MAIN_EVENT_ID) {
   })
 }
 
-let gamercardItemsBySpecialEvent = {
-  christmas = [ "firework_kit" ]
-  event_new_year = [ "firework_kit" ]
-  event_lunar_ny_season = [ "firework_kit" ]
-  anniversary_2025 = [ "firework_kit" ]
-}
 let specialEventGamercardItems = Computed(function() {
-  let specialEventsList = specialEvents.get().reduce(function(acc, e) {
-    acc.append(e.eventName)
-    return acc
-  }, [])
   let res = []
-  foreach (eventName, items in gamercardItemsBySpecialEvent)
-    if (specialEventsList.indexof(eventName) != null)
-      res.extend(items.map(@(itemId) { itemId, eventName }))
+  foreach (e in specialEvents.get()) {
+    let { eventName } = e
+    let { gamercardItems = [] } = getEventPresentation(eventName)
+    res.extend(gamercardItems.map(@(itemId) { itemId, eventName }))
+  }
   return res
 })
 

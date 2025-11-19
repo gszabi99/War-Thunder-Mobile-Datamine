@@ -88,9 +88,9 @@ function mkPlayerNotify(notify, rowIdx, addChild = null) {
   let info = mkPublicInfo(userId)
   return @() mkNotifyBg(notify, rowIdx,
     [
-      contactLevelBlock(info.value)
-      contactAvatar(info.value)
-      contactNameBlock(contact.value, info.value)
+      contactLevelBlock(info.get())
+      contactAvatar(info.get())
+      contactNameBlock(contact.get(), info.get())
       mkTextArea(notify.text, { halign = ALIGN_RIGHT })
       addChild ?? btnRemove(notify)
     ]

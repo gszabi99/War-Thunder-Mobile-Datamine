@@ -10,6 +10,7 @@ let { set_purch_player_type, check_new_offer, debug_offer_generation_stats, shif
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
@@ -33,7 +34,7 @@ registerHandler("closeOfferWndOnSuccess",
 
 registerHandler("onDebugShiftOffer", @(_) check_new_offer(curCampaign.get(), "closeOfferWndOnSuccess"))
 
-let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] } })
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] }, useFlexText = true })
 let infoTextOvr = {
   size = FLEX_H
   halign = ALIGN_LEFT,
@@ -65,17 +66,21 @@ let unitsSort = @(a, b) a.rank <=> b.rank
   || a.name <=> b.name
 
 registerHandler("onDebugOfferUnits",
-  function(res) {
+  function(res, context) {
     let { units = null } = res
     if (units == null) {
       openMsgBox({ text = tostring_r(res) })
       return
     }
 
-    let { allUnits } = serverConfigs.get()
+    let { isOnlyOwn = false } = context
+    let { allUnits = {} } = serverConfigs.get()
+    let myUnits = servProfile.get()?.units ?? {}
     let unitsByCamp = {}
     let unknown = []
     foreach(unitName in units) {
+      if (isOnlyOwn && unitName in myUnits)
+        continue
       let unitCfg = allUnits?[unitName]
       if (unitCfg == null) {
         unknown.append(unitName)
@@ -94,19 +99,29 @@ registerHandler("onDebugOfferUnits",
         units = cUnits.sort(unitsSort)  
           .map(@(u) $"{u.rank} {getRomanNumeral(u.mRank)} {u.name}")
       })
-    textsByCamp.sort(@(a, b) a.campaign <=> b.campaign)
+
+    let cur = curCampaign.get()
+    textsByCamp.sort(@(a, b) (b.campaign == cur) <=> (a.campaign == cur)
+      || a.campaign <=> b.campaign)
 
     if (unknown.len() > 0)
       textsByCamp.append({ campaign = "unknown", units = unknown })
 
+    let columns = saSize[0] / hdpxi(650)
     openMsgBox({
-      title = "Offer allowed units"
+      title = isOnlyOwn ? "My offer allowed units" : "All offer allowed units"
       text = makeVertScroll(
-        mkUnitsTexts(textsByCamp),
+        {
+          size = FLEX_H
+          flow = FLOW_VERTICAL
+          gap = hdpx(80)
+          children = arrayByRows(textsByCamp, columns)
+            .map(@(row) mkUnitsTexts(row))
+        },
         { rootBase = { behavior = Behaviors.Pannable } })
-      wndOvr = { size = [hdpx(max(1100, 650 * textsByCamp.len())), hdpx(1000)] }
+      wndOvr = { size = [hdpx(max(1100, 650 * columns)), hdpx(1000)] }
       buttons = [
-        { text = "COPY", cb = @() set_clipboard_text(object_to_json_string(textsByCamp)) }
+        { text = "COPY", cb = @() set_clipboard_text(object_to_json_string(textsByCamp, true)) }
         { id = "ok", styleId = "PRIMARY", isDefault = true }
       ]
     })
@@ -120,7 +135,11 @@ let commandsList = [
     func = @() debug_offer_generation_stats(curCampaign.get(), "onDebugOfferStats")
   }
   {
-    label = "debug_offer_possible_units"
+    label = "debug_offer_possible_units_my"
+    func = @() debug_offer_possible_units({ id = "onDebugOfferUnits", isOnlyOwn = true })
+  }
+  {
+    label = "debug_offer_possible_units_all"
     func = @() debug_offer_possible_units("onDebugOfferUnits")
   }
 ]
@@ -195,7 +214,9 @@ return @() addModalWindow({
           closeButton(close)
         ]
       }
-      mkCommandsList()
+      makeVertScroll(
+        mkCommandsList(),
+        { rootBase = { behavior = Behaviors.Pannable } })
     ]
   }
 })

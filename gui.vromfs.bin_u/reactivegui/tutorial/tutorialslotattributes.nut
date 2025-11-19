@@ -14,7 +14,7 @@ let { markTutorialCompleted, isFinishedSlotAttributes } = require("%rGui/tutoria
 let { hasSlotAttrPreset, curCategoryId, selAttributes, getMaxAttrLevelData, attrPresets
 } = require("%rGui/attributes/attrState.nut")
 let { isSlotAttrAttached, openSlotAttrWnd, slotAttributes, leftSlotSp,
-  applyAttributes, hasUpgradedAttrUnitNotUpdatable
+  applyAttributes, hasUpgradedAttrUnitNotUpdatable, needDistributeCampaignSlotExp
 } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { selectedSlotIdx, slotBarSlotKey } = require("%rGui/slotBar/slotBarState.nut")
 let { applyAttrRowChange } = require("%rGui/attributes/attrBlockComp.nut")
@@ -31,7 +31,8 @@ let needShowTutorial = Computed(@() !isFinishedSlotAttributes.get()
   && curCampaignSlots.get() != null
   && selectedSlotIdx.get() != null
   && null == curCampaignSlots.get().slots.findvalue(@(slot) slot.attrLevels.len() > 0)
-  && hasSlotForTutor(curCampaignSlots.get()))
+  && hasSlotForTutor(curCampaignSlots.get())
+  && !needDistributeCampaignSlotExp.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isMainMenuAttached.get()
   && !isTutorialActive.get())

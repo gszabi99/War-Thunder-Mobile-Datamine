@@ -21,8 +21,22 @@ let mkSliderPoint = @(isActive) {
 
 let mkRewardPlateBg = @(size) {
   size
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/images/offer_item_slot_bg.avif:{size[0]}:{size[1]}:P")
+  rendObj = ROBJ_BOX
+  fillColor = 0xFFB9B9B9
+  children = {
+    size = flex()
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#gradient_button.svg")
+    padding = hdpx(3)
+    color = 0xFFEEEEEE
+    children = {
+      size = flex()
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#offer_item_slot_bg.avif")
+    }
+  }
 }
 
 function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {

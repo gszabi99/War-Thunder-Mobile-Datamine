@@ -12,9 +12,11 @@ let curCampaignSlots = Computed(function() {
   if (!isCampaignWithSlots.get())
     return null
   let campaignSlots = campProfile.get()?.campaignSlots
-  if (curCampaign.get() in slotsSelectedByUser.get() && campaignSlots)
-    return campaignSlots.__merge({ slots = slotsSelectedByUser.get()[curCampaign.get()] })
-  return campaignSlots
+  if (campaignSlots == null)
+    return null
+  let slots = slotsSelectedByUser.get()?[curCampaign.get()] ?? campaignSlots.slots
+  let { allUnits = {} } = campConfigs.get()
+  return campaignSlots.__merge({ slots = slots.map(@(v) v.name in allUnits ? v : v.__merge({ name = "" })) })
 })
 
 let curSlots = Computed(function() {
@@ -25,7 +27,7 @@ let curSlots = Computed(function() {
 let curCampaignSlotUnits = Computed(function(prev) {
   if (!isCampaignWithSlots.get())
     return null
-  let slots = curSlots.get() ?? curCampaignSlots.get()?.slots
+  let slots = curSlots.get()
   let res = slots?.map(@(s) s.name)
     .filter(@(v) v != "")
   return isEqual(res, prev) ? prev : res

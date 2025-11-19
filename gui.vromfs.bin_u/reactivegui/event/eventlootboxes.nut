@@ -4,7 +4,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 
 
 let MAIN_EVENT_ID = "main"
@@ -89,8 +89,8 @@ let eventLootboxesRaw = Computed(@() serverConfigs.get()?.lootboxesCfg
       return false
     let { event_id = MAIN_EVENT_ID, event_slot = null } = v?.meta
     return event_slot != null
-      && (v?.meta.campaign == null || curCampaign.value == v?.meta.campaign)
-      && (event_id != MAIN_EVENT_ID || isFitCurSeason(v?.timeRange, "season", userstatStats.get()))
+      && (v?.meta.campaign == null || curCampaign.get() == v?.meta.campaign)
+      && (event_id != MAIN_EVENT_ID || isFitCurSeason(v?.timeRange, "season", userstatStatsTables.get()))
   })
     ?? {})
 

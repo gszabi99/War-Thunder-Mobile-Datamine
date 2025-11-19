@@ -4,22 +4,22 @@ let newbieGameModesConfig = {
   tanks = [
     {
       gmName = "tank_new_players_battle_single"
-      isFit = @(s, _) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
+      isFit = @(s, _, __) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
       isSingle = true
       abTest = true
-      offlineMissions = ["abandoned_factory_single_Conq1"]
-      abTestOfflineMissions = ["abandoned_factory_single_Conq1_restricted"]
+      offlineMissions = ["abandoned_factory_single_Conq3"]
+      abTestOfflineMissions = ["abandoned_factory_single_Conq3_restricted"]
     }
     {
       gmName = "tank_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 1
+      isFit = @(s, mRank, abTests) (mRank <= 2 || abTests?.newbieExitByMRank == "false")
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
   ]
   ships = [
     {
       gmName = "ship_new_players_battle_single"
-      isFit = @(s, _) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 2 || !s.hasPkg))
+      isFit = @(s, _, __) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 2 || !s.hasPkg))
       isSingle = true
       offlineMissions = [
         "pacific_island_small_single_NTdm"
@@ -27,14 +27,14 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "ship_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 1
+      isFit = @(s, mRank, abTests) (mRank <= 1 || abTests?.newbieExitByMRank == "false")
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 3))
     }
   ]
   air = [
     {
       gmName = "plane_new_players_battle_single"
-      isFit = @(s, mRank) s.anyBattles < 1 && mRank <= 1
+      isFit = @(s, _, __) s.anyBattles < 1
       isSingle = true
       offlineMissions = [
         "air_zhengzhou_single_GSn"
@@ -42,7 +42,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "plane_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 2
+      isFit = @(s, mRank, abTests) (mRank <= 2 || abTests?.newbieExitByMRank == "false")
         && (s.anyBattles < 3 || (s.anyBattles < 6 && s.kills < 10))
     }
   ]

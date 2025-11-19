@@ -24,7 +24,7 @@ let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
 } = require("%rGui/rewards/rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkUnitBg, mkUnitImage, mkPlateText, maxFlagSizeWithoutGrad } = require("%rGui/unit/components/unitPlateComp.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
@@ -41,6 +41,7 @@ let { mkBgImg, mkFitCenterImg, offerPad } = require("%rGui/shop/goodsView/shared
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { withGlareEffect } = require("%rGui/components/glare.nut")
+let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
 
 
 let currenciesOnOfferBanner = [PLATINUM, EVENT_KEY, GOLD, WARBOND]
@@ -51,12 +52,33 @@ let textPadding = [0, hdpx(5)]
 let cornerIconMargin = hdpx(5)
 let fontLabelBig = fontSmall
 let transparentBlackColor = 0x80000000
+let rewardPlateBorderWidth = hdpx(3)
 
 let iconBase = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   keepAspect = true
+}
+
+let mkRewardPlateBgImpl = @(size, bgImg) {
+  size
+  rendObj = ROBJ_BOX
+  fillColor = 0xFFB9B9B9
+  children = {
+    size = flex()
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#gradient_button.svg")
+    padding = rewardPlateBorderWidth
+    color = 0xFFEEEEEE
+    children = {
+      size = flex()
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#{bgImg}")
+    }
+  }
 }
 
 let mkCommonLabelText = @(text, rStyle) {
@@ -78,6 +100,7 @@ let mkCommonLabelTextMarquee = @(text, rStyle) {
 let mkRewardLabel = @(children, rStyle, needPadding = true) {
   size = [flex(), rStyle.labelHeight]
   padding = needPadding ? textPadding : null
+  margin = rewardPlateBorderWidth
   vplace = ALIGN_BOTTOM
   valign = ALIGN_CENTER
   halign = ALIGN_RIGHT
@@ -337,8 +360,12 @@ function mkRewardPlatePremiumTexts(r, rStyle) {
 
 let mkDecoratorIconAvatar = @(decoratorId, _rStyle, size) {
   size
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{getAvatarImage(decoratorId)}:0:P")
+  padding = rewardPlateBorderWidth
+  children = {
+    size = flex()
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{getAvatarImage(decoratorId)}:0:P")
+  }
 }
 
 let decoratorFontIconBase = {
@@ -461,7 +488,7 @@ function mkRewardPlateStatImage(r, rStyle) {
     children = iconBase.__merge({
       size = [w, h]
       pos = [ 0, iconShiftY ]
-      image = Picture($"{getStatsImage(r.id)}:{w}:{h}:P")
+      image = Picture($"{getStatsImage(r.id, r?.subId)}:{w}:{h}:P")
     })
   }
 }
@@ -493,6 +520,26 @@ function mkRewardPlateSkinImage(r, rStyle) {
 
 let mkRewardPlateSkinTexts = @(r, rStyle)
   mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(r.id)), rStyle), rStyle)
+
+
+
+function mkRewardPlateDecalImage(r, rStyle) {
+  let { id } = r
+  let { iconShiftY } = rStyle
+  let size = getRewardPlateSize(r.slots, rStyle)
+  let iconSize = size.map(@(v) (v * 0.55).tointeger())
+  return {
+    size
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = mkDecalIcon(id, iconSize).__update({
+      pos = [0, iconShiftY * 1.2]
+    })
+  }
+}
+
+let mkRewardPlateDecalTexts = @(rStyle)
+  mkRewardLabel(mkCommonLabelTextMarquee(loc("reward/decal"), rStyle), rStyle)
 
 
 
@@ -738,11 +785,7 @@ function mkRewardPlateDiscount(previewReward, discount, rewardCtors, rewardStyle
   let mkPlate = @(r, rDiscount, rStyle, rSize) {
     transform = {}
     children = [
-      {
-        size = rSize
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/images/offer_item_slot_bg.avif:{rSize[0]}:{rSize[1]}:P")
-      }
+      mkRewardPlateBgImpl(rSize, "offer_item_slot_bg.avif")
       mkPlateImage(r, rStyle)
       mkPlateTexts(r, rStyle)
       mkDiscountOfferTag(rDiscount)
@@ -790,23 +833,11 @@ function mkRewardPlateUnknownImage(r, rStyle) {
 
 
 
-function mkRewardPlateBg(r, rStyle) {
-  let size = getRewardPlateSize(r.slots, rStyle)
-  return {
-    size
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/images/offer_item_slot_bg.avif:{size[0]}:{size[1]}:P")
-  }
-}
+let mkRewardPlateBg = @(r, rStyle)
+  mkRewardPlateBgImpl(getRewardPlateSize(r.slots, rStyle), "offer_item_slot_bg.avif")
 
-function mkRewardPlateBgVip(r, rStyle) {
-  let size = getRewardPlateSize(r.slots, rStyle)
-  return {
-    size
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/images/offer_item_slot_bg_vip.avif:{size[0]}:{size[1]}:P")
-  }
-}
+let mkRewardPlateBgVip = @(r, rStyle)
+  mkRewardPlateBgImpl(getRewardPlateSize(r.slots, rStyle), "offer_item_slot_bg_vip.avif")
 
 let battleModeViewCtors = {
   eventUnit = {
@@ -863,6 +894,10 @@ let simpleRewardPlateCtors = {
   skin = {
     image = mkRewardPlateSkinImage
     texts = mkRewardPlateSkinTexts
+  }
+  decal = {
+    image = mkRewardPlateDecalImage
+    texts = @(_, rStyle) mkRewardPlateDecalTexts(rStyle)
   }
   battleMod = {
     image = function(r, rStyle) {
@@ -931,6 +966,12 @@ let mkRewardLocked = @(rStyle) {
   }
 }
 
+function mkRewardFlagSize(rStyle) {
+  let w = rStyle.markSize
+  let h = round(w * (66.0 / 84)).tointeger()
+  return [w, h]
+}
+
 let function mkRewardUnitFlag(unit, rStyle) {
   let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
   if (operatorCountry == "")
@@ -938,14 +979,19 @@ let function mkRewardUnitFlag(unit, rStyle) {
   let countryId = operatorCountry ?? unit.country
   if (countryId == null)
     return null
-  let w = rStyle.markSize
-  let h = round(w * (66.0 / 84)).tointeger()
+
+  let size = mkRewardFlagSize(rStyle)
+  let sizeStr = $"{size[0]}:{size[1]}"
+  let flagImg = size[0] > maxFlagSizeWithoutGrad
+    ? Picture($"ui/gameuiskin#{countryId}.avif:{sizeStr}:P")
+    : Picture($"ui/gameuiskin#{countryId}.svg:{sizeStr}:P")
+
   return {
-    size = [w, h]
+    size
     margin = cornerIconMargin
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#{countryId}.avif:{w}:{h}:P")
-    fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{w}:{h}:P")
+    image = flagImg
+    fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{sizeStr}:P")
     keepAspect = true
   }
 }

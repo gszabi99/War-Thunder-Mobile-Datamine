@@ -43,12 +43,11 @@ function gameModesList() {
         close()
         let modeId = m?.gameModeId
         let campaign = m?.campaign ?? selectedCampaign.get()
-        let name = m?.name ?? ""
-        if (tryOpenQueuePenaltyWnd(campaign, { id = "queueToGameMode", modeId }, null, name))
+        if (tryOpenQueuePenaltyWnd(campaign, m, { id = "queueToGameMode", modeId }))
           return
         eventbus_send("queueToGameMode", { modeId })
       },
-      { ovr = { size = const [flex(), hdpx(100)] } }))
+      { ovr = { size = const [flex(), hdpx(100)] }, useFlexText = true }))
 
   if (modes.len() == 0)
     return res

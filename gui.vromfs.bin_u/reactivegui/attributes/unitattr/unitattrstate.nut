@@ -22,7 +22,7 @@ let attrUnitPreset = Computed(@() attrUnitData.get().unit?.preset)
 let attrUnitLevelsToMax = Computed(@() (attrUnitData.get().unit?.levels.len() ?? 0) - (attrUnitData.get().unit?.level ?? 0))
 
 function resetAttrState() {
-  selAttributes({})
+  selAttributes.set({})
   curCategoryId.set(attrUnitData.get().preset?[0].id)
 }
 resetAttrState()

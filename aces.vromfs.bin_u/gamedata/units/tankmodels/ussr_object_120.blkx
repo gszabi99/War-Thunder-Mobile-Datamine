@@ -2064,6 +2064,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -2081,6 +2082,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2141,6 +2143,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2158,6 +2161,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -2231,6 +2235,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -2372,6 +2377,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2379,6 +2385,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2386,6 +2393,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2504,156 +2512,21 @@
     "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
-    "machinegun_belt_ap": {},
-    "machinegun_belt_tracer": {},
-    "machinegun_belt_stealth": {},
     "art_support_smoke": {},
     "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
-    "tank_smoke_screen_low_cooldown": {},
-    "tank_smoke_screen_long_duration": {}
+    "art_support_highcaliber": {}
   },
   "default_skin": {
     "replace_tex": {
       "from": "ussr_camo_green*",
-      "to": "ussr_camo_dkgreen_ltgreen_brown*"
+      "to": "ussr_camo_green*"
     }
   },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [
-        2.78195,
-        -1.09183e-7,
-        -0.22826,
-        3.48117
-      ],
-      "decal0Line1": [
-        -0.070679,
-        -2.65411,
-        -0.861408,
-        4.40411
-      ],
-      "decal0Line2": [
-        -2.78195,
-        -9.35855e-8,
-        -0.22826,
-        -2.48117
-      ],
-      "decal0Line3": [
-        -0.0706787,
-        -2.65411,
-        0.861408,
-        4.40411
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        -0.0777565,
-        0.309642,
-        -0.947668,
-        -1.74684
-      ],
-      "decal0CPNormDepth1": [
-        -0.0777565,
-        0.309642,
-        0.947668,
-        -1.74684
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.358257
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.200001,
-      "decal0Tex": "ussr_numbers_0",
-      "decal1Line0": [
-        5.5807,
-        -2.54709e-7,
-        -0.0914715,
-        5.60394
-      ],
-      "decal1Line1": [
-        -0.0130629,
-        -2.67448,
-        -0.796963,
-        4.57332
-      ],
-      "decal1Line2": [
-        -5.5807,
-        -2.15723e-7,
-        -0.0914714,
-        -4.60394
-      ],
-      "decal1Line3": [
-        -0.0130626,
-        -2.67448,
-        0.796963,
-        4.57332
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        -0.0157058,
-        0.285614,
-        -0.958216,
-        -1.64599
-      ],
-      "decal1CPNormDepth1": [
-        -0.0157058,
-        0.285614,
-        0.958216,
-        -1.64599
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.35833
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.205149,
-      "decal1Tex": "ussr_numbers_1"
-    }
-  },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_green*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    },
-    "forest2": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_modern_forest*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    },
-    "desert": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

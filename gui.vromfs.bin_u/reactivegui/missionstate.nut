@@ -1,5 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let DataBlock  = require("DataBlock")
 let { get_game_type } = require("mission")
+let { get_current_mission_desc } = require("guiMission")
+let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
+let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let interopGet = require("%rGui/interopGen.nut")
 
 let gameType = Watched(get_game_type())
@@ -24,14 +28,28 @@ interopGet({
   postfix = "Update"
 })
 
-let isGtFFA = Computed(@() !!(gameType.get() & (GT_FFA_DEATHMATCH | GT_FFA)))
-let isGtBattleRoyale = Computed(@() !!(gameType.get() & GT_FFA))
-let isGtLastManStanding = Computed(@() (gameType.get() & GT_LAST_MAN_STANDING))
+let raceForceCannotShoot = Watched(false)
+
+function updateRaceForceCannotShoot() {
+  if (!isAppLoaded.get())
+    return
+  let misBlk = DataBlock()
+  get_current_mission_desc(misBlk)
+  raceForceCannotShoot.set(misBlk?.raceForceCannotShoot)
+}
+
+updateRaceForceCannotShoot()
+isInLoadingScreen.subscribe(@(v) !v ? updateRaceForceCannotShoot() : null)
+isAppLoaded.subscribe(@(_) updateRaceForceCannotShoot())
+
+let isGtRace = Computed(@() !!(gameType.get() & GT_RACE))
 
 let missionState = missionStateInterop.__merge({
-  isGtFFA
-  isGtBattleRoyale
-  isGtLastManStanding
+  isGtFFA = Computed(@() !!(gameType.get() & (GT_FFA_DEATHMATCH | GT_FFA)))
+  isGtBattleRoyale = Computed(@() !!(gameType.get() & GT_LAST_MAN_STANDING))
+  isGtRace
+  notGtRace = Computed(@() !isGtRace.get())
+  raceForceCannotShoot
 })
 
 return missionState

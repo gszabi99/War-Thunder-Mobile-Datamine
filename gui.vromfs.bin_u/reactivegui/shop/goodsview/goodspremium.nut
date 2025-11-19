@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
+let { G_PREMIUM } = require("%appGlobals/rewardType.nut")
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkBgImg, borderBgGold, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, mkSlotBgImg, mkBorderByCurrency,
   oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime
@@ -57,7 +58,11 @@ let mkPremiumDaysTitle = function(amount, oldAmount) {
   }
 }
 
-let getLocNamePremium = @(goods) loc("shop/item/premium/amount", { amount = goods.premiumDays })
+let getLocNamePremium = @(goods) loc("shop/item/premium/amount",
+  { amount = goods?.rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count
+      ?? goods?.premiumDays 
+      ?? 0
+  })
 let infoBtn = infoGreyButton(
   openPremiumDescription,
   {
@@ -70,7 +75,10 @@ let infoBtn = infoGreyButton(
 )
 
 function mkGoodsPremium(goods, onClick, state, animParams, addChildren) {
-  let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let { rewards = null, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let premiumDays = rewards?.findvalue(@(r) r.gType == G_PREMIUM)?.count
+    ?? goods?.premiumDays 
+    ?? 0
   let premIconAndDaysTitleWrapper = {
     size = flex()
     children = [

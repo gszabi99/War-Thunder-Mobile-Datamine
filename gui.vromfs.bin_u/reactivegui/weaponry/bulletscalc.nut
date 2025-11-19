@@ -9,9 +9,10 @@ let { getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nu
 let MAX_SLOTS = 2
 let MAX_SLOTS_SAILBOAT = 3
 
-function collectBulletsCount(bulletsCfg, level, maxSlots) {
+function collectBulletsCount(bulletsCfg, level, maxSlots, mods) {
   let { fromUnitTags, bulletsOrder, total, catridge, guns } = bulletsCfg
-  let allowed = bulletsOrder.filter(@(bullet) (fromUnitTags?[bullet].reqLevel ?? -1) <= level)
+  let allowed = bulletsOrder.filter(@(bullet) (fromUnitTags?[bullet].reqLevel ?? -1) <= level
+    && (fromUnitTags?[bullet].reqModification == null || mods?[fromUnitTags?[bullet].reqModification]))
   if (allowed.len() > maxSlots)
     allowed.resize(maxSlots)
   let stepSize = guns
@@ -39,9 +40,9 @@ function getDefaultBulletsForSpawn(unitName, level, mods = null) {
 
   local maxSlots = unitType == SAILBOAT ? MAX_SLOTS_SAILBOAT : MAX_SLOTS
 
-  res.extend(collectBulletsCount(primary, level, maxSlots))
+  res.extend(collectBulletsCount(primary, level, maxSlots, mods))
   if (secondary != null)
-    res.extend(collectBulletsCount(secondary, level, maxSlots))
+    res.extend(collectBulletsCount(secondary, level, maxSlots, mods))
 
   if (special != null)
     res.append({ name = special.bulletsOrder[0], count = special.total })

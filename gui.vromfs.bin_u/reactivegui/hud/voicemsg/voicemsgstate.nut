@@ -166,6 +166,8 @@ isVoiceMsgStickActive.subscribe(function(isActive) {
 function voiceMsgChatCmdHandlerFunc(sender, msg) {
   if (!msg.startswith(CMD_MSG_PREFIX_VOICE))
     return null
+  if (!isVoiceMsgAllowedInMission.get())
+    return null
   let params = msg.slice(CMD_MSG_PREFIX_VOICE.len()).split(":")
   let id = params[0]
   let voiceId = params?[1] ?? 1

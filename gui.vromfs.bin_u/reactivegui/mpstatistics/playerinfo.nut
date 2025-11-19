@@ -32,12 +32,14 @@ let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
+
 
 let maxMedalInRow = 7
 let defColor = 0xFFFFFFFF
-let hlColor = 0xFF5FC5FF
+let hlColor = selectColor
 let grayColor = 0x80808080
 let iconSize = [hdpx(40), hdpx(20)]
 let rowMedalHeight = hdpx(70)
@@ -53,7 +55,7 @@ let textProps = {
     fontFx = FFT_GLOW
     fontFxFactor = 48
     fontFxColor = 0xFF000000
-    color = 0xFF69DADC
+    color = selectColor
   }.__update(fontMediumShaded)
 
 let mkTitle = @(title, ovr = {}) {
@@ -84,9 +86,9 @@ let mkContactInfo = @(contact, info) @() {
   minWidth = SIZE_TO_CONTENT
   size = FLEX_H
   children = [
-    contactAvatar(info.value)
-    contactNameBlock(contact.value, info.value)
-    contactLevelBlock(info.value)
+    contactAvatar(info.get())
+    contactNameBlock(contact.get(), info.get())
+    contactLevelBlock(info.get())
   ]
 }
 
@@ -104,7 +106,7 @@ let mkBotNameContent = @(player, info) function() {
     minWidth = SIZE_TO_CONTENT
     size = FLEX_H
     children = [
-      contactAvatar(info.value)
+      contactAvatar(info.get())
       {
         valign = ALIGN_CENTER
         gap = hdpx(10)
@@ -416,7 +418,7 @@ selectedPlayerForInfo.subscribe(function(v) {
     }
     foreach (unit in allUnits) {
       let { campaign = "", isHidden = false, isPremium = false, costWp = 0, name = ""} = unit
-      if (name not in releasedUnits.get())
+      if (name in unreleasedUnits.get())
         continue
       if (campaign not in all)
         all[campaign] <- { prem = 0, wp = 0 }

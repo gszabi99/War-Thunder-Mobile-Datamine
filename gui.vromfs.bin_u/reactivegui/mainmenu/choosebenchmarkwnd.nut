@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { benchmarkGameModes } = require("%rGui/gameModes/gameModeState.nut")
@@ -39,7 +39,7 @@ let btnStyle = { ovr = { size = const [flex(), hdpx(100)] } }
 function missionsListUi() {
   let children = [byRows(benchmarksList.get().map(@(b)
     textButtonCommon(
-      b.name,
+      utf8ToUpper(b.name),
       function() {
         close()
         eventbus_send("startBenchmark", { id = b.id })
@@ -56,7 +56,7 @@ function missionsListUi() {
       byRows(benchmarkGameModes.get().values()
         .sort(@(a, b) a.gameModeId <=> b.gameModeId)
         .map(@(gm) textButtonCommon(
-          loc($"gameMode/{gm.name}", gm.name),
+          utf8ToUpper(loc($"gameMode/{gm.name}", gm.name)),
           function() {
             close()
             eventbus_send("queueToGameMode", { modeId = gm?.gameModeId })

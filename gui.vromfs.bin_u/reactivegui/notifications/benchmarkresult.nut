@@ -16,7 +16,7 @@ eventbus_subscribe("showBenchmarkResult", @(msg) result.set(msg))
 let statsCfg = [
   {
     locId = "benchmark/avgfps"
-    getValue = @(s) round_by_value(s.benchTotalTime < 0.1 ? 0.0 : (s.benchTotalFrames / s.benchTotalTime), 0.1)
+    getValue = @(s) round_by_value(s.benchAvgFPS, 0.1)
   }
   {
     locId = "benchmark/minfps"

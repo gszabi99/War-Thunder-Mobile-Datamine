@@ -16,7 +16,8 @@
       "environment": "14",
       "weather": "hazy",
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 21
+      "skiesInitialRandomSeed": 21,
+      "mobileFpsLimit": 0
     }
   },
   "imports": {},

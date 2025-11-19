@@ -36,10 +36,10 @@ function resetForm() {
 
 function getFormValidationError() {
   let err = []
-  if (fieldCategory.value == "")
+  if (fieldCategory.get() == "")
     err.append(loc("support/form/hint/select_a_category"))
   foreach (field in [ fieldEmail, fieldSubject, fieldMessage ])
-    if (field.value == "") {
+    if (field.get() == "") {
       err.append(loc("support/form/hint/fill_all_text_fields"))
       break
     }
@@ -111,14 +111,14 @@ function categoryComp() {
   return {
     watch = fieldCategory
     size = FLEX_H
-    children = textButtonCommon(text, supportChooseCategory)
+    children = textButtonCommon(utf8ToUpper(text), supportChooseCategory)
   }
 }
 
 let mkTextInputField = @(textWatch, placeholderText, options = {}) textInput(textWatch, {
   placeholder = placeholderText
-  onChange = @(value) textWatch(value)
-  onEscape = @() textWatch("")
+  onChange = @(value) textWatch.set(value)
+  onEscape = @() textWatch.set("")
 }.__update(options))
 
 let formBlock = {

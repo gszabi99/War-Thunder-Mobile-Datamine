@@ -17,7 +17,7 @@
   "lastClip": true,
   "lastclip_horizon": true,
   "rendinstPreloadDistance": 8500.0,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "addLandToSky": true,
   "max_wind_strength": 3.0,
   "mapCoord0": [
@@ -203,8 +203,7 @@
     "helicopterVerMul": 1.0,
     "helicopterToDirectWindMul": 2.0,
     "helicopterFalloff": 0.001,
-    "avg_abandoned_factory_tank_part": "avg_abandoned_factory_tank_part_scatter_mask",
-    "poland_fields_b": "poland_fields_b_mask",
+    "st_patrick_meadows": "avg_abandoned_factory_tank_part_scatter_mask",
     "underground_sand": "black_m",
     "layer": [
       {

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { EII_TOOLKIT } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { EII_TOOLKIT, EII_ACOUSTIC_DECOY } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
 let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
 let { mkRhombZoomButton, mkDivingLockButton } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
@@ -61,6 +61,9 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SUBMARINE,
     { defTransform = mkRBPos([hdpx(-650), hdpx(43)]) })
+
+  acousticDecoy = withActionBarButtonCtor(EII_ACOUSTIC_DECOY, SUBMARINE,
+    { defTransform = mkRBPos([hdpx(-500), hdpx(43)]) })
 
   voiceCmdStick = {
     ctor = voiceMsgStickBlock

@@ -2,17 +2,18 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 
 
-let defaultArrowSize = evenPx(30)
 let defaultExpandAnimationDuration = 0.3
 
-function mkArrowImageComp(isExpanded, duration, lengthPx, ovr) {
-  let h = round(lengthPx).tointeger()
-  let w = round(h / 2.0 / 24 * 40).tointeger() * 2
+let defArrowH = evenPx(30)
+let defArrowW = round(defArrowH / 2.0 / 24 * 40).tointeger() * 2
+let defaultArrowSize = [defArrowW, defArrowH]
+
+function mkArrowImageComp(isExpanded, duration, size, ovr) {
   return @() {
     watch = isExpanded,
-    size = [w, h]
+    size
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#scroll_arrow.svg:{w}:{h}:P")
+    image = Picture($"ui/gameuiskin#scroll_arrow.svg:{size[0]}:{size[1]}:P")
     color = 0xFFFFFFFF
     transform = {rotate = !isExpanded.get()? 0 : 180}
     transitions = [{

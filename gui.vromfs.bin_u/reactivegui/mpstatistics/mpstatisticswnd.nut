@@ -4,7 +4,7 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
-let { gameOverReason, isGtFFA } = require("%rGui/missionState.nut")
+let { gameOverReason, isGtFFA, gameType } = require("%rGui/missionState.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
@@ -30,13 +30,13 @@ eventbus_subscribe("MissionResult", @(_) updatePlayersByTeams())
 isGtFFA.subscribe(@(_) isAttached.get() ? updatePlayersByTeams() : null)
 
 function onAttach() {
-  isAttached(true)
+  isAttached.set(true)
   eventbus_send("MpStatistics_GetInitialData", {})
   startContinuousUpdate()
 }
 
 function onDetach() {
-  isAttached(false)
+  isAttached.set(false)
   stopContinuousUpdate()
 }
 
@@ -89,11 +89,11 @@ return bgShaded.__merge({
         }]
     }
     @() {
-      watch = [playersByTeam, battleCampaign, isGtFFA]
+      watch = [playersByTeam, battleCampaign, isGtFFA, gameType]
       size = FLEX_H
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name(), isGtFFA.get()),
+      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name(), gameType.get()),
         playersByTeam.get(),
         isGtFFA.get() ? statisticsHeight : null)
     }

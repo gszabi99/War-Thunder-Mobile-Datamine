@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import sign_out
 from "%scripts/dagui_library.nut" import *
 from "app" import pauseGame
 
+let { signOut } = require("auth_wt")
 let { registerRespondent } = require("scriptRespondent")
 let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -20,9 +20,9 @@ let isNeedUpdateStages = @(state) (state & LOGIN_STATE.LOGIN_STARTED) != 0
 let isStageCompleted = @(state, stage) (state & stage.finishState) == stage.finishState
 let isStageAllowed = @(state, stage) (state & stage.reqState) == stage.reqState
 
-local prevState = loginState.value
+local prevState = loginState.get()
 function startNextLoginStages() {
-  let state = loginState.value
+  let state = loginState.get()
   let wasState = prevState
   prevState = state
   if (isNeedUpdateStages(state))
@@ -34,7 +34,7 @@ function startNextLoginStages() {
       ) {
         stage.logStage("Start")
         stage.start()
-        if (loginState.value == LOGIN_STATE.NOT_LOGGED_IN) {
+        if (loginState.get() == LOGIN_STATE.NOT_LOGGED_IN) {
           stage.logStage("login process was interrupted right from stage start")
           break
         }
@@ -47,7 +47,7 @@ loginState.subscribe(function(s) {
 })
 
 function restartLoginStages() { 
-  let state = loginState.value
+  let state = loginState.get()
   if (!isNeedUpdateStages(state))
     return
   foreach (stage in curStages)
@@ -61,7 +61,7 @@ function restartLoginStages() {
 }
 
 eventbus_subscribe("login.interrupt", function(_errData) {
-  let state = loginState.value
+  let state = loginState.get()
   foreach (stage in curStages)
     if ("interrupt" in stage
       && !isStageCompleted(state, stage)
@@ -70,10 +70,10 @@ eventbus_subscribe("login.interrupt", function(_errData) {
       stage.logStage("Interrupt")
       stage.interrupt()
     }
-  let wasAuthorized = isAuthorized.value
-  loginState(LOGIN_STATE.NOT_LOGGED_IN)
+  let wasAuthorized = isAuthorized.get()
+  loginState.set(LOGIN_STATE.NOT_LOGGED_IN)
   if (wasAuthorized)
-    sign_out()
+    signOut()
 })
 
 function getStagesErrors(stages) {
@@ -114,7 +114,7 @@ function getStagesErrors(stages) {
 }
 
 function initStages(stages) {
-  if (curStages.len() > 0 && isLoginStarted.value) {
+  if (curStages.len() > 0 && isLoginStarted.get()) {
     logerrL("Try to change login stages while in the active login process!")
     return
   }

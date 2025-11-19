@@ -2,18 +2,21 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { utf8ToUpper } = require("%sqstd/string.nut")
 
+let { getSlotAttrBg, getAttrTabPresentation } = require("%appGlobals/config/slotAttrPresentation.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
-let { gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { gamercardWithoutLevelBlock } = require("%rGui/mainMenu/gamercard.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
-let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
-let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { slotAttrPage } = require("%rGui/attributes/slotAttr/slotAttrWndPage.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
@@ -23,8 +26,8 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
-  curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax,
+let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel, curCampaignSlotExp,
+  curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax, openSlotExpWnd,
   isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp,
   markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable
 } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
@@ -85,8 +88,8 @@ function categoriesBlock() {
     flow = FLOW_VERTICAL
     children = mkAttrTabs(attrSlotData.get().preset.map(@(page, idx) {
         id = page.id
-        locId = loc($"attrib_section/{page.id}")
-        image = categoryImages?[page.id] ?? defCategoryImage
+        locId = loc(getAttrTabPresentation(page.id).locId)
+        image = getAttrTabPresentation(page.id).img
         statusW = Computed(@() unseenSlotAttrByIdx.get().statusByCat?[idx])
       }),
       curCategoryId
@@ -197,17 +200,21 @@ let applyAction = function() {
 }
 
 let actionButtons = @() {
-  watch = [selAttrSpCost, slotLevelsToMax, selectedSlotIdx, attrSlotData]
+  watch = [selAttrSpCost, slotLevelsToMax, selectedSlotIdx, attrSlotData, curCampaignSlotExp]
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap * 0.5
   children = [
-    textButtonPrimary(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
-      { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
+    textButtonCommon(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
+      { hotkeys = ["^J:LB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
     slotLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-        (slotLevel.get() ?? 0) + 1,
-        @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"] })
+          (slotLevel.get() ?? 0) + 1,
+          @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"] })
+    curCampaignSlotExp.get() <= 0 || slotLevelsToMax.get() <= 0 ? null
+      : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnBoostLevel")),
+          openSlotExpWnd,
+          { hotkeys = ["^J:RB"] })
     selAttrSpCost.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
           ovr = {
@@ -370,5 +377,9 @@ let slotAttrWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("slotAttrWnd", slotAttrWnd, @() isSlotAttrOpened.set(false), isSlotAttrOpened, false, @() selAttrSpCost.get() <= 0)
-setSceneBg("slotAttrWnd", "ui/images/air_crew_bg.avif")
+let getBackground = @() getSlotAttrBg(getCampaignPresentation(curCampaign.get()).campaign)
+
+let sceneId = "slotAttrWnd"
+registerScene(sceneId, slotAttrWnd, @() isSlotAttrOpened.set(false), isSlotAttrOpened, false, @() selAttrSpCost.get() <= 0)
+setSceneBg(sceneId, getBackground())
+isSlotAttrOpened.subscribe(@(_) setSceneBg(sceneId, getBackground()))

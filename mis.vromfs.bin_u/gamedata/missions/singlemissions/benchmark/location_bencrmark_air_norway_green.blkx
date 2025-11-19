@@ -18,7 +18,8 @@
       "attempts": true,
       "locName": "location/arcade_norway_green",
       "restoreType": "attempts",
-      "optionalTakeOff": false
+      "optionalTakeOff": false,
+      "mobileFpsLimit": 0
     },
     "atmosphere": {
       "pressure": 760.0,

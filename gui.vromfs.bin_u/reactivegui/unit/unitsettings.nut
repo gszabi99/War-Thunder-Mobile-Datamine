@@ -149,6 +149,19 @@ function mkSeenMods(unitNameW) {
   return { seenUnitMods, setSeenUnitMods }
 }
 
+function mkDecalsPresets(unitNameW) {
+  let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
+  let decalsPresets = Computed(@() unitSettings.get()?.decalsPresets ?? {})
+  let setDecalsPresets = @(preset) isEqual(preset, decalsPresets.get()) ? null
+    : updateUnitSettings({ decalsPresets = preset })
+  return { decalsPresets, setDecalsPresets }
+}
+
+function getDecalsPresets(unitName) {
+  loadSettingsOnce(unitName)
+  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].decalsPresets ?? {}
+}
+
 return {
   mkUnitSettingsWatch
   mkIsAutoSkin
@@ -161,5 +174,7 @@ return {
   getChosenBelts
   mkSavedWeaponPresets
   mkSeenMods
+  mkDecalsPresets
+  getDecalsPresets
   resetUnitSettings
 }

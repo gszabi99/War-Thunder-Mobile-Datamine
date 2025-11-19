@@ -9,6 +9,7 @@ let defaultCampaign = "tanks"
 
 let campaignStatsRemap = {
   ships_new = "ships"
+  tanks_new = "tanks"
 }
 
 let selectedCampaign = sharedWatched("selectedCampaign", @() null) 
@@ -18,21 +19,27 @@ let isAnyCampaignSelected = Computed(@() (selectedCampaign.get() ?? savedCampaig
 
 let campaignsList = Computed(@() serverConfigs.get()?.circuit.campaigns.available ?? [ defaultCampaign ])
 
-let curCampaign = Computed(@()
-  campaignsList.get().contains(selectedCampaign.get()) ? selectedCampaign.get()
-    : campaignsList.get().contains(savedCampaign.get()) ? savedCampaign.get()
-    : campaignsList.get()?[0])
+let curCampaign = Computed(function() {
+  if (campaignsList.get().contains(selectedCampaign.get()))
+    return selectedCampaign.get()
+  let saved = savedCampaign.get()
+  return (saved == null ? null
+    : campaignsList.get().contains(saved) ? saved
+    : campaignsList.get().findvalue(@(c) c.startswith(saved) || saved.startswith(c))
+  )
+    ?? campaignsList.get()?[0]
+})
 
 let curCampaignBit = Computed(@() serverConfigs.get()?.campaignCfg[curCampaign.get()].bit ?? 0)
 
 function setCampaign(campaign) {
-  selectedCampaign(campaign)
+  selectedCampaign.set(campaign)
   if (campaign != savedCampaign.get())
     set_current_campaign(campaign)
 }
 
 savedCampaign.subscribe(@(_)
-  resetTimeout(0.1, @() savedCampaign.value == selectedCampaign.get() ? selectedCampaign(null) : null))
+  resetTimeout(0.1, @() savedCampaign.get() == selectedCampaign.get() ? selectedCampaign.set(null) : null))
 
 function chooseByCampaign(res, key, campaign) {
   if (key in res)

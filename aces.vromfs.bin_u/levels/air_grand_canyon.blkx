@@ -25,6 +25,11 @@
     65536.0,
     65536.0
   ],
+  "fixedLocalProbePos": [
+    -359.0,
+    1274.0,
+    -7855.0
+  ],
   "customLevelMap": "air_grand_canyon_map*",
   "numBorderCellsXPos": 16,
   "numBorderCellsXNeg": 16,

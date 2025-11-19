@@ -556,8 +556,14 @@
       "maxReverseSpeed": 9.0,
       "speedToTime": {
         "row": [
-          54.0,
-          10.3
+          [
+            15.0,
+            7.0
+          ],
+          [
+            54.0,
+            10.3
+          ]
         ]
       },
       "reverseSpeedToTime": {
@@ -568,8 +574,8 @@
       },
       "engine": {
         "pos": [
-          0.0,
-          -2.0,
+          10.0,
+          -0.5,
           0.0
         ],
         "engineDmPart": "engine_room_02_dm",
@@ -608,41 +614,13 @@
       },
       "hydrofoils": {
         "targetAltitude": 6.0,
+        "maxTiltAngle": 20.0,
         "hydrofoil": [
-          {
-            "euler": [
-              2.0,
-              -90.0,
-              0.0
-            ],
-            "pos": [
-              -30.0,
-              13.0,
-              0.0
-            ],
-            "size": [
-              10.0,
-              4.0
-            ],
-            "maxV": 140.0,
-            "glider": {
-              "sensitivity": 0.8
-            },
-            "polar": {
-              "Cl0": 0.15,
-              "CdMin": 0.09,
-              "lineClCoeff": 0.052,
-              "ClCritHigh": 0.2,
-              "ClCritLow": -0.15,
-              "alphaCritHigh": 7.0,
-              "alphaCritLow": -3.0
-            }
-          },
           {
             "euler": [
               -1.4,
               90.0,
-              10.0
+              1.5
             ],
             "pos": [
               10.0,
@@ -651,7 +629,7 @@
             ],
             "size": [
               12.0,
-              4.5
+              3.5
             ],
             "maxV": 140.0,
             "glider": {
@@ -659,11 +637,11 @@
             },
             "polar": {
               "Cl0": 0.15,
-              "CdMin": 0.09,
+              "CdMin": 0.15,
               "lineClCoeff": 0.052,
               "ClCritHigh": 0.2,
               "ClCritLow": -0.15,
-              "alphaCritHigh": 7.0,
+              "alphaCritHigh": 10.0,
               "alphaCritLow": -3.0
             }
           },
@@ -671,7 +649,7 @@
             "euler": [
               1.4,
               -90.0,
-              10.0
+              1.5
             ],
             "pos": [
               10.0,
@@ -680,7 +658,36 @@
             ],
             "size": [
               12.0,
-              4.5
+              3.5
+            ],
+            "maxV": 140.0,
+            "glider": {
+              "sensitivity": 0.8
+            },
+            "polar": {
+              "Cl0": 0.15,
+              "CdMin": 0.15,
+              "lineClCoeff": 0.052,
+              "ClCritHigh": 0.2,
+              "ClCritLow": -0.15,
+              "alphaCritHigh": 10.0,
+              "alphaCritLow": -3.0
+            }
+          },
+          {
+            "euler": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "pos": [
+              -35.0,
+              13.0,
+              0.0
+            ],
+            "size": [
+              2.0,
+              12.0
             ],
             "maxV": 140.0,
             "glider": {
@@ -756,7 +763,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.059,
+        "shotFreq": 0.05,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -812,7 +819,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.059,
+        "shotFreq": 0.05,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -868,7 +875,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.059,
+        "shotFreq": 0.05,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -924,7 +931,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.059,
+        "shotFreq": 0.05,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -980,7 +987,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.059,
+        "shotFreq": 0.05,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1036,7 +1043,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.059,
+        "shotFreq": 0.05,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1119,8 +1126,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1175,8 +1181,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {

@@ -59,7 +59,7 @@
     "selfDestructionInAir": true,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -73,6 +73,8 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "30mm_vog_30",
     "hitPowerMult": 2.0,

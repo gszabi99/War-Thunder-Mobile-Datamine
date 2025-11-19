@@ -14,7 +14,7 @@ function applyRights(result) {
   }
 
   logR("Apply permissions")
-  rights({
+  rights.set({
     permissions = readPermissions(clientPermJwt, myUserId.get())
     penalties = readPenalties(penaltiesJwt, myUserId.get())
     penaltiesJwt

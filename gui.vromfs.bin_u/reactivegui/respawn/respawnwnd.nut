@@ -53,7 +53,9 @@ let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { CS_RESPAWN } = require("%rGui/components/currencyStyles.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-
+let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
+let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
+let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
@@ -115,7 +117,7 @@ let sparePrice = {
     fullPrice = 1,
     price = 1,
     currencyId = SPARE
-  }, null, CS_RESPAWN)
+  }, CS_RESPAWN)
 }
 
 function mkSlotPlate(slot, baseUnit) {
@@ -132,11 +134,7 @@ function mkSlotPlate(slot, baseUnit) {
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      mkUnitSelectedUnderline(unit, isSelected, null,
-        {
-          margin = 0
-          size = [flex(), selLineSize]
-        })
+      mkUnitSelectedUnderline(unit, isSelected, { margin = 0, size = [flex(), selLineSize] })
       {
         size = [unitPlateWidth, unitPlateHeight]
         children = [
@@ -264,16 +262,15 @@ let map = @() {
   ]
 }
 
-let cancelText = utf8ToUpper(loc("Cancel"))
 function cancelBtn() {
-  local btnText = cancelText
+  local btnText = loc("Cancel")
   if (timeToRespawn.get() > 0)
     btnText = "".concat(btnText,
       loc("ui/parentheses/space", {
         text = $"{timeToRespawn.get()}{loc("mainmenu/seconds")}" }))
   return {
     watch = timeToRespawn
-    children = textButtonCommon(btnText, cancelRespawn, { hotkeys = [btnBEscUp] })
+    children = textButtonCommon(utf8ToUpper(btnText), cancelRespawn, { hotkeys = [btnBEscUp] })
   }
 }
 
@@ -331,6 +328,45 @@ function toBattle() {
     respawn(selSlot.get(), bulletsToSpawn.get())
 }
 
+function checkAndBattle() {
+  if (selSlot.get()?.unitClass != "bomber")
+    return toBattle()
+
+  let allWSlots = loadUnitWeaponSlots(selSlot.get()?.name)
+  let { weaponPreset, setWeaponPreset } = mkWeaponPreset(Watched(selSlot.get().name))
+  let equippedWeaponsBySlots = allWSlots.map(@(wSlot, idx) getEquippedWeapon(
+      weaponPreset.get(),
+      idx,
+      wSlot?.wPresets ?? {},
+      selSlot.get()?.mods))
+  let isEmpty = equippedWeaponsBySlots.filter(@(s, idx) s != null && idx != 0).len() == 0
+
+  if (!isEmpty)
+    return toBattle()
+
+  openMsgBox({
+    text = loc("weapons/secondaryWeaponNotSet")
+    buttons = [
+      { text = loc("btn/doNotSet"),
+        isCancel = true
+        cb = toBattle
+      }
+      {
+        text = loc("btn/setDefault"),
+        function cb() {
+          let preset = equippedWeaponsBySlots.map(
+            @(equippedWeapon, idx) equippedWeapon != null ? equippedWeapon.name
+              : (allWSlots[idx].wPresets.findvalue(@(w) w.isDefault)?.name ?? ""))
+          setWeaponPreset(preset)
+          toBattle()
+        }
+        styleId = "PRIMARY",
+        multiLine = true
+      }
+    ]
+  })
+}
+
 let buttons = @() {
   watch = [needCancel, isRespawnStarted, selSlot, selSlotUnitType, isGamepad]
   vplace = ALIGN_BOTTOM
@@ -343,7 +379,7 @@ let buttons = @() {
         hotkeys = ["^J:Y | Enter"]
       }),
     !(selSlot.get()?.canSpawn ?? false) ? null
-      : !isRespawnStarted.get() ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })
+      : !isRespawnStarted.get() ? toBattleButton(checkAndBattle, { hotkeys = ["^J:X | Enter"] })
       : needCancel.get() ? cancelBtn
       : spinner
   ]
@@ -359,7 +395,7 @@ let rightBlock = {
   ]
 }
 
-let updateSlotAABB = @() slotAABB.set(selSlot.value == null ? null
+let updateSlotAABB = @() slotAABB.set(selSlot.get() == null ? null
   : gui_scene.getCompAABBbyKey(selSlot.get()))
 selSlot.subscribe(@(_) deferOnce(updateSlotAABB))
 

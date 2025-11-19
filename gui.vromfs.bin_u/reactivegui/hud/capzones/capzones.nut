@@ -4,11 +4,12 @@ let { capZones, capZonesCount } = require("%rGui/hud/capZones/capZonesState.nut"
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { ECT_CAPTURE_INDIVIDUAL } = require("guiMission")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 
 let zoneSizeBase = evenPx(50)
 let bigZoneMul = 1.5
-let neutralColor = 0xFFFFFFFF
+let neutralColor = hudWhiteColor
 const MP_TEAM_NEUTRAL = 0
 
 let getZoneIcon = @(i, size)

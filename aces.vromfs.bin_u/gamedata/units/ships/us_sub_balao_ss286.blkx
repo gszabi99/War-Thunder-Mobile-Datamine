@@ -416,7 +416,7 @@
           "action": {
             "type": "forcedExplosion",
             "probability": 1.0,
-            "relativeDamage": 0.2,
+            "relativeDamage": 0.3,
             "damageType": "explosion",
             "fxEvent": "ammo_expl",
             "parts": {
@@ -434,7 +434,7 @@
           "action": {
             "type": "forcedExplosion",
             "probability": 1.0,
-            "relativeDamage": 0.2,
+            "relativeDamage": 0.3,
             "damageType": "explosion",
             "fxEvent": "ammo_expl",
             "parts": {
@@ -724,8 +724,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -783,8 +782,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -843,8 +841,7 @@
           "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 100.0,
-          "speedFromVehicleVerticalMult": -1.0
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1280,8 +1277,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1339,8 +1335,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1399,8 +1394,7 @@
                 "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 100.0,
-                "speedFromVehicleVerticalMult": -1.0
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {

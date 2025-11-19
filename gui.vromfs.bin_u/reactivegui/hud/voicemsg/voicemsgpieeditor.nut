@@ -11,6 +11,8 @@ let { voiceMsgCfg, voiceMsgPieOrder, voiceMsgPieHidden, mkVoiceMsgCfgItem,
   resetVoiceMsgPieUserConfig, saveVoiceMsgPieUserConfig
 } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { pieRadius, pieIconSizeMul } = defaultPieMenuParams
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let rowHeight = hdpx(80)
 let DISABLED_OPACITY = 0.5
@@ -57,7 +59,7 @@ let header = {
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      color = 0xFFFFFFFF
+      color = hudWhiteColor
       text = loc("radio_messages_menu/editor")
     }.__update(fontBig)
   ]
@@ -100,8 +102,8 @@ function mkItemRow(idx) {
         watch = [isSelected, isHovered]
         size = flex()
         rendObj = ROBJ_SOLID
-        color = isSelected.get() || isHovered.get() ? 0x80296272 : 0
-        opacity = isSelected.get() ? 1 : 0.5
+        color = isSelected.get() || isHovered.get() ? selectColor : 0
+        opacity = isSelected.get() ? 0.9 : 0.5
       }
       @() {
         watch = [isVisible, item]

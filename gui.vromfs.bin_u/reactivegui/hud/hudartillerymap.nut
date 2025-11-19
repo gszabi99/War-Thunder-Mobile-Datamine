@@ -1,21 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time, get_current_mission_name } = require("mission")
+let { get_mission_time } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let { round } = require("math")
-let { getBattleAreaSize } = require("guiTacticalMap")
 let { getMapRelativePlayerPos, getArtilleryRange, getArtilleryDispersion,
-  callArtillery, artilleryCancel, onArtilleryClose,
-  isSuperArtilleryMode = @() get_current_mission_name().endswith("_BR"),
-  getSuperArtilleryRadius = function() {
-    let misName = get_current_mission_name()
-    if (!misName.endswith("_BR"))
-      return 0.0
-    let radM = { abandoned_factory_BR = 100, africa_desert_BR = 150,
-      cargo_port_BR = 150, stalingrad_factory_BR = 200 }?[misName] ?? 100
-    let mapSizeM = getBattleAreaSize().x
-    return mapSizeM == 0 ? 0.0 : (radM / mapSizeM)
-  }
+  callArtillery, artilleryCancel, onArtilleryClose, isSuperArtilleryMode, getSuperArtilleryRadius
 } = require("guiArtillery")
 let { getActionBarItems } = require("hudActionBar")
 local { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
@@ -28,6 +17,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textColor, goodTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut")
+let { hudBlackColor, hudTransparentBlackColor } = require("%rGui/style/hudColors.nut")
 
 const DATA_UPDATE_TIMEOUT = 0.2
 
@@ -95,7 +85,7 @@ let txtAreaBase = {
   color = textColor
   fontFx = FFT_GLOW
   fontFxFactor = hdpx(32)
-  fontFxColor = 0xFF000000
+  fontFxColor = hudBlackColor
 }.__update(fontSmall)
 
 let wndTitle = txtAreaBase.__merge(fontBig, {
@@ -202,9 +192,9 @@ function crosshairDrawing() {
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = 0
     commands = [].extend(
-      mkCommandsFunc(0x40000000, crosshairLineWidth + hdpx(6), circleRadPrc),
-      mkCommandsFunc(0x40000000, crosshairLineWidth + hdpx(4), circleRadPrc),
-      mkCommandsFunc(0xFF000000, crosshairLineWidth + hdpx(2), circleRadPrc),
+      mkCommandsFunc(hudTransparentBlackColor, crosshairLineWidth + hdpx(6), circleRadPrc),
+      mkCommandsFunc(hudTransparentBlackColor, crosshairLineWidth + hdpx(4), circleRadPrc),
+      mkCommandsFunc(hudBlackColor, crosshairLineWidth + hdpx(2), circleRadPrc),
       mkCommandsFunc(color, crosshairLineWidth, circleRadPrc))
   }
 }

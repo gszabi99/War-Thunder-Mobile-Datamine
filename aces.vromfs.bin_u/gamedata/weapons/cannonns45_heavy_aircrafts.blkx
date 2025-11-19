@@ -784,7 +784,7 @@
       "damageCaliber": 0.02,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apcr",
-      "groundRicochetPreset": "apcr",
+      "groundRicochetPreset": "apcr_ground",
       "secondaryShattersPreset": "apcr",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,

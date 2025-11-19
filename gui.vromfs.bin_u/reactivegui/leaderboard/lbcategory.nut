@@ -37,6 +37,8 @@ let categories = {
     field = "name"
     dataType = NICKNAME
     relWidth = 2.0
+    icon = "ui/gameuiskin#profile_avatar_icon.svg"
+    locId = "player"
   }
 
   SHIP_RATING = {

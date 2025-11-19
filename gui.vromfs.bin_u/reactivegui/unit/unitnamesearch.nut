@@ -34,15 +34,16 @@ function getSearchTokenByUnitName(unitName) {
   return searchTokensCache[unitName]
 }
 
-function isUnitNameMatchSearchStr(unit, searchStr) {
+function isUnitNameMatchSearchStr(unit, searchStr, needSearchPlatoonUnits = true) {
   let token = getSearchTokenByQuery(searchStr)
   if (token == "")
     return false
   if (getSearchTokenByUnitName(unit.name).contains(token) || getTagsUnitName(unit.name) == getTagsUnitName(searchStr))
     return true
-  foreach (pu in unit.platoonUnits)
-    if (getSearchTokenByUnitName(pu.name).contains(token) || getTagsUnitName(pu.name) == getTagsUnitName(searchStr))
-      return true
+  if (needSearchPlatoonUnits)
+    foreach (pu in unit.platoonUnits)
+      if (getSearchTokenByUnitName(pu.name).contains(token) || getTagsUnitName(pu.name) == getTagsUnitName(searchStr))
+        return true
   return false
 }
 

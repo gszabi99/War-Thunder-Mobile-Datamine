@@ -2,19 +2,22 @@ from "%globalsDarg/darg_library.nut" import *
 let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { maxSquadMRank } = require("%rGui/squad/squadAddons.nut")
-let { squadLeaderCampaign } = require("%appGlobals/squadState.nut")
+let { squadLeaderCampaign, isInSquad } = require("%appGlobals/squadState.nut")
+let { allBattleUnits, maxReleasedUnitRanks } = require("%appGlobals/updater/gameModeAddons.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+
+
+let maxSquadMRank = Computed(@() !isInSquad.get() ? null
+  : allBattleUnits.get().reduce(@(res, unitName) max(res, serverConfigs.get()?.allUnits[unitName].mRank ?? 0), -1))
 
 let curUnitMRankRange = Computed(function() {
   let mRank = maxSquadMRank.get() ?? battleUnitsMaxMRank.get()
   let campaign = squadLeaderCampaign.get() ?? curCampaign.get()
   if (mRank == null || campaign == null)
     return null
-  let isMaxMRank = !serverConfigs.get()?.allUnits.findvalue(@(u) u.campaign == campaign && u.mRank > mRank)
   let minMRank = max(1, mRank - 1)
-  let maxMRank = isMaxMRank ? mRank : mRank + 1
+  let maxMRank = clamp(maxReleasedUnitRanks.get()?[campaign] ?? (mRank + 1), mRank, mRank + 1)
   return { minMRank, maxMRank }
 })
 

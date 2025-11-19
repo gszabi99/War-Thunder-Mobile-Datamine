@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopConst.nut" import *
+from "%appGlobals/rewardType.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 
 let defaultFeaturedIcon = "!ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
   tanks = "!ui/gameuiskin#shop_tanks.svg"
+  tanks_new = "!ui/gameuiskin#shop_tanks.svg"
   ships = "!ui/gameuiskin#shop_ships.svg"
   ships_new = "!ui/gameuiskin#shop_ships.svg"
   air = defaultFeaturedIcon
@@ -68,17 +70,48 @@ let gtypeToShopCategory = {
   [SGT_DECORATOR] = SC_FEATURED,
 }
 
-function getShopCategory(gtype, meta = {}) {
-  if (meta?.eventId)
-    return SC_EVENTS
+let getShopCategory = @(gtype, meta = {}) "eventId" in meta ? SC_EVENTS
+  : gtypeToShopCategory?[gtype] ?? SC_OTHER
 
-  return gtypeToShopCategory?[gtype] ?? SC_OTHER
+let rTypeToGTypeCommon = {
+  [G_BLUEPRINT] = SGT_BLUEPRINTS,
+  [G_BOOSTER] = SGT_BOOSTERS,
+  [G_CURRENCY] = SGT_EVT_CURRENCY,
+  [G_DECORATOR] = SGT_DECORATOR,
+  [G_ITEM] = SGT_CONSUMABLES,
+  [G_LOOTBOX] = SGT_LOOTBOX,
+  [G_PREMIUM] = SGT_PREMIUM,
+  [G_SKIN] = SGT_SKIN,
+  [G_UNIT_UPGRADE] = SGT_UNIT,
+}
+
+let rTypeToGTypeComplex = {
+  [G_UNIT] = function(rewards) {
+    local units = 0
+    local upgrades = 0
+    foreach (r in rewards)
+      if (r.gType == G_UNIT)
+        units++
+      else if (r.gType == G_UNIT_UPGRADE)
+        upgrades++
+    return upgrades == 0 && units > 1 ? SGT_BRANCH : SGT_UNIT 
+  },
+  [G_CURRENCY] = @(rewards) currencyToGoodsType?[rewards[0].id] ?? SGT_EVT_CURRENCY,
 }
 
 function getGoodsType(goods) {
   if ((goods?.slotsPreset ?? "") != "")
     return SGT_SLOTS
-  if (goods.units.len() == 1 || (goods?.unitUpgrades.len() ?? 0) > 0 || goods?.meta.previewUnit)
+  if ((goods?.meta.previewUnit ?? "") != "")
+    return SGT_UNIT
+
+  if ("rewards" in goods) {
+    let { gType = null } = goods.rewards?[0]
+    return rTypeToGTypeComplex?[gType](goods.rewards) ?? rTypeToGTypeCommon?[gType] ?? SGT_UNKNOWN
+  }
+
+  
+  if (goods.units.len() == 1 || (goods?.unitUpgrades.len() ?? 0) > 0)
     return SGT_UNIT
   if (goods.units.len() >= 2 )
     return SGT_BRANCH
@@ -101,8 +134,33 @@ function getGoodsType(goods) {
   return SGT_UNKNOWN
 }
 
-function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
-  let { units = [], unitUpgrades = [], skins = {}, items = {} , meta = {}, blueprints = {} } = goods
+let isGoodsFit = {
+  [G_UNIT] = @(r, cConfigs) r.id in cConfigs?.allUnits,
+  [G_UNIT_UPGRADE] = @(r, cConfigs) r.id in cConfigs?.allUnits,
+  [G_BLUEPRINT] = @(r, cConfigs) r.id in cConfigs?.allUnits,
+  [G_SKIN] = @(r, cConfigs) r.id in cConfigs?.allUnits,
+  [G_ITEM] = @(r, cConfigs) r.id in cConfigs?.allItems,
+}
+
+function isGoodsFitToCampaign(goods, cConfigs, curCampaign) {
+  let { meta = {}, rewards = null } = goods
+  if (meta?.campaign && meta?.campaign != curCampaign)
+    return false
+
+  if (rewards != null) {
+    local hasCampRewards = false
+    foreach (r in rewards) {
+      if (r.gType not in isGoodsFit)
+        continue
+      hasCampRewards = true
+      if (isGoodsFit[r.gType](r, cConfigs))
+        return true
+    }
+    return !hasCampRewards
+  }
+
+  
+  let { units = [], unitUpgrades = [], skins = {}, items = {}, blueprints = {} } = goods
   if (units.len() > 0)
     return null != units.findvalue(@(u) u in cConfigs?.allUnits)
   if (blueprints.len() > 0)
@@ -113,8 +171,6 @@ function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
     return null != skins.findvalue(@(_, u) u in cConfigs?.allUnits)
   if (items.len() > 0)
     return null != items.findvalue(@(_, i) i in cConfigs?.allItems)
-  if (meta?.campaign && meta?.campaign != curCampaign)
-    return false
   return true
 }
 

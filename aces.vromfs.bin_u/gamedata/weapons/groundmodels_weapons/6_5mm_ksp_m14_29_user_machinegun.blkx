@@ -239,7 +239,7 @@
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/t_ball.ivf",
       "hitPowerMult": 2.8,
-      "onHitChanceMultFire": 1.5,
+      "onHitChanceMultFire": 2.9,
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
         300.0,

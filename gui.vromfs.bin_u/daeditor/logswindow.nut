@@ -78,7 +78,7 @@ function listRow(msg, idx) {
       color
       behavior = Behaviors.Button
       onClick = function(){
-        selectedLogIndex(selectedLogIndex.get() != idx ? idx : -1)
+        selectedLogIndex.set(selectedLogIndex.get() != idx ? idx : -1)
       }
       children = {
         rendObj = ROBJ_TEXT
@@ -109,13 +109,13 @@ function listRowMoreLeft(num) {
 
 function selectedLogExpanded() {
   if (selectedLogIndex.get() == -1)
-    return const { watch = selectedLogIndex }
+    return { watch = selectedLogIndex }
 
   return {
     rendObj = ROBJ_SOLID
     color = logExpandedColor
     size = const [flex(), hdpx(160)]
-    watch = const [logList, selectedLogIndex]
+    watch = [logList, selectedLogIndex]
     children = makeVertScroll({
       margin = hdpx(10)
       rendObj = ROBJ_TEXTAREA
@@ -190,8 +190,8 @@ function logsRoot() {
         halign = ALIGN_CENTER
         children = [
           textButton("Clear",  function(){
-            logList([])
-            selectedLogIndex(-1)
+            logList.set([])
+            selectedLogIndex.set(-1)
           }, {hotkeys=["^X"]})
         ]
       }

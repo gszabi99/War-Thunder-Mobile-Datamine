@@ -1,28 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-
-let patternSize = hdpxi(110)
-let pattern = {
-  size = flex()
-  clipChildren = true
-  children = {
-    size = [patternSize, patternSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#button_pattern.svg:{patternSize}:{patternSize}")
-    color = 0x23000000
-  }
-}
-
-let gradientCommon = {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#gradient_button.svg")
-  color = 0xFF848484
-}
-
-let gradientPremium = gradientCommon.__merge({ color = premiumTextColor })
-let gradientPrimary = gradientCommon.__merge({ color = 0xFF16B2E9 })
+let { defBorderGradient } = require("%rGui/components/buttonStyles.nut")
+let { mkGradient }  = require("%rGui/components/textButton.nut")
 
 let iText = {
   vplace = ALIGN_CENTER
@@ -38,40 +18,53 @@ let defSize = [evenPx(70), evenPx(70)]
 let defSizeSmall = [evenPx(50), evenPx(50)]
 let defSizeMedium = [evenPx(60), evenPx(60)]
 
-let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
+let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   let stateFlags = Watched(0)
+  let { fillColor = null, color = null } = btnStyle
   return @() {
     watch = stateFlags
     size
-    rendObj = ROBJ_SOLID
-    color = bgColor
+    rendObj = ROBJ_BOX
+    fillColor = 0xFFB9B9B9
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     xmbNode = {}
     sound = { click  = "click" }
     onClick
-    brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
-    children = [
-      pattern
-      gradient
-      iText.__merge(textOvr)
-    ]
-
+    brightness = stateFlags.get() & S_HOVER ? 0.5 : 1
+    children = {
+      size = flex()
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = {
+        size = flex()
+        rendObj = ROBJ_BOX
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        fillColor
+        clipChildren = true
+        children = [
+          mkGradient({ color })
+          iText.__merge(textOvr)
+        ]
+      }
+    }.__update(defBorderGradient)
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }.__update(ovr)
 }
 
-let mkInfoEllipseButtonCtor = @(borderColor, fillColor) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
+let mkInfoEllipseButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSizeMedium
   let stateFlags = Watched(0)
+  let { fillColor = null, borderColor = null } = btnStyle
   return @() {
     watch = stateFlags
     size
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpxi(2)
-    fillColor = fillColor
+    fillColor
     color = borderColor
     commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
     behavior = Behaviors.Button
@@ -80,19 +73,20 @@ let mkInfoEllipseButtonCtor = @(borderColor, fillColor) function(onClick, ovr = 
     sound = { click  = "click" }
     onClick
     brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
-    children = [
-      iText.__merge(textOvr)
-    ]
-
+    children = iText.__merge(textOvr)
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }.__update(ovr)
 }
 
-let infoGoldButton = mkInfoButtonCtor(0xFFAA7305, gradientPremium)
-let infoBlueButton = mkInfoButtonCtor(0xFF0593AD, gradientPrimary)
-let infoCommonButton = mkInfoButtonCtor(0xFF646464, gradientCommon)
-let infoEllipseButton = mkInfoEllipseButtonCtor( 0x80AAAAAA, 0x80000000)
+let infoCommonButton = mkInfoButtonCtor({
+  fillColor = 0xFF191616
+  color = 0xFF57595B
+})
+let infoEllipseButton = mkInfoEllipseButtonCtor({
+  fillColor = 0xFF070707
+  borderColor = 0x80777777
+})
 
 function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
@@ -172,8 +166,6 @@ function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
 }
 
 return {
-  infoGoldButton
-  infoBlueButton
   infoGreyButton
   infoCommonButton
   infoEllipseButton

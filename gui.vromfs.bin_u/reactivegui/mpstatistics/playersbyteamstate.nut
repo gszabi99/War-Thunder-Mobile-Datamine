@@ -3,10 +3,11 @@ let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team } = require("missi
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { squadLabels } = require("%appGlobals/squadLabelState.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { isGtFFA } = require("%rGui/missionState.nut")
-let { sortAndFillPlayerPlaces, sortAndFillPlayerPlacesByFFA } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { isGtFFA, gameType } = require("%rGui/missionState.nut")
+let { getSortAndFillPlayerPlacesFunc } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { playersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 
@@ -15,7 +16,7 @@ const STATS_UPDATE_TIMEOUT = 1.0
 
 let playersByTeamBase = Watched([])
 let playersByTeam = Computed(function() {
-  let sortFunction = isGtFFA.get() ? sortAndFillPlayerPlacesByFFA : sortAndFillPlayerPlaces
+  let sortFunction = getSortAndFillPlayerPlacesFunc(gameType.get())
   let res = playersByTeamBase.get()
     .map(@(list) sortFunction(battleCampaign.get(),
       list.map(function(p) {
@@ -26,7 +27,7 @@ let playersByTeam = Computed(function() {
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
           hasVip = false, hasPrem = false } = !isBot
             ? playersCommonStats.get()?[userId.tointeger()]
-            : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
+            : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get(), curCampaign.get()) ?? {}, playerLevelInfo.get().level)
         let unit = units?[unitName]
         let { unitClass = "", mRank = null } = unit
         let isUnitCollectible = unit?.isCollectible ?? false

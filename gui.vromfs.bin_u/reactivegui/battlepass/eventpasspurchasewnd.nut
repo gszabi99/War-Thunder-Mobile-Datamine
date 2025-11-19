@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isEPPurchaseWndOpened, closeEPPurchaseWnd, isEpSeasonActive, curStage, sendEpBqEvent,
   purchasedEp, eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, eventPassGoods, getEpIcon,
@@ -8,7 +9,7 @@ let { isEPPurchaseWndOpened, closeEPPurchaseWnd, isEpSeasonActive, curStage, sen
 } = require("%rGui/battlePass/eventPassState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo, sortRewardsViewInfo
+let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -18,7 +19,7 @@ let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { mkRewardPlate, mkRewardPlateVip } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { textButtonPricePurchase, buttonStyles, mergeStyles, mkCustomButton } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, PRIMARY } = buttonStyles
+let { defButtonHeight, COMMON } = buttonStyles
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -140,13 +141,13 @@ function rewardsToViewInfo(rewards, servConfigs) {
 
 let rewardsList = @(selBpInfo) function() {
   let res = {
-    watch = [eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, curStage, serverConfigs, selBpInfo, purchasedEp]
+    watch = [eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, curStage,
+      serverConfigs, selBpInfo, purchasedEp, servProfile]
     size = FLEX_H
   }
   if (eventPaidRewardsUnlock.get() == null)
     return res
 
-  let viewInfoExclusive = []
   let viewInfoOnPurchase = []
   let viewInfoAddLevels = []
   let viewInfoOnProgress = []
@@ -181,20 +182,27 @@ let rewardsList = @(selBpInfo) function() {
         }
     }
   }
+
+  let profile = servProfile.get()
   viewInfoOnPurchase.extend(rewardsToViewInfo(rewardsOnPurchase, serverConfigs.get())
+    .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
     .sort(sortRewardsViewInfo))
   viewInfoAddLevels.extend(rewardsToViewInfo(rewardsAddLevels, serverConfigs.get())
+    .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
     .sort(sortRewardsViewInfo))
   if (purchasedEp.get() == EP_NONE)
     viewInfoOnProgress.extend(rewardsToViewInfo(rewardsOnProgress, serverConfigs.get())
+      .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
       .sort(sortRewardsViewInfo))
 
+  local viewInfoExclusive = []
   let { goods = null } = selBpInfo.get()
   if (goods != null) {
-    let vi = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)
+    viewInfoExclusive = shopGoodsToRewardsViewInfo(goods)
+      .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
+      .sort(sortRewardsViewInfo)
     if (selBpInfo.get().bpType == EP_VIP)
-      vi.each(@(v) v.$rawset("isVip", true))
-    viewInfoExclusive.extend(vi)
+      viewInfoExclusive.each(@(v) v.$rawset("isVip", true))
   }
 
   return res.__update({
@@ -219,11 +227,19 @@ let rewardsList = @(selBpInfo) function() {
 }
 
 function getNextFromList(list, cur) {
+  if (list.len() == 0)
+    return null
   let idx = (list.indexof(cur) ?? -1) + 1
-  return list?[idx % list.len()]
+  return list[idx % list.len()]
 }
 
 let battlePassIcon = @(bpList, selBpInfo) function() {
+  if ((curEventId.get() ?? "") == "")
+    return {
+      size = [bpIconSize * (bpList.get().len() + 1) / 2, SIZE_TO_CONTENT]
+      watch = [bpList, selBpInfo, curEventId]
+    }
+
   let children = []
   foreach(idx, bp in bpList.get()) {
     let isCurrent = bp == selBpInfo.get()
@@ -287,7 +303,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
               keepAspect = true
             },
             @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType),
-            mergeStyles(PRIMARY, { ovr = { minWidth = defButtonHeight } }))
+            mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight } }))
       purchasedEp.get() == selBpInfo.get()?.bpType
         ? {
             rendObj = ROBJ_TEXT

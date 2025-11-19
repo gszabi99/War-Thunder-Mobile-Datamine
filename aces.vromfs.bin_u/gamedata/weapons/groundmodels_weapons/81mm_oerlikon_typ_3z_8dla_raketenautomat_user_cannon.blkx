@@ -145,7 +145,13 @@
       "ricochetEffect": "hit_133_160mm_metal_ap",
       "waterCollisionEffect": "hit_133_160mm_water",
       "explosionPatchRadius": 4.0,
-      "smokeEffect": "trail_smoke",
+      "fireEffect": "rocket_fire_short",
+      "smokeEffect": [
+        "",
+        "trail_smoke"
+      ],
+      "hazeEffect": "haze_missile",
+      "endSmokeViscosity": 0.05,
       "maxDistance": 6000.0,
       "minDistance": 30.0,
       "spawnExplosionWreckage": false,
@@ -585,7 +591,13 @@
         "ricochetEffect": "hit_133_160mm_metal_ap",
         "waterCollisionEffect": "hit_133_160mm_water",
         "explosionPatchRadius": 4.0,
-        "smokeEffect": "trail_smoke",
+        "fireEffect": "rocket_fire_short",
+        "smokeEffect": [
+          "",
+          "trail_smoke"
+        ],
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
         "maxDistance": 6000.0,
         "minDistance": 30.0,
         "spawnExplosionWreckage": false,
@@ -921,7 +933,7 @@
     "bullet": {
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -971,7 +983,7 @@
         "massEnd": 19.7,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1010,7 +1022,13 @@
         "ricochetEffect": "hit_133_160mm_metal_ap",
         "waterCollisionEffect": "hit_133_160mm_water",
         "explosionPatchRadius": 4.0,
-        "smokeEffect": "trail_smoke",
+        "fireEffect": "rocket_fire_short",
+        "smokeEffect": [
+          "",
+          "trail_smoke"
+        ],
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
         "maxDistance": 6000.0,
         "minDistance": 30.0,
         "spawnExplosionWreckage": false,

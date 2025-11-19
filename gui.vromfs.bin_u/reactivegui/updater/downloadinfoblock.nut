@@ -79,7 +79,7 @@ let downloadInfoBlock = @() {
   group
   onElemState = @(v) stateFlags.set(v)
   sound = { click  = "click" }
-  onClick = @() openDownloadAddonsWnd([], "downloadInfoBlock")
+  onClick = @() openDownloadAddonsWnd([], [], "downloadInfoBlock")
 
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL

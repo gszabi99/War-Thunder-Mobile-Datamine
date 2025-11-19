@@ -31,13 +31,13 @@ let isRatedExcellent = Computed(@() hasAppliedRating.get() && fieldRating.get() 
 local onCloseCb = null
 
 function close() {
-  isOpened(false)
+  isOpened.set(false)
   isRateGameSeen.set(true)
   onCloseCb?()
 }
 
 function resetForm() {
-  fieldRating(0)
+  fieldRating.set(0)
   fieldComment.set("")
   hasAppliedRating.set(false)
 }
@@ -81,7 +81,7 @@ function mkRateStarsRow(valueWatch, needInteractive, needBig) {
     gap = iconGap
     children = array(RATE_STARS_TOTAL).map(@(_, idx) function() {
       let rating = idx + 1
-      let icon = rating <= valueWatch.value ? "rate_star_filled" : "rate_star_empty"
+      let icon = rating <= valueWatch.get() ? "rate_star_filled" : "rate_star_empty"
       let res = {
         watch = valueWatch
         rendObj = ROBJ_IMAGE
@@ -91,7 +91,7 @@ function mkRateStarsRow(valueWatch, needInteractive, needBig) {
       if (needInteractive)
         res.__update({
           behavior = Behaviors.Button
-          onClick = @() valueWatch(rating)
+          onClick = @() valueWatch.set(rating)
         })
       return res
     })

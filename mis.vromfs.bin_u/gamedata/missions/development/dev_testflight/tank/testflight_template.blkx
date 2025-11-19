@@ -249,32 +249,6 @@
         }
       },
       "else_actions": {
-        "unitSetRoute": [
-          {
-            "route": "way_target_tank05",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "teleportToStart": true,
-            "object": "target_tank06",
-            "object_type": "isActive"
-          },
-          {
-            "route": "way_target_tank09",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "teleportToStart": true,
-            "object": "target_tank09",
-            "object_type": "isActive"
-          },
-          {
-            "route": "way_target_tank10",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "teleportToStart": true,
-            "object": "target_tank10",
-            "object_type": "isActive"
-          }
-        ],
         "unitSetProperties": {
           "object_marking": 0,
           "object_var_name": "",
@@ -304,7 +278,36 @@
         },
         "triggerEnable": {
           "target": "tick_killed"
-        }
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "unitSetRoute": [
+          {
+            "route": "way_target_tank05",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "teleportToStart": true,
+            "object": "target_tank06",
+            "object_type": "isActive"
+          },
+          {
+            "route": "way_target_tank09",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "teleportToStart": true,
+            "object": "target_tank09",
+            "object_type": "isActive"
+          },
+          {
+            "route": "way_target_tank10",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "teleportToStart": true,
+            "object": "target_tank10",
+            "object_type": "isActive"
+          }
+        ]
       }
     },
     "spawn_plane": {
@@ -668,7 +671,7 @@
       },
       "actions": {
         "wait": {
-          "time": 0.1
+          "time": 3.0
         },
         "unitSetRoute": {
           "object_var_name": "",
@@ -702,7 +705,7 @@
       },
       "actions": {
         "wait": {
-          "time": 0.1
+          "time": 3.0
         },
         "unitSetRoute": {
           "object_var_name": "",
@@ -736,7 +739,7 @@
       },
       "actions": {
         "wait": {
-          "time": 0.1
+          "time": 3.0
         },
         "unitSetRoute": {
           "object_var_name": "",

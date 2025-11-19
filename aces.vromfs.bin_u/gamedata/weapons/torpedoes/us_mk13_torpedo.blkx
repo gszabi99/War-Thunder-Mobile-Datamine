@@ -55,7 +55,7 @@
     "arcadeProp": {
       "dropSpeedRange": [
         0.0,
-        300.0
+        800.0
       ],
       "dropHeightRange": [
         -10.0,

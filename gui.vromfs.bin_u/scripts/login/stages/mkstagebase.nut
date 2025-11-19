@@ -7,9 +7,9 @@ function mkStageBase(id, reqState, finishState) {
   let logStage = log_with_prefix($"[LOGIN][{id}] ")
 
   function canContinueWithLog(prefix) {
-    if ((loginState.value & reqState) != reqState)
+    if ((loginState.get() & reqState) != reqState)
       logStage($"{prefix}, because of not ready (login interrupted?)")
-    else if ((loginState.value & finishState) == finishState)
+    else if ((loginState.get() & finishState) == finishState)
       logStage($"{prefix}, because of already completed.")
     else
       return true
@@ -26,7 +26,7 @@ function mkStageBase(id, reqState, finishState) {
     if (!canContinueWithLog("Ignore finalize stage"))
       return
     logStage("Success")
-    loginState(loginState.value | finishState)
+    loginState.set(loginState.get() | finishState)
   }
 
   let onlyActiveStageCb = @(cb) function(...) {

@@ -83,7 +83,7 @@ let interactiveValidTypes = ["num", "lat", "integer", "float"]
 function textInput(text_state, options = {}) {
   let group = ElemGroup()
   let {
-    setValue = @(v) text_state(v), inputType = null,
+    setValue = @(v) text_state.set(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
     title = null, hotkeys = null,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
@@ -109,19 +109,19 @@ function textInput(text_state, options = {}) {
   let errorCount = Watched(0)
 
   function onBlurExt() {
-    if (!isValidResult(text_state.value))
+    if (!isValidResult(text_state.get()))
       anim_start(text_state)
     onBlur?()
   }
 
   function onReturnExt() {
-    if (!isValidResult(text_state.value))
+    if (!isValidResult(text_state.get()))
       anim_start(text_state)
     onReturn?()
   }
 
   function onEscapeExt() {
-    if (!isValidResult(text_state.value))
+    if (!isValidResult(text_state.get()))
       anim_start(text_state)
     onEscape()
   }
@@ -144,7 +144,7 @@ function textInput(text_state, options = {}) {
       margin = const [0, sh(0.5)]
     }.__update(textStyle, { color = placeHolderColor })
     placeholderObj = placeholder instanceof Watched
-      ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
+      ? @() phBase.__update({ watch = placeholder, text = placeholder.get() })
       : phBase
   }
 
@@ -161,7 +161,7 @@ function textInput(text_state, options = {}) {
 
     animations = [failAnim(text_state)]
 
-    text = text_state.value
+    text = text_state.get()
     title
     inputType = inputType
     password = password
@@ -183,7 +183,7 @@ function textInput(text_state, options = {}) {
     xmbNode
     imeOpenJoyBtn
 
-    children = (text_state.value?.len() ?? 0) == 0
+    children = (text_state.get()?.len() ?? 0) == 0
         && (showPlaceHolderOnFocus || !(stateFlags.get() & S_KB_FOCUS))
       ? placeholderObj
       : null

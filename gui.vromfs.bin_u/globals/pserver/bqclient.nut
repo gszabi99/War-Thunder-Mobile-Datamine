@@ -1,4 +1,5 @@
 from "%globalScripts/logs.nut" import *
+from "math" import min, max
 let { eventbus_send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
 let { get_time_msec } = require("dagor.time")
@@ -6,13 +7,15 @@ let { get_platform_string_id } = require("platform")
 let { send_to_bq_offer } = require("pServerApi.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { sharedStatsByCampaign, campProfile, receivedMissionRewards } = require("%appGlobals/pServer/campaign.nut")
+let { sharedStatsByCampaign, campProfile, receivedMissionRewards, curCampaign
+} = require("%appGlobals/pServer/campaign.nut")
 let { get_user_system_info = @() null } = require_optional("sysinfo")
 let servProfile = require("servProfile.nut")
 let { get_game_version_str = @() "-" } = require_optional("app") 
-let { curCampaign } = require("campaign.nut")
 let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut")
 let { downloadInProgress, allowLimitedDownload } = require("%appGlobals/clientState/downloadState.nut")
+let { allUnitsRanks } = require("%appGlobals/updater/gameModeAddons.nut")
+let { getCampaignOrig } = require("%appGlobals/updater/campaignAddons.nut")
 
 
 function addEventTime(data, key = "eventTime") {
@@ -74,7 +77,7 @@ let sendOfferBqEvent = @(event, campaign) send_to_bq_offer(campaign, addEventTim
 let getTotalBattles = @(stats) (stats?.battles ?? 0) + (stats?.offlineBattles ?? 0)
 
 function needSendNewbieEvent() {
-  let statsByCamp = servProfile.value?.sharedStatsByCampaign ?? {}
+  let statsByCamp = servProfile.get()?.sharedStatsByCampaign ?? {}
   foreach(stats in statsByCamp)
     if (getTotalBattles(stats) > 2)
       return false
@@ -101,6 +104,38 @@ function sendNewbieBqEvent(actionId, data = {}) {
 let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{campaign}_1"
   : $"tutorial_{campaign.slice(0, -4)}_1_nc"
 
+function buildRanksString(units, ranks, prefix, notFound) {
+  local minR = null
+  local maxR = null
+  foreach (u in units)
+    if (u not in ranks)
+      notFound.append(u)
+    else {
+      let r = ranks[u]
+      minR = min(r, minR ?? r)
+      maxR = max(r, maxR ?? r)
+    }
+  return minR == null ? ""
+    : minR == maxR ? $"{prefix}{minR}"
+    : $"{prefix}{minR}-{maxR}"
+}
+
+function mkBqUnitsString(units, campaign) {
+  if (units.len() <= 5)
+    return ";".join((clone units).sort())
+
+  local notFound = []
+  let campOrig = getCampaignOrig(campaign)
+  let resArr = [buildRanksString(units, allUnitsRanks.get()?[campOrig] ?? {}, campOrig, notFound)]
+  foreach(camp, ranks in allUnitsRanks.get()) {
+    if (notFound.len() == 0)
+      break
+    let list = notFound
+    notFound = []
+    resArr.append(buildRanksString(list, ranks, camp, notFound))
+  }
+  return ";".join(resArr.filter(@(t) t != "").sort())
+}
 
 
 
@@ -118,7 +153,8 @@ let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{c
 
 
 
-function sendLoadingAddonsBqEvent(action, addons = null, data = {}) {
+
+function sendLoadingAddonsBqEvent(action, addons = null, units = null, data = {}) {
   let campaign = curCampaign.get()
   let { lastReceivedFirstBattlesRewardIds = {} } = campProfile.get()
   local firstBattleRewards = lastReceivedFirstBattlesRewardIds?[campaign]
@@ -133,11 +169,18 @@ function sendLoadingAddonsBqEvent(action, addons = null, data = {}) {
     platform = get_platform_string_id(),
     connectionStatus = connectionStatus.get(),
     allowLimitedConnectionDownload = allowLimitedDownload.get(),
-    addonsInProgress = ";".join(downloadInProgress.get().keys().sort())
+    addonsInProgress = downloadInProgress.get()?.addons != null
+      ? ";".join(downloadInProgress.get()?.addons.keys().sort() ?? [])
+      : mkBqUnitsString(downloadInProgress.get()?.units.keys() ?? [], campaign)
   })
   if (addons != null) {
     params.addons <- ";".join((clone addons).sort())
-    params.isSameAddonsDownloading <- isEqual(downloadInProgress.get(), addons.reduce(@(res, v) res.$rawset(v, true), {}))
+    params.isSameAddonsDownloading <- isEqual(downloadInProgress.get()?.addons, addons.reduce(@(res, v) res.$rawset(v, true), {}))
+  }
+  if (units != null) {
+    params.units <- mkBqUnitsString(units, campaign)
+    params.isSameAddonsDownloading <- (params?.isSameAddonsDownloading ?? false)
+      || isEqual(downloadInProgress.get()?.units, units.reduce(@(res, v) res.$rawset(v, true), {}))
   }
   eventbus_send("sendBqEvent", { tableId = "loading_addons_1", data = addEventTime(params) })
 }

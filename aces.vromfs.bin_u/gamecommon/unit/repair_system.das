@@ -439,6 +439,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
       
       else
+        print("[REPAIR] uid:{unit.id} EventRepairSystemStopRepair");
         sendEvent(eid, EventRepairSystemStopRepair())
         repair_system_remaining_repair_time = 0.0f
         repair_system_delay_time_to_repair = 0.0f
@@ -446,10 +447,12 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
   
   if !was_repairing && repair_system_remaining_repair_time > 0.0f
+    print("[REPAIR] uid:{unit.id} EventRepairSystemOnStartRepair: repair_system_remaining_repair_time:{repair_system_remaining_repair_time}");
     sendEvent(eid, EventRepairSystemOnStartRepair())
 
   
   if was_repairing && repair_system_remaining_repair_time <= 0.0f
+    print("[REPAIR] uid:{unit.id} EventRepairSystemOnStopRepair: not_finished:{not_finished}");
     sendEvent(eid, EventRepairSystemOnStopRepair(notFinished = not_finished))
 
   if has_changed && is_server()
@@ -569,7 +572,10 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
   let unit = unit__ref.unit
   if unit.isDelayed
     return
-  if (!unit.isShip && unit.isBurn) || (repair_system_toolkit_count_max >= 0 && !get_flag(repair_system_state, RepairState.REPAIR_AVAILABLE) && !get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP))
+  let fRepairAvailable = get_flag(repair_system_state, RepairState.REPAIR_AVAILABLE)
+  let fNeedRepairHelp = get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)
+  print("[REPAIR] uid:{unit.id} button_handle_es: isBurn:{unit.isBurn} toolkit_count:{repair_system_toolkit_count} fRepairAvailable:{fRepairAvailable} fNeedRepairHelp:{fNeedRepairHelp} btnDown:{evt.isButtonDown}")
+  if (!unit.isShip && unit.isBurn) || (repair_system_toolkit_count_max >= 0 && !fRepairAvailable && !fNeedRepairHelp)
     return
 
   sendEvent(eid, EventRepairSystemOnRequestedRepair())
@@ -591,6 +597,8 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       repair_system_remaining_repair_time, repair_system_delay_time_to_repair,
       get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)
     )
+
+    print("[REPAIR] uid:{unit.id} button_handle_es: can_start:{can_start} delay:{delay}")
     if can_start || (repair_system_remaining_repair_time > delay && !get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS))
       set_flag(repair_system_state, RepairState.REPAIR_DELAY_FOR_START, can_start)
       set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, false)
@@ -636,10 +644,12 @@ def repair_system_handle_allow_part_repair_es(evt : EventRepairSystemAllowPartRe
 
 [es(tag=netClient)]
 def repair_system_net_sync_handle_es(evt : EventRepairSystemNetSync;
+                                     var unit__ref : UnitRef;
                                      var repair_system_toolkit_count : int&;
                                      var repair_system_delay_time_to_repair : float&;
                                      var repair_system_remaining_repair_time : float&;
                                      var repair_system_state : uint&)
+  print("[REPAIR] uid:{unit__ref.unit.id} repair_system_net_sync_handle_es: toolkit:{repair_system_toolkit_count}={evt.toolkitCount} delay:{evt.delayToRepair} remainingRepairTime:{evt.remainingRepiarTime}");
   set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, evt.repairWithoutModsOnly)
   repair_system_toolkit_count = evt.toolkitCount
   repair_system_delay_time_to_repair = evt.delayToRepair
@@ -668,7 +678,8 @@ def repair_system_on_damage_es(evt : EventUnitDamage;
   let mult = get_game_params().minDamageFractionToResetRepair
   for part_id, part_state, part_hp in repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp
     if part_id.id == evt.partId.id && get_flag(part_state, DmPartRepairState.IN_PROGRESS)
-      let current_hp = get_part_hp(unit.dmData, part_id)
-      if part_hp.y * mult < evt.damage && current_hp > 0.0f
+      let partWasAlive = evt.prevHpFixed != uint16(0)
+      if part_hp.y * mult < evt.damage && partWasAlive
+        let current_hp = get_part_hp(unit.dmData, part_id)
         part_hp.x = max(current_hp - evt.damage, 0.0f)
       break

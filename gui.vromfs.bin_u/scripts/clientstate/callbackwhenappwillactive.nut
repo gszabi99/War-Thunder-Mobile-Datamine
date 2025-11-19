@@ -6,14 +6,14 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let cbs = hardPersistWatched("callbackWhenAppWillActive", [])
 
 function popCbs() {
-  let list = cbs.value
-  cbs([])
+  let list = cbs.get()
+  cbs.set([])
   foreach(eventFn in list)
     eventFn()
 }
 
 windowActive.subscribe(function(v) {
-  if (v && cbs.value.len() != 0)
+  if (v && cbs.get().len() != 0)
     deferOnce(popCbs)
 })
 

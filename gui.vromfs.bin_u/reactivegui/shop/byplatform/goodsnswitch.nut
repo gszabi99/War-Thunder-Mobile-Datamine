@@ -108,7 +108,7 @@ products.subscribe(@(v) logG($"available products: ", v.keys()))
 isAuthorized.subscribe(function(v) {
   if (v)
     return
-  products({})
+  products.set({})
 })
 
 
@@ -142,7 +142,7 @@ let platformGoods = Computed(function() {
 
 let platformOffer = Computed(function() {
   let priceExt = availablePrices.get()?[getProductId(activeOffers.get())]
-  return priceExt == null || activeOffers.value == null ? null
+  return priceExt == null || activeOffers.get() == null ? null
     : activeOffers.get().__merge({ priceExt })
 })
 
@@ -191,7 +191,7 @@ function fillItems() {
     logG("show_eshop_items:", itemId, nsUid, groupNsUid)
   }
 
-  products(items)
+  products.set(items)
 }
 
 eventbus_subscribe("nswitch.eshop.onItemsRequested", function(val) {

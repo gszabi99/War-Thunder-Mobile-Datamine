@@ -1,7 +1,7 @@
 {
   "normalizationPreset": "heat",
   "ricochetPreset": "he",
-  "groundRicochetPreset": "he",
+  "groundRicochetPreset": "he_ground",
   "secondaryShattersPreset": "ap",
   "stabilityThreshold": 0.05,
   "stabilityCaliberToArmorThreshold": 5.0,
@@ -15,6 +15,9 @@
     2.0
   ],
   "explodeOnRendinst": true,
+  "fuseOnWater": true,
+  "fuseOnWaterProbability": 1.0,
+  "shellAnimation": "video/shells_animations/he_vt.ivf",
   "stabilityRicochetModifier": {
     "mod1": [
       0.0,

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -98,9 +99,9 @@ let manageButtons = @(){
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("consentWnd/manage/acceptAll"), @() applyConsent(defaultPointsTable.map(@(_) true), {wnd="consentManage", action="accept_all"}))
+    textButtonCommon(utf8ToUpper(loc("consentWnd/manage/acceptAll")), @() applyConsent(defaultPointsTable.map(@(_) true), { wnd="consentManage", action="accept_all" }))
     {size = flex()}
-    textButtonPrimary(loc("consentWnd/manage/acceptChoosen"), @() applyConsent(choosenPoints.get(), {wnd="consentManage", action="accept_chosen"}))
+    textButtonPrimary(utf8ToUpper(loc("consentWnd/manage/acceptChoosen")), @() applyConsent(choosenPoints.get(), { wnd="consentManage", action="accept_chosen" }))
   ]
 }
 

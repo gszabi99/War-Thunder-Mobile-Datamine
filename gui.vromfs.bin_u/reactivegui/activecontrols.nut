@@ -47,4 +47,4 @@ activeControlsTypeComputed.subscribe(function(v) {
 let toggleForce = @(mask) forcedControlsType.modify(@(v) v == mask ? 0 : mask)
 register_command(@() toggleForce(DEV_TOUCH), "ui.forceControlTypeTouch")
 register_command(@() toggleForce(DEV_GAMEPAD), "ui.forceControlTypeGamepad")
-register_command(@() forcedControlsType(0), "ui.forceControlTypeAuto")
+register_command(@() forcedControlsType.set(0), "ui.forceControlTypeAuto")

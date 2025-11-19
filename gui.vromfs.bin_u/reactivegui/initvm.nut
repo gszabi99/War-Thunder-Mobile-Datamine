@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "frp" import warn_on_deprecated_methods
 
 let { DBGLEVEL } = require("dagor.system")
 let { is_pc } = require("%sqstd/platform.nut")
@@ -18,6 +19,8 @@ gui_scene.setConfigProps({
 })
 
 set_nested_observable_debug(DBGLEVEL > 0)
+
+warn_on_deprecated_methods(DBGLEVEL > 0)
 if (is_pc)
   set_slow_update_threshold_usec(300)
 require("%sqstd/regScriptDebugger.nut")(debugTableData)

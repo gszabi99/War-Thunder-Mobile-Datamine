@@ -71,7 +71,7 @@ eventbus_subscribe("TankDebuffs:Repair", onRepair)
 eventbus_subscribe("ShipDebuffs:Repair", onRepair)
 
 let function repairMessage(val) {
-  if (unitType.value == SHIP || unitType.value == BOAT || unitType.value == SUBMARINE)
+  if (unitType.get() == SHIP || unitType.get() == BOAT || unitType.get() == SUBMARINE)
     return
 
   let msgId = "MSG_EVENT_HINT"

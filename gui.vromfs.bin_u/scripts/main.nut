@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+from "frp" import set_nested_observable_debug, set_subscriber_validation, warn_on_deprecated_methods
+from "dagor.system" import DBGLEVEL
 
 let { get_time_msec, ref_time_ticks } = require("dagor.time")
 let startLoadTime = get_time_msec()
@@ -9,6 +11,11 @@ let { loadOnce, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloa
 let { set_rnd_seed } = require("dagor.random")
 let { eventbus_subscribe } = require("eventbus")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+
+
+set_nested_observable_debug(DBGLEVEL > 0)
+
+warn_on_deprecated_methods(DBGLEVEL > 0)
 clear_vm_entity_systems()
 start_es_loading()
 
@@ -77,6 +84,7 @@ require("utils/restartGame.nut")
 require("%sqstd/regScriptProfiler.nut")("dagui", dlog) 
 require("bqQueue.nut")
 require("battlePerfstats.nut")
+require("updaterStateSync.nut")
   
 
 let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -125,7 +133,7 @@ let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut
 
 log($"DaGui scripts load before login {get_time_msec() - startLoadTime} msec")
 
-if (isReadyToFullLoad.value || !isLoginRequired.value)
+if (isReadyToFullLoad.get() || !isLoginRequired.get())
   loadScriptsAfterLoginOnce()
 isReadyToFullLoad.subscribe(@(v) v ? loadScriptsAfterLoginOnce() : null)
 isLoginRequired.subscribe(@(v) v ? null : loadScriptsAfterLoginOnce())

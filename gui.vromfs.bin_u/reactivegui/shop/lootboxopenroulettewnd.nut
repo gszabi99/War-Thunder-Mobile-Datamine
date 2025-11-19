@@ -100,7 +100,7 @@ function isReceivedSame(received, rewardInfo) {
 }
 
 let allowedResultIndexes = Computed(function() {
-  if (rouletteOpenResult.value == null)
+  if (rouletteOpenResult.get() == null)
     return null
   let res = {}
   let isFit = {}
@@ -115,8 +115,8 @@ let allowedResultIndexes = Computed(function() {
 })
 
 let isResultLastReward = Computed(function() {
-  if (rouletteOpenResult.value == null || (allowedResultIndexes.get()?.len() ?? 0) > 0
-      || rouletteLastReward.value == null)
+  if (rouletteOpenResult.get() == null || (allowedResultIndexes.get()?.len() ?? 0) > 0
+      || rouletteLastReward.get() == null)
     return false
   return isReceivedSame(curRewardViewInfo.get(), rouletteLastReward.get())
 })
@@ -150,7 +150,7 @@ function onChangeIndexes() {
   if (!isAllJackpotsReceived.get())
     return
   let indexes = allowedResultIndexes.get()
-  if (rouletteOpenId.value == null || indexes == null || indexes.len() > 0 || isResultLastReward.get())
+  if (rouletteOpenId.get() == null || indexes == null || indexes.len() > 0 || isResultLastReward.get())
     return
   log($"Not found received reward to show in the roulette '{rouletteOpenId.get()}': ", curRewardViewInfo.get())
   logOpenConfig()
@@ -336,7 +336,7 @@ let updAnimByStatus = {
     state.offset <- offset > fullSize + halfViewSize ? (offset % fullSize) : offset
 
     if (isCurRewardFixed.get() || isResultLastReward.get()) {
-      if (rouletteOpenIdx.value == state?.lastFixedIdx || recevedRewardAnimIdx.get() >= 0)
+      if (rouletteOpenIdx.get() == state?.lastFixedIdx || recevedRewardAnimIdx.get() >= 0)
         return
       if (rouletteOpenIdx.get() != state?.waitFixedIdx) {
         state.startTime = get_time_msec()
@@ -687,7 +687,7 @@ function onRewardScaleFinish(viewInfo, rewardIdx) {
   resetTimeout(aTimeRewardMove, @() resultVisibleIdx.set(max(rewardIdx, resultVisibleIdx.get())))
   if (resultOffsetIdx.get() >= receivedRewardsAll.get().len() - 1)
     resetTimeout(aTimeRewardMove + delayBeforeClose, closeRoulette)
-  else if (rouletteOpenIdx.value == rewardIdx && (isReceivedAnimFixed.get() || isReceivedAnimLast.get()))
+  else if (rouletteOpenIdx.get() == rewardIdx && (isReceivedAnimFixed.get() || isReceivedAnimLast.get()))
     rouletteOpenIdx.set(rewardIdx + 1)
   recevedRewardAnimIdx.set(-1)
 }
@@ -945,7 +945,7 @@ let progressbar = @(value) {
 
 let fixedRewardCurrent = Computed(@()
   max(lastJackpotIdx.get(),
-    (nextFixedReward.get()?.current ?? -1) + (rouletteOpenIdx.value == resultOffsetIdx.get() ? 0 : -1)))
+    (nextFixedReward.get()?.current ?? -1) + (rouletteOpenIdx.get() == resultOffsetIdx.get() ? 0 : -1)))
 let fixedRewardTotal = Computed(@() (nextFixedReward.get()?.total ?? 1))
 
 local lastFixedRewardCurrent = fixedRewardCurrent.get()

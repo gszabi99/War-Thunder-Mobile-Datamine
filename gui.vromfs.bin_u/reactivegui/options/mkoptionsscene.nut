@@ -14,6 +14,7 @@ let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
 
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
+let pageBlocksGap = hdpx(30)
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
 let gradientHeightBottom = saBorders[1]
 let gradientHeightTop = min(topAreaSize, gradientHeightBottom)
@@ -23,6 +24,10 @@ let scrollHandler = ScrollHandler()
 let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100),
   [gradientHeightTop, gradientHeightBottom],
   [topAreaSize, gradientHeightBottom])
+
+let mkTabsVerticalPannableArea = verticalPannableAreaCtor(
+  sh(100) - topAreaSize + pageBlocksGap,
+  [pageBlocksGap, gradientHeightBottom])
 
 let scrollArrowsBlock = {
   size = [SIZE_TO_CONTENT, saSize[1] + saBorders[1]]
@@ -34,20 +39,20 @@ let scrollArrowsBlock = {
   ]
 }
 
-function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null) {
+function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null, tabsPannableOvr = {}) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
   curTabId = curTabId ?? Watched(null)
   let findTabIdxById = @(pageId) pageId == null ? null
-    : tabs.findindex(@(v) v?.id == pageId && (v?.isVisible.value ?? true))
-  let curTabIdx = mkWatched(persist, $"{sceneId}_curTabIdx", findTabIdxById(curTabId.value) ?? 0)
-  let close = @() isOpened(false)
+    : tabs.findindex(@(v) v?.id == pageId && (v?.isVisible.get() ?? true))
+  let curTabIdx = mkWatched(persist, $"{sceneId}_curTabIdx", findTabIdxById(curTabId.get()) ?? 0)
+  let close = @() isOpened.set(false)
   let backBtn = backButton(function() {
-    curTabId(null)
+    curTabId.set(null)
     close()
   })
-  isAuthorized.subscribe(@(_) isOpened(false))
+  isAuthorized.subscribe(@(_) isOpened.set(false))
 
-  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(t) t?.isVisible.value ?? true))
+  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(t) t?.isVisible.get() ?? true))
 
   foreach(idx, tab in tabs) {
     let { isVisible = null } = tab
@@ -55,13 +60,13 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
       continue
     let tabIdx = idx
     isVisible.subscribe(@(v) v || tabIdx != curTabIdx.get() ? null : resetCurTabIdx())
-    if (tabIdx == curTabIdx.get() && !isVisible.value)
+    if (tabIdx == curTabIdx.get() && !isVisible.get())
       resetCurTabIdx()
   }
 
   function setTabById(id) {
     let idx = findTabIdxById(id)
-    if (idx != null && (tabs[idx]?.isVisible.value ?? true))
+    if (idx != null && (tabs[idx]?.isVisible.get() ?? true))
       curTabIdx.set(idx)
   }
   curTabId.subscribe(setTabById)
@@ -106,7 +111,11 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
         }
   }
 
-  let tabsList = mkOptionsTabs(tabs, curTabIdx)
+  let tabsList = mkTabsVerticalPannableArea(
+    mkOptionsTabs(tabs, curTabIdx),
+    { size = [tabW + hdpx(25), sh(100) - topAreaSize] }.__merge(tabsPannableOvr),
+    { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler }
+  )
 
   let optionsScene = bgShaded.__merge({
     key = {}
@@ -116,7 +125,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
     gap = hdpx(50)
 
     function onAttach() {
-      if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.value ?? true))
+      if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.get() ?? true))
         resetCurTabIdx()
     }
 
@@ -145,7 +154,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
 
   return function(pageId = null) {
     setTabById(pageId)
-    isOpened(true)
+    isOpened.set(true)
   }
 }
 return {

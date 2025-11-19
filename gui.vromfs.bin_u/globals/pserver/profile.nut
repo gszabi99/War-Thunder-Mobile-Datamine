@@ -20,22 +20,22 @@ let defaultProfileLevelInfo = {
 }
 
 let campUnitsCfg = Computed(function() {
-  let unitLevels = campConfigs.value?.unitLevels ?? {}
-  return (campConfigs.value?.allUnits ?? {}).map(@(u) u.__merge({
+  let unitLevels = campConfigs.get()?.unitLevels ?? {}
+  return (campConfigs.get()?.allUnits ?? {}).map(@(u) u.__merge({
     levels = unitLevels?[u?.levelPreset ?? "0"] ?? []
   }))
 })
 
 let campMyUnits = Computed(function() {
   let cfg = campUnitsCfg.get()
-  let { upgradeUnitBonus = {} } = campConfigs.value?.gameProfile
-  return units.value.map(@(u)
+  let { upgradeUnitBonus = {} } = campConfigs.get()?.gameProfile
+  return units.get().map(@(u)
     (cfg?[u.name] ?? {}).__merge(u, (u?.isUpgraded ?? false) ? upgradeUnitBonus : {}))
 })
 
-let curUnitInProgressExt = Watched(curUnitInProgress.value)
+let curUnitInProgressExt = Watched(curUnitInProgress.get())
 curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt.set(v)
-  : deferOnce(@() curUnitInProgressExt.set(curUnitInProgress.value)))
+  : deferOnce(@() curUnitInProgressExt.set(curUnitInProgress.get())))
 
 let curUnit = Computed(function() {
   let my = campMyUnits.get()
@@ -54,8 +54,8 @@ let battleUnitsMaxMRank = Computed(@() curCampaignSlotUnits.get() == null ? (cur
   : curCampaignSlotUnits.get().reduce(@(res, name) max(res, campConfigs.get()?.allUnits[name].mRank ?? 0), 0))
 
 let playerLevelInfo = Computed(function() {
-  let res = defaultProfileLevelInfo.__merge(levelInfo.value)
-  let { playerLevels = null, playerLevelsInfo = null } = campConfigs.value
+  let res = defaultProfileLevelInfo.__merge(levelInfo.get())
+  let { playerLevels = null, playerLevelsInfo = null } = campConfigs.get()
   let { maxBaseLevel = null, maxLevel = 0 } = playerLevelsInfo
   let levelCfg = playerLevels?[min(res.level, maxBaseLevel ?? res.level)]
   if (levelCfg == null || maxLevel <= res.level)
@@ -75,10 +75,14 @@ let playerLevelInfo = Computed(function() {
   return res
 })
 
+let curUnits = Computed(@()
+  (curCampaignSlotUnits.get()?.map(@(u) campMyUnits.get()?[u]) ?? [curUnit.get()]).filter(@(u) u != null))
+
 return {
   campUnitsCfg
   campMyUnits
   curUnit
+  curUnits
   battleUnitsMaxMRank
   curUnitName
   playerLevelInfo

@@ -17,7 +17,7 @@ let isShowed = hardPersistWatched("allowPushNotificationsShowed", false)
 function show() {
   if (!needAskPermissions || isShowed.get())
     return
-  isShowed(true)
+  isShowed.set(true)
   checkAndRequestPermission("","","", "android.permission.POST_NOTIFICATIONS")
 }
 

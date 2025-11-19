@@ -28,7 +28,7 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
-let { G_ITEM } = require("%appGlobals/rewardType.nut")
+let { G_ITEM, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 
 
 let activeItemId = Watched(null)
@@ -178,7 +178,7 @@ let spinnerBlockOvr = {
   halign = ALIGN_CENTER
 }
 
-let purchStyle = buttonStyles.PURCHASE.__merge({ hotkeys = ["^J:X"] })
+let purchStyle = buttonStyles.PURCHASE.__merge({ hotkeys = ["^J:X"] }, {childOvr = fontMedium})
 function mkPurchButton(content, onClick, animStartTime) {
   let start = animStartTime + aTimePriceMove + aTimePriceStrike
   let animations = opacityAnims(aTimeFinalPriceShow, start)
@@ -406,7 +406,7 @@ let mkPreviewHeader = @(textW, onBack, animStartTime) doubleSideGradient.__merge
       watch = textW
       rendObj = ROBJ_TEXT
       color = 0xFFFFFFFF
-      text = utf8ToUpper(textW.value)
+      text = utf8ToUpper(textW.get())
       transform = { pivot = [0, 0.5] }
       animations = opacityAnims(0.5 * aTimePackNameFull, animStartTime).append(
         { prop = AnimProp.translate, from = [-hdpx(100), 0.0], to = [0.0, 0.0], easing = InQuad, play = true,
@@ -536,7 +536,8 @@ function mkItem(r, rStyle, idx, animStartTime) {
 function mkPreviewItems(goods, animStartTime) {
   if (goods == null)
     return null
-  let info = shopGoodsToRewardsViewInfo(goods.__merge({ units = [], unitUpgrades = [] }))
+  let info = shopGoodsToRewardsViewInfo(goods)
+    .filter(@(r) r.rType not in unitRewardTypes)
     .sort(sortRewardsViewInfo)
   return info.len() == 0 ? null : {
     flow = FLOW_HORIZONTAL

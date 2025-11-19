@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
 let { get_local_mplayer } = require("mission")
 let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
 let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { battleCampaign, battleUnitClasses } = require("%appGlobals/clientState/missionState.nut")
@@ -44,7 +45,8 @@ function getViewScoreKey(campaign, unitClass, scoreTank) {
   return getScoreKey(campaign)
 }
 let curUnitClass = Computed(@() battleUnitClasses.get()?[playerUnitName.get()] ?? "")
-let viewScoreKey = Computed(@() getViewScoreKey(battleCampaign.get(), curUnitClass.get(), hudScoreTank.get()))
+let viewScoreKey = Computed(@() getViewScoreKey(getCampaignPresentation(battleCampaign.get()).campaign,
+  curUnitClass.get(), hudScoreTank.get()))
 
 let myPlace = Computed(function() {
   let key = scoreKey.get()
@@ -101,7 +103,7 @@ function mkImageWithCount(value, image, scale = 1, key = null) {
 
         halign = ALIGN_CENTER
         children = value instanceof Watched
-          ? @() mkValueText(value.value, font).__update({ watch = value})
+          ? @() mkValueText(value.get(), font).__update({ watch = value })
           : mkValueText(value, font)
       }
     ]

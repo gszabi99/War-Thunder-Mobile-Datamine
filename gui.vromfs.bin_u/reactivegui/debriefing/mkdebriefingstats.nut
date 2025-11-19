@@ -82,16 +82,16 @@ let rowPlace =
   { getLoc = getPlayerPlaceLabel, getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
 
 let rowLbShips = { getLoc = @(_) labelLbShips, getVal = @(debrData, _) hasUserstatMode(debrData, "ships")
-  ? getValIfPositive(debrData?.userstat.ships_rating, toLbRating)
+  ? getValIfPositive(debrData?.userstat.toAdd.ships_rating, toLbRating)
   : null }
 let rowLbTanks = { getLoc = @(_) labelLbTanks, getVal = @(debrData, _) hasUserstatMode(debrData, "tanks")
-  ? getValIfPositive(debrData?.userstat.tanks_rating, toLbRating)
+  ? getValIfPositive(debrData?.userstat.toAdd.tanks_rating, toLbRating)
   : null }
 let rowLbAir = { getLoc = @(_) labelLbAir, getVal = @(debrData, _) hasUserstatMode(debrData, "air")
-  ? getValIfPositive(debrData?.userstat.air_rating, toLbRating)
+  ? getValIfPositive(debrData?.userstat.toAdd.air_rating, toLbRating)
   : null }
 let rowLbCommon = { getLoc = @(_) labelLbCommon, getVal = @(debrData, _) hasUserstatMode(debrData, "battle_common")
-  ? getValIfPositive(debrData?.userstat.wp_rating, toLbRating)
+  ? getValIfPositive(debrData?.userstat.toAdd.wp_rating, toLbRating)
   : null }
 
 let statsByCamp = {

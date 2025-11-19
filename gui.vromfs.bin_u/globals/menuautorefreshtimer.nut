@@ -19,7 +19,7 @@ function menuAutoRefreshTimer(
   local startAutoRefreshTimer = null
 
   function autoRefreshImpl() {
-    if (!isLoggedIn.value || isInBattle.get())
+    if (!isLoggedIn.get() || isInBattle.get())
       return
 
     readyRefreshTime = get_time_msec() + (1000 * refreshDelaySec).tointeger()

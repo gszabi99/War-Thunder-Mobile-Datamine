@@ -19,6 +19,7 @@ let { updateActionBarDelayed, actionBarItems, emptyActionItem, actionItemsInCd
 } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { AB_TOOLKIT_WITH_MEDICAL, AB_TOOLKIT, AB_MEDICALKIT } = require("%rGui/hud/actionBar/actionType.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
+let { hudBlackColor } = require("%rGui/style/hudColors.nut")
 
 
 let SPLIT_HOLD_TIME = 0.3
@@ -74,7 +75,7 @@ let mkBlackBg = @(box, borderW) {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   rendObj = ROBJ_SOLID
-  color = 0xFF000000
+  color = hudBlackColor
 }
 
 function getRepairIcon(assistState, aType) {
@@ -100,7 +101,7 @@ function mkSlaveButton(aType, box, hoverAType, stateFlagsBase, borderW) {
         pos = [box.l, box.t]
         children = [
           bg
-          mkActionItemProgressByWatches(actionItem, isAvailable)
+          mkActionItemProgressByWatches(actionItem, isAvailable, size[0])
           mkActionItemBorder(borderW, stateFlags, Computed(@() !isAvailable.get()))
           @() {
             watch = isAvailable
@@ -199,7 +200,7 @@ function tankRrepairButtonCtor(scale) {
                     children = [ blackBg ]
                       .extend(smallButtons.map(@(c) mkSlaveButton(c.aType, c.box, hoverAType, stateFlags, borderW)))
                   }
-              mkActionItemProgressByWatches(actionItem, isAvailable)
+              mkActionItemProgressByWatches(actionItem, isAvailable, btnSize)
               mkActionItemBorder(borderW, stateFlagsMain, Computed(@() !isAvailable.get()))
               @() {
                 watch = [isAvailable, btnImage, repairAssistAllow]
@@ -214,7 +215,7 @@ function tankRrepairButtonCtor(scale) {
                 color = !isAvailable.get() ? imageDisabledColor : imageColor
               }
               mkActionGlare(actionItem.get())
-              isDisabled.value ? null : mkGamepadShortcutImage(shortcutId.get(), abShortcutImageOvr, scale)
+              isDisabled.get() ? null : mkGamepadShortcutImage(shortcutId.get(), abShortcutImageOvr, scale)
               mkConsumableSpend("tank_tool_kit_expendable")
               mkConsumableSpend("tank_medical_kit")
             ]

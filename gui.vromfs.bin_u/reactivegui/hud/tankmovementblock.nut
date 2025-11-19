@@ -143,7 +143,7 @@ let tankMoveStickBase = @(zoneSize, scale) @() {
     [75, 1.0]
   ]
   maxValueRadius = zoneSize * zoneToBgRadius
-  useCenteringOnTouchBegin = currentTankMoveCtrlType.value == "stick"
+  useCenteringOnTouchBegin = currentTankMoveCtrlType.get() == "stick"
 
   onChange = @(v) stickDelta.set(Point2(v.x, v.y))
 

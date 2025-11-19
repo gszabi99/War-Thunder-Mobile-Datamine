@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sendBpBqEvent,
   purchasedBp, bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, battlePassGoods, getBpIcon,
@@ -9,7 +10,7 @@ let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sen
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo, sortRewardsViewInfo
+let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -141,13 +142,13 @@ function rewardsToViewInfo(rewards, servConfigs) {
 
 let rewardsList = @(selBpInfo) function() {
   let res = {
-    watch = [bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, curStage, serverConfigs, selBpInfo, purchasedBp]
+    watch = [bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, curStage, serverConfigs,
+      selBpInfo, purchasedBp, servProfile]
     size = FLEX_H
   }
   if (bpPaidRewardsUnlock.get() == null)
     return res
 
-  let viewInfoExclusive = []
   let viewInfoOnPurchase = []
   let viewInfoAddLevels = []
   let viewInfoOnProgress = []
@@ -196,20 +197,27 @@ let rewardsList = @(selBpInfo) function() {
         }
     }
   }
+
+  let profile = servProfile.get()
   viewInfoOnPurchase.extend(rewardsToViewInfo(rewardsOnPurchase, serverConfigs.get())
+    .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
     .sort(sortRewardsViewInfo))
   viewInfoAddLevels.extend(rewardsToViewInfo(rewardsAddLevels, serverConfigs.get())
+    .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
     .sort(sortRewardsViewInfo))
   if (purchasedBp.get() == BP_NONE)
     viewInfoOnProgress.extend(rewardsToViewInfo(rewardsOnProgress, serverConfigs.get())
+      .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
       .sort(sortRewardsViewInfo))
 
+  local viewInfoExclusive = []
   let { goods = null } = selBpInfo.get()
   if (goods != null) {
-    let vi = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)
+    viewInfoExclusive = shopGoodsToRewardsViewInfo(goods)
+      .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
+      .sort(sortRewardsViewInfo)
     if (selBpInfo.get().bpType == BP_VIP)
-      vi.each(@(v) v.$rawset("isVip", true))
-    viewInfoExclusive.extend(vi)
+      viewInfoExclusive.each(@(v) v.$rawset("isVip", true))
   }
 
   return res.__update({
@@ -234,8 +242,10 @@ let rewardsList = @(selBpInfo) function() {
 }
 
 function getNextFromList(list, cur) {
+  if (list.len() == 0)
+    return null
   let idx = (list.indexof(cur) ?? -1) + 1
-  return list?[idx % list.len()]
+  return list[idx % list.len()]
 }
 
 let battlePassIcon = @(bpList, selBpInfo) function() {

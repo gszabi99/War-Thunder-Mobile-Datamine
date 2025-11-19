@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
@@ -44,18 +45,22 @@ let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTim
 let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart, skipOfferBtn)
 
 function goldInfo() {
-  let { discountInPercent = 0 } = previewGoods.get()
-  let gold = previewGoods.get()?.currencies.gold ?? 0
-  let oldGold = (gold * (1.0 - (discountInPercent / 100.0))).tointeger()
+  let { discountInPercent = 0, rewards = [], currencies = null } = previewGoods.get()
+  local { id = null, count = null } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
+  if (currencies != null) { 
+    id = "gold"
+    count = currencies?.gold ?? 0
+  }
+  let oldCount = (count * (1.0 - (discountInPercent / 100.0))).tointeger()
   return doubleSideGradient.__merge({
     watch = previewGoods
     pos = [-doubleSideGradientPaddingX, 0]
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     children = [
-      oldPriceBlock(mkCurrencyComp(oldGold, "gold", currencyOldStyle),
+      oldPriceBlock(mkCurrencyComp(oldCount, id, currencyOldStyle),
         aTimeGoldStart + aTimeGoldBack)
-      mkCurrencyComp(gold, "gold", currencyStyle)
+      mkCurrencyComp(count, id, currencyStyle)
         .__update({
           animations = opacityAnims(0.5, aTimeGoldStart + aTimeGoldBack + aTimePriceStrike)
         })
@@ -121,12 +126,12 @@ let currencyImage = {
     )
 }
 
-let currencyEffectFw = {
+let currencyEffectFw = @() {
   children = mkSparks({ size = const [hdpx(1100), hdpx(500)], delay = aTimeHeaderStart, count = 30 })
   animations = opacityAnims(0.5, aTimeHeaderStart)
 }
 
-let currencyEffectBw = {
+let currencyEffectBw = @() {
   children = mkSparks({ size = const [hdpx(1100), hdpx(500)], delay = aTimeHeaderStart, count = 20 })
   animations = opacityAnims(0.5, aTimeHeaderStart)
 }

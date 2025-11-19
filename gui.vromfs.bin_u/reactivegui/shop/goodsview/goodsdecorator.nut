@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { G_DECORATOR } = require("%appGlobals/rewardType.nut")
 let { mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsWrap
   goodsH, goodsSmallSize, goodsBgH, mkSlotBgImg, mkBgParticles, borderBg,
   goodsW, limitFontGrad, mkGradeTitle, mkEndTime
@@ -92,7 +93,8 @@ let mkDecoratorContent = @(decoratorId) function() {
 }
 
 function mkGoodsDecorator(goods, onClick, state, animParams, addChildren) {
-  let decoratorId = goods?.decorators[0]
+  let decoratorId = goods?.rewards.findvalue(@(r) r.gType == G_DECORATOR)?.id
+    ?? goods?.decorators[0] 
   let ovrState = Computed(@() state.get() | (myDecorators.get()?[decoratorId] != null ? ALL_PURCHASED : 0))
   let onDecoratorClick = (ovrState.get() & ALL_PURCHASED) == 0 ? onClick : null
   return mkGoodsWrap(

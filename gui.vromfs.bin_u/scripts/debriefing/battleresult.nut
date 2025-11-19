@@ -14,6 +14,7 @@ let { register_command } = require("console")
 let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
 let { battleData } = require("%scripts/battleData/battleData.nut")
 let { singleMissionResult } = require("singleMissionResult.nut")
+let { lastBattles, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState/clientState.nut")
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
 let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
@@ -40,6 +41,16 @@ let questProgressDiff = mkWatched(persist, "questProgressDiff", null)
 let unitWeaponry = mkWatched(persist, "unitWeaponry", null)
 let completedTutorials = mkWatched(persist, "completedTutorials", {})
 let roomInfo = Computed(@() lastRoom.get()?.public.filter(@(_, key) key in exportRoomParams))
+let hasVip = Computed(@() subscriptions.get()?.vip.isActive ?? false )
+let hasPrem = Computed(@() subscriptions.get()?.premium.isActive ?? false )
+let hasPremiumSubs = Computed(@() hasPrem.get() || hasVip.get())
+
+function realNameToName(unit) {
+  let res = clone unit
+  res.name = unit.realName
+  res.$rawdelete("realName")
+  return res
+}
 
 let battleResult = Computed(function() {
   if (debugBattleResult.get())
@@ -49,12 +60,33 @@ let battleResult = Computed(function() {
     return singleMissionResult.get()
   else {
     res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
-    if ("realName" in res?.unit) {
-      let unitCopy = clone res.unit
-      unitCopy.name = res.unit.realName
-      unitCopy.$rawdelete("realName")
-      res.unit = unitCopy
+    if (res?.sessionId
+        && lastBattles.get()?[$"{res.sessionId}"]
+        && !res?.hasPrem
+        && hasPremiumSubs.get()) {
+      let lastBattle = lastBattles.get()[$"{res.sessionId}"]
+      let premiumBonus = clone res?.premiumBonusNotApplied
+      res.premiumBonus <- premiumBonus
+      res.hasPrem <- true
+      res.$rawdelete("premiumBonusNotApplied")
+      res.reward.playerWp.premWp = lastBattle.wp - res.reward.playerWp.totalWp
+      res.reward.playerWp.totalWp = lastBattle.wp
+      res.reward.playerExp.premExp = lastBattle.playerExp - res.reward.playerExp.totalExp
+      res.reward.playerExp.totalExp = lastBattle.playerExp
+      res.reward.units = res.reward.units.map(function(u) {
+        let totalExpWithPrem = u.exp.totalExp * (res.premiumBonus?.expMul ?? 1.0)
+        let totalGoldWithPrem = u.gold.totalGold * (res.premiumBonus?.goldMul ?? 1.0)
+        u.exp.premExp <- totalExpWithPrem - u.exp.totalExp
+        u.gold.premGold <- totalGoldWithPrem - u.gold.totalGold
+        u.exp.totalExp <- totalExpWithPrem
+        u.gold.totalGold <- totalGoldWithPrem
+        return u
+      })
     }
+    if ("realName" in res?.unit) 
+      res.unit = realNameToName(res.unit)
+    if (type(res?.unit.platoonUnits) == "array")
+      res.unit = res.unit.__merge({ platoonUnits = res.unit.platoonUnits.map(@(u) (u?.realName ?? u.name) == u.name ? u : realNameToName(u))})
     if (res?.sessionId != battleSessionId.get())
       return connectFailedData.get()?.sessionId != battleSessionId.get() ? null
         : connectFailedData.get().__merge({ isDisconnected = true }, { roomInfo = roomInfo.get() })
@@ -71,7 +103,7 @@ let battleResult = Computed(function() {
   return res
 })
 
-let sendBattleResult = @() eventbus_send("BattleResult", battleResult.value)
+let sendBattleResult = @() eventbus_send("BattleResult", battleResult.get())
 battleResult.subscribe(@(_) resetTimeout(0.1, sendBattleResult))
 eventbus_subscribe("RequestBattleResult", @(_) sendBattleResult())
 
@@ -119,13 +151,13 @@ battleResult.subscribe(function(v) {
 eventbus_subscribe("BattleResultUnitWeaponry", @(v) unitWeaponry.set(v))
 
 let gotQuitToDebriefing = mkWatched(persist, "gotQuitToDebriefing", false)
-isInBattle.subscribe(@(v)  v ? gotQuitToDebriefing(false) : null)
-let needDestroySession = keepref(Computed(@() gotQuitToDebriefing.value
-  && baseBattleResult.value?.sessionId == get_mp_session_id_int()
-  && resultPlayers.value?.sessionId == get_mp_session_id_int()))
+isInBattle.subscribe(@(v)  v ? gotQuitToDebriefing.set(false) : null)
+let needDestroySession = keepref(Computed(@() gotQuitToDebriefing.get()
+  && baseBattleResult.get()?.sessionId == get_mp_session_id_int()
+  && resultPlayers.get()?.sessionId == get_mp_session_id_int()))
 
 function doDestroySession() {
-  gotQuitToDebriefing(false)
+  gotQuitToDebriefing.set(false)
   set_quit_to_debriefing_allowed(true)
   destroy_session("on needDestroySession by battleResult received")
 }
@@ -133,7 +165,7 @@ needDestroySession.subscribe(@(v) v ? deferOnce(doDestroySession) : null)
 
 eventbus_subscribe("onSetQuitToDebriefing", function(_) {
   resetTimeout(destroySessionTimeout, doDestroySession)
-  gotQuitToDebriefing(true)
+  gotQuitToDebriefing.set(true)
   set_quit_to_debriefing_allowed(false)
 })
 
@@ -141,7 +173,7 @@ isInBattle.subscribe(@(v) v ? debugBattleResult.set(null) : null)
 
 function onBattleResult(evt, _eid, comp) {
   let userId = comp.server_player__userId
-  if (userId != myUserId.value)
+  if (userId != myUserId.get())
     return
 
   let resultWithBd = evt.data.__merge(battleData.get() ?? {})
@@ -151,7 +183,7 @@ function onBattleResult(evt, _eid, comp) {
       {
         localTeam = get_mp_local_team()
         teams = get_mp_tbl_teams()
-        userName = myUserName.value
+        userName = myUserName.get()
       }))
   updateCompletedTutorials()
 }
@@ -174,7 +206,7 @@ register_es("battle_result_mplayers_es",
           res.players[p.userId] = p.__merge(res.players[p.userId])
           res.players[p.userId].squadLabel <- (squadLabels.get()?[p.userId] ?? -1)
         }
-      resultPlayers(res)
+      resultPlayers.set(res)
     },
   }, {})
 
@@ -207,8 +239,8 @@ function getPlayersCommonStats(players) {
   }
   return res
 }
-resultPlayers.subscribe(@(v) playersCommonStats(getPlayersCommonStats(v?.players ?? {})))
-isInBattle.subscribe(@(v) v ? playersCommonStats({}) : null)
+resultPlayers.subscribe(@(v) playersCommonStats.set(getPlayersCommonStats(v?.players ?? {})))
+isInBattle.subscribe(@(v) v ? playersCommonStats.set({}) : null)
 
 function requestEarlyExitRewards() {
   logBD("Request early exit rewards")
@@ -217,15 +249,15 @@ function requestEarlyExitRewards() {
     eventbus_send("matchingApiNotify", { name = "match.remove_from_session" }) 
 }
 
-eventbus_subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.get() })))
+eventbus_subscribe("onBattleConnectionFailed", @(p) connectFailedData.set(p.__merge({ sessionId = battleSessionId.get() })))
 
 register_command(requestEarlyExitRewards, "debriefing.request_early_exit_rewards")
 register_command(function() {
-  if (battleResult.value == null)
+  if (battleResult.get() == null)
     return console_print("Current battle result is empty")
 
   let file = io.file(SAVE_FILE, "wt+")
-  file.writestring(object_to_json_string(battleResult.value, true))
+  file.writestring(object_to_json_string(battleResult.get(), true))
   file.close()
   return console_print($"Saved to {SAVE_FILE}")
 }, "debriefing.save_current_battle_result")

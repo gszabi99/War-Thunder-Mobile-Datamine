@@ -741,7 +741,9 @@
     "turret_turn": "turret_turn_manual_y",
     "EngineNameAi": "engine_tank_ai_heavy",
     "TrackSoundNameAi": "tracks_ai_heavy",
-    "gun_turn": "turret_turn_mg_light"
+    "gun_turn": "turret_turn_mg_light",
+    "EngineNameEx": "engine_sherman_m4a3",
+    "TrackSoundNameEx": "tracks_sherman_m4a1"
   },
   "tank_crew": {
     "changeTimeMult": 1.0,
@@ -988,12 +990,12 @@
       ],
       "CenterOfGravity": [
         0.1,
-        0.8,
+        0.4,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 1150.0
@@ -1011,6 +1013,12 @@
       "fricFrontal": [
         1.0,
         0.8
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
       ]
     },
     "collisionProps": {
@@ -1027,6 +1035,7 @@
       "driveGearRadius": 0.34,
       "mainGearRatio": 4.7,
       "sideGearRatio": 2.74,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -5.64,
@@ -1296,6 +1305,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "tank_engine_fire",
@@ -1313,6 +1323,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -1373,6 +1384,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1390,6 +1402,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_big",
@@ -1463,6 +1476,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 25.0,
         "fx": [
           {
             "name": "tank_smoke_small",
@@ -1604,6 +1618,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1611,6 +1626,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -1618,6 +1634,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -1708,6 +1725,58 @@
       0.25,
       0.05,
       0.7
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageEffects": {
@@ -2550,7 +2619,6 @@
           "hasVertical": true,
           "verticalOmegaMult": 0.7,
           "verticalSpeedLimitKPH": 24.0,
-          "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
               [
@@ -2925,28 +2993,27 @@
     "art_support_highcaliber": {},
     "tank_smoke_screen_smoke_shell": {}
   },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab_olive*"
-      }
-    },
-    "desert": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_ww_1*"
-      }
-    },
-    "winter": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_blots*"
-      }
+  "default_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "us_camo_olive*"
     }
   },
   "defaultDecals": {
-    "forest": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "us_camo_desert_pink_lines*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0,
@@ -3091,251 +3158,6 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.24201,
       "decal2Tex": "back_02"
-    },
-    "desert": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [
-        2.61285,
-        -1.12752e-7,
-        0.315826,
-        0.806897
-      ],
-      "decal0Line1": [
-        0.0554339,
-        -2.59102,
-        -0.458611,
-        5.95173
-      ],
-      "decal0Line2": [
-        -2.61285,
-        -1.07849e-7,
-        0.315826,
-        0.193006
-      ],
-      "decal0Line3": [
-        0.0554342,
-        -2.59102,
-        0.458611,
-        5.95159
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.118138,
-        0.175521,
-        -0.977362,
-        -1.33492
-      ],
-      "decal0CPNormDepth1": [
-        0.118138,
-        0.175521,
-        0.977362,
-        -1.33522
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.379958
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.270738,
-      "decal0Tex": "back_02",
-      "decal1Line0": [
-        -2.59674,
-        -1.16927e-7,
-        0.313638,
-        0.183911
-      ],
-      "decal1Line1": [
-        0.054208,
-        -2.57624,
-        0.448809,
-        6.06547
-      ],
-      "decal1Line2": [
-        2.59674,
-        -1.21799e-7,
-        0.313638,
-        0.815993
-      ],
-      "decal1Line3": [
-        0.0542077,
-        -2.57624,
-        -0.448809,
-        6.06561
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.118106,
-        0.172836,
-        0.977844,
-        -1.32961
-      ],
-      "decal1CPNormDepth1": [
-        0.118106,
-        0.172836,
-        -0.977844,
-        -1.3293
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.38232
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.258038,
-      "decal1Tex": "back_02",
-      "decal2Line0": [
-        6.12338e-8,
-        -6.12338e-8,
-        2.05467,
-        0.426305
-      ],
-      "decal2Line1": [
-        1.45287,
-        -1.45287,
-        -8.98123e-8,
-        -1.74799
-      ],
-      "decal2Line2": [
-        6.12338e-8,
-        -6.12338e-8,
-        -2.05467,
-        0.573694
-      ],
-      "decal2Line3": [
-        1.45287,
-        -1.45287,
-        8.98123e-8,
-        -1.74799
-      ],
-      "decal2HaveCP": true,
-      "decal2CPNormDepth": [
-        0.707107,
-        0.707107,
-        0.0,
-        -2.65059
-      ],
-      "decal2CPNormDepth1": [
-        -0.707107,
-        -0.707107,
-        -0.0,
-        2.64022
-      ],
-      "decal2RotScale": [
-        1.5708,
-        0.486697
-      ],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2OppositeMirrored": false,
-      "decal2WidthBox": 0.240443,
-      "decal2Tex": "usa_tank_emblem_09"
-    },
-    "winter": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [
-        2.79056,
-        -1.21979e-7,
-        0.00000909701,
-        -1.45636
-      ],
-      "decal0Line1": [
-        -1.22207e-7,
-        -2.79056,
-        0.0000699526,
-        4.70783
-      ],
-      "decal0Line2": [
-        -2.79056,
-        -1.21979e-7,
-        0.000009097,
-        2.45636
-      ],
-      "decal0Line3": [
-        1.21751e-7,
-        -2.79056,
-        -0.0000699526,
-        4.70783
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.00000325992,
-        -0.0000250676,
-        -1.0,
-        -1.32499
-      ],
-      "decal0CPNormDepth1": [
-        0.00000325992,
-        -0.0000250676,
-        1.0,
-        -1.32499
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.358351
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.212921,
-      "decal0Tex": "back_02",
-      "decal1Line0": [
-        -2.79108,
-        -1.22002e-7,
-        0.00000922012,
-        2.60765
-      ],
-      "decal1Line1": [
-        1.21769e-7,
-        -2.79108,
-        -0.0000705147,
-        4.75749
-      ],
-      "decal1Line2": [
-        2.79108,
-        -1.22002e-7,
-        0.00000922013,
-        -1.60765
-      ],
-      "decal1Line3": [
-        -1.22235e-7,
-        -2.79108,
-        0.0000705147,
-        4.75749
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.00000330342,
-        -0.0000252643,
-        1.0,
-        -1.32499
-      ],
-      "decal1CPNormDepth1": [
-        0.00000330342,
-        -0.0000252643,
-        -1.0,
-        -1.32499
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.358284
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.212485,
-      "decal1Tex": "back_02"
     }
   }
 }

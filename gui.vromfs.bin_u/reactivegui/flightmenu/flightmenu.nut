@@ -15,7 +15,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonBright, textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mergeStyles
+let { textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mergeStyles
 } = require("%rGui/components/textButton.nut")
 let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
 let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
@@ -92,7 +92,7 @@ let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBat
     : loc("msgbox/leaveBattle/giveUp"),
   [
     isGivingUp ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })
-      : textButtonBright(utf8ToUpper(loc(getCampaignPresentation(campaign).returnToHangarShortLocId)), quitMission, { hotkeys = ["^J:LB"] })
+      : textButtonCommon(utf8ToUpper(loc(getCampaignPresentation(campaign).returnToHangarShortLocId)), quitMission, { hotkeys = ["^J:LB"] })
     textButtonPrimary(utf8ToUpper(loc("btn/continueBattle")), battleResume,
       { hotkeys = [btnBEscUp] })
   ])

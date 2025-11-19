@@ -1280,6 +1280,90 @@
       "damage_k": 0.3,
       "explMat": "default"
     },
+    "transparentMetal": {
+      "bf_class": "transparentMetal",
+      "color": [
+        139,
+        103,
+        74,
+        200
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.000025,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "steel",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "metal",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "transparentWood": {
+      "bf_class": "transparentWood",
+      "color": [
+        49,
+        71,
+        86,
+        200
+      ],
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.000025,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "wood",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "wood",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
     "visibilityCamera": {
       "bf_class": "visibilityCamera"
     },
@@ -1313,6 +1397,12 @@
         "en": false
       },
       "transparentBeton": {
+        "en": false
+      },
+      "transparentMetal": {
+        "en": false
+      },
+      "transparentWood": {
         "en": false
       }
     },
