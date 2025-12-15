@@ -794,12 +794,12 @@ Hal ini bisa terjadi karena:
 "contacts/friends_online";"Friends online: %d";"Amis en ligne: %d";"Amici online: %d";"Freunde online: %d";"Amigos en línea: %d";"Друзей онлайн: %d";"Друзів у мережі: %d";"Liczba znajomych online: %d";"Amigos online: %d";"Çevrimiçi arkadaşlar: %d";"Přátelé online: %d";"Φίλοι online: %d";"Teman yang online: %d";"เพื่อนที่ออนไลน์อยู่: %d";"접속중인 친구: %d명";"在\t线\t好\t友\t数：%d";"オンラインの\tフレンド: %d";"在\t線\t好\t友：%d";;
 "contacts/friend";"Friends";"Amis";"Amici";"Freunde";"Amigos";"Друзья";"Друзі";"Znajomi";"Amigos";"Arkadaşlar";"Přátelé";"Φίλοι";"Teman";"เพื่อน";"친구";"好\t友";"フレンド";"好\t友";;
 "contacts/requestsToMe";"Friends requests";"Demandes d’amis";"Richieste di Amicizia";"Freundschaftsanfrage";"Solicitudes de amistad";"Приглашения в друзья";"Запити на додавання в друзі";"Zaproszenia do znajomych";"Pedidos de amizade";"Arkadaşlık istekleri";"Žádost o přátelství";"Αιτήματα φιλίας";"Permintaan teman";"คำขอเป็นเพื่อน";"친구 요청";"好\t友\t邀\t请";"フレンドリクエスト";"好\t友\t申\t請";;
-"contacts/myRequests";"Sent friend invitations";"Invitations envoyées";"Inviti inviati";"Versendete Einladungen";"Invitaciones enviadas";"Отправленные приглашения в друзья";"Надіслані запрошення";"Wysłane zaproszenia";"Convites enviados";"Gönderilen davetler";"Poslané pozvánky";"Προσκλήσεις που στάλθηκαν";"Undangan terkirim";"คำเชิญที่ส่งแล้ว";"보낸 요청";"已\t发\t送\t邀\t请";"送信済み\t招待状";"已\t發\t送\t邀\t請";;
+"contacts/myRequests";"Sent friend invitations";"Invitations d'ajout en ami envoyées";"Richieste d'amicizia inviate";"Freundschaftseinladungen verschickt";"Invitaciones de amistad enviadas";"Отправленные приглашения в друзья";"Надіслані запрошення в друзі";"Wysłane zaproszenia do znajomych";"Convites de amizade enviados";"Gönderilmiş arkadaşlık davetleri";"Odeslané pozvánky přátelům";"Προσκλήσεις που στάλθηκαν";"Undangan teman terkirim";"คำเชิญที่ส่งแล้ว";"친구 초대를 보냈습니다";"已\t发\t送\t的\t好\t友\t申\t请";"送信済み\tフレンド\t招待";"已\t發\t送\t的\t好\t友\t邀\t請";;
 "contacts/rejectedByMe";"Rejected requests";"Invitations rejetées";"Richieste rigettate";"Abgelehnte Anfragen";"Solicitudes rechazadas";"Отклонённые приглашения";"Відхилені запити";"Odrzucone zaproszenia";"Pedidos rejeitados";"Reddedilen davetler";"Odmítnuté žádosti";"Αιτήματα που απορρίφθηκαν";"Permintaan ditolak";"คำขอที่ปฏิเสธแล้ว";"거절한 요청";"已\t拒\t绝\t的\t邀\t请";"拒否された\tリクエスト";"已\t拒\t絕\t的\t邀\t請";;
 "contacts/recent";"Fought Together";"Combattu ensemble";"Compagni di battaglia";"Zusammen gekämpft";"Combatimos Juntos";"Сражались вместе";"Воювали разом";"Towarzysze broni";"Combateram Juntos";"Beraber Savaşılanlar";"Spolubojovníci";"Πολέμησαν μαζί";"Bertarung Bersama";"สู้ร่วมกัน";"편대한 적이 있는 사람";"组\t队\t记\t录";"戦友";"並\t肩\t作\t戰";;
 "contacts/met";"Met in Battle";"Rencontré(s) dans une bataille";"Incontrati in battaglia";"In der Schlacht getroffen";"Nos hemos enfrentado en batalla";"Встречались в бою";"Зустрічалися в бою";"Spotkani w boju";"Enfrentaram-se em Batalha";"Savaşta Karşılaşılanlar";"Setkání v bitvě";"Πολέμησαν ως αντίπαλοι";"Bertemu dalam Pertempuran";"พบกันในการต่อสู้";"전투에서 만난 사람";"战\t友\t记\t录";"戦闘で\t遭遇した\tプレイヤー";"戰\t場\t相\t遇";;
 "contacts/block";"Blacklist";"Liste noire";"Lista Nera";"Blockierliste";"Lista Negra";"Чёрный список";"Чорний список";"Czarna lista";"Lista-negra";"Kara Liste";"Černá listina";"Μαύρη λίστα";"Daftar hitam";"บัญชีดำ";"차단목록";"黑\t名\t单";"ブラックリスト";"黑\t名\t單";;
-"contacts/squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Приглашения во взвод";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";"Invitations to the squad";;
+"contacts/squad";"Invitations to the squad";"Invitations à rejoindre l'escouade";"Inviti ai plotoni";"Staffel-Einladungen";"Invitaciones al escuadrón";"Приглашения во взвод";"Запрошення до ланки";"Zaproszenia do Oddziału";"Convites para pelotão";"Filo davetleri";"Pozvánky do družstva";"Invitations to the squad";"Undangan ke skuad";"Invitations to the squad";"편대 초대";"组\t队\t邀\t请";"分隊への\t招待";"組\t隊\t邀\t請";;
 "contacts/search";"Player Search";"Rechercher un joueur";"Ricerca giocatore";"Spielersuche";"Búsqueda de Jugador";"Найти игрока";"Знайти гравця";"Wyszukaj gracza";"Procurar jogador";"Oyuncu Arama";"Hledání hráčů";"Αναζήτηση παίκτη";"Pencarian Pemain";"ค้นหาผู้เล่น";"플레이어 찾기";"搜\t索\t玩\t家";"プレイヤー\t検索";"搜\t尋\t玩\t家";;
 "contacts/searchNotFound";"No Search Results";"Aucun résultat de recherche";"Nessun risultato";"Keine Suchergebnisse";"No hay resultados de búsqueda";"Поиск не дал результатов";"Пошук не дав результатів";"Brak wyników wyszukiwania";"Não há resultados da pesquisa";"Arama Sonucu Bulunamadı";"Žádné výsledky hledání";"Δεν βρέθηκαν αποτελέσματα";"Tidak Ada Hasil Pencarian";"ไม่มีผลการค้นหา";"검색결과가 없습니다";"无\t相\t关\t结\t果";"検索結果がありません";"沒\t有\t搜\t尋\t到\t相\t關\t的\t結\t果";;
 "contacts/friendlist/add";"Add Friend";"Ajouter un ami";"Aggiungi amico";"Freund hinzufügen";"Añadir Amigo";"Добавить в друзья";"Додати в друзі";"Dodaj znajomego";"Adicionar amigo";"Arkadaş Ekle";"Přidat přítele";"Προσθήκη φίλου";"Tambahkan Teman";"เพิ่มเพื่อน";"친구 추가";"添\t加\t好\t友";"フレンドに\t追加";"增\t加\t好\t友";;
@@ -1447,24 +1447,24 @@ Kamu harus memperbarui untuk melanjutkan permainan.";"มีอัปเดต
 {addon} ({size})";"遊\t玩\t此\t模\t式\t需\t要\t額\t外\t下\t載 {count=\t附\t件}：
 {addon}\t（{size}）";;
 "msg/needUpdateAddonToPlayGameMode";"To play in this mode, you need to update {count=an add-on/add-ons}:
-{addon} ({size})";"Afin de jouer à ce mode, il vous faut mettre à jour une/des {count=extension/extensions}:
-{addon} ({size})";"Per giocare in questa modalità, devi aggiornare {count=add-on/add-on}:
-{addon} ({size})";"Um diesen Modus zu spielen, musst Du {count=ein Add-On/Add-Ons} updaten:
-{addon} ({size})";"Para jugar en este modo, necesitas actualizar un {count=addon/addons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
 {addon} ({size})";"Для игры в данный режим нужно обновить {count=дополнение/дополнения/дополнения}:
-{addon} ({size})";"Для гри в цей режим потрібно оновити {count=доповнення/доповнення/доповнень}:
-{addon} ({size})";"Aby zagrać w tym trybie, musisz zaktualizować {count=dodatek/dodatki/dodatków}:
-{addon} ({size})";"Para jogar neste modo, é necessário atualizar {count=um suplemento/alguns suplementos}:
-{addon} ({size})";"Bu modda oynayabilmek için bir {count=eklentiyi/eklentiyi} indirmen gerekiyor:
-{addon} ({size})";"Chceš-li hrát v tomto režimu, musíš si aktualizovat {count=add-on/add-ony/add-onů}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
 {addon} ({size})";"Για να παίξετε σε αυτή τη λειτουργία, πρέπει να ενημερώσετε το/τα {count=πρόσθετο/πρόσθετα}:
-{addon} ({size})";"Untuk bermain dalam mode ini, kamu harus memperbarui {count=fitur tambahan}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
 {addon} ({size})";"เพื่อเล่นในโหมดนี้ คุณต้องอัปเดต{count=ส่วนเสริม}:
-{addon} ({size})";"이 모드를 플레이하기 위해선 {count=개}의 애드온을 업데이트 해야 합니다:
-{addon} ({size})";"游\t玩\t此\t模\t式\t需\t要\t追\t加\t更\t新 {count=\t文\t件}：
-{addon}\t（{size}）";"この\tモードを\tプレイするには、\t{count=アドオン}を\tアップデートする\t必要があります：\t
-{addon} ({size})";"遊\t玩\t此\t模\t式\t需\t要\t追\t加\t更\t新 {count=\t文\t件}：
-{addon}\t（{size}）";;
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";"To play in this mode, you need to update {count=an add-on/add-ons}:
+{addon} ({size})";;
 "msg/needAddonToPlayBySquad";"You need to download {count=an add-on/add-ons} to play with the squad:
 {addon} ({size})";"Vous devez télécharger {count=an add-on/add-ons} pour jouer avec l'escouade:
 {addon} ({size})";"Devi scaricare {count=un add-on/degli add-on} per giocare in plotone:
