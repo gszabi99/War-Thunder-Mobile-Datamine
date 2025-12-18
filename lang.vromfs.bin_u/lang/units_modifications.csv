@@ -344,41 +344,41 @@ Menimbulkan damage dalam jumlah besar jika musuh menyentuhnya";"ทิ้งไ�
 "modification/protection_new_sonar";"Sonar station";"Station sonar";"Stazione sonar";"Sonarstation";"Estación de sonar";"Гидроакустика";"Сонарна станція";"Sonar";"Estação de SONAR";"Sonar istasyonu";"Sonarová stanice";"Σταθμός σόναρ";"Stasiun sonar";"สถานีโซนาร์";"소나 스테이션";"声\t呐\t设\t备";"音波探知基地";"聲\t吶\t設\t備";"max 20 symbols";
 "modification/protection_new_sonar/desc";"Detects submarines near the ship
 radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Обнаруживает подводные лодки вокруг корабля
+depth: up to 30 m";"Détecte les sous-marins à proximité du navire
+rayon: jusqu'à 6 km
+profondeur: jusqu'à 30 m";"Avvista i sommergibili vicino alla nave
+raggio: fino a 6km
+profondità: fino a 30m";"Erkennt U-Boote in der Nähe des Schiffes
+Radius: bis zu 6 km 
+Tiefe: bis zu 30 m";"Detecta submarinos cerca del barco
+radio: hasta 6 km
+profundidad: hasta 30 m";"Обнаруживает подводные лодки вокруг корабля
 Радиус: до 6 км
-Глубина: до 30 м";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Εντοπίζει υποβρύχια κοντά στο πλοίο
+Глубина: до 30 м";"Виявляє підводні човни поряд із кораблями
+радіус: до 6 км
+глибина: до 30 м";"Wykrywa okręty podwodne w pobliżu
+zasięg: do 6 km
+głębokość: do 30 m";"Deteta submarinos perto do navio
+raio: até 6 km
+profundidade: até 30 m";"Gemiye yakın denizaltıları tespit eder
+yarı çap: 6 km'ye kadar
+derinlik: 30 m'ye kadar";"Detekuje ponorky v blízkosti lodi
+poloměr: až 6 km 
+hloubka: až 30 m";"Εντοπίζει υποβρύχια κοντά στο πλοίο
 ακτίνα: έως 1,5 km 
-βάθος: έως 50 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"ตรวจจับเรือดำน้ำใกล้ๆ เรือ
+βάθος: έως 50 m";"Mendeteksi kapal selam di dekat kapal
+radius: hingga 6 km
+kedalaman: hingga 30 m";"ตรวจจับเรือดำน้ำใกล้ๆ เรือ
 รัศมี: สูงสุด 1.5 กม.
-ความลึก: สูงสุด 50 ม.";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";"Detects submarines near the ship
-radius: up to 6 km
-depth: up to 30 m";;
+ความลึก: สูงสุด 50 ม.";"함선 근처의 잠수함을 감지해낼 수 있습니다.
+범위: 최대 6km
+심도: 최대 30m";"探\t测\t舰\t艇\t周\t边\t潜\t艇\t单\t位\t的\t位\t置
+探\t测\t半\t径：\t最\t大 6 千\t米
+探\t测\t深\t度：\t最\t大 30 米";"艦船の\t辺くにある\t潜水艦を\t探知する
+半径：\t最大\t6 km 
+深度：\t最大\t30 m";"偵\t測\t船\t艦\t附\t近\t的\t潛\t艇
+半\t徑：\t最\t大 6 公\t里
+深\t度：\t最\t大 30 公\t尺";;
 "modification/protection_new_fireProtection";"Fire protection";"Protection contre l’incendie";"Sistema antincendio";"Brandschutz";"Protección contra incendios";"Защита от пожара";"Протипожежна система";"Ochrona przeciwpożarowa";"Proteção contra fogo";"Yangından korunma";"Požární ochrana";"Προστασία από φωτιά";"Proteksi kebakaran";"ทนไฟ";"방화 체계";"防\t火\t改\t造";"防火";"防\t火\t改\t造";"max 20 symbols";
 "modification/protection_new_fireProtection/desc";"Take 50% less fire damage";"Subit 50% de dégâts de feu en moins";"Si subiscono il 50% in meno di danni da incendio";"50 % weniger Feuerschaden";"Recibe un 50% menos de daño por fuego";"Снижает урон от пожара на 50%";"Зменшення шкоди від пожежі на 50%";"Otrzymuje 50% mniej obrażeń od pożaru";"Sofre menos 50% de danos de fogo";"%50 daha az yangın hasarı al";"O 50 % nižší poškození ohněm";"Αντιμετωπίστε 50% λιγότερη ζημιά από φωτιά";"Mengurangi damage akibat kebakaran sebesar 50%";"ได้รีบความเสียหายจากไฟลดลง 50%";"화재로 인한 피해가 50% 감소합니다.";"舰\t艇\t起\t火\t后\t造\t成\t的\t伤\t害\t减\t少 50%";"火災時の\tダメージを\t50%低下させる";"船\t艦\t起\t火\t後\t造\t成\t的\t傷\t害\t減\t少 50%";;
 "modification/maintanance_new_propellers";"New propellers";"Nouvelles hélices";"Nuove eliche";"Neue Propeller";"Hélices nuevas";"Новые винты";"Нові пропелери";"Nowe śruby napędowe";"Novas hélices";"Yeni pervaneler";"Nové lodní šrouby";"Νέες προπέλες";"Baling-baling baru";"ใบพัดใหม่";"새 프로펠러";"螺\t旋\t桨\t翻\t新";"新しい\tプロペラ";"螺\t旋\t槳\t翻\t新";"max 20 symbols";
