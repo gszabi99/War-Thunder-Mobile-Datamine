@@ -826,3 +826,7 @@ If a failure occurs, the operation of the electronic equipment is blocked.
 "engine_model/jumo004d";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"유모 004D";"Jumo 004D";"ユモ 004D";"Jumo 004D";;
 "engine_model/rd-20f";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"РД-20Ф";"РД-20Ф";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";;
 "armor_class/pas_1a";"Alloy PAS-1A";"Alliage PAS-1A";"Lega PAS-1A";"Legierung PAS-1A";"Aleación PAS-1A";"Сплав ПАС-1А";"Сплав ПАС-1А";"Stop PAS-1A";"Liga PAS-1A";"Alaşım PAS-1A";"Slitina PAS-1A";"Alloy PAS-1A";"Paduan PAS-1A";"Alloy PAS-1A";"PAS-1A 합금";"PAS-1A 合\t金";"合金 PAS-1A";"PAS-1A 合\t金";;
+"engine_manufacturer/iveco";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";;
+"engine_model/iveco_8262_6v";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";;
+"engine_model/di_16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";;
+"engine_model/j35-a-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";;
