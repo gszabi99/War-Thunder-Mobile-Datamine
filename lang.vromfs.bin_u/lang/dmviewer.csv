@@ -558,9 +558,9 @@ If a failure occurs, the operation of the electronic equipment is blocked.
 "radar_ld_head_on_velocity";"Head-on, velocity search";"Recherche frontale, vitesse";"Ricerca in velocità, in frontale";"Frontal, Geschwindigkeitssuche";"Búsqueda frontal, velocidad";"ППС, поиск по скорости";"Лобовий, швидкісний пошук";"Head-on, przeszukiwanie prędkości";"Head-on, velocity search";"Karşıdan, hız aramalı";"Head-on, vyhledávání rychlosti";"Head-on, velocity search";"Head-on, cari kecepatan";"Head-on, velocity search";"헤드온, 속도 탐색";"迎\t头\t攻\t击，\t相\t对\t速\t度\t搜\t索";"正面・\tVS\tモード";"迎\t頭\t攻\t擊、\t相\t對\t速\t度\t搜\t索";;
 "radar_ld_all_aspects";"All aspects";"Tous aspects";"Qualsiasi Vista";"Aufschalten aus jedem Winkel";"Todos los aspectos";"Всеракурсный";"Всеракурсна";"Dowolny aspekt";"Todos os ângulos";"Her yönden";"Všesměrová";"All aspects";"Segala arah";"All aspects";"전방위";"全\t向\t攻\t击";"オールアスペクト（全方位）";"全\t向\t攻\t擊";;
 "radar_lu";"Look-up";"Look-up";"Look-up";"Nach oben blicken";"Vista hacia arriba";"Обзор вверх";"Режим «Огляд вверх»";"Look-up";"Look-up";"Yukarı bak";"Look-up";"Look-up";"Look-up";"Look-up";"룩 업";"仰\t视";"ルックアップ\t能力";"上\t視";;
-"radar_tws";"TWS";"TWS";"TWS";"TWS";"TWS";"СНП";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";;
-"radar_tws_plus";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"СНП+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";;
-"radar_tws_esa";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"СНП ФАР";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";;
+"radar_tws";"TWS";"TWS";"TWS";"TWS";"TWS";"СНП";"СПС";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";"TWS";;
+"radar_tws_plus";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"СНП+";"СПС+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";"TWS+";;
+"radar_tws_esa";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"СНП ФАР";"СПС ФАР";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";"TWS ESA";;
 "radar_ram";"RAM";"RAM";"RAM";"RAM";"RAM";"СПР ОБЗ";"СПС ОГЛ";"RAM";"RAM";"RAM";"RAM";"RAM";"RAM";"RAM";"RAM";"空\t战\t目\t标\t分\t析\t模\t式";"RAM";"目\t標\t分\t析\t模\t式";;
 "radar_iff";"IFF";"IFF";"IFF";"IFF";"IFF";"Свой-чужой";"Система «свій — чужий»";"System identyfikacji „swój-obcy”";"IFF";"IFF";"IFF";"IFF";"IFF";"IFF";"피아식별장치";"敌\t我\t识\t别";"IFF";"敵\t我\t識\t別";;
 "radar_bvr_mode";"BVR";"BVR";"BVR";"BVR";"BVR";"ДВБ";"ПМВ";"BVR";"BVR";"BVR";"BVR";"BVR";"BVR";"BVR";"BVR";"超\t视\t距\t模\t式";"BVR";"超\t視\t距";;
@@ -826,7 +826,7 @@ If a failure occurs, the operation of the electronic equipment is blocked.
 "engine_model/jumo004d";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"Jumo 004D";"유모 004D";"Jumo 004D";"ユモ 004D";"Jumo 004D";;
 "engine_model/rd-20f";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"РД-20Ф";"РД-20Ф";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";"RD-20F";;
 "armor_class/pas_1a";"Alloy PAS-1A";"Alliage PAS-1A";"Lega PAS-1A";"Legierung PAS-1A";"Aleación PAS-1A";"Сплав ПАС-1А";"Сплав ПАС-1А";"Stop PAS-1A";"Liga PAS-1A";"Alaşım PAS-1A";"Slitina PAS-1A";"Alloy PAS-1A";"Paduan PAS-1A";"Alloy PAS-1A";"PAS-1A 합금";"PAS-1A 合\t金";"合金 PAS-1A";"PAS-1A 合\t金";;
-"engine_manufacturer/iveco";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";;
+"engine_manufacturer/iveco";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"IVECO";"依\t维\t柯";"IVECO";"威\t凱";;
 "engine_model/iveco_8262_6v";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";"8262 6V";;
 "engine_model/di_16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";"DC16";;
 "engine_model/j35-a-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";"J35-A-29";;
