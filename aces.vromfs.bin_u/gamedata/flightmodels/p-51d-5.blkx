@@ -2289,5 +2289,18 @@
       1.64058,
       -0.000424385
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_51d_a*",
+        "to": "p_51d_5_yellow_a*"
+      },
+      {
+        "from": "p_51d_n*",
+        "to": "p_51d_5_yellow_n*"
+      }
+    ]
   }
 }

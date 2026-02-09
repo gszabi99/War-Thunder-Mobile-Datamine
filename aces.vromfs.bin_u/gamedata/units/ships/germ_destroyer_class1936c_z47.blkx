@@ -8274,5 +8274,27 @@
         "to": "camo_halloween_wtm*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "destroyer_class1936c_z47_skin_c*",
+          "to": "destroyer_class1936c_z47_c*"
+        },
+        {
+          "from": "destroyer_class1936c_z47_deckhouse_skin_c*",
+          "to": "destroyer_class1936c_z47_deckhouse_c*"
+        },
+        {
+          "from": "camo_halloween_wtm*",
+          "to": "camo_hellgrau_50*"
+        },
+        {
+          "from": "camo_syntheticblackpaint*",
+          "to": "camo_navygrey_5*"
+        }
+      ]
+    }
   }
 }

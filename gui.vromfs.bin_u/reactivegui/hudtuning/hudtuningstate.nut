@@ -13,12 +13,13 @@ let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { hudUnitType } = require("%rGui/hudState.nut")
+let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
 
 
 const SAVE_ID = "hudTuning"
 const MAX_HISTORY_LEN = 200
+const VERSION = 2
 let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE, SAILBOAT]
   .reduce(@(res, v) res.__update({ [v] = true }), {})
 
@@ -27,9 +28,15 @@ let isTuningOpened = Computed(@() tuningUnitType.get() != null)
 let presetsSaved = mkWatched(persist, "presetsSaved", {})
 let hudTuningStateByUnitType = Computed(@() presetsSaved.get().map(
   function(p) {
-    let { transforms = {}, resolution = [], options = {} } = p
-    if (resolution?[1] == sh(100).tointeger() || (resolution?[1] ?? 0) <= 0)
-      return { transforms, options }
+    let { transforms = {}, resolution = [], options = {}, version = 1 } = p
+    if (resolution?[1] == sh(100).tointeger() || (resolution?[1] ?? 0) <= 0) {
+      if (version >= VERSION)
+        return { transforms, options }
+      return {
+        transforms = transforms.map(@(t) "pos" not in t ? t : t.__merge({ pos = t.pos.map(@(v) round(v).tointeger()) }))
+        options
+      }
+    }
     let mul = sh(100) / resolution[1]
     return {
       transforms = transforms.map(@(t) "pos" not in t ? t : t.__merge({ pos = t.pos.map(@(v) round(v * mul).tointeger()) }))
@@ -48,7 +55,7 @@ let history = mkWatched(persist, "history", [])
 let curHistoryIdx = Computed(@() history.get().findindex(@(h) h.ts == tuningState.get()))
 
 let canShowRadar = mkWatched(persist, "canShowRadar", true)
-let shouldShowAirTacticalMap = isGtRace
+let shouldShowAirTacticalMap = Computed(@() isGtRace.get() && isInBattle.get())
 let shouldShowRadar = Computed(@() canShowRadar.get() && !shouldShowAirTacticalMap.get())
 
 let mkEmptyTuningState = @() { transforms = {}, options = {} }
@@ -138,7 +145,7 @@ let clearTuningState = @() setTuningState(mkEmptyTuningState())
 let saveCurrentTransform = @() tuningUnitType.get() == null ? null
   : savePreset(tuningUnitType.get(),
       tuningState.get() == null ? {}
-        : tuningState.get().__merge({ resolution = [sw(100).tointeger(), sh(100).tointeger()] }))
+        : tuningState.get().__merge({ resolution = [sw(100).tointeger(), sh(100).tointeger()], version = VERSION }))
 
 function applyTransformProgress() {
   if (selectedId.get() == null || transformInProgress.get() == null)

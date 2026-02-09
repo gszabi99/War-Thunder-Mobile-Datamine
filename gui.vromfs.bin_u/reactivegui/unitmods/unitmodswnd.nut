@@ -48,8 +48,7 @@ let { mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY } = require("%rGui/st
 let panelBg = require("%rGui/components/panelBg.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-
+let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let iconSizeH = hdpxi(80)
 let iconSizeW = iconSizeH * 2.3
@@ -102,17 +101,19 @@ function bulletsCategoriesBlock() {
   let bInfoSec = bulletsSecInfo.get()
   if (bInfoSec != null) {
     let bullets = chosenBulletsSec.get()
-    let slots = array(bullets.len()).map(function(_, idx) {
-      let bSlot = bullets?[idx]
+    let slots = array(bullets.len()).map(function(_, i) {
+      let bSlot = bullets?[i]
       let bSet = bInfoSec?.bulletSets[bSlot?.name]
+      let idx = bSlot?.idx ?? i
       return {
-        id = bullets.findvalue(@(b) b.name == bSet?.id)?.idx ?? idx
+        id = idx
+        visIdx = bSlot?.visIdx ?? idx
         bInfo = bInfoSec
         bSlot
         bSet
         bTotalSteps = bulletSecTotalSteps.get()
         bStep = bulletSecStep
-        maxBullets = Computed(@() maxBulletsSecCountForExtraAmmo.get()?[idx])
+        maxBullets = Computed(@() maxBulletsSecCountForExtraAmmo.get()?[i])
         withExtraBullets = hasExtraBulletsSec
         bLeftSteps = bulletSecLeftSteps
         isOwn = isOwn.get()
@@ -320,6 +321,7 @@ function onPurchase() {
     price = { price, currencyId },
     purchase = @() buy_unit_mod(unitName, modName, currencyId, price),
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}")
+    spendingCountry = campConfigs.get()?.unitTreeNodes?[unitName].country ?? ""
   })
 }
 

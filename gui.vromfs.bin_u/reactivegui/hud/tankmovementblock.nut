@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
 let { Point2 } = require("dagor.math")
-let { TouchScreenSteeringStick } = require("wt.behaviors")
+let { TouchScreenSteeringStick, TouchScreenGamepadStick } = require("wt.behaviors")
+let { setVirtualAxisValue } = require("controls")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
-let { setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
 let { isStickActiveByStick, stickDelta } = require("%rGui/hud/stickState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { IsTracked } = require("%rGui/hud/tankState.nut")
@@ -13,6 +13,7 @@ let { setMoveControlByArrows } = require("hudState")
 let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 let stickZoneSize = evenPx(380)
 let bgRadius = evenPx(160)
@@ -148,12 +149,16 @@ let tankMoveStickBase = @(zoneSize, scale) @() {
   onChange = @(v) stickDelta.set(Point2(v.x, v.y))
 
   function onTouchBegin() {
+    if (isPlayingReplay.get())
+      return
     setVirtualAxisValue("gm_brake_left", 0)
     setVirtualAxisValue("gm_brake_right", 0)
     isStickActiveByStick.set(true)
     setMoveControlByArrows(false)
   }
   function onTouchEnd() {
+    if (isPlayingReplay.get())
+      return
     setVirtualAxisValue("gm_brake_left", 1)
     setVirtualAxisValue("gm_brake_right", 1)
     isStickActiveByStick.set(false)
@@ -192,6 +197,7 @@ function gamepadStick(scale) {
       dir.normalize()
     return {
       watch = stickDelta
+      stickDelta = stickDelta.get()
       size = 0
       pos = [pw(50.0 - 50.0 * dir.x), ph(50.0 - 50.0 * dir.y)]
       valign = ALIGN_CENTER
@@ -203,15 +209,25 @@ function gamepadStick(scale) {
 
 let gamepadAxisListener = axisListener({
   [gm_steering] = function(v) {
+    if (isPlayingReplay.get())
+        return
     stickDelta.set(Point2(-v, stickDelta.get().y))
-    setVirtualAxisValue("gm_steering", -v)
   },
   [gm_throttle] = function(v) {
+    if (isPlayingReplay.get())
+      return
     stickDelta.set(Point2(stickDelta.get().x, v))
-    setVirtualAxisValue("gm_throttle", v)
   },
-  [gm_mouse_aim_x] = @(v) setVirtualAxisValue("gm_mouse_aim_x", v),
-  [gm_mouse_aim_y] = @(v) setVirtualAxisValue("gm_mouse_aim_y", v),
+  [gm_mouse_aim_x] = function(v) {
+    if (isPlayingReplay.get())
+      return
+    setVirtualAxisValue("gm_mouse_aim_x", v)
+  },
+  [gm_mouse_aim_y] = function(v) {
+    if (isPlayingReplay.get())
+      return
+    setVirtualAxisValue("gm_mouse_aim_y", v)
+  },
 })
 
 let updateStickActive = @(delta) isStickActiveByStick.set(delta.lengthSq() > 0.04)
@@ -220,6 +236,24 @@ let tankGamepadStick = @(scale) @(){
   key = {}
   watch = [isGamepad, isPieMenuActive]
   size = array(2, scaleEven(imgBgSize, scale))
+
+  behavior = TouchScreenGamepadStick
+  touchStickAction = {
+    horizontal = "gm_steering"
+    vertical = "gm_throttle"
+  }
+  deadZoneForTurnAround = 75
+  deadZoneForStraightMove = 20
+  valueAfterDeadZone = 0.34
+  steeringTable = [
+    [12, 0],
+    [13, 0.2],
+    [60, 0.5],
+    [74, 0.9],
+    [75, 1.0]
+  ]
+  maxValueRadius = scaleEven(stickZoneSize, scale) * zoneToBgRadius
+
   function onAttach() {
     stickDelta.subscribe(updateStickActive)
     updateStickActive(stickDelta.get())

@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime } = require("%rGui/shop/shopState.nut")
+let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime
+} = require("%rGui/shop/shopState.nut")
 let { getEventPresentationId, getEventLoc, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
@@ -16,6 +17,9 @@ let currencyIdToOpen = mkWatched(persist, "currencyIdToOpen", null)
 
 let parentEventName = Computed(function() {
   let cId = currencyIdToOpen.get()
+  if (cId == null)
+    return null
+
   foreach(lbox in eventLootboxesRaw.get())
     if (lbox.currencyId == cId)
       return lbox?.meta.event_id ?? MAIN_EVENT_ID
@@ -57,13 +61,8 @@ let currencyWndOpenCount = Computed(function(prev) {
   return type(prev) == "integer" ? prev + 1 : 1
 })
 
-let isGoodsFit = @(goods, cId) "rewards" in goods
-  ? goods.rewards.len() == 1 && goods.rewards[0].gType == G_CURRENCY && goods.rewards[0].id == cId
-  : (goods.currencies?[cId] ?? 0) > 0 
-      && goods.currencies.len() == 1
-      && goods.units.len() == 0
-      && goods.unitUpgrades.len() == 0
-      && goods.items.len() == 0
+let isGoodsFit = @(goods, cId)
+  goods.rewards.len() == 1 && goods.rewards[0].gType == G_CURRENCY && goods.rewards[0].id == cId
 
 let eventCurrenciesGoods = Computed(function() {
   if (currencyId.get() == null)
@@ -71,8 +70,9 @@ let eventCurrenciesGoods = Computed(function() {
   let cId = currencyId.get()
   let exclude = finishedGoodsByTime.get()
   let notStarted = inactiveGoodsByTime.get()
+  let soon = soonGoodsByTime.get()
   return allShopGoods.get().filter(@(g, id) isGoodsFit(g, cId) && id not in exclude
-    && (!!g.meta?.isNeedPrew || g.id not in notStarted))
+    && (g.id not in notStarted || g.id in soon))
 })
 
 let buyCurrencyWndGamercardCurrencies = Computed(function() {

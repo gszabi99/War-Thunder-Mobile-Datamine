@@ -247,8 +247,10 @@ function startTutorial() {
           keys = "purchase_tutor_btn"
           needArrow = true
           function onClick() {
-            let unitName = curUnit.get().name
             let mod = isHangarUnitHasWeaponSlots.get() ? curWeaponMod.get() : curMod.get()
+            if (!mod)
+              return closeMsgBox(PURCHASE_BOX_UID)
+            let unitName = curUnit.get().name
             let modName = isHangarUnitHasWeaponSlots.get() ? curWeaponModName.get() : curMod.get().name
             let allModsCost = isHangarUnitHasWeaponSlots.get() ? curUnitAllModsSlotsCost.get() : curUnitAllModsCost.get()
             let price = getModCost(mod, allModsCost)

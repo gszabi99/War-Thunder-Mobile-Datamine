@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
@@ -43,8 +43,6 @@ let battlePassOpenCounter = mkWatched(persist, "battlePassOpenCounter", 0)
 let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
 let tutorialFreeMarkIdx = Watched(null)
-let openBattlePassWnd = @() battlePassOpenCounter.set(battlePassOpenCounter.get() + 1)
-let closeBattlePassWnd = @() battlePassOpenCounter.set(0)
 
 let seasonNumber = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? 0)
 let seasonName = Computed(@() loc($"events/name/season_{seasonNumber.get()}"))
@@ -94,6 +92,8 @@ let purchasedBpRaw = Computed(@() !isBpPurchasedByType.get()[BP_COMMON] ? BP_NON
   : !isBpPurchasedByType.get()[BP_VIP] ? BP_COMMON
   : BP_VIP)
 let purchasedBp = Computed(@() debugBp.get() ?? purchasedBpRaw.get())
+let isBpVipActive = Computed(@() purchasedBp.get() == BP_VIP)
+let isBpCommonActive = Computed(@() purchasedBp.get() == BP_COMMON)
 
 let isBpActive = Computed(@() debugBp.get() == null
   ? (activeUnlocks.get()?[bpPaidRewardsUnlock.get()?.requirement].isCompleted ?? false)
@@ -112,11 +112,11 @@ let maxStage = Computed(@() max(bpFreeRewardsUnlock.get()?.stages.top().progress
   bpPaidRewardsUnlock.get()?.stages.top().progress ?? 0))
 
 let mkBpStagesList = @() Computed(function() {
-  let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.get(), true, isBpActive.get(), curStage.get(), maxStage.get())
-  let listFreeStages = gatherUnlockStageInfo(bpFreeRewardsUnlock.get(), false, true, curStage.get(), maxStage.get())
+  let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.get(), true, isBpActive.get(), curStage.get())
+  let listFreeStages = gatherUnlockStageInfo(bpFreeRewardsUnlock.get(), false, true, curStage.get())
 
   let res = listPaidStages.extend(listFreeStages)
-  let purchaseStages = gatherUnlockStageInfo(bpPurchasedUnlock.get(), true, true, curStage.get(), maxStage.get())
+  let purchaseStages = gatherUnlockStageInfo(bpPurchasedUnlock.get(), true, true, curStage.get())
   if (purchaseStages.len() > 0) {
     let { isReceived, canReceive } = purchaseStages[0]
     res.insert(0, purchaseStages[0].__merge({
@@ -149,6 +149,14 @@ let mkBpStagesList = @() Computed(function() {
     : (((b?.loopMultiply ?? 0) <=> (a?.loopMultiply ?? 0)) || ((a?.progress ?? 0) <=> (b?.progress ?? 0))))
   fillViewInfo(res, serverConfigs.get())
   return res
+})
+
+let lastStageBpProgress = Computed(function() {
+  let { stages = [], startStageLoop = 1, periodic = false } = bpFreeRewardsUnlock.get()
+  return !periodic ? maxStage.get()
+    : isEqual(stages?[startStageLoop - 1].rewards, stages?[startStageLoop - 2].rewards)
+      ? (stages?[startStageLoop - 2].progress ?? 0) - 1
+    : (stages?[startStageLoop - 1].progress ?? 0) - 1
 })
 
 let selectedStage = mkWatched(persist, "bpSelectedStage", 0)
@@ -248,8 +256,6 @@ register_command(
 
 return {
   battlePassOpenCounter
-  openBattlePassWnd
-  closeBattlePassWnd
   isBPPurchaseWndOpened
   openBPPurchaseWnd = @() isBPPurchaseWndOpened.set(true)
   closeBPPurchaseWnd = @() isBPPurchaseWndOpened.set(false)
@@ -263,12 +269,15 @@ return {
   battlePassGoods
   isBpRewardsInProgress
   isBpSeasonActive = Computed(@() bpFreeRewardsUnlock.get() != null)
+  lastStageBpProgress
 
   mkBpStagesList
   curStage
   maxStage
   selectedStage
   isBpActive
+  isBpVipActive
+  isBpCommonActive
   purchasedBp
   pointsCurStage
   bpProgressUnlock

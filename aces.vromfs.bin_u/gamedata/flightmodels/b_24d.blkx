@@ -3225,5 +3225,18 @@
       1.30877,
       -3.09129
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "b_24d_c*",
+        "to": "b_24d_camo_c*"
+      },
+      {
+        "from": "b_24d_n*",
+        "to": "b_24d_camo_n*"
+      }
+    ]
   }
 }

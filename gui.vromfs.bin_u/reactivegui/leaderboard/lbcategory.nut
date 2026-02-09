@@ -1,16 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/leaderboard/lbConst.nut" import *
 let { NUM, PLACE, NICKNAME, RATING, WIN_TEXT } = require("%rGui/leaderboard/lbDataType.nut")
+
+function getRowValue(rowData, field) {
+  local res = rowData?[field]
+  if (typeof res == "table")
+    res = res?["value_total"]
+  return res
+}
 
 function makeType(params, id) {
   let { dataType = NUM, field = id.tolower()
   } = params
   let getValue = params?.getValue
-    ?? function(rowData) {
-        local res = rowData?[field]
-        if (typeof res == "table")
-          res = res?["value_total"]
-        return res
-      }
+    ?? @(rowData) getRowValue(rowData, field)
   return {
     id
     locId = ""
@@ -89,6 +92,15 @@ let categories = {
     dataType = WIN_TEXT
     locId = "lb/wins"
     icon = "ui/gameuiskin#lb_victory_icon.svg"
+    function getValue(rowData) {
+      let battles = getRowValue(rowData, "battles") ?? 0
+      let win = getRowValue(rowData, "win") ?? 0
+      let battle_end = getRowValue(rowData, "battle_end") ?? 0
+      return battles == 0 ? RESULT_IN_PROGRESS
+        : battle_end == 0 ? RESULT_DESERTER
+        : win == 0 ? RESULT_LOSE
+        : RESULT_WIN
+    }
   }
 
   KILL = {

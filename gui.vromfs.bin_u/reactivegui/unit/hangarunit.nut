@@ -14,6 +14,7 @@ let { prevIfEqual, isEqual } = require("%sqstd/underscore.nut")
 let { decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
@@ -31,6 +32,7 @@ const MAX_DECAL_SLOTS_COUNT = 4
 let hasBgUnitsByCamp = {
   tanks = true
   tanks_new = true
+  air = true
 }
 
 let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
@@ -39,6 +41,7 @@ let loadedInfo = Watched({
   skin = hangar_get_current_unit_skin()
 })
 let loadedHangarUnitName = Computed(@() loadedInfo.get().name)
+let loadedHangarUnitSkin = Computed(@() loadedInfo.get().skin)
 let hangarUnitData = mkWatched(persist, "hangarUnitData", null)
 let hangarUnitDataBackup = mkWatched(persist, "hangarUnitDataBackup", null)
 let hangarUnitName = Computed(@() hangarUnitData.get()?.name ?? loadedHangarUnitName.get() ?? "")
@@ -153,13 +156,22 @@ let hasHangarUnitResources = mkHasUnitsResources(downloadUnitNames)
 let canReloadModel = keepref(Computed(@() !isInBattle.get() && !isInLoadingScreen.get()))
 
 let { decalsPresets } = mkDecalsPresets(hangarUnitName)
-let hangarUnitDecalPreset = Computed(@() decalsPresets.get()?[hangarUnitSkin.get()])
+let hangarUnitDecalPreset = keepref(Computed(@() decalsPresets.get()?[hangarUnitSkin.get()]))
 
 let hangarUnitDecalSlotsCount = Computed(function() {
   if (hangarUnit.get() == null)
     return MAX_DECAL_SLOTS_COUNT
-  let { isUpgraded = false, isPremium = false, decalSlotsCount = 2 } = hangarUnit.get()
-  return isUpgraded || isPremium || havePremium.get() ? MAX_DECAL_SLOTS_COUNT : decalSlotsCount
+
+  let { name, isUpgraded = false, isPremium = false, decalSlotsCount = 2 } = hangarUnit.get()
+  let { decalSkinCfg = {} } = serverConfigs.get()
+  let { skins = {} } = servProfile.get()
+
+  let unitDecalsList = decalSkinCfg?[getTagsUnitName(name)][hangarUnitSkin.get()] ?? []
+  let isSkinReceived = hangarUnitSkin.get() in skins
+
+  return isUpgraded || isPremium || havePremium.get() || (!isSkinReceived && unitDecalsList.len() > 0)
+    ? MAX_DECAL_SLOTS_COUNT
+    : decalSlotsCount
 })
 
 let hangarUnitHasLockedPremDecals = Computed(@() hangarUnitDecalSlotsCount.get() < MAX_DECAL_SLOTS_COUNT)
@@ -185,10 +197,13 @@ function setHangarUnitDecalPreset(unitName, skin, preset) {
   apply_skin_decals_blk(unitName, skin, decalTblToBlk(preset))
 }
 
-function loadModel(unitName, skin, weapPreset, decalPreset, availableDecalSlotsCount) {
-  if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
+function loadModel(unitName, skin, weapPreset, availableDecalSlotsCount) {
+  if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "") {
     
     unitName = (campMyUnits.get().findvalue(@(_) true) ?? campUnitsCfg.get().findvalue(@(_) true))?.name
+    
+    skin = ""
+  }
 
   if ((unitName ?? "") == "")
     return
@@ -198,7 +213,7 @@ function loadModel(unitName, skin, weapPreset, decalPreset, availableDecalSlotsC
     return
   }
 
-  let preset = decalPreset ?? getDecalsPresets(getTagsUnitName(unitName))?[skin]
+  let preset = getDecalsPresets(getTagsUnitName(unitName))?[skin]
   if (preset != null)
     setHangarUnitDecalPreset(getTagsUnitName(unitName), skin, preset)
   else
@@ -206,13 +221,13 @@ function loadModel(unitName, skin, weapPreset, decalPreset, availableDecalSlotsC
 
   set_allowed_decals_count(availableDecalSlotsCount)
 
-  hangar_load_model_with_skin(getTagsUnitName(unitName), skin)
+  hangar_load_model_with_skin(getTagsUnitName(unitName), false, skin)
   if (weapPreset != null)
     setHangarUnitWeaponPreset(unitName, weapPreset)
 }
 
 let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.get(), hangarUnitSkin.get(), hangarUnitPreset.get(),
-  hangarUnitDecalPreset.get(), hangarUnitDecalSlotsCount.get())
+  hangarUnitDecalSlotsCount.get())
 
 loadCurrentHangarUnitModel()
 hangarUnitName.subscribe(@(_) deferOnce(loadCurrentHangarUnitModel))
@@ -273,10 +288,10 @@ function loadBGModels() {
 
   change_one_background_model_with_skin(wasBgUnits[changedIdx].name, bgUnits[changedIdx].name, bgUnits[changedIdx].skin)
 }
-loadBGModels()
+deferOnce(loadBGModels)
 
-loadedInfo.subscribe(@(_) loadBGModels())
-hangarBgUnits.subscribe(@(_) loadBGModels())
+loadedInfo.subscribe(@(_) deferOnce(loadBGModels))
+hangarBgUnits.subscribe(@(_) deferOnce(loadBGModels))
 
 isInLoadingScreen.subscribe(function(v) {
   if (v)
@@ -317,7 +332,6 @@ let hangarBattleData = Computed(function(prev) {
     : {}
   return prevIfEqual(prev, {
     userId = myUserId.get()
-    items = modifications 
     modifications
     unit = {
       name
@@ -335,18 +349,26 @@ let hangarBattleData = Computed(function(prev) {
   })
 })
 
-hangarBattleData.subscribe(function(bd) {
+let needReloadHangarBattleData = Computed(function() {
+  let bd = hangarBattleData.get()
   let { name = null } = bd?.unit
   let lastName = lastHangarUnitBattleData.get()?.unit.name ?? name
   let hangarUnitDataName = hangarUnitData.get()?.name != null ? getTagsUnitName(hangarUnitData.get().name) : loadedHangarUnitName.get()
-  let needReload = name != null && name == lastName
+  return name != null && name == lastName
+    && hangarUnitSkin.get() == loadedHangarUnitSkin.get()
     && hangarUnitDataName == loadedHangarUnitName.get()
     && !isEqual(bd, lastHangarUnitBattleData.get())
-  if (needReload) {
-    log("[HANGAR_BATTLE_DATA] request hangar_force_reload_model on battle data change")
-    hangar_force_reload_model()
-  }
 })
+
+function reloadModelIdNeed() {
+  if (!needReloadHangarBattleData.get())
+    return
+  log("[HANGAR_BATTLE_DATA] request hangar_force_reload_model on battle data change")
+  hangar_force_reload_model()
+}
+
+hangarBattleData.subscribe(@(_) deferOnce(reloadModelIdNeed))
+needReloadHangarBattleData.subscribe(@(_) deferOnce(reloadModelIdNeed))
 
 function onReloadModel() {
   if (!canReloadModel.get())
@@ -378,6 +400,7 @@ eventbus_subscribe("onHangarModelLoaded", function(_) {
 
 return {
   loadedHangarUnitName 
+  loadedHangarUnitSkin
   hangarUnitName 
   hangarUnit 
   hangarUnitSkin
@@ -393,6 +416,7 @@ return {
   mainHangarUnitName
   lastHangarUnitBattleData
   hangarBattleData
+  needReloadHangarBattleData
 
   hasHangarUnitResources
   hasBgUnitsByCamp

@@ -1,3 +1,4 @@
+from "math" import min
 let { Fonts } = require("daRg")
 let { hdpxi } = require("screenUnits.nut")
 let { getLocalLanguage = @() "" } = require_optional("language")
@@ -15,12 +16,12 @@ let wtfont = Fonts.wtfont
 let shadeTiny = {
   fontFx = FFT_GLOW
   fontFxColor = 0xB3000000
-  fontFxFactor = hdpxi(32)
+  fontFxFactor = min(hdpxi(32), 32) 
 }
 let shade = {
   fontFx = FFT_GLOW
   fontFxColor = 0xFF000000
-  fontFxFactor = hdpxi(64)
+  fontFxFactor = 32 
 }
 
 let fontVeryVeryTiny = {
@@ -190,7 +191,7 @@ let fontsSets = {
 let sortFunc = @(a, b) a.fontSize <=> b.fontSize
 let fontsLists = fontsSets.map(@(v) v.values().sort(sortFunc))
 
-let res = { fontsLists, shadeTiny }
+let res = { fontsLists, shadeTiny, shade }
 fontsSets.each(@(set) res.__update(set))
 
 return freeze(res)

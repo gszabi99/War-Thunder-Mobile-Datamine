@@ -5,6 +5,7 @@ let { UNKNOWN, MICROSOFT, SONY, NINTENDO } = VendorId
 let { register_command } = require("console")
 let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let defGamepadPresetId = "xone"
 let vendorIdToGamepadPresetId = {
@@ -15,6 +16,7 @@ let vendorIdToGamepadPresetId = {
 
 let lastVendorId = hardPersistWatched("lastGamepadVendorId", null)
 let debugVendorId = hardPersistWatched("debugGamepadVendorId", null)
+let hasGamepadConnected = hardPersistWatched("hasGamepadConnected", isGamepad.get())
 let curVendorId = Computed(@() debugVendorId.get() ?? lastVendorId.get())
 let presetId = Computed(@() vendorIdToGamepadPresetId?[curVendorId.get()] ?? defGamepadPresetId)
 
@@ -27,13 +29,14 @@ presetId.subscribe(@(v) log("[GAMEPAD] presetId = ", v))
 let vendorIdToShow = lastVendorId.get() 
 let presetIdToShow = presetId.get() 
 
-function updateVendor(_) {
+function updateVendor(isConnected) {
   let id = getJoystickVendor()
+  hasGamepadConnected.set(isConnected)
   if (id != UNKNOWN)
     lastVendorId.set(id)
 }
-eventbus_subscribe("controls.joystickConnected", updateVendor)
-eventbus_subscribe("controls.joystickDisconnected", updateVendor)
+eventbus_subscribe("controls.joystickConnected", @(_) updateVendor(true))
+eventbus_subscribe("controls.joystickDisconnected", @(_) updateVendor(false))
 
 function reloadVmIfNeed() {
   if (presetId.get() != presetIdToShow)
@@ -54,4 +57,5 @@ VendorId.each(@(id, name) register_command(
 return {
   gamepadVendor = vendorIdToShow
   gamepadPreset = presetIdToShow
+  hasGamepadConnected
 }

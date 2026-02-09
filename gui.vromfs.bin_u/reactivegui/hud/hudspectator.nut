@@ -19,7 +19,8 @@ let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let { isInSpectatorMode } = require("%rGui/hudState.nut")
 let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
 let { playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
-let { hudWhiteColor, hudBlackColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor, hudAshGrayColor } = require("%rGui/style/hudColors.nut")
+let { hudWhiteColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor, hudAshGrayColor
+} = require("%rGui/style/hudColors.nut")
 
 
 let bgButtonColor = hudGraphiteColor
@@ -120,10 +121,7 @@ let watchedHeroLabel = @() {
   rendObj = ROBJ_TEXT
   text = watchedHeroName.get()
   color = watchedHeroColor.get()
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(48)
-  fontFxColor = hudBlackColor
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 let spectatorControlsBlock = {
   hplace = ALIGN_CENTER

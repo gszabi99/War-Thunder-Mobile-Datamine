@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
 let { getLocNameDefault, mkGoodsDefault } = require("%rGui/shop/goodsView/goodsDefault.nut")
+let { getLocNameDecal, mkGoodsDecal } = require("%rGui/shop/goodsView/goodsDecal.nut")
 let { getLocNameGold, mkGoodsGold } = require("%rGui/shop/goodsView/goodsGold.nut")
 let { getLocNameWp, mkGoodsWp } = require("%rGui/shop/goodsView/goodsWp.nut")
 let { getLocNamePlatinum, mkGoodsPlatinum } = require("%rGui/shop/goodsView/goodsPlatinum.nut")
@@ -32,6 +33,7 @@ let locNameGetters = {
   [SGT_PREMIUM] = getLocNamePremium,
   [SGT_UNIT] = getLocNameUnit,
   [SGT_SKIN] = getLocNameSkin,
+  [SGT_DECALS] = getLocNameDecal,
   [SGT_CONSUMABLES] = getLocNameConsumables,
   [SGT_LOOTBOX] = getLocNameLootbox,
   [SGT_BOOSTERS] = getLocNameBooster,
@@ -48,6 +50,7 @@ let constructors = {
   [SGT_PREMIUM] = mkGoodsPremium,
   [SGT_UNIT] = mkGoodsUnit,
   [SGT_SKIN] = mkGoodsSkin,
+  [SGT_DECALS] = mkGoodsDecal,
   [SGT_CONSUMABLES] = mkGoodsConsumables,
   [SGT_LOOTBOX] = mkGoodsLootbox,
   [SGT_BOOSTERS] = mkGoodsBooster,

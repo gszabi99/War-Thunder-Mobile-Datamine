@@ -103,6 +103,12 @@ struct EventOnZoneCapture
   unitId : int
   capturePart : float
 
+[cpp_event(broadcast)]
+struct EventAddScore
+  playerId : uint8
+  unitId : int
+  value : float
+  reason : string
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdGetPlayersStats {}

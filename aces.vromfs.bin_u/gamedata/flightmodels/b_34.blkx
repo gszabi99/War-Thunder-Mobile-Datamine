@@ -2529,5 +2529,18 @@
       1.70536,
       -3.15238
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ventura_b_34_raf_a*",
+        "to": "b_34_blue_a*"
+      },
+      {
+        "from": "ventura_b_34_raf_n*",
+        "to": "b_34_blue_n*"
+      }
+    ]
   }
 }

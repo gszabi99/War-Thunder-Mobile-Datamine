@@ -116,12 +116,15 @@ function getUnitTagsBlk(commonData) {
 }
 
 function findBlockByName(blk, name) {
-  if (blk.getBlockByName(name) != null)
-    return true
-  for (local b = 0; b < blk.blockCount(); b++)
-    if (callee()(blk.getBlock(b), name))
-      return true
-  return false
+  let subBlk = blk.getBlockByName(name)
+  if (subBlk != null)
+    return subBlk
+  for (local b = 0; b < blk.blockCount(); b++) {
+    let childBlk = callee()(blk.getBlock(b), name)
+    if (childBlk != null)
+      return childBlk
+  }
+  return null
 }
 
 function countBlocksByName(blk, name) {
@@ -259,7 +262,7 @@ function mkTankCrewMemberDesc(partType, params, commonData) {
   let { unitBlk, simUnitType } = commonData
   let partName = params.name
   let desc = []
-  if (simUnitType == S_TANK) {
+  if (simUnitType == S_TANK && unitBlk?.tank_crew) {
     let memberBlk = getTankCrewMemberBlk(unitBlk.tank_crew, partName)
     if (memberBlk != null) {
       let memberRole = tankCrewMemberToRole[partType]
@@ -295,7 +298,9 @@ function mkEngineDesc(_partType, params, commonData) {
     let infoBlk = findAnyModEffectValueBlk(commonData, "engine") ?? unitBlk?.VehiclePhys.engine
     if (infoBlk) {
       let engineModelName = getEngineModelName(infoBlk)
-      desc.append(engineModelName)
+      let addEngineName = params?.isAddEngineName ?? true
+      if (addEngineName)
+        desc.append(engineModelName)
 
       let engineConfig = []
       let engineType = infoBlk?.type ?? (engineModelName != "" ? "diesel" : "")
@@ -331,7 +336,9 @@ function mkEngineDesc(_partType, params, commonData) {
         partIndex-- 
 
         let infoBlk = getInfoBlk(partName, getUnitTagsBlk(commonData), unitBlk)
-        desc.append(getEngineModelName(infoBlk))
+        let addEngineName = params?.isAddEngineName ?? true
+        if (addEngineName)
+          desc.append(getEngineModelName(infoBlk))
 
         let enginePartId = infoBlk?.part_id ?? $"Engine{partIndex}"
         let engineTypeId = "".concat("EngineType", fmBlk?[enginePartId].Type ?? -1)
@@ -1402,7 +1409,7 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
     }
   }
 
-  let isSearchRadar = findBlockByName(sensorPropsBlk, "addTarget")
+  let isSearchRadar = findBlockByName(sensorPropsBlk, "addTarget") != null
 
   local anglesFinder = false
   local iff = false
@@ -1471,14 +1478,37 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
 
   let surfaceSearch = gtm || sea || gmti || gtmAndSea
 
-  let hasRam = findBlockByName(sensorPropsBlk, "ram")
-  let hasTwsEsa = !hasRam && findBlockByName(sensorPropsBlk, "addTargetTrack")
-  let hasTwsPlus = !hasRam && !hasTwsEsa && findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
-  let hasTws = !hasRam && !hasTwsEsa && !hasTwsPlus && findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
-  let isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
-  let hasSARH = findBlockByName(sensorPropsBlk, "setIllumination")
-  let hasMG = findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
+  let hasRam = findBlockByName(sensorPropsBlk, "ram") != null
+
+  local processTargetsOfInterestBlk = null
+  local hasTwsEsa = false
+  if (!hasRam) {
+    let addTargetTrackBlk = findBlockByName(sensorPropsBlk, "addTargetTrack")
+    if (addTargetTrackBlk != null) {
+      processTargetsOfInterestBlk = addTargetTrackBlk.getBlockByName("actions")?.getBlockByName("updateTargetOfInterest")
+      if (processTargetsOfInterestBlk != null)
+        hasTwsEsa = true;
+    }
+  }
+  local hasTwsPlus = false
+  if (!hasRam && !hasTwsEsa) {
+    processTargetsOfInterestBlk = findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
+    if (processTargetsOfInterestBlk != null)
+      hasTwsPlus = true
+  }
+  local hasTws = false
+  if (!hasRam && !hasTwsEsa && !hasTwsPlus) {
+    processTargetsOfInterestBlk = findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
+    if (processTargetsOfInterestBlk != null)
+      hasTws = true
+  }
+  let twsTargetsMax = processTargetsOfInterestBlk?.getInt("limit", 0) ?? 0
+
+  let isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest") != null
+  let hasSARH = findBlockByName(sensorPropsBlk, "setIllumination") != null
+  let hasMG = findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut") != null
   let datalinkChannelsNum = sensorPropsBlk.getInt("weaponTargetsMax", 0)
+  let launchedMissilesPredictedPositionsMax = sensorPropsBlk.getInt("launchedMissilesPredictedPositionsMax", 0)
 
   local radarType = ""
   if (isRadar)
@@ -1582,11 +1612,11 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
   if (iff)
     desc.append("".concat(indent, loc("radar_iff")))
   if (isSearchRadar && hasTws)
-    desc.append("".concat(indent, loc("radar_tws")))
+    desc.append("".concat(indent, loc("radar_tws"), colon, twsTargetsMax))
   if (isSearchRadar && hasTwsPlus)
-    desc.append("".concat(indent, loc("radar_tws_plus")))
+    desc.append("".concat(indent, loc("radar_tws_plus"), colon, twsTargetsMax))
   if (isSearchRadar && hasTwsEsa)
-    desc.append("".concat(indent, loc("radar_tws_esa")))
+    desc.append("".concat(indent, loc("radar_tws_esa"), colon, twsTargetsMax))
   if (isSearchRadar && hasRam)
     desc.append("".concat(indent, loc("radar_ram")))
   if (isTrackRadar) {
@@ -1596,7 +1626,7 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
     let hasACM = findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
     if (hasACM)
       desc.append("".concat(indent, loc("radar_acm_mode")))
-    let hasHMD = findBlockByName(sensorPropsBlk, "designateHelmetTarget")
+    let hasHMD = (findBlockByName(sensorPropsBlk, "designateHelmetTarget") != null)
     if (hasHMD)
       desc.append("".concat(indent, loc("radar_hms_mode")))
     let nctrTargetTypes = countBlocksByName(sensorPropsBlk, "targetTypeId")
@@ -1608,6 +1638,8 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       desc.append("".concat(indent, loc("radar_mg")))
     if (datalinkChannelsNum > 0)
       desc.append("".concat(indent, loc("radar_dl_channels"), colon, round(datalinkChannelsNum)))
+    if (launchedMissilesPredictedPositionsMax > 0)
+      desc.append("".concat(indent, loc("radar_predicted_missiles"), colon, round(launchedMissilesPredictedPositionsMax)))
   }
 
   return desc
@@ -2302,6 +2334,20 @@ let mkSimpleDescByPartType = @(partType, _params, _commonData)
   { desc = [ loc($"armor_class/desc/{partType}") ] }
 
 
+function mkSupportPlaneDesc(partType, _params, commonData) {
+  let weaponInfoData = commonData?.makeWeaponInfoData(commonData.supportPlane)
+  let weaponsInfoText = weaponInfoData ? commonData.getWeaponInfoText(commonData.supportPlane, weaponInfoData) : null
+
+  return {
+    partLocId = " ".concat(
+      loc($"armor_class/{partType}"),
+      loc($"{commonData.supportPlane.name}_shop")
+    ),
+    desc = weaponsInfoText ? [weaponsInfoText] : null
+  }
+}
+
+
 
 return {
   
@@ -2348,4 +2394,14 @@ return {
   mkElectronicEquipmentDesc
   mkPowerSystemDesc
   mkSimpleDescByPartType
+  mkSupportPlaneDesc
+  getInfoBlk
+
+  getRadarSensorType
+  getPartLocNameByBlkFile
+  findBlockByNameWithParamValue
+  findParamValue
+  getUnitSensorsList
+  mkRwrTexts
+  mkMlwsTexts
 }

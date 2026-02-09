@@ -2,10 +2,18 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 
 
 let hasPenaltyStatus = Watched({})
-let penalties = Computed(@() servProfile.get()?.penalties ?? {})
+let penalties = Computed(function() {
+  let basePenalties = servProfile.get()?.penalties ?? {}
+  let res = clone basePenalties
+  foreach (k, v in basePenalties)
+    if (k in campaignPresentations)
+      res[getCampaignPresentation(k).campaign] <- v
+  return res
+})
 
 function updatePenaltyStatus() {
   if (!isServerTimeValid.get()) {

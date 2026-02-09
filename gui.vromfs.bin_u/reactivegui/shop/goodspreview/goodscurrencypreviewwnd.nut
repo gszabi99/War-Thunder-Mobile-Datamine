@@ -5,6 +5,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
 } = require("%rGui/shop/goodsPreviewState.nut")
+let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice, aTimePriceFull,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
   aTimePriceStrike, opacityAnims, colorAnims, oldPriceBlock
@@ -45,15 +46,14 @@ let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTim
 let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart, skipOfferBtn)
 
 function goldInfo() {
-  let { discountInPercent = 0, rewards = [], currencies = null } = previewGoods.get()
-  local { id = null, count = null } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
-  if (currencies != null) { 
-    id = "gold"
-    count = currencies?.gold ?? 0
-  }
+  let { rewards = [] } = previewGoods.get()
+  let { id = null, count = 0 } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
+  if (id == null)
+    return { watch = previewGoods }
+  let { discountInPercent } = applyDiscount(previewGoods.get(), discountsToApply.get())
   let oldCount = (count * (1.0 - (discountInPercent / 100.0))).tointeger()
   return doubleSideGradient.__merge({
-    watch = previewGoods
+    watch = [previewGoods, discountsToApply]
     pos = [-doubleSideGradientPaddingX, 0]
     flow = FLOW_VERTICAL
     gap = hdpx(10)

@@ -87,9 +87,6 @@ let newMark = {
   children = {
     rendObj = ROBJ_TEXT
     color = 0xFFFFFFFF
-    fontFx = FFT_GLOW
-    fontFxFactor = hdpx(64)
-    fontFxColor = 0xFF000000
     text = utf8ToUpper(loc("newsWnd/new_article_mark/short"))
     vplace = ALIGN_CENTER
   }.__update(fontVeryTinyShaded)

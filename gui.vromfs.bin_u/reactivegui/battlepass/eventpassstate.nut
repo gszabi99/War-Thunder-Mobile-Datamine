@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -56,15 +56,8 @@ let epPresentation = {
   },
 }
 let getEpPresentation = @(epType) epPresentation?[epType] ?? epPresentation[EP_NONE]
-let eventPassOpenCounter = mkWatched(persist, "eventPassOpenCounter", 0)
 let isEPPurchaseWndOpened = mkWatched(persist, "isEPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
-let tutorialFreeMarkIdx = Watched(null)
-function openEventPassWnd(id) {
-  eventPassOpenCounter.set(eventPassOpenCounter.get() + 1)
-  curEventId.set(id)
-}
-let closeEventPassWnd = @() eventPassOpenCounter.set(0)
 
 let eventProgressUnlock = Computed(@() activeUnlocks.get()?[epPrograssUnlockId.get()])
 let pointsPerStage   = Computed(@() eventProgressUnlock.get()?.stages[0].progress ?? 1)
@@ -111,6 +104,8 @@ let purchasedEpRaw = Computed(@() !isEpPurchasedByType.get()?[EP_COMMON] ? EP_NO
   : !isEpPurchasedByType.get()[EP_VIP] ? EP_COMMON
   : EP_VIP)
 let purchasedEp = Computed(@() debugBp.get() ?? purchasedEpRaw.get())
+let isEpVipActive = Computed(@() purchasedEp.get() == EP_VIP)
+let isEpCommonActive = Computed(@() purchasedEp.get() == EP_COMMON)
 
 let isEpActive = Computed(@() debugBp.get() == null
   ? (activeUnlocks.get()?[eventPaidRewardsUnlock.get()?.requirement].isCompleted ?? false)
@@ -130,11 +125,11 @@ let maxStage = Computed(@() max(eventFreeRewardsUnlock.get()?.stages.top().progr
 
 
 let mkEpStagesList = @() Computed(function() {
-  let listPaidStages = gatherUnlockStageInfo(eventPaidRewardsUnlock.get(), true, isEpActive.get(), curStage.get(), maxStage.get())
-  let listFreeStages = gatherUnlockStageInfo(eventFreeRewardsUnlock.get(), false, true, curStage.get(), maxStage.get())
+  let listPaidStages = gatherUnlockStageInfo(eventPaidRewardsUnlock.get(), true, isEpActive.get(), curStage.get())
+  let listFreeStages = gatherUnlockStageInfo(eventFreeRewardsUnlock.get(), false, true, curStage.get())
 
   let res = listPaidStages.extend(listFreeStages)
-  let purchaseStages = gatherUnlockStageInfo(eventPurchasedUnlock.get(), true, true, curStage.get(), maxStage.get())
+  let purchaseStages = gatherUnlockStageInfo(eventPurchasedUnlock.get(), true, true, curStage.get())
   if (purchaseStages.len() > 0) {
     let { isReceived, canReceive } = purchaseStages[0]
     res.insert(0, purchaseStages[0].__merge({
@@ -167,6 +162,14 @@ let mkEpStagesList = @() Computed(function() {
     : (((b?.loopMultiply ?? 0) <=> (a?.loopMultiply ?? 0)) || ((a?.progress ?? 0) <=> (b?.progress ?? 0))))
   fillViewInfo(res, serverConfigs.get())
   return res
+})
+
+let lastStageEpProgress = Computed(function() {
+  let { stages = [], startStageLoop = 1, periodic = false } = eventFreeRewardsUnlock.get()
+  return !periodic ? maxStage.get()
+    : isEqual(stages?[startStageLoop - 1].rewards, stages?[startStageLoop - 2].rewards)
+      ? (stages?[startStageLoop - 2].progress ?? 0) - 1
+    : (stages?[startStageLoop - 1].progress ?? 0) - 1
 })
 
 let selectedStage = mkWatched(persist, "epSelectedStage", 0)
@@ -266,9 +269,6 @@ register_command(
 
 return {
   eventBgImage = Computed(@() gmEventPresentation(curEventId.get()).bgImage )
-  eventPassOpenCounter
-  openEventPassWnd
-  closeEventPassWnd
   isEPPurchaseWndOpened
   openEPPurchaseWnd = @() isEPPurchaseWndOpened.set(true)
   closeEPPurchaseWnd = @() isEPPurchaseWndOpened.set(false)
@@ -284,12 +284,15 @@ return {
   eventPassGoods
   isEpRewardsInProgress
   isEpSeasonActive = Computed(@() eventFreeRewardsUnlock.get() != null)
+  lastStageEpProgress
 
   mkEpStagesList
   curStage
   maxStage
   selectedStage
   isEpActive
+  isEpVipActive
+  isEpCommonActive
   purchasedEp
   pointsCurStage
   eventProgressUnlock
@@ -302,8 +305,6 @@ return {
   curEventId
   seasonEndTime
   hasEpRewardsToReceive
-
-  tutorialFreeMarkIdx
 
   getEpIcon = @(epType, season) getEpPresentation(epType).icon(season)
   getEpName = @(epType) getEpPresentation(epType).name()

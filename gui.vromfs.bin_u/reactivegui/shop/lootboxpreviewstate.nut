@@ -14,7 +14,7 @@ function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { opened = 0, total = {} } = sProfile?.lootboxStats[lootbox?.name]
   local openingToNext = 0
   foreach (steps, fr in (lootbox?.fixedRewards ?? {})) {
-    let id = fr?.rewardId ?? fr 
+    let id = fr.rewardId
     if (steps.tointeger() > opened
         && (steps.tointeger() < openingToNext || openingToNext == 0)
         && id in rewardsCfg

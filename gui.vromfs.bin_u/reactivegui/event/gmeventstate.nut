@@ -13,6 +13,7 @@ let mustHasFinishedBattle = {
 
 let openedGmEventId = mkWatched(persist, "openedGmEventId")
 let openedGMEvenPasstId = mkWatched(persist, "openedGMEvenPasstId")
+let openedGMEvenPassCounter = mkWatched(persist, "openedGMEvenPassCounter", 0)
 let curGmList = Computed(@() separateEventModes.get()?[openedGmEventId.get()] ?? separateEventModes.get()?[openedGMEvenPasstId.get()] ?? [])
 let reqBattleMods = Computed(@() curGmList.get()?[0].reqBattleMod.split(";") ?? [])
 let hasAccessCurGmEvent = Computed(@() reqBattleMods.get().len() == 0
@@ -22,7 +23,10 @@ let hasFinishedFirstBattle = Computed(@()
   (campProfile.get()?.lastReceivedFirstBattlesRewardIds ?? []).reduce(@(res, v) max(v, res), -1) >= 0)
 
 let closeGmEventWnd = @() openedGmEventId.set(null)
-let closeGmEPWnd = @() openedGMEvenPasstId.set(null)
+function closeGmEPWnd() {
+  openedGMEvenPasstId.set(null)
+  openedGMEvenPassCounter.set(0)
+}
 
 let canOpenGmEventWnd = @(eventId, finishedFirstBattle) !mustHasFinishedBattle?[eventId] || finishedFirstBattle
 
@@ -34,6 +38,7 @@ function openGmEventWnd(eventId) {
   if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
     return openTreeEventWnd(eventId)
   if (eventsPassList.get().findvalue(@(v) v.eventName == eventId)) {
+    openedGMEvenPassCounter.set(openedGMEvenPassCounter.get() + 1)
     openedGMEvenPasstId.set(eventId)
     curEventId.set(eventId)
     return
@@ -52,7 +57,7 @@ return {
   openedGmEventId
   openedGMEvenPasstId
   isGmEventWndOpened = Computed(@() openedGmEventId.get() != null)
-  isGmEventWndEPOpened = Computed(@() openedGMEvenPasstId.get() != null)
+  openedGMEvenPassCounter
   closeGmEventWnd
   closeGmEPWnd
   openGmEventWnd

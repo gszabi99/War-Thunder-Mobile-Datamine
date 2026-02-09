@@ -2043,5 +2043,12 @@
       0.71735,
       -2.17179
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "dornier_do_17e_1_c*",
+      "to": "do_17e_black_c*"
+    }
   }
 }

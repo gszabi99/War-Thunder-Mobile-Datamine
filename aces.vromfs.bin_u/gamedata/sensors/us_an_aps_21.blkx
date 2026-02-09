@@ -9,6 +9,12 @@
       "rcs": 3.0,
       "range": 28000.0,
       "rangeMax": 45000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 3.3,
         "sideLobesSensitivity": -27.0
@@ -57,7 +63,6 @@
     "search": {
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "groundVehiclesAsTarget": true,
       "friendFoeId": true,
       "showCScope": true,
       "distance": {
@@ -69,14 +74,14 @@
     }
   },
   "scanPatternSets": {
-    "common": {
+    "search": {
       "scanPattern2": "search30",
       "scanPattern1": "search170"
     }
   },
   "scopeRangeSets": {
-    "common": {
-      "range1": 20000.0,
+    "search": {
+      "range1": 5000.0,
       "range2": 45000.0,
       "range3": 110000.0,
       "range4": 220000.0,
@@ -91,21 +96,43 @@
           "setEnabled": {
             "value": false
           },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": 5.0
+            }
+          ],
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": [
+            {
+              "scopeRangeSet": "search"
+            },
+            {
+              "scopeRangeSet": "search"
+            }
+          ],
           "setTransiver": {
             "transiver": "search"
           },
           "setSignal": {
             "signal": "search"
           },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 5.0
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -85.0,
               85.0
             ],
+            "azimuthWidth": 85.0,
             "elevationRange": [
               -60.0,
               60.0
@@ -114,12 +141,6 @@
               0.0,
               40000.0
             ]
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "common"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
           }
         },
         "setStandbyMode": {
@@ -128,13 +149,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "clearTargets": {}
+          }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -142,16 +159,22 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
+          },
+          "setCueEnabled": {
+            "value": true
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -230,6 +253,18 @@
           "actions": {
             "addTarget": {},
             "updateActiveDetectedTarget": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
           }
         },
         "switchSelectedTarget": {

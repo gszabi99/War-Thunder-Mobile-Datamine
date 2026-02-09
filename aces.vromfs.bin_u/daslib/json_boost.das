@@ -48,54 +48,80 @@ def operator ?[] (var a : json::JsonValue? ==const; idx : int) : JsonValue? {
     return a != null && a.value is _array ? (a.value as _array)?[idx] ?? JVNull() : JVNull()
 }
 
+def private null_coalescing(a : json::JsonValue const?; val : auto(TT)) : TT {
+    
+    if (a != null) {
+        if (a.value is _number) {
+            return TT(a.value as _number)
+        } elif (a.value is _longint) {
+            return TT(a.value as _longint)
+        }
+    }
+    return val
+}
+
+def private null_coalescing_with_string(a : json::JsonValue const?; val : auto(TT)) : TT {
+    
+    if (a != null) {
+        if (a.value is _number) {
+            return TT(a.value as _number)
+        } elif (a.value is _longint) {
+            return TT(a.value as _longint)
+        } elif (a.value is _string) {
+            return TT(a.value as _string)
+        }
+    }
+    return val
+}
+
 def operator ??(a : json::JsonValue const?; val : double) : double {
     
-    return a != null && a.value is _number ? a.value as _number : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : float) : float {
     
-    return a != null && a.value is _number ? float(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : int8) : int8 {
     
-    return a != null && a.value is _number ? int8(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : int16) : int16 {
     
-    return a != null && a.value is _number ? int16(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : int) : int {
     
-    return a != null && a.value is _number ? int(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : int64) : int64 {
     
-    return a != null && a.value is _number ? int64(a.value as _number) : val
+    return null_coalescing_with_string(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : uint8) : uint8 {
     
-    return a != null && a.value is _number ? uint8(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : uint16) : uint16 {
     
-    return a != null && a.value is _number ? uint16(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : uint) : uint {
     
-    return a != null && a.value is _number ? uint(a.value as _number) : val
+    return null_coalescing(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : uint64) : uint64 {
     
-    return a != null && a.value is _number ? uint64(a.value as _number) : val
+    return null_coalescing_with_string(a, val)
 }
 
 def operator ??(a : json::JsonValue const?; val : bool) : bool {
@@ -120,6 +146,7 @@ def operator ?. value(var a : JsonValue? ==const) : JsValue? {
 
 [macro_function]
 def private is_json_ptr_value(td : TypeDeclPtr) {
+    
     if (td.baseType != Type.tPointer) {
         return false
     }
@@ -145,6 +172,7 @@ class private BetterJsonMacro : AstVariantMacro {
     
     
     def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
+        
         if (is_json_ptr_value(expr.value._type)) {
             var inscope vdr <- new ExprField(at = expr.at, name := "value", value <- clone_expression(expr.value))
             var inscope isv <- new ExprIsVariant(at = expr.at, name := expr.name, value <- vdr)
@@ -154,6 +182,7 @@ class private BetterJsonMacro : AstVariantMacro {
         return <- default<ExpressionPtr>
     }
     def override visitExprAsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprAsVariant>) : ExpressionPtr {
+        
         if (is_json_ptr_value(expr.value._type)) {
             var inscope vdr <- new ExprField(at = expr.at, name := "value", value <- clone_expression(expr.value))
             var inscope isv <- new ExprAsVariant(at = expr.at, name := expr.name, value <- vdr)
@@ -163,6 +192,7 @@ class private BetterJsonMacro : AstVariantMacro {
         return <- default<ExpressionPtr>
     }
     def override visitExprSafeAsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprSafeAsVariant>) : ExpressionPtr {
+        
         if (is_json_ptr_value(expr.value._type)) {
             var inscope vdr <- new ExprField(at = expr.at, name := "value", value <- clone_expression(expr.value))
             var inscope isv <- new ExprSafeAsVariant(at = expr.at, name := expr.name, value <- vdr)
@@ -183,6 +213,7 @@ class private JsonReader : AstReaderMacro {
     
     
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
+        
         append(expr.sequence, ch)
         if (ends_with(expr.sequence, "%%")) {
             let len = length(expr.sequence)
@@ -193,6 +224,7 @@ class private JsonReader : AstReaderMacro {
         }
     }
     def override visit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprReader>) : ExpressionPtr {
+        
         let seqStr = string(expr.sequence)
         var error = ""
         var json = read_json(seqStr, error)
@@ -204,7 +236,7 @@ class private JsonReader : AstReaderMacro {
 [expect_any_enum(ent), template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : auto(EnumT); defV : EnumT = default<EnumT>) : EnumT {
     
-    if (v == null || !((v.value is _string) || (v.value is _number))) {
+    if (v == null || !((v.value is _string) || (v.value is _number) || (v.value is _longint))) {
         return defV
     }
     if (v.value is _string) {
@@ -221,7 +253,7 @@ def from_JV(v : JsonValue const explicit?; ent : auto(EnumT); defV : EnumT = def
         }
         panic("not a valid enumeration {name} in {typeinfo typename(type<EnumT>)}")
     } else {
-        let intValue = int(v.value as _number)
+        let intValue = (v.value is _number) ? int(v.value as _number) : int(v.value as _longint)
         for (it in each_enum(defV)) {
             if (intValue == int(it)) {
                 return it
@@ -234,6 +266,7 @@ def from_JV(v : JsonValue const explicit?; ent : auto(EnumT); defV : EnumT = def
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : string; defV : string = "") {
+    
     if (v == null || !(v.value is _string)) {
         return defV
     } else {
@@ -243,6 +276,7 @@ def from_JV(v : JsonValue const explicit?; ent : string; defV : string = "") {
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : bool; defV : bool = false) {
+    
     if (v == null || !(v.value is _bool)) {
         return defV
     } else {
@@ -252,109 +286,86 @@ def from_JV(v : JsonValue const explicit?; ent : bool; defV : bool = false) {
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : float; defV : float = 0.) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return float(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : double; defV : double = 0.lf) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return v.value as _number
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : int; defV : int = 0) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return int(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : uint; defV : uint = 0u) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return uint(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : int64; defV : int64 = 0l) {
-    if (v == null) {
-        return defV
-    } elif (v.value is _number) {
-        return int64(v.value as _number)
-    } elif (v.value is _string) {
-        return to_int64(v.value as _string)
-    } else {
-        return defV
-    }
+    
+    return null_coalescing_with_string(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : uint64; defV : uint64 = 0ul) {
-    if (v == null) {
-        return defV
-    } elif (v.value is _number) {
-        return uint64(v.value as _number)
-    } elif (v.value is _string) {
-        return to_uint64(v.value as _string, true)
-    } else {
-        return defV
-    }
+    
+    return null_coalescing_with_string(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : int8; defV : int8 = int8(0)) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return int8(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : uint8; defV : uint8 = uint8(0)) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return uint8(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : int16; defV : int16 = int16(0)) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return int16(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : uint16; defV : uint16 = uint16(0)) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return uint16(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
 }
 
 [generic, template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : bitfield; defV : bitfield = bitfield()) {
-    if (v == null || !(v.value is _number)) {
-        return defV
-    } else {
-        return bitfield(v.value as _number)
-    }
+    
+    return null_coalescing(v, defV)
+}
+
+[generic, template(ent), unused_argument(ent)]
+def from_JV(v : JsonValue const explicit?; ent : bitfield : uint8 < >; defV : bitfield8 = bitfield8()) {
+    
+    return null_coalescing(v, defV)
+}
+
+[generic, template(ent), unused_argument(ent)]
+def from_JV(v : JsonValue const explicit?; ent : bitfield : uint16 < >; defV : bitfield16 = bitfield16()) {
+    
+    return null_coalescing(v, defV)
+}
+
+[generic, template(ent), unused_argument(ent)]
+def from_JV(v : JsonValue const explicit?; ent : bitfield : uint64 < >; defV : bitfield64 = bitfield64()) {
+    
+    return null_coalescing(v, defV)
 }
 
 [expect_any_vector_type(v)]
@@ -371,6 +382,7 @@ def JV(v : auto(VecT)) {
 
 [expect_any_vector_type(ent), template(ent), unused_argument(ent)]
 def from_JV(v : JsonValue const explicit?; ent : auto(VecT); defV : VecT = VecT()) {
+    
     if (v == null) {
         return defV
     }
@@ -387,6 +399,7 @@ def from_JV(v : JsonValue const explicit?; ent : auto(VecT); defV : VecT = VecT(
 
 [template(anything), unused_argument(anything)]
 def from_JV(v : JsonValue const explicit?; anything : table< auto(KT); auto(VT) >) {
+    
     var ret : table<KT; VT>
     if (v == null || !(v.value is _object)) {
         return <- ret
@@ -401,14 +414,15 @@ def from_JV(v : JsonValue const explicit?; anything : table< auto(KT); auto(VT) 
 }
 
 struct public JsonFieldState {
-    argName : string
-    enumAsInt : bool
-    unescape : bool
-    embed : bool
-    optional : bool
+    argName : string        
+    enumAsInt : bool        
+    unescape : bool         
+    embed : bool            
+    optional : bool         
 }
 
 def public parse_json_annotation(name : string; annotation : array<tuple<name : string; data : RttiValue>>) : JsonFieldState {
+    
     var fieldState : JsonFieldState
     fieldState.argName = name
     for (ann in annotation) {
@@ -429,6 +443,8 @@ def public parse_json_annotation(name : string; annotation : array<tuple<name : 
 
 [unused_argument(anything)]
 def from_JV(v : JsonValue const explicit?; anything : auto(TT)) {
+    
+    
     static_if (typeinfo is_dim(anything)) {
         var ret : TT[typeinfo dim(anything)]
         if (v == null || !(v.value is _array)) {
@@ -496,11 +512,12 @@ def from_JV(v : JsonValue const explicit?; anything : auto(TT)) {
             return <- ret
         }
         let vv : JsonValue? = (v.value as _object)?["$variant"] ?? default<JsonValue?>
-        if (vv == null || !(vv.value is _number)) {
+        if (vv == null || !((vv.value is _number) || (vv.value is _longint))) {
             return <- ret
         }
+        let index = (vv.value is _number) ? int(vv.value as _number) : int(vv.value as _longint)
         unsafe {
-            set_variant_index(ret, int(vv.value as _number))
+            set_variant_index(ret, index)
         }
         apply(ret) <| $(name : string; var field) {
             (v as _object) |> get(name) <| $(val) {
@@ -513,55 +530,9 @@ def from_JV(v : JsonValue const explicit?; anything : auto(TT)) {
     }
 }
 
-def JV(v : float) {
-    return new JsonValue(value <- JsValue(_number = double(v)))
-}
-
-def JV(v : int) {
-    return new JsonValue(value <- JsValue(_number = double(v)))
-}
-
-def JV(v : bitfield) {
-    return new JsonValue(value <- JsValue(_number = double(v)))
-}
-
-def JV(val : int8) : JsonValue? {
-    return new JsonValue(value <- JsValue(_number = double(val)))
-}
-
-def JV(val : uint8) : JsonValue? {
-    return new JsonValue(value <- JsValue(_number = double(val)))
-}
-
-def JV(val : int16) : JsonValue? {
-    return new JsonValue(value <- JsValue(_number = double(val)))
-}
-
-def JV(val : uint16) : JsonValue? {
-    return new JsonValue(value <- JsValue(_number = double(val)))
-}
-
-def JV(val : uint) : JsonValue? {
-    return new JsonValue(value <- JsValue(_number = double(val)))
-}
-
-def JV(val : int64) : JsonValue? {
-    if (val < int64(INT_MIN) || val > int64(INT_MAX)) {
-        return new JsonValue(value <- JsValue(_string = "{val}"))
-    } else {
-        return new JsonValue(value <- JsValue(_number = double(val)))
-    }
-}
-
-def JV(val : uint64) : JsonValue? {
-    if (val > uint64(UINT_MAX)) {
-        return new JsonValue(value <- JsValue(_string = "{val}"))
-    } else {
-        return new JsonValue(value <- JsValue(_number = double(val)))
-    }
-}
-
 def JV(value : auto(TT)) : JsonValue? {
+    
+    
     static_if (typeinfo is_dim(value)) {
         var arr : array<JsonValue?>
         for (t in value) {
@@ -674,40 +645,47 @@ def JV(value : auto(TT)) : JsonValue? {
     }
 }
 
-
 def JV(val1; val2) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2)])
 }
 
 def JV(val1; val2; val3) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3)])
 }
 
 def JV(val1; val2; val3; val4) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4)])
 }
 
 def JV(val1; val2; val3; val4; val5) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5)])
 }
 
 def JV(val1; val2; val3; val4; val5; val6) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5), _::JV(val6)])
 }
 
 def JV(val1; val2; val3; val4; val5; val6; val7) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5), _::JV(val6), _::JV(val7)])
 }
 
 def JV(val1; val2; val3; val4; val5; val6; val7; val8) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5), _::JV(val6), _::JV(val7), _::JV(val8)])
 }
 
 def JV(val1; val2; val3; val4; val5; val6; val7; val8; val9) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5), _::JV(val6), _::JV(val7), _::JV(val8), _::JV(val9)])
 }
 
 def JV(val1; val2; val3; val4; val5; val6; val7; val8; val9; val10) : JsonValue? {
+    
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5), _::JV(val6), _::JV(val7), _::JV(val8), _::JV(val9), _::JV(val10)])
 }
-

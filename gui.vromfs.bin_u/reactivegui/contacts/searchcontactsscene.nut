@@ -2,21 +2,21 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { searchContactsResult, isSearchInProgress, searchContacts, searchedNick, clearSearchData
 } = require("%rGui/contacts/contactsState.nut")
-let { floatingTextInput, floatingTextInputHeight } = require("%rGui/components/textInput.nut")
+let { floatingTextInput } = require("%rGui/components/textInput.nut")
 let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 let mkContactRow = require("%rGui/contacts/mkContactRow.nut")
 let { mkContactActionBtnPrimary, mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
-let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,
-  INVITE_TO_SQUAD, REVOKE_INVITE, PROFILE_VIEW
+let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, PROFILE_VIEW
 } = require("%rGui/contacts/contactActions.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
 
-let searchIconSize = hdpxi(60)
+let searchIconSize = hdpxi(40)
 let gap = hdpx(24)
+let textInputHeight = hdpx(60)
 
 let onChangeDelay = 0.8 
 let searchName = Watched("")
@@ -42,7 +42,7 @@ let searchIcon = {
 }
 
 let nameInput = floatingTextInput(searchName, {
-  ovr = { size = [flex(), floatingTextInputHeight] }
+  ovr = { size = [flex(), textInputHeight] }
   onReturn = startSearch
   mkEditContent = @(_, inputComp) {
     size = flex()
@@ -57,7 +57,7 @@ let nameInput = floatingTextInput(searchName, {
 })
 
 let resetBtn = {
-  size = [floatingTextInputHeight, floatingTextInputHeight]
+  size = [textInputHeight, textInputHeight]
   rendObj = ROBJ_SOLID
   color = 0x990C1113
   children = closeWndBtn(
@@ -65,11 +65,11 @@ let resetBtn = {
       clearSearchData()
       searchName.set(searchedNick.get() ?? "")
     },
-    { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
+    { size = evenPx(30), vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
 }
 
 let searchBlock = {
-  size = [flex(), floatingTextInputHeight]
+  size = [flex(), textInputHeight]
   flow = FLOW_HORIZONTAL
   gap
   children = [
@@ -79,7 +79,7 @@ let searchBlock = {
 }
 
 let pannableTopOffset = gap
-let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - floatingTextInputHeight - defButtonHeight - gap * 2,
+let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - textInputHeight - defButtonHeight - gap * 2,
   [pannableTopOffset, gradientHeightBottom])
 let scrollHandler = ScrollHandler()
 
@@ -145,7 +145,6 @@ let buttons = @() {
         mkContactActionBtn(PROFILE_VIEW, selectedUserId.get(), { hotkeys = ["^J:LT"] })
         mkContactActionBtn(REMOVE_FROM_BLACKLIST, selectedUserId.get(), { hotkeys = ["^J:RB"] })
         mkContactActionBtn(ADD_TO_BLACKLIST, selectedUserId.get(), { hotkeys = ["^J:RT"] })
-        mkContactActionBtn(REVOKE_INVITE, selectedUserId.get(), { hotkeys = ["^J:LB"] })
         mkContactActionBtnPrimary(INVITE_TO_SQUAD, selectedUserId.get(), { hotkeys = ["^J:Y"] })
         mkContactActionBtn(CANCEL_INVITE, selectedUserId.get(), { hotkeys = ["^J:RB"] })
         mkContactActionBtnPrimary(INVITE_TO_FRIENDS, selectedUserId.get(), { hotkeys = ["^J:X | Enter"] })

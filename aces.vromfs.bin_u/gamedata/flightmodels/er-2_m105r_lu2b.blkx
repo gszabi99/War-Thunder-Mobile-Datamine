@@ -2809,5 +2809,18 @@
       0.482739,
       -2.69309
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "er_2_m105r_lu2b_a*",
+        "to": "er_2_m105r_tat_late_a*"
+      },
+      {
+        "from": "er_2_m105r_lu2b_n*",
+        "to": "er_2_m105r_tat_late_n*"
+      }
+    ]
   }
 }

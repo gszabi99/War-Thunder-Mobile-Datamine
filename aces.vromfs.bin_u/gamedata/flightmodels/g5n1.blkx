@@ -4096,5 +4096,18 @@
       2.04194,
       -5.05207
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "g5n1_a*",
+        "to": "g5n1_brown_a*"
+      },
+      {
+        "from": "g5n1_n*",
+        "to": "g5n1_brown_n*"
+      }
+    ]
   }
 }

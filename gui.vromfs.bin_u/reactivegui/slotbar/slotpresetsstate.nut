@@ -52,7 +52,7 @@ let currentPresetUnits = Computed(@() curSlots.get().map(@(s) s.name))
 
 let currentPresetName = Watched("")
 
-let isOpenedPresetWnd = Watched(false)
+let isOpenedPresetWnd = mkWatched(persist, "OpenedPresetWnd" ,false)
 
 return {
   isOpenedPresetWnd

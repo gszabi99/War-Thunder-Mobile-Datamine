@@ -8,7 +8,7 @@ let { curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
 } = require("%rGui/leaderboard/lbStateBase.nut")
 let { lbCfgById } = require("%rGui/leaderboard/lbConfig.nut")
 let { lbPageRows } = require("%rGui/leaderboard/lbStyle.nut")
-let { userstatStats, seasonIntervals } = require("%rGui/unlocks/userstat.nut")
+let { userstatStats, mkSeasonInterval } = require("%rGui/unlocks/userstat.nut")
 
 
 const REFRESH_PERIOD = 10.0
@@ -36,13 +36,14 @@ let lbLastPage = Computed(function() {
   return lastPage
 })
 
+let curLbSeasonInterval = mkSeasonInterval(Computed(@() curLbCfg.get()?.lbTable))
+
 let requestDataInternal = keepref(Computed(function() {
   let { lbTable = null, sortBy = null, gameMode = "" } = curLbCfg.get()
   if (lbTable == null || sortBy == null || !isLoggedIn.get())
     return null
 
-  let curSeasonIntervals = seasonIntervals.get()?[lbTable] ?? {}
-  let { prevInterval = null, interval = null } = curSeasonIntervals
+  let { prevInterval = null, interval = null } = curLbSeasonInterval.get()
 
   let isCurSeasonActive = interval?.isActive ?? false
   let newData =  {

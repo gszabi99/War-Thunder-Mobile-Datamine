@@ -8,8 +8,10 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, HAS_UPGRADE, IS_ACTIVE } = require("%rGui/shop/goodsStates.nut")
+let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, HAS_UPGRADE, IS_ACTIVE, LIMIT_REACHED
+} = require("%rGui/shop/goodsStates.nut")
 let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
+let { discountsToApply } = require("%rGui/shop/discounts.nut")
 let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -25,6 +27,7 @@ let { withGlareEffect } = require("%rGui/components/glare.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { goodsSmallSizeW, goodsH, goodsGap } = require("%rGui/shop/shopWndConst.nut")
 let { hasVip, vipBonuses } = require("%rGui/state/profilePremium.nut")
+let { personalGoodsUnseenIds } = require("%rGui/shop/personalGoodsState.nut")
 
 let goodsW = hdpxi(555)
 let goodsSmallSize = [goodsSmallSizeW, goodsH]
@@ -37,8 +40,8 @@ let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
 
-let offerW = hdpx(332)
-let offerH = hdpx(136)
+let offerW = hdpx(308)
+let offerH = hdpx(119)
 let offerPad = [hdpx(5), hdpx(15), hdpx(10), hdpx(15)]
 let bottomPad = [hdpx(15), hdpx(20)]
 let titlePadding = hdpx(33)
@@ -285,7 +288,7 @@ function dailyBonusTag(wpMul, expMul, hasSlots) {
 
 function mkGoodsNewPopularMark(goods, state) {
   let isPopular = goods?.isPopular
-  let isNew = Computed(@() goods.id in shopUnseenGoods.get())
+  let isNew = Computed(@() goods.id in shopUnseenGoods.get() || (personalGoodsUnseenIds.get()?[goods.id] ?? false) )
   let isPurchased = Computed(@() (state.get() & ALL_PURCHASED) != 0)
 
   return @() {
@@ -331,14 +334,7 @@ let vipBonusPurchLabel = purchBonusTxt({ text = utf8ToUpper(loc("shop/item/vip_b
 vipBonusPurchLabel.fontSize = getFontSizeToFitWidth(vipBonusPurchLabel, purchBonusLabelMaxWidth, fontVeryVeryTiny.fontSize)
 
 function mkFirstPurchBonusMark(goods, state) {
-  local { id = null, gType = null, count = 0 } = goods?.firstPurchaseRewards
-  if (gType == null && ("firstPurchaseBonus" in goods)) { 
-    id = goods.firstPurchaseBonus.findindex(@(_, k) k != "premiumDays")
-    if (id != null) {
-      gType = G_CURRENCY
-      count = goods.firstPurchaseBonus?[id] ?? 0
-    }
-  }
+  let { id = null, gType = null, count = 0 } = goods?.firstPurchaseRewards[0]
   return gType == null ? null
     : function() {
         let res = { watch = state }
@@ -402,21 +398,21 @@ let mkPurchBonuses = @(goods, state) {
 
 function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
   let { discountInPercent, priceExt = null } = goods
-  let { price, currencyId } = getAdjustedPriceInfo(goods, todayPurchCount)
   let isRealCurrency = "priceText" in priceExt
-  let basePrice = discountInPercent <= 0 ? price : round(price / (1.0 - (discountInPercent / 100.0)))
-  let background = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[currencyId] ?? priceBgGradDefault
-
+  let undiscountedPrice = goods.price.price
+  let basePrice = discountInPercent <= 0 ? undiscountedPrice : round(undiscountedPrice / (1.0 - (discountInPercent / 100.0)))
+  let final = Computed(@() getAdjustedPriceInfo(goods, todayPurchCount, discountsToApply.get()))
   return @() {
-    watch = state
+    watch = [state, final]
     size = flex()
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
-    image = background
-    picSaturate = state.get() & DELAYED ? 0 : 1.0
+    image = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[final.get().currencyId] ?? priceBgGradDefault
+    picSaturate = (state.get() & (DELAYED | NOT_READY)) ? 0 : 1.0
     children = [
-      price > 0 && currencyId != "" ? mkDiscountPriceComp(basePrice, price, currencyId, CS_COMMON.__merge({fontStyle = fontMedium}))
+      final.get().price > 0 && final.get().currencyId != ""
+          ? mkDiscountPriceComp(basePrice, final.get().price, final.get().currencyId, CS_COMMON.__merge({ fontStyle = fontMedium }))
         : isRealCurrency ? txt({ text = priceExt.priceText }.__update(fontMedium))
         : null
       needDiscountTag ? mkDiscountCorner(discountInPercent) : null
@@ -436,7 +432,7 @@ let advertMark = {
   hplace = ALIGN_CENTER
 }.__update(adsButtonCounter)
 
-let purchasedPlate = {
+let mkPlate = @(text, fontStyle = fontMedium) {
   size = flex()
   rendObj = ROBJ_SOLID
   color = 0x990C1113
@@ -444,9 +440,18 @@ let purchasedPlate = {
   halign = ALIGN_CENTER
   children = {
     rendObj = ROBJ_TEXT
-    text = loc("shop/unit_bought")
-  }.__update(fontMedium)
+    text
+  }.__update(fontStyle)
 }
+
+let purchasedPlate = mkPlate(loc("shop/unit_bought"))
+let limitReachedPlate = mkPlate(loc("shop/limit_reached"))
+let tinyLimitReachedPlate = mkPlate(utf8ToUpper(loc("shop/limit_reached")), {
+    size = [hdpx(270), SIZE_TO_CONTENT],
+    rendObj = ROBJ_TEXTAREA,
+    behavior = Behaviors.TextArea,
+    halign = ALIGN_CENTER
+  }.__update(fontTinyAccentedShaded))
 
 let skipPurchasedPlate = {
   size = flex()
@@ -511,15 +516,18 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true, t
   return @() {
     watch = state
     size = flex()
-    children = (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
-      : animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
-      : withGlareEffect(
-          pricePlateComp,
-          goodsW,
-          { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
-          { glareWidth },
-          { translateXMult = 1.5 }
-        ).__update({ size = flex() })
+    children = [
+      (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
+        : (state.get() & LIMIT_REACHED) != 0 ? limitReachedPlate
+        : animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
+        : withGlareEffect(
+            pricePlateComp,
+            goodsW,
+            { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
+            { glareWidth },
+            { translateXMult = 1.5 }
+          ).__update({ size = flex() })
+    ]
   }
 }
 
@@ -649,18 +657,29 @@ function mkOfferWrap(onClick, mkContent) {
   })
 }
 
-let fadeAnims = [
-  { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = InQuad, playFadeOut = true }
-]
-
-let mkGoodsTimeProgress = @(fValue, text) {
+let disabledBg = {
   size = flex()
   rendObj = ROBJ_SOLID
   color = 0x80000000
-  animations = fadeAnims
-  flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
+  animations = [
+    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = InQuad, playFadeOut = true }
+  ]
+}
+
+let mkAvailableIn = @(timeText, ovr = {}) {
+  size = flex()
+  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  children = [
+    txtBase.__merge({ text = loc("shop/updateIn") }, fontSmall)
+    @() txtBase.__merge({ watch = timeText, text = timeText.get() }, fontSmall)
+  ]
+}.__update(ovr)
+
+let mkGoodsTimeProgress = @(fValue, text) disabledBg.__merge({
+  flow = FLOW_VERTICAL
   gap = hdpx(20)
   padding = const [hdpx(50), 0, 0, 0]
   children = [
@@ -673,31 +692,17 @@ let mkGoodsTimeProgress = @(fValue, text) {
       bgColor = 0x33555555
       fValue = fValue.get()
     }
-    {
-      size = flex()
-      halign = ALIGN_CENTER
-      flow = FLOW_VERTICAL
-      children = [
-        txtBase.__merge({ text = loc("shop/updateIn") }, fontSmall)
-        @() txtBase.__merge({ watch = text, text = text.get() }, fontSmall)
-      ]
-    }
+    mkAvailableIn(text)
   ]
-}
+})
 
-let disabledAdsGoodsPlate = {
-  size = flex()
-  rendObj = ROBJ_SOLID
-  color = 0x80000000
-  animations = fadeAnims
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
+let disabledAdsGoodsPlate = disabledBg.__merge({
   children = textArea({
     halign = ALIGN_CENTER
     maxWidth = goodsW - titlePadding * 2
     text = loc("shop/notAvailableAds")
   }.__update(fontSmall))
-}
+})
 
 function mkCalcDailyLimitGoodsTimeProgress() {
   let sec = Computed(@() untilNextDaySec(serverTime.get(), dayOffset.get()))
@@ -732,12 +737,33 @@ function mkFreeAdsGoodsTimeProgress(goods) {
   return mkGoodsTimeProgress(fValue, timeText)
 }
 
+function mkSoonGoodsAvailableTime(goods, state) {
+  let { showTimeBeforeActivate = 0, timeRanges = [] } = goods
+  if (showTimeBeforeActivate <= 0)
+    return null
+  let needTimer = Computed(@() (state.get() & NOT_READY) != 0)
+  let timeLeftText = Computed(function() {
+    if (!needTimer)
+      return ""
+    let time = serverTime.get()
+    local nextTime = timeRanges.findvalue(@(tr) tr.start > time)?.start ?? 0
+    let timeLeft = nextTime - time
+    return timeLeft <= 0 ? "" : secondsToHoursLoc(timeLeft)
+  })
+  return @() !needTimer.get() ? { watch = needTimer }
+    : disabledBg.__merge({
+        watch = needTimer
+        children = mkAvailableIn(timeLeftText, { valign = ALIGN_CENTER })
+      })
+}
+
 let mkGoodsCommonParts = @(goods, state) [
   mkGoodsNewPopularMark(goods, state)
   mkPurchBonuses(goods, state)
   mkWaitDimmingSpinner(Computed(@() (state.get() & PURCHASING) != 0))
   mkFreeAdsGoodsTimeProgress(goods)
   mkDailyLimitGoodsTimeProgress(goods)
+  mkSoonGoodsAvailableTime(goods, state)
 ]
 
 let mkOfferCommonParts = @(goods, state) [
@@ -754,11 +780,7 @@ function getGoodsTimeLeft(goods, curTime) {
     let left = endTime - curTime
     return left < 0 ? null : left
   }
-  let { timeRange = null, timeRanges = [] } = goods
-  if (timeRange != null) {
-    let left = timeRange.end - curTime
-    return left < 0 ? null : left
-  }
+  let { timeRanges = [] } = goods
   foreach (tr in timeRanges)
     if (tr.start <= curTime && tr.end >= curTime)
       return tr.end - curTime
@@ -887,16 +909,14 @@ function mkEndTimeImpl(goods, ovr = {}) {
 
 let mkEndTime = @(goods, ovr = {}) mkEndTimeImpl(goods,
   {
-    pos = (goods?.firstPurchaseRewards.len() ?? goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null 
-      : firstPuchaseBottomOffset,
+    pos = (goods?.firstPurchaseRewards.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset,
     margin = bottomPad
   }.__update(ovr))
 
 let mkGoodsLimitAndEndTime = @(goods) {
   size = FLEX_H
   margin = bottomPad
-  pos = (goods?.firstPurchaseRewards.len() ?? goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null 
-    : firstPuchaseBottomOffset
+  pos = (goods?.firstPurchaseRewards.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
@@ -905,6 +925,21 @@ let mkGoodsLimitAndEndTime = @(goods) {
     mkGoodsLimitText(goods, limitFontGrad)
   ]
 }
+
+let mkGoodsLimitAndEndTimeExt = @(goods, state) @() (state.get() & LIMIT_REACHED) != 0 ? { watch = state }
+  : {
+      watch = state
+      size = FLEX_H
+      margin = bottomPad
+      pos = (goods?.firstPurchaseRewards.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
+      halign = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      flow = FLOW_VERTICAL
+      children = [
+        mkEndTimeImpl(goods)
+        mkGoodsLimitText(goods, limitFontGrad)
+      ]
+    }
 
 return {
   goodsW
@@ -944,6 +979,8 @@ return {
   mkPricePlate
   mkSubsPricePlate
   purchasedPlate
+  limitReachedPlate
+  tinyLimitReachedPlate
   mkGoodsCommonParts
   mkOfferCommonParts
   oldAmountStrikeThrough
@@ -956,6 +993,7 @@ return {
   mkGoodsLimitText
   mkEndTime
   mkGoodsLimitAndEndTime
+  mkGoodsLimitAndEndTimeExt
   mkCanPurchase
   skipPurchasedPlate
   mkCanShowTimeProgress
@@ -967,5 +1005,6 @@ return {
   mkGoodsTimeProgress
 
   dailyBonusTag
+  disabledBg
   disabledAdsGoodsPlate
 }

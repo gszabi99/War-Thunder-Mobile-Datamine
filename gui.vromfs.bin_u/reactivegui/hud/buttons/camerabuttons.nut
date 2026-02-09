@@ -45,7 +45,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
         color = isActive(stateFlags.get()) ? colorActive : colorInactive
       }
       mkGamepadShortcutImage(shortcutId,
-        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
+        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] },
         scale)
     ]
   })

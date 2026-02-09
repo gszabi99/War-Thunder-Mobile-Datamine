@@ -42,4 +42,5 @@ return {
 
   getBaseCurrency
   sortByCurrencyId
+  currencySeasons
 }

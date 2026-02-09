@@ -1495,5 +1495,12 @@
       1.32554,
       -0.00222441
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "i_16_type_5_standard_a*",
+      "to": "i_16_type_5_silver_a*"
+    }
   }
 }

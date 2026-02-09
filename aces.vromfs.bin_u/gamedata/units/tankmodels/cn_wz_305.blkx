@@ -45,6 +45,58 @@
   "destroysTrees": true,
   "type": "typeSPAA",
   "minRelativeTankCameraThreshold": 1.48,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "ikGunner": [
     {
       "model": "chinese_gunner_char",
@@ -2229,7 +2281,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 1300.0,
@@ -2247,6 +2299,12 @@
         0.0,
         0.6,
         0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2259,11 +2317,11 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 120000.0,
       "driveGearRadius": 0.28345,
       "mainGearRatio": 0.7,
       "sideGearRatio": 6.78,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -6.0,
@@ -3056,13 +3114,14 @@
       }
     }
   },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "cn_camo_green_yellow_black_lines*"
+    }
+  },
   "defaultDecals": {
     "default": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
-    },
-    "forest": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0,
@@ -3112,7 +3171,7 @@
       "decal0Abs": true,
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.21431,
-      "decal0Tex": "ussr_numbers_6",
+      "decal0Tex": "ussr_numbers_3",
       "decal1Line0": [
         2.79015,
         -1.18884e-7,
@@ -3159,7 +3218,7 @@
       "decal1Abs": true,
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.207035,
-      "decal1Tex": "ussr_numbers_8",
+      "decal1Tex": "ussr_numbers_2",
       "decal2Line0": [
         2.79094,
         -1.18918e-7,
@@ -3206,7 +3265,7 @@
       "decal2Abs": true,
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.206151,
-      "decal2Tex": "ussr_numbers_6",
+      "decal2Tex": "ussr_numbers_3",
       "decal3Line0": [
         -2.79021,
         -1.19211e-7,
@@ -3255,12 +3314,7 @@
       "decal3WidthBox": 0.203815,
       "decal3Tex": "noak_gf_roundel"
     },
-    "winter": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
-    },
-    "forest2": {
+    "forest": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
@@ -3270,19 +3324,7 @@
     "forest": {
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "cn_camo_sand_green_black*"
-      }
-    },
-    "winter": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    "forest2": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "cn_f_green_black*"
+        "to": "ussr_camo_green*"
       }
     }
   },

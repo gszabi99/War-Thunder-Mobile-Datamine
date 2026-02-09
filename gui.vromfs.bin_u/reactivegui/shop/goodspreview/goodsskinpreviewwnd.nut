@@ -4,6 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { registerScene } = require("%rGui/navState.nut")
+let { G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_SKIN, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
   HIDE_PREVIEW_MODALS_ID
@@ -90,13 +91,14 @@ let curSelectedUnitId = Watched("")
 previewGoodsUnit.subscribe(@(v) curSelectedUnitId.set(v?.name ?? ""))
 
 let unitForShow = Computed(function() {
-  let unitName = previewGoods.get()?.skins.keys()[0]
-  if (!unitName)
+  let skinReward = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_SKIN)
+  let unitName = skinReward?.id
+  if (unitName == null)
     return null
 
+  let skin = skinReward?.subId
   local res = campUnitsCfg.get()?[unitName]
-  let skin = previewGoods.get()?.skins[unitName]
-  if (skin != null) {
+  if (res != null && skin != null) {
     res = clone res
     res.currentSkins <- clone (res?.currentSkins ?? {})
     res.currentSkins[unitName] <- skin
@@ -185,7 +187,9 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
     @() {
       watch = previewGoods
       flow = FLOW_HORIZONTAL
-      children = mkPreviewItems(previewGoods.get(), aTimePackInfoStart + aTimeFirstItemOfset)
+      children = mkPreviewItems(
+        (previewGoods.get()?.rewards ?? []).filter(@(r) r.gType not in unitRewardTypes),
+        aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]

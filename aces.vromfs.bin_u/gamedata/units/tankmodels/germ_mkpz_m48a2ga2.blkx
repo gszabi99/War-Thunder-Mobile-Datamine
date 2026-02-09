@@ -1551,6 +1551,58 @@
       0.8
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "gunConvergence": {
     "defaultDistance": 1200.0,
     "vertical": true,
@@ -2527,7 +2579,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 2500.0
@@ -2535,7 +2587,13 @@
     "tracks": {
       "animationMultiplier": 0.6381,
       "height": 0.095,
-      "width": 0.5
+      "width": 0.5,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2552,6 +2610,7 @@
       "mainGearRatio": 29.7,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 3.0,
+      "alternativeGearControl": 0.5,
       "gearRatios": {
         "ratio": [
           -1.4,

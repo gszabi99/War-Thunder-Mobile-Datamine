@@ -14,6 +14,7 @@ let allStages = [
   "stageConsent.nut"
   "stageIDFA.nut"
   "stageGoogleConsent.nut"
+  "stageTcfConsent.nut"
 ]
   .map(@(name) require($"stages/{name}"))
   .extend(require("stages/nativeOnlineStages.nut"))

@@ -1,12 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { G_DISCOUNT, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize } = require("%rGui/style/gradients.nut")
 let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
   COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB,
   progressUnlockByTab, progressUnlockBySection, curTabParams
 } = require("%rGui/quests/questsState.nut")
 let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("%rGui/quests/questsWndPage.nut")
+let { tabW, tabPadding } = require("%rGui/options/optionsStyle.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -19,8 +23,9 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { mkQuestsHeaderBtn, linkToEventWidth } = require("%rGui/quests/questsPkg.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
-let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
+let { selLineSize } = require("%rGui/components/selectedLine.nut")
+let { shopGoods, openShopWnd, isDisabledGoods, allShopGoods } = require("%rGui/shop/shopState.nut")
+let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { eventsPassList, getEventPassName, hasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
@@ -29,6 +34,9 @@ let { openPassScene, BATTLE_PASS, OPERATION_PASS } = require("%rGui/battlePass/p
 
 let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
+let tabGap = hdpx(10)
+
+let maxTabTextWidth = tabW - iconSize - tabGap - selLineSize - tabPadding[1] * 2
 
 let personalTabImageByCamp = {
   air = "ui/gameuiskin#icon_personal_air.svg"
@@ -135,7 +143,7 @@ function mkLinkToStoreBtnInfo(idx) {
                 children = hasEpRewardsToReceive.get() ? priorityUnseenMark : null
               })
         : hasGoods.get()
-          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(defaultShopCategory))
+          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(null, null, "events"))
         : lootboxInfo.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
         : null
@@ -176,15 +184,74 @@ function eventTabContent(){
   }
 }
 
+let mkTabText = @(text) @() text.get() == null ? { watch = text }
+  : {
+      watch = text
+      size = FLEX_H
+      behavior = Behaviors.Marquee
+      delay = defMarqueeDelay
+      halign = ALIGN_RIGHT
+      rendObj = ROBJ_TEXT
+      text = text.get()
+    }.__update(fontTinyAccented)
+
+function splitByCenterSpace(text) {
+  if (text == null || calc_str_box(text, fontTinyAccented)[0] <= maxTabTextWidth)
+    return [text, null]
+
+  let len = text.len();
+  let center = len / 2
+
+  let right = text.indexof(" ", center)
+  if (right == center)
+    return [text.slice(0, center), text.slice(center + 1)]
+
+  let leftBound = right == null ? 0 : 2 * center - right
+  local left = null
+  local pos = text.indexof(" ", leftBound)
+  while (pos != null && pos < center) {
+    left = pos
+    pos = text.indexof(" ", pos + 1)
+  }
+  return left != null ? [text.slice(0, left), text.slice(left + 1)]
+    : right != null ? [text.slice(0, right), text.slice(right + 1)]
+    : [text, null]
+}
+
 function mkSpecialEventTabContent(idx) {
   let endsAt = Computed(@() specialEventsOrdered.get()?[idx].endsAt)
-  let locId = Computed(@() $"events/name/{specialEventsOrdered.get()?[idx].eventName}")
+  let eventNameTexts = Computed(function() {
+    let allGoods = allShopGoods.get()
+    let servConfigs = serverConfigs.get()
+    let { eventName = null, eventId = null } = specialEventsOrdered.get()?[idx]
+    let { locId } = getEventPresentation(eventName)
+    let defaultLoc = loc(locId)
+    if (!defaultLoc.contains("{name}")) 
+      return splitByCenterSpace(defaultLoc)
+
+    let { stages = [] } = progressUnlockByTab.get()?[eventId]
+    foreach (stage in stages) {
+      let reward = getUnlockRewardsViewInfo(stage, servConfigs)
+        .findvalue(@(r) r.rType == G_DISCOUNT && !isDisabledGoods(r, allGoods, servConfigs))
+      if (reward == null)
+        continue
+      let goodsId = servConfigs?.personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == reward.id) != null)
+      let { id = null } = allGoods?[goodsId].rewards.findvalue(@(r) r.gType in unitRewardTypes)
+      if (id != null)
+        return splitByCenterSpace(defaultLoc.subst({ name = getUnitName(id, loc).replace(" ", nbsp) }))
+    }
+    return splitByCenterSpace(defaultLoc)
+  })
+  let eventNameFirstRow = Computed(@() eventNameTexts.get()?[0])
+  let eventNameSecondRow = Computed(@() eventNameTexts.get()?[1])
   let image = Computed(@() getEventPresentation(specialEventsOrdered.get()?[idx].eventName).icon)
+  let timeLeft = Computed(@() !endsAt.get() || (endsAt.get() - serverTime.get() < 0) ? null
+    : secondsToHoursLoc(endsAt.get() - serverTime.get()))
 
   return {
     size = flex()
     flow = FLOW_HORIZONTAL
-    gap = hdpx(10)
+    gap = tabGap
     children = [
       @() {
         watch = image
@@ -199,22 +266,9 @@ function mkSpecialEventTabContent(idx) {
         size = FLEX_H
         flow = FLOW_VERTICAL
         children = [
-          @() {
-            watch = locId
-            size = FLEX_H
-            halign = ALIGN_RIGHT
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            text = loc(locId.get())
-          }.__update(fontTinyAccented)
-          @() {
-            watch = [serverTime, endsAt]
-            size = FLEX_H
-            halign = ALIGN_RIGHT
-            rendObj = ROBJ_TEXT
-            text = !endsAt.get() || (endsAt.get() - serverTime.get() < 0) ? null
-              : secondsToHoursLoc(endsAt.get() - serverTime.get())
-          }.__update(fontTinyAccented)
+          mkTabText(eventNameFirstRow)
+          mkTabText(eventNameSecondRow)
+          mkTabText(timeLeft)
         ]
       }
     ]

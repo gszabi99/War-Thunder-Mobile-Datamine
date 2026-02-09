@@ -9,7 +9,8 @@ let { btnBgStyle, borderColorPushed, borderNoAmmoColor, borderColor, imageColor,
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { canZoom, isInZoom, isTrackingActive } = require("%rGui/hudState.nut")
+let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { canZoom, isInZoom, isTrackingActive, isPlayingReplay } = require("%rGui/hudState.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
@@ -399,6 +400,7 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isInDeadZone = actionItem?.inDeadzone ?? false
     let color = !isAvailable || (isWaitForAim && isInDeadZone) || isOnCd.get() ? disabledColor : hudWhiteColor
+    let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_aircraft_machine_gun.svg"
     let res = mkContinuousButtonParams(
       function onTouchBegin() {
         if (isWaitForAim && (!allowShoot.get() || isInDeadZone))
@@ -419,7 +421,7 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
         mkBtnBg(bgSize, hudLightBlackColor)
         mkCircleProgressBg(bgSize, actionItem)
         mkWeaponBtnBorder(bgSize, isAvailable, stateFlags)
-        mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_machine_gun.svg", color)
+        mkBtnImage(imgSize, image, color)
         actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color, scale)
         isWaitForAim ? mkWaitForAimIcon(scale) : null
         mkGamepadShortcutImage("ID_FIRE_GM_MACHINE_GUN", defShortcutOvr, scale)
@@ -543,9 +545,9 @@ let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, isAimReady 
   let radiusX = scaleEven(zoneRadiusX, scale)
   let radiusY = scaleEven(zoneRadiusY, scale)
 
-  return @() !hasWeapon.get() ? { watch = weapon, key = shortcutId }
+  return @() !hasWeapon.get() ? { watch = hasWeapon, key = shortcutId }
     : res.__update({
-      watch = [isDisabled, isAvailable]
+      watch = [hasWeapon, isDisabled, isAvailable]
       size = [bgSize, bgSize]
       zoneRadiusX = radiusX
       zoneRadiusY = radiusY
@@ -859,7 +861,7 @@ let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.sv
       cameraControl = true
       hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
       function onClick() {
-        if (isDisabled.get())
+        if (isDisabled.get() || isPlayingReplay.get())
           return
         if (canZoom.get())
           toggleShortcut("ID_ZOOM_TOGGLE")
@@ -954,6 +956,7 @@ let mkCircleFireworkBtn = @(aType) function(actionItem, scale) {
         count < 0 ? null : mkCountTextLeft(count, color, scale)
         mkCircleGlare(bgSize, actionItem?.id)
         mkGamepadShortcutImage("ID_FIREWORK", defShortcutOvr, scale)
+        mkConsumableSpend("firework_kit")
       ]
     }
   }
@@ -998,4 +1001,7 @@ return {
   bigButtonImgSize
   airButtonSize
   buttonAirImgSize
+
+  isWeaponAvailable
+  getWeapStateFlags
 }

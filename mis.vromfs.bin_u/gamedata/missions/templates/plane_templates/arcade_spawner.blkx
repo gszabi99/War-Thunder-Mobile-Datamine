@@ -938,7 +938,7 @@
         "varCompareInt": [
           {
             "var_value": "arcade_spawn_matcher",
-            "value": 99,
+            "value": 8,
             "comparasion_func": "more"
           },
           {
@@ -950,7 +950,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang x-x"
+          "value": "rang 9-99"
         },
         "missionMarkAsRespawnPoint": [
           {
@@ -1127,7 +1127,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 9+"
+          "value": "rang x-x"
         },
         "missionMarkAsRespawnPoint": [
           {

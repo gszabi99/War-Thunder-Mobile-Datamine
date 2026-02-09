@@ -52,9 +52,6 @@ let mkText = @(text, color = defColor) {
 
 let textProps = {
     rendObj = ROBJ_TEXT
-    fontFx = FFT_GLOW
-    fontFxFactor = 48
-    fontFxColor = 0xFF000000
     color = selectColor
   }.__update(fontMediumShaded)
 

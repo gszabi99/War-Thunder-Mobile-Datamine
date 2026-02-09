@@ -97,7 +97,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
         @() isStickActive.set(true),
         @() isStickActive.set(false),
         shortcutId),
-      mkGamepadShortcutImage(shortcutId, {pos = [pw(70), ph(-50)]})
+      mkGamepadShortcutImage(shortcutId, {pos = [0, ph(-50)]})
     ]
     transform = { scale = isStickActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]

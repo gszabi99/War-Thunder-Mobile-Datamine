@@ -229,7 +229,8 @@ function stackSecondaryWeapons(weapons) {
       res.append(clone w)
     }
     let idx = byIcon[w.iconType]
-    res[idx].count <- (res[idx]?.count ?? 0) + ((w?.count ?? 1) * (w?.weapons[0].totalBullets ?? 1))
+    res[idx].count <- (res[idx]?.count ?? 0)
+      + (w?.weapons.reduce(@(r, v) r + (w?.count ?? 1) * (v?.totalBullets ?? 1), 0) ?? w?.count ?? 1)
   }
   return res
 }

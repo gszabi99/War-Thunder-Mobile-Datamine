@@ -2007,5 +2007,18 @@
       1.28128,
       -3.72527e-9
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ki_43_1_hei_green_c*",
+        "to": "ki_43_1_hei_greenbrown_c*"
+      },
+      {
+        "from": "ki_43_1_hei_green_n*",
+        "to": "ki_43_1_hei_greenbrown_n*"
+      }
+    ]
   }
 }

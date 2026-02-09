@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1
     },
@@ -15,10 +11,14 @@
     "mission": {
       "level": "levels/guadalcanal.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Evening",
-      "weather": "clear"
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": {}
   },
@@ -26,6 +26,352 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
+    "GS_score_rewards": {
+      "isCategory": true,
+      "is_enabled": true,
+      "score_mult_init_bunkers": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_bunkers_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "bunkers - x4.5"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_bunkers_squad",
+              "t2_bunkers_squad"
+            ],
+            "scoreKillMult": 4.5
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_artillery": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_artillery_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "static artillery - x0.8"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_artillery_squad",
+              "t2_artillery_squad"
+            ],
+            "scoreKillMult": 0.8
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_aaa": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_aaa_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "static aaa - x1"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_aaa_squad",
+              "t2_aaa_squad"
+            ],
+            "scoreKillMult": 1.0
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_truck_aaa": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_truck_aaa_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "moving aaa - x1.2"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_truck_aaa_squad",
+              "t2_truck_aaa_squad"
+            ],
+            "scoreKillMult": 1.2
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_trucks": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_trucks_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "cargo trucks - x1"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_trucks_squad",
+              "t2_trucks_squad"
+            ],
+            "scoreKillMult": 1.0
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_tanks": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_tanks_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "light tanks - x2"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_tanks_squad",
+              "t2_tanks_squad"
+            ],
+            "scoreKillMult": 2.0
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_boats": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_boats_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "boats - x1"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_boats_squad",
+              "t2_boats_squad"
+            ],
+            "scoreKillMult": 1.0
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_cargo_ships": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_cargo_ships_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "cargo ships - x3"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_cargo_ships_squad",
+              "t2_cargo_ships_squad"
+            ],
+            "scoreKillMult": 3.0
+          }
+        },
+        "else_actions": {}
+      },
+      "score_mult_init_navy_ships": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "t1_navy_ships_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 5.0
+          },
+          "comment": {
+            "value": "destroyers - x6"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_navy_ships_squad",
+              "t2_navy_ships_squad"
+            ],
+            "scoreKillMult": 6.0
+          }
+        },
+        "else_actions": {}
+      }
+    },
     "basic_logic_init_template": {
       "is_enabled": true,
       "comments": "",
@@ -1055,11 +1401,11 @@
               10.0,
               15.0
             ],
+            "giveKillTo": "t2_quest_units_squad",
             "target": "t1_quest_units_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true,
-            "giveKillTo": "t2_quest_units_squad"
+            "useForTriggerFiltered": true
           },
           {
             "part": 0,
@@ -1079,11 +1425,11 @@
               10.0,
               15.0
             ],
+            "giveKillTo": "t1_quest_units_squad",
             "target": "t2_quest_units_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true,
-            "giveKillTo": "t1_quest_units_squad"
+            "useForTriggerFiltered": true
           }
         ]
       },
@@ -1166,11 +1512,11 @@
               10.0,
               15.0
             ],
+            "giveKillTo": "t2_quest_units_squad",
             "target": "t1_land_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true,
-            "giveKillTo": "t2_quest_units_squad"
+            "useForTriggerFiltered": true
           },
           {
             "part": 0,
@@ -1190,11 +1536,11 @@
               10.0,
               15.0
             ],
+            "giveKillTo": "t1_quest_units_squad",
             "target": "t2_land_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true,
-            "giveKillTo": "t1_quest_units_squad"
+            "useForTriggerFiltered": true
           }
         ]
       },
@@ -2221,6 +2567,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2281,6 +2629,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2341,6 +2691,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2401,6 +2753,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2461,6 +2815,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2521,6 +2877,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2581,6 +2939,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2641,6 +3001,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2701,6 +3063,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2761,6 +3125,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2821,6 +3187,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2881,6 +3249,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2941,6 +3311,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3001,6 +3373,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3061,6 +3435,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3121,6 +3497,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3181,6 +3559,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3241,6 +3621,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3301,6 +3683,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3361,6 +3745,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3421,6 +3807,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3481,6 +3869,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3541,6 +3931,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3601,6 +3993,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3661,6 +4055,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3721,6 +4117,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3781,6 +4179,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3841,6 +4241,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3901,6 +4303,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3961,6 +4365,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4021,6 +4427,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4081,6 +4489,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4142,6 +4552,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4202,6 +4614,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4262,6 +4676,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4322,6 +4738,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4382,6 +4800,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4442,6 +4862,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4502,6 +4924,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4562,6 +4986,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4622,6 +5048,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4682,6 +5110,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4742,6 +5172,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4802,6 +5234,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4862,6 +5296,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4922,6 +5358,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4982,6 +5420,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5042,6 +5482,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5102,6 +5544,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5162,6 +5606,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5222,6 +5668,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5282,6 +5730,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5342,6 +5792,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5402,6 +5854,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5462,6 +5916,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5522,6 +5978,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5582,6 +6040,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5642,6 +6102,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5702,6 +6164,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5762,6 +6226,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5822,6 +6288,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5882,6 +6350,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5942,6 +6412,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6002,6 +6474,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6051,7 +6525,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_player01",
             "t1_player02",
@@ -6119,7 +6592,8 @@
             "t2_player32",
             "t2_player33"
           ],
-          "object_type": "isTeamA"
+          "object_type": "isTeamA",
+          "object_marking": 0
         }
       },
       {
@@ -6147,7 +6621,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_player01",
             "t1_player02",
@@ -6215,7 +6688,8 @@
             "t2_player32",
             "t2_player33"
           ],
-          "object_type": "isTeamB"
+          "object_type": "isTeamB",
+          "object_marking": 0
         }
       },
       {
@@ -6243,7 +6717,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_player01",
             "t1_player02",
@@ -6310,7 +6783,8 @@
             "t2_player31",
             "t2_player32",
             "t2_player33"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ]

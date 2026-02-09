@@ -37,10 +37,7 @@ let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >=
     rendObj = ROBJ_TEXT
     text = $"-{round(discountPrc)}%"
     color = 0xFFFFFFFF
-    fontFx = FFT_GLOW
-    fontFxFactor = hdpxi(64)
-    fontFxColor = 0xFF000000
-  }.__update(fontSmall)
+  }.__update(fontSmallShaded)
 }.__update(ovr)
 
 let discountTagOffer = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
@@ -74,10 +71,7 @@ function discountTagUnitCtor(discount, height, ovr) {
       rendObj = ROBJ_TEXT
       text = $"-{round(discountPrc)}%"
       color = 0xFFFFFFFF
-      fontFx = FFT_GLOW
-      fontFxFactor = hdpxi(64)
-      fontFxColor = 0xFF000000
-    }.__update(ovr)
+    }.__update(fontTinyShaded, ovr)
   }
 }
 
@@ -88,9 +82,9 @@ return {
   discountTagBig
   discountTagOffer
   discountTagUnit = @(discount)
-    discountTagUnitCtor(discount, hdpxi(42), { margin = const [0, hdpx(30), 0, hdpx(15)] pos = [0, hdpx(3)] }.__update(fontTiny))
+    discountTagUnitCtor(discount, hdpxi(42), { margin = const [0, hdpx(30), 0, hdpx(15)] pos = [0, hdpx(3)] }.__update(fontTinyShaded))
   discountTagUnitBig = @(discount)
-    discountTagUnitCtor(discount, hdpxi(60), { margin = const [0, hdpx(40), 0, hdpx(20)] pos = [0, hdpx(5)] }.__update(fontSmall))
+    discountTagUnitCtor(discount, hdpxi(60), { margin = const [0, hdpx(40), 0, hdpx(20)] pos = [0, hdpx(5)] }.__update(fontSmallShaded))
   discountTagUnitSmall = @(discount)
-    discountTagUnitCtor(discount, hdpxi(36), { margin = const [0, hdpx(15), 0, hdpx(5)] pos = [0, hdpx(3)] }.__update(fontVeryTinyAccented))
+    discountTagUnitCtor(discount, hdpxi(36), { margin = const [0, hdpx(15), 0, hdpx(5)] pos = [0, hdpx(3)] }.__update(fontVeryTinyAccentedShaded))
 }

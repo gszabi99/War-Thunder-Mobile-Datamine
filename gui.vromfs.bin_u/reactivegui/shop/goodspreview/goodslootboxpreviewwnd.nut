@@ -32,10 +32,8 @@ let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount
 let lootbox = Computed(@(prev) prevIfEqual(prev,
   serverConfigs.get()?.lootboxesCfg[
     previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).id
-      ?? previewGoods.get()?.lootboxes.findindex(@(_) true) 
   ]))
-let lootboxAmount = Computed(@() previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).count
-  ?? previewGoods.get()?.lootboxes.findvalue(@(_) true)) 
+let lootboxAmount = Computed(@() previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).count)
 let bgImage = keepref(Computed(@() lootboxPreviewBg?[lootbox.get()?.name]))
 
 

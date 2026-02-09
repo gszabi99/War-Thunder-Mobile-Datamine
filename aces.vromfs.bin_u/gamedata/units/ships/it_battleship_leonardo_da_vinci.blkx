@@ -10733,17 +10733,29 @@
   },
   "default_skin": {
     "name": "prem_camo",
-    "replace_tex": {
-      "from": "battleship_leonardo_da_vinci_c*",
-      "to": "battleship_leonardo_da_vinci_skin_c*"
-    }
+    "replace_tex": [
+      {
+        "from": "battleship_leonardo_da_vinci_c*",
+        "to": "battleship_leonardo_da_vinci_skin_c*"
+      },
+      {
+        "from": "camo_navygrey_5*",
+        "to": "camo_inside_white*"
+      }
+    ]
   },
   "vehicleSkins": {
     "factory": {
-      "replace_tex": {
-        "from": "battleship_leonardo_da_vinci_skin_c*",
-        "to": "battleship_leonardo_da_vinci_c*"
-      }
+      "replace_tex": [
+        {
+          "from": "battleship_leonardo_da_vinci_skin_c*",
+          "to": "battleship_leonardo_da_vinci_c*"
+        },
+        {
+          "from": "camo_inside_white*",
+          "to": "camo_navygrey_5*"
+        }
+      ]
     }
   }
 }

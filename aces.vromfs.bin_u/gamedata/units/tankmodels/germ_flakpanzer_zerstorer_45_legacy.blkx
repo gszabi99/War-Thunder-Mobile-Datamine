@@ -565,6 +565,18 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
   "steeringTableAlternative": {
     "point": [
       [
@@ -615,18 +627,6 @@
         75.0,
         1.0
       ]
-    ]
-  },
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.0,
-      0.0,
-      1.0
-    ],
-    "armorThicknessSide": [
-      0.0,
-      0.0,
-      1.0
     ]
   },
   "controlDevices": {
@@ -2563,7 +2563,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 940.0
@@ -2571,7 +2571,13 @@
     "tracks": {
       "animationMultiplier": 0.48,
       "height": 0.06,
-      "width": 0.4
+      "width": 0.4,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2588,6 +2594,7 @@
       "driveGearRadius": 0.35,
       "mainGearRatio": 1.2,
       "sideGearRatio": 8.526,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -5.35,

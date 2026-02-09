@@ -57,6 +57,58 @@
       0.75
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1968,7 +2020,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 2000.0
@@ -1976,7 +2028,13 @@
     "tracks": {
       "animationMultiplier": -0.605,
       "height": 0.045,
-      "width": 0.654
+      "width": 0.654,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1996,6 +2054,7 @@
       "mainGearRatio": 4.62,
       "sideGearRatio": 2.74,
       "neutralGearRatio": 12.0,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -0.89,

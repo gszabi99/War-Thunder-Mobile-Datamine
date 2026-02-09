@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let hudTimers = require("%rGui/hudHints/hudTimers.ui.nut")
 
-let hudTimerPosY = hdpx(190)
+let hudTimerPosY = hdpx(130)
 
 return {
   size = FLEX_H

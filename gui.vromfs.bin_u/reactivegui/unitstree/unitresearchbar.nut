@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
-let { progressbarAnimDuration,  progressbarAnimDurationShort } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
+let { progressbarAnimDuration, progressbarAnimDurationShort } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
 let plateBarHeight = hdpx(10)
@@ -60,17 +60,18 @@ function mkPlateBlueprintBar(unit, ovr = {}) {
       vplace = ALIGN_BOTTOM
       pos = [0, plateBarHeight]
       color = bgColor
-      children = mkAnimatedBar(max(0.01, curBluebrintsCount.get().tofloat() / reqBluebrintsCount.get()),blueprintBarColor, false)
+      children = mkAnimatedBar(max(0.01, curBluebrintsCount.get().tofloat() / reqBluebrintsCount.get()), blueprintBarColor, false)
     }.__update(ovr)
 }
 
-function mkPlateExpBarAnimSlot(animExpPart,  ovr = {}) {
+function mkPlateExpBarAnimSlot(animExpPart, isBlueprintUnit, ovr = {}) {
   return {
     rendObj = ROBJ_SOLID
     size = [unitPlateTiny[0], plateBarHeight]
     valign = ALIGN_BOTTOM
     color = bgColor
-    children = mkAnimatedBar(max(0.01, animExpPart), expColor, false, progressbarAnimDuration, progressbarAnimDurationShort)
+    children = mkAnimatedBar(max(0.01, animExpPart), isBlueprintUnit ? blueprintBarColor : expColor,
+      false, progressbarAnimDuration, progressbarAnimDurationShort)
   }.__update(ovr)
 }
 

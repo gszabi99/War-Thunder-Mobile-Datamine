@@ -13,7 +13,6 @@ let { curQueue, isInQueue, curQueueState, queueStates,
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { selClusters } = require("clustersList.nut")
@@ -54,24 +53,6 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   logQ($"Queue ", q.unitInfo, " params by token: ", payload)
 })
 
-function getCurQueueCampaignNotUpdatable() {
-  let gmName = curQueue.get()?.params.mode
-  return allGameModes.get()?.findvalue(@(m) m.name == gmName).campaign
-    ?? curCampaign.get()
-}
-
-function hasPenaltyNonUpdatable() {
-  let curGm = allGameModes.get()?.findvalue(@(m) m.name == curQueue.get()?.params.mode)
-  let mName = curGm?.mission_decl.missions_list.findindex(@(_) true) ?? curGm?.name ?? ""
-  let mInfo = get_meta_mission_info_by_name(mName)
-  if (mInfo?.gt_ffa)
-    return false
-
-  let { campaign = curCampaign.get() } = curGm
-  return (servProfile.get()?.penalties[campaign].penaltyEndTime ?? 0) > serverTime.get()
-    || (servProfile.get()?.penalties[curCampaign.get()].penaltyEndTime ?? 0) > serverTime.get()
-}
-
 function actualizeSquadQueueOnce() {
   if (isSquadActualizeSend.get())
     return
@@ -82,6 +63,9 @@ function actualizeSquadQueueOnce() {
 function tryWriteMembersData() {
   let playersUpd = {}
   let campaign = squadLeaderCampaign.get()
+  let curGm = allGameModes.get()?.findvalue(@(m) m.name == curQueue.get()?.params.mode)
+  let { penaltyId = "" } = curGm?.mission_decl
+
   foreach(uid, m in squadMembers.get()) {
     if (uid == myUserId.get())
       continue
@@ -108,7 +92,8 @@ function tryWriteMembersData() {
       return
     }
 
-    if ((payload?.penaltyEndTime ?? 0) > serverTime.get()) {
+    let penaltyEndTime = payload?.penaltyEndTimeList[penaltyId == "" ? campaign : penaltyId] ?? 0
+    if (penaltyEndTime > serverTime.get()) {
       openFMsgBox({ text = loc("multiplayer/queuePenaltySquad") })
       curQueue.set(null)
       return
@@ -138,14 +123,27 @@ let queueSteps = {
   },
 
   [QS_CHECK_PENALTY] = function() {
-    if (!hasPenaltyNonUpdatable()) {
-      writeJwtData()
-      return
-    }
+    let curGm = allGameModes.get()?.findvalue(@(m) m.name == curQueue.get()?.params.mode)
+    let { penaltyId = "" } = curGm?.mission_decl
+    let byMissionPenaltyId = penaltyId != ""
+    if (!byMissionPenaltyId && curGm?.campaign == null)
+      return writeJwtData()
+
+    let mName = curGm?.mission_decl.missions_list.findindex(@(_) true) ?? curGm?.name ?? ""
+    if (get_meta_mission_info_by_name(mName)?.gt_ffa)
+      return writeJwtData()
+
+    let { campaign, headerLocId } = getCampaignPresentation(curGm?.campaign)
+    let actPenaltyId = byMissionPenaltyId ? penaltyId : campaign
+    if ((servProfile.get()?.penalties[actPenaltyId].penaltyEndTime ?? 0) <= serverTime.get())
+      return writeJwtData()
+
     curQueue.set(null)
     openFMsgBox({
-      text = loc("multiplayer/queuePenalty",
-        { campaign = loc(getCampaignPresentation(getCurQueueCampaignNotUpdatable()).headerLocId) })
+      text = loc("multiplayer/queuePenalty/common",
+        { name = byMissionPenaltyId
+            ? loc($"penaltyId/{penaltyId}")
+            : loc("penaltyId/campaign", { campaign = loc(headerLocId) })})
     })
   },
 

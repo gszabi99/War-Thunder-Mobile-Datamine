@@ -550,7 +550,7 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_fs_long_tank",
+      "bulletType": "apds_fs_long_l30_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -559,11 +559,11 @@
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "120mm_m322_idf",
-      "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "onHitChanceMultExplFuel": 0.1,
       "relativeVelArmorShift": [
         200.0,
         1000.0

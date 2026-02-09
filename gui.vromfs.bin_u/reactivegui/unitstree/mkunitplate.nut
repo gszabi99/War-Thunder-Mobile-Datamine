@@ -3,7 +3,7 @@ let { unitsMaxRank, unitsTreeOpenRank } = require("%rGui/unitsTree/unitsTreeStat
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
+let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame, mkUnitTimeLeft,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, plateTextsSmallPad, unitPlateTiny,
   bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
@@ -22,15 +22,17 @@ let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLi
 let { ceil } = require("math")
 let { nodeToScroll } = require("%rGui/unitsTree/unitsTreeScroll.nut")
 let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus,
-  unseenResearchedUnits, selectedCountry } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+  unseenResearchedUnits, selectedCountry, shownUnitsOffersForPurchase, markUnitOfferShown
+} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("%rGui/unitsTree/unitResearchBar.nut")
+let { mkReceiveTimeLeft } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { animUnitAfterResearch, needShowPriceUnit, animExpPart, animNewUnitsAfterResearch, needDelayAnimation, loadStatusesAnimUnits,
   animNewUnitsAfterResearchTrigger, hasAnimDarkScreen, unitsForExpAnim, isBuyUnitWndOpened, canPlayAnimUnitAfterResearch
 } = require("%rGui/unitsTree/animState.nut")
-let { animUnitSlot, mkUnitResearchPriceAnim, priceAnimDuration } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
+let { animUnitSlot, mkUnitResearchPriceAnim, mkBlueprintUnitResearchPriceAnim, priceAnimDuration } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
 let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let unitBuyWnd = require("%rGui/unitsTree/components/unitBuyWnd.nut")
@@ -39,6 +41,8 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
 let { draggedData } = require("%rGui/slotBar/dragDropSlotState.nut")
+let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOptions.nut")
+
 
 let frameBorderWidth = hdpxi(2)
 let framesGapMul = 0.7
@@ -71,8 +75,10 @@ function triggerAnim() {
 function openBuyUnitWnd(name, price) {
   let researchStatus = unitsResearchStatus.get()?[name]
   let blueprintStatus = blueprintUnitsStatus.get()?[name]
-  if (researchStatus?.canBuy || blueprintStatus?.canBuy) {
+  if ((isAllowAutoOfferToBuyUnitEnabled.get() ?? true) && name not in shownUnitsOffersForPurchase.get()
+      && (researchStatus?.canBuy || blueprintStatus?.canBuy)) {
     let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, name)
+    markUnitOfferShown(name)
     purchaseUnit({
       unitId = name,
       bqInfo = bqPurchaseInfo,
@@ -188,7 +194,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
 
 let treeNodeUnitPlateKey = @(name) name == null ? null : $"treeNodeUnitPlate:{name}"
 
-let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, xmbNode, ovr) {
+let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, xmbNode, isBlueprint, ovr) {
   children = {
     key = treeNodeUnitPlateKey(unit.name)
     size = unitPlateTiny
@@ -210,12 +216,12 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
               flow = FLOW_VERTICAL
               gap = hdpx(7)
               children = [
-                @() {
-                  watch = animUnitAfterResearch
-                  size = FLEX_H
+                {
+                  size = const [flex(), hdpx(40)]
                   padding = plateTextsSmallPad
-                  flow = FLOW_HORIZONTAL
-                  children = mkUnitResearchPriceAnim(researchStatus.get(), { padding = 0 })
+                  valign = ALIGN_BOTTOM
+                  children = isBlueprint.get() ? mkBlueprintUnitResearchPriceAnim(unit, researchStatus.get())
+                    : mkUnitResearchPriceAnim(researchStatus.get(), { padding = 0 })
                 }
                 @() {
                   watch = animExpPart
@@ -223,7 +229,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
                   rendObj = ROBJ_SOLID
                   valign = ALIGN_BOTTOM
                   color = 0xFF000000
-                  children = mkPlateExpBarAnimSlot(animExpPart.get())
+                  children = mkPlateExpBarAnimSlot(animExpPart.get(), isBlueprint.get())
                 }
               ]
             }
@@ -411,7 +417,7 @@ function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
   }.__update(ovr)
 }
 
-function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
+function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   if (unit == null)
     return null
 
@@ -437,16 +443,19 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
     || hasUnseenRewards.get())
   let needShowUnseenBranchMark = Computed(@() curCampaignUnseenBranches.get()?[unit.country]
     && unitsResearchStatus.get()?[unit.name].canResearch)
-  let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints
+  let isBlueprint = Computed(@() unit.name in serverConfigs.get()?.allBlueprints)
+  let needShowBlueprintBar = Computed(@() isBlueprint.get()
     && unit.name not in campMyUnits.get()
     && (servProfile.get()?.blueprints[unit.name] ?? 0) < (serverConfigs.get()?.allBlueprints[unit.name].targetCount ?? 0))
   let trigger = $"{unit.name}_anim"
   let startCurAnim = @() anim_start(trigger)
   let needToShowHighlight = Computed(@() animNewUnitsAfterResearch.get().len() == 0
     && (currentResearch.get() ? currentResearch.get().name == unit.name : researchStatus.get()?.canResearch))
+  let { receiveType = null, receiveData = null } = receiveInfo
   return @() animUnitAfterResearch.get() == unit.name && canPlayAnimUnitAfterResearch.get()
-      ? mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, blueprintStatus.get() != null ? blueprintStatus : researchStatus, xmbNode,
-        ovr.__merge({ watch = [animUnitAfterResearch, canPlayAnimUnitAfterResearch, blueprintStatus] }))
+      ? mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, blueprintStatus.get() != null ? blueprintStatus : researchStatus,
+          xmbNode, isBlueprint, ovr.__merge({ watch = [animUnitAfterResearch, canPlayAnimUnitAfterResearch,
+            blueprintStatus, researchStatus, isBlueprint] }))
     : animNewUnitsAfterResearch.get()?[unit.name]
       ? mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr.__merge({ watch = animNewUnitsAfterResearch }))
     : {
@@ -496,18 +505,21 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
         mkUnitImage(unit, canPurchase.get() || isLocked.get())
         mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
         @() {
-          watch = [price, discount, canPurchase, researchStatus]
+          watch = [price, discount, canPurchase]
           key = price
           flow = FLOW_HORIZONTAL
           hplace = ALIGN_LEFT
           vplace = ALIGN_BOTTOM
           valign = ALIGN_BOTTOM
-          children = !price.get() ? null : [
-            discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
-            price.get() != null && price.get().price > 0
-                ? mkUnitsTreePrice(price.get(), canPurchase.get())
-              : null
-          ]
+          children = price.get()
+              ? [
+                  discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
+                  price.get() != null && price.get().price > 0
+                      ? mkUnitsTreePrice(price.get(), canPurchase.get())
+                    : null
+                ]
+            : receiveType != null ? mkUnitTimeLeft(mkReceiveTimeLeft(receiveType, receiveData))
+            : null
           transform = {}
           animations = [
             { prop = AnimProp.rotate, to = 8, duration = aTimePriceShake, easing = Shake6,
@@ -526,11 +538,8 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
               padding = plateTextsSmallPad
               valign = ALIGN_BOTTOM
               flow = FLOW_HORIZONTAL
-              children = [
-                needShowBlueprintBar.get()
-                    ? mkUnitBlueprintMark(unit)
-                  : mkUnitResearchPrice(researchStatus.get(), { padding = 0 })
-              ]
+              children = needShowBlueprintBar.get() ? mkUnitBlueprintMark(unit)
+                : mkUnitResearchPrice(researchStatus.get(), { padding = 0 })
             }
             needShowBlueprintBar.get()
                 ? mkPlateBlueprintBar(unit)

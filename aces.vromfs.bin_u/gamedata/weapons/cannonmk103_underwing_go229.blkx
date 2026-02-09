@@ -602,7 +602,7 @@
       }
     }
   ],
-  "mk_103_antitank": {
+  "mk_103_armor_targets": {
     "bullet": [
       {
         "mass": 0.356,
@@ -1376,7 +1376,7 @@
       }
     ]
   },
-  "mk_103_antibomber": {
+  "mk_103_air_targets": {
     "bullet": [
       {
         "mass": 0.33,

@@ -9,7 +9,9 @@ struct EventDamagePartRestored
 
 [cpp_event(unicast, with_scheme)]
 struct EventOnHitEntity
-  impactRes : int
+  impactRes : int 
+  hitMatId : int 
+  newPiercingShift : float 
   offender : EntityId
   bullet : EntityId
   gunEid : EntityId
@@ -32,7 +34,7 @@ struct EventSplashHitEntity
   shatterDamage : float
   pos : float3
   dir : float3
-  isAircraftExplosion : bool
+  isExplosionHaveProps : bool
 
 [cpp_event(unicast, with_scheme)]
 struct EventMeleeHitEntity
@@ -46,15 +48,26 @@ struct EventMeleeHitEntity
 
 [cpp_event(unicast, with_scheme)]
 struct EventShatterHitEntity
+  damage : float 
+  penetratedArmor : float 
   offender : EntityId
   packedProjPropsId : uint
-  damage : float
+  penetration : float
   pos : float3
   dir : float3
   collNodeId : int
+  penetrationMin : float
+  penetrationMax : float
+  damageMin : float
+  damageMax : float
+  damageScale : float
 
 [cpp_event(unicast)]
 struct CmdRestoreHpPart
+  hp : float
+
+[event(unicast)]
+struct CmdRestoreArmor
   hp : float
 
 [event(unicast)]

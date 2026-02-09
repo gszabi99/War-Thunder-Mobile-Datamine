@@ -1,0 +1,42 @@
+{
+  "torpedoGun": true,
+  "preset_cost": 15,
+  "bullets": 1,
+  "shotFreq": 0.025,
+  "external": true,
+  "allowHumanReload": false,
+  "mesh": "rocket_countermeasure",
+  "shellAnimChar": "rocket_countermeasure_char",
+  "tags": {
+    "acousticDecoy": true
+  },
+  "torpedo": {
+    "bulletType": "torpedo",
+    "distToLive": 3500.0,
+    "maxSpeedInWater": 0.0,
+    "diveDepth": 5.0,
+    "mass": 5.0,
+    "dragCx": 0.24,
+    "lifeTime": 10.0,
+    "startSpeed": 80.0,
+    "useStartSpeed": true,
+    "decoyRaduis": 3000.0,
+    "decoyStartDelay": 1.0,
+    "descendSpeed": 2.0,
+    "decoyCollisionRadiusSq": 1000.0,
+    "courseChangeViscosity": 1.6,
+    "startPropulsionDelay": 0.1,
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    }
+  }
+}

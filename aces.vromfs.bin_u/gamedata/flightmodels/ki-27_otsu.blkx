@@ -2245,5 +2245,12 @@
       1.3248,
       2.65427e-8
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "ki_27_otsu_gray_a*",
+      "to": "ki_27_otsu_green_ep_a*"
+    }
   }
 }

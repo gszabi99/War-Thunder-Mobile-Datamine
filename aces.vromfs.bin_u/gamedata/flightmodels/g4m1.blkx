@@ -2836,5 +2836,18 @@
       3.2111,
       3.57628e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "g4m_c*",
+        "to": "g4m_orange_a*"
+      },
+      {
+        "from": "g4m_n*",
+        "to": "g4m_orange_n*"
+      }
+    ]
   }
 }

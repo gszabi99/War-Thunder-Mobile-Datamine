@@ -7,22 +7,28 @@ let GOLD = "gold"
 let WARBOND = "warbond"
 let EVENT_KEY = "eventKey"
 let SLOT_EXP_TANKS = "slot_exp_tanks"
+let SLOT_EXP_AIR = "slot_exp_air"
 
 let NYBOND = "nybond"
+let LUNARBOND = "lunarbond"
 let APRILBOND = "aprilbond"
 let PLATINUM = "platinum"
-let BLACK_FRIDAY_BOND = "blackfridaybond"
+let BLACKFRIDAYBOND = "blackfridaybond"
 let APRILMAPPIECE = "aprilMapPiece"
 let APRILDOUBLON = "aprilDoublon"
 let HOTMAYBOND = "hotmaybond"
 let INDEPENDENCEBOND = "independencebond"
 let ANNIVERSARYBOND = "anniversarybond"
 let HALLOWEENBOND = "halloweenbond"
+let VALENTINEBOND = "valentinebond"
+let CANDYBOND = "candybond"
+let LOLLIPOPBOND = "lollipopbond"
+let CHOCOLATEBOND = "chocolatebond"
 
 let balance = sharedWatched("balance", @() {})
 let isBalanceReceived = sharedWatched("isBalanceReceived", @() false)
 
-let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, SLOT_EXP_TANKS]
+let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, SLOT_EXP_TANKS, SLOT_EXP_AIR]
 let orderByCurrency = currencyOrder.reduce(@(res, c, i) res.$rawset(c, i + 1), {})
 
 let dbgCurrencyCount = {
@@ -38,16 +44,22 @@ let currenciesRes = {
   WARBOND
   EVENT_KEY
   SLOT_EXP_TANKS
+  SLOT_EXP_AIR
 
   NYBOND
+  LUNARBOND
   APRILBOND
   APRILMAPPIECE
   APRILDOUBLON
-  BLACK_FRIDAY_BOND
+  BLACKFRIDAYBOND
   HOTMAYBOND
   INDEPENDENCEBOND
   ANNIVERSARYBOND
   HALLOWEENBOND
+  VALENTINEBOND
+  CANDYBOND
+  LOLLIPOPBOND
+  CHOCOLATEBOND
 }
 
 let allCurrencies = currenciesRes.values()
@@ -62,7 +74,6 @@ return currenciesRes.__update({
   onlineBattleBlockCurrencyId = Computed(@() (balance.get()?[PLATINUM] ?? 0) < 0 ? PLATINUM
     : (balance.get()?[GOLD] ?? 0) < 0 ? GOLD
     : null)
-  slotExpTanks = Computed(@() balance.get()?[SLOT_EXP_TANKS] ?? 0)
   orderByCurrency
   currencyOrder
   getDbgCurrencyCount

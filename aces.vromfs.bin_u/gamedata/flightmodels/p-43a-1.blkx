@@ -1786,5 +1786,18 @@
       1.25174,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p43a_1_usaaf_1_c*",
+        "to": "p43a_1_usaaf_2_alumin_c*"
+      },
+      {
+        "from": "p43a_1_usaaf_1_n*",
+        "to": "p43a_1_usaaf_2_alumin_n*"
+      }
+    ]
   }
 }

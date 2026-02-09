@@ -61,7 +61,8 @@ let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots) Computed(fu
   }
 })
 
-let defaultTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1) * (w?.weapons[0].totalBullets ?? 1))
+let defaultTitle = @(w) format(loc("weapons/counter/right/short"),
+  w?.weapons.reduce(@(res, v) res + (w?.count ?? 1) * (v?.totalBullets ?? 1), 0) ?? w?.count ?? 1)
 
 function caliberTitle(w) {
   let { caliber = null } = w.bulletSets.findvalue(@(_) true)

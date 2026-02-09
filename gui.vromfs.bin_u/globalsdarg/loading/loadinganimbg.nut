@@ -10,19 +10,25 @@ let lastAttachedTime = mkWatched(persist, "lastAttachedTime", -1000000)
 let isBgAttached = Watched(false)
 let screenWeights = Watched(screensList.map(@(s) s.weight))
 
+local lastChooseWeights = null
+
 function chooseRandomScreen() {
+  lastChooseWeights = screenWeights.get()
   let weights = clone screenWeights.get()
   if (curScreenId.get() in weights)
     weights.$rawdelete(curScreenId.get())
-  if (weights.len() != 0)
-    curScreenId.set(random_pick(weights))
+  if (weights.len() != 0) {
+    let id = random_pick(weights)
+    log($"[LOADING] Loading screen set to: {id}")
+    curScreenId.set(id)
+  }
 }
 
 if (curScreenId.get() == null)
   chooseRandomScreen()
 
-screenWeights.subscribe(function(_) {
-  if (isBgAttached.get())
+screenWeights.subscribe(function(v) {
+  if (isBgAttached.get() || lastChooseWeights == v)
     return
   if (lastAttachedTime.get() + 5000 > get_time_msec())
     resetTimeout(3.0, chooseRandomScreen)
@@ -33,7 +39,7 @@ screenWeights.subscribe(function(_) {
 isBgAttached.subscribe(function(v) {
   clearTimer(chooseRandomScreen)
   if (v) {
-    if (curScreenId.get() == null)
+    if (curScreenId.get() not in screenWeights.get())
       chooseRandomScreen()
     lastAttachedTime.set(get_time_msec())
     setInterval(17.0, chooseRandomScreen)
@@ -57,4 +63,5 @@ return {
   isLoadinAnimBgAttached = isBgAttached
   curScreenId
   screenWeights
+  chooseRandomScreen
 }

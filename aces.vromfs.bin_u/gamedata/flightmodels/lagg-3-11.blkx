@@ -2013,5 +2013,18 @@
       1.17072,
       -1.78348e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "lagg_3_series_11_a*",
+        "to": "lagg_3_series_11_winter_a*"
+      },
+      {
+        "from": "lagg_3_series_11_n*",
+        "to": "lagg_3_series_11_winter_n*"
+      }
+    ]
   }
 }

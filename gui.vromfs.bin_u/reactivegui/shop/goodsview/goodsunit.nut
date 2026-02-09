@@ -18,6 +18,7 @@ let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut"
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
+let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
@@ -59,7 +60,8 @@ let branchOfferImageOvr = {
   vplace = ALIGN_CENTER
 }
 
-let discountTagUnit = @(percent) discountTag(percent, {
+let discountTagUnit = @(percentW) @() discountTag(percentW.get(), {
+  watch = percentW
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
   pos = [0, 0]
@@ -130,7 +132,6 @@ function mkUnitTexts(goods, unit) {
             color
             font = Fonts.wtfont
             fontSize = hdpx(42)
-            fontFxFactor = hdpx(32)
             behavior = Behaviors.Marquee
             delay = defMarqueeDelay
             speed = hdpx(20)
@@ -187,10 +188,10 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   }
 
   let ovrState = Computed(@() state.get() | (isPurchased ? ALL_PURCHASED : 0))
-  let { rewards = null, items = {} } = goods
-  let consumableItems = rewards != null
-    ? consumablesOnGoodsPlate.map(@(id) rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM)).filter(@(v) v != null)
-    : consumablesOnGoodsPlate.map(@(id) { id, count = items?[id] ?? 0 }).filter(@(v) v.count > 0) 
+  let { rewards } = goods
+  let consumableItems = consumablesOnGoodsPlate
+    .map(@(id) rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
+    .filter(@(v) v != null)
   let unitImg = getGoodsAsOfferIcon(goods.id)
     ?? (unit?.isUpgraded ? p.upgradedImage : p.image)
   let unitImgScale = consumableItems.len() == 0 ? unitImgScaleDefault
@@ -226,19 +227,13 @@ let mkCurrencyIcon = @(currencyId, amount) {
 }
 
 function getCurrencyOnOfferBanner(goods) {
-  let { rewards = null, currencies = {} } = goods
-  if (rewards != null) {
-    let r = rewards.findvalue(@(r) r.gType == G_CURRENCY && r.id in currenciesOnOfferBanner)
-    return { currencyId = r?.id, currencyAmount = r?.count ?? 0 }
-  }
-  
-  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
-  return { currencyId, currencyAmount = currencies?[currencyId] ?? 0 }
+  let r = goods.rewards.findvalue(@(r) r.gType == G_CURRENCY && r.id in currenciesOnOfferBanner)
+  return { currencyId = r?.id, currencyAmount = r?.count ?? 0 }
 }
 
 function mkOfferUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, offerClass = null } = goods
+  let { isShowDebugOnly = false, offerClass = null } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
     : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
@@ -250,6 +245,7 @@ function mkOfferUnit(goods, onClick, state) {
     unitOfferImageOvrByType?[unit?.unitType] ?? {}).__update({ fallbackImage = Picture(p.image) })
   let imageOffset = currencyId == null || unit?.unitType == TANK? 0
     : hdpx(40)
+  let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
@@ -265,7 +261,8 @@ function mkOfferUnit(goods, onClick, state) {
 
 function mkOfferBlueprint(goods, onClick, state){
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, offerClass = null } = goods
+  let { isShowDebugOnly = false, offerClass = null } = goods
+  let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
   let bgImg = "ui/gameuiskin#offer_bg_blue.avif"
   let image = {
     size = [ offerW,  offerH ]
@@ -281,14 +278,14 @@ function mkOfferBlueprint(goods, onClick, state){
       sf & S_HOVER ? bgHiglight : null
       image
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc), goods)
-      discountTagBig(discountInPercent)
+      @() discountTagBig(discountInPercent.get(), { watch = discountInPercent })
     ].extend(mkOfferCommonParts(goods, state)))
 
 }
 
 function mkOfferBranchUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, offerClass = null } = goods
+  let { isShowDebugOnly = false, offerClass = null } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
     : unit?.unitType == TANK ? "ui/gameuiskin#offer_bg_yellow.avif"
@@ -298,6 +295,7 @@ function mkOfferBranchUnit(goods, onClick, state) {
     branchOfferImageOvr)
   let imageOffset = currencyId == null || unit?.unitType == TANK ? 0
     : hdpx(40)
+  let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
@@ -313,12 +311,12 @@ function mkOfferBranchUnit(goods, onClick, state) {
 
 function mkOfferBattleMode(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { discountInPercent = 0, isShowDebugOnly = false, battleMods = {}, rewards = [] } = goods
+  let { isShowDebugOnly = false, rewards } = goods
   let battleMode = rewards.findvalue(@(r) r.gType == G_BATTLE_MOD)?.id
-    ?? battleMods.findindex(@(_) true) 
   let bgImg = getBattleModPresentationForOffer(battleMode)?.bannerImg ?? "ui/gameuiskin#offer_bg_green.avif"
   let { currencyId = null, currencyAmount = 0 } = getCurrencyOnOfferBanner(goods)
   let image = mkFitCenterImg(getUnitPresentation(unit)?.image, branchOfferImageOvr)
+  let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)

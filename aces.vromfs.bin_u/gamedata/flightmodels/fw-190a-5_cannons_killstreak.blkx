@@ -1874,6 +1874,13 @@
       }
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "fw_190a_5_a*",
+      "to": "fw_190a_5_tunisia_a*"
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "fw-190a-5_cannons_killstreak_default",

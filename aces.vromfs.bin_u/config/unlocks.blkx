@@ -2164,7 +2164,7 @@
       }
     },
     {
-      "id": "streak_firework_halloween",
+      "id": "streak_firework_new_year",
       "type": "streak",
       "amount_warpoints": 10000,
       "exclude_from_rating": true,
@@ -2614,6 +2614,119 @@
             "type": "critical"
           }
         ]
+      }
+    },
+    {
+      "id": "ctf_gift_deliver",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 500,
+      "isMultiStage": true,
+      "wpA": [
+        500.0,
+        500.0,
+        500.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "userstat_stat_id": "ctf_deliver",
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 500
+      },
+      "mode": {
+        "type": "missionTriggerAction",
+        "triggerId": "flagDelivery",
+        "num": 6
+      }
+    },
+    {
+      "id": "ctf_gift_kill_capturer",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 150,
+      "isMultiStage": true,
+      "wpA": [
+        150.0,
+        150.0,
+        150.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "userstat_stat_id": "ctf_kill_capturer",
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 150
+      },
+      "mode": {
+        "type": "missionTriggerAction",
+        "triggerId": "killCapturer",
+        "num": 5
+      }
+    },
+    {
+      "id": "ctf_gift_return",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "wpA": [
+        250.0,
+        250.0,
+        250.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
+      "mode": {
+        "type": "missionTriggerAction",
+        "triggerId": "flagReturn",
+        "num": 5
       }
     }
   ]

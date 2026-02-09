@@ -9,7 +9,7 @@ let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let boosterDesc = require("%rGui/boosters/boosterDesc.nut")
@@ -18,9 +18,9 @@ let purchaseBooster = require("%rGui/boosters/purchaseBooster.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pServer/pServerApi.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { hoverColor, warningTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { mkBgParticles } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { mkBgParticles, tinyLimitReachedPlate } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let close = @() isOpenedBoosterWnd.set(false)
 
@@ -29,6 +29,8 @@ let bgSize = [hdpxi(370), hdpxi(412)]
 let boosterSize = hdpxi(230)
 
 let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
+
+let animTrigger = @(bstId) $"changeBoosterNumber_${bstId}"
 
 let bgHiglight = {
   size = flex()
@@ -49,10 +51,11 @@ let footer = {
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
   text = loc("boosters/footer")
-}.__update(fontTiny)
+}.__update(fontTinyShaded)
 
-function mkPricePlate(bst) {
+function mkPricePlate(bst, count) {
   let isDelayed = Computed(@() boosterInProgress.get() != null)
+  let { limit = 0 } = bst
   return @() {
     watch = isDelayed
     size = const [flex(), hdpx(90)]
@@ -61,11 +64,12 @@ function mkPricePlate(bst) {
     rendObj = ROBJ_IMAGE
     image = priceBgGrad
     picSaturate = isDelayed.get() ? 0 : 1.0
-    children = bst.price > 0
-      ? textButtonPricePurchase(null,
-        mkCurrencyComp(bst.price, bst.currencyId),
-        @() null,
-        { ovr = { size = flex(), minWidth = 0, behavior = null } })
+    children = limit > 0 && limit <= count ? tinyLimitReachedPlate
+      : bst.price > 0
+        ? textButtonPricePurchase(null,
+            mkCurrencyComp(bst.price, bst.currencyId),
+            @() null,
+            { ovr = { size = flex(), minWidth = 0, behavior = null } })
       : null
     transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
   }
@@ -84,7 +88,6 @@ let infoBtn = @(id) infoCommonButton(
   @() boosterDesc(id),
   {
     size = [evenPx(60), evenPx(60)]
-    margin = const [hdpx(12), hdpx(16)]
     hplace = ALIGN_LEFT
   }
 )
@@ -96,13 +99,14 @@ let cardTitle = @(id) {
   halign = ALIGN_LEFT
   padding = hdpx(30)
   text = utf8ToUpper(loc($"boosters/{id}"))
-}.__update(fontVeryTinyAccented)
+}.__update(fontVeryTinyAccentedShaded)
 
 let cardHeader = @(id) {
   size = FLEX_H
   padding = hdpx(10)
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
+  gap = hdpx(16)
   children = [
     infoBtn(id)
     {
@@ -113,7 +117,7 @@ let cardHeader = @(id) {
   ]
 }
 
-let boosterSlot = @(bst, sf) {
+let boosterSlot = @(bst, count, sf) {
   rendObj = ROBJ_SOLID
   color = 0xFF645858
   borderColor = 0x40FFFFFF
@@ -129,7 +133,6 @@ let boosterSlot = @(bst, sf) {
     }
     {
       size = flex()
-      padding = const [0, 0, hdpx(20), 0]
       flow = FLOW_VERTICAL
       children = [
         cardHeader(bst.id)
@@ -154,6 +157,29 @@ let boosterSlot = @(bst, sf) {
             }.__update(fontWtBig)
           ]
         }
+        {
+          size = FLEX_H
+          rendObj = ROBJ_IMAGE
+          flipX = true
+          flow = FLOW_VERTICAL
+          image = simpleHorGrad
+          color = 0x80000000
+          padding = hdpx(10)
+          children = {
+            size = [flex(), SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            color = (bst?.limit ?? 0) <= 0 || bst.limit > count ? 0xFFFFFFFF
+              : warningTextColor
+            text = utf8ToUpper((bst?.limit ?? 0) <= 0 ? loc("item/balance", {count})
+              : loc("item/balanceWithLimit", {count, limit = bst.limit}))
+            transform = { pivot = [0, 0.5] }
+            animations = [{
+              prop = AnimProp.scale, from = [1,1], to = [1.3, 1.3],
+              duration = 1, trigger = animTrigger(bst.id), easing = DoubleBlink
+            }]
+          }.__update(fontVeryTinyAccentedShaded)
+        }
       ]
     }
   ]
@@ -168,30 +194,18 @@ let textBase = @(battlesLeft) {
   delay = defMarqueeDelay
   hplace = ALIGN_CENTER
   opacity = battlesLeft <= 0 ? 0.5 : 1
-}.__update(fontTinyAccented)
+}.__update(fontTinyAccentedShaded)
 
-let animTrigger = @(bstId) $"changeBoosterNumber_${bstId}"
-let battlesLeftTitle = @(bst, sf, battlesLeft, isDisabled) {
+let battlesLeftTitle = @(sf, battlesLeft, isDisabled) {
   size = FLEX_H
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   clipChildren = true
-  children = [
-    textBase(battlesLeft).__merge({
+  children = textBase(battlesLeft).__merge({
       text = isDisabled || battlesLeft <= 0 ? loc("booster/use") : loc("booster/using")
       color = battlesLeft > 0 && (sf & S_HOVER) ? hoverColor : null
     })
-    textBase(battlesLeft).__merge({
-      text = loc("booster/battlesLeft", { battlesLeft })
-      color = battlesLeft > 0 && (sf & S_HOVER) ? hoverColor : null
-      transform = {}
-      animations = [{
-        prop = AnimProp.scale, from = [1,1], to = [1.7, 1.7],
-        duration = 1, trigger = animTrigger(bst.id), easing = DoubleBlink
-      }]
-    })
-  ]
 }
 
 let function boosterCard(bst) {
@@ -200,28 +214,30 @@ let function boosterCard(bst) {
   let isDisabled = Computed(@() servProfile.get()?.boosters[bst.id].isDisabled ?? false)
   let battlesLeft = Computed(@() servProfile.get()?.boosters[bst.id].battlesLeft ?? 0)
   let hasSpinner = Computed(@() boosterInProgress.get() == bst.id)
+  let { limit = 0 } = bst
   battlesLeft.subscribe(@(_) anim_start(animTrigger(bst.id)))
   return {
     flow = FLOW_VERTICAL
     children = [
       @() {
-        watch = stateFlags
+        watch = [stateFlags, battlesLeft]
         behavior = Behaviors.Button
         flow = FLOW_VERTICAL
         sound = { click  = "click" }
         transform = { scale = battlesLeft.get() > 0 && (stateFlags.get() & S_ACTIVE) ? [0.95, 0.95] : [1, 1] }
         onElemState = @(sf) stateFlags.set(sf)
-        onClick = @() purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
-          mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst.id))
+        onClick = @() (limit > 0 && limit <= battlesLeft.get()) ? null
+          : purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
+              mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst.id))
         gap = -hdpx(2)
         children = [
           {
             children = [
-              boosterSlot(bst, stateFlags.get())
+              boosterSlot(bst, battlesLeft.get(), stateFlags.get())
               mkWaitDimmingSpinner(hasSpinner)
             ]
           }
-          mkPricePlate(bst)
+          mkPricePlate(bst, battlesLeft.get())
         ]
       }
       @() {
@@ -257,7 +273,7 @@ let function boosterCard(bst) {
                   color = 0xFFFFFFFF
                 }
           }
-          battlesLeftTitle(bst, cbStateFlags.get(), battlesLeft.get(), isDisabled.get())
+          battlesLeftTitle(cbStateFlags.get(), battlesLeft.get(), isDisabled.get())
         ]
       }
     ]
@@ -299,4 +315,4 @@ let window = bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-registerScene("bstWnd", window, close, isOpenedBoosterWnd)
+registerScene("boostersWnd", window, close, isOpenedBoosterWnd)

@@ -25,7 +25,7 @@ let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsO
 let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
 let { moveArrowsView } = require("%rGui/components/movementArrows.nut")
 let { hitCamera, hitCameraTankEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
+let { mkTacticalMapForHud, tacticalMapEditView, tacticalMapSize } = require("%rGui/hud/components/tacticalMap.nut")
 let winchButton = require("%rGui/hud/buttons/winchButton.nut")
 let { mkDoll, dollEditView, mkSpeedText, speedTextEditView, mkCrewDebuffs, crewDebuffsEditView,
   mkTechDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
@@ -47,15 +47,22 @@ let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut"
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
+let { showRadarOverMap, IsRadarVisible, IsRadarHudVisible, IsBScopeVisible } = require("%rGui/radar/radarState.nut")
+let { mkRadarToggleButton, mkRadarToggleButtonEditView } = require("%rGui/radar/radarToggleButton.nut")
+let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
+let { isCompassVisible } = require("%rGui/compass/compassState.nut")
+let { mkCompass, mkCompassEditView } = require("%rGui/compass/compass.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.get() == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get()) && !isGamepad.get())
 let isTargetTracking = Computed(@() !currentTargetTrackingType.get())
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
+let isRadarExist = Computed(@() IsBScopeVisible.get() && IsRadarVisible.get() && IsRadarHudVisible.get())
 
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
+let tacticalMapPos = hdpx(155)
 
 return {
   primaryGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON,
@@ -246,14 +253,15 @@ return {
 
   tacticalMap = {
     ctor = mkTacticalMapForHud
-    defTransform = mkLTPos([hdpx(155), 0])
+    defTransform = mkLTPos([tacticalMapPos, 0])
     editView = tacticalMapEditView
+    isVisibleInBattle = Computed(@() !showRadarOverMap.get() || !isRadarExist.get())
     hideForDelayed = false
   }
 
   myPlace = {
     ctor = mkMyPlaceUi
-    defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(330)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(340), 0]) : mkRTPos([-hdpx(90), hdpx(330)])
     editView = mkMyPlace(1)
     hideForDelayed = false
     isVisibleInBattle = hasMyScores
@@ -261,7 +269,7 @@ return {
 
   myScores = {
     ctor = mkMyScoresUi
-    defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(330)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(430), 0]) : mkRTPos([0, hdpx(330)])
     editView = { children = mkTankMyScores(221) }
     hideForDelayed = false
     isVisibleInBattle = hasMyScores
@@ -317,4 +325,32 @@ return {
     isVisibleInBattle = isVisibleCrewRank
     isVisibleInEditor = isVisibleCrewRank
   }
+
+  radarToggle = {
+    ctor = mkRadarToggleButton
+    defTransform = mkLTPos([tacticalMapPos + tacticalMapSize[0] + hdpx(10), 0])
+    editView = mkRadarToggleButtonEditView
+    priority = Z_ORDER.BUTTON
+    isVisibleInBattle = Computed(@() isRadarExist.get())
+    isVisibleInEditor = IsRadarHudVisible
+  }
+
+  radarHud = {
+    ctor = radarHudCtor
+    defTransform = mkLTPos([tacticalMapPos, 0])
+    editView = radarHudEditView
+    priority = Z_ORDER.BUTTON
+    isVisibleInBattle = Computed(@() isRadarExist.get() && showRadarOverMap.get())
+    isVisibleInEditor = IsRadarHudVisible
+  }
+
+  compass = {
+    ctor = mkCompass
+    defTransform = mkCTPos([0, hdpx(120)])
+    editView = mkCompassEditView
+    priority = Z_ORDER.BUTTON
+    isVisibleInBattle = Computed(@() isCompassVisible && isRadarExist.get())
+    isVisibleInEditor = IsRadarHudVisible
+  }
+
 }.__update(cfgHudCommon).filter(@(v) v != null)

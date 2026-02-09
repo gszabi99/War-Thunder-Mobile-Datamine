@@ -16,6 +16,7 @@ let { mkResearchingUnitForBattleData } = require("%appGlobals/data/battleDataExt
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
 
 let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{campaign}_1"
   : $"tutorial_{campaign.slice(0, -4)}_1_nc"
@@ -87,18 +88,23 @@ function startTutor(id, currentUnitName = null) {
       needAddUnit = true
     })
   }
-  if (!isSkippedTutor.get()?[id])
+  if (!isSkippedTutor.get()?[id]) {
+    let unitName = (!isCampaignWithUnitsResearch.get() || currentUnitName == "")
+        ? null
+      : currentUnitName
+        ? currentUnitName
+      : isDebugMode.get() && hangarUnit.get()?.name
+        ? hangarUnit.get().name
+      : campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))
+        ?? currentResearch.get()?.name
     eventbus_send("startSingleMission", {
       id = tutorialMissions.get()[id],
-      unitName = (!isCampaignWithUnitsResearch.get() || currentUnitName == "")
-          ? null
-        : currentUnitName
-          ? currentUnitName
-        : isDebugMode.get() && hangarUnit.get()?.name
-          ? hangarUnit.get().name
-        : campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))
-          ?? currentResearch.get()?.name
+      unitName
+      bullets = unitName != null && unitName != ""
+        ? getDefaultBulletsForSpawn(unitName, 1000, campMyUnits.get()?[unitName].mods)
+        : null
     })
+  }
   resetTimeout(0.1, @() isDebugMode.set(false))
 }
 

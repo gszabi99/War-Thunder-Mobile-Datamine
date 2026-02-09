@@ -4,10 +4,15 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
+let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
+let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress,
+  setLastSeenUnlocks, unseenUnlocks
+} = require("%rGui/unlocks/unlocks.nut")
+let { EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION,
+  PERSONAL_META_MARK, SPEED_UP_AD_COST
+} = require("%rGui/unlocks/unlocksConst.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { showAdsForReward, isProviderInited  } = require("%rGui/ads/adsState.nut")
@@ -18,21 +23,11 @@ let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { getUnlockRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { sendBqQuestsReceiveTask } = require("%rGui/quests/bqQuests.nut")
 
-let EVENT_PREFIX = "day"
+
 let SEEN_QUESTS = "seenQuests"
-let COMMON_TAB = "common"
-let EVENT_TAB = MAIN_EVENT_ID
-let PROMO_TAB = "promo"
-let ACHIEVEMENTS_TAB = "achievements"
-let PERSONAL_TAB = "personal"
-let DAILY_SECTION = "daily_quest"
-let WEEKLY_SECTION = "weekly_quest"
-let PERSONAL_META_MARK = "personal"
 
-let SPEED_UP_AD_COST = 1
-
-let seenQuests = mkWatched(persist, SEEN_QUESTS, {})
 let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
 let rewardsList = Watched(null)
 let isRewardsQuestFinished = Watched(false)
@@ -153,6 +148,10 @@ let progressUnlockBySection = Computed(@() {
   [WEEKLY_SECTION] = campaignActiveUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
 })
 
+let getStarsTotalNonUpdatable = @(unlock) (
+  progressUnlockByTab.get()?[unlock?.tabId] ?? progressUnlockBySection.get()?[unlock?.sectionId]
+)?.current ?? 0
+
 let tutorialSectionIdWithReward = Computed(@() questsCfg.get()?[EVENT_TAB]
   .findvalue(@(section) null != questsBySection.get()?[section].findvalue(@(r) r.hasReward)))
 
@@ -190,40 +189,43 @@ let mkHasReceivedAllRewards = @(item, rewardsPreview) Computed(function() {
   return countReceivedR == rPreview.len()
 })
 
-function saveSeenQuests(ids) {
-  seenQuests.mutate(function(v) {
-    foreach (id in ids)
-      v[id] <- true
-  })
-  let sBlk = get_local_custom_settings_blk()
-  let blk = sBlk.addBlock(SEEN_QUESTS)
-  foreach (id, isSeen in seenQuests.get())
-    if (isSeen)
-      blk[id] = true
+function moveSeenQuestsFromCloudToUserstat() { 
+  if (!isSettingsAvailable.get() || isUserstatMissingData.get())
+    return
+
+  let blk = get_local_custom_settings_blk()
+  let htBlk = blk?[SEEN_QUESTS]
+  if (!isDataBlock(htBlk))
+    return
+
+  let res = {}
+  eachParam(htBlk, @(isSeen, id) isSeen ? res[id] <- isSeen : null)
+  if (res.len() == 0) {
+    blk.removeBlock(SEEN_QUESTS)
+    return
+  }
+
+  setLastSeenUnlocks(res.keys())
+  blk.removeBlock(SEEN_QUESTS)
   eventbus_send("saveProfile", {})
 }
 
-function loadSeenQuests() {
-  if (!isSettingsAvailable.get())
-    return seenQuests.set({})
-  let blk = get_local_custom_settings_blk()
-  let htBlk = blk?[SEEN_QUESTS]
-  if (!isDataBlock(htBlk)) {
-    seenQuests.set({})
-    return
+moveSeenQuestsFromCloudToUserstat()
+isSettingsAvailable.subscribe(@(v) v ? moveSeenQuestsFromCloudToUserstat() : null)
+isUserstatMissingData.subscribe(@(v) v ? null : moveSeenQuestsFromCloudToUserstat())
+
+function saveSeenQuests(names) {
+  foreach (unlockName in names) {
+    let unlock = allUnlocksDesc.get()?[unlockName]
+    if ((unlock?.personal ?? "") != "" && unlockName in unseenUnlocks.get())
+      sendBqQuestsReceiveTask(unlock)
   }
-  let res = {}
-  eachParam(htBlk, @(isSeen, id) res[id] <- isSeen)
-  seenQuests.set(res)
+
+  setLastSeenUnlocks(names)
 }
 
-if (seenQuests.get().len() == 0)
-  loadSeenQuests()
-
-isSettingsAvailable.subscribe(@(_) loadSeenQuests())
-
 let hasUnseenQuestsBySection = Computed(@() questsBySection.get().map(@(quests)
-  null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && (id not in seenQuests.get() || v.hasReward))))
+  null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && (id in unseenUnlocks.get() || v.hasReward))))
 
 let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.get()?[sectionId] ? null
   : saveSeenQuests(questsBySection.get()?[sectionId].filter(@(v) !v.hasReward).keys())
@@ -276,12 +278,6 @@ eventbus_subscribe("adsRewardApply", function(data) {
     speed_up_unlock_progress(data.speedUpUnlockId)
 })
 
-register_command(function() {
-  seenQuests.set({})
-  get_local_custom_settings_blk().removeBlock(SEEN_QUESTS)
-  eventbus_send("saveProfile", {})
-}, "debug.reset_seen_quests")
-
 return {
   openQuestsWnd
   openQuestsWndOnTab
@@ -298,7 +294,7 @@ return {
   curTabParams
   questsBySection
 
-  seenQuests
+  unseenUnlocks
   saveSeenQuests
   hasUnseenQuestsBySection
   saveSeenQuestsForSection
@@ -315,6 +311,8 @@ return {
   isSameTutorialSectionId
 
   mkHasReceivedAllRewards
+
+  getStarsTotalNonUpdatable
 
   COMMON_TAB
   EVENT_TAB

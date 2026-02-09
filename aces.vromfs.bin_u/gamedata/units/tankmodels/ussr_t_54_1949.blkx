@@ -47,6 +47,58 @@
   "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "sound": {
     "EngineName": "engine_medium_diesel",
     "TrackSoundPathStudio": "ground/engines",
@@ -1045,7 +1097,13 @@
     "tracks": {
       "animationMultiplier": 0.68,
       "height": 0.06,
-      "width": 0.58
+      "width": 0.58,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1063,6 +1121,7 @@
       "driveGearRadius": 0.28345,
       "mainGearRatio": 0.7,
       "sideGearRatio": 6.78,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -6.0,
@@ -1105,7 +1164,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 1300.0
@@ -2347,7 +2406,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "shotFreq": 0.117,
+        "shotFreq": 0.095,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -2533,7 +2592,7 @@
               "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "shotFreq": 0.117,
+              "shotFreq": 0.095,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",

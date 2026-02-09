@@ -2961,5 +2961,18 @@
       0.482739,
       -2.69309
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "er_2_ach30b_early_a*",
+        "to": "er_2_ach30b_early_day_c*"
+      },
+      {
+        "from": "er_2_ach30b_early_n*",
+        "to": "er_2_ach30b_early_day_n*"
+      }
+    ]
   }
 }

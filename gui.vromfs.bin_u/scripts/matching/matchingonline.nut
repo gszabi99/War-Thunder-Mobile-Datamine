@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
+from "app" import exitGame
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { format } = require("string")
 let { register_command } = require("console")
@@ -14,7 +15,6 @@ let { is_ios } = require("%sqstd/platform.nut")
 let { canLogout, startLogout, startRelogin } = require("%scripts/login/loginStart.nut")
 let { isMatchingOnline } = require("%appGlobals/loginState.nut")
 let { wndStartActiveMsec, wndStartInactiveMsec, windowActive } = require("%appGlobals/windowState.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -37,13 +37,13 @@ subscribeFMsgBtns({
     uid = "no_online_warning",
     text = loc("mainmenu/noOnlineWarning")
   })
-  matchingExitGame = @(_) exitGamePlatform()
+  matchingExitGame = @(_) exitGame()
 
   function exitAndLinkToStore (_) {
     let url = dgs_get_settings()?.storeUrl
     if (url != null)
       shell_execute({ cmd = "action", file = url })
-    exitGamePlatform()
+    exitGame()
   }
 
   function exitGameForUpdate(_) {

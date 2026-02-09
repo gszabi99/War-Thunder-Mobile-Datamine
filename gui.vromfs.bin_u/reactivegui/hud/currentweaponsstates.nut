@@ -22,6 +22,7 @@ let shipWeaponsList = [
   "EII_MINE"
   "EII_DEPTH_CHARGE"
   "EII_MORTAR"
+  "EII_ROCKET_ASW"
 ]
 
 let shipGunInsertIdx = 1

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkCurrencyFullId, currencyToFullId, sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { getCurrencyDescription } = require("%appGlobals/config/currencyPresentation.nut")
+let { mkCurrencyFullId, currencyToFullId, sortByCurrencyId, currencySeasons
+} = require("%appGlobals/pServer/seasonCurrencies.nut")
+let { getCurrencyConvertInfo } = require("%appGlobals/config/currencyPresentation.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventId, parentEventLoc,
   buyCurrencyWndGamercardCurrencies
@@ -87,9 +88,7 @@ function mkQuestsLink(curId, eventId) {
 }
 
 function mkTimeTextComputed(goods) {
-  local { timeRange = null, timeRanges = [] } = goods
-  if (timeRange != null && (timeRange.start != 0 || timeRange.end != 0)) 
-    timeRanges = [timeRange]
+  let { timeRanges = [] } = goods
   if (timeRanges.len() == 0)
     return Watched(null)
 
@@ -109,12 +108,8 @@ function mkTimeTextComputed(goods) {
 }
 
 function mkGoods(goods, onClick, state, animParams) {
-  let { viewBaseValue = 0, rewards = [], currencies = null } = goods
-  local { id = null, count = 0 } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
-  if (currencies != null) { 
-    id = currencies.findindex(@(v) v > 0)
-    count = currencies?[id] ?? 0
-  }
+  let { viewBaseValue = 0, rewards } = goods
+  let { id = null, count = 0 } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
   if (id == null)
     return null
 
@@ -233,15 +228,15 @@ let buyEventCurrenciesHeader = @() {
   text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))
 }.__update(fontLarge)
 
-let buyEventCurrenciesDesc = @(){
-  watch = [eventCurrenciesGoods, currencyId]
+let buyEventCurrenciesDesc = @() {
+  watch = [currencyId, currencySeasons]
   size = [saSize[0], SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  text = getCurrencyDescription(currencyId.get())
+  text = getCurrencyConvertInfo(currencySeasons.get()?[currencyId.get()].convertion.currencyId ?? "")
 }.__update(fontMedium)
 
 let buyEventCurrenciesGamercard = @() {

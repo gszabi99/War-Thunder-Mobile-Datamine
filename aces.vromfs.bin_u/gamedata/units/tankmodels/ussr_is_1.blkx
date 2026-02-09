@@ -1995,7 +1995,13 @@
     "tracks": {
       "animationMultiplier": -0.73,
       "height": 0.07,
-      "width": 0.7
+      "width": 0.7,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.2,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2012,7 +2018,7 @@
       "driveGearRadius": 0.37,
       "mainGearRatio": 2.16,
       "sideGearRatio": 6.25,
-      "alternativeGearControl": 4.0,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -1.27,

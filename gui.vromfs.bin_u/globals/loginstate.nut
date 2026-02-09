@@ -22,10 +22,10 @@ let LOGIN_STATE = {
   ONLINE_SETTINGS_AVAILABLE   = 0x00100
   LEGAL_ACCEPTED              = 0x00200
   CONTACTS_LOGGED_IN          = 0x00400
-  CONSENT_WND                 = 0x00800
-  IOS_IDFA                    = 0x01000
-  GOOGLE_CONSENT              = 0x02000
-
+  TCF_CONSENT                 = 0x00800
+  CONSENT_WND                 = 0x01000
+  IOS_IDFA                    = 0x02000
+  GOOGLE_CONSENT              = 0x04000
 
   
   HANGAR_LOADED               = 0x10000
@@ -36,10 +36,11 @@ let LOGIN_STATE = {
   NOT_LOGGED_IN               = 0x00000
   AUTH_AND_UPDATED            = 0x00003
   READY_TO_FULL_LOAD          = 0x00107
-  READY_FOR_OUR_CONSENT       = 0x00700
-  READY_FOR_IDFA              = 0x00F00
-  READY_FOR_GOOGLE_CONSENT    = 0x01F00
-  LOGGED_IN                   = 0x03FF7 
+  READY_FOR_TCF_CONSENT       = 0x00700
+  READY_FOR_OUR_CONSENT       = 0x00F00
+  READY_FOR_IDFA              = 0x01F00
+  READY_FOR_GOOGLE_CONSENT    = 0x03F00
+  LOGGED_IN                   = 0x07FF7 
 }
 
 let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
@@ -57,6 +58,7 @@ let isGoogleConsentShowed = Computed(@() goodleConsent.get()?.isShowed ?? false)
 let isGoogleConsentAllowAds = Computed(@() goodleConsent.get()?.canRequest ?? false)
 let isPreviewIDFAShowed = sharedWatched("isPreviewIDFAShowed", @() false)
 let isReadyForShowPreviewIdfa = sharedWatched("isReadyForShowPreviewIdfa", @() false)
+let isTcfConsentAllowLogin = sharedWatched("isTcfConsentAllowLogin", @() false)
 
 function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.get()
@@ -121,8 +123,10 @@ return loginTypes.__merge(secondStepTypes, {
   isGoogleConsentAllowAds
   isReadyForShowPreviewIdfa
   isPreviewIDFAShowed
+  isTcfConsentAllowLogin
 
   CONSENT_OPTIONS_SAVE_ID = "consentManageOptions"
+  TCF_CONSENT_ACCEPTED_SAVE_ID = "tcfConsentAccepted"
 
   isLoginStarted = Computed(@() (loginState.get() & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.get() & LOGIN_STATE.AUTHORIZED) != 0)
@@ -130,6 +134,7 @@ return loginTypes.__merge(secondStepTypes, {
   isSettingsAvailable = Computed(@() isAppLoaded.get() && (isOnlineSettingsAvailable.get() || !isLoginRequired.get()))
   isMatchingConnected = Computed(@() (loginState.get() & LOGIN_STATE.MATCHING_CONNECTED) != 0)
   isProfileReceived = Computed(@() (loginState.get() & LOGIN_STATE.PROFILE_RECEIVED) != 0)
+  isProfileConfigsReceived = Computed(@() (loginState.get() & LOGIN_STATE.CONFIGS_RECEIVED) != 0)
   isContactsLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
   isOpenedLegalWnd = Computed(@() legalListForApprove.get().findvalue(@(v) v) != null)
   isGameUpdatedOnLogin = Computed(@() (loginState.get() & LOGIN_STATE.GAME_UPDATED) != 0)
@@ -137,6 +142,7 @@ return loginTypes.__merge(secondStepTypes, {
   isLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
   isAuthAndUpdated = Computed(@() (loginState.get() & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)
   isReadyToFullLoad = Computed(@() (loginState.get() & LOGIN_STATE.READY_TO_FULL_LOAD) == LOGIN_STATE.READY_TO_FULL_LOAD)
+  isReadyForTcfConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_TCF_CONSENT) == LOGIN_STATE.READY_FOR_TCF_CONSENT)
   isReadyForGoogleConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_GOOGLE_CONSENT) == LOGIN_STATE.READY_FOR_GOOGLE_CONSENT)
   isReadyForConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_OUR_CONSENT) == LOGIN_STATE.READY_FOR_OUR_CONSENT)
 

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getHeroTankMaxSpeedBySteps } = require("hudState")
+let { setVirtualAxisValue, changeCruiseControl } = require("controls")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { setVirtualAxisValue, changeCruiseControl } = require("%globalScripts/controls/shortcutActions.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let { speed, cruiseControl } = require("%rGui/hud/tankState.nut")
 let { playSound } = require("sound_wt")
@@ -10,7 +10,7 @@ let { setInterval, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, arrowsVerSize,
   mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn, outlineColorDef
 } = require("%rGui/components/movementArrows.nut")
-let { playerUnitName } = require("%rGui/hudState.nut")
+let { playerUnitName, isPlayingReplay } = require("%rGui/hudState.nut")
 let { isStickActiveByArrows, stickDelta } = require("%rGui/hud/stickState.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { currentGearDownOnStopButtonTouch } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
@@ -105,6 +105,8 @@ function updateAxeleration(flipY) {
 }
 
 function steeringAxelerate(id, flipX) {
+  if (isPlayingReplay.get())
+    return
   curSteerValue = min(curSteerValue + deltaSteer, 1)
   steerWatch.set(flipX ? -curSteerValue : curSteerValue)
   setVirtualAxisValue(id, steerWatch.get())
@@ -128,6 +130,8 @@ function mkSteerParams(isRight, scale) {
     ovr = { key = shortcutId }
     shortcutId
     function onTouchBegin() {
+      if (isPlayingReplay.get())
+        return
       setGmBrakeAxis(0)
       if (cruiseControl.get() == 0)
         curSteerValue = 1
@@ -141,6 +145,10 @@ function mkSteerParams(isRight, scale) {
       }
     }
     function onTouchEnd() {
+      if (isPlayingReplay.get())
+        return
+      if (cruiseControl.get() == 0)
+        setGmBrakeAxis(1)
       clearTimer(onTouchUpdate)
       setVirtualAxisValue("gm_steering", 0)
       steerWatch.set(0)
@@ -155,6 +163,8 @@ function mkStopParams(verSize) {
     ovr = { key = "gm_brake", size = verSize }
     shortcutId
     function onTouchBegin() {
+      if (isPlayingReplay.get())
+        return
       setGmBrakeAxis(1)
       toNeutral()
       if (fullStopOnTouchButton.get())
@@ -163,6 +173,8 @@ function mkStopParams(verSize) {
         resetTimeout(delayReverse, toReverse)
     }
     function onTouchEnd() {
+      if (isPlayingReplay.get())
+        return
       if (!fullStopOnTouchButton.get())
         setGmBrakeAxis(0)
       clearTimer(toReverse)
@@ -177,6 +189,8 @@ function mkEngineBtn(isBackward, id, verSize, children) {
   let onTouchUpdate = @() updateAxeleration(isBackward)
   return mkMoveVertBtn(
     function onTouchBegin() {
+      if (isPlayingReplay.get())
+        return
       setGmBrakeAxis(0)
       playHapticPattern(isBackward ? HAPT_BACKWARD : HAPT_FORWARD)
       if (axelerate(isBackward))
@@ -187,6 +201,8 @@ function mkEngineBtn(isBackward, id, verSize, children) {
       }
     },
     function onTouchEnd() {
+      if (isPlayingReplay.get())
+        return
       prevCruiseControl = CRUISE_CONTROL_UNDEF
       clearTimer(onTouchUpdate)
     },

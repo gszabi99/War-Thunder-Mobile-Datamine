@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_subscribe
 from "wt.behaviors" import HangarCameraControl
-from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%sqstd/underscore.nut" import arrayByRows
 import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 from "%appGlobals/unitPresentation.nut" import getUnitLocId
@@ -21,6 +21,7 @@ from "%rGui/components/closeWndBtn.nut" import closeWndBtn
 from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/components/slider.nut" import sliderWithButtons, sliderH
 from "%rGui/components/foldableSelector.nut" import itemGap, contentPadding, contentBgColor, headerBgColor
+from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/dmViewer/protectionAnalysisState.nut" import isProtectionAnalysisActive, inspectedUnit, inspectedBaseUnit,
   isSimulationMode, protectionMapUpdate, threatUnitSearchString, threatCountry, threatMRank, threatUnit,
   threatBulletData, fireDistance, armorPiercingMm, threatCountriesList, threatMRanksList,
@@ -152,8 +153,11 @@ let threatSearchResultsContent = @() {
   gap = itemGap
   flow = FLOW_VERTICAL
   children = arrayByRows(threatUnitSearchResults.get()
-    .map(@(unit) { unit, mRank = unit.mRank, locName = loc(getUnitLocId(unit)) })
-    .sort(@(a, b) a.mRank <=> b.mRank || a.locName <=> b.locName)
+    .map(function(unit) {
+      let locName = loc(getUnitLocId(unit))
+      return { unit, mRank = unit.mRank, locName, locNameLower = utf8ToLower(locName) }
+    })
+    .sort(@(a, b) a.mRank <=> b.mRank || a.locNameLower <=> b.locNameLower)
     .map(@(v) mkSearchResultUnit(v.unit)), 2)
       .map(@(children) {
         flow = FLOW_HORIZONTAL
@@ -207,19 +211,6 @@ let protectionMapBtnPlace = @() {
     : protMapBtn
 }
 
-let mkVerticalPannableArea = @(content, override = {}) {
-  size = flex()
-  flow = FLOW_VERTICAL
-  clipChildren = true
-  children = {
-    size = flex()
-    behavior = Behaviors.Pannable
-    touchMarginPriority = TOUCH_BACKGROUND
-    skipDirPadNav = true
-    children = content
-  }
-}.__update(override)
-
 let paramsLeft = panelBg.__merge({
   size = const [leftPanelW, SIZE_TO_CONTENT]
   gap = hdpx(24)
@@ -237,22 +228,25 @@ let paramsRight = {
   flow = null
   children = [
     threatBlockTitle
-    mkVerticalPannableArea({
-      size = FLEX_H
-      flow = FLOW_VERTICAL
-      gap = hdpx(24)
-      children = [
-        threatUnitSearchTextInput
-        @() {
-          watch = threatUnitSearchString
-          gap = hdpx(12)
-          flow = FLOW_VERTICAL
-          children = threatUnitSearchString.get() == ""
-            ? threatOprtionsContent
-            : threatSearchResultsContent
-        }
-      ]
-    })
+    makeVertScroll(
+      {
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        gap = hdpx(24)
+        children = [
+          threatUnitSearchTextInput
+          @() {
+            watch = threatUnitSearchString
+            size = FLEX_H
+            gap = hdpx(12)
+            flow = FLOW_VERTICAL
+            children = threatUnitSearchString.get() == ""
+              ? threatOprtionsContent
+              : threatSearchResultsContent
+          }
+        ]
+      }
+      { isBarOutside = true })
   ]
 }
 

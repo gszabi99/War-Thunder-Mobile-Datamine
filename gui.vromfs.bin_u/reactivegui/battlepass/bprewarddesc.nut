@@ -15,6 +15,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let { markTextColor } = require("%rGui/style/stdColors.nut")
 let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
+let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
 
 
 let unitPlateWidth = hdpx(480)
@@ -112,6 +113,7 @@ let infoImageCtors = {
   decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
   currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
   booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
+  decal = @(viewInfo, _) mkDecalIcon(viewInfo.id, [1.5 * REWARD_STYLE_BIG.boxSize, REWARD_STYLE_BIG.boxSize])
 }
 
 let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() {

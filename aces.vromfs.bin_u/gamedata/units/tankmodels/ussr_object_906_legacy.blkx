@@ -58,7 +58,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "drowningCheckHeightMultiplier": 0.9,
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -70,6 +70,58 @@
       0.0,
       0.0,
       1.0
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -1786,7 +1838,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 980.0
@@ -1794,7 +1846,13 @@
     "tracks": {
       "animationMultiplier": -0.5,
       "height": 0.02,
-      "width": 0.35
+      "width": 0.35,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1811,6 +1869,7 @@
       "mainGearRatio": 1.0,
       "sideGearRatio": 5.09,
       "neutralGearRatio": 10.0,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -0.688,

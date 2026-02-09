@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { abs } = require("math")
-let { buyUnitsData } = require("%appGlobals/unitsState.nut")
+let { buyUnitsData, canBuyUnitsStatus, US_CAN_BUY } = require("%appGlobals/unitsState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isUnitsTreeOpen, closeUnitsTreeWnd, mkAllTreeUnits, countriesCfg, countriesRows,
   unitsMaxRank, unitsMaxStarRank, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached,
   mapUnitsByCountryGroup, getColumnsCfg
 } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { mkNodesReceiveInfo } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 let { levelInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
@@ -37,7 +38,7 @@ let { isFiltersVisible, filterStateFlags, openFilters, activeFilters, mkFiltered
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
-let { blockedCountries } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { rankBlockOffset } = require("%rGui/unitsTree/unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { scrollHandler, startAnimScroll, interruptAnimScroll, scrollPos, unseenArrowsBlockCtor
@@ -51,6 +52,8 @@ let { selectedTreeSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { researchBlock, mkBarText } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
+
 
 let infoPannelPadding = hdpx(30)
 let infoPanelFooterGap = hdpx(20)
@@ -428,25 +431,32 @@ function mkHasUnitActions(withTreeNodes) {
   return Computed(@() curSelectedUnit.get() != null || selectedTreeSlotIdx.get() == null || hasDarkScreen.get())
 }
 
-let mkBottomInfoPanel = {
+let mkBottomInfoPanel = @(unitW, unitReceiveInfoW) {
   size = FLEX_H
   rendObj = ROBJ_BOX
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    discountBlock
-    unitActions
+    discountBlock(unitW)
+    unitActions(unitW, unitReceiveInfoW)
   ]
 }
 
-function infoPanel() {
+let infoPanel = @(nodesReceiveInfo) function() {
   let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
-  let isBlockedUnit = Computed(@() hangarUnit.get()?.country in blockedCountries.get())
+  let isBlockedUnit = Computed(function() {
+    let { name = "" } = hangarUnit.get()
+    return name not in campMyUnits.get()
+      && name in unitsBlockedByBattleMode.get()
+      && (unitsResearchStatus.get()?[name].hasAccessLock ?? true)
+      && (name not in serverConfigs.get()?.allBlueprints || canBuyUnitsStatus.get()?[name] != US_CAN_BUY)
+  })
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
     && hangarUnit.get()?.name not in campMyUnits.get()
     && !isBlockedUnit.get())
   let hasDarkScreen = mkHasDarkScreen()
+  let unitReceiveInfo = Computed(@() nodesReceiveInfo.get()?[curSelectedUnit.get()])
   return {
     watch = [hasSelectedUnit, isTreeNodes, isCampaignWithSlots, hasDarkScreen, isBlockedUnit]
     key = {}
@@ -472,18 +482,19 @@ function infoPanel() {
                 size = flex()
               }
               @() {
-                watch = hangarUnit
+                watch = [hangarUnit, unitReceiveInfo]
                 flow = FLOW_VERTICAL
                 gap = infoPanelFooterGap
                 children = [
                   needShowBlueprintDescr.get() ? mkBarText(loc("blueprints/fullDescription")) : null
-                  isBlockedUnit.get() ? mkBarText(loc("unitsTree/needAccessHint")) : null
-                  researchBlock(hangarUnit.get())
+                  isBlockedUnit.get() && unitReceiveInfo.get() == null ? mkBarText(loc("unitsTree/needAccessHint")) : null
+                  researchBlock(hangarUnit.get(), unitReceiveInfo.get())
                   @() {
                     watch = hasUnitActions
                     size = FLEX_H
                     stopMouse = true
-                    children = hasUnitActions.get() ? mkBottomInfoPanel : null
+                    children = !hasUnitActions.get() ? null
+                      : mkBottomInfoPanel(curSelectedUnit, unitReceiveInfo)
                   }
                 ]
               }
@@ -512,33 +523,37 @@ function infoPanel() {
   }
 }
 
-let unitsTreeWnd = {
-  key = {}
-  size = const [sw(100), sh(100)]
-  children = [
-    mkTreeBg(isUnitsTreeOpen)
+let unitsTreeWndKey = {}
+function unitsTreeWnd() {
+  let nodesReceiveInfo = isTreeNodes.get() ? mkNodesReceiveInfo() : Watched({})
+  return {
+    watch = isTreeNodes
+    key = unitsTreeWndKey
+    size = const [sw(100), sh(100)]
+    children = [
+      mkTreeBg(isUnitsTreeOpen)
 
-    @() {
-      watch = isTreeNodes
-      children = isTreeNodes.get() ? mkUnitsTreeNodesContent() : mkUnitsTreeContent()
+      {
+        children = isTreeNodes.get() ? mkUnitsTreeNodesContent(nodesReceiveInfo) : mkUnitsTreeContent()
+      }
+
+      {
+        size = const [sw(100), SIZE_TO_CONTENT]
+        padding = [saBorders[1], saBorders[0], 0, saBorders[0]]
+        children = unitsTreeGamercard
+      }
+
+      infoPanel(nodesReceiveInfo)
+    ]
+    function onAttach() {
+      isUnitsTreeAttached.set(true)
     }
-
-    {
-      size = const [sw(100), SIZE_TO_CONTENT]
-      padding = [saBorders[1], saBorders[0], 0, saBorders[0]]
-      children = unitsTreeGamercard
+    function onDetach() {
+      isUnitsTreeAttached.set(false)
+      unitsTreeOpenRank.set(null)
     }
-
-    infoPanel
-  ]
-  function onAttach() {
-    isUnitsTreeAttached.set(true)
+    animations = wndSwitchAnim
   }
-  function onDetach() {
-    isUnitsTreeAttached.set(false)
-    unitsTreeOpenRank.set(null)
-  }
-  animations = wndSwitchAnim
 }
 
 registerScene("unitsTreeWnd", unitsTreeWnd, closeUnitsTreeWnd, isUnitsTreeOpen)

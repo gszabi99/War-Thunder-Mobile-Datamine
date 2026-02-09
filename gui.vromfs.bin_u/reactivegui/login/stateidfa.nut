@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let iOsPlaform = require("ios.platform")
-let { getTrackingPermission, ATT_DENIED } = iOsPlaform
+from "eventbus" import eventbus_subscribe
+from "ios.platform" import getTrackingPermission, ATT_DENIED
 
 let idfaPermission = Watched(getTrackingPermission())
 let isIdfaDenied = Computed(@() idfaPermission.get() == ATT_DENIED)
@@ -11,6 +10,3 @@ eventbus_subscribe("ios.platform.onPermissionTrackCallback", @(p) idfaPermission
 return {
   isIdfaDenied
 }
-
-
-

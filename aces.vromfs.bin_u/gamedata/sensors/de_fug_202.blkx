@@ -56,6 +56,16 @@
           },
           "setTransiver": {
             "transiver": "search"
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -30.0,
+              30.0
+            ],
+            "distanceRange": [
+              0.0,
+              4000.0
+            ]
           }
         },
         "setStandbyMode": {

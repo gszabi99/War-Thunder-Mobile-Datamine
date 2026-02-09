@@ -5,8 +5,9 @@ let { get_meta_mission_info_by_name, do_start_flight, select_mission } = require
 let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
 let { requestHudState, changeTrainingUnit } = require("%scripts/missions/guiOptions.nut")
 
+
 eventbus_subscribe("startSingleMission", function(msg) {
-  let { id, unitName = null } = msg
+  let { id, unitName = null, bullets = null } = msg
   let mission = get_meta_mission_info_by_name(id)
   if (mission == null) {
     logerr($"Not found mission '{id}' to start")
@@ -23,7 +24,7 @@ eventbus_subscribe("startSingleMission", function(msg) {
   if (unitName != null) {
     missionCopy["modTutorial"] = true
     missionCopy["gt_training"] = false
-    changeTrainingUnit(unitName)
+    changeTrainingUnit(unitName, "", bullets)
   }
 
   log($"[OFFLINE_MISSION] startSingleMission {id} (unitName = {unitName})")

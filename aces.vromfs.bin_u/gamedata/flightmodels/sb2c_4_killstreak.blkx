@@ -2871,6 +2871,19 @@
       0.00188086
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "sb2c_4_a*",
+        "to": "sb2c_4_blue_a*"
+      },
+      {
+        "from": "sb2c_4_n*",
+        "to": "sb2c_4_blue_n*"
+      }
+    ]
+  },
   "weapon_presets": {
     "preset": {
       "name": "sb2c_4_killstreak_default",

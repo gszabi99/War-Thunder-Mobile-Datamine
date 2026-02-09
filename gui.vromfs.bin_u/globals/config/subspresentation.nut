@@ -22,13 +22,15 @@ let iconScale = {
 }
 
 let defCfg = {
-  icon = "ui/gameuiskin/subs_prem.avif"
+  image = "ui/gameuiskin/subs_prem.avif"
+  icon = "ui/gameuiskin/gamercard_subs_prem.avif"
   
 }
 
 let allPresentations = {
   vip = {
-    icon = "ui/gameuiskin/subs_vip.avif"
+    image = "ui/gameuiskin/subs_vip.avif"
+    icon = "ui/gameuiskin/gamercard_subs_vip.avif"
   }
 }
   .map(@(cfg) defCfg.__merge(cfg))

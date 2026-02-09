@@ -1,13 +1,13 @@
 {
   "type": "radar",
-  "name": "Roland",
+  "name": "Roland TT",
   "transivers": {
     "radarTrack": {
       "power": 90.0,
       "band": 9,
-      "rcs": 3.0,
-      "range": 12000.0,
-      "rangeMax": 16000.0,
+      "rcs": 1.0,
+      "range": 16000.0,
+      "rangeMax": 20000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 2.2,
@@ -22,13 +22,21 @@
     "irstTrack": {
       "power": 200.0,
       "band": -1,
-      "rcs": 1.0,
+      "rcs": 8000.0,
       "range": 8000.0,
       "rangeMax": 10000.0,
       "visibilityType": "infraRed",
+      "range0": 0.0,
+      "range1": 5000.0,
+      "range2": 0.0,
+      "range3": 0.0,
+      "range4": 0.0,
+      "range5": 0.0,
+      "range6": 0.0,
+      "range7": 0.0,
       "antenna": {
-        "angleHalfSens": 1.0,
-        "sideLobesSensitivity": -60.0
+        "angleHalfSens": 0.4,
+        "sideLobesSensitivity": -120.0
       }
     }
   },
@@ -44,11 +52,11 @@
         80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 85.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 8.5,
-      "barHeight": 1.5,
+      "width": 22.5,
+      "barHeight": 3.0,
       "barsCount": 3,
       "rowMajor": false,
       "indicate": true
@@ -64,7 +72,7 @@
         80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 85.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
       "width": 0.75,
@@ -84,8 +92,28 @@
         80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 85.0,
       "rollStabLimit": 10.0
+    },
+    "irstLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -20.0,
+        20.0
+      ],
+      "elevationLimits": [
+        -10.0,
+        80.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 85.0,
+      "rollStabLimit": 10.0,
+      "period": 0.1,
+      "width": 22.5,
+      "barHeight": 0.4,
+      "barsCount": 12,
+      "rowMajor": false,
+      "indicate": true
     },
     "irstLosLock": {
       "type": "pyramide",
@@ -98,11 +126,11 @@
         80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 85.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 2.0,
-      "barHeight": 2.0,
+      "width": 0.4,
+      "barHeight": 0.4,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -118,21 +146,21 @@
         80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 85.0,
       "rollStabLimit": 10.0
     }
   },
   "signals": {
     "radarTrack": {
       "groundClutter": false,
-      "angularAccuracy": 0.06,
+      "angularAccuracy": 0.03,
       "distanceAccuracy": 5.0,
       "absDopplerSpeed": true,
       "track": true,
       "distance": {
         "presents": true,
         "minValue": 750.0,
-        "maxValue": 16000.0,
+        "maxValue": 20000.0,
         "width": 60.0
       },
       "dopplerSpeed": {
@@ -145,8 +173,10 @@
     },
     "irstTrack": {
       "groundClutter": false,
+      "rangeFinder": false,
       "angularAccuracy": 0.01,
       "distanceAccuracy": 2.0,
+      "targetRadiusMin": 0.2,
       "distance": {
         "presents": true,
         "minValue": 30.0,
@@ -154,6 +184,16 @@
       },
       "dopplerSpeed": {
         "presents": false
+      }
+    }
+  },
+  "transmitters": {
+    "rc": {
+      "power": 100.0,
+      "band": 9,
+      "antenna": {
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   },
@@ -176,16 +216,11 @@
             "value": 0.0
           },
           "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": false
-            },
-            {
-              "fsm": "track",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
         },
         "setRadarStandbyMode": {
           "setStandbyModeCommon": {},
@@ -197,7 +232,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 8.5
+            "value": 22.5
           }
         },
         "setIrstStandbyMode": {
@@ -210,7 +245,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 9.0
+            "value": 22.5
           }
         },
         "setLockModeCommon": {
@@ -218,6 +253,9 @@
             "source": "const",
             "value": true
           },
+          "setDesignatedTarget": {
+            "set": true
+          },
           "setEnabled": {
             "value": true
           },
@@ -231,24 +269,59 @@
             "active": true
           }
         },
-        "setRadarLockMode": {
+        "setRadarLockModeCommon": {
           "setLockModeCommon": {},
           "setModeName": {
             "name": "acquisition"
           },
-          "setScanPattern": {
-            "scanPattern": "radarLock"
-          },
           "setCenterElevation": {
             "source": "constant",
-            "value": 8.5
+            "value": 22.5
           },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 1000.0
           }
         },
-        "setLosVisualPreLockModeCommon": {
+        "setIrstLockModeCommon": {
+          "setLockModeCommon": {},
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 22.5
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 100.0
+          }
+        },
+        "setRadarLockModeCue": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "radarLock"
+          }
+        },
+        "setIrstLockModeCue": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "irstLock"
+          }
+        },
+        "setRadarLockModeTarget": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "radarLock"
+          }
+        },
+        "setIrstLockModeTarget": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "irstLock"
+          }
+        },
+        "setLosVisualLockModeCommon": {
           "setEnabled": {
             "value": true
           },
@@ -265,17 +338,17 @@
             "active": true
           }
         },
-        "setRadarLosVisualPreLockMode": {
+        "setRadarLosVisualLockModeCommon": {
           "setScanPattern": {
             "scanPattern": "radarLosLock"
           },
-          "setLosVisualPreLockModeCommon": {}
+          "setLosVisualLockModeCommon": {}
         },
-        "setIrstLosVisualPreLockMode": {
+        "setIrstLosVisualLockModeCommon": {
           "setScanPattern": {
             "scanPattern": "irstLosLock"
           },
-          "setLosVisualPreLockModeCommon": {}
+          "setLosVisualLockModeCommon": {}
         },
         "setLosLockModeCommon": {
           "setEnabled": {
@@ -283,9 +356,13 @@
           },
           "setWeaponDetectionAllowance": {
             "source": "targetDesignation"
+          },
+          "setDesignatedTarget": {
+            "set": false
           }
         },
         "setRadarLosLockMode": {
+          "setRadarLosVisualLockModeCommon": {},
           "setLosLockModeCommon": {},
           "setModeName": {
             "name": "acquisition"
@@ -297,6 +374,7 @@
           }
         },
         "setIrstLosLockMode": {
+          "setIrstLosVisualLockModeCommon": {},
           "setLosLockModeCommon": {},
           "setModeName": {
             "name": "IRST acquisition"
@@ -317,9 +395,13 @@
           "setWeaponDetectionAllowance": {
             "source": "const",
             "value": true
+          },
+          "setDesignatedTarget": {
+            "set": true
           }
         },
         "setRadarVisualLockMode": {
+          "setRadarLosVisualLockModeCommon": {},
           "setVisualLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -327,6 +409,7 @@
           }
         },
         "setIrstVisualLockMode": {
+          "setIrstLosVisualLockModeCommon": {},
           "setVisualLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -341,6 +424,9 @@
             "source": "const",
             "value": true
           },
+          "setDesignatedTarget": {
+            "set": false
+          },
           "clearTargetsOfInterest": {},
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
@@ -352,10 +438,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -382,6 +464,12 @@
             "scanPattern": "irstTrack"
           }
         },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
+            "active": false
+          }
+        },
         "setRadar": {
           "setTransiver": {
             "transiver": "radarTrack"
@@ -403,77 +491,96 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "radarParked",
+          "stateTo": "radarStandby",
           "actions": {
             "init": {},
             "setRadarStandbyMode": {},
             "setRadar": {}
           }
         },
-        "radarCheckLockType0": {
+        "checkRadarLockTypeCue": {
           "stateFrom": "radarStandby",
           "command": "designateTarget",
-          "stateTo": "radarCheckLockType0",
+          "stateTo": "checkRadarLockTypeCue",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": "cue"
             }
           }
         },
-        "radarLock": {
-          "stateFrom": "radarCheckLockType0",
+        "radarLockCue": {
+          "stateFrom": "checkRadarLockTypeCue",
           "event": "designationTypeEquals",
-          "stateTo": "radarLock",
+          "stateTo": "radarLockCue",
           "actions": {
-            "setRadarLockMode": {}
+            "setRadarLockModeCue": {}
           }
         },
-        "radarCheckLockType1": {
-          "stateFrom": "radarCheckLockType0",
+        "checkRadarLockTypeTarget": {
+          "stateFrom": "checkRadarLockTypeCue",
           "event": "designationTypeNotEquals",
-          "stateTo": "radarCheckLockType1",
+          "stateTo": "checkRadarLockTypeTarget",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "target"
             }
           }
         },
-        "radarLosLock": {
-          "stateFrom": "radarCheckLockType1",
+        "lockRadarTarget": {
+          "stateFrom": "checkRadarLockTypeTarget",
+          "event": "designationTypeEquals",
+          "stateTo": "radarLockTarget",
+          "actions": {
+            "setRadarLockModeTarget": {}
+          }
+        },
+        "checkRadarLockTypeLos": [
+          {
+            "stateFrom": "checkRadarLockTypeTarget",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkRadarLockTypeLos",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "los"
+              }
+            }
+          },
+          {
+            "stateFrom": "checkRadarLockTypeLos",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkRadarLockTypeVisual",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "visual"
+              }
+            }
+          }
+        ],
+        "lockRadarLos": {
+          "stateFrom": "checkRadarLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "radarLosLock",
           "actions": {
-            "setRadarLosVisualPreLockMode": {},
             "setRadarLosLockMode": {}
           }
         },
-        "radarCheckLockType2": {
-          "stateFrom": "radarCheckLockType1",
-          "event": "designationTypeNotEquals",
-          "stateTo": "radarCheckLockType2",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 2
-            }
-          }
-        },
-        "radarVisualLock": {
-          "stateFrom": "radarCheckLockType2",
+        "lockRadarVisual": {
+          "stateFrom": "checkRadarLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "radarVisualLock",
           "actions": {
-            "setRadarLosVisualPreLockMode": {},
             "setRadarVisualLockMode": {}
           }
         },
-        "radarFinishLockTypeCheck": {
-          "stateFrom": "radarCheckLockType2",
+        "finishRadarLockTypeCheck": {
+          "stateFrom": "checkRadarLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "radarStandby"
         },
         "radarTrack": {
           "stateFrom": [
-            "radarLock",
+            "radarLockCue",
+            "radarLockTarget",
             "radarLosLock",
             "radarVisualLock"
           ],
@@ -489,7 +596,8 @@
         },
         "radarFailedLock": {
           "stateFrom": [
-            "radarLock",
+            "radarLockCue",
+            "radarLockTarget",
             "radarLosLock",
             "radarVisualLock"
           ],
@@ -508,62 +616,96 @@
           "event": "targetsOfInterestCleanup",
           "command": [
             "selectTarget",
+            "undesignateTarget",
             "designateTarget"
           ],
           "stateTo": "radarStandby",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
-        "irstCheckLockType1": {
+        "checkIrstLockTypeCue": {
           "stateFrom": "irstStandby",
           "command": "designateTarget",
-          "stateTo": "irstCheckLockType1",
+          "stateTo": "checkIrstLockTypeCue",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "cue"
             }
           }
         },
-        "irstLosLock": {
-          "stateFrom": "irstCheckLockType1",
+        "irstLockCue": {
+          "stateFrom": "checkIrstLockTypeCue",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLockCue",
+          "actions": {
+            "setIrstLockModeCue": {}
+          }
+        },
+        "checkIrstLockTypeTarget": {
+          "stateFrom": "checkIrstLockTypeCue",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkIrstLockTypeTarget",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "target"
+            }
+          }
+        },
+        "lockIrstTarget": {
+          "stateFrom": "checkIrstLockTypeTarget",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLockTarget",
+          "actions": {
+            "setIrstLockModeTarget": {}
+          }
+        },
+        "checkIrstLockTypeLos": {
+          "stateFrom": "checkIrstLockTypeTarget",
+          "event": "designationTypeNotEquals",
+          "stateTo": "checkIrstLockTypeLos",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "type": "los"
+            }
+          }
+        },
+        "lockIrstLos": {
+          "stateFrom": "checkIrstLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "irstLosLock",
           "actions": {
-            "setIrstLosVisualPreLockMode": {},
             "setIrstLosLockMode": {}
           }
         },
-        "irstCheckLockType2": {
-          "stateFrom": "irstCheckLockType1",
+        "checkIrstLockTypeVisual": {
+          "stateFrom": "checkIrstLockTypeLos",
           "event": "designationTypeNotEquals",
-          "stateTo": "irstCheckLockType2",
+          "stateTo": "checkIrstLockTypeVisual",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 2
+              "type": "visual"
             }
           }
         },
-        "irstVisualLock": {
-          "stateFrom": "irstCheckLockType2",
+        "lockIrstVisual": {
+          "stateFrom": "checkIrstLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "irstVisualLock",
           "actions": {
-            "setIrstLosVisualPreLockMode": {},
             "setIrstVisualLockMode": {}
           }
         },
-        "irstFinishLockTypeCheck": {
-          "stateFrom": "irstCheckLockType2",
+        "finishIrstLockTypeCheck": {
+          "stateFrom": "checkIrstLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "irstStandby"
         },
         "irstTrack": {
           "stateFrom": [
+            "irstLockCue",
+            "irstLockTarget",
             "irstLosLock",
             "irstVisualLock"
           ],
@@ -579,6 +721,8 @@
         },
         "irstFailedLock": {
           "stateFrom": [
+            "irstLockCue",
+            "irstLockTarget",
             "irstLosLock",
             "irstVisualLock"
           ],
@@ -602,10 +746,7 @@
           "stateTo": "irstStandby",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarToIrstStandby": {
@@ -654,44 +795,20 @@
             "setRadar": {}
           }
         },
-        "switchRadarOn": {
-          "stateFrom": "radarParked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "radarStandby"
-        },
-        "switchRadarOff": {
-          "stateFrom": [
-            "radarStandby",
-            "radarLosLock",
-            "radarVisualLock",
-            "radarTrack"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "radarParked",
+        "activateWeaponTracking": {
+          "event": "updateWeaponTracking",
           "actions": {
-            "setRadarStandbyMode": {}
+            "setWeaponRcTransmissionTimeOut": {
+              "timeOut": 2.0
+            }
           }
         },
-        "switchIrstOn": {
-          "stateFrom": "irstParked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "irstStandby"
-        },
-        "switchIrstOff": {
-          "stateFrom": [
-            "irstStandby",
-            "irstLosLock",
-            "irstVisualLock",
-            "irstTrack"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "irstParked",
+        "deactivateWeaponTracking": {
+          "event": "update",
           "actions": {
-            "setIrstStandbyMode": {}
+            "checkWeaponRcTransmissionTimeOut": {
+              "transmitter": "rc"
+            }
           }
         }
       }
@@ -708,7 +825,10 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -719,13 +839,33 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": {},
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -733,10 +873,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
@@ -747,7 +883,8 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 2.0
+              "timeOut": 2.0,
+              "dirRateLim": 0.78
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
@@ -756,10 +893,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }

@@ -1,6 +1,6 @@
 {
   "type": "radar",
-  "name": "RP-5",
+  "name": "RP-5 TT",
   "transivers": {
     "track": {
       "sideLobesAttenuation": -16.0,
@@ -9,6 +9,12 @@
       "rcs": 3.0,
       "range": 4500.0,
       "rangeMax": 6000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 6.0,
         "sideLobesSensitivity": -24.0
@@ -46,7 +52,6 @@
     "track": {
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "groundVehiclesAsTarget": true,
       "angularAccuracy": 0.08,
       "distanceAccuracy": 22.0,
       "track": true,
@@ -90,7 +95,7 @@
         },
         "setLockMode": {
           "setModeName": {
-            "name": "acquisition"
+            "name": "ACM"
           },
           "setEnabled": {
             "value": true
@@ -129,6 +134,9 @@
             "source": "const",
             "value": true
           },
+          "setDesignatedTarget": {
+            "set": false
+          },
           "setScanPattern": {
             "scanPattern": "track"
           },
@@ -143,10 +151,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -168,7 +172,10 @@
         },
         "lock": {
           "stateFrom": "standby",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "acmSwitch"
+          ],
           "stateTo": "lock",
           "actions": {
             "setLockMode": {}
@@ -192,7 +199,10 @@
               "lock",
               "track"
             ],
-            "command": "selectTarget",
+            "command": [
+              "selectTarget",
+              "acmSwitch"
+            ],
             "event": "disable",
             "stateTo": "standby",
             "actions": {
@@ -236,7 +246,10 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -247,7 +260,10 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -263,10 +279,6 @@
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "setRelSpeedGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
             }
           }
         },
@@ -275,7 +287,8 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 1.0
+              "timeOut": 1.0,
+              "dirRateLim": 1.0
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
@@ -284,10 +297,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }

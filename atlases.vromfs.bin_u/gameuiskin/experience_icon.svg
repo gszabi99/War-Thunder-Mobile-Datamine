@@ -1,19 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="58" viewBox="0 0 60 58">
-  <defs>
-    <style>
-      .cls-1 {
-        stroke: #fff;
-        stroke-width: 2px;
-        fill-rule: evenodd;
-        fill: url(#linear-gradient);
-      }
-    </style>
-    <linearGradient id="linear-gradient" x1="30" y1="55.906" x2="30" y2="0.906" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#afaead"/>
-      <stop offset="0.12" stop-color="#afaead"/>
-      <stop offset="0.856" stop-color="#eaeaea"/>
-      <stop offset="1" stop-color="#eaeaea"/>
-    </linearGradient>
-  </defs>
-  <path id="Polygon_1_copy_15" data-name="Polygon 1 copy 15" class="cls-1" d="M49.8,55.908L29.989,46.283,9.919,55.789l5.345-20.356L0.089,20.192l20.9-.024,9-19.26,8.947,19.25,20.973,0.054L44.715,35.454Z"/>
+<svg width="71" height="67" viewBox="0 0 71 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M35.1891 0L43.4961 25.5664H70.3782L48.6301 41.3673L56.9371 66.9336L35.1891 51.1327L13.441 66.9336L21.7481 41.3673L0 25.5664H26.8821L35.1891 0Z" fill="url(#paint0_linear_3718_32701)"/>
+<path d="M43.4961 25.5664H70.3789L48.6309 41.3672L56.9375 66.9336L35.1895 51.1328L13.4414 66.9336L21.748 41.3672L0 25.5664H26.8828L35.1895 0L43.4961 25.5664ZM28.3359 27.5664H6.15625L24.0996 40.6035L17.2451 61.6963L35.1895 48.6602L53.1328 61.6963L46.2793 40.6035L64.2227 27.5664H42.043L35.1895 6.47168L28.3359 27.5664Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_3718_32701" x1="35.1875" y1="0" x2="35.1875" y2="74" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FEFEFE"/>
+<stop offset="1" stop-color="#A3A3A3"/>
+</linearGradient>
+</defs>
 </svg>

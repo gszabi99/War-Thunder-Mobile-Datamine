@@ -3,12 +3,12 @@ from "math" import min
 from "dagor.workcycle" import resetTimeout, clearTimer
 let { Watched, Computed } = require("frp")
 let { serverConfigs } = require("servConfigs.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 
 let seasonsCfg = Computed(@() serverConfigs.get()?.seasons ?? {})
 let curSeasons = Watched({})
 
-let mkSeason = @(idx, isActive, start, end, unlocks) { idx, isActive, start, end, unlocks }
+let mkSeason = @(idx, isActive, start, end, unlocks, meta) { idx, isActive, start, end, unlocks, meta }
 
 let mkRewardUnlocks = @(rewards) rewards.map(@(v) {
   campaignLevel = v.unlockCampaignLevel
@@ -27,19 +27,21 @@ function updateSeasons() {
   }
 
   let cur = {}
-  let time = serverTime.get()
+  let time = getServerTime()
   foreach(id, s in seasons) {
     if ((s?.rangeList.len() ?? 0) == 0)
       continue
 
     let last = s.rangeList.top()
+    let { meta = {} } = s
     if (time > last.end) {
       if (s.repeat <= 0) {
         cur[id] <- mkSeason(s.rangeList.len() - 1 + s.idxOffset,
           false,
           last.start,
           last.end,
-          mkRewardUnlocks(s.rewards))
+          mkRewardUnlocks(s.rewards),
+          meta)
         continue
       }
       let loops = (time - last.end) / s.repeat + 1
@@ -48,7 +50,8 @@ function updateSeasons() {
         start <= time,
         start,
         last.end + s.repeat * loops,
-        mkRewardUnlocks(s.rewards))
+        mkRewardUnlocks(s.rewards),
+        meta)
       continue
     }
 
@@ -60,7 +63,8 @@ function updateSeasons() {
           false,
           nextRange.start,
           nextRange.end,
-          mkRewardUnlocks(s.rewards))
+          mkRewardUnlocks(s.rewards),
+          meta)
         break
       }
       if (time >= range.start || i == 0) {
@@ -68,7 +72,8 @@ function updateSeasons() {
           time >= range.start,
           range.start,
           range.end,
-          mkRewardUnlocks(s.rewards))
+          mkRewardUnlocks(s.rewards),
+          meta)
         break
       }
     }

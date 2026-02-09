@@ -49,6 +49,58 @@
   "minRelativeTankCameraThreshold": 1.44,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageEffects": {
     "part": [
       {
@@ -1038,7 +1090,13 @@
     "tracks": {
       "animationMultiplier": 0.68,
       "height": 0.05,
-      "width": 0.58
+      "width": 0.58,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1049,6 +1107,7 @@
       "driveGearRadius": 0.28,
       "mainGearRatio": 1.0,
       "sideGearRatio": 3.99,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -6.0,

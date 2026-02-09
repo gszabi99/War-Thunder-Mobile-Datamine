@@ -2750,5 +2750,12 @@
       3.69462,
       6.90216e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "pby_5a_early_a*",
+      "to": "pby_5a_blue_a*"
+    }
   }
 }

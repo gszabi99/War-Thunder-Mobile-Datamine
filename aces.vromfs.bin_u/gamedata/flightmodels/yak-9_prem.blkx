@@ -148,6 +148,13 @@
       "to": "yak_9k_gray_a*"
     }
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "yak_9t_a*",
+      "to": "yak_9k_gray_a*"
+    }
+  },
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {

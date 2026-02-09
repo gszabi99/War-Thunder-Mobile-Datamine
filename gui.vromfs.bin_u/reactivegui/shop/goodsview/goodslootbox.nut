@@ -23,8 +23,7 @@ let bgHiglight = {
 }
 
 function getLocNameLootbox(goods) {
-  let name = goods?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).id
-    ?? goods?.lootboxes.findindex(@(_) true) 
+  let name = goods.rewards.findvalue(@(r) r.gType == G_LOOTBOX)?.id
   return name == null ? goods.id : getLootboxName(name)
 }
 
@@ -45,14 +44,9 @@ let mkLootboxTitle = @(goods) {
 }
 
 function getGoodsLootbox(goods) {
-  let { rewards = null, lootboxes = {} } = goods
-  if (rewards != null) {
-    let r = goods?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).id
-    return { lootboxId = r?.id, lootboxAmount = r?.count ?? 0 }
-  }
-  
-  let lootboxId = lootboxes.findindex(@(_) true)
-  return { lootboxId, lootboxAmount = lootboxes?[lootboxId] ?? 0 }
+  let { rewards } = goods
+  let r = rewards.findvalue(@(r) r.gType == G_LOOTBOX)
+  return { lootboxId = r?.id, lootboxAmount = r?.count ?? 0 }
 }
 
 function mkGoodsLootbox(goods, _, state, animParams, addChildren) {

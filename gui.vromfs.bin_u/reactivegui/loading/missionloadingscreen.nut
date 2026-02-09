@@ -16,11 +16,8 @@ let mapBgByCamp = {
 
 let textParams = {
   rendObj = ROBJ_TEXT
-  fontFx = FFT_GLOW
-  fontFxFactor = 64
-  fontFxColor = Color(0, 0, 0)
   color = Color(205, 205, 205)
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 let loadingHeader = {
   margin = hdpx(70)

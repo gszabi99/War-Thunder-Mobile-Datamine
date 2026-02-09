@@ -2,61 +2,71 @@ from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { deferOnce } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { utf8ToUpper } = require("%sqstd/string.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
 let { mkGameModeByCampaign } = require("%appGlobals/gameModes/gameModes.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { TANK, AIR, SHIP, HELICOPTER, BOAT, SUBMARINE, SAILBOAT } = require("%appGlobals/unitConst.nut")
+let { getUnitLocId, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { hangarUnitName, setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
+let { setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { textButtonCommon, buttonsHGap, buttonsVGap } = require("%rGui/components/textButton.nut")
+let { buttonsHGap, buttonsVGap } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
-let { mkCfg, debugOfflineBattleCfg, openOfflineBattleMenu, isOfflineBattlesActive, savedUnitType, savedUnitName,
-  isDebugListMapsActive, canAccessForDebug, savedMissionName, runOfflineBattle, initOfflineBattlesData,
-  refreshOfflineMissionsList, savedOBDebugMissionName, skipMissionSettings, unitPresetsLevelList, savedUnit,
+let { offlineBattlesCfg, openOfflineBattleMenu, isOfflineBattlesActive, unitSearchName, unitSearchResults,
+  isDebugListMapsActive, canAccessForDebug, runOfflineBattle, initOfflineBattlesData, selectedMission,
+  refreshOfflineMissionsList, skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList,
   savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
+  countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit
 } = require("%rGui/gameModes/offlineBattlesState.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { verticalToggleWithLabel, horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
+let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
 let { addModalWindowWithHeader, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { sliderWithButtons } = require("%rGui/components/slider.nut")
 let { OCT_LIST } = require("%rGui/options/optCtrlType.nut")
 let mkOption = require("%rGui/options/mkOption.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
+let { mkFoldableSelector, mkListItem, headerBgColor, itemGap, contentPadding, contentBgColor,
+  headerH } = require("%rGui/components/foldableSelector.nut")
+let { mkGradRank, mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
+let { mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
+} = require("%rGui/unit/components/unitPlateComp.nut")
+let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
+let { textInput } = require("%rGui/components/textInput.nut")
 
 
 let SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
-let campaignByUnitType = {
-  [SUBMARINE] = "ships",
-  [SAILBOAT] = "ships",
-  [SHIP] = "ships",
-  [BOAT] = "ships",
-  [HELICOPTER] = "air",
-  [AIR] = "air",
-  [TANK] = "tanks"
-}
-let unitTypeByCampaign = {
-  air = AIR
-  tanks = TANK
-  ships = SHIP
-}
-
+let curOpenedSelector = Watched("")
 let needShowBattleSettingsWnd = mkWatched(persist, "needShowBattleSettingsWnd", false)
+let rightPanelWidth = hdpx(520)
+let itemSize = hdpx(120)
+let unitPlateW = hdpx(248)
+let textItemH = hdpx(70)
+let labelIconGap = hdpx(20)
+let maxTextWidth = hdpx(400)
+let flagSizeHeader = hdpx(54)
+let searchIconSize = hdpxi(50)
 
 let close = @() isOfflineBattlesActive.set(false)
+function setHangarUnit() {
+  let curUnitName = curUnit.get()?.name
+  let realUnitName = $"{getTagsUnitName(curUnitName)}_nc"
 
-let setHangarUnit = @() getCampaignPresentation(curCampaign.get()).campaign != campaignByUnitType?[savedUnitType.get()]
-  ? savedUnitName.set(serverConfigs.get()?.allUnits.findindex(@(unit) unit.unitType == savedUnitType.get()))
-  : savedUnitName.set(getTagsUnitName(curUnit.get()?.name))
+  let unit = offlineBattlesCfg.get()?[getTagsUnitName(curUnitName)]
+    ?? campUnitsCfg.get()?[curUnitName]
+    ?? campUnitsCfg.get()?[realUnitName]
+
+  let { operatorCountry = null } = getUnitTagsCfg(curUnitName)
+  let { country = "" } = unit
+
+  if (unit != null)
+    selectedUnit.set(unit.__merge({ country = operatorCountry ?? country }))
+}
 
 function mkSliderOpt(opt) {
   let { value = null, ctrlOverride = {}, locId = "" } = opt
@@ -77,12 +87,144 @@ let mkBotOpt = @(value, locId, maxValue) {
   }
 }
 
-function setMisBlkParamsContent(campaign) {
-  let allUnits = Computed(@() serverConfigs.get()?.allUnits ?? {})
-  let gmCfg = mkGameModeByCampaign(getCampaignPresentation(campaign).campaign)
+let mkText = @(text, ovr = {}) {
+  padding = [0, hdpx(10)]
+  rendObj = ROBJ_TEXT
+  behavior = Behaviors.Marquee
+  halign = ALIGN_LEFT
+  valign = ALIGN_CENTER
+  text
+}.__update(fontSmall, ovr)
+
+let mkIconWithLabel = @(iconComp, text) {
+  valign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = labelIconGap
+  children = [
+    iconComp
+    mkText(text, { size = [maxTextWidth - (flagSizeHeader + labelIconGap), SIZE_TO_CONTENT] })
+  ]
+}
+
+let mkImage = @(w, h, imgPath, ovr = {}) {
+  size = [w, h]
+  rendObj = ROBJ_IMAGE
+  image = Picture(imgPath)
+  keepAspect = true
+}.__update(ovr)
+
+let mkUnitPlate = @(unit, isSelected = Watched(false)) {
+  size = [unitPlateW, itemSize]
+  children = [
+    mkUnitBg(unit)
+    mkUnitSelectedGlow(unit, isSelected)
+    mkUnitImage(unit)
+    mkUnitTexts(unit, getUnitName(unit, loc))
+    mkUnitInfo(unit)
+  ]
+}
+
+let searchIcon = {
+  size = searchIconSize
+  pos = [hdpx(30), 0]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#btn_search.svg:{searchIconSize}:{searchIconSize}:P")
+}
+
+let resetBtn = {
+  size = headerH
+  rendObj = ROBJ_SOLID
+  color = headerBgColor
+  children = closeWndBtn(@() unitSearchName.get() == "" ? setHangarUnit() : unitSearchName.set(""),
+    { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
+}
+
+let unitSearchTextInput = {
+  size = FLEX_H
+  valign = ALIGN_CENTER
+  children = [
+    textInput(unitSearchName, {
+      ovr = {
+        size = [flex(), headerH]
+        padding = [hdpx(50), hdpx(85)]
+        fillColor = headerBgColor
+      }
+      placeholder = loc("unit_search")
+      onChange = @(v) unitSearchName.set(v)
+      onEscape = @() unitSearchName.get() != "" ? unitSearchName.set("") : close()
+      maxChars = 40
+    })
+    searchIcon
+  ]
+}
+
+function selectSearchResultUnit(unit) {
+  selectedUnit.set(unit)
+  curOpenedSelector.set("")
+  unitSearchName.set("")
+}
+
+function mkSearchResultUnit(unit) {
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    behavior = Behaviors.Button
+    onClick = @() selectSearchResultUnit(unit)
+    onElemState = @(v) stateFlags.set(v)
+    sound = { click  = "click" }
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+    children = mkUnitPlate(unit)
+  }
+}
+
+let searchUnitResults = @() {
+  watch = unitSearchResults
+  rendObj = ROBJ_SOLID
+  color = contentBgColor
+  padding = contentPadding
+  gap = itemGap
+  flow = FLOW_VERTICAL
+  children = arrayByRows(unitSearchResults.get()
+    .map(@(v) mkSearchResultUnit(v)), 2)
+      .map(@(children) {
+        flow = FLOW_HORIZONTAL
+        gap = itemGap
+        children
+      })
+}
+
+let mkFlagImage = @(countryId, sz) mkImage(sz, sz, $"ui/gameuiskin#{countryId}.svg:{sz}:{sz}:P")
+
+let mkCountryHeadItem = @(v) v == "" ? null
+  : mkIconWithLabel(mkFlagImage(v, flagSizeHeader), loc(v))
+let mkCountryListItem = @(v, isSelected, onClick) v == "" ? null
+  : mkListItem(v, isSelected, onClick, itemSize, itemSize, mkFlagImage(v, textItemH))
+let mkSelectorCountry = @(list, country) mkFoldableSelector(list, country, 4,
+  mkCountryListItem, mkCountryHeadItem, curOpenedSelector, "country")
+
+let mkMRankHeadItem = mkGradRank
+let mkMRankListItem = @(v, isSelected, onClick)
+  mkListItem(v, isSelected, onClick, itemSize, itemSize, mkGradRankLarge(v))
+let mkSelectorMRank = @(list, mRank) mkFoldableSelector(list, mRank, 4,
+  mkMRankListItem, mkMRankHeadItem, curOpenedSelector, "mRank")
+
+let mkUnitHeadItem = @(v) mkText(loc(getUnitLocId(v ?? "")))
+let mkUnitListItem = @(v, isSelected, onClick)
+  mkListItem(v, isSelected, onClick, unitPlateW, itemSize, mkUnitPlate(v, isSelected))
+let mkSelectorUnit = @(list, unit) mkFoldableSelector(list, unit, 2,
+  mkUnitListItem, mkUnitHeadItem, curOpenedSelector, "unit")
+
+let mkMissionHeadItem = @(v) mkText(loc(getMissionName(v)), { size = [maxTextWidth, SIZE_TO_CONTENT] })
+let mkMissionListItem = @(v, isSelected, onClick)
+  mkListItem(v, isSelected, onClick, rightPanelWidth, textItemH, mkText(loc(getMissionName(v)), { size = FLEX_H }))
+let mkSelectorMission = @(list, mission) mkFoldableSelector(list, mission, 1,
+  mkMissionListItem, mkMissionHeadItem, curOpenedSelector, "mission")
+
+function misParamsContent() {
+  let gmCfg = mkGameModeByCampaign(getCampaignPresentation(curCampaign.get()).campaign)
   let isCommonUnit = Computed(function() {
-    let unit = allUnits.get()?[savedUnitName.get()] ?? allUnits.get()?[$"{savedUnitName.get()}_nc"] ?? {}
-    let { isPremium = false, isHidden = false } = unit
+    let { isPremium = false, isHidden = false } = selectedUnit.get()
     return !isPremium && !isHidden
   })
 
@@ -93,9 +235,10 @@ function setMisBlkParamsContent(campaign) {
   })
 
   let maxBotsRank = Computed(function() {
+    let globalCampaign = getCampaignPresentation(curCampaign.get()).campaign
     local res = 1
-    foreach (unit in allUnits.get())
-      if (getCampaignPresentation(unit.campaign).campaign == campaign)
+    foreach (unit in campUnitsCfg.get())
+      if (getCampaignPresentation(unit.campaign).campaign == globalCampaign)
         res = max(unit.mRank, res)
     return res
   })
@@ -118,9 +261,8 @@ function setMisBlkParamsContent(campaign) {
     padding = hdpx(40)
     gap = hdpx(40)
     function onAttach() {
-      let selectedUnit = allUnits.get()?[savedUnitName.get()] ?? allUnits.get()?[$"{savedUnitName.get()}_nc"] ?? {}
       savedBotsCount.set(maxBotsCount.get())
-      savedBotsRank.set(selectedUnit?.mRank ?? defMaxBotsRank)
+      savedBotsRank.set(selectedUnit.get()?.mRank ?? defMaxBotsRank)
     }
     onDetach = @() needShowBattleSettingsWnd.set(false)
     children = [
@@ -137,7 +279,7 @@ function setMisBlkParamsContent(campaign) {
 
 let openBattleSettingsModal = @() addModalWindowWithHeader(SET_MIS_BLK_PARAMS_WND,
   loc("mainmenu/offlineBattles/settings/modalTitle"),
-  setMisBlkParamsContent(campaignByUnitType[savedUnitType.get()]))
+  misParamsContent)
 
 needShowBattleSettingsWnd.subscribe(@(v) v
   ? openBattleSettingsModal()
@@ -166,11 +308,22 @@ let toBattleHint = @(text) {
   }.__update(fontTinyAccented)
 }
 
-let wndHeader = @(children) {
+let searchBlock = {
   size = FLEX_H
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(10)
+  children = [
+    unitSearchTextInput
+    resetBtn
+  ]
+}
+
+let wndHeader = {
+  size = flex()
   valign = ALIGN_TOP
   flow = FLOW_HORIZONTAL
-  gap = buttonsHGap
+  gap = buttonsVGap
+  minHeight = hdpx(700)
   children = [
     backButton(close)
     {
@@ -179,9 +332,31 @@ let wndHeader = @(children) {
       text = loc("mainmenu/offlineBattles")
     }.__update(fontBig)
     {
-      flow = FLOW_VERTICAL
-      gap = buttonsVGap
-      children
+      size = [rightPanelWidth, flex()]
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_TOP
+      children = makeVertScroll({
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        gap = buttonsVGap
+        children = [
+          searchBlock
+          @() {
+            watch = [unitSearchName, missionsList]
+            size = FLEX_H
+            gap = buttonsVGap
+            flow = FLOW_VERTICAL
+            children = unitSearchName.get() == ""
+              ? [
+                  mkSelectorCountry(countriesList, selectedCountry)
+                  mkSelectorMRank(mRanksList, selectedMRank)
+                  mkSelectorUnit(unitsList, selectedUnit)
+                  missionsList.get().len() > 0 ? mkSelectorMission(missionsList, selectedMission) : null
+                ]
+              : searchUnitResults
+          }
+        ]
+      }, { isBarOutside = true })
     }
   ]
 }
@@ -195,16 +370,14 @@ let wndFooter = @() {
   children = [
     !canAccessForDebug.get() ? null
       : {
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          gap = buttonsHGap
+          valign = ALIGN_BOTTOM
+          flow = FLOW_VERTICAL
+          gap = buttonsVGap
           children = [
-            textButtonCommon(utf8ToUpper(loc("mainmenu/offlineBattles/debug/useHangarUnit")), setHangarUnit)
             horizontalToggleWithLabel(skipMissionSettings, loc("mainmenu/offlineBattles/settings/skipMissionSettings"),
-              {
-                maxWidth = defButtonMinWidth
-                behavior = Behaviors.Marquee
-              })
+              { behavior = Behaviors.Marquee })
+            horizontalToggleWithLabel(isDebugListMapsActive, loc("mainmenu/offlineBattles/debug/maps"),
+              { behavior = Behaviors.Marquee })
           ]
         }
     {
@@ -220,150 +393,45 @@ let wndFooter = @() {
   ]
 }
 
-let mkSelector = @(curValue, allValues, setValue, mkLoc, mkValues, title = "") @() {
-  watch = curValue
-  children = textButtonCommon(utf8ToUpper(mkLoc(curValue.get())),
-    @(event) chooseByNameWnd(event.targetRect,
-      title
-      mkValues(allValues?.get() ?? allValues, mkLoc),
-      curValue.get(),
-      setValue))
+function onUnitChange(unit) {
+  if (unit == null)
+    return
+  let { name = "", country = "", mRank = 0 } = unit
+  setHangarUnitWithSkin(name, "")
+  selectedCountry.set(country)
+  selectedMRank.set(mRank)
 }
 
-let mkMisContent = @(cfg, allMissions, curMissionName, curUnitType) @() {
-  watch = allMissions
-  children = allMissions.get().len() == 0
-    ? textButtonCommon(utf8ToUpper(loc("options/mislist/empty")), @() null)
-    : mkSelector(curMissionName,
-        allMissions,
-        @(value) savedMissionName.set(value),
-        @(id) cfg.get()?.missions[curUnitType.get()][id] || id,
-        @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
-        loc("options/mislist"))
-}
+let content = {
+  key = {}
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = hdpx(30)
+  function onAttach() {
+    refreshOfflineMissionsList()
 
-function mkDebugMisContent(curUnitType) {
-  let cfg = debugOfflineBattleCfg()
-  let allDebugMissions = Computed(@() cfg.get()?[curUnitType.get()] ?? {})
-  let curDebugMissionName = Computed(@() savedOBDebugMissionName.get() in allDebugMissions.get()
-    ? savedOBDebugMissionName.get()
-    : allDebugMissions.get().findindex(@(_) true))
-
-  savedUnitType.subscribe(@(_) savedOBDebugMissionName.set(curDebugMissionName.get()))
-
-  return @() {
-    watch = allDebugMissions
-    children = allDebugMissions.get().len() == 0
-      ? textButtonCommon(utf8ToUpper(loc("options/mislist/empty")), @() null)
-      : mkSelector(curDebugMissionName,
-          allDebugMissions,
-          @(value) savedOBDebugMissionName.set(value),
-          @(id) cfg.get()?[curUnitType.get()][id] || id,
-          @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
-          loc("options/mislist"))
-  }
-}
-
-function mkContent() {
-  let cfg = mkCfg()
-  let allUnitTypes = Computed(@() cfg.get().unitTypes.keys().sort())
-  let curUnitType = Computed(function() {
-    let curTypeByCampaign = unitTypeByCampaign?[getCampaignPresentation(curCampaign.get()).campaign]
-    return allUnitTypes.get().contains(savedUnitType.get()) ? savedUnitType.get()
-      : curTypeByCampaign != null ? curTypeByCampaign
-      : allUnitTypes.get()?[0]
-  })
-  let unitsByType = Computed(@() cfg.get()?.allUnits[curUnitType.get()] ?? {})
-  let allMissions = Computed(@() cfg.get()?.missions[curUnitType.get()] ?? {})
-
-  let curData = Computed(function() {
-    local name = getTagsUnitName(savedUnitName.get() ?? hangarUnitName.get())
-    local mission = savedMissionName.get()
-    local units = unitsByType.get()
-    name = name in units ? name : getTagsUnitName(units.findindex(@(_) true) ?? "")
-    mission = mission in allMissions.get() ? mission : allMissions.get().findindex(@(_) true)
-    return { name, units, mission }
-  })
-  let curUnitName = Computed(@() curData.get().name)
-  let curMissionName = Computed(@() curData.get().mission)
-
-  let onUnitChange = @(name) name != null
-    ? setHangarUnitWithSkin(name, "")
-    : null
-
-  let initMissionName = @(mission) (mission != null && !isDebugListMapsActive.get())
-    ? savedMissionName.set(mission)
-    : null
-
-  function onUnitTypeChange(_unitType) {
-    savedUnitName.set(getTagsUnitName(curUnitName.get() ?? hangarUnitName.get()))
-    savedMissionName.set(curMissionName.get() ?? allMissions.get().findindex(@(_) true) ?? "")
-  }
-
-  return @() {
-    watch = [cfg, isDebugListMapsActive, canAccessForDebug, initOfflineBattlesData]
-    key = onUnitChange
-    size = flex()
-    flow = FLOW_VERTICAL
-    gap = hdpx(30)
-    function onAttach() {
-      refreshOfflineMissionsList()
-
-      if (initOfflineBattlesData.get() != null) {
-        let { unitType, unitName, missionName } = initOfflineBattlesData.get()
-        savedUnitType.set(unitType)
-        savedUnitName.set(unitName)
-        savedMissionName.set(missionName)
-      } else {
-        savedUnitType.set(getUnitType(hangarUnitName.get()))
+    if (initOfflineBattlesData.get() != null) {
+      let { unitName, missionName } = initOfflineBattlesData.get()
+      if (unitName in offlineBattlesCfg.get())
+        selectedUnit.set(offlineBattlesCfg.get()?[unitName])
+      else
         setHangarUnit()
-        savedMissionName.set(curMissionName.get() ?? allMissions.get().findindex(@(_) true) ?? "")
-      }
-
-      curUnitName.subscribe(onUnitChange)
-      savedUnitType.subscribe(onUnitTypeChange)
-
-      deferOnce(function() {
-        onUnitChange(curUnitName.get())
-        initMissionName(curMissionName.get())
-      })
+      selectedMission.set(missionName)
+    } else {
+      setHangarUnit()
+      selectedMission.set(missionsList.get()?.findvalue(@(_) true) ?? "")
     }
-    function onDetach() {
-      curUnitName.unsubscribe(onUnitChange)
-      savedUnitType.unsubscribe(onUnitTypeChange)
-    }
-    children = [
-      {
-        size = flex()
-        flow = FLOW_VERTICAL
-        gap = hdpx(30)
-        children = [
-          wndHeader([
-            mkSelector(curUnitType,
-              allUnitTypes,
-              @(value) savedUnitType.set(value),
-              @(name) loc($"campaign/{campaignByUnitType?[name] ?? "tanks"}"),
-              @(allValues, mkLoc) allValues.map(@(value) { text = mkLoc(value), value }),
-              loc("changeCampaignShort"))
-            mkSelector(curUnitName,
-              Computed(@() curData.get().units),
-              @(value) savedUnitName.set(value),
-              @(name) loc(getUnitLocId(name ?? "")),
-              @(allValues, mkLoc) allValues.keys().sort().filter(@(v) v != "dummy_plane").map(@(value) { text = mkLoc(value), value }),
-              loc("slotbar/selectUnit"))
-            isDebugListMapsActive.get() && canAccessForDebug.get()
-              ? mkDebugMisContent(curUnitType)
-              : mkMisContent(cfg, allMissions, curMissionName, curUnitType)
-            !canAccessForDebug.get() ? null
-              : verticalToggleWithLabel(isDebugListMapsActive, loc("mainmenu/offlineBattles/debug/maps"))
-          ])
-        ]
-      }
-      { size = flex() }
-      mkUnitPkgDownloadInfo(savedUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
-      wndFooter
-    ]
+
+    selectedUnit.subscribe(onUnitChange)
+    deferOnce(@() onUnitChange(selectedUnit.get()))
   }
+  onDetach = @() selectedUnit.unsubscribe(onUnitChange)
+  children = [
+    wndHeader
+    { size = flex() }
+    mkUnitPkgDownloadInfo(selectedUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
+    wndFooter
+  ]
 }
 
 let offlineBattlesWnd = {
@@ -373,7 +441,7 @@ let offlineBattlesWnd = {
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   animations = wndSwitchAnim
-  children = mkContent()
+  children = content
 }
 
 registerScene("offlineBattlesWnd", offlineBattlesWnd, close, isOfflineBattlesActive)

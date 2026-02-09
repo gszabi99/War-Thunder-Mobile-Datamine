@@ -8,7 +8,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { secondsToTimeSimpleString, millisecondsToSecondsInt } = require("%sqstd/time.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE, QS_ACTUALIZE_SQUAD
+let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE, QS_ACTUALIZE_SQUAD,
+  QS_NOT_IN_QUEUE, QS_JOINING, QS_IN_QUEUE, QS_CHECK_PENALTY
 } = require("%appGlobals/queueState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { get_time_msec } = require("dagor.time")
@@ -22,12 +23,12 @@ let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZ
 let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
 let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
 let helpEventBattleRoyale = require("%rGui/loading/complexScreens/helpEventBattleRoyale.nut")
-let helpEventChristmas = require("%rGui/loading/complexScreens/helpEventChristmas.nut")
+let helpEventChristmas2 = require("%rGui/loading/complexScreens/helpEventChristmas2.nut")
 let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
 let helpEventHalloween = require("%rGui/loading/complexScreens/helpEventHalloween.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkMRankRange, curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
+let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -42,6 +43,16 @@ let spinnerGap = hdpx(20)
 let hintIconSize = hdpxi(50)
 let hintIconTank = "hud_tank_binoculars.svg"
 let hintIconShip = "hud_binoculars.svg"
+
+let queueStateLocId = {
+  [QS_NOT_IN_QUEUE] = "matching/SERVER_ERROR_NOT_IN_QUEUE",
+  [QS_ACTUALIZE] = "wait/actualizeProfile",
+  [QS_CHECK_PENALTY] = "wait/actualizeProfile",
+  [QS_ACTUALIZE_SQUAD] = "wait/actualizeSquadMembersProfile",
+  [QS_JOINING] = "wait/joiningQueue",
+  [QS_IN_QUEUE] = "yn1/waiting_time",
+  [QS_LEAVING] = "wait/queueLeave",
+}
 
 let isDebugQueueWnd = mkWatched(persist, "isDebugQueueWnd", false)
 register_command(@() isDebugQueueWnd.set(!isDebugQueueWnd.get()), "ui.debug.queueWnd")
@@ -89,12 +100,10 @@ let playersCountInQueue = Computed(function() {
   return res
 })
 
-let isOnlyOverrideUnits = Computed(@() allGameModes.get().findvalue(@(mode) mode.name == curQueue.get()?.params.mode)?.only_override_units ?? false)
-
 let textParams = {
   rendObj = ROBJ_TEXT
   fontFx = FFT_GLOW
-  fontFxFactor = 64
+  fontFxFactor = 32 
   fontFxColor = Color(0, 0, 0)
   color = Color(205, 205, 205)
 }.__update(fontSmall)
@@ -135,12 +144,10 @@ let waitingBlock = @() {
   gap = spinnerGap
   children = [
     textParams.__merge({
-      text = curQueueState.get() == QS_ACTUALIZE ? loc("wait/actualizeProfile")
-        : curQueueState.get() == QS_ACTUALIZE_SQUAD ? loc("wait/actualizeSquadMembersProfile")
-        : loc("yn1/waiting_time")
+      text = loc(queueStateLocId?[curQueueState.get()] ?? "Error")
       color = textColor
     }, fontMedium)
-    curQueueState.get() != QS_ACTUALIZE && curQueueState.get() != QS_ACTUALIZE_SQUAD ? waitTime : null
+    curQueueState.get() == QS_IN_QUEUE ? waitTime : null
     waitCircle
   ]
 }
@@ -185,7 +192,7 @@ function leaveQueue() {
 }
 
 let isCancelInProgress = Computed(@() curQueueState.get() == QS_LEAVING)
-let cancelQueueButton = @(isOnlyOverride) {
+let cancelQueueButton = {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
@@ -201,7 +208,7 @@ let cancelQueueButton = @(isOnlyOverride) {
         valign = ALIGN_CENTER
       }
     )
-  ].insert(0, !isOnlyOverride ? mkMRankRange : null)
+  ]
 }
 
 let allowCancelJoining = @() canCancelJoining.set(true)
@@ -218,10 +225,7 @@ let cancelJoiningButton = @() {
         flow = FLOW_VERTICAL
         halign = ALIGN_RIGHT
         gap = hdpx(12)
-        children = [
-          mkMRankRange
-          textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() eventbus_send("cancelJoiningSession", {}), cancelOvr)
-        ]
+        children = textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() eventbus_send("cancelJoiningSession", {}), cancelOvr)
       }
 }
 
@@ -272,7 +276,7 @@ let mkBgImagesByCampaign = {
 }
 
 let mkBgImageByGameMode = {
-  tank_event_ny_ctf_mode = @() helpEventChristmas
+  tank_event_ny_ctf_mode = @() helpEventChristmas2
   event_1_april_pirates = @() helpEventPirates
   tank_event_battle_royale = @() helpEventBattleRoyale
   plane_event_halloween_po2_race = @() helpEventHalloween
@@ -286,7 +290,7 @@ let bgImage = @() {
 
 let key = {}
 let queueWindow = @() {
-  watch = [isInJoiningGame, isOnlyOverrideUnits, hasAimingHint]
+  watch = [isInJoiningGame, hasAimingHint]
   key
   function onAttach() {
     sendNewbieBqEvent("openQueueWindow")
@@ -310,7 +314,7 @@ let queueWindow = @() {
             hasAimingHint.get() ? aimingHint : null
             playersCount
             waitingBlock
-            cancelQueueButton(isOnlyOverrideUnits.get())
+            cancelQueueButton
           ]
     }
   ]

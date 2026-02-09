@@ -143,6 +143,18 @@
   "iPhone 16e": {
     "batterySize": 4005
   },
+  "iPhone 17 Pro": {
+    "batterySize": 3988
+  },
+  "iPhone 17 Pro Max": {
+    "batterySize": 4823
+  },
+  "iPhone 17": {
+    "batterySize": 3692
+  },
+  "iPhone Air": {
+    "batterySize": 3149
+  },
   "iPad 1": {
     "batterySize": 6600
   },
@@ -268,5 +280,11 @@
   },
   "iPad Mini 7": {
     "batterySize": 5078
+  },
+  "iPad Pro 11 inch 5th Gen": {
+    "batterySize": 8300
+  },
+  "iPad Pro 12.9 inch 7th Gen": {
+    "batterySize": 10340
   }
 }

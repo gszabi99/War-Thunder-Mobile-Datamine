@@ -9,6 +9,7 @@ require Unit
 require HeroManager
 require soundEvent
 require soundSystem
+require Sound
 
 def add_area(var bgrid : BoolList&;
              aid : int;
@@ -47,9 +48,8 @@ def init_grid(var bgrid : BoolList&;
   out_stride = int((bounds.z - bounds.x) / step)
   bgrid |> resize(len)
 
-[es(on_event = (EventSoundAreaInit, EventOnSceneLoaded), tag=gameClient, tag=sound)]
+[es(on_event = (EventSoundAreaInit, EventOnSceneLoaded), on_appear, tag=gameClient, tag=sound)]
 def sound_area_init(evt : Event;
-                    eid : EntityId;
                     sound_area__area_names : StringList;
                     sound_area__grid_step : float;
                     var sound_area__grid_stride : int&;
@@ -76,7 +76,6 @@ def sound_area_init(evt : Event;
       else
         print("sound_area {areaName} not found")
     if sound_area__bounds.x > sound_area__bounds.z || sound_area__bounds.y > sound_area__bounds.w
-      destroyEntity(eid)
       return
     init_grid(sound_area__bgrid, sound_area__bounds, sound_area__grid_step, sound_area__grid_stride)
 
@@ -108,7 +107,7 @@ def sound_area_update_es(act : UpdateStageInfoAct;
                          sound_area__bounds : float4)
   let hero = get_controlled_hero()
   if hero != null && !hero.isFlightModelWrap && !hero.isDelayed
-    let pos = get_listener_pos()
+    let pos = get_cached_listener_pos()
     if sound_area__use_height
       if pos.y < sound_area__bounds_y.x || pos.y > sound_area__bounds_y.y
         sound_area__event |> abandon()
@@ -141,7 +140,7 @@ def sound_area_debug_update_es(act : UpdateStageInfoAct;
                                sound_area__bounds_y : float2;
                                sound_area__bounds : float4)
   var inIdx = 0
-  let pos = get_listener_pos()
+  let pos = get_cached_listener_pos()
   inIdx = get_grid_idx(float2(pos.x, pos.z), sound_area__bounds, sound_area__grid_stride, sound_area__grid_step)
 
   let testPoint = float3(sound_area__bounds.x, 0.f, sound_area__bounds.y)

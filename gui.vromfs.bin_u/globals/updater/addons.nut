@@ -21,11 +21,10 @@ let MB = 1 << 20
 let nbsp = "\u00A0" 
 let comma = loc("ui/comma")
 
+let initialAddonsByCamp = {} 
 let initialAddons = []
 let latestDownloadAddonsByCamp = {} 
 let latestDownloadAddons = []
-let commonUhqAddons = ["pkg_environment_uhq"]
-let ovrHangarAddon = {addons = [], hangarPath=""}
 
 let campaignPostfix = {
   tanks = "ground"
@@ -61,26 +60,12 @@ if (addonsBlk != null) {
   eachBlock(addonsBlk, function(b) {
     let addon = b.getBlockName()
     let addonHq = $"{addon}_hq"
-    let addonUhq = $"{addon}_uhq"
 
     knownAddons[addon] <- true
 
-    let { hq = true, uhq = false } = b
+    let { hq = true } = b
     if (hq)
       knownAddons[addonHq] <- true
-    if (uhq)
-      knownAddons[addonUhq] <- true
-
-    let { hangarPath = "" } = b
-    if (hangarPath != "") {
-      ovrHangarAddon.clear()
-      ovrHangarAddon.__update({ addons = [addon], hangarPath })
-      latestDownloadAddons.append(addon)
-      if (hq) {
-        latestDownloadAddons.append(addonHq)
-        ovrHangarAddon.addons.append(addonHq)
-      }
-    }
 
     function appendAddonByKey(list, key) {
       if (key not in list)
@@ -96,9 +81,13 @@ if (addonsBlk != null) {
         isDownloadFirst = false
       } = conditions
       if (isDownloadFirst) {
-        initialAddons.append(addon)
-        if (hq)
-          initialAddons.append(addonHq)
+        if (campaign != null)
+          appendAddonByKey(initialAddonsByCamp, campaign)
+        else {
+          initialAddons.append(addon)
+          if (hq)
+            initialAddons.append(addonHq)
+        }
         continue
       }
       if (isDownloadLast && campaign == null) {
@@ -230,12 +219,11 @@ return freeze({
   campaignPostfix
   commonCampaignAddons
   initialAddons
-  commonUhqAddons
+  initialAddonsByCamp
   latestDownloadAddons
   latestDownloadAddonsByCamp
   campaignAddonsByRank
   knownAddons
-  ovrHangarAddon
   soloNewbieByCampaign
   coopNewbieByCampaign
 

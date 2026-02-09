@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/shop/goodsView/sharedParts.nut" import mkDiscountCorner, pricePlateH, mkBgParticles, mkSlotBgImg
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
 
-let { mkDiscountCorner, pricePlateH, mkBgParticles, mkSlotBgImg } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { mkDiscountPriceComp, CS_COMMON, CS_NO_BALANCE } = require("%rGui/components/currencyComp.nut")
 let { mkGradGlowText, mkGradText } = require("%rGui/components/gradTexts.nut")
 let { textButtonPurchase } = require("%rGui/components/textButton.nut")
@@ -103,7 +103,7 @@ function generateDataDiscount(discountConfig, levelsToMax, isForSlot = false) {
 
 let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
   watch = [isInProgress, balanceGold]
-  size = static [flex(), pricePlateH]
+  size = const [flex(), pricePlateH]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = isInProgress.get() != null ? spinner

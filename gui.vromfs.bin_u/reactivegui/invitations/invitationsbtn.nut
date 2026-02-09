@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hasUnread, hasImportantUnread, openInvitations, invitations } = require("%rGui/invitations/invitationsState.nut")
+let { hasUnread, hasImportantUnread, invitations } = require("%rGui/invitations/invitationsState.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { priorityUnseenMark, unseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
+let { openContacts, SQUAD_TAB } = require("%rGui/contacts/contactsState.nut")
 
 let invitationsBtn = @() {
   watch = invitations
   children = invitations.get().len() == 0 ? null
     : framedImageBtn("ui/gameuiskin#icon_party.svg",
-        openInvitations,
+        @() openContacts(SQUAD_TAB),
         {
           sound = { click  = "meta_squad_button" }
           size = [evenPx(80), evenPx(80)]

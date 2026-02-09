@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.37,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.8,
@@ -1673,29 +1674,6 @@
       }
     }
   },
-  "cockpit": {
-    "zoomOutFov": 40.0,
-    "zoomInFov": 21.0,
-    "sightFov": 20.0,
-    "sightName": "default_tank_spg",
-    "headPos": [
-      0.0,
-      2.0,
-      -17.0
-    ],
-    "headPosOnShooting": [
-      -0.8,
-      3.45,
-      0.46
-    ],
-    "detectionHeight": 2.74
-  },
-  "user_skin": {
-    "name": "us_m4_sherman",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "battleHideNodes": {
     "n": "details"
   },
@@ -2559,34 +2537,34 @@
     }
   },
   "modifications": {
-    "tank_tool_kit_expendable": {}
+    "upgraded": {},
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {}
   },
-  "default_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*",
-      "to": "cn_camo_light_olive*"
-    }
+  "cockpit": {
+    "zoomOutFov": 40.0,
+    "zoomInFov": 21.0,
+    "sightFov": 20.0,
+    "sightName": "default_tank_spg",
+    "headPos": [
+      0.0,
+      3.7,
+      -13.0
+    ],
+    "headPosOnShooting": [
+      -0.9,
+      3.35,
+      0.5
+    ],
+    "detectionHeight": 2.74
   },
-  "skin": [
-    {
-      "name": "green_yellow_black",
-      "nameLocId": "skin/cn_camo_green_yellow_black",
-      "descLocId": "skin/cn_camo_green_yellow_black/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "cn_camo_green_yellow_black*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
-      }
-    }
-  ],
   "steeringTableAlternative": {
     "point": [
       [
@@ -2638,5 +2616,31 @@
         1.0
       ]
     ]
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "cn_camo_light_olive*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "cn_camo_green_yellow_black*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
   }
 }

@@ -50,6 +50,7 @@ let { Color4 } = require("dagor.math")
 
 
 
+
 let RENDER_PARAMS = @"ui/gameuiskin#render{
   itemName:t={itemName};animchar:t={animchar};autocrop:b=false;
   yaw:r={yaw};pitch:r={pitch};roll:r={roll};
@@ -72,6 +73,7 @@ let RENDER_PARAMS = @"ui/gameuiskin#render{
   {paintColor}
   {shaderColors}
   contrast:r={contrast}
+  sharpening:r={sharpening}
 }.render"
 
 let getTMatrixString = @(m)
@@ -184,6 +186,7 @@ function iconWidget(item, params = {}) {
     attachType = item?.attachType ?? "slot"
     forceRealTimeRenderIcon = needEnableRTRender ? "forceRenderEveryFrame:b=yes;" : ""
     contrast = item?.contrast ?? 1.0
+    sharpening = item?.sharpening ?? 0.0
   })
 }
 

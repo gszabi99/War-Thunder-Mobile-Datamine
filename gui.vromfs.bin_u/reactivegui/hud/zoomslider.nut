@@ -93,13 +93,13 @@ let btnImageZoomInc = @(scale) mkGamepadShortcutImg(zoomShortcutIncId,
   isZoomIncPushed,
   Computed(@() zoomMult.get() > 0),
   scale,
-  { hplace = ALIGN_RIGHT, pos = [pw(-50), ph(40)] })
+  { hplace = ALIGN_CENTER, pos = [0, ph(45)] })
 
 let btnImageZoomDec = @(scale) mkGamepadShortcutImg(zoomShortcutDecId,
   isZoomDecPushed,
   Computed(@() zoomMult.get() < 1),
   scale,
-  { hplace = ALIGN_RIGHT, pos = [pw(-50), ph(-40)] })
+  { hplace = ALIGN_CENTER, pos = [0, ph(-45)] })
 
 function mkZoomSliderImpl(scale) {
   let { height, scaleWidth, knobSize, knobPadding, sliderPadding, fullWidth, zoomScaleHeight, lineWidth

@@ -1103,7 +1103,13 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "smokescreen_medium": {
-    "fx": "smoke_smokescreen_medium_cmps_fx"
+    "fx": "smoke_smokescreen_medium_cmps_fx",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_gr_smoke"
+  },
+  "smokescreen_medium_tank_engine_smoke": {
+    "fx": "smoke_smokescreen_medium_cmps_fx",
+    "sfxPathStudio": "ground/explosions"
   },
   "smokescreen_hydroplane": {
     "fx": "smoke_smokescreen_hydroplane_cmps_fx"
@@ -1262,6 +1268,9 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "heavy_explosion_air"
+  },
+  "explosion_state_change": {
+    "fx": "explosion_state_change_cmps_fx"
   },
   "muzzle_air_8mm": {
     "fx": "muzzle_air_8mm_cmps_fx",
@@ -3043,6 +3052,12 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "underwater_trp_propeller_water_splashes_dens": {
+    "fx": "underwater_trp_propeller_water_splashes_dens_cmps_fx",
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "repair_ground": {
     "fx": "misc_markers_repair_ground_cmps_fx",
     "group": "highres",
@@ -3491,6 +3506,13 @@
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
+  "ad_tree_felling_snow_small": {
+    "fx": "dust_destruction_tree_snow_small_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
   "ad_tree_felling_leaves_fall_medium": {
     "fx": "dust_destruction_tree_fall_small_cmps_fx",
     "sfxPath": "tanks/object_crash",
@@ -3731,9 +3753,12 @@
     "sfxPathStudio": "naval/gui",
     "sfxEvent": "misc_open_tank"
   },
+  "misc_godray": {
+    "fx": "misc_godray_cmps_fx"
+  },
   "misc_christmas_cracker": {
     "fx": "misc_christmas_cracker_cmps_fx",
-    "sfxPathStudio": "event/explosions",
+    "sfxPathStudio": "event/ui",
     "sfxEvent": "gift_destroy"
   },
   "misc_christmas_gift_add": {

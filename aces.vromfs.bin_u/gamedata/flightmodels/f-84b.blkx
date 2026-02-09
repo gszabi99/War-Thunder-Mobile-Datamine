@@ -2688,5 +2688,26 @@
         "to": "f_84b_tank_metall_n*"
       }
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "f_84b_metall_c*",
+        "to": "f_84b_c*"
+      },
+      {
+        "from": "f_84b_metall_n*",
+        "to": "f_84b_n*"
+      },
+      {
+        "from": "f_84b_tank_metall_c*",
+        "to": "f_84b_tank_c*"
+      },
+      {
+        "from": "f_84b_tank_metall_n*",
+        "to": "f_84b_tank_n*"
+      }
+    ]
   }
 }

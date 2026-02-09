@@ -1,8 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
+let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
 let { curSceneBg, curSceneBgFallback } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { mkAnimBgWithGyro } = require("%rGui/loading/mkAnimBgWithGyro.nut")
+
 
 let scenesList = []
 let sceneListGeneration = mkWatched(persist, "sceneListGeneration", 0)
@@ -13,15 +16,22 @@ let behindScene = {
     @() {
       watch = [curSceneBg, curSceneBgFallback]
       size = flex()
-      children = {
-        key = curSceneBg.get()
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = Picture(curSceneBg.get())
-        fallbackImage = Picture(curSceneBgFallback.get())
-        keepAspect = KEEP_ASPECT_FILL
-        animations = wndSwitchAnim
-      }
+      children = curSceneBg.get() in screensList
+        ? {
+            key = curSceneBg.get()
+            size = flex()
+            children = mkAnimBgWithGyro(screensList[curSceneBg.get()].mkLayers() ?? [])
+            animations = wndSwitchAnim
+          }
+        : {
+            key = curSceneBg.get()
+            size = flex()
+            rendObj = ROBJ_IMAGE
+            image = Picture(curSceneBg.get())
+            fallbackImage = Picture(curSceneBgFallback.get())
+            keepAspect = KEEP_ASPECT_FILL
+            animations = wndSwitchAnim
+          }
     }
     @() {
       watch = sceneListGeneration

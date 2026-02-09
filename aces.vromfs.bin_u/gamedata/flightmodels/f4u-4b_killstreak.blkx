@@ -3924,6 +3924,19 @@
       -5.51567e-7
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "f4u_4b_a*",
+        "to": "f4u-4b_marines_a*"
+      },
+      {
+        "from": "f4u_4b_n*",
+        "to": "f4u-4b_marines_n*"
+      }
+    ]
+  },
   "weapon_presets": {
     "preset": {
       "name": "f4u-4b_killstreak_default",

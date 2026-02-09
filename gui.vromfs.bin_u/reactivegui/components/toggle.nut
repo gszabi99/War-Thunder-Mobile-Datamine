@@ -91,6 +91,10 @@ function verticalToggleWithLabel(valueW, label, textOvr = {}) {
 }
 
 return {
+  toggle
+  toggleLabel
+  toggleWithLabel
+
   horizontalToggleWithLabel
   verticalToggleWithLabel
 }

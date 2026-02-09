@@ -3035,5 +3035,12 @@
       4.60043,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "boeing_b_17e_c*",
+      "to": "b_17e_brown_c*"
+    }
   }
 }

@@ -81,9 +81,6 @@ let mkUnitClassFilterDesc = @(unitClassList) @() {
         rendObj = ROBJ_TEXT
         text = unitClassFontIcons?[unitClass] ?? ""
         color = 0xFFFFFFFF
-        fontFx = FFT_GLOW
-        fontFxFactor = 64
-        fontFxColor = 0xFF000000
       }.__update(fontSmallShaded)
       {
         rendObj = ROBJ_TEXT

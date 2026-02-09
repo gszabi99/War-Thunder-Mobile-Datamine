@@ -7,7 +7,7 @@
   "node": [
     {
       "type": "rendInst",
-      "name": "%major_banner_a",
+      "name": "%major_banner_b",
       "tm": [
         [
           -0.67292,
@@ -34,7 +34,7 @@
     },
     {
       "type": "rendInst",
-      "name": "%major_banner_a",
+      "name": "%major_banner_b",
       "tm": [
         [
           1.39012,
@@ -61,7 +61,7 @@
     },
     {
       "type": "rendInst",
-      "name": "%major_banner_a",
+      "name": "%major_banner_b",
       "tm": [
         [
           0.633414,

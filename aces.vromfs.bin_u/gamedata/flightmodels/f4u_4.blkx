@@ -4096,5 +4096,18 @@
       1.80244,
       -5.51567e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "f4u_4_a*",
+        "to": "f4u_4_marines_c*"
+      },
+      {
+        "from": "f4u_4_n*",
+        "to": "f4u_4_marines_n*"
+      }
+    ]
   }
 }

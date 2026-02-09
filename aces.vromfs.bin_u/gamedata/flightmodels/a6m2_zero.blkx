@@ -1966,5 +1966,12 @@
       1.40468,
       0.00330352
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "a6m2_a*",
+      "to": "a6m2_nakajima_a*"
+    }
   }
 }

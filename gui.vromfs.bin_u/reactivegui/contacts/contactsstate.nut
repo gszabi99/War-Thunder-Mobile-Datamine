@@ -22,6 +22,7 @@ const GAME_GROUP_NAME = "warthunder"
 const FETCH_CB = "contacts.onFetch"
 const SEARCH_TAB = "search"
 const FRIENDS_TAB = "friends"
+const SQUAD_TAB = "squad"
 
 let isContactsOpened = mkWatched(persist, "isContactsOpened", false)
 let contactsOpenTabId = Watched(null)
@@ -311,6 +312,7 @@ return {
   openContacts
   SEARCH_TAB
   FRIENDS_TAB
+  SQUAD_TAB
   contactsOpenTabId
   isContactsOpened
   getContactsInviteId

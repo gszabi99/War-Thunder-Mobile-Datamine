@@ -3,47 +3,49 @@ from "%appGlobals/rewardType.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
+
 let NO_DROP_LIMIT = 1000000
 
 let rTypesPriority = {
-  stat            = 1000000
-  lootbox         = 100000
-  unitUpgrade     = 20000
-  unit            = 10000
-  blueprint       = 9000
-  discount        = 8000
-  skin            = 5000
-  decorator       = 1000
-  booster         = 500
-  currency        = 100
-  premium         = 50
-  item            = 1
+  [G_STAT_SET]        = 1000000,
+  [G_STAT_ADD]        = 1000000,
+  [G_LOOTBOX]         = 100000,
+  [G_UNIT_UPGRADE]    = 20000,
+  [G_UNIT]            = 10000,
+  [G_BLUEPRINT]       = 9000,
+  [G_DISCOUNT]        = 8000,
+  [G_SKIN]            = 5000,
+  [G_DECORATOR]       = 1000,
+  [G_BOOSTER]         = 500,
+  [G_CURRENCY]        = 100,
+  [G_PREMIUM]         = 50,
+  [G_ITEM]            = 1,
 }
 
 let customPriority = {
-  decorator = {
+  [G_DECORATOR] = {
     avatar        = 1010
     nickFrame     = 1009
     title         = 1008
-  }
-  currency = {
+  },
+  [G_CURRENCY] = {
     gold          = 110
     eventKey      = 109
     warbond       = 108
     wp            = 30
-  }
-  item = {
+  },
+  [G_ITEM] = {
     spare         = 40
-  }
+  },
 }
 
 let slotsByType = {
-  unitUpgrade = 2
-  battleMod = 2
-  unit = 2
-  blueprint = 2
-  prizeTicket = 2
-  discount = 2
+  [G_UNIT_UPGRADE] = 2,
+  [G_BATTLE_MOD] = 2,
+  [G_UNIT] = 2,
+  [G_BLUEPRINT] = 2,
+  [G_PRIZE_TICKET] = 2,
+  [G_DISCOUNT] = 2,
 }
 
 let slotsByDType = {
@@ -75,56 +77,20 @@ let sortRewardsWithOrder = @(a, b) b.rewardOrder <=> a.rewardOrder
 let mkViewInfo = @(id, rType, count = 0, subId = "")
   { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[getDecoratorType(id)] ?? 1 }
 
-let getRewardsViewInfo = @(data, multiply = 1)
-  (data ?? []).map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
+let getRewardsViewInfo = @(rewards, multiply = 1)
+  (rewards ?? []).map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
 
-function shopGoodsToRewardsViewInfo(data, multiply = 1) {
-  let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},
-    decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {},
-    battleMods = {}, decals = [], rewards = null
-  } = data
+let filterHiddenViewInfo = @(viewInfo) viewInfo.filter(@(r) r.rType not in statRewardTypes || hasStatsImage(r.id, r.subId))
 
-  if (rewards != null)
-    return getRewardsViewInfo(rewards).filter(@(r) r.rType != G_STAT || hasStatsImage(r.id, r.subId))
-
-  
-  let res = []
-  foreach (id in unitUpgrades)
-    res.append(mkViewInfo(id, G_UNIT_UPGRADE))
-  foreach (id in units)
-    if (!unitUpgrades.contains(id))
-      res.append(mkViewInfo(id, G_UNIT))
-
-  foreach(id, value in currencies)
-    if (value > 0)
-      res.append(mkViewInfo(id, G_CURRENCY, value * multiply))
-
-  if (premiumDays > 0)
-    res.append(mkViewInfo("", G_PREMIUM, premiumDays * multiply))
-
-  foreach (id in decorators)
-    res.append(mkViewInfo(id, G_DECORATOR))
-  foreach (id, count in items)
-    res.append(mkViewInfo(id, G_ITEM, count * multiply))
-  foreach (id, count in lootboxes)
-    res.append(mkViewInfo(id, G_LOOTBOX, count * multiply))
-  foreach (id, count in boosters)
-    res.append(mkViewInfo(id, G_BOOSTER, count * multiply))
-  foreach (unitName, skinName in skins)
-    res.append(mkViewInfo(unitName, G_SKIN, 0, skinName))
-  foreach (id, count in battleMods)
-    res.append(mkViewInfo(id, G_BATTLE_MOD, count))
-  foreach (id in decals)
-    res.append(mkViewInfo(id, G_DECAL))
-  return res
-}
+let shopGoodsToRewardsViewInfo = @(data, multiply = 1)
+  filterHiddenViewInfo(getRewardsViewInfo(data.rewards, multiply))
 
 function getStatsRewardsViewInfo(unlockStage) {
   let res = []
   foreach(stat in unlockStage?.updStats ?? {})
     if (hasStatsImage(stat.name, stat.mode) && stat.value.tointeger() > 0)
       res.append({
-        rType = "stat"
+        rType = G_STAT_ADD
         count = stat.value.tointeger()
         id = stat.name
         subId = stat.mode
@@ -143,14 +109,14 @@ function getUnlockRewardsViewInfo(unlockStage, servConfigs) {
 }
 
 let customJoin = {
-  unit = {
+  [G_UNIT] = {
     function unitUpgrade(resV, _) {
       resV.rType = G_UNIT_UPGRADE
       return true
     }
-  }
-  unitUpgrade = { unit = @(_, __) true }
-  skin = { skin = @(a, b) a.subId == b.subId }
+  },
+  [G_UNIT_UPGRADE] = { unit = @(_, __) true },
+  [G_SKIN] = { skin = @(a, b) a.subId == b.subId },
 }
 
 function joinSingleViewInfo(resV, joiningV, onJoin) {
@@ -293,7 +259,7 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
   let fixedRewards = []
   let added = {}
   foreach (fr in lootbox.fixedRewards) {
-    let id = fr?.rewardId ?? fr 
+    let id = fr.rewardId
     if (id in added)
       continue
     added[id] <- true
@@ -376,7 +342,7 @@ function canReceiveFixedReward(lootbox, id, reward, profile) {
   let { name, fixedRewards } = lootbox
   let { opened = 0, total = {} } = profile?.lootboxStats[name]
   let rollToReceive = fixedRewards
-    .findindex(@(fr, idxStr) (fr?.rewardId ?? fr) == id  
+    .findindex(@(fr, idxStr) fr.rewardId == id
       && idxStr.tointeger() > opened
       && null == fr?.lockedBy.findvalue(@(l) (total?[l] ?? 0) > 0))
   return !isRewardEmpty(reward, profile) && rollToReceive != null
@@ -409,7 +375,7 @@ function fillRewardsCounts(rewards, profile, configs) {
       local received = 0
       local dropLimit = 0
       foreach(countStr, fr in fixedRewards)
-        if ((fr?.rewardId ?? fr) == r.id) { 
+        if (fr.rewardId == r.id) {
           dropLimit++
           if (countStr.tointeger() <= opened)
             received++
@@ -455,4 +421,6 @@ return {
   isSingleViewInfoRewardEmpty
   canReceiveFixedReward
   fillRewardsCounts
+  mkViewInfo
+  filterHiddenViewInfo
 }

@@ -11,6 +11,12 @@
       "rcs": 5.0,
       "range": 2500.0,
       "rangeMax": 2750.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
         "angleHalfSens": 18.0,
         "sideLobesSensitivity": -20.0
@@ -36,6 +42,7 @@
       "anglesFinder": false,
       "rangeFinder": true,
       "distanceAccuracy": 15.0,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
@@ -90,7 +97,6 @@
           "setEnabled": {
             "value": false
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {}
         },
         "setLockMode": {
@@ -100,7 +106,6 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "resetScanPhase": {},
           "setFsmActive": {
@@ -128,10 +133,6 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
           "setFsmActive": {
             "fsm": "track",
             "active": true
@@ -150,7 +151,10 @@
         },
         "lock": {
           "stateFrom": "standby",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "acmSwitch"
+          ],
           "event": "enable",
           "stateTo": "lock",
           "actions": {
@@ -175,7 +179,10 @@
               "lock",
               "track"
             ],
-            "command": "selectTarget",
+            "command": [
+              "selectTarget",
+              "acmSwitch"
+            ],
             "event": "disable",
             "stateTo": "standby",
             "actions": {
@@ -225,7 +232,10 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -236,18 +246,40 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": {},
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
             },
-            "setRelSpeedGatePos": {
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
@@ -256,15 +288,21 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": {},
+            "extrapolateTargetsOfInterest": [
+              {},
+              {}
+            ],
             "clearTargetsOfInterest": {
-              "timeOut": 0.5
+              "timeOut": 0.5,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }

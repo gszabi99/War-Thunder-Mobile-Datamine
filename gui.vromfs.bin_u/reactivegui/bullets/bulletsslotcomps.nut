@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
-let { mkCustomButton } = require("%rGui/components/textButton.nut")
+let { mkCustomButton, mergeStyles, buttonStyles } = require("%rGui/components/textButton.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
 let { bg, bulletsBlockWidth, headerSlotHeight } = require("%rGui/respawn/respawnComps.nut")
 let { bulletsAABB } = require("%rGui/respawn/respawnAnimState.nut")
 let { showRespChooseWnd } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
 let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
-let { hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
+let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let padding = hdpx(8)
 let btnSize = evenPx(80)
@@ -67,14 +67,9 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
         rendObj = ROBJ_SOLID
         color = 0x99000000
         children = [
-          mkCustomButton(arrowBtnImage(
-            openedSlot.get() < 0 || idx != openedSlot.get()), @() onHeaderClick(key, idx),
-            {
-              ovr = {
-                size = [flex(), headerSlotHeight]
-                fillColor = selectColor
-              }
-            })
+          mkCustomButton(arrowBtnImage(openedSlot.get() < 0 || idx != openedSlot.get()),
+            @() onHeaderClick(key, idx),
+            mergeStyles(buttonStyles.PRIMARY, { ovr = { size = [flex(), headerSlotHeight], minWidth = 0 } }))
           mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = hdpx(7) })
         ]
       }

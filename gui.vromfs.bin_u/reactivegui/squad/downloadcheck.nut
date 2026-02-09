@@ -5,8 +5,7 @@ from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader, squadLeaderDownloadCheckTime,
   squadLeaderWantedModeId, squadLeaderCampaign, isReady
-from "%appGlobals/updater/addonsState.nut" import hasAddons, addonsExistInGameFolder,
-  addonsVersions, unitSizes
+from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
 from "%appGlobals/updater/gameModeAddons.nut" import missingUnitResourcesByRank, allUnitsRanks,
   getModeAddonsInfo, allBattleUnits, maxReleasedUnitRanks
 from "%appGlobals/updater/addons.nut" import localizeAddons
@@ -64,8 +63,6 @@ function showDownloadCheck() {
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),
-    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
-    addonsVersionsV = addonsVersions.get(),
     missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
     maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
     unitSizesV = unitSizes.get(),

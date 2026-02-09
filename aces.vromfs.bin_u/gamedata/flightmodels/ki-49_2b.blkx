@@ -3108,5 +3108,18 @@
       2.69845,
       0.000121693
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ki49_2b_a*",
+        "to": "ki49_2b_formoza45_a*"
+      },
+      {
+        "from": "ki49_2b_n*",
+        "to": "ki49_2b_formoza45_n*"
+      }
+    ]
   }
 }

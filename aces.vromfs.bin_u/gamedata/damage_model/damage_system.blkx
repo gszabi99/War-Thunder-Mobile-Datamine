@@ -37,6 +37,7 @@
   "cumulativePierceDispersion": 0.05,
   "minSecondaryShatterAngleFromArmor": 15.0,
   "splashPenetrationPrecheck": true,
+  "shattersMinSolidArmorThicknessMult": 0.5,
   "ricochetPenetrationModifier": {
     "mod1": [
       0.0,
@@ -284,6 +285,13 @@
     "minVoxelSize": 0.02,
     "minObstacleSize": 0.02,
     "thicknessMapEnabled": true,
+    "thicknessMapResolution": 32,
+    "thicknessMapMinVoxelSize": 0.1,
+    "thicknessMapRelLimits": [
+      0.7,
+      6.0
+    ],
+    "thicknessMapMinObstacleSize": 0.02,
     "pushOutCenter": true,
     "squashArmorAnglesScale": {
       "p0": [

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { onWatchQuestAd, SPEED_UP_AD_COST } = require("%rGui/quests/questsState.nut")
+let { onWatchQuestAd, SPEED_UP_AD_COST, getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
@@ -159,7 +159,7 @@ function mkAdsBtn(unlock) {
   let hasAdBudget = Computed(@() adBudget.get() >= SPEED_UP_AD_COST)
   function onClick() {
     if (onWatchQuestAd(unlock))
-      sendBqQuestsSpeedUp(unlock)
+      sendBqQuestsSpeedUp(unlock, getStarsTotalNonUpdatable(unlock))
   }
 
   return @() {
@@ -211,6 +211,7 @@ function mkQuestText(item, ovr = {}) {
   let header = loc(locId)
   let text = loc($"{locId}/desc")
   let isLocked = item.meta?.chain_quest
+    && item?.type == "INDEPENDENT"
     && item.requirement != ""
     && !(unlockProgress.get()?[item.requirement].isCompleted ?? false)
 

@@ -15,7 +15,8 @@
     "%wtlibs/templates/microdetail.blk",
     "%wtlibs/templates/bloom.blk",
     "%wtlibs/templates/postfx.blk",
-    "%wtlibs/templates/lightning.blk"
+    "%wtlibs/templates/lightning.blk",
+    "%wtlibs/templates/replay.blk"
   ],
   "delayed_action": {
     "delayed_action__doAtTime": -1.0,
@@ -511,6 +512,19 @@
       "is_ground_effect": true
     }
   },
+  "camera_snow_light_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_snow_light_cmps_fx"
+    }
+  },
   "unit_init_params_ext": {},
   "base_unit_ext": {
     "base_unit__kill_score_mult": 1.0
@@ -528,5 +542,12 @@
   "human_ext": {},
   "light_vehicle_ext": {},
   "fortification_ext": {},
-  "infantry_troop_ext": {}
+  "infantry_troop_ext": {},
+  "capsules_ao": {
+    "capsules_ao__max_units_per_cell": 4,
+    "_singleton": true,
+    "capsules_ao": {
+      "_tags": "render"
+    }
+  }
 }

@@ -160,6 +160,20 @@ let nickFrames = {
   spear = @(n) $"✆{n}✇"
   bats = @(n) $"✈{n}✉"
   hands_grave = @(n) $"✊{n}✋"
+  oasis = @(n) $"✐{n}✑"
+  crocodile = @(n) $"✎{n}✏"
+  lion = @(n) $"✌{n}✍"
+  sand_clock = @(n) $"✓{n}✒"
+  radar_screen = @(n) $"⋶{n}⋷"
+  rocket_launch = @(n) $"⋸{n}⋹"
+  rockets_attack = @(n) $"⋺{n}⋻"
+  half_thunder = @(n) $"⋼{n}⋽"
+  snowmans = @(n) $"⋲{n}⋳"
+  mittens = @(n) $"⋴{n}⋵"
+  snow_flame = @(n) $"✕{n}✖"
+  polar_star = @(n) $"✛{n}✛"
+  axe_edge = @(n) $"✗{n}✘"
+  iceberg_ship = @(n) $"✙{n}✚"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

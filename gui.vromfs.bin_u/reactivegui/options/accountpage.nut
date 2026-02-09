@@ -207,7 +207,7 @@ let mkSubsIcon = @(status) @() {
   rendObj = ROBJ_IMAGE
   image = status in premIconByStatus
     ? Picture($"ui/gameuiskin#{premIconByStatus[status](allow_subscriptions.get())}:{premIconSize[0]}:{premIconSize[1]}:P")
-    : Picture($"{getSubsPresentation(status).icon}:0:P")
+    : Picture($"{getSubsPresentation(status).image}:0:P")
   color = 0xFFFFFFFF
   keepAspect = true
 }

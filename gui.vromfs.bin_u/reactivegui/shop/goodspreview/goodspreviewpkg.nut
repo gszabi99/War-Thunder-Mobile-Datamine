@@ -10,6 +10,7 @@ let { unhideModals } = require("%rGui/components/modalWindows.nut")
 let { previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID } = require("%rGui/shop/goodsPreviewState.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
+let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -17,7 +18,8 @@ let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty, filterHiddenViewInfo
+} = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardReceivedMark
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -28,7 +30,7 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
-let { G_ITEM, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { G_ITEM } = require("%appGlobals/rewardType.nut")
 
 
 let activeItemId = Watched(null)
@@ -86,7 +88,7 @@ function colorAnims(duration, delay, skipTrigger = ANIM_SKIP_DELAY) {
 }
 
 let withBqEvent = @(goods, action) function() {
-  if ((goods?.endTime ?? 0) > 0) 
+  if ("situation" in goods) 
     sendOfferBqEvent("gotoPurchaseFromInfo", goods.campaign)
   stop_prem_cutscene()
   action()
@@ -208,11 +210,11 @@ function unifyBasePrice(basePrice, finalPrice) {
   return (100 * basePrice).tointeger() % 100 == 0 ? basePrice - 0.01 : basePrice
 }
 
-function getPriceInfo(goods) {
+function getPriceInfo(goods, discountsToApplyV) {
   if (goods == null)
     return null
-  let { price = null, priceExt = null, discountInPercent = 0 } = goods
-  if ((price?.price ?? 0) > 0) {
+  if (goods.price.price > 0) {
+    let { price, discountInPercent } = applyDiscount(goods, discountsToApplyV)
     local basePrice = discountInPercent <= 0 ? price.price
       : unifyBasePrice(round(price.price / (1.0 - (discountInPercent / 100.0))), price.price).tointeger()
     return {
@@ -227,6 +229,7 @@ function getPriceInfo(goods) {
       }
     }
   }
+  let { priceExt = null, discountInPercent = 0 } = goods
   if ((priceExt?.price ?? 0) > 0) {
     local basePrice = discountInPercent <= 0 ? priceExt.price
       : unifyBasePrice(round(priceExt.price / (1.0 - (discountInPercent / 100.0))), priceExt.price).tointeger()
@@ -280,12 +283,12 @@ let abTestDiscountViewCfg = {
 
 let purchaseButtonBlock = @(animStartTime) function() {
   let res = {
-    watch = [previewGoods, abTests]
+    watch = [previewGoods, abTests, discountsToApply]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
   }
   let goods = previewGoods.get()
-  let info = getPriceInfo(goods)
+  let info = getPriceInfo(goods, discountsToApply.get())
   if (info == null)
     return res
 
@@ -316,9 +319,9 @@ let purchaseButtonBlock = @(animStartTime) function() {
 }
 
 let purchaseButtonNoOldPrice = function() {
-  let res = { watch = previewGoods }
+  let res = { watch = [previewGoods, discountsToApply] }
   let goods = previewGoods.get()
-  let info = getPriceInfo(goods)
+  let info = getPriceInfo(goods, discountsToApply.get())
   if (info == null)
     return res
 
@@ -362,11 +365,7 @@ function previewGoodsTimeLeft(halign, width = hdpx(350)) {
         return null
       return endTime - curTime
     }
-    let { timeRange = null, timeRanges = [] } = previewGoods.get()
-    if (timeRange != null) {
-      let left = timeRange.end - curTime
-      return left < 0 ? null : left
-    }
+    let { timeRanges = [] } = previewGoods.get()
     foreach (tr in timeRanges)
       if (tr.start <= curTime && tr.end >= curTime)
         return tr.end - curTime
@@ -533,11 +532,8 @@ function mkItem(r, rStyle, idx, animStartTime) {
   }
 }
 
-function mkPreviewItems(goods, animStartTime) {
-  if (goods == null)
-    return null
-  let info = shopGoodsToRewardsViewInfo(goods)
-    .filter(@(r) r.rType not in unitRewardTypes)
+function mkPreviewItems(rewards, animStartTime) {
+  let info = filterHiddenViewInfo(getRewardsViewInfo(rewards))
     .sort(sortRewardsViewInfo)
   return info.len() == 0 ? null : {
     flow = FLOW_HORIZONTAL

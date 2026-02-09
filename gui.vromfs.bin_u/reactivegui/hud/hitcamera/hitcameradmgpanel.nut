@@ -4,7 +4,7 @@ let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { SHIP, BOAT, TANK, SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { hcUnitType, hcDamageStatus, hcDmgPartsInfo, isHcUnitKilled, hcRelativeHealth
 } = require("%rGui/hud/hitCamera/hitCameraState.nut")
-let { hudUnitType } = require("%rGui/hudState.nut")
+let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let { isTargetRepair, targetHp } = require("%rGui/hud/shipState.nut")
 let { hudWhiteColor, hudBlackColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 

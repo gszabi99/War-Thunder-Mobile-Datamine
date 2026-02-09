@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
 let { playSound } = require("sound_wt")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { buy_personal_goods, personalGoodsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -23,16 +24,17 @@ function purchasePersonalGoods(pGoods, shopGoods) {
   }
 
   let { price, currencyId } = pGoods.price
+  let currencyFullId = currencyToFullId.get()?[currencyId] ?? currencyId
   function purchase() {
     if (personalGoodsInProgress.get() != null)
       logShop("personalGoodsInProgress")
     else
-      buy_personal_goods(goodsId, groupId, varId, currencyId, price, "onShopGoodsPurchase")
+      buy_personal_goods(goodsId, groupId, varId, currencyFullId, price, "onShopGoodsPurchase")
   }
 
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(shopGoods).replace(" ", nbsp)) }),
-    price = { price = price, currencyId },
+    price = { price = price, currencyId = currencyFullId },
     purchase,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(shopGoods.gtype), $"pack {pGoods.id}")
   })

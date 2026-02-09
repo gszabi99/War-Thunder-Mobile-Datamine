@@ -5,7 +5,8 @@ let { object_to_json_string } = require("json")
 let io = require("io")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { curUnitName } = require("%appGlobals/pServer/profile.nut")
+let { battleRentInfo } = require("%appGlobals/rentalState.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -64,6 +65,7 @@ let profileKeysAffectData = {
   levelInfo = true
   lastBattles = true
   premium = true
+  subscriptions = true
   lastReceivedFirstBattlesRewardIds = true
   sharedStats = true
   sharedStatsByCampaign = true
@@ -75,11 +77,12 @@ lastProfileKeysUpdated.subscribe(function(list) {
     markNeedRefresh()
 })
 
-let curUnitName = Computed(@() curUnit.get()?.name)
 function refreshBattleUnitsinfo() {
   if (isInMpSession.get())
     return
-  if (curCampaignSlotUnits.get() != null)
+  if (battleRentInfo.get() != null)
+    battleUnitsInfo.set(battleRentInfo.get())
+  else if (curCampaignSlotUnits.get() != null)
     battleUnitsInfo.set({
       isSlots = true,
       unitList = curCampaignSlotUnits.get()
@@ -93,6 +96,7 @@ if (battleUnitsInfo.get() == null)
   refreshBattleUnitsinfo()
 isInMpSession.subscribe(@(_) refreshBattleUnitsinfo())
 curUnitName.subscribe(@(_) refreshBattleUnitsinfo())
+battleRentInfo.subscribe(@(_) refreshBattleUnitsinfo())
 curCampaignSlotUnits.subscribe(@(_) refreshBattleUnitsinfo())
 
 function actualizeBattleDataByUnitsInfo(unitsInfo, executeAfterExt = null) {
@@ -248,7 +252,8 @@ registerHandler("saveMenuBattleDataOvrMissionToJwt", function(result) {
 })
 
 register_command(function() {
-  let unitsInfo = curCampaignSlotUnits.get() != null
+  let unitsInfo = battleRentInfo.get() != null ? battleRentInfo.get()
+    : curCampaignSlotUnits.get() != null
       ? {
           isSlots = true,
           unitList = curCampaignSlotUnits.get()

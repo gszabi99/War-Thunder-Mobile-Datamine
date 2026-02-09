@@ -925,9 +925,20 @@
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "105mm_ofl_105_g1",
       "Cx": 0.49,
-      "relativeVelArmorShift": [
-        200.0,
+      "relativeVelHitShift": [
+        300.0,
         1000.0
+      ],
+      "onHitChanceMultExplFuel": 0.1,
+      "relativeVelArmorShift": [
+        [
+          200.0,
+          1000.0
+        ],
+        [
+          200.0,
+          1000.0
+        ]
       ],
       "explosionEffect": "hit_106_132mm_dirt_ap",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
@@ -974,6 +985,13 @@
           0.8,
           10000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 380.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

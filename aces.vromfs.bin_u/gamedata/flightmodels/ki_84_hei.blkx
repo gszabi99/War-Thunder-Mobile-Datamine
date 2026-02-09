@@ -1674,6 +1674,19 @@
     "maxSpeed": 192.3,
     "turnTime": 19.4
   },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "ki_84_ko_c*",
+        "to": "ki_84_modern_c*"
+      },
+      {
+        "from": "ki_84_ko_n*",
+        "to": "ki_84_modern_n*"
+      }
+    ]
+  },
   "cockpit": {
     "headPos": [
       -1.561,

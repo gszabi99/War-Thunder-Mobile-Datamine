@@ -3114,5 +3114,12 @@
       3.05597,
       0.00000193518
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "fw_200c_1_c*",
+      "to": "fw_200c_white_c*"
+    }
   }
 }

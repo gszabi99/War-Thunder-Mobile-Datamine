@@ -4,7 +4,7 @@ let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
 let { isVoiceMsgAllowedInMission, isVoiceMsgStickActive, voiceMsgStickDelta,
   voiceMsgCooldownEndTime, COOLDOWN_TIME_SEC, isVoiceMsgEnabled
 } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
-let { hudUnitType } = require("%rGui/hudState.nut")
+let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let { tuningUnitType } = require("%rGui/hudTuning/hudTuningState.nut")
 let { STICK } = require("%rGui/hud/stickState.nut")
 let { hudWhiteColor } = require("%rGui/style/hudColors.nut")

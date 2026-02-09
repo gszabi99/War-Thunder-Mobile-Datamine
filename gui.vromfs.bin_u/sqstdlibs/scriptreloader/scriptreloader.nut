@@ -12,8 +12,8 @@ function _runScript(scriptPath) {
     res = true
   }
   catch (e) {
+    assert(false, $"Scripts reloader: failed to load script {scriptPath}: {e}")
   }
-  assert(res, $"Scripts reloader: failed to load script {scriptPath}")
   return res
 }
 

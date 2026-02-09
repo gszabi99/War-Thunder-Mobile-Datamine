@@ -1,8 +1,7 @@
 from "%globalScripts/logs.nut" import *
 from "math" import max, min, clamp
-from "frp" import Computed, Watched
+from "frp" import Computed
 let { get_unittags_blk } = require("blkGetters")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { tostring_r } = require("%sqstd/string.nut")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { kwarg } = require("%sqstd/functools.nut")
@@ -11,7 +10,7 @@ let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieCoop, getCampaignP
   getCampaignOrig
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { ADDON_VERSION_EMPTY, unitSizes } = require("%appGlobals/updater/addonsState.nut")
+let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { gameModeAddonToAddonSetMap, knownAddons
 } = require("%appGlobals/updater/addons.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
@@ -21,6 +20,8 @@ let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { squadMembers, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getMGameModeMissionUnitsAndAddons, getBotUnits, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
+let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
+let { battleRentInfo } = require("%appGlobals/rentalState.nut")
 
 
 function addToCampRank(res, camp, name, rank) {
@@ -30,6 +31,8 @@ function addToCampRank(res, camp, name, rank) {
 }
 
 let allUnitsRanks = Computed(function() {
+  if (!isReadyToFullLoad.get())
+    return {}
   let { allUnits = {} } = serverConfigs.get()
   let res = {}
   foreach (u in allUnits) {
@@ -86,37 +89,16 @@ let getModeAddonsDbgString = @(mode)
   $"only_override_units = {mode?.only_override_units ?? false}, reqPkg = {tostring_r(mode?.reqPkg ?? {})}"
 
 let getModeAddonsInfo = kwarg(function getModeAddonsInfoImpl(mode, unitNames, serverConfigsV, hasAddonsV,
-    addonsExistInGameFolderV, addonsVersionsV, missingUnitResourcesByRankV, maxReleasedUnitRanksV, unitSizesV
+    missingUnitResourcesByRankV, maxReleasedUnitRanksV, unitSizesV
 ) {
   let { reqPkg = {}, campaign = curCampaign.get(), name = "", only_override_units = false } = mode
-  local addons = {}  
   local allReqAddons = {}
-  local updateDiff = 0
 
-  let processAddon = function (addon, reqVersion = ADDON_VERSION_EMPTY) {
-    if (addon not in hasAddonsV)
-      return
+  foreach (addon, _ in reqPkg) {
     allReqAddons[addon] <- true
-    if (addonsExistInGameFolderV?[addon]) {
-      addons[addon] <- false
-      return
-    }
-    let version = addonsVersionsV?[addon] ?? ADDON_VERSION_EMPTY
-    if (version != ADDON_VERSION_EMPTY
-        && (reqVersion == ADDON_VERSION_EMPTY || check_version(reqVersion, version))) {
-      addons[addon] <- false
-      return
-    }
-    addons[addon] <- true
-    updateDiff += version == "" ? -1 : 1
-  }
-
-  foreach (addon, reqVersion in reqPkg) {
-    processAddon(addon, reqVersion)
-
     let addonHq = $"{addon}_hq"
     if (addonHq in knownAddons)
-      processAddon(addonHq, reqVersion)
+      allReqAddons[addonHq] <- true
   }
 
   local mRank = 1
@@ -130,31 +112,26 @@ let getModeAddonsInfo = kwarg(function getModeAddonsInfoImpl(mode, unitNames, se
       : isNewbieMode(name) ? getCampaignPkgsForNewbieCoop(campaign, mRank)
       : getCampaignPkgsForOnlineBattle(campaign, mRank)
     foreach (addon in campAddons)
-      processAddon(addon)
+      allReqAddons[addon] <- true
   }
 
   let { misAddons, misUnits } = getMGameModeMissionUnitsAndAddons(mode, mRank - 1, maxRank)
   foreach (a, _ in misAddons)
-    processAddon(a)
+    allReqAddons[a] <- true
 
-  let toDownload = addons.filter(@(v) v)
-  foreach (addon, _ in addons) {
-    let list = gameModeAddonToAddonSetMap?[addon]
-    if (list == null)
-      continue
-    foreach (a in list)
-      if (a not in addons && !(hasAddonsV?[a] ?? true))
-        toDownload[a] <- true
-  }
-
-  let allReqAddonsFinal = clone allReqAddons
+  let allReqAddonsFinal = {}
   foreach (addon, _ in allReqAddons) {
+    if (addon in hasAddonsV)
+      allReqAddonsFinal[addon] <- true
     let list = gameModeAddonToAddonSetMap?[addon]
     if (list == null)
       continue
     foreach (a in list)
-      allReqAddonsFinal[a] <- true
+      if (a in hasAddonsV)
+        allReqAddonsFinal[a] <- true
   }
+
+  let addonsToDownload = allReqAddonsFinal.filter(@(_, a) !hasAddonsV[a])
 
   local unitsToDownload = only_override_units ? {}
     : isNewbieModeSingle(name)
@@ -170,8 +147,7 @@ let getModeAddonsInfo = kwarg(function getModeAddonsInfoImpl(mode, unitNames, se
   unitsToDownload.__update(botUnits.filter(@(_, u) (unitSizesV?[u] ?? -1) != 0))
 
   return {
-    addonsToDownload = toDownload.keys(),
-    updateDiff,
+    addonsToDownload = addonsToDownload.keys(),
     allReqAddons = allReqAddonsFinal,
     unitsToDownload = unitsToDownload.keys()
   }
@@ -179,6 +155,11 @@ let getModeAddonsInfo = kwarg(function getModeAddonsInfoImpl(mode, unitNames, se
 
 let allMyBattleUnits = Computed(function() {
   let res = {}
+  let { unit = null, unitList = null } = battleRentInfo.get()
+  if (unit != null)
+    res[unit] <- true
+  if (unitList != null)
+    unitList.each(@(name) res[name] <- true)
   if (curCampaignSlotUnits.get() != null)
     curCampaignSlotUnits.get().each(@(name) res[name] <- true)
   else if (curUnit.get() != null)

@@ -1895,5 +1895,18 @@
       1.70299,
       -0.000424474
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_51c_10_nt_a*",
+        "to": "p_51c_usaaf_topper_a*"
+      },
+      {
+        "from": "p_51c_10_nt_n*",
+        "to": "p_51c_usaaf_topper_n*"
+      }
+    ]
   }
 }

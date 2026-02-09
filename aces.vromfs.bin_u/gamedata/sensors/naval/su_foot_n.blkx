@@ -1,5 +1,6 @@
 {
   "type": "radar",
+  "name": "Foot-N",
   "transivers": {
     "search": {
       "pulsePower": 60000.0,
@@ -35,7 +36,7 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
-      "period": 2.0,
+      "period": 12.0,
       "barHeight": 15.0,
       "barsCount": 1,
       "rowMajor": true
@@ -54,11 +55,18 @@
       }
     }
   },
-  "scopeRanges": {
-    "range1": 10000.0,
-    "range2": 50000.0,
-    "range3": 100000.0,
-    "range4": 150000.0
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "search"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 10000.0,
+      "range2": 50000.0,
+      "range3": 100000.0,
+      "range4": 150000.0
+    }
   },
   "fsms": {
     "main": {
@@ -68,23 +76,36 @@
           "setEnabled": {
             "value": false
           },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": 7.5
+            }
+          ],
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
           "setTransiver": {
             "transiver": "search"
           },
           "setSignal": {
             "signal": "search"
           },
-          "setScanPattern": {
-            "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 7.5
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -150.0,
-              150.0
+              -170.0,
+              170.0
             ],
             "distanceRange": [
               0.0,
@@ -98,13 +119,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "clearTargets": {}
+          }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -112,19 +129,22 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
           },
-          "setScanPattern": {
-            "scanPattern": "search"
+          "setCueEnabled": {
+            "value": true
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -239,11 +259,11 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "sensorIndex": 1
             },
             "designateTargetUnderCue": {
-              "type": 0,
+              "type": "cue",
               "sensorIndex": 1
             }
           }

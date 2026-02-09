@@ -10,7 +10,7 @@ let cameraEventUnitType = require("%rGui/hud/hitCamera/cameraEventUnitType.nut")
 let { hitResultCfg, defPartPriority, partsPriority } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { register_command } = require("console")
-let { hudUnitType } = require("%rGui/hudState.nut")
+let { hudUnitType } = require("%rGui/hudStateExt.nut")
 
 
 const MIN_SHOW_IMPORTANT_MSEC = 3000

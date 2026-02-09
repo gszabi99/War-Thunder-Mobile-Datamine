@@ -4,7 +4,7 @@ let { scaleArr } = require("%globalsDarg/screenMath.nut")
 
 let radarColor = 0xFF00FF00
 let radarColorEdit = 0x80008000
-let radarSize = [hdpxi(300), hdpxi(300)]
+let radarSize = [hdpx(325), hdpx(325)]
 
 let radarHudCtor = @(scale) {
   size = scaleArr(radarSize, scale)

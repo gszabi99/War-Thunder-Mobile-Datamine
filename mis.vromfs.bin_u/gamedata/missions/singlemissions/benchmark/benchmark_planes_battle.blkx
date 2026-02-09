@@ -15,9 +15,9 @@
       "level": "levels/air_norway_green.bin",
       "environment": "14",
       "weather": "hazy",
+      "mobileFpsLimit": 0,
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 21,
-      "mobileFpsLimit": 0
+      "skiesInitialRandomSeed": 21
     }
   },
   "imports": {},
@@ -84,7 +84,7 @@
           ]
         },
         "wait": {
-          "time": 60.0
+          "time": 30.0
         },
         "triggerActivate": {
           "target": "end",

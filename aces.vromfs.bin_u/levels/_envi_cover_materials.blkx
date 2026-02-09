@@ -1,0 +1,109 @@
+{
+  "enviCoverMaterials": {
+    "ground": {
+      "explosionEmitterMaterial": "mud",
+      "materialParams": {
+        "dust": {
+          "name": "dust",
+          "color": [
+            0.62,
+            0.58,
+            0.52
+          ],
+          "metalness": 0.0,
+          "texScale": 3.7,
+          "maxLevel": 1.0,
+          "topProjScale": 0.3
+        },
+        "mud": {
+          "name": "mud",
+          "color": [
+            0.22,
+            0.21,
+            0.198
+          ],
+          "metalness": 0.0,
+          "texScale": 12.7,
+          "maxLevel": 1.0,
+          "topProjScale": 0.0
+        }
+      },
+      "materialTextures": {
+        "texName": [
+          "tank_sand_mask",
+          "tank_dirt_mask"
+        ]
+      }
+    },
+    "sand": {
+      "explosionEmitterMaterial": "sand",
+      "materialParams": {
+        "dust": {
+          "name": "dust",
+          "color": [
+            0.62,
+            0.58,
+            0.52
+          ],
+          "metalness": 0.0,
+          "texScale": 3.7,
+          "maxLevel": 1.0,
+          "topProjScale": 0.3
+        },
+        "mud": {
+          "name": "mud",
+          "color": [
+            0.22,
+            0.21,
+            0.198
+          ],
+          "metalness": 0.0,
+          "texScale": 12.7,
+          "maxLevel": 1.0,
+          "topProjScale": 0.0
+        }
+      },
+      "materialTextures": {
+        "texName": [
+          "tank_sand_mask",
+          "tank_dirt_mask"
+        ]
+      }
+    },
+    "snow": {
+      "explosionEmitterMaterial": "mud",
+      "materialParams": {
+        "snow": {
+          "name": "snow",
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "metalness": 0.1,
+          "texScale": 3.4,
+          "maxLevel": 1.0,
+          "topProjScale": 4.00997
+        },
+        "mud": {
+          "name": "mud",
+          "color": [
+            0.22,
+            0.21,
+            0.198
+          ],
+          "metalness": 0.0,
+          "texScale": 12.7,
+          "maxLevel": 1.0,
+          "topProjScale": 0.0
+        }
+      },
+      "materialTextures": {
+        "texName": [
+          "tank_snow_mask",
+          "tank_dirt_mask"
+        ]
+      }
+    }
+  }
+}

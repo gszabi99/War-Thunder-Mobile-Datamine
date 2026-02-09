@@ -93,11 +93,8 @@ let textarea = @(text, override = {}) {
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
   color = 0xFFFFFFFF
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
   text
-}.__update(fontMedium, override)
+}.__update(fontMediumShaded, override)
 
 let unitActionButtons = function() {
   let unit = buyUnitsData.get().canBuyOnLvlUp?[curSelectedUnit.get()]

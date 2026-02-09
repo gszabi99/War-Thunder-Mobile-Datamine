@@ -4,7 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { AirThrottleMode, AirParamsMain } = require("%globalScripts/sharedEnums.nut")
 let interopGen = require("%rGui/interopGen.nut")
 let { registerInteropFunc } = require("%globalsDarg/interop.nut")
-let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO, CANNON_ADDITIONAL } = AirParamsMain
+let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO, CANNON_ADDITIONAL, FLARES } = AirParamsMain
 let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
 let { isUnitAlive, isUnitDelayed, playerUnitName } = require("%rGui/hudState.nut")
 let { FlightCameraType, getCameraViewType } = require("camera_control")
@@ -25,6 +25,7 @@ let AddGun           = Watched({ count = 0, time = -1, endTime = -1 })
 let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) 
 let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) 
 let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) 
+let FlaresState      = Watched({ count = 0, time = -1, endTime = -1, mode = 0 }) 
 let cannonsOverheat  = Watched(0)
 let mgunsOverheat    = Watched(0)
 let addgunsOverheat  = Watched(0)
@@ -63,6 +64,7 @@ let airState = {
   hasBombs = Computed(@() (MainMask.get() & (1 << BOMBS)) != 0)
   hasRockets = Computed(@() (MainMask.get() & (1 << ROCKET)) != 0)
   hasTorpedos = Computed(@() (MainMask.get() & (1 << TORPEDO)) != 0)
+  hasFlare = Computed(@() (MainMask.get() & (1 << FLARES)) != 0)
 
   DistanceToGround = Watched(0)
   Spd = Watched(0)
@@ -71,6 +73,9 @@ let airState = {
   TargetLockTime = Watched(0)
   DmStateMask
   isTorpedoReady
+
+  FlaresState
+  IsPeriodicFlaresEnabled = Watched(false)
 }
 
 interopGen({
@@ -143,6 +148,12 @@ registerInteropFunc("updateTurrets", function(_, _, _, isReloading, empty, visib
     TurretsEmpty.mutate(@(v) v[index] = empty)
   if (TurretsVisible.get()[index] != visible)
     TurretsVisible.mutate(@(v) v[index] = visible)
+})
+
+registerInteropFunc("updateFlares", function(count, mode, _, time, endTime) {
+  let curVal = FlaresState.get()
+  if (curVal.count != count || curVal.mode != mode || curVal.time != time || curVal.endTime != endTime)
+    FlaresState.set({ count, mode, time, endTime })
 })
 
 eventbus_subscribe("onSetCamera", @(v) activeCameraView.set(v.newType))

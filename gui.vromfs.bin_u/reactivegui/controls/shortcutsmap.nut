@@ -16,6 +16,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_CHANGE_ZOOM_INC = "J:LB J:D.Down | R"
 
   ID_CAMERA_NEUTRAL =  "J:LS | N" 
+  ID_TACTICAL_MAP = "J:LB J:Start | O" 
   ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" 
 
   
@@ -91,6 +92,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_LOCK_TARGET = "J:LT | L.Alt"
   ID_ROCKETS = "J:A | X"
   ID_WTM_AIRCRAFT_TORPEDOES = "J:Y | C"
+  ID_COUNTERMEASURES_FLARES = "J:LB J:A | Q"
 }
 
 let gamepadAxes = {

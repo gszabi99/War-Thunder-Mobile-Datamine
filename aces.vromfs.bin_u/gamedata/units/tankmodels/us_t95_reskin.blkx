@@ -97,6 +97,58 @@
       ]
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1002,7 +1054,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 3000.0
@@ -1016,6 +1068,12 @@
         0.0,
         0.3,
         0.6
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        0.8,
+        0.3
       ]
     },
     "collisionProps": {
@@ -1035,7 +1093,7 @@
       "mainGearRatio": 17.58,
       "sideGearRatio": 6.25,
       "neutralGearRatio": 1.0,
-      "gearType": "differential",
+      "alternativeGearControl": 0.3,
       "gearRatios": {
         "ratio": [
           -0.756,
@@ -2255,6 +2313,12 @@
             -5.0,
             19.5
           ]
+        },
+        "hullAiming": {
+          "horizontal": true,
+          "defaultEnabled": false,
+          "isAutoTurner": true,
+          "maxSpeedForHorizontalAiming": 3.0
         }
       },
       {

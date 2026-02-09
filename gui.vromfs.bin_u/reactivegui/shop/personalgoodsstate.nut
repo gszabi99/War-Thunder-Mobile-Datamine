@@ -1,23 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
+let { eventbus_send } = require("eventbus")
+let { get_local_custom_settings_blk } = require("blkGetters")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { check_new_personal_goods, personalGoodsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { isLoggedIn, isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { SC_FEATURED } = require("%rGui/shop/shopConst.nut")
+let { SC_FEATURED, SC_SPECIAL } = require("%rGui/shop/shopConst.nut")
 
+
+let SEEN_PERSONAL_GOODS = "seenPersonalGoods"
+let seenPerosnalGoods = mkWatched(persist, "seenPersonalGoods", {})
 
 let personalGoodsCfg = Computed(@() serverConfigs.get()?.personalGoodsCfg ?? {})
 let personalGoods = Computed(@() servProfile.get()?.personalGoods ?? {})
 let pGoodsRelevance = Watched({})
-let needRefresh = Computed(@() isServerTimeValid.get() && isLoggedIn.get()
-  && null != pGoodsRelevance.get().findindex(@(r) !r))
-let shouldRefreshRequest = keepref(Computed(@() needRefresh.get() && isInMenu.get()))
 
-let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
+let getPersonalGoodsFullId = @(goodsId, idx) idx == 0 ? goodsId : $"{goodsId}&{idx}"
+let getPersonalGoodsBaseId = memoize(function getPersonalGoodsBaseIdImpl(fullId) {
+  let idx = fullId.indexof("&")
+  return idx == null ? fullId : fullId.slice(0, idx)
+})
+
+let needRefresh = Computed(function() {
+  if (!isServerTimeValid.get() || !isLoggedIn.get())
+    return false
+  let byBaseId = {}
+  foreach (fullId, v in pGoodsRelevance.get()) {
+    let id = getPersonalGoodsBaseId(fullId)
+    byBaseId[id] <- (byBaseId?[id] ?? false) || v
+  }
+  return null != byBaseId.findindex(@(r) !r)
+})
+let shouldRefreshRequest = keepref(Computed(@() needRefresh.get() && isInMenu.get()))
 
 function updateRelevance() {
   if (!isServerTimeValid.get()) {
@@ -28,11 +48,18 @@ function updateRelevance() {
   let time = getServerTime()
   let relevance = {}
   local nextTime = 0
-  foreach (goodsId, _ in personalGoodsCfg.get()) {
-    let { endTime = 0 } = personalGoods.get()?[goodsId]
-    relevance[goodsId] <- endTime > time
-    if (endTime > time && (nextTime == 0 || endTime < nextTime))
-      nextTime = endTime
+  foreach (baseId, cfg in personalGoodsCfg.get()) {
+    let { start, end } = cfg.timeRange
+    if (time < start || (end > 0 && time >= end))
+      continue
+
+    for (local i = 0; i < cfg.slots; i++) {
+      let fullId = getPersonalGoodsFullId(baseId, i)
+      let { endTime = 0 } = personalGoods.get()?[fullId]
+      relevance[fullId] <- endTime > time
+      if (endTime > time && (nextTime == 0 || endTime < nextTime))
+        nextTime = endTime
+    }
   }
   pGoodsRelevance.set(relevance)
 
@@ -48,33 +75,96 @@ updateRelevance()
 foreach (w in [isServerTimeValid, personalGoodsCfg, personalGoods])
   w.subscribe(@(_) updateRelevance())
 
-let personalGoodsRewards = Computed(function(prev) {
+let activePersonalGoods = Computed(function(prev) {
   let res = {}
-  foreach (goodsId, cfg in personalGoodsCfg.get()) {
-    if (!(pGoodsRelevance.get()?[goodsId] ?? false))
+  let campaign = curCampaign.get()
+  foreach (baseId, cfg in personalGoodsCfg.get()) {
+    if ((cfg.meta?.campaign ?? campaign) != campaign)
       continue
-    let cur = personalGoods.get()?[goodsId]
-    if (cur == null)
-      continue
-    let { groupId, varId } = cur
-    let groupCfg = cfg?[groupId]
-    if (groupCfg == null)
-      continue
-    let { price, discountInPercent, variants, lifeTime } = groupCfg
-    let { goods = null, discountInPercentOvr = null } = variants?[varId]
-    if (goods == null)
-      continue
-    let discount = discountInPercentOvr ? discountInPercentOvr : discountInPercent
-    res[goodsId] <- cur.__merge({ id = goodsId, goods, price, discountInPercent = discount, lifeTime })
+    for (local i = 0; i < cfg.slots; i++) {
+      let fullId = getPersonalGoodsFullId(baseId, i)
+      if (!(pGoodsRelevance.get()?[fullId] ?? false))
+        continue
+      let cur = personalGoods.get()?[fullId]
+      if (cur == null)
+        continue
+      let { groupId, varId } = cur
+      let groupCfg = cfg.groups?[groupId]
+      if (groupCfg == null)
+        continue
+      let { price, discountInPercent, variants, lifeTime } = groupCfg
+      let { goods = null, discountInPercentOvr = null } = variants?[varId]
+      if (goods == null)
+        continue
+      let discount = discountInPercentOvr ? discountInPercentOvr : discountInPercent
+      res[fullId] <- cur.__merge({ id = fullId, goods, price, discountInPercent = discount,
+        lifeTime, meta = cfg.meta
+      })
+    }
   }
 
   return prevIfEqual(prev, res)
 })
 
-let personalGoodsByShopCategory = Computed(@() personalGoodsRewards.get().len() == 0 ? {}
-  : {
-      [SC_FEATURED] = personalGoodsRewards.get().values().sort(@(a, b) a.endTime <=> b.endTime)
-    })
+let personalGoodsByShopCategory = Computed(function() {
+  let res = {}
+  foreach (g in activePersonalGoods.get())
+    getSubArray(res, "eventId" in g.meta ? SC_SPECIAL : SC_FEATURED).append(g)
+  res.each(@(l) l.sort(@(a, b)
+    a.lifeTime <=> b.lifeTime
+      || a.endTime <=> b.endTime
+      || a.id <=> b.id))
+  return res
+})
+
+let personalGoodsUnseenIds = Computed(function() {
+  let unseenIds = {}
+  foreach (goods in activePersonalGoods.get())
+    if ((seenPerosnalGoods.get()?[goods.id] ?? 0) < goods.endTime)
+      unseenIds[goods.id] <- true
+
+  return unseenIds
+})
+
+function markPersonalGoodsSeen(ids) {
+  if (!isSettingsAvailable.get())
+    return
+  let seen = {}
+  foreach(id in ids)
+    if (id in personalGoodsUnseenIds.get() && id in activePersonalGoods.get())
+      seen[id] <- activePersonalGoods.get()[id].endTime
+
+  if (seen.len() == 0)
+    return
+
+  let pBlk = get_local_custom_settings_blk().addBlock(SEEN_PERSONAL_GOODS)
+  foreach(id, endTime in seen)
+    pBlk[id] <- endTime
+
+  seenPerosnalGoods.set(seenPerosnalGoods.get().__merge(seen))
+  eventbus_send("saveProfile", {})
+}
+
+function resetSeenPersonalGoods() {
+  seenPerosnalGoods.set({})
+  get_local_custom_settings_blk().removeBlock(SEEN_PERSONAL_GOODS)
+  eventbus_send("saveProfile", {})
+}
+
+function loadSeenPersonalGoods() {
+  if (!isSettingsAvailable.get())
+    return seenPerosnalGoods.set({})
+  let blk = get_local_custom_settings_blk()
+  let seenBlk = blk?[SEEN_PERSONAL_GOODS]
+  let seen = {}
+  if (isDataBlock(seenBlk))
+    eachParam(seenBlk, @(endTime, id) seen[id] <- endTime)
+  seenPerosnalGoods.set(seen)
+}
+
+if (seenPerosnalGoods.get().len() == 0)
+  loadSeenPersonalGoods()
+isSettingsAvailable.subscribe(@(_) loadSeenPersonalGoods())
 
 shouldRefreshRequest.subscribe(@(v) v ? check_new_personal_goods() : null)
 if (shouldRefreshRequest.get() && personalGoodsInProgress.get() == null)
@@ -82,6 +172,10 @@ if (shouldRefreshRequest.get() && personalGoodsInProgress.get() == null)
 
 
 return {
-  personalGoodsRewards
+  activePersonalGoods
   personalGoodsByShopCategory
+  getPersonalGoodsBaseId
+  personalGoodsUnseenIds
+  markPersonalGoodsSeen
+  resetSeenPersonalGoods
 }

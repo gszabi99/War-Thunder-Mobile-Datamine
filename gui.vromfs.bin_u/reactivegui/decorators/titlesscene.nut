@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ceil } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
+let { utf8ToUpper, utf8ToLower } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -168,9 +168,12 @@ function titlesList() {
 
   let titles = visibleTitles.get()
     .keys()
-    .map(@(name) { name, locName = loc($"title/{name}") })
+    .map(function(name) {
+      let locName = loc($"title/{name}")
+      return { name, locName, locNameLower = utf8ToLower(locName) }
+    })
     .sort(@(a,b) (b.name in availTitles.get()) <=> (a.name in availTitles.get())
-      || a.locName <=> b.locName)
+      || a.locNameLower <=> b.locNameLower)
     .insert(0, { name = "", locName = loc("title/empty") })
   let titleComps = titles.map(@(v, idx) titleRow(v.name, v.locName, idx % rows))
 

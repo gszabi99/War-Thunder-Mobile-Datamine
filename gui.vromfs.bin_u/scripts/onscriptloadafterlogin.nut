@@ -1,25 +1,16 @@
 from "%scripts/dagui_library.nut" import *
 let { get_settings_blk } = require("blkGetters")
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("topMenuButtonsActions.nut")
 
-foreach (fn in [
-  "%scripts/missions/missionsUtils.nut"
+require("%scripts/missions/missionsUtils.nut")
+require("%scripts/matchingRooms/sessionLobby.nut")
+require("%scripts/matchingRooms/roomInfo.nut")
+require("%scripts/flightMenu.nut")
+require("%scripts/respawn.nut")
 
-  "%scripts/matchingRooms/sessionLobby.nut"
-  "%scripts/matchingRooms/roomInfo.nut"
-
-  "%scripts/flightMenu.nut"
-  "%scripts/respawn.nut"
-
-  "%scripts/debriefing/debriefingModal.nut"
-
-  "%scripts/hud/hudEventManager.nut"
-
-]) {
-  loadOnce(fn)
-}
+require("%scripts/debriefing/debriefingModal.nut")
+require("%scripts/hud/hudEventManager.nut")
 
 require("%scripts/clientState/updateClientStates.nut")
 require("%scripts/matching/webRpcMessages.nut")

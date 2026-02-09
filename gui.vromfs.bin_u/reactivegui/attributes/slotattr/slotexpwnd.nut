@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { slotExpTanks, SLOT_EXP_TANKS } = require("%appGlobals/currenciesState.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { buy_slots_exp, registerHandler, slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -9,7 +8,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { slider, sliderValueSound, sliderH } = require("%rGui/components/slider.nut")
+let { slider, mkSliderOnChangeSound, sliderH } = require("%rGui/components/slider.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -18,7 +17,7 @@ let { mkSlotLevel, mkSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLe
 let { mkProgressBtnContentDec, mkProgressBtnContentInc, mkProgressBtn, knobCtor,
   progressBtnSize
 } = require("%rGui/attributes/attrBlockComp.nut")
-let { isOpenedSlotExpWnd } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
+let { isOpenedSlotExpWnd, curCampSlotExpId, curCampSlotExp } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { bgUnit, unitPlateRatio } = require("%rGui/unit/components/unitPlateComp.nut")
 let { maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -37,11 +36,11 @@ let lvlProgressHeight = 5 * lvlProgressBorder
 let expIconSize = hdpx(30)
 
 let chosenExp = mkWatched(persist, "chosenExp", {})
-let curBalance = Computed(@() slotExpTanks.get() - chosenExp.get().reduce(@(a, b) a + b, 0))
+let curBalance = Computed(@() curCampSlotExp.get() - chosenExp.get().reduce(@(a, b) a + b, 0))
 
 let closeSlotExpWnd = @() isOpenedSlotExpWnd.set(false)
 
-slotExpTanks.subscribe(@(v) v == 0 ? closeSlotExpWnd() : null)
+curCampSlotExp.subscribe(@(v) v == 0 ? closeSlotExpWnd() : null)
 
 registerHandler("onBuySlotsExp", @(res) res?.error == null ? chosenExp.set({}) : null)
 isLoggedIn.subscribe(@(_) chosenExp.set({}))
@@ -49,7 +48,7 @@ isLoggedIn.subscribe(@(_) chosenExp.set({}))
 function buySlotsExp() {
   let expList = curSlots.get().map(@(_, i) chosenExp.get()?[i] ?? 0)
   if (expList.findindex(@(v) v > 0) != null)
-    buy_slots_exp(curCampaign.get(), SLOT_EXP_TANKS, expList, "onBuySlotsExp")
+    buy_slots_exp(curCampaign.get(), curCampSlotExpId.get(), expList, "onBuySlotsExp")
 }
 
 let textComp = @(text, ovr = {}) {
@@ -215,15 +214,15 @@ function mkSlider(idx) {
   let canDec = Computed(@() level.get() > curLevel.get())
   let canInc = Computed(@() incCost.get() > 0 && curBalance.get() > 0)
 
-  function onChange(newLevel) {
+  let onChange = mkSliderOnChangeSound(function onChangeBase(newLevel) {
     local newExp = (expSum.get()?[newLevel - 1] ?? 0)
     let leftBalance = slotChosenExp.get() + curBalance.get()
     newExp = clamp(newExp, 0, max(leftBalance, 0))
     if (newExp == slotChosenExp.get())
-      return
-    sliderValueSound()
+      return false
     chosenExp.set(chosenExp.get().__merge({ [idx] = newExp }))
-  }
+    return true
+  })
 
   return {
     size = [flex(), slotHeight]
@@ -296,9 +295,9 @@ let slots = @() {
 }
 
 let navBar = @() {
-  watch = [slotExpTanks, curBalance]
+  watch = [curCampSlotExp, curBalance]
   size = [ flex(), defButtonHeight ]
-  children = slotExpTanks.get() == curBalance.get() ? null
+  children = curCampSlotExp.get() == curBalance.get() ? null
     : mkSpinnerHideBlock(Computed(@() slotInProgress.get() != null),
         textButtonPrimary(utf8ToUpper(loc("msgbox/btn_confirm")), buySlotsExp),
         {

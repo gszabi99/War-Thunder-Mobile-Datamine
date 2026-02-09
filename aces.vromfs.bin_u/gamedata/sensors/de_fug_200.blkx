@@ -46,12 +46,12 @@
         "presents": true,
         "minValue": 200.0,
         "maxValue": 10000.0,
-        "maxUnambiguousValue": 210000.0
+        "maxUnambiguousValue": 220000.0
       }
     }
   },
   "scopeRanges": {
-    "range1": 10000.0
+    "range1": 5000.0
   },
   "fsms": {
     "main": {

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { G_UNIT } = require("%appGlobals/rewardType.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
@@ -24,12 +25,8 @@ let OP_VIP = "vip"
 
 let OP_MAX_LEVELS_TO_ADD = 10
 
-let operationPassOpenCounter = mkWatched(persist, "operationPassOpenCounter", 0)
 let isOPPurchaseWndOpened = mkWatched(persist, "isOPPurchaseWndOpened", false)
 let debugOP = mkWatched(persist, "debugOP", null)
-let tutorialFreeMarkIdx = Watched(null)
-let openoperationPassWnd = @() operationPassOpenCounter.set(operationPassOpenCounter.get() + 1)
-let closeOperationPassWnd = @() operationPassOpenCounter.set(0)
 
 let OPFreeRewardsUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "operation_pass_free" in unlock?.meta
@@ -41,6 +38,8 @@ let OPPaidRewardsUnlock = Computed(@()
 let OPPurchasedUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "operation_pass_purchased" in unlock?.meta
     && unlock?.meta.campaign == OPCampaign.get()))
+
+let isOPSeasonActive = Computed(@() OPFreeRewardsUnlock.get() != null)
 
 let seasonUnitName = Computed(function() {
   let { stages = [] } = OPPaidRewardsUnlock.get()
@@ -102,6 +101,8 @@ let purchasedOPRaw = Computed(@() !isOPPurchasedByType.get()[OP_COMMON] ? OP_NON
   : !isOPPurchasedByType.get()[OP_VIP] ? OP_COMMON
   : OP_VIP)
 let purchasedOP = Computed(@() debugOP.get() ?? purchasedOPRaw.get())
+let isOpVipActive = Computed(@() purchasedOP.get() == OP_VIP)
+let isOpCommonActive = Computed(@() purchasedOP.get() == OP_COMMON)
 
 let isOPActive = Computed(@() debugOP.get() == null
   ? (activeUnlocks.get()?[OPPaidRewardsUnlock.get()?.requirement].isCompleted ?? false)
@@ -120,11 +121,11 @@ let maxStage = Computed(@() max(OPFreeRewardsUnlock.get()?.stages.top().progress
   OPPaidRewardsUnlock.get()?.stages.top().progress ?? 0))
 
 let mkOPStagesList = @() Computed(function() {
-  let listPaidStages = gatherUnlockStageInfo(OPPaidRewardsUnlock.get(), true, isOPActive.get(), curStage.get(), maxStage.get())
-  let listFreeStages = gatherUnlockStageInfo(OPFreeRewardsUnlock.get(), false, true, curStage.get(), maxStage.get())
+  let listPaidStages = gatherUnlockStageInfo(OPPaidRewardsUnlock.get(), true, isOPActive.get(), curStage.get())
+  let listFreeStages = gatherUnlockStageInfo(OPFreeRewardsUnlock.get(), false, true, curStage.get())
 
   let res = listPaidStages.extend(listFreeStages)
-  let purchaseStages = gatherUnlockStageInfo(OPPurchasedUnlock.get(), true, true, curStage.get(), maxStage.get())
+  let purchaseStages = gatherUnlockStageInfo(OPPurchasedUnlock.get(), true, true, curStage.get())
   if (purchaseStages.len() > 0) {
     let { isReceived, canReceive } = purchaseStages[0]
     res.insert(0, purchaseStages[0].__merge({
@@ -157,6 +158,14 @@ let mkOPStagesList = @() Computed(function() {
     : (((b?.loopMultiply ?? 0) <=> (a?.loopMultiply ?? 0)) || ((a?.progress ?? 0) <=> (b?.progress ?? 0))))
   fillViewInfo(res, serverConfigs.get())
   return res
+})
+
+let lastStageOpProgress = Computed(function() {
+  let { stages = [], startStageLoop = 1, periodic = false } = OPFreeRewardsUnlock.get()
+  return !periodic ? maxStage.get()
+    : isEqual(stages?[startStageLoop - 1].rewards, stages?[startStageLoop - 2].rewards)
+      ? (stages?[startStageLoop - 2].progress ?? 0) - 1
+    : (stages?[startStageLoop - 1].progress ?? 0) - 1
 })
 
 let selectedStage = mkWatched(persist, "OPSelectedStage", 0)
@@ -266,9 +275,6 @@ register_command(
 
 return {
   OPCampaign
-  operationPassOpenCounter
-  openoperationPassWnd
-  closeOperationPassWnd
   isOPPurchaseWndOpened
   openOPPurchaseWnd = @() isOPPurchaseWndOpened.set(true)
   closeOPPurchaseWnd = @() isOPPurchaseWndOpened.set(false)
@@ -281,13 +287,16 @@ return {
   OPPurchasedUnlock
   operationPassGoods
   isOPRewardsInProgress
-  isOPSeasonActive = Computed(@() OPFreeRewardsUnlock.get() != null)
+  isOPSeasonActive
+  lastStageOpProgress
 
   mkOPStagesList
   curStage
   maxStage
   selectedStage
   isOPActive
+  isOpVipActive
+  isOpCommonActive
   purchasedOP
   pointsCurStage
   OPProgressUnlock
@@ -302,8 +311,6 @@ return {
   seasonName
   seasonEndTime
   hasOPRewardsToReceive
-
-  tutorialFreeMarkIdx
 
   getOPIcon
   getOPName

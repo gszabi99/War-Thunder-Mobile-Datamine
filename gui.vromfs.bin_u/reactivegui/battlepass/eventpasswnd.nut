@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { closeEventPassWnd, isEpSeasonActive, isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
+let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
   EP_VIP, EP_COMMON, EP_NONE, purchasedEp,curOpenEventPass,
   pointsCurStage, pointsPerStage, curEventId, seasonEndTime,
   isEpRewardsInProgress, receiveEpRewards
@@ -13,7 +13,7 @@ let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components
 let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { bpCurProgressbar, bpProgressText, progressIconSize, sideTabWidth, vGradientGapSize
 } = require("%rGui/battlePass/battlePassPkg.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
@@ -24,8 +24,9 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-
-isEpSeasonActive.subscribe(@(isActive) isActive ? null : closeEventPassWnd())
+let { openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let { translucentButton } = require("%rGui/components/translucentButton.nut")
+let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 
 let bpIconSize = [hdpx(269), hdpx(306)]
 let scrollHandler = ScrollHandler()
@@ -44,7 +45,7 @@ let header = {
   margin = saBordersRv
   valign = ALIGN_TOP
   halign = ALIGN_RIGHT
-  children = mkCurrencyBalance(GOLD)
+  children = mkCurrenciesBtns([GOLD])
 }
 
 let scrollArrowsBlock = {
@@ -109,7 +110,16 @@ let leftMiddle = {
       gap = hdpx(15)
       children = [
         taskDesc
-        mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB)
+        {
+          flow = FLOW_HORIZONTAL
+          gap = hdpx(15)
+          children = [
+            mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB)
+            translucentButton(gmEventPresentation(curOpenEventPass.get()?.eventName).image,
+              "",
+              @() openGmEventWnd(curOpenEventPass.get()?.eventName))
+          ]
+        }
       ]
     }
   ]

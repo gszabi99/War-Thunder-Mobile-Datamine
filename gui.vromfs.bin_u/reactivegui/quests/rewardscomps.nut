@@ -13,7 +13,7 @@ let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
-let { G_UNIT } = require("%appGlobals/rewardType.nut")
+let { G_UNIT, G_STAT_ADD } = require("%appGlobals/rewardType.nut")
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
@@ -114,7 +114,7 @@ let mkQuestRewardPlate = @(r, startIdx, rewards, isQuestFinished = false, rStyle
     mkRewardPlate(r, rStyle, {
       key = {}
       animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1))
-        .append(r.rType == "stat" && !isQuestFinished ? statsAnimation : null)
+        .append(r.rType == G_STAT_ADD && !isQuestFinished ? statsAnimation : null)
     })
     @() {
       watch = servProfile

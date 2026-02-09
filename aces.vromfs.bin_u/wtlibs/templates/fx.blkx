@@ -140,6 +140,7 @@
   "area_fx": {
     "_use": "replicating",
     "_replicate": true,
+    "_track": true,
     "transform": [
       [
         1.0,
@@ -169,9 +170,28 @@
     "area_fx__spawn_timer_max": 1.0,
     "area_fx__res": "misc_placeholder_cmps_fx",
     "area_fx__moveByWind": false,
+    "area_fx__velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "area_fx__spawn_rate": 1.0,
+    "area_fx__color_mult": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "area_fx__light_radius_mult": 1.0,
     "area_fx": {
       "_tags": "render"
     }
+  },
+  "area_fx_point": {
+    "_use": "area_fx",
+    "area_fx__radius": -1.0,
+    "area_fx__height": -1.0,
+    "area_fx__active_limit": 1
   },
   "dafx_rain": {
     "_singleton": true,
@@ -385,6 +405,35 @@
     "sound_area__bgrid:list<b>": {},
     "sound_area__event:SoundEvent": {
       "_tags": "sound"
+    }
+  },
+  "rain_sound": {
+    "_tags": "sound",
+    "rain_sound__eventName": "",
+    "rain_sound__eventNameCockpit": "",
+    "rain_sound__eventPath": "",
+    "rain_sound__eventPathInf": "",
+    "rain_sound__isCockpit": false,
+    "rain_sound__isForInfantry": false,
+    "rain_sound__event:SoundEvent": {},
+    "rain_sound__unitTypeToSoundType:list<r>": {
+      "type": [
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        2.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        2.0,
+        0.0,
+        3.0
+      ]
     }
   }
 }

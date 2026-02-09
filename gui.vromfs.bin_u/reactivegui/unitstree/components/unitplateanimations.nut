@@ -2,8 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { startSound, stopSound } = require("sound_wt")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkIcon, plateTextsSmallPad } = require("%rGui/unit/components/unitPlateComp.nut")
 let { needShowPriceUnit, animUnitAfterResearch }= require("%rGui/unitsTree/animState.nut")
+
 
 let activeCounters = Watched({})
 
@@ -51,9 +56,9 @@ function setCounterActive(uid, isActive) {
     })
 }
 
-function mkAnimatedCountText(needStart, startV, endV, key) {
+function mkAnimatedCountText(needStart, startV, endV, key, ovr = {}) {
   if(!needStart)
-    return animCountBaseComp.__merge({text = startV})
+    return animCountBaseComp.__merge({ text = startV }, ovr)
 
   let finalText = endV
   local needReset = false
@@ -92,7 +97,7 @@ function mkAnimatedCountText(needStart, startV, endV, key) {
       setCounterActive(key, text != finalText)
       return { text }
     }
-  })
+  }, ovr)
 }
 
 let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
@@ -105,7 +110,8 @@ let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     children = [
-      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)], {margin = const [0, hdpx(10), 0, 0]})
+      mkIcon("ui/gameuiskin#experience_icon.svg", [hdpxi(28), hdpxi(28)],
+        { margin = const [0, hdpx(10), 0, 0], color = currencyIconsColor["researchUnitExp"] })
       mkAnimatedCountText(animUnitAfterResearch.get(), isResearched ? reqExp : exp, reqExp, isResearched ? reqExp : exp)
       {
         rendObj = ROBJ_TEXT
@@ -116,6 +122,33 @@ let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
   }.__update(ovr)
 }
 
+let mkBlueprintUnitResearchPriceAnim = @(unit, researchStatus, ovr = {}) function() {
+  let { exp = 0, reqExp = 0, isResearched = false } = researchStatus
+  let count = servProfile.get()?.blueprints?[unit.name] ?? 0
+  let tgtCount = serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 0
+  return count < tgtCount || unit.name in campMyUnits.get()
+    ? { watch = [servProfile, serverConfigs, campMyUnits, animUnitAfterResearch] }
+    : {
+        watch = animUnitAfterResearch
+        padding = plateTextsSmallPad
+        hplace = ALIGN_LEFT
+        vplace = ALIGN_BOTTOM
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(5)
+        children = [
+          mkIcon("ui/unitskin#blueprint_default_small.avif", [hdpxi(28), hdpxi(28)],
+            { margin = const [0, hdpx(10), 0, 0], transform = { rotate = -10 } })
+          mkAnimatedCountText(animUnitAfterResearch.get(), isResearched ? reqExp : exp, reqExp, isResearched ? reqExp : exp,
+            { color = 0xFFFFFFFF })
+          {
+            rendObj = ROBJ_TEXT
+            color = 0xFFFFFFFF
+            text = $"/{reqExp}"
+          }.__update(fontVeryTiny)
+        ]
+      }.__update(ovr)
+}
 
 return {
   progressbarAnimDuration
@@ -129,4 +162,5 @@ return {
   animUnitSlot
   mkAnimatedCountText
   mkUnitResearchPriceAnim
+  mkBlueprintUnitResearchPriceAnim
 }

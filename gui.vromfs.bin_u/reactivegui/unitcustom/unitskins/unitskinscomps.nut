@@ -13,7 +13,7 @@ let { G_SKIN, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 
 let { unseenSkins, markAllUnitSkinsSeen, markSkinSeen } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { mkGradText, lockIcon, checkIcon, iconSize } =  require("%rGui/unitCustom/unitCustomComps.nut")
+let { mkGradText, mkIcon, iconSize } = require("%rGui/unitCustom/unitCustomComps.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods
 } = require("%rGui/battlePass/battlePassState.nut")
@@ -21,42 +21,41 @@ let { unitSkins, selectedSkin, currentSkin, availableSkins, selectedSkinCfg, has
 } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
 let { openEventWnd, MAIN_EVENT_ID, getEventLoc, eventSeason, allSpecialEvents
 } = require("%rGui/event/eventState.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
-} = require("%rGui/components/gradientDefComps.nut")
+let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let changeSkinTagWnd = require("%rGui/unitCustom/unitSkins/changeSkinTagWnd.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkIsAutoSkin, mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { userlogTextColor, markTextColor, selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
+let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { shopGoods, openShopWndByGoods } = require("%rGui/shop/shopState.nut")
+let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
 
 let appsFlyerSaveId = "DefaultSkinWasReplaced"
 let SKINS_IN_ROW = 4
 let SKINS_IN_ROW_TAGS = 3
-let skinSize = hdpxi(110)
+let skinSize = hdpxi(100)
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
-let skinGap = evenPx(20)
+let skinGap = evenPx(15)
 let tagNameSize = hdpx(210)
+let skinsRowPadding = hdpx(20)
 let skinsRowWidth = skinSize * SKINS_IN_ROW + skinGap * (SKINS_IN_ROW - 1)
-let skinsRowWidthWithTags = (skinSize + skinGap) * SKINS_IN_ROW_TAGS + tagNameSize + doubleSideGradientPaddingX * 2
 let rowHeight = skinSize + skinGap
 let aTimeSelected = 0.2
-let rowBgEvenColor = 0xD0000000
+let rowBgEvenColor = 0xB3000000
 let rowBgOddColor = 0x70000000
 
 function applyToPlatoon(unit, skinName) {
@@ -69,12 +68,15 @@ function applyToPlatoon(unit, skinName) {
     sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
 }
 
-let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + saBorders[0], [skinSize, saBorders[0]])
+let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + skinsRowPadding * 2, [skinsRowPadding, skinsRowPadding])
 let skinsPannableWithTags = horizontalPannableAreaCtor(
-  (skinSize + skinGap) * SKINS_IN_ROW_TAGS + skinGap + saBorders[0], [2 * skinGap, saBorders[0]])
+  (skinSize + skinGap) * SKINS_IN_ROW_TAGS + skinsRowPadding, [skinsRowPadding, skinsRowPadding])
 
 let mkTankRow = @(rowIdx, text, content, ovr = {}) {
-  size = [skinsRowWidthWithTags, rowHeight]
+  size = [pw(100), rowHeight]
+  rendObj = ROBJ_SOLID
+  padding = [skinGap / 2, skinsRowPadding]
+  color = rowIdx % 2 == 1 ? rowBgOddColor : rowBgEvenColor
   flow = FLOW_HORIZONTAL
   gap = skinGap
   children = [
@@ -84,19 +86,15 @@ let mkTankRow = @(rowIdx, text, content, ovr = {}) {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text = text
-    }.__update(fontSmall)
+    }.__update(fontTinyAccented)
     content
   ]
-}.__merge(doubleSideGradient,
-  {
-    padding = [skinGap / 2, doubleSideGradientPaddingX]
-    color = rowIdx % 2 == 1 ? rowBgOddColor : rowBgEvenColor
-  },
-  ovr)
+}.__merge(ovr)
 
 let mkInfoTextarea = @(text, ovr = {}) doubleSideGradient.__merge({
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
+  padding = skinsRowPadding
   children = {
     maxWidth = hdpx(400)
     rendObj = ROBJ_TEXTAREA
@@ -106,26 +104,17 @@ let mkInfoTextarea = @(text, ovr = {}) doubleSideGradient.__merge({
   }.__update(fontTiny)
 }.__update(ovr))
 
-let calcAmountOfRewards = @(g) "rewards" in g
-  ? g.rewards.len()
-    
-  : g.units.len() + g.unitUpgrades.len() + g.skins.len() + g.items.len() + g.decorators.len()
-
 function findShopSkinGoods(unitName, skinName, allGoods) {
   local res = null
   foreach(g in allGoods) {
     if (g.isHidden)
       continue
 
-    let { rewards = null, skins = {} } = g
-    if (rewards != null) {
-      if (null == rewards.findvalue(@(r) r.id == unitName && r.subId == skinName && r.gType == G_SKIN))
-        continue
-    }
-    else if (skins?[unitName] != skinName)
+    let { rewards } = g
+    if (null == rewards.findvalue(@(r) r.id == unitName && r.subId == skinName && r.gType == G_SKIN))
       continue
 
-    if (res == null || (calcAmountOfRewards(g) <= calcAmountOfRewards(res)))
+    if (res == null || (g.rewards.len() <= res.rewards.len()))
       res = g
   }
   return res
@@ -183,7 +172,7 @@ function skinBtn(skinPresentation) {
         valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
         children = !isLocked.get() ? null
-          : !currencyId.get() ? lockIcon
+          : !currencyId.get() ? mkIcon("ui/gameuiskin#lock_icon.svg")
           : mkCurrencyImage(currencyId.get(), iconSize, { vplace = ALIGN_BOTTOM, margin = hdpx(8) })
       }
       @() {
@@ -191,7 +180,9 @@ function skinBtn(skinPresentation) {
         size = flex()
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
-        children = currentSkin.get() == name ? checkIcon : null
+        children = currentSkin.get() == name
+          ? mkIcon("ui/gameuiskin#check.svg", { color = 0xFF78FA78 })
+          : null
       }
       @() !canChangeTags.get() ? { watch = canChangeTags }
         : {
@@ -222,12 +213,20 @@ function autoSkinRow() {
   let content = listbox({
     value = isAutoSkin
     list = [false, true]
-    valToString = @(v) loc(v ? "controls/on" : "controls/off")
     setValue = setAutoSkin
+    mkContentCtor = @(v, _, _) {
+      size = [flex(), hdpx(70)]
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      color = 0xFFFFFFFF
+      text = loc(v ? "controls/on" : "controls/off")
+    }.__update(fontTinyAccented)
   }).__update({ vplace = ALIGN_CENTER })
 
   return mkTankRow(tankTagsOrder.len(), loc("skins/autoselect"), content,
-    { size = [skinsRowWidthWithTags, SIZE_TO_CONTENT] })
+    { size = [pw(100), SIZE_TO_CONTENT] })
 }
 
 function skinsBlockWithTags() {
@@ -248,6 +247,7 @@ function skinsBlockWithTags() {
   })
 
   return {
+    size = [pw(100), SIZE_TO_CONTENT]
     key = {}
     flow = FLOW_VERTICAL
     onDetach = @() markAllUnitSkinsSeen(baseUnit.get()?.name)
@@ -271,19 +271,23 @@ function skinsBlockWithTags() {
 
 let skinsBlockNoTags = @() {
   key = "skinsBlockNoTags"
-  size = [skinsRowWidth + doubleSideGradientPaddingX * 2, skinSize + 2 * doubleSideGradientPaddingY]
+  size = [pw(100), skinSize + 2 * skinsRowPadding]
   onDetach = @() markAllUnitSkinsSeen(baseUnit.get()?.name)
+  rendObj = ROBJ_SOLID
+  padding = [0, skinsRowPadding]
+  color = rowBgEvenColor
   children = skinsPannable(
     @() {
       watch = [unitSkins, unitToShow]
       flow = FLOW_HORIZONTAL
       gap = skinGap
+      vplace = ALIGN_CENTER
       children = unitSkins.get()
         .keys()
         .map(@(v) getSkinPresentation(unitToShow.get()?.name ?? "", v).__merge({ name = v }))
         .map(skinBlock)
     })
-}.__merge(doubleSideGradient)
+}
 
 function onPurchase() {
   if (selectedSkinCfg.get() == null)
@@ -318,6 +322,8 @@ function openLootboxForEvent(lootbox) {
   openEventWndLootbox(lootbox.name)
 }
 
+let canChangeSkin = @(unit, myUnits) unit.isUpgraded == myUnits?[unit.name].isUpgraded
+
 function selectBtns(unit, vehicleName, skinName, cSkin) {
   if ("currentSkins" not in unit) 
     return null
@@ -325,8 +331,8 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
   let showApplyToPlatoon = unit.platoonUnits.len() > 0
     && ((unit.currentSkins?[unit.name] ?? "") != skinName
       || unit.platoonUnits.findvalue(@(v) (unit.currentSkins?[v.name] ?? "") != skinName) != null)
-
-  return {
+  return @() {
+    watch = campMyUnits
     hplace = ALIGN_RIGHT
     padding = [0, saBorders[0], 0, 0]
     flow = FLOW_HORIZONTAL
@@ -334,7 +340,9 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
     children = [
       !showApplyToPlatoon ? null
         : textButtonPrimary(utf8ToUpper(loc("skins/applyToPlatoon")), @() applyToPlatoon(unit, skinName))
-      cSkin == skinName ? mkGradText(loc("skins/applied"))
+      cSkin == skinName
+        ? mkGradText(loc("skins/applied"))
+        : !canChangeSkin(unit, campMyUnits.get()) ? null
         : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
             function() {
               enable_unit_skin(unit.name, vehicleName, skinName)
@@ -367,15 +375,10 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 
   let goodsByLootboxId = {}
   foreach (goods in shopGoods.get()) {
-    let { rewards = null, lootboxes = {} } = goods
-    if (rewards != null) {
-      foreach (r in rewards)
-        if (r.gType == G_LOOTBOX)
-          goodsByLootboxId[r.id] <- (r.id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[r.id], goods)
-    }
-    else 
-      foreach (id, _ in lootboxes)
-        goodsByLootboxId[id] <- (id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[id], goods)
+    let { rewards } = goods
+    foreach (r in rewards)
+      if (r.gType == G_LOOTBOX)
+        goodsByLootboxId[r.id] <- (r.id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[r.id], goods)
   }
 
   let lootbox = findLootboxWithReward(goodsByLootboxId.keys().extend(eventLootboxesRaw.get().values()),
@@ -383,10 +386,8 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     @(r) (null != r.findvalue(@(g) g.gType == "skin" && g.id == unitName && g.subId == skinName)))
 
   let goods = goodsByLootboxId?[lootbox]
-  let lootboxTbl = goods != null
-    ? serverConfigs.get()?.lootboxesCfg[lootbox]
-    : null
-  if (lootboxTbl) {
+  if (goods != null) {
+    let lootboxTbl = serverConfigs.get().lootboxesCfg[lootbox]
     return res.__update({
       children = [
         @() mkInfoTextarea(loc("canReceive/inShopLootbox", { name = colorize(markTextColor, getLootboxName(lootboxTbl.name)) }))
@@ -413,8 +414,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     @(r) (null != r.findvalue(@(g) g.gType == G_SKIN && g.id == unitName && g.subId == skinName)))
   let isBpGoods = null != battlePassGoods.get()
     .findindex(@(v) v != null
-      && (null != v?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName && r.subId == skinName)
-        || v?.skins[unitName] == skinName)) 
+      && null != v.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName && r.subId == skinName))
 
   if (bpUnlock != null || isBpGoods)
     return res.__update({
@@ -428,11 +428,11 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 }
 
 let skinActionBtn = @() {
-  watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, unitToShow, skinsInProgress, baseUnit, isOwnUnit]
+  watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, unitToShow,
+    skinsInProgress, baseUnit, isOwnUnit, campMyUnits]
   size = [flex(), defButtonHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  animations = wndSwitchAnim
   children = !isOwnUnit.get() || !selectedSkin.get() || unitToShow.get() == null
       ? null
     : skinsInProgress.get() ? spinner
@@ -440,7 +440,7 @@ let skinActionBtn = @() {
       ? mkGradText(loc("attrib_section/upgradeBattleRewards"))
     : currentSkin.get() == selectedSkin.get() || selectedSkin.get() in availableSkins.get()
       ? selectBtns(baseUnit.get(), unitToShow.get().name, selectedSkin.get(), currentSkin.get())
-    : selectedSkinCfg.get()?.currencyId != null
+    : selectedSkinCfg.get()?.currencyId != null && canChangeSkin(unitToShow.get(), campMyUnits.get())
       ? textButtonPricePurchase(
           utf8ToUpper(loc("mainmenu/btnBuy")),
           mkCurrencyComp(selectedSkinCfg.get()?.price, selectedSkinCfg.get()?.currencyId),

@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
+let { battleCampaign, hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { gameOverReason, isGtFFA, gameType } = require("%rGui/missionState.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { updatePlayersByTeams, playersByTeam, startContinuousUpdate, stopContinuousUpdate
 } = require("%rGui/mpStatistics/playersByTeamState.nut")
 
@@ -89,11 +88,12 @@ return bgShaded.__merge({
         }]
     }
     @() {
-      watch = [playersByTeam, battleCampaign, isGtFFA, gameType]
+      watch = [playersByTeam, battleCampaign, isGtFFA, gameType, hudCustomRules]
       size = FLEX_H
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name(), gameType.get()),
+      children = mkMpStatsTable(
+        getColumnsByCampaign(battleCampaign.get(), get_current_mission_name(), gameType.get(), hudCustomRules.get()),
         playersByTeam.get(),
         isGtFFA.get() ? statisticsHeight : null)
     }

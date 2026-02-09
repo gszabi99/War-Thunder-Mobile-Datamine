@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { abs } = require("%sqstd/math.nut")
-let { G_PREMIUM, G_BLUEPRINT } = require("%appGlobals/rewardType.nut")
+let { G_PREMIUM, G_BLUEPRINT, G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
@@ -23,18 +23,18 @@ let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/
 let { curCampaignSlotUnits, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campUnitsCfg, curUnit, playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { setCurrentUnit, canBuyUnits, buyUnitsData, canBuyUnitsStatus, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
+let { setCurrentUnit, canBuyUnits, buyUnitsData, canBuyUnitsStatus, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE, US_CAN_BUY
 } = require("%appGlobals/unitsState.nut")
 let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { unitsResearchStatus, currentResearch, blockedCountries } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { getReceiveLocId, goToReceive } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 let openBuyUnitResearchWnd = require("%rGui/unitsTree/buyUnitResearchWnd.nut")
 let { clearUnitSlot, openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -46,7 +46,7 @@ let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rG
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { upgradeCommonUnitName, buyExpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
+let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 
 let fontIconPreview = "⌡"
 
@@ -62,25 +62,20 @@ function getBlueprintGoodsId(config, shopCfg, uName) {
         .findvalue(@(v) v.findvalue(@(g) g.id == uName && g.gType == G_BLUEPRINT) != null))
 
   return shopCfg.findindex(@(goods) goods.slotsPreset in presets
-    || ("rewards" in goods ? goods.rewards.findvalue(@(r) r.id == uName && r.gType == G_BLUEPRINT) != null
-        : uName in goods.blueprints)) 
+    || goods.rewards.findvalue(@(r) r.id == uName && r.gType == G_BLUEPRINT) != null)
 }
 
-let curSelectedUnitPrice = Computed(@()
-  (campUnitsCfg.get()?[curSelectedUnit.get()]?.costGold ?? 0) + (campUnitsCfg.get()?[curSelectedUnit.get()]?.costWp ?? 0))
-let canEquipSelectedUnit = Computed(@() (curSelectedUnit.get() in campMyUnits.get()) && (curSelectedUnit.get() != curUnit.get()?.name))
-
-function onSetCurrentUnit() {
-  if (curSelectedUnit.get() == null || curUnitInProgress.get() != null)
+function onSetCurrentUnit(unitName) {
+  if (curUnitInProgress.get() != null)
     return
-  setCurrentUnit(curSelectedUnit.get())
+  setCurrentUnit(unitName)
   tryResetToMainScene()
 }
 
 function onBuyUnit(unitName, price) {
   if (unitName == null || unitInProgress.get() != null)
     return
-  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.get())
+  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, unitName)
   purchaseUnit({unitId = unitName, bqInfo = bqPurchaseInfo, price})
 }
 
@@ -97,19 +92,9 @@ function findGoodsPrem(shopGoodsList) {
   local delta = 0
   foreach (g in shopGoodsList) {
     local days = 0
-    if ("rewards" in g) {
-      if (g.rewards.len() != 1 || g.rewards[0].gType != G_PREMIUM)
-        continue
-      days = g.rewards[0].count
-    }
-    else { 
-      if ((g?.premiumDays ?? 0) <= 0
-        || (g?.currencies.len() ?? 0) > 0
-        || (g?.items.len() ?? 0) > 0
-        || (g?.units.len() ?? 0) > 0 || (g?.unitUpgrades.len() ?? 0) > 0)
-        continue
-      days = g.premiumDays
-    }
+    if (g.rewards.len() != 1 || g.rewards[0].gType != G_PREMIUM)
+      continue
+    days = g.rewards[0].count
     let d = abs(days - premiumDays)
     if (d == 0)
       return g
@@ -252,18 +237,22 @@ function separateByRows(bigBtnsList, smallBtnsList) {
   }
 }
 
-let unitActionButtons = @(allowSeveralRows) function() {
-  let unitName = curSelectedUnit.get()
+let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
+  let unitName = unitNameW.get()
+  let unit = campUnitsCfg.get()?[unitName]
   let isUnitInSlot = curCampaignSlotUnits.get()?.findvalue(@(v) v == unitName) != null
-  let { isResearched = false, canBuy = false, isCurrent = false, canResearch = false } = unitsResearchStatus.get()?[unitName]
+  let { isResearched = false, canBuy = false, isCurrent = false, canResearch = false,
+    hasAccessLock = true
+  } = unitsResearchStatus.get()?[unitName]
   let levelInfo = playerLevelInfo.get()
   let canBuyStatus = canBuyUnitsStatus.get()?[unitName]
   let isOwned = unitName in campMyUnits.get()
-  let unitCountry = serverConfigs.get()?.allUnits[unitName].country ?? ""
-  let isBlocked = unitCountry in blockedCountries.get()
   let withBlueprint = unitName in serverConfigs.get()?.allBlueprints && !isOwned
+  let isBlocked = hasAccessLock && (unitName in unitsBlockedByBattleMode.get())
+    && (!withBlueprint || canBuyStatus != US_CAN_BUY)
   let unitFromCanBuyUnits = canBuyUnits.get()?[unitName]
   let canBuyUnit = unitFromCanBuyUnits != null
+  let { receiveType = null, receiveData = null } = unitReceiveInfoW.get()
   
   
   
@@ -278,21 +267,30 @@ let unitActionButtons = @(allowSeveralRows) function() {
     bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("mod/enable")),
       @() openSelectUnitToSlotWnd(unitName, treeNodeUnitPlateKey(unitName)),
       { hotkeys = ["^J:X"] }))
-  else if (canEquipSelectedUnit.get())
-    bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
+  else if (isOwned && unitName != curUnit.get()?.name)
+    bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")),
+      @() onSetCurrentUnit(unitName),
+      { hotkeys = ["^J:X"] }))
   else if (isBlocked) {
-    let requiredBattleModeForUnlock = blockedResearchByBattleMods.get()?[curCampaign.get()][unitCountry]
-    let offerId = shopGoods.get().findindex(@(offer) requiredBattleModeForUnlock in offer?.battleMods)
-    bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/getEarlyAccess")),
-      @() offerId != null ? openGoodsPreview(offerId) : openMsgBox({ text = loc("msg/needUnlockBranchToResearch") }),
-      mergeStyles(PRIMARY, { hotkeys = ["^J:X"], hasGlare = true, ovr = { key = "startResearchButton" } }))
-    )
+    if (receiveType != null) {
+      bigBtnsList.append(textButtonCommon(utf8ToUpper(loc(getReceiveLocId(receiveType))),
+        @() goToReceive(receiveType, receiveData),
+        { hotkeys = ["^J:X"] }))
+    }
+    else {
+      let requiredBattleModeForUnlock = unitsBlockedByBattleMode.get()?[unitNameW.get()]
+      let offerId = shopGoods.get().findindex(@(offer)
+        null != offer.rewards.findvalue(@(v) v.gType == G_BATTLE_MOD && v.id == requiredBattleModeForUnlock))
+      bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/getEarlyAccess")),
+        @() offerId != null ? openGoodsPreview(offerId) : openMsgBox({ text = loc("msg/needUnlockBranchToResearch") }),
+        mergeStyles(PRIMARY, { hotkeys = ["^J:X"], hasGlare = true, ovr = { key = "startResearchButton" } }))
+      )
+    }
   }
   else if (canBuyUnit || (isResearched && !canBuy)) {
-    let unit = unitFromCanBuyUnits ?? campUnitsCfg.get()[unitName]
-    let isForLevelUp = levelInfo.isReadyForLevelUp && (unit?.name in buyUnitsData.get().canBuyOnLvlUp)
+    let isForLevelUp = levelInfo.isReadyForLevelUp && (unitName in buyUnitsData.get().canBuyOnLvlUp)
 
-    let price = Computed(@() getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.get()))
+    let price = Computed(@() getUnitAnyPrice(unitFromCanBuyUnits ?? unit, isForLevelUp, unitDiscounts.get()))
     if (price.get() != null) {
       let priceComp = @() { watch = price, children = mkDiscountPriceComp(price.get().fullPrice, price.get().price, price.get().currencyId, CS_INCREASED_ICON) }
       bigBtnsList.append(textButtonPricePurchase(utf8ToUpper(loc(!isCampaignWithUnitsResearch.get() ? "msgbox/btn_order" : "msgbox/btn_build")), priceComp,
@@ -313,12 +311,13 @@ let unitActionButtons = @(allowSeveralRows) function() {
   else if (canBuyStatus == US_TOO_LOW_LEVEL) {
     let { rank = 0, starRank = 0 } = campUnitsCfg.get().findvalue(@(u) u.name == unitName)
     let deltaLevels = rank - levelInfo.level
+    let hasPrice = (unit?.costGold ?? 0) + (unit?.costWp ?? 0) > 0
     if (deltaLevels >= 2)
       bigBtnsList.append(bgTextMessage.__merge({
-        children = @(){
+        children = @() {
           size = SIZE_TO_CONTENT
           rendObj = ROBJ_TEXT
-          text = curSelectedUnitPrice.get() == 0 ? loc("unitWnd/coming_soon") : loc("unitWnd/explore_request")
+          text = hasPrice ? loc("unitWnd/explore_request") : loc("unitWnd/coming_soon")
         }.__update(fontTiny)
       }))
     else if (deltaLevels == 1 && canBuyStatus != US_NOT_FOR_SALE) {
@@ -336,34 +335,37 @@ let unitActionButtons = @(allowSeveralRows) function() {
       bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("mainmenu/get_blueprints")),
         function() {
           openGoodsPreview(blueprintsGoodsId)
-          openedUnitFromTree.set(curSelectedUnit.get())
+          openedUnitFromTree.set(unitName)
         },
         mergeStyles(PURCHASE, { hotkeys = ["^J:X"], hasGlare = true })))
   }
+  else if (!isOwned && receiveType != null)
+    bigBtnsList.append(textButtonCommon(utf8ToUpper(loc(getReceiveLocId(receiveType))),
+      @() goToReceive(receiveType, receiveData),
+      { hotkeys = ["^J:X"] }))
+
   bigBtnsList.append(unitUpgradeBtn(campMyUnits.get()?[unitName]))
   smallBtnsList.append(withUnseenMark(unitName, infoBtn))
 
   return {
     watch = [
-      curSelectedUnit, campMyUnits, curSelectedUnitPrice, campUnitsCfg, curCampaign,
-      canBuyUnits, canEquipSelectedUnit, havePremium, canBuyUnitsStatus, playerLevelInfo,
+      unitNameW, curUnit, campMyUnits, campUnitsCfg, curCampaign, unitReceiveInfoW,
+      canBuyUnits, havePremium, canBuyUnitsStatus, playerLevelInfo,
       curCampaignSlotUnits, shopGoods, buyUnitsData, unitDiscounts,
-      unitsResearchStatus, serverConfigs, blockedCountries, blockedResearchByBattleMods
+      unitsResearchStatus, serverConfigs, unitsBlockedByBattleMode
     ]
     size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = gapBtns
-    children = allowSeveralRows
-      ? bigBtnsList.extend(smallBtnsList)
-      : separateByRows(bigBtnsList, smallBtnsList)
+    children = separateByRows(bigBtnsList, smallBtnsList)
   }
 }
 
-function discountBlock() {
-  let discount = unitDiscounts.get()?[curSelectedUnit.get()]
+let discountBlock = @(unitNameW) function() {
+  let discount = unitDiscounts.get()?[unitNameW.get()]
   return {
-    watch = [curSelectedUnit, unitDiscounts]
+    watch = [unitNameW, unitDiscounts]
     flow = FLOW_VERTICAL
     margin = discount != null ? [0,0,hdpx(15),0] : 0
     children = discount != null
@@ -378,12 +380,11 @@ function discountBlock() {
         ]
       : null
   }
-
 }
 
-let unitActions = @(allowSeveralRows) mkSpinnerHideBlock(
+let unitActions = @(unitNameW, unitReceiveInfoW) mkSpinnerHideBlock(
   Computed(@() unitInProgress.get() != null || curUnitInProgress.get() != null || firstRewardInProgress.get() != null),
-  unitActionButtons(allowSeveralRows),
+  unitActionButtons(unitNameW, unitReceiveInfoW),
   {
     size = FLEX_H
     minHeight = defButtonHeight
@@ -395,9 +396,7 @@ let unitActions = @(allowSeveralRows) mkSpinnerHideBlock(
 
 return {
   setResearchUnit
-  unitActions = unitActions(false)
+  unitActions
   discountBlock
   findGoodsPrem
-
-  unitActionsOneRow = unitActions(true)
 }

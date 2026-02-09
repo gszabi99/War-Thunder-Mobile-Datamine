@@ -37,9 +37,7 @@ function openPassScene(id) {
   playerSelectedScene.set(id)
 }
 
-function closePassScene() {
-  passOpenCounter.set(0)
-}
+let closePassScene = @() passOpenCounter.set(0)
 
 function updateCurEventId() {
   let curEventPassName = playerSelectedScene.get()

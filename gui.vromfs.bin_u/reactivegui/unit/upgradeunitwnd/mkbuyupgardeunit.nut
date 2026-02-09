@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let {  userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
@@ -31,6 +32,7 @@ let openConfirmationWnd = @(unit, price) openMsgBoxPurchase({
   purchase = @() buy_upgrade_unit(unit.name, price, "onUnitUpgradePurchase")
   bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT, unit.name)
   onGoToShop = close
+  spendingCountry = campConfigs.get()?.unitTreeNodes?[unit.name].country ?? ""
 })
 
 

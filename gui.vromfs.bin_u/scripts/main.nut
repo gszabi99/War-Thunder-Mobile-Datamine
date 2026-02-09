@@ -1,13 +1,12 @@
 from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import set_nested_observable_debug, set_subscriber_validation, warn_on_deprecated_methods
+from "frp" import set_nested_observable_debug, warn_on_deprecated_methods
 from "dagor.system" import DBGLEVEL
 
 let { get_time_msec, ref_time_ticks } = require("dagor.time")
 let startLoadTime = get_time_msec()
 let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
-let { loadOnce, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { set_rnd_seed } = require("dagor.random")
 let { eventbus_subscribe } = require("eventbus")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
@@ -37,11 +36,8 @@ set_rnd_seed(ref_time_ticks())
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 subscriptions.setDefaultPriority(g_listener_priority.DEFAULT)
 
-foreach (fn in [
-  "%scripts/debugTools/dbgToString.nut"
-  "%scripts/util.nut"
-])
-  require(fn)
+require("%scripts/debugTools/dbgToString.nut")
+require("%scripts/util.nut")
 
 require("%scripts/options/optionsExtNames.nut")
 require("login/initLoginWTM.nut")
@@ -52,28 +48,17 @@ require("%scripts/matching/onlineInfo.nut")
 require("%scripts/matching/rpcCall.nut")
 
 
-foreach (fn in [
-  "%sqstd/math.nut"
-
-  "%scripts/urlType.nut"
-  "%scripts/url.nut"
-
-  "%scripts/clientState/localProfile.nut"
-
-  "%scripts/language.nut"
-  "%scripts/loadRootScreen.nut"
-
-  "%scripts/clientState/keyboardState.nut"
+require("%scripts/urlType.nut")
+require("%scripts/url.nut")
+require("%scripts/clientState/localProfile.nut")
+require("%scripts/language.nut")
+require("%scripts/loadRootScreen.nut")
+require("%scripts/clientState/keyboardState.nut")
 
   
-  "%scripts/loading.nut"
-
-  "%scripts/webRPC.nut"
-
-  "%scripts/debugTools/dbgUtils.nut"
-]) {
-  loadOnce(fn)
-}
+require("%scripts/loading.nut")
+require("%scripts/webRPC.nut")
+require("%scripts/debugTools/dbgUtils.nut")
 
   
 require("%scripts/login/updateRights.nut")
@@ -91,7 +76,9 @@ let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 end_es_loading()
 
-if (!isInReloading()) {
+let isLoadedOnce = keepref(mkWatched(persist, "isLoadedOnce", false))
+if (!isLoadedOnce.get()) {
+  isLoadedOnce.set(true)
   sendLoadingStageBqEvent("main_loaded")
 
   run_reactive_gui()

@@ -1980,5 +1980,18 @@
       1.21739,
       0.0035887
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "fw_190d_9_a*",
+        "to": "fw-190d-9_gray_a*"
+      },
+      {
+        "from": "fw_190d_9_n*",
+        "to": "fw-190d-9_gray_n*"
+      }
+    ]
   }
 }

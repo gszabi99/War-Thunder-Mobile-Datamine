@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sendBpBqEvent,
   purchasedBp, bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, battlePassGoods, getBpIcon,
@@ -16,6 +17,7 @@ let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { mkRewardPlate, mkRewardPlateVip } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
@@ -349,7 +351,12 @@ let rightBlock = @(bpList, selBpInfo) {
   gap = { size = flex() }
   children = [
     battlePassIcon(bpList, selBpInfo)
-    buyBlock(bpList, selBpInfo)
+    mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.get() != null),
+      buyBlock(bpList, selBpInfo),
+      {
+        size = [ flex(), defButtonHeight ]
+        halign = ALIGN_CENTER
+      })
   ]
 }
 

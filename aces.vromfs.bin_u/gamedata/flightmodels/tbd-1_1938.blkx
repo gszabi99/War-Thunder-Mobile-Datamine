@@ -2318,5 +2318,12 @@
       1.96228,
       4.86886e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "tbd_1_1938_modern_aluminum_c*",
+      "to": "tbd_1_1938_yellow_c*"
+    }
   }
 }

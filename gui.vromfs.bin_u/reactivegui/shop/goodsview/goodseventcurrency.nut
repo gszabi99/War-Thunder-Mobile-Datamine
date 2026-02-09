@@ -29,14 +29,8 @@ function getImgByAmount(curId, amount) {
 }
 
 function mkGoodsEventCurrency(goods, onClick, state, animParams, addChildren) {
-  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {}, rewards = [],
-    currencies = null
-  } = goods
-  local { id = null, count = 0 } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
-  if (currencies != null) { 
-    id = currencies.findindex(@(v) v > 0)
-    count = currencies?[id] ?? 0
-  }
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {}, rewards } = goods
+  let { id = null, count = 0 } = rewards.findvalue(@(r) r.gType == G_CURRENCY)
   if (id == null)
     return null
 

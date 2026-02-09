@@ -9,7 +9,8 @@ let allTypes = {
   G_MEDAL = "medal"
   G_PREMIUM = "premium"
   G_SKIN = "skin"
-  G_STAT = "stat"
+  G_STAT_SET = "stat"
+  G_STAT_ADD = "stat_add"
   G_UNIT = "unit"
   G_UNIT_UPGRADE = "unitUpgrade"
   G_UNIT_LEVEL = "unitLevel"
@@ -23,8 +24,10 @@ let allTypes = {
 
 let rewardTypeByValue = allTypes.reduce(@(res, v, k) res.$rawset(v, k), {})
 let unitRewardTypes = [allTypes.G_UNIT, allTypes.G_UNIT_UPGRADE, allTypes.G_BLUEPRINT].totable()
+let statRewardTypes = [allTypes.G_STAT_SET, allTypes.G_STAT_ADD].totable()
 
 return allTypes.__merge({
   rewardTypeByValue
   unitRewardTypes
+  statRewardTypes
 })

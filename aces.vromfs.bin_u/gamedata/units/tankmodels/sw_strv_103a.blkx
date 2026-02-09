@@ -2015,7 +2015,7 @@
       "trackMass": 2600.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.4
+        0.3
       ]
     },
     "tracks": {
@@ -2038,7 +2038,6 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.27,
       "mainGearRatio": 1.313,

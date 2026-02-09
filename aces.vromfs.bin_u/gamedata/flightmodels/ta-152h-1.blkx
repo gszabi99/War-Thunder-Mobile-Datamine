@@ -2144,5 +2144,12 @@
       1.20782,
       0.0035887
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "ta_152h_1_a*",
+      "to": "ta_152h_1_german45_a*"
+    }
   }
 }

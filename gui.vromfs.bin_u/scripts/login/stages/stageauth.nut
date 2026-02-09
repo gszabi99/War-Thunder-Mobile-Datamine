@@ -1,17 +1,17 @@
 from "%scripts/dagui_library.nut" import *
+from "app" import exitGame
 let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async
 } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let googlePlayAccount = require("android.account.googleplay")
 let guestFirebaseAccount = require_optional("android.account.guest")
 let hmsAccount = require("android.account.huawei")
 let appleAccount = require("ios.account.apple")
 let { getUUID } = require("ios.platform")
-let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
+let { is_ios, is_android } = require("%sqstd/platform.nut")
 let fbAccount = is_ios ? require("ios.account.facebook") : require("android.account.fb")
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -26,7 +26,7 @@ let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
 subscribeFMsgBtns({
-  loginExitGame = @(_) exitGamePlatform()
+  loginExitGame = @(_) exitGame()
   loginRecovery = @(_) openUrl(FORGOT_PASSWORD_URL, false, "login_wnd")
 })
 

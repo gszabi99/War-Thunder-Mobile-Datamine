@@ -15,7 +15,7 @@ let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
 let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { mkViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -33,10 +33,12 @@ let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { isInSquad, isReady, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { markTextColor } = require("%rGui/style/stdColors.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
+let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
+let { mkQuestDesc } = require("%rGui/shop/msgQuestDesc.nut")
+
 
 let itemsGap = hdpx(50)
 
@@ -127,12 +129,10 @@ function shouldShowItem(name, hasBalance, timeWndShowing) {
 
 function getItemGoodsInfo(name, neededCount) {
   let goods = getCheapestGoods(shopGoods.get(),
-    @(g) "rewards" in g ? g.rewards.len() == 1 && g.rewards[0].id == name && g.rewards[0].gType == G_ITEM
-      : (g?.items[name] ?? 0) > 0 && g?.gtype == SGT_CONSUMABLES) 
+    @(g) g.rewards.len() == 1 && g.rewards[0].id == name && g.rewards[0].gType == G_ITEM)
   if (goods == null)
     return null
-  let count = "rewards" in goods ? goods.rewards[0].count
-    : goods.items[name] 
+  let { count } = goods.rewards[0]
   let neededCountOfGoods = ceil(neededCount.tofloat() / count)
   let { price = 0, currencyId = "" } = goods?.price
   let totalPrice = price * neededCountOfGoods
@@ -251,19 +251,9 @@ let mkMissingItemsComp = @(units, spawnCfg, timeWndShowing) Computed(function() 
 function mkItemsRewards(item) {
   let { goods, neededCountOfGoods } = item
   let list = []
-  if ("rewards" in goods) {
-    foreach (r in goods.rewards)
-      if (r.gType == G_ITEM)
-        list.append(r.__merge({ count = r.count * neededCountOfGoods, order = orderByItems?[r.id] ?? orderByItems.len() }))
-  }
-  else 
-    foreach (itemId, count in goods.items)
-      if (count > 0)
-        list.append({
-          id = itemId,
-          count = count * neededCountOfGoods,
-          order = orderByItems?[itemId] ?? orderByItems.len()
-        })
+  foreach (r in goods.rewards)
+    if (r.gType == G_ITEM)
+      list.append(r.__merge({ count = r.count * neededCountOfGoods, order = orderByItems?[r.id] ?? orderByItems.len() }))
   if (list.len() == 0)
     return null
   list.sort(@(a, b) a.order <=> b.order)
@@ -294,7 +284,8 @@ function mkPurchaseBtn(item, toBattle) {
           saveTimeShowingWnd(itemId)
           close()
           toBattle()
-      })
+        },
+        { ovr = { size = [SIZE_TO_CONTENT, defButtonHeight] } })
     mkCustomButton(mkCurrencyComp(totalPrice, currencyId, textStyle),
       function() {
         saveTimeShowingWnd(itemId)
@@ -326,7 +317,7 @@ let countText = @(count){
 }.__update(fontTiny)
 
 let mkItemPlate = @(itemId, count, ovr = {})
-  mkRewardPlate(shopGoodsToRewardsViewInfo({ items = { [itemId] = count } })[0], REWARD_STYLE_MEDIUM, ovr)
+  mkRewardPlate(mkViewInfo(itemId, G_ITEM, count), REWARD_STYLE_MEDIUM, ovr)
 
 
 let mkSimpleContent = @(item){
@@ -344,6 +335,10 @@ let mkSimpleContent = @(item){
       }
       text = loc(purchaseDesc?[item?.itemId] ?? defaultPurchaseDesc)
     }.__update(fontTiny)
+    @() {
+      watch = spendingUnlocks
+      children = mkQuestDesc(item?.goods.price.currencyId ?? "", spendingUnlocks.get())
+    }
     @() {
       pos = [hdpx(250), 0]
       halign = ALIGN_CENTER
@@ -414,6 +409,10 @@ let mkContWithTransfToSkill = @(item) {
       }
       text = loc(purchaseDesc?[item?.itemId] ?? defaultPurchaseDesc)
     }.__update(fontTiny)
+    @() {
+      watch = spendingUnlocks
+      children = mkQuestDesc(item?.goods.price.currencyId ?? "", spendingUnlocks.get())
+    }
     @() {
       pos = [hdpx(250), 0]
       halign = ALIGN_CENTER

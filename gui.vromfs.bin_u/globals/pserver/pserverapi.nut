@@ -30,6 +30,7 @@ const PROGRESS_PREM_BONUS = "PremBonusInProgress"
 const PROGRESS_QUEUE_PENALTY = "QueuePenaltyInProgress"
 const PROGRESS_SLOTS_UNITS = "CampaignSlotsInProgress"
 const PROGRESS_AD_BUDGET = "AdBudgetInProgress"
+const PROGRESS_ITEM_CONVERSION = "ItemConversionInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -207,11 +208,12 @@ function registerHandler(id, handler) {
     logerr($"pServerApi handler {id} is already registered")
     return
   }
-  let nargs = handler.getfuncinfos().parameters.len() - 1
-  if (nargs == 1 || nargs == 2)
+  let {parameters, varargs} = handler.getfuncinfos()
+  let nargs = parameters.len() - 1
+  if (nargs == 1 || nargs == 2 || varargs)
     handlers[id] <- handler
   else
-    logerr($"pServerApi handler {id} has wrong number of parameters. Should be 1 or 2")
+    logerr($"pServerApi handler {id} has wrong number of parameters. Should be 1 or 2 or vargved")
 }
 
 function localizePServerError(err) {
@@ -259,6 +261,7 @@ return {
   isQueuePenaltyInProgress = mkProgress(PROGRESS_QUEUE_PENALTY, false)
   campaignSlotsInProgress = mkProgress(PROGRESS_SLOTS_UNITS)
   adBudgetInProgress = mkProgress(PROGRESS_AD_BUDGET)
+  ItemConversionInProgress = mkProgress(PROGRESS_ITEM_CONVERSION)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -267,6 +270,7 @@ return {
   get_all_configs = @(cb = null) request({ method = "get_all_configs" }, cb)
   check_purchases = @(cb = null) request({ method = "check_purchases" }, cb)
   check_purchases_debug = @(cb = null) request({ method = "check_purchases_debug" }, cb)
+  get_purchases_list = @(cb = null) request({ method = "get_purchases_list" }, cb)
   reset_profile = @(cb = null) request({ method = "reset_profile" }, cb)
   reset_profile_with_stats = @(cb = null) request({ method = "reset_profile_with_stats" }, cb)
   get_default_battle_data = @(cb = null) request({ method = "get_default_battle_data" }, cb)
@@ -281,6 +285,9 @@ return {
   add_all_decals = @(cb = null) request({ method = "add_all_decals" }, cb)
   remove_all_decals = @(cb = null) request({ method = "remove_all_decals" }, cb)
   get_campaign_copy_exceptions = @(cb = null) request({ method = "get_campaign_copy_exceptions" }, cb)
+  get_cur_time = @(cb = null) request({ method = "get_cur_time" }, cb)
+  debug_reset_unit_rent = @(cb = null) request({ method = "debug_reset_unit_rent" }, cb)
+  get_gdpr_report = @(cb = null) request({ method = "get_gdpr_report_client" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -386,6 +393,20 @@ return {
   add_slot_exp = @(campaign, slotIdx, exp, cb = null) request({
     method = "add_slot_exp_common"
     params = { campaign, slotIdx, exp }
+  }, cb)
+
+  reset_slot_skills = @(campaign, slotIdx, currencyId, price, cb = null) request({
+    method = "reset_slot_skills"
+    params = { campaign, slotIdx, currencyId, price }
+    progressId = PROGRESS_SLOT
+    progressValue = slotIdx
+  }, cb)
+
+  reset_slots_level = @(campaign, slots, currencyId, price, cb = null) request({
+    method = "reset_slots_level"
+    params = { campaign, slots, currencyId, price }
+    progressId = PROGRESS_SLOT
+    progressValue = -1
   }, cb)
 
   buy_unit = @(unitName, currencyId, price, cb = null) request({
@@ -494,6 +515,11 @@ return {
     params = { unitName, modName, enable }
     progressId = PROGRESS_MODS
     progressValue = modName
+  }, cb)
+
+  add_subscription_time = @(subsId, duration, cb = null) request({
+    method = "add_subscription_time"
+    params = { subsId, duration }
   }, cb)
 
   add_premium = @(duration, cb = null) request({
@@ -882,14 +908,14 @@ return {
     method = "buy_personal_goods"
     params = { goodsId, groupId, variantId, currencyId, price }
     progressId = PROGRESS_PERSONAL_GOODS
-    progressValue = ""
+    progressValue = goodsId
   }, cb)
 
   halt_personal_goods_purchase = @(goodsId, cb = null) request({
     method = "halt_personal_goods_purchase"
     params = { goodsId }
     progressId = PROGRESS_PERSONAL_GOODS
-    progressValue = ""
+    progressValue = goodsId
   }, cb)
 
   apply_deeplink_reward = @(id, campaign, cb = null) request({
@@ -913,16 +939,16 @@ return {
     progressValue = true
   }, cb)
 
-  reset_queue_penalty = @(campaign, price, currencyId, cb = null) request({
-    method = "reset_queue_penalty"
-    params = { campaign, price, currencyId }
+  reset_queue_penalty = @(penaltyId, price, currencyId, cb = null) request({
+    method = "reset_queue_penalty_v2"
+    params = { penaltyId, price, currencyId }
     progressId = PROGRESS_QUEUE_PENALTY
     progressValue = true
   }, cb)
 
-  debug_apply_deserter_lock_time = @(sessionId, campaign, timestamp, cb = null) request({
+  debug_apply_deserter_lock_time = @(sessionId, campaign, timestamp, maxMRank, cb = null) request({
     method = "debug_apply_deserter_lock_time"
-    params = { sessionId, campaign, timestamp }
+    params = { sessionId, campaign, timestamp, maxMRank }
   }, cb)
 
   buy_decal = @(decalName, currencyId, price, cb = null) request({
@@ -956,5 +982,17 @@ return {
     params = { campaign, currencyId, expList }
     progressId = PROGRESS_SLOT
     progressValue = -1
+  }, cb)
+
+  debug_apply_unit_rent = @(sessionId, campaign, timestamp, cb = null) request({
+    method = "debug_apply_unit_rent"
+    params = { sessionId, campaign, timestamp }
+  }, cb)
+
+  convert_items = @(campaign, itemConversions, cb = null) request({
+    method = "convert_items"
+    params = { campaign, itemConversions }
+    progressId = PROGRESS_ITEM_CONVERSION
+    progressValue = ""
   }, cb)
 }

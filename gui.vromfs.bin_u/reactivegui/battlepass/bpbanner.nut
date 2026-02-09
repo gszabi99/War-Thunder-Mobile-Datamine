@@ -1,44 +1,39 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { seenPasses, isPassGoodsUnseen } = require("%rGui/battlePass/passState.nut")
 let { isBpSeasonActive, hasBpRewardsToReceive, battlePassGoods } = require("%rGui/battlePass/battlePassState.nut")
-let { isOPSeasonActive, hasOPRewardsToReceive, operationPassGoods } = require("%rGui/battlePass/operationPassState.nut")
+let { isOPSeasonActive, hasOPRewardsToReceive, operationPassGoods, OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
 let { isEpSeasonActive, hasEpRewardsToReceive, eventPassGoods } = require("%rGui/battlePass/eventPassState.nut")
-let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_EVENT_ID, isEventActive,
   isFitSeasonRewardsRequirements
 } = require("%rGui/event/eventState.nut")
 let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
-let { translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { openPassScene, BATTLE_PASS } = require("passState.nut")
+let { openPassScene, BATTLE_PASS, OPERATION_PASS } = require("passState.nut")
+let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
+
 
 let bannerIconSize = [hdpxi(216), hdpxi(127)]
-let buttonSize = [translucentButtonsHeight * 1.5, translucentButtonsHeight]
 let horPadding = hdpx(80)
 
-let mainEventBtn = framedImageBtn($"ui/gameuiskin#icon_events.svg",
+let mainEventBtn = translucentButton("ui/gameuiskin#icon_events.svg", "",
   @() openEventWnd(),
-  {
-    size = buttonSize
-    imageSize = [hdpx(70), hdpx(70)]
-    sound = { click = "click" }
-  },
-  @() {
+  @(_) @() {
     watch = [unseenLootboxes, unseenLootboxesShowOnce, eventLootboxes]
-    pos = [0.5 * buttonSize[0], -0.5 * buttonSize[1]]
     children = eventLootboxes.get().reduce(@(res, v) res || !!unseenLootboxes.get()?[MAIN_EVENT_ID][v.name], false)
       || unseenLootboxesShowOnce.get().findindex(@(v) v == MAIN_EVENT_ID) != null
           ? priorityUnseenMark
         : null
-  })
+})
 
 let isPassActive = Computed(@() isBpSeasonActive.get() || isOPSeasonActive.get() || isEpSeasonActive.get())
 let hasAnyPassRewards = Computed(@() hasBpRewardsToReceive.get() || hasOPRewardsToReceive.get() || hasEpRewardsToReceive.get())
 
+let hasUnseenOP = Computed(@() isPassGoodsUnseen(operationPassGoods.get(), seenPasses.get()))
 let hasAnyUnseenPass = Computed(@() isPassGoodsUnseen(battlePassGoods.get(), seenPasses.get())
-  || isPassGoodsUnseen(operationPassGoods.get(), seenPasses.get())
+  || hasUnseenOP.get()
   || isPassGoodsUnseen(eventPassGoods.get(), seenPasses.get()))
 
 return function () {
@@ -46,6 +41,7 @@ return function () {
   return {
     watch = [isPassActive, isEventActive, eventSeason, isFitSeasonRewardsRequirements]
     size = [bannerIconSize[0] * 2, SIZE_TO_CONTENT]
+    pos = [-hdpx(22), 0]
     children = !isFitSeasonRewardsRequirements.get() ? null
       : isPassActive.get()
         ? {
@@ -83,20 +79,28 @@ return function () {
                 ]
               }
               @() {
-                watch = [isEventActive, hasAnyPassRewards, hasAnyUnseenPass]
+                watch = [isEventActive, OPCampaign, isOPSeasonActive]
                 flow = FLOW_HORIZONTAL
-                gap = hdpx(40)
+                gap = translucentButtonsVGap
                 children = [
                   isEventActive.get() ? mainEventBtn : null
-                  framedImageBtn($"ui/gameuiskin#icon_bp.svg",
+                  translucentButton("ui/gameuiskin#icon_bp.svg",
+                    "",
                     @() openPassScene(BATTLE_PASS),
-                    {
-                      size = buttonSize
-                      sound = { click = "click" }
-                    },
-                    !hasAnyPassRewards.get() && !hasAnyUnseenPass.get() ? null
-                      : priorityUnseenMark.__merge({ pos = [0.5 * buttonSize[0], -0.5 * buttonSize[1]] })
-                  )
+                    @(_) @() {
+                      watch = [hasAnyPassRewards, hasAnyUnseenPass]
+                      children = !hasAnyPassRewards.get() && !hasAnyUnseenPass.get() ? null
+                        : priorityUnseenMark
+                    })
+                  !isOPSeasonActive.get() || OPCampaign.get() == null ? null
+                    : translucentButton(getOPPresentation(OPCampaign.get()).iconTab,
+                        "",
+                        @() openPassScene(OPERATION_PASS),
+                        @(_) @() {
+                          watch = [hasOPRewardsToReceive, hasUnseenOP]
+                          children = !hasOPRewardsToReceive.get() && !hasUnseenOP.get() ? null
+                            : priorityUnseenMark
+                        })
                 ]
               }
             ]

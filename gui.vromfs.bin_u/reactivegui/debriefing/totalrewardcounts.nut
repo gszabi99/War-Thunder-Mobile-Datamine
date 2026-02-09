@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { playSound } = require("sound_wt")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerExpColor, unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
@@ -14,6 +15,7 @@ let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitsSet, getUnitRew
 let REWARDS_SCORES = "wp"
 let REWARDS_CAMPAIGN = "campaign"
 let REWARDS_UNIT = "unit"
+let REWARDS_SLOT = "slot"
 
 let fontCommon = fontTinyAccented
 let fontTotal = fontSmallAccented
@@ -112,6 +114,10 @@ let rewardsInfoCfg = {
         : round(totalExp * getPremMulExp(debrData)).tointeger()
     }
     mkCurrComp = @(val, style) mkExp(val, unitExpColor, style)
+  },
+  [REWARDS_SLOT] = {
+    getPremMul = getPremMulExp
+    mkCurrComp = @(val, style) mkExp(val, slotExpColor, style)
   },
 }
 
@@ -216,13 +222,12 @@ let mkLabelIcon = @(path, w, h) {
   image = Picture($"{path}:{w}:{h}:P")
 }
 
-let iconPrem = mkLabelIcon("ui/gameuiskin#premium_active.svg", round(labelIconSize / 237.0 * 339).tointeger(), labelIconSize)
 let iconPremVehicle = mkLabelIcon("ui/gameuiskin#icon_premium.svg", round(labelIconSize / 237.0 * 339).tointeger(), labelIconSize)
 let iconBooster = {
   [REWARDS_SCORES] = mkLabelIcon(getBoosterIcon("wp"), labelIconSize, labelIconSize),
   [REWARDS_CAMPAIGN] = mkLabelIcon(getBoosterIcon("playerExp"), labelIconSize, labelIconSize),
   [REWARDS_UNIT] = mkLabelIcon(getBoosterIcon("unitExp"), labelIconSize, labelIconSize),
-  slot = mkLabelIcon(getBoosterIcon("slotExp"), labelIconSize, labelIconSize),
+  [REWARDS_SLOT] = mkLabelIcon(getBoosterIcon("slotExp"), labelIconSize, labelIconSize),
 }
 
 let CS_DEBR_REWARD = CS_COMMON.__merge({ fontStyle = fontCommon })
@@ -302,7 +307,10 @@ let cfgRowTotalWithPrem = {
   needShow = @(ri) ri.totalWithPrem != 0
   getVal = @(ri) ri.totalWithPrem
   getLabelText = @(_ri) loc("debriefing/battleReward/withPremium")
-  getLabelIcon = @(_ri) iconPrem
+  getLabelIcon = @(ri) mkSubsIcon(ri?.hasVip ? "vip"
+    : ri?.hasPrem ? "prem"
+    : "prem_deprecated"
+    labelIconSize)
   labelOvr = fontTotal
   getIsDisabled = @(ri) !ri.isPremiumIncluded
 }
@@ -409,11 +417,16 @@ function mkRewardRow(rewardLabelComp, cfg, rewardsInfo, idx, rewardsStartTime) {
   }
 }
 
-let mkPremBonusMulComps = @(debrData) [ REWARDS_CAMPAIGN, REWARDS_UNIT, REWARDS_SCORES ].map(function(p) {
-  let { getPremMul, mkCurrComp } = rewardsInfoCfg[p]
-  let premMul = getPremMul(debrData)
-  return mkCurrComp($"x{premMul}", CS_SMALL)
-})
+let premBonusesList = [ REWARDS_CAMPAIGN, REWARDS_UNIT, REWARDS_SCORES ]
+function mkPremBonusMulComps(debrData) {
+  let res = clone premBonusesList
+  return (debrData?.campaign != "ships_new" ? res.insert(2, REWARDS_SLOT) : premBonusesList)
+    .map(function(p) {
+      let { getPremMul, mkCurrComp } = rewardsInfoCfg[p]
+      let premMul = getPremMul(debrData)
+      return mkCurrComp($"x{premMul}", CS_SMALL)
+    })
+}
 
 function mkTotalRewardCounts(preset, rewardsInfo, debrData, rewardsStartTime) {
   if (rewardsInfo == null)
@@ -426,7 +439,10 @@ function mkTotalRewardCounts(preset, rewardsInfo, debrData, rewardsStartTime) {
       btnTryPremium = null
     }
 
-  let labelComps = rowsCfg.map(@(cfg) mkRewardLabel(cfg.getLabelText(rewardsInfo), cfg.getLabelIcon(rewardsInfo), cfg))
+  let labelComps = rowsCfg.map(@(cfg) mkRewardLabel(
+    cfg.getLabelText(rewardsInfo),
+    cfg.getLabelIcon(rewardsInfo.__merge({hasVip = debrData?.hasVip, hasPrem = debrData?.hasPrem})),
+    cfg))
   let maxLabelWidth = labelComps.reduce(@(res, v) max(res, calc_comp_size(v)[0]), 0)
   labelComps.each(@(v) v.__update({ size = [maxLabelWidth, SIZE_TO_CONTENT] }))
   let rowComps = rowsCfg.map(@(cfg, idx) mkRewardRow(labelComps[idx], cfg, rewardsInfo, idx, rewardsStartTime))

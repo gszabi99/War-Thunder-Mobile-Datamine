@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
-let { addModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { modalWndBg, wndHeaderHeight, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -12,6 +11,7 @@ let { mkSquareIconBtn } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { mkQuestBar } = require("%rGui/quests/questBar.nut")
 let { mkRewardsPreview, getRewardsPreviewInfo, REWARDS_PREVIEW_SLOTS } = require("%rGui/quests/rewardsComps.nut")
 let { mkQuestText } = require("%rGui/quests/questsPkg.nut")
+let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 
 let WND_UID = "quest_chain_info_wnd"
@@ -19,6 +19,7 @@ let WND_UID = "quest_chain_info_wnd"
 let questChainIconSize = [hdpxi(40), hdpxi(45)]
 let questIconGap = hdpx(10)
 let iconColor = 0xFFFF9C11
+let rewardPlateFullWidth = REWARD_STYLE_SMALL.boxSize + REWARD_STYLE_SMALL.boxGap
 
 let questChainIconCurrent = Picture($"ui/gameuiskin/quest_chain_icon_current.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
 let questChainIconCompleted = Picture($"ui/gameuiskin/quest_chain_icon_completed.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
@@ -38,16 +39,19 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
   key = WND_UID
   size = flex()
   children = modalWndBg.__merge({
+    maxHeight = saSize[1]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      modalWndHeader(
+      modalWndHeaderWithClose(
         loc("quests/rewarsForChainCompletion"),
+        @() removeModalWindow(WND_UID),
         {
           minWidth = SIZE_TO_CONTENT,
           padding = [0, buttonsHGap]
         })
-      {
+      makeVertScroll({
+        size = [saSize[0], SIZE_TO_CONTENT]
         rendObj = ROBJ_BOX
         flow = FLOW_VERTICAL
         padding = hdpx(20)
@@ -55,6 +59,7 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
         children = quests.map(function(q, idx) {
           let rewardsPreview = Computed(@() getRewardsPreviewInfo(q, serverConfigs.get()))
           return {
+            size = FLEX_H
             rendObj = ROBJ_SOLID
             color = 0x80000000
             flow = FLOW_HORIZONTAL
@@ -71,7 +76,7 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
               }
               {
                 rendObj = ROBJ_BOX
-                size = [contentWidth, SIZE_TO_CONTENT]
+                size = FLEX_H
                 flow = FLOW_VERTICAL
                 children = [
                   mkQuestText(q)
@@ -81,7 +86,8 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
               @() {
                 watch = rewardsPreview
                 rendObj = ROBJ_BOX
-                size = [(REWARD_STYLE_SMALL.boxSize + REWARD_STYLE_SMALL.boxGap) * REWARDS_PREVIEW_SLOTS, SIZE_TO_CONTENT ]
+                size = [rewardPlateFullWidth * min(rewardsPreview.get().reduce(@(acc, r) acc += r.slots, 0), REWARDS_PREVIEW_SLOTS),
+                  SIZE_TO_CONTENT]
                 flow = FLOW_HORIZONTAL
                 gap = hdpx(10)
                 halign = ALIGN_RIGHT
@@ -89,7 +95,7 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
               }
             ]
           }})
-      }
+      }, { size = [SIZE_TO_CONTENT, saSize[1] - wndHeaderHeight], isBarOutside = true })
     ]
   })
   animations = wndSwitchAnim
@@ -101,15 +107,19 @@ let mkChainProgress = @(item, ovr = {}) {
   valign = ALIGN_CENTER
   gap = hdpx(20)
   children = [
-    mkSquareIconBtn("⌡", @() onClick(item.chainQuests), { size = hdpx(50), borderColor = 0xFFFFFFFF, borderWidth = 2, rendObj = ROBJ_BOX }, fontSmall)
+    mkSquareIconBtn("⌡", @() onClick(item.chainQuests),
+      {
+        size = hdpx(50)
+        borderColor = 0xFFFFFFFF
+        borderWidth = 2
+        rendObj = ROBJ_BOX
+      }, fontSmall)
     {
       rendObj = ROBJ_BOX
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = hdpx(15)
-      children = item.chainQuests.map(@(q, idx)
-        mkProgresImage(q.isCompleted, idx > item.pos)
-      )
+      children = item.chainQuests.map(@(q, idx) mkProgresImage(q.isCompleted, idx > item.pos))
     }
   ]
 }.__update(ovr)

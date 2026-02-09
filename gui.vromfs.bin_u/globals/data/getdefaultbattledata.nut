@@ -1,10 +1,12 @@
-let { get_unittags_blk } = require("blkGetters")
+let { get_unittags_blk, get_settings_blk } = require("blkGetters")
 let defaultBattleData = require("defaultBattleData.nut")
 
 function mkDefaultBattleData(unitName, userId) {
   let unitTags = get_unittags_blk()?[unitName]
   if (unitTags == null)
     return null
+  let debugData = get_settings_blk()?.debug
+  let debugUnitData = debugData?[unitName]
   return {
     userId
     isFake = true
@@ -25,8 +27,8 @@ function mkDefaultBattleData(unitName, userId) {
       tank_extinguisher = 1
       spare = 10
       ircm_kit = 15
-    }
-  }
+    }.__update(debugUnitData?.mods ?? {})
+  }.__update(debugData?.battleData ?? {})
 }
 
 return @(unitName, userId) defaultBattleData?[unitName]

@@ -5,7 +5,7 @@ let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
 let { parse_json, object_to_json_string } = require("json")
-let { registerHuaweiPurchase, YU2_WRONG_PAYMENT, YU2_OK } = require("auth_wt")
+let { registerHuaweiPurchase, YU2_WRONG_PAYMENT, YU2_ALREADY, YU2_OK } = require("auth_wt")
 let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { round_by_value } = require("%sqstd/math.nut")
@@ -19,7 +19,9 @@ let { startSeveralCheckPurchases, severalCheckPurchasesOnActivate } = require("%
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { logEvent } = require("appsFlyer")
+let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
+let { DBGLEVEL } = require("dagor.system")
 
 let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
@@ -286,6 +288,17 @@ function sendLogPurchaseData(json_value) {
     af_currency = availableSkusPrices.get()?[productId].currencyId ?? "USD" 
   }
   logEvent("af_purchase", object_to_json_string(af, true))
+
+  local firebase_event = {
+    value = availableSkusPrices.get()?[productId].price ?? -1
+    quantity = 1
+    product_id = productId
+    free_trial = false
+    subscription = subsIdByPlanId.get()?[productId] != null
+    currency = (availableSkusPrices.get()?[productId].currencyId ?? "USD").toupper()
+    price_is_discounted = false
+  }
+  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string(firebase_event, true))
 }
 
 function onFinishRestore() {
@@ -337,7 +350,8 @@ function registerNextTransaction() {
     logG("registerHuaweiPurchase ", value)
     isRegisterInProgress.set(true)
     register_huawei_purchase(value, false, "auth.onRegisterHuaweiPurchase")
-    sendLogPurchaseData(value)
+    if (DBGLEVEL == 0)
+      sendLogPurchaseData(value)
   } else {
     let statusName = getStatusName(status)
     purchaseInProgress.set(null)
@@ -415,6 +429,8 @@ eventbus_subscribe("auth.onRegisterHuaweiPurchase", function(result) {
   logG($"register_huawei_purchase error={getYu2CodeName(status)}")
   if (status == YU2_WRONG_PAYMENT)
     showErrorMsg(loc("msg/errorPaymentDelayed"))
+  else if (status == YU2_ALREADY)
+    showErrorMsg(loc("msg/errorPaymentAlreadyPurchased"))
   else if (status in yu2BadConnectionCodes) {
     lastYu2TimeoutErrorTime.set(get_time_msec())
     showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = const [hdpx(1300), hdpx(700)] })

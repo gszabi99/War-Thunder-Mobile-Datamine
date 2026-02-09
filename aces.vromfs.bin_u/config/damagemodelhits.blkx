@@ -98,6 +98,7 @@
   "dmgTurretScreenBorder": 32.0,
   "dmgTurretMinSize": 50.0,
   "dmgTurretFadeBorder": 23.0,
+  "colorCurrentDamagedTurret": false,
   "dmgLinePlaneColor": [
     0.6,
     0.6,
@@ -840,8 +841,8 @@
   },
   "schemeDmgTank": {
     "partNormalColor": [
-      0.8,
-      0.9,
+      0.49,
+      0.68,
       1.0,
       0.75
     ],
@@ -896,8 +897,8 @@
   },
   "schemeDmgPlane": {
     "partNormalColor": [
-      0.8,
-      0.9,
+      0.49,
+      0.68,
       1.0,
       1.0
     ],
@@ -914,9 +915,9 @@
       1.0
     ],
     "partNormalFresnel": [
-      0.4,
-      0.4,
-      0.4,
+      0.49,
+      0.68,
+      1.0,
       1.0
     ],
     "partDeadFresnel": [
@@ -970,8 +971,8 @@
   },
   "schemeDmgShip": {
     "partNormalColor": [
-      0.8,
-      0.9,
+      0.49,
+      0.68,
       1.0,
       1.0
     ],
@@ -988,9 +989,9 @@
       1.0
     ],
     "partNormalFresnel": [
-      0.4,
-      0.4,
-      0.4,
+      0.49,
+      0.68,
+      1.0,
       1.0
     ],
     "partDeadFresnel": [
@@ -1006,10 +1007,10 @@
       1.0
     ],
     "partNormalHatching": [
-      0.1,
-      0.0,
-      1.6,
-      1.6
+      0.49,
+      0.68,
+      1.0,
+      1.0
     ],
     "partDeadHatching": [
       0.0,

@@ -82,4 +82,7 @@ function mkContactListScene(uidsList, mkContactActions, responseAction = null) {
   }
 }
 
-return mkContactListScene
+return {
+  mkContactListScene,
+  contactsBlock
+}

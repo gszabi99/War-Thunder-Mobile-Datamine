@@ -7,28 +7,55 @@ let { exit_decal_mode, get_decal_in_slot, set_current_decal_slot, get_skin_decal
   enter_decal_mode, focus_on_current_decal, set_decal_scalerot_active,
   set_decal_pos, get_decal_rotation_scale, apply_skin_decals_blk
 } = require("unitCustomization")
+let { setVirtualAxisValue, setAxisValue } = require("controls")
 let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
+let { utf8ToLower } = require("%sqstd/string.nut")
 let { PI, atan2 } = require("%sqstd/math.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { allPenalties } = require("%appGlobals/userPenalties.nut")
 let { decalBlkToTbl, decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
+let { getDecalCategoryLocName } = require("%appGlobals/config/decalsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { setVirtualAxisValue, setAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
 let { getDecalsByCategories, decalsBlkVersion } = require("%rGui/unitCustom/unitDecals/decalsCache.nut")
-let { isCustomizationWndAttached, curSelectedUnitId } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { currentSkin, selectedSkin } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let { hangarUnitDecalSlotsCount, MAX_DECAL_SLOTS_COUNT, isHangarUnitLoaded } = require("%rGui/unit/hangarUnit.nut")
-let { openForUnit, curSelectedSectionId, SECTION_IDS } = require("%rGui/unitCustom/unitCustomState.nut")
+let { isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
+let { currentSkin, selectedSkin, availableSkins } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
+let { hangarUnitDecalSlotsCount, MAX_DECAL_SLOTS_COUNT, isHangarUnitLoaded, hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { curSelectedSectionId, SECTION_IDS } = require("%rGui/unitCustom/unitCustomState.nut")
 let { mkDecalsPresets } = require("%rGui/unit/unitSettings.nut")
 
 
 let MAX_DECALS_IN_ROW = 4
 let SCALE_SPEED = 2.0
 let DEFAULT_PRESET_NAME = "default"
+let PENALTY_KEY = "DECALS_DISABLE"
+
+let decalParamNames = [
+  "decal{0}Line0"
+  "decal{0}Line1"
+  "decal{0}Line2"
+  "decal{0}Line3"
+  "decal{0}HaveCP"
+  "decal{0}CPNormDepth"
+  "decal{0}CPNormDepth1"
+  "decal{0}RotScale"
+  "decal{0}Mirrored"
+  "decal{0}Wrap"
+  "decal{0}Abs"
+  "decal{0}OppositeMirrored"
+  "decal{0}WidthBox"
+  "decal{0}Tex"
+]
+
+let decalParamNamesToCompare = []
+
+for (local i = 0; i < MAX_DECALS_IN_ROW; i++)
+  foreach (param in decalParamNames)
+    decalParamNamesToCompare.append(param.subst(i))
 
 let customizationDecalId = Watched(null)
 let decalsSlots = Watched([])
@@ -38,9 +65,10 @@ let selectedSlot = Computed(@() decalsSlots.get()?[selectedSlotId.get()])
 let isPreparingToEditDecal = Watched(false)
 let isEditingDecal = Watched(false)
 let shouldSaveDecal = Watched(false)
-let unitId = Computed(@() getTagsUnitName(curSelectedUnitId.get() ?? openForUnit.get() ?? ""))
+let unitId = Computed(@() getTagsUnitName(hangarUnitName.get() ?? ""))
 let { decalsPresets, setDecalsPresets } = mkDecalsPresets(unitId)
 let curSkinForEdit = Computed(@() selectedSkin.get() ?? currentSkin.get())
+let isCurSkinAvailable = Computed(@() curSkinForEdit.get() in availableSkins.get())
 let isDefaultPreset = Computed(@() curSkinForEdit.get() not in decalsPresets.get() && curSkinForEdit.get() == "")
 let defDecalsPresets = Computed(function() {
   if (!isCustomizationWndAttached.get() || unitId.get() == "" || curSelectedSectionId.get() != SECTION_IDS.DECALS)
@@ -57,9 +85,13 @@ let defDecalsPresets = Computed(function() {
 
   return res
 })
-let isNotEqualPresets = Computed(@() curSkinForEdit.get() in decalsPresets.get()
-  && curSkinForEdit.get() in defDecalsPresets.get()
-  && !isEqual(decalsPresets.get()[curSkinForEdit.get()], defDecalsPresets.get()[curSkinForEdit.get()]))
+let isNotEqualPresets = Computed(function() {
+  let dec = decalsPresets.get()?[curSkinForEdit.get()]
+  if (dec == null)
+    return false
+  let defDec = defDecalsPresets.get()?[curSkinForEdit.get()]
+  return null != decalParamNamesToCompare.findvalue(@(k) !isEqual(defDec?[k], dec?[k]))
+})
 let curDecalPosition = Watched(Point2(-1, -1))
 let curDecalScaleRot = Watched(Point2(PI * 0.5, 1.))
 
@@ -69,6 +101,7 @@ let selectedDecalId = mkWatched(persist, "selectedDecalId", null)
 
 let decalsCfg = Computed(@() serverConfigs.get()?.decalsCfg ?? {})
 let userDecals = Computed(@() servProfile.get()?.decals ?? {})
+let decalsPenalty = Computed(@() allPenalties.get()?[PENALTY_KEY] ?? 0)
 
 let needToShowHiddenDecalsDebug = mkWatched(persist, "needToShowHiddenDecalsDebug", false)
 
@@ -80,22 +113,45 @@ let availableDecals = Computed(function() {
   return res
 })
 
+let decalsCategorySort = @(a, b) a.locNameLower <=> b.locNameLower
+
 let decalsCollection = Computed(function() {
   if (!isCustomizationWndAttached.get())
     return []
   let ver = decalsBlkVersion 
-  let res = []
-  let allDecals = decalsCfg.get()
-  foreach (c in getDecalsByCategories()) {
-    let { category, decals } = c
-    let filtered = decals.filter(@(d) d in allDecals
+  let res = {}
+  let locNameOther = getDecalCategoryLocName("other")
+  let locNameOtherLower = utf8ToLower(locNameOther)
+
+  foreach (category, decals in getDecalsByCategories()) {
+    let filtered = decals.filter(@(d) d in decalsCfg.get()
       && (needToShowHiddenDecalsDebug.get()
-        || !(allDecals[d]?.isHidden ?? false)
+        || !(decalsCfg.get()[d]?.isHidden ?? false)
         || d in availableDecals.get()))
-    if (filtered.len() > 0)
-      res.append({ category, decals = arrayByRows(filtered, MAX_DECALS_IN_ROW) })
+    if (filtered.len() == 0)
+      continue
+    let fDecals = arrayByRows(filtered, MAX_DECALS_IN_ROW)
+    let cat = category.split("/")
+    if (cat[0] not in res) {
+      let locName = getDecalCategoryLocName(cat[0])
+      res[cat[0]] <- { category = cat[0], decals = [], subCategories = [], locName, locNameLower = utf8ToLower(locName) }
+    }
+    if (cat.len() == 1)
+      res[cat[0]].decals.extend(fDecals)
+    else {
+      let locName = getDecalCategoryLocName(cat[1])
+      res[cat[0]].subCategories.append({ category = cat[1], decals = fDecals, locName, locNameLower = utf8ToLower(locName) })
+    }
   }
-  return res
+
+  res.each(function(c) {
+    if (c.subCategories.len() > 0 && c.decals.len() > 0)
+      c.subCategories.append({ category = "other", decals = c.decals, locName = locNameOther, locNameLower = locNameOtherLower })
+    c?.subCategories.sort(decalsCategorySort)
+  })
+
+  return res.values()
+    .sort(decalsCategorySort)
 })
 
 customizationDecalId.subscribe(@(v) v != null ? isPreparingToEditDecal.set(true) : null)
@@ -121,13 +177,15 @@ function updateSlots() {
       id = slotIdx
       isEmpty = decalId.len() == 0
       isDisabled
+      isBlocked = !isCurSkinAvailable.get()
     }
   })
 
   decalsSlots.set(slots)
 }
 
-foreach (watch in [isCustomizationWndAttached, unitId, curSkinForEdit, isDefaultPreset, isHangarUnitLoaded, openForUnit, hangarUnitDecalSlotsCount])
+foreach (watch in [isCustomizationWndAttached, unitId, curSkinForEdit, isDefaultPreset, isHangarUnitLoaded,
+    hangarUnitName, hangarUnitDecalSlotsCount, isCurSkinAvailable])
   watch.subscribe(@(_) deferOnce(updateSlots))
 
 function applySkinDecalsBlk(isRemove) {
@@ -159,13 +217,12 @@ function applySkinDecalsBlk(isRemove) {
 }
 
 function resetDecalsPreset() {
-  if (curSkinForEdit.get() not in defDecalsPresets.get() || curSkinForEdit.get() not in decalsPresets.get()
-      || !isNotEqualPresets.get())
+  if (!isNotEqualPresets.get())
     return
 
   local decalsPresetsExt = clone decalsPresets.get()
   decalsPresetsExt.$rawdelete(curSkinForEdit.get())
-  apply_skin_decals_blk(unitId.get(), curSkinForEdit.get(), decalTblToBlk(defDecalsPresets.get()[curSkinForEdit.get()]))
+  apply_skin_decals_blk(unitId.get(), curSkinForEdit.get(), decalTblToBlk(defDecalsPresets.get()?[curSkinForEdit.get()] ?? {}))
   setDecalsPresets(decalsPresetsExt)
 }
 
@@ -288,6 +345,10 @@ return {
   selectedSlotId
   selectedSlot
   curDecalPosition
+  decalsPenalty
+  userDecals
+  curSkinForEdit
+  isCurSkinAvailable
 
   removeDecalFromSelectedSlot
   resetDecalsPreset

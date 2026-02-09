@@ -139,6 +139,13 @@
     "maxSpeed": 156.94,
     "turnTime": 21.0015
   },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": {
+      "from": "a6m5_a*",
+      "to": "a6m5_trein_c*"
+    }
+  },
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {

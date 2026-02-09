@@ -2,8 +2,6 @@ from "%globalScripts/logs.nut" import *
 import "regexp2"
 import "utf8"
 from "string" import format
-from "auth_wt" import getCountryCode
-from "language" import getLocalLanguage
 from "%sqstd/string.nut" import utf8ToLower, utf8CharToInt
 from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clearExcessiveWhitespace, getUnicodeCharsArray
 
@@ -58,9 +56,9 @@ function updateAsianDict(lookupTbl, upd) {
 }
 
 
-function init(langSources) {
-  let myLocation = getCountryCode()
-  let myLanguage = getLocalLanguage()
+
+
+function init(myLocation, myLanguage, langSources) {
   let isMyLocationKnown = myLocation != "" 
   pendingDict = null
   pendingDictAsian = null
@@ -135,8 +133,8 @@ function init(langSources) {
   }
 }
 
-function continueInitAfterLogin() {
-  let myLocation = getCountryCode()
+
+function continueInitAfterLogin(myLocation) {
   if (myLocation == "")
     return
   if (pendingDict != null) {

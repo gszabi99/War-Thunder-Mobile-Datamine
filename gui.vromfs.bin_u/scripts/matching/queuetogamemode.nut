@@ -12,8 +12,7 @@ let { sendUiBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqCl
 let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons } = require("%appGlobals/updater/addons.nut")
 let { localizeUnitsResources, getCampaignOrig } = require("%appGlobals/updater/campaignAddons.nut")
-let { addonsVersions, hasAddons, addonsExistInGameFolder, unitSizes
-} = require("%appGlobals/updater/addonsState.nut")
+let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { curCampaign, setCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString, allBattleUnits, missingUnitResourcesByRank,
   allUnitsRanks, maxReleasedUnitRanks
@@ -190,13 +189,11 @@ function queueToGameModeImpl(mode) {
 
   log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", allBattleUnits.get())
   log("modeInfo = ", getModeAddonsDbgString(mode))
-  let { addonsToDownload, updateDiff, allReqAddons, unitsToDownload } = getModeAddonsInfo({
+  let { addonsToDownload, allReqAddons, unitsToDownload } = getModeAddonsInfo({
     mode,
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),
-    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
-    addonsVersionsV = addonsVersions.get(),
     missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
     maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
     unitSizesV = unitSizes.get(),
@@ -205,29 +202,29 @@ function queueToGameModeImpl(mode) {
     return
 
   if (addonsToDownload.len() + unitsToDownload.len() > 0 && !canBattleWithoutAddons.get()) {
-    let isUpdate = updateDiff >= 0
     let locs = localizeAddons(addonsToDownload)
+    if (addonsToDownload.len() > 0)
+      log($"[ADDONS] Ask download addons on try to join queue {addonsToDownload.len()}", addonsToDownload)
     if (unitsToDownload.len() > 0) {
       let unitLocs = localizeUnitsResources(unitsToDownload, allUnitsRanks.get(), campaign ?? curCampaign.get())
       locs.extend(unitLocs)
       log($"[ADDONS] Ask download units on try to join queue {unitsToDownload.len()}", unitLocs)
     }
-    addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{addonsVersions.get()?[a] ?? "-"}')"))
 
     openFMsgBox({
       viewType = "downloadMsg"
       addons = addonsToDownload
       units = unitsToDownload
-      bqAction = isUpdate ? "msg_update_addons_for_queue" : "msg_download_addons_for_queue"
+      bqAction = "msg_download_addons_for_queue"
       bqData = { source = mode.name, unit = ";".join(allBattleUnits.get()) }
 
-      text = loc(isUpdate ? "msg/needUpdateAddonToPlayGameMode" : "msg/needAddonToPlayGameMode",
+      text = loc("msg/needAddonToPlayGameMode",
         { count = locs.len(),
           addon = ", ".join(locs.map(@(t) colorize(0xFFFFB70B, t)))
         })
       buttons = [
         { id = "cancel", isCancel = true }
-        { text = loc(isUpdate ? "ugm/btnUpdate" : "msgbox/btn_download")
+        { text = loc("msgbox/btn_download")
           eventId = "downloadAddonsForQueue"
           context = { addons = addonsToDownload, units = unitsToDownload, modeId = mode.gameModeId, modeName = mode.name }
           styleId = "PRIMARY"
@@ -315,8 +312,6 @@ function queueToGameModeAfterAddons(modeId) {
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),
-    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
-    addonsVersionsV = addonsVersions.get(),
     missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
     maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
     unitSizesV = unitSizes.get(),

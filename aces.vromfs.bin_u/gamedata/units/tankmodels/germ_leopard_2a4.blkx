@@ -62,6 +62,58 @@
       0.85
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -2510,7 +2562,7 @@
       "trackMass": 2000.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ]
     },
     "tracks": {
@@ -2520,6 +2572,12 @@
       "fricFrontal": [
         1.2,
         1.0
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2534,12 +2592,12 @@
       "model": "mb_873_ka_501"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 300000.0,
       "driveGearRadius": 0.312,
       "mainGearRatio": 4.47,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 9.0,
+      "alternativeGearControl": 5.0,
       "gearRatios": {
         "ratio": [
           -2.209,
@@ -3638,6 +3696,11 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "upgraded_skin": {
@@ -3839,6 +3902,27 @@
       "decal3OppositeMirrored": false,
       "decal3WidthBox": 0.200142,
       "decal3Tex": "germany_numbers_6"
+    }
+  },
+  "vehicleSkins": {
+    "winter": {
+      "set_tex": [
+        {
+          "from": "leopard_2a4_body_c*",
+          "to": "leopard_2a4_skin_ny_26_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "leopard_2a4_gun_c*",
+          "to": "leopard_2a4_skin_ny_26_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "leopard_2a4_turret_c*",
+          "to": "leopard_2a4_skin_ny_26_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "battleHideNodes": {

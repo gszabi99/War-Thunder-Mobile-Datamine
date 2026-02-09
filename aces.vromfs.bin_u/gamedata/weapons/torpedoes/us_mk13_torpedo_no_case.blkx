@@ -52,6 +52,11 @@
       1000.0
     ],
     "explodeTreshold": 0.00001,
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 1020.0,
+      "damage": 50000.0
+    },
     "arcadeProp": {
       "dropSpeedRange": [
         0.0,

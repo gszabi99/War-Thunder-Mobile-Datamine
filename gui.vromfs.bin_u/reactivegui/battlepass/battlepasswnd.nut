@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let {  closeBattlePassWnd, isBpSeasonActive, isBpActive,
-  openBPPurchaseWnd, selectedStage, curStage, getBpIcon, seasonEndTime,
+let { isBpActive, openBPPurchaseWnd, selectedStage, curStage, getBpIcon, seasonEndTime,
   BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods, pointsCurStage, pointsPerStage, seasonName,
   receiveBpRewards, isBpRewardsInProgress
 } = require("%rGui/battlePass/battlePassState.nut")
@@ -13,7 +12,7 @@ let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components
 let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { bpCurProgressbar, bpProgressText, progressIconSize, sideTabWidth, vGradientGapSize
 } = require("%rGui/battlePass/battlePassPkg.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
@@ -23,8 +22,6 @@ let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollA
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-
-isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBattlePassWnd())
 
 let bpIconSize = [hdpx(298), hdpx(181)]
 let scrollHandler = ScrollHandler()
@@ -43,7 +40,7 @@ let header = {
   margin = saBordersRv
   valign = ALIGN_TOP
   halign = ALIGN_RIGHT
-  children = mkCurrencyBalance(GOLD)
+  children = mkCurrenciesBtns([GOLD])
 }
 
 let scrollArrowsBlock = {

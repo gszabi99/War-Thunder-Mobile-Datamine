@@ -2034,5 +2034,18 @@
       1.40468,
       0.00330352
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "a6m3_mod22ko_a*",
+        "to": "a6m3_mod22_silver_a*"
+      },
+      {
+        "from": "a6m3_mod22_n*",
+        "to": "a6m3_mod22_silver_n*"
+      }
+    ]
   }
 }

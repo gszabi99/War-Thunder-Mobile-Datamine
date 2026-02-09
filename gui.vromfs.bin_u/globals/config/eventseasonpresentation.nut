@@ -22,23 +22,75 @@ let presentations = {
   season_24 = { color = 0xFFFC7724 }
   season_25 = { color = 0xFFADDB76 }
   season_26 = { color = 0xFFC3EBFF }
+  season_27 = { color = 0xFFE9AB10 }
+  season_28 = { color = 0xFF397EE6 }
+  season_29 = { color = 0xFF36B388 }
+  season_30 = { color = 0xFFBC0022 }
+  nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
-  event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif",
-                                   gamercardItems = [ "firework_kit" ] }
-  event_lunar_ny_season        = { icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg", bg = "ui/images/event_bg_lunar.avif",
-                                   gamercardItems = [ "firework_kit" ] }
+  black_friday_2025            = {
+    image = $"ui/gameuiskin/icon_event_event_black_friday_shop.avif",
+    bg = "ui/images/event_bg_season_27.avif"
+  }
+  event_new_year               = {
+    icon = "ui/gameuiskin#icon_event_christmas.svg",
+    bg = "ui/images/event_bg_christmas_2024.avif",
+    gamercardItems = [ "firework_kit" ]
+  }
+  china_tanks_early_access        = {
+    bg = "ui/images/event_bg_lunar.avif"
+  }
+  event_lunar_ny_season        = {
+    icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg",
+    bg = "ui/images/event_bg_lunar.avif",
+    gamercardItems = [ "firework_kit" ]
+  }
   event_patrick_day            = { icon = "ui/gameuiskin#icon_event_patrick_day2.svg" }
   event_patrick_daily          = { icon = "ui/gameuiskin#icon_event_patrick_day.svg" }
-  event_april_2025             = { icon = "ui/gameuiskin#icon_event_april_2025.svg", bg = "ui/images/event_bg_event_april_2025.avif" }
-  hot_may                      = { icon = "ui/gameuiskin#icon_event_hot_may.svg", bg = "ui/images/event_bg_season_20.avif" }
+  event_april_2025             = {
+    icon = "ui/gameuiskin#icon_event_april_2025.svg",
+    bg = "ui/images/event_bg_event_april_2025.avif"
+  }
+  hot_may                      = {
+    icon = "ui/gameuiskin#icon_event_hot_may.svg",
+    bg = "ui/images/event_bg_season_20.avif"
+  }
   hotmaybond                   = { bg = "ui/images/event_bg_season_20.avif" }
   independencebond             = { bg = "ui/images/event_bg_event_independence_day.avif" }
   anniversary_2025             = { bg = "ui/images/event_bg_anniversary_2025.avif", gamercardItems = [ "firework_kit" ] }
   anniversarybond              = { bg = "ui/images/event_bg_anniversary_2025.avif" }
   halloween_2025               = { bg = "ui/images/event_bg_halloween_2025.avif", gamercardItems = [ "firework_kit" ] }
+  new_year_2026                = {
+    image = $"ui/gameuiskin/icon_event_christmas_shop.avif",
+    icon = "ui/gameuiskin#icon_event_christmas.svg",
+    bg = "new_year_2026",
+    gamercardItems = [ "firework_kit" ]
+  }
+  valentine_day_2026                = {
+    image = $"ui/gameuiskin/icon_event_valentine_day_shop.avif",
+    icon = "ui/gameuiskin#icon_event_event_valentine_day.svg",
+    bg = "valentine_day_2026",
+    gamercardItems = [ "firework_kit" ]
+  }
+  lunar_ny_2026                = {
+    image = $"ui/gameuiskin/icon_event_lunar_ny_shop.avif",
+    icon = "ui/gameuiskin#icon_event_lunar_ny.svg",
+    bg = "lunar_ny_2026",
+    gamercardItems = [ "firework_kit" ]
+  }
   halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
+  valentinebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
+  candybond                    = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
+  lollipopbond                 = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
+  chocolatebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
+  lunarbond                    = { bg = "ui/images/event_bg_lunar.avif" }
   event_leyte_battle           = { imageSizeMul = 1.4 }
+  tank_constructor_birthday    = { image = $"ui/gameuiskin/icon_event_event_black_friday_shop.avif" }
+  offers_event                 = { locId = "events/name/challenge" }
+  premiere_challenge_first     = { locId = "events/name/challenge" }
+  premiere_challenge_second    = { locId = "events/name/challenge" }
+  rerun_offers_event           = { locId = "events/name/challenge" }
 }
 
 let genParams = {

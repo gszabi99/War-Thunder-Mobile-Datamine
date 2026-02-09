@@ -1836,6 +1836,13 @@
       -0.00815762
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "la_7_a*",
+      "to": "la_7_east44_a*"
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "la-7_kozhedub_default",

@@ -55,7 +55,8 @@ let actionBtnsCtors = {
   [MAP_OBJ_TYPE.NONE] = function(_obj, coordsW) {
     let msgId = "attention_to_point"
     return textButtonPrimary(utf8ToUpper(loc($"voice_message_{msgId}_0")),
-      @() sendMsgAndClose(msgId, relPosToWorldPos(coordsW.get())))
+      @() sendMsgAndClose(msgId, relPosToWorldPos(coordsW.get()))
+      {hotkeys = ["^J:X"]})
   },
   [MAP_OBJ_TYPE.CAPTURE_ZONE] = function(mapObj, _coordsW) {
     let { team, iconIdx, mapPos } = mapObj
@@ -74,8 +75,12 @@ let actionBtnsCtors = {
     let btnWidth = max(defButtonMinWidth, btnTxtWidths[0], btnTxtWidths[1])
     let btnStyleOvr = { ovr = { size = [btnWidth, defButtonHeight] }, useFlexText = true }
     return [
-      attackBtnCtor(attackText, @() sendMsgAndClose(attackMsgId, relPosToWorldPos(mapPos)), btnStyleOvr)
-      defendBtnCtor(defendText, @() sendMsgAndClose(defendMsgId, relPosToWorldPos(mapPos)), btnStyleOvr)
+      attackBtnCtor(attackText, @() sendMsgAndClose(attackMsgId,
+        relPosToWorldPos(mapPos)),
+        btnStyleOvr.__merge({hotkeys = ["^J:X"]}))
+      defendBtnCtor(defendText, @() sendMsgAndClose(defendMsgId,
+        relPosToWorldPos(mapPos)),
+        btnStyleOvr.__merge({hotkeys = ["^J:Y"]}))
     ]
   },
 }
@@ -129,14 +134,10 @@ let txtAreaBase = {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = hudWhiteColor
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(32)
-  fontFxColor = hudBlackColor
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 let wndTitle = txtAreaBase.__merge(fontBig, {
   text = loc("hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
-  fontFxFactor = hdpx(64)
 })
 
 let usageInfoText = txtAreaBase.__merge({

@@ -1,6 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { G_CURRENCY, G_BLUEPRINT, G_UNIT } = require("%appGlobals/rewardType.nut")
@@ -13,7 +11,8 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { allShopGoods, calculateNewGoodsDiscount } = require("%rGui/shop/shopState.nut")
+let { allShopGoods } = require("%rGui/shop/shopState.nut")
+let { calculateNewGoodsDiscount, discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
 
 
@@ -234,7 +233,8 @@ let mkDiscountRow = @(reward = null, prevDiscount = null, discount = null) @() {
       ]
 }
 
-function mkMsgDiscount(stackDataV, onClick) {
+let mkMsgDiscount = @(stackDataV, onClick) function() {
+  let watch = [serverConfigs, allShopGoods, servProfile, discountsToApply]
   let { personalDiscounts = {} } = serverConfigs.get()
   let minDiscountsByGoodsId = {}
   let mainRewards = {}
@@ -247,9 +247,10 @@ function mkMsgDiscount(stackDataV, onClick) {
     if (!goodsId || !reward)
       continue
 
-    let goods = allShopGoods.get()?[goodsId] ?? {}
+    let goods = allShopGoods.get()?[goodsId]
+    if (goods == null)
+      continue
     let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)?[0]
-
     if (previewReward && isRewardEmpty([previewReward.__merge({ gType = previewReward.rType })], servProfile.get()))
       continue
 
@@ -260,7 +261,7 @@ function mkMsgDiscount(stackDataV, onClick) {
     let prevDiscount = (prevDiscountIdx >= 0 && sortedDiscountsByPrice?[prevDiscountIdx].id in servProfile.get()?.discounts)
       ? calculateNewGoodsDiscount(goods?.price.price ?? 0, goods?.discountInPercent ?? 0,
           sortedDiscountsByPrice?[prevDiscountIdx].price ?? 0)
-      : campConfigs.get()?.allGoods.findvalue(@(v) v.id == goodsId)?.discountInPercent ?? 0
+      : serverConfigs.get()?.allGoods.findvalue(@(v) v.id == goodsId)?.discountInPercent ?? 0
 
     if (prevDiscount == 0)
       singleRewards[info.id] <- reward.__merge({ goodsId })
@@ -268,7 +269,7 @@ function mkMsgDiscount(stackDataV, onClick) {
       let mainReward = {
         goodsId
         reward
-        discount = goods?.discountInPercent
+        discount = applyDiscount(goods, discountsToApply.get()).discountInPercent
         prevDiscount
       }
       mainRewards[info.id] <- mainReward
@@ -284,7 +285,7 @@ function mkMsgDiscount(stackDataV, onClick) {
   }
 
   if (mainRewards.len() == 0 && singleRewards.len() == 0)
-    return onClick()
+    return { watch }
 
   let agregatedMainRewards = mainRewards.filter(@(data)
     data.goodsId in minDiscountsByGoodsId && data.prevDiscount <= minDiscountsByGoodsId[data.goodsId])
@@ -316,6 +317,7 @@ function mkMsgDiscount(stackDataV, onClick) {
   }
 
   return {
+    watch
     minWidth = minWidthWnd
     padding = [0,0, padding, 0]
     halign = ALIGN_CENTER
@@ -342,20 +344,22 @@ function mkMsgDiscount(stackDataV, onClick) {
           }.__update(fontSmall)
           {
             size = [minWidthWnd, needPannableArea ? maxHeightContent : SIZE_TO_CONTENT]
-            children = needPannableArea ? [
-              mkVerticalPannableArea(
-                {
-                  size = FLEX_H
-                  flow = FLOW_VERTICAL
-                  children = [
-                    mainContent
-                    singleContent
-                  ]
-                },
-                {},
-                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-              scrollArrowsBlock
-            ] : [
+            children = needPannableArea
+              ? [
+                  mkVerticalPannableArea(
+                    {
+                      size = FLEX_H
+                      flow = FLOW_VERTICAL
+                      children = [
+                        mainContent
+                        singleContent
+                      ]
+                    },
+                    {},
+                    { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+                  scrollArrowsBlock
+                ]
+              : [
                   mainContent
                   singleContent
                 ]

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
-let { get_maximum_frames_per_second, is_texture_uhq_supported, should_notify_about_restart,
+let { eventbus_subscribe } = require("eventbus")
+let { get_settings_blk } = require("blkGetters")
+let { get_maximum_frames_per_second, should_notify_about_restart,
   get_default_graphics_preset, is_metalfx_upscale_supported,
   is_fxaa_high_broken, supports_deferred_msaa, hdr_available
 } = require("graphicsOptions")
@@ -12,7 +12,8 @@ let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTI
 let mkOptionDescFromValsList = require("%rGui/options/mkOptionDescFromValsList.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
-let { has_additional_graphics_content, allow_hdr_on_ios } = require("%appGlobals/permissions.nut")
+let { allow_hdr_on_ios } = require("%appGlobals/permissions.nut")
+let { hasHdrScreen } = require("android.platform")
 
 let qualitiesListDev = ["movie"]
 let minMemory = 4096
@@ -124,9 +125,6 @@ let optRayTracing = {
     : v == 1 ? $"options/quality_medium"
     : $"options/quality_high")
 }
-let isUhqSupported = is_texture_uhq_supported()
-let needUhqTexturesRaw = Watched(isUhqSupported
-  && !!get_common_local_settings_blk()?.uhqTextures) 
 
 let needShowRestartNotifyList = mkWatched(persist, "needShowRestartNotifyList",
   { onLoad = should_notify_about_restart() })
@@ -144,25 +142,8 @@ let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNot
     text = loc("msg/needRestartToApplySettings")
 }.__update(fontTiny)
 
-let needUhqTextures = Computed(@() needUhqTexturesRaw.get() && has_additional_graphics_content.get())
-function setNeedUhqTextures(v) {
-  get_common_local_settings_blk().uhqTextures = v
-  needUhqTexturesRaw.set(v)
-  eventbus_send("saveProfile", {})
-  if (v)
-    openFMsgBox({ text = loc("msg/needRestartToApplyTextures") })
-}
-let optUhqTextures = {
-  locId = "options/uhq_textures"
-  ctrlType = OCT_LIST
-  value = needUhqTextures
-  setValue = setNeedUhqTextures
-  list = Computed(@() has_additional_graphics_content.get() ? [false, true] : [])
-  valToString = @(v) loc(v ? "msgbox/btn_download" : "options/off")
-}
-
 let hdrStateOnStart = get_settings_blk()?.video.enableHdr ?? false;
-let hdrSupported = hdr_available()
+let hdrSupported = hdr_available() && (is_android ? hasHdrScreen() : true)
 let hdrValue = mkOptionValue(OPT_HDR, hdrStateOnStart);
 let disableHdrOnIosIfRequired = @(isAllowedHdrOnIos)
   (hdrSupported && is_ios && !isAllowedHdrOnIos) ? hdrValue(false) : null
@@ -187,13 +168,9 @@ return {
     optResolution
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
-    isUhqSupported ? optUhqTextures : null
     hdrSupported ? optHDR : null
     optAntiAliasing
   ]
-  isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.get())
-  needUhqTextures
-  setNeedUhqTextures
   graphicsQuality = Computed(@() graphicsQuality.get())
   setGraphicsQuality
 }

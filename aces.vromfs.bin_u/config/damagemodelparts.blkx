@@ -16,6 +16,12 @@
     "pressureDamageMult": 0.0,
     "explosionTorpedoDamageMult": 0.0
   },
+  "default_v1": {
+    "slopeMinCaliber": 29.0,
+    "simpleRicochet": true,
+    "checkFuseRelDamageThreshold": false,
+    "createSecondaryShatters": false
+  },
   "body": {
     "externalArmor": true,
     "body": {},

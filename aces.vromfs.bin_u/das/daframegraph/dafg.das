@@ -203,11 +203,10 @@ def executionHas(var self : Registry; side_effect : SideEffect) : Registry
   return self
 
 
-def create(var self : Registry; name : string; history : History) : VirtualResourceCreationSemiRequest
+def create(var self : Registry; name : string) : VirtualResourceCreationSemiRequest
   let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
   let nameId = self.registry.knownNames |> addNameId`ResNameId(nodeNsId, name)
   self.registry.resources |> get(nameId) <| $(var res : ResourceData&)
-    res.history = history
     res.createdResData |> emplace_some
 
   self.registry.nodes[self.nodeId].createdResources |> insert(nameId)
@@ -288,7 +287,7 @@ def modify(var self : NameSpaceRequest; slot : NamedSlot) : VirtualResourceSemiR
   return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = false))
 
 
-def rename(var self : NameSpaceRequest; from : string; to : string; history : History) : VirtualResourceSemiRequest
+def rename(var self : NameSpaceRequest; from : string; to : string) : VirtualResourceSemiRequest
   let fromResId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, from)
   let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
   let toResId = self.registry.knownNames |> addNameId`ResNameId(nodeNsId, to)
@@ -297,8 +296,6 @@ def rename(var self : NameSpaceRequest; from : string; to : string; history : Hi
   using() <| $(var req : ResourceRequest#)
     req.usage = ResourceUsage(access = Access.READ_WRITE)
     self.registry.nodes[self.nodeId].resourceRequests[fromResId] := req
-  self.registry.resources |> get(toResId) <| $(var res : ResourceData&)
-    res.history = history
 
   return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = fromResId, history = false))
 

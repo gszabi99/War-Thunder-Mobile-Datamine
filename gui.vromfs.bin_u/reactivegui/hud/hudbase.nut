@@ -3,7 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 let { TouchCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
-let { hudUnitType } = require("%rGui/hudState.nut")
+let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let tankHudTouch = require("%rGui/hud/tankHudTouch.nut")
 let { aircraftHud, aircraftHudElemsOverShade, aircraftOnTouchBegin, aircraftOnTouchEnd } = require("%rGui/hud/aircraftHudTouch.nut")
@@ -17,8 +17,8 @@ let { hudElementShade } = require("%rGui/tutorial/hudElementShade.nut")
 let { hudElementBlink } = require("%rGui/tutorial/hudElementBlink.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
 let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
-let hudReplayControls = require("%rGui/replay/hudReplayControls.nut")
-let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, isHudAttached
+let { hudReplayControls, replayShowHudAction } = require("%rGui/replay/hudReplayControls.nut")
+let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, HT_NONE, isHudAttached
 } = require("%appGlobals/clientState/hudState.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let battleResultsShort = require("%rGui/hud/battleResultsShort.ui.nut")
@@ -69,6 +69,7 @@ let hudByType = {
   [HT_FREECAM] = @(_) freeCamHud,
   [HT_CUTSCENE] = @(_) cutsceneHud,
   [HT_BENCHMARK] = @(_) emptySceneWithMenuButton,
+  [HT_NONE] = @(_) replayShowHudAction
 }
 
 let hudBase = {

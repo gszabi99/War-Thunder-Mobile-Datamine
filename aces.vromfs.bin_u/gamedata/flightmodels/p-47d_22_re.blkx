@@ -2162,5 +2162,18 @@
       1.74417,
       1.34111e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_47d_22_re_c*",
+        "to": "p_47d_22_re_camo_c*"
+      },
+      {
+        "from": "p_47d_22_re_n*",
+        "to": "p_47d_22_re_camo_n*"
+      }
+    ]
   }
 }

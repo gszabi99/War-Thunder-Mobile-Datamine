@@ -3767,5 +3767,18 @@
       4.16999,
       0.00975157
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "g8n1_aluminum_a*",
+        "to": "g8n1_orange_a*"
+      },
+      {
+        "from": "g8n1_aluminum_n*",
+        "to": "g8n1_orange_n*"
+      }
+    ]
   }
 }

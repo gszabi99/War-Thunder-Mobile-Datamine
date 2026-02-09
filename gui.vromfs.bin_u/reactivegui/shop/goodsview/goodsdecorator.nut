@@ -93,8 +93,7 @@ let mkDecoratorContent = @(decoratorId) function() {
 }
 
 function mkGoodsDecorator(goods, onClick, state, animParams, addChildren) {
-  let decoratorId = goods?.rewards.findvalue(@(r) r.gType == G_DECORATOR)?.id
-    ?? goods?.decorators[0] 
+  let decoratorId = goods.rewards.findvalue(@(r) r.gType == G_DECORATOR)?.id
   let ovrState = Computed(@() state.get() | (myDecorators.get()?[decoratorId] != null ? ALL_PURCHASED : 0))
   let onDecoratorClick = (ovrState.get() & ALL_PURCHASED) == 0 ? onClick : null
   return mkGoodsWrap(
@@ -113,7 +112,7 @@ function mkGoodsDecorator(goods, onClick, state, animParams, addChildren) {
 }
 
 function getLocNameDecorator(goods) {
-  let decoratorId = goods?.decorators[0]
+  let decoratorId = goods.rewards.findvalue(@(r) r.gType == G_DECORATOR)?.id ?? ""
   let cfg = viewCfg?[allDecorators.get()?[decoratorId].dType]
   return cfg?.getTitle(decoratorId) ?? decoratorId
 }

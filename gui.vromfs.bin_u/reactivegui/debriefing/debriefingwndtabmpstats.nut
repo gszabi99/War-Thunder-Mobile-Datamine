@@ -14,7 +14,7 @@ function mkDebriefingWndTabMpStats(debrData, params) {
   if ((debrData?.isSingleMission ?? false) || (debrData?.players ?? {}).len() == 0)
     return null
 
-  let { campaign = "", mission = "", gameType = 0 } = debrData
+  let { campaign = "", mission = "", gameType = 0, hudCustomRules = {} } = debrData
   let isFFA = !!(gameType & (GT_FFA_DEATHMATCH | GT_FFA))
   let playersByTeamAligned = alignTeamLengths(mkPlayersByTeam(debrData))
   let { contentHeight } = params
@@ -24,7 +24,7 @@ function mkDebriefingWndTabMpStats(debrData, params) {
     pos = [0, topMargin]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = mkMpStatsTable(getColumnsByCampaign(campaign, mission, gameType),
+    children = mkMpStatsTable(getColumnsByCampaign(campaign, mission, gameType, hudCustomRules),
       playersByTeamAligned,
       isFFA ? tableHeight : null)
   }

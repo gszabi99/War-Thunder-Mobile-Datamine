@@ -61,7 +61,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "dm_for_shop": {
     "armorThicknessFront": [
       0.65,
@@ -115,6 +115,58 @@
       [
         74.0,
         0.9
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
       ],
       [
         75.0,
@@ -2429,7 +2481,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 2500.0
@@ -2443,6 +2495,12 @@
         0.0,
         0.6,
         0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        0.9,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2455,11 +2513,11 @@
       "minRPM": 800.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.308,
       "mainGearRatio": 0.8,
       "sideGearRatio": 4.91,
+      "alternativeGearControl": 5.0,
       "gearRatios": {
         "ratio": [
           -14.167,
@@ -3814,6 +3872,11 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3822,6 +3885,25 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_green*"
       }
+    },
+    "winter": {
+      "set_tex": [
+        {
+          "from": "ztz_99_w_body_c*",
+          "to": "ztz_99_w_skin_ny_26_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "ztz_99_w_gun_c*",
+          "to": "ztz_99_w_skin_ny_26_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "ztz_99_w_turret_c*",
+          "to": "ztz_99_w_skin_ny_26_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "smokeScreenExhaustEmitters": {

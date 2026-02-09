@@ -4136,5 +4136,12 @@
       1.75746,
       0.00192011
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "me262a_2a_camo1_a*",
+      "to": "me262a_2a_camo3_a*"
+    }
   }
 }

@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
+let { setAxisValue, setVirtualAxisValue, setVirtualAxesAim,
+  setVirtualAxesAileronsAssist, setVirtualAxesDirectControl
+} = require("controls")
 let { Point3 } = require("dagor.math")
 let { fabs, lerp } = require("%sqstd/math.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { getScaledFont, prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue,
-  setVirtualAxesAim =  null, setVirtualAxesAileronsAssist = null, setVirtualAxesDirectControl = null
-} = require("%globalScripts/controls/shortcutActions.nut")
+let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
 let { getSvgImage, borderColor, btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
@@ -17,12 +18,13 @@ let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator, turre
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { playerUnitName, unitType, isUnitDelayed } = require("%rGui/hudState.nut")
+let { playerUnitName, unitType, isUnitDelayed, isPlayingReplay } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
-let { currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
-      currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity,
-      currentControlByGyroModeElevatorDeadZone, currentControlByGyroModeElevatorSensitivity,
-      currentAircraftCtrlType, currentThrottleStick, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
+let { currentControlByGyroAimMode, currentControlByGyroDirectControl,
+  currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity,
+  currentControlByGyroModeElevatorDeadZone, currentControlByGyroModeElevatorSensitivity,
+  currentAircraftCtrlType, currentThrottleStick, currentAdditionalFlyControls
+} = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner, outlineColorDef
@@ -133,6 +135,9 @@ function showIncreaseThrottleHint() {
 }
 
 function changeThrottleValue(val) {
+  if (isPlayingReplay.get())
+    return
+
   val = clamp(val, sliderWepValue, maxThrottle)
   needOpacityThrottle.set(false)
   resetTimeout(idleTimeForThrottleOpacity, makeOpacityThrottle)
@@ -166,11 +171,11 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
 let btnImageThrottleInc = mkGamepadHotkey(axisMinToHotkey(throttle_axis),
   Computed(@() sliderValue.get() > sliderWepValue),
   Computed(@() isThrottleAxisActive.get() && throttleAxisVal.get() > 0),
-  { hplace = ALIGN_RIGHT, pos = [pw(90), 0] })
+  { pos = [pw(50), 0] })
 let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
   Computed(@() sliderValue.get() < maxThrottle),
   Computed(@() isThrottleAxisActive.get() && throttleAxisVal.get() < 0),
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(90), 0] })
+  { vplace = ALIGN_BOTTOM, pos = [pw(50), 0] })
 
 let isStateVisible = @(state) state == ON
 
@@ -372,6 +377,9 @@ isThrottleAxisActive.subscribe(function(isActive) {
   }
 })
 
+if (isPlayingReplay.get())
+  Trt0.subscribe(@(value) sliderValue.set(throttleToSlider(value)))
+
 isRespawnStarted.subscribe(@(v) v ? setVirtualAxisValue("throttle", 0) : null)
 
 let setThrottleAxisVal = @(v) isThrottleDisabled.get() ? null : throttleAxisVal.set(v)
@@ -413,27 +421,19 @@ function resetGravityAxesZero() {
   setVirtualAxisValue("mouse_aim_y", 0.0)
 }
 unitType.subscribe(@(_v) resetGravityAxesZero())
-currentControlByGyroModeAileronsAssist.subscribe(@(_v) resetGravityAxesZero())
 currentControlByGyroAimMode.subscribe(@(_v) resetGravityAxesZero())
 currentControlByGyroDirectControl.subscribe(@(_v) resetGravityAxesZero())
 
-function setVirtualAxesAileronsEelvatorAssistValueFromGravity(_aileronsDeadZone, aileronsSensitivity, _elevatorDeadZone, _elevatorSensitivity) {
-  setVirtualAxesAileronsElevatorValue(aileronsSensitivity, true, false, gravity0.z, gravity0.x, gravity0.y, gravity.z, gravity.x, gravity.y)
-}
-
 function setVirtualAxesAimValuesFromGravity(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
-  if (setVirtualAxesAim != null)
-    setVirtualAxesAim(gravity0, gravity, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
+  setVirtualAxesAim(gravity0, gravity, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
 }
 
 function setVirtualAxesAileronsAssistValueFromGravity(aileronsDeadZone, aileronsSensitivity, _elevatorDeadZone, _elevatorSensitivity) {
-  if (setVirtualAxesAileronsAssist != null)
-    setVirtualAxesAileronsAssist(gravity0, gravity, aileronsDeadZone, aileronsSensitivity)
+  setVirtualAxesAileronsAssist(gravity0, gravity, aileronsDeadZone, aileronsSensitivity)
 }
 
 function setVirtualAxesDirectControlValuesFromGravity(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
-  if (setVirtualAxesDirectControl != null)
-    setVirtualAxesDirectControl(gravity0, gravity, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
+  setVirtualAxesDirectControl(gravity0, gravity, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
 }
 
 function applyGravityLeft(val, setAxesFunc, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
@@ -477,7 +477,6 @@ function makeGravityListenerMap(setAxesFunc) {
   }
 }
 
-let imuAxesListenerAleronsElevatorAssist = axisListener( makeGravityListenerMap(setVirtualAxesAileronsEelvatorAssistValueFromGravity) )
 let imuAxesListenerAim = axisListener( makeGravityListenerMap(setVirtualAxesAimValuesFromGravity) )
 let imuAxesListenerAleronsAssist = axisListener( makeGravityListenerMap(setVirtualAxesAileronsAssistValueFromGravity) )
 let imuAxesListenerDirectControl = axisListener( makeGravityListenerMap(setVirtualAxesDirectControlValuesFromGravity) )
@@ -651,31 +650,22 @@ function mkGamepadAxisListener() {
   return gamepadAxisListener
 }
 
-function getImuAxesListener(controlType, gyroAimMode, aileronsAssistMode, directControlMode) {
-  if (controlType == "mouse_aim") {
-    if (setVirtualAxesAim != null) {
-      if (gyroAimMode == "aim")
-        return imuAxesListenerAim
-      else if (gyroAimMode == "aileron_assist")
-        return imuAxesListenerAleronsAssist
-      else
-        return null
-    }
-    else
-      return aileronsAssistMode ? imuAxesListenerAleronsElevatorAssist : null
-  }
-  else
+function getImuAxesListener(controlType, gyroAimMode, directControlMode) {
+  if (controlType != "mouse_aim")
     return directControlMode ? imuAxesListenerDirectControl : null
+  return gyroAimMode == "aim" ? imuAxesListenerAim
+    : gyroAimMode == "aileron_assist" ? imuAxesListenerAleronsAssist
+    : null
 }
 
 let aircraftMovement = @(scale) {
   children = [
     throttleSlider(getSizes(scale))
     @() {
-      watch = [ currentAircraftCtrlType, currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
+      watch = [ currentAircraftCtrlType, currentControlByGyroAimMode, currentControlByGyroDirectControl,
         currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive]
       children = [
-        getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroModeAileronsAssist.get(), currentControlByGyroDirectControl.get()),
+        getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroDirectControl.get()),
         isGamepad.get() && !isPieMenuActive.get() ? mkGamepadAxisListener() : null
       ]
     }

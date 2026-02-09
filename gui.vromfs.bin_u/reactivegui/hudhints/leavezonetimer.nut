@@ -12,6 +12,7 @@ let alert = Color(221, 17, 17)
 
 registerHintCreator(HINT_TYPE, @(hint, _) {
   rendObj = ROBJ_TEXT
+  pos = [0, -(0.25 * saSize[1])]
   minHeight = hdpx(40)
   color = alert
   behavior = Behaviors.RtPropUpdate
@@ -21,7 +22,7 @@ registerHintCreator(HINT_TYPE, @(hint, _) {
       : "".concat(inKillZone.get() ? loc("TXT_LEAVE_ZONE_TIMER") : loc("HUD_RETURN_TIMER"),
                 secondsToTimeAbbrString(hint.endTime - get_mission_time()))
   }
-}.__update(fontSmallAccented))
+}.__update(fontMedium))
 
 eventbus_subscribe("onShowReturnToMapMessage",
   @(data) data.showMessage ? addEvent({ id = HINT_TYPE, hType = HINT_TYPE, endTime = data.endTime })

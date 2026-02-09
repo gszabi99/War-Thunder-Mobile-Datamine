@@ -1885,8 +1885,7 @@
         "rocket_engine_2",
         "cannon_l",
         "cannon_r",
-        "no_cannon_l",
-        "no_cannon_r"
+        "no_cannon_l"
       ]
     },
     "HideDmParts": {
@@ -1902,10 +1901,7 @@
         "WeaponPreset": {
           "name": "default_common",
           "ShowNodes": {
-            "node": [
-              "cannon_l",
-              "no_cannon_r"
-            ]
+            "node": "cannon_l"
           },
           "Weapon": {
             "trigger": "cannon",
@@ -1930,20 +1926,17 @@
         "WeaponPreset": {
           "iconType": "gun_30mm",
           "name": "addition_cannon",
-          "ShowDmParts": {
+          "HideNodes": {
             "node": [
-              "engine3_dm",
-              "engine4_dm",
-              "cannon2_dm"
+              "no_cannon_l",
+              "no_cannon_r"
             ]
           },
           "ShowNodes": {
-            "node": [
-              "rocket_engine_1",
-              "rocket_engine_2",
-              "cannon_r",
-              "cannon_l"
-            ]
+            "node": "cannon_r"
+          },
+          "ShowDmParts": {
+            "node": "cannon2_dm"
           },
           "Weapon": {
             "trigger": "additional gun",
@@ -2103,5 +2096,32 @@
       1.67065,
       -7.43748e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "kitsuka_c*",
+        "to": "kitsuka_camo_c*"
+      },
+      {
+        "from": "kitsuka_n*",
+        "to": "kitsuka_camo_n*"
+      }
+    ]
+  },
+  "vehicleSkins": {
+    "valentines": {
+      "replace_tex": [
+        {
+          "from": "kitsuka_c*",
+          "to": "kitsuka_valentines_c*"
+        },
+        {
+          "from": "kitsuka_n*",
+          "to": "kitsuka_valentines_n*"
+        }
+      ]
+    }
   }
 }

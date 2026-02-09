@@ -112,12 +112,13 @@ function getWeaponNamesListImpl(weapons, isShort) {
       order.append(w)
     counts[weaponId] <- (counts?[weaponId] ?? 0) + max(turrets, 1) * count
   }
-  return order.map(function(w) {
+  return order.reduce(function(res, w) {
     let bSet = w.bulletSets?[""]
     let bulletName = getWeaponNameImpl(w, bSet, isShort)
     let count = counts[w.weaponId]
-    return count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName
-  })
+    let name = count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName
+    return res.contains(name) ? res : res.append(name)
+  }, [])
 }
 
 let getWeaponShortNamesList = @(weapons) getWeaponNamesListImpl(weapons, true)

@@ -1833,5 +1833,18 @@
       1.17072,
       -1.78348e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "lagg_3_series_8_winter_a*",
+        "to": "lagg_3_series_8_black_green_a*"
+      },
+      {
+        "from": "lagg_3_series_8_winter_n*",
+        "to": "lagg_3_series_8_black_green_n*"
+      }
+    ]
   }
 }

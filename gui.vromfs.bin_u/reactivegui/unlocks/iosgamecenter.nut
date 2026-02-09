@@ -1,11 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-from "app" import get_base_game_version_str
 let { signInGC, isSignedInGC, submitAchievement, loadAchievements, getAchievementById, showGameCenter
   APPLE_GC_SUCCESS, APPLE_GC_SHOW_ACHIEVMENTS
 } = require("ios.gamecenter")
 let { eventbus_subscribe } = require("eventbus")
 let { parse_json } = require("json")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { has_game_center } = require("%appGlobals/permissions.nut")
 
@@ -14,10 +12,7 @@ let achievementsToUnlockCached = mkWatched(persist, "achievementsToUnlockCached"
 let isSignedInGameCenter = mkWatched(persist, "isSignedInGameCenter", isSignedInGC())
 let isAchievementsLoadedInGameCenter = mkWatched(persist, "isAchievementsLoadedInGameCenter", false)
 
-let isGameCenterSupported = check_version(">=1.20.0.28", get_base_game_version_str())
-let canInteract = isGameCenterSupported
-  ? Computed(@() has_game_center.get() && isLoggedIn.get())
-  : Watched(false)
+let canInteract = Computed(@() has_game_center.get() && isLoggedIn.get())
 
 let isReadyToUnlock = Computed(@() canInteract.get()
   && isSignedInGameCenter.get()

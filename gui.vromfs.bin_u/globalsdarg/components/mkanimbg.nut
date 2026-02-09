@@ -43,6 +43,7 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
   if (moveX == 0 || children == null || animTime <= 0)
     return children
   return {
+    key = layerCfg
     size = flex()
     children
     transform = {}
@@ -53,6 +54,15 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
   }
 }
 
+let leftShade = {
+  size = [pw(shadePw), flex()]
+  pos = [pw(-0.5 * shadePw), 0]
+  rendObj = ROBJ_IMAGE
+  image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")
+  color = 0xFF000000
+}
+let rightShade = leftShade.__merge({ pos = [pw(100.0 - 0.5 * shadePw), 0] })
+
 let mkAnimBg = @(layersCfg, animTime = defAnimTime) {
   key = layersCfg
   size = const [sw(100), sh(100)]
@@ -62,26 +72,8 @@ let mkAnimBg = @(layersCfg, animTime = defAnimTime) {
 
   children = { 
     size = const [sh(250), sh(100)]
-    children = [
-      {
-        size = flex()
-        children = layersCfg.map(@(l) mkAnimBgLayer(l, animTime))
-      }
-      {
-        size = [pw(shadePw), flex()]
-        pos = [pw(-0.5 * shadePw), 0]
-        rendObj = ROBJ_IMAGE
-        image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")
-        color = 0xFF000000
-      }
-      {
-        size = [pw(shadePw), flex()]
-        pos = [pw(100.0 - 0.5 * shadePw), 0]
-        rendObj = ROBJ_IMAGE
-        image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")
-        color = 0xFF000000
-      }
-    ]
+    children = layersCfg.map(@(l) mkAnimBgLayer(l, animTime))
+      .append(leftShade, rightShade)
   }
 }
 
@@ -90,4 +82,7 @@ return {
   mkAnimBgLayer
   mkBgImageByPx
   mkBgImageWithFallback
+
+  leftShade
+  rightShade
 }

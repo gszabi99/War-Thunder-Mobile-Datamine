@@ -17,6 +17,7 @@ let { CMD_MSG_PREFIX, registerChatCmdHandler, sendChatMessage } = require("%rGui
 let { radioMessageVoice } = require("%rGui/options/options/soundOptions.nut")
 let { MARKER_TYPE, addMapMarker } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 let { INDICATOR_TYPE, addHudIndicator } = require("%rGui/hud/indicators/hudIndicatorsState.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 let CMD_MSG_PREFIX_VOICE = $"{CMD_MSG_PREFIX}voice:"
 let COOLDOWN_AFTER_USES = 2
@@ -26,7 +27,7 @@ let SAVE_ID_BLK = "voiceMsg"
 let SAVE_ID_ORDER = $"{SAVE_ID_BLK}/order"
 let SAVE_ID_HIDDEN = $"{SAVE_ID_BLK}/hide"
 
-let isVoiceMsgAllowedInMission = Computed(@() isInMpSession.get() && !isGtFFA.get())
+let isVoiceMsgAllowedInMission = Computed(@() (isInMpSession.get() || isPlayingReplay.get()) && !isGtFFA.get())
 
 let mapMarkTypeByMessageIdPrefix = {
   attack_ = MARKER_TYPE.CAPTURE_POINT_MARK
@@ -154,7 +155,7 @@ let voiceMsgStickDelta = Watched(Point2(0, 0))
 let voiceMsgSelectedIdx = Computed(@() getPieMenuSelectedIdx(voiceMsgCfg.get().len(), voiceMsgStickDelta.get()))
 
 isVoiceMsgStickActive.subscribe(function(isActive) {
-  if (isActive)
+  if (isActive || isPlayingReplay.get())
     return
   let selItem = voiceMsgCfg.get()?[voiceMsgSelectedIdx.get()]
   voiceMsgStickDelta.set(Point2(0, 0))

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { tabW, tabH } = require("%rGui/options/optionsStyle.nut")
+let { tabW, tabH, tabPadding } = require("%rGui/options/optionsStyle.nut")
 let { mkTabs } = require("%rGui/components/tabs.nut")
 let { mkUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { SEEN } = require("%rGui/unseenPriority.nut")
@@ -42,6 +42,7 @@ let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
     watchesList.append(imageTabOffset)
 
   return {
+    padding = [0, hdpx(15)]
     watch = watchesList
     vplace = ALIGN_CENTER
     children = imageTab == null ? null : mkTabImage(imageTab, imageTabSizeMul, imageTabOffsetVal)
@@ -51,8 +52,7 @@ let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
 function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, imageSizeMul = null, isVisible = null, unseen = null,
     tabContent = null, tabHeight = tabH, ovr = {}, imageTabOffset = null } = tab
-  let padding = const [hdpx(10), hdpx(20)]
-  let unseenMarkPos = [padding[1] + unseenSize[1] / 5, -padding[0] - unseenSize[1] / 5]
+  let unseenMarkPos = [tabPadding[1] + unseenSize[1] / 5, -tabPadding[0] - unseenSize[1] / 5]
   local unseenMark = null
   if (unseen != null) {
     let unseenExt = Computed(@() curTabIdx.get() == idx ? SEEN : unseen.get())
@@ -64,7 +64,7 @@ function tabData(tab, idx, curTabIdx) {
     isVisible
     content = {
       size = [ flex(), tabHeight ]
-      padding
+      padding = tabPadding
       children = [
         {
           size = flex()
@@ -75,8 +75,9 @@ function tabData(tab, idx, curTabIdx) {
             tabContent ?? {
               size = flex()
               rendObj = ROBJ_TEXTAREA
-              behavior = Behaviors.TextArea
+              behavior = [Behaviors.TextArea, Behaviors.Marquee]
               halign = ALIGN_RIGHT
+              lineSpacing = -hdpx(5)
               color = textColor
               text = loc(locId)
             }.__update(fontTinyAccented)

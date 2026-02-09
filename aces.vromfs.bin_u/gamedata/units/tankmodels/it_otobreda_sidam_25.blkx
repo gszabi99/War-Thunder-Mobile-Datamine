@@ -60,6 +60,58 @@
       1.0
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "aluminum_armor_5083",
@@ -2090,14 +2142,20 @@
       ],
       "CenterOfGravityClampY": [
         0.4,
-        0.6
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 800.0
     },
     "tracks": {
       "animationMultiplier": 0.6,
-      "height": 0.07
+      "height": 0.07,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2113,6 +2171,7 @@
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
       "sideGearRatio": 3.77573,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -4.35,

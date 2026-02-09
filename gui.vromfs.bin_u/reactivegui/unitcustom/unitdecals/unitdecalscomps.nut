@@ -5,6 +5,8 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
+let { getDecalImg } = require("%rGui/unitCustom/unitDecals/decalsCache.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 
 let decalIconSize = evenPx(130)
@@ -16,32 +18,34 @@ let decalCardWidth = decalIconSize + 2 * borderWidth
 let selBorderDecalColor = selectColor
 let commonBgColor = 0x70000000
 let decalsFooterHeight = decalCardWidth + decalsGap * 2
+let lockIconSize = [evenPx(25), evenPx(32)]
+let lockIconBlockHeight = evenPx(42)
 
-let mkDecalIcon = @(img, size = decalIconSize) {
+let mkDecalIcon = @(id, size = decalIconSize) {
   size
   rendObj = ROBJ_IMAGE
-  image = Picture($"!{img}*")
+  image = Picture($"!{getDecalImg(id)}*")
   keepAspect = true
 }
 
-let mkDecalText = @(text, ovr = {}) {
+let mkDecalText = @(text, ovr = {}) text == null ? null : {
   rendObj = ROBJ_TEXTAREA
   behavior = [Behaviors.TextArea, Behaviors.Marquee]
   halign = ALIGN_CENTER
   maxWidth = hdpx(300)
   text
-}.__update(ovr)
+}.__update(fontVeryTinyAccentedShaded, ovr)
 
-let mkDecalTitle = @(name) mkDecalText(loc($"decals/{name}"), fontVeryTinyAccentedShaded)
+let getDecalTitle = @(name) loc($"decals/{name}")
 
-function mkDecalDesc(name) {
+function getDecalDesc(name) {
   let locId = $"decals/{name}/desc"
   if (!doesLocTextExist(locId))
     return null
   let text = loc(locId)
   if (text == "" || text == loc($"decals/{name}"))
     return null
-  return mkDecalText(text, fontVeryVeryTinyAccented)
+  return text
 }
 
 let mkDecalPrice = @(isAvailable, decalPrice, ovr = {}) @() {
@@ -71,14 +75,37 @@ let decalBackground = {
   opacity = 0.2
 }
 
-function mkDecalCard(decal, availableDecals, selectedDecal, onSelect) {
+let lockIcon = {
+  size = [lockIconBlockHeight, lockIconBlockHeight]
+  rendObj = ROBJ_BOX
+  fillColor = commonBgColor
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    size = lockIconSize
+    rendObj = ROBJ_IMAGE
+    color = 0xFFFFFFFF
+    image = Picture($"ui/gameuiskin#lock_icon.svg:{lockIconSize[0]}:{lockIconSize[1]}:P")
+  }
+}
+
+let unseenMark = {
+  size = flex()
+  halign = ALIGN_RIGHT
+  valign = ALIGN_TOP
+  padding = hdpx(10)
+  children = priorityUnseenMark
+}
+
+function mkDecalCard(decal, availableDecals, selectedDecal, unseenDecals, onSelect) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() decal.get()?.name == selectedDecal.get())
   let isAvailable = Computed(@() decal.get()?.name in availableDecals.get())
+  let isUnseen = Computed(@() decal.get()?.name in unseenDecals.get())
   let decalPrice = Computed(@() decal.get()?.price)
   return @() !decal.get() ? { watch = decal }
     : {
-        watch = [stateFlags, decal, isSelected]
+        watch = [stateFlags, decal, isSelected, isAvailable, isUnseen]
         key = decal.get().name
         size = decalCardWidth
         padding = borderWidth
@@ -92,6 +119,8 @@ function mkDecalCard(decal, availableDecals, selectedDecal, onSelect) {
           decalBackground
           mkDecalIcon(decal.get().name)
           mkDecalPrice(isAvailable, decalPrice)
+          isAvailable.get() || (decal.get()?.price.currencyId ?? "") != "" ? null : lockIcon
+          isUnseen.get() ? unseenMark : null
         ]
       }.__update(mkButtonHoldTooltip(@() onSelect(decal.get().name), stateFlags, decal.get().name,
         @() {
@@ -102,8 +131,8 @@ function mkDecalCard(decal, availableDecals, selectedDecal, onSelect) {
             flow = FLOW_VERTICAL
             gap = hdpx(10)
             children = [
-              mkDecalTitle(decal.get().name)
-              mkDecalDesc(decal.get().name)
+              mkDecalText(getDecalTitle(decal.get().name))
+              mkDecalText(getDecalDesc(decal.get().name), fontVeryVeryTinyAccented)
               {
                 children = [
                   decalBackground
@@ -184,6 +213,7 @@ function mkDecalSlot(slot, selectedSlotId, editingDecalId, handleClick) {
       slot.isEmpty
         ? mkEmptyDecalSlot(isSelected.get(), slot.isDisabled, editingDecalId.get())
         : mkDefaultDecalSlot(slot.decalId, slot.isDisabled)
+      slot.isBlocked ? lockIcon : null
     ]
   }
 }
@@ -196,5 +226,6 @@ return {
   decalsFooterHeight
   mkDecalIcon
   mkDecalSlot
-  mkDecalText
+  getDecalTitle
+  getDecalDesc
 }

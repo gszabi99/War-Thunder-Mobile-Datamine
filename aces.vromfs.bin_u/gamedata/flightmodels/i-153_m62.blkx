@@ -2251,5 +2251,18 @@
       1.42614,
       -1.13606e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "i_153_m62_a*",
+        "to": "i_153_camo_a*"
+      },
+      {
+        "from": "i_153_n*",
+        "to": "i_153_camo_n*"
+      }
+    ]
   }
 }

@@ -62,7 +62,7 @@ return dargBaseLib.__merge(
   appearAnim
   Layers
   defMarqueeDelay = [5, 0.3]
-  defMarqueeDelayVert = [1, 2]
+  defMarqueeDelayVert = [5, 2]
 
   
   safeAreaW

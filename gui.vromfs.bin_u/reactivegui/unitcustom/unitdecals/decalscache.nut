@@ -7,6 +7,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 
 local decalsByCategories = null
+local decalsImgById = {}
 let decalsBlkVersion = Watched(0)
 
 function getDecalsByCategories() {
@@ -16,25 +17,36 @@ function getDecalsByCategories() {
   let decalsBlk = DataBlock()
   get_decals_blk(decalsBlk)
 
-  let byCategory = {}
   local total = 0
-  decalsByCategories = []
+  decalsByCategories = {}
   for (local i = 0; i < decalsBlk.blockCount(); i++) {
     let decalBlk = decalsBlk.getBlock(i)
-    let { category = "" } = decalBlk
-    if (category not in byCategory) {
-      byCategory[category] <- []
-      decalsByCategories.append({ category, decals = byCategory[category] })
+    let decalId = decalBlk.getBlockName()
+    let { category = "", lod1 = decalId } = decalBlk
+    if (category not in decalsByCategories) {
+      decalsByCategories[category] <- []
     }
-    byCategory[category].append(decalBlk.getBlockName())
+    decalsByCategories[category].append(decalId)
+    decalsImgById[decalId] <- lod1
     total++
   }
+
   logD($"Decals from blk loaded. categories: {decalsByCategories.len()}, total decals: {total}")
   return decalsByCategories
 }
 
+function getDecalImg(id) {
+  let img = decalsImgById?[id]
+  if (img != null)
+    return img
+
+  getDecalsByCategories()
+  return decalsImgById?[id] ?? id
+}
+
 function invalidateCache() {
   decalsByCategories = null
+  decalsImgById = {}
   decalsBlkVersion.set(decalsBlkVersion.get() + 1)
 }
 
@@ -44,4 +56,5 @@ eventbus_subscribe("on_dl_content_skins_invalidate", @(_) invalidateCache())
 return {
   getDecalsByCategories
   decalsBlkVersion
+  getDecalImg
 }

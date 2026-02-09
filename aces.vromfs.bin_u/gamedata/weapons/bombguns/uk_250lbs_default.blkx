@@ -1,0 +1,88 @@
+{
+  "bombGun": true,
+  "preset_cost": 75,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "uk_250lbs_gp_mk4",
+  "tags": {
+    "antiTankBomb": true
+  },
+  "bomb": {
+    "mass": 104.3,
+    "mass_lbs": 230.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 30.7,
+    "bombType": "he_bomb",
+    "bombName": "gp_250lb_mk_iv",
+    "caliber": 0.259,
+    "length": 1.422,
+    "distFromCmToStab": 0.013,
+    "dragCx": 0.015,
+    "sound": "weapon.bomb_mid",
+    "explosionFx": "bomb_expl_100kg",
+    "explosionPatchRadius": 5.0,
+    "waterExplosionEffect": "bomb_water_explosion_big",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "explodeTreshold": 0.00001,
+    "explodeHitPower": 220.0,
+    "explodeArmorPower": 78.0,
+    "explodeRadius": [
+      4.5,
+      13.0
+    ],
+    "rendinstDamageRadius": 20.0,
+    "shutterDamage": true,
+    "shutterDamageRadius": 48.0,
+    "shutterAmount": 3000,
+    "shutterArmorPower": 12.0,
+    "shutterHit": 12.0,
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    }
+  }
+}

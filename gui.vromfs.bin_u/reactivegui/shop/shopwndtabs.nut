@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkTabs } = require("%rGui/components/tabs.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { hasUnseenGoodsByCategory, curCategoryId, onTabChange } = require("%rGui/shop/shopState.nut")
+let { curCategoryId, onTabChange } = require("%rGui/shop/shopState.nut")
 let { iconSize, iconMarginW, tabW, tabH } = require("%rGui/shop/shopWndConst.nut")
 
 
-function tabData(tab, campaign) {
+function tabData(tab, campaign, hasUnseenGoodsByCategory) {
   let { id = "", image = null, getImage = null } = tab
   let icon = getImage?(campaign) ?? image
   return {
@@ -16,10 +16,11 @@ function tabData(tab, campaign) {
       size = [flex(), tabH]
       children = [
         icon == null ? null
-          : {
+          : @() {
+              watch = icon instanceof Watched ? icon : null
               size = [iconSize, iconSize]
               rendObj = ROBJ_IMAGE
-              image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+              image = Picture($"{icon instanceof Watched ? icon.get() : icon}:{iconSize}:{iconSize}:P")
               keepAspect = KEEP_ASPECT_FIT
               imageHalign = ALIGN_CENTER
               imageValign = ALIGN_CENTER
@@ -39,7 +40,7 @@ function tabData(tab, campaign) {
 }
 
 return {
-  mkShopTabs = @(tabs, curTabId, campaign)
-    mkTabs(tabs.map(@(t) tabData(t, campaign)), curTabId, {}, onTabChange)
+  mkShopTabs = @(tabs, curTabId, campaign, hasUnseenGoodsByCategory)
+    mkTabs(tabs.map(@(t) tabData(t, campaign, hasUnseenGoodsByCategory)), curTabId, {}, onTabChange)
   tabW
 }

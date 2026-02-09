@@ -5,42 +5,11 @@ options no_unused_function_arguments = false
 
 module linq_boost shared public
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 require daslib/linq public
 
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/macro_boost
-
 
 def private clone_iterator_type(it : TypeDeclPtr) : TypeDeclPtr {
     var inscope res <- clone_type(it.firstType)
@@ -72,121 +41,187 @@ class private AstCallMacro_LinqPred2 : AstCallMacro {
 
 [call_macro(name="_where")]
 class private LinqWhere : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "where_"
 }
 
 [call_macro(name="_where_to_array")]
 class private LinqWhereToArray : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "where_to_array"
-}
-
-[call_macro(name="_where_to_sequence")]
-class private LinqWhereToSequence : AstCallMacro_LinqPred2 {
-    override predName = "where_to_sequence"
 }
 
 [call_macro(name="_select")]
 class private LinqSelect : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "select"
 }
 
 [call_macro(name="_select_to_array")]
 class private LinqSelectToArray : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "select_to_array"
-}
-
-[call_macro(name="_select_to_sequence")]
-class private LinqSelectToSequence : AstCallMacro_LinqPred2 {
-    override predName = "select_to_sequence"
 }
 
 [call_macro(name="_min_by")]
 class private LinqMinBy : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "min_by"
 }
 
 [call_macro(name="_max_by")]
 class private LinqMaxBy : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "max_by"
 }
 
 [call_macro(name="_min_max_by")]
 class private LinqMinMaxBy : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "min_max_by"
 }
 
 [call_macro(name="_min_max_average_by")]
 class private LinqMinMaxAverageBy : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "min_max_average_by"
 }
 
 [call_macro(name="_skip_while")]
 class private LinqSkipWhile : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "skip_while"
 }
 
 [call_macro(name="_take_while")]
 class private LinqTakeWhile : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "take_while"
 }
 
 [call_macro(name="_all")]
 class private LinqAll : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "all"
 }
 
 [call_macro(name="_any")]
 class private LinqAny : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "any"
+}
+
+[call_macro(name="_unique_by")]
+class private LinqUnique : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
+    override predName = "unique_by"
+}
+
+[call_macro(name="_unique_by_to_array")]
+class private LinqUniqueToArray : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
+    override predName = "unique_by_to_array"
 }
 
 [call_macro(name="_distinct_by")]
 class private LinqDistinctBy : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "distinct_by"
 }
 
 [call_macro(name="_distinct_by_to_array")]
 class private LinqDistinctByToArray : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "distinct_by_to_array"
-}
-
-[call_macro(name="_distinct_by_to_sequence")]
-class private LinqDistinctByToSequence : AstCallMacro_LinqPred2 {
-    override predName = "distinct_by_to_sequence"
 }
 
 [call_macro(name="_order_by")]
 class private LinqOrderBy : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "order_by"
 }
 
 [call_macro(name="_order_by_to_array")]
 class private LinqOrderByToArray : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "order_by_to_array"
-}
-
-[call_macro(name="_order_by_to_sequence")]
-class private LinqOrderByToSequence : AstCallMacro_LinqPred2 {
-    override predName = "order_by_to_sequence"
 }
 
 [call_macro(name="_order_by_descending")]
 class private LinqOrderByDescending : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "order_by_descending"
 }
 
 [call_macro(name="_order_by_descending_to_array")]
 class private LinqOrderByDescendingToArray : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
     override predName = "order_by_descending_to_array"
-}
-
-[call_macro(name="_order_by_descending_to_sequence")]
-class private LinqOrderByDescendingToSequence : AstCallMacro_LinqPred2 {
-    override predName = "order_by_descending_to_sequence"
 }
 
 class private AstCallMacro_LinqPredII2 : AstCallMacro {
     predName = "sequence_equal_by"
+    
     
     
     
@@ -208,52 +243,65 @@ class private AstCallMacro_LinqPredII2 : AstCallMacro {
 
 [call_macro(name="_sequence_equal_by")]
 class private LinqPred3 : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "sequence_equal_by"
 }
 
 [call_macro(name="_except_by")]
 class private LinqExceptBy : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "except_by"
 }
 
 [call_macro(name="_except_by_to_array")]
 class private LinqExceptByToArray : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "except_by_to_array"
-}
-
-[call_macro(name="_except_by_to_sequence")]
-class private LinqExceptByToSequence : AstCallMacro_LinqPredII2 {
-    override predName = "except_by_to_sequence"
 }
 
 [call_macro(name="_intersect_by")]
 class private LinqIntersectBy : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "intersect_by"
 }
 
 [call_macro(name="_intersect_by_to_array")]
 class private LinqIntersectByToArray : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "intersect_by_to_array"
-}
-
-[call_macro(name="_intersect_by_to_sequence")]
-class private LinqIntersectByToSequence : AstCallMacro_LinqPredII2 {
-    override predName = "intersect_by_to_sequence"
 }
 
 [call_macro(name="_union_by")]
 class private LinqUnionBy : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "union_by"
 }
 
 [call_macro(name="_union_by_to_array")]
 class private LinqUnionByToArray : AstCallMacro_LinqPredII2 {
+    
+    
+    
+    
     override predName = "union_by_to_array"
-}
-
-[call_macro(name="_union_by_to_sequence")]
-class private LinqUnionByToSequence : AstCallMacro_LinqPredII2 {
-    override predName = "union_by_to_sequence"
 }
 
 def private is_call_or_generic(var expr : Expression?, name, moduleName : string) : ExprCall? {
@@ -308,33 +356,24 @@ var private linqCalls = {
 
     "where_" => LinqCall(name = "where_"),
     "where_to_array" => LinqCall(name = "where_"),
-    "where_to_sequence" => LinqCall(name = "where_"),
 
     "select" => LinqCall(name = "select"),
     "select_to_array" => LinqCall(name = "select"),
-    "select_to_sequence" => LinqCall(name = "select"),
     "select_many" => LinqCall(name = "select_many"),
     "select_many_to_array" => LinqCall(name = "select_many"),
-    "select_many_to_sequence" => LinqCall(name = "select_many"),
     "zip" => LinqCall(name = "zip", recursive = [1]),
     "zip_to_array" => LinqCall(name = "zip", recursive = [1]),
-    "zip_to_sequence" => LinqCall(name = "zip", recursive = [1]),
 
     "reverse" => LinqCall(name = "reverse", inplace = true),
     "reverse_to_array" => LinqCall(name = "reverse", inplace = true),
-    "reverse_to_sequence" => LinqCall(name = "reverse", inplace = true),
     "order" => LinqCall(name = "order", inplace = true),
     "order_to_array" => LinqCall(name = "order", inplace = true),
-    "order_to_sequence" => LinqCall(name = "order", inplace = true),
     "order_descending" => LinqCall(name = "order_descending", inplace = true),
     "order_descending_to_array" => LinqCall(name = "order_descending", inplace = true),
-    "order_descending_to_sequence" => LinqCall(name = "order_descending", inplace = true),
     "order_by" => LinqCall(name = "order_by", inplace = true),
     "order_by_to_array" => LinqCall(name = "order_by", inplace = true),
-    "order_by_to_sequence" => LinqCall(name = "order_by", inplace = true),
     "order_by_descending" => LinqCall(name = "order_by_descending", inplace = true),
     "order_by_descending_to_array" => LinqCall(name = "order_by_descending", inplace = true),
-    "order_by_descending_to_sequence" => LinqCall(name = "order_by_descending", inplace = true),
 
     "count" => LinqCall(name = "count"),
     "long_count" => LinqCall(name = "long_count"),
@@ -352,54 +391,42 @@ var private linqCalls = {
 
     "skip" => LinqCall(name = "skip", inplace = true),
     "skip_to_array" => LinqCall(name = "skip", inplace = true),
-    "skip_to_sequence" => LinqCall(name = "skip", inplace = true),
     "skip_while" => LinqCall(name = "skip_while"),
     "skip_while_to_array" => LinqCall(name = "skip_while"),
-    "skip_while_to_sequence" => LinqCall(name = "skip_while"),
     "take" => LinqCall(name = "take", inplace = true),
     "take_to_array" => LinqCall(name = "take", inplace = true),
-    "take_to_sequence" => LinqCall(name = "take", inplace = true),
     "take_while" => LinqCall(name = "take_while"),
     "take_while_to_array" => LinqCall(name = "take_while"),
-    "take_while_to_sequence" => LinqCall(name = "take_while"),
     "chunk" => LinqCall(name = "chunk"),
     "chunk_to_array" => LinqCall(name = "chunk"),
-    "chunk_to_sequence" => LinqCall(name = "chunk"),
 
     "concat" => LinqCall(name = "concat", recursive = [1], inplace = true),
     "concat_to_array" => LinqCall(name = "concat", recursive = [1], inplace = true),
-    "concat_to_sequence" => LinqCall(name = "concat", recursive = [1], inplace = true),
     "prepend" => LinqCall(name = "prepend", inplace = true),
     "prepend_to_array" => LinqCall(name = "prepend", inplace = true),
-    "prepend_to_sequence" => LinqCall(name = "prepend", inplace = true),
     "append" => LinqCall(name = "append", inplace = true),
     "append_to_array" => LinqCall(name = "append", inplace = true),
-    "append_to_sequence" => LinqCall(name = "append", inplace = true),
 
     "distinct" => LinqCall(name = "distinct", inplace = true),
     "distinct_to_array" => LinqCall(name = "distinct", inplace = true),
-    "distinct_to_sequence" => LinqCall(name = "distinct", inplace = true),
     "distinct_by" => LinqCall(name = "distinct_by", inplace = true),
     "distinct_by_to_array" => LinqCall(name = "distinct_by", inplace = true),
-    "distinct_by_to_sequence" => LinqCall(name = "distinct_by", inplace = true),
     "union" => LinqCall(name = "union", recursive = [1]),
     "union_to_array" => LinqCall(name = "union", recursive = [1]),
-    "union_to_sequence" => LinqCall(name = "union", recursive = [1]),
     "union_by" => LinqCall(name = "union_by", recursive = [1]),
     "union_by_to_array" => LinqCall(name = "union_by", recursive = [1]),
-    "union_by_to_sequence" => LinqCall(name = "union_by", recursive = [1]),
     "except" => LinqCall(name = "except", recursive = [1]),
     "except_to_array" => LinqCall(name = "except", recursive = [1]),
-    "except_to_sequence" => LinqCall(name = "except", recursive = [1]),
     "except_by" => LinqCall(name = "except_by", recursive = [1]),
     "except_by_to_array" => LinqCall(name = "except_by", recursive = [1]),
-    "except_by_to_sequence" => LinqCall(name = "except_by", recursive = [1]),
     "intersect" => LinqCall(name = "intersect", recursive = [1]),
     "intersect_to_array" => LinqCall(name = "intersect", recursive = [1]),
-    "intersect_to_sequence" => LinqCall(name = "intersect", recursive = [1]),
     "intersect_by" => LinqCall(name = "intersect_by", recursive = [1]),
     "intersect_by_to_array" => LinqCall(name = "intersect_by", recursive = [1]),
-    "intersect_by_to_sequence" => LinqCall(name = "intersect_by", recursive = [1]),
+    "unique" => LinqCall(name = "unique", inplace = true),
+    "unique_to_array" => LinqCall(name = "unique", inplace = true),
+    "unique_by" => LinqCall(name = "unique_by", inplace = true),
+    "unique_by_to_array" => LinqCall(name = "unique_by", inplace = true),
 
     "element_at" => LinqCall(name = "element_at"),
     "element_at_or_default" => LinqCall(name = "element_at_or_default"),
@@ -412,13 +439,10 @@ var private linqCalls = {
 
     "join" => LinqCall(name = "join", recursive = [1]),
     "join_to_array" => LinqCall(name = "join", recursive = [1]),
-    "join_to_sequence" => LinqCall(name = "join", recursive = [1]),
     "group_join" => LinqCall(name = "group_join", recursive = [1]),
     "group_join_to_array" => LinqCall(name = "group_join", recursive = [1]),
-    "group_join_to_sequence" => LinqCall(name = "group_join", recursive = [1]),
     "group_by" => LinqCall(name = "group_by"),
     "group_by_to_array" => LinqCall(name = "group_by"),
-    "group_by_to_sequence" => LinqCall(name = "group_by"),
 
     "any" => LinqCall(name = "any"),
     "all" => LinqCall(name = "all"),
@@ -451,7 +475,7 @@ def private is_linq_call(var expr : Expression?) : bool {
 [macro_function]
 def private flatten_linq(var expr : ExpressionPtr)  {
     var top = get_ptr(expr)
-    var calls : array<tuple<ExprCall?; LinqCall const?>>
+    var calls : array<tuple<ExprCall?; LinqCall?>>
     while (top != null) {
         if (top is ExprCall) {
             var topCall = top as ExprCall
@@ -463,7 +487,7 @@ def private flatten_linq(var expr : ExpressionPtr)  {
             if (!linqCalls.key_exists(funcName)) {
                 break
             }
-            let linqCall & = unsafe(linqCalls?[funcName] ?? default<LinqCall>)
+            var linqCall & = unsafe(linqCalls?[funcName] ?? default<LinqCall>)
             if (linqCall.moduleName != string(topFunc._module.name)) {
                 break
             }
@@ -478,6 +502,155 @@ def private flatten_linq(var expr : ExpressionPtr)  {
     calls.reverse_inplace()
     
     return <- (top, calls)
+}
+
+struct private FoldSequence {
+    calls : array<string>
+    folder : function<(
+        argIndex : int;
+        var topValue : ExpressionPtr;
+        var blk : ExprBlock?;
+        var calls : array<tuple<ExprCall?; LinqCall?>>
+    ) : ExpressionPtr>
+}
+
+var private g_foldSeq = [               
+
+    FoldSequence(
+        calls = ["order", "distinct" ],
+        folder = @@fold_order_distinct
+    ),
+    FoldSequence(
+        calls = ["distinct", "order" ],
+        folder = @@fold_order_distinct
+    ),
+
+    FoldSequence(
+        calls = ["where_", "select" ],
+        folder = @@fold_where_select
+    ),
+    FoldSequence(
+        calls = ["select", "where_"],
+        folder = @@fold_select_where
+    ),
+    FoldSequence(
+        calls = ["where_"],
+        folder = @@fold_where
+    ),
+    FoldSequence(
+        calls = ["select"],
+        folder = @@fold_select
+    ),
+]
+
+[macro_function]
+def private append_comprehension(argIndex : int; var topValue : ExpressionPtr; var comprehension : ExpressionPtr; var blk : ExprBlock?; at : LineInfo) : ExpressionPtr {
+    comprehension.force_at(at)
+    comprehension.force_generated(true)
+    let newArgName = "pass_{argIndex}"
+    blk.list |> emplace_new <| qmacro_expr() {
+        var $i(newArgName) <- $e(comprehension)
+    }
+    (blk.list.back() as ExprLet).variables[0].flags |= VariableFlags.can_shadow
+    if (argIndex != 0) {
+        blk.list |> emplace_new <| qmacro_expr() {
+            delete $e(topValue)
+        }
+    }
+    return <- qmacro($i(newArgName))
+}
+
+[macro_function]
+def private fold_order_distinct(argIndex : int; var topValue : ExpressionPtr; var blk : ExprBlock?; var calls : array<tuple<ExprCall?; LinqCall?>>) : ExpressionPtr {
+    
+    var eOrder = calls[0]._0
+    var eDistinct = calls[1]._0
+    if (argIndex == 0) {
+        var inscope comprehension <- qmacro(order_unique_folded($e(topValue)))
+        return <- append_comprehension(argIndex, topValue, comprehension, blk, calls[0]._0.at)
+    } else {
+        blk.list |> emplace_new <| qmacro(order_unique_folded_inplace($e(topValue)))
+        return <- clone_expression(topValue)
+    }
+}
+
+[macro_function]
+def private fold_where_select(argIndex : int; var topValue : ExpressionPtr; var blk : ExprBlock?; var calls : array<tuple<ExprCall?; LinqCall?>>) : ExpressionPtr {
+    
+    var eWhere = calls[0]._0
+    var eSelect = calls[1]._0
+    var inscope iterType <- clone_type(eWhere.arguments[0]._type.firstType)
+    var inscope whereCond : ExpressionPtr
+    whereCond |> move_new <| fold_linq_cond(eWhere.arguments[1], "it")
+    var inscope selectExpr : ExpressionPtr
+    if (eSelect != null) {
+        selectExpr |> move_new <| fold_linq_cond(eSelect.arguments[1], "it")
+    } else {
+        selectExpr |> move_new <| new ExprVar(name := "it", at = topValue.at, _type := iterType)
+    }
+    var inscope comprehension <- qmacro([for (it in $e(topValue)); $e(selectExpr); where $e(whereCond)])
+    return <- append_comprehension(argIndex, topValue, comprehension, blk, calls[0]._0.at)
+}
+
+[macro_function]
+def private fold_where(argIndex : int; var topValue : ExpressionPtr; var blk : ExprBlock?; var calls : array<tuple<ExprCall?; LinqCall?>>) : ExpressionPtr {
+    
+    var eWhere = calls[0]._0
+    var inscope whereCond : ExpressionPtr
+    whereCond |> move_new <| fold_linq_cond(eWhere.arguments[1], "it")
+    var inscope comprehension <- qmacro([for (it in $e(topValue)); it; where $e(whereCond)])
+    return <- append_comprehension(argIndex, topValue, comprehension, blk, calls[0]._0.at)
+}
+
+[macro_function]
+def private fold_select(argIndex : int; var topValue : ExpressionPtr; var blk : ExprBlock?; var calls : array<tuple<ExprCall?; LinqCall?>>) : ExpressionPtr {
+    
+    var eSelect = calls[0]._0
+    var inscope selectExpr : ExpressionPtr
+    selectExpr |> move_new <| fold_linq_cond(eSelect.arguments[1], "it")
+    var inscope comprehension <- qmacro([for (it in $e(topValue)); $e(selectExpr)])
+    return <- append_comprehension(argIndex, topValue, comprehension, blk, calls[0]._0.at)
+}
+
+[macro_function]
+def private fold_select_where(argIndex : int; var topValue : ExpressionPtr; var blk : ExprBlock?; var calls : array<tuple<ExprCall?; LinqCall?>>) : ExpressionPtr {
+    
+    
+    var eWhere = calls[1]._0
+    var eSelect = calls[0]._0
+    var inscope iterType <- clone_type(eWhere.arguments[0]._type.firstType)
+    var inscope whereCond : ExpressionPtr
+    let srcName = "`source`{argIndex}`{eSelect.at.line}`{eSelect.at.column}"
+    let valName = "`value`{argIndex}`{eSelect.at.line}`{eSelect.at.column}"
+    let itName = "`it`{argIndex}`{eSelect.at.line}`{eSelect.at.column}"
+    let arrName = "`arr`{argIndex}`{eSelect.at.line}`{eSelect.at.column}"
+    whereCond |> move_new <| fold_linq_cond(eWhere.arguments[1], valName)
+    var inscope selectExpr : ExpressionPtr
+    if (eSelect != null) {
+        selectExpr |> move_new <| fold_linq_cond(eSelect.arguments[1], itName)
+    } else {
+        selectExpr |> move_new <| new ExprVar(name := itName, at = topValue.at, _type := iterType)
+    }
+    var inscope comprehension <- qmacro(invoke($($i(srcName) : typedecl($e(topValue)) - const) {
+            var $i(arrName) : array<$t(iterType)>
+            unsafe(set_verify_array_locks($i(arrName), false))
+            for ($i(itName) in $i(srcName)) {
+                static_if (typeinfo is_workhorse($e(selectExpr))) {
+                    var $i(valName) = $e(selectExpr)
+                    if ($e(whereCond)) {
+                        $i(arrName).emplace($i(valName))
+                    }
+                } else {
+                    var $i(valName) <- $e(selectExpr)
+                    if ($e(whereCond)) {
+                        $i(arrName).emplace($i(valName))
+                    }
+                }
+            }
+            unsafe(set_verify_array_locks($i(arrName), true))
+            return <- $i(arrName)
+        }, $e(topValue)))
+    return <- append_comprehension(argIndex, topValue, comprehension, blk, calls[0]._0.at)
 }
 
 [macro_function]
@@ -503,51 +676,84 @@ def private fold_linq_default(var expr : ExpressionPtr) : ExpressionPtr {
     var inscope topExprType <- clone_type(top._type)
     var inscope topValue = qmacro(source)
     let lastCallIndex = calls |> length - 1
-    for (cll, argIndex in calls, count()) {
+    var argIndex = 0
+    let argMax = length(calls)
+    while (argIndex < argMax) {
         if (true) {
+            var cll & = unsafe(calls[argIndex])
             let newArgName = "pass_{argIndex}"
             var callName = cll._1.name
             var inplace = false
-            if (cll._0._type.isIterator || cll._0._type.isGoodArrayType) {
-                if (argIndex == 0 && top._type.isIterator) {
-                    callName = "{callName}_to_array"
-                } elif (argIndex == lastCallIndex && expr._type.isIterator) {
-                    callName = "{callName}_to_sequence"
-                } elif (argIndex != 0 && cll._1.inplace) {
-                    callName = "{callName}_inplace"
-                    inplace = true
-                }
-            }
-            for (i in cll._1.recursive) {   
-                if (i >= 1 && i < cll._0.arguments |> length) {
-                    var inscope argExpr <- make_call(cll._0.at, "_fold")
-                    (argExpr as ExprCallMacro).arguments |> emplace <| cll._0.arguments[i]
-                    cll._0.arguments[i] |> move <| argExpr
-                }
-            }
-            var inscope newCall = qmacro($c(callName)($e(topValue)))
-            let numArgs = cll._0.arguments |> length
-            for (i in 1..numArgs) {
-                (newCall as ExprCall).arguments |> emplace_new <| clone_expression(cll._0.arguments[i])
-            }
-            if (inplace) {
-                blk.list |> emplace(newCall)
-            } else {
-                blk.list |> emplace_new <| qmacro_expr() {
-                    var $i(newArgName) = $e(newCall)
-                }
-                (blk.list.back() as ExprLet).variables[0].flags |= VariableFlags.can_shadow
-                if (argIndex != 0) {
-                    blk.list |> emplace_new <| qmacro_expr() {
-                        delete $e(topValue)
+            
+            var found : FoldSequence?
+            for (fs in g_foldSeq) {
+                if (fs.calls |> length + argIndex - 1 < argMax) {
+                    var match = true
+                    for (i in 0 .. fs.calls |> length) {
+                        if (fs.calls[i] != unsafe(calls[argIndex + i]._1.name)) {
+                            match = false
+                            break
+                        }
+                    }
+                    if (match) {
+                        found = unsafe(addr(fs))
+                        break
                     }
                 }
-                topValue |> move_new <| qmacro($i(newArgName))
+            }
+            if (found != null) {
+                var sub = subarray(calls, argIndex .. argIndex + found.calls |> length)
+                print("before topValue = {describe(topValue)}\n")
+                topValue |> move_new <| found.folder(argIndex, topValue, blk.get_ptr(), sub)
+                print("after topValue = {describe(topValue)}\n")
+                argIndex += found.calls |> length
+            } else {
+                if (cll._0._type.isIterator || cll._0._type.isGoodArrayType) {
+                    if (argIndex == 0 && top._type.isIterator) {
+                        callName = "{callName}_to_array"
+                    } elif (argIndex != 0 && cll._1.inplace) {
+                        callName = "{callName}_inplace"
+                        inplace = true
+                    }
+                }
+                for (i in cll._1.recursive) {   
+                    if (i >= 1 && i < cll._0.arguments |> length) {
+                        var inscope argExpr <- make_call(cll._0.at, "_fold")
+                        (argExpr as ExprCallMacro).arguments |> emplace <| cll._0.arguments[i]
+                        cll._0.arguments[i] |> move <| argExpr
+                    }
+                }
+                var inscope newCall = qmacro($c(callName)($e(topValue)))
+                let numArgs = cll._0.arguments |> length
+                for (i in 1..numArgs) {
+                    (newCall as ExprCall).arguments |> emplace_new <| clone_expression(cll._0.arguments[i])
+                }
+                if (inplace) {
+                    blk.list |> emplace(newCall)
+                } else {
+                    blk.list |> emplace_new <| qmacro_expr() {
+                        var $i(newArgName) = $e(newCall)
+                    }
+                    (blk.list.back() as ExprLet).variables[0].flags |= VariableFlags.can_shadow
+                    if (argIndex != 0) {
+                        blk.list |> emplace_new <| qmacro_expr() {
+                            delete $e(topValue)
+                        }
+                    }
+                    topValue |> move_new <| qmacro($i(newArgName))
+                }
+                argIndex ++
             }
         }
     }
-    blk.list |> emplace_new <| qmacro_expr() {
-        return <- $e(topValue)
+    if (expr._type.isIterator) {
+        blk.list |> emplace_new <| qmacro_expr() {
+            return <- $e(topValue).to_sequence_move()
+        }
+    } else {
+        blk.list |> emplace_new <| qmacro_expr() {
+            return <- $e(topValue)
+        }
     }
     topExpr.genFlags |= ExprGenFlags.alwaysSafe
     var inscope res <- qmacro(invoke($(source : $t(topExprType)) { $e(blk); }, $e(topExpr)))
@@ -556,71 +762,21 @@ def private fold_linq_default(var expr : ExpressionPtr) : ExpressionPtr {
     return <- res
 }
 
-[macro_function]
-def private fold_linq_where_expr(var expr : ExpressionPtr) : ExpressionPtr {
-    
-    
-    
-    
-    var inscope res : ExpressionPtr
-    
-    var top : Expression? = expr.get_ptr()
-    
-    var e_to_array = top.is_call_or_generic_arg0("to_array", "$")
-    top = e_to_array != null ? e_to_array : top
-    
-    var e_select = top.is_call_or_generic("select", "linq")
-    top = e_select != null ? e_select.arguments[0].get_ptr() : top
-    
-    var e_where = top.is_call_or_generic("where_", "linq")
-    top = e_where != null ? e_where.arguments[0].get_ptr() : top
-    
-    return <- res if (top._type == null || !(top._type.isIterator || top._type.isGoodArrayType))
-    return <- res if (is_linq_call(top))    
-    var inscope iterType <- clone_type(top._type.firstType)
-    
-    var e_to_sequence = top.is_call_or_generic_arg0("to_sequence", "linq")
-    top = e_to_sequence != null ? e_to_sequence : top
-    
-    var e_to_array_move = top.is_call_or_generic_arg0("to_array_move", "$")
-    top = e_to_array_move != null ? e_to_array_move : top
-    
-    var inscope top_e <- clone_expression(unsafe(reinterpret<ExpressionPtr>(top)))
-    var inscope select_e : ExpressionPtr
-    if (e_select != null) {
-        select_e |> move_new <| fold_linq_cond(e_select.arguments[1], "it")
-    } else {
-        select_e |> move_new <| new ExprVar(name := "it", at = expr.at, _type := iterType)
-    }
-    
-    var inscope comprehension : smart_ptr<ExprArrayComprehension>
-    comprehension |> move_new <| qmacro([for (it in $e(top_e)); $e(select_e)])
-    comprehension.force_at(expr.at)
-    if (e_where != null) {
-        comprehension.exprWhere |> move_new <| fold_linq_cond(e_where.arguments[1], "it")
-    }
-    let input_is_sequence = e_to_sequence != null || top._type.isIterator
-    let output_is_array = e_to_array != null
-    comprehension.generatorSyntax = input_is_sequence && !output_is_array
-    return <- comprehension
-}
-
 [call_macro(name="_fold")]
 class private LinqFold : AstCallMacro {
+    
+    
+    
+    
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting _fold(expression)")
         macro_verify(call.arguments[0]._type != null, prog, call.at, "expecting linq expression")
-        var inscope res : ExpressionPtr <- fold_linq_where_expr(call.arguments[0])
+        var inscope res : ExpressionPtr <- fold_linq_default(call.arguments[0])
         if (res == null) {
-            res |> move_new <| fold_linq_default(call.arguments[0])
-        }
-        if (res == null) {
-            prog |> macro_error(call.at, "cannot fold LINQ expression")
+            prog |> macro_error(call.at, "cannot fold LINQ expression\n{describe(call.arguments[0])}")
             return <- res
         }
         return <- res
     }
 }
-
-
 

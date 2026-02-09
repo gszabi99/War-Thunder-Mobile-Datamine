@@ -8,6 +8,7 @@ let { openUnitCustom } = require("%rGui/unitCustom/unitCustomState.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { unseenDecals } = require("%rGui/unitCustom/unitDecals/unseenDecals.nut")
 
 
 let iconSize = hdpxi(80)
@@ -40,10 +41,10 @@ let mkBtnOpenCustomization = @(unitW, minWidth) @() {
         : openDownloadAddonsWnd([], [getTagsUnitName(unitW.get().name)], "unitDownloadInfoBlock", {}, "openUnitCustom"),
       mkBtnStyle(minWidth))
     @() {
-      watch = [unitW, unseenSkins]
+      watch = [unitW, unseenSkins, unseenDecals]
       margin = hdpx(10)
       hplace = ALIGN_RIGHT
-      children = unitW.get()?.name in unseenSkins.get() ? priorityUnseenMark : null
+      children = (unitW.get()?.name in unseenSkins.get() || unseenDecals.get().len() > 0) ? priorityUnseenMark : null
     }
   ]
 }

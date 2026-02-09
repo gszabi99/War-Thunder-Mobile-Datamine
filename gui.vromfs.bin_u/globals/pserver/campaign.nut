@@ -19,7 +19,9 @@ let isAnyCampaignSelected = Computed(@() (selectedCampaign.get() ?? savedCampaig
 
 let campaignsList = Computed(@() serverConfigs.get()?.circuit.campaigns.available ?? [ defaultCampaign ])
 
-let curCampaign = Computed(function() {
+let curCampaign = Computed(function(prev) {
+  if (servProfile.get().len() == 0)
+    return type(prev) == "string" ? prev : campaignsList.get()?[0]  
   if (campaignsList.get().contains(selectedCampaign.get()))
     return selectedCampaign.get()
   let saved = savedCampaign.get()
@@ -64,6 +66,8 @@ let campConfigs = Computed(function() {
   chooseByCampaign(res, "playerLevels", campaign)
   chooseByCampaign(res, "playerLevelsInfo", campaign)
   chooseByCampaign(res, "playerLevelRewards", campaign)
+  chooseByCampaign(res, "unitTreeNodes", campaign)
+  chooseByCampaign(res, "itemConversionsCfg", campaign)
   filterByCampaign(res, "clientMissionRewards", campaign)
   filterByCampaign(res, "allUnits", campaign)
   filterByCampaignMask(res, "allBoosters", campaignBit)
@@ -82,11 +86,20 @@ function newIfHasChanges(newList, prevList) {
   return prevList
 }
 
-function filterByListTbl(res, prev, key, compareList) {
+function filterByListTbl(res, prev, prevFullList, key, compareList) {
   if (key not in res)
     return
-  let newList = res[key].filter(@(_, id) id in compareList)
-  let prevList = prev?[key] ?? {}
+
+  let curFullList = res[key]
+  let prevFilteredList = prev?[key]
+
+  if (prevFullList != null && prevFilteredList != null && curFullList == prevFullList) {
+    res[key] = prevFilteredList
+    return
+  }
+
+  let newList = curFullList.filter(@(_, id) id in compareList)
+  let prevList = prevFilteredList ?? {}
   res[key] = newIfHasChanges(newList, prevList)
 }
 
@@ -109,11 +122,16 @@ function chooseOneByCampaignTbl(res, prev, key, campaign) {
 let getCampaignStatsId = @(campaign) campaignStatsRemap?[campaign] ?? campaign
 
 let campProfile = Computed(function(prev) {
-  let res = clone (servProfile.get() ?? {})
+  let sProfile = servProfile.get() ?? {}
+  let { units = null, items = null } = sProfile
+  let res = clone sProfile
   let campaign = curCampaign.get()
+  let { prevCampaign = null, prevUnits = null, prevItems = null } = prev
+  let isCampaignChanged = prevCampaign != campaign
+
   let { allUnits = {}, allItems = {} } = campConfigs.get()
-  filterByListTbl(res, prev, "units", allUnits)
-  filterByListTbl(res, prev, "items", allItems)
+  filterByListTbl(res, prev, isCampaignChanged ? null : prevUnits, "units", allUnits)
+  filterByListTbl(res, prev, isCampaignChanged ? null : prevItems, "items", allItems)
   chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", getCampaignStatsId(campaign))
@@ -121,6 +139,10 @@ let campProfile = Computed(function(prev) {
   chooseListByCampaignTbl(res, prev, "penalties", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
   chooseOneByCampaignTbl(res, prev, "campaignSlots", campaign)
+
+  res.prevUnits <- units
+  res.prevItems <- items
+  res.prevCampaign <- campaign
   return res
 })
 

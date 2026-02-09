@@ -1739,7 +1739,7 @@
         "weap": "canberra_bimk6_killstreak_default",
         "rankRange": [
           6,
-          6
+          9
         ]
       },
       {
@@ -1747,7 +1747,7 @@
         "weap": "so_4050_vautour_2a_killstreak_default",
         "rankRange": [
           6,
-          6
+          9
         ]
       },
       {
@@ -1755,30 +1755,30 @@
         "weap": "il_28sh_killstreak_default",
         "rankRange": [
           6,
-          6
+          9
         ]
       },
       {
-        "name": "canberra_bimk6_killstreak",
-        "weap": "canberra_bimk6_killstreak_default",
+        "name": "su_25_killstreak",
+        "weap": "su_25_killstreak_default",
         "rankRange": [
-          7,
+          10,
           50
         ]
       },
       {
-        "name": "so_4050_vautour_2a_killstreak",
-        "weap": "so_4050_vautour_2a_killstreak_default",
+        "name": "hawk_200_killstreak",
+        "weap": "hawk_200_killstreak_default",
         "rankRange": [
-          7,
+          10,
           50
         ]
       },
       {
-        "name": "il_28sh_killstreak",
-        "weap": "il_28sh_killstreak_default",
+        "name": "a_10a_late_killstreak",
+        "weap": "a_10a_late_killstreak_default",
         "rankRange": [
-          7,
+          10,
           50
         ]
       }
@@ -1925,7 +1925,7 @@
         "weap": "mig_15_killstreak_default",
         "rankRange": [
           6,
-          6
+          9
         ]
       },
       {
@@ -1933,7 +1933,7 @@
         "weap": "meteor_fmk8_killstreak_default",
         "rankRange": [
           6,
-          6
+          9
         ]
       },
       {
@@ -1941,30 +1941,22 @@
         "weap": "me_262c_2b_killstreak_default",
         "rankRange": [
           6,
-          6
+          9
         ]
       },
       {
-        "name": "mig_15_killstreak",
-        "weap": "mig_15_killstreak_default",
+        "name": "f-100d_killstreak",
+        "weap": "f-100d_killstreak_default",
         "rankRange": [
-          7,
+          10,
           50
         ]
       },
       {
-        "name": "meteor_fmk8_killstreak",
-        "weap": "meteor_fmk8_killstreak_default",
+        "name": "mig-19pt_killstreak",
+        "weap": "mig-19pt_killstreak_default",
         "rankRange": [
-          7,
-          50
-        ]
-      },
-      {
-        "name": "me_262c_2b_killstreak",
-        "weap": "me_262c_2b_killstreak_default",
-        "rankRange": [
-          7,
+          10,
           50
         ]
       }

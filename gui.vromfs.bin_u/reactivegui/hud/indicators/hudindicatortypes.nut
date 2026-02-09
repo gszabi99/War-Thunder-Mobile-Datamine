@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+let { hudWhiteColor, hudBlackColor } = require("%rGui/style/hudColors.nut")
 
 let INDICATOR_TYPE = {
   PLAYER_CHAT_BUBBLE = 1
   PLAYER_MISSION_ICON = 2
+  PLAYER_ID_DEBUG = 3
 }
 
 let INDICATOR_ICON_SIZE = hdpxi(64)
@@ -56,9 +57,28 @@ let indicatorTypes = {
       })
     }
   },
+  [INDICATOR_TYPE.PLAYER_ID_DEBUG] = {
+    showSec = 0.0
+    isDuplicate = isDuplicate_OnePerPlayer
+    function ctor(data) {
+      let { id, params } = data
+      let { playerId } = params
+      return mkHudIndicatorIcon(id, "score_icon.svg", INDICATOR_ICON_SIZE, {
+        children = {
+          pos = [0, hdpx(4)]
+          hplace = ALIGN_CENTER
+          vplace = ALIGN_CENTER
+          rendObj = ROBJ_TEXT
+          text = playerId
+          color = hudBlackColor
+        }.__update(fontTiny)
+      })
+    }
+  },
 }
 
 return {
   INDICATOR_TYPE
   indicatorTypes
+  INDICATOR_ICON_SIZE
 }

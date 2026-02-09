@@ -28,8 +28,9 @@ let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEd
   bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
   buttonAirImgSize, mkCircleSecondaryGuns
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera
-  hasBombs, RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady
+let flaresButton = require("%rGui/hud/buttons/flaresButton.nut")
+let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera, hasBombs,
+  RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare
 } = require("%rGui/hud/airState.nut")
 let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
@@ -62,7 +63,7 @@ return cfgHudCommon.__merge({
     defTransform = mkLBPos([hdpx(327), hdpx(-5)])
     editView = bombPieStickView
     priority = Z_ORDER.STICK
-    isVisibleInBattle = hasBombs
+    isVisibleInBattle = Computed(@() hasBombs.get() && !isActiveTurretCamera.get())
   }
 
   rocket = {
@@ -79,6 +80,14 @@ return cfgHudCommon.__merge({
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisibleInBattle = hasTorpedos
+  }
+
+  flares = {
+    ctor = flaresButton
+    defTransform = mkLBPos([hdpx(150), hdpx(-230)])
+    editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_ltc.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+    isVisibleInBattle = hasFlare
   }
 
   lock = {
@@ -128,7 +137,7 @@ return cfgHudCommon.__merge({
               "ui/gameuiskin#hud_ship_switch.svg", scale)
         : null
     }
-    defTransform = mkRBPos([hdpx(-680), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-680), 0])
     editView = mkSquareButtonEditView("ui/gameuiskin#hud_ship_switch.svg")
   }
 
@@ -146,6 +155,7 @@ return cfgHudCommon.__merge({
     editView = tacticalMapEditView
     hideForDelayed = false
     isVisibleInBattle = shouldShowAirTacticalMap
+    isVisibleInEditor = shouldShowAirTacticalMap
   }
 
   radar = {
@@ -154,6 +164,7 @@ return cfgHudCommon.__merge({
     editView = airMapEditView
     hideForDelayed = false
     isVisibleInBattle = shouldShowRadar
+    isVisibleInEditor = shouldShowRadar
   }
 
   myPlace = {

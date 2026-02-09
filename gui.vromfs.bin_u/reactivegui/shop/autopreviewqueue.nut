@@ -18,6 +18,8 @@ let { actualSchRewards } = require("%rGui/shop/schRewardsState.nut")
 let { featureGoodsToShow } = require("%rGui/shop/goodsAutoPreview.nut")
 let { offerToShow, offerShowedTime } = require("%rGui/shop/offerAutoPreview.nut")
 let { offersByGoodsToShow, showInRow } = require("%rGui/shop/offerByGoodsAutoPreview.nut")
+let { hasLoginReward } = require("%rGui/unlocks/loginAwardState.nut")
+let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 
 
 let isDebugMode = hardPersistWatched("autoPreviewQueue.isDebugMode", true)
@@ -34,7 +36,9 @@ let hasSeenBetweenBattles = Computed(@() hasSeenBetweenBattlesByCamp.get()?[curC
 let canShowScene = Computed(@() isDebugMode.get()
   && (showInRow.get() || !hasSeenBetweenBattles.get())
   && !isInBattle.get()
-  && isInMenuNoModals.get())
+  && isInMenuNoModals.get()
+  && !hasLoginReward.get()
+  && !isUserstatMissingData.get())
 let needShow = Computed(@() canShowScene.get() && goodsToShow.get() != null)
 
 let isAllUnitsLoaded = @(goods, sConfigs, uSizes)

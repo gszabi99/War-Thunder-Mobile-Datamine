@@ -3,7 +3,7 @@ let logG = log_with_prefix("[GOODS] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
-let { YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, registerApplePurchase } = require("auth_wt")
+let { YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, YU2_ALREADY, registerApplePurchase } = require("auth_wt")
 let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -18,7 +18,9 @@ let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { object_to_json_string, parse_json } = require("json")
 let { logEvent } = require("appsFlyer")
+let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
+let { DBGLEVEL } = require("dagor.system")
 
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 let billingModule = require("ios.billing.appstore")
@@ -118,6 +120,46 @@ isLoggedIn.subscribe(function(v) {
     setSuspend(true)
 })
 
+let getProductId = @(goods) goods?.purchaseGuids.iOS.extId
+let getPlanId = @(goods) goods?.purchaseGuids.iOS.planId
+let getIosDiscount = @(goods) goods?.purchaseGuids.iOS.discountInPercent ?? 0
+
+let goodsIdByProductId = Computed(function() {
+  let res = {}
+  foreach (id, goods in campConfigs.get()?.allGoods ?? {})
+    if (can_debug_shop.get() || !goods.isShowDebugOnly) {
+      let productId = getProductId(goods)
+      if (productId != null)
+        res[productId] <- id
+    }
+  return res
+})
+
+let subsIdByProductId = Computed(function() {
+  let res = {}
+  foreach (id, subs in campConfigs.get()?.subscriptionsCfg ?? {}) {
+    let productId = getPlanId(subs)
+    if (productId != null)
+      res[productId] <- id
+  }
+  return res
+})
+let platformGoods = Computed(function() {
+  let allGoods = campConfigs.get()?.allGoods ?? {}
+  let productToGoodsId = goodsIdByProductId.get()
+  let res = {}
+  foreach (productId, priceExt in availablePrices.get()) {
+    let goodsId = productToGoodsId?[productId]
+    let goods = allGoods?[goodsId]
+    if (goods != null) {
+      let platformDiscount = getIosDiscount(goods)
+      let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
+      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) 
+    }
+  }
+  return res
+})
+
 function sendLogPurchaseData(product_id,transaction_id) {
   
   local af = {
@@ -128,6 +170,17 @@ function sendLogPurchaseData(product_id,transaction_id) {
     af_currency = availablePrices.get()?[product_id].currencyId ?? "USD"
   }
   logEvent("af_purchase", object_to_json_string(af, true))
+
+  local firebase_event = {
+    value = availablePrices.get()?[product_id].price ?? -1
+    quantity = 1
+    product_id = product_id
+    currency = (availablePrices.get()?[product_id].currencyId ?? "USD").toupper()
+    price_is_discounted = false
+    free_trial = false
+    subscription = subsIdByProductId.get()?[product_id] != null
+  }
+  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string(firebase_event, true))
 }
 
 function onFinishRestore() {
@@ -181,7 +234,8 @@ function registerNextTransaction() {
     logG("registerApplePurchase ", id, transaction_id)
     isRegisterInProgress.set(true)
     register_apple_purchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
-    sendLogPurchaseData(id, transaction_id)
+    if (DBGLEVEL == 0)
+      sendLogPurchaseData(id, transaction_id)
   } else {
     purchaseInProgress.set(null)
     if (status != AS_CANCELED) {
@@ -224,6 +278,8 @@ eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
   logG($"register_apple_purchase error={getYu2CodeName(status)}")
   if (status == YU2_WRONG_PAYMENT)
     showErrorMsg(loc("msg/errorPaymentDelayed"))
+  else if (status == YU2_ALREADY)
+    showErrorMsg(loc("msg/errorPaymentAlreadyPurchased"))
   else if (status in yu2BadConnectionCodes) {
     lastYu2TimeoutErrorTime.set(get_time_msec())
     showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = const [hdpx(1300), hdpx(700)] })
@@ -282,31 +338,6 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
   }))
 })
 
-let getProductId = @(goods) goods?.purchaseGuids.iOS.extId
-let getPlanId = @(goods) goods?.purchaseGuids.iOS.planId
-let getIosDiscount = @(goods) goods?.purchaseGuids.iOS.discountInPercent ?? 0
-
-let goodsIdByProductId = Computed(function() {
-  let res = {}
-  foreach (id, goods in campConfigs.get()?.allGoods ?? {})
-    if (can_debug_shop.get() || !goods.isShowDebugOnly) {
-      let productId = getProductId(goods)
-      if (productId != null)
-        res[productId] <- id
-    }
-  return res
-})
-
-let subsIdByProductId = Computed(function() {
-  let res = {}
-  foreach (id, subs in campConfigs.get()?.subscriptionsCfg ?? {}) {
-    let productId = getPlanId(subs)
-    if (productId != null)
-      res[productId] <- id
-  }
-  return res
-})
-
 let offerProductId = Computed(@() getProductId(activeOffers.get()))
 
 let productsForRequest = keepref(Computed(function(prev) {
@@ -350,22 +381,6 @@ function startRefreshTimer() {
 startRefreshTimer()
 nextRefreshTime.subscribe(@(_) startRefreshTimer())
 isInBattle.subscribe(@(_) startRefreshTimer())
-
-let platformGoods = Computed(function() {
-  let allGoods = campConfigs.get()?.allGoods ?? {}
-  let productToGoodsId = goodsIdByProductId.get()
-  let res = {}
-  foreach (productId, priceExt in availablePrices.get()) {
-    let goodsId = productToGoodsId?[productId]
-    let goods = allGoods?[goodsId]
-    if (goods != null) {
-      let platformDiscount = getIosDiscount(goods)
-      let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
-      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) 
-    }
-  }
-  return res
-})
 
 let platformSubs = Computed(function() {
   let { subscriptionsCfg = {} } = campConfigs.get()

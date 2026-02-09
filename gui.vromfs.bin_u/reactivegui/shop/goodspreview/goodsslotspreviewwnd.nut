@@ -3,6 +3,7 @@ let { register_command } = require("console")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount, GPT_BLUEPRINT, openedGoodsId,
   openedUnitFromTree
@@ -21,6 +22,7 @@ let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_REROLL_SLOTS,
   mkBqPurchaseInfo
 } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
+let { discountsToApply } = require("%rGui/shop/discounts.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -48,6 +50,7 @@ let { mkTooltipText } = require("%rGui/tooltip.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
+let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
@@ -87,7 +90,8 @@ let previewGoodsWithUpdatedPrice = Computed(function() {
   let { count = 0, lastTime = 0 } = todayPurchasesCount.get()?[goods.id]
   return goods.__merge({
     price = getAdjustedPriceInfo(goods,
-      serverTimeDay.get() == getDay(lastTime, dayOffset.get()) ? count : 0)
+      serverTimeDay.get() == getDay(lastTime, dayOffset.get()) ? count : 0,
+      discountsToApply.get())
   })
 })
 
@@ -164,12 +168,15 @@ function timer() {
 function headerText() {
   let previewG = previewGoods.get()
   let allLeftSlotNames = (goodsRewardSlots.get()?.variants ?? []).reduce(
-    @(res, v) isRewardEmpty(v, servProfile.get()) ? res
-      : res.append(loc(getUnitLocId(v[0].id))),
+    @(res, v) isRewardEmpty(v, servProfile.get()) || v[0].id in unreleasedUnits.get() || v[0].id in unitsBlockedByBattleMode.get()
+      ? res
+      : res.append(loc(getUnitLocId(v[0].id)).replace(" ", nbsp)),
     [])
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
-    watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs, servProfile] 
+    watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs,
+      servProfile, unreleasedUnits, unitsBlockedByBattleMode
+    ]
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     valign = ALIGN_CENTER

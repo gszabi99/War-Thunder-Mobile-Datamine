@@ -40,6 +40,7 @@ return function (priceVal, context) {
     text = purchaseContent(context),
     price = { price currencyId = currency },
     purchase = buyEPLevel,
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT_PASS, PURCH_TYPE_EP_LEVEL, epPrograssUnlockId.get())
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT_PASS, PURCH_TYPE_EP_LEVEL, epPrograssUnlockId.get()),
+    hasSpendingStat = false
   })
 }

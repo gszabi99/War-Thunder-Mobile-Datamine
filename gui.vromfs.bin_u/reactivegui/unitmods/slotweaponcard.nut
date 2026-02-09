@@ -90,7 +90,6 @@ let mkWeaponImage = @(weapon) function() {
   return {
     watch = weapon
     size = [modW, modH]
-    margin = modContentMargin
     rendObj = ROBJ_IMAGE
     image = iconType == "" ? fallbackImage
       : Picture($"ui/gameuiskin#{iconType}.avif:{modW}:{modH}:P")

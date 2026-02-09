@@ -16,6 +16,7 @@ let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
+let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
 let { closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -23,7 +24,6 @@ let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 
 let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
-let MAIN_EVENT_ID = "main"
 let getSeasonPrefix = @(n) $"season_{n}"
 let getSpecialEventName = @(n) $"special_event_{n}"
 
@@ -63,10 +63,19 @@ let eventsLists = Computed(function() {
   let events = {}
   let eventsWithTree = {}
   foreach (unlock in activeUnlocks.get()) {
+    if (!unlock?.meta.event_table)
+      continue
     let { event_id = null, tree_travel = false, tree_gift = false, tree_quest = false, quest_cluster = false } = unlock?.meta
     let isTreeEvent = tree_travel || tree_gift || tree_quest || quest_cluster
-    if (event_id == null || event_id == MAIN_EVENT_ID || event_id in events || event_id in eventsWithTree)
+    if (event_id == null || event_id == MAIN_EVENT_ID || event_id in events || event_id in eventsWithTree) {
+      if (unlock.table != "") {
+        if (event_id in events && unlock.table != events[event_id].tableId)
+          logerr($"event_id {event_id} has 2 different active tables: {unlock.table}, {events[event_id].tableId}")
+        if (event_id in eventsWithTree && unlock.table != eventsWithTree[event_id].tableId)
+          logerr($"event_id {event_id} has 2 different active tables: {unlock.table}, {events[event_id].tableId}")
+      }
       continue
+    }
     let tableId = unlock.table
     if (!unlockTables.get()?[tableId])
       continue

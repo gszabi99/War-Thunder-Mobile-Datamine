@@ -716,12 +716,12 @@
       ]
     },
     "rainX7": {
-      "alphaFadeSpeedBegin": 20.0,
-      "alphaFadeSpeedEnd": 100.0,
-      "length": 0.001,
+      "alphaFadeSpeedBegin": 40.0,
+      "alphaFadeSpeedEnd": 120.0,
+      "length": 0.002,
       "speed": 1.5,
-      "width": 0.02,
-      "density": 2.0,
+      "width": 0.03,
+      "density": 9.0,
       "wind": 2.0,
       "alpha": 0.6,
       "lighting": [
@@ -731,8 +731,20 @@
       ]
     },
     "rain": {
-      "rainFromInvisibleClouds": false,
-      "probability": 0.7
+      "rainFromInvisibleClouds": true,
+      "probability": 1.0
+    },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
     }
   },
   "cloudy": {
@@ -1014,8 +1026,8 @@
       ]
     },
     "rain": {
-      "rainFromInvisibleClouds": false,
-      "probability": 0.7
+      "probability": 1.0,
+      "rainFromInvisibleClouds": true
     }
   },
   "thin_clouds": {
@@ -2192,6 +2204,18 @@
         2.0
       ]
     },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
+    },
     "rain": {
       "probability": 1.0,
       "rainFromInvisibleClouds": true
@@ -2413,6 +2437,18 @@
         2.0
       ]
     },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
+    },
     "rain": {
       "probability": 1.0,
       "rainFromInvisibleClouds": true
@@ -2633,6 +2669,18 @@
         4.0,
         2.0
       ]
+    },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
     },
     "rain": {
       "probability": 1.0,
@@ -2948,6 +2996,18 @@
         2.0
       ]
     },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
+    },
     "rain": {
       "probability": 1.0,
       "rainFromInvisibleClouds": true
@@ -3180,6 +3240,18 @@
         2.0
       ]
     },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
+    },
     "rain": {
       "probability": 1.0,
       "rainFromInvisibleClouds": true
@@ -3201,6 +3273,18 @@
         4.0,
         2.0
       ]
+    },
+    "dafx_rain": {
+      "density": 10.0,
+      "speed": 1.0,
+      "width": 1.0,
+      "length": 1.0,
+      "alpha": 1.0,
+      "fmaxDensity": 10.0,
+      "isSnow": true,
+      "effect_templates": {
+        "template": "camera_snow_light_effect"
+      }
     },
     "rain": {
       "probability": 1.0,

@@ -315,6 +315,18 @@
       "main_caliber_turret_02_dm": {},
       "main_caliber_turret_03_dm": {}
     },
+    "aux_turrets": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "armorThrough": 300.0,
+      "hp": 79870.0,
+      "genericDamageMult": 1.0,
+      "fireParamsPreset": "ship_aux_fire",
+      "auxiliary_caliber_turret_03_dm": {},
+      "auxiliary_caliber_turret_04_dm": {},
+      "auxiliary_caliber_turret_05_dm": {},
+      "auxiliary_caliber_turret_06_dm": {}
+    },
     "engine_rooms": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,

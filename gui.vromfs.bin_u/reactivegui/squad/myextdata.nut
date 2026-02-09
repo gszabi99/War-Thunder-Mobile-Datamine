@@ -8,8 +8,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { myClustersRTT, queueDataCheckTime, isInSquad } = require("%appGlobals/squadState.nut")
-let { hasAddons, addonsExistInGameFolder, addonsVersions, unitSizes
-} = require("%appGlobals/updater/addonsState.nut")
+let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { missingUnitResourcesByRank, allUnitsRanks, getModeAddonsInfo, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
@@ -76,8 +75,6 @@ let readyOvrGameModes = Computed(function(prev) {
       unitNames = [],
       serverConfigsV = serverConfigs.get(),
       hasAddonsV = hasAddons.get(),
-      addonsExistInGameFolderV = addonsExistInGameFolder.get(),
-      addonsVersionsV = addonsVersions.get(),
       missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
       maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
       unitSizesV = unitSizes.get(),

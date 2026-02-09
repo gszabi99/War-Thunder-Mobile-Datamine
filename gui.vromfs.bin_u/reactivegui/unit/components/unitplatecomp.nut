@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
+let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
@@ -28,6 +29,7 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
 
 
+let timerFontIcon = "▩"
 let unitPlateWidth = hdpx(406)
 let unitPlateHeight = hdpx(158)
 let unitPlateRatio = unitPlateHeight / unitPlateWidth
@@ -206,8 +208,7 @@ let mkUnitBlueprintMark = @(unit, ovr = {}) function() {
               rotate = -10
             }
           }
-          @() {
-            watch = servProfile
+          {
             rendObj = ROBJ_TEXT
             text = "/".concat(count, tgtCount)
           }.__update(fontVeryTiny)
@@ -229,10 +230,7 @@ let mkPlateText = @(text, override = {}) {
   rendObj = ROBJ_TEXT
   text
   color = plateTextColor
-  fontFx = FFT_GLOW
-  fontFxColor = 0xFF000000
-  fontFxFactor = hdpx(32)
-}.__update(fontVeryTinyAccented, override)
+}.__update(fontVeryTinyAccentedShaded, override)
 
 let mkPlateTextTimer = @(endTime, override = {}) @() {
   watch = serverTime
@@ -397,6 +395,14 @@ let function mkFlagImageWithoutGrad(countryId, width, ovr = {}) {
   return mkFlagImpl(img, mkFlagSize(isLegacy, width), ovr)
 }
 
+let mkFlagFrame = @(flagComp, ovr = {}) {
+  rendObj = ROBJ_BOX
+  borderColor = plateTextColor
+  padding = hdpx(6)
+  borderWidth = hdpx(3)
+  children = flagComp
+}.__update(ovr)
+
 let function mkUnitFlag(unit, isLocked = false) {
   let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
   if (operatorCountry == "")
@@ -448,6 +454,18 @@ let mkUnitsTreePrice = @(price, canBuy = true) {
     iconGap = hdpx(6)
     textColor = canBuy ? 0xFFFFFFFF : 0xFFA0A0A0
   }))
+}
+
+function mkUnitTimeLeft(timeLeft) {
+  let countdownText = Computed(@() timeLeft.get() <= 0 ? ""
+    : $"{timerFontIcon}{secondsToHoursLoc(timeLeft.get())}")
+  return @() {
+    watch = countdownText
+    vplace = ALIGN_BOTTOM
+    margin = [0, 0, plateTextsSmallPad, plateTextsSmallPad]
+    rendObj = ROBJ_TEXT
+    text = countdownText.get()
+  }.__update(fontTinyAccented)
 }
 
 let slotLock = mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconRespWnd, lockIconRespWnd], { color = slotLockedTextColor })
@@ -600,7 +618,7 @@ let function mkUnitResearchPrice(researchStatus, ovr = {}) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)])
+      mkIcon("ui/gameuiskin#experience_icon.svg", [hdpxi(28), hdpxi(28)], { color = currencyIconsColor["researchUnitExp"] })
       {
         rendObj = ROBJ_TEXT
         text = "/".concat(exp, reqExp)
@@ -678,12 +696,14 @@ return {
   mkUnitDailyBonus
   mkUnitSpinner
   mkProfileUnitDailyBonus
+  mkUnitTimeLeft
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates
 
   mkFlagImage
   mkFlagImageWithoutGrad
+  mkFlagFrame
   bgUnit
   bgUnitNotAvailable
   unitBgImageBase

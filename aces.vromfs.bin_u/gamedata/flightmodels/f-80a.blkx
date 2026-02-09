@@ -2348,5 +2348,18 @@
       0.365655,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "p_80a_5_usaaf_silver_a*",
+        "to": "f_80a_5_blue_a*"
+      },
+      {
+        "from": "p_80a_5_usaaf_silver_n*",
+        "to": "f_80a_5_blue_n*"
+      }
+    ]
   }
 }

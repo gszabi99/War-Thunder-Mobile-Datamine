@@ -13,9 +13,8 @@ let constructors = {
 }
 
 function mkOffer(offer, onClick, state) {
-  let { rewards = null, battleMods = {} } = offer
-  let hasBattleMode = rewards?.findvalue(@(r) r.gType == G_BATTLE_MOD) != null
-    || battleMods.len() != 0 
+  let { rewards } = offer
+  let hasBattleMode = rewards.findvalue(@(r) r.gType == G_BATTLE_MOD) != null
   return hasBattleMode ? mkOfferBattleMode(offer, onClick, state)
     : (constructors?[offer.gtype](offer, onClick, state) ?? mkGoods(offer, onClick, state, null))
 }

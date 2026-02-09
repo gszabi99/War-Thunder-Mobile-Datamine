@@ -27,7 +27,7 @@ let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRe
 let isFake = keepref(Computed(@() battleData.get()?.isFake))
 let predefinedReward = keepref(Computed(@() battleData.get()?.predefinedReward))
 let dailyUnitBonus = keepref(Computed(@() battleData.get()?.dailyUnitBonus))
-let curBattleMods = Computed(@() battleData.get()?.modifications ?? battleData.get()?.items) 
+let curBattleMods = Computed(@() battleData.get()?.modifications)
 let unitToSpawn = Computed(@() !isBatleDataRequired.get() || isBattleDataReceived.get() || isLocalMultiplayer.get()
   ? curBattleUnit.get() : null)
 let respawnData = mkWatched(persist, "respawnData", null)

@@ -178,6 +178,58 @@
       1.0
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "aluminum_armor_AMS_4050A",
@@ -1936,7 +1988,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 40.0,
@@ -1945,7 +1997,13 @@
     "tracks": {
       "animationMultiplier": 0.5,
       "height": 0.0,
-      "width": 0.4
+      "width": 0.4,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1958,12 +2016,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 63200.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 6.386,
       "sideGearRatio": 1.26,
       "neutralGearRatio": 15.0,
+      "alternativeGearControl": 5.0,
       "gearRatios": {
         "ratio": [
           -1.0,

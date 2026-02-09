@@ -64,13 +64,17 @@ let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unit.get()
   @(idx) idx > BULLETS_PRIM_SLOTS,
   ammoReductionFactorDef,
   BULLETS_PRIM_SLOTS))
-let chosenBulletsSec = Computed(@() calcChosenBullets(bulletsSecInfo.get(), unit.get()?.level ?? 0, bulletSecStep.get(),
-  visibleBulletsSec.get(), maxBulletsSecCountForExtraAmmo.get(), hasExtraBulletsSec.get(), bulletSecTotalSteps.get(),
-  savedBullets.get(),
-  @(idx) idx <= BULLETS_PRIM_SLOTS,
-  ammoReductionSecFactorDef,
-  BULLETS_SEC_SLOTS,
-  chosenBullets.get().len()))
+let primaryCount = Computed(@() chosenBullets.get().len())
+let chosenBulletsSec = Computed(@()
+  calcChosenBullets(bulletsSecInfo.get(), unit.get()?.level ?? 0, bulletSecStep.get(),
+    visibleBulletsSec.get(), maxBulletsSecCountForExtraAmmo.get(), hasExtraBulletsSec.get(), bulletSecTotalSteps.get(),
+    savedBullets.get(),
+    @(idx) idx <= BULLETS_PRIM_SLOTS,
+    ammoReductionSecFactorDef,
+    BULLETS_SEC_SLOTS,
+    BULLETS_PRIM_SLOTS
+  )
+    .map(@(s) s.$rawset("visIdx", s.idx - BULLETS_PRIM_SLOTS + primaryCount.get())))
 
 let choiceCount = Computed(@() chosenBullets.get().len())
 let choiceSecCount = Computed(@() chosenBulletsSec.get().len())

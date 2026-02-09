@@ -520,7 +520,10 @@ let streaksPresentation = {
 
   streak_firework_new_year = {
     name = "streaks/streak_firework_new_year"
-    bgImage = "ui/gameuiskin#streak_lunar.avif"
+    bgImage = "ui/gameuiskin#streak_ny_bg.avif"
+    stackImages = [
+      mkStackImage("ny_snowflake.avif", [55, 55])
+    ]
   }
 
   streak_firework_lunar_new_year = {
@@ -662,6 +665,30 @@ let streaksPresentation = {
       mkStackImage("pirate_ship_cannon_master.avif", [62, 62])
     ]
     numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
+  ctf_gift_deliver = {
+    name = "streaks/ctf_gift_deliver"
+    bgImage = "ui/gameuiskin#streak_ny_bg.avif"
+    stackImages = [
+      mkStackImage("gift_delivery.avif", [55, 55])
+    ]
+  }
+
+  ctf_gift_kill_capturer = {
+    name = "streaks/ctf_gift_kill_capturer"
+    bgImage = "ui/gameuiskin#streak_ny_bg.avif"
+    stackImages = [
+      mkStackImage("gift_defender.avif", [55, 55])
+    ]
+  }
+
+  ctf_gift_return = {
+    name = "streaks/ctf_gift_return"
+    bgImage = "ui/gameuiskin#streak_ny_bg.avif"
+    stackImages = [
+      mkStackImage("gift_return.avif", [55, 55])
+    ]
   }
 
 }

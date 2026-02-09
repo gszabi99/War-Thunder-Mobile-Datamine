@@ -1,12 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBgImageWithFallback } = require("%globalsDarg/components/mkAnimBg.nut")
+let { parse_unix_time = @(_) 0 } = require_optional("dagor.iso8601") 
 let mkLayersComplexShip1 = require("complex_ship_1.nut")
+let mkLayersNewYear2026 = require("loading_new_year_2026.nut")
+let mkLayersValentinesDay2026 = require("loading_valentines_day_2026.nut")
 
 
 let mkSingleImageLayers = @(image) [{
   moveX = sh(10)
   children = mkBgImageWithFallback(image)
 }]
+
+let parseTime = @(timeRange) {
+  start = timeRange?.start == null ? 0 : parse_unix_time(timeRange.start) ?? 0,
+  end = timeRange?.end == null ? 0 : parse_unix_time(timeRange.end) ?? 0
+}
 
 
 
@@ -52,10 +60,23 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_7.avif")
   }
+  simple_ship_9 = {
+    camp = [ "ships" ]
+    weight = 1.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_9.avif")
+  }
   complex_ship_1 = {
     camp = [ "ships" ]
     weight = 1.0
     mkLayers = mkLayersComplexShip1
+  }
+  new_year_2026 = {
+    weight = 0.0
+    mkLayers = mkLayersNewYear2026
+  }
+  valentines_day_2026 = {
+    weight = 0.0
+    mkLayers = mkLayersValentinesDay2026
   }
   simple_tank_1 = {
     camp = [ "tanks" ]
@@ -143,6 +164,14 @@ let screensList = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_17.avif")
   }
+  event_new_year_25_26 = {
+    weight = 0.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_34.avif")
+    timeRange = {
+      start = "2025-12-22T10:00"
+      end = "2026-01-08T10:00"
+    }
+  }
   simple_tank_18 = {
     camp = [ "tanks" ]
     weight = 1.0
@@ -165,6 +194,14 @@ let screensList = {
     camp = [ "ships" ]
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_8.avif")
+  }
+  event_black_friday_2025 = {
+    weight = 0.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_32.avif")
+  }
+  event_china_tanks_early_access = {
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_35.avif")
   }
   simple_tank_20 = {
     camp = [ "tanks" ]
@@ -206,6 +243,11 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_31.avif")
   }
+  simple_tank_28 = {
+    camp = [ "tanks" ]
+    weight = 0.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_33.avif")
+  }
   simple_airplane_1 = {
     camp = [ "air" ]
     weight = 1.0
@@ -233,10 +275,11 @@ let screensList = {
   }
   simple_airplane_7 = {
     camp = [ "air" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_7.avif")
   }
-}
+}.map(@(v) "timeRange" not in v ? v :
+  v.__merge({timeRange = parseTime(v.timeRange)}))
 
 return {
   screensList

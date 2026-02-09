@@ -2478,5 +2478,18 @@
       2.38642,
       0.000019777
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "db_3b_c*",
+        "to": "db_3b_camo_c*"
+      },
+      {
+        "from": "db_3b_n*",
+        "to": "db_3b_camo_n*"
+      }
+    ]
   }
 }

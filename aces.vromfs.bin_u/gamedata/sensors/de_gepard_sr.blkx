@@ -1,13 +1,13 @@
 {
   "type": "radar",
-  "name": "Gepard",
+  "name": "Gepard TA",
   "transivers": {
     "search": {
       "power": 100.0,
       "band": 4,
-      "rcs": 5.0,
-      "range": 15000.0,
-      "rangeMax": 15000.0,
+      "rcs": 1.0,
+      "range": 5000.0,
+      "rangeMax": 20000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 6.3,
@@ -35,9 +35,10 @@
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "barHeight": 18.0,
+      "barHeight": 15.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 7.5
     }
   },
   "signals": {
@@ -48,21 +49,28 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 15000.0,
+        "maxValue": 20000.0,
         "maxUnambiguousValue": 80000.0
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 10.0,
+        "minValue": 15.0,
         "maxValue": 1000.0,
         "signalWidthMin": 5.0,
         "width": 0.0
       }
     }
   },
-  "scopeRanges": {
-    "range1": 10000.0,
-    "range2": 15000.0
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "search"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 5000.0,
+      "range2": 20000.0
+    }
   },
   "fsms": {
     "main": {
@@ -72,24 +80,32 @@
           "setEnabled": {
             "value": false
           },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
           "setTransiver": {
             "transiver": "search"
           },
           "setSignal": {
             "signal": "search"
           },
-          "setScanPattern": {
-            "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 7.5
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -100.0,
               100.0
             ],
+            "azimuthWidth": 6.3,
             "distanceRange": [
               0.0,
               15000.0
@@ -102,13 +118,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "clearTargets": {}
+          }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -116,23 +128,26 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
           },
-          "setScanPattern": {
-            "scanPattern": "search"
+          "setCueEnabled": {
+            "value": true
           },
           "setScanDirectionPhase": {
-            "azimuth": -180.0,
+            "azimuth": 180.0,
             "elevation": 0.0
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -171,6 +186,17 @@
             "setNextScopeRange": {}
           }
         },
+        "resumeSearch": {
+          "stateFrom": "antennaParking",
+          "command": "switch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            }
+          }
+        },
         "switchingOff": {
           "stateFrom": "search",
           "command": "switch",
@@ -192,13 +218,11 @@
               "fsm": "parkAntenna",
               "active": false
             },
-            "setScanPattern": {
-              "scanPattern": "search"
-            },
             "setScanDirectionPhase": {
-              "azimuth": -180.0,
+              "azimuth": 180.0,
               "elevation": 0.0
             },
+            "resetSearchMode": {},
             "setStandbyMode": {}
           }
         }
@@ -268,11 +292,11 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "sensorIndex": 1
             },
             "designateTargetUnderCue": {
-              "type": 0,
+              "type": "cue",
               "sensorIndex": 1
             }
           }
@@ -286,12 +310,15 @@
           "event": "update",
           "actions": {
             "checkInScanDirectionPhase": {
-              "azimuth": -180.0,
+              "azimuth": 180.0,
               "elevation": 0.0
             }
           }
         }
       }
     }
+  },
+  "hideInAvailableModeNameIds": {
+    "mode": "standby"
   }
 }

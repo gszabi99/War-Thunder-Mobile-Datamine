@@ -2165,5 +2165,18 @@
       1.37932,
       -1.16048e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "ki_100_59sentai_a*",
+        "to": "ki_100_blue_a*"
+      },
+      {
+        "from": "ki_100_59sentai_n*",
+        "to": "ki_100_blue_n*"
+      }
+    ]
   }
 }

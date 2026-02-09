@@ -83,14 +83,10 @@ let txtAreaBase = {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = textColor
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(32)
-  fontFxColor = hudBlackColor
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 let wndTitle = txtAreaBase.__merge(fontBig, {
   text = loc("actionBarItem/artillery_target")
-  fontFxFactor = hdpx(64)
 })
 
 let fireBtnText = utf8ToUpper(loc("hints/duel_battle_fire"))

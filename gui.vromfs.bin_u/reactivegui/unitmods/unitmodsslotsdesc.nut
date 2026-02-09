@@ -38,7 +38,7 @@ let weaponDescRowsCfg = [
     function getHeader(w) {
       let bSet = w.bulletSets?[""]
       let name = getWeaponFullName(w, bSet)
-      return w.count > 1 ? $"{name} {format(loc("weapons/counter"), w.count)}" : name
+      return w.count > 1 ? $"{name} {format(loc("weapons/counter"), w?.totalBullets ?? w.count)}" : name
     }
     color = headerColor
   }

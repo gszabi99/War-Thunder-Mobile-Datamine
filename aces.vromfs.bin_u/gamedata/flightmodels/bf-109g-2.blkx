@@ -2104,5 +2104,12 @@
       1.36926,
       3.98199e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "bf_109g_2_a*",
+      "to": "bf_109g_2_yellow_6_a*"
+    }
   }
 }

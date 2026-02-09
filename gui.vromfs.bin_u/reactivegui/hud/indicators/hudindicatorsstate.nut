@@ -2,14 +2,16 @@ from "%globalsDarg/darg_library.nut" import *
 let { sqrt, pow, fabs } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { get_mplayer_by_id } = require("mission")
+let { register_command } = require("console")
+let { get_mplayer_by_id, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { getPlayerWorldPos } = require("guiTacticalMap")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { isInBattle, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, localMPlayerId, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { INDICATOR_TYPE, indicatorTypes } = require("%rGui/hud/indicators/hudIndicatorTypes.nut")
 let { getTitleShowDist } = require("%rGui/hud/indicators/playerIndicator.nut")
+let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 
 let TRACKED_PLAYERS_INFO_UPDATE_INTERVAL_SEC = 0.5
 let FAR_DISTANCE_METERS = 100000.0
@@ -94,23 +96,25 @@ local trackedPlayersInfoCache = {}
 function updateTrackedPlayersInfo() {
   let myWPos = getPlayerWorldPos(localMPlayerId.get())
   let hudUnitType = unitType.get()
+  let localTeam = localMPlayerTeam.get()
   let hudIndicatorsByPlayerV = hudIndicatorsByPlayer.get()
 
   let trackedPlayersInfo = hudIndicatorsByPlayerV.map(function(_, playerId) {
-    let { title = "", aircraftName = "" } = get_mplayer_by_id(playerId)
+    let { title = "", aircraftName = "", team = -1 } = get_mplayer_by_id(playerId)
     let prev = trackedPlayersInfoCache?[playerId]
     let unitName = aircraftName
     let uType = unitName != prev?.unitName ? getUnitType(unitName) : prev?.uType
+    let teamColor = (team == localTeam || localTeam == 0) ? teamBlueColor : teamRedColor
     let wPos = getPlayerWorldPos(playerId)
     let wDist = (myWPos != null && wPos != null) ? getWorldDistance(myWPos, wPos) : FAR_DISTANCE_METERS
     let hasTitle = title != ""
       && (wDist != null ? (wDist <= getTitleShowDist(hudUnitType, uType)) : (prev?.hasTitle ?? false))
-    return { playerId, unitName, uType, wPos, wDist, hasTitle }
+    return { playerId, unitName, uType, teamColor, wPos, wDist, hasTitle }
   })
 
   let indicatorsSorted = trackedPlayersInfo.values()
     .sort(@(a, b) b.wDist <=> a.wDist || b.playerId <=> a.playerId)
-    .map(@(v) { playerId = v.playerId, data = hudIndicatorsByPlayerV[v.playerId] })
+    .map(@(v) { playerId = v.playerId, teamColor = v.teamColor, data = hudIndicatorsByPlayerV[v.playerId] })
   if (!isEqual(hudIndicatorsByPlayerSorted.get(), indicatorsSorted))
     hudIndicatorsByPlayerSorted.set(indicatorsSorted)
 
@@ -130,6 +134,14 @@ needPlayerInfoUpdateTimer.subscribe(function(v) {
 })
 updateTrackedPlayersInfo()
 
+register_command(function() {
+  let func = hudIndicatorsState.get().len() == 0 ? addHudIndicator : removeHudIndicatorByParams
+  get_mplayers_list(GET_MPLAYERS_LIST, true)
+    .each(@(p) func(INDICATOR_TYPE.PLAYER_ID_DEBUG, { playerId = p.id }))
+}, "ui.debug.hud_indicators")
+register_command(@(playerId) addHudIndicator(INDICATOR_TYPE.PLAYER_ID_DEBUG, { playerId }),
+  "ui.debug.hud_indicators.attach_to_player_by_id")
+
 return {
   INDICATOR_TYPE
   addHudIndicator
@@ -137,5 +149,4 @@ return {
   isHudIndicatorsAttached
   hudIndicatorsByPlayerSorted
   playerTitlesVisibility
-  indicatorTypes
 }

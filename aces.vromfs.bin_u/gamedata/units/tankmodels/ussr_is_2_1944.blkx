@@ -45,58 +45,6 @@
   "destroysTrees": true,
   "type": "typeHeavyTank",
   "minRelativeTankCameraThreshold": 1.3,
-  "steeringTableAlternative": {
-    "point": [
-      [
-        -12.0,
-        0.0
-      ],
-      [
-        -13.0,
-        0.4
-      ],
-      [
-        -45.0,
-        0.75
-      ],
-      [
-        -70.0,
-        0.9
-      ],
-      [
-        -75.0,
-        1.0
-      ],
-      [
-        12.0,
-        0.0
-      ],
-      [
-        13.0,
-        0.1
-      ],
-      [
-        20.0,
-        0.15
-      ],
-      [
-        55.0,
-        0.6
-      ],
-      [
-        60.0,
-        0.7
-      ],
-      [
-        74.0,
-        0.8
-      ],
-      [
-        75.0,
-        1.0
-      ]
-    ]
-  },
   "attachables": {
     "body_bottom_dm": [
       true,
@@ -845,6 +793,58 @@
       ]
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 45760.0,
@@ -874,7 +874,7 @@
       "fricSideRot": [
         5.0,
         0.0,
-        0.6,
+        0.9,
         0.3
       ]
     },
@@ -892,6 +892,7 @@
       "driveGearRadius": 0.37,
       "mainGearRatio": 2.16,
       "sideGearRatio": 6.25,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -1.27,

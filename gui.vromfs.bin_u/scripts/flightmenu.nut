@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import toggle_freecam, is_freecam_enabled
 from "gameplayBinding" import closeIngameGui, doPlayerBailout, inFlightMenu,
   isCameraNotFlight, isPlayerCanBailout
 from "app" import is_dev_version, is_offline_version, isGamePaused, pauseGame
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 from "%globalScripts/ecs.nut" import *
@@ -13,13 +14,15 @@ let { getSpareSlotsMask, getDisabledSlotsMask } = require("guiRespawn")
 let { requestEarlyExitRewards } = require("%scripts/debriefing/battleResult.nut")
 let { curBattleUnit, curBattleItems } = require("%scripts/battleData/battleData.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { command } = require("console")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
   quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status,
-  is_ready_to_die, ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL
+  is_ready_to_die, ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL,
+  get_current_mission_desc
 } = require("guiMission")
 
 function canRestart() {
@@ -148,17 +151,26 @@ function bailout() {
   }
 
   local msg = loc("flightmenu/questionLeaveTheTank")
+  if (hudCustomRules.get()?.isUnlimRespawn)
+    return openConfirmMsg(msg, loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
+
+  let misBlk = DataBlock()
+  get_current_mission_desc(misBlk)
+  let { multiRespawn = false } = misBlk
+
   let allSlotsMask = (1 << slots.get().len()) - 1
   local spareSlotsMask = allSlotsMask & getSpareSlotsMask()
   local disabledSlotsMask = allSlotsMask & getDisabledSlotsMask()
-  let currentUnitName = get_local_mplayer()?.aircraftName
-  let currentSlotIdx = slots.get().findindex(@(v) v == currentUnitName)
-  let currentSlotMask = currentSlotIdx != null ? 1 << currentSlotIdx : 0
-  let leftSpares = (curBattleItems.get()?.spare ?? 0) - spendSpares.get()
-  if ((currentSlotMask & spareSlotsMask) == 0 && leftSpares != 0)
-    spareSlotsMask = (spareSlotsMask | currentSlotMask)
-  else
-    disabledSlotsMask = disabledSlotsMask | currentSlotMask
+  if (!multiRespawn) {
+    let currentUnitName = get_local_mplayer()?.aircraftName
+    let currentSlotIdx = slots.get().findindex(@(v) v == currentUnitName)
+    let currentSlotMask = currentSlotIdx != null ? 1 << currentSlotIdx : 0
+    let leftSpares = (curBattleItems.get()?.spare ?? 0) - spendSpares.get()
+    if ((currentSlotMask & spareSlotsMask) == 0 && leftSpares != 0)
+      spareSlotsMask = (spareSlotsMask | currentSlotMask)
+    else
+      disabledSlotsMask = disabledSlotsMask | currentSlotMask
+  }
 
   let isSlotsAvailable = (allSlotsMask & ~disabledSlotsMask) != 0
   let isFreeSlotsAvailable = (allSlotsMask & ~spareSlotsMask) != 0
@@ -234,9 +246,6 @@ function gui_start_flight_menu(...) {
   canBailoutFromFlightMenu.set(canBailout())
 }
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
-
-eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) 
-eventbus_subscribe("gui_start_flight_menu_psn", function gui_start_flight_menu_psn(...) {}) 
 
 eventbus_subscribe("gui_start_flight_menu_help", function gui_start_flight_menu_help() {
   

@@ -1,19 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let { campUnitsCfg, campMyUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, blueprints } = require("%appGlobals/pServer/campaign.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-
-let bgByHangar = {
-  tanks = {
-    ["config/hangar_field_ny.blk"] = "tank_blur_bg_ny.avif"
-  }
-}
 
 let countriesCfg = [
   ["country_usa", "country_israel"],
@@ -68,10 +61,7 @@ function getColumnsCfg(unitsByGroup, maxRank) {
   return cfg
 }
 
-let unitsTreeBg = Computed(function() {
-  let addonHangar = ovrHangarAddon?.hangarPath
-  return bgByHangar?[curCampaign.get()][addonHangar] ?? getCampaignPresentation(curCampaign.get()).treeBg
-})
+let unitsTreeBg = Computed(@() getCampaignPresentation(curCampaign.get()).treeBg)
 
 let closeUnitsTreeWnd = @() isUnitsTreeOpen.set(false)
 function openUnitsTreeWnd() {

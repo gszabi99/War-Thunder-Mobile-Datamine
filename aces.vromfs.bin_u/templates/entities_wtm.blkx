@@ -233,7 +233,8 @@
     "_group": {
       "_replicate": true,
       "stats__damage": 0.0,
-      "stats__score": 0.0
+      "stats__score": 0.0,
+      "stats__flagsDelivered": 0
     }
   },
   "wtm_server_player": {
@@ -271,7 +272,8 @@
       "value": 0
     },
     "sentStatsToUserstat:object": {},
-    "sentMinStatsToUserstat:object": {}
+    "sentMinStatsToUserstat:object": {},
+    "sentAvgStatsToUserstat:object": {}
   },
   "damage_log": {
     "nextStatsSyncTime": 0.0,
@@ -285,7 +287,8 @@
     "damageLogStats:object": {},
     "streakLog:object": {},
     "battleRoyaleLog:array": {},
-    "raceLog:array": {}
+    "raceLog:array": {},
+    "missionScoreLog:array": {}
   },
   "statistic_players": {
     "statisticPlayers:object": {},
@@ -305,7 +308,11 @@
     "lap_time_fast": 0.0,
     "lap_time_faster": 0.0,
     "lap_time_fastest": 0.0,
-    "userstat_modes:list<t>": {}
+    "userstat_battle_score": false,
+    "allow_spend_items": true,
+    "penalty_id": "",
+    "userstat_modes:list<t>": {},
+    "allow_spend_items_exclude:object": {}
   },
   "battle_perfstat": {
     "_group": {

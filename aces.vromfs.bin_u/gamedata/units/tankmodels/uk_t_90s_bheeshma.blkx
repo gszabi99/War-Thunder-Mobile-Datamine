@@ -58,7 +58,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "battleHideNodes": {
     "n": [
       "details",
@@ -84,6 +84,58 @@
       0.25,
       0.05,
       0.7
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2119,7 +2171,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M5_t_90s_bheeshma_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "shotFreq": 0.1408,
+        "shotFreq": 0.142857,
         "shellCasingEmitter": "emtr_shell",
         "shellCasingMesh": "semi_combustible_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
@@ -2373,7 +2425,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 2500.0
@@ -2386,6 +2438,12 @@
         5.0,
         0.0,
         0.6,
+        0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
         0.3
       ]
     },
@@ -2407,6 +2465,7 @@
       "driveGearRadius": 0.31,
       "mainGearRatio": 0.95,
       "sideGearRatio": 4.1,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -14.35,
@@ -3633,7 +3692,7 @@
               "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M5_t_90s_bheeshma_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "shotFreq": 0.1408,
+              "shotFreq": 0.142857,
               "shellCasingEmitter": "emtr_shell",
               "shellCasingMesh": "semi_combustible_cartridge_case",
               "hatchAnimVar": "hatch_toggle",

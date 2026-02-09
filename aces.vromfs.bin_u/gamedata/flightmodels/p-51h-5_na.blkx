@@ -2298,5 +2298,18 @@
       2.1382,
       -9.87143e-8
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_51h_10_1947_a*",
+        "to": "p_51h_bunny_red_a*"
+      },
+      {
+        "from": "p_51h_10_1947_n*",
+        "to": "p_51h_bunny_red_n*"
+      }
+    ]
   }
 }

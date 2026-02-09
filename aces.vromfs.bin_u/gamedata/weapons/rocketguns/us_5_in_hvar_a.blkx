@@ -74,11 +74,11 @@
     "maxDeltaAngle": 3.5,
     "hitpower": {
       "HitPower0m": [
-        400.0,
+        1.0,
         500.0
       ],
       "HitPower10000m": [
-        400.0,
+        1.0,
         10000.0
       ]
     },

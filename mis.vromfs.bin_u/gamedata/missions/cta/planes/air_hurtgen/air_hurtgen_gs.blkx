@@ -50,6 +50,8 @@
       "type": "domination",
       "environment": "Day",
       "weather": "good",
+      "missionProgressType": "airGS",
+      "showAIKilllog": true,
       "locName": "missions/_GS/medium_tank;location/air_hurtgen",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,
@@ -59,8 +61,6 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "missionProgressType": "airGS",
-      "showAIKilllog": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -430,8 +430,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": [
-              "t1_trucks_squad",
-              "t2_trucks_squad",
+              "t1_truck_aaa_squad",
+              "t2_truck_aaa_squad",
               "t1_aaa_squad",
               "t2_aaa_squad"
             ],
@@ -549,7 +549,7 @@
               "teleportToStart": false,
               "object": [
                 "t1_tank_01",
-                "t1_truck_01"
+                "t1_truck_aaa_01"
               ]
             }
           },
@@ -577,7 +577,7 @@
               "teleportToStart": false,
               "object": [
                 "t1_tank_02",
-                "t1_truck_02"
+                "t1_truck_aaa_02"
               ]
             }
           },
@@ -605,7 +605,7 @@
               "teleportToStart": false,
               "object": [
                 "t1_tank_03",
-                "t1_truck_03"
+                "t1_truck_aaa_03"
               ]
             }
           },
@@ -633,7 +633,7 @@
               "teleportToStart": false,
               "object": [
                 "t1_tank_04",
-                "t1_truck_04"
+                "t1_truck_aaa_04"
               ]
             }
           },
@@ -665,7 +665,7 @@
               "teleportToStart": false,
               "object": [
                 "t2_tank_01",
-                "t2_truck_01"
+                "t2_truck_aaa_01"
               ]
             }
           },
@@ -693,7 +693,7 @@
               "teleportToStart": false,
               "object": [
                 "t2_tank_02",
-                "t2_truck_02"
+                "t2_truck_aaa_02"
               ]
             }
           },
@@ -721,7 +721,7 @@
               "teleportToStart": false,
               "object": [
                 "t2_tank_03",
-                "t2_truck_03"
+                "t2_truck_aaa_03"
               ]
             }
           },
@@ -749,7 +749,7 @@
               "teleportToStart": false,
               "object": [
                 "t2_tank_04",
-                "t2_truck_04"
+                "t2_truck_aaa_04"
               ]
             }
           },
@@ -2719,7 +2719,7 @@
         }
       },
       {
-        "name": "t1_trucks_squad",
+        "name": "t1_truck_aaa_squad",
         "tm": [
           [
             -4.37114e-8,
@@ -2744,16 +2744,16 @@
         ],
         "props": {
           "squad_members": [
-            "t1_truck_01",
-            "t1_truck_02",
-            "t1_truck_03",
-            "t1_truck_04"
+            "t1_truck_aaa_01",
+            "t1_truck_aaa_02",
+            "t1_truck_aaa_03",
+            "t1_truck_aaa_04"
           ],
           "object_marking": 0
         }
       },
       {
-        "name": "t2_trucks_squad",
+        "name": "t2_truck_aaa_squad",
         "tm": [
           [
             -4.37114e-8,
@@ -2778,10 +2778,10 @@
         ],
         "props": {
           "squad_members": [
-            "t2_truck_01",
-            "t2_truck_02",
-            "t2_truck_03",
-            "t2_truck_04"
+            "t2_truck_aaa_01",
+            "t2_truck_aaa_02",
+            "t2_truck_aaa_03",
+            "t2_truck_aaa_04"
           ],
           "object_marking": 0
         }
@@ -2916,7 +2916,7 @@
           ]
         ],
         "props": {
-          "squad_members": "t1_trucks_squad",
+          "squad_members": "t1_truck_aaa_squad",
           "object_marking": 0
         }
       },
@@ -3006,7 +3006,7 @@
           ]
         ],
         "props": {
-          "squad_members": "t2_trucks_squad",
+          "squad_members": "t2_truck_aaa_squad",
           "object_marking": 0
         }
       },
@@ -3068,7 +3068,7 @@
         ],
         "props": {
           "squad_members": [
-            "t1_trucks_squad",
+            "t1_truck_aaa_squad",
             "t1_aaa_squad",
             "t1_artillery_squad"
           ],
@@ -3101,7 +3101,7 @@
         ],
         "props": {
           "squad_members": [
-            "t2_trucks_squad",
+            "t2_truck_aaa_squad",
             "t2_aaa_squad",
             "t2_artillery_squad"
           ],
@@ -3299,15 +3299,15 @@
             -4.37114e-8
           ],
           [
-            4325.1,
-            32.452,
-            -5391.5
+            -5537.55,
+            32.4512,
+            19166.8
           ]
         ],
         "props": {
           "squad_members": [
             "t1_aaa_squad",
-            "t1_trucks_squad"
+            "t1_truck_aaa_squad"
           ]
         }
       },
@@ -3330,15 +3330,15 @@
             -4.37114e-8
           ],
           [
-            11946.0,
-            32.452,
-            -5391.5
+            2337.01,
+            32.4512,
+            17667.4
           ]
         ],
         "props": {
           "squad_members": [
             "t2_aaa_squad",
-            "t2_trucks_squad"
+            "t2_truck_aaa_squad"
           ]
         }
       }
@@ -6131,7 +6131,7 @@
     ],
     "air_defence": [
       {
-        "name": "t1_truck_01",
+        "name": "t1_truck_aaa_01",
         "tm": [
           [
             0.943445,
@@ -6189,7 +6189,7 @@
         "way": {}
       },
       {
-        "name": "t1_truck_02",
+        "name": "t1_truck_aaa_02",
         "tm": [
           [
             0.99936,
@@ -6247,7 +6247,7 @@
         "way": {}
       },
       {
-        "name": "t1_truck_03",
+        "name": "t1_truck_aaa_03",
         "tm": [
           [
             0.949558,
@@ -6305,7 +6305,7 @@
         "way": {}
       },
       {
-        "name": "t1_truck_04",
+        "name": "t1_truck_aaa_04",
         "tm": [
           [
             0.8577,
@@ -6363,7 +6363,7 @@
         "way": {}
       },
       {
-        "name": "t2_truck_01",
+        "name": "t2_truck_aaa_01",
         "tm": [
           [
             -0.899271,
@@ -6421,7 +6421,7 @@
         "way": {}
       },
       {
-        "name": "t2_truck_02",
+        "name": "t2_truck_aaa_02",
         "tm": [
           [
             -0.977234,
@@ -6479,7 +6479,7 @@
         "way": {}
       },
       {
-        "name": "t2_truck_03",
+        "name": "t2_truck_aaa_03",
         "tm": [
           [
             -0.945918,
@@ -6537,7 +6537,7 @@
         "way": {}
       },
       {
-        "name": "t2_truck_04",
+        "name": "t2_truck_aaa_04",
         "tm": [
           [
             -0.584301,

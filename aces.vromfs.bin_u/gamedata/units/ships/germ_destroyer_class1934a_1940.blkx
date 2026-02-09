@@ -1421,7 +1421,7 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
         "emitter": "bone_torpedo_01",
-        "bullets": 9,
+        "bullets": 12,
         "useEmitter": true,
         "emitterGenRange": [
           1,
@@ -2265,7 +2265,7 @@
               "external": true,
               "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
               "emitter": "bone_torpedo_01",
-              "bullets": 9,
+              "bullets": 12,
               "useEmitter": true,
               "emitterGenRange": [
                 1,
@@ -3106,7 +3106,7 @@
               "external": true,
               "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
               "emitter": "bone_torpedo_01",
-              "bullets": 9,
+              "bullets": 12,
               "useEmitter": true,
               "emitterGenRange": [
                 1,

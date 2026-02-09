@@ -8,9 +8,9 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_currency_no_popup,
   add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
   royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time,
-  check_purchases_debug
+  check_purchases_debug, add_subscription_time
 } = require("%appGlobals/pServer/pServerApi.nut")
-let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
+let { resetUserstatAppData, allowOpenUnlock } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { makeVertScroll, makeSideScroll } = require("%rGui/components/scrollbar.nut")
@@ -84,6 +84,8 @@ let commandsList = [].extend(
     return { label = $"meta.add_{c} {amount}", func = @() add_currency_no_popup(c, amount, "sceenlogResult") }
   }),
   [
+    { label = "meta.add_subscription_time vip 3600 sec", func = @() add_subscription_time("vip", 3600, "sceenlogResult") }
+    { label = "meta.add_subscription_time premium 3600 sec", func = @() add_subscription_time("premium", 3600, "sceenlogResult") }
     { label = "meta.add_premium 3600 sec", func = @() add_premium(3600, "sceenlogResult") }
     { label = "add_all_skins_for_unit", func = withClose(@() add_all_skins_for_unit(mainHangarUnitName.get(),
       mainHangarUnitName.get()?.isUpgraded || mainHangarUnitName.get()?.isPremium
@@ -149,6 +151,12 @@ let commandsList = [].extend(
     { label = "balance_full", func = @() showSortedTable(balance.get()) }
     { label = "balance_not_empty", func = @() showSortedTable(balance.get().filter(@(v) v != 0)) }
     { label = "updater.removeAddons", func = @() removeAddonsForCampaign(["tanks","air","ships"]) }
+    { label = "allowOpenUnlock",
+      func = withClose(function() {
+        allowOpenUnlock.set(!allowOpenUnlock.get())
+        dlog($"allowOpenUnlock: {allowOpenUnlock.get()}") 
+      })
+    }
   ])
 
 function mkCommandsList() {

@@ -58,6 +58,58 @@
       0.95
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1712,6 +1764,12 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel"
         },
+        "hullAiming": {
+          "horizontal": true,
+          "defaultEnabled": false,
+          "isAutoTurner": true,
+          "maxSpeedForHorizontalAiming": 15.0
+        },
         "limits": {
           "yaw": [
             -15.0,
@@ -1874,7 +1932,13 @@
     "tracks": {
       "animationMultiplier": -0.64,
       "height": 0.04,
-      "width": 0.4
+      "width": 0.4,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1887,12 +1951,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 1.45,
       "sideGearRatio": 2.85,
       "neutralGearRatio": 12.0,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -1.0,
@@ -2506,6 +2570,12 @@
                 "head": "bone_turret",
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel"
+              },
+              "hullAiming": {
+                "horizontal": true,
+                "defaultEnabled": false,
+                "isAutoTurner": true,
+                "maxSpeedForHorizontalAiming": 15.0
               },
               "limits": {
                 "yaw": [

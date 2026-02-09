@@ -6,6 +6,7 @@ let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY } = require("colorCorrector")
 let { loadAsCurrentPreset, getDefaultPresetPath } = require("controls")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { setTonemappingMode, getTonemappingMode } = require("postFxSettings")
 
 let failedLoadPreset = hardPersistWatched("options.failedLoadPreset", null)
 
@@ -32,5 +33,7 @@ function initOptions() {
 }
 
 eventbus_subscribe("controls.presetLoadFailed", @(p) failedLoadPreset.set(p.basePresetPath))
+
+eventbus_subscribe("on_renderer_init_environment", @(_) setTonemappingMode(getTonemappingMode()))
 
 return initOptions

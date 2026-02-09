@@ -1,12 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let DataBlock  = require("DataBlock")
-let { get_game_type } = require("mission")
+let { get_game_type, get_game_mode, GM_TRAINING } = require("mission")
 let { get_current_mission_desc } = require("guiMission")
+let { register_command } = require("console")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let interopGet = require("%rGui/interopGen.nut")
 
 let gameType = Watched(get_game_type())
+let gameMode = Watched(get_game_mode())
 
 let missionStateInterop = {
   gameType
@@ -30,26 +33,46 @@ interopGet({
 
 let raceForceCannotShoot = Watched(false)
 
-function updateRaceForceCannotShoot() {
+function updateByMissionDesc() {
   if (!isAppLoaded.get())
     return
+  log("Update hudCustomRules")
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
   raceForceCannotShoot.set(misBlk?.raceForceCannotShoot)
+
+  hudCustomRules.set({
+    ctfFlagPreset = misBlk?.customRules.ctfFlagPreset ?? ""
+    useKillStreaks = misBlk?.useKillStreaks ?? false
+    allowSpare = misBlk?.allowSpare ?? true
+    isUnlimRespawn = misBlk?.multiRespawn && misBlk?.maxRespawns == -1
+  })
 }
 
-updateRaceForceCannotShoot()
-isInLoadingScreen.subscribe(@(v) !v ? updateRaceForceCannotShoot() : null)
-isAppLoaded.subscribe(@(_) updateRaceForceCannotShoot())
+updateByMissionDesc()
+isInLoadingScreen.subscribe(function(value) {
+  if (!value) {
+    updateByMissionDesc()
+    gameMode.set(get_game_mode())
+  }
+})
+isAppLoaded.subscribe(@(_) updateByMissionDesc())
 
 let isGtRace = Computed(@() !!(gameType.get() & GT_RACE))
 
 let missionState = missionStateInterop.__merge({
   isGtFFA = Computed(@() !!(gameType.get() & (GT_FFA_DEATHMATCH | GT_FFA)))
   isGtBattleRoyale = Computed(@() !!(gameType.get() & GT_LAST_MAN_STANDING))
+  isTutorial = Computed(@() (gameMode.get() == GM_TRAINING) && !(gameType.get() & GT_TRAINING))
   isGtRace
   notGtRace = Computed(@() !isGtRace.get())
   raceForceCannotShoot
 })
+
+register_command(function() {
+  let misBlk = DataBlock()
+  get_current_mission_desc(misBlk)
+  console_print(misBlk?.customRules) 
+}, "mission.getDescriptionCustomRules")
 
 return missionState

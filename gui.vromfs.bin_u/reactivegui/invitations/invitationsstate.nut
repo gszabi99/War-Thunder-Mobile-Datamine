@@ -3,11 +3,11 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
-let isInvitationsOpened = mkWatched(persist, "isInvitationsOpened", false)
 let invitations = hardPersistWatched("invitations", [])
 let counter = hardPersistWatched("invitationsCounter", 0)
 let hasUnread = Computed(@() invitations.get().findvalue(@(i) !i.isRead) != null)
 let hasImportantUnread = Computed(@() invitations.get().findvalue(@(i) !i.isRead && i.isImportant) != null)
+let invitationsUids = Computed(@() invitations.get().map(@(v) [v.playerUid.tostring(), true]).totable())
 
 let subscriptions = {}
 function subscribeGroup(actionsGroup, actions) {
@@ -30,15 +30,17 @@ function removeNotify(notify) {
     invitations.mutate(@(value) value.remove(idx))
 }
 
-function onNotifyApply(notify) {
-  if (!invitations.get().contains(notify))
+function onNotifyApply(uid) {
+  let notify = invitations.get().findvalue(@(v) v.playerUid == uid)
+  if (notify == null)
     return
   let onApply = subscriptions?[notify.actionsGroup].onApply ?? removeNotify
   onApply(notify)
 }
 
-function onNotifyRemove(notify) {
-  if (!invitations.get().contains(notify))
+function onNotifyRemove(uid) {
+  let notify = invitations.get().findvalue(@(v) v.playerUid == uid)
+  if (notify == null)
     return
 
   let onRemove = subscriptions?[notify.actionsGroup].onRemove
@@ -83,14 +85,13 @@ function markReadAll() {
     invitations.mutate(@(v) v.each(@(notify) notify.isRead = true))
 }
 
-function markRead(id) {
-  let idx = invitations.get().findindex(@(n) n.id == id)
+function markRead(uid) {
+  let idx = invitations.get().findindex(@(n) n.playerUid == uid)
   if (idx != null && !invitations.get()[idx].isRead)
     invitations.mutate(@(v) v[idx] = v[idx].__merge({ isRead = true }))
 }
 
 isLoggedIn.subscribe(@(_) clearAll())
-invitations.subscribe(@(v) v.len() > 0 ? null : isInvitationsOpened.set(false))
 
 return {
   invitations
@@ -101,9 +102,8 @@ return {
   markReadAll
   markRead
   clearAll
-  isInvitationsOpened
+  invitationsUids
 
-  openInvitations = @() isInvitationsOpened.set(true)
   subscribeGroup
   onNotifyRemove
   onNotifyApply

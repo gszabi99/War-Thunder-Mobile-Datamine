@@ -5,13 +5,14 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { G_SKIN } = require("%appGlobals/rewardType.nut")
 let { mkGoodsWrap, borderBg, mkPricePlate, mkGoodsCommonParts,
   goodsSmallSize, goodsBgH, underConstructionBg, mkEndTime,
   limitFontGrad, mkBorderByCurrency, mkBgImg
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { mkGradRank, mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
+let { ALL_PURCHASED, NOT_READY } = require("%rGui/shop/goodsStates.nut")
 
 
 let skinSize =  (0.5 * goodsBgH).tointeger()
@@ -28,9 +29,8 @@ let bgHiglight = {
 }
 
 let getLocNameSkin = @(goods) comma.join(
-  goods.skins
-    .keys()
-    .map(@(unitName) loc("reward/skin_for", { unitName = loc(getUnitLocId(unitName)) })))
+  goods.rewards.filter(@(r) r.gType == G_SKIN)
+    .map(@(r) loc("reward/skin_for", { unitName = loc(getUnitLocId(r.id)) })))
 
 
 function mkImgs(skinName, unitName, hasUnit, unitImg) {
@@ -112,8 +112,9 @@ function mkGoodsSkin(goods, onClick, state, animParams, addChildren) {
   let { isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 
-  let unitName = goods.skins.findindex(@(_) true) ?? ""
-  let skinName = goods.skins?[unitName] ?? ""
+  let firstSkin = goods.rewards.findvalue(@(r) r.gType == G_SKIN)
+  let unitName = firstSkin?.id ?? ""
+  let skinName = firstSkin?.subId ?? ""
   let unit = Computed(@() serverConfigs.get()?.allUnits[unitName])
   let hasUnit = Computed(@() unitName in servProfile.get()?.units)
   let isPurchased = Computed(@() servProfile.get()?.skins[unitName][skinName] ?? false)
@@ -128,7 +129,7 @@ function mkGoodsSkin(goods, onClick, state, animParams, addChildren) {
   return mkGoodsWrap(
     goods,
     @() isPurchased.get() ? null
-      : hasUnit.get() ? onClick()
+      : hasUnit.get() || (state.get() & NOT_READY) != 0 ? onClick()
       : openMsgBox({ text = loc("msg/needUnitToBuySkin") }),
     unitName == "" ? null
       : @(sf, _) [

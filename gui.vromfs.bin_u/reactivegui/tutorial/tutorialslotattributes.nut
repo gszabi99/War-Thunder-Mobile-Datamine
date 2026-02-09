@@ -67,6 +67,7 @@ let getIncButtonsForTutorial = @(cat) cat?.attrList.map(@(attr, idx) {
     let selLevel = max(selAttributes.get()?[catId][attr.id] ?? minLevel, minLevel)
     let { maxLevel } = getMaxAttrLevelData(attr, selLevel, leftSlotSp.get())
     applyAttrRowChange(catId, attr.id, selLevel + 1, Watched(selLevel), Watched(minLevel), Watched(maxLevel))
+    playSound("click")
   }
   needArrow = idx == 0
 }) ?? []

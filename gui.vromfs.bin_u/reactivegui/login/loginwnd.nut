@@ -217,10 +217,7 @@ let resendCodeBlock = @() {
         rendObj = ROBJ_TEXT
         text = loc("msgbox/btn_resend_code_message", {value = resendTimer.get()})
         color = Color(192, 192, 192)
-        fontFx = FFT_GLOW
-        fontFxFactor = 64
-        fontFxColor = Color(0, 0, 0)
-      }.__update(fontSmall)
+      }.__update(fontSmallShaded)
     : [
         urlLikeButton(loc("msgbox/btn_resend_code"), doResendCode, { ovr = { hplace = ALIGN_RIGHT } })
         {
@@ -416,10 +413,7 @@ let mainAuthorizationButtons = {
       halign = ALIGN_CENTER
       text = loc("choose_authorization_method")
       color = textColor
-      fontFx = FFT_GLOW
-      fontFxFactor = 64
-      fontFxColor = Color(0, 0, 0)
-    }.__update(fontMedium)
+    }.__update(fontMediumShaded)
     {
       gap = loginButtonsHGap
       hplace = ALIGN_CENTER

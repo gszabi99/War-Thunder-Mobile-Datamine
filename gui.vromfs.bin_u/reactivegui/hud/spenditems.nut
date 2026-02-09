@@ -2,10 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { register_command } = require("console")
 let { EventSpendItems } = require("dasevents")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let spendItemsQueue = Watched([])
 
 let addSpendItem = @(itemId, count) spendItemsQueue.mutate(@(v) v.append({ itemId, count }))
+
+isInBattle.subscribe(@(_) spendItemsQueue.set([]))
 
 function removeSpendItem(itemData) {
   let idx = spendItemsQueue.get().indexof(itemData)

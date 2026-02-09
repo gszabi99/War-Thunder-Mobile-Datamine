@@ -49,6 +49,58 @@
   "minRelativeTankCameraThreshold": 1.4,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1736,7 +1788,7 @@
       "trackMass": 3000.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "cls_body": 0.7,
       "cls_turret": 0.3
@@ -1744,7 +1796,13 @@
     "tracks": {
       "animationMultiplier": 0.68,
       "width": 0.55,
-      "height": 0.08
+      "height": 0.08,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1761,6 +1819,7 @@
       "mainGearRatio": 1.0,
       "sideGearRatio": 4.2,
       "neutralGearRatio": 10.0,
+      "alternativeGearControl": 5.0,
       "gearRatios": {
         "ratio": [
           -2.6,

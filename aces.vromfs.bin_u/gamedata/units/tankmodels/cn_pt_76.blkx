@@ -59,7 +59,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "drowningCheckHeightMultiplier": 1.2,
   "DamageParts": {
     "formatVersion": 2,

@@ -45,6 +45,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "radarCanLockTargetFromTPV": false,
+  "guidanceAutoUnlockTime": 8.0,
   "radarAnimVar": "radar_drive",
   "radarAntenaSpeed": 720.0,
   "radarDeployTime": 3.525,
@@ -62,7 +63,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
@@ -1776,6 +1777,26 @@
     "TrackSoundNameAi": "tracks_ai_wheels"
   },
   "class_tags": {},
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/uk_rooikat_za_35_search_radar.blk",
+        "turretIndex": 0,
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "dmPart": "antenna_target_location_dm",
+        "radarParkingAzimuth": 180.0
+      },
+      {
+        "blk": "gameData/sensors/sam_tv_ir_track.blk",
+        "turretIndex": 0,
+        "dmPart": "optic_gun_dm"
+      },
+      {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+      }
+    ]
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 31000.0,

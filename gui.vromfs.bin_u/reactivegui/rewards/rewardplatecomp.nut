@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/rewardType.nut" import *
 let { round } =  require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR, TANK } = require("%appGlobals/unitConst.nut")
@@ -19,6 +20,7 @@ let { getBattleModPresentation } = require("%appGlobals/config/battleModPresenta
 let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { getDecalPresentation } = require("%appGlobals/config/decalsPresentation.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
@@ -33,7 +35,8 @@ let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonTex
 let { NO_DROP_LIMIT, shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardSlider } = require("%rGui/rewards/components/mkRewardSlider.nut")
 let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
-let { allShopGoods, calculateNewGoodsDiscount } = require("%rGui/shop/shopState.nut")
+let { allShopGoods } = require("%rGui/shop/shopState.nut")
+let { calculateNewGoodsDiscount } = require("%rGui/shop/discounts.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { SGT_UNIT } = require("%rGui/shop/shopCommon.nut")
@@ -148,10 +151,7 @@ function mkProgressBarText(r, rStyle) {
       text = countText
       hplace = ALIGN_RIGHT
       vplace = ALIGN_CENTER
-      fontFx = FFT_GLOW
-      fontFxColor = 0xFF000000
-      fontFxFactor = hdpxi(32)
-    }.__update(rStyle.textStyle)
+    }.__update(shade, rStyle.textStyle)
   }
 }
 
@@ -208,10 +208,7 @@ let mkProgressLabel = @(available, total, rStyle) {
         text = "/".concat(available, total)
         halign = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        fontFx = FFT_GLOW
-        fontFxColor = 0xFF000000
-        fontFxFactor = hdpxi(24)
-      }.__update(rStyle.textStyle)
+      }.__update(shade, rStyle.textStyle)
     ]
   }
 }
@@ -274,6 +271,15 @@ function mkUnitNameText(unitNameLoc, size, rStyle) {
     nameText = mkPlateText(unitNameLoc, fontVeryTiny)
       .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
   return nameText
+}
+
+let mkTrashIcon = @(size) {
+  rendObj = ROBJ_IMAGE
+  size = [size, size]
+  pos = [ rewardPlateBorderWidth * 2, rewardPlateBorderWidth * 2 ]
+  image = Picture($"ui/gameuiskin#btn_trash.svg:{size}:{size}:P")
+  color = 0xFFFF231E
+  keepAspect = true
 }
 
 
@@ -427,10 +433,19 @@ function mkRewardPlateItemImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.55).tointeger()
-  return {
+  let hasLimitReached = Computed(function() {
+    let { limit = 0 } = serverConfigs.get()?.allItems[r.id]
+    return limit > 0 && limit <= (servProfile.get()?.items[r.id].count ?? 0)
+  })
+  let trashIconSize = (iconSize / 3).tointeger()
+  return @() {
+    watch = hasLimitReached
     size
     clipChildren = true
-    children = mkCurrencyImage(r.id, iconSize, { hplace = ALIGN_CENTER, pos = [ 0, iconShiftY ] })
+    children = [
+      mkCurrencyImage(r.id, iconSize, { hplace = ALIGN_CENTER, pos = [ 0, iconShiftY ] })
+      hasLimitReached.get() ? mkTrashIcon(trashIconSize) : null
+    ]
   }
 }
 
@@ -452,13 +467,22 @@ function mkRewardPlateBoosterImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.67).tointeger()
-  return {
+  let hasLimitReached = Computed(function() {
+    let { limit = 0 } = serverConfigs.get()?.allBoosters[r.id]
+    return limit > 0 && limit <= (servProfile.get()?.boosters[r.id].battlesLeft ?? 0)
+  })
+  let trashIconSize = (iconSize / 3).tointeger()
+  return @() {
+    watch = hasLimitReached
     size
-    children = iconBase.__merge({
-      size = [iconSize, iconSize]
-      pos = [ 0, iconShiftY ]
-      image = Picture($"{getBoosterIcon(r.id)}:{iconSize}:{iconSize}:P")
-    })
+    children = [
+      iconBase.__merge({
+        size = [iconSize, iconSize]
+        pos = [ 0, iconShiftY ]
+        image = Picture($"{getBoosterIcon(r.id)}:{iconSize}:{iconSize}:P")
+      })
+      hasLimitReached.get() ? mkTrashIcon(trashIconSize) : null
+    ]
   }
 }
 
@@ -527,7 +551,7 @@ function mkRewardPlateDecalImage(r, rStyle) {
   let { id } = r
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
-  let iconSize = size.map(@(v) (v * 0.55).tointeger())
+  let iconSize = size.map(@(v) (v * getDecalPresentation(id).scale).tointeger())
   return {
     size
     halign = ALIGN_CENTER
@@ -797,19 +821,21 @@ function mkRewardPlateDiscount(previewReward, discount, rewardCtors, rewardStyle
 
 let mkRewardPlateDiscountImage = @(reward, rStyle, rewardCtors) function() {
   let goodsId = serverConfigs.get()?.personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == reward.id) != null)
-  let goods = allShopGoods.get()?[goodsId] ?? {}
-  let offer = activeOffersByGoods.get()?[goodsId] ?? goods.__merge({ offerClass = "seasonal" }) 
-  let needShowAsOffer = !!goods?.meta.showAsOffer
+  let offer = activeOffersByGoods.get()?[goodsId] ?? allShopGoods.get()?[goodsId].__merge({ offerClass = "seasonal" }) 
+  if (offer == null)
+    return { watch = [serverConfigs, allShopGoods, activeOffersByGoods] }
 
-  let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)?[0]
+  let needShowAsOffer = !!offer.meta?.showAsOffer
+
+  let previewReward = shopGoodsToRewardsViewInfo(offer).sort(sortRewardsViewInfo)?[0]
   let personalFinalPrice = serverConfigs.get()?.personalDiscounts?[goodsId].findvalue(@(v) v.id == reward.id).price ?? 0
-  let newDiscount = calculateNewGoodsDiscount(goods?.price.price ?? 0, goods?.discountInPercent ?? 0, personalFinalPrice)
+  let newDiscount = calculateNewGoodsDiscount(offer.price.price, offer.discountInPercent, personalFinalPrice)
 
   return {
     watch = [serverConfigs, allShopGoods, activeOffersByGoods]
     size = flex()
-    children = !goodsId || !previewReward ? null
-      : !needShowAsOffer || goods?.gtype not in discountOfferCtors
+    children = !previewReward ? null
+      : !needShowAsOffer || offer.gtype not in discountOfferCtors
         ? mkRewardPlateDiscount(previewReward, newDiscount, rewardCtors, rStyle)
       : discountOfferCtors[offer.gtype](offer, newDiscount, rStyle)
   }
@@ -854,52 +880,56 @@ let simpleRewardPlateCtors = {
   unknown = {
     image = mkRewardPlateUnknownImage
     texts = mkRewardPlateCountText
-  }
-  currency = {
+  },
+  [G_CURRENCY] = {
     image = mkRewardPlateCurrencyImage
     texts = mkRewardPlateCurrencyTexts
-  }
-  premium = {
+  },
+  [G_PREMIUM] = {
     image = mkRewardPlatePremiumImage
     texts = mkRewardPlatePremiumTexts
-  }
-  decorator = {
+  },
+  [G_DECORATOR] = {
     image = mkRewardPlateDecoratorImage
     texts = mkRewardPlateDecoratorTexts
-  }
-  item = {
+  },
+  [G_ITEM] = {
     image = mkRewardPlateItemImage
     texts = mkRewardPlateCountText
-  }
-  lootbox = {
+  },
+  [G_LOOTBOX] = {
     image = mkRewardPlateLootboxImage
     texts = mkRewardPlateCountText
-  }
-  unitUpgrade = {
+  },
+  [G_UNIT_UPGRADE] = {
     image = mkRewardPlateUnitUpgradeImage
     texts = mkRewardPlateUnitUpgradeTexts
-  }
-  unit = {
+  },
+  [G_UNIT] = {
     image = mkRewardPlateUnitImage
     texts = mkRewardPlateUnitTexts
-  }
-  stat = {
+  },
+  [G_STAT_SET] = {
     image = mkRewardPlateStatImage
     texts = mkRewardPlateCountText
-  }
-  booster = {
+  },
+  [G_STAT_ADD] = {
+    image = mkRewardPlateStatImage
+    texts = mkRewardPlateCountText
+  },
+  [G_BOOSTER] = {
     image = mkRewardPlateBoosterImage
     texts = mkRewardPlateCountText
-  }
-  skin = {
+  },
+  [G_SKIN] = {
     image = mkRewardPlateSkinImage
     texts = mkRewardPlateSkinTexts
-  }
-  decal = {
+  },
+  [G_DECAL] = {
     image = mkRewardPlateDecalImage
     texts = @(_, rStyle) mkRewardPlateDecalTexts(rStyle)
-  }
-  battleMod = {
+  },
+  [G_BATTLE_MOD] = {
     image = function(r, rStyle) {
       let battleMod = getBattleModPresentation(r.id)
       return battleMod?.viewType in battleModeViewCtors
@@ -912,22 +942,22 @@ let simpleRewardPlateCtors = {
         ? battleModeViewCtors[battleMod.viewType].texts(battleMod, rStyle, r.slots)
         : mkRewardPlateCountText(r, rStyle)
     }
-  }
-  blueprint = {
+  },
+  [G_BLUEPRINT] = {
     image = mkRewardPlateBlueprintImage
     texts = mkRewardPlateBlueprintTexts
-  }
+  },
 }
 
 let complexRewardPlateCtors = {
-  prizeTicket = {
+  [G_PRIZE_TICKET] = {
     image = @(r, rStyle) mkRewardPlatePrizeTicketImage(r, rStyle, simpleRewardPlateCtors)
     texts = @(_, _) null
-  }
-  discount = {
+  },
+  [G_DISCOUNT] = {
     image = @(r, rStyle) mkRewardPlateDiscountImage(r, rStyle, simpleRewardPlateCtors)
     texts = @(_, _) null
-  }
+  },
 }
 
 let rewardPlateCtors = {}.__merge(simpleRewardPlateCtors, complexRewardPlateCtors)

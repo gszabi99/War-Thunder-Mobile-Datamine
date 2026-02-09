@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY, SGT_DECORATOR
+let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY, SGT_DECORATOR, SGT_DECALS
   SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS, SGT_BRANCH, SGT_SKIN
 } = require("%rGui/shop/shopConst.nut")
 
@@ -31,6 +31,7 @@ let PURCH_SRC_SLOT_UPGRADES = "slot_upgrades"
 let PURCH_SRC_BLUEPRINTS = "blueprints"
 let PURCH_SRC_BRANCH = "branch"
 let PURCH_SRC_DECALS = "decals"
+let PURCH_SRC_RESET_SLOT_LEVEL = "reset_slot_lvl"
 
 let PURCH_TYPE_UNIT = "unit"
 let PURCH_TYPE_UNIT_MOD = "unit_mod"
@@ -58,11 +59,13 @@ let PURCH_TYPE_BRANCH = "branch"
 let PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
 let PURCH_TYPE_DECAL = "decal"
 let PURCH_TYPE_QUEST_REROLL = "quest_reroll"
+let PURCH_TYPE_RESET_SLOT_LEVEL = "reset_slot_lvl"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
   [SGT_UNIT] = PURCH_TYPE_UNIT,
   [SGT_SKIN] = PURCH_TYPE_SKIN,
+  [SGT_DECALS] = PURCH_TYPE_DECAL,
   [SGT_CONSUMABLES] = PURCH_TYPE_CONSUMABLES,
   [SGT_PREMIUM] = PURCH_TYPE_PREMIUM,
   [SGT_WP] = PURCH_TYPE_CURRENCY,
@@ -116,6 +119,7 @@ return {
   PURCH_SRC_BLUEPRINTS
   PURCH_SRC_BRANCH
   PURCH_SRC_DECALS
+  PURCH_SRC_RESET_SLOT_LEVEL
 
   PURCH_TYPE_UNIT
   PURCH_TYPE_UNIT_MOD
@@ -142,6 +146,7 @@ return {
   PURCH_TYPE_QUEUE_PENALTY
   PURCH_TYPE_DECAL
   PURCH_TYPE_QUEST_REROLL
+  PURCH_TYPE_RESET_SLOT_LEVEL
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

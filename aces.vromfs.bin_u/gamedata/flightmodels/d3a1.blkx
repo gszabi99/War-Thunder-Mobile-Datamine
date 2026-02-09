@@ -2107,5 +2107,18 @@
       1.54143,
       0.000124812
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "d3a1_c*",
+        "to": "d3a1_green_c*"
+      },
+      {
+        "from": "d3a1_n*",
+        "to": "d3a1_green_n*"
+      }
+    ]
   }
 }

@@ -836,10 +836,10 @@
         "triggerGroup": "rockets",
         "blk": "gameData/weapons/rocketGuns/350mm_mm_38_alike_rocket_naval_bullet.blk",
         "weaponType": "rockets",
-        "emitter": "bone_rocket_08",
-        "flash": "bone_rocket_08",
+        "emitter": "bone_rocket_07",
+        "flash": "bone_rocket_07",
         "emitterGenRange": [
-          8,
+          7,
           10
         ],
         "emitterGenFmt": "bone_rocket_%02d",
@@ -1384,10 +1384,10 @@
               "triggerGroup": "rockets",
               "blk": "gameData/weapons/rocketGuns/350mm_mm_38_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
-              "emitter": "bone_rocket_08",
-              "flash": "bone_rocket_08",
+              "emitter": "bone_rocket_07",
+              "flash": "bone_rocket_07",
               "emitterGenRange": [
-                8,
+                7,
                 10
               ],
               "emitterGenFmt": "bone_rocket_%02d",
@@ -1916,10 +1916,10 @@
               "triggerGroup": "rockets",
               "blk": "gameData/weapons/rocketGuns/350mm_mm_38_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
-              "emitter": "bone_rocket_08",
-              "flash": "bone_rocket_08",
+              "emitter": "bone_rocket_07",
+              "flash": "bone_rocket_07",
               "emitterGenRange": [
-                8,
+                7,
                 10
               ],
               "emitterGenFmt": "bone_rocket_%02d",

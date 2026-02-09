@@ -3,7 +3,7 @@ let logW = require("%globalScripts/logs.nut").log_with_prefix("[WINDOW] ")
 let { get_time_msec } = require("dagor.time")
 let { eventbus_subscribe } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { is_mobile } = require("%appGlobals/clientState/platform.nut")
+let { is_mobile } = require("%sqstd/platform.nut")
 
 
 let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})

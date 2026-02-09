@@ -1,14 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-from "dagor.workcycle" import deferOnce
 from "%sqstd/string.nut" import utf8ToUpper
-from "%appGlobals/activeControls.nut" import needCursorForActiveInputDevice
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%rGui/cursor.nut" import needShowCursor, cursor
 from "%rGui/navState.nut" import registerScene
 from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 import "%rGui/components/panelBg.nut" as panelBg
-from "%rGui/components/textButton.nut" import textButtonCommon, textButtonBattle
+from "%rGui/components/textButton.nut" import textButtonBattle
 from "%rGui/dmViewer/protectionAnalysisState.nut" import inspectedBaseUnit, isSimulationMode,
   isHintVisible, doFire
 import "%rGui/dmViewer/protectionAnalysisControl.nut" as protectionAnalysisControl

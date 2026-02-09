@@ -20,15 +20,13 @@ let getImgByAmount = @(amount)
   mkGoodsImg(getCurrencyGoodsPresentation(WP, amount).img)
 
 function getLocNameWp(goods) {
-  let amount = goods?.rewards[0].count
-    ?? goods?.currencies.wp ?? 0 
+  let amount = goods.rewards?[0].count ?? 0
   return loc("shop/item/wp/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
 function mkGoodsWp(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
-  let wp = goods?.rewards[0].count
-    ?? goods?.currencies.wp ?? 0 
+  let wp = goods.rewards?[0].count ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 

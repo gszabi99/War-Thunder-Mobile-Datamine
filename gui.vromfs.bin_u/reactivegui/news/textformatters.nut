@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
@@ -284,21 +283,12 @@ let image = @(obj, _, style = {}) {
     rendObj = ROBJ_TEXT
     text = obj?.caption
     vplace = ALIGN_BOTTOM
-    fontFxColor = 0x96000000
-    fontFxFactor = min(64, hdpx(64))
-    fontFx = FFT_GLOW
-  }
+  }.__update(fontTinyShaded)
 }.__update(obj, style)
 
 function spoiler(obj, formatTextFunc, style) {
   let isExpanded = Watched(false)
   let isHover = Watched(false)
-  let contentHeight = Watched(0)
-  let buttonHeight = Watched(0)
-  let spoilerHeight = Watched(0)
-  let resetSpoilerHeight = @() spoilerHeight.set(buttonHeight.get())
-
-  buttonHeight.subscribe(@(v) spoilerHeight.set(v))
 
   let button = @() {
     watch = [isExpanded, isHover]
@@ -328,9 +318,7 @@ function spoiler(obj, formatTextFunc, style) {
     ]
   }
 
-  let content = @() {
-    watch = [isExpanded, contentHeight, buttonHeight]
-    pos = [0, buttonHeight.get()]
+  let mkContent = @(isVisible) {
     size = [spoilerWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     padding = insideBlockPadding
@@ -338,33 +326,28 @@ function spoiler(obj, formatTextFunc, style) {
     fillColor = contentBackground
     clipChildren = true
     children = formatList(obj.v, formatTextFunc)
-    opacity = isExpanded.get() ? 1 : 0
-    transform = {translate = [0, (!isExpanded.get() ? -contentHeight.get() : 0)]}
+    opacity = isVisible ? 1 : 0
     transitions = [
-      { prop = AnimProp.translate, duration = defaultExpandAnimationDuration }
       { prop = AnimProp.opacity, duration = defaultExpandAnimationDuration }
     ]
   }
 
-  contentHeight.set(calc_comp_size(content)[1])
-  buttonHeight.set(calc_comp_size(button)[1])
-
-  isExpanded.subscribe(function(v) {
-    if (v) {
-      clearTimer(resetSpoilerHeight)
-      spoilerHeight.set(buttonHeight.get() + contentHeight.get())
-    } else
-      resetTimeout(defaultExpandAnimationDuration, resetSpoilerHeight)
-  })
-
   return @() {
-    watch = spoilerHeight
-    size = [spoilerWidth, spoilerHeight.get()]
+    watch = isExpanded
+    size = FLEX_H
     margin = [headerMargin, 0]
+    behavior = Behaviors.TransitionSize
+    orientation = O_VERTICAL
+    speed = hdpx(2000)
+    maxTime = defaultExpandAnimationDuration
     clipChildren = true
+    flow = FLOW_VERTICAL
     children = [
-      content
       button
+      {
+        size = isExpanded.get() ? FLEX_H : [flex(), 0]
+        children = mkContent(isExpanded.get())
+      }
     ]
   }
 }

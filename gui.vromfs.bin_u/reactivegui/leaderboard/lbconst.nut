@@ -1,0 +1,6 @@
+return {
+  RESULT_DESERTER = 0
+  RESULT_IN_PROGRESS = 1
+  RESULT_LOSE = 2
+  RESULT_WIN = 3
+}

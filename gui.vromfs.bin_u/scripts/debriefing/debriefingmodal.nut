@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { destroy_session } = require("multiplayer")
+let { object_to_json_string } = require("json")
 let { loadJson, saveJson } = require("%sqstd/json.nut")
 let { register_command } = require("console")
 let { file_exists } = require("dagor.fs")
@@ -72,6 +73,14 @@ function loadDebriefing(fileName) {
   return true
 }
 
+function printDebriefing() {
+  if (battleResult.get() == null) {
+    console_print("No debriefing data to print")
+    return
+  }
+  console_print("Debriefing data:\n", object_to_json_string(battleResult.get(), true))
+}
+
 let function getTimestampStr() {
   let t = unixtime_to_local_timetbl(get_local_unixtime())
   return format("%02d%02d%02d_%02d%02d%02d", t.year, t.month + 1, t.day, t.hour, t.min, t.sec)
@@ -83,5 +92,6 @@ register_command(@() loadDebriefing(SAVE_FILE), "debriefing.debriefing_load")
 register_command(@(fileName) saveDebriefing(fileName), "debriefing.debriefing_save_by_name")
 register_command(@(fileName) loadDebriefing(fileName), "debriefing.debriefing_load_by_name")
 register_command(@() saveDebriefing($"wtmDebriefingData_{getTimestampStr()}.json"), "debriefing.debriefing_save_with_timestamp")
+register_command(printDebriefing, "debriefing.print_console")
 
 eventbus_subscribe("Debriefing_CloseInDagui", @(_) closeDebriefing())

@@ -1150,6 +1150,14 @@
     "ricochetCosinePower": 2.0,
     "ricochetDamage": 0.3
   },
+  "armor18": {
+    "armorThickness": 18.0,
+    "armorThrough": 18.0,
+    "restrainDamage": 0.1,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3
+  },
   "armor19_05": {
     "armorThickness": 19.05,
     "armorThrough": 19.05,
@@ -2051,6 +2059,64 @@
     "ricochetCosinePower": 3.0,
     "ricochetDamage": 0.1,
     "armorQuality": 0.1
+  },
+  "polyurethane_filing": {
+    "armorThickness": 5.0,
+    "armorThrough": 1.5,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "createSecondaryShatters": false,
+    "explosionArmorQuality": 1.1,
+    "shatterArmorQuality": 0.5,
+    "genericArmorQuality": 0.5
+  },
+  "armor_spar": {
+    "armorThickness": 14.0,
+    "armorThrough": 14.0,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "createSecondaryShatters": false,
+    "explosionArmorQuality": 1.5
+  },
+  "titan10": {
+    "armorThickness": 10.0,
+    "armorThrough": 16.0,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "oneSided": true
+  },
+  "titan17": {
+    "armorThickness": 17.0,
+    "armorThrough": 23.0,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "oneSided": true
+  },
+  "titan24": {
+    "armorThickness": 24.0,
+    "armorThrough": 30.0,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "oneSided": true
+  },
+  "titan38": {
+    "armorThickness": 38.0,
+    "armorThrough": 44.0,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "oneSided": true
   },
   "tank_textolite": {
     "armorThickness": 1.0,

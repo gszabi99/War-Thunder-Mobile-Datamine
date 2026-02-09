@@ -1868,5 +1868,12 @@
       1.47124,
       0.00349412
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "p_40f_10_usaaf_c*",
+      "to": "p_40f_10_usaaf_trop_c*"
+    }
   }
 }

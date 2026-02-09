@@ -11,6 +11,7 @@ let lastBalanceUpdate = mkWatched(persist, "lastBalanceUpdate", 0)
 isAuthorized.subscribe(function(v) {
   if (v)
     return
+  logC("Clear balance on logout")
   balance.set({})
   isBalanceReceived.set(false)
 })
@@ -31,8 +32,17 @@ let notifications = {
     }
 
     let newBalance = clone balance.get()
-    foreach (k, v in ev.balance)
-      newBalance[k] <- v?.value
+    let changes = []
+    foreach (k, v in ev.balance) {
+      let newV = v?.value ?? 0
+      let wasV = newBalance?[k] ?? 0
+      newBalance[k] <- newV
+      if (newV != wasV)
+        changes.append($"{k}: {wasV} -> {newV}")
+    }
+    let changedText = changes.len() == 0 ? "Changed 0."
+      : $"Changed {changes.len()}:\n{"\n".join(changes)}"
+    logC($"update_balance of {ev.balance.len()} currencies. Not empty {ev.balance.reduce(@(res, v) v?.value == 0 ? res : res + 1, 0)}. {changedText}")
     if (!isEqual(newBalance, balance.get()))
       balance.set(newBalance)
     isBalanceReceived.set(true)

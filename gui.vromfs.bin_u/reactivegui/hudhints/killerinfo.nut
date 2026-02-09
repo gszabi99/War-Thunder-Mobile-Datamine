@@ -63,17 +63,14 @@ eventbus_subscribe("HudMessage", function(data) {
   }
 })
 
-let mkText = @(text, style = fontMedium, color = 0xFFFFFFFF) {
+let mkText = @(text, style = fontMediumShaded, color = 0xFFFFFFFF) {
   rendObj = ROBJ_TEXT
   text
   color
-  fontFx = FFT_GLOW
-  fontFxFactor = max(64, hdpx(64))
-  fontFxColor = 0xFF000000
 }.__update(style)
 
 let fontByPlateWidth = @(text) calc_str_box(text, fontSmall)[0] > unitPlateWidth
-  ? fontSmall : fontMedium
+  ? fontSmallShaded : fontMediumShaded
 
 let premiumMark = {
   size = [premIconSize, premIconSize]
@@ -98,7 +95,7 @@ function hintContent(infoV) {
             flow = FLOW_VERTICAL
             gap = -hdpx(8)
             children = [
-              mkText(loc("hud/killer"), fontTiny, 0xA0A0A0A0)
+              mkText(loc("hud/killer"), fontTinyShaded, 0xA0A0A0A0)
               mkText(name, fontByPlateWidth(name))
             ]
           }

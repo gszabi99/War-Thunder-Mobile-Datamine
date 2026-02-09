@@ -22,6 +22,7 @@ let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/init
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign, battleUnitClasses, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 let { curUnitName } = require("%appGlobals/pServer/profile.nut")
+let { battleRentInfo } = require("%appGlobals/rentalState.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { registerRespondent } = require("scriptRespondent")
 
@@ -46,6 +47,8 @@ function isUnitsInfoSame(unitsInfo, isSlots, slots) {
     return false
   return isSlots ? isEqual(unitsInfo.unitList, slots) : unitsInfo.unit == slots[0]
 }
+
+let toTable = @(list) list.reduce(@(res, u) res.$rawset(u, (res?[u] ?? 0) + 1), {})
 
 let curAction = keepref(Computed(function() {
   let { isBattleDataReceived = null, isUnitsOverrided = null, ovrUnitUpgradesPreset = "", sessionId = -1, data = null,
@@ -90,7 +93,7 @@ let actions = {
     ecs.client_request_unicast_net_sqevent(state.get().eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
   },
   [ACTION.SET_AND_SEND_DEFAULT] = function() {
-    let unitName = state.get().slots?[0] ?? ""
+    let unitName = get_arg_value_by_name("unitModel") ?? state.get().slots?[0] ?? ""
     state.mutate(@(v) v.data <- getDefaultBattleData(unitName, myUserId.get()))
     ecs.client_request_unicast_net_sqevent(state.get().eid, mkCmdSetDefaultBattleData({ dataId = unitName }))
   },
@@ -120,7 +123,10 @@ function onChangeSlots(eid, comp) {
     return
   }
 
-  local slots = comp.unitSlots.getAll()
+  let curCampSlots = curCampaignSlotUnits.get() ?? []
+  let compSlots = comp.unitSlots.getAll()
+  local slots = isEqual(toTable(curCampSlots), toTable(compSlots)) ? curCampSlots : compSlots
+
   if (slots.len() == 0)
     if (shouldDisableMenu || isOfflineMenu)
       slots = [get_arg_value_by_name("unitModel") ?? "germ_cruiser_admiral_hipper"]
@@ -248,8 +254,8 @@ function createBattleDataForLocalMP() {
     return
   }
 
-  let unitName = curUnitName.get()
-  let slots = curCampaignSlotUnits.get()
+  let unitName = battleRentInfo.get()?.unit ?? curUnitName.get()
+  let slots = battleRentInfo.get()?.unitList ?? curCampaignSlotUnits.get()
   logBD("createBattleDataForLocalMP ", unitName, slots, isBattleDataActual.get())
   if (slots != null)
     actualizeBattleData(slots)
@@ -290,7 +296,12 @@ isInBattle.subscribe(function(v) {
     isSingleMissionOverrided.set(false)
   }
 })
-isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied.set(v) : null)
+isBattleDataApplied.subscribe(function(v) {
+  if (!v)
+    return
+  wasBattleDataApplied.set(v)
+  battleCampaign.set(realBattleData.get()?.campaign ?? "")
+})
 
 let battleUnitName = keepref(Computed(@() !isInBattle.get() ? null : state.get()?.slots[0]))
 battleUnitName.subscribe(@(v) mainBattleUnitName.set(v))

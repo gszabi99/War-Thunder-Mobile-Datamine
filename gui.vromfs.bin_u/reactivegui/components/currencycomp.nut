@@ -84,7 +84,7 @@ function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
   let price = !isFree
     ? mkCurrencyComp(value, currencyId, style)
     : mkFreeText(style)
-  if (fullValue == value)
+  if (fullValue == value || fullValue == 0 || fullValue == "0")
     return price
   let oldPriceStyle = style.__merge({ fontStyle = style.discountFontStyle })
   return {

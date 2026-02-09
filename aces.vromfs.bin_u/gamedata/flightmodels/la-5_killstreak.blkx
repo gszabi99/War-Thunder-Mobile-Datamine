@@ -1775,6 +1775,19 @@
       1.12632e-8
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "la_5_type_37_early_c*",
+        "to": "la_5_type_37_early_winter_c*"
+      },
+      {
+        "from": "la_5_type_37_early_n*",
+        "to": "la_5_type_37_early_winter_n*"
+      }
+    ]
+  },
   "weapon_presets": {
     "preset": {
       "name": "la-5_killstreak_default",

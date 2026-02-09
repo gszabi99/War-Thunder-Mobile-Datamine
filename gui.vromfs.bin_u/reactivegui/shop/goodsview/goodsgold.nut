@@ -8,6 +8,7 @@ let { mkGoodsWrap, mkOfferWrap, borderBgGold, mkBgImg, mkSlotBgImg, goodsSmallSi
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 
 let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
@@ -21,15 +22,13 @@ let getImgByAmount = @(amount)
   mkGoodsImg(getCurrencyGoodsPresentation(GOLD, amount).img, null, { keepAspect = KEEP_ASPECT_FILL })
 
 function getLocNameGold(goods) {
-  let amount = goods?.rewards[0].count
-    ?? goods?.currencies.gold ?? 0 
+  let amount = goods.rewards?[0].count ?? 0
   return loc("shop/item/gold/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
 function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
-  let gold = goods?.rewards[0].count
-   ?? goods?.currencies.gold ?? 0 
+  let gold = goods.rewards?[0].count ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBgGold, isFreeReward, price?.currencyId)
 
@@ -46,11 +45,12 @@ function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
       mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),
-    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams), { size = goodsSmallSize })
 }
 
 function mkOfferGold(goods, onClick, state) {
-  let { discountInPercent = 0, isShowDebugOnly = false } = goods
+  let { isShowDebugOnly = false } = goods
+  let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
   return mkOfferWrap(onClick,
     @(sf) [
       mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
@@ -58,7 +58,7 @@ function mkOfferGold(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg("!ui/images/offer_art_gold.avif")
       mkOfferTexts(loc("offer/gold"), goods)
-      discountTagBig(discountInPercent)
+      @() discountTagBig(discountInPercent.get(), { watch = discountInPercent })
     ].extend(mkOfferCommonParts(goods, state)))
 }
 

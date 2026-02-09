@@ -1,21 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler, get_profile, get_all_configs
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, G_BOOSTER, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
+let { activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
+let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
+let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
 let { openMsgBoxPurchase, closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { playSound } = require("sound_wt")
@@ -27,44 +31,19 @@ let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
 function getCantPurchaseReason(goods) {
-  if ("rewards" in goods) {
-    let units = []
-    foreach (r in goods.rewards)
-      if (r.gType in unitRewardTypes
-          && (isEmptyByRType?[r.gType](r.id, r.subId, servProfile.get(), serverConfigs.get()) ?? false))
-        units.append(r.id)
-    if (units.len() > 0)
-      return {
-        canPurchase = false
-        logText = $"ERROR: Units already received: {", ".join(units)}"
-        msgboxText = loc("trophy/prizeAlreadyReceived",
-          { prizeText = ", ".join(units.map(
-              @(unitName) colorize(userlogTextColor, loc(getUnitLocId(unitName))))) })
-      }
-    return null
-  }
-
-  
-  let hasUnits = goods.units.filter(@(unitId) campMyUnits.get()?[unitId] != null)
-  if (hasUnits.len())
+  let units = []
+  foreach (r in goods.rewards)
+    if (r.gType in unitRewardTypes
+        && (isEmptyByRType?[r.gType](r.id, r.subId, servProfile.get(), serverConfigs.get()) ?? false))
+      units.append(r.id)
+  if (units.len() > 0)
     return {
       canPurchase = false
-      logText = $"ERROR: Units already received: {", ".join(hasUnits)}"
+      logText = $"ERROR: Units already received: {", ".join(units)}"
       msgboxText = loc("trophy/prizeAlreadyReceived",
-        { prizeText = ", ".join(hasUnits.map(
-            @(unitId) colorize(userlogTextColor, loc(getUnitLocId(unitId))))) })
+        { prizeText = ", ".join(units.map(
+            @(unitName) colorize(userlogTextColor, loc(getUnitLocId(unitName))))) })
     }
-
-  let hasUpgraded = goods.unitUpgrades.filter(@(unitId) campMyUnits.get()?[unitId]?.isUpgraded ?? false)
-  if (hasUpgraded.len())
-    return {
-      canPurchase = false
-      logText = $"ERROR: Units already upgraded: {", ".join(hasUpgraded)}"
-      msgboxText = loc("trophy/prizeAlreadyReceived",
-        { prizeText = ", ".join(hasUpgraded.map(
-            @(unitId) colorize(userlogTextColor, loc(getUnitLocId(unitId))))) })
-    }
-
   return null
 }
 
@@ -130,13 +109,9 @@ function purchaseOfferImpl(offer, currencyId, price) {
   if (shopPurchaseInProgress.get() != null)
     return "shopPurchaseInProgress"
   local units = []
-  if ("rewards" in offer) {
-    foreach (r in offer.rewards)
-      if (r.gType == G_UNIT_UPGRADE || r.gType == G_UNIT)
-        units.append(r.id)
-  }
-  else 
-    units.extend(offer.unitUpgrades, offer.units)
+  foreach (r in offer.rewards)
+    if (r.gType == G_UNIT_UPGRADE || r.gType == G_UNIT)
+      units.append(r.id)
 
   buy_offer(offer.campaign, offer.id, currencyId, price,
     { id = "onOfferPurchase", units })
@@ -144,11 +119,7 @@ function purchaseOfferImpl(offer, currencyId, price) {
 }
 
 let mkCurrencyWithIcon = @(goods) function() {
-  local { id = null, count = null } = goods?.rewards.findvalue(@(r) r.gType == G_CURRENCY)
-  if ("currencies" in goods) { 
-    id = goods.currencies.findindex(@(_) true) ?? ""
-    count =  goods.currencies?[id] ?? 0
-  }
+  let { id = null, count = null } = goods?.rewards.findvalue(@(r) r.gType == G_CURRENCY)
   return {
     watch = currencyToFullId
     flow = FLOW_VERTICAL
@@ -164,30 +135,56 @@ let mkCurrencyWithIcon = @(goods) function() {
   }
 }
 
-function startRemoveTimer(goods) {
-  let { timeRanges = null } = goods
-  let time = serverTime.get()
-  local timeLeft = null
-  if (timeRanges != null) 
-    foreach (tr in timeRanges)
-      if (tr.end > time)
-        timeLeft = min(timeLeft ?? tr.end, tr.end)
+function getGoodsRemoveTime(goods) {
+  if ("situation" in goods)  
+    return null
 
-  if ((timeLeft ?? 0) <= 0)
+  if ("endTime" in goods)
+    return goods.endTime
+
+  let { timeRanges = [] } = goods
+  let time = serverTime.get()
+  foreach (tr in timeRanges)
+    if (tr.start <= time && tr.end > time)
+      return tr.end
+  return null
+}
+
+function startRemoveTimer(goods) {
+  let timeLeft = (getGoodsRemoveTime(goods) ?? 0) - serverTime.get()
+  if (timeLeft <= 0)
     clearTimer(closePurchaseAndBalanceBoxes)
   else
     resetTimeout(timeLeft, closePurchaseAndBalanceBoxes)
 }
 
+function mkLimitCountText(id, gType) {
+  let configType = gType == G_BOOSTER ? "allBoosters" : "allItems"
+  let limit = campConfigs.get()[configType]?[id].limit ?? 0
+  if (limit <= 0)
+    return null
+  let count = (gType == G_BOOSTER ? servProfile.get()?.boosters[id].battlesLeft
+    : servProfile.get()?.items[id].count) ?? 0
+
+  return $"{count}/{limit}"
+}
+
 function purchaseGoods(goodsId, description = "", locParam = null) {
+  let personalGoods = activePersonalGoods.get()?[goodsId]
+  if (personalGoods != null) {
+    purchasePersonalGoods(personalGoods, personalGoodsToShopGoods(personalGoods))
+    return
+  }
+
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.get() != null)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.get()}")
   let isOffer = activeOffer.get()?.id == goodsId
-  let goods = isOffer ? activeOffer.get() : shopGoodsAllCampaigns.get()?[goodsId]
+  let goods = isOffer ? activeOffer.get()
+    : shopGoodsAllCampaigns.get()?[goodsId]
   if (goods == null)
     return logShop($"ERROR: Goods not found: {goodsId}")
-  let { price, currencyId } = goods.price
+  let { price, currencyId } = applyDiscount(goods, discountsToApply.get()).price
   let isPriceValid = price > 0 && currencyId != ""
   if (!isPriceValid)
     return logShop("ERROR: Invalid price")
@@ -212,6 +209,7 @@ function purchaseGoods(goodsId, description = "", locParam = null) {
       tryResetToMainScene()
   }
 
+  let limitCountText = mkLimitCountText(goods.rewards[0].id, goods.rewards[0].gType)
   let textItem = colorize(userlogTextColor, getGoodsLocName(goods, locParam).replace(" ", nbsp))
 
   openMsgBoxPurchase({
@@ -220,8 +218,10 @@ function purchaseGoods(goodsId, description = "", locParam = null) {
         ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
       : loc("shop/needMoneyQuestion", { item = textItem }),
     price = { price, currencyId = currencyFullId },
+    limitCountText,
     purchase,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}")
+    goodsId
   })
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }

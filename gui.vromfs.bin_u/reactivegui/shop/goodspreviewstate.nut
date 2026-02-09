@@ -7,14 +7,16 @@ let { unitRewardTypes, G_UNIT, G_UNIT_UPGRADE, G_BLUEPRINT, G_CURRENCY, G_LOOTBO
 let { activeOffer } = require("%rGui/shop/offerState.nut")
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
 let { shopGoodsAllCampaigns, saveSeenGoods } = require("%rGui/shop/shopState.nut")
+let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
+let { activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopPurchaseInProgress, validate_active_offer } = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, personalGoodsInProgress, validate_active_offer
+} = require("%appGlobals/pServer/pServerApi.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 
@@ -46,32 +48,24 @@ function getAllTagsUnitsToShowGoods(goods, sConfigs) {
   let res = {}
   if (goods?.meta.previewUnit != null)
     addTagsUnitsWithPlatoon(res, goods.meta.previewUnit, sConfigs)
-  if ("rewards" in goods) {
-    foreach (r in goods.rewards)
-      if (r.gType in unitRewardTypes)
-        addTagsUnitsWithPlatoon(res, r.id, sConfigs)
-    return res
-  }
-  
-  foreach (u in goods?.unitUpgrades ?? [])
-    addTagsUnitsWithPlatoon(res, u, sConfigs)
-  foreach (u in goods?.units ?? [])
-    addTagsUnitsWithPlatoon(res, u, sConfigs)
-  foreach (u, _ in goods?.blueprints ?? {})
-    addTagsUnitsWithPlatoon(res, u, sConfigs)
+  foreach (r in goods.rewards)
+    if (r.gType in unitRewardTypes)
+      addTagsUnitsWithPlatoon(res, r.id, sConfigs)
   return res
 }
 
 let getNotLoadedTagsUnitsToShowGoods = @(goods, sConfigs, uSizes)
   getAllTagsUnitsToShowGoods(goods, sConfigs).filter(@(_, u) (uSizes?[u] ?? -1) != 0)
 
-let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods)
+let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods, persGoods)
   activeOff?.id == id ? activeOff
     : id in activeOffsByGoods ? activeOffsByGoods[id]
+    : id in persGoods ? personalGoodsToShopGoods(persGoods[id])
     : shopGoods?[id]
 
 function openGoodsPreview(id) {
-  let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
+  let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(),
+    shopGoodsAllCampaigns.get(), activePersonalGoods.get())
   if (goods == null)
     return
 
@@ -87,7 +81,8 @@ function openGoodsPreview(id) {
 }
 
 function openGoodsPreviewInMenuOnly(id) {
-  let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
+  let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(),
+    shopGoodsAllCampaigns.get(), activePersonalGoods.get())
   if (goods == null)
     return
 
@@ -107,17 +102,9 @@ function openGoodsPreviewInMenuOnly(id) {
 }
 
 let previewGoods = Computed(@() getPreviewGoods(openedGoodsId.get(), activeOffer.get(),
-  activeOffersByGoods.get(), shopGoodsAllCampaigns.get()))
+  activeOffersByGoods.get(), shopGoodsAllCampaigns.get(), activePersonalGoods.get()))
 
 let previewGoodsUnit = Computed(@() getBestUnitByGoods(previewGoods.get(), serverConfigs.get()))
-
-let getPreviewTypeDeprecated = @(goods, goodsUnit) (goods?.blueprints.len() ?? 0) > 0 ? GPT_BLUEPRINT 
-  : goodsUnit != null ? GPT_UNIT
-  : (goods?.skins.len() ?? 0) > 0  ? GPT_SKIN
-  : (goods?.lootboxes.len() ?? 0) > 0 ? GPT_LOOTBOX
-  : (goods?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
-  : (goods?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
-  : null
 
 let previewTypeByGType = {
   [G_BLUEPRINT] = GPT_BLUEPRINT,
@@ -129,22 +116,27 @@ let previewTypeByGType = {
   [G_PREMIUM] = GPT_PREMIUM,
 }
 
-let getPreviewType = @(goods, goodsUnit) (goods?.slotsPreset ?? "") != "" ? GPT_SLOTS
-  : "rewards" not in goods ? getPreviewTypeDeprecated(goods, goodsUnit) 
-  : previewTypeByGType?[goods.rewards?[0].gType]
-let previewType = Computed(@() getPreviewType(previewGoods.get(), previewGoodsUnit.get()))
+let getPreviewType = @(goods) (goods?.slotsPreset ?? "") != "" ? GPT_SLOTS
+  : previewTypeByGType?[goods?.rewards[0].gType]
+let previewType = Computed(@() getPreviewType(previewGoods.get()))
 
 let isPreviewGoodsPurchasing = Computed(@() previewGoods.get()?.id != null
   && (previewGoods.get().id == shopPurchaseInProgress.get()
-    || previewGoods.get().id == platformPurchaseInProgress.get()))
+    || previewGoods.get().id == platformPurchaseInProgress.get()
+    || previewGoods.get().id == personalGoodsInProgress.get()))
 
 isPreviewGoodsPurchasing.subscribe(function(v) {
   if (v || previewGoods.get() == null)
     return
-  let { id, limit = 0, dailyLimit = 0, oncePerSeason = "", slotsPreset = "", skins = [] } = previewGoods.get()
+  let { id, limit = 0, dailyLimit = 0, oncePerSeason = "", slotsPreset = "", rewards = [] } = previewGoods.get()
   if (slotsPreset != "")
     return
-  if (previewGoodsUnit.get() != null || activeOffer.get()?.id == id || limit > 0 || dailyLimit > 0 || oncePerSeason != "" || skins.len() > 0)
+  if (previewGoodsUnit.get() != null
+      || activeOffer.get()?.id == id
+      || limit > 0
+      || dailyLimit > 0
+      || oncePerSeason != ""
+      || rewards.findvalue(@(r) r.gType == G_SKIN) != null)
     defer(closeGoodsPreview)
 })
 
@@ -171,28 +163,10 @@ servProfile.subscribe(function(servProfileV){
   if (activeOffer.get() == null)
     return
 
-  let { rewards = null, blueprints = {}, unitUpgrades = [], units = [] } = activeOffer.get()
-  if (rewards != null) {
-    foreach (r in rewards)
-      if (needValidate?[r.gType](r, servProfileV, serverConfigs.get()))
-        return validate_active_offer(curCampaign.get())
-    return
-  }
-
-  
-  foreach (unitName, count in blueprints)
-    if (unitName in campMyUnits.get()
-      || (servProfileV?.blueprints[unitName] ?? 0) + count > (serverConfigs.get()?.allBlueprints?[unitName].targetCount ?? 0))
+  let { rewards } = activeOffer.get()
+  foreach (r in rewards)
+    if (needValidate?[r.gType](r, servProfileV, serverConfigs.get()))
       return validate_active_offer(curCampaign.get())
-
-  foreach (unitName in unitUpgrades)
-    if (campMyUnits.get()?[unitName].isUpgraded)
-      return validate_active_offer(curCampaign.get())
-
-  foreach (unitName in units)
-    if (unitName in campMyUnits.get()) {
-      return validate_active_offer(curCampaign.get())
-    }
 })
 
 return {

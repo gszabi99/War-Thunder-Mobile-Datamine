@@ -6,7 +6,7 @@ let { isConsentAllowLogin, isReadyForConsent, CONSENT_OPTIONS_SAVE_ID } = requir
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
+let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
@@ -15,7 +15,7 @@ let { setAppsFlyerConsent, startAppsFlyer } = require("appsFlyer")
 let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
-let { request_firebase_consent_eu_only } = require("%appGlobals/permissions.nut")
+let { request_firebase_consent_eu_only, tcf_consent_enabled } = require("%appGlobals/permissions.nut")
 let { getCountryCode } = require("auth_wt")
 
 
@@ -45,8 +45,8 @@ let defaultPointsTable = configManagePoints.reduce(@(res, val) res.$rawset(val.i
 let savedPoints = mkWatched(persist, "savedPoints", null)
 let points = Computed(@() defaultPointsTable.map(@(v, k) savedPoints.get()?[k] ?? v))
 
+let isEnabled = keepref(Computed(@() !tcf_consent_enabled.get()))
 let isConsentAcceptedOnce = Computed(@() (savedPoints.get()?.len() ?? 0) != 0)
-
 let consentRequiredForCurrentRegion = Computed(@() !request_firebase_consent_eu_only.get() || EU_REGION.indexof(getCountryCode()) != null)
 let needOpenConsentWnd = mkWatched(persist, "consentMainWnd", false)
 let isConsentWasAutoSkipped = mkWatched(persist, "isConsentWasAutoSkipped", false)
@@ -55,10 +55,13 @@ let needSkipConsentWnd = keepref(Computed(@() savedPoints.get() != null && !isCo
 let needSkipForCurrentRegion = keepref(Computed(@() isReadyForConsent.get() && !consentRequiredForCurrentRegion.get()))
 
 let isOpenedConsentWnd = Computed(@()
-  (needOpenConsentWnd.get() || needForceOpenConsetnWnd.get())
+  isEnabled.get()
+  && (needOpenConsentWnd.get() || needForceOpenConsetnWnd.get())
   && isReadyForConsent.get() && consentRequiredForCurrentRegion.get())
 
 function setupAnalytics() {
+  if (!isEnabled.get())
+    return
   let v = savedPoints.get()
   logC("analytics starting with consent:", v)
   setFirebaseConsent(object_to_json_string(v))
@@ -68,7 +71,7 @@ function setupAnalytics() {
 }
 
 function autoSkipConsent() {
-  if (isConsentAcceptedOnce.get())
+  if (!isEnabled.get() || isConsentAcceptedOnce.get())
     return
   savedPoints.set(defaultPointsTable.map(@(_) false))
   logC("consent skipped by denied IDFA")
@@ -78,7 +81,7 @@ function autoSkipConsent() {
 }
 
 function autoAcceptForNonEURegion() {
-  if (isConsentAcceptedOnce.get())
+  if (!isEnabled.get() || isConsentAcceptedOnce.get())
     return
   logC("consent auto accepted for non EU region",getCountryCode())
   savedPoints.set(defaultPointsTable.map(@(_) true))
@@ -89,15 +92,16 @@ function autoAcceptForNonEURegion() {
 needSkipConsentWnd.subscribe(@(v) v ? deferOnce(autoSkipConsent) : null)
 
 needSkipForCurrentRegion.subscribe(@(v) v ? deferOnce(autoAcceptForNonEURegion) : null)
-
 if (needSkipForCurrentRegion.get())
   autoAcceptForNonEURegion()
 
-let function loadPoints(){
+let function loadPoints() {
+  if (!isEnabled.get())
+    return
   let res = {}
   let sBlk = get_local_custom_settings_blk()
   let blk = sBlk?[CONSENT_OPTIONS_SAVE_ID]
-  if(!blk){
+  if (!blk) {
     savedPoints.set({})
     return
   }
@@ -108,7 +112,6 @@ let function loadPoints(){
 }
 
 isConsentAcceptedOnce.subscribe(@(v) v ? isConsentAllowLogin.set(true) : null)
-
 if (isConsentAcceptedOnce.get())
   isConsentAllowLogin.set(true)
 
@@ -119,7 +122,19 @@ function onOnlineSettingsNOTAvailable(){
   isConsentAllowLogin.set(false)
   savedPoints.set(null)
 }
-isReadyForConsent.subscribe(@(v) v ? loadPoints(): onOnlineSettingsNOTAvailable())
+isReadyForConsent.subscribe(function(isReady) {
+  if (!isEnabled.get()) {
+    if (isReady) {
+      logC("Firebase consent disabled")
+      isConsentAllowLogin.set(true)
+    }
+    return
+  }
+  if (isReady)
+    loadPoints()
+  else
+    onOnlineSettingsNOTAvailable()
+})
 
 savedPoints.subscribe(@(_) isConsentWasAutoSkipped.set(false))
 
@@ -127,7 +142,7 @@ let isOpenedManage = mkWatched(persist, "consentManage", false)
 let isOpenedPartners = mkWatched(persist, "consentPartners", false)
 
 isOpenedConsentWnd.subscribe(function(v){
-  if(v){
+  if (v) {
     logC($"run consent at startup")
     sendUiBqEvent("ads_consent_firebase", { id = "consent_open_at_start" })
   }

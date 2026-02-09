@@ -1,14 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { register_command } = require("console")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { userstatDescList, userstatUnlocks, userstatStatsTables, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
 } = require("%rGui/unlocks/userstat.nut")
 let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 
+let ignoreUnseen = hardPersistWatched("unlocks.ignoreUnseen", {})
+let allowOpenUnlock = hardPersistWatched("allowOpenUnlock", false)
+
 let emptyProgress = {
   stage = 0
   lastRewardedStage = 0
+  lastSeenStage = -1
   current = 0
   required = 1
   isCompleted = false
@@ -44,6 +52,7 @@ function calcUnlockProgress(progressData, unlockDesc) {
   let res = clone emptyProgress
   let stage = progressData?.stage ?? 0
   res.stage = stage
+  res.lastSeenStage = progressData?.lastSeenStage ?? -1
   if (progressData?.price) {
     res["price"] <- progressData.price
     if (progressData?.currencyCode)
@@ -90,6 +99,9 @@ let unlockProgress = Computed(function(prev) {
   return hasChanges ? res : prev
 })
 
+let unseenUnlocks = Computed(@() unlockProgress.get()
+  .reduce(@(res, v, k) ((v?.lastSeenStage ?? -1) < 0 && k not in ignoreUnseen.get()) ? res.$rawset(k, true) : res, {}))
+
 function isFitSeason(unlock, seasons) {
   let { table = "", activity = null } = unlock
   let season = seasons?[table] ?? -1
@@ -118,6 +130,21 @@ let activeUnlocks = Computed(@(prev) allUnlocksDesc.get()
 let campaignActiveUnlocks = Computed(function() {
   let curC = getCampaignStatsId(curCampaign.get())
   return activeUnlocks.get().filter(@(u) (u?.meta.campaign == null || curC == getCampaignStatsId(u?.meta.campaign)) )
+})
+
+let spendingUnlocks = Computed(function() {
+  let res = {}
+  let active = activeUnlocks.get()
+  foreach(u in active) {
+    let { isCompleted, meta = {}, requirement = "" } = u
+    if ("spending_currency" not in meta
+        || isCompleted
+        || (requirement != "" && !(active?[requirement].isCompleted ?? false)))
+      continue
+    getSubArray(getSubTable(res, meta.spending_currency), meta?.spending_country ?? "")
+      .append(u.name)
+  }
+  return res
 })
 
 let mkPrice = @(price = 0, currency = "") { currency, price }
@@ -163,43 +190,6 @@ function receiveUnlockRewards(unlockName, stage, context = null) {
     (context ?? {}).__merge({ unlockName, stage }))
 }
 
-function buyUnlock(unlockName, stage, currency, price, context) {
-  if (!unlockName || unlockName in unlockInProgress.get()) {
-    log($"buyUnlock ignore {unlockName} because already in progress")
-    return
-  }
-  let unlock = activeUnlocks.get()?[unlockName]
-  if ((unlock?.periodic == true || !unlock?.isCompleted ) && price > 0) {
-    log($"buyUnlock {unlockName}={stage}")
-    unlockInProgress.mutate(@(v) v[unlockName] <- stage)
-    userstatRequest("BuyUnlock",
-      { data = { name = unlockName, stage, price, currency} },
-      (context ?? {}).__merge({ item = unlockName }))
-  }
-}
-
-function buyUnlockReroll(unlockName, price, currency, context = null) {
-  if (!unlockName || unlockName in unlockInProgress.get()) {
-    log($"buyUnlockReroll ignore {unlockName} because already in progress")
-    return
-  }
-  unlockInProgress.mutate(@(u) u[unlockName] <- true)
-  userstatRequest("BuyUnlockReroll",
-    { data = { unlock = unlockName, price, currency } },
-    (context ?? {}).__merge({ item = unlockName }))
-}
-
-userstatRegisterHandler("BuyUnlock", function(result, context) {
-  let { item = "", onSuccessCb = null } = context
-  unlockInProgress.mutate(@(v) v.$rawdelete(item))
-  if ("error" in result) {
-    log("BuyUnlock result: ", result)
-    return
-  }
-  log("BuyUnlock result success: ", context)
-  callExtCb(onSuccessCb)
-})
-
 userstatRegisterHandler("GrantRewards", function(result, context) {
   let { unlockName  = null, finalStage = null, stage = 0, onSuccessCb = null } = context
   if (unlockName in unlockInProgress.get())
@@ -215,15 +205,42 @@ userstatRegisterHandler("GrantRewards", function(result, context) {
     callExtCb(onSuccessCb)
 })
 
-userstatRegisterHandler("ResetAppData", function(result, context) {
-  let logFunc = (context?.needScreenLog ?? false) ? dlog : console_print
-  if ("error" in result && result.error != "WRONG_JSON")  
-    logFunc("Reset unlocks progress failed: ", result)
-  else
-    logFunc("Reset unlocks progress success.")
-  forceRefreshUnlocks()
-  forceRefreshStats()
+function buyUnlock(unlockName, stage, currency, price, context) {
+  if (!unlockName || unlockName in unlockInProgress.get()) {
+    log($"buyUnlock ignore {unlockName} because already in progress")
+    return
+  }
+  let unlock = activeUnlocks.get()?[unlockName]
+  if ((unlock?.periodic == true || !unlock?.isCompleted ) && price > 0) {
+    log($"buyUnlock {unlockName}={stage}")
+    unlockInProgress.mutate(@(v) v[unlockName] <- stage)
+    userstatRequest("BuyUnlock",
+      { data = { name = unlockName, stage, price, currency} },
+      (context ?? {}).__merge({ item = unlockName }))
+  }
+}
+
+userstatRegisterHandler("BuyUnlock", function(result, context) {
+  let { item = "", onSuccessCb = null } = context
+  unlockInProgress.mutate(@(v) v.$rawdelete(item))
+  if ("error" in result) {
+    log("BuyUnlock result: ", result)
+    return
+  }
+  log("BuyUnlock result success: ", context)
+  callExtCb(onSuccessCb)
 })
+
+function buyUnlockReroll(unlockName, price, currency, context = null) {
+  if (!unlockName || unlockName in unlockInProgress.get()) {
+    log($"buyUnlockReroll ignore {unlockName} because already in progress")
+    return
+  }
+  unlockInProgress.mutate(@(u) u[unlockName] <- true)
+  userstatRequest("BuyUnlockReroll",
+    { data = { unlock = unlockName, price, currency } },
+    (context ?? {}).__merge({ item = unlockName }))
+}
 
 userstatRegisterHandler("BuyUnlockReroll", function(result, context) {
   let { item = "", onSuccessCb = null } = context
@@ -236,10 +253,69 @@ userstatRegisterHandler("BuyUnlockReroll", function(result, context) {
   callExtCb(onSuccessCb)
 })
 
+function openNextUnlockStage(name) {
+  if (name in unlockInProgress.get())
+    return dlog($"'{name}' already in progress") 
+  let unlock = activeUnlocks.get()?[name]
+  if (unlock == null)
+    return dlog($"Unknown unlock '{name}'") 
+  if (unlock?.isCompleted)
+    return dlog($"'{name}' already completed") 
+  log($"openNextUnlockStage {name}")
+  unlockInProgress.mutate(@(v) v[name] <- unlock.stage)
+  userstatRequest("OpenNextUnlockStage", { data = { unlock = name } }, { name })
+}
+
+userstatRegisterHandler("OpenNextUnlockStage", function(result, context) {
+  let { name = "" } = context
+  unlockInProgress.mutate(@(v) v.$rawdelete(name))
+  if ("error" in result)
+    dlog("OpenNextUnlockStage result: ", result) 
+})
+
+function setLastSeenUnlocks(unlockNames) {
+  let names = unlockNames.filter(@(v) v in unseenUnlocks.get())
+  if (names.len() == 0)
+    return
+
+  ignoreUnseen.mutate(function(v) {
+    foreach (id in names)
+      v[id] <- true
+  })
+  unlockInProgress.mutate(function(v) {
+    foreach (n in names)
+      v[n] <- 0
+  })
+  userstatRequest("SetLastSeenUnlocks", { data = names.reduce(@(res, v) res.$rawset(v, 0), {})}, { names })
+}
+
+userstatRegisterHandler("SetLastSeenUnlocks", function(result, context) {
+  let { names = [], onSuccessCb = null } = context
+  unlockInProgress.mutate(function(v) {
+    foreach (n in names)
+      v.$rawdelete(n)
+  })
+  if ("error" in result) {
+    log("SetLastSeenUnlocks result: ", result.error)
+    return
+  }
+  callExtCb(onSuccessCb)
+})
+
 function resetUserstatAppData(needScreenLog = false) {
   log("[userstat] ResetAppData")
   userstatRequest("ResetAppData", {}, { needScreenLog })
 }
+
+userstatRegisterHandler("ResetAppData", function(result, context) {
+  let logFunc = (context?.needScreenLog ?? false) ? dlog : console_print
+  if ("error" in result && result.error != "WRONG_JSON")  
+    logFunc("Reset unlocks progress failed: ", result)
+  else
+    logFunc("Reset unlocks progress success.")
+  forceRefreshUnlocks()
+  forceRefreshStats()
+})
 
 function hasUnlockReward(unlock, isFit) {
   foreach (stage in unlock.stages)
@@ -248,6 +324,25 @@ function hasUnlockReward(unlock, isFit) {
         return true
   return false
 }
+
+isLoggedIn.subscribe(@(_) ignoreUnseen.set({}))
+subscribeResetProfile(@() ignoreUnseen.set({}))
+
+register_command(function() {
+  allowOpenUnlock.set(!allowOpenUnlock.get())
+  console_print($"allowOpenUnlock: {allowOpenUnlock.get()}") 
+}, "unlocks.allowOpenUnlock")
+
+register_command(function() {
+  ignoreUnseen.set({})
+  let names = unlockProgress.get().reduce(@(res, _, k) k not in unseenUnlocks.get() ? res.append(k) : res, [])
+  unlockInProgress.mutate(function(v) {
+    foreach (n in names)
+      v[n] <- -1
+  })
+  userstatRequest("SetLastSeenUnlocks", { data = names.reduce(@(res, v) res.$rawset(v, -1), { ["$force"] = true })},
+    { names, onSuccessCb = { id = "userstat.unlocks.forceRefresh" }})
+}, "debug.reset_seen_quests")
 
 return {
   activeUnlocks
@@ -260,10 +355,15 @@ return {
   allUnlocksDesc
   buyUnlock
   buyUnlockReroll
+  openNextUnlockStage
   getUnlockPrice
+  unseenUnlocks
+  setLastSeenUnlocks
+  spendingUnlocks
 
   unlockInProgress
   receiveUnlockRewards
   resetUserstatAppData
   hasUnlockReward
+  allowOpenUnlock
 }

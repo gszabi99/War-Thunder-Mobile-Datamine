@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitResearchPrice,
@@ -7,6 +8,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitResearchPrice,
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { mkPlateExpBar, mkPlateBlueprintBar } = require("%rGui/unitsTree/unitResearchBar.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
+
 
 let sectorSizeCommon = [hdpx(20), hdpx(10)]
 let sectorColorLight = 0xFF6EFF95
@@ -118,7 +120,7 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
             rendObj = ROBJ_TEXT
             text = "+"
           }.__update(fontVeryTinyAccented)
-          mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)])
+          mkIcon("ui/gameuiskin#experience_icon.svg", [hdpxi(28), hdpxi(28)], { color = currencyIconsColor["researchUnitExp"] })
           {
             rendObj = ROBJ_TEXT
             text = (researchStatus?.reqExp ?? 0)  - (researchStatus?.exp ?? 0)

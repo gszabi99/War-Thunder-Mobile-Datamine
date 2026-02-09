@@ -2033,5 +2033,18 @@
       1.78062,
       -0.0000731015
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "yak_15_silver_a*",
+        "to": "yak15_early_a*"
+      },
+      {
+        "from": "yak_15_silver_n*",
+        "to": "yak15_early_n*"
+      }
+    ]
   }
 }

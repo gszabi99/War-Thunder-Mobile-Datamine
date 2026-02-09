@@ -1,6 +1,5 @@
 from "dagor.system" import exit, get_arg_value_by_name
 from "%sqstd/string.nut" import tostring_r
-from "debug" import getstackinfos
 
 let knownProps = ["size","rendObj","watch","behavior","halign","valign","flow","pos","hplace","vplace","padding", "margin", "eventHandlers", "hotkeys"].totable()
 

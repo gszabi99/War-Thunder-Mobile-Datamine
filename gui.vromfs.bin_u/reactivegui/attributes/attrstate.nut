@@ -9,7 +9,8 @@ let lastModifiedAttr = Watched(null)
 const AVAIL_PART_FOR_GROUP = 0.7
 const MAX_AVAIL_STATUS = 3
 
-let hasSlotAttrPreset = Computed(@() campConfigs.get()?.campaignCfg.slotAttrPreset != "")
+let slotAttrPreset = Computed(@() campConfigs.get()?.campaignCfg.slotAttrPreset)
+let hasSlotAttrPreset = Computed(@() slotAttrPreset.get() != "")
 
 let attrPresets = Computed(function() {
   let { unitAttrPresets = [], unitAttrCostTables = null } = serverConfigs.get()
@@ -66,6 +67,7 @@ function setAttribute(catId, attrId, value) {
 let getSpCostText = @(val) $"⋥{val}"
 
 return {
+  slotAttrPreset,
   hasSlotAttrPreset,
   lastModifiedAttr,
   selAttributes,

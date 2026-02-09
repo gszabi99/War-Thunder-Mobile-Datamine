@@ -1,7 +1,7 @@
 {
   "node": [
     {
-      "name": "%major_banner_buoy_a",
+      "name": "%major_banner_buoy_b",
       "tm": [
         [
           -0.976296,
@@ -26,7 +26,7 @@
       ]
     },
     {
-      "name": "%major_banner_buoy_a",
+      "name": "%major_banner_buoy_b",
       "tm": [
         [
           0.608761,
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "name": "%major_banner_buoy_a",
+      "name": "%major_banner_buoy_b",
       "tm": [
         [
           0.715288,
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "name": "%major_banner_buoy_a",
+      "name": "%major_banner_buoy_b",
       "tm": [
         [
           0.724444,
@@ -101,7 +101,7 @@
       ]
     },
     {
-      "name": "%major_banner_wall_a",
+      "name": "%major_banner_wall_b",
       "tm": [
         [
           -1.04544,
@@ -126,7 +126,7 @@
       ]
     },
     {
-      "name": "%major_banner_wall_a",
+      "name": "%major_banner_wall_b",
       "tm": [
         [
           -1.04544,
@@ -151,7 +151,7 @@
       ]
     },
     {
-      "name": "%major_banner_wall_a",
+      "name": "%major_banner_wall_b",
       "tm": [
         [
           0.340481,
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "name": "%major_banner_wall_a",
+      "name": "%major_banner_wall_b",
       "tm": [
         [
           0.340481,
@@ -201,7 +201,7 @@
       ]
     },
     {
-      "name": "%major_banner_wall_a",
+      "name": "%major_banner_wall_b",
       "tm": [
         [
           0.340481,
@@ -226,7 +226,7 @@
       ]
     },
     {
-      "name": "%major_banner_wall_a",
+      "name": "%major_banner_wall_b",
       "tm": [
         [
           0.782825,

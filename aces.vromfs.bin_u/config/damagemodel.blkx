@@ -37,6 +37,7 @@
   "cumulativePierceDispersion": 0.05,
   "minSecondaryShatterAngleFromArmor": 15.0,
   "splashPenetrationPrecheck": true,
+  "shattersMinSolidArmorThicknessMult": 0.5,
   "defaultCaliberToArmorForGuiPenetrationTable": 1.25,
   "secondaryShattersCountLimitForTest": 30,
   "massKineticRange": 7.0,
@@ -78,6 +79,7 @@
       0.75
     ]
   ],
+  "botTankCanSetOnFire": false,
   "newbMultsShipMissionCount": 5,
   "botShipDamageMultNewbRange": [
     0.025,
@@ -445,6 +447,13 @@
     "minVoxelSize": 0.02,
     "minObstacleSize": 0.02,
     "thicknessMapEnabled": true,
+    "thicknessMapResolution": 32,
+    "thicknessMapMinVoxelSize": 0.1,
+    "thicknessMapRelLimits": [
+      0.7,
+      6.0
+    ],
+    "thicknessMapMinObstacleSize": 0.02,
     "pushOutCenter": true,
     "squashArmorAnglesScale": {
       "p0": [
@@ -3949,7 +3958,8 @@
       "speed": 2.0,
       "completely": true,
       "partRepairHp": 1.0,
-      "hpForRepair": 0.7
+      "hpForRepair": 0.7,
+      "modRequired": false
     },
     "antenna_target_location_01_dm": {
       "speed": 2.0,
@@ -3961,7 +3971,8 @@
       "speed": 2.0,
       "completely": true,
       "partRepairHp": 1.0,
-      "hpForRepair": 0.7
+      "hpForRepair": 0.7,
+      "modRequired": false
     },
     "commander_panoramic_sight_dm": {
       "speed": 1.0,

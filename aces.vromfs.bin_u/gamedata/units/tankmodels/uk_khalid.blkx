@@ -60,6 +60,58 @@
       0.85
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1990,7 +2042,7 @@
       "trackMass": 3000.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ]
     },
     "tracks": {
@@ -2002,6 +2054,12 @@
         0.0,
         0.55,
         0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2009,17 +2067,17 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 1217.0,
+      "horsePowers": 1314.0,
       "maxRPM": 2300.0,
       "minRPM": 660.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 220000.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 4.3,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 15.0,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -1.65,

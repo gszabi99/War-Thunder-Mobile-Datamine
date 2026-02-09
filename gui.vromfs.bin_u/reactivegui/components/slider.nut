@@ -7,6 +7,7 @@ let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let textColor = 0xFFFFFFFF
 let borderColor = 0xFF9FA7AF
+let inactiveColor = 0x30303030
 let sliderBgColor = 0xFF000000
 let sliderValueSound = @() playSound("choose")
 
@@ -68,7 +69,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
   let stateFlags = Watched(0)
   let minV = override?.min ?? 0
   let maxV = override?.max ?? 100
-  let relValue = Computed(@() lerpClamped(minV, maxV, 0.0, 1.0, valueWatch.get()))
+  let relValue = Computed(@() maxV == 0 ? 0 : lerpClamped(minV, maxV, 0.0, 1.0, valueWatch.get()))
   let size = override?.size ?? [sliderW, sliderH]
   let knob = knobCtor(relValue, stateFlags, size[0])
 
@@ -110,7 +111,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
   }
 }
 
-let sliderHeader = @(text, valueTextWatch, override = {}) {
+let sliderHeader = @(text, valueTextWatch) {
   size = FLEX_H
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
@@ -133,7 +134,7 @@ let sliderHeader = @(text, valueTextWatch, override = {}) {
       text = valueTextWatch.get()
     }.__update(fontSmall)
   ]
-}.__update(override)
+}
 
 let mkBtnText = @(override) {
   rendObj = ROBJ_TEXT
@@ -176,30 +177,32 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
     clearTimer(onHoldTimer)
   }
 
-  let bg = btnBg.__merge({ key = {} }) 
-  return @() bg.__merge(bgOvrW.get(), {
-    watch = [stateFlags, bgOvrW]
-    behavior = Behaviors.Button
-    xmbNode = {}
-    function onElemState(sf) {
-      stateFlags.set(sf)
-      let isActive = !!(sf & S_ACTIVE)
-      if (isActive == (holdCount >= 0))
-        return
+  return @() btnBg.__merge(
+    {
+      watch = [stateFlags, bgOvrW]
+      key = {} 
+      behavior = Behaviors.Button
+      xmbNode = {}
+      function onElemState(sf) {
+        stateFlags.set(sf)
+        let isActive = !!(sf & S_ACTIVE)
+        if (isActive == (holdCount >= 0))
+          return
 
-      if (isActive) {
-        lastTime = get_time_msec()
-        holdCount = 0
-        setInterval(btnRepeatTick, onHoldTimer)
+        if (isActive) {
+          lastTime = get_time_msec()
+          holdCount = 0
+          setInterval(btnRepeatTick, onHoldTimer)
+        }
+        else
+          resetTimer()
       }
-      else
-        resetTimer()
-    }
-    onClick = @() get_time_msec() - lastTime < firstTick * 1000 ? onChangeValue() : null
-    onDetach = resetTimer
-    children = childrenCtor(stateFlags.get())
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-  })
+      onClick = @() get_time_msec() - lastTime < firstTick * 1000 ? onChangeValue() : null
+      onDetach = resetTimer
+      children = childrenCtor(stateFlags.get())
+      transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    },
+    bgOvrW.get())
 }
 
 function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString = null) {
@@ -213,6 +216,9 @@ function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString 
   } = sliderOverride
   let minV = sliderOverride?.min ?? 0
   let maxV = sliderOverride?.max ?? 100
+  let knobCtor = sliderOverride?.knobCtor ?? mkSliderKnob
+  let isMax = Computed(@() valueWatch.get() >= maxV)
+  let isMin = Computed(@() valueWatch.get() <= minV)
 
   let mkOnClick = @(diff) function onClick() {
     let value = clamp(valueWatch.get() + diff, minV, maxV)
@@ -226,20 +232,53 @@ function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString 
     gap = sliderGap
     valign = ALIGN_BOTTOM
     children = [
-      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = selectColor }) : btnTextDec),
-        mkOnClick(-unit))
+      sliderBtn(
+        @(sf) mkIconBtn(@() btnTextDec.__merge({ watch = isMin,
+          color = isMin.get() ? inactiveColor
+            : (sf & S_HOVER) ? selectColor
+            : null
+        })),
+        mkOnClick(-unit),
+        Computed(@() isMin.get() ? { transform = null, color = inactiveColor } : {}))
       {
         flow = FLOW_VERTICAL
         padding = [0, 0, (sliderBtnSize - knobSize - sliderVisibleH) / 2, 0]
         gap = hdpx(10)
         children = [
-          header == null ? null : sliderHeader(header, valueTextWatch)
-          slider(valueWatch, sliderOverride)
+          header == null ? null
+            : (typeof header == "string") ? sliderHeader(header, valueTextWatch)
+            : header
+          slider(valueWatch, sliderOverride, knobCtor)
         ]
       }
-      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextInc.__merge({ color = selectColor }) : btnTextInc),
-        mkOnClick(unit))
+      sliderBtn(
+        @(sf) mkIconBtn(@() btnTextInc.__merge({ watch = isMax,
+          color = isMax.get() ? inactiveColor
+            : (sf & S_HOVER) ? selectColor
+            : null
+        })),
+        mkOnClick(unit),
+        Computed(@() isMax.get() ? { transform = null, color = inactiveColor } : {}))
     ]
+  }
+}
+
+
+
+
+function mkSliderOnChangeSound(onChangeValue, soundSuccess = "choose", soundDeny = "meta_denied") {
+  local lastVal = null
+  local lastChangeMsec = 0
+  return function onChangeExt(v) {
+    let isSoon = lastChangeMsec + 300 > get_time_msec()
+    if (isSoon && lastVal == v)
+      return
+    lastChangeMsec = get_time_msec()
+    lastVal = v
+    if (onChangeValue(v))
+      playSound(soundSuccess)
+    else if (!isSoon)
+      playSound(soundDeny)
   }
 }
 
@@ -259,4 +298,6 @@ return {
   btnTextInc
   mkIconBtn
   btnBg
+
+  mkSliderOnChangeSound
 }

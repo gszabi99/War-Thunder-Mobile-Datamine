@@ -47,6 +47,7 @@ let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 let lootboxImageSize = hdpxi(400)
 let blueprintSize = hdpxi(30)
 
+let tooltipTextGap = hdpx(5)
 let jpBarHeight = hdpx(10)
 let jpBorderWidth = hdpx(1)
 let jpBgColor = 0x80000000
@@ -74,6 +75,23 @@ let mkPlateClickByType = {
   [G_UNIT] = mkUnitPlateClick,
   [G_UNIT_UPGRADE] = mkUnitPlateClick,
   [G_LOOTBOX] = @(r) @() openLootboxPreview(r.id),
+}
+
+let limitInfoCfgByType = {
+  [G_BOOSTER] = {
+    mkHas = @(id) Computed(function() {
+      let { limit = 0 } = serverConfigs.get()?.allBoosters[id]
+      return limit > 0 && limit <= (servProfile.get()?.boosters[id].battlesLeft ?? 0)
+    }),
+    infoLoc = "booster/limit/info"
+  },
+  [G_ITEM] = {
+    mkHas = @(id) Computed(function() {
+      let { limit = 0 } = serverConfigs.get()?.allItems[id]
+      return limit > 0 && limit <= (servProfile.get()?.items[id].count ?? 0)
+    }),
+    infoLoc = "item/limit/info"
+  }
 }
 
 let mkText = @(text, ovr = {}) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded, ovr)
@@ -218,7 +236,7 @@ function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInPr
     watch = [isInProgress, mainPercents, jackpotChances]
     flow = FLOW_VERTICAL
     sound = { attach = "click" }
-    gap = hdpx(5)
+    gap = tooltipTextGap
     halign = ALIGN_LEFT
     children = isInProgress.get() ? spinner
       : mkTooltipText(mkJackpotChanceText(rewardId,
@@ -228,13 +246,18 @@ function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInPr
     }
 }
 
+function mkChanceWithLimit(hasLimit, chance, infoLoc) {
+  let baseChance = [mkText("".concat(loc("item/chance"), colon, roundChance(chance), "%"))]
+  return !hasLimit ? baseChance : baseChance.append(mkTextArea(loc(infoLoc), hdpx(400)))
+}
+
 function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) { 
-  let { rewardId = null, agregatedRewards = null, source = "", isLastReward = false } = reward
+  let { rewardId = null, agregatedRewards = null, source = "", isLastReward = false, rType, id } = reward
   let { isAvailable, isAllReceived, isJackpot = false } = rewardStatus
 
   if (!isAvailable.get() || isAllReceived)
     return isAvailable.get() ? loc("battlepass/receivedRew")
-      : loc("battlepass/unavailableRew", { unitName = loc(getUnitLocId(reward.id)) })
+      : loc("battlepass/unavailableRew", { unitName = loc(getUnitLocId(id)) })
 
   if (isLastReward && !isJackpot)
     return loc("item/chance/lastReward")
@@ -245,19 +268,24 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
   if (isJackpot)
     return mkJackpotChanceContent(reward, stepsCount, mainChances, isInProgress)
 
-  let rId = Computed(@() currencyToFullId.get()?[reward.id] ?? reward.id)
+  let limitInfoCfg = limitInfoCfgByType?[rType]
+
+  let { infoLoc } = limitInfoCfg ?? limitInfoCfgByType[G_ITEM]
+  let hasLimitInfo = limitInfoCfg?.mkHas(id) ?? Watched(false)
+
+  let rId = Computed(@() currencyToFullId.get()?[id] ?? id)
   if (dropFromNested == null) {
     return @() {
-      watch = [isInProgress, mainChances, rId]
+      watch = [isInProgress, mainChances, rId, hasLimitInfo]
       flow = FLOW_VERTICAL
       sound = { attach = "click" }
-      gap = hdpx(5)
+      gap = tooltipTextGap
       halign = ALIGN_LEFT
       children = isInProgress.get() ? spinner
         : mainChances.get() == null ? mkText(loc("item/chance/error"))
         : agregatedRewards != null ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward.rType, rId.get()))
         : rewardId != null
-          ? mkText("".concat(loc("item/chance"), colon, roundChance(mainChances.get().percents?[rewardId] ?? 0), "%"))
+          ? mkChanceWithLimit(hasLimitInfo.get(), mainChances.get().percents?[rewardId] ?? 0, infoLoc)
         : null
     }
   }
@@ -266,10 +294,10 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
   let isInProgressNested = mkIsLootboxChancesInProgress(dropFromNested.source)
   let isInProgressFull = Computed(@() isInProgress.get() || isInProgressNested.get())
   return @() {
-    watch = [isInProgressFull, mainChances, nestedChances, rId]
+    watch = [isInProgressFull, mainChances, nestedChances, rId, hasLimitInfo]
     flow = FLOW_VERTICAL
     sound = { attach = "click" }
-    gap = hdpx(5)
+    gap = tooltipTextGap
     halign = ALIGN_LEFT
     children = isInProgressFull.get() ? spinner
       : mainChances.get() == null || nestedChances.get() == null ? mkText(loc("item/chance/error"))
@@ -279,7 +307,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
             agregatedRewards != null
                 ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward.rType, rId.get()))
               : rewardId != null
-                ? [mkText("".concat(loc("item/chance"), colon, roundChance(mainChances.get().percents?[rewardId] ?? 0), "%"))]
+                ? mkChanceWithLimit(hasLimitInfo.get(), mainChances.get().percents?[rewardId] ?? 0, infoLoc)
               : [])
           .append(
             {  size = hdpx(20) },
@@ -559,10 +587,10 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     let { name = "", fixedRewards = {} } = lootbox.get()
     if (fixedRewards.len() == 0)
       return null
-    let rewards = fixedRewards.reduce(@(res, fr) res.$rawset(fr?.rewardId ?? fr, true), {}) 
+    let rewards = fixedRewards.reduce(@(res, fr) res.$rawset(fr.rewardId, true), {})
     return curEventLootboxes.get()
       .findvalue(@(lb) lb.name != name
-        && null != lb.fixedRewards.findvalue(@(fr) (fr?.rewardId ?? fr) in rewards)) 
+        && null != lb.fixedRewards.findvalue(@(fr) fr.rewardId in rewards))
       ?.name
   })
   let openRewards = Computed(@() lootbox.get() == null ? []

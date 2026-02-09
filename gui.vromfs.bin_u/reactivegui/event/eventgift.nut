@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { is_ios } = require("%sqstd/platform.nut")
+let { allow_event_gift_on_ios } = require("%appGlobals/permissions.nut")
 let { getGiftPresentation, availableGifts } = require("%appGlobals/config/eventsGiftPresentation.nut")
 let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { specialEvents } = require("%rGui/event/eventState.nut")
@@ -58,9 +60,10 @@ function mkGiftBtn(eventId) {
 
 function eventGift() {
   let eventId = specialEvents.get().findvalue(@(e) e.eventName in availableGifts)?.eventName
+  let canShow = !is_ios || allow_event_gift_on_ios.get()
   return {
-    watch = specialEvents
-    children = eventId == null ? null
+    watch = [specialEvents, allow_event_gift_on_ios]
+    children = eventId == null || !canShow ? null
       : mkGiftBtn(eventId)
     }
 }

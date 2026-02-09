@@ -9,9 +9,10 @@ let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
+let { missionProgressType, ctfFlagPreset } = require("%appGlobals/clientState/missionState.nut")
+let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { isInMpBattle, isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInMpBattle, isInBattle, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType,
   isGtRace, isGtBattleRoyale
 } = require("%rGui/missionState.nut")
@@ -21,6 +22,7 @@ let { ticketPenaltyReasonAllyLogPlace, ticketPenaltyReasonEnemyLogPlace } = requ
 let { mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let { mkImageWithCount } = require("%rGui/hud/myScores.nut")
 let { mkMissionVar } = require("%rGui/hud/missionVariableState.nut")
+let { missionScoresTable, isCTFProgressType } = require("%rGui/hud/missionScoreState.nut")
 let { playersByTeam, startContinuousUpdate, stopContinuousUpdate } = require("%rGui/mpStatistics/playersByTeamState.nut")
 let { cellTextProps } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let { hudWhiteColor, hudBlackColor, hudTranslucentBlackColor, hudSilverGray, hudSmokyBlack } = require("%rGui/style/hudColors.nut")
@@ -40,6 +42,8 @@ let battleRoyaleScoreBoardCfg = {
   killProperty = "groundKills"
 }
 
+let scoreBarIconSize = hdpxi(40)
+let scoreBarIconGap = hdpx(5)
 let scoreBarPlateHeight = hdpxi(15)
 let scoreBarPlateWidth = (barRatio * scoreBarPlateHeight + 0.5).tointeger()
 let scoreBarPadding = (0.15 * scoreBarPlateHeight).tointeger()
@@ -78,6 +82,10 @@ let mkBasesByTeam = @(isLocal) Computed(function() {
 
 let localTeamBasesToShow = mkBasesByTeam(true)
 let enemyTeamBasesToShow = mkBasesByTeam(false)
+let localTeamIconScoreTable = Computed(@() !isCTFProgressType.get() ? null
+  : missionScoresTable.get()?[localMPlayerTeam.get() == 1 ? "flags_count_t1" : "flags_count_t2"])
+let enemyTeamIconScoreTable = Computed(@() !isCTFProgressType.get() ? null
+  : missionScoresTable.get()?[localMPlayerTeam.get() == 1 ? "flags_count_t2" : "flags_count_t1"])
 
 let updateBZones = @() battleBasesRaw.set(getBombingZones() ?? [])
 eventbus_subscribe("onBombingZoneDamaged", @(_) updateBZones())
@@ -95,6 +103,7 @@ let scoreParamsByTeam = {
     bases = localTeamBasesToShow
     baseCount = Computed(@() localTeamBasesToShow.get().len())
     penaltyLog = ticketPenaltyReasonAllyLogPlace
+    iconScoreTable = localTeamIconScoreTable
   }
   enemyTeam = {
     score = enemyTeamTickets
@@ -107,6 +116,7 @@ let scoreParamsByTeam = {
     bases = enemyTeamBasesToShow
     baseCount = Computed(@() enemyTeamBasesToShow.get().len())
     penaltyLog = ticketPenaltyReasonEnemyLogPlace
+    iconScoreTable = enemyTeamIconScoreTable
   }
 }
 
@@ -126,6 +136,35 @@ let mkScoreBarBg = @(image, size) mkBar(image, size).__update({
   color = hudBlackColor
   valign = ALIGN_CENTER
 })
+
+let mkIconRow = @(img, size, count, gap, color = null) count == null ? null : {
+  size = flex()
+  flow = FLOW_HORIZONTAL
+  gap
+  children = array(count, {
+    size
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{img}:{size}:{size}:P")
+    fallbackImage = Picture($"ui/gameuiskin#icon_hud_ctf_empty.svg:{size}:{size}:P")
+    color
+  })}
+
+function mkIconScoreBar(teamName, scale) {
+  let { fillColor, halign, iconScoreTable } = scoreParamsByTeam[teamName]
+  let size = round(scoreBarIconSize * scale).tointeger()
+  let gap = round(scoreBarIconGap * scale).tointeger()
+  let p = Computed(@() getCtfFlagPresentation(ctfFlagPreset.get()))
+  return @() {
+    watch = [iconScoreTable, p]
+    size = [size * (iconScoreTable.get()?.maxValue ?? 0) + gap * ((iconScoreTable.get()?.maxValue ?? 0) - 1), size]
+    pos = scaleArr([0, (scoreBarOffesetY / 2)], scale)
+    halign
+    children = !iconScoreTable.get() ? null : [
+      mkIconRow(p.get().emptyIcon, size, iconScoreTable.get().maxValue, gap)
+      mkIconRow(p.get().icon, size, iconScoreTable.get().value, gap, fillColor).__update({ halign })
+    ]
+  }
+}
 
 function mkSplitScoreBar(teamName, scale) {
   let { score, fillColor, image, halign } = scoreParamsByTeam[teamName]
@@ -330,7 +369,8 @@ let shortcutImg = @(scale) @() {
 
 let barCtors = {
   split = mkSplitScoreBar,
-  airGS = mkLinearScoreBarWithScore
+  airGS = mkLinearScoreBarWithScore,
+  CTF = mkIconScoreBar
 }
 
 let scoreBoardBase = {
@@ -361,7 +401,9 @@ let mkScoreBoard = @(scale) function() {
       isInMpBattle.get() ? shortcutImg(scale) : null
       {
         flow = FLOW_HORIZONTAL
-        gap = missionProgressType.get() == "airGS" ? -hdpx(round(5 * scale).tointeger()) : gapToTimer(tSize[0])
+        gap = missionProgressType.get() == "airGS" ? -hdpx(round(5 * scale).tointeger())
+          : missionProgressType.get() == "CTF" ? (scoreBarIconGap * scale).tointeger()
+          : gapToTimer(tSize[0])
         children = [
           barCtor("localTeam", scale)
           {

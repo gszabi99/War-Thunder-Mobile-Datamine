@@ -18,7 +18,7 @@ let { msgboxComponent } = require("%daeditor/components/msgbox.nut")
 let { windowsManager, registerWindow } = require("%daeditor/components/window.nut")
 
 registerWindow(require("entitySelect.nut"))
-registerWindow(require("loadedScenes.nut"))
+registerWindow(require("sceneOutliner.nut"))
 registerWindow(require("logsWindow.nut"))
 
 function getActionCursor(actionType) {

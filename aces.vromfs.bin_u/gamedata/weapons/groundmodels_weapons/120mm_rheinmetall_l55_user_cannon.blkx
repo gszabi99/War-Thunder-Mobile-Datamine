@@ -834,7 +834,7 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_fs_long_tank",
+      "bulletType": "apds_fs_long_l30_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -843,11 +843,11 @@
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "120mm_dm53",
-      "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "onHitChanceMultExplFuel": 0.1,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -898,43 +898,12 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          652.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          650.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          640.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          628.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          616.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          604.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          579.0,
-          3000.0
-        ],
-        "ArmorPower10000m": [
-          5.0,
-          10000.0
-        ],
-        "ArmorPower20000m": [
-          0.0,
-          20000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 685.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

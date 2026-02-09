@@ -3628,5 +3628,18 @@
       3.89349,
       8.85129e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "pe_8_m82_green_black_c*",
+        "to": "pe_8_m82_green_c*"
+      },
+      {
+        "from": "pe_8_m82_green_black_n*",
+        "to": "pe_8_m82_green_n*"
+      }
+    ]
   }
 }

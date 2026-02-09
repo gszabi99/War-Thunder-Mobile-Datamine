@@ -56,6 +56,58 @@
   "minRelativeTankCameraThreshold": 1.33,
   "drowningCheckHeightMultiplier": 0.7,
   "rearmTimeOnField": 45.0,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "controlDevices": {
     "device": [
       {
@@ -1945,14 +1997,20 @@
       ],
       "CenterOfGravityClampY": [
         0.4,
-        0.6
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 800.0
     },
     "tracks": {
       "animationMultiplier": 0.6,
-      "height": 0.055
+      "height": 0.055,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1968,6 +2026,7 @@
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
       "sideGearRatio": 3.77573,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -4.35,
@@ -2969,6 +3028,12 @@
             -15.0,
             25.0
           ]
+        },
+        "hullAiming": {
+          "horizontal": true,
+          "defaultEnabled": false,
+          "isAutoTurner": true,
+          "maxSpeedForHorizontalAiming": 10.0
         }
       },
       {

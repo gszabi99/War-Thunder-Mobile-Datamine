@@ -33,6 +33,7 @@ registerHandler("closePremDailyBonusWnd", @(res) res?.error == null ? close() : 
 
 let reward = @() {
   watch = [serverConfigs, hasPremDailyBonus]
+  margin = [wndGap, 0]
   children = [
     mkRewardPlate(
       { id = GOLD, rType = G_CURRENCY, count = serverConfigs.get()?.gameProfile.premiumBonuses.dailyGold ?? 0, slots = 1 },
@@ -77,7 +78,7 @@ let promoBlock = {
     {
       size = iconSize
       rendObj = ROBJ_IMAGE
-      image = Picture($"{getSubsPresentation("vip").icon}:0:P")
+      image = Picture($"{getSubsPresentation("vip").image}:0:P")
       keepAspect = true
     }
     textButtonPurchase(utf8ToUpper(loc("subscription/activate")),

@@ -5,11 +5,11 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { shopCategoriesCfg } = require("%rGui/shop/shopCommon.nut")
-let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent,
-  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, subsByCategory
+let { isShopOpened, curCategoryId, prevCategoryId, shopOpenCount, saveSeenGoodsCurrent, curShopSubsByCategory,
+  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, hasUnseenGoodsByShop, shopId, prevShopId,
+  curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
+  curShopSoonGoodsByCategory
 } = require("%rGui/shop/shopState.nut")
-let { actualSchRewardByCategory } = require("%rGui/shop/schRewardsState.nut")
-let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
 let { mkShopTabs } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage, mkShopGamercard } = require("%rGui/shop/shopWndPage.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
@@ -29,7 +29,14 @@ let shopContentH = saSize[1] + saBorders[1] - gapFromGamercard - gamercardHeight
 
 local lastScrollPosY = 0
 let resetScrollPos = @() lastScrollPosY = 0
-let close = @() isShopOpened.set(false)
+function close() {
+  if (prevShopId.get() != null && prevShopId.get() != shopId.get()) {
+    shopId.set(prevShopId.get())
+    curCategoryId.set(prevCategoryId.get())
+    return prevShopId.set(null)
+  }
+  isShopOpened.set(false)
+}
 isShopOpened.subscribe(@(v) v ? null : resetScrollPos())
 isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? close() : null)
 
@@ -54,15 +61,17 @@ let pannableArea = verticalPannableAreaCtor(shopContentH, [shopContentGradient, 
 
 function mkShopContent() {
   let curCategoriesCfg = Computed(@() shopCategoriesCfg
-    .filter(@(c) c.id in actualSchRewardByCategory.get()
-      || c.id in goodsByCategory.get()
-      || c.id in personalGoodsByShopCategory.get()
-      || c.id in subsByCategory.get()))
+    .filter(@(c) c.id in curShopActualSchRewardsByCategory.get()
+      || c.id in curShopGoodsByCategory.get()
+      || c.id in curShopSoonGoodsByCategory.get()
+      || c.id in curShopPersonalGoodsByCategory.get()
+      || c.id in curShopSubsByCategory.get()))
   let distances = Computed(function() {
-    let allGoodsLists = goodsByCategory.get()
-    let allRewards = actualSchRewardByCategory.get()
-    let allPersonal = personalGoodsByShopCategory.get()
-    let allSubs = subsByCategory.get()
+    let allGoodsLists = curShopGoodsByCategory.get()
+    let soonGoods = curShopSoonGoodsByCategory.get()
+    let allRewards = curShopActualSchRewardsByCategory.get()
+    let allPersonal = curShopPersonalGoodsByCategory.get()
+    let allSubs = curShopSubsByCategory.get()
     local top = 0
     local totalRows = 0
     local totalHeaders = 0
@@ -70,7 +79,7 @@ function mkShopContent() {
     foreach (cfg in curCategoriesCfg.get()) {
       let { id = "" } = cfg
       let goodsRewardLen = (allGoodsLists?[id] ?? []).len() + (allRewards?[id] == null ? 0 : 1) + (allPersonal?[id].len() ?? 0)
-         + (allSubs?[id].len() ?? 0)
+         + (allSubs?[id].len() ?? 0) + (soonGoods?[id].len() ?? 0)
       let rows = ceil(1.0 * goodsRewardLen / goodsPerRow)
       let bottom = top + titleH + titleGap + rows * goodsH + (rows - 1) * goodsGap + categoryGap
       let additionalTriggerSpace = categoryGap + goodsH / 3
@@ -103,6 +112,7 @@ function mkShopContent() {
     : pageScrollHandler.scrollToY(distances.get()[curCategoryId.get()].scrollTo)
   let onPageScroll = @(_) tryDoActionForCurrentScroll(@(idx) onTabChange(idx))
   let onChangeCategory = @(_) tryDoActionForCurrentScroll(@(_) scrollToCurCategory())
+  let hasUnseenGoodsByCategory = Computed(@() hasUnseenGoodsByShop.get()?[shopId.get()])
 
   return {
     key = distances
@@ -129,7 +139,7 @@ function mkShopContent() {
         size = [fullTabW, flex()]
         children = @() pannable({
           watch = [curCategoriesCfg, curCampaign]
-          children = mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
+          children = mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get(), hasUnseenGoodsByCategory)
         })
       }
       pannableArea(mkShopPage(curCategoriesCfg, distances),

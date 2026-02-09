@@ -10,16 +10,23 @@ let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { slotExpTanks } = require("%appGlobals/currenciesState.nut")
+let { balance, SLOT_EXP_TANKS, SLOT_EXP_AIR } = require("%appGlobals/currenciesState.nut")
 let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { selAttributes, curCategoryId, attrPresets,
   calcStatus, sumCost, MAX_AVAIL_STATUS
 } = require("%rGui/attributes/attrState.nut")
 
 
+let slotExpByCamp = {
+  tanks_new = SLOT_EXP_TANKS
+  air = SLOT_EXP_AIR
+}
+
 let isSlotAttrOpened = mkWatched(persist, "isSlotAttrOpened", false)
 let isSlotAttrAttached = mkWatched(persist, "isSlotAttrAttached", false)
 let isOpenedSlotExpWnd = mkWatched(persist, "isOpenedSlotExpWnd", false)
+let isOpenedSlotResetWnd = mkWatched(persist, "isOpenedSlotResetWnd", false)
+let resetSlotSelectionData = mkWatched(persist, "resetSlotSelectionData", null)
 
 let SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
 let seenSlotAttributes = mkWatched(persist, SEEN_SLOT_ATTRIBUTES, {})
@@ -33,9 +40,15 @@ let attrSlotData = Computed(function() {
 })
 
 let slotUnitName = Computed(@() attrSlotData.get().slot?.name ?? "")
-let slotAttributes = Computed(@() attrSlotData.get().slot?.attrLevels)
-let slotLevel = Computed(@() attrSlotData.get().slot?.level)
+let slotAttributes = Computed(@() attrSlotData.get().slot?.attrLevels ?? {})
+let slotLevel = Computed(@() attrSlotData.get().slot?.level ?? 0)
 let slotLevelsToMax = Computed(@() (maxSlotLevels.get()?.len() ?? 0) - (attrSlotData.get().slot?.level ?? 0))
+
+let slotLevelResetPrice = Computed(@() campConfigs.get()?.campaignCfg.slotLevelResetPrice)
+let slotSkillsResetPrice = Computed(@() campConfigs.get()?.campaignCfg.slotSkillsResetPrice)
+let isResetSlotLevelAllowed = Computed(@() (slotLevelResetPrice.get()?.price ?? 0) > 0 && slotLevel.get() > 0)
+let isResetSlotSkillsAllowed = Computed(@() (slotSkillsResetPrice.get()?.price ?? 0) > 0
+  && null != slotAttributes.get().findindex(@(c) null != c.findindex(@(a) a > 0)))
 
 function resetAttrState() {
   selAttributes.set({})
@@ -67,8 +80,9 @@ let isSlotMaxSkills = Computed(function() {
     null != cat.attrList.findvalue(@(attr) attr.levelCost.len() > (slot.attrLevels?[cat.id][attr.id] ?? 0)))
 })
 
-let curCampaignSlotExp = Computed(@() curCampaign.get() == "tanks_new" ? slotExpTanks.get() : 0)
-let needDistributeCampaignSlotExp = Computed(@() curCampaignSlotExp.get() > 0 && slotLevelsToMax.get() > 0)
+let curCampSlotExpId = Computed(@() slotExpByCamp?[curCampaign.get()])
+let curCampSlotExp = Computed(@() balance.get()?[curCampSlotExpId.get()] ?? 0)
+let needDistributeCampaignSlotExp = Computed(@() curCampSlotExp.get() > 0 && slotLevelsToMax.get() > 0)
 
 function mkUnseenSlotAttrByIdx(idx) {
   let attrDataByIdx = Computed(function() {
@@ -106,7 +120,7 @@ function mkUnseenSlotAttrByIdx(idx) {
   return Computed(function() {
     let { slot = null, preset = null } = attrDataByIdx.get()
     let { attrLevels = null } = slot
-    let isUnseenByBalance = curCampaignSlotExp.get() > 0 && !isMaxSlotLevel.get()
+    let isUnseenByBalance = curCampSlotExp.get() > 0 && !isMaxSlotLevel.get()
     if (attrLevels == null || preset == null || leftSp.get() <= 0 || isMaxSkills.get())
       return { status = -1, statusByCat = [], isUnseen = isUnseenByBalance }
     let selAttr = selAttributes.get()
@@ -210,6 +224,13 @@ function openSlotAttrWnd() {
     openSlotExpWnd()
 }
 
+local wasExp = curCampSlotExp.get()
+curCampSlotExp.subscribe(function(exp) {
+  if (isSlotAttrOpened.get() && exp > wasExp)
+    openSlotExpWnd()
+  wasExp = exp
+})
+
 register_command(function() {
   seenSlotAttributes.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_SLOT_ATTRIBUTES)
@@ -219,10 +240,19 @@ register_command(function() {
 return {
   openSlotAttrWnd
   openSlotExpWnd
+  openSlotResetWnd = @() isOpenedSlotResetWnd.set(true)
   isSlotAttrOpened
   isSlotAttrAttached
   isOpenedSlotExpWnd
+  isOpenedSlotResetWnd
+  resetSlotSelectionData
+  isOpenedSlotSelection = Computed(@() resetSlotSelectionData.get() != null)
+  attrSlotIdx = selectedSlotIdx
 
+  slotLevelResetPrice
+  slotSkillsResetPrice
+  isResetSlotLevelAllowed
+  isResetSlotSkillsAllowed
   attrSlotData
   slotUnitName
   slotLevel
@@ -239,6 +269,7 @@ return {
   slotLevelsToMax
   seenSlotAttributes
   markSlotAttributesSeen
-  curCampaignSlotExp
+  curCampSlotExpId
+  curCampSlotExp
   needDistributeCampaignSlotExp
 }

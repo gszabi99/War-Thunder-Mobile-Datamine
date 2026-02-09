@@ -110,6 +110,9 @@
         -2.0,
         0.0
       ]
+    },
+    "collisionProps": {
+      "body_dm": "convex_hull"
     }
   }
 }

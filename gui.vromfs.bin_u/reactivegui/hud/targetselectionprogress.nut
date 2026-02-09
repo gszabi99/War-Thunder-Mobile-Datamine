@@ -38,7 +38,7 @@ eventbus_subscribe("on_asm_capture:show", function(data) {
 
 let nameTrigger = {}
 
-let hasTargetName = Computed(@() showTargetName.get() && targetUnitName.get() != null && targetUnitName.get() != "")
+let hasTargetName = Computed(@() hasTarget.get() && showTargetName.get() && targetUnitName.get() != null && targetUnitName.get() != "")
 
 function hide_asm() {
   asmCaptureEndTime.set(0.0)
@@ -57,10 +57,6 @@ isInBattle.subscribe(function(_) {
 })
 eventbus_subscribe("on_asm_capture:hide", @(_) hide_asm())
 eventbus_subscribe("on_delayed_target_select:hide", @(_) hide_delayed_target_select())
-hasTarget.subscribe(function(value){
-  if (value == false)
-    showTargetName.set(false)
-})
 targetUnitName.subscribe(@(_) anim_start(nameTrigger))
 
 let mkTargetCorner = @(cdLeft, delay, ovr) {

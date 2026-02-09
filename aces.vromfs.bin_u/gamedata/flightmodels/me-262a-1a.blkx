@@ -1957,10 +1957,17 @@
     }
   },
   "weapon_presets": {
-    "preset": {
-      "name": "me-262a-1a_default",
-      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
-    }
+    "preset": [
+      {
+        "name": "me-262a-1a_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "me-262a-1a_r4m_rocket24",
+        "blk": "gameData/FlightModels/weaponPresets/me-262a-1a_r4m_rocket24.blk",
+        "reqModification": "me262_r1"
+      }
+    ]
   },
   "WeaponSlots": {
     "HideNodes": {

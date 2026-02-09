@@ -647,14 +647,13 @@
   },
   "120mm_DM_APDS_FS": {
     "bullet": {
-      "bulletCount": 25,
+      "bulletCount": 40,
       "mass": 3.8,
       "caliber": 0.12,
       "damageCaliber": 0.026,
       "ballisticCaliber": 0.026,
       "speed": 1780.0,
-      "Cx": 0.41,
-      "maxDistance": 10000.0,
+      "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "groundRicochetPreset": "apds_fs_ground",
@@ -674,15 +673,21 @@
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "120mm_ofl_120_g1",
-      "hitPowerMult": 800.0,
-      "onHitChanceMultExplFuel": 0.1,
+      "Cx": 0.41,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "onHitChanceMultExplFuel": 0.1,
       "relativeVelArmorShift": [
-        200.0,
-        1000.0
+        [
+          200.0,
+          1000.0
+        ],
+        [
+          200.0,
+          1000.0
+        ]
       ],
       "explosionEffect": "hit_106_132mm_dirt_ap",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
@@ -729,6 +734,13 @@
           0.8,
           10000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 380.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

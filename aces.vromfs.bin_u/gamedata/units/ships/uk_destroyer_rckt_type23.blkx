@@ -974,13 +974,13 @@
         "triggerGroup": "rockets",
         "blk": "gameData/weapons/rocketGuns/340mm_rgm_84_alike_rocket_naval_bullet.blk",
         "weaponType": "rockets",
-        "emitter": "rckt_head_01",
-        "flash": "rckt_head_01",
+        "emitter": "bone_rocket_01",
+        "flash": "bone_rocket_01",
         "emitterGenRange": [
           1,
           8
         ],
-        "emitterGenFmt": "rckt_head_%02d",
+        "emitterGenFmt": "bone_rocket_%02d",
         "useEmitter": true,
         "allowableDelta": [
           180.0,
@@ -1012,8 +1012,8 @@
         "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
-          "head": "auxiliary_caliber_turret_03",
-          "gun": "auxiliary_caliber_turret_03"
+          "head": "auxiliary_caliber_turret_02",
+          "gun": "auxiliary_caliber_turret_02"
         },
         "limits": {
           "yaw": [
@@ -1567,13 +1567,13 @@
               "triggerGroup": "rockets",
               "blk": "gameData/weapons/rocketGuns/340mm_rgm_84_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
-              "emitter": "rckt_head_01",
-              "flash": "rckt_head_01",
+              "emitter": "bone_rocket_01",
+              "flash": "bone_rocket_01",
               "emitterGenRange": [
                 1,
                 8
               ],
-              "emitterGenFmt": "rckt_head_%02d",
+              "emitterGenFmt": "bone_rocket_%02d",
               "useEmitter": true,
               "allowableDelta": [
                 180.0,
@@ -1605,8 +1605,8 @@
               "errTargetting": 0.1,
               "errExplTime": 0.0,
               "turret": {
-                "head": "auxiliary_caliber_turret_03",
-                "gun": "auxiliary_caliber_turret_03"
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_turret_02"
               },
               "limits": {
                 "yaw": [
@@ -2144,13 +2144,13 @@
               "triggerGroup": "rockets",
               "blk": "gameData/weapons/rocketGuns/340mm_rgm_84_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
-              "emitter": "rckt_head_01",
-              "flash": "rckt_head_01",
+              "emitter": "bone_rocket_01",
+              "flash": "bone_rocket_01",
               "emitterGenRange": [
                 1,
                 8
               ],
-              "emitterGenFmt": "rckt_head_%02d",
+              "emitterGenFmt": "bone_rocket_%02d",
               "useEmitter": true,
               "allowableDelta": [
                 180.0,
@@ -2182,8 +2182,8 @@
               "errTargetting": 0.1,
               "errExplTime": 0.0,
               "turret": {
-                "head": "auxiliary_caliber_turret_03",
-                "gun": "auxiliary_caliber_turret_03"
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_turret_02"
               },
               "limits": {
                 "yaw": [

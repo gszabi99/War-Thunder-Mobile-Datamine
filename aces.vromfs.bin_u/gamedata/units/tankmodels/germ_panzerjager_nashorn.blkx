@@ -2251,6 +2251,12 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel"
         },
+        "hullAiming": {
+          "horizontal": true,
+          "defaultEnabled": false,
+          "isAutoTurner": true,
+          "maxSpeedForHorizontalAiming": 10.0
+        },
         "limits": {
           "yaw": [
             -15.0,
@@ -2401,7 +2407,7 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "maxBrakeForce": 80000.0,
+      "maxBrakeForce": 90000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 1.2,
       "sideGearRatio": 8.246,

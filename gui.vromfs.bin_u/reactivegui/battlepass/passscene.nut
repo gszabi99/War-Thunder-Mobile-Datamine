@@ -11,9 +11,12 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { passOpenCounter, closePassScene, passPageId, playerSelectedScene, passPageIdx
   BATTLE_PASS, EVENT_PASS, OPERATION_PASS, visibleTabs, seenPasses, markPassesSeen, isPassGoodsUnseen } = require("passState.nut")
-let { mkBpStagesList, isBpActive, hasBpRewardsToReceive, battlePassGoods } = require("%rGui/battlePass/battlePassState.nut")
-let { mkEpStagesList, isEpActive, eventBgImage, hasEpRewardsToReceive, eventPassGoods } = require("%rGui/battlePass/eventPassState.nut")
-let { mkOPStagesList, isOPActive, OPCampaign, hasOPRewardsToReceive, operationPassGoods } = require("%rGui/battlePass/operationPassState.nut")
+let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress
+} = require("%rGui/battlePass/battlePassState.nut")
+let { mkEpStagesList, isEpVipActive, isEpCommonActive, eventBgImage, hasEpRewardsToReceive, eventPassGoods, lastStageEpProgress
+} = require("%rGui/battlePass/eventPassState.nut")
+let { mkOPStagesList, isOpVipActive, isOpCommonActive, OPCampaign, hasOPRewardsToReceive, operationPassGoods, lastStageOpProgress
+} = require("%rGui/battlePass/operationPassState.nut")
 let { contentBP, scrollToCardBP } = require("battlePassWnd.nut")
 let { contentEP, scrollToCardEP } = require("eventPassWnd.nut")
 let { contentOP, scrollToCardOP } = require("operationPassWnd.nut")
@@ -31,7 +34,9 @@ let sceneBg = keepref(Computed(function() {
 let tabs = {
   [BATTLE_PASS] = {
     mkStagesList = mkBpStagesList
-    isActive = isBpActive
+    lastRewardProgress = lastStageBpProgress
+    isVipActive = isBpVipActive
+    isCommonActive = isBpCommonActive
     hasReward = hasBpRewardsToReceive
     goods = battlePassGoods
     scrollToCard = scrollToCardBP
@@ -40,7 +45,9 @@ let tabs = {
   },
   [EVENT_PASS] = {
     mkStagesList = mkEpStagesList
-    isActive = isEpActive
+    lastRewardProgress = lastStageEpProgress
+    isVipActive = isEpVipActive
+    isCommonActive = isEpCommonActive
     hasReward = hasEpRewardsToReceive
     goods = eventPassGoods
     scrollToCard = scrollToCardEP
@@ -49,7 +56,9 @@ let tabs = {
   },
   [OPERATION_PASS] = {
     mkStagesList = mkOPStagesList
-    isActive = isOPActive
+    lastRewardProgress = lastStageOpProgress
+    isVipActive = isOpVipActive
+    isCommonActive = isOpCommonActive
     hasReward = hasOPRewardsToReceive
     goods = operationPassGoods
     scrollToCard = scrollToCardOP
@@ -112,22 +121,34 @@ function wnd() {
       children = backButton(closePassScene)
     }
 
-  let { mkStagesList, scrollToCard, content, isActive } = data
+  let { mkStagesList, scrollToCard, content, isVipActive, isCommonActive, lastRewardProgress } = data
   let stagesList = mkStagesList()
   let recommendInfo = Computed(function(prev) {
     local scrollX = -bpCardMargin
     local selProgress = 0
+    local scrollLastRewardX = 0
+    local isFound = false
+
     foreach(s in stagesList.get()) {
-      selProgress = s.progress
-      if (s.canReceive || (!s.isReceived && (!s.isPaid || isActive.get()))) {
-        scrollX += bpCardMargin + bpCardPadding[1]
-          + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0] / 2
-        break
+      let rewardPlateW = getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0]
+      let fullStep = bpCardMargin + 2 * bpCardPadding[1] + rewardPlateW
+
+      if (s.progress <= lastRewardProgress.get())
+        scrollLastRewardX += fullStep
+
+      if (!isFound) {
+        if (s.canReceive || (!s.isReceived && (!s.isPaid || (!s?.isVip && isCommonActive.get()) || (s?.isVip && isVipActive.get())))) {
+          scrollX += bpCardMargin + bpCardPadding[1] + rewardPlateW / 2
+          selProgress = s.progress
+          isFound = true
+        } else {
+          scrollX += fullStep
+          selProgress = s.progress
+        }
       }
-      scrollX += bpCardMargin + 2 * bpCardPadding[1]
-        + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0]
     }
-    let res = { scrollX, selProgress }
+
+    let res = { scrollX, scrollLastRewardX, lastRewardProgress = lastRewardProgress.get(), selProgress }
     return isEqual(prev, res) ? prev : res
   })
   recommendInfo.subscribe(@(v) !v ? null : scrollToCard(v.scrollX, v.selProgress))

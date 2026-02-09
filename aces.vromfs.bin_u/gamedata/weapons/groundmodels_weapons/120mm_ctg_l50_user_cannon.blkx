@@ -556,7 +556,7 @@
       "rendinstDamageRadius": 5.0,
       "caliber": 0.12,
       "Cx": 0.66,
-      "speed": 736.0,
+      "speed": 754.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -821,7 +821,7 @@
       "caliber": 0.12,
       "damageCaliber": 0.025,
       "ballisticCaliber": 0.025,
-      "speed": 1705.0,
+      "speed": 1740.0,
       "Cx": 0.73,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
@@ -834,7 +834,7 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_fs_long_tank",
+      "bulletType": "apds_fs_long_l30_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -843,11 +843,11 @@
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "120mm_slpprj_m95",
-      "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "onHitChanceMultExplFuel": 0.1,
       "relativeVelArmorShift": [
         200.0,
         1000.0

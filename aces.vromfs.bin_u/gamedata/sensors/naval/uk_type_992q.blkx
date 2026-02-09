@@ -1,5 +1,6 @@
 {
   "type": "radar",
+  "name": "Type 992Q",
   "transivers": {
     "search": {
       "power": 60.0,
@@ -52,9 +53,16 @@
       }
     }
   },
-  "scopeRanges": {
-    "range1": 18500.0,
-    "range2": 56000.0
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "search"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 18500.0,
+      "range2": 56000.0
+    }
   },
   "fsms": {
     "main": {
@@ -64,18 +72,31 @@
           "setEnabled": {
             "value": false
           },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": 5.0
+            }
+          ],
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
           "setTransiver": {
             "transiver": "search"
           },
           "setSignal": {
             "signal": "search"
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 5.0
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
@@ -94,13 +115,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "clearTargets": {}
+          }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -108,19 +125,22 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
           },
-          "setScanPattern": {
-            "scanPattern": "search"
+          "setCueEnabled": {
+            "value": true
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -235,11 +255,11 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "sensorIndex": 1
             },
             "designateTargetUnderCue": {
-              "type": 0,
+              "type": "cue",
               "sensorIndex": 1
             }
           }

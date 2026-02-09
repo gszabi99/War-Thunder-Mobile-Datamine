@@ -1770,5 +1770,18 @@
       1.25074,
       -3.56464e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "he_112b_0_luftwaffe_a*",
+        "to": "he_112b_0_legion_condor_a*"
+      },
+      {
+        "from": "he_112b_0_luftwaffe_n*",
+        "to": "he_112b_0_legion_condor_n*"
+      }
+    ]
   }
 }

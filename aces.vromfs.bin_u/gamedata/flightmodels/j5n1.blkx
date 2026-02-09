@@ -2045,5 +2045,18 @@
       2.20726,
       8.74221e-9
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "j5n1_c*",
+        "to": "j5n1_brown_c*"
+      },
+      {
+        "from": "j5n1_n*",
+        "to": "j5n1_brown_n*"
+      }
+    ]
   }
 }

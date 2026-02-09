@@ -686,14 +686,14 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 11900000.0,
+      "Empty": 10000000.0,
       "momentOfInertia": [
         52.5,
         1204.0,
         735.0
       ],
       "CenterOfGravity": [
-        0.0,
+        -2.0,
         0.0,
         0.0
       ]

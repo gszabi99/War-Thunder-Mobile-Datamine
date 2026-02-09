@@ -1709,6 +1709,13 @@
       0.0035887
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "fw_190d_11_a*",
+      "to": "fw_190d_12_a_galland*"
+    }
+  },
   "default_skin_tomoe": {
     "replace_tex": {
       "from": "fw_190d_11_a*",

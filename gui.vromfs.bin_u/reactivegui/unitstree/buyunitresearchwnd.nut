@@ -18,16 +18,24 @@ let { unitPlateWidth, unitPlateHeight } = require("%rGui/unit/components/unitPla
 let { mkTreeNodesUnitPlateSimple } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { mkCustomMsgBoxWnd, mkBtn } = require("%rGui/components/msgBox.nut")
 let { animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch } = require("%rGui/unitsTree/animState.nut")
+let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
+let { mkQuestDesc } = require("%rGui/shop/msgQuestDesc.nut")
+
 
 let WND_UID = "buyUnitResearchWnd"
+let currencyIdByUnitCost = {
+  costGold = "gold"
+}
 
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() serverConfigs.get()?.allUnits[unitName.get()])
 let unitExp = Computed(@() unitsResearchStatus.get()?[unitName.get()].exp ?? 0)
 let unitReqExp = Computed(@() unitsResearchStatus.get()?[unitName.get()].reqExp ?? 1)
 let unitResearchCfg = Computed(@() campConfigs.get()?.unitResearchLevels[unit.get()?.campaign][(unit.get()?.rank ?? 0) - 1])
+let unitCurrencyId = Computed(@()
+  currencyIdByUnitCost?[unitResearchCfg.get()?.keys().findvalue(@(v) v in currencyIdByUnitCost)] ?? "")
 let needShowWnd = keepref(Computed(@() unitName.get() != null))
-let wndSize = [hdpx(1000), hdpx(600)]
+let wndSize = [hdpx(1100), hdpx(700)]
 
 let close = @() unitName.set(null)
 
@@ -69,24 +77,26 @@ let function mkPrice() {
   })
 
   return @() {
-    watch = [unitInProgress, speedUpCost]
+    watch = [unitInProgress, speedUpCost, unitCurrencyId]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = speedUpCost.get() == null ? null
       : unitInProgress.get() != null ? spinner
       : textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-        mkCurrencyComp(speedUpCost.get(), "gold"), @() onClick(speedUpCost.get() ?? 0))
+        mkCurrencyComp(speedUpCost.get(), unitCurrencyId.get()), @() onClick(speedUpCost.get() ?? 0))
   }
 }
 
 function mkContent() {
   let stateFlags = Watched(0)
+  let country = Computed(@() visibleNodes.get()?[unitName.get()].country)
   return @() {
     watch = stateFlags
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
+    margin = [0, 0, hdpx(20), 0]
     gap = hdpx(30)
     children = [
       @() {
@@ -104,6 +114,11 @@ function mkContent() {
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = unit.get() ? mkTreeNodesUnitPlateSimple(unit.get()) : null
+      }
+      @() {
+        watch = [spendingUnlocks, unitCurrencyId, country]
+        flow = FLOW_VERTICAL
+        children = mkQuestDesc(unitCurrencyId.get(), spendingUnlocks.get(), country.get())
       }
     ]
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }

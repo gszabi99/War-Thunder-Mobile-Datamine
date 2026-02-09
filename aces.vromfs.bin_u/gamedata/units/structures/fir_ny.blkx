@@ -1,5 +1,5 @@
 {
-  "model": "flag_ctf_fir_ny",
+  "model": "tree_christmas_dynamic_a",
   "subclass": "fortification",
   "damageableByGun": false,
   "expClass": "exp_structure",

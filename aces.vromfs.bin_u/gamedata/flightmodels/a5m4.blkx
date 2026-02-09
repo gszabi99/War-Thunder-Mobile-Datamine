@@ -2180,5 +2180,18 @@
       1.16074,
       2.79397e-9
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "a5m4_a*",
+        "to": "a5m4_promo_a*"
+      },
+      {
+        "from": "a5m4_n*",
+        "to": "a5m4_promo_n*"
+      }
+    ]
   }
 }

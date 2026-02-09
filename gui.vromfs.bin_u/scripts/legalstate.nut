@@ -27,7 +27,7 @@ let requiredVersionsRaw = hardPersistWatched("requiredVersionsRaw")
 let lastVersionsError = hardPersistWatched("lastVersionsError")
 let isFailedToGetLegalVersions = Computed(@() requiredVersionsRaw.get() == null && lastVersionsError.get() != null)
 let requiredVersions = Computed(@() isFailedToGetLegalVersions.get() ? versionsFallback : requiredVersionsRaw.get())
-let needApprove = Computed(@() !isOnlineSettingsAvailable.get() ? {}
+let needApprove = Computed(@() acceptedVersions.get() == null ? {}
   : legalToApprove.map(@(_, id) id in requiredVersions.get()
       && (id not in acceptedVersions.get() || requiredVersions.get()[id] > acceptedVersions.get()[id])))
 
@@ -126,6 +126,22 @@ register_command(
     return console_print("Success")
   }
   "debug.legalReset")
+
+register_command(
+  function() {
+    if (!isOnlineSettingsAvailable.get())
+      return console_print("Error: Online settings not available")
+    let blk = get_local_custom_settings_blk()
+    let ver = blk?[VERSIONS_ID].privacypolicy
+    if (ver == null)
+      return console_print("Error: Legals not accepted, you need to accept it first")
+    let downgragedVer = ver - 1
+    blk[VERSIONS_ID].privacypolicy = downgragedVer
+    loadAcceptedVersions()
+    saveProfile()
+    return console_print("Success")
+  }
+  "debug.legalDowngradeVersion")
 
 return {
   isLoginAllowed

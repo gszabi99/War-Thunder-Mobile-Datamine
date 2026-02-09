@@ -487,6 +487,9 @@
       },
       "arcadeProps": {
         "boost": 1.0
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.02
       }
     },
     "ships": {
@@ -1112,6 +1115,9 @@
       },
       "arcadeProps": {
         "boost": 1.0
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.02
       }
     },
     "ice": {
@@ -1119,6 +1125,7 @@
       "trackEffectsPreset": "snow",
       "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
+      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1129,7 +1136,10 @@
       ],
       "tankTracksTexId": 2,
       "dustFactor": 0.0,
-      "mudFactor": 0.0
+      "mudFactor": 0.0,
+      "enviCoverAccumulationFactors": {
+        "snow": 0.025
+      }
     },
     "snowLower": {
       "bf_class": "snow",
@@ -1175,6 +1185,9 @@
       },
       "arcadeProps": {
         "boost": 1.0
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.02
       }
     },
     "roadSnow": {
@@ -1221,6 +1234,9 @@
       },
       "arcadeProps": {
         "boost": 1.0
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.02
       }
     },
     "rocks": {
@@ -1461,8 +1477,8 @@
         "rollingFrictionK": 0.055
       },
       "ice": {
-        "fk": 0.3,
-        "rollingFrictionK": 0.07
+        "fk": 0.4,
+        "rollingFrictionK": 0.045
       },
       "roadSnow": {
         "fk": 1.0,
@@ -1547,8 +1563,8 @@
         "rollingFrictionK": 0.045
       },
       "ice": {
-        "fk": 0.35,
-        "rollingFrictionK": 0.02
+        "fk": 0.45,
+        "rollingFrictionK": 0.055
       },
       "roadSnow": {
         "fk": 1.0,

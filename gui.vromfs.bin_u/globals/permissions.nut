@@ -23,7 +23,6 @@ let defaults = {
   can_write_replays = isDevBuild
   can_link_to_gaijin_account = isDevBuild
   can_link_email_for_gaijin_login = isDevBuild
-  has_additional_graphics_content = isDevBuild
   has_leaderboard = isDevBuild
   has_strategy_mode = isDevBuild
   has_offline_battle_access = isDevBuild
@@ -45,8 +44,10 @@ let defaults = {
   has_option_tank_alternative_control = isDevBuild
   has_decals = isDevBuild
   has_extended_sound = isDevBuild
+  tcf_consent_enabled = false
   has_game_center = isDevBuild
   allow_hdr_on_ios = isDevBuild
+  allow_event_gift_on_ios = isDevBuild
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

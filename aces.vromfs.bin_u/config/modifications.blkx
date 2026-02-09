@@ -25,7 +25,6 @@
     "tank_tool_kit_expendable": {
       "image": "#ui/gameuiskin#tank_tool_kit",
       "effects": {
-        "toolkitActivationCount": 30,
         "repairAvailable": true
       }
     },
@@ -50,9 +49,9 @@
     "protection_new_sonar": {
       "image": "#ui/gameuiskin#protection_new_sonar",
       "effects": {
-        "sonarDetectionRadius": 750.0,
-        "sonarDetectionDepth": 50.0,
-        "sonarTimeStep": 5.0
+        "sonarDetectionRadius": 3000.0,
+        "sonarDetectionDepth": 30.0,
+        "sonarTimeStep": 4.0
       }
     },
     "maintanance_powered_toolkit": {

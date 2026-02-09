@@ -7,6 +7,7 @@ let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlock
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { getDebugSavedBullets } = require("%rGui/debugTools/debugSavedData.nut")
 
 
 const SAVE_ID = "bullets"
@@ -17,6 +18,11 @@ function loadSavedBullets(realUnitName) {
   if (realUnitName == null)
     return null
   let unitName = getTagsUnitName(realUnitName)
+
+  let debugBlk = getDebugSavedBullets(unitName)
+  if (debugBlk != null)
+    return debugBlk
+
   let sBlk = get_local_custom_settings_blk()
   let res = getBlkValueByPath(sBlk, $"{SAVE_ID}/{unitName}")
   if (!isDataBlock(res))
@@ -46,6 +52,13 @@ function collectBlkBullet(slot, maxBullets, withExtraBullets, newName) {
   return blk
 }
 
+function emptyBullet() {
+  let blk = DataBlock()
+  blk.name = ""
+  blk.count = 0
+  return blk
+}
+
 function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec,
   maxBullets, maxBulletsSec, hasExtraBullets, hasExtraBulletsSec, slotIdx, bName
 ) {
@@ -68,6 +81,8 @@ function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec,
   let blk = DataBlock()
   foreach (idx, slot in chosenBullets)
     blk.bullet <- collectBlkBullet(slot, maxBullets?[idx], hasExtraBullets, newNames?[idx])
+  for (local i = chosenBullets.len(); i < BULLETS_PRIM_SLOTS; i++)
+    blk.bullet <- emptyBullet()
   foreach (idx, slot in chosenBulletsSec)
     blk.bullet <- collectBlkBullet(slot, maxBulletsSec?[idx], hasExtraBulletsSec, newNames?[idx + BULLETS_PRIM_SLOTS])
   savedBullets.set(blk)

@@ -1983,5 +1983,12 @@
       1.40468,
       0.00330352
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": {
+      "from": "a6m5_a*",
+      "to": "a6m5_trein_c*"
+    }
   }
 }

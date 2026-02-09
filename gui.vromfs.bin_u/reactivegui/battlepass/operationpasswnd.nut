@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout } = require("dagor.workcycle")
+let { register_command } = require("console")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { closeOperationPassWnd, isOPSeasonActive, isOPActive,
-  openOPPurchaseWnd, selectedStage, curStage, getOPIcon, seasonEndTime,
+let { isOPActive, openOPPurchaseWnd, selectedStage, curStage, getOPIcon, seasonEndTime,
   OP_VIP, OP_COMMON, OP_NONE, purchasedOP, operationPassGoods, pointsCurStage, pointsPerStage, seasonName,
-  receiveOPRewards, isOPRewardsInProgress, OPCampaign
+  receiveOPRewards, isOPRewardsInProgress, OPCampaign, seasonNumber
 } = require("%rGui/battlePass/operationPassState.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
@@ -12,7 +14,7 @@ let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components
 let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { bpCurProgressbar, bpProgressText, progressIconSize, sideTabWidth, vGradientGapSize
 } = require("%rGui/battlePass/battlePassPkg.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
@@ -22,11 +24,27 @@ let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollA
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { PERSONAL_TAB } = require("%rGui/quests/questsState.nut")
+let { bgCard, purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
+let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
+let { bpCardStyle, bpCardPadding, bpCardHeight } = require("%rGui/battlePass/bpCardsStyle.nut")
+let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
+let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 
-isOPSeasonActive.subscribe(@(isActive) isActive ? null : closeOperationPassWnd())
 
+let TIME_TO_HIDE_AD = 4
+let HIDE_AD_TRIGGER = "hideOPLastReward"
+let startAdPointX = hdpx(700)
+let endAdPointX = hdpx(2000)
+let moveAdDuration = 1
 let opIconSize = [hdpx(298), hdpx(181)]
 let scrollHandler = ScrollHandler()
+
+let showedAdForCampaigns = mkWatched(persist, "showedAdForCampaigns", {})
+let isShowedAdForOPCampaign = Computed(@() OPCampaign.get() in showedAdForCampaigns.get())
+
+let saveShowedAdCampaign = @(camp) showedAdForCampaigns.mutate(@(v) v[camp] <- true)
+
+seasonNumber.subscribe(@(_) showedAdForCampaigns.set({}))
 
 let rewardPannable = horizontalPannableAreaCtor(sw(100) - (sideTabWidth + vGradientGapSize[0]),
   [hdpx(40) + vGradientGapSize[0], hdpx(60)], [hdpx(40), hdpx(200)])
@@ -42,7 +60,7 @@ let header = {
   margin = saBordersRv
   valign = ALIGN_TOP
   halign = ALIGN_RIGHT
-  children = mkCurrencyBalance(GOLD)
+  children = mkCurrenciesBtns([GOLD])
 }
 
 let scrollArrowsBlock = {
@@ -53,6 +71,74 @@ let scrollArrowsBlock = {
     mkScrollArrow(scrollHandler, MR_L, scrollArrowImageSmall)
     mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
   ]
+}
+
+function operationPassLastRewardAd(stagesList, recommendInfo) {
+  if (stagesList == null || stagesList.len() == 0 || recommendInfo == null)
+    return null
+
+  let { scrollLastRewardX, lastRewardProgress } = recommendInfo
+  let stageInfo = stagesList.findvalue(@(v) v.progress == lastRewardProgress) ?? stagesList.top()
+
+  let { viewInfo, isVip = false, progress = 0 } = stageInfo
+  let cardWidth = getRewardPlateSize(viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
+  let stateFlags = Watched(0)
+  let needHideLastRewardAd = Watched(false)
+
+  let canHideAd = Computed(@() needHideLastRewardAd.get() && (stateFlags.get() & (S_ACTIVE | S_HOVER)) == 0)
+  let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
+  canHideAd.subscribe(@(v) v ? anim_start(HIDE_AD_TRIGGER) : null)
+
+  return @() {
+    watch = [isShowedAdForOPCampaign, isEmptyReward]
+    keepRef = canHideAd
+    key = stageInfo
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_RIGHT
+    margin = [0, 0, purchBtnHeight, 0]
+    behavior = Behaviors.Button
+    onElemState = @(v) stateFlags.set(v)
+    function onClick() {
+      needHideLastRewardAd.set(true)
+      scrollToCardOP(scrollLastRewardX, progress)
+    }
+    children = isShowedAdForOPCampaign.get() || isEmptyReward.get() ? null
+      : doubleSideGradient.__merge({
+          halign = ALIGN_RIGHT
+          valign = ALIGN_BOTTOM
+          padding = [hdpx(10), hdpx(30)]
+          screenOffs = [0, hdpx(25)]
+          children = {
+            size = [cardWidth, bpCardHeight]
+            children = [
+              {
+                size = flex()
+                rendObj = ROBJ_IMAGE
+                image = bgCard
+              }
+              {
+                padding = bpCardPadding
+                children = {
+                  halign = ALIGN_CENTER
+                  valign = ALIGN_CENTER
+                  children = viewInfo == null ? { size = bpCardStyle.boxSize }
+                    : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
+                    : mkRewardPlate(viewInfo, bpCardStyle)
+                }
+              }
+            ]
+          }
+      })
+    transform = {}
+    animations = [
+      { prop = AnimProp.translate, from = [startAdPointX, 0], to = [0, 0], delay = 0, duration = moveAdDuration, easing = InQuad,
+        play = true, onFinish = @() resetTimeout(TIME_TO_HIDE_AD, @() needHideLastRewardAd.set(true)) }
+      { prop = AnimProp.translate, from = [0, 0], to = [endAdPointX, 0], duration = moveAdDuration, easing = OutQuad,
+        onFinish = @() saveShowedAdCampaign(OPCampaign.get()), trigger = HIDE_AD_TRIGGER }
+      { prop = AnimProp.translate, from = [endAdPointX, 0], to = [endAdPointX, 0], delay = moveAdDuration,
+        duration = moveAdDuration, trigger = HIDE_AD_TRIGGER }
+    ]
+  }
 }
 
 let rewardsList = @(stages, recommendInfo) @() {
@@ -133,6 +219,7 @@ let rightMiddle = @() {
       image = Picture($"{getOPIcon(purchasedOP.get(), OPCampaign.get())}:{opIconSize[0]}:{opIconSize[1]}:P")
       fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{opIconSize[0]}:{opIconSize[1]}:P")
       opacity = isOPActive.get() ? 1 : 0.5
+      keepAspect = true
     }
     purchasedOP.get() == OP_COMMON && operationPassGoods.get()[OP_VIP] != null
         ? openPurchOpButton(loc("operationPass/upgrade"))
@@ -192,6 +279,7 @@ let middlePart = @(stagesList) function() {
 let contentOP = @(stagesList, recommendInfo) @() {
   watch = stagesList
   size = flex()
+  onDetach = @() saveShowedAdCampaign(OPCampaign.get())
   children = [
     header
     {
@@ -216,6 +304,7 @@ let contentOP = @(stagesList, recommendInfo) @() {
                 behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
                 scrollHandler = scrollHandler
               })
+            operationPassLastRewardAd(stagesList.get(), recommendInfo.get())
             scrollArrowsBlock
           ]
         }
@@ -224,6 +313,8 @@ let contentOP = @(stagesList, recommendInfo) @() {
   ]
   animations = wndSwitchAnim
 }
+
+register_command(@() showedAdForCampaigns.set({}), "ui.debug.operationPass.resetBestRewardAd")
 
 return {
   contentOP

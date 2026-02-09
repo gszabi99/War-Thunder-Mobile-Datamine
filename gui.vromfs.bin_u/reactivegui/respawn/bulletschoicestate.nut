@@ -50,7 +50,7 @@ let mods = Computed(function() {
     return defUnitMods
   let unitData = unitInfo?.name == curUnitName ? unitInfo
     : unitInfo?.platoonUnits.findvalue(@(v) v.name == curUnitName)
-  return unitData?.modifications ?? unitData?.items ?? defUnitMods 
+  return unitData?.modifications ?? defUnitMods
 })
 
 let visibleBullets = Computed(@() calcVisibleBullets(bulletsInfo.get(), mods.get()))
@@ -67,13 +67,17 @@ let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unitLevel.
   @(idx) idx > BULLETS_PRIM_SLOTS,
   ammoReductionFactorDef,
   BULLETS_PRIM_SLOTS))
-let chosenBulletsSec = Computed(@() calcChosenBullets(bulletsSecInfo.get(), unitLevel.get(), bulletSecStep.get(),
-  visibleBulletsSec.get(), maxBulletsSecCountForExtraAmmo.get(), hasExtraBulletsSec.get(), bulletSecTotalSteps.get(),
-  savedBullets.get(),
-  @(idx) idx <= BULLETS_PRIM_SLOTS,
-  ammoReductionSecFactorDef,
-  BULLETS_SEC_SLOTS,
-  chosenBullets.get().len()))
+let primaryCount = Computed(@() chosenBullets.get().len())
+let chosenBulletsSec = Computed(@()
+  calcChosenBullets(bulletsSecInfo.get(), unitLevel.get(), bulletSecStep.get(),
+    visibleBulletsSec.get(), maxBulletsSecCountForExtraAmmo.get(), hasExtraBulletsSec.get(), bulletSecTotalSteps.get(),
+    savedBullets.get(),
+    @(idx) idx <= BULLETS_PRIM_SLOTS,
+    ammoReductionSecFactorDef,
+    BULLETS_SEC_SLOTS,
+    BULLETS_PRIM_SLOTS
+  )
+    .map(@(s) s.$rawset("visIdx", s.idx - BULLETS_PRIM_SLOTS + primaryCount.get())))
 
 let bulletFormat = @(b, c) { name = b.name, count = ceil(b.count / c).tointeger() }
 let bulletsToSpawn = Computed(function() {

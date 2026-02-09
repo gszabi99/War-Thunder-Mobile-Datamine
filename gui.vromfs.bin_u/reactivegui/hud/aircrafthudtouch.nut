@@ -178,6 +178,7 @@ let targetSelectorLayer = {
   touchMarginPriority = TOUCH_BACKGROUND
   selectAngle = 30
   captureAngle = 7
+  shiftLimit = 0.03
 }
 
 let aircraftHud = {

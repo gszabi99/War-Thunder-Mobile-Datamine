@@ -3,6 +3,9 @@ let { eventbus_send } = require("eventbus")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { rentals } = require("%appGlobals/rentalState.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
 let { curUnit, curUnits } = require("%appGlobals/pServer/profile.nut")
@@ -14,7 +17,9 @@ let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
 let { getMissionUnitsAndAddons, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
+let buttonStyles = require("%rGui/components/buttonStyles.nut")
+let { textButtonBattle, textButtonCommon, textButtonPrimary, mkCustomButton, mergeStyles
+} = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
@@ -30,7 +35,7 @@ let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMess
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { battleBtnCampaign, penaltyTimerIcon } = require("%rGui/queue/penaltyComps.nut")
 let { isNeedAddonsForRandomBattle } = require("%rGui/updater/randomBattleModeAddons.nut")
-
+let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
 
 let randomBattleButtonDownloading = Watched({})
 
@@ -45,11 +50,24 @@ let battleBtnOvr = {
   ovr = commonOvr
   hotkeys = hotkeyX
 }
-let battleBtnPenaltyOvr = @(campaign, ovr) {
-  ovr = commonOvr.__merge({ children = penaltyTimerIcon(campaign) })
+let battleBtnPenaltyOvr = @(campaign, penaltyId = "") {
+  ovr = commonOvr.__merge({ children = penaltyTimerIcon(campaign, penaltyId) })
   hotkeys = hotkeyX
-}.__update(ovr)
+}
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
+let toBattleContent = {
+  pos = [0, hdpx(10)]
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = toBattleText
+    }.__update(fontSmallShaded)
+    mkMRankRange
+  ]
+}
 
 function mkDownloadingOvr(key, isDownloading) {
   function update(isDl) {
@@ -91,11 +109,31 @@ function mkRandomBattlesButton(toBattleFunc) {
   let ovr = mkDownloadingOvr("randomBattle", isNeedAddonsForRandomBattle)
   return @() {
     watch = [isNeedAddonsForRandomBattle, curCampaign]
-    children = (isNeedAddonsForRandomBattle.get() ? textButtonCommon : textButtonBattle)(
-      toBattleText,
+    children = mkCustomButton(
+      toBattleContent,
       toBattleFunc,
-      battleBtnPenaltyOvr(curCampaign.get(), ovr))
+      mergeStyles(mergeStyles(battleBtnPenaltyOvr(curCampaign.get()), ovr),
+        isNeedAddonsForRandomBattle.get() ? buttonStyles.COMMON : buttonStyles.BATTLE))
   }.__update(ovr)
+}
+
+function mkRentBattlesButton(rentalCd, campaign, toBattleFunc) {
+  let ovr = mkDownloadingOvr("randomBattle", isNeedAddonsForRandomBattle)
+  let leftTime = Computed(@()
+    max(0, (rentals.get()?[campaign].entryTime ?? 0) + rentalCd - serverTime.get()))
+  let defToBattleText = utf8ToUpper(loc("mainmenu/toBattle/try"))
+  return function() {
+    let hasCooldown = leftTime.get() > 0
+    let leftTimeText = secondsToHoursLoc(leftTime.get())
+    return {
+      watch = [isNeedAddonsForRandomBattle, leftTime]
+      children = (isNeedAddonsForRandomBattle.get() || hasCooldown ? textButtonCommon : textButtonPrimary)(
+        !hasCooldown ? defToBattleText
+          : "\n".join([defToBattleText, $"{loc("icon/timer")}{leftTimeText}"])
+        @() hasCooldown ? openMsgBox({ text = loc("mainmenu/toBattle/restrict/cooldown", { time = leftTimeText }) }) : toBattleFunc(),
+        mergeStyles(hasCooldown ? battleBtnOvr : battleBtnPenaltyOvr(campaign), ovr))
+    }.__update(ovr)
+  }
 }
 
 function mkToBattleButtonNoAddons(toBattleFunc, battleMode, ovr = {}) {
@@ -107,7 +145,10 @@ function mkToBattleButtonNoAddons(toBattleFunc, battleMode, ovr = {}) {
       : textButtonBattle(
           toBattleText,
           toBattleFunc,
-          !isGtFfa.get() ? battleBtnPenaltyOvr(battleMode.get()?.campaign, ovr) : battleBtnOvr.__update(ovr))
+          mergeStyles(isGtFfa.get()
+              ? battleBtnOvr
+              : battleBtnPenaltyOvr(battleMode.get()?.campaign, battleMode.get()?.mission_decl.penaltyId ?? ""),
+            ovr))
   }
 }
 
@@ -228,12 +269,12 @@ let toBattleButtonForRandomBattles = @() {
     : textButtonCommon(toBattleText, @() openMsgBox({ text = loc("msg/noGameModes") }), { hotkeys = hotkeyX })
 }
 
-function mkToBattleButtonWithSquadManagement(toBattleFunc, bModeOrId = null) {
+function mkToBattleButtonWithSquadManagement(toBattleFunc, bModeOrId = null, ovr = {}) {
   let battleMode = bModeOrId == null ? randomBattleMode
     : bModeOrId instanceof Watched ? bModeOrId
     : type(bModeOrId) == "table" ? Watched(bModeOrId)
     : Computed(@() allGameModes.get()?[bModeOrId])
-  let toBattleButton = mkToBattleButtonNoAddons(toBattleFunc, battleMode)
+  let toBattleButton = mkToBattleButtonNoAddons(toBattleFunc, battleMode, ovr)
   return @() {
     watch = [ needReadyCheckButton, isReadyCheckSuspended, isSquadLeader, isInSquad, isReady ]
     children = needReadyCheckButton.get() && isReadyCheckSuspended.get() ? readyCheckButtonInactive
@@ -246,7 +287,9 @@ function mkToBattleButtonWithSquadManagement(toBattleFunc, bModeOrId = null) {
 }
 
 return {
+  queueCurRandomBattleMode
   randomBattleButtonDownloading
+  mkRentBattlesButton
   mkToBattleButtonNoAddons
   toBattleButtonForRandomBattles
   mkToBattleButtonWithSquadManagement

@@ -66,14 +66,18 @@ let mkActionItemProgressByWatches = @(actionItem, isAvailable, btnSize) @()
         children = mkActionItemProgress(actionItem.get(), isAvailable.get(), isHudPrimaryStyle.get(), btnSize)
       }
 
-let mkActionItemCount = @(count, scale = 1) {
+let mkActionItemCountImpl = @(text, font, scale, ovr = {}) {
   size = flex()
   rendObj = ROBJ_TEXT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   color = textColor
-  text = count < 0 ? "" : count
-}.__update(getScaledFont(fontTinyShaded, scale))
+  text
+}.__update(getScaledFont(font, scale), ovr)
+
+let mkActionItemCount = @(count, scale = 1) count < 0 ? null
+  : count > 100000 ? mkActionItemCountImpl("∞", fontSmallShaded, scale, { transform = { translate = [0, -hdpx(5 * scale)] } })
+  : mkActionItemCountImpl(count, fontTinyShaded, scale)
 
 let mkActionItemImage = @(getImage, isAvailable, size) @() {
   watch = unitType

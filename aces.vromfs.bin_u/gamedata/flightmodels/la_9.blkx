@@ -1937,5 +1937,12 @@
       "name": "la_9_default",
       "blk": "gameData/FlightModels/weaponPresets/la_9_killstreak_default.blk"
     }
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "la_9_a*",
+      "to": "la_9_grey_a*"
+    }
   }
 }

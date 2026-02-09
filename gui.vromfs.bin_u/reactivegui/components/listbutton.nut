@@ -55,6 +55,7 @@ function listButton(textOrCtor, isSelected, onClick, override = {}) {
     flow = FLOW_VERTICAL
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
+    sound = { click = "click" }
     onClick
     xmbNode = {}
 

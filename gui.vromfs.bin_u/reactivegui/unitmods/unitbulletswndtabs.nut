@@ -20,7 +20,7 @@ let tabContentW = tabW - tabExtraWidth
 let slotNumberText = @(slotNumber) slotNumber == null ? "" : "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
 
 function tabData(tab, ovr = {}) {
-  let { id, bSlot, bInfo, bSet, bTotalSteps, bStep, maxBullets, withExtraBullets, bLeftSteps, isOwn } = tab
+  let { id, visIdx = null, bSlot, bInfo, bSet, bTotalSteps, bStep, maxBullets, withExtraBullets, bLeftSteps, isOwn } = tab
   let { count = 0, name = null } = bSlot
   let { image = null, icon = null, maxCount = null } = bInfo?.fromUnitTags[name]
 
@@ -71,7 +71,7 @@ function tabData(tab, ovr = {}) {
           hplace = ALIGN_LEFT
           margin = tabContentMargin
           rendObj = ROBJ_TEXT
-          text = slotNumberText(id)
+          text = slotNumberText(visIdx ?? id)
           behavior = Behaviors.Marquee
           delay = defMarqueeDelay
           speed = hdpx(50)

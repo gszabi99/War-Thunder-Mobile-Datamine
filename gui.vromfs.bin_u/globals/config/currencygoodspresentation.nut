@@ -1,7 +1,7 @@
 let { max } = require("math")
 let { getBaseCurrency, getSeasonStr, getCurrencyBigIcon } = require("currencyPresentation.nut")
 let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND, APRILMAPPIECE, APRILDOUBLON,
-  BLACK_FRIDAY_BOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, HALLOWEENBOND
+  BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, HALLOWEENBOND, VALENTINEBOND, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND
 } = require("%appGlobals/currenciesState.nut")
 
 let presentations = {
@@ -31,8 +31,8 @@ let presentations = {
   ],
   [NYBOND] = [
     { img = "warbond_goods_christmas_01.avif", amountAtLeast = 0 }
-    { img = "warbond_goods_christmas_02.avif", amountAtLeast = 600 }
-    { img = "warbond_goods_christmas_03.avif", amountAtLeast = 3000 }
+    { img = "warbond_goods_christmas_02.avif", amountAtLeast = 500 }
+    { img = "warbond_goods_christmas_03.avif", amountAtLeast = 1500 }
   ],
   [APRILBOND] = [
     { img = "warbond_april_01.avif", amountAtLeast = 0 }
@@ -58,7 +58,7 @@ let presentations = {
     { img = $"event_keys_02.avif", amountAtLeast = 2 }
     { img = $"event_keys_03.avif", amountAtLeast = 10 }
   ],
-  [BLACK_FRIDAY_BOND] = [
+  [BLACKFRIDAYBOND] = [
     { img = "blackfridaybond_goods_01.avif", amountAtLeast = 0 }
     { img = "blackfridaybond_goods_02.avif", amountAtLeast = 500 }
     { img = "blackfridaybond_goods_03.avif", amountAtLeast = 1000 }
@@ -83,6 +83,31 @@ let presentations = {
     { img = "halloweenbond_goods_2025_02.avif", amountAtLeast = 500 }
     { img = "halloweenbond_goods_2025_03.avif", amountAtLeast = 1500 }
   ],
+  [VALENTINEBOND] = [
+    { img = "valentinebond_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "valentinebond_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "valentinebond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ],
+  [CANDYBOND] = [
+    { img = "candybond_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "candybond_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "candybond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ],
+  [LOLLIPOPBOND] = [
+    { img = "lollipopbond_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "lollipopbond_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "lollipopbond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ],
+  [CHOCOLATEBOND] = [
+    { img = "chocolatebond_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "chocolatebond_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "chocolatebond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ],
+  [LUNARBOND] = [
+    { img = "lunarbond_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "lunarbond_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "lunarbond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ]
 }
 
 let ctors = {

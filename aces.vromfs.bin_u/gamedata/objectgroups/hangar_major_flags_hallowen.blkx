@@ -6,7 +6,7 @@
   ],
   "node": [
     {
-      "name": "%major_banner_a",
+      "name": "%major_banner_b",
       "tm": [
         [
           0.692922,
@@ -32,7 +32,7 @@
       "place_type": 1
     },
     {
-      "name": "%major_banner_a",
+      "name": "%major_banner_b",
       "tm": [
         [
           0.852533,
@@ -58,7 +58,7 @@
       "place_type": 1
     },
     {
-      "name": "%major_banner_a",
+      "name": "%major_banner_b",
       "tm": [
         [
           0.81143,

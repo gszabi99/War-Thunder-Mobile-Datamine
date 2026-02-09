@@ -58,7 +58,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "dm_for_shop": {
     "armorThicknessFront": [
       0.4,
@@ -69,6 +69,58 @@
       0.15,
       0.0,
       0.85
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2204,7 +2256,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 2500.0
@@ -2212,7 +2264,13 @@
     "tracks": {
       "animationMultiplier": 0.72,
       "height": 0.045,
-      "width": 0.65
+      "width": 0.65,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2224,11 +2282,11 @@
       "minRPM": 800.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 5.9,
       "sideGearRatio": 0.741,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
           -5.786,

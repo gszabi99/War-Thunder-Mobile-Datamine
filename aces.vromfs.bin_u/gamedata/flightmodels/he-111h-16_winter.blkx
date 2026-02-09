@@ -2779,5 +2779,12 @@
       2.6014,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "he_111h_16_a_winter*",
+      "to": "he_111h_16_summer43_a*"
+    }
   }
 }

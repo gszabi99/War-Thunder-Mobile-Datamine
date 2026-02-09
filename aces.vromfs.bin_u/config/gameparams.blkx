@@ -70,6 +70,7 @@
   "effectsZNearOffsetInCockpit": 2.0,
   "invisibleSupportUnits": true,
   "allowShipAnimCharInHangar": true,
+  "isCustomDecalPosInHangar": true,
   "unitDefaultVisibilityDistance": 2000.0,
   "sleeveFallFx": "hit_12_18mm_water",
   "minMassMultApexObjectsCollidedWithHero": 0.002,
@@ -103,6 +104,7 @@
   "rocketIndicatorShowFriendly": false,
   "rocketIndicatorShowUnguided": false,
   "rocketIndicatorShowSelf": false,
+  "rocketIndicatorShowAtmgEnemy": true,
   "rocketIndicatorLosCheck": true,
   "forceShowDetectedOnceShips": true,
   "rearmSupportPlaneInAir": false,
@@ -130,7 +132,8 @@
   "timeBeforeEngineNoticeFire": 0.5,
   "noAnimationForTankMisfire": true,
   "enableImpostorPreshadowCompression": false,
-  "forceDisableRadarsOnSpawnGm": true,
+  "forceDisableRadarsOnSpawnGm": false,
+  "enableRadarAfterRepairGm": true,
   "defaultTankAimPointOffset": [
     0.0,
     0.0,
@@ -238,6 +241,7 @@
   "leaveKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
+  "shipCrewKilledPartForAssist": 0.2,
   "showDamageReport": false,
   "damageReportTimeOut": 1.0,
   "showFireDamageReport": true,
@@ -305,6 +309,9 @@
     4.0
   ],
   "useBurningDecals": true,
+  "countermeasuresPeriods": 1.0,
+  "countermeasuresSeries": 4,
+  "countermeasuresSeriesPeriods": 1.0,
   "jetLightRadius": 40.0,
   "jetLightAttenuation": 0.8,
   "jetLightBrightness": 5.0,
@@ -363,9 +370,15 @@
   "useYawDeadzone": true,
   "showStreaksForOwnerOnly": true,
   "physObjUseMovementDamping": true,
+  "minTorpedoHitTimeThreatShow": 10.0,
+  "asrocTargetOnlySubmarine": true,
+  "separateTorpedoInitialSpeedMult": 0.2,
+  "autoLockSelectedTarget": true,
+  "shouldAutoSelectTargetForAiGunners": true,
+  "shouldSyncLockedTarget": false,
   "needCreateWreckedPartShip": false,
   "dayTimeSpeed": 0.0,
-  "syncWeatherPeriod": 1000000.0,
+  "syncWeatherPeriod": 86400.0,
   "useMedicalKitWithToolkit": true,
   "missionTeamTicketsPenaltyStatEnabled": true,
   "missionTeamTicketsPenaltyStatDebug": true,
@@ -380,7 +393,6 @@
   "shiftUpSteerThreshold": 0.35,
   "rtsModeForAircraftCarrier": true,
   "allowSpectatingEnemiesInLastManStanding": false,
-  "minTorpedoHitTimeThreatShow": 10.0,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -9738,8 +9750,6 @@
     "landedSpeed": 10.0,
     "drivingHeight": 7.0,
     "drivingSpeed": 180.0,
-    "nearGroundHeight": 100.0,
-    "nearGroundSpeed": 200.0,
     "flyingMaximumHeight": 200.0,
     "flyingMaximumSpeed": 300.0
   },
@@ -15984,6 +15994,70 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "freccia"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "lav_ad"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "lav_ad"
         }
       ]
     },
@@ -18177,6 +18251,20 @@
     "normalY": 0.07,
     "sharpness": 3.5
   },
+  "tankEnviCover": {
+    "enabled": true,
+    "snowEmitterIntensity": 0.0,
+    "velocitySheddingMult": 0.0005,
+    "impulseEmitterLifetime": 0.3,
+    "impulseEmitterCaliberMult": 40.0,
+    "impulseEmitterMinCaliber": 0.05,
+    "sootEmitterMaxRadius": 1.7,
+    "sootEmitterRadiusMul": 0.8,
+    "sootEmitterIntensity": 0.3,
+    "explosionEmitterMinMass": 10.0,
+    "explosionEmitterMassMult": 0.05,
+    "explosionEmitterDuration": 1.0
+  },
   "apex": {
     "gravity": -9.8,
     "randomTorque": 100000.0,
@@ -19031,6 +19119,7 @@
   "reactivGuiBlk": {
     "reactivGuiForAircraft": true,
     "reactivGuiForArbiter": true,
+    "reactivGuiAAMSightActivated": true,
     "collapsedIconForRadarTws": true,
     "indicationForCollapsedRadar": false,
     "reactivGuiParamTableActivated": true

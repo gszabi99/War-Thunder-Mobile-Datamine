@@ -40,28 +40,16 @@ function getBonusDesc(goodId) {
   if (!goods || !relatedGoods)
     return ""
 
-  if ("rewards" in goods) {
-    let { gType, id } = goods.rewards[0]
-    if (gType != relatedGoods.rewards[0].gType
-        || id != relatedGoods.rewards[0].id)
-      return ""
-    let amount = relatedGoods.rewards[0].count - goods.rewards[0].count
-    if (amount > 0)
-      if (gType == G_CURRENCY)
-        return loc($"onlineShop/gaijinBonus/{id}", { amount })
-      else if (gType == G_PREMIUM)
-        return loc("onlineShop/gaijinBonus/premium", { amount })
+  let { gType, id } = goods.rewards[0]
+  if (gType != relatedGoods.rewards[0].gType
+      || id != relatedGoods.rewards[0].id)
     return ""
-  }
-
-  
-  if (goods.currencies?.gold)
-    return loc("onlineShop/gaijinBonus/gold")
-  if (goods.premiumDays > 0) {
-    let amount = relatedGoods.premiumDays - goods.premiumDays
-    if (amount != 0)
+  let amount = relatedGoods.rewards[0].count - goods.rewards[0].count
+  if (amount > 0)
+    if (gType == G_CURRENCY)
+      return loc($"onlineShop/gaijinBonus/{id}", { amount })
+    else if (gType == G_PREMIUM)
       return loc("onlineShop/gaijinBonus/premium", { amount })
-  }
   return ""
 }
 

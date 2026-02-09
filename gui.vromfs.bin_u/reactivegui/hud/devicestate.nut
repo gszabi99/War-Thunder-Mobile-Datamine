@@ -5,7 +5,7 @@ let { register_command } = require("console")
 let { get_battery, is_charging } = require("sysinfo")
 let { DBGLEVEL } = require("dagor.system")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { is_pc } = require("%appGlobals/clientState/platform.nut")
+let { is_pc } = require("%sqstd/platform.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { hudWhiteColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
 

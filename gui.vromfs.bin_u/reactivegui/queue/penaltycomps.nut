@@ -1,18 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
 let { isOfflineBattlesActive } = require("%rGui/gameModes/offlineBattlesState.nut")
 
 
-let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
+let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign)
 
 let timerSize = hdpxi(40)
-let penaltyTimerIcon = @(campaign = null) function() {
+let penaltyTimerIcon = @(rawCampaign = null, penaltyId = "") function() {
   let res = { watch = [hasPenaltyStatus, battleBtnCampaign, isOfflineBattlesActive] }
-  let hasPenalty = !isOfflineBattlesActive.get()
-    && ((hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false)
-      || (hasPenaltyStatus.get()?[curCampaign.get()] ?? false))
+  if (isOfflineBattlesActive.get())
+    return res
+
+  let byMissionPenaltyId = penaltyId != ""
+  let campaign = rawCampaign ?? battleBtnCampaign.get()
+  if (!byMissionPenaltyId && campaign == null)
+    return res
+
+  let actPenaltyId = byMissionPenaltyId ? penaltyId : getCampaignPresentation(campaign).campaign
+  let hasPenalty = hasPenaltyStatus.get()?[actPenaltyId] ?? false
   return !hasPenalty ? res
     : res.__update({
         size = [timerSize, timerSize]

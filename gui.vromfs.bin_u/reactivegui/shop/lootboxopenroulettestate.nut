@@ -68,10 +68,10 @@ function getOpenResultViewInfos(result) {
     return []
   let res = []
   foreach(unseen in unseenPurchases) {
-    let { goods = [] } = unseen
-    if (goods.len() == 0)
+    let { goods = [], lostGoods = [] } = unseen
+    if (goods.len() == 0 && lostGoods.len() == 0)
       continue
-    let viewInfo = goods.map(receivedGoodsToViewInfo)
+    let viewInfo = goods.map(receivedGoodsToViewInfo).extend(lostGoods.map(receivedGoodsToViewInfo))
     res.append({ viewInfo, openCount = unseen?.paramInt ?? 0 })
   }
   res.sort(@(a, b) a.openCount <=> b.openCount)
@@ -106,7 +106,7 @@ let rouletteFixedRewards = Computed(function() {
   foreach(countStr, fr in fixedRewards) {
     if (fr?.lockedBy.findvalue(@(r) (total?[r] ?? 0) > 0) != null)
       continue
-    let rewardId = fr?.rewardId ?? fr 
+    let { rewardId } = fr
     let reward = serverConfigs.get()?.rewardsCfg[rewardId]
     let viewInfo = reward != null ? getRewardsViewInfo(reward) : []
     if (viewInfo.len() != 0)
@@ -151,7 +151,7 @@ function calcJackpotOpens(id, openCount, profile, configs) {
   let hasOpens = profile?.lootboxStats[id].opened ?? 0
   let jackpotsById = {}
   foreach(idxStr, fr in fixedRewards) {
-    let rewardId = fr?.rewardId ?? fr 
+    let { rewardId } = fr
     let idx = idxStr.tointeger()
     if (idx <= hasOpens || idx > hasOpens + openCount)
       continue

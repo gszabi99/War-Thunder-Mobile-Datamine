@@ -6,6 +6,7 @@ let { isVoiceMsgEnabled } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { isVoiceMsgMapSceneOpened } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
 let { isTacticalMapSceneOpened } = require("%rGui/hud/tacticalMap/hudTacticalMapScene.nut")
 let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
+let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 let tacticalMapSize = [hdpx(325), hdpx(325)]
 
@@ -33,6 +34,7 @@ let tacticalMap = mkTacticalMap(tacticalMapSize)
 function mkTacticalMapForHud(scale) {
   let stateFlags = Watched(0)
   let size = scaleArr(tacticalMapSize, scale)
+  let shortcutId = "ID_TACTICAL_MAP"
   let openMapBtn = @() {
     watch = stateFlags
     size = flex()
@@ -45,8 +47,11 @@ function mkTacticalMapForHud(scale) {
       : isTacticalMapSceneOpened.set(true)
     rendObj = ROBJ_SOLID
     color = stateFlags.get() & S_ACTIVE ? 0x28000000 : 0
+    hotkeys = mkGamepadHotkey(shortcutId)
   }
-  return mkTacticalMap(size, [ openMapBtn ])
+  return mkTacticalMap(size, [ openMapBtn, mkGamepadShortcutImage(shortcutId,
+    { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-52)] },
+    scale) ])
 }
 
 let tacticalMapEditView = {

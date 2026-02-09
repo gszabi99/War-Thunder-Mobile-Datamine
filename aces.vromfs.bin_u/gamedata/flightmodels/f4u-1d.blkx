@@ -3802,5 +3802,12 @@
       1.80244,
       -5.51567e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "f4u_1d_c*",
+      "to": "f4u_1d_blue_c*"
+    }
   }
 }

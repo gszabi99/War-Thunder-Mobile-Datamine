@@ -7,6 +7,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
+let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
@@ -83,7 +84,7 @@ let balanceBlock = @() {
 
 let topPanel = @() {
   size = [flex(), scoreBoardHeight]
-  watch = respawnUnitItems
+  watch = [respawnUnitItems, hudCustomRules]
   children = [
     { size = FLEX_V, children = logerrHintsBlock }
     @() {
@@ -92,7 +93,8 @@ let topPanel = @() {
       children = scoreBoardCfgByType?[scoreBoardType.get()].comp
     }
     mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
-    respawnUnitItems.get()?.spare ? balanceBlock : null
+    hudCustomRules.get()?.allowSpare
+      && respawnUnitItems.get()?.spare ? balanceBlock : null
   ]
 }
 

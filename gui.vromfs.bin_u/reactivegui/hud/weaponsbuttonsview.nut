@@ -471,6 +471,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
   let isBlocked = Computed(@() unitType.get() == SUBMARINE && isNotOnTheSurface.get()
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let isWaitForAim = hasAim && !(actionItem?.aimReady ?? true)
+  let canAimTarget = actionItem?.canAimTarget ?? true
   let isInDeadZone = hasAim && (actionItem?.inDeadzone ?? false)
   let mainShortcut = getShortcut(unitType.get(), actionItem) 
   let hotkeyShortcut = selShortcut ?? mainShortcut
@@ -505,7 +506,12 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
         return
       }
       if (isWaitForAim) {
-        addCommonHint(loc("hints/select_cooldown_rocket"))
+        if (!canAimTarget)
+          addCommonHint(loc("hints/wrong_aim_target"))
+        else if (isInDeadZone)
+          addCommonHint(loc("hints/guns_in_deadzone"))
+        else
+          addCommonHint(loc("hints/select_cooldown_rocket"))
         return
       }
     }

@@ -31,27 +31,14 @@
       "armorClass": "RHA_tank",
       "hp": 480.0,
       "armorThickness": 4.0,
+      "engine_dm": {
+        "armorThickness": 1.0,
+        "hp": 30.0,
+        "explosionDamageMult": 3.0
+      },
       "body_dm": {
-        "explosionDamageMult": 3.0
-      },
-      "gun3_dm": {
-        "armorThickness": 5.0,
-        "hp": 10.0,
-        "explosionDamageMult": 3.0
-      },
-      "gun2_dm": {
-        "armorThickness": 5.0,
-        "hp": 10.0,
-        "explosionDamageMult": 3.0
-      },
-      "gun1_dm": {
-        "armorThickness": 5.0,
-        "hp": 10.0,
-        "explosionDamageMult": 3.0
-      },
-      "gun0_dm": {
-        "armorThickness": 5.0,
-        "hp": 10.0,
+        "armorThickness": 4.0,
+        "hp": 60.0,
         "explosionDamageMult": 3.0
       }
     }
@@ -99,6 +86,9 @@
         0.0,
         0.0
       ]
+    },
+    "collisionProps": {
+      "body_dm": "convex_hull"
     }
   },
   "sound": {

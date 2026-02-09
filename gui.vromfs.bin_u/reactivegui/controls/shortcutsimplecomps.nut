@@ -6,7 +6,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let defBtnHeight = hdpxi(50)
 
-let combinationButton = "J:LB"
+const combinationButton = "J:LB"
 let combinationButtonState = Watched(0)
 let isCombinationModActive = Computed(@() (combinationButtonState.get() & S_ACTIVE) != 0)
 
@@ -23,6 +23,7 @@ let mkGamepadShortcutImage = @(shortcutId, ovr = {}, scale = 1.0) function() {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
+    gap = -hdpx(5)
     children = (children?.len() ?? 0) < 2 ? children : children?.insert(1,
       {
         rendObj = ROBJ_TEXT
@@ -73,7 +74,7 @@ let mkLtButtonListener = @() {
   size = 0
   behavior = Behaviors.Button
   onElemState = @(v) combinationButtonState.set(v)
-  hotkeys = static [$"^{combinationButton}"]
+  hotkeys = const [$"^{combinationButton}"]
 }
 
 return {

@@ -20,7 +20,8 @@
     "mass": 735.0,
     "rocket": {
       "bulletName": "rgm84",
-      "mesh": "rocket_mm38_exocet",
+      "mesh": "rocket_rgm84_harpoon",
+      "shellAnimChar": "rocket_rgm84_harpoon_deployed_char",
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "groundRicochetPreset": "he_ground",

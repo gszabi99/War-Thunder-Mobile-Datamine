@@ -5,7 +5,9 @@ let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { attractColor, aTimeHint, aTimePriceScale } = require("%rGui/unitsTree/treeAnimConsts.nut")
-let { unitsResearchStatus, blockedCountries } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { getReceiveDesc } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
+let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 
 
 let statsWidth = hdpx(495)
@@ -50,10 +52,10 @@ let mkBarText = @(text) {
 function blueprintBar(unit) {
   let curBluebrintsCount = Computed(@() servProfile.get()?.blueprints?[unit.name] ?? 0)
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
-  let isBlocked = unit.country in blockedCountries.get()
+  let isBlocked = unit.name in unitsBlockedByBattleMode.get()
   return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked
     ? {
-      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, blockedCountries]
+      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, unitsBlockedByBattleMode]
       size = FLEX_H
       flow = FLOW_VERTICAL
       gap = hdpx(5)
@@ -61,14 +63,14 @@ function blueprintBar(unit) {
         mkBarText(loc("blueprints/desc"))
         mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(), blueprintBarColor)
       ]}
-    : { watch = [serverConfigs, campMyUnits, blockedCountries]}
+    : { watch = [serverConfigs, campMyUnits, unitsBlockedByBattleMode]}
 }
 
 let unitExpBar = @(unitName, unitResearch) function() {
-  let { isCurrent = false, canResearch = false, exp = 0, reqExp = 1, country = "" } = unitResearch.get()
-  let isBlocked = country in blockedCountries.get()
+  let { isCurrent = false, canResearch = false, exp = 0, reqExp = 1, hasAccessLock = true } = unitResearch.get()
+  let isBlocked = hasAccessLock && unitName in unitsBlockedByBattleMode.get()
   return {
-    watch = [unitResearch, campMyUnits, blockedCountries]
+    watch = [unitResearch, campMyUnits, unitsBlockedByBattleMode]
     children = unitName not in campMyUnits.get() && (isCurrent || canResearch) && !isBlocked
       ? mkLevelLine(exp, reqExp, unitResearchExpColor)
       : null
@@ -84,8 +86,10 @@ function unitResearchBar(unitName) {
         : null
     if (unitResearch.get() == null)
       return null
-    let { isCurrent = false, canResearch = false, canBuy = false, isResearched = false, country = "" } = unitResearch.get()
-    if (country in blockedCountries.get())
+    let { isCurrent = false, canResearch = false, canBuy = false, isResearched = false,
+      hasAccessLock = true
+    } = unitResearch.get()
+    if (hasAccessLock && unitName in unitsBlockedByBattleMode.get())
       return null
     return isCurrent ? "unitsTree/currentResearch"
       : canResearch ? "unitsTree/availableForResearch"
@@ -124,7 +128,13 @@ function unitResearchBar(unitName) {
       }
 }
 
-let researchBlock = @(unit) unit == null ? null
+function mkReceiveInfoText(receiveInfo) {
+  let { receiveType = null, receiveData = null } = receiveInfo
+  let text = getReceiveDesc(receiveType, receiveData)
+  return text == "" ? null : mkBarText(text)
+}
+
+let researchBlock = @(unit, receiveInfo = null) unit == null ? null
   : {
       size = [researchBlockWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
@@ -132,6 +142,7 @@ let researchBlock = @(unit) unit == null ? null
       children = [
         blueprintBar(unit)
         unitResearchBar(unit.name)
+        mkReceiveInfoText(receiveInfo)
       ]
     }
 

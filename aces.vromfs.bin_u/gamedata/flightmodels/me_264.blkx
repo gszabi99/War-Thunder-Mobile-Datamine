@@ -3145,5 +3145,18 @@
       0.201849,
       -3.02036
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "me_264_c*",
+        "to": "me_264_black_c*"
+      },
+      {
+        "from": "me_264_n*",
+        "to": "me_264_black_n*"
+      }
+    ]
   }
 }

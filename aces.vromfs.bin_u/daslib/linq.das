@@ -88,6 +88,8 @@ module linq shared public
 
 
 
+
+
 [skip_lock_check]
 def to_sequence(a : array<auto(TT)>) : iterator<TT -const -&> {
     
@@ -124,11 +126,13 @@ def private to_table_impl_const(a : auto(ARGT); tt : auto(TT); key : block<(v : 
 
 [skip_lock_check]
 def to_table(var a : iterator<auto(TT)>; key : block<(v : TT -&) : auto>; elementSelector : block<(v : TT -&) : auto>) : table<typedecl(_::unique_key(type<TT>)) -const -&, typedecl(elementSelector(type<TT>)) -const -&> {
+    
     return <- to_table_impl(a, type<TT -const -&>, key, elementSelector)
 }
 
 [skip_lock_check]
 def to_table(a : array<auto(TT)>; key : block<(v : TT -&) : auto>; elementSelector : block<(v : TT -&) : auto>) : table<typedecl(_::unique_key(type<TT>)) -const -&, typedecl(elementSelector(type<TT>)) -const -&> {
+    
     return <- to_table_impl_const(a, type<TT -const -&>, key, elementSelector)
 }
 
@@ -161,17 +165,14 @@ def private concat_impl_const(a : auto(ARGT); b : auto(ARGU); tt : auto(TT); res
 
 [skip_lock_check]
 def concat(a, b : array<auto(TT)>) : array<TT -const -&> {
+    
     return <- concat_impl_const(a, b, type<TT -const -&>, length(a) + length(b))
 }
 
 [skip_lock_check]
 def concat_to_array(var a, b : iterator<auto(TT)>) : array<TT -const -&> {
+    
     return <- concat_impl(a, b, type<TT -const -&>, 0)
-}
-
-[skip_lock_check]
-def concat_to_sequence(a, b : array<auto(TT)>) : iterator<TT -const -&> {
-    return <- concat_impl_const(a, b, type<TT -const -&>, length(a) + length(b)).to_sequence_move()
 }
 
 [skip_lock_check]
@@ -280,11 +281,33 @@ def reverse_to_array(var a : iterator<auto(TT)>) : array<TT -const -&> {
 }
 
 [skip_lock_check]
-def reverse_to_sequence(a : array<auto(TT)>) : iterator<TT -const -&> {
+def order_inplace(var buffer : array<auto(TT)>) {
     
-    var b := a
-    reverse_inplace(b)
-    return to_sequence_move(b)
+    sort(buffer, $(a, b) => _::unique_key(a) < _::unique_key(b))
+}
+
+[skip_lock_check]
+def order(var a : iterator<auto(TT)>) : iterator<TT -const -&> {
+    
+    var arr <- to_array(a)
+    sort(arr, $(a, b) => _::unique_key(a) < _::unique_key(b))
+    return to_sequence_move(arr)
+}
+
+[skip_lock_check]
+def order(arr : array<auto(TT)>) : array<TT -const -&> {
+    
+    var brr := arr
+    sort(brr, $(a, b) => _::unique_key(a) < _::unique_key(b))
+    return <- brr
+}
+
+[skip_lock_check]
+def order_to_array(var a : iterator<auto(TT)>) : array<TT -const -&> {
+    
+    var arr <- to_array(a)
+    sort(arr, $(a, b) => _::unique_key(a) < _::unique_key(b))
+    return <- arr
 }
 
 [skip_lock_check]
@@ -318,14 +341,6 @@ def order_to_array(var a : iterator<auto(TT)>; fun : block<(v1 : TT -&, v2 : TT 
 }
 
 [skip_lock_check]
-def order_to_sequence(a : array<auto(TT)>; fun : block<(v1 : TT -&, v2 : TT -&) : bool>) : iterator<TT -const -&> {
-    
-    var b := a
-    sort(b, fun)
-    return to_sequence_move(b)
-}
-
-[skip_lock_check]
 def order_descending_inplace(var buffer : array<auto(TT)>; fun : block<(v1 : TT -&, v2 : TT -&) : bool>) {
     
     sort(buffer, $(v1, v2) => fun(v2, v1))
@@ -355,29 +370,25 @@ def order_descending_to_array(var a : iterator<auto(TT)>; fun : block<(v1 : TT -
     return <- arr
 }
 
-[skip_lock_check]
-def order_descending_to_sequence(a : array<auto(TT)>; fun : block<(v1 : TT -&, v2 : TT -&) : bool>) : iterator<TT -const -&> {
-    
-    var b := a
-    sort(b, $(v1, v2) => fun(v2, v1))
-    return to_sequence_move(b)
-}
-
 def less(a, b) : bool {
+    
     return a < b
 }
 
 def less(a, b : tuple<auto(TT)>) : bool {
+    
     return a._0 < b._0
 }
 
 def less(a, b : tuple<auto(TT), auto(UU)>) : bool {
+    
     return true if (a._0 < b._0)
     return false if (a._0 > b._0)
     return a._1 < b._1
 }
 
 def less(a, b : tuple<auto(TT), auto(UU), auto(VV)>) : bool {
+    
     return true if (a._0 < b._0)
     return false if (a._0 > b._0)
     return true if (a._1 < b._1)
@@ -386,6 +397,7 @@ def less(a, b : tuple<auto(TT), auto(UU), auto(VV)>) : bool {
 }
 
 def less(a, b : tuple<auto(TT), auto(UU), auto(VV), auto(WW)>) : bool {
+    
     return true if (a._0 < b._0)
     return false if (a._0 > b._0)
     return true if (a._1 < b._1)
@@ -426,14 +438,6 @@ def order_by_to_array(var a : iterator<auto(TT)>; key) : array<TT -const -&> {
 }
 
 [skip_lock_check]
-def order_by_to_sequence(a : array<auto(TT)>; key) : iterator<TT -const -&> {
-    
-    var b := a
-    sort(b, $(v1, v2) => _::less(key(v1), key(v2)))
-    return to_sequence_move(b)
-}
-
-[skip_lock_check]
 def order_by_descending_inplace(var buffer : array<auto(TT)>; key) {
     
     sort(buffer, $(v1, v2) => _::less(key(v2), key(v1)))
@@ -461,14 +465,6 @@ def order_by_descending_to_array(var a : iterator<auto(TT)>; key) : array<TT -co
     var arr <- to_array(a)
     sort(arr, $(v1, v2) => _::less(key(v2), key(v1)))
     return <- arr
-}
-
-[skip_lock_check]
-def order_by_descending_to_sequence(a : array<auto(TT)>; key) : iterator<TT -const -&> {
-    
-    var b := a
-    sort(b, $(v1, v2) => _::less(key(v2), key(v1)))
-    return to_sequence_move(b)
 }
 
 def unique_key(a) {
@@ -516,13 +512,6 @@ def distinct(a : array<auto(TT)>) : array<TT -const -&> {
 def distinct_to_array(var a : iterator<auto(TT)>) : array<TT -const -&> {
     
     return <- distinct_impl(a, type<TT -const -&>)
-}
-
-[skip_lock_check]
-def distinct_to_sequence(a : array<auto(TT)>) : iterator<TT -const -&> {
-    
-    var b := a
-    return distinct_impl_const(b, type<TT -const -&>).to_sequence_move()
 }
 
 [skip_lock_check]
@@ -610,13 +599,6 @@ def distinct_by_to_array(var a : iterator<auto(TT)>; key : block<(arg : TT -&) :
 }
 
 [skip_lock_check]
-def distinct_by_to_sequence(a : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
-    
-    var b := a
-    return distinct_by_impl_const(b, type<TT -const -&>, key).to_sequence_move()
-}
-
-[skip_lock_check]
 def distinct_by(var a : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
     
     
@@ -644,6 +626,92 @@ def distinct_by_inplace(var a : array<auto(TT)>; key : block<(arg : TT -&) : aut
         }
     }
     a.resize(to_index)
+    static_if (typeinfo need_lock_check(a)) {
+        set_verify_array_locks(a, true)
+    }
+}
+
+[skip_lock_check]
+def unique(a : iterator<auto(TT)>) : iterator<TT -const -&> {
+    
+    var inscope buffer <- to_array(a)
+    unique_inplace(buffer)
+    return to_sequence_move(buffer)
+}
+
+[skip_lock_check]
+def unique(a : array<auto(TT)>) : array<TT -const -&> {
+    
+    var b := a
+    unique_inplace(b)
+    return <- b
+}
+
+[skip_lock_check]
+def unique_to_array(a : iterator<auto(TT)>) : array<TT -const -&> {
+    
+    var inscope buffer <- to_array(a)
+    unique_inplace(buffer)
+    return <- buffer
+}
+
+[skip_lock_check]
+def unique_inplace(var a : array<auto(TT)>) {
+    
+    static_if (typeinfo need_lock_check(a)) {
+        _builtin_verify_locks(a)
+        set_verify_array_locks(a, false)
+    }
+    var write_index = 1
+    for (from_index in 1 .. length(a)) {
+        if (_::unique_key(a[from_index]) != _::unique_key(a[write_index - 1])) {
+            a[write_index++] <- a[from_index]
+        }
+    }
+    a.resize(write_index)
+    static_if (typeinfo need_lock_check(a)) {
+        set_verify_array_locks(a, true)
+    }
+}
+
+[skip_lock_check]
+def unique_by(a : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    var inscope buffer <- to_array(a)
+    unique_by_inplace(buffer, key)
+    return to_sequence_move(buffer)
+}
+
+[skip_lock_check]
+def unique_by(a : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    var b := a
+    unique_by_inplace(b, key)
+    return <- b
+}
+
+[skip_lock_check]
+def unique_by_to_array(a : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    var inscope buffer <- to_array(a)
+    unique_by_inplace(buffer, key)
+    return <- buffer
+}
+
+[skip_lock_check]
+def unique_by_inplace(var a : array<auto(TT)>; key : block<(arg : TT -&) : auto>) {
+    
+    static_if (typeinfo need_lock_check(a)) {
+        _builtin_verify_locks(a)
+        set_verify_array_locks(a, false)
+    }
+    var write_index = 1
+    for (from_index in 1 .. length(a)) {
+        if (key(a[from_index]) != key(a[write_index - 1])) {
+            a[write_index++] <- a[from_index]
+        }
+    }
+    a.resize(write_index)
     static_if (typeinfo need_lock_check(a)) {
         set_verify_array_locks(a, true)
     }
@@ -724,12 +792,6 @@ def where_to_array(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&)
 }
 
 [skip_lock_check]
-def where_to_sequence(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : iterator<TT -& -const> {
-    
-    return <- where_impl_const(src, type<TT -& -const>, length(src), predicate).to_sequence_move()
-}
-
-[skip_lock_check]
 def skip(arr : array<auto(TT)>; var total : int) : array<TT -& -const> {
     
     let len = length(arr)
@@ -786,12 +848,6 @@ def private skip_impl(var src; tt : auto(TT); var total : int) : iterator<TT -& 
 def skip(var src : iterator<auto(TT)>; var total : int) : iterator<TT -& -const> {
     
     return skip_impl(src, type<TT -& -const>, total)
-}
-
-[skip_lock_check]
-def skip_to_sequence(src : array<auto(TT)>; var total : int) : iterator<TT -& -const> {
-    
-    return skip_impl(clone_to_move(src), type<TT -& -const>, total)
 }
 
 [skip_lock_check]
@@ -863,12 +919,6 @@ def skip_while_to_array(var src : iterator<auto(TT)>; predicate : block<(arg : T
 }
 
 [skip_lock_check]
-def skip_while_to_sequence(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : iterator<TT -& -const> {
-    
-    return <- skip_while_impl_const(src, type<TT -& -const>, predicate).to_sequence_move()
-}
-
-[skip_lock_check]
 def take(arr : array<auto(TT)>; var total : int) : array<TT -& -const> {
     
     let len = length(arr)
@@ -907,12 +957,6 @@ def private take_impl(var src; tt : auto(TT); var total : int) : iterator<TT -& 
 def take(var src : iterator<auto(TT)>; var total : int) : iterator<TT -& -const> {
     
     return take_impl(src, type<TT -& -const>, total)
-}
-
-[skip_lock_check]
-def take_to_sequence(src : array<auto(TT)>; var total : int) : iterator<TT -& -const> {
-    
-    return take_impl(clone_to_move(src), type<TT -& -const>, total)
 }
 
 [skip_lock_check]
@@ -993,18 +1037,6 @@ def take_to_array(var src : iterator<auto(TT)>; from : range) : array<TT -& -con
 }
 
 [skip_lock_check]
-def take_to_sequence(src : array<auto(TT)>; from : range) : iterator<TT -& -const> {
-    
-    let len = length(src)
-    let start = (from.x < 0) ? 0 : ((from.x > len) ? len : from.x)
-    var end = (from.y < 0) ? 0 : ((from.y > len) ? len : from.y)
-    if (end < start) {
-        end = start
-    }
-    return <- subarray(src, start..end).to_sequence_move()
-}
-
-[skip_lock_check]
 def take_inplace(var arr : array<auto(TT)>; from : range) {
     
     static_if (typeinfo need_lock_check(arr)) {
@@ -1071,12 +1103,6 @@ def take_while(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) :
 def take_while_to_array(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : array<TT -& -const> {
     
     return <- take_while_impl(src, type<TT -& -const>, predicate)
-}
-
-[skip_lock_check]
-def take_while_to_sequence(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : iterator<TT -& -const> {
-    
-    return <- take_while_impl_const(src, type<TT -& -const>, predicate).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt)]
@@ -1416,7 +1442,7 @@ def sum(src : array<auto(TT)>) : TT -const -& {
 }
 
 [skip_lock_check, unused_argument(tt)]
-def average_impl(var src; tt : auto(TT)) : TT -const -& {
+def private average_impl(var src; tt : auto(TT)) : TT -const -& {
     var total : TT -const -&
     var count : uint64
     for (x in src) {
@@ -1434,7 +1460,7 @@ def average_impl(var src; tt : auto(TT)) : TT -const -& {
 }
 
 [skip_lock_check, unused_argument(tt)]
-def average_impl_const(src : auto(ARGT); tt : auto(TT)) : TT -const -& {
+def private average_impl_const(src : auto(ARGT); tt : auto(TT)) : TT -const -& {
     static_if (typeinfo is_workhorse(type<TT>)) {
         return average_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>)
     } else {
@@ -1611,12 +1637,6 @@ def join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; 
     return <- join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
 }
 
-[skip_lock_check]
-def join_to_sequence(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<TB>)) -const -&> {
-    
-    return <- join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(ta, tb)]
 def private group_join_impl(var srca; var srcb; ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
     
@@ -1662,12 +1682,6 @@ def group_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; resul
 def group_join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
     
     return <- group_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
-}
-
-[skip_lock_check]
-def group_join_to_sequence(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
-    
-    return <- group_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt)]
@@ -1716,12 +1730,6 @@ def group_by(source : array<auto(TT)>; key; element_selector; result_selector)  
 def group_by_to_array(var source : iterator<auto(TT)>; key; element_selector; result_selector)  {
     
     return <- group_by_impl(source, type<TT -const -&>, key, element_selector, result_selector)
-}
-
-[skip_lock_check]
-def group_by_to_sequence(source : array<auto(TT)>; key; element_selector; result_selector)  {
-    
-    return <- group_by_impl_const(source, type<TT -const -&>, key, element_selector, result_selector).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt)]
@@ -1775,12 +1783,6 @@ def union_to_array(var srca, srcb : iterator<auto(TT)>) : array<TT -const -&> {
     return <- union_impl(srca, srcb, type<TT -const -&>)
 }
 
-[skip_lock_check]
-def union_to_sequence(srca, srcb : array<auto(TT)>) : iterator<TT -const -&> {
-    
-    return <- union_impl_const(srca, srcb, type<TT -const -&>).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(tt)]
 def private union_by_impl(var srca; var srcb; tt : auto(TT); key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
@@ -1830,12 +1832,6 @@ def union_by(srca, srcb : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : 
 def union_by_to_array(var srca, srcb : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- union_by_impl(srca, srcb, type<TT -const -&>, key)
-}
-
-[skip_lock_check]
-def union_by_to_sequence(srca, srcb : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
-    
-    return <- union_by_impl_const(srca, srcb, type<TT -const -&>, key).to_sequence_move()
 }
 
 [skip_lock_check]
@@ -1952,12 +1948,6 @@ def except_to_array(var src, exclude : iterator<auto(TT)>) : array<TT -const -&>
     return <- except_impl(src, exclude, type<TT -const -&>)
 }
 
-[skip_lock_check]
-def except_to_sequence(src, exclude : array<auto(TT)>) : iterator<TT -const -&> {
-    
-    return <- except_impl_const(src, exclude, type<TT -const -&>).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(tt)]
 def private except_by_impl(var src, exclude; tt : auto(TT); key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
@@ -2001,12 +1991,6 @@ def except_by(src, exclude : array<auto(TT)>; key : block<(arg : TT -&) : auto>)
 def except_by_to_array(var src, exclude : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- except_by_impl(src, exclude, type<TT -const -&>, key)
-}
-
-[skip_lock_check]
-def except_by_to_sequence(src, exclude : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
-    
-    return <- except_by_impl_const(src, exclude, type<TT -const -&>, key).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt)]
@@ -2054,12 +2038,6 @@ def intersect_to_array(var srca, srcb : iterator<auto(TT)>) : array<TT -const -&
     return <- intersect_impl(srca, srcb, type<TT -const -&>)
 }
 
-[skip_lock_check]
-def intersect_to_sequence(srca, srcb : array<auto(TT)>) : iterator<TT -const -&> {
-    
-    return <- intersect_impl_const(srca, srcb, type<TT -const -&>).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(tt)]
 def private intersect_by_impl(var srca, srcb; tt : auto(TT); key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
@@ -2103,12 +2081,6 @@ def intersect_by(srca, srcb : array<auto(TT)>; key : block<(arg : TT -&) : auto>
 def intersect_by_to_array(var srca, srcb : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- intersect_by_impl(srca, srcb, type<TT -const -&>, key)
-}
-
-[skip_lock_check]
-def intersect_by_to_sequence(srca, srcb : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
-    
-    return <- intersect_by_impl_const(srca, srcb, type<TT -const -&>, key).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt)]
@@ -2561,12 +2533,6 @@ def prepend_to_array(var it : iterator<auto(TT)>; value : TT -&) : array<TT -con
 }
 
 [skip_lock_check]
-def prepend_to_sequence(arr : array<auto(TT)>; value : TT -&) : iterator<TT -const -&> {
-    
-    return <- prepend_impl_const(arr, type<TT -const -&>, length(arr) + 1, value).to_sequence_move()
-}
-
-[skip_lock_check]
 def prepend(var it : iterator<auto(TT)>; value : TT -&) : iterator<TT -const -&> {
     
     return generator<TT -const -&> capture(<- it, := value) () <| $ {
@@ -2627,12 +2593,6 @@ def append(arr : array<auto(TT)>; value : TT -&) : array<TT -const -&> {
 def append_to_array(var it : iterator<auto(TT)>; value : TT -&) : array<TT -const -&> {
     
     return <- append_impl(it, type<TT -const -&>, 0, value)
-}
-
-[skip_lock_check]
-def append_to_sequence(arr : array<auto(TT)>; value : TT -&) : iterator<TT -const -&> {
-    
-    return <- append_impl_const(arr, type<TT -const -&>, length(arr) + 1, value).to_sequence_move()
 }
 
 [skip_lock_check]
@@ -2700,12 +2660,6 @@ def select_to_array(var src : iterator<auto(TT)>) : array<tuple<int, TT -const -
     return <- select_impl(src, type<TT -const -&>)
 }
 
-[skip_lock_check]
-def select_to_sequence(src : array<auto(TT)>) : iterator<tuple<int, TT -const -&>> {
-    
-    return <- select_impl_const(src, type<TT -const -&>).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(tt)]
 def private select_impl(var src; tt : auto(TT); len : int; selector) : array<typedecl(selector(type<TT>)) -const -&> {
     
@@ -2730,22 +2684,20 @@ def private select_impl_const(src : auto(ARGT); tt : auto(TT); len : int; select
 
 [skip_lock_check]
 def select(var src : iterator<auto(TT)>; result_selector) : iterator<typedecl(result_selector(type<TT>)) -const -&> {
+    
     return <- select_impl(src, type<TT -const -&>, 0, result_selector).to_sequence_move()
 }
 
 [skip_lock_check]
 def select(src : array<auto(TT)>; result_selector) : array<typedecl(result_selector(type<TT>)) -const -&> {
+    
     return <- select_impl_const(src, type<TT -const -&>, length(src), result_selector)
 }
 
 [skip_lock_check]
 def select_to_array(var src : iterator<auto(TT)>; result_selector) : array<typedecl(result_selector(type<TT>)) -const -&> {
+    
     return <- select_impl(src, type<TT -const -&>, 0, result_selector)
-}
-
-[skip_lock_check]
-def select_to_sequence(src : array<auto(TT)>; result_selector) : iterator<typedecl(result_selector(type<TT>)) -const -&> {
-    return <- select_impl_const(src, type<TT -const -&>, length(src), result_selector).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt)]
@@ -2793,12 +2745,6 @@ def chunk(src : array<auto(TT)>; size : int) : array<array<TT -const -&>> {
 def chunk_to_array(var src : iterator<auto(TT)>; size : int) : array<array<TT -const -&>> {
     
     return <- chunk_impl(src, type<TT -const -&>, size)
-}
-
-[skip_lock_check]
-def chunk_to_sequence(src : array<auto(TT)>; size : int) : iterator<array<TT -const -&>> {
-    
-    return <- chunk_impl_const(src, type<TT -const -&>, size).to_sequence_move()
 }
 
 [skip_lock_check]
@@ -2862,12 +2808,6 @@ def select_many_to_array(var src : iterator<auto(TT)>; result_selector) : array<
     return <- select_many_impl(src, type<TT -const -&>, result_selector)
 }
 
-[skip_lock_check]
-def select_many_to_sequence(src : array<auto(TT)>; result_selector) : iterator<typedecl(result_selector(iter_type(type<TT>))) -const -&> {
-    
-    return <- select_many_impl_const(src, type<TT -const -&>, result_selector).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(tt)]
 def private select_many_impl(var src; tt : auto(TT); collection_selector; result_selector) : array<typedecl(result_selector(iter_type(collection_selector(type<TT>)))) -const -&> {
     
@@ -2909,12 +2849,6 @@ def select_many_to_array(var src : iterator<auto(TT)>; collection_selector; resu
     return <- select_many_impl(src, type<TT -const -&>, collection_selector, result_selector)
 }
 
-[skip_lock_check]
-def select_many_to_sequence(src : array<auto(TT)>; collection_selector; result_selector) : iterator<typedecl(result_selector(iter_type(collection_selector(type<TT>)))) -const -&> {
-    
-    return <- select_many_impl_const(src, type<TT -const -&>, collection_selector, result_selector).to_sequence_move()
-}
-
 [skip_lock_check, unused_argument(tt, uu)]
 def private zip_impl(var a; tt : auto(TT); var b; var uu : auto(UU)) : array<tuple<TT -const -&, UU -const -&>> {
     
@@ -2952,12 +2886,6 @@ def zip(a : array<auto(TT)>; b : array<auto(UU)>) : array<tuple<TT -const -&, UU
 def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>) : array<tuple<TT -const -&, UU -const -&>> {
     
     return <- zip_impl(a, type<TT -const -&>, b, type<UU -const -&>)
-}
-
-[skip_lock_check]
-def zip_to_sequence(a : array<auto(TT)>; b : array<auto(UU)>) : iterator<tuple<TT -const -&, UU -const -&>> {
-    
-    return <- zip_impl_const(a, type<TT -const -&>, b, type<UU -const -&>).to_sequence_move()
 }
 
 [skip_lock_check, unused_argument(tt, uu)]
@@ -2999,7 +2927,25 @@ def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; result_
 }
 
 [skip_lock_check]
-def zip_to_sequence(a : array<auto(TT)>; b : array<auto(UU)>; result_selector : block<(l : TT -&; r : UU -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
+def public order_unique_folded(var a : array<auto(TT)>) : array<TT -const -&> {
     
-    return <- zip_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, result_selector).to_sequence_move()
+    var arr <- order(a)
+    unique_inplace(arr)
+    return <- arr
+}
+
+[skip_lock_check]
+def public order_unique_folded(var a : iterator<auto(TT)>) : array<TT -const -&> {
+    
+    var arr <- to_array(a)
+    order_inplace(arr)
+    unique_inplace(arr)
+    return <- arr
+}
+
+[skip_lock_check]
+def public order_unique_folded_inplace(var a : array<auto(TT)>) {
+    
+    order_inplace(a)
+    unique_inplace(a)
 }

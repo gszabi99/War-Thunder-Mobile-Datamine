@@ -30,10 +30,6 @@
   "numBorderCellsXNeg": 0,
   "numBorderCellsZPos": 0,
   "numBorderCellsZNeg": 0,
-  "mirrorShrinkXPos": 0.0,
-  "mirrorShrinkXNeg": 0.0,
-  "mirrorShrinkZPos": 0.0,
-  "mirrorShrinkZNeg": 0.0,
   "gridSteps": [
     3250.0,
     3250.0
@@ -57,6 +53,10 @@
     "year": 2025,
     "month": 11,
     "day": 6
+  },
+  "clustered_lights": {
+    "enabled": true,
+    "maxClusteredDist": 2000.0
   },
   "micro_details": {
     "micro_detail": [

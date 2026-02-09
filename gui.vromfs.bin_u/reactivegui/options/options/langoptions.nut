@@ -1,12 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-from "app" import get_base_game_version_str
 from "soundOptions" import set_option_speech_country_type, get_option_speech_country_type, UNIT_LANG, GAME_LANG
 
 let { getLocalLanguage, getSpeechLanguage, setSpeechLanguage } = require("language")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { ndbRead, ndbExists } = require("nestdb")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { has_extended_sound } = require("%appGlobals/permissions.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
@@ -15,11 +13,9 @@ const NDB_ID = "language.localizationInfo"
 let language = Watched(getLocalLanguage())
 let languageVoice = Watched(getSpeechLanguage())
 
-let isSpeechTypeSupported = check_version(">=1.20.0.26", get_base_game_version_str())
-
 let langByUnitCrew = [UNIT_LANG, GAME_LANG]
 function getSpeechType() {
-  if (!isSettingsAvailable.get() || !has_extended_sound.get() || !isSpeechTypeSupported)
+  if (!isSettingsAvailable.get() || !has_extended_sound.get())
     return GAME_LANG
   let speechType = get_option_speech_country_type()
   return langByUnitCrew.contains(speechType) ? speechType : GAME_LANG
@@ -41,7 +37,7 @@ let optLangByUnit = {
   locId = "options/speech_country_type"
   ctrlType = OCT_LIST
   value = speechUnitCountryType
-  list = Computed(@() has_extended_sound.get() && isSpeechTypeSupported ? langByUnitCrew : [])
+  list = Computed(@() has_extended_sound.get() ? langByUnitCrew : [])
   valToString = @(v) loc(v == UNIT_LANG ? "options/speech_country_unit" : "options/speech_country_player")
 }
 

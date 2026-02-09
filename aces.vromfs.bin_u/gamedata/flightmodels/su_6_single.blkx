@@ -2538,5 +2538,18 @@
       1.72114,
       0.0210384
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "su_6_single_green_c*",
+        "to": "su_6_single_white_a*"
+      },
+      {
+        "from": "su_6_single_green_n*",
+        "to": "su_6_single_white_n*"
+      }
+    ]
   }
 }

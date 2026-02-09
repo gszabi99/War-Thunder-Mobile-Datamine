@@ -478,6 +478,7 @@
     "trimAutoCorrectionPower": 0.5,
     "surfacingAreaMult": 0.8,
     "maxVerticalSpeed": 5.0,
+    "needSegmentMoments": false,
     "mass": {
       "Empty": 2200000.0,
       "momentOfInertia": [
@@ -706,6 +707,192 @@
             0.0
           ]
         }
+      },
+      {
+        "trigger": "countermeasures",
+        "triggerGroup": "flares",
+        "weaponType": "ircm",
+        "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+        "emitter": "bone_ad_01",
+        "bullets": 100,
+        "external": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "allowableDelta": 180.0,
+        "turret": {
+          "head": "bone_ad_01",
+          "gun": "bone_ad_01"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "countermeasures",
+        "triggerGroup": "flares",
+        "weaponType": "ircm",
+        "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+        "emitter": "bone_ad_02",
+        "bullets": 100,
+        "external": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "allowableDelta": 180.0,
+        "turret": {
+          "head": "bone_ad_02",
+          "gun": "bone_ad_02"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "countermeasures",
+        "triggerGroup": "flares",
+        "weaponType": "ircm",
+        "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+        "emitter": "bone_ad_03",
+        "bullets": 100,
+        "external": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "allowableDelta": 180.0,
+        "turret": {
+          "head": "bone_ad_03",
+          "gun": "bone_ad_03"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "countermeasures",
+        "triggerGroup": "flares",
+        "weaponType": "ircm",
+        "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+        "emitter": "bone_ad_04",
+        "bullets": 100,
+        "external": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "allowableDelta": 180.0,
+        "turret": {
+          "head": "bone_ad_04",
+          "gun": "bone_ad_04"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "countermeasures",
+        "triggerGroup": "flares",
+        "weaponType": "ircm",
+        "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+        "emitter": "bone_ad_05",
+        "bullets": 100,
+        "external": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "allowableDelta": 180.0,
+        "turret": {
+          "head": "bone_ad_05",
+          "gun": "bone_ad_05"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "countermeasures",
+        "triggerGroup": "flares",
+        "weaponType": "ircm",
+        "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+        "emitter": "bone_ad_06",
+        "bullets": 100,
+        "external": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "allowableDelta": 180.0,
+        "turret": {
+          "head": "bone_ad_06",
+          "gun": "bone_ad_06"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
       }
     ]
   },
@@ -822,6 +1009,192 @@
                 ],
                 "pitch": [
                   0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "triggerGroup": "flares",
+              "weaponType": "ircm",
+              "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+              "emitter": "bone_ad_01",
+              "bullets": 100,
+              "external": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_ad_01",
+                "gun": "bone_ad_01"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "triggerGroup": "flares",
+              "weaponType": "ircm",
+              "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+              "emitter": "bone_ad_02",
+              "bullets": 100,
+              "external": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_ad_02",
+                "gun": "bone_ad_02"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "triggerGroup": "flares",
+              "weaponType": "ircm",
+              "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+              "emitter": "bone_ad_03",
+              "bullets": 100,
+              "external": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_ad_03",
+                "gun": "bone_ad_03"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "triggerGroup": "flares",
+              "weaponType": "ircm",
+              "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+              "emitter": "bone_ad_04",
+              "bullets": 100,
+              "external": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_ad_04",
+                "gun": "bone_ad_04"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "triggerGroup": "flares",
+              "weaponType": "ircm",
+              "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+              "emitter": "bone_ad_05",
+              "bullets": 100,
+              "external": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_ad_05",
+                "gun": "bone_ad_05"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "triggerGroup": "flares",
+              "weaponType": "ircm",
+              "blk": "gameData/weapons/torpedoes/acoustic_decoy_sub.blk",
+              "emitter": "bone_ad_06",
+              "bullets": 100,
+              "external": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_ad_06",
+                "gun": "bone_ad_06"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
                   0.0
                 ]
               }

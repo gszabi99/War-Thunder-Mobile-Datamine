@@ -117,7 +117,7 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
       hotkeys = s2?.hotkeys ?? s1?.hotkeys
       stateFlags = s2?.stateFlags ?? s1?.stateFlags
       tooltipCtor = s1?.tooltipCtor ?? s2?.tooltipCtor
-      hasPattern = s2?.hasPattern ?? s1?.hasPattern ?? false
+      hasPattern = s2?.hasPattern ?? s1?.hasPattern
       hasGlare = s2?.hasGlare ?? s1?.hasGlare ?? false
       repayTime = s1?.repayTime ?? s2?.repayTime ?? REPAY_TIME
       useFlexText = s2?.useFlexText ?? s1?.useFlexText ?? false
@@ -227,9 +227,9 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
 
   let contentW = calc_comp_size(contentExt)[0]
   if ((type(ovrSize?[0]) != "integer" && type(ovrSize?[0]) != "float" && ovr?.minWidth != null && contentW > ovr.minWidth))
-    ovrExt = ovr.__merge({ minWidth = contentW })
+    ovrExt = ovrExt.__merge({ minWidth = contentW })
 
-  let key = ovr?.key ?? {}
+  let key = ovrExt?.key ?? {}
   return @() {
     watch = stateFlags
     key

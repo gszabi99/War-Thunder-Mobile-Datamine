@@ -101,9 +101,6 @@ registerHintCreator(HINT_TYPE, function(data, _) {
         halign = ALIGN_CENTER
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
-        fontFxColor = Color(0, 0, 0, 50)
-        fontFxFactor = min(64, hdpx(64))
-        fontFx = FFT_GLOW
         text = loc(locId ?? noKeyLocId, {
           time = $"{timeSeconds}{loc("debriefing/timeSec")}",
           player = player == null ? "???" : getColoredName(player)

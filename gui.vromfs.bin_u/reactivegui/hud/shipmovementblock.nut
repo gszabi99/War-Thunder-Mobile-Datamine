@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
+let { setVirtualAxisValue } = require("controls")
 let { SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { lerpClamped, round } = require("%sqstd/math.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
-let { setShortcutOn, setShortcutOff, setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
+let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { speedValue, speedUnits, averageSpeed, machineSpeedLoc, isStoppedSpeedStep, machineSpeedDirection
 } = require("%rGui/hud/shipStateView.nut")
 let { getHeroShipMaxSpeedBySteps } = require("hudState")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
+let { playerUnitName, isUnitDelayed, isPlayingReplay } = require("%rGui/hudState.nut")
 let { speed, hasDebuffEngines, hasDebuffMoveControl, currentMaxThrottle } = require("%rGui/hud/shipState.nut")
 let { playSound } = require("sound_wt")
 let { btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
@@ -68,7 +69,7 @@ let mkSteerParams = @(id, disableId, scale) {
   shortcutId = id
   outlineColor
   function onTouchBegin() {
-    if (!isControlsBlocked.get()) {
+    if (!isControlsBlocked.get() && !isPlayingReplay.get()) {
       setShortcutOn(id)
       playSound("steer")
     }
@@ -85,7 +86,7 @@ function calcBackSpeedPart() {
 }
 let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
-    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
+    if (isControlsBlocked.get() || isPlayingReplay.get() || (isGamepad.get() && isPieMenuActive.get()))
       return
     setShortcutOn(id)
     playHapticPattern(HAPT_BACKWARD)
@@ -129,7 +130,7 @@ function calcForwSpeedPart2() {
 let fwdDirections = { forward = true, forward2 = true }
 let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
-    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
+    if (isControlsBlocked.get() || isPlayingReplay.get() || (isGamepad.get() && isPieMenuActive.get()))
       return
     setShortcutOn(id)
     playHapticPattern(HAPT_FORWARD)

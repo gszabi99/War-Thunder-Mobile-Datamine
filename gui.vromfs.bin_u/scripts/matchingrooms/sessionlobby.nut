@@ -381,8 +381,7 @@ SessionLobby = {
       return
 
     
-    SessionLobbyState.settings.clear()
-    SessionLobbyState.__merge(v_settings)
+    SessionLobbyState.settings.replace_with(v_settings)
     
     SessionLobbyState.settings.connect_on_join <- true
 

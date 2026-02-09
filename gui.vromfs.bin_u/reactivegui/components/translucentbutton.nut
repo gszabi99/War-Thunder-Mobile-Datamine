@@ -88,10 +88,7 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
         valign = ALIGN_CENTER
         color = stateFlags.get() & S_HOVER ? hoverColor : textColor
         text
-        fontFx = FFT_GLOW
-        fontFxFactor = 64
-        fontFxColor = Color(0, 0, 0)
-      }.__update(fontSmallAccented)
+      }.__update(fontSmallAccentedShaded)
     ]
   }
 }

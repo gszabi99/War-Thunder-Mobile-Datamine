@@ -9,10 +9,7 @@ let iText = {
   hplace = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   text = "i"
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
-}
+}.__update(fontSmallAccentedShaded)
 
 let defSize = [evenPx(70), evenPx(70)]
 let defSizeSmall = [evenPx(50), evenPx(50)]

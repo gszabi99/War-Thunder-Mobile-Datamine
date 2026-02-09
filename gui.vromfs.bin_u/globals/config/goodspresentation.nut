@@ -19,6 +19,14 @@ let icons = {
 let iconGoodsAsOffer = {
   seasonal_event_offer_yellow_submarine = "ui/unitskin#uk_sub_swiftsure_yellow.avif"
   seasonal_event_offer_yellow_submarine_skin_only = "ui/unitskin#uk_sub_swiftsure_yellow.avif"
+
+  seasonal_event_new_year_2026_ussr_t_90a_nc_with_skin = "ui/unitskin#ussr_t_90a_event.avif"
+  seasonal_event_new_year_2026_us_m1_abrams_nc_with_skin = "ui/unitskin#us_m1_abrams_event.avif"
+  seasonal_event_new_year_2026_germ_leopard_2a4_nc_with_skin = "ui/unitskin#germ_leopard_2a4_event.avif"
+  seasonal_event_new_year_2026_uk_challenger_1_mk_3_gulf_nc_with_skin = "ui/unitskin#uk_challenger_1_mk_3_gulf_event.avif"
+  seasonal_event_new_year_2026_cn_ztz_99_w_nc_with_skin = "ui/unitskin#cn_ztz_99_w_event.avif"
+  seasonal_event_new_year_2026_il_merkava_mk_2d_nc_with_skin = "ui/unitskin#il_merkava_mk_2d_event.avif"
+  seasonal_event_new_year_2026_jp_type_90_nc_with_skin = "ui/unitskin#jp_type_90_event.avif"
 }
 
 let defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"

@@ -1,17 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { eventbus_subscribe } = require("eventbus")
 let { get_local_mplayer } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { playSound } = require("sound_wt")
+let { register_command } = require("console")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { isGtFFA } = require("%rGui/missionState.nut")
 let { localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
+let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
-let { mkImageWithCount, myPlace, isPlaceVisible, icons, viewMuls } = require("%rGui/hud/myScores.nut")
+let { mkImageWithCount, myPlace, isPlaceVisible, icons } = require("%rGui/hud/myScores.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
 let { resultsHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -43,35 +45,51 @@ let gap = hdpx(10)
 let scoresGap = hdpx(100)
 let scoresTextWidth = (saSize[0] - scoresGap) / 2
 let scoresContentWidth = scoresTextWidth
+let streakSize = hdpx(70)
+
 let missionResult = Watched(null)
 let needShowResultScreen = Computed(@() missionResult.get() == GO_WIN || missionResult.get() == GO_FAIL)
-let streakSize = hdpx(70)
+
+isInBattle.subscribe(@(v) v ? missionResult.set(null) : null)
+isInDebriefing.subscribe(@(v) v ? missionResult.set(null) : null)
+needShowResultScreen.subscribe(@(v) !v ? resultsHintLogState.clearEvents() : null)
+
 
 let scoresByCampaign = {
   ships = [
     {
-      name = "damage"
+      getFromStats = getScoreFull
+      locId = "debriefing/totalscore"
+      iconId = "score"
+    }
+    {
+      getFromStats = @(p) p?.damage ?? 0
       locId = "debriefing/damageDealt"
+      iconId = "damage"
     }
   ]
   tanks = [
     {
-      name = "score"
+      getFromStats = getScoreFull
       locId = "debriefing/totalscore"
+      iconId = "score"
     }
     {
-      name = "groundKills"
+      getFromPlayer = @(p) p?.groundKills ?? 0
       locId = "debriefing/GroundKills"
+      iconId = "groundKills"
     }
   ]
   air = [
     {
-      name = "score"
+      getFromStats = getScoreFull
       locId = "debriefing/totalscore"
+      iconId = "score"
     }
     {
-      name = "kills"
+      getFromPlayer = @(p) p?.kills ?? 0
       locId = "debriefing/AirKills"
+      iconId = "kills"
     }
   ]
 }
@@ -210,11 +228,12 @@ function battleResultsShort() {
 
   let children = !isPlaceVisible.get() ? []
                  : [ mkUserScores(mkPlaceIcon(myPlace.get()), "debriefing/placeInMyTeam") ]
-                   .extend((scoresByCampaign?[battleCampaign.get()] ?? [])
+                   .extend((scoresByCampaign?[getCampaignPresentation(battleCampaign.get()).campaign] ?? [])
                      .map(function(v) {
-                       let mul = viewMuls?[v.name] ?? 1.0
-                       let score = localPlayerDamageStats.get()?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
-                       return mkUserScores(mkImageWithCount(mul * score, icons?[v.name] ?? icons.score), v.locId)
+                       let score = v?.getFromStats(localPlayerDamageStats.get())
+                         ?? v?.getFromPlayer(get_local_mplayer())
+                         ?? 0
+                       return mkUserScores(mkImageWithCount(score, icons?[v.iconId] ?? icons.score), v.locId)
                      }))
   children.append(achievementsBlock)
 
@@ -241,17 +260,26 @@ function battleResultsShort() {
   return res
 }
 
-eventbus_subscribe("MissionResult", function(data) {
-  let { resultNum } = data
-  if (resultNum != GO_WIN && resultNum != GO_FAIL)
-    return
+function openResult(resultNum) {
   let soundName = resultNum == GO_WIN || isGtFFA.get() ? "message_win" : "message_loose"
   playSound(soundName)
   missionResult.set(resultNum)
+}
+
+eventbus_subscribe("MissionResult", function(data) {
+  let { resultNum } = data
+  if (resultNum == GO_WIN || resultNum == GO_FAIL)
+    openResult(resultNum)
 })
 
-isInBattle.subscribe(@(v) v ? missionResult.set(null) : null)
-isInDebriefing.subscribe(@(v) v ? missionResult.set(null) : null)
-needShowResultScreen.subscribe(@(v) !v ? resultsHintLogState.clearEvents() : null)
+function toggleResult(resultNum) {
+  if (missionResult.get() == resultNum)
+    missionResult.set(null)
+  else
+    openResult(resultNum)
+}
+
+register_command(@() toggleResult(GO_WIN), "hud.showShortBattleResultWin")
+register_command(@() toggleResult(GO_FAIL), "hud.showShortBattleResultFail")
 
 return battleResultsShort

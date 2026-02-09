@@ -2,11 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send } = require("eventbus")
 let { DBGLEVEL } = require("dagor.system")
+let { hasGamepadConnected } = require("%rGui/controlsMenu/gamepadVendor.nut")
 let { OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
-  OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue
+  OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue, OPT_GAMEPAD_VIBRATION
 } = require("%rGui/options/guiOptions.nut")
 let { set_camera_sens, set_camera_rotation_assist } = require("controlsOptions")
-let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION } = require("hapticVibration")
+let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION, useGamepadHaptic } = require("hapticVibration")
 let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
@@ -81,6 +82,19 @@ let cameraRotationAssist = {
   description = loc("options/desc/camera_rotation_assist")
 }
 
+let gamepadVibrationValue = mkOptionValue(OPT_GAMEPAD_VIBRATION, true)
+gamepadVibrationValue.subscribe(useGamepadHaptic)
+useGamepadHaptic(gamepadVibrationValue.get())
+
+let gamepadHaptic = {
+  locId = "options/vibration_on_gamepad"
+  ctrlType = OCT_LIST
+  value = gamepadVibrationValue
+  list = [false, true]
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  visible = hasGamepadConnected
+}
+
 return {
   cameraSenseSlider
   controlsOptions = [
@@ -96,6 +110,7 @@ return {
         onClick = openVoiceMsgPieEditor
       }
     ]
+    gamepadHaptic
     hapticIntensitySlider("options/vibration", OPT_HAPTIC_INTENSITY)
     hapticIntensitySlider("options/vibration_on_shoot", OPT_HAPTIC_INTENSITY_ON_SHOOT, ON_SHOOT)
     hapticIntensitySlider("options/vibration_on_hero_get_shot", OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT, ON_HERO_GET_SHOT)

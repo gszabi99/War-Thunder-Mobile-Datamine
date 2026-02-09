@@ -8,7 +8,7 @@ let panelBg = require("%rGui/components/panelBg.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
   avgShellPenetrationMmByRank, addedFromSlot } = require("%rGui/unit/unitStats.nut")
-let { attrPresets, hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
+let { attrPresets, hasSlotAttrPreset, slotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("%rGui/unit/components/unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgByCampaignOrdered } = require("%appGlobals/itemsState.nut")
@@ -72,13 +72,10 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
       ? unitNameCtor(unit)
       : "  ".concat(unitNameCtor(unit), getUnitClassFontIcon(unit))
     color = isElite ? premiumTextColor : textColor
-    fontFx = FFT_GLOW
-    fontFxFactor = 64
-    fontFxColor = 0xFF000000
     behavior = Behaviors.Marquee
     speed = hdpx(30)
     delay = defMarqueeDelay
-  }.__update(fontSmallAccented, textOverride)
+  }.__update(fontSmallAccentedShaded, textOverride)
   return !isElite ? title.__update(override)
     : {
         valign = ALIGN_CENTER
@@ -394,10 +391,7 @@ let unitClassBlock = @(unit) {
           rendObj = ROBJ_TEXT
           text = getUnitClassFontIcon(unit)
           color = textColor
-          fontFx = FFT_GLOW
-          fontFxFactor = 64
-          fontFxColor = 0xFF000000
-        }.__update(fontSmallAccented)
+        }.__update(fontSmallAccentedShaded)
       ]
     }
   ]
@@ -485,13 +479,21 @@ let unitHeaderBlock = @(unit, unitTitleCtor) @(){
 
 local lastUnitStats = null
 
-let getAttrLevels = @(unit) campConfigs.get()?.campaignCfg?.slotAttrPreset != ""
-    ? curCampaignSlots.get()?.slots.findvalue(@(slot) slot.name == unit?.name)?.attrLevels ?? {}
-    : unit?.attrLevels ?? {}
+let mkAttrLevels = @(unit) Computed(@() hasSlotAttrPreset.get()
+    ? curCampaignSlots.get()?.slots.findvalue(@(slot) slot.name == unit.get()?.name)?.attrLevels ?? {}
+  : !unit.get()?.isPremium && !unit.get()?.isUpgraded
+    ? unit.get()?.attrLevels ?? {}
+  : (attrPresets.get()?[unit.get()?.attrPreset] ?? {}).reduce(function(res, v) {
+      res[v.id] <- v.attrList.reduce(function(acc, a) {
+        acc[a.id] <- a.levelCost.len()
+        return acc
+      }, {})
+      return res
+    }, {}))
 
-let getAttrPreset = @(unit) hasSlotAttrPreset.get()
-  ? attrPresets.get()?[campConfigs.get()?.campaignCfg?.slotAttrPreset]
-  : attrPresets.get()?[unit?.attrPreset]
+let mkAttrPreset = @(unit) Computed(@() hasSlotAttrPreset.get()
+  ? attrPresets.get()?[slotAttrPreset.get()]
+  : attrPresets.get()?[unit.get()?.attrPreset])
 
 let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
 let notNumericToZero = @(v) isNumeric(v) ? v : 0
@@ -503,14 +505,15 @@ function calcPadding(c) {
     : 0
 }
 
-let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, bg = panelBg)
-  function() {
+function unitInfoPanel(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, bg = panelBg) {
+  let attrPreset = mkAttrPreset(unit)
+  let attrLevels = mkAttrLevels(unit)
+  return function() {
     if (unit.get() == null)
       return { watch = unit }
 
     let prevStats = lastUnitStats
-    let unitStats = mkUnitStatsCompShort(unit.get(), getAttrLevels(unit.get()),
-      getAttrPreset(unit.get()), unit.get()?.mods)
+    let unitStats = mkUnitStatsCompShort(unit.get(), attrLevels.get(), attrPreset.get())
     lastUnitStats = unitStats
 
     let children = {
@@ -537,7 +540,7 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
 
     let res = bg.__merge(
       {
-        watch = [unit, attrPresets]
+        watch = [unit, attrLevels, attrPreset]
         children = children
       },
       ovr)
@@ -561,41 +564,45 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
 
     return res
   }
+}
 
-let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
-  if (unit.get() == null)
-    return { watch = unit }
+function unitInfoPanelFull(unit = hangarUnit, ovr = {}) {
+  let attrPreset = mkAttrPreset(unit)
+  let attrLevels = mkAttrLevels(unit)
+  return function() {
+    if (unit.get() == null)
+      return { watch = unit }
 
-  let prevStats = lastUnitStats
-  let unitStats = mkUnitStatsCompFull(unit.get(), getAttrLevels(unit.get()),
-    getAttrPreset(unit.get()), unit.get()?.mods)
-  lastUnitStats = unitStats
+    let prevStats = lastUnitStats
+    let unitStats = mkUnitStatsCompFull(unit.get(), attrLevels.get(), attrPreset.get())
+    lastUnitStats = unitStats
 
-  return {
-    watch = [ unit, itemsCfgByCampaignOrdered, attrPresets ]
-    size = FLEX_V
-    children = unit.get() == null ? null
-      : makeVertScroll(
-          {
-            flow = FLOW_VERTICAL
-            children = [
-              unitClassBlock(unit.get())
-              unitMRankBlock(unit.get())
-              unitRewardsBlock(unit.get(), loc("attrib_section/battleRewards"))
-              unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
-                ? null
-                : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
-                  { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
-              unit.get()?.isUpgraded || unit.get()?.isPremium
-                ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
-                : null
-              unitStatsBlock(unitStats, prevStats)
-              unitArmorBlock(unit.get(), false)
-              unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
-            ]
-          },
-          { size = FLEX_V, isBarOutside = true })
-  }.__update(ovr)
+    return {
+      watch = [ unit, itemsCfgByCampaignOrdered, attrPreset, attrLevels ]
+      size = FLEX_V
+      children = unit.get() == null ? null
+        : makeVertScroll(
+            {
+              flow = FLOW_VERTICAL
+              children = [
+                unitClassBlock(unit.get())
+                unitMRankBlock(unit.get())
+                unitRewardsBlock(unit.get(), loc("attrib_section/battleRewards"))
+                unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
+                  ? null
+                  : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
+                    { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
+                unit.get()?.isUpgraded || unit.get()?.isPremium
+                  ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
+                  : null
+                unitStatsBlock(unitStats, prevStats)
+                unitArmorBlock(unit.get(), false)
+                unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
+              ]
+            },
+            { size = FLEX_V, isBarOutside = true })
+    }.__update(ovr)
+  }
 }
 
 return {

@@ -2,13 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { setVirtualAxesAim, setVirtualAxesDirectControl } = require("%globalScripts/controls/shortcutActions.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { OPT_AIRCRAFT_FIXED_AIM_CURSOR, OPT_CAMERA_SENSE_IN_ZOOM_PLANE, OPT_CAMERA_SENSE_PLANE,
   OPT_CAMERA_SENSE, OPT_CAMERA_SENSE_IN_ZOOM, OPT_FREE_CAMERA_PLANE, OPT_CAMERA_VISC_PLANE,
   OPT_CAMERA_VISC_IN_ZOOM_PLANE, OPT_CAMERA_VISC_PLANE_STICK, OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
   OPT_AIRCRAFT_INVERTED_Y, OPT_AIRCRAFT_MOVEMENT_CONTROL, OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
-  OPT_AIRCRAFT_THROTTLE_STICK, OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS, OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
+  OPT_AIRCRAFT_THROTTLE_STICK, OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
   OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE,
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE,
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY, OPT_TARGET_SELECTION_TYPE,
@@ -22,7 +21,7 @@ let { set_aircraft_continuous_turn_mode, set_aircraft_control_by_gyro, set_aircr
 } = require("controlsOptions")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { crosshairOptions } = require("%rGui/options/options/crosshairOptions.nut")
-let { isGtRace } = require("%rGui/missionState.nut")
+let { isGtRace, isTutorial } = require("%rGui/missionState.nut")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -87,6 +86,9 @@ eventbus_subscribe("resetGuiOptionOverrides", @(_) overridedOptions.set({}))
 
 let currentAircraftCtrlType = Computed( @() overridedOptions.get()?[OPT_AIRCRAFT_MOVEMENT_CONTROL] ?? optAircraftCtrlType.get())
 
+let isMouseAim = Computed( @() currentAircraftCtrlType.get() == "mouse_aim")
+let isStick = Computed( @() currentAircraftCtrlType.get() != "mouse_aim")
+
 let aircraftControlType = {
   locId = "options/aircraft_movement_control"
   ctrlType = OCT_LIST
@@ -133,22 +135,10 @@ let controlThrottleStick = {
   list = throttleStickList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/throttle_stick")
+  visible = isStick
 }
 
-let isOptAvailableControlByGyroModeAileronsAssist = Computed(@() setVirtualAxesAim == null && currentAircraftCtrlType.get() == "mouse_aim")
-let currentControlByGyroModeAileronsAssistList = [false, true]
-let currentControlByGyroModeAileronsAssist = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS, false,
-  @(v) validate(v, currentAdditionalFlyControlsList))
-let controlByGyroModeAileronsAssist = {
-  locId = "options/control_by_gyro_ailerons_assist"
-  ctrlType = OCT_LIST
-  value = currentControlByGyroModeAileronsAssist
-  onChangeValue = @(v) sendChange("control_by_gyro_ailerons_assist", v)
-  list = Computed(@() isOptAvailableControlByGyroModeAileronsAssist.get() ? currentControlByGyroModeAileronsAssistList : [])
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
-}
-
-let isOptAvailableControlByGyroAimMode = Computed(@() setVirtualAxesAim != null && currentAircraftCtrlType.get() == "mouse_aim")
+let isOptAvailableControlByGyroAimMode = Computed(@() currentAircraftCtrlType.get() == "mouse_aim")
 let currentControlByGyroAimModeList = ["off", "aim", "aileron_assist"]
 let currentControlByGyroAimMode = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE, null,
   @(v) currentControlByGyroAimModeList.contains(v) ? v : currentControlByGyroAimModeList[0])
@@ -161,7 +151,7 @@ let controlByGyroAimMode = {
   valToString = airCtrlTypeToString
 }
 
-let isOptAvailableControlByGyroDirectControl = Computed(@() setVirtualAxesDirectControl != null && currentAircraftCtrlType.get() != "mouse_aim")
+let isOptAvailableControlByGyroDirectControl = Computed(@() currentAircraftCtrlType.get() != "mouse_aim")
 let currentControlByGyroDirectControlList = [false, true]
 let currentControlByGyroDirectControl = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL, false,
   @(v) validate(v, currentAdditionalFlyControlsList))
@@ -174,8 +164,8 @@ let controlByGyroDirectControl = {
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
-let isAircraftControlByGyro = Computed(@() (isOptAvailableControlByGyroModeAileronsAssist.get() && currentControlByGyroModeAileronsAssist.get())
-  || (isOptAvailableControlByGyroAimMode.get() && currentControlByGyroAimMode.get() != "off")
+let isAircraftControlByGyro = Computed(@()
+  (isOptAvailableControlByGyroAimMode.get() && currentControlByGyroAimMode.get() != "off")
   || (isOptAvailableControlByGyroDirectControl.get() && currentControlByGyroDirectControl.get()))
 let updateAircraftControlByGyro = @() set_aircraft_control_by_gyro(isAircraftControlByGyro.get())
 isAircraftControlByGyro.subscribe(@(_) updateAircraftControlByGyro())
@@ -272,22 +262,23 @@ let CAM_VISC_LIMITS = {
 }
 
 currentAircraftCtrlType.subscribe( function(v) {
-  let isMouseAim = v == "mouse_aim"
-  set_mouse_aim(isMouseAim)
-  let optId = isMouseAim ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
+  let isMouseAimV = v == isMouseAim.get()
+  set_mouse_aim(isMouseAimV)
+  let optId = isMouseAimV ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
   let limits = CAM_VISC_LIMITS[optId]
   let optValue = optionValues?[optId]
   if (optValue != null)
     set_camera_viscosity(max(limits[1] - optValue.get(), limits[0]))
 
-  let optZoomId = isMouseAim ? OPT_CAMERA_VISC_IN_ZOOM_PLANE : OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK
+  let optZoomId = isMouseAimV ? OPT_CAMERA_VISC_IN_ZOOM_PLANE : OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK
   let limitsZoom = CAM_VISC_LIMITS[optZoomId]
   let optValueZoom = optionValues?[optZoomId]
   if (optValueZoom != null)
     set_camera_viscosity_in_zoom(max(limitsZoom[1] - optValueZoom.get(), limitsZoom[0]))
 })
 
-let targetSelectionList = Computed(@() isGtRace.get() && isInBattle.get() ? ["manual_selection"]
+let targetSelectionList = Computed(@() isTutorial.get() && isInBattle.get() ? ["auto_selection"]
+  : isGtRace.get() && isInBattle.get() ? ["manual_selection"]
   : ["manual_selection", "tap_selection", "auto_selection"])
 let currentTargetSelectionRaw = mkOptionValue(OPT_TARGET_SELECTION_TYPE)
 let currentTargetSelection = Computed(@()
@@ -337,12 +328,10 @@ let currentQuitZoomSelectionType = {
   description = loc("options/desc/quit_zoom_after_kill")
 }
 
-let isMouseAim = Computed( @() currentAircraftCtrlType.get() == "mouse_aim")
-let isStick = Computed( @() currentAircraftCtrlType.get() != "mouse_aim")
-
 return {
   airControlsOptions = [
     aircraftControlType
+    controlThrottleStick
     currentFixedAimCursorType
     currentinvertedYOptionType
     currentAdditionalFlyControlsType
@@ -370,8 +359,6 @@ return {
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][1])
     cameraSenseSlider(CAM_TYPE_FREE_PLANE, "options/free_camera_sensitivity_plane", OPT_FREE_CAMERA_PLANE, 0.5, 0.125, 3.875, 0.01875)
     currentContinuousTurnModeType
-    controlThrottleStick
-    controlByGyroModeAileronsAssist
     controlByGyroAimMode
     controlByGyroDirectControl
     controlByGyroModeAileronsDeadZoneSlider
@@ -385,7 +372,6 @@ return {
   ].extend(crosshairOptions)
   currentAircraftCtrlType,
   currentThrottleStick,
-  currentControlByGyroModeAileronsAssist
   currentControlByGyroAimMode,
   currentControlByGyroDirectControl,
   isAircraftControlByGyro,

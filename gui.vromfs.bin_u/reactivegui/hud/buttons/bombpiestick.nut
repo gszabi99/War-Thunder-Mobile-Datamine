@@ -254,7 +254,7 @@ function stickControl(scale) {
           stateFlags.set(0)
           onStateRelease()
         }
-        hotkeys = [allShortcutsUp[oneBombShortcutId]]
+        hotkeys = (oneBombShortcutId in allShortcutsUp) ? [allShortcutsUp[oneBombShortcutId]] : null
 
         children = [
           !(bombStickState.get() & BOMB_STICK_ACTIVE) || !hasAmmo.get() ? null : {

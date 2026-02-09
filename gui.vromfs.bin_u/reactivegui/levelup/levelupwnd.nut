@@ -114,10 +114,7 @@ let levelUpRequirePkgDownload = @(missingLvlUpUnits) {
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
       text = loc("download/unitResources")
-      fontFxColor = Color(0, 0, 0, 255)
-      fontFxFactor = 50
-      fontFx = FFT_GLOW
-    }.__update(fontSmall)
+    }.__update(fontSmallShaded)
     textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")),
       @() openDownloadAddonsWnd([], missingLvlUpUnits, "level_up_wnd",
         { paramInt1 = buyUnitsData.get().canBuyOnLvlUp.findvalue(@(_) true)?.mRank ?? 0 }))

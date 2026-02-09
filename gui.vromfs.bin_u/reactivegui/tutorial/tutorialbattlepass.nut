@@ -13,8 +13,8 @@ let { battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
-let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection,
-  progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId } = require("%rGui/quests/questsState.nut")
+let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection, getStarsTotalNonUpdatable,
+  progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
@@ -78,7 +78,7 @@ shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function receiveReward(item, currencyReward) {
   receiveUnlockRewards(item.name, 1, { stage = 1 })
-  sendBqQuestsTask(item, currencyReward?.count ?? 0, currencyReward?.id)
+  sendBqQuestsTask(item, getStarsTotalNonUpdatable(item), currencyReward?.count ?? 0, currencyReward?.id)
 }
 
 let mkReceiveRewardStepObjectNonUpdatable = @() (questsBySection.get()?[sectionId.get()] ?? {})
@@ -172,7 +172,8 @@ function startTutorial() {
             keys = $"quest_bar_stage_{stageIdx}"
             function onClick() {
               receiveUnlockRewards(name, stage, { stage, finalStage = stage })
-              sendBqQuestsStage(progressUnlock.__merge({ tabId, sectionId = sectionId.get() }), count, id)
+              let unlock = progressUnlock.__merge({ tabId, sectionId = sectionId.get() })
+              sendBqQuestsStage(unlock, getStarsTotalNonUpdatable(unlock), count, id)
             }
             needArrow = true
           })

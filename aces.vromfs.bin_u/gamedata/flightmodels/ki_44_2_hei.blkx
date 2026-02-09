@@ -2041,5 +2041,18 @@
       1.15246,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ki_44_2_hei_a*",
+        "to": "ki_44_2_hei_red_a*"
+      },
+      {
+        "from": "ki_44_2_hei_n*",
+        "to": "ki_44_2_hei_red_n*"
+      }
+    ]
   }
 }

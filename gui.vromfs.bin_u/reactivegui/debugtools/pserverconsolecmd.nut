@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
 let { object_to_json_string } = require("json")
+let { saveJson } = require("%sqstd/json.nut")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, set_purch_player_type,
-  check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
+  check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer, add_subscription_time,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler, add_decal_by_name,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator, add_all_decals, remove_decal_by_name,
   apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances, remove_all_decals,
@@ -15,12 +16,12 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, add_currency_no_popup_by_full_id,
-  get_campaign_copy_exceptions, get_profile
+  get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report, get_purchases_list
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
@@ -76,6 +77,47 @@ registerHandler("onDebugCheckPurchases",
 
     openMsgBox({
       uid = "debug_check_purchases"
+      text = makeSideScroll(msgBoxText(text, infoTextOvr))
+      wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
+      buttons = [
+        { text = "COPY", cb = @() set_clipboard_text(text) }   
+        { id = "ok", styleId = "PRIMARY", isDefault = true }   
+      ]
+    })
+  })
+
+registerHandler("onDebugPurchasesList",
+  function(res) {
+    let { purchases = {}, purchaseApplyErrors = {}, totalPurchases = 0 } = res
+    let textArr = []
+    if (res?.error != null)
+      textArr.append("FAILED")
+    else {
+      textArr.append($"Total purchases: {totalPurchases}")
+
+      if (purchases.len() > 0)
+        textArr.append("\n".join(
+          purchases
+            .map(@(v, k) { k, v })
+            .values()
+            .sort(@(a, b) !a.v <=> !b.v
+              || a.k <=> b.k)
+            .map(@(r) $"  {r.k} = {r.v}")
+            .insert(0, "Purchases:")))
+
+      if (purchaseApplyErrors.len() > 0)
+        textArr.append("\n".join(
+          purchaseApplyErrors
+            .map(@(v, k) { k, v })
+            .values()
+            .sort(@(a, b) a.k <=> b.k)
+            .map(@(r) $"  {r.k} = {r.v}")
+            .insert(0, "Purchases apply errors:")))
+    }
+
+    let text = "\n\n".join(textArr)
+    openMsgBox({
+      uid = "debug_purchases_list"
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
       wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
       buttons = [
@@ -143,6 +185,8 @@ register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
     : add_premium(seconds, "consolePrintResult"),
   "meta.add_premium")
+register_command(@(seconds) add_subscription_time("premium", seconds, "consolePrintResult"), "meta.add_subs_premium")
+register_command(@(seconds) add_subscription_time("vip", seconds, "consolePrintResult"), "meta.add_subs_vip")
 register_command(@(unitName) add_unit(unitName, "consolePrintResult"), "meta.add_unit")
 register_command(@(unitName) remove_unit(unitName, "consolePrintResult"), "meta.remove_unit")
 register_command(@() add_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.add_hangar_unit")
@@ -220,9 +264,7 @@ register_command(@(minutes) shift_all_offers_time(minutes * 60, "consolePrintRes
 register_command(@() debug_offer_generation_stats(curCampaign.get(), "consolePrint"),
   "meta.debug_offer_generation_stats")
 
-let offerTypes = ["start", "gold", "collection", "sidegrade", "upgrade", "premUnit", "branch",
-  "whale", "blueprint", "blueprintUpgraded"
-]
+let offerTypes = ["start", "gold", "premUnit", "branch", "whale", "blueprint", "blueprintUpgraded"]
 foreach (ot in offerTypes) {
   let offerType = ot
   register_command(@() generate_fixed_type_offer(curCampaign.get(), offerType, "consolePrintResult"),
@@ -233,14 +275,15 @@ register_command(@() validate_active_offer(curCampaign.get()),
 
 foreach (cmd in ["get_all_configs", "reset_profile",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "unlock_all_units_and_upgrade", "unlock_all_unreleased_units",
-  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_all_unit_daily_bonus"
+  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_all_unit_daily_bonus", "debug_reset_unit_rent"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
 }
 
 register_command(@() get_profile({}, "consolePrintResult"), "meta.get_profile")
-register_command(@() check_purchases_debug("onDebugCheckPurchases"), $"meta.check_purchases_debug")
+register_command(@() check_purchases_debug("onDebugCheckPurchases"), "meta.check_purchases_debug")
+register_command(@() get_purchases_list("onDebugPurchasesList"), "meta.get_purchases_list")
 
 register_command(function() {
   reset_profile_with_stats("consolePrintResult")
@@ -270,8 +313,10 @@ register_command(function(id) {
 
 register_command(@(unitname) set_research_unit("air", unitname), "meta.set_research_unit")
 
+register_command(@() shift_all_personal_goods_time(3600, "consolePrintResult"), "meta.shift_personal_goods_1_hour")
 register_command(@() shift_all_personal_goods_time(24 * 3600, "consolePrintResult"), "meta.shift_personal_goods_1_day")
 register_command(@() shift_all_personal_goods_time(7 * 24 * 3600, "consolePrintResult"), "meta.shift_personal_goods_7_days")
+register_command(@() shift_all_personal_goods_time(30 * 24 * 3600, "consolePrintResult"), "meta.shift_personal_goods_30_days")
 register_command(@(goodsId) halt_personal_goods_purchase(goodsId, "consolePrintResult"), "meta.halt_personal_goods_purchase")
 
 register_command(@(id) authorize_deeplink_reward(id, "consolePrintError"), "meta.authorize_deeplink_reward")
@@ -281,8 +326,10 @@ let counters = ["offer_skip", "daily_prem_gold"]
 counters.each(@(id)
   register_command(@() reset_daily_counter(id, "consolePrintError"), $"meta.reset_daily_counter.{id}"))
 
-register_command(@() debug_apply_deserter_lock_time(1, curCampaign.get(), serverTime.get()),
+register_command(@() debug_apply_deserter_lock_time(1, curCampaign.get(), serverTime.get(), battleUnitsMaxMRank.get()),
   "meta.debug_apply_deserter_lock_time")
+register_command(@() debug_apply_unit_rent(1, curCampaign.get(), serverTime.get()),
+  "meta.debug_apply_unit_rent")
 
 register_command(
   function() {
@@ -293,3 +340,17 @@ register_command(
   "meta.copy_hangar_unit_name_to_clipboard")
 
 register_command(@() get_campaign_copy_exceptions("onGetCopyExceptions"), "meta.get_campaign_copy_exceptions")
+
+register_command(@() get_gdpr_report("onGetGDPR"), "meta.get_gdpr_report")
+
+registerHandler("onGetGDPR",
+  function(res) {
+    if (res?.error != null) {
+      console_print(console_print(res)) 
+      return
+    }
+
+    let data = clone res
+    data.$rawdelete("isCustom")
+    saveJson("wtmGDPR.json", data, { logger = console_print })
+  })

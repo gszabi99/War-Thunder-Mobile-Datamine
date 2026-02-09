@@ -68,6 +68,58 @@
       0.95
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -2182,7 +2234,7 @@
       "trackMass": 2500.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.6
+        0.3
       ]
     },
     "tracks": {
@@ -2192,6 +2244,12 @@
       "fricFrontal": [
         1.1,
         0.9
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2206,12 +2264,12 @@
       "model": "10zg32wt"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 0.909,
       "sideGearRatio": 4.2,
       "neutralGearRatio": 9.0,
+      "alternativeGearControl": 3.0,
       "manufacturer": "mitsubishi",
       "model": "mt1500",
       "type": "auto",
@@ -3325,6 +3383,11 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "upgraded_skin": {
@@ -3385,6 +3448,27 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.209233,
       "decal0Tex": "jp_72nd_tank_reg"
+    }
+  },
+  "vehicleSkins": {
+    "winter": {
+      "set_tex": [
+        {
+          "from": "type_90_body_c*",
+          "to": "type_90_skin_ny_26_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "type_90_gun_c*",
+          "to": "type_90_skin_ny_26_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "type_90_turret_c*",
+          "to": "type_90_skin_ny_26_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "battleHideNodes": {

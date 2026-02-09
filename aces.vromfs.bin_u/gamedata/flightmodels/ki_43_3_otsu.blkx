@@ -2088,5 +2088,18 @@
       1.28128,
       -5.23867e-9
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "ki_43_3_otsu_c*",
+        "to": "ki_43_3_otsu_gray_c*"
+      },
+      {
+        "from": "ki_43_3_otsu_n*",
+        "to": "ki_43_3_otsu_gray_n*"
+      }
+    ]
   }
 }

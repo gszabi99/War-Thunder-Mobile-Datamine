@@ -69,7 +69,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "dm_for_shop": {
     "armorThicknessFront": [
       0.65,
@@ -80,6 +80,58 @@
       0.2,
       0.0,
       0.8
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2634,7 +2686,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 2500.0
@@ -2647,6 +2699,12 @@
         5.0,
         0.0,
         0.6,
+        0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
         0.3
       ]
     },
@@ -2663,11 +2721,11 @@
       "type": "gasturbine"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 170000.0,
       "driveGearRadius": 0.292,
       "mainGearRatio": 0.795,
       "sideGearRatio": 6.25,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
           -6.36,

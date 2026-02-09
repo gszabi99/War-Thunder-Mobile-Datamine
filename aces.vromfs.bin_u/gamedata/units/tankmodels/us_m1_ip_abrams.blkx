@@ -59,7 +59,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "attachables": {
     "superstructure_back_dm": true,
     "turret_08_top_dm": true,
@@ -1524,6 +1524,58 @@
       0.85
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -2928,7 +2980,13 @@
     "tracks": {
       "animationMultiplier": -0.63,
       "height": 0.11,
-      "width": 0.635
+      "width": 0.635,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2943,12 +3001,12 @@
       "type": "gasturbine"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.32,
       "mainGearRatio": 3.87,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 11.0,
+      "alternativeGearControl": 4.0,
       "manufacturer": "allison",
       "model": "x_1100_3b",
       "type": "auto",

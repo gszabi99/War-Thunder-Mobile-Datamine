@@ -15,6 +15,10 @@ let iconsScale = {
   warbond = 1.4
   eventKey = 1.2
   nybond = 1.4
+  valentinebond = 1.4
+  candybond = 1.4
+  lollipopbond = 1.4
+  chocolatebond = 1.4
   lunarbond = 1.4
   aprilbond = 1.4
   anniversarybond = 1.4
@@ -44,6 +48,10 @@ let icons = {
   aprilDoublon = "ui/gameuiskin#warbond_icon_aprildoublon.svg"
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond_2025.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloweenbond_2025.avif"
+  valentinebond = "ui/gameuiskin#warbond_icon_valentinebond_2026.avif"
+  candybond = "ui/gameuiskin#warbond_icon_candybond_2026.avif"
+  lollipopbond = "ui/gameuiskin#warbond_icon_lollipopbond_2026.avif"
+  chocolatebond = "ui/gameuiskin#warbond_icon_chocolatebond_2026.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
   hotmaybond = "ui/gameuiskin#warbond_icon_hotmaybond.avif"
   independencebond = "ui/gameuiskin#warbond_icon_independencebond.avif"
@@ -54,7 +62,7 @@ let icons = {
   tank_medical_kit = "ui/gameuiskin#shop_consumables_tank_medical_kit_gamercard.avif"
   tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher_gamercard.avif"
   spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
-  firework_kit = "ui/gameuiskin#icon_fireworks.avif"
+  firework_kit = "ui/gameuiskin#shop_fireworks_gamercard.avif"
   ircm_kit = "ui/gameuiskin#icon_ircm.avif"
 }
 
@@ -71,6 +79,10 @@ let bigIcons = {
   independencebond = "ui/gameuiskin#independencebond_goods_01.avif"
   anniversarybond = "ui/gameuiskin#anniversarybond_goods_2025_01.avif"
   halloweenbond = "ui/gameuiskin#halloweenbond_goods_2025_01.avif"
+  valentinebond = "ui/gameuiskin#valentinebond_goods_2026_01.avif"
+  candybond = "ui/gameuiskin#candybond_goods_2026_01.avif"
+  lollipopbond = "ui/gameuiskin#lollipopbond_goods_2026_01.avif"
+  chocolatebond = "ui/gameuiskin#chocolatebond_goods_2026_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
@@ -82,22 +94,14 @@ let seasonIcons = {
 
 let currencyIconsColor = {
   playerExp = 0xFFFFB70B
+  researchUnitExp = 0xFFFFB70B
   unitExp = 0xFF7FAEFF
-  slotExp = 0xFF009900
+  slotExp = 0xFF65BC82
 }
 
-let convertsToTrophies  = "events/buyCurrency/desc/convertsToTrophies"
-let convertsToGold      = "events/buyCurrency/desc/convertsToGold"
-
-let currencyEventDescriptions = {
-  default         = convertsToTrophies
-  blackfridaybond = convertsToGold
-  nybond          = convertsToGold
-  aprilMapPiece   = convertsToGold
-  hotmaybond      = convertsToGold
-  independencebond      = convertsToGold
-  anniversarybond      = convertsToGold
-  halloweenbond      = convertsToGold
+let currencyConvertInfo = {
+  [""] = "events/buyCurrency/desc/convertsToTrophies",
+  gold = "events/buyCurrency/desc/convertsToGold",
 }
 
 let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {
@@ -129,7 +133,7 @@ let getCurrencyFallback = @(id) icons?[getBaseCurrency(id)] ?? placeholder
 let getCurrencyBigIcon = @(id) id in bigIcons ? bigIcons[id]
   : getBaseCurrency(id) in bigIcons ? bigIcons[getBaseCurrency(id)]
   : getCurrencyImage(id)
-let getCurrencyDescription = @(id) loc(currencyEventDescriptions?[id] ?? currencyEventDescriptions.default)
+let getCurrencyConvertInfo = @(targetCurrency) loc(currencyConvertInfo?[targetCurrency] ?? currencyConvertInfo?[""])
 
 return {
   getIconSize
@@ -138,7 +142,7 @@ return {
   getCurrencyFallback
   getCurrencyBigIcon
   maxIconsScale
-  getCurrencyDescription
+  getCurrencyConvertInfo
   getBaseCurrency
   getSeasonStr
 }

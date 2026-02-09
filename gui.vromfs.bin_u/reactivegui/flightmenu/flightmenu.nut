@@ -10,7 +10,7 @@ let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
+let { canBailoutFromFlightMenu, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -199,6 +199,7 @@ let flightMenu = @() bgShaded.__merge({
               isUnitAlive.get() && !isUnitDelayed.get()
                   && canBailoutFromFlightMenu.get()
                   && (respawnSlots.get().len() > 1 || canUseSpare.get())
+                  && !isSingleMissionOverrided.get()
                 ? leaveVehicleButton
                 : null
               customButtons

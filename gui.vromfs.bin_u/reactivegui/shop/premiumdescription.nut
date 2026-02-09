@@ -12,7 +12,7 @@ let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let premDescWndUid = "prem_desc_wnd_uid"
 
 let isPremiumDescriptionWndVisible = Watched(false)
-let premiumDescriptionWidth = sw(50)
+let premiumDescriptionWidth = sw(70)
 
 let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
@@ -22,6 +22,8 @@ let infoText = Computed(function() {
   let expMul = bonusMultText(premiumBonusesCfg.get()?.expMul ?? 1.0)
   return loc("charServer/entitlement/PremiumAccount/desc", {
     bonusPlayerExp = expMul
+    slotExpMul = expMul
+    decalsSlots = "+2"
     bonusWp = bonusMultText(premiumBonusesCfg.get()?.wpMul ?? 1.0)
     bonusUnitExp = expMul
     bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul ?? 1.0)

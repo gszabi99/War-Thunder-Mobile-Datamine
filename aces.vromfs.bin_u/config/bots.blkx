@@ -882,12 +882,12 @@
       {
         "name": "uk_destroyer_hunt_4series",
         "weight": 1.0,
-        "country": "germany"
+        "country": "britain"
       },
       {
         "name": "us_destroyer_fletcher",
         "weight": 0.25,
-        "country": "germany"
+        "country": "usa"
       },
       {
         "name": "germ_destroyer_class1934a_1940",
@@ -905,12 +905,12 @@
           {
             "name": "uk_destroyer_hunt_4series",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "us_destroyer_fletcher",
             "weight": 0.5,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "germ_destroyer_class1934a_1940",
@@ -933,27 +933,27 @@
           {
             "name": "us_cruiser_new_orleans_class",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "ussr_cruiser_sverdlov",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "jp_cruiser_furutaka",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "uk_cruiser_kent",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "us_cruiser_cleveland_class_cleveland",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "germ_cruiser_admiral_hipper",
@@ -963,17 +963,17 @@
           {
             "name": "uk_cruiser_southampton",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "ussr_cruiser_kirov",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "jp_cruiser_tone",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           }
         ]
       },
@@ -991,22 +991,22 @@
           {
             "name": "uk_battleship_dreadnought",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "us_battleship_north_dakota",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "ussr_battleship_imperatritsa_mariya",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "jp_battleship_settsu",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "germ_battleship_kaiser",
@@ -1016,22 +1016,22 @@
           {
             "name": "us_battleship_wyoming_class",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "ussr_battleship_parizhskaya_kommuna",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "uk_battleship_warspite",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "jp_battleship_hyuga",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           }
         ]
       },
@@ -1044,22 +1044,22 @@
           {
             "name": "us_battlecruiser_alaska_class",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "ussr_battlecruiser_stalingrad",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "jp_battleship_fuso",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "uk_battleship_king_george_1945",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "germ_battleship_tirpitz_1944",
@@ -1077,7 +1077,7 @@
           {
             "name": "us_battleship_iowa",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "germ_battleship_bismarck",
@@ -1087,7 +1087,7 @@
           {
             "name": "uk_battleship_vanguard",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           }
         ]
       },
@@ -1105,12 +1105,12 @@
           {
             "name": "us_cruiser_rckt_belknap",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "jp_destroyer_rckt_takatsuki",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           }
         ]
       }

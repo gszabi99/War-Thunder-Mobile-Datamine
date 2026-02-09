@@ -6,8 +6,12 @@ let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
   getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, selectRespawnBase
 } = require("guiRespawn")
 let { onSpectatorMode } = require("guiSpectator")
+let { getUnitFileName } = require("vehicleModel")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
   hasRespawnSeparateSlots, curUnitsAvgCostWp, respawnUnitSkins, respawnUnitMods
@@ -27,6 +31,7 @@ let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { seenShells, SEEN_SHELLS } = require("%rGui/unitMods/unseenBullets.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
+let { decalsPenalty } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
 
 let unitListScrollHandler = ScrollHandler()
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.get()?.items[SPARE].count ?? 0)
@@ -51,7 +56,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     canSpawn = is_bit_set(readyMask, id),
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
-    mods = info?.modifications ?? info?.items ?? defMods 
+    mods = info?.modifications ?? defMods
     isCollectible = info?.isCollectible ?? false
     isPremium = info?.isPremium ?? false
     isUpgraded = info?.isUpgraded ?? false
@@ -225,7 +230,20 @@ function respawn(slot, bullets) {
   let weaponPreset = getUnitSlotsPresetNonUpdatable(name, mods)
     .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
 
-  let skinDecalsTable = getDecalsPresets(getTagsUnitName(name))?[spawnSkin] ?? {}
+  local skinDecalsTable = getDecalsPresets(getTagsUnitName(name))?[spawnSkin] ?? {}
+
+  if ((decalsPenalty.get() - serverTime.get()) > 0) {
+    let unitBlk = blkOptFromPath(getUnitFileName(getTagsUnitName(name)))
+    let { defaultDecals = {}, upgradedDecals = {} } = unitBlk
+
+    let res = {}
+    foreach(skinName, decalBlk in defaultDecals)
+      res[skinName == "default" ? "" : skinName] <- decalBlkToTbl(decalBlk)
+    foreach(skinName, decalBlk in upgradedDecals)
+      res[skinName == "default" ? "" : skinName] <- decalBlkToTbl(decalBlk)
+
+    skinDecalsTable = res?[spawnSkin] ?? {}
+  }
 
   eventbus_send("requestRespawn", {
     name

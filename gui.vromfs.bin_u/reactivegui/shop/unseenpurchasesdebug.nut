@@ -6,6 +6,9 @@ let unseenPurchasesDebug = mkWatched(persist, "unseenPurchasesDebug", null)
 let fakeUnseenPurchases = {
   [-1] = {
     source = "lootbox"
+    lostGoods = [
+      { id = "playerExp", gType = "booster", count = 2 },
+    ]
     goods = [
       { id = "wp", gType = "currency", count = 2000 },
       { id = "gold", gType = "currency", count = 1000 },
@@ -13,6 +16,7 @@ let fakeUnseenPurchases = {
       { id = "eventKey", gType = "currency", count = 50 },
       { id = "premium", gType = "premium", count = 30 },
       { id = "ship_tool_kit", gType = "item", count = 20 },
+      { id = "back_20", gType = "decal", count = 1 },
       { id = "ship_smoke_screen_system_mod", gType = "item", count = 15 },
       { id = "tank_tool_kit_expendable", gType = "item", count = 50 },
       { id = "tank_extinguisher", gType = "item", count = 30 },
@@ -33,9 +37,12 @@ let fakeUnseenPurchases = {
       { id = "uk_destroyer_tribal", subId = "upgraded", gType = "skin", count = 0 },
       { id = "air_cbt_access", gType = "battleMod", count = 36000 },
       { id = "japan_branch_access", gType = "battleMod", count = 36000 },
-      { id = "anniversary_BR_unit_1", gType = "battleMod", count = 36000 },
-      { id = "anniversary_BR_unit_2", gType = "battleMod", count = 36000 },
-      { id = "anniversary_BR_unit_3", gType = "battleMod", count = 36000 },
+      { id = "new_year_unit_1", gType = "battleMod", count = 36000 },
+      { id = "new_year_unit_2", gType = "battleMod", count = 36000 },
+      { id = "new_year_unit_3", gType = "battleMod", count = 36000 },
+      { id = "new_year_unit_4", gType = "battleMod", count = 36000 },
+      { id = "new_year_unit_5", gType = "battleMod", count = 36000 },
+      { id = "new_year_unit_6", gType = "battleMod", count = 36000 },
     ]
   }
 }

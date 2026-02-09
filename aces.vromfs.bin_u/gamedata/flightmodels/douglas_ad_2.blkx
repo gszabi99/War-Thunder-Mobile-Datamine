@@ -2456,5 +2456,18 @@
       2.57952,
       3.78495e-8
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "douglas_ad_2_usn_gloss_sea_blue_a*",
+        "to": "douglas_ad_2_blue_a*"
+      },
+      {
+        "from": "douglas_ad_2_usn_gloss_sea_blue_n*",
+        "to": "douglas_ad_2_blue_n*"
+      }
+    ]
   }
 }

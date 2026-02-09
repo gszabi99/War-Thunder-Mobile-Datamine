@@ -3272,5 +3272,18 @@
       0.645993,
       -2.64112
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ju288_c_green_a*",
+        "to": "ju288_c_black_a*"
+      },
+      {
+        "from": "ju288_c_green_n*",
+        "to": "ju288_c_black_n*"
+      }
+    ]
   }
 }

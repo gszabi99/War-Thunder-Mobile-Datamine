@@ -2279,5 +2279,18 @@
       1.83987,
       0.0051915
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "sb2u_2_a*",
+        "to": "sb2u_2_yorktown_a*"
+      },
+      {
+        "from": "sb2u_2_n*",
+        "to": "sb2u_2_yorktown_n*"
+      }
+    ]
   }
 }

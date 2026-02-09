@@ -44,6 +44,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "guidanceAutoUnlockTime": 8.0,
   "radarAnimVar": "radar_drive",
   "radarAnimPitchVar": "radar_drive2",
   "radarDeployTime": 5.0,
@@ -53,6 +54,58 @@
   "arcadePowerMult": 1.895,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "controlDevices": {
     "device": [
       {
@@ -1963,13 +2016,19 @@
       "trackMass": 3000.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ]
     },
     "tracks": {
       "animationMultiplier": -0.62,
       "width": 0.61,
-      "height": 0.06
+      "height": 0.06,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1981,12 +2040,12 @@
       "minRPM": 850.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 228800.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 3.93,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 15.0,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
           -6.58,

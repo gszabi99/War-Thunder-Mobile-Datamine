@@ -1775,5 +1775,12 @@
       1.20414,
       0.00358869
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "fw_190a_1_a*",
+      "to": "fw_190a_1_white_a*"
+    }
   }
 }

@@ -2155,5 +2155,18 @@
       1.1171,
       -1.76441e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ki_10_2_light_grey_green_a*",
+        "to": "ki_10_2_3colors_a*"
+      },
+      {
+        "from": "ki_10_2_light_grey_green_n*",
+        "to": "ki_10_2_3colors_n*"
+      }
+    ]
   }
 }

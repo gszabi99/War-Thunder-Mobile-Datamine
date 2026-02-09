@@ -5,7 +5,7 @@ let { activeUnlocks, unlockInProgress, receiveUnlockRewards } = require("%rGui/u
 let { mkQuestBar } = require("%rGui/quests/questBar.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
 let { G_DECORATOR } = require("%appGlobals/rewardType.nut")
-let { questsBySection, questsCfg } = require("%rGui/quests/questsState.nut")
+let { questsBySection, questsCfg, getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
 let { textButtonInactive, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
@@ -15,7 +15,7 @@ let btnStyleSound = { ovr = { sound = { click  = "meta_get_unlock" } } }
 
 function receiveReward(unlock) {
   receiveUnlockRewards(unlock.name, 1, { stage = 1 })
-  sendBqQuestsTask(unlock, 0, null)
+  sendBqQuestsTask(unlock, getStarsTotalNonUpdatable(unlock), 0, null)
 }
 
 function mkReceiveButton(unlock) {

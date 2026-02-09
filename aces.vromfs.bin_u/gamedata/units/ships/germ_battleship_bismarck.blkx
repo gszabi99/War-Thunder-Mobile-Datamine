@@ -11278,5 +11278,19 @@
       "from": "camo_warshipdeepgray*",
       "to": "camo_greyblackblue_geometry*"
     }
+  },
+  "vehicleSkins": {
+    "february_skin": {
+      "replace_tex": [
+        {
+          "from": "battleship_tirpitz_1944_c*",
+          "to": "battleship_bismarck_february_skin_c*"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_yellow*"
+        }
+      ]
+    }
   }
 }

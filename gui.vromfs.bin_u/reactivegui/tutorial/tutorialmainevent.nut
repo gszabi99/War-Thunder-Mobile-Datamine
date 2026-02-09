@@ -10,7 +10,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
-let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, curTabId, EVENT_TAB, questsBySection,
+let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, curTabId, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
   tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { openEventWnd, curEventLootboxes, isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
@@ -58,7 +58,7 @@ shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function receiveReward(item, currencyReward) {
   receiveUnlockRewards(item.name, 1, { stage = 1 })
-  sendBqQuestsTask(item, currencyReward?.count ?? 0, currencyReward?.id)
+  sendBqQuestsTask(item, getStarsTotalNonUpdatable(item), currencyReward?.count ?? 0, currencyReward?.id)
 }
 
 function startTutorial() {

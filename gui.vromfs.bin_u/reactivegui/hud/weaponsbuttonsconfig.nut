@@ -3,7 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 from "blkGetters" import get_current_mission_info_cached
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL, AB_SPECIAL_FIGHTER,
-  AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE, AB_ACOUSTIC_DECOY
+  AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE, AB_ROCKET_ASW, AB_ACOUSTIC_DECOY
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
 
@@ -97,7 +97,7 @@ let actionBarItemsConfig = {
   },
   EII_ACOUSTIC_DECOY = {
     getShortcut = @(_, __) "ID_SUBMARINE_ACOUSTIC_DECOY"
-    getImage = @(_) "ui/gameuiskin#icon_ircm.svg"
+    getImage = @(_) "ui/gameuiskin#icon_acoustic_decoy.svg"
     actionType = AB_ACOUSTIC_DECOY
     mkButtonFunction = "mkCountermeasureItem"
   },
@@ -151,6 +151,15 @@ let actionBarItemsConfig = {
     needCheckRocket = true
     relImageSize = 0.85
   },
+  EII_ROCKET_ASW = {
+    getShortcut = @(_, __) "ID_SHIP_ROCKET_ASW"
+    getImage = @(_) "ui/gameuiskin#hud_asroc.svg"
+    actionType = AB_ROCKET_ASW
+    mkButtonFunction = "mkSubmarineWeaponryItem"
+    hasAim = true
+    needCheckRocket = true
+    relImageSize = 0.85
+  }
   EII_SPECIAL_UNIT = {
     getShortcut = getActionBarShortcut
     getImage = @(_) "ui/gameuiskin#hud_aircraft_fighter.svg"

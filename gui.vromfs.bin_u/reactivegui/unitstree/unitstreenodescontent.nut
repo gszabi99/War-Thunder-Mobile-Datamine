@@ -27,7 +27,7 @@ let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { selectedCountry, visibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
-  setUnitToScroll, unitToScroll, unitInfoToScroll, blockedCountries
+  setUnitToScroll, unitToScroll, unitInfoToScroll
 } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -42,6 +42,7 @@ let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
 } = require("%rGui/unitsTree/animState.nut")
 let { attractColor } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let { draggedData, removeUnitFromSlot } = require("%rGui/slotBar/dragDropSlotState.nut")
+let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 
 let aTimeAppearLink = 1
 let aTimeChangeLink = 0.5
@@ -529,7 +530,8 @@ function genLinks(nodes, positions, size) {
   return { linesFrom, linesTo }
 }
 
-let function mkUnitsNode(name, pos, hasDarkScreenV) {
+let function mkUnitsNode(node, pos, hasDarkScreenV) {
+  let { name } = node
   let xmbNode = XmbNode()
   let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
   let needDuplicateDraggableUnit = Computed(@() draggedData.get() != null && draggedData.get()?.unitName == unit.get()?.name)
@@ -556,7 +558,8 @@ let function mkUnitsNode(name, pos, hasDarkScreenV) {
                       if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
                         setResearchedUnitsSeen({ [name] = true })
                     }
-                  })
+                  },
+                  node)
             needDuplicateDraggableUnit.get() || isUnitSelectedToSlot.get()
               ? mkTreeNodesUnitPlateDefault(curUnit, xmbNode, { pos })
               : null
@@ -582,19 +585,23 @@ function mkHasDarkScreen() {
     || animUnitAfterResearch.get() != null
     || isBuyUnitWndOpened.get())
   return Computed(@() !currentResearch.get() && !isSlotsAnimActive.get() && !isPlayingAnyAnim.get()
-    && unitsResearchStatus.get().filter(@(val) val.canResearch == true && val.country not in blockedCountries.get()).len() > 0)
+    && null != unitsResearchStatus.get().findvalue(@(val) val.canResearch == true
+      && (!(val?.hasAccessLock ?? true) || val.name not in unitsBlockedByBattleMode.get())))
 }
 
 let mkDarkScreen = @(size, positions) function() {
-  let boxes = positions.reduce(@(res, pos, name)
-    !unitsResearchStatus.get()?[name].canResearch ? res
-      : res.append({
+  let boxes = []
+  foreach (name, pos in positions) {
+    let { canResearch = false, hasAccessLock = true } = unitsResearchStatus.get()?[name]
+    if (canResearch && (!hasAccessLock || name not in unitsBlockedByBattleMode.get()))
+      boxes.append({
         l = pos[0], r = pos[0] + nodePlatesSize[0],
         t = pos[1], b = pos[1] + nodePlatesSize[1]
-      }), [])
+      })
+  }
   return {
     size = flex()
-    watch = unitsResearchStatus
+    watch = [unitsResearchStatus, unitsBlockedByBattleMode]
     children = {
       size = flex()
       children = mkCutBg(boxes, { l = -sw(50), r = size[0] + sw(50), t = -sh(50), b = size[1] + sh(50) })
@@ -617,7 +624,7 @@ let mkUnitsTree = @(countryNodesCfg, hasDarkScreenV) function() {
     children = [
       mkLinks(genLinks(nodes, positions, size))
     ]
-      .extend(nodes.values().map(@(n) mkUnitsNode(n.name, positions[n.name], hasDarkScreenV)))
+      .extend(nodes.values().map(@(n) mkUnitsNode(n, positions[n.name], hasDarkScreenV)))
       .append(hasDarkScreenV ? mkDarkScreen(size, positions) : null)
   }
 }
@@ -742,8 +749,8 @@ let pannableAreaWithSlobar = mkAreaPannable(calcAreaSize(true))
 
 let contentKey = {}
 let pannableKey = {}
-let function mkUnitsTreeNodesContent() {
-  let filteredNodes = mkFilteredNodes(visibleNodes)
+let function mkUnitsTreeNodesContent(nodesReceiveInfo) {
+  let filteredNodes = mkFilteredNodes(Computed(@() visibleNodes.get().__merge(nodesReceiveInfo.get())))
   let allCountries = mkCountries(filteredNodes)
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()

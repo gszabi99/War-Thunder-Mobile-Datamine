@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { isEqual, isArray } = require("%sqstd/underscore.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { curUnitName } = require("%appGlobals/pServer/profile.nut")
+let { battleRentInfo } = require("%appGlobals/rentalState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { get_queue_data_jwt, get_queue_data_slots_jwt, registerHandler, callHandler, lastProfileKeysUpdated
@@ -20,7 +21,8 @@ const SQUAD_ACTUALIZE_DELAY = 2
 let lastResult = mkWatched(persist, "lastResult", null)
 let successResult = mkWatched(persist, "lastSuccessResult", null)
 let needRefresh = mkWatched(persist, "needRefresh", false)
-let curUnitInfo = Computed(@() curCampaignSlotUnits.get() ?? curUnit.get()?.name)
+let curUnitInfo = Computed(@() battleRentInfo.get()?.unitList ?? battleRentInfo.get()?.unit
+  ?? curCampaignSlotUnits.get() ?? curUnitName.get())
 let isQueueDataActual = Computed(@() !needRefresh.get() && isEqual(successResult.get()?.unitInfo, curUnitInfo.get()))
 let queueDataError = Computed(@() lastResult.get()?.error)
 let needActualize = Computed(@() !isQueueDataActual.get() && isLoggedIn.get() && curUnitInfo.get() != null)

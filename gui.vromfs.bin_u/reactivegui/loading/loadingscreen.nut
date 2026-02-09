@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { wndSwitchAnim, wndSwitchTrigger } = require("%rGui/style/stdAnimations.nut")
 let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
 let { loadingAnimBg, isLoadinAnimBgAttached, curScreenId, screenWeights
@@ -21,14 +23,38 @@ function setMissionLoadingScreen(screen) {
   missionScreenIdx.set(missionScreenIdx.get() + 1)
 }
 
-function updateWeights(campaign) {
+function updateWeights() {
+  let campaign = curCampaign.get()
   let commonCamp = getCampaignPresentation(campaign).campaign
-  return screenWeights.set(screensList
-    .filter(@(v) campaign == null || (v?.camp.contains(commonCamp) ?? true))
-    .map(@(s) s.weight))
+  let weights = {}
+  let time = getServerTime()
+  local timeToUpdate = 0
+  foreach (id, screenCfg in screensList) {
+    if ((campaign == null || (screenCfg?.camp.contains(commonCamp) ?? true))) {
+      let { start = 0, end = 0 } = screenCfg?.timeRange
+      if (end != 0 && end <= time)
+        continue
+      local nextTime = end - time
+      if (start > time)
+        nextTime = start - time
+      else {
+        weights[id] <- screenCfg.weight
+      }
+      if (nextTime > 0)
+        timeToUpdate = timeToUpdate == 0 ? nextTime : min(timeToUpdate, nextTime)
+    }
+  }
+
+  if (timeToUpdate <= 0)
+    clearTimer(updateWeights)
+  else
+    resetTimeout(timeToUpdate, updateWeights)
+
+  return screenWeights.set(weights)
 }
-updateWeights(curCampaign.get())
-curCampaign.subscribe(updateWeights)
+updateWeights()
+curCampaign.subscribe(@(_) updateWeights())
+isServerTimeValid.subscribe(@(_) updateWeights())
 
 let lsKey = {}
 let loadingScreen = @() {

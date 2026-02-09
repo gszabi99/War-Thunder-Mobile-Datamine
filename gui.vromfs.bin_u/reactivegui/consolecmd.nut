@@ -1,6 +1,9 @@
 
 from "%globalsDarg/darg_library.nut" import *
 let { startSound, playSound, stopSound } = require("sound_wt")
+let { get_local_custom_settings_blk } = require("blkGetters")
+let DataBlock  = require("DataBlock")
+let { eventbus_send } = require("eventbus")
 let { inspectorToggle } = require("%darg/helpers/inspector.nut")
 let { register_command } = require("console")
 let { round } =  require("math")
@@ -53,5 +56,27 @@ let printSorted = @(tbl) console_print(
 
 register_command(@() printSorted(balance.get()), "debug.balance_full")
 register_command(@() printSorted(balance.get().filter(@(v) v != 0)), "debug.balance_not_empty")
-register_command(@() printSorted(curSeasons.get().map(@(s) s.idx)), "debug.current_seasons")
+register_command(@() printSorted(curSeasons.get().map(@(s) s.idx)), "debug.current_seasons_with_inactive")
+register_command(@() printSorted(curSeasons.get().filter(@(s) s.isActive).map(@(s) s.idx)), "debug.current_seasons")
 
+register_command(function() {
+    let fileName = "localCustomSettings.blk"
+    let blk = get_local_custom_settings_blk()
+    blk.saveToTextFile(fileName)
+    console_print($"Saved to: {fileName}")
+  },
+  "debug.save_local_custom_settings_blk_to_file")
+
+register_command(function(fileName) {
+    let sBlk = get_local_custom_settings_blk()
+    let blk = DataBlock()
+    if (!blk.tryLoad(fileName)) {
+      console_print($"Failed to load from '{fileName}'")
+      return
+    }
+    sBlk.setFrom(blk)
+    console_print($"Success")
+    eventbus_send("saveProfile", {})
+    eventbus_send("reloadDargVM", { msg = "loaded new custom settings" })
+  },
+  "debug.load_local_custom_settings_blk_from_file")

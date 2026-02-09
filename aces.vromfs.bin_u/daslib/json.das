@@ -11,38 +11,45 @@ require daslib/strings_boost
 
 variant JsValue {
     
-    _object : table<string; JsonValue?>
-    _array  : array<JsonValue?>
-    _string : string
-    _number : double
-    _bool   : bool
-    _null   : void?
+    _object  : table<string; JsonValue?>    
+    _array   : array<JsonValue?>           
+    _string  : string                      
+    _number  : double                      
+    _longint : int64                       
+    _bool    : bool                        
+    _null    : void?                       
 }
 
 struct JsonValue {
     
-    value : JsValue
+    value : JsValue                         
 }
 
 variant Token {
     
-    _string : string
-    _number : double
-    _bool   : bool
-    _null   : void?
-    _symbol : int
-    _error  : string
+    _string  : string                       
+    _number  : double                       
+    _longint : int64                        
+    _bool    : bool                         
+    _null    : void?                        
+    _symbol  : int                          
+    _error   : string                       
 }
 
 struct TokenAt {
     
-    value : Token
-    line, row : int
+    value : Token                           
+    line, row : int                         
 }
 
 let private {
     Token_string = typeinfo variant_index<_string>(type<Token>) 
     Token_symbol = typeinfo variant_index<_symbol>(type<Token>)
+}
+
+def JVNull {
+    
+    return new JsonValue(value <- JsValue(_null = null))
 }
 
 def JV(v : string) {
@@ -51,38 +58,104 @@ def JV(v : string) {
 }
 
 def JV(v : double) {
+    
     return new JsonValue(value <- JsValue(_number = v))
 }
 
 def JV(v : bool) {
+    
     return new JsonValue(value <- JsValue(_bool = v))
 }
 
-def JVNull {
-    
-    return new JsonValue(value <- JsValue(_null = null))
-}
-
 def JV(var v : table<string; JsonValue?>) {
+    
     return new JsonValue(value <- JsValue(_object <- v))
 }
 
 def JV(var v : array<JsonValue?>) {
+    
     return new JsonValue(value <- JsValue(_array <- v))
 }
 
+def JV(v : float) {
+    
+    return new JsonValue(value <- JsValue(_number = double(v)))
+}
+
+def JV(v : int) {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(v)))
+}
+
+def JV(v : bitfield) {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(v)))
+}
+
+def JV(v : bitfield : uint8 < >) {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(v)))
+}
+
+def JV(v : bitfield : uint16 < >) {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(v)))
+}
+
+def JV(v : bitfield : uint64 < >) {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(v)))
+}
+
+def JV(val : int8) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(val)))
+}
+
+def JV(val : uint8) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(val)))
+}
+
+def JV(val : int16) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(val)))
+}
+
+def JV(val : uint16) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(val)))
+}
+
+def JV(val : uint) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(val)))
+}
+
+def JV(val : int64) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = val))
+}
+
+def JV(val : uint64) : JsonValue? {
+    
+    return new JsonValue(value <- JsValue(_longint = int64(val)))
+}
+
 def private lexer(text : string) {
+    
     let stext = clone_string(text)
     return <- _lexer(stext)
 }
 
 def private lexer(text : array<uint8>) {
+    
     let stext = string(text)
     return <- _lexer(stext)
 }
 
 def private next(var text : iterator<int>; var character, line, row : int&) : bool {
-
+    
     if (next(text, character)) {
         if (is_new_line(character)) {
             line++
@@ -96,6 +169,7 @@ def private next(var text : iterator<int>; var character, line, row : int&) : bo
 }
 
 def private _lexer(var stext : string implicit) {
+    
     return <- generator<TokenAt>() <| $() {
         var tin : iterator<int>
         unsafe {
@@ -149,13 +223,16 @@ def private _lexer(var stext : string implicit) {
                 clear(str)
                 next(tin, ahead)
             } elif (ahead == '+' || ahead == '-' || is_number(ahead)) {
+                var is_negative = (ahead == '-')
                 push(str, uint8(ahead))
                 var anyNumbers = is_number(ahead)
                 while (next(tin, ahead, line, row) && is_number(ahead)) {
                     push(str, uint8(ahead))
                     anyNumbers = true
                 }
+                var is_integer = true
                 if (!empty(tin) && ahead == '.') {
+                    is_integer = false
                     push(str, uint8(ahead))
                     while (next(tin, ahead, line, row) && is_number(ahead)) {
                         push(str, uint8(ahead))
@@ -163,6 +240,7 @@ def private _lexer(var stext : string implicit) {
                     }
                 }
                 if (!empty(tin) && (ahead == 'e' || ahead == 'E')) {
+                    is_integer = false
                     push(str, uint8(ahead))
                     next(tin, ahead, line, row)
                     if (ahead == '+' || ahead == '-' || is_number(ahead)) {
@@ -178,7 +256,13 @@ def private _lexer(var stext : string implicit) {
                     yield TokenAt(value = Token(_error = "invalid number {num}"), line = line, row = row)
                     return false
                 }
-                yield TokenAt(value = Token(_number = double(num)), line = line, row = row)
+                if (is_integer) {
+                    
+                    var ival = is_negative ? int64(num) : int64(uint64(num))
+                    yield TokenAt(value = Token(_longint = ival), line = line, row = row)
+                } else {
+                    yield TokenAt(value = Token(_number = double(num)), line = line, row = row)
+                }
                 clear(str)
                 unsafe {
                     delete_string(num)
@@ -217,6 +301,7 @@ def private _lexer(var stext : string implicit) {
 }
 
 def private expect_token(var itv : iterator<TokenAt>; var ahead : TokenAt; vindex : int; var error : string&) : bool {
+    
     if (!next(itv, ahead)) {
         error = "unexected eos"
         return false
@@ -229,6 +314,7 @@ def private expect_token(var itv : iterator<TokenAt>; var ahead : TokenAt; vinde
 }
 
 def private expect_symbol(var itv : iterator<TokenAt>; var ahead : TokenAt; sym : int; var error : string&) : bool {
+    
     if (!next(itv, ahead)) {
         error = "unexected eos"
         return false
@@ -244,6 +330,7 @@ def private expect_symbol(var itv : iterator<TokenAt>; var ahead : TokenAt; sym 
 }
 
 def private parse_value(var itv : iterator<TokenAt>; var error : string&) : JsonValue? {
+    
     var ahead : TokenAt
     if (!next(itv, ahead)) {
         return null
@@ -329,6 +416,8 @@ def private parse_value(var itv : iterator<TokenAt>; var error : string&) : Json
         return JV(ahead.value as _string);
     } elif (ahead.value is _number) {
         return JV(ahead.value as _number);
+    } elif (ahead.value is _longint) {
+        return JV(ahead.value as _longint)
     } elif (ahead.value is _bool) {
         return JV(ahead.value as _bool);
     } elif (ahead.value is _null) {
@@ -350,6 +439,8 @@ def read_json(text : string implicit; var error : string&) : JsonValue? {
 }
 
 def read_json(text : array<uint8>; var error : string&) : JsonValue? {
+    
+    
     error = ""
     var lex <- lexer(text)
     var res = parse_value(lex, error)
@@ -386,6 +477,7 @@ def set_allow_duplicate_keys(value : bool) {
 
 
 def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; depth : int) {
+    
     if (jsv == null) {
         write(writer, "null")
     } elif (jsv.value is _string) {
@@ -398,6 +490,8 @@ def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; dept
         } else {
             write(writer, jsv.value as _number)
         }
+    } elif (jsv.value is _longint) {
+        write(writer, jsv.value as _longint)
     } elif (jsv.value is _array) {
         if (length(jsv.value as _array) == 0) {
             write(writer, "[]")

@@ -178,6 +178,18 @@
   "iPhone 16e": {
     "codename": "iPhone17,5"
   },
+  "iPhone 17 Pro": {
+    "codename": "iPhone18,1"
+  },
+  "iPhone 17 Pro Max": {
+    "codename": "iPhone18,2"
+  },
+  "iPhone 17": {
+    "codename": "iPhone18,3"
+  },
+  "iPhone Air": {
+    "codename": "iPhone18,4"
+  },
   "iPod 1st Gen": {
     "codename": "iPod1,1"
   },
@@ -467,6 +479,18 @@
     "codename": [
       "iPad16,1",
       "iPad16,2"
+    ]
+  },
+  "iPad Pro 11 inch 5th Gen": {
+    "codename": [
+      "iPad16,3",
+      "iPad16,4"
+    ]
+  },
+  "iPad Pro 12.9 inch 7th Gen": {
+    "codename": [
+      "iPad16,5",
+      "iPad16,6"
     ]
   }
 }

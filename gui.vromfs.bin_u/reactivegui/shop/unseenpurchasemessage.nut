@@ -6,7 +6,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE } = require("%appGlobals/rewardType.nut")
+let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM } = require("%appGlobals/rewardType.nut")
 let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -60,12 +60,13 @@ let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slo
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { curUnitInProgress, enable_unit_skin } = require("%appGlobals/pServer/pServerApi.nut")
+let { curUnitInProgress, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { isDisabledGoods } = require("%rGui/shop/shopState.nut")
+let { isDisabledGoods, allShopGoods } = require("%rGui/shop/shopState.nut")
 let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkGradText } =  require("%rGui/unitCustom/unitCustomComps.nut")
-let { mkDecalIcon, mkDecalText } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
+let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 
 
 let wndWidth = saSize[0]
@@ -79,6 +80,7 @@ let rewIconsPerRow = (wndWidth / (rewBlockWidth + rewIconToTextGap)).tointeger()
 let rewTextMaxWidth = rewBlockWidth - hdpx(10)
 let unitPlatesGap = hdpx(40)
 let unitsPerRow = (wndWidth / (unitPlateWidth + unitPlatesGap)).tointeger()
+let trashIconSize = hdpx(50)
 
 let textColor = 0xFFE0E0E0
 let ANIM_SKIP = {}
@@ -118,9 +120,40 @@ let infoTextBySource = {
     { time = secondsToHoursLoc(count) })
 }
 
+let gTypesLost = {
+  [G_BOOSTER] = true,
+  [G_ITEM] = true
+}
+
 function defaultInfoText(id, paramInt) {
   let locId = $"reward/{id}/desc"
   return doesLocTextExist(locId) ? loc(locId, { count = paramInt }) : ""
+}
+
+function fillStackRawGoods(stackRaw, goods, source, campList, allUnits, conversionList, serverCfg, lboxes, countProp) {
+  foreach (data in goods) {
+    let { id, gType, count, subId = ""} = data
+    if ((gType == G_UNIT || gType == G_UNIT_UPGRADE) && !campList.contains(allUnits?[id].campaign))
+      continue
+
+    let rewId = gType in ignoreSubIdRTypes ? id : "".concat(id, subId)
+
+    let convIdx = conversionList.findindex(@(c) isEqual(data, c))
+    if (convIdx != null) {
+      conversionList.remove(convIdx)
+      continue
+    }
+
+    if (!isUnseenGoodsVisible(data, source, serverCfg, lboxes))
+      continue
+
+    if (gType not in stackRaw)
+      stackRaw[gType] <- {}
+    if (rewId not in stackRaw[gType])
+      stackRaw[gType][rewId] <- { id, gType, [countProp] = count, subId, order = -1 }
+    else
+      stackRaw[gType][rewId][countProp] <- count + (stackRaw?[gType][rewId][countProp] ?? 0)
+  }
 }
 
 let stackData = Computed(function() {
@@ -134,30 +167,10 @@ let stackData = Computed(function() {
     let conversionList = []
     foreach(c in purch?.conversions ?? [])
       conversionList.append(c.to, c.from)
-    foreach (data in purch.goods) {
-      let { id, gType, count, subId = ""} = data
-
-      if ((gType == G_UNIT || gType == G_UNIT_UPGRADE) && !campaignsList.get().contains(allUnits?[id].campaign))
-        continue
-
-      let rewId = gType in ignoreSubIdRTypes ? id : "".concat(id, subId)
-
-      let convIdx = conversionList.findindex(@(c) isEqual(data, c))
-      if (convIdx != null) {
-        conversionList.remove(convIdx)
-        continue
-      }
-
-      if (!isUnseenGoodsVisible(data, purch.source, serverCfg, lboxes))
-        continue
-
-      if (gType not in stackRaw)
-        stackRaw[gType] <- {}
-      if (rewId not in stackRaw[gType])
-        stackRaw[gType][rewId] <- { id, gType, count, subId, order = -1 }
-      else
-        stackRaw[gType][rewId].count += count
-    }
+    fillStackRawGoods(stackRaw, purch.goods, purch.source, campaignsList.get(),
+      allUnits, conversionList, serverCfg, lboxes, "count")
+    fillStackRawGoods(stackRaw, purch.lostGoods, purch.source, campaignsList.get(),
+      allUnits, conversionList, serverCfg, lboxes, "lostCount")
   }
   if (stackRaw?.unit != null && stackRaw?.unitUpgrade != null)
     stackRaw.unit = stackRaw.unit.filter(@(_, unitName) stackRaw.unitUpgrade?[unitName] == null)
@@ -212,7 +225,7 @@ let stackData = Computed(function() {
     unitPlates
     battleMod
     convertions
-    discounts = discount.filter(@(r) !isDisabledGoods(r))
+    discounts = discount.filter(@(r) !isDisabledGoods(r, allShopGoods.get(), serverCfg))
   }.filter(@(v) v.len() != 0))
 })
 
@@ -421,6 +434,25 @@ function mkRewardLabel(startDelay, text) {
   return res
 }
 
+let mkTrashIcon = @(startDelay) {
+  size = trashIconSize
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_LEFT
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#icon_trash_outline.svg:{trashIconSize}:{trashIconSize}:P")
+  color = 0xFFFFFFFF
+  keepAspect = true
+}.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+
+let mkRewardLostText = @(startDelay, text) {
+  size = [rewBlockWidth, SIZE_TO_CONTENT]
+  behavior = Behaviors.TextArea
+  rendObj = ROBJ_TEXTAREA
+  halign = ALIGN_CENTER
+  color = 0xFFFF231E
+  text
+}.__update(fontSmallShaded, mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+
 let mkPrizeTicketLabel = @(startDelay, text) {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
@@ -463,9 +495,11 @@ function mkSkinEquipButton(unitName, skinName) {
   let currentSkin = Computed(@() unit.get()?.currentSkins[unitName] ?? "")
 
   return @() {
-    watch = [currentSkin, unit]
+    watch = [currentSkin, unit, skinsInProgress]
     size = FLEX_H
+    halign = ALIGN_CENTER
     children = !unit.get() ? null
+      : skinsInProgress.get() ? spinner
       : currentSkin.get() == skinName
         ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = [flex(), hdpx(70)], minWidth = 0, padding = hdpx(10) })
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
@@ -602,6 +636,16 @@ let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) 
   ]
 }
 
+let mkDecalIconWithAnim = @(startDelay, id) {
+  size = [rewIconSize, rewIconSize]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    mkHighlight(startDelay, aRewardIconFlareScale)
+    mkDecalIcon(id, rewIconSize).__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+  ]
+}
+
 let rewardCtors = {
   currency = {
     mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
@@ -613,16 +657,36 @@ let rewardCtors = {
       "".concat(rewardInfo.count, loc("measureUnits/days")))
   }
   item = {
-    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
-    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+    mkIcon = @(rewardInfo) {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = [
+        mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
+        !rewardInfo?.isLost ? null : mkTrashIcon(rewardInfo.startDelay)
+      ]
+    }
+    mkText = @(rewardInfo) !rewardInfo?.isLost ? mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+      : mkRewardLostText(rewardInfo.startDelay, loc("item/limit/out"))
   }
   decorator = {
     mkIcon = @(rewardInfo) mkDecoratorRewardIcon(rewardInfo.startDelay, rewardInfo.id)
     mkText = @(rewardInfo) mkDecoratorRewardLabel(rewardInfo.startDelay, rewardInfo.id)
   }
   booster = {
-    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, getBoosterIcon(rewardInfo.id))
-    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+    mkIcon = @(rewardInfo) {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = [
+        mkRewardIcon(rewardInfo.startDelay, getBoosterIcon(rewardInfo.id))
+        !rewardInfo?.isLost ? null : mkTrashIcon(rewardInfo.startDelay)
+      ]
+    }
+    mkText = @(rewardInfo) !rewardInfo?.isLost ? mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+      : mkRewardLostText(rewardInfo.startDelay, utf8ToUpper(loc("item/limit/out")))
   }
   skin = {
     mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
@@ -663,8 +727,8 @@ let rewardCtors = {
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay, loc("discounts/title"), fontSmall)
   }
   decal = {
-    mkIcon = @(rewardInfo) mkDecalIcon(rewardInfo.id)
-    mkText = @(_) mkDecalText(loc("reward/decal"), fontTinyAccented)
+    mkIcon = @(rewardInfo) mkDecalIconWithAnim(rewardInfo.startDelay, rewardInfo.id)
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, loc("reward/decal"))
   }
 }
 
@@ -1103,13 +1167,22 @@ function onCloseRequest() {
 
 function mkMsgContent(stackDataV, purchGroup, onClick) {
   let { rewardIcons = [], unitPlates = [], outroDelay, battleMod = [] } = stackDataV
+  let modifiedRewardIcons = rewardIcons.reduce(function(res, v) {
+    if (!gTypesLost?[v.gType])
+      return res.append(v)
+    if ((v?.count ?? 0) > 0)
+      res.append(v.__merge({ lostCount = 0 }))
+    if ((v?.lostCount ?? 0) > 0)
+      res.append(v.__merge({ count = v.lostCount, isLost = true, lostCount = 0 }))
+    return res
+  }, [])
   let { style = null } = purchGroup
   let title = titleCtors?[style](outroDelay, purchGroup) ?? modalWndHeader(loc("mainmenu/you_received"))
   let size = [
     max(
       min(unitPlates.len(), unitsPerRow) * (unitPlateWidth + unitPlatesGap),
       min(battleMod.len(), unitsPerRow) * (unitPlateWidth + unitPlatesGap),
-      min(rewardIcons.len(), rewIconsPerRow) * (rewBlockWidth + rewIconToTextGap)
+      min(modifiedRewardIcons.len(), rewIconsPerRow) * (rewBlockWidth + rewIconToTextGap)
     ),
     SIZE_TO_CONTENT
   ]
@@ -1141,7 +1214,7 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
         children = [
           mkUnitRewards(unitPlates)
           mkBattleModeRewards(battleMod)
-          mkRewardIconsBlock(rewardIcons)
+          mkRewardIconsBlock(modifiedRewardIcons)
         ]
       }
       mkTapToContinueText(outroDelay)
@@ -1174,7 +1247,7 @@ let showAddRewardMessage = @() addModalWindow(bgShadedDark.__merge({
   onClick = onCloseRequest
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  children = @() addRewardMessageWnd(onCloseRequest)
+  children = addRewardMessageWnd(onCloseRequest)
   animations = wndSwitchAnim
   sound = { detach  = "meta_reward_window_close" }
 }))

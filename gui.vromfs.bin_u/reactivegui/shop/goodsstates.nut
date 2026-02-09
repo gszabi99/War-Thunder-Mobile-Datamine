@@ -6,4 +6,5 @@ return {
   ALL_PURCHASED        = 0x10
   IS_ACTIVE            = 0x20 
   HAS_UPGRADE          = 0x40
+  LIMIT_REACHED        = 0x80
 }

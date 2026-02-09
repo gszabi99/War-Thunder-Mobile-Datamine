@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+from "hudState" import hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state,
+  hud_request_hud_crew_state
 let { on_view_replay, get_replays_list } = require("replays")
 let { format } = require("string")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -72,6 +74,9 @@ function replaysList() {
         utf8ToUpper(r.name),
         function() {
           close()
+          hud_request_hud_tank_debuffs_state()
+          hud_request_hud_ship_debuffs_state()
+          hud_request_hud_crew_state()
           on_view_replay(r.path)
         },
         {

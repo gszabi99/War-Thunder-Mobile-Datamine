@@ -18,8 +18,8 @@ let showUnseenAfterAnimDelay = 0.2
 const LOGIN_UNLOCK_ID = "every_day_award"
 let loginAwardUnlock = Computed(@() activeUnlocks.get()?[LOGIN_UNLOCK_ID])
 let isLoginAwardOpened = mkWatched(persist, "isLoginAwardOpened", false)
-let needShowLoginAwardWnd = keepref(Computed(@() (loginAwardUnlock.get()?.hasReward ?? false)
-  && isInMenuNoModals.get()))
+let hasLoginReward = Computed(@() loginAwardUnlock.get()?.hasReward ?? false)
+let needShowLoginAwardWnd = keepref(Computed(@() hasLoginReward.get() && isInMenuNoModals.get()))
 
 function getStageReward(unlock) {
   let { stages, stage } = getRelativeStageData(unlock)
@@ -121,6 +121,7 @@ return {
   loginAwardUnlock
   isLoginAwardOpened
   canShowLoginAwards = Computed(@() loginAwardUnlock.get() != null)
+  hasLoginReward
   receiveLoginAward
   isLoginAwardInProgress = Computed(@() LOGIN_UNLOCK_ID in unlockInProgress.get()
     || loginAwardUnlockByAds.get()?.name in unlockInProgress.get())

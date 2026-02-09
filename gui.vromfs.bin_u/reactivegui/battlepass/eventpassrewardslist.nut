@@ -5,7 +5,7 @@ let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin
 let { getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
 let { textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
 let { receiveEpRewards, isEpRewardsInProgress, selectedStage, eventLevelPrice,
-  isEPLevelPurchaseInProgress, tutorialFreeMarkIdx
+  isEPLevelPurchaseInProgress
 } = require("%rGui/battlePass/eventPassState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -69,13 +69,6 @@ let eventPassRewardsList = @(rewardsStages) {
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = bpCardMargin
-  function onAttach() {
-    let idx = rewardsStages.findindex(@(r) !r.canReceive && !r?.isVip && !r.isPaid)
-    if (idx == null)
-      return
-    tutorialFreeMarkIdx.set(idx)
-  }
-  onDetach = @() tutorialFreeMarkIdx.set(null)
   children = rewardsStages.map(mkCard)
 }
 

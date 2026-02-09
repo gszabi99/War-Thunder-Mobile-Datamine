@@ -2,7 +2,7 @@ import "daEditorEmbedded" as daEditor
 from "%darg/ui_imports.nut" import *
 
 let entity_editor = require_optional("entity_editor")
-let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback } = require("state.nut")
+let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback, allScenesWatcher, getAllScenes } = require("state.nut")
 let { colors } = require("components/style.nut")
 let txt = require("%daeditor/components/text.nut").dtext
 
@@ -13,12 +13,12 @@ let combobox = require("%daeditor/components/combobox.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let { mkTemplateTooltip } = require("components/templateHelp.nut")
 
-let { getSceneLoadTypeText } = require("%daeditor/daeditor_es.nut")
+let { sceneToComboboxEntry, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
 let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
 let {DE4_MODE_SELECT} = daEditor
 
 const noSceneSelected = "UNKNOWN:0"
-let allScenes = Watched([])
+let allModifiableScenes = Watched([])
 let allSceneTexts = Watched([noSceneSelected])
 let selectedScene = Watched(noSceneSelected)
 let selectedItem = Watched(null)
@@ -51,8 +51,7 @@ function doSelectTemplate(tpl_name) {
 
 let filter = nameFilter(filterText, {
   placeholder = "Filter by name"
-
-  function onChange(text) {
+  onChange = function(text) {
     filterText.set(text)
 
     if (selectedItem.get() && text.len()>0 && selectedItem.get().tolower().contains(text.tolower()))
@@ -62,16 +61,9 @@ let filter = nameFilter(filterText, {
     else
       scrollBySelection()
   }
-
-  function onEscape() {
-    set_kb_focus(null)
-  }
-
-  function onReturn() {
-    set_kb_focus(null)
-  }
-
-  function onClear() {
+  onEscape = @() set_kb_focus(null)
+  onReturn = @() set_kb_focus(null)
+  onClear = function() {
     filterText.set("")
     set_kb_focus(null)
   }
@@ -79,20 +71,10 @@ let filter = nameFilter(filterText, {
 
 let templPostfix = nameFilter(templatePostfixText, {
   placeholder = "Template postfix"
-
-  function onChange(text) {
-    templatePostfixText.set(text)
-  }
-
-  function onEscape() {
-    set_kb_focus(null)
-  }
-
-  function onReturn() {
-    set_kb_focus(null)
-  }
-
-  function onClear() {
+  onChange = @(text) templatePostfixText.set(text)
+  onEscape = @() set_kb_focus(null)
+  onReturn = @() set_kb_focus(null)
+  onClear = function() {
     templatePostfixText.set("")
     set_kb_focus(null)
   }
@@ -207,47 +189,28 @@ function doValidateTemplates(idx) {
 }
 doRepeatValidateTemplates = doValidateTemplates
 
-function sceneToText(scene) {
-  if (scene.importDepth != 0) {
-    local loadType = getSceneLoadTypeText(scene)
-    return $"{loadType}:{scene.index}"
-  }
-  return "MAIN"
-}
-
-allScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  allSceneTexts.set(v.map(@(scene, _idx) sceneToText(scene)))
+allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
+  allSceneTexts.set(v.filter(@(scene) canSceneBeModified(scene)).map(@(scene, _idx) sceneToComboboxEntry(scene)))
   allSceneTexts.get().append(noSceneSelected)
   local scene = entity_editor?.get_instance().getTargetScene()
-  if (scene != null && ("loadType" in scene) && ("index" in scene)) {
-    selectedScene.set(sceneToText(scene))
+  let sceneText = (scene != null && ("loadType" in scene) && ("id" in scene)) ? sceneToComboboxEntry(scene) : null
+  if (sceneText != null && allSceneTexts.get().indexof(sceneText) != null) {
+    selectedScene.set(sceneText)
   } else {
     selectedScene.set(noSceneSelected)
   }
 })
 
-selectedScene.subscribe(function(v) {
-  local loadType = 0
-  local index = 0
-  if (v != noSceneSelected) {
-    local selectedSceneIndex = allSceneTexts.get().indexof(v)
-    if (selectedSceneIndex != null) {
-      local scene = allScenes.get()[selectedSceneIndex]
-      loadType = scene.loadType
-      index = scene.index
-    }
-  }
-  entity_editor?.get_instance().setTargetScene(loadType, index)
-})
-
-
 function dialogRoot() {
   let templatesGroups = entity_editor?.get_instance().getEcsTemplatesGroups()
   let maxTemplatesInList = 1000
 
-  local scenes = entity_editor?.get_instance().getSceneImports() ?? []
+  local scenes = getAllScenes().map(function (item, ind) {
+      item.index <- ind
+      return item
+      }) ?? [] 
   scenes.sort(defaultScenesSortMode.func)
-  allScenes.set(scenes)
+  allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
   let sceneInfo = selectedSceneIndex != null ? scenes[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
@@ -301,9 +264,7 @@ function dialogRoot() {
     scrollHandler
     rootBase = {
       size = flex()
-      function onAttach() {
-        scrollBySelection()
-      }
+      onAttach = @() scrollBySelection()
     }
   })
 
@@ -327,7 +288,7 @@ function dialogRoot() {
     size = [flex(), flex()]
     flow = FLOW_HORIZONTAL
 
-    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene]
+    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene, allScenesWatcher]
 
     children = [
       {
@@ -360,7 +321,22 @@ function dialogRoot() {
 
           {
             size = [flex(),fontH(100)]
-            children = combobox(selectedScene, allSceneTexts, sceneTooltip)
+            children = combobox({
+              value = selectedScene
+              update = function(v) {
+                local loadType = 0
+                local id = -1
+                if (v != noSceneSelected) {
+                  local selectedBoxItem = allSceneTexts.get().indexof(v)
+                  if (selectedBoxItem != null) {
+                    local scene = allModifiableScenes.get()[selectedBoxItem]
+                    loadType = scene.loadType
+                    id = scene.id
+                  }
+                }
+                entity_editor?.get_instance().setTargetScene(loadType, id)
+              }
+            }, allSceneTexts, sceneTooltip)
           }
 
           {

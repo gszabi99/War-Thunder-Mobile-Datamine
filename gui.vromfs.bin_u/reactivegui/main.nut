@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "dagor.system" import DBGLEVEL
 from "%rGui/cursor.nut" import needShowCursor, cursor
 
 let { get_time_msec } = require("dagor.time")
@@ -43,9 +42,10 @@ require("%rGui/debugTools/debugSafeArea.nut")
 let { get_platform_string_id } = require("platform")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 let { modalWindowsComponent, closeAllModalWindows } = require("%rGui/components/modalWindows.nut")
 let { dbgOverlayComponent } = require("%rGui/components/debugOverlay.nut")
-let { isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInLoadingScreen, isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { isLoggedIn, isLoginRequired, isReadyToFullLoad, isLoginStarted
 } = require("%appGlobals/loginState.nut")
@@ -157,14 +157,16 @@ return function() {
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.get() ? [loadingScreen]
     : [sceneAfterLogin]
-  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp,
-    deviceStateArea, waitbox, dbgOverlayComponent)
+  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, waitbox, dbgOverlayComponent)
   if (isDebugTouchesActive.get()) {
     children.insert(0, debugTouchesHandlerComp)
     children.append(debugTouchesUi)
   }
+  if (!isPlayingReplay.get() || isHudVisible.get())
+    children.append(deviceStateArea, fpsLineComp)
   return {
-    watch = [isInLoadingScreen, isLoggedIn, isLoginRequired, isAllScriptsLoaded, isDebugTouchesActive, needShowCursor]
+    watch = [isInLoadingScreen, isLoggedIn, isLoginRequired, isAllScriptsLoaded, isDebugTouchesActive,
+      needShowCursor, isPlayingReplay, isHudVisible]
     key = "sceneRoot"
     size = flex()
     children

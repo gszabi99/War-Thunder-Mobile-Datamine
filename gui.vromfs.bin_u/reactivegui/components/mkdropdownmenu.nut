@@ -40,7 +40,7 @@ function makeMenuBtn(onClick, icon, iconSize) {
     children = {
       size = [iconSize, iconSize]
       rendObj = ROBJ_IMAGE
-      image = Picture($"{icon}:{iconSize}:{iconSize}")
+      image = Picture($"{icon}:{iconSize}:{iconSize}:P")
       color = stateFlags.get() & S_HOVER ? hoverColor : textColor
     }
     sound = { click  = "menu_appear" }

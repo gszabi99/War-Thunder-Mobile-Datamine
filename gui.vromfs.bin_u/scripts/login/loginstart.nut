@@ -15,7 +15,7 @@ let { isAutologinUsed, setAutologinEnabled, isAutologinEnabled } = require("auto
 let { resetLoginPass, signOut } = require("auth_wt")
 let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
 let { isInFlight } = require("gameplayBinding")
-let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
+let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { logoutFB = @() null } = is_ios ? require("ios.account.facebook")
       : is_android ? require("android.account.fb")
       : {}

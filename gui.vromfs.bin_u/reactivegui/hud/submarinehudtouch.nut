@@ -22,8 +22,6 @@ return {
     hudTuningElems
     shipSight
     currentWeaponNameText
-
-
-
+    threatTorpedosBlock
   ]
 }

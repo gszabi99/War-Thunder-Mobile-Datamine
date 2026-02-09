@@ -9,6 +9,7 @@ let ads = is_ios ? require("ios.ads")
 let { requestConsent } = ads
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isReadyForGoogleConsent, goodleConsent, isAuthorized } = require("%appGlobals/loginState.nut")
+let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
 
 let consentNames = {}
 foreach(id, val in ads)
@@ -27,7 +28,16 @@ function onConsentResponse(bq_id, msg) {
 }
 
 isAuthorized.subscribe(@(v) v ? null : goodleConsent.set(null))
-isReadyForGoogleConsent.subscribe(@(v) v ? requestConsent(true) : null)
+isReadyForGoogleConsent.subscribe(function(isReady) {
+  if (!isReady)
+    return
+  if (tcf_consent_enabled.get()) {
+    logC("Google consent disabled")
+    goodleConsent.set({ isShowed = true, canRequest = false })
+    return
+  }
+  requestConsent(true)
+})
 
 eventbus_subscribe("android.ads.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
 eventbus_subscribe("android.ads.onShowConsent",    @(msg) onConsentResponse("show_result", msg))

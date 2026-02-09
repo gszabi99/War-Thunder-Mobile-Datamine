@@ -48,6 +48,7 @@
   "radarAnimVar": "radar_drive",
   "radarDeployTime": 0.0,
   "radarAntenaSpeed": 720.0,
+  "guidanceAutoUnlockTime": 8.0,
   "type": "typeSPAA",
   "minRelativeTankCameraThreshold": 1.2,
   "autoSightDistanceCorrection": true,
@@ -63,7 +64,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "controlDevices": {
     "device": [
       {
@@ -178,6 +179,58 @@
         "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "ikGunner": [
@@ -2042,6 +2095,16 @@
     }
   },
   "class_tags": {},
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/fr_dr_vc_1a.blk",
+      "turretIndex": 0,
+      "designationFromBody": true,
+      "designationTurretIndex": 0,
+      "dmPart": "antenna_target_location_dm",
+      "radarParkingAzimuth": 180.0
+    }
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 35200.0,
@@ -2059,7 +2122,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 1500.0
@@ -2067,7 +2130,13 @@
     "tracks": {
       "animationMultiplier": -0.68,
       "height": 0.08,
-      "width": 0.57
+      "width": 0.57,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2083,6 +2152,7 @@
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.4,
       "sideGearRatio": 1.0,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -0.62,

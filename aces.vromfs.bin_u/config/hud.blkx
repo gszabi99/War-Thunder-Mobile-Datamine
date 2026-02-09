@@ -45,6 +45,7 @@
     7.0,
     7.0
   ],
+  "showTimeToRepairAlly": false,
   "debugFontName": "debug_font_small",
   "consoleFontName": "debug_font",
   "smallTextHudFontName": "very_tiny_text",
@@ -103,8 +104,11 @@
   "allowableAnglesSectorRadius": 2000.0,
   "drawNativeTankSpeedInSpectator": false,
   "drawNativeRespawnIndicators": false,
+  "drawPointersInReplay": true,
+  "isPlayerHudInReplay": true,
   "maxShipRelativeHpRepairHint": 0.12,
   "heightTresholdForCriticalSpeedHint": 100.0,
+  "updateProlongatingAgmTracker": false,
   "skins": {
     "defSkin": "ui/gameuiskin"
   },
@@ -385,13 +389,6 @@
       400.0,
       400.0
     ],
-    "fovColor": [
-      255,
-      255,
-      255,
-      60
-    ],
-    "fovInner": true,
     "line": "thin_line",
     "arrow": "map_arrow",
     "outOfMapArrow": "arrow_mark.svg:15:18:K",
@@ -408,12 +405,7 @@
       3.0
     ],
     "isGridTextVisible": false,
-    "gridColor": [
-      255,
-      255,
-      255,
-      150
-    ],
+    "isGridVisible": true,
     "fontColor": [
       0,
       0,
@@ -496,7 +488,7 @@
     "helicopter": "objective_helicopter.svg:36:36:K",
     "helicopter_outline": "objective_helicopter_outline.svg:36:36:K",
     "april_event_unit": "icon_hud_base_new_year.svg:48:48:K",
-    "exoskeleton": "objective_galleon.svg:48:48:K",
+    "exoskeleton": "icon_hud_gift.svg:30:30:K",
     "truck": "objective_truck",
     "mark": "objective_mark.svg:21:21:K",
     "sunk_carrier": "objective_sunk_carrier",
@@ -552,6 +544,63 @@
         1.25,
         1.5
       ]
+    },
+    "mapDrawStylePresets": {
+      "default": {
+        "gridColor": [
+          250,
+          250,
+          250,
+          150
+        ],
+        "heroColor": [
+          250,
+          250,
+          250,
+          255
+        ],
+        "fovColor": [
+          250,
+          250,
+          250,
+          60
+        ],
+        "fovLineColor": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "fovInner": true
+      },
+      "winterMap": {
+        "basePreset": "default",
+        "heroColor": [
+          178,
+          121,
+          88,
+          255
+        ],
+        "fovColor": [
+          160,
+          160,
+          160,
+          60
+        ],
+        "fovColorCenter": [
+          100,
+          100,
+          100,
+          50
+        ],
+        "fovLineColor": [
+          0,
+          0,
+          0,
+          65
+        ],
+        "fovLineWidth": 1.5
+      }
     },
     "customIcons": {
       "iconPickupAllInOne": "pickup_map_icon_allinone.svg:21:21:K",
@@ -804,8 +853,8 @@
     "airfieldLineBorderWidth": 1.0,
     "airfieldLineMinLength": 12.0,
     "specialIcons": {
-      "iconNYPresent": "icon_hud_gift.svg:16:16:K",
-      "iconNYtree": "icon_hud_base_new_year.svg:36:36:K"
+      "iconNYPresent": "icon_hud_gift.svg:60:60:K",
+      "iconNYtree": "icon_hud_base_new_year.svg:72:72:K"
     },
     "tankHudIcons": {
       "iconLightTank": "gnd_light_tank_radar.svg:13:7:K",
@@ -1065,7 +1114,7 @@
     "mouse_joy_pointer_max_opacity": 1.0,
     "bombSight": "bomb_sight",
     "rocketSight": "rocket_sight.svg:90:135:K",
-    "ccipRocketSight": "ccip_rocket_sight.svg:42:42:K",
+    "ccipRocketSight": "ccip_rocket_sight.svg:90:135:K",
     "ccipGunIndication": "ccip_gun_indication.svg:24:24:K",
     "ccrpGunIndication": "ccip_gun_indication.svg:24:24:K",
     "gyroGunIndication": "",
@@ -1633,6 +1682,7 @@
     },
     "ship_bullet_fall_spot": {
       "enabled": false,
+      "bombEnabled": false,
       "widthLimitsPx": [
         20.0,
         30.0
@@ -2072,9 +2122,10 @@
       50,
       118
     ],
-    "fontFxType": 2,
-    "unitNameFontFxType": 2,
+    "fontFxType": 3,
+    "unitNameFontFxType": 3,
     "fontFxOffset": 0,
+    "useResolutionIndependentFontFxScale": true,
     "notVisibleColorAlpha": [
       128,
       170
@@ -2227,6 +2278,7 @@
     "indicatorAnimationTime": 0.5,
     "scalingTextToTargetFrame": false,
     "drawDistStrOverModel": true,
+    "lineOfSightDelay": 1.5,
     "objectivesEnemyBlinkFxColor": [
       0,
       0,
@@ -2265,6 +2317,14 @@
     ],
     "iconOuterCaptureZone": "capturezone_big_ring.svg:132:168:K",
     "iconRepairInProgressOuter": "capturezone_big_ring.svg:132:168:K",
+    "iconTimer": "circular_progress_1.svg:168:168:K",
+    "iconTimerBgd": "circle.svg:168:168:K",
+    "timerColorBgd": [
+      69,
+      69,
+      69,
+      160
+    ],
     "formatBasezoneBig": "basezone_big_mark_%c.svg:60:60:K",
     "formatBasezoneSmall": "basezone_small_mark_%c.svg:42:42:K",
     "formatCapturezoneBig": "capturezone_big_mark_%c.svg:75:75:K",
@@ -2334,6 +2394,7 @@
       -0.5,
       0.5
     ],
+    "shouldShowAiTargetIcons": false,
     "aiTargetIconScale": 2.0,
     "iconBomb": "bomb_mark",
     "colorBomb": [
@@ -2343,6 +2404,7 @@
       255
     ],
     "iconTorpedoTrail": "big_wheeled_radar",
+    "iconAcousticDecoyTrail": "decoy_radar",
     "torpedoTrailCount": 20,
     "torpedoTrailInterval": 0.2,
     "torpedoTrailOpacity": [
@@ -2354,6 +2416,7 @@
       0.3
     ],
     "iconTorpedo": "big_wheeled_radar",
+    "iconAcousticDecoy": "decoy_radar",
     "iconTorpedoWithActiveSonar": "big_wheeled_radar",
     "colorTorpedo": [
       70,

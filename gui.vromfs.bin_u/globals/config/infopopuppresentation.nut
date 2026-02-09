@@ -23,6 +23,16 @@ let presentations = {
   tanks_legacy_tree = {
     image = "ui/images/tanks_legacy_tree_info.avif"
   }
+  new_year_2026 = {
+    image = "ui/images/event_bg_christmas_2024.avif"
+    imageSize = [1200, 554]
+  }
+  china_tanks_early_access = {
+    image = "ui/images/tanks_china_tree_info.avif"
+  }
+  spend_event_lunar_ny = {
+    image = "ui/images/spending_event_lunar_info.avif"
+  }
 }
 
 return memoize(@(id) mkDefPresentation(id).__update(presentations?[id] ?? {}))

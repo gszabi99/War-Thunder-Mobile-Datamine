@@ -557,6 +557,19 @@
     "maxSpeed": 103.612,
     "turnTime": 42.3217
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "tu_2_a*",
+        "to": "tu_2_postwar_a*"
+      },
+      {
+        "from": "tu_2_n*",
+        "to": "tu_2_postwar_n*"
+      }
+    ]
+  },
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {

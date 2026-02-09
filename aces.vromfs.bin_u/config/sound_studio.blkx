@@ -8,6 +8,7 @@
   "rejectFarOneshots": true,
   "androidUseOpenSLFallback": true,
   "blockFailedEvents": true,
+  "allowEventsWithoutAssets": true,
   "memoryPc": 100,
   "memoryPS4": 175,
   "memoryPCLowMode": 100,
@@ -1273,6 +1274,29 @@
       "eventBack": "engine_jet_ai",
       "eventSurround": "",
       "eventLod1": "engine_jet_ai",
+      "rpmSmooth": 0.005,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_rocket_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_rocket_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_rocket_ai",
       "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -2986,6 +3010,31 @@
       "eventBack": "engine_jet",
       "eventSurround": "",
       "eventLod1": "engine_jet",
+      "rpmSmooth": 0.001,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    }
+  },
+  "engine_rocket": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_start",
+      "eventStop": "engine_jet_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_rocket",
+      "eventSurround": "",
+      "eventLod1": "engine_rocket",
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.005,

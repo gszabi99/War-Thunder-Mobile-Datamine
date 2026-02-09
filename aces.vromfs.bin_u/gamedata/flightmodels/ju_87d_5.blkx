@@ -5329,5 +5329,12 @@
       1.64348,
       -1.11759e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "ju_87d_5_a*",
+      "to": "ju_87d_5_africa42_a*"
+    }
   }
 }

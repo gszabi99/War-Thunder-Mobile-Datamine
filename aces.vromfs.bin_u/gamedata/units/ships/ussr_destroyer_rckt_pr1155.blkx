@@ -1074,6 +1074,67 @@
         }
       },
       {
+        "trigger": "gunner7",
+        "triggerGroup": "special",
+        "blk": "gameData/weapons/rocketGuns/574mm_85ru_asroc_alike_rocket_naval_bullet.blk",
+        "weaponType": "rockets",
+        "emitter": "bone_rocket_05",
+        "flash": "bone_rocket_05",
+        "ammoDpGenFmt": "bone_rocket_%02d_dm",
+        "emitterGenRange": [
+          5,
+          8
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "useEmitter": true,
+        "allowableDelta": [
+          30.0,
+          1.0
+        ],
+        "bullets": 400,
+        "startFx": "smoke_rocketlaunch_ground",
+        "startFxOffset": [
+          1.5,
+          0.0,
+          0.0
+        ],
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "reloadTime": 20.0,
+        "enableCourseCorrection": true,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 10.0,
+        "aimMaxDist": 14000.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.0,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 1.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "auxiliary_caliber_gun_01",
+          "gun": "auxiliary_caliber_gun_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
         "trigger": "countermeasures",
         "triggerGroup": "flares",
         "weaponType": "ircm",
@@ -1626,6 +1687,67 @@
               }
             },
             {
+              "trigger": "gunner7",
+              "triggerGroup": "special",
+              "blk": "gameData/weapons/rocketGuns/574mm_85ru_asroc_alike_rocket_naval_bullet.blk",
+              "weaponType": "rockets",
+              "emitter": "bone_rocket_05",
+              "flash": "bone_rocket_05",
+              "ammoDpGenFmt": "bone_rocket_%02d_dm",
+              "emitterGenRange": [
+                5,
+                8
+              ],
+              "emitterGenFmt": "bone_rocket_%02d",
+              "useEmitter": true,
+              "allowableDelta": [
+                30.0,
+                1.0
+              ],
+              "bullets": 400,
+              "startFx": "smoke_rocketlaunch_ground",
+              "startFxOffset": [
+                1.5,
+                0.0,
+                0.0
+              ],
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "reloadTime": 20.0,
+              "enableCourseCorrection": true,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_gun_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
               "trigger": "countermeasures",
               "triggerGroup": "flares",
               "weaponType": "ircm",
@@ -2153,6 +2275,67 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_turret_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "special",
+              "blk": "gameData/weapons/rocketGuns/574mm_85ru_asroc_alike_rocket_naval_bullet.blk",
+              "weaponType": "rockets",
+              "emitter": "bone_rocket_05",
+              "flash": "bone_rocket_05",
+              "ammoDpGenFmt": "bone_rocket_%02d_dm",
+              "emitterGenRange": [
+                5,
+                8
+              ],
+              "emitterGenFmt": "bone_rocket_%02d",
+              "useEmitter": true,
+              "allowableDelta": [
+                30.0,
+                1.0
+              ],
+              "bullets": 400,
+              "startFx": "smoke_rocketlaunch_ground",
+              "startFxOffset": [
+                1.5,
+                0.0,
+                0.0
+              ],
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "reloadTime": 20.0,
+              "enableCourseCorrection": true,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_gun_01",
+                "gun": "auxiliary_caliber_gun_01"
               },
               "limits": {
                 "yaw": [

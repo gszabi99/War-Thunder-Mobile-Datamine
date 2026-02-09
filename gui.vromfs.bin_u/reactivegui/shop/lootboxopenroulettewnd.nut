@@ -28,10 +28,13 @@ let lootboxOpenRouletteConfig = require("%rGui/shop/lootboxOpenRouletteConfig.nu
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getRouletteImage } = require("%appGlobals/config/lootboxPresentation.nut")
+
+let ROULETTE_HIDE_MODALS_ID = "rouletteHideModals"
 
 let markSize = evenPx(40)
 let markMaxOffset = hdpx(20)
@@ -1114,6 +1117,8 @@ let lootboxWnd = @() {
   key = WND_UID
   size = flex()
   onClick = @() null
+  onAttach = @() hideModals(ROULETTE_HIDE_MODALS_ID)
+  onDetach = @() unhideModals(ROULETTE_HIDE_MODALS_ID)
   children = {
     size = flex()
     children = rouletteWnd

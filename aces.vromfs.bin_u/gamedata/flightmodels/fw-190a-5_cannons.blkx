@@ -1885,5 +1885,12 @@
         }
       }
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "fw_190a_5_a*",
+      "to": "fw_190a_5_tunisia_a*"
+    }
   }
 }

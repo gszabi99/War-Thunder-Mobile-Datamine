@@ -2,12 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let logE = log_with_prefix("[GM_EVENT] ")
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { registerScene } = require("%rGui/navState.nut")
+let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
+let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { isGmEventWndOpened, closeGmEventWnd, curGmList, openedGmEventId, reqBattleMods, hasAccessCurGmEvent
 } = require("%rGui/event/gmEventState.nut")
 let { userstatStats, userstatSetStat, userstatRegisterExecutor, statsInProgress
 } = require("%rGui/unlocks/userstat.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
@@ -45,6 +47,7 @@ let curEventAccessStat = Computed(@() openedGmEventId.get() == null ? ""
 let curEventAccessStatValue = Computed(@() curEventAccessStat.get() == "" ? STAT_NO_NEED
   : userstatStats.get()?.stats["global"][statMode][curEventAccessStat.get()])
 let isAcceessStatInProgress = Computed(@() !!statsInProgress.get()?[curEventAccessStat.get()])
+let curGmEventBg = keepref(Computed(@() gmEventPresentation(openedGmEventId.get()).bgImage))
 
 function setAccessStat(value, context = {}) {
   if (isAcceessStatInProgress.get())
@@ -155,7 +158,8 @@ let content = @() {
             gmEventSubTitleText(loc($"{openedGmEventId.get()}/accessPacks/header"))
             gmEventContent(Computed(@() reqBattleMods.get().len() == 0 ? []
               : shopGoodsAllCampaigns.get()
-                .filter(@(goods) null != (goods?.battleMods.findvalue(@(_, bm) reqBattleMods.get().contains(bm))))
+                .filter(@(goods)
+                  null != (goods.rewards.findvalue(@(v) v.gType == G_BATTLE_MOD && reqBattleMods.get().contains(v.id))))
                 .values()))
             gmEventDescriptionText(loc($"{openedGmEventId.get()}/accessPacks/description"))
           ]
@@ -266,8 +270,6 @@ let gmEventWnd = @() {
   key = wndKey
   size = flex()
   padding = saBordersRv
-  rendObj = ROBJ_IMAGE
-  image = Picture(gmEventPresentation(openedGmEventId.get()).bgImage)
   flow = FLOW_VERTICAL
   gap = headerGap
   children = [
@@ -278,4 +280,8 @@ let gmEventWnd = @() {
   animations = wndSwitchAnim
 }
 
-registerScene("gmEventWnd", gmEventWnd, closeGmEventWnd, isGmEventWndOpened)
+let sceneId = "gmEventWnd"
+registerScene(sceneId, gmEventWnd, closeGmEventWnd, isGmEventWndOpened)
+setSceneBgFallback(sceneId, eventBgFallback)
+setSceneBg(sceneId, curGmEventBg.get())
+curGmEventBg.subscribe(@(v) setSceneBg(sceneId, v))

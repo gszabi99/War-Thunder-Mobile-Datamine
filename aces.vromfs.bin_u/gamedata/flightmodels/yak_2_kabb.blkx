@@ -2165,5 +2165,18 @@
       0.861147,
       -1.56138
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "yak_2_kabb_c*",
+        "to": "yak_2_kabb_winter_c*"
+      },
+      {
+        "from": "yak_2_kabb_n*",
+        "to": "yak_2_kabb_winter_n*"
+      }
+    ]
   }
 }

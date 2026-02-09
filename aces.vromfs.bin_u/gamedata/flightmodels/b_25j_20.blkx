@@ -2975,5 +2975,18 @@
       0.840381,
       -2.69429
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "b_25j_20_usaaf_olive_c*",
+        "to": "b_25j_1_usaaf_silver_c*"
+      },
+      {
+        "from": "b_25j_20_usaaf_olive_n*",
+        "to": "b_25j_1_usaaf_silver_n*"
+      }
+    ]
   }
 }

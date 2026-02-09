@@ -1964,24 +1964,49 @@
       ]
     },
     "loader2": {
-      "dmPart": "loader_02_dm",
-      "role": "loader",
+      "dmPart": [
+        "loader_02_dm",
+        "loader_02_dm"
+      ],
+      "role": [
+        "loader",
+        "loader"
+      ],
       "substitute": [
         "machine_gunner",
-        "commander"
+        "commander",
+        "machine_gunner"
       ]
     },
     "loader1": {
-      "dmPart": "loader_01_dm",
-      "role": "loader",
+      "dmPart": [
+        "loader_01_dm",
+        "loader_01_dm"
+      ],
+      "role": [
+        "loader",
+        "loader"
+      ],
       "substitute": [
         "machine_gunner",
-        "commander"
+        "commander",
+        "machine_gunner"
       ]
     },
     "commander": {
-      "dmPart": "commander_dm",
-      "role": "commander"
+      "dmPart": [
+        "commander_dm",
+        "commander_dm"
+      ],
+      "role": [
+        "commander",
+        "commander"
+      ],
+      "substitute": [
+        "machine_gunner",
+        "loader1",
+        "loader2"
+      ]
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",

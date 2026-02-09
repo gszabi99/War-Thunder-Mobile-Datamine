@@ -1685,6 +1685,13 @@
       -2.93367e-8
     ]
   },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": {
+      "from": "yak_3_a*",
+      "to": "yak_3_czech45_a*"
+    }
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,

@@ -20,6 +20,7 @@ let wndContent = @() {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(15)
+  onDetach = close
   children = [
     {
       rendObj = ROBJ_TEXT

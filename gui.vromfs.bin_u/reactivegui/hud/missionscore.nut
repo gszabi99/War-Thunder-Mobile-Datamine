@@ -1,28 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { eventbus_subscribe } = require("eventbus")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+let { missionScoresTable } = require("%rGui/hud/missionScoreState.nut")
 
+
+let hiddenScores = ["flags_count_t1", "flags_count_t2"].totable()
 let missionScoreIconSize = [hdpxi(40), hdpxi(40)]
-let missionScoresTable = mkWatched(persist, "missionScoresTable", {})
+
 let missionScoreBlockSize = [hdpxi(180), 2 * missionScoreIconSize[1]]
-
-isInBattle.subscribe(@(_) missionScoresTable.set({}))
-
-eventbus_subscribe("setMissionScore", function(ev) {
-  missionScoresTable.mutate( @(v) ev.visible
-    ? v[ev.id] <- {
-      icon = ev.icon
-      value = ev.value
-      maxValue = ev.maxValue
-      army = ev.army
-    }
-    : v.$rawdelete(ev.id))
-})
 
 function scoreLineCtr(data, scale) {
   let font = scaleFontWithTransform(fontVeryTinyShaded, scale, [0, 1])
@@ -59,13 +47,14 @@ function mkMissionScoreListCtr(scoresTbl, scale) {
 }
 
 function missionScoreCtr(scale) {
-  return @() missionScoresTable.get().len() == 0 ? { watch = missionScoresTable }
+  let mScoresTableFiltered = Computed(@() missionScoresTable.get().filter(@(v) v.id not in hiddenScores))
+  return @() mScoresTableFiltered.get().len() == 0 ? { watch = mScoresTableFiltered }
     : {
-      watch = missionScoresTable
+      watch = mScoresTableFiltered
       size = missionScoreBlockSize
       flow = FLOW_VERTICAL
       gap = hdpx(10)
-      children = mkMissionScoreListCtr(missionScoresTable.get(), scale)
+      children = mkMissionScoreListCtr(mScoresTableFiltered.get(), scale)
     }
 }
 

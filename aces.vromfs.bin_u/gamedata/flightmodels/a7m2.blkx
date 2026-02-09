@@ -2303,5 +2303,18 @@
       1.75649,
       0.0378628
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "a7m2_a*",
+        "to": "a7m2_beige_a*"
+      },
+      {
+        "from": "a7m2_n*",
+        "to": "a7m2_beige_n*"
+      }
+    ]
   }
 }

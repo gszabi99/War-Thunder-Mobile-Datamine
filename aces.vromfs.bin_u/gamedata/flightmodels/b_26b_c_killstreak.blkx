@@ -2358,6 +2358,13 @@
       0.0
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "b_26b_c_c*",
+      "to": "b_26b_c_shark_c*"
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "b_26b_c_killstreak_default",

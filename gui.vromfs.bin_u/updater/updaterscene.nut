@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command  = null } = require_optional("console") 
 let { statusText, progressPercent } = require("updaterState.nut")
 let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
-let { screenWeights, loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
+let { screenWeights, loadingAnimBg, chooseRandomScreen, curScreenId } = require("%globalsDarg/loading/loadingAnimBg.nut")
 let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { gradientLoadingTip } = require("loadingTip.nut")
@@ -17,9 +18,19 @@ let loadingScreensWhitelist = [
   "simple_tank_7"
   "simple_airplane_3"
 ]
-screenWeights.set(screensList
-  .filter(@(_, k) loadingScreensWhitelist.contains(k))
-  .map(@(s) s.weight))
+let dbgScreen = mkWatched(persist, "dbgScreen", null)
+
+function updateScreenList() {
+  screenWeights.set(dbgScreen.get() != null ? { [dbgScreen.get()] = 1 }
+    : screensList
+        .filter(@(_, k) loadingScreensWhitelist.contains(k))
+        .map(@(s) s.weight))
+  if (curScreenId.get() not in screenWeights.get())
+    chooseRandomScreen()
+}
+
+updateScreenList()
+dbgScreen.subscribe(@(_) updateScreenList())
 
 let waitSpinner = {
   size = [spinnerSize, spinnerSize]
@@ -42,6 +53,11 @@ let bottomBlock = {
     mkProgressbar(progressPercent, 0xFF7FAEFF)
   ]
 }
+
+if (register_command != null)
+  screensList.each(@(_, id) register_command(
+    @() dbgScreen.get() == id ? dbgScreen.set(null) : dbgScreen.set(id),
+    $"debug.loadingScreen.{id}"))
 
 return {
   size = flex()

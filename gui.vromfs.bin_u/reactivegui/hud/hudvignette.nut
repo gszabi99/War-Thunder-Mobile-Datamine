@@ -18,14 +18,14 @@ const dangerLineFadeTime = 0.2
 
 const dangerLineH = hdpxi(100)
 const stripeImgH = dangerLineH
-let stripeImgW = round(stripeImgH / 805.0 * 609).tointeger()
-let stripeImgGap = round(dangerLineH * 0.56).tointeger()
+const stripeImgW = round(stripeImgH / 805.0 * 609).tointeger()
+const stripeImgGap = round(dangerLineH * 0.56).tointeger()
 
-let stripeW = stripeImgW + stripeImgGap
-let stripesTotal = ceil(sw(100) / stripeW).tointeger() + 1
+const stripeW = stripeImgW + stripeImgGap
+const stripesTotal = ceil(sw(100) / stripeW).tointeger() + 1
 
 let stripeImg = {
-  size = static [stripeImgW, stripeImgH]
+  size = const [stripeImgW, stripeImgH]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin/danger_line_mask.svg:{stripeImgW}:{stripeImgH}:P")
   keepAspect = true
@@ -51,7 +51,7 @@ let mkDangerLine = @(isTop) {
       duration = dangerLineFadeTime, easing = OutQuad, playFadeOut = true }
   ]
   children = {
-    size = static [stripesTotal * stripeW, dangerLineH]
+    size = const [stripesTotal * stripeW, dangerLineH]
     flow = FLOW_HORIZONTAL
     gap = stripeImgGap
     transform = {}

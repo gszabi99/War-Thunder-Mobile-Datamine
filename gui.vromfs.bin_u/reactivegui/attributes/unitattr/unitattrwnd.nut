@@ -52,10 +52,7 @@ let txt = @(ovr) {
   rendObj = ROBJ_TEXT
   size = SIZE_TO_CONTENT
   color = textColor
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
-}.__merge(fontTiny, ovr)
+}.__merge(fontTinyShaded, ovr)
 
 let mkVerticalPannableArea = @(content, override = {}) {
   size = flex()

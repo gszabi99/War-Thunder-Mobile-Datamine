@@ -72,7 +72,7 @@ pointer.subscribe(function(p) {
     : cx - saSize[0] / 2
   let y = alignV & ALIGN_B ? cy + halfY - saSize[1]
     : cy - halfY
-  transformInProgress.set({ align = alignH | alignV, pos = [x, y] })
+  transformInProgress.set({ align = alignH | alignV, pos = [x.tointeger(), y.tointeger()] })
 })
 
 let wasMoved = @(pointerV, x, y) pointerV.time + START_MOVE_TIME_MSEC > get_time_msec()

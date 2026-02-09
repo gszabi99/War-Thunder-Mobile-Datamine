@@ -3,7 +3,11 @@ let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { WatchedImmediate } = require("%sqstd/frp.nut")
 let { log } = require("%sqstd/log.nut")()
 
+
 let sharedData = {}
+let persistSharedData = persist("PERSIST_SHARED_DATA", @() {}) 
+
+let mkNdbKey = @(name) $"SHARED_WATCHED_STATE__{name}"
 
 function make(name, ctor) {
   if (sharedData?[name].watch != null) {
@@ -11,13 +15,18 @@ function make(name, ctor) {
     return sharedData[name].watch
   }
 
-  let key = ["SHARED_WATCHED_STATE", name]
+  let key = mkNdbKey(name)
   local val = null
-  if (ndbExists(key))
-    val = ndbRead(key)
+  if (name in persistSharedData)
+    val = persistSharedData[name]
   else {
-    val = ctor()
-    ndbWrite(key, val)
+    if (ndbExists(key))
+      val = ndbRead(key)
+    else {
+      val = ctor()
+      ndbWrite(key, val)
+    }
+    persistSharedData[name] <- val
   }
 
   let res = WatchedImmediate(val)
@@ -28,6 +37,7 @@ function make(name, ctor) {
     if (data.isExternalEvent)
       return
     ndbWrite(key, value)
+    persistSharedData[name] <- value
     try {
       eventbus_send_foreign("sharedWatched.update", { name })
     } catch (err) {
@@ -46,9 +56,12 @@ eventbus_subscribe("sharedWatched.update",
     if (data?.watch == null)
       return
     data.isExternalEvent = true
-    let key = ["SHARED_WATCHED_STATE", name]
-    if (ndbExists(key))
-      data.watch.set(ndbRead(key))
+    let { key } = data
+    if (ndbExists(key)) {
+      let val = ndbRead(key)
+      persistSharedData[name] <- val
+      data.watch.set(val)
+    }
     data.isExternalEvent = false
   })
 

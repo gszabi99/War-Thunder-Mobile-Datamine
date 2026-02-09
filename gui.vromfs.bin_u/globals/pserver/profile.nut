@@ -4,6 +4,8 @@ let { min, max } = require("math")
 let { units, levelInfo, campConfigs } = require("campaign.nut")
 let { curCampaignSlotUnits } = require("slots.nut")
 let { curUnitInProgress } = require("pServerApi.nut")
+let { battleRentInfo } = require("%appGlobals/rentalState.nut")
+
 
 let defaultProfileLevelInfo = {
   exp = 0
@@ -29,8 +31,11 @@ let campUnitsCfg = Computed(function() {
 let campMyUnits = Computed(function() {
   let cfg = campUnitsCfg.get()
   let { upgradeUnitBonus = {} } = campConfigs.get()?.gameProfile
-  return units.get().map(@(u)
-    (cfg?[u.name] ?? {}).__merge(u, (u?.isUpgraded ?? false) ? upgradeUnitBonus : {}))
+  let res = {}
+  foreach (u in units.get())
+    if (u.name in cfg)
+      res[u.name] <- cfg[u.name].__merge(u, (u?.isUpgraded ?? false) ? upgradeUnitBonus : {})
+  return res
 })
 
 let curUnitInProgressExt = Watched(curUnitInProgress.get())
@@ -50,8 +55,16 @@ let curUnit = Computed(function() {
   return res ?? my.findvalue(@(_) true)
 })
 let curUnitName = Computed(@() curUnit.get()?.name)
-let battleUnitsMaxMRank = Computed(@() curCampaignSlotUnits.get() == null ? (curUnit.get()?.mRank ?? 0)
-  : curCampaignSlotUnits.get().reduce(@(res, name) max(res, campConfigs.get()?.allUnits[name].mRank ?? 0), 0))
+let battleUnitsMaxMRank = Computed(function() {
+  let { allUnits = {} } = campConfigs.get()
+  let slotsRank = curCampaignSlotUnits.get() == null ? (curUnit.get()?.mRank ?? 0)
+    : curCampaignSlotUnits.get().reduce(@(res, name) max(res, allUnits?[name].mRank ?? 0), 0)
+  let { unit = null, unitList = null } = battleRentInfo.get()
+  let rentRank = unit != null ? (allUnits?[unit].mRank ?? 0)
+    : unitList != null ? unitList.reduce(@(res, name) max(res, allUnits?[name].mRank ?? 0), 0)
+    : 0
+  return max(slotsRank, rentRank)
+})
 
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.get())

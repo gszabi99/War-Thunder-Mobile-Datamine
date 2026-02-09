@@ -2043,6 +2043,13 @@
       3.98199e-7
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "bf_109f_4_a*",
+      "to": "bf_109f_4_eastern_front_a*"
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "bf-109f-4_killstreak_default",

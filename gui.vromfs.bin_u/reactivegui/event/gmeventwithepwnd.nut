@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let { isGmEventWndEPOpened, closeGmEPWnd, curGmList, openedGMEvenPasstId, hasAccessCurGmEvent
+let { openedGMEvenPassCounter, closeGmEPWnd, curGmList, openedGMEvenPasstId, hasAccessCurGmEvent
 } = require("%rGui/event/gmEventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
@@ -17,7 +17,6 @@ let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { curOpenEventPass, eventBgImage, getEventPassName } = require("%rGui/battlePass/eventPassState.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
@@ -104,7 +103,7 @@ let footer = @() {
               gap = hdpx(20)
               children = [
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_shop.svg", utf8ToUpper(loc("eventShop"))),
-                  @() openShopWnd(defaultShopCategory), COMMON)
+                  @() openShopWnd(null, null, "events"), COMMON)
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_event_pass.svg", utf8ToUpper(loc("eventPass"))),
                   @() openPassScene(getEventPassName(curOpenEventPass.get()?.eventName)))
               ]
@@ -164,6 +163,6 @@ let gmEventWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("gmEventEPWnd", gmEventWnd, closeGmEPWnd, isGmEventWndEPOpened)
+registerScene("gmEventEPWnd", gmEventWnd, closeGmEPWnd, openedGMEvenPassCounter)
 setSceneBg("gmEventEPWnd", eventBgImage.get())
 eventBgImage.subscribe(@(v) setSceneBg("gmEventEPWnd", v))

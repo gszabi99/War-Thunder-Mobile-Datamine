@@ -15,7 +15,7 @@ let { canZoom, isInZoom, groupIsInAir, group2IsInAir, group3IsInAir, group4IsInA
 let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold } = require("%rGui/hud/currentWeaponsStates.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { mkActionBtnGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { mkActionBtnGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
@@ -99,7 +99,7 @@ let mkRhombBtnBorder = @(stateFlags, isAvailable, scale) {
   transform = { rotate = 45 }
 }
 
-function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale) {
+function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale, addChild = null) {
   let stateFlags = Watched(0)
   let isDisabled = mkIsControlDisabled(shortcutId)
   let btnSize = scaleEven(touchButtonSize, scale)
@@ -133,12 +133,14 @@ function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale) {
         hotkeys = mkGamepadHotkey(shortcutId)
         onClick = @() useShortcut(shortcutId)
       }
+      addChild
     ]
   }
 }
 
 let mkRhombFireworkBtn = @(actionItem, scale)
-  mkRhombSimpleActionBtn(actionItem, "ID_FIREWORK", "ui/gameuiskin#hud_ammo_fireworks.svg", scale)
+  mkRhombSimpleActionBtn(actionItem, "ID_FIREWORK", "ui/gameuiskin#hud_ammo_fireworks.svg", scale,
+    mkConsumableSpend("firework_kit"))
 
 function mkAntiairButton(scale) {
   let actionItem = Computed(@() actionBarItems.get()?.AB_MANUAL_ANTIAIR)

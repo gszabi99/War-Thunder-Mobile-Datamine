@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
+let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
 let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}

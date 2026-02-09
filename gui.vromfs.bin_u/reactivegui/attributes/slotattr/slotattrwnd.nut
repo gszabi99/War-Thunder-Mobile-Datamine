@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let { getSlotAttrBg, getAttrTabPresentation } = require("%appGlobals/config/slotAttrPresentation.nut")
@@ -9,10 +8,10 @@ let { slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
+let { orderByCurrency, GOLD } = require("%appGlobals/currenciesState.nut")
 
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { gamercardWithoutLevelBlock } = require("%rGui/mainMenu/gamercard.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
@@ -26,10 +25,11 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel, curCampaignSlotExp,
-  curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax, openSlotExpWnd,
-  isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp,
-  markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable
+let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel, curCampSlotExp,
+  curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax, openSlotExpWnd, openSlotResetWnd,
+  isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp, isResetSlotLevelAllowed,
+  isResetSlotSkillsAllowed, markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable,
+  slotLevelResetPrice, slotSkillsResetPrice
 } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -40,6 +40,8 @@ let panelBg = require("%rGui/components/panelBg.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let buySlotLevelWnd = require("%rGui/attributes/slotAttr/buySlotLevelWnd.nut")
 let { tooltipBg } = require("%rGui/tooltip.nut")
+let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
+let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 
 
 isSlotAttrOpened.subscribe(function(v) {
@@ -62,10 +64,7 @@ let txt = @(ovr) {
   rendObj = ROBJ_TEXT
   size = SIZE_TO_CONTENT
   color = textColor
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
-}.__merge(fontTiny, ovr)
+}.__merge(fontTinyShaded, ovr)
 
 let mkVerticalPannableArea = @(content, override = {}) {
   size = flex()
@@ -200,18 +199,22 @@ let applyAction = function() {
 }
 
 let actionButtons = @() {
-  watch = [selAttrSpCost, slotLevelsToMax, selectedSlotIdx, attrSlotData, curCampaignSlotExp]
+  watch = [selAttrSpCost, slotLevelsToMax, selectedSlotIdx, attrSlotData, curCampSlotExp, isResetSlotLevelAllowed, isResetSlotSkillsAllowed]
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap * 0.5
   children = [
     textButtonCommon(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
       { hotkeys = ["^J:LB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
+    isResetSlotLevelAllowed.get() || isResetSlotSkillsAllowed.get()
+      ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_reset")), openSlotResetWnd,
+        { ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
+      : null
     slotLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-          (slotLevel.get() ?? 0) + 1,
+          slotLevel.get() + 1,
           @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"] })
-    curCampaignSlotExp.get() <= 0 || slotLevelsToMax.get() <= 0 ? null
+    curCampSlotExp.get() <= 0 || slotLevelsToMax.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnBoostLevel")),
           openSlotExpWnd,
           { hotkeys = ["^J:RB"] })
@@ -274,11 +277,8 @@ let slotTitle = @(slot, text) {
       pos = [0, -hdpx(10)]
       rendObj = ROBJ_TEXT
       color = textColor
-      fontFx = FFT_GLOW
-      fontFxColor = 0xFF000000
-      fontFxFactor = hdpx(64)
       text
-    }.__update(fontSmall)
+    }.__update(fontSmallShaded)
     mkSlotLevelBlock(slot, maxSlotLevels.get())
   ]
 }
@@ -324,12 +324,29 @@ let mkLeftBlockSlotCampaign = @(backCb, keyHintText, slotNameBlock) @() {
   ]
 }
 
+function balanceButtons() {
+  let currenciesIds = { [GOLD] = true } 
+  currenciesIds[slotLevelResetPrice.get()?.currencyId ?? ""] <- true
+  currenciesIds[slotSkillsResetPrice.get()?.currencyId ?? ""] <- true
+  currenciesIds.$rawdelete("")
+  return {
+    watch = [slotLevelResetPrice, slotSkillsResetPrice]
+    size = FLEX_V
+    hplace = ALIGN_RIGHT
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = gamercardGap
+    children = currenciesIds.keys()
+      .sort(@(a, b) (orderByCurrency?[a] ?? 100) <=> (orderByCurrency?[b] ?? 100))
+      .map(@(c) mkCurrencyBalance(c, @() openShopWndByCurrencyId(c)))
+  }
+}
+
 let mkGamercardSlotCampaign = @(backCb, keyHintText, slotNameBlock = null){
   size = [ saSize[0], gamercardHeight ]
-  hplace = ALIGN_CENTER
   children = [
     mkLeftBlockSlotCampaign(backCb, keyHintText, slotNameBlock)
-    gamercardWithoutLevelBlock
+    balanceButtons
   ]
 }
 

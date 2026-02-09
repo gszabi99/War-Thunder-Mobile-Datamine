@@ -73,7 +73,7 @@ return freeze({
   }
   BATTLE = { 
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = [hdpx(400), defButtonHeight]
       minWidth = defButtonMinWidth
     }
     childOvr = fontTinyAccentedShadedBold

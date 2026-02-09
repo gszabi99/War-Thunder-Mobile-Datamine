@@ -23,7 +23,7 @@ let blinking = [{
 let getThreatImg = @(size = imgSize) {
   size = [size, size]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#hud_missile_anti_ship.svg:{size}:{size}:P")
+  image = Picture($"ui/gameuiskin#hud_asroc.svg:{size}:{size}:P")
 }
 let getThreatImgBlinking = @(size = imgSize)
   getThreatImg(size).__merge({ key = {} animations = blinking })

@@ -2345,5 +2345,18 @@
       1.43107,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "yokosuka_d4y3_mod33_a*",
+        "to": "d4y3_brown_a*"
+      },
+      {
+        "from": "yokosuka_d4y3_mod33_n*",
+        "to": "d4y3_brown_n*"
+      }
+    ]
   }
 }

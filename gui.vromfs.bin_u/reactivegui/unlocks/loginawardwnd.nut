@@ -70,9 +70,6 @@ let mkText = @(text, style) {
   text
   rendObj = ROBJ_TEXT
   color = activeTextColor
-  fontFx = FFT_GLOW
-  fontFxFactor = max(64, hdpx(64))
-  fontFxColor = 0xFF000000
 }.__update(style)
 
 let header = {
@@ -93,7 +90,7 @@ let header = {
       size = const [hdpx(80), SIZE_TO_CONTENT]
       children = canClose.get() ? backButton(close, { animations = wndSwitchAnim }) : null
     }
-    mkText(loc("dailyRewards/header"), fontBig)
+    mkText(loc("dailyRewards/header"), fontBigShaded)
   ]
 }
 
@@ -371,7 +368,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
         valign = ALIGN_CENTER
         color = isReceived ? 0x80808080 : 0xFFFFFFFF
         margin = borderWidth
-      }.__update(fontVeryTiny))
+      }.__update(fontVeryTinyShaded))
     isCurrentActivePlate ? activePlateButtonBlock() : null
     isCurrentActivePlate ? activePlateHotkeyComp : null
     needReceiveAnim ? checkImgWithAnim
@@ -475,7 +472,7 @@ function rewardText() {
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_CENTER
       color = commonTextColor
-    }.__update(fontTiny))
+    }.__update(fontTinyShaded))
 }
 
 function dayInRowInfo() {
@@ -487,7 +484,7 @@ function dayInRowInfo() {
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         color = activeTextColor
-      }.__update(fontSmall))
+      }.__update(fontSmallShaded))
 }
 
 let content = {

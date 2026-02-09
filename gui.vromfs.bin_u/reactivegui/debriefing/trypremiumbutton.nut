@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_session_id_for_premium_bonus } = require("%appGlobals/pServer/pServerApi.nut")
+let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
@@ -39,27 +40,28 @@ let btnGlow = {
   color = glowColor
 }
 
-let btnIcon = {
+let btnIcon = @() {
+  watch = allow_subscriptions
   size = [premIconW, premIconH]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#premium_active_big.avif:{premIconW}:{premIconH}:K:P")
+  image = allow_subscriptions.get()
+    ? Picture($"ui/gameuiskin#subs_vip.avif:{premIconW}:{premIconH}:P")
+    : Picture($"ui/gameuiskin#premium_active_big.avif:{premIconW}:{premIconH}:K:P")
   keepAspect = KEEP_ASPECT_FIT
 }
 
-let btnText = {
+let btnText = @() {
+  watch = allow_subscriptions
   size = FLEX_H
   margin = const [0, hdpx(10)]
   halign = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [0, ph(29)]
+  pos = [0, ph(35)]
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA
-  text = loc("debriefing/tryPremium")
+  text = loc(allow_subscriptions.get() ? "debriefing/trySubs" : "debriefing/tryPremium")
   color = textColor
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpxi(32)
-  fontFxColor = 0xFF000000
-}.__update(fontTiny)
+}.__update(fontTinyShaded)
 
 let glare = @() !isDebriefingAnimFinished.get() ? { watch = isDebriefingAnimFinished } : {
   watch = isDebriefingAnimFinished

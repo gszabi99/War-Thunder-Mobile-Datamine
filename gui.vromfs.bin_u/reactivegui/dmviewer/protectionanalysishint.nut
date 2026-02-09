@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "math" import min, max, round
+from "math" import max, round
 from "hangar" import CHECK_PROT_RICOCHET_POSSIBLE, CHECK_PROT_RICOCHET_GUARANTEED
 from "%sqstd/underscore.nut" import isEqual, prevIfEqual
 from "%sqstd/string.nut" import utf8Capitalize

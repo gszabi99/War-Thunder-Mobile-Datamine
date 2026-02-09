@@ -2007,5 +2007,18 @@
       1.42614,
       -1.13606e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "i_15_1935_a*",
+        "to": "i_15_1935_moscow_a*"
+      },
+      {
+        "from": "i_15_add_a*",
+        "to": "i_15_add_white_a*"
+      }
+    ]
   }
 }

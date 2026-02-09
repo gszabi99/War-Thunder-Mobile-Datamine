@@ -11,9 +11,6 @@ let { get_emulator_system_flags, get_emulator_input_flags, get_emulated_input_co
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { is_texture_uhq_supported } = require("graphicsOptions")
-let { get_common_local_settings_blk } = require("blkGetters")
-let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 let { median } = require("%sqstd/math.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -111,10 +108,6 @@ let connectionTypeMap = {
   [2] =  "Wi-Fi",
 }
 
-let isUhq = @() has_additional_graphics_content.get()
-  && is_texture_uhq_supported()
-  && !!get_common_local_settings_blk()?.uhqTextures
-
 function onFrameTimes(evt, _eid, _comp) {
   log("[BQ] send battle fps info to BQ")
   let data = blk2SquirrelObjNoArrays(evt[0])
@@ -161,7 +154,6 @@ function onFrameTimes(evt, _eid, _comp) {
     gameVersion = get_game_version_str()
     apkVersion = get_base_game_version_str()
     isSquad = wasInSquadLastBattle
-    isUltraHigh = isUhq()
     isDeferred = true
     aa = get_gui_option(OPT_AA)
   })

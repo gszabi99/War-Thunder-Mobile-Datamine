@@ -4335,5 +4335,18 @@
       2.02548,
       0.00011934
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "aichi_b7a2_dark_green_c*",
+        "to": "b7a2_metal_c*"
+      },
+      {
+        "from": "aichi_b7a2_dark_green_n*",
+        "to": "b7a2_metal_n*"
+      }
+    ]
   }
 }

@@ -2,10 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_subscribe
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%rGui/hudState.nut" import unitType
-from "%rGui/components/backButton.nut" import backButton, backButtonHeight
+from "%rGui/components/backButton.nut" import backButton
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor
 from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import tacticalMapMarkersLayer
 
 let mapSizePx = min(saSize[1], saSize[0] * 0.5625)

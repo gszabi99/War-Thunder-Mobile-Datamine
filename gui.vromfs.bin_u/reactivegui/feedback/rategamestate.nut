@@ -17,7 +17,7 @@ let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { getScoreFullRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { appStoreProdVersion } = require("%rGui/appStoreVersion.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 let hasAndroidStore = is_android && (isHuaweiBuild || isDownloadedFromGooglePlay())
@@ -123,7 +123,7 @@ let isGameUnrated = Computed(@()
   ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.get()) || savedRating.get() == 0)) 
 
 function needRateGameByDebriefing(dData) {
-  let { sessionId = -1, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
+  let { sessionId = -1, isFinished = false, isTutorial = false, players = {} } = dData
   if (!isFinished || isTutorial)
     return false
   if (sessionId == -1) 
@@ -131,9 +131,8 @@ function needRateGameByDebriefing(dData) {
   let player = players?[myUserIdStr.get()]
   if (player == null)
     return false
-  let { team = null } = player
-  let score = player?[getScoreKeyRaw(campaign)] ?? 0
-  return team != null && score > 0
+  return player.team > 0 
+    && getScoreFullRaw(player) > 0
 }
 
 let needRateGame = Computed(@() allow_review_cue.get()

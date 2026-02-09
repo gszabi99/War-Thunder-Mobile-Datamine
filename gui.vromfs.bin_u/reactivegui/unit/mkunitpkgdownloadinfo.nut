@@ -26,9 +26,6 @@ let textArea = @(text, ovr = {}) {
     color = textColor
     halign = ALIGN_CENTER
     text
-    fontFxColor = Color(0, 0, 0, 255)
-    fontFxFactor = 50
-    fontFx = FFT_GLOW
   }.__update(fontTinyShaded, ovr)
 }
 

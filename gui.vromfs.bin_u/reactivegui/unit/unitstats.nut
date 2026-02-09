@@ -4,7 +4,6 @@ let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
 let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
-let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getWeaponShortNameWithCount, getWeaponTypeName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getSpeedText } = require("%rGui/measureUnits.nut")
@@ -17,8 +16,6 @@ let goodPenetrationColor = 0xFF64B140
 let normalPenetrationColor = 0xFFFFD966
 let badPenetrationColor = 0xFFE06666
 let addedFromSlot = 0xFF65BC82
-
-let MAX_ATTR_VALUE = 5
 
 let armorProtectionPercentageColors = [
   goodPenetrationColor,
@@ -413,14 +410,14 @@ function getTotalWeaponAmountByCaliberAndType(weaponSlots, caliber, weaponType) 
   local total = 0
   foreach (weaponSlot in weaponSlots)
     foreach (weap in weaponSlot?.wPresets.default_common.weapons ?? {})
-      if (weap.bulletSets[weap.bulletSets.keys()[0]].caliber == caliber && weap.trigger == weaponType)
+      if (weap.bulletSets.len() > 0 && weap.bulletSets[weap.bulletSets.keys()[0]].caliber == caliber && weap.trigger == weaponType)
         total += weap.guns
   return total
 }
 
 function getAirGunName(s, u, isFullName = true) {
   let weapon = findWeapon(loadUnitWeaponSlots(u.name), s.wId, isFullName)
-  if (weapon == null)
+  if (weapon == null || weapon.bulletSets.len() == 0)
     return ""
   let bSet = weapon.bulletSets[weapon.bulletSets.keys()[0]]
   let totalWeapByCaliberAndType = getTotalWeaponAmountByCaliberAndType(loadUnitWeaponSlots(u.name), bSet.caliber, s.type)
@@ -645,28 +642,19 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   return unitStats.filter(@(v) v != null)
 }
 
-let setMaxAttrs = @(attrPreset) attrPresets.get()?[attrPreset]
-  .reduce(function(res, v) {
-    res[v.id] <- v.attrList.reduce(function(acc, a) {
-      acc[a.id] <- MAX_ATTR_VALUE
-      return acc
-    }, {})
-    return res
-  }, {})
-
-function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
-  attrLevels = (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
-  let unitType = unit.unitType
-  let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
-  return getUnitStats(unit, stats, getUnitTagsShop(unit.name), statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
+function mkUnitStats(unit, attrLevels, attrPreset, cfgKey) {
+  let { unitType, name, mods = null } = unit
+  return getUnitStats(unit,
+    applyAttrLevels(unitType, getUnitTagsShop(name), attrLevels, attrPreset, mods),
+    getUnitTagsShop(name),
+    statsCfg?[unitType][cfgKey] ?? [],
+    weaponsCfg?[unitType][cfgKey] ?? [])
 }
 
-function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
-  attrLevels = (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
-  let unitType = unit.unitType
-  let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
-  return getUnitStats(unit, stats, getUnitTagsShop(unit.name), statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
-}
+let mkUnitStatsCompFull = @(unit, attrLevels, attrPreset)
+  mkUnitStats(unit, attrLevels, attrPreset, "full")
+let mkUnitStatsCompShort = @(unit, attrLevels, attrPreset)
+  mkUnitStats(unit, attrLevels, attrPreset, "short")
 
 function appendStatValue(res, stat, shopCfg) {
   if (!stat.isAvailable(shopCfg))

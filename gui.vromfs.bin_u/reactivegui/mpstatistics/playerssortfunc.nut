@@ -1,5 +1,8 @@
+let getScoreFull = @(p) p.damage + p.score * 100
+let getScoreFullRaw = @(p) p.damage + p.dmgScoreBonus * 100
+
 let shipsSort = @(a, b)
-       b.damage <=> a.damage
+       getScoreFull(b) <=> getScoreFull(a)
     || b.navalKills <=> a.navalKills
     || b.kills <=> a.kills
     || (a.isDead && !a.isTemporary) <=> (b.isDead && !b.isTemporary)
@@ -38,34 +41,15 @@ let raceSort = {
     || sortByCampaign.air(a, b)
 }
 
-let scoreKey = {
-  ships = "damage"
-  ships_new = "damage"
-  tanks = "score"
-  tanks_new = "score"
-  air   = "score"
-}
-
-let scoreKeyRaw = {
-  ships = "damage"
-  ships_new = "damage"
-  tanks = "dmgScoreBonus"
-  tanks_new = "dmgScoreBonus"
-  air   = "dmgScoreBonus"
-}
-
-let getScoreKey = @(campaign) scoreKey?[campaign] ?? scoreKey.tanks
-let getScoreKeyRaw = @(campaign) scoreKeyRaw?[campaign] ?? scoreKeyRaw.tanks
 let playersSortFunc = @(campaign) sortByCampaign?[campaign] ?? sortByCampaign.tanks
 
 function sortAndFillPlayerPlaces(campaign, players) {
   players.sort(playersSortFunc(campaign))
 
-  let key = getScoreKey(campaign)
   local prevPlace = 1
   local prevScore = null
   foreach(idx, p in players) {
-    let score = p?[key] ?? 0
+    let score = getScoreFull(p)
     if (score <= 0)
       p.place <- 0
     else if (prevScore == score)
@@ -100,8 +84,8 @@ let sortAndFillPlayerPlacesByGameType = {
 let gtCfgMask = sortAndFillPlayerPlacesByGameType.reduce(@(res, _, gt) res | gt, 0)
 
 return {
-  getScoreKey
-  getScoreKeyRaw
+  getScoreFull
+  getScoreFullRaw
   playersSortFunc
   getSortAndFillPlayerPlacesFunc = @(gt) sortAndFillPlayerPlacesByGameType?[gt & gtCfgMask] ?? sortAndFillPlayerPlaces
 }

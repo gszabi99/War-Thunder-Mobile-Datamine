@@ -10,11 +10,10 @@ let { markShellsSeenInBattle } = require("%rGui/respawn/respawnState.nut")
 let getBulletStats = require("%rGui/bullets/bulletStats.nut")
 let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
 let { mkVisibleBulletsList } = require("calcBullets.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+let { selectColor, textColor } = require("%rGui/style/stdColors.nut")
 
 
-let bgSlotColor = selectColor
-let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize, mkGradientCtorRadial(bgSlotColor, 0 , 20, 55, 35, 0))
+let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize, mkGradientCtorRadial(selectColor, 0, 20, 55, 35, 0))
 
 let bulletSlotSize = [hdpxi(350), hdpxi(105)]
 let minWndWidth = hdpx(700)
@@ -109,7 +108,7 @@ let mkCurListBulletInfo = @(bInfo, curSlotName, selSlot) function() {
       margin = const [0, 0, hdpx(10), 0]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      color = 0xFFFFFFFF
+      color = textColor
       text = loc($"bulletNameWithCaliber", { caliber, bulletName })
     }.__update(fontTiny)
     mkStatTextarea(getAmmoTypeText(bSet))
@@ -152,7 +151,7 @@ let mkBulletButton = kwarg(function mkBtn(
       children = [
         @() mkBulletSlot(chosenBullets, bSet, fromUnitTags,
           {
-            color = isCurrent.get() ? 0xFF51C1D1 : 0x402C2C2C
+            color = isCurrent.get() ? textColor : 0x402C2C2C
             opacity = isLockedSlot.get() ? 0.5 : 1
             rendObj = isCurrent.get() ? ROBJ_IMAGE : ROBJ_SOLID
             image = isCurrent.get() ? slotBGImage() : null

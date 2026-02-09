@@ -3293,5 +3293,18 @@
       0.535769,
       -2.15092
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "tu_2_a*",
+        "to": "tu_2_postwar_a*"
+      },
+      {
+        "from": "tu_2_n*",
+        "to": "tu_2_postwar_n*"
+      }
+    ]
   }
 }

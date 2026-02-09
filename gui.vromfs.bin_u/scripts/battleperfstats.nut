@@ -4,10 +4,7 @@ let { get_platform_string_id } = require("platform")
 let { get_mp_session_id_int } = require("multiplayer")
 let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_game_version_str, get_base_game_version_str } = require("app")
-let { get_common_local_settings_blk } = require("blkGetters")
-let { is_texture_uhq_supported } = require("graphicsOptions")
 let { get_gui_option, addLocalUserOption } = require("guiOptions")
-let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
@@ -37,10 +34,6 @@ let segments = [
 
 let segmentName = @(minFps, maxFps) $"battle_perfstat__segment_{minFps}_{maxFps}"
 
-let isUhq = @() has_additional_graphics_content.get()
-  && is_texture_uhq_supported()
-  && !!get_common_local_settings_blk()?.uhqTextures
-
 ecs.register_es("battle_pefstats_es", {
   [EventOnSetupFrameTimes] = function (_eid, comp) {
     let battle_perfstat__segments = {}
@@ -55,7 +48,6 @@ ecs.register_es("battle_pefstats_es", {
       sessionId = get_mp_session_id_int()
       gameVersion = get_game_version_str()
       apkVersion = get_base_game_version_str()
-      isUltraHigh = isUhq()
       aa = get_gui_option(OPT_AA)
       peakMemory = comp.battle_perfstat__peakMemoryKb
     })

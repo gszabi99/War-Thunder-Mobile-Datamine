@@ -1660,6 +1660,12 @@
           -6.0,
           17.0
         ]
+      },
+      "hullAiming": {
+        "horizontal": true,
+        "defaultEnabled": false,
+        "isAutoTurner": true,
+        "maxSpeedForHorizontalAiming": 10.0
       }
     },
     "hideNodes": {
@@ -2759,6 +2765,12 @@
                   -6.0,
                   17.0
                 ]
+              },
+              "hullAiming": {
+                "horizontal": true,
+                "defaultEnabled": false,
+                "isAutoTurner": true,
+                "maxSpeedForHorizontalAiming": 10.0
               }
             },
             {

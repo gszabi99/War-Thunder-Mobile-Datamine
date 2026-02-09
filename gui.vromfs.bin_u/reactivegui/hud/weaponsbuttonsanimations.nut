@@ -107,6 +107,7 @@ function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = c
     return null
   let nextAnimation = Computed(@() spendItemsQueue.get().findvalue(@(i) i.itemId == itemId))
   return {
+    key = itemId
     hplace = ALIGN_LEFT
     children = @() {
       watch = nextAnimation

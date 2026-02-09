@@ -11,7 +11,7 @@ let { isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
-let rewardsToShopGoods = require("%rGui/shop/rewardsToShopGoods.nut")
+let { rewardsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
 
 let rewardsToGoodsFormat = @(schReward, id)
   schReward.__merge({ id, isFreeReward = true }, rewardsToShopGoods(schReward?.rewards ?? []))

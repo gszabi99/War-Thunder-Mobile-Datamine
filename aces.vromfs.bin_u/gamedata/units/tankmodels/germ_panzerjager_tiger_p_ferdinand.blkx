@@ -56,6 +56,58 @@
       0.95
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -80,7 +132,8 @@
         "armorThickness": 80.0
       },
       "superstructure_front_dm": {
-        "armorThickness": 100.0
+        "armorThickness": 100.0,
+        "disableProjectleBreaking": true
       },
       "turret_01_front_dm": {
         "armorThickness": 100.0
@@ -109,6 +162,9 @@
       "body_bottom_dm": {
         "armorThickness": 20.0
       },
+      "turret_02_bottom_dm": {
+        "armorThickness": 20.0
+      },
       "superstructure_bottom_dm": {
         "armorThickness": 25.0
       },
@@ -122,7 +178,7 @@
         "armorThickness": 80.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 50.0
+        "armorThickness": 20.0
       },
       "turret_02_back_dm": {
         "armorThickness": 30.0
@@ -148,6 +204,15 @@
       "turret_06_top_dm": {
         "armorThickness": 80.0
       },
+      "turret_04_top_dm": {
+        "armorThickness": 30.0
+      },
+      "turret_01_top_dm": {
+        "armorThickness": 80.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 30.0
+      },
       "turret_07_side_dm": {
         "armorThickness": 10.0
       },
@@ -165,6 +230,9 @@
       },
       "turret_08_front_dm": {
         "armorThickness": 30.0
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 30.0
       }
     },
     "body_shields": {
@@ -178,13 +246,15 @@
       "ex_decor_02_dm": {},
       "ex_decor_body_r_03_dm": {},
       "ex_decor_body_l_01_dm": {},
+      "ex_decor_body_r_01_dm": {},
       "ex_decor_body_r_02_dm": {}
     },
     "mask": {
       "armorClass": "CHA_tank",
       "gun_mask_dm": {
-        "armorThickness": 250.0,
-        "hp": 10000.0
+        "armorThickness": 30.0,
+        "hp": 10000.0,
+        "armorClass": "RHA_tank"
       },
       "gun_mask_03_dm": {
         "armorThickness": 125.0,
@@ -1672,6 +1742,12 @@
           }
         ]
       },
+      "hullAiming": {
+        "horizontal": true,
+        "defaultEnabled": false,
+        "isAutoTurner": true,
+        "maxSpeedForHorizontalAiming": 12.0
+      },
       "limits": {
         "yaw": [
           -14.0,
@@ -1709,13 +1785,19 @@
       "trackMass": 3300.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ]
     },
     "tracks": {
       "animationMultiplier": 0.68,
       "width": 0.64,
-      "height": 0.06
+      "height": 0.06,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_body_01": "convex_hull",
@@ -1732,6 +1814,7 @@
       "mainGearRatio": 14.5,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 16.0,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -0.9,

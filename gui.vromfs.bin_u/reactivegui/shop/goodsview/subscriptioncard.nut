@@ -11,7 +11,7 @@ let { mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
 
 let fontIconPreview = "⌡"
 let contentMargin = hdpx(20)
-let mkSubsIcon = @(id) mkBgImg($"{getSubsPresentation(id).icon}:0:P")
+let mkSubsIcon = @(id) mkBgImg($"{getSubsPresentation(id).image}:0:P")
   .__update({
     size = const [hdpx(400), hdpx(200)]
     pos = [0, hdpx(30)]

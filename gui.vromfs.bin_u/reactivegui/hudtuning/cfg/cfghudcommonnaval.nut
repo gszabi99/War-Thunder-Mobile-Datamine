@@ -82,12 +82,10 @@ return {
     editView = simpleThreatRocketsIndicatorEditView
     hideForDelayed = false
   }
-
-
-
-
-
-
-
-
+  torpedoThreatIndicator = {
+    ctor = simpleThreatTorpedosIndicator
+    defTransform = mkLBPos([dollPosX + hdpx(-55), hdpx(-55)])
+    editView = simpleThreatTorpedosIndicatorEditView
+    hideForDelayed = false
+  }
 }.filter(@(v) v != null)

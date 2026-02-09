@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_mplayer_by_name, get_mission_time } = require("mission")
+let { get_mission_time } = require("mission")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -19,17 +19,10 @@ let raceLeadershipPlayers = Computed(function(prev) {
     let p = raceData.get()?[id]
     if (p == null)
       continue
-    let pExt = clone p
-    if ("raceLap" not in p) {
-      let mplayer = get_mplayer_by_name(p.name)
-      pExt.raceLap <- mplayer?.raceLap ?? 0
-      pExt.raceLastCheckpoint <- mplayer?.raceLastCheckpoint ?? 0
-      pExt.raceFinishTime <- mplayer?.raceFinishTime ?? -1.0
-    }
-    local { raceLap, raceLastCheckpoint } = pExt
-    pExt.progress <- total <= 0 ? -1
+    let { raceLap, raceLastCheckpoint } = p
+    let progress = total <= 0 ? -1
       : (100 * (max(0, raceLap - 1) * checkpointsPerLap + raceLastCheckpoint) / total).tointeger()
-    res.append(prevIfEqual(prev?[res.len()], pExt))
+    res.append(prevIfEqual(prev?[res.len()], p.__merge({ progress })))
   }
   return res
 })
@@ -57,11 +50,6 @@ function updateRaceTimer() {
 }
 updateRaceTimer()
 raceStartTime.subscribe(@(_) updateRaceTimer())
-
-eventbus_subscribe("hint:missionHint:set", function(data) {
-  if (isGtRace.get() && raceStartTime.get() == null && data?.locId == "hints/race_starts_in")
-    raceStartTime.set(get_mission_time()) 
-})
 
 return {
   raceLeadershipPlayers

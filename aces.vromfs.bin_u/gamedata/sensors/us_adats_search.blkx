@@ -1,13 +1,13 @@
 {
   "type": "radar",
-  "name": "ADATS",
+  "name": "ADATS TA",
   "transivers": {
     "search": {
       "power": 400.0,
       "band": 8,
       "rcs": 3.0,
       "range": 25000.0,
-      "rangeMax": 35000.0,
+      "rangeMax": 30000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 5.0,
@@ -28,8 +28,8 @@
         180.0
       ],
       "elevationLimits": [
-        9.0,
-        9.0
+        -10.0,
+        10.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
@@ -37,18 +37,20 @@
       "period": 1.0,
       "barHeight": 18.0,
       "barsCount": 1,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": 9.0
     }
   },
   "signals": {
     "search": {
       "groundClutter": false,
       "friendFoeId": true,
+      "targetId": true,
       "absDopplerSpeed": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
-        "maxValue": 30000.0,
+        "maxValue": 25000.0,
         "maxUnambiguousValue": 100000.0
       },
       "dopplerSpeed": {
@@ -60,10 +62,16 @@
       }
     }
   },
-  "scopeRanges": {
-    "range1": 10000.0,
-    "range2": 15000.0,
-    "range3": 30000.0
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "search"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 5000.0,
+      "range2": 25000.0
+    }
   },
   "fsms": {
     "main": {
@@ -73,23 +81,30 @@
           "setEnabled": {
             "value": false
           },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
           "setTransiver": {
             "transiver": "search"
           },
           "setSignal": {
             "signal": "search"
           },
-          "setScanPattern": {
-            "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 9.0
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -5.0,
-              5.0
+              -20.0,
+              20.0
             ],
             "distanceRange": [
               0.0,
@@ -103,13 +118,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "clearTargets": {}
+          }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -117,13 +128,12 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
           },
-          "setScanPattern": {
-            "scanPattern": "search"
+          "setCueEnabled": {
+            "value": true
           },
           "setScanDirectionPhase": {
             "azimuth": -180.0,
@@ -131,9 +141,13 @@
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -172,6 +186,17 @@
             "setNextScopeRange": {}
           }
         },
+        "resumeSearch": {
+          "stateFrom": "antennaParking",
+          "command": "switch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            }
+          }
+        },
         "switchingOff": {
           "stateFrom": "search",
           "command": "switch",
@@ -193,13 +218,11 @@
               "fsm": "parkAntenna",
               "active": false
             },
-            "setScanPattern": {
-              "scanPattern": "search"
-            },
             "setScanDirectionPhase": {
               "azimuth": -180.0,
               "elevation": 0.0
             },
+            "resetSearchMode": {},
             "setStandbyMode": {}
           }
         }
@@ -231,7 +254,51 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {}
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "sensorIndex": 1
+            },
+            "designateTargetUnderCue": {
+              "type": "cue",
+              "sensorIndex": 1
+            }
           }
         }
       }
@@ -250,5 +317,91 @@
         }
       }
     }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/single prop",
+      "targetPropulsion": {
+        "type": "propellers",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi prop",
+      "targetPropulsion": [
+        {
+          "type": "propellers",
+          "num": 2
+        },
+        {
+          "type": "propellers",
+          "num": 3
+        },
+        {
+          "type": "propellers",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/single jet",
+      "targetPropulsion": {
+        "type": "jet",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi jet",
+      "targetPropulsion": [
+        {
+          "type": "jet",
+          "num": 2
+        },
+        {
+          "type": "jet",
+          "num": 3
+        },
+        {
+          "type": "jet",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/helicopter",
+      "targetPropulsion": {
+        "type": "rotors"
+      }
+    },
+    {
+      "name": "hud/rocket",
+      "targetPropulsion": {
+        "type": "rocket"
+      }
+    },
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ],
+  "hideInAvailableModeNameIds": {
+    "mode": "standby"
   }
 }

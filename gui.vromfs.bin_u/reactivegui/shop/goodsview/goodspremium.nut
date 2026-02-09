@@ -59,10 +59,7 @@ let mkPremiumDaysTitle = function(amount, oldAmount) {
 }
 
 let getLocNamePremium = @(goods) loc("shop/item/premium/amount",
-  { amount = goods?.rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count
-      ?? goods?.premiumDays 
-      ?? 0
-  })
+  { amount = goods?.rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count ?? 0 })
 let infoBtn = infoGreyButton(
   openPremiumDescription,
   {
@@ -75,10 +72,8 @@ let infoBtn = infoGreyButton(
 )
 
 function mkGoodsPremium(goods, onClick, state, animParams, addChildren) {
-  let { rewards = null, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
-  let premiumDays = rewards?.findvalue(@(r) r.gType == G_PREMIUM)?.count
-    ?? goods?.premiumDays 
-    ?? 0
+  let { rewards, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let premiumDays = rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count ?? 0
   let premIconAndDaysTitleWrapper = {
     size = flex()
     children = [

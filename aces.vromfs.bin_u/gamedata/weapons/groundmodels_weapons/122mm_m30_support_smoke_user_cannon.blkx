@@ -100,6 +100,7 @@
       0.8
     ],
     "fuseDelayDist": 0.4,
+    "fuseOnWater": true,
     "shutterDamage": true,
     "shutterDamageRadius": 18.5,
     "shutterAmount": 130,

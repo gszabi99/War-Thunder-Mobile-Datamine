@@ -3147,7 +3147,7 @@
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.85,
     "maxCriticalHeelingTime": 1.0,
-    "heelingDeathHeightOffsetMult": 3.0,
+    "heelingDeathHeightOffsetMult": 1.2,
     "sideCenterOfMassOffsetPercent": 0.2,
     "additionalWaterInfluenceOnSpeed": 2.8
   },

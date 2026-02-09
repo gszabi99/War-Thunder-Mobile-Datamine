@@ -2109,5 +2109,18 @@
       1.32782,
       -1.16048e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "ki_61_hei_a*",
+        "to": "ki_61_hei_2_a*"
+      },
+      {
+        "from": "ki_61_hei_n*",
+        "to": "ki_61_hei_2_n*"
+      }
+    ]
   }
 }

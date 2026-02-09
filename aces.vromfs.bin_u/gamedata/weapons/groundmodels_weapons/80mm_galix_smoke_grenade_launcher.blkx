@@ -63,8 +63,8 @@
     "fireEffect": "",
     "smokeEffect": "",
     "waterExplosionEffect": "water_splash",
-    "maxDistance": 12.0,
-    "minDistance": 12.0,
+    "maxDistance": 20.0,
+    "minDistance": 20.0,
     "smokeShell": true,
     "smokeFx": "smokescreen_medium",
     "smokeShellRad": 13.0,
@@ -122,8 +122,8 @@
     "rendinstDamageRadius": 0.0,
     "advancedMissiles": false,
     "useStartSpeed": true,
-    "startSpeed": 20.0,
-    "endSpeed": 20.0,
+    "startSpeed": 15.0,
+    "endSpeed": 15.0,
     "price": 300.0,
     "stabilityRicochetModifier": {
       "mod1": [

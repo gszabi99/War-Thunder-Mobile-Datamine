@@ -3,15 +3,28 @@ let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { object_to_json_string, parse_json } = require("json")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { decalTblToBlk, decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
+let { getDebugUserSettings } = require("%rGui/debugTools/debugSavedData.nut")
 
 
 const SAVE_ID = "unitSettings"
+const DECALS_SAVE_ID = "decalsPresets"
 
 let loadedSettings = Watched({})
+let loadedDecals = Watched({})
+
+const DEF_SKIN = "default"
+let skinIdToBlk = { [""] = DEF_SKIN }
+let skinIdFromBlk = { [DEF_SKIN] = "" }
 
 function loadUnitSettings(unitName) {
+  let debugSettings = getDebugUserSettings(unitName)
+  if (debugSettings != null)
+    return debugSettings
+
   let blk = get_local_custom_settings_blk()
   let settingsString = blk?[SAVE_ID][unitName]
   if (type(settingsString) != "string" || settingsString == "")
@@ -40,21 +53,88 @@ function loadSettingsOnce(unitNameExt) {
     loadedSettings.mutate(@(v) v.$rawset(unitName, loadUnitSettings(unitName)))
 }
 
-function resetUnitSettings(unitNameExt) {
-  let unitName = getTagsUnitName(unitNameExt)
-  if (isOnlineSettingsAvailable.get())
-    saveUnitSettings(unitName, {})
-  loadedSettings.mutate(@(v) v.$rawset(unitName, {}))
+function loadUnitDecals(unitName) {
+  let blk = get_local_custom_settings_blk()
+  let dPresetsBlk = blk?[DECALS_SAVE_ID][unitName]
+  if (!isDataBlock(dPresetsBlk))
+    return {}
+
+  let res = {}
+  eachBlock(dPresetsBlk, function(b) {
+    let skin = b.getBlockName()
+    res[skinIdFromBlk?[skin] ?? skin] <- decalBlkToTbl(b)
+  })
+  return res
 }
 
-let OLD_SAVE_ID = "skinTuning" 
-function applyCompatibility() {
-  let blk = get_local_custom_settings_blk()
-  if (OLD_SAVE_ID not in blk)
+function saveUnitDecals(unitNameExt, decalPresets) {
+  let allBlk = get_local_custom_settings_blk().addBlock(DECALS_SAVE_ID)
+  let unitName = getTagsUnitName(unitNameExt)
+  if (decalPresets.len() == 0) {
+    if (unitName in allBlk) {
+      allBlk.removeBlock(unitName)
+      eventbus_send("saveProfile", {})
+    }
     return
-  let newBlk = blk.addBlock(SAVE_ID)
-  newBlk.setFrom(blk[OLD_SAVE_ID])
-  blk.removeBlock(OLD_SAVE_ID)
+  }
+
+  let dBlk = allBlk.addBlock(unitName)
+  dBlk.clearData()
+  foreach (skin, preset in decalPresets)
+    dBlk[skinIdToBlk?[skin] ?? skin] = decalTblToBlk(preset)
+  eventbus_send("saveProfile", {})
+}
+
+function loadDecalsOnce(unitNameExt) {
+  let unitName = getTagsUnitName(unitNameExt ?? "")
+  if (loadedDecals.get()?[unitName] == null && unitName != "")
+    loadedDecals.mutate(@(v) v.$rawset(unitName, loadUnitDecals(unitName)))
+}
+
+function resetUnitSettings(unitNameExt) {
+  let unitName = getTagsUnitName(unitNameExt)
+  if (isOnlineSettingsAvailable.get()) {
+    saveUnitSettings(unitName, {})
+    saveUnitDecals(unitName, {})
+  }
+  loadedSettings.mutate(@(v) v.$rawset(unitName, {}))
+  loadedDecals.mutate(@(v) v.$rawset(unitName, {}))
+}
+
+function applyCompatibility() {
+  let fullBlk = get_local_custom_settings_blk()
+  let sBlk = fullBlk?[SAVE_ID]
+  if (!isDataBlock(sBlk) || DECALS_SAVE_ID in fullBlk)
+    return
+
+  let decalsBlk = fullBlk.addBlock(DECALS_SAVE_ID)
+  let upd = {}
+  eachParam(sBlk, function(str, id) {
+    if (type(str) != "string" || str == "")
+      return
+    local data = null
+    try {
+      data = parse_json(str)
+    }
+    catch(e) {
+      logerr($"Failed to load unit settings data")
+    }
+    let { decalsPresets = null } = data
+    if (decalsPresets == null)
+      return
+    let udBlk = decalsBlk.addBlock(id)
+    foreach (skin, preset in decalsPresets)
+      udBlk[skinIdToBlk?[skin] ?? skin] = decalTblToBlk(preset)
+
+    data.$rawdelete("decalsPresets")
+    upd[id] <- data.len() == 0 ? "" : object_to_json_string(data)
+  })
+
+  foreach (id, str in upd)
+    if (str != "")
+      sBlk[id] = str
+    else
+      sBlk.removeParam(id)
 }
 
 if (isOnlineSettingsAvailable.get())
@@ -68,12 +148,12 @@ isOnlineSettingsAvailable.subscribe(function(s) {
 })
 
 function mkUnitSettingsWatch(unitNameW) {
-  let unitSettings = Computed(@() loadedSettings.get()?[getTagsUnitName(unitNameW.get() ?? "")] ?? {})
+  let unitSettings = Computed(@() loadedSettings.get()?[getTagsUnitName(unitNameW.get() ?? "")])
   loadSettingsOnce(unitNameW.get())
-  unitSettings.subscribe(@(v) v.len() != 0 ? null : loadSettingsOnce(unitNameW.get())) 
+  unitSettings.subscribe(@(v) v != null ? null : loadSettingsOnce(unitNameW.get())) 
   function updateUnitSettings(ovr) {
     let unitName = getTagsUnitName(unitNameW.get() ?? "")
-    let newValue = unitSettings.get().__merge(ovr)
+    let newValue = (unitSettings.get() ?? {}).__merge(ovr)
     if (isOnlineSettingsAvailable.get())
       saveUnitSettings(unitName, newValue)
     loadedSettings.mutate(@(v) v.$rawset(unitName, newValue))
@@ -150,16 +230,26 @@ function mkSeenMods(unitNameW) {
 }
 
 function mkDecalsPresets(unitNameW) {
-  let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
-  let decalsPresets = Computed(@() unitSettings.get()?.decalsPresets ?? {})
-  let setDecalsPresets = @(preset) isEqual(preset, decalsPresets.get()) ? null
-    : updateUnitSettings({ decalsPresets = preset })
-  return { decalsPresets, setDecalsPresets }
+  let unitDecals = Computed(@() loadedDecals.get()?[getTagsUnitName(unitNameW.get() ?? "")])
+  loadDecalsOnce(unitNameW.get())
+  unitDecals.subscribe(@(v) v != null ? null : loadSettingsOnce(unitNameW.get())) 
+  function setDecalsPresets(presets) {
+    let unitName = getTagsUnitName(unitNameW.get() ?? "")
+    if (unitName == "")
+      return
+    if (isOnlineSettingsAvailable.get())
+      saveUnitDecals(unitName, presets)
+    loadedDecals.mutate(@(v) v.$rawset(unitName, presets))
+  }
+  return {
+    decalsPresets = Computed(@() unitDecals.get() ?? {}),
+    setDecalsPresets
+  }
 }
 
 function getDecalsPresets(unitName) {
-  loadSettingsOnce(unitName)
-  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].decalsPresets ?? {}
+  loadDecalsOnce(unitName)
+  return loadedDecals.get()?[getTagsUnitName(unitName ?? "")] ?? {}
 }
 
 return {

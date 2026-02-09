@@ -1975,5 +1975,18 @@
       1.21659,
       -2.93367e-8
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "yak7b_c*",
+        "to": "yak_7b_winter_c*"
+      },
+      {
+        "from": "yak7b_n*",
+        "to": "yak_7b_winter_n*"
+      }
+    ]
   }
 }

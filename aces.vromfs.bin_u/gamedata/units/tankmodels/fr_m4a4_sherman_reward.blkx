@@ -46,7 +46,10 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": [
+    1.37,
+    1.4
+  ],
   "attachables": {
     "ex_armor_01_dm": true,
     "ex_decor_01_dm": true,

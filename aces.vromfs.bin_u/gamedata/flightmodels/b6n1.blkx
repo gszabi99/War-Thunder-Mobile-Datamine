@@ -2334,5 +2334,12 @@
       1.60464,
       1.49012e-8
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "b6n1_dark_green_c*",
+      "to": "b6n1_orange_c*"
+    }
   }
 }

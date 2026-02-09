@@ -5,9 +5,11 @@ let { isDownloadedFromGooglePlay } = require("android.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
+let { isTcfConsentAutoSkipped, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
 let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
 let { set_mute_sound } = require("soundOptions")
 
@@ -18,7 +20,7 @@ let RETRY_INC_TIMEOUT = 60
 let hasAdsPreloadError = Watched(false)
 let adsPreloadParams = Watched(null)
 let isOpenedAdsPreloaderWnd = Computed(@() adsPreloadParams.get() != null
-  && !isConsentWasAutoSkipped.get()
+  && ((tcf_consent_enabled.get() && !isTcfConsentAutoSkipped.get()) || (!tcf_consent_enabled.get() && !isConsentWasAutoSkipped.get()))
   && isLoggedIn.get())
 
 let rewardInfo = mkWatched(persist, "rewardInfo", null)
@@ -111,7 +113,9 @@ function onShowAds(providerBase = "") {
 }
 
 function openAdsPreloader(rInfo) {
-  if (isConsentWasAutoSkipped.get())
+  if (tcf_consent_enabled.get() && isTcfConsentAutoSkipped.get())
+    openTcfConsentWnd()
+  else if (!tcf_consent_enabled.get() && isConsentWasAutoSkipped.get())
     needOpenConsentWnd.set(true)
   adsPreloadParams.set(rInfo)
 }

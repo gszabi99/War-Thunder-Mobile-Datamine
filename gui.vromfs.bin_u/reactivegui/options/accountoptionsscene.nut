@@ -1,6 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "app" import get_base_game_version_str
-let { check_version } = require("%sqstd/version_compare.nut")
 let { is_ios, is_pc } = require("%sqstd/platform.nut")
 let { has_game_center } = require("%appGlobals/permissions.nut")
 let communityOptions = require("%rGui/options/options/communityOptions.nut")
@@ -38,8 +36,7 @@ let tabs = [
   }
 ]
 
-let isGameCenterSupported = check_version(">=1.20.0.28", get_base_game_version_str())
-if ((is_ios || is_pc) && isGameCenterSupported)
+if (is_ios || is_pc)
   tabs.append({
     locId = "options/gameCenter"
     image = "ui/gameuiskin#icon_gamecenter.svg"

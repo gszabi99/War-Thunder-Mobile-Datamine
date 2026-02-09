@@ -2991,5 +2991,18 @@
       2.64443,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "ki_67_1ko_browngreen_a*",
+        "to": "ki_67_1ko_gray_a*"
+      },
+      {
+        "from": "ki_67_1ko_browngreen_n*",
+        "to": "ki_67_1ko_gray_n*"
+      }
+    ]
   }
 }

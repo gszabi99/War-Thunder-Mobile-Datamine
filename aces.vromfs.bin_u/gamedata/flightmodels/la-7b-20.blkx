@@ -1774,5 +1774,12 @@
       1.49975,
       -0.00136484
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "la_7b_20_a*",
+      "to": "la_7b_20_grey_blue_a*"
+    }
   }
 }

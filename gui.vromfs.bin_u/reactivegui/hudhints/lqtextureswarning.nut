@@ -46,10 +46,7 @@ function lqTexturesWarning(wasShown, showWarning) {
         {
           rendObj = ROBJ_TEXT
           text = loc("updater/lqTexturesWarning")
-          fontFxColor = 0xFF000000
-          fontFxFactor = 50
-          fontFx = FFT_GLOW
-        }.__update(fontSmall)
+        }.__update(fontSmallShaded)
         textSize[0] * 1.3
       ).__update({ animations = blinkAnimation })
     function onAttach() {

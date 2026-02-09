@@ -2346,5 +2346,18 @@
         }
       }
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "me_410a_1_a*",
+        "to": "me_410a_1_u2_a*"
+      },
+      {
+        "from": "me_410a_1_n*",
+        "to": "me_410a_1_u2_n*"
+      }
+    ]
   }
 }

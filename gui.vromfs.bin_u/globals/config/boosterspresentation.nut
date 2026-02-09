@@ -7,8 +7,6 @@ let icons = {
   slotExp =  "ui/gameuiskin#slotsExp_booster.avif"
 }
 
-let getBoosterIcon = @(id) icons?[id] ?? unknownBooster
-
 return {
-  getBoosterIcon
+  getBoosterIcon = @(id) icons?[id] ?? unknownBooster
 }

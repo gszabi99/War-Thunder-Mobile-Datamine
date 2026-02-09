@@ -2161,5 +2161,18 @@
       1.42552,
       0.0000375042
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "ki_84_ko_c*",
+        "to": "ki_84_modern_c*"
+      },
+      {
+        "from": "ki_84_ko_n*",
+        "to": "ki_84_modern_n*"
+      }
+    ]
   }
 }

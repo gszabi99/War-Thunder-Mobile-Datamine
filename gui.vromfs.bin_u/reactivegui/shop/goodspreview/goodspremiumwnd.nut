@@ -56,9 +56,7 @@ let premiumDescriptionHeader = @() {
     rendObj = ROBJ_TEXT
     text = loc($"charServer/entitlement/PremiumAccount/header",
       {
-        days = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count
-          ?? previewGoods.get()?.premiumDays 
-          ?? 0
+        days = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count ?? 0
       })
   }.__update(fontMedium)
 }

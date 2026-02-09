@@ -1,12 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
-let { defer, resetTimeout } = require("dagor.workcycle")
+let { defer, resetTimeout, deferOnce } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
+let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
-let { mark_offer_seen } = require("%appGlobals/pServer/pServerApi.nut")
-let { unitRewardTypes, G_UNIT_UPGRADE, G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
+let { mark_offer_seen, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { unitRewardTypes, G_UNIT_UPGRADE, G_UNIT, G_BLUEPRINT, G_BATTLE_MOD, G_SKIN
+} = require("%appGlobals/rewardType.nut")
+let { battleRentInfo, rentalCd } = require("%appGlobals/rentalState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
@@ -15,17 +19,20 @@ let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, clos
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
+let { mkRentBattlesButton, queueCurRandomBattleMode } = require("%rGui/mainMenu/toBattleButton.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, SUBMARINE_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
-let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
-  hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
+let { loadedHangarUnitName, loadedHangarUnitSkin, setCustomHangarUnit, resetCustomHangarUnit,
+  hangarUnitDataBackup, needReloadHangarBattleData
+} = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
+let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
@@ -55,6 +62,9 @@ let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut
 let mkPersonalDiscountBtn = require("%rGui/shop/goodsPreview/mkPersonalDiscountBtn.nut")
 let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
+let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+
 
 let TIME_TO_SHOW_UI = 5.0 
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
@@ -69,15 +79,11 @@ let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
 let openCount = Computed(@() previewType.get() == GPT_UNIT || previewType.get() == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
-let needScroll = Computed(@() previewGoods.get() == null ? false
-  : "rewards" in previewGoods.get()
-    ? previewGoods.get().rewards.reduce(@(res, r) r.gType in unitRewardTypes ? res + 1 : res, 0) > 8
-  : (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8) 
+let needScroll = Computed(@() previewGoods.get() != null
+  && previewGoods.get().rewards.reduce(@(res, r) r.gType in unitRewardTypes ? res + 1 : res, 0) > 8)
 let goodsBattleMode = Computed(function() {
   let { campaign = "", country = "" } = previewGoodsUnit.get()
   let battleMode = blockedResearchByBattleMods.get()?[campaign][country] ?? ""
-  if (battleMode in previewGoods.get()?.battleMods) 
-    return battleMode
   if (null != previewGoods.get()?.rewards.findvalue(@(r) r.id == battleMode && r.gType == G_BATTLE_MOD))
     return battleMode
   return null
@@ -100,6 +106,8 @@ function showUi() {
   resetTimeout(aTimeShowModals, @() unhideModals(HIDE_PREVIEW_MODALS_ID))
   needShowUi.set(true)
 }
+
+openCount.subscribe(@(v) v == 0 ? battleRentInfo.set(null) : null)
 
 isWindowAttached.subscribe(function(v) {
   if (!v) {
@@ -141,13 +149,12 @@ let unitForShow = keepref(Computed(function() {
   local res = unitName == previewGoodsUnit.get().name || unitName == "" ? previewGoodsUnit.get()
     : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.get().__merge({ name = unitName }))
 
-  let skin = previewGoods.get()?.skins[previewGoodsUnit.get()?.name]
-  if (skin != null) {
-    res = clone res
-    res.currentSkins <- clone (res?.currentSkins ?? {})
-    res.currentSkins[unitName] <- skin
-    res.currentSkins[previewGoodsUnit.get().name] <- skin
-  }
+  let skin = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName).subId
+    ?? (previewGoodsUnit.get()?.isUpgraded ? "upgraded" : "")
+  res = clone res
+  res.currentSkins <- clone (res?.currentSkins ?? {})
+  res.currentSkins[unitName] <- skin
+  res.currentSkins[previewGoodsUnit.get().name] <- skin
   return res
 }))
 
@@ -172,10 +179,12 @@ eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" :
 
 let needShowCutscene = keepref(Computed(@() unitForShow.get() != null
   && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.get()?.name ?? "")
-  && readyToShowCutScene.get() ))
+  && loadedHangarUnitSkin.get() == (unitForShow.get()?.currentSkins[unitForShow.get()?.name ?? ""] ?? "")
+  && readyToShowCutScene.get()
+  && !needReloadHangarBattleData.get()))
 
-function showCutscene(v) {
-  if (!v)
+function showCutscene() {
+  if (!needShowCutscene.get())
     stop_prem_cutscene()
   else if (!needShowUi.get() && !skipAnimsOnce.get()) {
     let unitType = unitForShow.get()?.unitType ?? ""
@@ -198,8 +207,8 @@ function showCutscene(v) {
       start_prem_cutscene(presetIds[rnd_int(0, presetIds.len()-1)])
   }
 }
-showCutscene(needShowCutscene.get())
-needShowCutscene.subscribe(showCutscene)
+showCutscene()
+needShowCutscene.subscribe(@(_) deferOnce(showCutscene))
 
 function openDetailsWnd() {
   hangarUnitDataBackup.set({
@@ -250,10 +259,7 @@ function mkBlueprintUnitPlate(unit){
                     text = "/".concat((servProfile.get()?.blueprints?[unit.name] ?? 0), (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) )
                     halign = ALIGN_CENTER
                     vplace = ALIGN_CENTER
-                    fontFx = FFT_GLOW
-                    fontFxColor = 0xFF000000
-                    fontFxFactor = hdpxi(32)
-                  }.__update(fontTinyAccented)
+                  }.__update(fontTinyAccentedShaded)
                   mkGradRank(unit?.mRank)
                 ]
               }
@@ -269,10 +275,7 @@ function mkBlueprintUnitPlate(unit){
                   text = "".concat("+", deltaBlueprints.get())
                   hplace = ALIGN_RIGHT
                   vplace = ALIGN_CENTER
-                  fontFx = FFT_GLOW
-                  fontFxColor = 0xFF000000
-                  fontFxFactor = hdpxi(32)
-                }.__update(fontTinyAccented))
+                }.__update(fontTinyAccentedShaded))
             ]
           }
         ]
@@ -381,9 +384,12 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
       children = activeItemHint
     }
     @() {
-      watch = previewGoods
+      watch = [previewGoods, goodsBattleMode]
       flow = FLOW_HORIZONTAL
-      children = mkPreviewItems(previewGoods.get(), aTimePackInfoStart + aTimeFirstItemOfset)
+      children = mkPreviewItems(
+        (previewGoods.get()?.rewards ?? [])
+          .filter(@(r) (r.gType not in unitRewardTypes) && (r.gType != G_BATTLE_MOD || r.id != goodsBattleMode.get())),
+        aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]
@@ -424,9 +430,8 @@ let itemsDescText = {
 }.__update(fontSmall)
 
 function itemsDesc() {
-  let { items = {}, decorators = [], rewards = null } = previewGoods.get()
-  let hasOtherRewards = rewards != null ? null != rewards.findvalue(@(r) r.gType not in unitRewardTypes)
-    : items.len() + decorators.len() > 0 
+  let { rewards = [] } = previewGoods.get()
+  let hasOtherRewards = null != rewards.findvalue(@(r) r.gType not in unitRewardTypes)
   return hasOtherRewards ? itemsDescText.__update({ watch = previewGoods }) : { watch = previewGoods }
 }
 
@@ -543,26 +548,18 @@ function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
 let sortedUnits = Computed(function() {
   if (previewGoods.get() == null)
     return []
-  let { units = [], unitUpgrades = [], rewards = null } = previewGoods.get()
-  if (rewards != null) {
-    let res = []
-    let configs = serverConfigs.get()
-    let profile = servProfile.get()
-    foreach (r in rewards) {
-      if (r.gType not in unitRewardTypes || isEmptyByRType?[r.gType](r.id, r.subId, profile, configs))
-        continue
-      let unit = campUnitsCfg.get()?[r.id]
-      if (unit != null)
-        res.append(r.gType != G_UNIT_UPGRADE ? unit : unit.__merge({ isUpgraded = true }))
-    }
-    return res
+  let { rewards } = previewGoods.get()
+  let res = []
+  let configs = serverConfigs.get()
+  let profile = servProfile.get()
+  foreach (r in rewards) {
+    if (r.gType not in unitRewardTypes || isEmptyByRType?[r.gType](r.id, r.subId, profile, configs))
+      continue
+    let unit = campUnitsCfg.get()?[r.id]
+    if (unit != null)
+      res.append(r.gType != G_UNIT_UPGRADE ? unit : unit.__merge({ isUpgraded = true }))
   }
-
-  
-  return unitUpgrades.map(@(u) campUnitsCfg.get()?[u].__merge({ isUpgraded = true }))
-    .extend(units.map(@(u) campUnitsCfg.get()?[u]))
-    .filter(@(u) u != null && u.name not in campMyUnits.get())
-    .sort(@(a, b) b.mRank <=> a.mRank)
+  return res
 })
 let totalUnits = Computed(@() sortedUnits.get().len())
 
@@ -602,6 +599,10 @@ let leftBlockUnits = @() {
     : leftBlockPlatoon
 }
 
+let cbId = "onResetPenaltyToRandomBattleInUnitPreview"
+
+registerHandler(cbId, @(res) res?.error == null ? showNoPremMessageIfNeed(@() queueCurRandomBattleMode()) : null)
+
 let leftBlock = {
   size = flex()
   flow = FLOW_VERTICAL
@@ -625,8 +626,30 @@ let leftBlock = {
           : scrollArrowsBlock
       ]
     }
+    @() {
+      watch = [battleRentInfo, previewGoodsUnit, rentalCd]
+      children = rentalCd.get() <= 0 || battleRentInfo.get() == null ? null
+        : mkRentBattlesButton(rentalCd.get(), previewGoodsUnit.get().campaign, function() {
+            sendNewbieBqEvent("pressToBattleButtonUnitPreview", { status = "online_battle" })
+            if (tryOpenQueuePenaltyWnd(previewGoodsUnit.get().campaign, randomBattleMode.get(), cbId))
+              return
+            showNoPremMessageIfNeed(@() queueCurRandomBattleMode())
+          })
+    }
   ]
 }
+
+let gTypesRental = [G_UNIT, G_UNIT_UPGRADE, G_BLUEPRINT].reduce(@(res, v) res.$rawset(v, true), {})
+
+let previewRentUnitId = keepref(Computed(@() rentalCd.get() <= 0 ? null
+  : activeOffer.get()?.id == null || activeOffer.get()?.id != previewGoods.get()?.id ? null
+  : !activeOffer.get()?.rentalEnabled ? null
+  : previewGoods.get()?.rewards.findvalue(@(v) gTypesRental?[v.gType] && v.id == curSelectedUnitId.get()).id
+      ?? previewGoods.get()?.rewards.findvalue(@(v) gTypesRental?[v.gType]).id))
+
+previewRentUnitId.subscribe(@(id) battleRentInfo.set(id == null ? null
+  : isCampaignWithSlots.get() ? { isSlots = isCampaignWithSlots.get(), unitList = [id] }
+  : { isSlots = isCampaignWithSlots.get(), unit = id }))
 
 let previewWnd = @() {
   watch = needShowUi

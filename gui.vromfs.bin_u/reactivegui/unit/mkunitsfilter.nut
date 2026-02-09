@@ -6,11 +6,12 @@ let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkOvrTooltipContent } = require("%rGui/options/tooltipCtors.nut")
 
 let textColor = 0xFFFFFFFF
-let inactiveTextColor = 0xFF808080
+let inactiveTextColor = 0xFFD96363
 let checkBorderColor = 0xFF9FA7AF
 let ctrlHeight = hdpx(80)
 let vGap = hdpx(20)
 let hGap = hdpx(15)
+let incHGap = hdpx(30)
 let inputFullHeight = hdpx(60)
 let inputPadding = [hdpx(10), hdpx(20)]
 let checkIconSize = hdpxi(60)
@@ -23,7 +24,7 @@ let mkCheckIcon = @(isChecked, isActive, opacity, inBoxValue) {
   size = ctrlHeight
   rendObj = ROBJ_BOX
   opacity = isActive && isChecked ? 1.0 : 0.5
-  borderColor = checkBorderColor
+  borderColor = isActive ? checkBorderColor : inactiveTextColor
   borderWidth = hdpx(3)
   children = !inBoxValue
     ? {
@@ -33,7 +34,7 @@ let mkCheckIcon = @(isChecked, isActive, opacity, inBoxValue) {
         rendObj = ROBJ_IMAGE
         image = isChecked ? Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}") : null
         keepAspect = KEEP_ASPECT_FIT
-        color = textColor
+        color = isActive ? textColor : inactiveTextColor
         opacity
       }
   : {
@@ -72,6 +73,7 @@ function mkFilterIcon(onClick, iconSize, img) {
 
 function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inBoxValue = null) {
   let stateFlags = Watched(0)
+  let needShowText = !customValue && !inBoxValue
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
@@ -79,18 +81,21 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
     onElemState = @(s) stateFlags.set(s)
     halign = ALIGN_CENTER
     vplace = ALIGN_CENTER
-    flow = FLOW_VERTICAL
+    flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      (customValue || inBoxValue) ? null : {
-        minWidth = ctrlHeight * 1.5
-        halign = ALIGN_CENTER
-        rendObj = ROBJ_TEXT
-        color = hasValues ? textColor : inactiveTextColor
-        text
-      }.__update(fontTiny)
       customValue ? mkCustomCheck(isChecked, hasValues, customValue)
         : mkCheckIcon(isChecked, hasValues, stateFlags.get() & S_ACTIVE ? 0.5 : 1.0, inBoxValue)
+      !needShowText ? null
+        : {
+            rendObj = ROBJ_TEXTAREA
+            behavior = [Behaviors.TextArea, Behaviors.Marquee]
+            delay = defMarqueeDelay
+            maxWidth = hdpx(200)
+            halign = ALIGN_LEFT
+            color = hasValues ? textColor : inactiveTextColor
+            text
+          }.__update(fontTiny)
     ]
   }
 }
@@ -146,35 +151,55 @@ let filterCtors = {
     onAttach = @() set_kb_focus(filter.value) 
   }),
 
-  [OCT_MULTISELECT] = @(filter, width) wrap(
-    filter.allValuesV.map(function(v) {
+  [OCT_MULTISELECT] = function(filter, width) {
+    local needIncreaseGap = false
+    let res = filter.allValuesV.map(function(v) {
       let isChecked = filter.valueV == null || v in filter.valueV
+      let hasValues = v in filter.hasValues
+      let customValue = filter?.customValue(v, hasValues)
+      let inBoxValue = filter?.inBoxValue(v, hasValues)
+
+      if (!customValue && !inBoxValue)
+        needIncreaseGap = true
+
       return mkCheckBtn(filter?.valToString(v) ?? v,
         isChecked,
-        v in filter.hasValues,
+        hasValues,
         @() filter.toggleValue(v, !isChecked),
-        filter?.customValue(v),
-        filter?.inBoxValue(v))
-    }).append(filter?.useAllToggle
-        ? allToggleBtn(filter.allValuesV, filter.value, @(v) filter.toggleAllValues(v))
-        : null),
-    { width, hGap, vGap }),
+        customValue,
+        inBoxValue)
+    })
+
+    res.append(filter?.useAllToggle
+      ? allToggleBtn(filter.allValuesV, filter.value, @(v) filter.toggleAllValues(v))
+      : null)
+
+    return wrap(res, { width, hGap = needIncreaseGap ? incHGap : hGap, vGap })
+  },
 
   [OCT_MULTISELECT_MASK] = function(filter, width) {
     let res = []
+    local needIncreaseGap = false
     for (local i = 0; (1 << i) <= filter.allValuesV; i++) {
       if (is_bit_set(filter.allValuesV, i)) {
         let curBit = 1 << i
         let isChecked = filter.valueV == null || ((curBit & filter.valueV) != 0x0)
+        let hasValues = (curBit & filter.hasValues) != 0x0
+        let customValue = filter?.customValue(curBit, hasValues)
+        let inBoxValue = filter?.inBoxValue(curBit, hasValues)
+
+        if (!customValue && !inBoxValue)
+          needIncreaseGap = true
+
         res.append(mkCheckBtn(filter?.valToString(curBit) ?? curBit,
           isChecked,
-          (curBit & filter.hasValues) != 0x0,
+          hasValues,
           @() filter.toggleValue(curBit, !isChecked),
-          filter?.customValue(curBit),
-          filter?.inBoxValue(curBit)))
+          customValue,
+          inBoxValue))
       }
     }
-    return wrap(res, { width, hGap, vGap })
+    return wrap(res, { width, hGap = needIncreaseGap ? incHGap : hGap, vGap })
   }
 }
 

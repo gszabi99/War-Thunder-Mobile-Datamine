@@ -1,46 +1,75 @@
 from "%globalsDarg/darg_library.nut" import *
+let { isEqual } = require("%sqstd/underscore.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
-function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV, maxStageV) {
+function gatherUnlockStageInfo(unlock, isPaid, isActive, curProgressV) {
+  let res = []
   let { name = "", stages = [], lastRewardedStage = -1,
-    hasReward = false, startStageLoop = 1, periodic = false,
+    hasReward = false, startStageLoop = 0, periodic = false,
   } = unlock
-  let loopIterationSize = periodic ? max(1, stages.len() - startStageLoop + 1) : 0
-  return stages.map(function(stage, idx) {
-    let { progress = 0, rewards = {} } = stage
+  let maxStage = stages.len()
+  let loop1Start = stages?[startStageLoop - 2].progress ?? 0 
+  let loop1End = stages?[maxStage - 1].progress ?? loop1Start
+  let loopPeriod = loop1End - loop1Start
+  let loopStagePeriod = maxStage - startStageLoop + 1
+  let lastRewardedProgress = !periodic || lastRewardedStage < maxStage || loopStagePeriod == 0
+    ? (stages?[lastRewardedStage - 1].progress ?? 0)
+    : ((stages?[startStageLoop - 1 + (lastRewardedStage - startStageLoop) % loopStagePeriod].progress ?? 0)
+        + ((lastRewardedStage - startStageLoop) / loopStagePeriod) * loopPeriod)
+  for (local idx = 0; idx < maxStage; idx++) {
+    let { progress = 0, rewards = {} } = stages[idx]
     local viewProgress = progress
     local loopMultiply = 0
     local isReceived = idx < lastRewardedStage
-    let isLoop = periodic && idx >= startStageLoop - 1
-    if (isLoop) {
-      let startStageLoopProgress = maxStageV - loopIterationSize + 1
-
-      let loopIndexByCurStage = max(0, (curStageV - startStageLoopProgress) / loopIterationSize)
-      let addProgressByCurStage = loopIterationSize * loopIndexByCurStage
-      let progressByCurStage = progress + addProgressByCurStage
-      let prevProgressByCurStage = max(progress, progressByCurStage - loopIterationSize)
-
-      let lastLoopRewardedStage = max(0, lastRewardedStage - startStageLoop + 1)
-
-      let canReceiveOnlyFromPrevIterations = (prevProgressByCurStage - startStageLoopProgress > lastLoopRewardedStage)
-        && (curStageV < progressByCurStage)
-      viewProgress = canReceiveOnlyFromPrevIterations ? prevProgressByCurStage
-        : (lastLoopRewardedStage  - addProgressByCurStage == 1) ? progressByCurStage + loopIterationSize
-        : progressByCurStage
-      loopMultiply = 1 + (viewProgress - startStageLoopProgress - lastLoopRewardedStage) / loopIterationSize
-      isReceived = viewProgress - startStageLoopProgress < lastLoopRewardedStage
+    local canReceiveByProgress = !isReceived && curProgressV >= viewProgress
+    local canBuyLevel = curProgressV + 1 == viewProgress
+    local isLoop = periodic && idx >= startStageLoop - 1
+    let isMergedWithLoop = periodic && idx == startStageLoop - 2 && isEqual(rewards, stages?[idx + 1].rewards)
+    if (isMergedWithLoop) {
+      idx++ 
+      if (isReceived) {
+        isLoop = true
+        viewProgress = stages[idx]?.progress ?? viewProgress
+      }
+      else
+        loopMultiply = 1
     }
-    return {
+    if (isLoop && loopPeriod > 0 && curProgressV >= loop1Start) {
+      let completedLoops = (curProgressV - loop1Start) / loopPeriod
+
+      let curLoopProgress = viewProgress + loopPeriod * completedLoops
+      let isReceivedCurLoop = curLoopProgress <= lastRewardedProgress
+      let canReceiveCurLoop = !isReceivedCurLoop && curLoopProgress <= curProgressV
+      let loopsToReceive = ((canReceiveCurLoop ? curLoopProgress : curLoopProgress - loopPeriod) - lastRewardedProgress)
+        / loopPeriod
+      loopMultiply = max(1, loopsToReceive)
+      if (isReceivedCurLoop || canReceiveCurLoop) {
+        viewProgress += loopPeriod * completedLoops
+        isReceived = isReceivedCurLoop
+        canReceiveByProgress = canReceiveCurLoop
+        canBuyLevel = false
+      }
+      else {
+        let prevLoopProgress = curLoopProgress - loopPeriod
+        let isReceivedPrevLoop = completedLoops == 0 || prevLoopProgress <= lastRewardedProgress
+        viewProgress += loopPeriod * (completedLoops + (isReceivedPrevLoop ? 0 : -1))
+        isReceived = false
+        canReceiveByProgress = !isReceivedPrevLoop
+        canBuyLevel = isReceivedPrevLoop && curProgressV + 1 == curLoopProgress
+      }
+    }
+    res.append({
       loopMultiply
       progress = viewProgress
       rewards
       unlockName = name
       isPaid
       isReceived
-      canBuyLevel = ((curStageV + 1) == viewProgress) || (isLoop && curStageV >= maxStageV && loopIterationSize == 1)
-      canReceive = !isReceived && isActive && hasReward && curStageV >= viewProgress
-    }
-  })
+      canBuyLevel
+      canReceive = canReceiveByProgress && isActive && hasReward
+    })
+  }
+  return res
 }
 
 function fillViewInfo(res, servConfigs) {

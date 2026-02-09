@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "dagor.workcycle" import resetTimeout, clearTimer
 from "%sqstd/underscore.nut" import arrayByRows
 from "%rGui/components/expandArrow.nut" import expandArrow, defaultExpandAnimationDuration
 from "%rGui/style/gradients.nut" import mkColoredGradientY
@@ -20,24 +19,20 @@ let arrowOvr = {
   image = Picture($"ui/gameuiskin#triangle.svg:{arrowSize[0]}:{arrowSize[1]}:P")
 }
 
-function mkFoldableList(listContent, headerContent, listW = null, curOpenedSelector = null, selectorId = null) {
+function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorId, handleClick = null) {
   let stateFlags = Watched(0)
-  let isExpanded = Watched(false)
-  let contentHeight = Watched(0)
-  let foldableHeight = Watched(headerH)
-  let collapseFoldableHeight = @() foldableHeight.set(headerH)
+  let isExpanded = Computed(@() curOpenedSelector.get() == selectorId)
 
   let header = @() {
-    watch = [stateFlags, isExpanded]
+    watch = stateFlags
     size = [flex(), headerH]
     rendObj = ROBJ_SOLID
     color = (stateFlags.get() & S_HOVER) != 0 ? headerBgHoverColor : headerBgColor
     behavior = Behaviors.Button
     function onClick() {
-      let isExpand = !isExpanded.get()
-      isExpanded.set(isExpand)
-      if (isExpand)
-        curOpenedSelector?.set(selectorId)
+      if (handleClick?(isExpanded.get()))
+        return
+      curOpenedSelector.set(isExpanded.get() ? null : selectorId)
     }
     onElemState = @(v) stateFlags.set(v)
     valign = ALIGN_CENTER
@@ -49,44 +44,31 @@ function mkFoldableList(listContent, headerContent, listW = null, curOpenedSelec
     ]
   }
 
-  let content = @() {
-    watch = [isExpanded, contentHeight]
+  let content = {
     size = FLEX_H
-    pos = [0, headerH]
     flow = FLOW_VERTICAL
     padding = contentPadding
     rendObj = ROBJ_SOLID
     color = contentBgColor
     clipChildren = true
     children = listContent
-    opacity = isExpanded.get() ? 1 : 0
-    transform = { translate = [0, (isExpanded.get() ? 0 : -contentHeight.get())] }
-    transitions = [
-      { prop = AnimProp.translate, duration = defaultExpandAnimationDuration }
-      { prop = AnimProp.opacity, duration = defaultExpandAnimationDuration }
-    ]
   }
 
-  let updateContentHeight = @() contentHeight.set(calc_comp_size(content)[1])
-  listW?.subscribe(@(_) updateContentHeight())
-  updateContentHeight()
-  curOpenedSelector?.subscribe(@(v) v == selectorId ? null : isExpanded.set(false))
-  isExpanded.subscribe(function(v) {
-    if (v) {
-      clearTimer(collapseFoldableHeight)
-      foldableHeight.set(headerH + contentHeight.get())
-    }
-    else
-      resetTimeout(defaultExpandAnimationDuration, collapseFoldableHeight)
-  })
-
   return @() {
-    watch = foldableHeight
-    size = [hdpx(520), foldableHeight.get()]
+    watch = isExpanded
+    size = FLEX_H
+    behavior = Behaviors.TransitionSize
+    orientation = O_VERTICAL
+    speed = hdpx(2000)
+    maxTime = 0.3
     clipChildren = true
+    flow = FLOW_VERTICAL
     children = [
-      content
       header
+      {
+        size = isExpanded.get() ? FLEX_H : [flex(), 0]
+        children = content
+      }
     ]
   }
 }
@@ -110,7 +92,6 @@ let mkFoldableSelector = @(listValues, curValue, columns, itemCtor, headItemCtor
     watch = curValue
     children = headItemCtor(curValue.get())
   },
-  listValues
   curOpenedSelector,
   selectorId
 )
@@ -154,6 +135,7 @@ return {
   mkListItem
 
   itemGap
+  headerH
   contentPadding
   contentBgColor
   headerBgColor

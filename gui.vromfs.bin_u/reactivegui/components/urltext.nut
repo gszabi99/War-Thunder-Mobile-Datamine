@@ -15,9 +15,6 @@ function urlLikeButton(text, action, style = {}) {
     }
     text
     color = Color(192, 192, 192)
-    fontFx = FFT_GLOW
-    fontFxFactor = 64
-    fontFxColor = Color(0, 0, 0)
     onClick = action
     transform = {
       scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
@@ -30,7 +27,7 @@ function urlLikeButton(text, action, style = {}) {
       pos = [0, 2]
       color = Color(192, 192, 192)
     }.__update(childOvr)
-  }.__update(fontSmall, ovr)
+  }.__update(fontSmallShaded, ovr)
 }
 
 function urlText(text, baseUrl, style = {}, useExternalBrowser = true) {

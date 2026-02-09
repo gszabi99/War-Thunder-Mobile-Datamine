@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { G_BOOSTER } = require("%appGlobals/rewardType.nut")
+let { LIMIT_REACHED } = require("%rGui/shop/goodsStates.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitleArea, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
-  titleFontGradConsumables, mkBorderByCurrency
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTimeExt,
+  titleFontGradConsumables, mkBorderByCurrency, disabledBg
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
@@ -42,14 +45,9 @@ let mkImgs = @(list) {
 }
 
 let getLocNameBooster = @(goods) comma.join(
-  goods?.rewards.filter(@(r) r.gType == G_BOOSTER).map(@(r) loc($"boosters/{r.id}"))
-    ?? goods?.boosters.keys().map(@(id) loc($"boosters/{id}"))) 
-    ?? []
+  goods.rewards.filter(@(r) r.gType == G_BOOSTER).map(@(r) loc($"boosters/{r.id}")))
 
-let getBoostersList = @(goods)
-  goods?.rewards.filter(@(r) r.gType == G_BOOSTER)
-    ?? goods?.boosters.keys().map(@(id) { id, count = goods.boosters[id] }) 
-    ?? []
+let getBoostersList = @(goods) goods.rewards.filter(@(r) r.gType == G_BOOSTER)
 
 function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
@@ -57,9 +55,14 @@ function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let boostersList = getBoostersList(goods)
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
+  let hasLimitReached = Computed(@() null != boostersList.findvalue(function(b) {
+    let { limit = 0 } = serverConfigs.get()?.allBoosters[b.id]
+    return limit > 0 && limit <= (servProfile.get()?.boosters[b.id].battlesLeft ?? 0)
+  }))
+  let stateExt = Computed(@() state.get() | (hasLimitReached.get() ? LIMIT_REACHED : 0))
   return mkGoodsWrap(
     goods,
-    onClick,
+    @() hasLimitReached.get() ? null : onClick(),
     @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
@@ -77,9 +80,15 @@ function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
               titleFontGradConsumables,
               nameBooster(b.id)))
       })
-      mkGoodsLimitAndEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state), addChildren),
-    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
+      mkGoodsLimitAndEndTimeExt(goods, stateExt)
+    ]
+      .extend(mkGoodsCommonParts(goods, stateExt), addChildren)
+      .append(@() {
+        watch = hasLimitReached
+        size = flex()
+        children = hasLimitReached.get() ? disabledBg : null
+      }),
+    mkPricePlate(goods, stateExt, animParams), {size = goodsSmallSize})
 }
 
 return {

@@ -2,15 +2,19 @@ from "%globalsDarg/darg_library.nut" import *
 let {eventbus_subscribe} = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { adBudgetInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { questsBySection, seenQuests, saveSeenQuestsForSection, sectionsCfg, questsCfg, mkHasReceivedAllRewards,
+let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { questsBySection, unseenUnlocks, saveSeenQuestsForSection, sectionsCfg, questsCfg, mkHasReceivedAllRewards,
   inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection,
-  getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId, tutorialSectionIdWithReward
+  getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId, tutorialSectionIdWithReward,
+  getStarsTotalNonUpdatable
 } = require("%rGui/quests/questsState.nut")
-let { textButtonSecondary, textButtonInactive, textButtonPricePurchase, iconButtonCommon, iconButtonInactive
+let { textButtonSecondary, textButtonInactive, textButtonPricePurchase, iconButtonCommon,
+  iconButtonInactive, textButtonPurchase
 } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress,
-  getUnlockPrice, buyUnlock, buyUnlockReroll } = require("%rGui/unlocks/unlocks.nut")
+let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress, activeUnlocks,
+  getUnlockPrice, buyUnlock, buyUnlockReroll, allowOpenUnlock, openNextUnlockStage
+} = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
@@ -21,7 +25,7 @@ let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBar
 } = require("%rGui/quests/rewardsComps.nut")
 let { mkQuestBar, mkQuestListProgressBar } = require("%rGui/quests/questBar.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
@@ -31,7 +35,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { defer } = require("dagor.workcycle")
-let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
+let { sendBqQuestsTask, sendBqQuestsRerollTask } = require("%rGui/quests/bqQuests.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, PURCH_SRC_OPERATION_PASS, PURCH_TYPE_QUEST_REROLL,
   mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -44,6 +48,7 @@ let { REWARD_STYLE_VERY_TINY } = require("%rGui/rewards/rewardStyles.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
+let { isOPActive, openOPPurchaseWnd } = require("%rGui/battlePass/operationPassState.nut")
 
 
 let bgColor = 0x80000000
@@ -78,7 +83,7 @@ let newMarkSize = calc_comp_size(newMark)
 
 function receiveReward(item, currencyReward) {
   receiveUnlockRewards(item.name, 1, { stage = 1 })
-  sendBqQuestsTask(item, currencyReward?.count ?? 0, currencyReward?.id)
+  sendBqQuestsTask(item, getStarsTotalNonUpdatable(item), currencyReward?.count ?? 0, currencyReward?.id)
 }
 
 function mkAchievementText(item, ovr = {}) {
@@ -126,21 +131,28 @@ eventbus_subscribe("quests.buyUnlock", function(data) {
   receiveReward(data.item, data.currencyReward)
 })
 
+eventbus_subscribe("quests.buyUnlockReroll", function(data) {
+  sendBqQuestsRerollTask(activeUnlocks.get()?[data.unlockName] ?? data.unlockName)
+})
+
 let buyRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward)
   openMsgBoxPurchase({
     text = buyPurchaseContent(rewardsPreview, item),
     price = { price, currencyId },
     purchase = @() buyUnlock(item.name, 1, currencyId, price,
         { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name),
+    hasSpendingStat = false
   })
 
 let rerollQuestMsgBox = @(unlockName, price, currencyId)
   openMsgBoxPurchase({
     text = loc("quests/needMoneyQuestion_reroll"),
     price = { price, currencyId },
-    purchase = @() buyUnlockReroll(unlockName, price, currencyId)
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_OPERATION_PASS, PURCH_TYPE_QUEST_REROLL, unlockName)
+    purchase = @() buyUnlockReroll(unlockName, price, currencyId,
+      { onSuccessCb = { id = "quests.buyUnlockReroll", unlockName }})
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_OPERATION_PASS, PURCH_TYPE_QUEST_REROLL, unlockName),
+    hasSpendingStat = false
   })
 
 let exploreRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward)
@@ -150,10 +162,11 @@ let exploreRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyRew
     purchase = @() buyUnlock(item.name, 1, currencyId, price,
         { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
-    purchaseLocId = "msgbox/btn_explore"
+    purchaseLocId = "msgbox/btn_explore",
+    hasSpendingStat = false
   })
 
-function mkQuestBtn(item, currencyReward, rewardsPreview, hasReceivedAllRewards) {
+let mkQuestBtn = @(item, currencyReward, rewardsPreview, hasReceivedAllRewards) function() {
   let { name, progressCorrectionStep = 0 } = item
   let hasAds = !item?.hasReward && !hasReceivedAllRewards && progressCorrectionStep > 0
   let isRewardInProgress = hasAds ? Computed(@() name in unlockInProgress.get() || adBudgetInProgress.get())
@@ -174,6 +187,11 @@ function mkQuestBtn(item, currencyReward, rewardsPreview, hasReceivedAllRewards)
           text = utf8ToUpper(loc("ui/received"))
           behavior = Behaviors.Button 
         }.__update(fontTinyAccentedShaded)
+    : allowOpenUnlock.get()
+      ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
+          mkCurrencyComp(0, GOLD).__merge({size = [SIZE_TO_CONTENT, CS_COMMON.iconSize]}),
+          @() openNextUnlockStage(item.name),
+          btnStyle)
     : progressCorrectionStep > 0 ? mkAdsBtn(item)
     : (price.price ?? 0) > 0
       ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
@@ -185,6 +203,7 @@ function mkQuestBtn(item, currencyReward, rewardsPreview, hasReceivedAllRewards)
         @() anim_start($"unfilledBarEffect_{name}"),
         btnStyle)
   return {
+    watch = allowOpenUnlock
     key = $"quest_reward_receive_btn_{name}" 
     size = btnSize
     halign = ALIGN_CENTER
@@ -239,7 +258,7 @@ function mkItem(item, textCtor, sectionId) {
   )
   let imgLockSize = hdpxi(60)
   let isUnseen = Computed(@() !item.hasReward
-    && item.name not in seenQuests.get()
+    && item.name in unseenUnlocks.get()
     && item.name not in inactiveEventUnlocks.get())
 
   let rewardsPreview = Computed(@() getRewardsPreviewInfo(item, serverConfigs.get()))
@@ -263,6 +282,9 @@ function mkItem(item, textCtor, sectionId) {
   let headerPadding = item.hasReward ? Watched(unseenMarkMargin * 2)
     : Computed(@()isUnseen.get() ? newMarkSize[0] : 0)
 
+  let needOPAccessMark = Computed(@() !isOPActive.get()
+    && item?.meta.personal.startswith("premium_personal_unlocks"))
+
   return {
     rendObj = ROBJ_SOLID
     color = bgColor
@@ -282,8 +304,9 @@ function mkItem(item, textCtor, sectionId) {
       }
 
       @() {
-        watch = isHiddenForReroll
+        watch = [isHiddenForReroll, needOPAccessMark]
         size = FLEX_H
+        opacity = needOPAccessMark.get() ? 0.5 : 1
         children = isHiddenForReroll.get() ? mkItemTimerUntilReroll(statsTable)
           : {
               size = FLEX_H
@@ -339,7 +362,8 @@ function mkItem(item, textCtor, sectionId) {
 
                         @() {
                           watch = [isCompletedPrevQuest, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards]
-                          children = isCompletedPrevQuest.get() ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get())
+                          children = isCompletedPrevQuest.get()
+                            ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get())
                             : {
                                 size = btnSize
                                 halign = ALIGN_CENTER
@@ -359,7 +383,18 @@ function mkItem(item, textCtor, sectionId) {
               ]
             }
       }
-
+      @() !needOPAccessMark.get()
+        ? { watch = needOPAccessMark }
+        : {
+          watch = needOPAccessMark
+          size = flex()
+          padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
+          stopMouse = true
+          flow = FLOW_HORIZONTAL
+          halign = ALIGN_RIGHT
+          valign = ALIGN_BOTTOM
+          children = textButtonPurchase(utf8ToUpper(loc("quests/needOP")), openOPPurchaseWnd, {ovr = {size = btnSize, minWidth = btnSize[0]}})
+        }
       @() {
         watch = isCompletedPrevQuest
         size = FLEX_H
@@ -440,7 +475,7 @@ function questTimerUntilStart(sectionTable) {
 let questsSort = @(a, b) b.hasReward <=> a.hasReward
   || a.isFinished <=> b.isFinished
   || "chainQuests" in b <=> "chainQuests" in a
-  || a.name in seenQuests.get() <=> b.name in seenQuests.get()
+  || b.name in unseenUnlocks.get() <=> a.name in unseenUnlocks.get()
   || a.name <=> b.name
 
 let pQuestsSortByDifficult = @(a, b) (a?.personal ?? "") <=> (b?.personal ?? "")
@@ -476,8 +511,12 @@ function mergeQuestChains(quests, tabId, sectionId) {
   foreach (name, c in chains) {
     let q = res[name]
     c.insert(0, q)
-    let actualQuestIdx = c.findindex(@(quest) (!quest.isFinished && (quest.requirement == "" || unlockProgress.get()[quest.requirement].isFinished))
-      || (quest.isFinished && c[c.len() - 1].name == quest.name)) ?? 0
+    let actualQuestIdx = c.findindex(@(quest)
+        (!quest.isFinished
+          && (quest.requirement == ""
+            || (unlockProgress.get()?[quest.requirement].isFinished ?? false)))
+        || (quest.isFinished && c[c.len() - 1].name == quest.name))
+      ?? 0
     if (actualQuestIdx == 0)
       res[name] <- q.__merge({ chainQuests = c, pos = actualQuestIdx })
     else {
@@ -701,7 +740,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
                         },
                         {},
                         { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-                      mkScrollArrow(scrollHandler, MR_B)
+                      mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
                     ]
               }
         ]

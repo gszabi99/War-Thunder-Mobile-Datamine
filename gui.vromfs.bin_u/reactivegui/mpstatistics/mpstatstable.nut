@@ -5,6 +5,7 @@ let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
+let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { premiumTextColor, collectibleTextColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -12,6 +13,7 @@ let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlace
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
+let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { backButtonWidth } = require("%rGui/components/backButton.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
@@ -38,11 +40,8 @@ let notAvailableTxt = loc("ui/mdash")
 
 let cellTextProps = {
   rendObj = ROBJ_TEXT
-  fontFx = FFT_GLOW
-  fontFxFactor = 48
-  fontFxColor = Color(0, 0, 0)
   color = cellTextColor
-}.__update(fontTinyAccented)
+}.__update(fontTinyAccentedShaded)
 
 let mkCellIcon = @(icon) {
   size = [ rowHeadIconSize, rowHeadIconSize ]
@@ -216,7 +215,7 @@ let columnsByCampaign = {
   ships = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
-    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(p.damage.tointeger()) }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(getScoreFull(p).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#stats_ships_destroyed.svg", getText = @(p) decimalFormat(p.navalKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
@@ -225,19 +224,20 @@ let columnsByCampaign = {
   tanks = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
-    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(getScoreFull(p).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
-    { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
+    { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills)
+      isVisible = @(_, cr) cr?.useKillStreaks ?? false }
   ]
 
   air = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
-    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(getScoreFull(p).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { width = hdpx(100), fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 2),
-      isVisible = @(missionName) damageZoneMission.match(missionName) }
+      isVisible = @(missionName, _) damageZoneMission.match(missionName) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
     { headerIcon = "ui/gameuiskin#air_defence_destroyed_icon.svg", getText = @(p) decimalFormat(p.aiGroundKills + p.aiNavalKills) }
   ]
@@ -274,12 +274,24 @@ let columnsByGameType = {
 }
 
 let gtCfgMask = columnsByGameType.reduce(@(res, _, gt) res | gt, 0)
-let getColumnsByCampaign = @(campaign, missionName, gt)
-  mkColumnsCfg((columnsByGameType?[gt & gtCfgMask]
+let getColumnsByCampaignCommon = @(campaign, gt)
+  columnsByGameType?[gt & gtCfgMask]
     ?? columnsByCampaign?[campaign]
     ?? columnsByCampaign?[getCampaignPresentation(campaign).campaign]
     ?? columnsByCampaign.air
-  ).filter(@(c) c?.isVisible(missionName) ?? true))
+
+function getColumnsByCampaign(campaign, missionName, gt, hCustomRules) {
+  let { ctfFlagPreset = "" } = hCustomRules
+  if (ctfFlagPreset != "") {
+    let columns = clone getColumnsByCampaignCommon(campaign, gt)
+    let { mpStatIcon } = getCtfFlagPresentation(ctfFlagPreset)
+    columns.append({ width = hdpx(120), valign = ALIGN_BOTTOM, headerIcon = mpStatIcon, getText = @(p) p?.flagsDelivered ?? 0 })
+    return mkColumnsCfg(columns.filter(@(c) c?.isVisible(missionName, hCustomRules) ?? true))
+  }
+  return mkColumnsCfg(getColumnsByCampaignCommon(campaign, gt)
+    .filter(@(c) c?.isVisible(missionName, hCustomRules) ?? true))
+}
+
 
 function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr = {}) {
   let { columns, rowOvr = {} } = columnCfg

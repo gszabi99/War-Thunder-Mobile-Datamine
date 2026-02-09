@@ -7,7 +7,7 @@ let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlace
 let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { battleCampaign, battleUnitClasses } = require("%appGlobals/clientState/missionState.nut")
 let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
-let { getScoreKey } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { hudScoreTank } = require("%rGui/options/options/tankControlsOptions.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 
@@ -31,31 +31,31 @@ let iconsAlign = {
   groundKills = ALIGN_BOTTOM
 }
 
-let viewMuls = {
-  score = 100.0
+let getValueByKey = {
+  score = getScoreFull
+  damage = getScoreFull
 }
-
-let scoreKey = Computed(@() getScoreKey(battleCampaign.get()))
 
 function getViewScoreKey(campaign, unitClass, scoreTank) {
   if (campaign == "tanks" && scoreTank == "kills")
     return "groundKills"
   if (campaign == "air" && unitClass == "fighter")
     return "kills"
-  return getScoreKey(campaign)
+  if (campaign == "ships")
+    return "damage"
+  return "score"
 }
 let curUnitClass = Computed(@() battleUnitClasses.get()?[playerUnitName.get()] ?? "")
 let viewScoreKey = Computed(@() getViewScoreKey(getCampaignPresentation(battleCampaign.get()).campaign,
   curUnitClass.get(), hudScoreTank.get()))
 
 let myPlace = Computed(function() {
-  let key = scoreKey.get()
-  let myValue = localPlayerDamageStats.get()?[key] ?? 0
+  let myValue = localPlayerDamageStats.get() == null ? 0 : getScoreFull(localPlayerDamageStats.get())
   if (myValue <= 0)
     return -1
   local res = 1
   foreach(data in playerTeamDamageStats.get())
-    if ((data?[key] ?? 0) > myValue)
+    if (getScoreFull(data) > myValue)
       res++
   return res
 })
@@ -147,8 +147,11 @@ let mkMyScoresUi = @(scale) function() {
     return res
 
   let key = viewScoreKey.get()
-  let mul = viewMuls?[key] ?? 1.0
-  local score = Computed(@() mul * (localPlayerDamageStats.get()?[key] ?? localMPlayer.get()?[key] ?? 0))
+  local score = Computed(@() (localPlayerDamageStats.get() == null ? null
+      : getValueByKey?[key](localPlayerDamageStats.get()))
+    ?? localPlayerDamageStats.get()?[key]
+    ?? localMPlayer.get()?[key]
+    ?? 0)
   score.subscribe(@(_) anim_start(scoreTrigger))
 
   return res.__update({
@@ -174,7 +177,6 @@ return {
   isPlaceVisible
   isScoreVisible
   icons
-  viewMuls
 
   mkMyScores
   mkMyDamage

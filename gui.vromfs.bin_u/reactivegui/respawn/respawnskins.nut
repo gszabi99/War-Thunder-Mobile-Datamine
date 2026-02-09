@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let { mkIcon } = require("%rGui/unitCustom/unitCustomCompsNew.nut")
+let { mkIcon } = require("%rGui/unitCustom/unitCustomComps.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { respawnUnitInfo, respawnUnitSkins } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { isAutoSkin } = require("%rGui/unit/unitSettings.nut")

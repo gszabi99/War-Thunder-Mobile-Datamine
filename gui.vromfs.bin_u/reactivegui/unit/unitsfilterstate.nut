@@ -8,7 +8,7 @@ let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO
 } = require("%appGlobals/unitsState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { mkFlagImageWithoutGrad } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkFlagImageWithoutGrad, mkFlagFrame } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isUnitNameMatchSearchStr } = require("%rGui/unit/unitNameSearch.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 
@@ -35,6 +35,9 @@ let mkValue = @(id, defValue = null) Computed(@() curFilters.get()?[id] ?? defVa
 let saveValue = @(id, value) curFilters.mutate(@(f) f[id] <- value)
 let mkSetValue = @(id) @(value) saveValue(id, value)
 let clearFilters = @() curFilters.set({})
+
+let textColor = 0xFFFFFFFF
+let inactiveTextColor = 0xFFD96363
 
 function fillFilters(filters) {
   foreach (f in filters ?? []) {
@@ -117,17 +120,20 @@ function mkOptMultiselect(id, override = {}) {
 }
 
 let optCountry = mkOptMultiselect("country", {
-  customValue = @(v) mkFlagImageWithoutGrad(v, hdpxi(90))
+  customValue = @(v, hasValues) hasValues
+    ? mkFlagImageWithoutGrad(v, hdpxi(90))
+    : mkFlagFrame(mkFlagImageWithoutGrad(v, hdpxi(90)), { borderColor = inactiveTextColor })
   sortFunc = sortCountries
   useAllToggle = true
 })
 let optMRank = mkOptMultiselect("mRank", {
-  inBoxValue = @(v) mkGradRank(v)
+  inBoxValue = @(v, hasValues) mkGradRank(v, hasValues ? {} : { fontTex = null, fontTexSv = null, color = inactiveTextColor })
   useAllToggle = true
 })
 let optUnitClass = mkOptMultiselect("unitClass", {
-  inBoxValue = @(v) {
+  inBoxValue = @(v, hasValues) {
     rendObj = ROBJ_TEXT
+    color = hasValues ? textColor : inactiveTextColor
     text = unitClassFontIcons?[v]
   }.__update(fontBig)
   useAllToggle = true

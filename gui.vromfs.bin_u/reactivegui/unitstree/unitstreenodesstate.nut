@@ -2,19 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
-
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { activeBattleMods, blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
+let { unitsBlockedByBattleMode, blockedCountries } = require("%rGui/unit/unitAccess.nut")
+
 
 let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
 
@@ -24,7 +22,7 @@ let countryPriority = {
   country_ussr = 8
 }
 
-let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()] ?? {})
+let nodes = Computed(@() campConfigs.get()?.unitTreeNodes ?? {})
 
 let visibleNodes = Computed(@()
   needToShowHiddenUnitsDebug.get() ? nodes.get()
@@ -32,11 +30,10 @@ let visibleNodes = Computed(@()
       || v.name in campMyUnits.get()))
 
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
+let shownUnitsOffersForPurchase = mkWatched(persist, "shownUnitsOffersForPurchase", {})
 let seenResearchedUnits = mkWatched(persist, SEEN_RESEARCHED_UNITS, {})
 let unitInfoToScroll = Watched(null)
 let unitToScroll = Computed(@() unitInfoToScroll.get()?.name)
-let blockedCountries = Computed(@() blockedResearchByBattleMods.get()?[curCampaign.get()]
-  .filter(@(battleMod) battleMod not in activeBattleMods.get()) ?? {})
 
 let unitsResearchStatus = Computed(function(prev) {
   let list = {}
@@ -44,7 +41,7 @@ let unitsResearchStatus = Computed(function(prev) {
     return list
 
   local hasChanges = false
-  let { unitResearchExp = {} } = serverConfigs.get()
+  let { unitResearchExp = {} } = campConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
   foreach (unitName, reqExp in unitResearchExp) {
     if (unitName in campMyUnits.get() || unitName not in campUnitsCfg.get())
@@ -52,7 +49,9 @@ let unitsResearchStatus = Computed(function(prev) {
     if (!needToShowHiddenUnitsDebug.get() && unitName in unreleasedUnits.get())
       continue
     let { reqUnits = [] , country = "" } = nodes.get()?[unitName]
-    let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false } = unitsResearch?[unitName]
+    let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false,
+      hasAccessLock = true
+    } = unitsResearch?[unitName]
     let res = {
       name = unitName
       exp
@@ -62,6 +61,7 @@ let unitsResearchStatus = Computed(function(prev) {
       isResearched
       canBuy
       canResearch
+      hasAccessLock
       country
     }
     let value = prevIfEqual(prev?[unitName], res)
@@ -76,12 +76,13 @@ let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.is
 let researchCountry = Computed(@() currentResearch.get()?.country)
 
 let isAllAvailableUnitsResearched = Computed(@()
-  unitsResearchStatus.get().findvalue(@(r) (r.canResearch || r.canBuy) && r.country not in blockedCountries.get()) == null)
+   null == unitsResearchStatus.get().findvalue(@(r) (r.canResearch || r.canBuy)
+     && ((r?.hasAccessLock ?? true) && r.name not in unitsBlockedByBattleMode.get())))
 
 let mkCountries = @(nodeList) Computed(function(prev) {
   let resTbl = {}
   foreach (node in nodeList.get()) {
-    if (node.country in blockedCountries.get()
+    if (node.name in unitsBlockedByBattleMode.get()
       && node.name not in campMyUnits.get()
       && currentResearch.get() == null
       && !isAllAvailableUnitsResearched.get())
@@ -93,6 +94,8 @@ let mkCountries = @(nodeList) Computed(function(prev) {
       || a <=> b)
   return prevIfEqual(prev, res)
 })
+
+let markUnitOfferShown = @(unitName) shownUnitsOffersForPurchase.mutate(@(v) v[unitName] <- true)
 
 function mkFilteredNodes(nodeList) {
   let res = Computed(@() filterGenId.get() == 0 ? nodeList.get()
@@ -200,12 +203,12 @@ function remapLegacyNodesPositions(nodeList, serverConfigsV) {
 
 let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
   let nodeList = allNodes.get().filter(@(n) n.country == curCountry.get())
-  let res = curCountry.get() == "legacy" ? remapLegacyNodesPositions(nodeList, serverConfigs.get())
+  let res = curCountry.get() == "legacy" ? remapLegacyNodesPositions(nodeList, campConfigs.get())
     : remapNodesPositions(nodeList)
   return prevIfEqual(prev, res)
 })
 
-let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
+let allBlueprints = Computed(@() campConfigs.get()?.allBlueprints ?? {})
 let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
 
 let availableBlueprints = Computed(@() allBlueprints.get()
@@ -242,14 +245,13 @@ let unseenResearchedUnits = Computed(function() {
   if (!isCampaignWithUnitsResearch.get())
     return res
 
-  let { unitTreeNodes = {}, unitResearchExp = {} } = serverConfigs.get()
+  let { unitTreeNodes = {}, unitResearchExp = {} } = campConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
-  let curCampaignUnits = unitTreeNodes?[curCampaign.get()] ?? {}
   let blueprints = availableBlueprints.get()
   let bCounts = blueprintCounts.get()
   let seenUnits = seenResearchedUnits.get()
 
-  foreach(unitName, node in curCampaignUnits) {
+  foreach(unitName, node in unitTreeNodes) {
     let unit = campUnitsCfg.get()?[unitName]
     if (!unit || unit.isHidden || unitName in seenUnits)
       continue
@@ -282,9 +284,11 @@ let unseenResearchedUnits = Computed(function() {
 
 function getResearchableCountries(nodeList, uResearchStatus, countriesToBlock) {
   let resTbl = {}
-  foreach (node in nodeList)
-    if ((uResearchStatus?[node.name].canResearch ?? false) && node.country not in countriesToBlock)
+  foreach (node in nodeList) {
+    let { canResearch = false, hasAccessLock = true } = uResearchStatus?[node.name]
+    if (canResearch && (!hasAccessLock || node.country not in countriesToBlock))
       resTbl[node.country] <- true
+  }
   return resTbl.keys()
     .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
       || a <=> b)
@@ -359,6 +363,8 @@ return {
   getResearchableCountries
   mkResearchableCountries
 
+  shownUnitsOffersForPurchase
+  markUnitOfferShown
+
   countryPriority
-  blockedCountries
 }

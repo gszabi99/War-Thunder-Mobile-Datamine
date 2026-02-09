@@ -39,9 +39,6 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
   size = [saSize[0] - hdpx(1100), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  fontFxColor = Color(0, 0, 0, 50)
-  fontFxFactor = min(64, hdpx(64))
-  fontFx = FFT_GLOW
   text = "".concat(textToShow.get(), colon,
     abs(distanceToObstacleExt.get()),
     loc("measureUnits/meters_alt"))
@@ -54,7 +51,7 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
       easing = DoubleBlink, play = true }
     { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = OutQuad, playFadeOut = true }
   ]
-}.__update(fontTiny))
+}.__update(fontTinyShaded))
 
 needHint.subscribe(@(v) !v ? removeEvent({ id = HINT_TYPE })
   : addEvent({ id = HINT_TYPE, hType = HINT_TYPE }))

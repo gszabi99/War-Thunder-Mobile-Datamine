@@ -1749,5 +1749,18 @@
       1.39957,
       0.0000267067
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_36c_usaaf_a*",
+        "to": "p_36c_usaaf_silver1_a*"
+      },
+      {
+        "from": "p_36c_usaaf_n*",
+        "to": "p_36c_usaaf_silver1_n*"
+      }
+    ]
   }
 }

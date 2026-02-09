@@ -5,7 +5,7 @@ let { activeUnlocks, unlockProgress, getUnlockPrice } = require("%rGui/unlocks/u
 let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { seenQuests, inactiveEventUnlocks } = require("%rGui/quests/questsState.nut")
+let { unseenUnlocks, inactiveEventUnlocks } = require("%rGui/quests/questsState.nut")
 let { loadPresetOnce, updatePresetByUnlocks } = require("%rGui/event/treeEvent/treeEventUtils.nut")
 
 
@@ -105,12 +105,12 @@ let pointsStatusesByPresets = Computed(function () {
 
       let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks, unlockProgress.get())
       let isCompleted = isCompletedPrevQuest && !!unlock?.isCompleted
-      let isSeen = unlock?.name not in seenQuests.get() && unlock?.name not in inactiveEventUnlocks.get()
+      let isUnseen = unlock?.name in unseenUnlocks.get() && unlock?.name not in inactiveEventUnlocks.get()
 
       res[quest_cluster_id][id] <- {
         isCompletedPrevQuest
         isCompleted
-        isUnseen = (isCompleted && !unlock?.isFinished) || (isSeen && isCompletedPrevQuest && !isCompleted)
+        isUnseen = (isCompleted && !unlock?.isFinished) || (isUnseen && isCompletedPrevQuest && !isCompleted)
       }
     }
   }

@@ -37,7 +37,7 @@
   "DamageParts": {
     "steel": {
       "body_dm": {
-        "hp": 240.0
+        "hp": 120.0
       }
     },
     "armor50_tanks": {

@@ -10,10 +10,7 @@ let progressMarginL = levelHolderSize - levelProgressBorderWidth - (0.5 * progre
 
 let textParams = {
   rendObj = ROBJ_TEXT
-  fontFxColor = 0xFF000000
-  fontFxFactor = hdpx(50)
-  fontFx = FFT_GLOW
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 let levelBg = mkLevelBg({
   ovr = { size = [ rhombusSize, rhombusSize ] }

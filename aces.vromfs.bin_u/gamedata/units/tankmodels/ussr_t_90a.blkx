@@ -61,7 +61,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "battleHideNodes": {
     "n": [
       "details",
@@ -87,6 +87,58 @@
       0.25,
       0.0,
       0.75
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2096,7 +2148,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M5_T_90A_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "shotFreq": 0.1408,
+        "shotFreq": 0.142857,
         "shellCasingEmitter": "emtr_shell",
         "shellCasingMesh": "semi_combustible_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
@@ -2391,7 +2443,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 2500.0
@@ -2404,6 +2456,12 @@
         5.0,
         0.0,
         0.6,
+        0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
         0.3
       ]
     },
@@ -2419,11 +2477,11 @@
       "model": "v_92s2"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 220000.0,
       "driveGearRadius": 0.31,
       "mainGearRatio": 0.95,
       "sideGearRatio": 4.1,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -14.35,
@@ -3354,7 +3412,7 @@
               "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M5_T_90A_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "shotFreq": 0.1408,
+              "shotFreq": 0.142857,
               "shellCasingEmitter": "emtr_shell",
               "shellCasingMesh": "semi_combustible_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
@@ -3645,6 +3703,11 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "upgraded_skin": {
@@ -3799,6 +3862,27 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.243428,
       "decal2Tex": "ussr_numbers_8"
+    }
+  },
+  "vehicleSkins": {
+    "winter": {
+      "set_tex": [
+        {
+          "from": "t_90a_body_c*",
+          "to": "t_90a_skin_ny_26_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_gun_c*",
+          "to": "t_90a_skin_ny_26_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_90a_turret_c*",
+          "to": "t_90a_skin_ny_26_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "ammoStowages": {

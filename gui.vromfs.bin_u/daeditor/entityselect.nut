@@ -3,16 +3,15 @@ from "%darg/ui_imports.nut" import *
 from "%sqstd/ecs.nut" import *
 from "components/style.nut" import colors
 from "%darg/laconic.nut" import *
-from "%sqstd/underscore.nut" import partition, flatten
 
 let entity_editor = require_optional("entity_editor")
-let { EntitySelectWndId, selectedEntities, markedScenes, de4workMode, allScenesWatcher, getAllScenes } = require("state.nut")
+let { EntitySelectWndId, selectedEntities, markedScenes, de4workMode, sceneIdMap } = require("state.nut")
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let { setTooltip } = require("components/cursors.nut")
 let nameFilter = require("components/nameFilter.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
-let { getEntityExtraName, getSceneLoadTypeText, getSceneIndicies, sceneGenerated, sceneSaved, getNumMarkedScenes, matchEntityByScene } = require("%daeditor/daeditor_es.nut")
+let { getEntityExtraName, getSceneLoadTypeText, sceneGenerated, sceneSaved, getNumMarkedScenes, matchEntityByScene } = require("%daeditor/daeditor_es.nut")
 let mkSortModeButton = require("components/mkSortModeButton.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
 
@@ -22,7 +21,6 @@ let filterString = mkWatched(persist, "filterString", "")
 let filterEntitiesByMarkedScenes = mkWatched(persist, "filterEntitiesByMarkedScenes", true)
 let scrollHandler = ScrollHandler()
 let allEntities = mkWatched(persist, "allEntities", [])
-let allSceneIndices = mkWatched(persist, "allSceneIndices", [])
 
 let statusAnimTrigger = { lastN = null }
 local locateOnDoubleClick = false
@@ -39,8 +37,6 @@ let numSelectedEntities = Computed(function() {
   }
   return nSel
 })
-
-allScenesWatcher.subscribe_with_nasty_disregard_of_frp_update(@(v) allSceneIndices.set(getSceneIndicies(v)))
 
 function matchEntityByText(eid, text) {
   if (text==null || text=="" || eid.tostring().indexof(text)!=null)
@@ -153,20 +149,10 @@ function statusLine() {
 
 let filter = nameFilter(filterString, {
   placeholder = "Filter by name"
-
-  function onChange(text) {
-    filterString.set(text)
-  }
-
-  function onEscape() {
-    set_kb_focus(null)
-  }
-
-  function onReturn() {
-    set_kb_focus(null)
-  }
-
-  function onClear() {
+  onChange = @(text) filterString.set(text)
+  onEscape = @() set_kb_focus(null)
+  onReturn = @() set_kb_focus(null)
+  onClear = function() {
     filterString.set("")
     set_kb_focus(null)
   }
@@ -191,17 +177,16 @@ let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+
 
 let sceneInfoStyle = const { fontSize = hdpx(17), color=Color(180,180,180,120) }
 
-function mkEntitySceneTooltip(loadType, index) {
-  if (loadType > 0 && index >= 0) {
+function mkEntitySceneTooltip(loadType, id) {
+  if (loadType > 0 && id >= 0) {
     local loadTypeText = "MAIN"
     local idSeparator = ""
     local indexText = ""
-    local loadTypeIndex = allSceneIndices.get()[loadType]
-    local sceneInfo = getAllScenes()[loadTypeIndex + index]
-    if (sceneInfo.importDepth != 0) {
+    local sceneInfo = sceneIdMap.get()?[id]
+    if (sceneInfo && sceneInfo.importDepth != 0) {
       loadTypeText = getSceneLoadTypeText(sceneInfo)
       idSeparator = ":"
-      indexText = sceneInfo.index
+      indexText = sceneInfo.id
     }
     return @() {
       rendObj = ROBJ_BOX
@@ -236,23 +221,22 @@ function listRow(eid, idx) {
     let div = (tplName != name) ? "•" : "|"
 
     local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid) ?? 0
-    local indexVal = entity_editor?.get_instance().getEntityRecordIndex(eid) ?? -1
+    local id = entity_editor?.get_instance().getEntityRecordSceneId(eid) ?? -1
     local loadType = "MAIN"
     local idSeparator = ""
     local index = ""
-    if (loadTypeVal > 0 && indexVal >= 0) {
-      local loadTypeIndex = allSceneIndices.get()[loadTypeVal]
-      local scene = getAllScenes()[loadTypeIndex + indexVal]
-      if (scene.importDepth != 0) {
+    if (loadTypeVal > 0 && id >= 0) {
+      local scene = sceneIdMap.get()?[id]
+      if (scene != null && scene.importDepth != 0) {
         loadType = getSceneLoadTypeText(scene)
         idSeparator = ":"
-        index = scene.index
+        index = scene.id
       }
     } else {
       loadType = ""
     }
 
-    let tooltip = mkEntitySceneTooltip(loadTypeVal, indexVal)
+    let tooltip = mkEntitySceneTooltip(loadTypeVal, id)
 
     return {
       rendObj = ROBJ_SOLID
@@ -261,7 +245,7 @@ function listRow(eid, idx) {
       eid
       behavior = Behaviors.Button
 
-      function onClick(evt) {
+      onClick = function(evt) {
         if (evt.shiftKey) {
           local selCount = 0
           foreach (_k, v in selectionState.get()) {
@@ -348,7 +332,6 @@ function listRowMoreLeft(num, idx) {
 
 
 function initEntitiesList() {
-  allSceneIndices.set(getSceneIndicies(getAllScenes()))
   let entities = entity_editor?.get_instance().getEntities(selectedGroup.get()) ?? []
   foreach (eid in entities) {
     let isSelected = selectedEntities.get()?[eid] ?? false
@@ -449,9 +432,7 @@ function mkEntitySelect() {
     scrollHandler
     rootBase = {
       size = flex()
-      function onAttach() {
-        scrollBySelection()
-      }
+      onAttach = @() scrollBySelection()
     }
   })
   const WORKSET_FILTER = "workset filter"
@@ -550,4 +531,5 @@ return {
   id = EntitySelectWndId
   mkContent = mkEntitySelect
   saveState=true
+  headerText = "Entity Select"
 }

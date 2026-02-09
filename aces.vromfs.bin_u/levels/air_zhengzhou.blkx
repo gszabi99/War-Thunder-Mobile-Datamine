@@ -33,10 +33,6 @@
   "numBorderCellsXNeg": 8,
   "numBorderCellsZPos": 8,
   "numBorderCellsZNeg": 8,
-  "mirrorShrinkXPos": 256.0,
-  "mirrorShrinkXNeg": 256.0,
-  "mirrorShrinkZPos": 256.0,
-  "mirrorShrinkZNeg": 256.0,
   "gridSteps": [
     8192.0,
     8192.0
@@ -53,24 +49,15 @@
     "texelSize": 0.125,
     "lastClipSize": 512
   },
-  "micro_details": {
-    "micro_detail": [
-      "microdetail_stone_a_tex_n*",
-      "microdetail_scan_gravel_a_tex_n*",
-      "microdetail_sand_a_tex_n*",
-      "microdetail_soil_a_tex_n*",
-      "microdetail_generic_granules_a_tex_n*",
-      "microdetail_grass_a_tex_n*",
-      "microdetail_forest_floor_a_tex_n*",
-      "microdetail_generic_granules_a_tex_n*",
-      "microdetail_wood_a_tex_n*",
-      "microdetail_metal_a_tex_n*",
-      "microdetail_snow_a_tex_n*",
-      "microdetail_generic_granules_a_tex_n*"
-    ],
-    "land_micro_details_uv_scale": 1.11
-  },
   "shader_vars": {
+    "shore__waves_dist": [
+      -80.0,
+      110.0,
+      0.0,
+      200.0
+    ],
+    "shore_amplitude_to_length": 180.0,
+    "shore_artistic_max_wave_height": 1.0,
     "max_river_width": 1500.0,
     "ocean_density": 0.4,
     "river_density": 1.0,
@@ -98,6 +85,26 @@
       0.19,
       0.0
     ]
+  },
+  "render": {
+    "riExToHeightmap": true
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_gravel_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_a_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11
   },
   "stars": {
     "latitude": 34.0,

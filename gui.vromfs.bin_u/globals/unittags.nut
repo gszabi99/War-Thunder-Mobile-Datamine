@@ -1,6 +1,7 @@
 from "%appGlobals/unitConst.nut" import *
 from "%globalScripts/logs.nut" import *
-let { get_unittags_blk } = require("blkGetters")
+from "blkGetters" import get_unittags_blk
+from "%sqstd/functools.nut" import memoize
 let { blk2SquirrelObjNoArrays, isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let { isReadyToFullLoad, isLoginRequired, isLoginStarted } = require("%appGlobals/loginState.nut")
 let getTagsUnitName = require("getTagsUnitName.nut")
@@ -52,9 +53,27 @@ function getUnitTagsCfg(realUnitName) {
   return unitTagsCfg[unitName]
 }
 
+let getUnitTagsCountry = memoize(function getUnitTagsCountryImpl(realUnitName) {
+  let { tags } = getUnitTagsCfg(realUnitName)
+  foreach(t, _ in tags)
+    if (t.startswith("country_"))
+      return t
+  return null
+})
+
+let getUnitTagsClass = memoize(function getUnitTagsClassImpl(realUnitName) {
+  let { tags } = getUnitTagsCfg(realUnitName)
+  foreach(t, _ in tags)
+    if (t.startswith("type_"))
+      return t.slice(5)
+  return null
+})
+
 return {
   getUnitTagsCfg
   getUnitTags = @(u) getUnitTagsCfg(u).tags
   getUnitType = @(u) getUnitTagsCfg(u).unitType
   getUnitTagsShop = @(u) getUnitTagsCfg(u)?.Shop
+  getUnitTagsCountry
+  getUnitTagsClass
 }

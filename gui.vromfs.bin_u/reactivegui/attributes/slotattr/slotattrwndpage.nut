@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let { playSound } = require("sound_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 
@@ -22,13 +22,16 @@ let { attrUnitType } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 
 
 function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
-  if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
-    let currTime = get_time_msec()
-    if (lastClickTime + boost_cooldown < currTime) { 
-      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 
-      if (nextIncCost > 0 && tryValue > selLevel.get())
-        buySlotLevelWnd(selectedSlotIdx.get())
-    }
+  if (applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
+    playSound("click")
+    return
+  }
+  playSound("meta_denied")
+  let currTime = get_time_msec()
+  if (lastClickTime + boost_cooldown < currTime) { 
+    let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 
+    if (nextIncCost > 0 && tryValue > selLevel.get())
+      buySlotLevelWnd(selectedSlotIdx.get())
   }
 }
 
@@ -43,7 +46,7 @@ function mkAttrRow(unitName, catId, attr, idx) {
   let canInc = Computed(@() selLevel.get() < maxLevel.get())
   let attrLocName = getAttrLabelText(attrUnitType.get(), attr.id)
   let mkBtnOnClick = @(diff) @() applyAttrRowChangeOrBoost(catId, attr, selLevel.get() + diff, selLevel, minLevel, maxLevel)
-  let mkCellOnClick = @(val) @() applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
+  let onChangeValue = @(val) applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
   let unitMods = Computed(@() campMyUnits.get()?[unitName].mods ?? {})
   let curValueData = Computed(@() getAttrValData(attrUnitType.get(), attr, minLevel.get(), shopCfg, serverConfigs.get(), unitMods.get()))
   let selValueData = Computed(@() selLevel.get() > minLevel.get()
@@ -72,7 +75,7 @@ function mkAttrRow(unitName, catId, attr, idx) {
               mkRowValue(curValueData, selValueData)
             ]
           }
-          mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
+          mkProgressBarSlider(selLevel, totalLevels, onChangeValue)
         ]
       }
       {

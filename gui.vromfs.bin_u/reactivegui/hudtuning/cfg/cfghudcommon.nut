@@ -3,11 +3,13 @@ let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { Z_ORDER, mkRBPos, mkCTPos, mkLTPos, mkRTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let { scoreBoardEditView, needScoreBoard, scoreBoardCfgByType, scoreBoardType } = require("%rGui/hud/scoreBoard.nut")
 let { capZonesEditView, capZonesList } = require("%rGui/hud/capZones/capZones.nut")
+let { msgBlock, msgBlockEditView } = require("%rGui/hud/eventMissionMessageBox.nut")
 let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 let { mkMenuButton, mkMenuButtonEditView } = require("%rGui/hud/menuButton.nut")
 let { raceLeadershipEditView, raceLeadershipCtor } = require("%rGui/hud/raceLeadership.nut")
 let { optFontSize, optTextWidth } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
+let { isCTFProgressType, isNotCTFProgressType } = require("%rGui/hud/missionScoreState.nut")
 
 
 return {
@@ -34,6 +36,16 @@ return {
     defTransform = mkCTPos([0, hdpx(42)])
     editView = capZonesEditView
     hideForDelayed = false
+    isVisibleInBattle = isNotCTFProgressType
+    isVisibleInEditor = isNotCTFProgressType
+  }
+
+  eventMissionMessageBox = {
+    ctor = msgBlock
+    defTransform = mkCTPos([0, hdpx(42)])
+    editView = msgBlockEditView
+    isVisibleInBattle = isCTFProgressType
+    isVisibleInEditor = isCTFProgressType
   }
 
   chatLogAndKillLog = {

@@ -52,10 +52,11 @@ isInLoadingScreen.subscribe(function(v) {
 register_es("players_damage_stats_es",
   {
     [["onInit", "onChange"]] = function trackDamageStats(_, comp) {
-      let { stats__damage, stats__score, player_id } = comp
+      let { stats__damage, stats__score, stats__flagsDelivered, player_id } = comp
       statsRaw.mutate(@(v) v[player_id] <- {
         damage = stats__damage
         score = stats__score
+        flagsDelivered = stats__flagsDelivered
       })
     },
     [["onDestroy"]] = function trackDamageStats(_, comp) {
@@ -68,6 +69,7 @@ register_es("players_damage_stats_es",
     comps_track = [
       ["stats__damage", TYPE_FLOAT],
       ["stats__score", TYPE_FLOAT],
+      ["stats__flagsDelivered", TYPE_INT],
     ]
     comps_ro = [["player_id", TYPE_INT]]
   })

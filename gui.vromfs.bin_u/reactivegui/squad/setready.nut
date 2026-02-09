@@ -7,8 +7,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { localizeAddons } = require("%appGlobals/updater/addons.nut")
 let { localizeUnitsResources } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons, addonsExistInGameFolder, addonsVersions, unitSizes
-} = require("%appGlobals/updater/addonsState.nut")
+let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { allUnitsRanks, allBattleUnits, missingUnitResourcesByRank, getModeAddonsInfo, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
@@ -50,8 +49,6 @@ function getRequiredAddonsNotUpdatable(mGMode) {
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),
-    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
-    addonsVersionsV = addonsVersions.get(),
     missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
     maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
     unitSizesV = unitSizes.get(),

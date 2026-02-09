@@ -3062,5 +3062,12 @@
       1.68626,
       -0.00000969455
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "il_2_1941_green_a*",
+      "to": "il_2_1941_4_color_a*"
+    }
   }
 }

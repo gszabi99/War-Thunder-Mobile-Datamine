@@ -1935,5 +1935,18 @@
       1.74548,
       -0.000422836
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_40e_1_c*",
+        "to": "p_40e_1_shark_c*"
+      },
+      {
+        "from": "p_40e_1_n*",
+        "to": "p_40e_1_shark_n*"
+      }
+    ]
   }
 }

@@ -2057,5 +2057,12 @@
       1.43751,
       0.000688716
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "f8f1_bearcat_c*",
+      "to": "f8f1_yellow_c*"
+    }
   }
 }

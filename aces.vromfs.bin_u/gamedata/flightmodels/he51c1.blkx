@@ -2160,5 +2160,18 @@
       1.18349,
       -3.95338e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "he51c1_a*",
+        "to": "he51c1_parad_a*"
+      },
+      {
+        "from": "he51a1_n*",
+        "to": "he51c1_parad_n*"
+      }
+    ]
   }
 }

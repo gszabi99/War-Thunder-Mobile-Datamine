@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isOPPurchaseWndOpened, closeOPPurchaseWnd, isOPSeasonActive, curStage, sendOPBqEvent,
   purchasedOP, OPPurchasedUnlock, OPPaidRewardsUnlock, OPFreeRewardsUnlock, operationPassGoods, getOPIcon,
@@ -16,6 +17,7 @@ let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
 let { mkRewardPlate, mkRewardPlateVip } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
@@ -29,6 +31,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { questsBySection } = require("%rGui/quests/questsState.nut")
 
 isOPSeasonActive.subscribe(@(isActive) isActive ? null : closeOPPurchaseWnd())
 
@@ -46,6 +49,7 @@ let wndContentHeight = saSize[1] - gamercardHeight - contentGap
 let contentGradientSize = [contentGap, saBorders[1]]
 
 let playerSelectedBp = mkWatched(persist, "playerSelectedBp", null)
+let countOPTasks = Computed(@() questsBySection.get()?["personal"].filter(@(v,_) v.meta.personal.startswith("premium_personal_unlocks"))?.len() ?? 0)
 
 let header = @() {
   watch = [seasonName, seasonEndTime]
@@ -229,6 +233,11 @@ let rewardsList = @(selBpInfo) function() {
       flow = FLOW_VERTICAL
       gap = rewardsListGap
       children = [
+        @() {
+          watch = countOPTasks
+          rendObj = ROBJ_TEXT
+          text = loc("battlePass/opAdditionalTasks", { count = countOPTasks.get() })
+        }.__update(fontMedium)
         rewardsBlock(
           viewInfoExclusive.len() == 0 ? loc("battlePass/receiveOnPurchase")
             : loc("battlePass/receiveOnPurchase/exclusive", { count = viewInfoExclusive.len() }),
@@ -353,7 +362,12 @@ let rightBlock = @(bpList, selBpInfo) {
   gap = { size = flex() }
   children = [
     operationPassIcon(bpList, selBpInfo)
-    buyBlock(bpList, selBpInfo)
+    mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.get() != null),
+      buyBlock(bpList, selBpInfo),
+      {
+        size = [ flex(), defButtonHeight ]
+        halign = ALIGN_CENTER
+      })
   ]
 }
 

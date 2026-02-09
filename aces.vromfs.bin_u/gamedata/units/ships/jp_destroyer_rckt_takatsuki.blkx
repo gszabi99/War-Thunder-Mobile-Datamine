@@ -739,9 +739,6 @@
   "commonWeapons": {
     "hideNodes": {
       "n": [
-        "auxiliary_caliber_turret_01",
-        "auxiliary_caliber_gun_01",
-        "turret_02",
         "turret_05",
         "aa_turret_01",
         "aa_gun_01"
@@ -1013,6 +1010,88 @@
         }
       },
       {
+        "trigger": "gunner6",
+        "triggerGroup": "special",
+        "blk": "gameData/weapons/rocketGuns/420mm_rur_5_alike_rocket_naval_bullet.blk",
+        "weaponType": "rockets",
+        "emitter": "rckt_head_17",
+        "flash": "rckt_head_17",
+        "ammoDpGenFmt": "rckt_head_%02d_dm",
+        "emitterGenRange": [
+          17,
+          20
+        ],
+        "emitterGenFmt": "rckt_head_%02d",
+        "useEmitter": true,
+        "allowableDelta": [
+          180.0,
+          1.0
+        ],
+        "bullets": 400,
+        "startFx": "smoke_rocketlaunch_ground",
+        "startFxOffset": [
+          1.5,
+          0.0,
+          0.0
+        ],
+        "defaultYaw": 0.0,
+        "defaultPitch": 10.0,
+        "speedYaw": 100.0,
+        "reloadTime": 20.0,
+        "enableCourseCorrection": true,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 10.0,
+        "aimMaxDist": 14000.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.0,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 1.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_01"
+        },
+        "limits": {
+          "yaw": [
+            -135.0,
+            135.0
+          ],
+          "pitch": [
+            10.0,
+            10.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -135.0,
+            -65.0,
+            12.0,
+            13.0
+          ],
+          "lim2": [
+            -65.0,
+            65.0,
+            24.0,
+            25.0
+          ],
+          "lim3": [
+            65.0,
+            135.0,
+            12.0,
+            13.0
+          ]
+        }
+      },
+      {
         "trigger": "countermeasures",
         "triggerGroup": "flares",
         "weaponType": "ircm",
@@ -1238,9 +1317,6 @@
         "commonWeapons": {
           "hideNodes": {
             "n": [
-              "auxiliary_caliber_turret_01",
-              "auxiliary_caliber_gun_01",
-              "turret_02",
               "turret_05",
               "aa_turret_01",
               "aa_gun_01"
@@ -1508,6 +1584,88 @@
                 "pitch": [
                   10.0,
                   10.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "special",
+              "blk": "gameData/weapons/rocketGuns/420mm_rur_5_alike_rocket_naval_bullet.blk",
+              "weaponType": "rockets",
+              "emitter": "rckt_head_17",
+              "flash": "rckt_head_17",
+              "ammoDpGenFmt": "rckt_head_%02d_dm",
+              "emitterGenRange": [
+                17,
+                20
+              ],
+              "emitterGenFmt": "rckt_head_%02d",
+              "useEmitter": true,
+              "allowableDelta": [
+                180.0,
+                1.0
+              ],
+              "bullets": 400,
+              "startFx": "smoke_rocketlaunch_ground",
+              "startFxOffset": [
+                1.5,
+                0.0,
+                0.0
+              ],
+              "defaultYaw": 0.0,
+              "defaultPitch": 10.0,
+              "speedYaw": 100.0,
+              "reloadTime": 20.0,
+              "enableCourseCorrection": true,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -135.0,
+                  135.0
+                ],
+                "pitch": [
+                  10.0,
+                  10.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -135.0,
+                  -65.0,
+                  12.0,
+                  13.0
+                ],
+                "lim2": [
+                  -65.0,
+                  65.0,
+                  24.0,
+                  25.0
+                ],
+                "lim3": [
+                  65.0,
+                  135.0,
+                  12.0,
+                  13.0
                 ]
               }
             },
@@ -1721,9 +1879,6 @@
         "commonWeapons": {
           "hideNodes": {
             "n": [
-              "auxiliary_caliber_turret_01",
-              "auxiliary_caliber_gun_01",
-              "turret_02",
               "turret_05",
               "aa_turret_01",
               "aa_gun_01"
@@ -1991,6 +2146,88 @@
                 "pitch": [
                   10.0,
                   10.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "special",
+              "blk": "gameData/weapons/rocketGuns/420mm_rur_5_alike_rocket_naval_bullet.blk",
+              "weaponType": "rockets",
+              "emitter": "rckt_head_17",
+              "flash": "rckt_head_17",
+              "ammoDpGenFmt": "rckt_head_%02d_dm",
+              "emitterGenRange": [
+                17,
+                20
+              ],
+              "emitterGenFmt": "rckt_head_%02d",
+              "useEmitter": true,
+              "allowableDelta": [
+                180.0,
+                1.0
+              ],
+              "bullets": 400,
+              "startFx": "smoke_rocketlaunch_ground",
+              "startFxOffset": [
+                1.5,
+                0.0,
+                0.0
+              ],
+              "defaultYaw": 0.0,
+              "defaultPitch": 10.0,
+              "speedYaw": 100.0,
+              "reloadTime": 20.0,
+              "enableCourseCorrection": true,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -135.0,
+                  135.0
+                ],
+                "pitch": [
+                  10.0,
+                  10.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -135.0,
+                  -65.0,
+                  12.0,
+                  13.0
+                ],
+                "lim2": [
+                  -65.0,
+                  65.0,
+                  24.0,
+                  25.0
+                ],
+                "lim3": [
+                  65.0,
+                  135.0,
+                  12.0,
+                  13.0
                 ]
               }
             },
@@ -2694,10 +2931,7 @@
       "details",
       "turret_05",
       "aa_turret_01",
-      "aa_gun_01",
-      "auxiliary_caliber_turret_01",
-      "auxiliary_caliber_gun_01",
-      "turret_02"
+      "aa_gun_01"
     ]
   },
   "upgraded_skin": {

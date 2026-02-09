@@ -17,6 +17,9 @@ let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsO
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { hudMediumGrayColor, hudCoralRedColor, hudVeilGrayColorFade } = require("%rGui/style/hudColors.nut")
+let { rocketAamAim } = require ("%rGui/rocketAim/rocketAamAim.nut")
+let { rocketAgmAim } = require("%rGui/rocketAim/rocketAgmAim.nut")
+let radarIndication = require ("%rGui/radar/radarIndication.nut")
 
 let crosshairReadyColor = hudCoralRedColor
 let crosshairSize = evenPx(38)
@@ -215,5 +218,8 @@ return {
     tankSight
     arcadeCrosshairAim
     arcadeCrosshair
+    rocketAamAim
+    rocketAgmAim
+    radarIndication
   ]
 }

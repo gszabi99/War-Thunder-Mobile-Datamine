@@ -8,7 +8,7 @@ let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
+let { openShopWnd, hasUnseenGoodsByShop } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
@@ -53,7 +53,7 @@ let openCfg = {
 
 let openBuyCurrencyWnd = @(curId) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId)
 
-let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.get().findindex(@(category) category == true))
+let needShopUnseenMark = Computed(@() hasUnseenGoodsByShop.get()?.common.findvalue(@(c) c) ?? false)
 let ownHangarUnit = Computed(@() hangarUnit.get()?.__merge(campMyUnits.get()?[hangarUnit.get()?.name] ?? {}))
 
 let textParams = {
@@ -281,11 +281,8 @@ function platoonOrUnitTitle(unit) {
           {
             rendObj = ROBJ_TEXT
             color = isElite ? premiumTextColor : textColor
-            fontFx = FFT_GLOW
-            fontFxColor = 0xFF000000
-            fontFxFactor = hdpx(64)
             text
-          }.__update(fontSmall)
+          }.__update(fontSmallShaded)
         ]
       }
       mkUnitLevelBlock(unit)
@@ -461,7 +458,6 @@ return {
   levelBlock
   mkLeftBlock
   mkLeftBlockUnitCampaign
-  gamercardWithoutLevelBlock
   mkGamercard
   mkGamercardUnitCampaign
   gamercardBalanceBtns

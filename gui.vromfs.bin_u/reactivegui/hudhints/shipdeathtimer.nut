@@ -13,21 +13,15 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
   children =  [
     {
       rendObj = ROBJ_TEXT
-      fontFxColor = Color(0, 0, 0, 50)
-      fontFxFactor = min(64, hdpx(64))
-      fontFx = FFT_GLOW
       text = "".concat(loc("hints/leaving_the_tank_in_progress"), loc("ui/colon"))
       color = alert
-    }.__update(fontTiny)
+    }.__update(fontTinyShaded)
     @() {
       watch = timeToDeath
       rendObj = ROBJ_TEXT
-      fontFxColor = Color(0, 0, 0, 50)
-      fontFxFactor = min(64, hdpx(64))
-      fontFx = FFT_GLOW
       text = secondsToTimeAbbrString(timeToDeath.get())
       color = alert
-    }.__update(fontTiny)
+    }.__update(fontTinyShaded)
   ]
 })
 

@@ -14,6 +14,7 @@ let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
 let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { headerLineGap } = require("%rGui/quests/questsPkg.nut")
 let { sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
+let { getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
 let { allShopGoods, isDisabledGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
@@ -256,7 +257,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
 
       let rewardPreview = Computed(@()
         getUnlockRewardsViewInfo(stages[idx], serverConfigs.get())
-          .filter(@(reward) !isDisabledGoods(reward))
+          .filter(@(reward) !isDisabledGoods(reward, allShopGoods.get(), serverConfigs.get()))
           .sort(sortRewardsViewInfo))
 
       function onRewardClick() {
@@ -264,8 +265,9 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
           return
         if (canClaimReward.get()) {
           receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
-          sendBqQuestsStage(progressUnlock.__merge({ tabId, sectionId = curSectionId.get() }),
-            rewardPreview.get()[0]?.count, rewardPreview.get()[0]?.id)
+          let unlock = progressUnlock.__merge({ tabId, sectionId = curSectionId.get() })
+          let { count = null, id = null } = rewardPreview.get()[0]
+          sendBqQuestsStage(unlock, getStarsTotalNonUpdatable(unlock), count, id)
           return
         }
         let reward = rewardPreview.get()?[0]
@@ -335,13 +337,15 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
   }
 }
 
-function rewardWidth(r) {
+function rewardWidth(r, allGoods, servConfigs) {
   let { slots = 1 } = r
-  return isDisabledGoods(r) ? 0 : progressBarRewardSize * slots + questItemsGap * (slots - 1)
+  return isDisabledGoods(r, allGoods, servConfigs) ? 0
+    : progressBarRewardSize * slots + questItemsGap * (slots - 1)
 }
 
-function stageRewardsWidth(rewardsArray) {
-  return rewardsArray.reduce(@(total, r) total + rewardWidth(r), 0) + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
+function stageRewardsWidth(rewardsArray, allGoods, servConfigs) {
+  return rewardsArray.reduce(@(total, r) total + rewardWidth(r, allGoods, servConfigs), 0)
+    + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
 }
 
 function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth) {
@@ -349,7 +353,8 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
     - (headerChildWidth.get() == 0 ? 0 : headerChildWidth.get() + headerLineGap))
   let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
     .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)))
-  let rewardsFullWidth = Computed(@() stageRewards.get().reduce(@(res, r) res + stageRewardsWidth(r), 0))
+  let rewardsFullWidth = Computed(@() stageRewards.get()
+    .reduce(@(res, r) res + stageRewardsWidth(r, allShopGoods.get(), serverConfigs.get()), 0))
   let minWidth = Computed(@() rewardsFullWidth.get() + stageRewards.get().len() * minStageProgressWidth + firstProgressWider)
   let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
@@ -373,7 +378,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
                     return
                   local x = 0
                   for (local i = 0; i < curStageIdx; i++)
-                    x += minStageProgressWidth + stageRewardsWidth(stageRewards.get()[i])
+                    x += minStageProgressWidth + stageRewardsWidth(stageRewards.get()[i], allShopGoods.get(), serverConfigs.get())
                   scrollHandler.scrollToX(max(0, x - progressBarRewardSize / 4))
                 }
                 children = [

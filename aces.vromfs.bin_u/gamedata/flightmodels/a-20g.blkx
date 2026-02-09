@@ -2514,5 +2514,12 @@
       3.17691,
       0.00000140816
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "douglas_a_20g_25_usaaf_totvd_c*",
+      "to": "a_20g_25_usaaf_c*"
+    }
   }
 }

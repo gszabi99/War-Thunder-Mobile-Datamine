@@ -1,10 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-require("%rGui/onlyAfterLogin.nut")
 let { register_command } = require("console")
 let { round } =  require("math")
 let { setDrawNativeAirCrosshair, setDrawNativeHitIndicator } = require("hudState")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
 let interopGet = require("%rGui/interopGen.nut")
 let { battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { DM_TEST_EMPTY } = require("crosshair")
@@ -67,10 +65,6 @@ let nativeToUnitType = {
 let nativeUnitType = hudStateNative.unitType
 let unitType = Computed(@() nativeToUnitType?[nativeUnitType.get()])
 
-let { playerUnitName } = hudStateNative
-let hudUnitType = Computed(@() playerUnitName.get() == "" ? unitType.get()
-  : getUnitType(playerUnitName.get()))
-
 let isUnitDelayedNative = hudStateNative.isUnitDelayed
 let forceDelayed = mkWatched(persist, "forceDelayed", false)
 let areHintsHidden = mkWatched(persist, "areHintsHidden", false)
@@ -78,7 +72,7 @@ let areSightHidden = mkWatched(persist, "areSightHidden", false)
 let isUnitDelayed = Computed(@() isUnitDelayedNative.get() || forceDelayed.get())
 register_command(@() forceDelayed.set(!forceDelayed.get()), "debug.hud.isUnitDelayed")
 
-playerUnitName.subscribe(@(v) (v ?? "") != "" ? battleUnitName.set(v) : null)
+hudStateNative.playerUnitName.subscribe(@(v) (v ?? "") != "" ? battleUnitName.set(v) : null)
 
 isUnitDelayed.subscribe(@(v) v ? null : anim_start("unitDelayFinished"))
 
@@ -111,7 +105,6 @@ return hudStateNative.__merge({
   areHintsHidden
   areSightHidden
   unitType
-  hudUnitType
   isUnitDelayed
   hudMode
   HM_COMMON

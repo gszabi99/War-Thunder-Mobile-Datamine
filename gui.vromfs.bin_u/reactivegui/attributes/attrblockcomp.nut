@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { playSound } = require("sound_wt")
-let { debounceImmediate } = require("%sqstd/timers.nut")
 
-let { btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob, sliderValueSound } = require("%rGui/components/slider.nut")
+let { btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob, mkSliderOnChangeSound
+} = require("%rGui/components/slider.nut")
 let { textColor, badTextColor, hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { getSpCostText, setAttribute } = require("%rGui/attributes/attrState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -110,10 +110,7 @@ let txt = @(ovr) {
   rendObj = ROBJ_TEXT
   behavior = Behaviors.Marquee
   color = textColor
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
-}.__merge(fontTiny, ovr)
+}.__merge(fontTinyShaded, ovr)
 
 let mkRowLabel = @(label) txt({
   size=FLEX_H
@@ -216,11 +213,8 @@ function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLeve
   local val = clamp(tryValue, minLevel.get(), maxLevel.get())
   if (val == selLevel.get() && tryValue <= maxLevel.get())
     val = max(val - 1, minLevel.get())
-  if (val == selLevel.get()) {
-    playSound("meta_denied")
+  if (val == selLevel.get())
     return false
-  }
-  playSound("click")
   setAttribute(catId, attrId, val)
   lastClickTime = get_time_msec()
   return true
@@ -241,27 +235,17 @@ let knobCtor = @(relValue, stateFlags, fullW)
       }
     })
 
-function mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
-  let debouncedSound = debounceImmediate(@() playSound("meta_denied"), 1)
-
+function mkProgressBarSlider(selLevel, totalLevels, onChangeValue) {
   let sliderOverride = {
     min = 0
     max = totalLevels
     size = [sliderWidth, sliderTouchableHeight]
-    function onChange(v) {
-      if (v < minLevel.get() || v > maxLevel.get()) {
-        debouncedSound()
-        return
-      }
-      sliderValueSound()
-      mkCellOnClick(v)()
-    }
+    onChange = mkSliderOnChangeSound(onChangeValue)
   }
-
   return slider(selLevel, sliderOverride, knobCtor)
 }
 
-function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
+function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, onChangeValue) {
   let hoveredLevel = Watched(-1)
 
   return array(totalLevels).map(function(_, i) {
@@ -271,15 +255,21 @@ function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCe
       : level <= maxLevel.get() ? cellColorCanBuy
       : cellColorEmpty)
     let isInteractive = Computed(@() level > minLevel.get())
-    return mkRowCell(cellColor, mkCellOnClick(level), level, hoveredLevel, isInteractive)
+    function onClick() {
+      if (onChangeValue(level))
+        playSound("click")
+      else
+        playSound("meta_denied")
+    }
+    return mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive)
   })
 }
 
-let mkRowProgressBar = @(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
+let mkRowProgressBar = @(minLevel, selLevel, maxLevel, totalLevels, onChangeValue) {
   size = [sliderWidth, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   gap = cellGap
-  children = mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
+  children = mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, onChangeValue)
 }
 
 return {

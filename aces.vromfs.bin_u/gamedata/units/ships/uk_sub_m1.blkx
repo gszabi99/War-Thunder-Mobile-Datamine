@@ -1969,5 +1969,19 @@
   },
   "battleHideNodes": {
     "n": "details"
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "sub_m1_c*",
+          "to": "sub_m1_c_default*"
+        },
+        {
+          "from": "sub_m1_c*",
+          "to": "sub_m1_c_default*"
+        }
+      ]
+    }
   }
 }

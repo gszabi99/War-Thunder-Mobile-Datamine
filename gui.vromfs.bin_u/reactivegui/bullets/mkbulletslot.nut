@@ -7,7 +7,8 @@ let headerHeight = hdpxi(108)
 let bulletIconSize = [hdpxi(214), headerHeight]
 
 function getSlotNumber(chosenBulletsList, id) {
-  let slotNumber = chosenBulletsList.findvalue(@(b) b.name == id)?.idx
+  let { idx = null, visIdx = null } = chosenBulletsList.findvalue(@(b) b.name == id)
+  let slotNumber = visIdx ?? idx
   return slotNumber == null ? "" : "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
 }
 

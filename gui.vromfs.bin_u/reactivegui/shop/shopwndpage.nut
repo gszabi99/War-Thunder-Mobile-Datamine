@@ -1,19 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+let { doesLocTextExist } = require("dagor.localize")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { G_PREMIUM, G_CURRENCY, G_ITEM } = require("%appGlobals/rewardType.nut")
-let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks, subsByCategory, subsGroups
+let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
+let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, goodsLinks, subsGroups, shopId,
+  curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
+  curShopSubsByCategory, curShopSoonGoodsByCategory
 } = require("%rGui/shop/shopState.nut")
-let { actualSchRewardByCategory, onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
+let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
+let { personalGoodsByShopCategory, getPersonalGoodsBaseId } = require("%rGui/shop/personalGoodsState.nut")
 let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE } = require("%rGui/shop/goodsStates.nut")
+let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE, NOT_READY
+} = require("%rGui/shop/goodsStates.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 } = require("%rGui/shop/platformGoods.nut")
@@ -23,19 +27,20 @@ let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, mkGoodsTimeProgr
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { openGoodsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { categoryGap, titleGap, goodsPerRow, titleH } = require("%rGui/shop/shopWndConst.nut")
-let rewardsToShopGoods = require("%rGui/shop/rewardsToShopGoods.nut")
+let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
+let { activeInternalSubs } = require("%rGui/state/profilePremium.nut")
+
 
 let goodsGlareRepeatDelay = 3
 let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
@@ -50,57 +55,24 @@ let tabTranslateWithOpacitySwitchAnim = [
   { prop = AnimProp.translate, from = [0, 0], to = [50, 0], duration = 0.1, easing = OutQuad, playFadeOut = true }
 ]
 
-let positive = @(id, count) count > 0 ? { id, count } : null
 let allowedCompare = [G_PREMIUM, G_CURRENCY, G_ITEM].totable()
-let goodsCompareCfg = [ 
-  @(g) g.units.len() > 0 || (g?.unitUpgrades.len() ?? 0) > 0 ? { canCompare = false } : null,
-  @(g) positive("premiumDays", g.premiumDays),
-  function(g) {
-    if (g.items.len() > 1)
-      return { canCompare = false }
-    foreach (itemId, count in g.items)
-      return positive(itemId, count) 
-    return null
-  },
-  function(g) {
-    if (g.currencies.len() > 1)
-      return { canCompare = false }
-    foreach (id, count in g.currencies)
-      return positive(id, count) 
-    return null
-  }
-]
+
+let personalTextByLifeTime = {
+  [3600] = "shop/hourly",
+  [24 * 3600] = "shop/daily",
+  [7 * 24 * 3600] = "shop/weekly",
+}
 
 function openGoodsNotAvailToPurchMsg(goods) {
-  if ("rewards" in goods) {
-    if (goods.rewards.len() == 1 && goods.rewards[0].id == "ircm_kit" && goods.rewards[0].gType == G_ITEM) {
-      local canBuyCountermeasure = false
-      foreach(unit in campMyUnits.get())
-        if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null) {
-          canBuyCountermeasure = true
-          break
-        }
-      if (!canBuyCountermeasure) {
-        openMsgBox({ text = msgBoxText(loc("shop/cantBuyCountermeasure")) })
-        return true
-      }
-    }
-    return false
-  }
-
-  
-  if ("ircm_kit" in goods.items && goods.items.len() == 1 && goods.gtype == SGT_CONSUMABLES) {
+  if (goods.rewards.len() == 1 && goods.rewards[0].id == "ircm_kit" && goods.rewards[0].gType == G_ITEM) {
     local canBuyCountermeasure = false
-    foreach(unit in campMyUnits.get()){
-      if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null){
+    foreach(unit in campMyUnits.get())
+      if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null) {
         canBuyCountermeasure = true
         break
       }
-    }
-    if (!canBuyCountermeasure){
-      openMsgBox({
-        text = msgBoxText(loc("shop/cantBuyCountermeasure"))
-      })
+    if (!canBuyCountermeasure) {
+      openMsgBox({ text = msgBoxText(loc("shop/cantBuyCountermeasure")) })
       return true
     }
   }
@@ -115,8 +87,8 @@ let function purchaseFunc(goods) {
   buyPlatformGoods(goods.id)
 }
 
-let mkGoodsState = @(goods) Computed(function() {
-  local res = 0
+let mkGoodsState = @(goods, addState = 0) Computed(function() {
+  local res = addState
   let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.get()
     : platformPurchaseInProgress.get()
   if (idInProgress != null) {
@@ -132,24 +104,10 @@ let mkGoodsState = @(goods) Computed(function() {
   return res
 })
 
-function getGoodsCompareData(goods) {
-  if ("rewards" in goods)
-    return goods.rewards.len() == 1 && goods.rewards[0].gType in allowedCompare
-      ? goods.rewards[0]
-      : null
-
-  
-  local res = null
-  foreach (calc in goodsCompareCfg) {
-    let data = calc(goods)
-    if (data == null)
-      continue
-    if (res != null || !(data?.canCompare ?? true)) 
-      return null
-    res = data
-  }
-  return res
-}
+let getGoodsCompareData = @(goods)
+  goods.rewards.len() == 1 && goods.rewards[0].gType in allowedCompare
+    ? goods.rewards[0]
+    : null
 
 function mkGoodsListWithBaseValue(goodsListBase) {
   let goodsList = []
@@ -201,13 +159,18 @@ function onGoodsClick(goods) {
     purchaseFunc(goods)
 }
 
-let gamercardShopItemsBalanceBtns = @(items, goodsByCat) {
+let gamercardShopItemsBalanceBtns = @(items) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = items.map(@(id) mkItemsBalance(id, function() {
-    let category = goodsByCat.findindex(@(goods) goods.findvalue(@(g) id in g.items))
-    openShopWnd(category ?? SC_CONSUMABLES)
+    let has = @(g) null != g.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM)
+    let category = curShopGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
+      ?? curShopSoonGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
+    if (category)
+      return openShopWnd(category, null, shopId.get())
+    let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
+    openShopWndByGoods(goods)
   }))
 }
 
@@ -218,11 +181,11 @@ let mkShopGamercard = @(onClose) function() {
   foreach (goods in personalGoodsByShopCategory.get()?[curCategoryId.get()] ?? []) {
     if (goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
-    if (goods.varId in orderByCurrency)
-      currencies[goods.varId] <- true
   }
-  foreach (goods in goodsByCategory.get()?[curCategoryId.get()] ?? []) {
-    if ("rewards" in goods) {
+  foreach (list in [curShopGoodsByCategory.get(), curShopSoonGoodsByCategory.get()])
+    foreach (goods in list?[curCategoryId.get()] ?? []) {
+      if (goods.price.currencyId != "")
+        currencies[goods.price.currencyId] <- true
       if (goods.rewards.len() != 1)
         continue 
       let { gType, id } = goods.rewards[0]
@@ -232,34 +195,20 @@ let mkShopGamercard = @(onClose) function() {
         items[id] <- true
       else if (gType == G_CURRENCY)
         currencies[id] <- true
-      continue
     }
-
-    
-    if(goods.price.currencyId != "")
-      currencies[goods.price.currencyId] <- true
-    currencies.__update(goods.currencies)
-    if (goods.units.len() == 0
-      && goods.unitUpgrades.len() == 0
-      && goods.blueprints.len() == 0
-      && goods.lootboxes.len() == 0)
-        items.__update(goods.items)
-    if (goods.premiumDays > 0)
-      needShowPremium = true
-  }
   let orderItems = items.keys().sort(@(a,b)
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
   return {
-    watch = [ goodsByCategory, curCategoryId, personalGoodsByShopCategory ]
+    watch = [ curShopGoodsByCategory, curShopSoonGoodsByCategory, curCategoryId, personalGoodsByShopCategory ]
     size = [ saSize[0], gamercardHeight ]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = gamercardGap
     children = [
-      mkLeftBlock(onClose)
+      backButton(onClose)
       {size = flex()}
       needShowPremium ? premIconWithTimeOnChange : null
-      gamercardShopItemsBalanceBtns(orderItems, goodsByCategory.get())
+      gamercardShopItemsBalanceBtns(orderItems)
       mkCurrenciesBtns(currencies.keys().sort(sortByCurrencyId))
         .__update({ size = SIZE_TO_CONTENT })
     ]
@@ -282,6 +231,13 @@ let mkGoodsCard = @(goods, animParams) mkGoods(
   animParams
 )
 
+let mkSoonGoodsCard = @(goods, animParams) mkGoods(
+  goods,
+  @() null,
+  mkGoodsState(goods, NOT_READY),
+  animParams
+)
+
 let mkSchRewardCard = @(schGoods, animParams) mkGoods(
   schGoods,
   @() onSchRewardReceive(schGoods),
@@ -291,16 +247,16 @@ let mkSchRewardCard = @(schGoods, animParams) mkGoods(
 
 function mkPersonalGoodsCard(pGoods, animParams) {
   let { isPurchased, endTime, lifeTime } = pGoods
-  let goods = rewardsToShopGoods(pGoods.goods).__update(
-    pGoods,
-    {
-      endTime = 0  
-      isPopular = true
-      popularText = loc($"shop/{pGoods.id}")
-      meta = {}
-    })
+  let popLocId = $"shop/{getPersonalGoodsBaseId(pGoods.id)}"
+  let goods = personalGoodsToShopGoods(pGoods).__update({
+    endTime = 0  
+    isPopular = true
+    popularText = loc(doesLocTextExist(popLocId) ? popLocId
+      : (personalTextByLifeTime?[lifeTime] ?? popLocId))
+  })
 
   local addChildren = []
+  let isWithUnitOrSkin = null != pGoods.goods.findvalue(@(g) g.gType in unitRewardTypes || g.gType == G_SKIN)
   if (isPurchased) {
     let sec = Computed(@() max(0, endTime - serverTime.get()))
     addChildren.append(mkGoodsTimeProgress(
@@ -308,7 +264,7 @@ function mkPersonalGoodsCard(pGoods, animParams) {
       Computed(@() secondsToHoursLoc(sec.get()))
     ))
   }
-  else
+  else if (!isWithUnitOrSkin)
     addChildren.append({
       margin = bottomPad
       hplace = ALIGN_RIGHT
@@ -318,7 +274,8 @@ function mkPersonalGoodsCard(pGoods, animParams) {
 
   return mkGoods(
     goods,
-    @() purchasePersonalGoods(pGoods, goods),
+    @() isWithUnitOrSkin ? openGoodsPreview(goods.id)
+      : purchasePersonalGoods(pGoods, goods),
     Computed(@() pGoods.id == personalGoodsInProgress.get() || personalGoodsInProgress.get() == "" ? PURCHASING : 0),
     animParams,
     addChildren)
@@ -328,13 +285,13 @@ let mkSubscriptionCardExt = @(subs, animParams) mkSubscriptionCard(
   subs,
   @() openSubsPreview(subs.id),
   Computed(function() {
-    local res = subscriptions.get()?[subs.id].isActive ? IS_ACTIVE : 0
+    local res = (subscriptions.get()?[subs.id].isActive || subs.id in activeInternalSubs.get()) ? IS_ACTIVE : 0
     let group = subsGroups.findvalue(@(g) g.contains(subs.id))
     if (group == null)
       return res
     for (local i = group.len() - 1; i >= 0; i--) {
       local subId = group[i]
-      if (subscriptions.get()?[subId].isActive ?? false){
+      if ((subscriptions.get()?[subId].isActive ?? false) || subId in activeInternalSubs.get()){
         if (subId == group.top())
           return IS_ACTIVE
         else
@@ -347,17 +304,19 @@ let mkSubscriptionCardExt = @(subs, animParams) mkSubscriptionCard(
 
 function mkShopCategoryGoods(categoryCfg, distances) {
   let { id = "", title = "", getTitle = null } = categoryCfg
-  let goodsListBase = Computed(@() goodsByCategory.get()?[id] ?? [])
-  let schReward = Computed(@() actualSchRewardByCategory.get()?[id])
-  let personalList = Computed(@() personalGoodsByShopCategory.get()?[id])
-  let subsList = Computed(@() subsByCategory.get()?[id])
+  let goodsListBase = Computed(@() curShopGoodsByCategory.get()?[id] ?? [])
+  let soonList = Computed(@() curShopSoonGoodsByCategory.get()?[id] ?? [])
+  let schReward = Computed(@() curShopActualSchRewardsByCategory.get()?[id])
+  let personalList = Computed(@() curShopPersonalGoodsByCategory.get()?[id])
+  let subsList = Computed(@() curShopSubsByCategory.get()?[id])
   let rowsBefore = Computed(@() distances.get()?[id].rowsBefore ?? 0)
   let headersBefore = Computed(@() distances.get()?[id].headersBefore ?? 0)
-  let watch = [ goodsListBase, schReward, curCampaign, personalList, subsList, rowsBefore, headersBefore ]
+  let watch = [ goodsListBase, soonList, schReward, curCampaign, personalList, subsList, rowsBefore, headersBefore ]
   return function() {
     let goodsListByCategory = goodsListBase.get()
     let hasSchReward = schReward.get() != null
-    if (goodsListByCategory.len() == 0 && !hasSchReward && !personalList.get() && !subsList.get())
+    if (goodsListByCategory.len() == 0 && !hasSchReward && !personalList.get() && !subsList.get()
+        && soonList.get().len() == 0)
       return { watch }
 
     let goodsList = mkGoodsListWithBaseValue(goodsListByCategory)
@@ -381,6 +340,10 @@ function mkShopCategoryGoods(categoryCfg, distances) {
     foreach (goods in goodsList)
       allCards.append(
         mkGoodsCard(goods, mkAnimParams(allCards.len() + animIdxOffset, headers)))
+
+    foreach (goods in soonList.get())
+      allCards.append(
+        mkSoonGoodsCard(goods, mkAnimParams(allCards.len() + animIdxOffset, headers)))
 
     let rows = arrayByRows(allCards, goodsPerRow)
 

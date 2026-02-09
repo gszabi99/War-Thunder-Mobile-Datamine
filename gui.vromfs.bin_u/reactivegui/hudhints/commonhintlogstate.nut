@@ -409,6 +409,10 @@ eventbus_subscribe("hint:have_potential_assistee", function(_) {
   addCommonHintWithTtl(loc("hints/have_potential_assistee"), 1)
 })
 
+eventbus_subscribe("hint:atgm_need_target_lock_to_shoot", function(_) {
+  addCommonHintWithTtl(loc("hints/atgm_need_target_lock_to_shoot"), 5)
+})
+
 const REPAIR = "REPAIR"
 eventbus_subscribe("tankRepair:offerRepair", function(data) {
   local locId = !data?.assist ? ""

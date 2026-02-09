@@ -2380,5 +2380,18 @@
       1.97113,
       0.0
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "ki_45_hei_brown_a*",
+        "to": "ki_45_hei_tei_gray_a*"
+      },
+      {
+        "from": "ki_45_hei_brown_n*",
+        "to": "ki_45_hei_tei_gray_n*"
+      }
+    ]
   }
 }

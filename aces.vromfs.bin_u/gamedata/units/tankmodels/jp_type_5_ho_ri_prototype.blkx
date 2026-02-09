@@ -59,6 +59,58 @@
       0.9
     ]
   },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "ikGunner": [
     {
       "model": "japan_gunner_char",
@@ -2308,6 +2360,12 @@
           ]
         }
       },
+      "hullAiming": {
+        "horizontal": true,
+        "defaultEnabled": false,
+        "isAutoTurner": true,
+        "maxSpeedForHorizontalAiming": 10.0
+      },
       "limits": {
         "yaw": [
           -10.0,
@@ -2387,7 +2445,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": false,
       "trackMass": 1500.0
@@ -2395,7 +2453,13 @@
     "tracks": {
       "animationMultiplier": -0.49,
       "height": 0.05,
-      "width": 0.6
+      "width": 0.6,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2413,6 +2477,7 @@
       "driveGearRadius": 0.3,
       "mainGearRatio": 0.82,
       "sideGearRatio": 5.14068,
+      "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [
           -5.35,

@@ -2315,5 +2315,18 @@
       1.74417,
       6.32158e-8
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "p_47n_20_aluminum_1948_c*",
+        "to": "p_47n_20_gren_a*"
+      },
+      {
+        "from": "p_47n_20_aluminum_1948_n*",
+        "to": "p_47n_20_gren_n*"
+      }
+    ]
   }
 }

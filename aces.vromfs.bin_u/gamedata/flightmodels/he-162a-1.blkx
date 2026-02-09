@@ -1,5 +1,8 @@
 {
-  "fmFile": "fm/he-162a-2.blk",
+  "fmFile": [
+    "fm/he-162a-2.blk",
+    "fm/he-162a-2.blk"
+  ],
   "model": "he_162a_1",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
@@ -1791,6 +1794,20 @@
     "maxSpeed": 250.0,
     "turnTime": 26.9654
   },
+  "vehicleSkins": {
+    "camo": {
+      "replace_tex": [
+        {
+          "from": "he_162a_2_a*",
+          "to": "he162a_camo_a*"
+        },
+        {
+          "from": "he_162a_2_n*",
+          "to": "he162a_white_n*"
+        }
+      ]
+    }
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -1932,5 +1949,12 @@
       0.280916,
       -1.3007
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "he_162a_1_a*",
+      "to": "he_162a_1_prototype_a*"
+    }
   }
 }

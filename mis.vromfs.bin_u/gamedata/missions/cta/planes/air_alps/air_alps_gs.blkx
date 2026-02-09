@@ -50,6 +50,8 @@
       "type": "domination",
       "environment": "Day",
       "weather": "good",
+      "missionProgressType": "airGS",
+      "showAIKilllog": true,
       "locName": "missions/_GS/medium_tank;location/arcade_alps",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,
@@ -60,8 +62,6 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "missionProgressType": "airGS",
-      "showAIKilllog": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -397,8 +397,8 @@
               "t2_tanks_squad",
               "t1_bunkers_squad",
               "t2_bunkers_squad",
-              "t1_trucks_squad",
-              "t2_trucks_squad",
+              "t1_truck_aaa_squad",
+              "t2_truck_aaa_squad",
               "t1_artillery_squad",
               "t2_artillery_squad"
             ],
@@ -7097,9 +7097,9 @@
             1.0
           ],
           [
-            -1082.19,
-            857.21,
-            6423.28
+            623.95,
+            857.211,
+            11403.0
           ]
         ],
         "props": {
@@ -7131,9 +7131,9 @@
             1.0
           ],
           [
-            9151.04,
+            12437.0,
             1338.12,
-            -2815.07
+            -4647.85
           ]
         ],
         "props": {
@@ -7165,14 +7165,14 @@
             1.0
           ],
           [
-            -7576.8,
+            -1494.75,
             2128.12,
-            9164.1
+            11159.6
           ]
         ],
         "props": {
           "squad_members": [
-            "t1_trucks_squad",
+            "t1_truck_aaa_squad",
             "t1_artillery_squad",
             "t1_aaa_squad"
           ],
@@ -7198,14 +7198,14 @@
             1.0
           ],
           [
-            9441.85,
+            11861.5,
             1659.07,
-            -12393.2
+            -6453.65
           ]
         ],
         "props": {
           "squad_members": [
-            "t2_trucks_squad",
+            "t2_truck_aaa_squad",
             "t2_artillery_squad",
             "t2_aaa_squad"
           ],
@@ -7231,9 +7231,9 @@
             1.0
           ],
           [
-            1043.4,
+            -2679.9,
             1414.78,
-            7950.33
+            8349.0
           ]
         ],
         "props": {
@@ -7271,9 +7271,9 @@
             1.0
           ],
           [
-            8992.28,
+            7255.3,
             1670.38,
-            -1703.15
+            -6114.45
           ]
         ],
         "props": {
@@ -7311,9 +7311,9 @@
             1.0
           ],
           [
-            -6033.39,
+            -800.15,
             493.145,
-            -226.821
+            10454.2
           ]
         ],
         "props": {
@@ -7349,9 +7349,9 @@
             1.0
           ],
           [
-            2494.98,
+            11375.9,
             493.145,
-            -6930.27
+            -5466.2
           ]
         ],
         "props": {
@@ -7387,9 +7387,9 @@
             1.0
           ],
           [
-            -1082.19,
+            -482.0,
             1630.41,
-            6423.28
+            12009.2
           ]
         ],
         "props": {
@@ -7419,9 +7419,9 @@
             1.0
           ],
           [
-            8722.13,
-            2000.54,
-            -3138.7
+            12810.0,
+            2000.55,
+            -6112.35
           ]
         ],
         "props": {
@@ -7451,9 +7451,9 @@
             1.0
           ],
           [
-            -1347.42,
+            207.9,
             1211.41,
-            5771.66
+            11841.2
           ]
         ],
         "props": {
@@ -7480,9 +7480,9 @@
             1.0
           ],
           [
-            7052.12,
+            12899.4,
             1211.41,
-            -4761.02
+            -5229.1
           ]
         ],
         "props": {
@@ -7509,13 +7509,13 @@
             1.0
           ],
           [
-            -1033.61,
+            -400.25,
             1211.41,
-            4994.34
+            11440.2
           ]
         ],
         "props": {
-          "squad_members": "t1_trucks_squad",
+          "squad_members": "t1_truck_aaa_squad",
           "object_marking": 0
         }
       },
@@ -7538,13 +7538,13 @@
             1.0
           ],
           [
-            7660.31,
+            12090.7,
             1639.3,
-            -7245.92
+            -5652.1
           ]
         ],
         "props": {
-          "squad_members": "t2_trucks_squad",
+          "squad_members": "t2_truck_aaa_squad",
           "object_marking": 0
         }
       },
@@ -7567,9 +7567,9 @@
             1.0
           ],
           [
-            3487.04,
+            10074.0,
             493.145,
-            -6724.39
+            -6348.5
           ]
         ],
         "props": {
@@ -7605,9 +7605,9 @@
             1.0
           ],
           [
-            -4954.64,
+            1405.4,
             493.145,
-            127.635
+            12018.7
           ]
         ],
         "props": {
@@ -7643,9 +7643,9 @@
             1.0
           ],
           [
-            -7880.15,
+            -1344.15,
             2016.41,
-            8519.29
+            12350.0
           ]
         ],
         "props": {
@@ -7676,9 +7676,9 @@
             1.0
           ],
           [
-            10082.6,
+            12411.4,
             2859.29,
-            -11742.4
+            -7276.05
           ]
         ],
         "props": {
@@ -7691,7 +7691,7 @@
         }
       },
       {
-        "name": "t1_trucks_squad",
+        "name": "t1_truck_aaa_squad",
         "tm": [
           [
             1.0,
@@ -7709,23 +7709,23 @@
             1.0
           ],
           [
-            274.877,
+            -91.65,
             1396.42,
-            7835.74
+            10947.9
           ]
         ],
         "props": {
           "squad_members": [
-            "t1_truck_01",
-            "t1_truck_02",
-            "t1_truck_03",
-            "t1_truck_04"
+            "t1_truck_aaa_03",
+            "t1_truck_aaa_04",
+            "t1_truck_aaa_01",
+            "t1_truck_aaa_02"
           ],
           "object_marking": 0
         }
       },
       {
-        "name": "t2_trucks_squad",
+        "name": "t2_truck_aaa_squad",
         "tm": [
           [
             1.0,
@@ -7743,17 +7743,17 @@
             1.0
           ],
           [
-            7722.28,
+            11751.8,
             1396.41,
-            -3387.99
+            -5029.25
           ]
         ],
         "props": {
           "squad_members": [
-            "t2_truck_01",
-            "t2_truck_02",
-            "t2_truck_03",
-            "t2_truck_04"
+            "t2_truck_aaa_03",
+            "t2_truck_aaa_04",
+            "t2_truck_aaa_01",
+            "t2_truck_aaa_02"
           ],
           "object_marking": 0
         }
@@ -7777,9 +7777,9 @@
             1.0
           ],
           [
-            3.67487,
+            -1448.0,
             853.225,
-            2719.09
+            9941.4
           ]
         ],
         "props": {
@@ -7819,9 +7819,9 @@
             1.0
           ],
           [
-            4182.49,
-            1068.82,
-            -2232.46
+            10610.1,
+            1068.83,
+            -5857.6
           ]
         ],
         "props": {
@@ -7861,14 +7861,14 @@
             1.0
           ],
           [
-            12.9,
+            -966.9,
             1396.4,
-            13343.0
+            11316.2
           ]
         ],
         "props": {
           "squad_members": [
-            "t1_trucks_squad",
+            "t1_truck_aaa_squad",
             "t1_aaa_squad"
           ]
         }
@@ -7892,14 +7892,14 @@
             1.0
           ],
           [
-            -2817.85,
+            11834.0,
             1396.4,
-            12734.0
+            -5853.9
           ]
         ],
         "props": {
           "squad_members": [
-            "t2_trucks_squad",
+            "t2_truck_aaa_squad",
             "t2_aaa_squad"
           ]
         }
@@ -9845,7 +9845,7 @@
         "way": {}
       },
       {
-        "name": "t1_truck_03",
+        "name": "t1_truck_aaa_03",
         "tm": [
           [
             -0.0048539,
@@ -10095,7 +10095,7 @@
         }
       },
       {
-        "name": "t2_truck_03",
+        "name": "t2_truck_aaa_03",
         "tm": [
           [
             -0.965926,
@@ -10402,7 +10402,7 @@
         "way": {}
       },
       {
-        "name": "t1_truck_04",
+        "name": "t1_truck_aaa_04",
         "tm": [
           [
             -0.580769,
@@ -11580,7 +11580,7 @@
         }
       },
       {
-        "name": "t2_truck_04",
+        "name": "t2_truck_aaa_04",
         "tm": [
           [
             -0.819152,
@@ -12975,7 +12975,7 @@
         "way": {}
       },
       {
-        "name": "t2_truck_01",
+        "name": "t2_truck_aaa_01",
         "tm": [
           [
             -0.999807,
@@ -13801,7 +13801,7 @@
         }
       },
       {
-        "name": "t1_truck_01",
+        "name": "t1_truck_aaa_01",
         "tm": [
           [
             0.392697,
@@ -15010,7 +15010,7 @@
         }
       },
       {
-        "name": "t1_truck_02",
+        "name": "t1_truck_aaa_02",
         "tm": [
           [
             0.5,
@@ -15612,7 +15612,7 @@
         }
       },
       {
-        "name": "t2_truck_02",
+        "name": "t2_truck_aaa_02",
         "tm": [
           [
             -0.999958,

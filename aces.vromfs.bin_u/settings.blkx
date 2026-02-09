@@ -178,6 +178,10 @@
         "src": "../../skyquake/prog/gamebase_wtm/mis_vrom"
       },
       {
+        "vrom": "dldata.staging.vromfs.bin",
+        "vromOptional": true
+      },
+      {
         "vrom": "dldata.production.vromfs.bin",
         "vromOptional": true
       },
@@ -293,27 +297,16 @@
     "pkg_sound_common": {
       "hq": false,
       "modelsPatch": false,
-      "conditions": [
-        {
-          "campaign": "air",
-          "isDownloadFirst": true
-        },
-        {
-          "campaign": "tanks",
-          "isDownloadFirst": true
-        },
-        {
-          "campaign": "ships",
-          "isDownloadFirst": true
-        }
-      ]
+      "conditions": {
+        "isDownloadLast": true
+      }
     },
     "pkg_sound_naval": {
       "hq": false,
       "modelsPatch": false,
       "conditions": {
         "campaign": "ships",
-        "isDownloadFirst": true
+        "isDownloadLast": true
       }
     },
     "pkg_sound_ground": {
@@ -321,15 +314,12 @@
       "modelsPatch": false,
       "conditions": {
         "campaign": "tanks",
-        "isDownloadFirst": true
+        "isDownloadLast": true
       }
     },
     "pkg_sound_event": {
       "hq": false,
-      "modelsPatch": false,
-      "conditions": {
-        "isDownloadFirst": true
-      }
+      "modelsPatch": false
     }
   },
   "video": {
@@ -349,10 +339,13 @@
     "vrStreamerMode": false,
     "vreye": "left",
     "fpsLimitOnUpdater": 10,
-    "compatibilityFxGpuSparksEnabled": false
+    "compatibilityFxGpuSparksEnabled": false,
+    "enableHdr": false,
+    "paperWhiteNits": 200,
+    "hdr_brightness": 1.0,
+    "hdr_shadows": 1.0
   },
   "graphics": {
-    "useHdr": true,
     "quality": "high",
     "gamma": 1.0,
     "useConditionalRendering": false,
@@ -430,7 +423,7 @@
     "resetManagedTexturesOnSettingsChanged": true,
     "allow_uhq_textures": false,
     "uhqForceDisabled": true,
-    "shoreHeightmapRange": 200.0,
+    "shoreHeightmapRange": 10.0,
     "wfxHeightLimit": 1.0,
     "waterVisibilityOffDelaySeconds": 4.0,
     "allowHighresFxDepthReprojection": true,
@@ -457,7 +450,9 @@
     "taaSigmaScaleMinShip": 0.5,
     "taaSigmaScaleMax": 2.5,
     "taaSigmaScaleMaxHangar": 7.5,
+    "taaSigmaScaleHdrMultiplier": 4.0,
     "taaMotionScale": 2500.0,
+    "motionVectorsDepthBias": 0.02,
     "shouldRenderLerxVapor": true,
     "volumetricAfterBurner": true,
     "backbufferHolderReadable": false,
@@ -481,7 +476,7 @@
     "useGlowLights": false,
     "anchorStaticShadowsToUnitInHangar": true,
     "allowAnimatedDay": false,
-    "usePrecalculatedHarmonics": false,
+    "usePrecalculatedHarmonics": true,
     "harmonicsSimilarityEps": 0.05,
     "listAllAaOptions": true,
     "mobile_demonpostfx": true,
@@ -491,12 +486,12 @@
     "vaporCalcSunTransmittance": false,
     "replaceEnviProbeWithLocal": true,
     "allowRIsInDynamicCube": false,
+    "tiledRenderLights": false,
+    "tiledRenderLightsUseRt": true,
     "guiHdrTonemap": [
       1.25,
       1.2
     ],
-    "tiledRenderLights": false,
-    "highPrecisionShoreDistField": true,
     "raytraced_shadows": {
       "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,
@@ -505,6 +500,21 @@
     },
     "cellsVBcfg": {
       "min_allocation_size": 8388608
+    },
+    "precalculatedWeathers": {
+      "clear": true,
+      "good": true,
+      "hazy": true,
+      "mist": false,
+      "thin_clouds": true,
+      "cloudy_windy": false,
+      "cloudy": true,
+      "overcast": false,
+      "poor": false,
+      "blind": false,
+      "rain": false,
+      "thunder": false,
+      "hangar_weather": true
     }
   },
   "stub3d": {
@@ -522,7 +532,7 @@
     "enableVR": false
   },
   "phys": {
-    "fixedTimeStepHz": 30,
+    "fixedTimeStepHz": -60,
     "maxSubSteps": 1
   },
   "input": {
@@ -607,7 +617,6 @@
     "disableNvapi": false,
     "useGpuDt": false,
     "flushOnPresent": true,
-    "enableHdr": false,
     "maxaa": 0,
     "minimumFeatureLevel": "10_0"
   },
@@ -669,7 +678,8 @@
     "dynamicDDScaleTarget": 0.75,
     "dynamicDDProportionalTerm": 0.1,
     "useFeedbackTexFilter": true,
-    "allowPrebakedLastclip": true
+    "allowPrebakedLastclip": true,
+    "allowFallback": false
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -689,6 +699,7 @@
     "stubServerOnlineId": 1,
     "psnAuthRequestTimeout": 30,
     "publicConfigsUrl": "http://public-configs.warthunder.com/",
+    "sendAppStateMetricsTimerIntervalMs": 60000,
     "httpClientPollInThread": true,
     "publicConfigsUrls": {
       "url": "http://public-configs.warthunder.com/"
@@ -927,17 +938,13 @@
       "requireSameGameVersion": false,
       "startMetric": "background_addons_update_start",
       "stopMetric": "background_addons_update_stop",
-      "flag": [
-        "--clear",
-        "--onlypacks"
-      ]
+      "flag": "--onlypacks"
     },
     "optional_game_resources": {
       "strictVersionCheck": false,
       "disableFastVersionCheck": true,
       "flag": [
         "--verbose",
-        "--clear",
         "--onlypacks",
         "--seed"
       ]
@@ -1016,7 +1023,7 @@
         "useFixedShadowCascade": true
       }
     },
-    "low": {
+    "shadow_low": {
       "vsmSize": 2048,
       "csm": {
         "cascadeWidth": 512,
@@ -1037,14 +1044,17 @@
           "powWeight": 0.45
         },
         "hangar": {
-          "shadowDist": 150.0,
+          "shadowDist": 70.0,
           "powWeight": 0.9,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "fadeOut": 5.0,
+          "dynmodelShadowMinTexels": 0.0
         },
         "hangar_ship": {
           "shadowDist": 150.0,
           "powWeight": 0.5,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "dynmodelShadowMinTexels": 0.0
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1053,7 +1063,7 @@
         }
       }
     },
-    "high": {
+    "shadow_high": {
       "vsmSize": 2048,
       "staticShadows": {
         "texWidth": 2048
@@ -1077,14 +1087,17 @@
           "powWeight": 0.6
         },
         "hangar": {
-          "shadowDist": 150.0,
+          "shadowDist": 70.0,
           "powWeight": 0.9,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "fadeOut": 5.0,
+          "dynmodelShadowMinTexels": 0.0
         },
         "hangar_ship": {
           "shadowDist": 250.0,
           "powWeight": 0.7,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "dynmodelShadowMinTexels": 0.0
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1094,7 +1107,7 @@
         }
       }
     },
-    "max": {
+    "shadow_max": {
       "vsmSize": 2048,
       "staticShadows": {
         "texWidth": 2048
@@ -1118,14 +1131,17 @@
           "powWeight": 0.6
         },
         "hangar": {
-          "shadowDist": 150.0,
+          "shadowDist": 70.0,
           "powWeight": 0.9,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "fadeOut": 5.0,
+          "dynmodelShadowMinTexels": 0.0
         },
         "hangar_ship": {
           "shadowDist": 250.0,
           "powWeight": 0.7,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "dynmodelShadowMinTexels": 0.0
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1135,7 +1151,7 @@
         }
       }
     },
-    "movie": {
+    "shadow_movie": {
       "vsmSize": 2048,
       "staticShadows": {
         "texWidth": 8192,
@@ -1160,14 +1176,17 @@
           "powWeight": 0.6
         },
         "hangar": {
-          "shadowDist": 150.0,
+          "shadowDist": 70.0,
           "powWeight": 0.9,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "fadeOut": 5.0,
+          "dynmodelShadowMinTexels": 0.0
         },
         "hangar_ship": {
           "shadowDist": 250.0,
           "powWeight": 0.7,
-          "zNearForCascadeDistribution": 0.5
+          "zNearForCascadeDistribution": 0.5,
+          "dynmodelShadowMinTexels": 0.0
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1176,6 +1195,56 @@
           "cascadeWidth": 1024
         }
       }
+    }
+  },
+  "fx": {
+    "haze": false,
+    "lowres_tex_overbright": 2.0,
+    "lowres_tex_float_target": false,
+    "fx_density_mul": 1.0,
+    "resolution_quality": 1,
+    "dafx_prefab_quality": 0,
+    "dafx_sim_lod_dist": 1600.0,
+    "dafx_shading_quality": 0,
+    "tank": {
+      "dafx_sim_lod_dist": 600.0
+    },
+    "aircraft": {
+      "dafx_sim_lod_dist": 1800.0
+    },
+    "cockpit": {
+      "dafx_sim_lod_dist": 1800.0
+    },
+    "small_ship": {
+      "dafx_sim_lod_dist": 1200.0
+    },
+    "big_ship": {
+      "dafx_sim_lod_dist": 1200.0
+    },
+    "nswitch": {
+      "fx_density_mul": 0.8
+    },
+    "android_low": {
+      "fx_density_mul": 0.2
+    },
+    "android_medium": {
+      "fx_density_mul": 0.5
+    },
+    "android_high": {
+      "fx_density_mul": 0.8
+    },
+    "android_max": {
+      "fx_density_mul": 1.0,
+      "resolution_quality": 2
+    },
+    "ios_low": {
+      "fx_density_mul": 0.2
+    },
+    "ios_medium": {
+      "fx_density_mul": 0.8
+    },
+    "ios_high": {
+      "fx_density_mul": 1.0
     }
   },
   "ProximityDependency": {
@@ -1197,6 +1266,7 @@
     "win64": true,
     "linux64": true,
     "Vulkan": true,
+    "colorTargetCount": 8,
     "graphics": {
       "gen_weather": true,
       "render_full_tonemap": true,
@@ -1394,16 +1464,19 @@
         "checkMemoryLeaksMb": 500
       }
     },
-    "broken_lights": {
-      "codename": [
-        "iPad Pro 2",
-        "iPad Pro 2 10.5 inch",
-        "iPad 5",
-        "iPad 6",
-        "iPad 7"
-      ],
-      "graphics": {
-        "tiledRenderLights": false
+    "mali_broken_clipmap_baking": {
+      "gpu": "Mali-G610",
+      "android_presets": {
+        "high": {
+          "clipmap": {
+            "updateCountHigh": 4
+          }
+        },
+        "max": {
+          "clipmap": {
+            "updateCountHigh": 4
+          }
+        }
       }
     }
   },
@@ -1444,10 +1517,11 @@
         "limitNonPlayerShipUnitsLod": -1,
         "hangarTankLod": 0,
         "hangarShipLod": 0,
-        "shadowQuality": "high",
-        "hangarShadowQuality": "high",
+        "shadowQuality": "shadow_high",
+        "hangarShadowQuality": "shadow_high",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
+        "fxQuality": "nswitch",
         "fxDensityMul": 0.8,
         "rendinstDistMul": 0.8,
         "compatibilityRendinstDistMul": 0.8,
@@ -1467,7 +1541,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": false,
         "texquality": "high",
-        "fxTarget": "high",
         "fftWaterRenderResolution": 8,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
@@ -1536,10 +1609,11 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": true,
-        "shadowQuality": "low",
-        "hangarShadowQuality": "low",
+        "shadowQuality": "shadow_low",
+        "hangarShadowQuality": "shadow_low",
         "grassRadiusMul": 0.5,
         "grassDensityMul": 0.5,
+        "fxQuality": "android_low",
         "fxDensityMul": 0.2,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
@@ -1559,7 +1633,6 @@
         "underwaterFogUseSimple": true,
         "underwaterFogUseTAA": false,
         "texquality": "low",
-        "fxTarget": "high",
         "fftWaterRenderResolution": 7,
         "allowNonSkyReflections": false,
         "enableWakeDisplacement": false,
@@ -1621,10 +1694,11 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "shadowQuality": "low",
-        "hangarShadowQuality": "low",
+        "shadowQuality": "shadow_low",
+        "hangarShadowQuality": "shadow_low",
         "grassRadiusMul": 0.45,
         "grassDensityMul": 0.15,
+        "fxQuality": "android_medium",
         "fxDensityMul": 0.5,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
@@ -1644,7 +1718,6 @@
         "underwaterFogUseSimple": true,
         "underwaterFogUseTAA": false,
         "texquality": "high",
-        "fxTarget": "high",
         "fftWaterRenderResolution": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
@@ -1706,10 +1779,11 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "shadowQuality": "high",
-        "hangarShadowQuality": "high",
+        "shadowQuality": "shadow_high",
+        "hangarShadowQuality": "shadow_high",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
+        "fxQuality": "android_high",
         "fxDensityMul": 0.8,
         "rendinstDistMul": 0.8,
         "compatibilityRendinstDistMul": 0.8,
@@ -1729,7 +1803,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": false,
         "texquality": "high",
-        "fxTarget": "high",
         "fftWaterRenderResolution": 8,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
@@ -1768,7 +1841,7 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
-        "updateCountHigh": 8
+        "updateCountHigh": 4
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -1791,10 +1864,11 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "shadowQuality": "max",
-        "hangarShadowQuality": "max",
+        "shadowQuality": "shadow_max",
+        "hangarShadowQuality": "shadow_max",
         "grassRadiusMul": 1.0,
         "grassDensityMul": 1.0,
+        "fxQuality": "android_max",
         "fxDensityMul": 1.0,
         "rendinstDistMul": 1.0,
         "compatibilityRendinstDistMul": 1.0,
@@ -1814,7 +1888,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": true,
         "texquality": "high",
-        "fxTarget": "ultrahigh",
         "fftWaterRenderResolution": 8,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
@@ -1853,7 +1926,7 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 8
+        "updateCountHigh": 4
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -1876,10 +1949,11 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "shadowQuality": "movie",
-        "hangarShadowQuality": "movie",
+        "shadowQuality": "shadow_movie",
+        "hangarShadowQuality": "shadow_movie",
         "grassRadiusMul": 2.0,
         "grassDensityMul": 2.0,
+        "fxQuality": "android_max",
         "fxDensityMul": 1.0,
         "rendinstDistMul": 2.0,
         "compatibilityRendinstDistMul": 2.0,
@@ -1899,7 +1973,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": true,
         "texquality": "high",
-        "fxTarget": "ultrahigh",
         "fftWaterRenderResolution": 8,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
@@ -1953,9 +2026,10 @@
       "graphics": {
         "sceneResolutionPreset": "low",
         "defaultPresetAA": "low_fxaa",
+        "fxQuality": "ios_low",
         "fxDensityMul": 0.2,
-        "shadowQuality": "low",
-        "hangarShadowQuality": "low",
+        "shadowQuality": "shadow_low",
+        "hangarShadowQuality": "shadow_low",
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 2,
         "limitPlayerShipUnitsLod": 1,
@@ -2026,9 +2100,10 @@
       "graphics": {
         "sceneResolutionPreset": "low",
         "defaultPresetAA": "low_fxaa",
+        "fxQuality": "ios_medium",
         "fxDensityMul": 0.8,
-        "shadowQuality": "high",
-        "hangarShadowQuality": "high",
+        "shadowQuality": "shadow_high",
+        "hangarShadowQuality": "shadow_high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2089,7 +2164,7 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
-        "updateCountHigh": 8
+        "updateCountHigh": 4
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": false
@@ -2099,9 +2174,10 @@
       "graphics": {
         "sceneResolutionPreset": "medium",
         "defaultPresetAA": "mobile_taa",
+        "fxQuality": "ios_high",
         "fxDensityMul": 1.0,
-        "shadowQuality": "high",
-        "hangarShadowQuality": "high",
+        "shadowQuality": "shadow_high",
+        "hangarShadowQuality": "shadow_high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2162,7 +2238,7 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 8
+        "updateCountHigh": 4
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": false
@@ -2172,9 +2248,10 @@
       "graphics": {
         "sceneResolutionPreset": "high",
         "defaultPresetAA": "mobile_taa",
+        "fxQuality": "ios_high",
         "fxDensityMul": 1.0,
-        "shadowQuality": "max",
-        "hangarShadowQuality": "max",
+        "shadowQuality": "shadow_max",
+        "hangarShadowQuality": "shadow_max",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2235,7 +2312,7 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 8
+        "updateCountHigh": 4
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": true
@@ -2453,7 +2530,7 @@
     }
   },
   "metal": {
-    "enable_manual_hazard_tracking": false,
+    "enable_manual_hazard_tracking": true,
     "enable_postmortem": true
   },
   "win64": {
@@ -2470,6 +2547,9 @@
     },
     "texStreaming": {
       "minMemQuotaKB": 1000000
+    },
+    "video": {
+      "dynamic_hdr": false
     }
   },
   "iOS": {
@@ -2481,9 +2561,34 @@
     },
     "debug": {
       "showFreeMemThresholdMb": 0
+    },
+    "video": {
+      "dynamic_hdr": true
     }
   },
   "stcode": {
     "tag": "$version"
+  },
+  "consent": {
+    "iab": {
+      "id": [
+        986,
+        755
+      ]
+    },
+    "google": {
+      "id": [
+        89,
+        2878,
+        3234,
+        1301
+      ]
+    },
+    "vendors": {
+      "vendor": {
+        "name": "AppsFlyer Ltd.",
+        "policy": "https://www.appsflyer.com/legal/services-privacy-policy/"
+      }
+    }
   }
 }

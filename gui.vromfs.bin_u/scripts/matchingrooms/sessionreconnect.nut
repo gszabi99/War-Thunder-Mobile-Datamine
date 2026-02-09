@@ -5,8 +5,7 @@ let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenu, isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
-let { hasAddons, addonsExistInGameFolder, addonsVersions, unitSizes
-} = require("%appGlobals/updater/addonsState.nut")
+let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { joinRoom, lastRoomId } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
@@ -56,8 +55,6 @@ function getDownloadLists(attribs) {
     unitNames = [unitName],
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),
-    addonsExistInGameFolderV = addonsExistInGameFolder.get(),
-    addonsVersionsV = addonsVersions.get(),
     missingUnitResourcesByRankV = missingUnitResourcesByRank.get(),
     maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
     unitSizesV = unitSizes.get(),

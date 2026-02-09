@@ -5,7 +5,7 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let profile = require("profile_server")
 let { frnd } = require("dagor.random")
 let { defer, deferOnce, setTimeout, resetTimeout } = require("dagor.workcycle")
-let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
+let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let serverTimeUpdate = require("%appGlobals/userstats/serverTimeUpdate.nut")
 let { get_time_msec } = require("dagor.time")
@@ -165,7 +165,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
 })
 
 function doRequestOnline(action, params, id, progressId) {
-  if (!isAuthAndUpdated.get()) {
+  if (!isAuthorized.get()) {
     logPSC($"Skip action {action}, no token")
     sendResult({ error = "Not authorized" }, id, progressId, action)
     return

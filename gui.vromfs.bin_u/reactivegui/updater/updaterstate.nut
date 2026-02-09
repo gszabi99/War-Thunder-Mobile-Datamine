@@ -9,20 +9,20 @@ let { get_free_disk_space = @() -1,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = contentUpdater
-let { get_local_custom_settings_blk, get_settings_blk } = require("blkGetters")
+let { get_local_custom_settings_blk } = require("blkGetters")
 let { isEqual, prevIfEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
 let { downloadInProgress, downloadState, totalSizeBytes, toDownloadSizeBytes, getDownloadLeftMbNotUpdatable,
   allowLimitedDownload, ALLOW_LIMITED_DOWNLOAD_SAVE_ID
 } = require("%appGlobals/clientState/downloadState.nut")
-let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons,
-  commonUhqAddons, coopNewbieByCampaign, getAddonsSize, MB, toMB
+let { initialAddons, initialAddonsByCamp, latestDownloadAddonsByCamp, latestDownloadAddons,
+  localizeAddonsLimited, coopNewbieByCampaign, getAddonsSize, MB, toMB
 } = require("%appGlobals/updater/addons.nut")
-let { hasAddons, addonsSizes, addonsExistInGameFolder, addonsVersions,
-  isAddonsInfoActual, isAddonsAndUnitsInfoActual, isAddonsExistInGameFolderActual,
-  isAddonsVersionsActual, isUnitSizesActual, unitSizes
+let { hasAddons, addonsSizes, isAddonsSizesActual, isAddonsAndUnitsInfoActual,
+  isUnitSizesActual, unitSizes
 } = require("%appGlobals/updater/addonsState.nut")
 let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getPkgsForCampaign,
   getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle, localizeUnitsResources
@@ -38,7 +38,6 @@ let { isRandomBattleNewbie, isRandomBattleNewbieSingle, randomBattleMode, random
 } = require("%rGui/gameModes/gameModeState.nut")
 let { requiredSquadAddons } = require("%rGui/updater/randomBattleModeAddons.nut")
 let { mkDlSizeCompByTablesWatch } = require("%rGui/updater/downloadSize.nut")
-let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
@@ -67,7 +66,7 @@ let progressPercent = Computed(function() {
 })
 
 let isAllowedDownloadUnits = Computed(@(prev) (type(prev) == "bool" && prev) || isUnitSizesActual.get())
-let isAllowedDownloadAddons = Computed(@(prev) (type(prev) == "bool" && prev) || isAddonsInfoActual.get())
+let isAllowedDownloadAddons = Computed(@(prev) (type(prev) == "bool" && prev) || isAddonsSizesActual.get())
 let isStageDownloading = Computed(@() currentStage.get() == UPDATER_DOWNLOADING)
 let maxMyMRank = Computed(@() campMyUnits.get().reduce(@(res, u) max(res, u.mRank), 1))
 
@@ -79,7 +78,9 @@ function mkAddonsToDownload(list, hasAddonsV, prev) {
   return isEqual(res, prev) ? prev : res
 }
 
-let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(initialAddons, hasAddons.get(), prev))
+let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
+  (clone initialAddons).extend(initialAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? []),
+  hasAddons.get(), prev))
 let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   (clone latestDownloadAddons).extend(latestDownloadAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? []),
   hasAddons.get(), prev))
@@ -116,23 +117,13 @@ function registerAutoDownloadUnits(unitsW) {
   deferRecalcExtAutoUnits()
 }
 
-let uhqAddonsToDownload = Computed(function(prev) {
-  if (!needUhqTextures.get() || (get_settings_blk()?.graphics.uhqForceDisabled ?? true))
-    return isEqual(prev, {}) ? prev : {}
-  let res = clone commonUhqAddons
-  foreach(a, has in hasAddons.get())
-    if (has) {
-      let uhq = $"{a}_uhq"
-      if (uhq in hasAddons.get())
-        res.append(uhq)
-    }
-  return mkAddonsToDownload(res, hasAddons.get(), prev)
-})
-
 let randomBattleMisInfo = Computed(@(prev) prevIfEqual(prev,
   getMGameModeMissionUnitsAndAddons(randomBattleMode.get(), 0, battleUnitsMaxMRank.get())))
 let randomBattleCoreMisInfo = Computed(@(prev) prevIfEqual(prev,
   getMGameModeMissionUnitsAndAddons(randomBattleModeCore.get(), 0, battleUnitsMaxMRank.get() + 1)))
+let randomBattleMaxMisInfo = Computed(@(prev) prevIfEqual(prev,
+  getMGameModeMissionUnitsAndAddons(randomBattleModeCore.get(), 0,
+    clamp(maxReleasedUnitRanks.get()?[curCampaign.get()] ?? (maxMyMRank.get() + 1), maxMyMRank.get(), maxMyMRank.get() + 1))))
 
 function getMissingUnits(byRank, maxMRank) {
   let res = {}
@@ -146,12 +137,13 @@ let wantStartDownloadAddons = Computed(function(prev) {
   if (!isLoggedIn.get()
       || isIncompatibleVersion.get()
       || !isAnyCampaignSelected.get()
-      || (addonsToDownload.get().len() + uhqAddonsToDownload.get().len() + unitsToDownload.get().len()) == 0)
+      || (addonsToDownload.get().len() + unitsToDownload.get().len()) == 0)
     return prevIfEqual(prev, {})
 
   let campaign = curCampaign.get()
   let campaignOrig = getCampaignOrig(campaign)
-  let maxMRank = battleUnitsMaxMRank.get()
+  let battleMRank = battleUnitsMaxMRank.get()
+  let maxMRank = maxMyMRank.get()
   let allUnits = isAllowedDownloadUnits.get() ? unitsToDownload.get() : {}
   let allAddons = isAllowedDownloadAddons.get() ? addonsToDownload.get() : {}
 
@@ -172,21 +164,25 @@ let wantStartDownloadAddons = Computed(function(prev) {
     })
   if (isRandomBattleNewbie.get())
     listGetters.append(@() {
-      addons = getCampaignPkgsForNewbieCoop(campaign, maxMRank).totable()
+      addons = getCampaignPkgsForNewbieCoop(campaign, battleMRank).totable()
         .__merge(randomBattleMisInfo.get().misAddons)
-      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, maxMRank)
+      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, battleMRank)
         .__merge(randomBattleMisInfo.get().misUnits)
     })
 
   listGetters.append(
     @() {
-      addons = getCampaignPkgsForOnlineBattle(campaign, maxMRank).totable()
+      addons = getCampaignPkgsForOnlineBattle(campaign, battleMRank).totable()
         .__merge(randomBattleCoreMisInfo.get().misAddons)
-      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, maxMRank + 1)
+      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, battleMRank + 1)
         .__merge(randomBattleCoreMisInfo.get().misUnits)
     }
-    @() { addons = allAddons.filter(@(_, a) (getAddonCampaign(a) ?? campaignOrig) == campaignOrig) }
     @() { addons = latestAddonsToDownload.get() }
+    @() {
+      addons = allAddons.filter(@(_, a) (getAddonCampaign(a) ?? campaignOrig) == campaignOrig)
+      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, maxMRank + 1)
+       .__merge(randomBattleMaxMisInfo.get().misUnits)
+    }
   )
 
   foreach (getList in listGetters) {
@@ -199,8 +195,6 @@ let wantStartDownloadAddons = Computed(function(prev) {
 
   return prevIfEqual(prev,
     allAddons.len() != 0 ? { addons = allAddons }
-      : uhqAddonsToDownload.get().len() != 0 && isAllowedDownloadAddons.get()
-        ? { addons = uhqAddonsToDownload.get() }
       : allUnits.len() != 0 ? { units = allUnits }
       : {})
 })
@@ -275,9 +269,11 @@ function updateStartDownload() {
     msgBoxError({ text = loc("msgbox/notEnoughSpace", {space = totalSizeText(((totalSize - freeSpace) * SIZE_INCREASE_MULTIPLIER).tointeger())}) })
     return
   }
-  isStarted = download_content_in_background(DOWNLOAD_ADDONS_EVENT_ID, units, addons)
-  logA(isStarted ? "start download " : "ignore download ",
-    ", ".join(addons.map(@(a) $"{a}: {addonsExistInGameFolder.get()?[a] ? "exists in game folder" : (addonsVersions.get()?[a] ?? "-")}")),
+  isStarted = totalSize > 0 && download_content_in_background(DOWNLOAD_ADDONS_EVENT_ID, units, addons)
+  logA(isStarted ? "start download "
+      : totalSize <= 0 ? "ignore download cause empty size "
+      : "ignore download ",
+    ", ".join(addons),
     "\nunits:\n",
     ", ".join(units))
 
@@ -334,8 +330,7 @@ eventbus_subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     let isSuccess = evt?.result == UPDATER_RESULT_SUCCESS
     logA($"download finish. isSuccess = {isSuccess}, isStopped = {evt?.isStopped}")
     awaitingAddonsInfoUpd.set({ isDownloadFinishedSuccessfully = isSuccess })
-    isAddonsExistInGameFolderActual.set(false)
-    isAddonsVersionsActual.set(false)
+    isAddonsSizesActual.set(false)
     isUnitSizesActual.set(false)
   }
 })
@@ -397,6 +392,8 @@ let maxCurCampaignMRank = Computed(function() {
 })
 
 let addonsToAutoDownload = keepref(Computed(function() {
+  if (!isAllowedDownloadAddons.get())
+    return []
   if (!isAnyCampaignSelected.get())
     return initialAddonsToDownload.get()?.keys()
   let maxMRank = max(battleUnitsMaxMRank.get(), maxCurCampaignMRank.get())
@@ -438,7 +435,8 @@ let unitsToAutoDownload = keepref(Computed(function(prev) {
       res.__update(list)
   res.__update(requiredSquadAddons.get().units.reduce(@(r, a) r.$rawset(a, true), {}),
     randomBattleMisInfo.get().misUnits,
-    randomBattleCoreMisInfo.get().misUnits)
+    randomBattleCoreMisInfo.get().misUnits,
+    randomBattleMaxMisInfo.get().misUnits)
   return prevIfEqual(prev, res)
 }))
 
@@ -463,6 +461,11 @@ allowLimitedDownload.subscribe(function(allow) {
 })
 
 function openDownloadAddonsWnd(addons = [], units = [], bqSource = "unknown", bqParams = {}, successEventId = null, context = {}) {
+  if (disableNetwork) {
+    if (successEventId != null)
+      eventbus_send(successEventId, context)
+    return
+  }
   let rqAddons = addons.filter(@(a) !(hasAddons.get()?[a] ?? true))
   let rqUnits = units.filter(@(u) (unitSizes.get()?[u] ?? -1) != 0)
   if (rqAddons.len() + rqUnits.len() == 0 

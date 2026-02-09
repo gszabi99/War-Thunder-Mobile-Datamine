@@ -1,6 +1,14 @@
 {
   "dmg": [
     {
+      "name": "af_central_building_stairs",
+      "destroyedModelName": "af_central_building_stairs_destr_phobj",
+      "destructionImpulse": 50000.0,
+      "fx": "ad_metal",
+      "material": "metal",
+      "stopsBullets": true
+    },
+    {
       "name": "fence_gates_a",
       "destroyedModelName": "fence_gates_a_destr_phobj",
       "destructionImpulse": 1400.0,
@@ -545,11 +553,11 @@
     },
     {
       "name": "european_lamp_small_f_snow",
-      "destroyedModelName": "european_lamp_small_f_destr_phobj",
+      "destroyedModelName": "european_lamp_small_f_snow_destr_phobj",
       "destructionImpulse": 20000.0,
       "fx": "ad_metal_snow",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "transparentMetal"
     },
     {
       "name": "berlin_lamp_a",
@@ -11048,6 +11056,70 @@
     },
     {
       "name": "viaduct_auto_metal_frame_700x16x145_a",
+      "immortal": true
+    },
+    {
+      "name": "avg_poland_iced_lake",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_a",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_a_dmg",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_b",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_b_dmg",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_c",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_c_dmg",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_d",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_d_dmg",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_e",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_e_dmg",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_f",
+      "immortal": true
+    },
+    {
+      "name": "snowdrift_f_dmg",
+      "immortal": true
+    },
+    {
+      "name": "hangar_field_snowdrift_a",
+      "immortal": true
+    },
+    {
+      "name": "hangar_field_snowdrift_b",
+      "immortal": true
+    },
+    {
+      "name": "hangar_field_snowdrift_c",
       "immortal": true
     },
     {

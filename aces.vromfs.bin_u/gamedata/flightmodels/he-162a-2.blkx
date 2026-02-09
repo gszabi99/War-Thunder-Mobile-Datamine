@@ -1,5 +1,6 @@
 {
   "model": "he_162a_2",
+  "fmFile": "fm/he-162a-2.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "useTouchTargeting": true,
@@ -1926,5 +1927,19 @@
       0.280916,
       -1.3007
     ]
+  },
+  "vehicleSkins": {
+    "camo": {
+      "replace_tex": [
+        {
+          "from": "he_162a_2_a*",
+          "to": "he162a_camo_a*"
+        },
+        {
+          "from": "he_162a_2_n*",
+          "to": "he162a_white_n*"
+        }
+      ]
+    }
   }
 }

@@ -4,7 +4,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { rnd_int, rnd_float } = require("dagor.random")
 
 function generateBot(player) {
-  let { level, userId, decorators = {} } = player
+  let { userId, decorators = {}, level = 1 } = player
   let battle_end_ships = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
   let battle_end_tanks = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
   let battle_end_air = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()

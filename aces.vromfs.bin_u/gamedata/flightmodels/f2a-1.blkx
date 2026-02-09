@@ -1693,5 +1693,18 @@
       1.48629,
       0.0000267049
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "f2a1_c*",
+        "to": "f2a1_usmc_c*"
+      },
+      {
+        "from": "f2a1_n*",
+        "to": "f2a1_usmc_n*"
+      }
+    ]
   }
 }

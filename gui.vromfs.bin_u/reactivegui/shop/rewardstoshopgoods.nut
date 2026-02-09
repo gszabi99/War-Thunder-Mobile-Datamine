@@ -8,4 +8,10 @@ function rewardsToShopGoods(rewards) {
   return res
 }
 
-return rewardsToShopGoods
+let personalGoodsToShopGoods = @(pGoods)
+  rewardsToShopGoods(pGoods.goods).__update(pGoods)
+
+return {
+  rewardsToShopGoods
+  personalGoodsToShopGoods
+}

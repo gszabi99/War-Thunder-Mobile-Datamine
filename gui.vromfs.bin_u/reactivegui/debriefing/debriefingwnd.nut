@@ -53,7 +53,7 @@ let { runOfflineBattle, openOfflineBattleMenu } = require("%rGui/gameModes/offli
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { mkToBattleButtonNoAddons } = require("%rGui/mainMenu/toBattleButton.nut")
+let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 
 let footerGap = hdpx(30)
@@ -202,7 +202,7 @@ let cbId = "onResetPenaltyToBattleInDebriefing"
 registerHandler(cbId, @(res, context) res?.error == null ? toBattle(context.gmId) : null)
 
 let toBattleButton = @(gmId, campaign)
-  mkToBattleButtonNoAddons(function() {
+  mkToBattleButtonWithSquadManagement(function() {
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
     let nextAction = @() tryOpenQueuePenaltyWnd(campaign, allGameModes.get()?[gmId], { id = cbId, gmId }) ? null : toBattle(gmId)

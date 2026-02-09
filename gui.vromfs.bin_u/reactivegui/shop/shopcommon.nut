@@ -2,16 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopConst.nut" import *
 from "%appGlobals/rewardType.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 
-let defaultFeaturedIcon = "!ui/gameuiskin#shop_planes.svg"
+let defaultFeaturedIcon = "ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
-  tanks = "!ui/gameuiskin#shop_tanks.svg"
-  tanks_new = "!ui/gameuiskin#shop_tanks.svg"
-  ships = "!ui/gameuiskin#shop_ships.svg"
-  ships_new = "!ui/gameuiskin#shop_ships.svg"
+  tanks = "ui/gameuiskin#shop_tanks.svg"
+  tanks_new = "ui/gameuiskin#shop_tanks.svg"
+  ships = "ui/gameuiskin#shop_ships.svg"
+  ships_new = "ui/gameuiskin#shop_ships.svg"
   air = defaultFeaturedIcon
 }
-let defaultShopCategory = SC_EVENTS
+let defaultShopCategory = SC_FEATURED
 
 let shopCategoriesCfg = [
   {
@@ -20,39 +21,44 @@ let shopCategoriesCfg = [
     image = null
   },
   {
-    id = SC_EVENTS
-    title = loc("shop/category/events")
-    image = "ui/gameuiskin#shop_event.svg"
-  },
-  {
     id = SC_FEATURED
     title = loc("shop/category/featured")
     getImage =  @(campaign) featuredIcon?[campaign] ?? defaultFeaturedIcon
   },
   {
+    id = SC_SPECIAL
+    title = loc("shop/category/special")
+    image = "ui/gameuiskin#shop_event.svg"
+  },
+  {
+    id = SC_DECORATOR
+    title = loc("shop/category/decorator")
+    image = "ui/gameuiskin#shop_decor.svg"
+  },
+  {
     id = SC_GOLD
     title = loc("shop/category/gold")
-    image = "!ui/gameuiskin#shop_eagles.svg"
+    image = "ui/gameuiskin#shop_eagles.svg"
   },
   {
     id = SC_WP
     title = loc("shop/category/wp")
-    image = "!ui/gameuiskin#shop_lions.svg"
+    image = "ui/gameuiskin#shop_lions.svg"
   },
   {
     id = SC_PLATINUM
     title = loc("shop/category/platinum")
-    image = "!ui/gameuiskin#shop_wolves.svg"
+    image = "ui/gameuiskin#shop_wolves.svg"
   },
   {
     id = SC_PREMIUM
     title = loc("shop/category/premium")
-    image = "!ui/gameuiskin#shop_premium.svg"
+    getImage = @(_) Computed(@(_) allow_subscriptions.get() ? "ui/gameuiskin#shop_subscription.svg" : "ui/gameuiskin#shop_premium.svg")
   },
   {
     id = SC_CONSUMABLES
     title = loc("shop/category/consumables")
-    image = "!ui/gameuiskin#shop_consumables.svg"
+    image = "ui/gameuiskin#shop_consumables.svg"
   }
 ]
 
@@ -61,17 +67,19 @@ let gtypeToShopCategory = {
   [SGT_SLOTS] = SC_FEATURED,
   [SGT_LOOTBOX] = SC_FEATURED,
   [SGT_BLUEPRINTS] = SC_FEATURED,
+  [SGT_DECALS] = SC_FEATURED,
   [SGT_GOLD] = SC_GOLD,
   [SGT_WP] = SC_WP,
   [SGT_PLATINUM] = SC_PLATINUM,
+  [SGT_EVT_CURRENCY] = SC_FEATURED,
   [SGT_PREMIUM] = SC_PREMIUM,
   [SGT_CONSUMABLES] = SC_CONSUMABLES,
   [SGT_BOOSTERS] = SC_CONSUMABLES,
-  [SGT_DECORATOR] = SC_FEATURED,
+  [SGT_DECORATOR] = SC_DECORATOR,
+  [SGT_SKIN] = SC_FEATURED,
 }
 
-let getShopCategory = @(gtype, meta = {}) "eventId" in meta ? SC_EVENTS
-  : gtypeToShopCategory?[gtype] ?? SC_OTHER
+let getShopCategory = @(gtype) gtypeToShopCategory?[gtype] ?? SC_OTHER
 
 let rTypeToGTypeCommon = {
   [G_BLUEPRINT] = SGT_BLUEPRINTS,
@@ -82,6 +90,7 @@ let rTypeToGTypeCommon = {
   [G_LOOTBOX] = SGT_LOOTBOX,
   [G_PREMIUM] = SGT_PREMIUM,
   [G_SKIN] = SGT_SKIN,
+  [G_DECAL] = SGT_DECALS,
   [G_UNIT_UPGRADE] = SGT_UNIT,
 }
 
@@ -105,33 +114,8 @@ function getGoodsType(goods) {
   if ((goods?.meta.previewUnit ?? "") != "")
     return SGT_UNIT
 
-  if ("rewards" in goods) {
-    let { gType = null } = goods.rewards?[0]
-    return rTypeToGTypeComplex?[gType](goods.rewards) ?? rTypeToGTypeCommon?[gType] ?? SGT_UNKNOWN
-  }
-
-  
-  if (goods.units.len() == 1 || (goods?.unitUpgrades.len() ?? 0) > 0)
-    return SGT_UNIT
-  if (goods.units.len() >= 2 )
-    return SGT_BRANCH
-  if (goods.skins.len() > 0)
-    return SGT_SKIN
-  if (goods.items.len() > 0)
-    return SGT_CONSUMABLES
-  if (goods.lootboxes.len() > 0)
-    return SGT_LOOTBOX
-  if (goods.premiumDays > 0)
-    return SGT_PREMIUM
-  if ((goods?.boosters.len() ?? 0) > 0)
-    return SGT_BOOSTERS
-  if ((goods?.decorators.len() ?? 0) > 0)
-    return SGT_DECORATOR
-  if ((goods?.blueprints.len() ?? 0) > 0)
-    return SGT_BLUEPRINTS
-  else if (goods.currencies.len() == 1)
-    return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_EVT_CURRENCY
-  return SGT_UNKNOWN
+  let { gType = null } = goods.rewards?[0]
+  return rTypeToGTypeComplex?[gType](goods.rewards) ?? rTypeToGTypeCommon?[gType] ?? SGT_UNKNOWN
 }
 
 let isGoodsFit = {
@@ -143,35 +127,19 @@ let isGoodsFit = {
 }
 
 function isGoodsFitToCampaign(goods, cConfigs, curCampaign) {
-  let { meta = {}, rewards = null } = goods
-  if (meta?.campaign && meta?.campaign != curCampaign)
+  let { meta, rewards } = goods
+  if (((meta?.campaign ?? curCampaign) != curCampaign) || ((meta?.showAsOffer ?? curCampaign) != curCampaign))
     return false
 
-  if (rewards != null) {
-    local hasCampRewards = false
-    foreach (r in rewards) {
-      if (r.gType not in isGoodsFit)
-        continue
-      hasCampRewards = true
-      if (isGoodsFit[r.gType](r, cConfigs))
-        return true
-    }
-    return !hasCampRewards
+  local hasCampRewards = false
+  foreach (r in rewards) {
+    if (r.gType not in isGoodsFit)
+      continue
+    hasCampRewards = true
+    if (isGoodsFit[r.gType](r, cConfigs))
+      return true
   }
-
-  
-  let { units = [], unitUpgrades = [], skins = {}, items = {}, blueprints = {} } = goods
-  if (units.len() > 0)
-    return null != units.findvalue(@(u) u in cConfigs?.allUnits)
-  if (blueprints.len() > 0)
-    return null != units.findvalue(@(u) u in cConfigs?.allUnits)
-  if (unitUpgrades.len() > 0)
-    return null != unitUpgrades.findvalue(@(u) u in cConfigs?.allUnits)
-  if (skins.len() > 0)
-    return null != skins.findvalue(@(_, u) u in cConfigs?.allUnits)
-  if (items.len() > 0)
-    return null != items.findvalue(@(_, i) i in cConfigs?.allItems)
-  return true
+  return !hasCampRewards
 }
 
 function getSubsPeriodString(subs) {

@@ -58,7 +58,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_medium",
+  "smokeScreenFx": "smokescreen_medium_tank_engine_smoke",
   "battleHideNodes": {
     "n": [
       "details",
@@ -84,6 +84,58 @@
       0.2,
       0.0,
       0.8
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -45.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
     ]
   },
   "DamageParts": {
@@ -2248,7 +2300,7 @@
       "trackMass": 3000.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.3
       ]
     },
     "tracks": {
@@ -2258,6 +2310,12 @@
       "fricFrontal": [
         1.0,
         0.8
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2265,17 +2323,17 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 1217.0,
+      "horsePowers": 1314.0,
       "maxRPM": 2300.0,
       "minRPM": 660.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 280000.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 4.3,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 15.0,
+      "alternativeGearControl": 5.0,
       "gearRatios": {
         "ratio": [
           -1.65,
@@ -3512,6 +3570,35 @@
           "param": "camo_skin_tex"
         }
       ]
+    },
+    "winter": {
+      "set_tex": [
+        {
+          "from": "challenger_1_body_c*",
+          "to": "challenger_1_skin_ny_26_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "challenger_1_gun_c*",
+          "to": "challenger_1_skin_ny_26_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "challenger_1_turret_c*",
+          "to": "challenger_1_skin_ny_26_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "challenger_mk_3_c*",
+          "to": "challenger_mk_3_skin_ny_26_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "challenger_1_mk3_gulf_c*",
+          "to": "challenger_1_skin_ny_26_mk3_gulf_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "defaultDecals": {
@@ -3521,6 +3608,11 @@
       "camo_rotation": 0.0
     },
     "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
