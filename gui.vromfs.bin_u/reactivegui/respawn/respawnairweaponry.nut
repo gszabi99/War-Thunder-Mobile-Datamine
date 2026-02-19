@@ -8,12 +8,12 @@ let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { headerText, header, headerHeight, bulletsBlockMargin, unitListHeight, textColor, secondaryMenuKey,
-  weaponSize, weaponGroupWidth, gap, commonWeaponIcon,
+  weaponSize, weaponGroupWidth, smallGap, commonWeaponIcon,
   caliberTitle, secondaryTitleKey, courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey,
   mkBeltImage
 } = require("%rGui/respawn/respawnComps.nut")
 let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { unitPlateSmall } = require("%rGui/unit/components/unitPlateComp.nut")
+let { unitPlatesGap, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
 let { respawnSlots, unitListScrollHandler } = require("%rGui/respawn/respawnState.nut")
 let { selectedBeltWeaponId } = require("%rGui/respawn/respawnAirChooseState.nut")
 let { showAirRespChooseSecWnd, showAirRespChooseBeltWnd } = require("%rGui/respawn/respawnAirChooseWeaponWnd.nut")
@@ -91,7 +91,7 @@ let mkEmptyInfo = @(text) {
 let mkGroup = @(locId, children, ovr = {}, headerOvr = {}) {
   size = [weaponGroupWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  gap
+  gap = smallGap
   clipChildren = true
   children = [
     header(headerText(loc(locId))).__update(headerOvr)
@@ -105,7 +105,7 @@ let mkGroup = @(locId, children, ovr = {}, headerOvr = {}) {
         touchMarginPriority = TOUCH_BACKGROUND
         scrollHandler = ScrollHandler()
         flow = FLOW_HORIZONTAL
-        gap
+        gap = smallGap
         halign = ALIGN_CENTER
         children
       }.__update(ovr)
@@ -131,13 +131,13 @@ function stackSecondaryWeapons(weapons) {
 let normalizeValue = @(val) (100 * val) / unitListHeight
 let calcUnitToY = @(idx) normalizeValue(
   idx * headerHeight
-    + idx * gap
-    + (idx - 1) * gap
+    + idx * smallGap
+    + (idx - 1) * unitPlatesGap
     + (idx - 0.5) * weaponSize)
 
 let calcUnitFromY = @(idx, scrollOffsY) normalizeValue(
-  (idx + 0.5) * unitPlateSmall[1]
-    + idx * gap
+  (idx + 0.5) * unitPlateHeight
+    + idx * unitPlatesGap
     - scrollOffsY)
 
 function mkLinks(selSlot, weaponGroupsLen) {
@@ -163,7 +163,7 @@ function mkLinks(selSlot, weaponGroupsLen) {
     return {
       watch = unitFromYComp
       size = [bulletsBlockMargin, unitListHeight]
-      margin = [gap + headerHeight, 0, 0, 0]
+      margin = [unitPlatesGap + headerHeight, 0, 0, 0]
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = evenPx(4)
       color = 0xFFFFFFFF
@@ -252,7 +252,7 @@ function respawnAirWeaponry(selSlot) {
           key = selSlot.name
           margin = const [0, hdpx(20), 0, 0]
           flow = FLOW_VERTICAL
-          gap
+          gap = unitPlatesGap
           children = [
             header(headerText(loc("respawn/select_weapon")))
           ].extend(rows)

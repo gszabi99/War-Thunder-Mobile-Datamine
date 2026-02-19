@@ -24,12 +24,13 @@ let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
-let { textButtonCommon, mkCustomButton, iconButtonPrimary, mkButtonTextMultiline } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, BATTLE } = require("%rGui/components/buttonStyles.nut")
+let { textButtonCommon, textButtonBattle, iconButtonPrimary } = require("%rGui/components/textButton.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoardType, scoreBoardCfgByType, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow,
+let { unitPlateWidth, unitPlateHeight, mkUnitPrice, mkUnitBg, mkUnitSelectedGlow,
   mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
-  mkUnitSelectedUnderline, mkUnitInfo, plateTextsSmallPad, mkUnitDailyBonus
+  mkUnitSelectedUnderline, mkUnitInfo, unitPlatesGap, plateTextsSmallPad,
+  mkUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -38,29 +39,28 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { respawnMap, visibleRespawnBases } = require("%rGui/respawn/respawnMap.ui.nut")
 let respawnBullets = require("%rGui/respawn/respawnBullets.nut")
 let respawnAirWeaponry = require("%rGui/respawn/respawnAirWeaponry.nut")
-let { bg, headerText, headerHeight, header, gap, headerMarquee,
-  contentOffset, unitListHeight, skinPadding
+let { bg, headerText, headerHeight, header, gap, headerMarquee, bulletsBlockMargin, bulletsBlockWidth,
+  contentOffset, unitListHeight, skinTextHeight, topSkinPadding, skinPadding
 } = require("%rGui/respawn/respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
-let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { respawnSkins, skinSize, skinGap } = require("%rGui/respawn/respawnSkins.nut")
+let { respawnSkins, skinSize } = require("%rGui/respawn/respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { CS_RESPAWN, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
+let { CS_RESPAWN } = require("%rGui/components/currencyStyles.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 
-
-let mapMaxSize = hdpx(610)
+let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
-let unitListGradientSize = [gap, saBorders[1]]
+let unitListGradientSize = [unitPlatesGap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
 let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.get().len() > 1)
@@ -113,9 +113,13 @@ function onSlotClick(slot) {
 
 let sparePrice = {
   hplace = ALIGN_RIGHT
-  vplace = ALIGN_CENTER
-  padding = const [hdpx(10), hdpx(20), 0, 0]
-  children = mkCurrencyImage(SPARE, CS_RESPAWN.iconSize)
+  halign = ALIGN_TOP
+  padding = const [hdpx(20), hdpx(20), 0, 0]
+  children = mkUnitPrice({
+    fullPrice = 1,
+    price = 1,
+    currencyId = SPARE
+  }, CS_RESPAWN)
 }
 
 function mkSlotPlate(slot, baseUnit) {
@@ -134,7 +138,7 @@ function mkSlotPlate(slot, baseUnit) {
     children = [
       mkUnitSelectedUnderline(unit, isSelected, { margin = 0, size = [flex(), selLineSize] })
       {
-        size = unitPlateSmall
+        size = [unitPlateWidth, unitPlateHeight]
         children = [
           mkUnitBg(unit, !canSpawn)
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
@@ -176,7 +180,7 @@ function slotsBlockTitle(unit, isSeparateSlots) {
   let isElite = isPremium || isUpgraded
   let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
   let textLength = calc_str_box(text, fontTinyAccented)[0]
-  let textWidth = unitPlateSmall[0] - levelHolderSize
+  let textWidth = unitPlateWidth - levelHolderSize
   let textColorOvr = isCollectible ? { color = collectibleTextColor }
     : isElite ? { color = premiumTextColor }
     : {}
@@ -188,7 +192,7 @@ function slotsBlockTitle(unit, isSeparateSlots) {
   return header({
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap
+    gap = hdpx(20)
     children = [
       level < 0 ? null : {
         size = [ levelHolderSize, levelHolderSize ]
@@ -216,9 +220,9 @@ function slotsBlock() {
   let list = respawnSlots.get().map(@(slot) mkSlotPlate(slot, respawnUnitInfo.get()))
   return {
     watch = [respawnSlots, respawnUnitInfo, hasRespawnSeparateSlots]
-    size = [unitPlateSmall[0], SIZE_TO_CONTENT]
+    size = [unitPlateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
-    gap
+    gap = unitPlatesGap
     children = respawnUnitInfo.get() == null ? null
       : list.len() <= 4 ? [ title ].extend(list)
       : [
@@ -230,7 +234,7 @@ function slotsBlock() {
                 {
                   size = FLEX_H
                   flow = FLOW_VERTICAL
-                  gap
+                  gap = unitPlatesGap
                   children = list
                 },
                 {},
@@ -249,7 +253,7 @@ let map = @() {
   maxHeight = mapMaxSize + headerHeight + gap
   maxWidth = mapMaxSize
   flow = FLOW_VERTICAL
-  gap
+  gap = unitPlatesGap
   children = [
     visibleRespawnBases.get().len() > 0 ? header(headerText(loc("respawn/choose_respawn_point"))) : null
     bg.__merge({
@@ -277,68 +281,29 @@ let mkText = @(text, override = {}) {
   text
 }.__update(fontTiny, override)
 
-let skinsList = @() {
-  watch = hasSkins
-  children = !hasSkins.get() ? null : {
-    flow = FLOW_VERTICAL
-    gap
-    children = [
-      header(headerText(loc("skins/select")))
-      {
-        size = [((skinSize + skinGap) * 4 - skinGap) + skinPadding * 2, skinSize + skinPadding * 2]
-        padding = skinPadding
-        rendObj = ROBJ_SOLID
-        color = 0x99000000
-        clipChildren = true
-        children = {
-          size = flex()
-          behavior = Behaviors.Pannable
-          touchMarginPriority = TOUCH_BACKGROUND
-          skipDirPadNav = true
-          xmbNode = XmbContainer()
-          children = respawnSkins
-        }
-      }
-    ]
-  }
-}
-
 let vehicleActionLangKeys = {
   [AIR] = "mainmenu/flightAgain"
 }
 
 function toBattleButton(onClick, styleOvr) {
-  let needShowSpareDesc = Computed(@() selSlot.get()?.isSpawnBySpare ?? false)
-
-  return @() {
-    watch = [selSlotUnitType, needShowSpareDesc]
+  let button = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")), onClick, styleOvr)
+  if (!(selSlot.get()?.isSpawnBySpare ?? false))
+    return button
+  return {
     flow = FLOW_HORIZONTAL
-    valign = ALIGN_BOTTOM
-    gap
+    gap = hdpx(30)
     children = [
-      skinsList
-      {
+      @() {
+        watch = selSlotUnitType
+        size = FLEX_V
         flow = FLOW_VERTICAL
-        gap
-        halign = ALIGN_CENTER
+        halign = ALIGN_RIGHT
         children = [
-          needShowSpareDesc.get()
-            ? mkText(utf8ToUpper(loc(vehicleActionLangKeys?[selSlotUnitType.get()] ?? "mainmenu/driveAgain")))
-            : null
-          mkCustomButton({
-              pos = [0, needShowSpareDesc.get() ? gap : 0]
-              flow = FLOW_VERTICAL
-              halign = ALIGN_CENTER
-              gap = -hdpx(15)
-              children = [
-                mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/toBattle/short")), fontTinyAccentedShadedBold)
-                needShowSpareDesc.get() ? mkCurrencyComp(1, SPARE, CS_GAMERCARD) : null
-              ]
-            },
-            onClick,
-            BATTLE.__merge(styleOvr))
+          mkText(utf8ToUpper(loc(vehicleActionLangKeys?[selSlotUnitType.get()] ?? "mainmenu/driveAgain")))
+          mkCurrencyComp(1, SPARE)
         ]
       }
+      button
     ]
   }
 }
@@ -407,18 +372,12 @@ function checkAndBattle() {
 let buttons = @() {
   watch = [needCancel, isRespawnStarted, selSlot, selSlotUnitType, isGamepad]
   vplace = ALIGN_BOTTOM
-  valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
-  gap
+  gap = hdpx(20)
   children = [
     selSlotUnitType.get() != AIR ? null
       : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg", @() openUnitWeaponPresetWnd(selSlot.get()), {
-        ovr = {
-          size = isGamepad.get()
-            ? [defButtonHeight * 2, defButtonHeight]
-            : [defButtonHeight, defButtonHeight]
-          minWidth = defButtonHeight
-        }
+        ovr = { size = isGamepad.get() ? [defButtonHeight*2, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }
         hotkeys = ["^J:Y | Enter"]
       }),
     !(selSlot.get()?.canSpawn ?? false) ? null
@@ -431,7 +390,7 @@ let buttons = @() {
 let rightBlock = {
   size = flex()
   halign = ALIGN_RIGHT
-  margin = const [0, 0, 0, hdpx(20)]
+  margin = const [0, 0, 0, hdpx(50)]
   children = [
     map
     buttons
@@ -466,6 +425,35 @@ function respawnBulletsPlace() {
   })
 }
 
+let skinsList = @() {
+  watch = hasSkins
+  size = flex()
+  valign = ALIGN_BOTTOM
+  children = !hasSkins.get() ? null : {
+    rendObj = ROBJ_SOLID
+    color = 0x99000000
+    pos = [bulletsBlockMargin, 0]
+    padding = [topSkinPadding, skinPadding, skinPadding, skinPadding]
+    flow = FLOW_VERTICAL
+    children = [
+      headerText(loc("skins/select"))
+        .__update({ hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, skinTextHeight] }, fontVeryTinyAccentedShaded)
+      {
+        size = [bulletsBlockWidth - skinPadding * 2, skinSize]
+        clipChildren = true
+        children = {
+          size = flex()
+          behavior = Behaviors.Pannable
+          touchMarginPriority = TOUCH_BACKGROUND
+          skipDirPadNav = true
+          xmbNode = XmbContainer()
+          children = respawnSkins
+        }
+      }
+    ]
+  }
+}
+
 let content = @() {
   watch = needRespawnSlotsAndWeaponry
   key = "respawnWndContent"
@@ -474,7 +462,13 @@ let content = @() {
   children = !needRespawnSlotsAndWeaponry.get() ? null
     : [
         slotsBlock
-        respawnBulletsPlace
+        {
+          size = FLEX_V
+          children = [
+            respawnBulletsPlace
+            skinsList
+          ]
+        }
         rightBlock
       ]
 }

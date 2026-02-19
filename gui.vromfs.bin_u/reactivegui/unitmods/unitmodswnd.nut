@@ -22,11 +22,10 @@ let { modsCategories, curModCategoryId, curMod, isUnitModsOpen, closeUnitModsWnd
 } = require("%rGui/unitMods/unitModsState.nut")
 let { mkModsCategories } = require("%rGui/unitMods/unitModsWndTabs.nut")
 let { mkMods } = require("%rGui/unitMods/unitModsCarousel.nut")
-let { curBullet, chosenBullets, chosenBulletsSec, chosenBulletsSpec, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, choiceCount,
-  bulletTotalSteps, bulletStep, maxBulletsCountForExtraAmmo, hasExtraBullets, bulletLeftSteps, bulletSecTotalSteps,
-  bulletSpecTotalSteps, bulletSecStep, bulletSpecStep, maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo,
-  hasExtraBulletsSec, hasExtraBulletsSpec, bulletSecLeftSteps, bulletSpecLeftSteps, isCurBulletLocked, isCurBulletEnabled,
-  setOrSwapCurUnitBullet, curBulletCategoryId, visibleBulletsList
+let { curBullet, chosenBullets, chosenBulletsSec, bulletsInfo, bulletsSecInfo, choiceCount,
+  bulletTotalSteps, bulletStep, maxBulletsCountForExtraAmmo, hasExtraBullets, bulletLeftSteps,
+  bulletSecTotalSteps, bulletSecStep, maxBulletsSecCountForExtraAmmo, hasExtraBulletsSec, bulletSecLeftSteps,
+  isCurBulletLocked, isCurBulletEnabled, setOrSwapCurUnitBullet, curBulletCategoryId, visibleBulletsList
 } = require("%rGui/unitMods/unitBulletsState.nut")
 let { mkBulletsTabs } = require("%rGui/unitMods/unitBulletsWndTabs.nut")
 let { mkBullets } = require("%rGui/unitMods/unitBulletsCarousel.nut")
@@ -122,32 +121,8 @@ function bulletsCategoriesBlock() {
     })
     allSlots.extend(slots)
   }
-  let bInfoSpec = bulletsSpecInfo.get()
-  if (bInfoSpec != null) {
-    let bullets = chosenBulletsSpec.get()
-    let slots = array(bullets.len()).map(function(_, i) {
-      let bSlot = bullets?[i]
-      let bSet = bInfoSpec?.bulletSets[bSlot?.name]
-      let idx = bSlot?.idx ?? i
-      return {
-        id = idx
-        visIdx = bSlot?.visIdx ?? idx
-        bInfo = bInfoSpec
-        bSlot
-        bSet
-        bTotalSteps = bulletSpecTotalSteps.get()
-        bStep = bulletSpecStep
-        maxBullets = Computed(@() maxBulletsSpecCountForExtraAmmo.get()?[i])
-        withExtraBullets = hasExtraBulletsSpec
-        bLeftSteps = bulletSpecLeftSteps
-        isOwn = isOwn.get()
-      }
-    })
-    allSlots.extend(slots)
-  }
   return {
-    watch = [bulletsInfo, bulletsSecInfo, bulletsSpecInfo, chosenBullets, chosenBulletsSec, chosenBulletsSpec,
-      bulletTotalSteps, bulletSecTotalSteps, bulletSpecTotalSteps, isOwn]
+    watch = [bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, bulletTotalSteps, bulletSecTotalSteps, isOwn]
     size = FLEX_H
     children = mkBulletsTabs(
       allSlots,

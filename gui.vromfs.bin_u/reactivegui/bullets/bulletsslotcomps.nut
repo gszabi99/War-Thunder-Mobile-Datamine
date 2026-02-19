@@ -10,7 +10,7 @@ let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let padding = hdpx(8)
-let btnSize = evenPx(70)
+let btnSize = evenPx(80)
 let knobSize = evenPx(50)
 let sliderGap = knobSize / 2 + (0.1 * btnSize).tointeger()
 let sliderWidth = bulletsBlockWidth - 2 * (btnSize + sliderGap + padding)
@@ -77,7 +77,7 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
   }
 }
 
-let btnBgOvr = { size = btnSize }
+let btnBgOvr = { size = [btnSize, btnSize] }
 let inactiveBtnOvr = { color = 0x30303030 }
 
 let mkBtnTextCtor = @(override) @(ovrW) @(sf) @() {

@@ -2,24 +2,22 @@ from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets,
   maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo, bulletSecStep, bulletSecLeftSteps
-  chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo,
-  bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps
-  chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec, maxBulletsSpecCountForExtraAmmo
+  chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo
 } = require("%rGui/respawn/bulletsChoiceState.nut")
-let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo, gap } = require("%rGui/respawn/respawnComps.nut")
+let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo } = require("%rGui/respawn/respawnComps.nut")
 let { openedSlot } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
 let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
+let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkBulletSliderSlot } = require("%rGui/bullets/bulletsSlotComps.nut")
 
 
 let choiceCount = Computed(@() chosenBullets.get().len())
 let choiceSecCount = Computed(@() chosenBulletsSec.get().len())
-let choiceSpecCount = Computed(@() chosenBulletsSpec.get().len())
-let bulletCardStyle = mkBulletHeightInfo(choiceCount, choiceSecCount, choiceSpecCount)
+let bulletCardStyle = mkBulletHeightInfo(choiceCount, choiceSecCount)
 
 function respawnBullets() {
   let res = {
-    watch = [bulletsInfo, bulletsSecInfo, choiceCount, choiceSecCount, bulletCardStyle, bulletsSpecInfo, choiceSpecCount]
+    watch = [bulletsInfo, bulletsSecInfo, choiceCount, choiceSecCount, bulletCardStyle]
     animations = wndSwitchAnim
   }
   let bulletSliderSlots = []
@@ -57,30 +55,13 @@ function respawnBullets() {
         cardStyle = bulletCardStyle,
         onChangeSlider = setCurUnitBullets
       })))
-  if (bulletsSpecInfo.get() != null)
-    bulletSliderSlots.extend(array(choiceSpecCount.get()).map(@(_, idx)
-      mkBulletSliderSlot({
-        idx,
-        selSlot,
-        bInfo = bulletsSpecInfo,
-        bullets = chosenBulletsSpec,
-        bTotalSteps = bulletSpecTotalSteps,
-        bStep = bulletSpecStep,
-        maxBullets = maxBulletsSpecCountForExtraAmmo,
-        withExtraBullets = hasExtraBulletsSpec,
-        bLeftSteps = bulletSpecLeftSteps,
-        hasUnseenShells = hasUnseenShellsBySlot,
-        openedSlot,
-        cardStyle = bulletCardStyle,
-        onChangeSlider = setCurUnitBullets
-      })))
   return bulletSliderSlots.len() == 0 ? res : res.__update({
     flow = FLOW_HORIZONTAL
     children = [
       {
         margin = headerMargin
         flow = FLOW_VERTICAL
-        gap
+        gap = unitPlatesGap
         children = [
           header(headerText(loc("respawn/chooseBullets")))
           {
