@@ -5,7 +5,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { G_UNIT } = require("%appGlobals/rewardType.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
+let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -201,18 +201,8 @@ function getNotReceivedInfo(unlock, maxProgress) {
       }
     }
   }
-  return stage == null ? null : { unlockName = name, stage, finalStage }
+  return stage == null ? null : { unlock = name, stage, finalStage }
 }
-
-function receiveOPRewardsImpl(toReceive) {
-  if (toReceive.len() == 0)
-    return
-  let { unlockName, stage, finalStage = null } = toReceive[0]
-  receiveUnlockRewards(unlockName, stage,
-    { finalStage, onSuccessCb = { id = "operationPass.grantMultiRewards", nextReceive = toReceive.slice(1) } })
-}
-
-eventbus_subscribe("operationPass.grantMultiRewards", @(msg) receiveOPRewardsImpl(msg.nextReceive))
 
 let sendOPBqEvent = @(action, params = {}) sendCustomBqEvent("operationpass_1", params.__merge({
   action
@@ -228,7 +218,7 @@ function receiveOPRewards(progress) {
 
   let fullList = [
     !OPPurchasedUnlock.get()?.hasReward ? null
-      : { unlockName = OPPurchasedUnlock.get().name, stage = OPPurchasedUnlock.get().stage }
+      : { unlock = OPPurchasedUnlock.get().name, stage = OPPurchasedUnlock.get().stage }
     getNotReceivedInfo(OPFreeRewardsUnlock.get(), progress)
     isOPActive.get() ? getNotReceivedInfo(OPPaidRewardsUnlock.get(), progress) : null
   ].filter(@(v) v != null)
@@ -241,7 +231,7 @@ function receiveOPRewards(progress) {
     paramInt1 = progress,
     paramInt2 = total
   })
-  receiveOPRewardsImpl(fullList)
+  batchReceiveRewards(fullList.map(@(c) { unlock = c.unlock, up_to_stage = c?.finalStage ?? c.stage }))
 }
 
 function buyOPLevel() {

@@ -82,7 +82,7 @@ let promoBlock = {
       keepAspect = true
     }
     textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
-      @() openSubsPreview("vip"),
+      @() openSubsPreview("vip", "prem_daily_bonus"),
       { hotkeys = [btnAUp] })
   ]
 }

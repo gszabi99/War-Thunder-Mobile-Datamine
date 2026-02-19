@@ -45,6 +45,8 @@ let btnBg = {
 function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
   let stateFlags = Watched(0)
   let iconSize = ((ovr?.iconSize ?? iconSizeDefault) * (ovr?.iconMul ?? 1) + 0.5).tointeger()
+  let onAttach = ovr?.onAttach
+  let onDetach = ovr?.onDetach
 
   return @() {
     behavior = Behaviors.Button
@@ -62,6 +64,8 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
       scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1]
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
+    onAttach
+    onDetach
     children = [
       {
         key = ovr?.key

@@ -2,7 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
+let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
@@ -12,7 +14,7 @@ let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+
 
 let EVENT_PASS = "event_pass"
 let EVENTPASS_POINTS = "eventpass_points_for_stages"
@@ -32,10 +34,18 @@ let getEventPassName = @(eventName) $"{EVENT_PASS}_{eventName}"
 let eventsPassList = Computed(@() allSpecialEvents.get().values().filter(@(v) eventPassTables.get().contains(v.tableId)))
 let curOpenEventPass = Computed(@() eventsPassList.get().findvalue(@(v) v.eventName == curEventId.get()))
 
-let epPrograssUnlockId = Computed(@()
-  activeUnlocks.get().findvalue(@(unlock) EVENTPASS_POINTS in unlock?.meta)?.name)
+let epPrograssUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
+  EVENTPASS_POINTS in unlock?.meta && curOpenEventPass.get()?.tableId == unlock.table)?.name)
 
 let seasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
+
+let eventBgImage = Computed(@() allSpecialEvents.get().findvalue(@(e) e.eventName == curEventId.get()) != null
+  ? getEventPresentation(curEventId.get()).bg
+  : gmEventPresentation(curEventId.get()).bgImage)
+
+let eventTitle = Computed(@() allSpecialEvents.get().findvalue(@(e) e.eventName == curEventId.get()) != null
+  ? $"events/name/{curEventId.get()}"
+  : gmEventPresentation(curEventId.get()).locId)
 
 let EP_NONE = "none"
 let EP_COMMON = "common"
@@ -55,7 +65,7 @@ let epPresentation = {
     icon = @(eventName) $"ui/gameuiskin#event_pass_icon_{eventName}_vip.avif"
   },
 }
-let getEpPresentation = @(epType) epPresentation?[epType] ?? epPresentation[EP_NONE]
+let getPresentationByType = @(epType) epPresentation?[epType] ?? epPresentation[EP_NONE]
 let isEPPurchaseWndOpened = mkWatched(persist, "isEPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
 
@@ -78,10 +88,24 @@ let isEpRewardsInProgress = Computed(@()
     || eventPaidRewardsUnlock.get()?.name in unlockInProgress.get()
     || eventPurchasedUnlock.get()?.name in unlockInProgress.get())
 
-let eventPassGoods = Computed(@() {
-  [EP_COMMON] = shopGoods.get().findvalue(@(s) "event_pass" in s?.meta),
-  [EP_VIP] = shopGoods.get().findvalue(@(s) "event_pass_vip" in s?.meta)
+let eventPassGoods = Computed(function() {
+  let res = { [EP_COMMON] = null, [EP_VIP] = null }
+  let eventId = curEventId.get()
+  foreach (g in shopGoods.get())
+    if ("event_pass" in g?.meta) {
+      let { event_id = null } = g.meta
+      if (event_id == eventId || (event_id == null && res[EP_COMMON] == null))
+        res[EP_COMMON] = g
+    }
+    else if ("event_pass_vip" in g?.meta) {
+      let { event_id = null } = g.meta
+      if (event_id == eventId || (event_id == null && res[EP_VIP] == null))
+        res[EP_VIP] = g
+    }
+  return res
 })
+
+let eventPassVipLevels = Computed(@() (eventPassGoods.get()?[EP_VIP].meta.pass_levels ?? 7).tointeger())
 
 let isEpPurchasedByType = Computed(function() {
   let { purchasesCount = null } = servProfile.get()
@@ -195,18 +219,8 @@ function getNotReceivedInfo(unlock, maxProgress) {
       }
     }
   }
-  return stage == null ? null : { unlockName = name, stage, finalStage }
+  return stage == null ? null : { unlock = name, stage, finalStage }
 }
-
-function receiveEpRewardsImpl(toReceive) {
-  if ((toReceive?.len() ?? 0) == 0)
-    return
-  let { unlockName, stage, finalStage = null } = toReceive[0]
-  receiveUnlockRewards(unlockName, stage,
-    { finalStage, onSuccessCb = { id = "battlePass.grantMultiRewards", nextReceive = toReceive.slice(1) } })
-}
-
-eventbus_subscribe("battlePass.grantMultiRewards", @(msg) receiveEpRewardsImpl(msg.nextReceive))
 
 let sendEpBqEvent = @(action, params = {}) sendCustomBqEvent("eventpass_1", params.__merge({
   action
@@ -222,7 +236,7 @@ function receiveEpRewards(progress) {
 
   let fullList = [
     !eventPurchasedUnlock.get()?.hasReward ? null
-      : { unlockName = eventPurchasedUnlock.get().name, stage = eventPurchasedUnlock.get().stage }
+      : { unlock = eventPurchasedUnlock.get().name, stage = eventPurchasedUnlock.get().stage }
     getNotReceivedInfo(eventFreeRewardsUnlock.get(), progress)
     isEpActive.get() ? getNotReceivedInfo(eventPaidRewardsUnlock.get(), progress) : null
   ].filter(@(v) v != null)
@@ -235,7 +249,8 @@ function receiveEpRewards(progress) {
     paramInt1 = progress,
     paramInt2 = total
   })
-  receiveEpRewardsImpl(fullList)
+
+  batchReceiveRewards(fullList.map(@(c) { unlock = c.unlock, up_to_stage = c?.finalStage ?? c.stage }))
 }
 
 function buyEPLevel() {
@@ -268,7 +283,8 @@ register_command(
   "ui.debug.eventPass")
 
 return {
-  eventBgImage = Computed(@() gmEventPresentation(curEventId.get()).bgImage )
+  eventBgImage
+  eventTitle
   isEPPurchaseWndOpened
   openEPPurchaseWnd = @() isEPPurchaseWndOpened.set(true)
   closeEPPurchaseWnd = @() isEPPurchaseWndOpened.set(false)
@@ -285,6 +301,7 @@ return {
   isEpRewardsInProgress
   isEpSeasonActive = Computed(@() eventFreeRewardsUnlock.get() != null)
   lastStageEpProgress
+  eventPassVipLevels
 
   mkEpStagesList
   curStage
@@ -306,8 +323,8 @@ return {
   seasonEndTime
   hasEpRewardsToReceive
 
-  getEpIcon = @(epType, season) getEpPresentation(epType).icon(season)
-  getEpName = @(epType) getEpPresentation(epType).name()
+  getEpIcon = @(epType, season) getPresentationByType(epType).icon(season)
+  getEpName = @(epType) getPresentationByType(epType).name()
 
   EP_NONE
   EP_COMMON

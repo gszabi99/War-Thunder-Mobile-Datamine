@@ -1,11 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { VendorId, getJoystickVendor } = require("controls")
+let { VendorId, getJoystickVendor, hasXInputDevice } = require("controls")
 let { UNKNOWN, MICROSOFT, SONY, NINTENDO } = VendorId
 let { register_command } = require("console")
 let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let defGamepadPresetId = "xone"
 let vendorIdToGamepadPresetId = {
@@ -16,7 +15,7 @@ let vendorIdToGamepadPresetId = {
 
 let lastVendorId = hardPersistWatched("lastGamepadVendorId", null)
 let debugVendorId = hardPersistWatched("debugGamepadVendorId", null)
-let hasGamepadConnected = hardPersistWatched("hasGamepadConnected", isGamepad.get())
+let hasGamepadConnected = hardPersistWatched("hasGamepadConnected", hasXInputDevice())
 let curVendorId = Computed(@() debugVendorId.get() ?? lastVendorId.get())
 let presetId = Computed(@() vendorIdToGamepadPresetId?[curVendorId.get()] ?? defGamepadPresetId)
 
@@ -31,7 +30,9 @@ let presetIdToShow = presetId.get()
 
 function updateVendor(isConnected) {
   let id = getJoystickVendor()
-  hasGamepadConnected.set(isConnected)
+  let hasInputDevice = hasXInputDevice()
+  hasGamepadConnected.set(hasInputDevice)
+  log($"[GAMEPAD] joystickConnected = {isConnected}; hasXInputDevice() = {hasInputDevice}")
   if (id != UNKNOWN)
     lastVendorId.set(id)
 }

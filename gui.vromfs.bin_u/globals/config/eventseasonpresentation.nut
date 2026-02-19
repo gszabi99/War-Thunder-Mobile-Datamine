@@ -70,13 +70,12 @@ let presentations = {
   valentine_day_2026                = {
     image = $"ui/gameuiskin/icon_event_valentine_day_shop.avif",
     icon = "ui/gameuiskin#icon_event_event_valentine_day.svg",
-    bg = "valentine_day_2026",
-    gamercardItems = [ "firework_kit" ]
+    bg = "ui/images/event_bg_valentine_day_2026.avif"
   }
   lunar_ny_2026                = {
     image = $"ui/gameuiskin/icon_event_lunar_ny_shop.avif",
-    icon = "ui/gameuiskin#icon_event_lunar_ny.svg",
-    bg = "lunar_ny_2026",
+    icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg",
+    bg = "ui/images/event_bg_lunar_ny_2026.avif",
     gamercardItems = [ "firework_kit" ]
   }
   halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
@@ -106,6 +105,12 @@ let genParams = {
   gamercardItems = @(_) []
 }
 
+let seasonFlagsRotation = {
+  ship = ["major_banner_buoy_even", "major_banner_buoy_odd"],
+  tank = ["major_banner_even", "major_banner_odd"],
+  air = ["major_banner_wall_even", "major_banner_wall_odd"],
+}
+
 function mkEventPresentation(name) {
   let res = presentations?[name] ?? {}
   foreach (id, gen in genParams)
@@ -125,4 +130,5 @@ function getEventPresentation(name) {
 return {
   getEventPresentation
   eventBgFallback
+  seasonFlagsRotation
 }

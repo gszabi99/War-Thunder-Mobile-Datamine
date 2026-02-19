@@ -29,6 +29,7 @@ let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rew
 let { bpCardStyle, bpCardPadding, bpCardHeight } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
 let TIME_TO_HIDE_AD = 4
@@ -158,14 +159,18 @@ let taskDesc = {
   behavior = Behaviors.TextArea
   maxWidth = hdpx(300)
   text = loc("battlepass/tasksDesc")
-}.__update(fontTinyAccented)
+}.__update(fontTinyAccentedShaded)
 
-let opLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmall)
+let opLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded)
 
 let levelBlock = @() {
   watch = curStage
-  vplace = ALIGN_TOP
+  rendObj = ROBJ_IMAGE
+  image = simpleHorGrad
+  color = 0xAA000000
+  flipX = true
   flow = FLOW_VERTICAL
+  padding = hdpx(10)
   gap = hdpx(15)
   children = [
     opLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
@@ -178,23 +183,21 @@ let levelBlock = @() {
         bpProgressText(pointsCurStage, pointsPerStage)
       ]
     }
+    taskDesc
   ]
 }
 
 let leftMiddle = {
-  size = FLEX_V
   padding = const [hdpx(10), 0, hdpx(20), 0]
   flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
+  pos = [0, hdpx(140)]
+  gap = hdpx(10)
   children = [
     levelBlock
     {
       flow = FLOW_VERTICAL
       gap = hdpx(15)
-      children = [
-        taskDesc
-        mkBtnOpenTabQuests(PERSONAL_TAB)
-      ]
+      children = mkBtnOpenTabQuests(PERSONAL_TAB)
     }
   ]
 }
@@ -250,7 +253,8 @@ let middlePart = @(stagesList) function() {
       {
         size = flex()
         flow = FLOW_VERTICAL
-        gap = hdpx(20)
+        padding = [hdpx(55), 0, 0, 0]
+        gap = hdpx(10)
         halign = ALIGN_CENTER
         children = [
           @() {
@@ -259,7 +263,7 @@ let middlePart = @(stagesList) function() {
             children = battlePassSeason(seasonName.get(), seasonEndTime.get(), null,
               {
                 halign = ALIGN_CENTER
-                padding = const [hdpx(20), hdpx(200)]
+                padding = const [hdpx(0), hdpx(200), hdpx(5), hdpx(200)]
               }
             )
           }

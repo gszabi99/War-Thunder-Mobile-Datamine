@@ -486,12 +486,14 @@
     "vaporCalcSunTransmittance": false,
     "replaceEnviProbeWithLocal": true,
     "allowRIsInDynamicCube": false,
-    "tiledRenderLights": false,
+    "tiledRenderLights": true,
     "tiledRenderLightsUseRt": true,
     "guiHdrTonemap": [
       1.25,
       1.2
     ],
+    "allowSceneSnowCover": true,
+    "decalHack": false,
     "raytraced_shadows": {
       "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,
@@ -953,6 +955,9 @@
   "shadows": {
     "bigShipForShadowsFrom": 0.0,
     "shadowsDistMulInZoom": 3.0,
+    "dynamicLightsShadows": {
+      "shadowQuality": 0
+    },
     "staticShadows": {
       "optimizeBigQuadRenderForSmallCascade": true,
       "cascadeCount": 2,
@@ -1478,6 +1483,12 @@
           }
         }
       }
+    },
+    "broken_snow_cover": {
+      "gpu": "Adreno (TM) 660",
+      "graphics": {
+        "decalHack": true
+      }
     }
   },
   "gamepad_layout": {
@@ -1817,7 +1828,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": true,
+        "useVapor": false,
         "planarReflectionTexDiv": 4
       },
       "render": {
@@ -1902,7 +1913,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": true,
+        "useVapor": false,
         "planarReflectionTexDiv": 4
       },
       "render": {
@@ -1987,7 +1998,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": true,
+        "useVapor": false,
         "planarReflectionTexDiv": 4
       },
       "render": {
@@ -2144,7 +2155,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": false,
-        "useVapor": true,
+        "useVapor": false,
         "planarReflectionTexDiv": 4
       },
       "clipmap": {
@@ -2218,7 +2229,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": true,
+        "useVapor": false,
         "planarReflectionTexDiv": 4
       },
       "clipmap": {
@@ -2292,7 +2303,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": true,
+        "useVapor": false,
         "planarReflectionTexDiv": 4
       },
       "clipmap": {

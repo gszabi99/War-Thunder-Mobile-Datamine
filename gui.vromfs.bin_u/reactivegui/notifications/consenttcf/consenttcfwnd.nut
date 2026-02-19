@@ -14,12 +14,12 @@ import "%rGui/notifications/consentTcf/mkPagePartnersExt.nut" as mkPagePartnersE
 
 const key = "consentTcf"
 
-let mkIntroStatus = @(locId, onClose = null)
-  mkContent(loc("consent_tcf/intro/header"), mkStatusContent(loc(locId)), null, onClose)
+let mkIntroStatus = @(text, onClose = null)
+  mkContent(loc("consent_tcf/intro/header"), mkStatusContent(text), null, onClose)
 
-let mkPageStatusWait = @() mkIntroStatus("msgbox/please_wait")
-let mkPageStatusInitializing = @() mkIntroStatus("wait/common/initializing")
-let mkPageStatusLoading = @() mkIntroStatus("wait/common/loading")
+let mkPageStatusWait = @() mkIntroStatus(loc("msgbox/please_wait"))
+let mkPageStatusInitializing = @() mkIntroStatus(loc("wait/common/initializing"))
+let mkPageStatusLoading = @() mkIntroStatus(loc("wait/common/loading"))
 let mkPageStatusLoadError = @() mkIntroStatus("\n".concat(loc("failed_to_load_data"), loc("try_again_later")), doSkipClose)
 
 let consentTcfWnd = bgShaded.__merge({

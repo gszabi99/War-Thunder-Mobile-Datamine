@@ -81,7 +81,8 @@
     "water3d": true,
     "staticScene": true,
     "riExtraMinSizeForReflection": 5.0,
-    "riExToHeightmap": true
+    "riExToHeightmap": true,
+    "unormRtPack": 3.0
   },
   "clipmap": {
     "texelSize": 0.03125,

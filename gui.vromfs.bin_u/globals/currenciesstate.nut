@@ -28,7 +28,7 @@ let CHOCOLATEBOND = "chocolatebond"
 let balance = sharedWatched("balance", @() {})
 let isBalanceReceived = sharedWatched("isBalanceReceived", @() false)
 
-let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, SLOT_EXP_TANKS, SLOT_EXP_AIR]
+let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, SLOT_EXP_TANKS, SLOT_EXP_AIR, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND]
 let orderByCurrency = currencyOrder.reduce(@(res, c, i) res.$rawset(c, i + 1), {})
 
 let dbgCurrencyCount = {

@@ -312,7 +312,6 @@ let isEmptyByRType = {
   [G_SKIN] = @(unitName, skinName, profile, _) skinName in profile?.skins[unitName],
   [G_BLUEPRINT] = @(value, _, profile, configs) value in profile?.units
     || (profile?.blueprints?[value] ?? 0) >= (configs?.allBlueprints[value].targetCount ?? 0),
-  [G_LOOTBOX] = @(value, _, profile, _) value in profile?.lootboxes,
   [G_DECAL] = @(id, _, profile, _) id in profile?.decals,
 }
 

@@ -31,10 +31,10 @@ let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/
 let { PRIMARY, defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { clearDmViewerUnitDataCollection } = require("%rGui/dmViewer/dmViewerState.nut")
-let { isProtectionAnalysisAvailable, openProtectionAnalysis } = require("%rGui/dmViewer/protectionAnalysisState.nut")
 let dmViewerBgComps = require("%rGui/dmViewer/dmViewerBgComps.nut")
 let dmViewerHintComps = require("%rGui/dmViewer/dmViewerHintComps.nut")
 let mkDmViewerSwitchComp = require("%rGui/dmViewer/mkDmViewerSwitchComp.nut")
+let mkBtnOpenProtectionAnalysis = require("%rGui/dmViewer/mkBtnOpenProtectionAnalysis.nut")
 
 
 let buttonsGap = hdpx(40)
@@ -86,7 +86,10 @@ platoonUnitsList.subscribe(function(pu) {
 })
 
 let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
-let btnopenUnitCustomization = mkBtnOpenCustomization(baseUnit, statsWidth)
+let btnOpenUnitCustomization = mkBtnOpenCustomization(baseUnit,
+  { hotkeys = ["^J:LB"], ovr = { size = leftBtnSizeWithRewardBtn } })
+let protectionAnalysisButton = mkBtnOpenProtectionAnalysis(unitToShow, baseUnit,
+  { hotkeys = ["^J:RB"], ovr = { size = [statsWidth, defButtonHeight] }, contentOvr = { width = statsWidth } })
 
 let unitInfoPanelPlace = @() {
   watch = curCampaign
@@ -103,7 +106,7 @@ let unitInfoPanelPlace = @() {
           touchMarginPriority = TOUCH_BACKGROUND
         })
       dmViewerSwitchComp
-      btnopenUnitCustomization
+      protectionAnalysisButton
     ]
   })
 }
@@ -118,7 +121,7 @@ let rewardsButton = @() {
               { size = [hdpx(300), SIZE_TO_CONTENT]}),
             "laurels", frameButtonIconSize),
           @() openUnitRewardsModal(baseUnit.get()),
-          mergeStyles(PRIMARY, { hotkeys = ["^J:LB"] }))
+          mergeStyles(PRIMARY, { hotkeys = ["^J:LT"] }))
         {
           margin = textButtonUnseenMargin
           children = priorityUnseenMark
@@ -127,11 +130,11 @@ let rewardsButton = @() {
 }
 
 let testDriveButton = @() {
-  watch = [can_debug_units, hasHangarUnitResources, hasUnseenRewards]
+  watch = [can_debug_units, hasHangarUnitResources]
   children = !can_debug_units.get() || !hasHangarUnitResources.get() ? null
     : textButtonCommon("TEST DRIVE",
         @() startTestFlight(unitToShow.get()),
-        { hotkeys = ["^J:X | Enter"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })
+        { hotkeys = ["^J:X | Enter"], ovr = { size = leftBtnSizeWithRewardBtn } })
 }
 
 let lvlUpButton = @() {
@@ -140,16 +143,6 @@ let lvlUpButton = @() {
     : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
         nextLevelToUnlockUnit.get(),
         @() buyUnitLevelWnd(baseUnit.get()?.name), { hotkeys = ["^J:Y"] })
-}
-
-let protectionAnalysisButton = @() {
-  watch = [isProtectionAnalysisAvailable, hasHangarUnitResources, hasUnseenRewards]
-  children = !isProtectionAnalysisAvailable.get() || !hasHangarUnitResources.get()
-      || getCampaignPresentation(unitToShow.get()?.campaign ?? "").campaign != "tanks"
-    ? null
-    : textButtonCommon(utf8ToUpper(loc("mainmenu/btnProtectionAnalysis")),
-        @() openProtectionAnalysis(unitToShow.get(), baseUnit.get()),
-        { hotkeys = ["^J:RB"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })
 }
 
 function buttonsBlock() {
@@ -177,14 +170,14 @@ function buttonsBlock() {
               hasSlotAttrPreset.get()
                 ? btnOpenUnitMods(baseUnit, {
                     hotkeys = ["^J:Y"]
-                    ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {}
+                    ovr = { size = leftBtnSizeWithRewardBtn }
                   })
                 : isOwnUnitPreview ? btnOpenUnitAttrBig
                 : null
               isOwnUnitPreview ? lvlUpButton : null
             ]
           }
-      protectionAnalysisButton
+      btnOpenUnitCustomization
     ]
   }
 }

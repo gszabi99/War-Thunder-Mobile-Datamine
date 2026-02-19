@@ -1,0 +1,56 @@
+{
+  "entity": [
+    {
+      "_template": "hangar_major_banner_ship",
+      "ri_extra__name": "major_banner_buoy_even",
+      "transform": [
+        [
+          -0.382683,
+          0.0,
+          0.923879
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.923879,
+          0.0,
+          -0.382683
+        ],
+        [
+          2966.05,
+          6.8,
+          -2649.45
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_ship",
+      "ri_extra__name": "major_banner_buoy_even",
+      "transform": [
+        [
+          -1.03923,
+          0.0,
+          -0.6
+        ],
+        [
+          0.0,
+          1.2,
+          0.0
+        ],
+        [
+          0.6,
+          0.0,
+          -1.03923
+        ],
+        [
+          2908.95,
+          6.79996,
+          -2823.75
+        ]
+      ]
+    }
+  ]
+}

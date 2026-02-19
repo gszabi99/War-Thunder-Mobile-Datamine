@@ -282,6 +282,7 @@ function addInvite(inviterUid) {
   if (isInSquad.get() && squadId.get() == inviterUid)
     return
 
+  logS("Got squad invite from ", inviterUid)
   pushNotification({
     id = getSquadInviteUid(inviterUid)
     isImportant = true
@@ -295,8 +296,10 @@ function addInvite(inviterUid) {
 function onInviteRevoked(inviterSquadId, invitedMemberId) {
   if (inviterSquadId == squadId.get())
     removeInvitedSquadmate(invitedMemberId)
-  else
+  else {
+    logS($"Notify from {inviterSquadId} was revoked.")
     removeNotifyById(getSquadInviteUid(inviterSquadId))
+  }
 }
 
 function onInviteNotify(invite_info) {
@@ -378,12 +381,14 @@ let acceptInviteImpl = @(sqId)
 
 eventbus_subscribe("squad.acceptInviteAfterLeave", function(msg) {
   let { notify } = msg.context
+  logS("Accept invite after leave previous squad ", notify.playerUid)
   acceptInviteImpl(notify.playerUid)
   removeNotifyById(notify.id)
 })
 
 subscribeFMsgBtns({
   function squadInviteNotifyReject(notify) {
+    logS("Reject invite ", notify.playerUid)
     removeNotifyById(notify.id)
     matchingCall("msquad.reject_invite", { squadId = notify.playerUid })
   }
@@ -391,6 +396,7 @@ subscribeFMsgBtns({
 
 subscribeGroup(INVITE_ACTION_ID, {
   function onApply(notify) {
+    logS("Try accept invite ", notify.playerUid)
     if (showNegativeBalanceWarning())
       return
     if (!isInSquad.get()) {

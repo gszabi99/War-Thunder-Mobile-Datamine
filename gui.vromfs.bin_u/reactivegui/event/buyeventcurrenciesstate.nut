@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
 let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime
 } = require("%rGui/shop/shopState.nut")
 let { getEventPresentationId, getEventLoc, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
@@ -93,7 +94,7 @@ function openBuyEventCurrenciesWnd(id) {
   if (isOfflineMenu)
     openFMsgBox({ text = "Not supported in the offline mode" })
   else
-    currencyIdToOpen.set(id)
+    currencyIdToOpen.set(getBaseCurrency(id))
 }
 
 return {

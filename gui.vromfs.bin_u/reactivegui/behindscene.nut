@@ -16,19 +16,20 @@ let behindScene = {
     @() {
       watch = [curSceneBg, curSceneBgFallback]
       size = flex()
-      children = curSceneBg.get() in screensList
+      children = curSceneBg.get()?.bg in screensList
         ? {
-            key = curSceneBg.get()
+            key = curSceneBg.get().bg
             size = flex()
-            children = mkAnimBgWithGyro(screensList[curSceneBg.get()].mkLayers() ?? [])
+            children = mkAnimBgWithGyro(screensList[curSceneBg.get().bg].mkLayers() ?? [])
             animations = wndSwitchAnim
           }
         : {
-            key = curSceneBg.get()
+            key = curSceneBg.get()?.bg
             size = flex()
             rendObj = ROBJ_IMAGE
-            image = Picture(curSceneBg.get())
+            image = Picture(curSceneBg.get()?.bg)
             fallbackImage = Picture(curSceneBgFallback.get())
+            color = curSceneBg.get()?.bgColor ?? 0xFFFFFFFF
             keepAspect = KEEP_ASPECT_FILL
             animations = wndSwitchAnim
           }

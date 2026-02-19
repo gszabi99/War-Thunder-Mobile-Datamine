@@ -215,7 +215,7 @@ let mkSubsIcon = @(status) @() {
 let mkPremAction = @(status) status == "prem_deprecated" || status == "vip"
   ? null
   : textButtonPurchase(utf8ToUpper(loc($"subscription/{status == "prem_inactive" ? "activate" : "upgrade"}")),
-    @() openSubsPreview("vip"),
+    @() openSubsPreview("vip", "account_page"),
     { hotkeys = [btnAUp], childOvr = fontTinyAccentedShadedBold })
 
 function mkPremiumDescription() {

@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let { getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
   EP_VIP, EP_COMMON, EP_NONE, purchasedEp,curOpenEventPass,
   pointsCurStage, pointsPerStage, curEventId, seasonEndTime,
-  isEpRewardsInProgress, receiveEpRewards
+  isEpRewardsInProgress, receiveEpRewards, eventTitle
 } = require("%rGui/battlePass/eventPassState.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
@@ -24,9 +24,11 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-let { openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
+
 
 let bpIconSize = [hdpx(269), hdpx(306)]
 let scrollHandler = ScrollHandler()
@@ -40,12 +42,13 @@ function scrollToCardEP(scrollX, selProgress) {
     scrollHandler.scrollToX(scrollX - saSize[0] / 2)
 }
 
-let header = {
+let header = @() {
+  watch = curEventId
   size = [flex(), gamercardHeight]
   margin = saBordersRv
   valign = ALIGN_TOP
   halign = ALIGN_RIGHT
-  children = mkCurrenciesBtns([GOLD])
+  children = mkCurrenciesBtns([GOLD].extend(getEpPresentation(curEventId.get()).passWndCurrencies))
 }
 
 let scrollArrowsBlock = {
@@ -69,19 +72,24 @@ let rewardsList = @(stages, recommendInfo) @() {
   ]
 }
 
-let taskDesc = {
+let taskDesc = @() {
+  watch = curEventId
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   maxWidth = hdpx(300)
-  text = loc("battlepass/tasksDesc")
-}.__update(fontTinyAccented)
+  text = loc(getEpPresentation(curEventId.get()).shortDescLocId)
+}.__update(fontTinyAccentedShaded)
 
-let epLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmall)
+let epLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded)
 
 let levelBlock = @() {
   watch = curStage
-  vplace = ALIGN_TOP
+  rendObj = ROBJ_IMAGE
+  image = simpleHorGrad
+  color = 0xAA000000
+  flipX = true
   flow = FLOW_VERTICAL
+  padding = hdpx(10)
   gap = hdpx(15)
   children = [
     epLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
@@ -94,33 +102,33 @@ let levelBlock = @() {
         bpProgressText(pointsCurStage, pointsPerStage)
       ]
     }
+    taskDesc
   ]
 }
 
 let leftMiddle = {
-  size = FLEX_V
   padding = const [hdpx(10), 0, hdpx(20), 0]
   flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
+  pos = [0, hdpx(140)]
+  gap = hdpx(10)
   children = [
     levelBlock
     @() {
-      watch = curOpenEventPass
+      watch = [curOpenEventPass, gmEventsList]
       flow = FLOW_VERTICAL
       gap = hdpx(15)
-      children = [
-        taskDesc
-        {
-          flow = FLOW_HORIZONTAL
-          gap = hdpx(15)
-          children = [
-            mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB)
-            translucentButton(gmEventPresentation(curOpenEventPass.get()?.eventName).image,
+      children = {
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(15)
+        children = [
+          mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB)
+          curOpenEventPass.get()?.eventName not in gmEventsList.get()
+            ? null
+            : translucentButton(gmEventPresentation(curOpenEventPass.get()?.eventName).image,
               "",
               @() openGmEventWnd(curOpenEventPass.get()?.eventName))
-          ]
-        }
-      ]
+        ]
+      }
     }
   ]
 }
@@ -172,18 +180,18 @@ let middlePart = @(stagesList) function() {
       {
         size = flex()
         flow = FLOW_VERTICAL
-        gap = hdpx(20)
+        padding = [hdpx(55), 0, 0, 0]
+        gap = hdpx(10)
         halign = ALIGN_CENTER
         children = [
           @() {
-            watch = [curEventId, seasonEndTime]
+            watch = [curEventId, eventTitle, seasonEndTime]
             flow = FLOW_HORIZONTAL
-
-            children = battlePassSeason($"events/name/{curEventId.get()}", seasonEndTime.get(),
-              infoTooltipButton(@() loc("eventPass/desc")),
+            children = battlePassSeason(loc(eventTitle.get()), seasonEndTime.get(),
+              infoTooltipButton(@() loc(getEpPresentation(curEventId.get()).descLocId)),
               {
                 halign = ALIGN_CENTER
-                padding = const [hdpx(20), hdpx(200)]
+                padding = const [hdpx(0), hdpx(200), hdpx(5), hdpx(200)]
               }
             )
           }

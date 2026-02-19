@@ -6,7 +6,7 @@ let { isDataBlock } = require("%sqstd/datablock.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
 let { getDebugSavedBullets } = require("%rGui/debugTools/debugSavedData.nut")
 
 
@@ -59,14 +59,21 @@ function emptyBullet() {
   return blk
 }
 
-function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec,
-  maxBullets, maxBulletsSec, hasExtraBullets, hasExtraBulletsSec, slotIdx, bName
+function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec, chosenBulletsSpec,
+  maxBullets, maxBulletsSec, maxBulletsSpec, hasExtraBullets, hasExtraBulletsSec, hasExtraBulletsSpec, slotIdx, bName
 ) {
   if (unitName == null)
     return false
 
-  let bullets = slotIdx >= BULLETS_PRIM_SLOTS ? chosenBulletsSec : chosenBullets
-  let actualBulletIdx = slotIdx % BULLETS_PRIM_SLOTS
+  let isBulletsSpec = slotIdx >= BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS
+
+  let bullets = isBulletsSpec
+      ? chosenBulletsSpec
+    : slotIdx >= BULLETS_PRIM_SLOTS
+      ? chosenBulletsSec
+    : chosenBullets
+
+  let actualBulletIdx = slotIdx % (BULLETS_PRIM_SLOTS + (isBulletsSpec ? BULLETS_SEC_SLOTS : 0))
   if (actualBulletIdx not in bullets)
     return false
 
@@ -85,6 +92,8 @@ function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec,
     blk.bullet <- emptyBullet()
   foreach (idx, slot in chosenBulletsSec)
     blk.bullet <- collectBlkBullet(slot, maxBulletsSec?[idx], hasExtraBulletsSec, newNames?[idx + BULLETS_PRIM_SLOTS])
+  foreach (idx, slot in chosenBulletsSpec)
+    blk.bullet <- collectBlkBullet(slot, maxBulletsSpec?[idx], hasExtraBulletsSpec, newNames?[idx + BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS])
   savedBullets.set(blk)
   saveBullets(unitName, blk)
   return true
@@ -97,7 +106,7 @@ function collectChangedBlkBullet(slot, hasChanged, bName, bCount) {
   return blk
 }
 
-function setUnitBullets(unitName, chosenBullets, chosenBulletsSec, slotIdx, bName, bCount) {
+function setUnitBullets(unitName, chosenBullets, chosenBulletsSec, chosenBulletsSpec, slotIdx, bName, bCount) {
   if (unitName == null)
     return
 
@@ -106,6 +115,8 @@ function setUnitBullets(unitName, chosenBullets, chosenBulletsSec, slotIdx, bNam
     blk.bullet <- collectChangedBlkBullet(slot, idx == slotIdx, bName, bCount)
   foreach (idx, slot in chosenBulletsSec)
     blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS == slotIdx, bName, bCount)
+  foreach (idx, slot in chosenBulletsSpec)
+    blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS == slotIdx, bName, bCount)
   savedBullets.set(blk)
   saveBullets(unitName, blk)
 }

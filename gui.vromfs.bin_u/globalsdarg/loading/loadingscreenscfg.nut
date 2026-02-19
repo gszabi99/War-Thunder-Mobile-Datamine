@@ -190,6 +190,14 @@ let screensList = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_21.avif")
   }
+  event_lunar_ny_2026 = {
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_36.avif")
+    timeRange = {
+      start = "2026-02-05T10:00"
+      end = "2026-02-19T10:00"
+    }
+  }
   event_april_fools = {
     camp = [ "ships" ]
     weight = 0.0
@@ -200,7 +208,7 @@ let screensList = {
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_32.avif")
   }
   event_china_tanks_early_access = {
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_35.avif")
   }
   simple_tank_20 = {
@@ -247,6 +255,11 @@ let screensList = {
     camp = [ "tanks" ]
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_33.avif")
+  }
+  simple_tank_29 = {
+    camp = [ "tanks" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_37.avif")
   }
   simple_airplane_1 = {
     camp = [ "air" ]

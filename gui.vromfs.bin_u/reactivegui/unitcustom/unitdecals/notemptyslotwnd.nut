@@ -57,8 +57,12 @@ let window = @() modalWndBg.__merge({
         : [
             textButtonCommon(utf8ToUpper(loc("msgbox/btn_cancel")), close, { hotkeys = [btnBEscUp] })
             allow_subscriptions.get()
-              ? textButtonPurchase(utf8ToUpper(loc("subscription/activate")), @() openSubsPreview("vip"), { hotkeys = [btnAUp] })
-              : textButtonPurchase(utf8ToUpper(loc("debriefing/tryPremium")), tryPremium, { hotkeys = [btnAUp] })
+              ? textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
+                  @() openSubsPreview("vip", "not_empty_slot"),
+                  { hotkeys = [btnAUp] })
+              : textButtonPurchase(utf8ToUpper(loc("debriefing/tryPremium")),
+                  tryPremium,
+                  { hotkeys = [btnAUp] })
           ]
     }
   ]

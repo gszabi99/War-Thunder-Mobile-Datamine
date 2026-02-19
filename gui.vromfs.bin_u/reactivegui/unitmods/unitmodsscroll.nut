@@ -7,7 +7,7 @@ let { tabH, modW, modsWidth, modsGap, knobSize, knobGap, catsBlockHeight
 } = require("%rGui/unitMods/unitModsConst.nut")
 let { curBulletCategoryId, curModCategoryId, modsCategories, isOwn
 } = require("%rGui/unitMods/unitModsState.nut")
-let { choiceCount, bulletTotalSteps, choiceSecCount, bulletSecTotalSteps
+let { choiceCount, bulletTotalSteps, choiceSecCount, bulletSecTotalSteps, choiceSpecCount, bulletSpecTotalSteps
 } = require("%rGui/unitMods/unitBulletsState.nut")
 
 
@@ -24,6 +24,7 @@ let catsHeight = Computed(function() {
   let calcCatsBlockHeight = modsCategories.get().len() * blockH
     + choiceCount.get() * (blockH + (bulletTotalSteps.get() <= 1 || !isOwn.get() ? 0 : (knobSize + knobGap * 2)))
     + choiceSecCount.get() * (blockH + (bulletSecTotalSteps.get() <= 1 || !isOwn.get() ? 0 : (knobSize + knobGap * 2)))
+    + choiceSpecCount.get() * (blockH + (bulletSpecTotalSteps.get() <= 1 || !isOwn.get() ? 0 : (knobSize + knobGap * 2)))
   return min(calcCatsBlockHeight - tabsGap, catsBlockHeight)
 })
 

@@ -287,7 +287,7 @@ let sectionFooterById = {
       }
       else {
         if (allow_subscriptions.get())
-          openSubsPreview("vip")
+          openSubsPreview("vip", "unit_custom")
         else
           openShopWnd(SC_PREMIUM)
       }

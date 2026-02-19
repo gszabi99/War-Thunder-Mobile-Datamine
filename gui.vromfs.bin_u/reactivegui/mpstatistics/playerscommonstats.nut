@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
-let { compatibilityConvertCommonStats } = require("%appGlobals/commonStatsUtils.nut")
 
 let playersCommonStats = Watched({})
 let dbgCommonStats = mkWatched(persist, "dbgCommonStats", {})
@@ -9,7 +8,7 @@ register_es("players_common_stats_es",
   {
     [["onInit", "onChange"]] = function trackStatistics(_, comp) {
       if (comp.isBattleDataReceived)
-        playersCommonStats.mutate(@(v) v[comp.server_player__userId] <- compatibilityConvertCommonStats(comp.commonStats.getAll()))
+        playersCommonStats.mutate(@(v) v[comp.server_player__userId] <- comp.commonStats.getAll())
     },
   },
   {

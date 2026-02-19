@@ -37,6 +37,7 @@ let curTabParams = Watched({})
 
 let tutorialSectionId = Watched(null)
 let isSameTutorialSectionId = Watched(false)
+let tutorialQuestBtnKey = Watched(null)
 
 function openRewardsList(rewards, isQuestFinished = false) {
   rewardsList.set(rewards)
@@ -309,6 +310,7 @@ return {
   tutorialSectionIdWithReward
   tutorialSectionId
   isSameTutorialSectionId
+  tutorialQuestBtnKey
 
   mkHasReceivedAllRewards
 

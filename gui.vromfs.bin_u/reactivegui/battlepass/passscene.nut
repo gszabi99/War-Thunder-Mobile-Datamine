@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { getOPPresentation, getBPPresentation, getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
@@ -11,9 +11,9 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { passOpenCounter, closePassScene, passPageId, playerSelectedScene, passPageIdx
   BATTLE_PASS, EVENT_PASS, OPERATION_PASS, visibleTabs, seenPasses, markPassesSeen, isPassGoodsUnseen } = require("passState.nut")
-let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress
+let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress, seasonNumber
 } = require("%rGui/battlePass/battlePassState.nut")
-let { mkEpStagesList, isEpVipActive, isEpCommonActive, eventBgImage, hasEpRewardsToReceive, eventPassGoods, lastStageEpProgress
+let { mkEpStagesList, isEpVipActive, isEpCommonActive, eventBgImage, hasEpRewardsToReceive, eventPassGoods, lastStageEpProgress, curEventId
 } = require("%rGui/battlePass/eventPassState.nut")
 let { mkOPStagesList, isOpVipActive, isOpCommonActive, OPCampaign, hasOPRewardsToReceive, operationPassGoods, lastStageOpProgress
 } = require("%rGui/battlePass/operationPassState.nut")
@@ -25,10 +25,11 @@ let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize, sideTabPadding } = r
 let sceneBg = keepref(Computed(function() {
   let id = passPageId.get()
   if (id == BATTLE_PASS)
-    return "ui/images/bp_bg_01.avif"
+    return { bg = "ui/images/bp_bg_01.avif", bgColor = getBPPresentation(seasonNumber.get()).bgColor }
   if (id != null && id.startswith(EVENT_PASS))
-    return eventBgImage.get()
-  return getOPPresentation(OPCampaign.get()).bg
+    return { bg = eventBgImage.get(), bgColor = getEpPresentation(curEventId.get()).bgColor }
+  let { bg, bgColor } = getOPPresentation(OPCampaign.get())
+  return { bg, bgColor }
 }))
 
 let tabs = {
@@ -189,5 +190,5 @@ function wnd() {
 }
 registerScene("passScene", wnd, closePassScene, passOpenCounter)
 
-setSceneBg("passScene", sceneBg.get())
-sceneBg.subscribe(@(v) setSceneBg("passScene", v))
+setSceneBg("passScene", sceneBg.get()?.bg, sceneBg.get()?.bgColor)
+sceneBg.subscribe(@(v) setSceneBg("passScene", v?.bg, v?.bgColor))

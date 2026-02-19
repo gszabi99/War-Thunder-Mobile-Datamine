@@ -20,7 +20,6 @@ let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
 let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { compatibilityConvertCommonStats } = require("%appGlobals/commonStatsUtils.nut")
 let { get_mp_local_team, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
@@ -229,7 +228,7 @@ function getPlayersCommonStats(players) {
   let res = {}
   playersCommonStatsQuery(function(_, c) {
     if (c.isBattleDataReceived)
-      res[c.server_player__userId.tostring()] <- compatibilityConvertCommonStats(c.commonStats.getAll())
+      res[c.server_player__userId.tostring()] <- c.commonStats.getAll()
   })
   let defLevel = res.findvalue(@(_) true)?.level ?? 1
   foreach (player in players) {

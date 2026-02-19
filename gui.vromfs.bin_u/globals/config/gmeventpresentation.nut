@@ -1,5 +1,6 @@
 let defCfg = {
   id = "unknown"
+  locId = ""
   image = "ui/gameuiskin#icon_primary_attention.svg"
   bgImage = "ui/images/event_bg.avif"
   accessStat = ""

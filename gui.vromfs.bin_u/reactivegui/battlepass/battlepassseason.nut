@@ -7,7 +7,6 @@ let battlePassSeason = @(text, seasonEndTime, children = null, ovr = {}) doubleS
   padding = const [hdpx(20), hdpx(200), hdpx(17), hdpx(30) ]
   halign = ALIGN_LEFT
   flow = FLOW_VERTICAL
-  gap = hdpx(10)
   children = [
     {
       rendObj = ROBJ_TEXT
@@ -26,6 +25,6 @@ let battlePassSeason = @(text, seasonEndTime, children = null, ovr = {}) doubleS
       text = loc("battlepass/endsin", { time = secondsToHoursLoc(seasonEndTime - serverTime.get())})
     }.__update(fontVeryTiny)
   ]
-}.__update(ovr)
-)
+}.__update(ovr))
+
 return battlePassSeason

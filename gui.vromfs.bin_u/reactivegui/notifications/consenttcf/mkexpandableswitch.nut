@@ -59,16 +59,16 @@ let switchKnob = @(val, sf) {
   ]
 }
 
-function mkSwitchComp(valueW, onManualSwitch = null) {
+function mkSwitchComp(isAvailableW, valueW, onManualSwitch = null) {
   let stateFlags = Watched(0)
   return @() {
-    watch = [stateFlags, valueW]
+    watch = [stateFlags, isAvailableW, valueW]
     size = [switchW, switchH]
 
-    behavior = Behaviors.Button
+    behavior = !isAvailableW.get() ? null : Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     sound = { click  = "click" }
-    function onClick() {
+    onClick = !isAvailableW.get() ? null : function() {
       let val = !valueW.get()
       valueW.set(val)
       onManualSwitch?(val)
@@ -76,6 +76,7 @@ function mkSwitchComp(valueW, onManualSwitch = null) {
 
     rendObj = ROBJ_BOX
     fillColor = slotOffColor
+    opacity = isAvailableW.get() ? 1 : 0.2
     borderRadius = switchH / 2
     valign = ALIGN_CENTER
     children = [
@@ -123,7 +124,7 @@ function mkExpandableLabel(text, isExpanded) {
   }
 }
 
-function mkExpandableSwitch(text, valueW = null, onManualSwitch = null, isExpandedW = null, mkExpandedContent = null) {
+function mkExpandableSwitch(text, isAvailableW = null, valueW = null, onManualSwitch = null, isExpandedW = null, mkExpandedContent = null) {
   let isSwitchable = valueW != null
   let isExpandable = mkExpandedContent != null
   let isExpanded = isExpandedW ?? Watched(false)
@@ -140,7 +141,7 @@ function mkExpandableSwitch(text, valueW = null, onManualSwitch = null, isExpand
         gap = headerHorGap
         children = [
           !isExpandable ? mkLabel(text) : mkExpandableLabel(text, isExpanded)
-          !isSwitchable ? null : mkSwitchComp(valueW, onManualSwitch)
+          !isSwitchable ? null : mkSwitchComp(isAvailableW ?? Watched(true), valueW, onManualSwitch)
         ]
       }
       !isExpandable ? null : @() {
@@ -163,6 +164,6 @@ function mkExpandableSwitch(text, valueW = null, onManualSwitch = null, isExpand
 
 return {
   mkExpandableSwitch
-  mkExpandable = @(text, isExpandedW, mkExpandedContent) mkExpandableSwitch(text, null, null, isExpandedW, mkExpandedContent)
-  mkSwitch = @(text, valueW, onManualSwitch = null) mkExpandableSwitch(text, valueW, onManualSwitch, null, null)
+  mkExpandable = @(text, isExpandedW, mkExpandedContent) mkExpandableSwitch(text, null, null, null, isExpandedW, mkExpandedContent)
+  mkSwitch = @(text, isAvailableW, valueW, onManualSwitch = null) mkExpandableSwitch(text, isAvailableW, valueW, onManualSwitch, null, null)
 }

@@ -7,6 +7,7 @@ let ads = is_ios ? require("ios.ads")
   : is_android ? require("android.ads")
   : require("%rGui/ads/byPlatform/adsAndroidDbg.nut")
 let { requestConsent } = ads
+let { getTrackingPermission, ATT_GRANTED } = require("ios.platform")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isReadyForGoogleConsent, goodleConsent, isAuthorized } = require("%appGlobals/loginState.nut")
 let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
@@ -31,9 +32,9 @@ isAuthorized.subscribe(@(v) v ? null : goodleConsent.set(null))
 isReadyForGoogleConsent.subscribe(function(isReady) {
   if (!isReady)
     return
-  if (tcf_consent_enabled.get()) {
+  if (tcf_consent_enabled.get() || (is_ios && getTrackingPermission() != ATT_GRANTED)) {
     logC("Google consent disabled")
-    goodleConsent.set({ isShowed = true, canRequest = false })
+    goodleConsent.set({ isShowed = true, canRequest = true })
     return
   }
   requestConsent(true)

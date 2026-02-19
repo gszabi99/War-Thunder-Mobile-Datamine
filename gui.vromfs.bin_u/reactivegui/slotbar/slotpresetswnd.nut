@@ -113,7 +113,13 @@ function openEditNameWnd(presets, presetIdx, isNotSaved, isMaxAmountReached, isN
             { subsActionTxt = loc(hasPremiumSubs.get() ? "msgbox/presets/unlockBySubs/upgrade" : "msgbox/presets/unlockBySubs/activate") }),
           buttons = [
             { id = "cancel", isCancel = true }
-            { id = "ok", text = loc("subscription/viewSubsPlans"), styleId = "PURCHASE", isDefault = true, cb = @() openSubsPreview("vip") }
+            {
+              id = "ok",
+              text = loc("subscription/viewSubsPlans"),
+              styleId = "PURCHASE",
+              isDefault = true,
+              cb = @() openSubsPreview("vip", "slot_presets")
+            }
           ]})
         : openMsgBox({text = loc("msgbox/presets/cannot_save/max_reached")})
   } else {
@@ -185,7 +191,7 @@ function mkPresetButtons(presets, presetIdx) {
         ["^J:LT"]
       ),
       !canEdit.get() ? null : textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
-        @() openSubsPreview("vip"),
+        @() openSubsPreview("vip", "slot_presets"),
         { ovr = {
           size = [defButtonMinWidth, btnIconSize]
         }}

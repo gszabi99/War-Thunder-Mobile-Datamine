@@ -1,0 +1,82 @@
+{
+  "entity": [
+    {
+      "_template": "hangar_major_banner_tank",
+      "ri_extra__name": "major_banner_even",
+      "transform": [
+        [
+          -0.67292,
+          0.0,
+          -1.35442
+        ],
+        [
+          0.0,
+          1.51238,
+          0.0
+        ],
+        [
+          1.35442,
+          0.0,
+          -0.67292
+        ],
+        [
+          474.277,
+          139.314,
+          3649.49
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_tank",
+      "ri_extra__name": "major_banner_even",
+      "transform": [
+        [
+          1.39012,
+          0.0,
+          -0.691705
+        ],
+        [
+          0.0,
+          1.55271,
+          0.0
+        ],
+        [
+          0.691705,
+          0.0,
+          1.39012
+        ],
+        [
+          421.277,
+          139.314,
+          3635.84
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_tank",
+      "ri_extra__name": "major_banner_even",
+      "transform": [
+        [
+          0.633414,
+          0.0,
+          1.38933
+        ],
+        [
+          0.0,
+          1.52691,
+          0.0
+        ],
+        [
+          -1.38933,
+          0.0,
+          0.633414
+        ],
+        [
+          454.57,
+          139.21,
+          3558.18
+        ]
+      ]
+    }
+  ]
+}

@@ -203,6 +203,9 @@ return {
     "bf-110g-2_prem": {
       "": "usa_f4u_4b"
     },
+    "bi": {
+      "": "ussr_la_5f_type39"
+    },
     "bv-155b-1": {
       "": "germ_do335a_1"
     },
@@ -355,6 +358,10 @@ return {
       "": "cn_camo_sand_ltgreen_dkgreen",
       "forest": "ussr_camo_green"
     },
+    "cn_plz_05": {
+      "": "cn_plz_05_lunar_ny_26",
+      "forest": "ussr_camo_green"
+    },
     "cn_plz_83": {
       "": "ussr_camo_green",
       "desert": "cn_camo_sand_ltgreen_dkgreen_spots",
@@ -479,6 +486,14 @@ return {
     },
     "cn_type_86_prem": {
       "": "cn_camo_desert_green",
+      "forest": "ussr_camo_green"
+    },
+    "cn_vt_4": {
+      "": "ussr_camo_green",
+      "forest": "cn_camo_sand_ltgreen_dkgreen_lines"
+    },
+    "cn_vt_4_prem": {
+      "": "cn_camo_vt_4",
       "forest": "ussr_camo_green"
     },
     "cn_wma_301": {
@@ -669,6 +684,13 @@ return {
     "f-84b": {
       "": "ussr_la_11_standard",
       "upgraded": "usa_sb2u_2"
+    },
+    "f-84g": {
+      "": "usa_f_80a_5_blue_a",
+      "camo": "usa_f_84g_fourqueens"
+    },
+    "f-84g_prem": {
+      "": "usa_f_84g_aerobatic"
     },
     "f-84g_thailand": {
       "": "ussr_i_15_1935_moscow"
@@ -2852,7 +2874,8 @@ return {
       "": "usa_p38k_usaaf"
     },
     "p-38l_1_china_rocaf": {
-      "": "usa_p38l_usaaf_horse"
+      "": "usa_p38l_usaaf_horse",
+      "china": "germ_bf_109a"
     },
     "p-39n_su": {
       "": "ussr_p_39n_su"
@@ -2982,6 +3005,13 @@ return {
     "sbd-3": {
       "": "usa_f4u_4b",
       "upgraded": "usa_sb2u_3"
+    },
+    "su-11": {
+      "": "ussr_i_15_1935_moscow",
+      "camo": "ussr_lagg_3_series_11"
+    },
+    "su-11_prem": {
+      "": "ussr_i_180s_red"
     },
     "su-2_mv5": {
       "": "ussr_yak_2_kabb",
@@ -3318,6 +3348,14 @@ return {
       "": "uk_camo_standart_modern_desert_bicolor",
       "forest": "uk_camo_very_dark_drab"
     },
+    "uk_challenger_2_lep": {
+      "": "uk_camo_very_dark_drab",
+      "desert": "uk_camo_standart_modern_light_stone"
+    },
+    "uk_challenger_2_lep_prem": {
+      "": "uk_camo_standart_modern_bicolor",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_challenger_2_tes": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
@@ -3438,6 +3476,9 @@ return {
       "forest": "uk_camo_very_dark_drab"
     },
     "uk_frigate_rckt_leander": {
+      "upgraded": "camo_mtb_spots"
+    },
+    "uk_frigate_rckt_type_21": {
       "upgraded": "camo_mtb_spots"
     },
     "uk_fv102_striker": {
@@ -4171,6 +4212,9 @@ return {
     },
     "us_sub_balao_ss286": {
       "upgraded": "camo_modern_nordgeometry"
+    },
+    "us_sub_seawolf": {
+      "upgraded": "camo_blackgray_spots"
     },
     "us_sub_tang": {
       "upgraded": "camo_modern_nordgeometry"

@@ -63,7 +63,8 @@ let nativeToUnitType = {
 }
 
 let nativeUnitType = hudStateNative.unitType
-let unitType = Computed(@() nativeToUnitType?[nativeUnitType.get()])
+let unitType = Computed(@(prev) nativeToUnitType?[nativeUnitType.get()]
+  ?? (type(prev) == "string" ? prev : null))
 
 let isUnitDelayedNative = hudStateNative.isUnitDelayed
 let forceDelayed = mkWatched(persist, "forceDelayed", false)

@@ -105,6 +105,7 @@ let skinsByTag = {
     "ussr_kv_7_u_13_halloween"
     "ussr_camo_t_80um2"
     "cn_camo_light_olive"
+    "cn_plz_05_lunar_ny_26"
   ],
 
   [DESERT] = [
@@ -163,6 +164,7 @@ let skinsByTag = {
     "uk_camo_standart_modern_light_stone"
     "ussr_camo_desert_sand_green_brown"
     "uk_camo_bheeshma"
+    "cn_camo_vt_4"
   ],
 
   [WINTER] = [
@@ -430,6 +432,8 @@ let skinsByTag = {
     "usa_f_80_camo_alaska"
     "usa_f_80a_5_blue_a"
     "usa_f_82e"
+    "usa_f_84g_aerobatic"
+    "usa_f_84g_fourqueens"
     "usa_f8f1b_bearcat"
     "usa_p_40e_1_shark"
     "usa_p_40c_metal"

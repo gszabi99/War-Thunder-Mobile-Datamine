@@ -221,3 +221,9 @@ struct EventRacePlayerFinish
   place : int
   isWinner : bool
   totalTime : float
+
+[event(broadcast)]
+struct EventChangeHangarBanners
+  newRiExName : string
+  bannerType : string
+

@@ -32,6 +32,7 @@
       0.0
     ],
     "baseWhiteTemp": 6500.0,
+    "dynamic_lights_ao_effect": 0.3,
     "ssao_on_sun": 0.0,
     "ao_point_lights_effect": [
       0.0,

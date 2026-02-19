@@ -18,7 +18,7 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let MIN_REWARDS_LEN = 100
 let MIN_REWARDS_CYCLE = 15
-let MAX_MULTIREWARD_OPEN = 10
+let MAX_MULTIREWARD_OPEN = 50
 let MAX_ROULETTE_OPEN = 50
 let openConfig = mkWatched(persist, "openConfig", null)
 let rouletteOpenResultFull = mkWatched(persist, "rouletteOpenResultFull", null)
@@ -254,12 +254,18 @@ function calcOpenType(openType, weights, rewardsCfg) {
   return minW / total <= 0.01 ? "roulette_long" : "roulette_short"
 }
 
+function filterLimited(weights, dropLimit, total) {
+  if (dropLimit.len() == 0 || total.len() == 0)
+    return weights
+  return weights.filter(@(_, id) id not in dropLimit || (total?[id] ?? 0) < dropLimit[id])
+}
+
 function calcOpenInfo(id, profile, configs) {
   let res = { rewardsList = [], openType = "", lastReward = null }
   let { lootboxesCfg = null, rewardsCfg = null, currencySeasons = null } = configs
-  let lastReward = lootboxesCfg?[id].lastReward
+  let { lastReward = "", dropLimit = {} } = lootboxesCfg?[id]
   res.lastReward = lastReward in rewardsCfg ? getRewardsViewInfo(rewardsCfg[lastReward]) : null
-  let weights = lootboxesCfg?[id].rewards ?? {}
+  let weights = filterLimited(lootboxesCfg?[id].rewards ?? {}, dropLimit, profile?.lootboxStats[id].total ?? {})
   let dropExclude = (profile?.lootboxStats[id].writeOffLeft ?? 0) <= 0 ? {}
     : (currencySeasons?[lootboxesCfg?[id].currencyId].dropExclude ?? [])
         .reduce(@(r, v) r.$rawset(v, true), {})

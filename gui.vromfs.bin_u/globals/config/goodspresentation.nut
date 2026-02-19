@@ -7,6 +7,11 @@ let customGoodsLocId = {
   ships_top_blueprints_slots = "shop/top_blueprints_slots"
 }
 
+let goodsLocIdByNamePart = {
+  ["event_pass_vip_"] = "eventPassVIP",
+  ["battle_pass_vip_"] = "battlePassVIP",
+}
+
 let defaultIcon = "ui/gameuiskin/icon_primary_attention.svg"
 let icons = {
   air_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
@@ -27,6 +32,11 @@ let iconGoodsAsOffer = {
   seasonal_event_new_year_2026_cn_ztz_99_w_nc_with_skin = "ui/unitskin#cn_ztz_99_w_event.avif"
   seasonal_event_new_year_2026_il_merkava_mk_2d_nc_with_skin = "ui/unitskin#il_merkava_mk_2d_event.avif"
   seasonal_event_new_year_2026_jp_type_90_nc_with_skin = "ui/unitskin#jp_type_90_event.avif"
+
+  seasonal_event_valentine_day_2026_ship_old_us_destroyer_selfridge_skin_only = "ui/unitskin#us_destroyer_selfridge_vd.avif"
+  seasonal_event_valentine_day_2026_ship_old_us_destroyer_selfridge = "ui/unitskin#us_destroyer_selfridge_vd.avif"
+  seasonal_event_valentine_day_2026_air_kitsuka_skin_only = "ui/unitskin#kitsuka_pink.avif"
+  valentine_event_timeline_offer_ship_battleship_bismarck_skin_only = "ui/unitskin#germ_battleship_bismarck_february_skin_c.avif"
 }
 
 let defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"
@@ -48,8 +58,24 @@ let slotTexts = {
 }
 let defaultSlotsTexts = slotTexts["air_blueprints_slots"]
 
+function calcCustomGoodsName(id) {
+  if (id in customGoodsLocId)
+    return loc(customGoodsLocId[id])
+  foreach (part, locId in goodsLocIdByNamePart)
+    if (id.indexof(part) != null)
+      return loc(locId)
+  return null
+}
+
+let customGoodsLoc = {}
+function getCustomGoodsNameById(id) {
+  if (id not in customGoodsLoc)
+    customGoodsLoc[id] <- calcCustomGoodsName(id)
+  return customGoodsLoc[id]
+}
+
 return {
-  getGoodsNameById = @(id) loc(customGoodsLocId?[id] ?? $"shop/{id}")
+  getCustomGoodsNameById
   getGoodsIcon = @(id) icons?[id] ?? defaultIcon
   getSlotsPreviewBg = @(id) slotsPreviewBg?[id] ?? defaultSlotsPreviewBg
   getSlotsTexts = @(id) slotTexts?[id] ?? defaultSlotsTexts

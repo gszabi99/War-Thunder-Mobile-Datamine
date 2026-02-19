@@ -174,6 +174,10 @@ let nickFrames = {
   polar_star = @(n) $"✛{n}✛"
   axe_edge = @(n) $"✗{n}✘"
   iceberg_ship = @(n) $"✙{n}✚"
+  fire_wings = @(n) $"✜{n}✝"
+  dragon_hand = @(n) $"✠{n}✡"
+  dragon_eye = @(n) $"✢{n}✣"
+  dragon_claws = @(n) $"✞{n}✟"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

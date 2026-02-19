@@ -88,7 +88,7 @@ let backBtn = backButton(battleResume,
 let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle/title"),
   !isGivingUp ? loc("msgbox/leaveBattle/toPort")
     : (deserterLockStart.get() + (campConfigs.get()?.campaignCfg.deserterPenalty.timeLimit ?? 0)) > serverTime.get()
-      ? " ".concat(loc("msgbox/leaveBattle/giveUp"), loc("msgbox/leaveBattle/deserterPenalty"))
+      ? " ".concat(loc("msgbox/leaveBattle/giveUp"), loc("msgbox/leaveBattle/deserterPenaltyPossible"))
     : loc("msgbox/leaveBattle/giveUp"),
   [
     isGivingUp ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })

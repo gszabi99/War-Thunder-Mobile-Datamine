@@ -6,7 +6,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM } = require("%appGlobals/rewardType.nut")
+let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -25,7 +25,7 @@ let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { getTextScaleToFitWidth, getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
+let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
@@ -55,7 +55,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkMsgConvert, mkMsgDiscount } = require("%rGui/shop/unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
-let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkLoootboxImage, getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -480,8 +480,8 @@ function mkRewardLabelMultiline(startDelay, text, ovr = {}) {
         delay = startDelay + aRewardLabelDelay, duration = aRewardLabelOpacityTime,
         play = true, trigger = ANIM_SKIP_DELAY }
     ]
-  }.__update(fontMediumShaded)
-  return res.__update(getFontToFitWidth(res, rewTextMaxWidth * 2, [fontVeryTinyShaded, fontTinyShaded, fontMediumShaded]), ovr)
+  }.__update(fontSmallShaded)
+  return res.__update(ovr)
 }
 
 let mkDecoratorRewardLabel = @(startDelay, decoratorId)
@@ -594,11 +594,15 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         children = mkHighlight(startDelay, aRewardIconFlareScale)
+      }
+      {
+        children = [
+          mkRewardPlateBg(reward, rStyle)
+          mkRewardPlateImage(reward, rStyle)
+          mkBlueprintPlateTexts(reward, rStyle)
+          unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle)
+        ]
       }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
-      mkRewardPlateBg(reward, rStyle)
-      mkRewardPlateImage(reward, rStyle)
-      mkBlueprintPlateTexts(reward, rStyle)
-      unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle)
     ]
   }
 }
@@ -716,11 +720,7 @@ let rewardCtors = {
   }
   lootbox = {
     mkIcon = @(rewardInfo) mkLootboxIcon(rewardInfo.startDelay, rewardInfo.id)
-    function mkText(rewardInfo) {
-      let { count } = rewardInfo
-      let key = count == 1 ? "events/continueToOpenOne" : "events/continueToOpenSeveral"
-      return mkRewardLabel(rewardInfo.startDelay, loc(key, { count }))
-    }
+    mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay, loc(getLootboxName(rewardInfo.id)))
   }
   discount = {
     mkIcon = @(rewardInfo) mkDiscountIcon(rewardInfo, REWARD_STYLE_MEDIUM)
@@ -1123,10 +1123,11 @@ let wndOvr = {
   customTexts = { gap = hdpx(20) }
 }
 
-let mkTapToContinueText = @(startDelay) {
+let mkTapToContinueText = @(startDelay, lootboxAmount) {
   rendObj = ROBJ_TEXT
   color = textColor
-  text = loc("TapAnyToContinue")
+  text = lootboxAmount > 0 ? loc("events/continueToOpenSeveral", { count = lootboxAmount })
+    : loc("TapAnyToContinue")
 
   transform = {}
   animations = [
@@ -1176,6 +1177,7 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
       res.append(v.__merge({ count = v.lostCount, isLost = true, lostCount = 0 }))
     return res
   }, [])
+  let lootboxAmount = modifiedRewardIcons.filter(@(r) r.gType == G_LOOTBOX).reduce(@(res, rew) res + rew.count, 0)
   let { style = null } = purchGroup
   let title = titleCtors?[style](outroDelay, purchGroup) ?? modalWndHeader(loc("mainmenu/you_received"))
   let size = [
@@ -1217,7 +1219,7 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
           mkRewardIconsBlock(modifiedRewardIcons)
         ]
       }
-      mkTapToContinueText(outroDelay)
+      mkTapToContinueText(outroDelay, lootboxAmount)
     ]
   }.__update(wndOvr?[style] ?? {})
   return makeVertScroll(content, { size = SIZE_TO_CONTENT maxHeight = maxWndHeight })

@@ -122,7 +122,9 @@ function tryResetToMainScene() {
   return res
 }
 
-let setSceneBg = @(id, bg) sceneBgList.mutate(@(v) v.rawset(id, bg))
+let setSceneBg = @(id, bg, bgColor = 0xFFFFFFFF) sceneBgList.mutate(
+  @(v) v.rawset(id, bg == null ? null : { bg, bgColor }))
+
 let setSceneBgFallback = @(id, bg) sceneBgListFallback.mutate(@(v) v.rawset(id, bg))
 
 return {

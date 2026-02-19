@@ -71,7 +71,7 @@ let gearDownOnStopButtonTouch = {
 
 let showReticleButtonList = [false, true]
 let currentShowReticle =
-  mkOptionValue(OPT_SHOW_RETICLE, false, @(v) validate(v, showReticleButtonList))
+  mkOptionValue(OPT_SHOW_RETICLE, true, @(v) validate(v, showReticleButtonList))
 set_show_reticle(currentShowReticle.get())
 currentShowReticle.subscribe(@(v) set_show_reticle(v))
 let showReticleButtonTouch = {
@@ -81,7 +81,6 @@ let showReticleButtonTouch = {
     onChangeValue = @(v) sendChange("show_reticle", v)
     list = showReticleButtonList
     valToString = @(v) loc(v ? "options/enable" : "options/disable")
-    description = loc("options/desc/show_reticle")
 }
 
 

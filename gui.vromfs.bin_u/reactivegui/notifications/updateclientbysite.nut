@@ -74,6 +74,7 @@ let customStatusHandlers = {
 eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
   let { downloadId } = event
   let status = queryDownloadStatus(downloadId)
+  logD($"On complete apk download id : {downloadId}, status : {status}")
   customStatusHandlers[status](downloadId)
 })
 
@@ -83,6 +84,8 @@ function delayedCheckDownloadStatus() {
 
   let downloadId = cachedDownloadId.get()
   let status = queryDownloadStatus(downloadId)
+
+  logD($"On delayed check for id : {downloadId}, status : {status}")
 
   cachedDownloadId.set(null)
 
@@ -107,6 +110,7 @@ function downloadAPK() {
   }
 
   let apkToInstall = getApkName()
+  logD($"Available apk name: {apkToInstall}")
   let availableForDownload = actualGameVersion.get()
   logD($"Available for download: {availableForDownload}")
 
@@ -137,6 +141,8 @@ function downloadAPK() {
   let downloadId = enqueueDownload(getApkLinkWithHash(actualGameHash.get()), apkToInstall, "Download WTM RC", false, false)
   let status = queryDownloadStatus(downloadId)
 
+  logD($"On start downloading apk / id : {downloadId}, status : {status}, apk name : {apkToInstall}")
+
   cachedDownloadId.set(downloadId)
   customStatusHandlers[status](downloadId)
 }
@@ -146,6 +152,7 @@ subscribeFMsgBtns({
     saveDownloadId(null)
     hasDownloadedApk.set(false)
     tryToInstall(getApkName())
+    logD($"On trying install downloaded apk : {getApkName()}")
   }
   markSuggestInstallSeen = @(_) isSuggested.set(true)
   tryToDownloadApkFromSite = @(_) downloadAPK()

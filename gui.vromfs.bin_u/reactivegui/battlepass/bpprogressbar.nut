@@ -41,14 +41,10 @@ let bpProgressIcon = @(progress, loopMultiply, curStage) @() {
   ]
 }
 
-let vipMark = {
+let emptyStage = {
   size = progressIconSize
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("battlePass/VIP/mark")
-  }.__update(fontSmall)
 }
 
 function bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage) {
@@ -73,7 +69,7 @@ function bpProgressBar(rewardsStages, curStage, pointsCurStage, pointsPerStage) 
   let children = []
   foreach(idx, stage in rewardsStages)
     children.append(
-      stage?.isVip ? vipMark : bpProgressIcon(max(0, stage.progress), stage?.loopMultiply ?? 0, curStage)
+      stage?.isVip ? emptyStage : bpProgressIcon(max(0, stage.progress), stage?.loopMultiply ?? 0, curStage)
       lastIdx == idx ? null : bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage) )
   return {
     pos = [ posFirstElem, 0]

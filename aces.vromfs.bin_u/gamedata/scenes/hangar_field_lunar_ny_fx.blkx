@@ -1,0 +1,91 @@
+{
+  "entity": [
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          469.256,
+          139.578,
+          3600.34
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3029.41,
+          7.0,
+          -2762.89
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3712.65,
+          23.7444,
+          3550.43
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    }
+  ]
+}

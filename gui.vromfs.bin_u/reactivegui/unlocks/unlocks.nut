@@ -191,7 +191,7 @@ function receiveUnlockRewards(unlockName, stage, context = null) {
 }
 
 userstatRegisterHandler("GrantRewards", function(result, context) {
-  let { unlockName  = null, finalStage = null, stage = 0, onSuccessCb = null } = context
+  let { unlockName  = null, onSuccessCb = null } = context
   if (unlockName in unlockInProgress.get())
     unlockInProgress.mutate(@(v) v.$rawdelete(unlockName))
   if ("error" in result) {
@@ -199,10 +199,38 @@ userstatRegisterHandler("GrantRewards", function(result, context) {
     return
   }
   log("GrantRewards result success: ", context)
-  if (finalStage != null && finalStage > stage)
-    receiveUnlockRewards(unlockName, stage + 1, { finalStage, onSuccessCb })
-  else
-    callExtCb(onSuccessCb)
+  callExtCb(onSuccessCb)
+})
+
+
+
+function batchReceiveRewards(unlocksToReward, context = null) {
+  let uTbl = {}
+  foreach (u in unlocksToReward)
+    if (u.unlock in unlockInProgress.get())
+      return
+    else
+      uTbl[u.unlock] <- true
+
+  log($"receiveRewards: ", unlocksToReward, context)
+  unlockInProgress.mutate(@(u) u.__update(uTbl))
+  userstatRequest("BatchGrantRewards",
+    { data = { unlocksToReward } },
+    (context ?? {}).__merge({ unlocksToReward }))
+}
+
+userstatRegisterHandler("BatchGrantRewards", function(result, context) {
+  let { unlocksToReward = [], onSuccessCb = null } = context
+  unlockInProgress.mutate(function(v) {
+    foreach (u in unlocksToReward)
+      v.$rawdelete(u.unlock)
+  })
+  if ("error" in result) {
+    log("BatchGrantRewards result: ", result, context)
+    return
+  }
+  log("BatchGrantRewards result success: ", context)
+  callExtCb(onSuccessCb)
 })
 
 function buyUnlock(unlockName, stage, currency, price, context) {
@@ -363,6 +391,7 @@ return {
 
   unlockInProgress
   receiveUnlockRewards
+  batchReceiveRewards
   resetUserstatAppData
   hasUnlockReward
   allowOpenUnlock

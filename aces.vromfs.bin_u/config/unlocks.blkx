@@ -2164,7 +2164,7 @@
       }
     },
     {
-      "id": "streak_firework_new_year",
+      "id": "streak_firework_lunar_new_year",
       "type": "streak",
       "amount_warpoints": 10000,
       "exclude_from_rating": true,

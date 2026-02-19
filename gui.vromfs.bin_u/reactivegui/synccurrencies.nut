@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { seasonBalance } = require("%appGlobals/pServer/seasonCurrencies.nut")
+let { currencySeasons, currencyToFullIdOnlyActive } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { registerHandler, process_currency_write_off } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -12,6 +13,21 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let RETRY_MSEC = 60000
 let lastRequestMsec = hardPersistWatched("lastRequestMsec", -RETRY_MSEC)
 let canRequestByTimeout = Watched(true)
+
+let seasonBalance = Computed(function(prev) {
+  let res = {}
+  let cSeasons = currencySeasons.get()
+  foreach(fullId, v in balance.get()) {
+    let baseId = getBaseCurrency(fullId)
+    if (baseId not in cSeasons && baseId == fullId)
+      res[fullId] <- v
+  }
+
+  foreach(fullId in currencyToFullIdOnlyActive.get())
+    res[fullId] <- balance.get()?[fullId] ?? 0
+
+  return prevIfEqual(prev, res)
+})
 
 let needSyncCurrencies = Computed(function() {
   let sum = {}

@@ -1,0 +1,238 @@
+{
+  "entity": [
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          -0.451059,
+          0.0,
+          -1.43058
+        ],
+        [
+          0.0,
+          1.5,
+          0.0
+        ],
+        [
+          1.43058,
+          0.0,
+          -0.451059
+        ],
+        [
+          3024.25,
+          33.1,
+          -2544.95
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          0.510721,
+          0.0,
+          1.41038
+        ],
+        [
+          0.0,
+          1.5,
+          0.0
+        ],
+        [
+          -1.41038,
+          0.0,
+          0.510721
+        ],
+        [
+          2886.9,
+          33.1,
+          -2979.8
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          0.782825,
+          0.0,
+          0.622242
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.622242,
+          0.0,
+          0.782825
+        ],
+        [
+          2816.6,
+          32.85,
+          -3165.38
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          -0.000769659,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.87,
+          0.0,
+          -0.000669603
+        ],
+        [
+          3651.5,
+          46.0,
+          3641.45
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          -0.00472834,
+          0.0,
+          -0.999989
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.86999,
+          0.0,
+          -0.00411366
+        ],
+        [
+          3583.65,
+          45.8089,
+          3641.56
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          0.00584367,
+          0.0,
+          -0.999983
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.868375,
+          0.0,
+          0.00507458
+        ],
+        [
+          3718.3,
+          45.7684,
+          3641.65
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          -1.42875,
+          0.0,
+          0.456814
+        ],
+        [
+          0.0,
+          1.5,
+          0.0
+        ],
+        [
+          -0.456814,
+          0.0,
+          -1.42875
+        ],
+        [
+          3163.1,
+          38.15,
+          -2802.45
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          -1.42875,
+          0.0,
+          0.456814
+        ],
+        [
+          0.0,
+          1.5,
+          0.0
+        ],
+        [
+          -0.456814,
+          0.0,
+          -1.42875
+        ],
+        [
+          3190.0,
+          38.15,
+          -2718.45
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          -1.42875,
+          0.0,
+          0.456814
+        ],
+        [
+          0.0,
+          1.5,
+          0.0
+        ],
+        [
+          -0.456814,
+          0.0,
+          -1.42875
+        ],
+        [
+          3136.05,
+          38.15,
+          -2886.3
+        ]
+      ]
+    }
+  ]
+}

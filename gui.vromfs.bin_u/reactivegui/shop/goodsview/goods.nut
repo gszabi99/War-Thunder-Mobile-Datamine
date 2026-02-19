@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
+let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
 let { getLocNameDefault, mkGoodsDefault } = require("%rGui/shop/goodsView/goodsDefault.nut")
 let { getLocNameDecal, mkGoodsDecal } = require("%rGui/shop/goodsView/goodsDecal.nut")
 let { getLocNameGold, mkGoodsGold } = require("%rGui/shop/goodsView/goodsGold.nut")
@@ -61,7 +62,10 @@ let constructors = {
 
 let getCustomName = @(goods) goods.meta.findindex(@(_, i) i in customLocId)
 
-function getGoodsLocName(goods, locParam = null){
+function getGoodsLocName(goods, locParam = null) {
+  let res = getCustomGoodsNameById(goods.id)
+  if (res != null)
+    return res
   let customName = getCustomName(goods)
   return customName ? loc(customLocId[customName], { name = locParam })
     : (locNameGetters?[goods.gtype] ?? locNameGetters[SGT_UNKNOWN])(goods)

@@ -11,7 +11,7 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, curTabId, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
-  tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId } = require("%rGui/quests/questsState.nut")
+  tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId, tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { openEventWnd, curEventLootboxes, isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
@@ -45,6 +45,7 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && tutorialSectionIdWithReward.get() != null
   && isFitSeasonRewardsRequirements.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
+  && tutorialQuestBtnKey.get() != null
   && isMainMenuTopScene.get()
   && !isTutorialActive.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
@@ -75,7 +76,7 @@ function startTutorial() {
         id = "s1_press_quests_wnd_btn"
         text = loc("tutorial/mainEvent/openQuestWnd")
         objects = [{
-          keys = "quest_wnd_btn"
+          keys = tutorialQuestBtnKey
           onClick = @() openQuestsWndOnTab(COMMON_TAB)
           needArrow = true
         }]
@@ -211,6 +212,8 @@ register_command(
       return finishTutorial()
     if (tutorialSectionIdWithReward.get() == null)
       console_print("Unable to start tutorial, because of no avaiable rewards to get") 
+    else if (tutorialQuestBtnKey.get() == null)
+      console_print("Unable to start tutorial, because of broken quest button in main menu") 
     else
       isDebugMode.set(true)
   }

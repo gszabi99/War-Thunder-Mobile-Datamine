@@ -83,27 +83,38 @@ function cardContent(stageInfo, stateFlags, isRewardsInProgress) {
   let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
   return @() {
     watch = [stateFlags, isEmptyReward]
-    padding = bpCardPadding
-    flow = FLOW_VERTICAL
-    gap = bpCardGap
     children = [
+      !isVip ? null : {
+        hplace = ALIGN_CENTER
+        rendObj = ROBJ_TEXT
+        text = loc("battlePass/VIP/mark")
+      }.__update(fontSmallShaded)
       {
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
+        flow = FLOW_VERTICAL
+        gap = bpCardGap
+        margin = bpCardPadding
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
         children = [
-          canReceive ? markAvailableReward(viewInfo?.slots ?? 1) : null
-          viewInfo == null ? emptySlot
-            : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
-            : mkRewardPlate(viewInfo, bpCardStyle)
-          isReceived || isEmptyReward.get() ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
-            : canReceive ? null
-            : lockedMark
+          {
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = [
+              canReceive ? markAvailableReward(viewInfo?.slots ?? 1) : null
+              viewInfo == null ? emptySlot
+                : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
+                : mkRewardPlate(viewInfo, bpCardStyle)
+              isReceived || isEmptyReward.get() ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
+                : canReceive ? null
+                : lockedMark
+            ]
+          }
+          canReceive ? canReceiveMark(isRewardsInProgress)
+            : isVip ? vipMark
+            : isPaid ? paidMark
+            : freeMark
         ]
       }
-      canReceive ? canReceiveMark(isRewardsInProgress)
-        : isVip ? vipMark
-        : isPaid ? paidMark
-        : freeMark
     ]
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]

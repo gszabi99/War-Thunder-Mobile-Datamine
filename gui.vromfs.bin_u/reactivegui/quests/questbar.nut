@@ -6,7 +6,7 @@ let { progressBarRewardSize, questItemsGap, rewardProgressBarCtor, statsAnimatio
 } = require("%rGui/quests/rewardsComps.nut")
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { receiveUnlockRewards, unlockInProgress, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
+let { batchReceiveRewards, unlockInProgress, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -264,7 +264,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
         if (isRewardInProgress.get())
           return
         if (canClaimReward.get()) {
-          receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
+          batchReceiveRewards([{ unlock = name, up_to_stage = idx + 1 }])
           let unlock = progressUnlock.__merge({ tabId, sectionId = curSectionId.get() })
           let { count = null, id = null } = rewardPreview.get()[0]
           sendBqQuestsStage(unlock, getStarsTotalNonUpdatable(unlock), count, id)

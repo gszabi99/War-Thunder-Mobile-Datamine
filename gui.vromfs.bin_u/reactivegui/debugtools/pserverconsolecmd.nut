@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
 let { object_to_json_string } = require("json")
 let { saveJson } = require("%sqstd/json.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -15,8 +16,9 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
-  check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, add_currency_no_popup_by_full_id,
-  get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report, get_purchases_list
+  check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
+  add_currency_no_popup_by_full_id, get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report,
+  get_purchases_list
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -326,10 +328,16 @@ let counters = ["offer_skip", "daily_prem_gold"]
 counters.each(@(id)
   register_command(@() reset_daily_counter(id, "consolePrintError"), $"meta.reset_daily_counter.{id}"))
 
-register_command(@() debug_apply_deserter_lock_time(1, curCampaign.get(), serverTime.get(), battleUnitsMaxMRank.get()),
+let fakeSessionId = hardPersistWatched("pServerConsoleCmd.fakeSessionId", 0)
+register_command(
+  function() {
+    fakeSessionId.set(fakeSessionId.get() + 1)
+    debug_apply_deserter_lock_time(fakeSessionId.get(), curCampaign.get(), serverTime.get(), battleUnitsMaxMRank.get())
+  },
   "meta.debug_apply_deserter_lock_time")
 register_command(@() debug_apply_unit_rent(1, curCampaign.get(), serverTime.get()),
   "meta.debug_apply_unit_rent")
+register_command(@() debug_reset_deserters(), "meta.debug_reset_deserters")
 
 register_command(
   function() {

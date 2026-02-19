@@ -190,7 +190,7 @@ let mkBulletButton = kwarg(function mkBtn(
           : null
         @() {
           watch = isLockedSlot
-          size = const [flex(), hdpx(108)]
+          size = const [flex(), hdpx(98)]
           rendObj = ROBJ_BOX
           borderWidth = isLockedSlot.get() ? 0 : hdpxi(4)
         }

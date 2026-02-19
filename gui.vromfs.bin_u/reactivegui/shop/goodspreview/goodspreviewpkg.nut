@@ -20,14 +20,14 @@ let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/te
 let { mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty, filterHiddenViewInfo
 } = require("%rGui/rewards/rewardViewInfo.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardReceivedMark
+let { REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardReceivedMark
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
 let { G_ITEM } = require("%appGlobals/rewardType.nut")
@@ -418,10 +418,11 @@ let mkPreviewHeader = @(textW, onBack, animStartTime) doubleSideGradient.__merge
   animations = colorAnims(aTimePackNameBack, animStartTime)
 })
 
-let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
-  pos = [doubleSideGradientPaddingX, 0]
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_RIGHT
+let mkTimeBlock = @(animStartTime, child) {
+  padding = hdpx(10)
+  rendObj = ROBJ_IMAGE
+  image = simpleHorGrad
+  color = 0x90000000
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = horGap
@@ -430,7 +431,7 @@ let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
     child
   ]
   animations = opacityAnims(aTimeTime, animStartTime, "price")
-})
+}
 
 let mkPriceWithTimeBlock = @(animStartTime, addChild  = null) mkTimeBlock(animStartTime,
   addChild
@@ -537,8 +538,8 @@ function mkPreviewItems(rewards, animStartTime) {
     .sort(sortRewardsViewInfo)
   return info.len() == 0 ? null : {
     flow = FLOW_HORIZONTAL
-    gap = hdpx(20)
-    children = info.map(@(r, idx) mkItem(r, REWARD_STYLE_MEDIUM, idx, animStartTime))
+    gap = hdpx(10)
+    children = info.map(@(r, idx) mkItem(r, REWARD_STYLE_TINY, idx, animStartTime))
   }
 }
 
@@ -569,9 +570,10 @@ let activeItemHint = @() activeItemId.get() == null ? { watch = activeItemId }
   : {
       watch = [activeItemId, eventSeason, allSpecialEvents]
       rendObj = ROBJ_IMAGE
-      image = gradTranspDoubleSideX
-      color = 0xFF000000
-      padding = [addHintPadding, saBorders[0] + addHintPadding]
+      image = simpleHorGrad
+      flipX = true
+      color = 0xAA000000
+      padding = addHintPadding
       children = {
         size = const [hdpx(500), SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXTAREA

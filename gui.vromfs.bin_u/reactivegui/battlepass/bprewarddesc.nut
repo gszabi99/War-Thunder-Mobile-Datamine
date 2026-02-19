@@ -129,8 +129,8 @@ let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() 
   }
   return doubleSideGradient.__merge({
     watch = serverConfigs
-    size = [hdpx(600) + 4 * doubleSideGradientPaddingX, flex()]
-    padding = [hdpx(10), doubleSideGradientPaddingX, hdpx(20), doubleSideGradientPaddingX]
+    size = [hdpx(300) + 4 * doubleSideGradientPaddingX, flex()]
+    padding = [0, doubleSideGradientPaddingX, hdpx(10), doubleSideGradientPaddingX]
     hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(5)

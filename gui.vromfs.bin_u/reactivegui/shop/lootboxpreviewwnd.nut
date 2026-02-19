@@ -19,12 +19,13 @@ let wndHeader = {
     @() {
       watch = previewLootbox
       rendObj = ROBJ_TEXT
-      size = FLEX_H
+      size = flex()
       halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
       color = 0xFFFFFFFF
       text = getLootboxName(previewLootbox.get()?.name)
       margin = const [0, 0, 0, hdpx(15)]
-    }.__update(fontBig)
+    }.__update(fontBigShaded)
   ]
 }
 

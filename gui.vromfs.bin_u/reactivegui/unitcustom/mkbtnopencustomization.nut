@@ -31,15 +31,13 @@ let customizationBtnContent = {
   ]
 }
 
-let mkBtnStyle = @(minWidth) mergeStyles(buttonStyles.COMMON, { ovr = { minWidth } })
-
-let mkBtnOpenCustomization = @(unitW, minWidth) @() {
+let mkBtnOpenCustomization = @(unitW, ovr) @() {
   watch = unitW
   children = !unitW.get() ? null : [
     mkCustomButton(customizationBtnContent,
       @() (unitSizes.get()?[getTagsUnitName(unitW.get().name)] ?? 0) == 0 ? openUnitCustom()
         : openDownloadAddonsWnd([], [getTagsUnitName(unitW.get().name)], "unitDownloadInfoBlock", {}, "openUnitCustom"),
-      mkBtnStyle(minWidth))
+      mergeStyles(buttonStyles.COMMON, ovr))
     @() {
       watch = [unitW, unseenSkins, unseenDecals]
       margin = hdpx(10)

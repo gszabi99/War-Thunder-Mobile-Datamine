@@ -48,8 +48,9 @@ function tryOpenQueuePenaltyWnd(rawCampaign, mGMode, resetPenaltyCb, cancelCb = 
   if (price == null || currencyId == null)
     return false
 
-  let priceMult = !byMRank ? 1 : (penalties.get()?[actPenaltyId].maxMRank ?? 1)
-  let resPrice = price * priceMult
+  let { maxMRank = 1, prevPenalties = 0 } = penalties.get()?[actPenaltyId]
+  let priceMult = !byMRank ? 1 : maxMRank
+  let resPrice = prevPenalties == 0 ? (price * priceMult) : (price * priceMult * prevPenalties * 0.5)
 
   let bqInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_QUEUE_PENALTY, "")
   let priceComp = mkCurrencyComp(decimalFormat(resPrice), currencyId, CS_INCREASED_ICON)

@@ -3102,12 +3102,6 @@
       }
     }
   },
-  "default_skin": {
-    "replace_tex": {
-      "from": "ussr_camo_green*",
-      "to": "ussr_camo_green*"
-    }
-  },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
@@ -3120,12 +3114,48 @@
       "camo_rotation": 0.0
     }
   },
+  "default_skin": {
+    "set_tex": [
+      {
+        "from": "plz_05_gun_c*",
+        "to": "plz_05_gun_skin_lunar_2026_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "plz_05_turret_c*",
+        "to": "plz_05_turret_skin_lunar_2026_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "plz_05_body_c*",
+        "to": "plz_05_body_skin_lunar_2026_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
+  },
   "vehicleSkins": {
     "forest": {
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_green*"
-      }
+      },
+      "set_tex": [
+        {
+          "from": "plz_05_gun_c*",
+          "to": "plz_05_gun_noskin_lunar_2026_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "plz_05_turret_c*",
+          "to": "plz_05_turret_noskin_lunar_2026_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "plz_05_body_c*",
+          "to": "plz_05_body_noskin_lunar_2026_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "battleHideNodes": {

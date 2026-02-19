@@ -81,8 +81,9 @@ let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBl
 
 let newMarkSize = calc_comp_size(newMark)
 
-function receiveReward(item, currencyReward) {
-  receiveUnlockRewards(item.name, 1, { stage = 1 })
+function receiveReward(item, currencyReward, stageToReceive = null) {
+  let stage = stageToReceive ?? item?.stage ?? 1
+  receiveUnlockRewards(item.name, stage, { stage })
   sendBqQuestsTask(item, getStarsTotalNonUpdatable(item), currencyReward?.count ?? 0, currencyReward?.id)
 }
 
@@ -127,23 +128,24 @@ let purchaseContentCtor = @(textLoc, costLoc) @(rewardsPreview, item) {
 let buyPurchaseContent = purchaseContentCtor(loc("shop/orderQuestion"), loc("shop/cost"))
 let explorePurchaseContent = purchaseContentCtor(loc("shop/orderQuestion/explore"), loc("shop/cost/explore"))
 
-eventbus_subscribe("quests.buyUnlock", function(data) {
-  receiveReward(data.item, data.currencyReward)
-})
+eventbus_subscribe("quests.buyUnlock", @(data)
+  receiveReward(data.item, data.currencyReward, (data.item?.stage ?? 0) + 1))
 
 eventbus_subscribe("quests.buyUnlockReroll", function(data) {
   sendBqQuestsRerollTask(activeUnlocks.get()?[data.unlockName] ?? data.unlockName)
 })
 
-let buyRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward)
+function buyRewardMsgBox(item, rewardsPreview, price, currencyId, currencyReward) {
+  let { stage = 0, name } = item
   openMsgBoxPurchase({
     text = buyPurchaseContent(rewardsPreview, item),
     price = { price, currencyId },
-    purchase = @() buyUnlock(item.name, 1, currencyId, price,
-        { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name),
+    purchase = @() buyUnlock(name, stage + 1, currencyId, price,
+      { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }}),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, name),
     hasSpendingStat = false
   })
+}
 
 let rerollQuestMsgBox = @(unlockName, price, currencyId)
   openMsgBoxPurchase({
@@ -155,16 +157,18 @@ let rerollQuestMsgBox = @(unlockName, price, currencyId)
     hasSpendingStat = false
   })
 
-let exploreRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward)
+function exploreRewardMsgBox(item, rewardsPreview, price, currencyId, currencyReward) {
+  let { stage = 0, name } = item
   openMsgBoxPurchase({
     text = explorePurchaseContent(rewardsPreview, item),
     price = { price, currencyId },
-    purchase = @() buyUnlock(item.name, 1, currencyId, price,
+    purchase = @() buyUnlock(name, stage + 1, currencyId, price,
         { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, name)
     purchaseLocId = "msgbox/btn_explore",
     hasSpendingStat = false
   })
+}
 
 let mkQuestBtn = @(item, currencyReward, rewardsPreview, hasReceivedAllRewards) function() {
   let { name, progressCorrectionStep = 0 } = item

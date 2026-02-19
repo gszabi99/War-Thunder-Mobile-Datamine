@@ -8,10 +8,10 @@ let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGl
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, goodsLinks, subsGroups, shopId,
   curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
-  curShopSubsByCategory, curShopSoonGoodsByCategory
+  curShopSubsByCategory, curShopSoonGoodsByCategory, soonGoodsByShop, goodsIdsByShop
 } = require("%rGui/shop/shopState.nut")
 let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { personalGoodsByShopCategory, getPersonalGoodsBaseId } = require("%rGui/shop/personalGoodsState.nut")
+let { getPersonalGoodsBaseId, activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
 let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
@@ -178,15 +178,13 @@ let mkShopGamercard = @(onClose) function() {
   let currencies = {}
   let items = {}
   local needShowPremium = false
-  foreach (goods in personalGoodsByShopCategory.get()?[curCategoryId.get()] ?? []) {
-    if (goods.price.currencyId != "")
-      currencies[goods.price.currencyId] <- true
-  }
-  foreach (list in [curShopGoodsByCategory.get(), curShopSoonGoodsByCategory.get()])
-    foreach (goods in list?[curCategoryId.get()] ?? []) {
-      if (goods.price.currencyId != "")
+  let goodsIds = goodsIdsByShop.get()?[shopId.get()]
+  foreach(goodsId in goodsIds?[curCategoryId.get()] ?? {}) {
+    let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId] ?? soonGoodsByShop.get()?[goodsId]
+    if(goods) {
+      if(goods.price.currencyId != "")
         currencies[goods.price.currencyId] <- true
-      if (goods.rewards.len() != 1)
+      if ((goods?.rewards.len() ?? 0) != 1)
         continue 
       let { gType, id } = goods.rewards[0]
       if (gType == G_PREMIUM)
@@ -196,10 +194,11 @@ let mkShopGamercard = @(onClose) function() {
       else if (gType == G_CURRENCY)
         currencies[id] <- true
     }
+  }
   let orderItems = items.keys().sort(@(a,b)
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
   return {
-    watch = [ curShopGoodsByCategory, curShopSoonGoodsByCategory, curCategoryId, personalGoodsByShopCategory ]
+    watch = [ curCategoryId, shopId, activePersonalGoods, shopGoods, soonGoodsByShop ]
     size = [ saSize[0], gamercardHeight ]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
@@ -283,7 +282,7 @@ function mkPersonalGoodsCard(pGoods, animParams) {
 
 let mkSubscriptionCardExt = @(subs, animParams) mkSubscriptionCard(
   subs,
-  @() openSubsPreview(subs.id),
+  @() openSubsPreview(subs.id, "shop"),
   Computed(function() {
     local res = (subscriptions.get()?[subs.id].isActive || subs.id in activeInternalSubs.get()) ? IS_ACTIVE : 0
     let group = subsGroups.findvalue(@(g) g.contains(subs.id))

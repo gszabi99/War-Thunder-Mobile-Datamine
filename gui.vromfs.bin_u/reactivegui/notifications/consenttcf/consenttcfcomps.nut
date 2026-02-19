@@ -4,11 +4,10 @@ import "%darg/helpers/mkTextareaBlock.nut" as mkTextareaBlock
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/scrollbar.nut" import makeVertScroll
-from "%rGui/components/msgBox.nut" import wndWidthDefault
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
 
-const wndW = wndWidthDefault
+const wndW = hdpx(1300)
 const wndH = saSize[1]
 
 let fontTitle = fontSmallAccented

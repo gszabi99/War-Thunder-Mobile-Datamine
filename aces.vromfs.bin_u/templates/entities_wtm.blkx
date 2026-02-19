@@ -363,5 +363,17 @@
         "air_speed_booster__enableWep": true
       }
     ]
+  },
+  "hangar_major_banner_tank": {
+    "_use": "rendinst",
+    "hangarMajorBannerTank:tag": {}
+  },
+  "hangar_major_banner_ship": {
+    "_use": "rendinst",
+    "hangarMajorBannerShip:tag": {}
+  },
+  "hangar_major_banner_air": {
+    "_use": "rendinst",
+    "hangarMajorBannerAir:tag": {}
   }
 }

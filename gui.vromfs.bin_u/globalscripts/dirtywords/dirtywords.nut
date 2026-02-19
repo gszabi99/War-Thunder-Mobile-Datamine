@@ -20,6 +20,7 @@ from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clea
 
 
 local debugLogFunc = null
+local needDebugLogJustPatterns = true
 
 let dict = {
   excludesdata    = null
@@ -277,7 +278,9 @@ function prepareWord(word) {
 function checkRegexps(word, regexps, accuse) {
   foreach (reg in regexps)
     if ((reg?.value ?? reg).match(word)) {
-      debugLogFunc?($"DirtyWordsFilter: Word \"{word}\" matched pattern \"{(reg?.value ?? reg).pattern()}\"")
+      let patternStr = (reg?.value ?? reg).pattern()
+      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+        : $"DirtyWordsFilter: Word \"{word}\" matched pattern \"{patternStr}\"")
       return !accuse
     }
   return accuse
@@ -362,7 +365,8 @@ function checkPhraseInternal(text, isName) {
       foreach (segment in segmentsList) {
         if (!phrase.contains(segment))
           continue
-        debugLogFunc?($"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
+        debugLogFunc?(needDebugLogJustPatterns ? segment
+          : $"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
         let utfPhrase = utf8(phrase)
         maskChars = maskChars ?? array(utfPhrase.charCount(), false)
@@ -386,7 +390,9 @@ function checkPhraseInternal(text, isName) {
   
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
-      debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
+      let patternStr = pattern.pattern()
+      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+        : $"DirtyWordsFilter: Phrase matched pattern \"{patternStr}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
       lowerPhrase = utf8ToLower(phrase)
@@ -410,7 +416,8 @@ let isPhrasePassing = @(text) checkPhrase(text) == text
 
 let checkName = function(name) {
   if (!isNameNormallyVisible(name)) {
-    debugLogFunc?($"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
+    debugLogFunc?(needDebugLogJustPatterns ? "Tricks"
+      : $"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
     return getMaskedWord(name)
   }
   let noWhitespaceName = clearAllWhitespace(name)
@@ -427,8 +434,9 @@ let checkName = function(name) {
 let isNamePassing = @(name) name != "" && checkName(name) == name
 
 
-function setDebugLogFunc(funcOrNull) {
+function setDebugLogFunc(funcOrNull, needJustPatterns = false) {
   debugLogFunc = funcOrNull
+  needDebugLogJustPatterns = needJustPatterns
 }
 
 

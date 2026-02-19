@@ -226,7 +226,7 @@ let buyEventCurrenciesHeader = @() {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))
-}.__update(fontLarge)
+}.__update(fontBig)
 
 let buyEventCurrenciesDesc = @() {
   watch = [currencyId, currencySeasons]

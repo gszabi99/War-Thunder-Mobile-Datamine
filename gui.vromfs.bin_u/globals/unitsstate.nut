@@ -46,7 +46,7 @@ let buyUnitsData = Computed(function() {
       }
       return US_NEED_BLUEPRINTS
     }
-    if(unitsResearch?[name].canResearch)
+    if (unitsResearch?[name].canResearch && name in unitResearchExp)
       return US_CAN_RESEARCH
     if (unit.isPremium
         || (name not in unitTreeNodes?[unit.campaign] && rank <= level)

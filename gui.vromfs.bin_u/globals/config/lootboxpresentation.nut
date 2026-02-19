@@ -94,6 +94,12 @@ let customLootboxImages = {
   event_tanks_big_subbox_box_season_29      = "lucky_box.avif"
   event_ships_big_subbox_box_season_29      = "lucky_box.avif"
   event_air_big_subbox_box_season_29        = "lucky_box.avif"
+  event_tanks_medium_subbox_box_season_30   = "lucky_box.avif"
+  event_ships_medium_subbox_box_season_30   = "lucky_box.avif"
+  event_air_medium_subbox_box_season_30     = "lucky_box.avif"
+  event_tanks_big_subbox_box_season_30      = "lucky_box.avif"
+  event_ships_big_subbox_box_season_30      = "lucky_box.avif"
+  event_air_big_subbox_box_season_30        = "lucky_box.avif"
 
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
@@ -152,6 +158,12 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_26 = "past_events_box_seasons_1_to_26.avif"
   past_events_box_ships_seasons_1_to_26 = "past_events_box_seasons_1_to_26.avif"
   past_events_box_air_seasons_1_to_26 = "past_events_box_seasons_1_to_26.avif"
+  past_events_box_tanks_seasons_1_to_27 = "past_events_box_seasons_1_to_27.avif"
+  past_events_box_ships_seasons_1_to_27 = "past_events_box_seasons_1_to_27.avif"
+  past_events_box_air_seasons_1_to_27 = "past_events_box_seasons_1_to_27.avif"
+  past_events_box_tanks_seasons_1_to_28 = "past_events_box_seasons_1_to_28.avif"
+  past_events_box_ships_seasons_1_to_28 = "past_events_box_seasons_1_to_28.avif"
+  past_events_box_air_seasons_1_to_28 = "past_events_box_seasons_1_to_28.avif"
 }
 
 let customRouletteImages = {
@@ -241,6 +253,12 @@ let lootboxPreviewBg = {
   event_ships_medium_subbox_box_season_29        = "ui/images/event_bg_season_29.avif"
   event_air_medium_subbox_box_season_29          = "ui/images/event_bg_season_29.avif"
   event_air_big_subbox_box_season_29             = "ui/images/event_bg_season_29.avif"
+  event_tanks_big_subbox_box_season_30           = "ui/images/event_bg_season_30.avif"
+  event_tanks_medium_subbox_box_season_30        = "ui/images/event_bg_season_30.avif"
+  event_ships_big_subbox_box_season_30           = "ui/images/event_bg_season_30.avif"
+  event_ships_medium_subbox_box_season_30        = "ui/images/event_bg_season_30.avif"
+  event_air_medium_subbox_box_season_30          = "ui/images/event_bg_season_30.avif"
+  event_air_big_subbox_box_season_30             = "ui/images/event_bg_season_30.avif"
 
   event_special_tanks_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
   event_special_ships_independence_2025          = "ui/images/event_bg_event_independence_day.avif"

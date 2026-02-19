@@ -1,0 +1,1557 @@
+{
+  "entity": [
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.803739,
+          -0.556231,
+          -0.211216
+        ],
+        [
+          0.580502,
+          -0.655263,
+          -0.483371
+        ],
+        [
+          0.231042,
+          -0.905139,
+          1.50449
+        ],
+        [
+          464.623,
+          171.107,
+          3551.03
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3000.0,
+      "light__max_radius": 300.0,
+      "light__color": [
+        255,
+        255,
+        245,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 80.0
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3071.22,
+          11.7629,
+          -2802.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 200.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          425.72,
+          145.37,
+          3588.41
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 800.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          0.906308,
+          8.88178e-16,
+          -0.422618
+        ],
+        [
+          4.37631e-7,
+          1.0,
+          -0.00000113249
+        ],
+        [
+          0.748419,
+          0.0,
+          1.605
+        ],
+        [
+          434.16,
+          143.525,
+          3551.89
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1000.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "light__radius_scale": 1.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.953717,
+          0.0,
+          -0.300706
+        ],
+        [
+          0.127084,
+          0.906308,
+          -0.403058
+        ],
+        [
+          0.482635,
+          -0.748422,
+          -1.53071
+        ],
+        [
+          437.694,
+          171.843,
+          3675.96
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 9000.0,
+      "light__max_radius": 400.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 40.0,
+      "shreddableInDarkZone": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.537299,
+          8.88178e-16,
+          -0.843392
+        ],
+        [
+          -0.00000117992,
+          1.0,
+          -2.86068e-7
+        ],
+        [
+          1.49358,
+          0.0,
+          -0.951511
+        ],
+        [
+          414.659,
+          143.807,
+          3656.13
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1000.0,
+      "light__max_radius": 400.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "light__radius_scale": 1.0
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          463.55,
+          142.0,
+          3578.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 80.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 30.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          469.89,
+          143.373,
+          3637.33
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 100.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 20.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          470.43,
+          152.154,
+          3662.57
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1200.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          476.749,
+          150.215,
+          3539.04
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1500.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.675591,
+          0.0,
+          0.737278
+        ],
+        [
+          -0.311586,
+          0.906308,
+          -0.285516
+        ],
+        [
+          -1.18332,
+          -0.748422,
+          -1.08432
+        ],
+        [
+          501.907,
+          171.026,
+          3640.02
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 12000.0,
+      "light__max_radius": 300.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 40.0,
+      "shreddableInDarkZone": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          0.173528,
+          0.0302551,
+          -0.984365
+        ],
+        [
+          0.284879,
+          0.955255,
+          0.0795797
+        ],
+        [
+          1.66949,
+          -0.521064,
+          0.278293
+        ],
+        [
+          2878.24,
+          48.0888,
+          -2771.33
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 27000.0,
+      "light__max_radius": 600.0,
+      "light__color": [
+        255,
+        255,
+        245,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0,
+      "shreddableInDarkZone": false
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.300707,
+          6.82161e-8,
+          0.953718
+        ],
+        [
+          -0.0831219,
+          0.996195,
+          -0.026208
+        ],
+        [
+          -1.68252,
+          -0.154346,
+          -0.5305
+        ],
+        [
+          3188.38,
+          42.2238,
+          -2718.42
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 32000.0,
+      "light__max_radius": 600.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 90.0
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3218.37,
+          29.355,
+          -2590.4
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 5000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3121.13,
+          31.2809,
+          -2954.84
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 4500.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.996196,
+          0.0151344,
+          0.0858309
+        ],
+        [
+          -0.00759633,
+          0.965984,
+          -0.258492
+        ],
+        [
+          -0.153756,
+          -0.457181,
+          -1.70396
+        ],
+        [
+          3012.58,
+          42.2238,
+          -2630.2
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 32000.0,
+      "light__max_radius": 500.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          0.905876,
+          0.0302551,
+          -0.422463
+        ],
+        [
+          0.0619301,
+          0.977264,
+          0.202782
+        ],
+        [
+          0.741997,
+          -0.371642,
+          1.56444
+        ],
+        [
+          3673.74,
+          46.3535,
+          3463.91
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 8000.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        255,
+        255,
+        245,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 20.0,
+      "shreddableInDarkZone": false
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.887011,
+          -3.49113e-17,
+          -0.461749
+        ],
+        [
+          -2.60645e-7,
+          1.0,
+          8.27079e-8
+        ],
+        [
+          0.817722,
+          -5.96046e-8,
+          -1.57082
+        ],
+        [
+          3664.13,
+          30.9801,
+          3675.45
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 8000.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 90.0,
+      "shreddableInDarkZone": false
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3614.58,
+          31.4764,
+          3673.18
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 4000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 400.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3651.53,
+          62.2184,
+          3652.07
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 50.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3639.37,
+          35.0333,
+          3493.91
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 600.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3846.42,
+          35.6402,
+          3610.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 600.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3798.07,
+          31.9726,
+          3471.77
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 600.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3685.49,
+          31.9991,
+          3668.53
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.707107,
+          2.57832e-8,
+          0.707107
+        ],
+        [
+          -0.153046,
+          0.976297,
+          -0.153046
+        ],
+        [
+          -1.22254,
+          -0.383297,
+          -1.22255
+        ],
+        [
+          3788.7,
+          46.4209,
+          3628.61
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 8000.0,
+      "light__max_radius": 300.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 15.0,
+      "shreddableInDarkZone": false
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3556.94,
+          28.6186,
+          3570.29
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 1000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          437.092,
+          142.926,
+          3557.33
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 500.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          421.05,
+          143.435,
+          3653.72
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 500.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3295.74,
+          46.9592,
+          -2897.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 5000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3270.66,
+          46.9592,
+          -2980.9
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 5000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3310.45,
+          41.3404,
+          -2741.54
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 5000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3331.86,
+          41.3404,
+          -2668.89
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 5000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3318.24,
+          42.0585,
+          -2807.71
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3000.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 200.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.996196,
+          0.0151344,
+          0.0858309
+        ],
+        [
+          -0.00759633,
+          0.965984,
+          -0.258492
+        ],
+        [
+          -0.153756,
+          -0.457181,
+          -1.70396
+        ],
+        [
+          2939.72,
+          42.2238,
+          -2828.35
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 23000.0,
+      "light__max_radius": 500.0,
+      "light__color": [
+        255,
+        255,
+        235,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.300707,
+          6.82161e-8,
+          0.953718
+        ],
+        [
+          -0.0831219,
+          0.996195,
+          -0.026208
+        ],
+        [
+          -1.68252,
+          -0.154346,
+          -0.5305
+        ],
+        [
+          3128.85,
+          42.2238,
+          -2893.33
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 21000.0,
+      "light__max_radius": 600.0,
+      "light__color": [
+        255,
+        255,
+        231,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": 90.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          0.887012,
+          -2.1684e-19,
+          -0.461749
+        ],
+        [
+          0.138851,
+          0.953717,
+          0.266729
+        ],
+        [
+          0.77987,
+          -0.532524,
+          1.49812
+        ],
+        [
+          2141.27,
+          20.1197,
+          1641.46
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 4000.0,
+      "light__max_radius": 600.0,
+      "light__color": [
+        255,
+        255,
+        249,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          -0.737279,
+          -2.1684e-19,
+          -0.675591
+        ],
+        [
+          0.203153,
+          0.953717,
+          -0.221703
+        ],
+        [
+          1.14104,
+          -0.532524,
+          -1.24522
+        ],
+        [
+          2141.45,
+          16.4223,
+          1693.12
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 4000.0,
+      "light__max_radius": 600.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          0.130526,
+          0.0,
+          0.991446
+        ],
+        [
+          -0.495722,
+          0.866026,
+          0.0652632
+        ],
+        [
+          -1.52054,
+          -0.885458,
+          0.200182
+        ],
+        [
+          2191.68,
+          36.0691,
+          1664.99
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 3000.0,
+      "light__max_radius": 400.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0
+    },
+    {
+      "_template": "spot_light",
+      "transform": [
+        [
+          0.770576,
+          0.0302551,
+          -0.636631
+        ],
+        [
+          0.0310468,
+          0.995905,
+          0.084907
+        ],
+        [
+          1.12735,
+          -0.150869,
+          1.35738
+        ],
+        [
+          3570.3,
+          46.3535,
+          3558.75
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 32000.0,
+      "light__max_radius": 800.0,
+      "light__color": [
+        200,
+        247,
+        255,
+        255
+      ],
+      "spot_light__inner_attenuation": 0.1,
+      "spot_light__shadows": false,
+      "light__affect_volumes": false,
+      "spot_light__cone_angle": -1.0,
+      "shreddableInDarkZone": false
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3793.9,
+          30.05,
+          3690.5
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 200.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          422.45,
+          146.35,
+          3622.1
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 600.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 100.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    },
+    {
+      "_template": "omni_light",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          412.1,
+          147.25,
+          3602.15
+        ]
+      ],
+      "light__nightly": false,
+      "light__brightness": 400.0,
+      "light__radius_scale": 1.0,
+      "light__max_radius": 50.0,
+      "light__color": [
+        50,
+        100,
+        255,
+        255
+      ],
+      "omni_light__shadows": true
+    }
+  ]
+}

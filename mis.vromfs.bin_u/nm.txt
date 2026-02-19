@@ -8241,3 +8241,7 @@ missions/_Conq2;poland/name;missions/winter
 missions/_Conq3;poland/name;missions/winter
 missions/_Dom;poland/name;missions/winter
 gameData/scenes/avg_poland_snow_ny_objects.blk
+at_area
+gameData/missions/development/cta_qa/abandoned_factory/tank_spawns/qa_template_abandoned_factory_Dom_tank_spawns.blk
+gameData/missions/development/cta_qa/abandoned_factory/battleareas/qa_template_abandoned_factory_Dom_battleareas.blk
+gameData/missions/development/cta_qa/pacific_island_small/mainareas/qa_pacific_island_small_NTdm_template.blk

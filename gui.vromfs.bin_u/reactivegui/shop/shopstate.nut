@@ -588,6 +588,7 @@ return {
   shopId
   prevShopId
   goodsByShop
+  goodsIdsByShop
   soonGoodsByShop
   curShopActualSchRewardsByCategory
   curShopGoodsByCategory

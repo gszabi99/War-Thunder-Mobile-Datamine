@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
+let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -182,18 +182,8 @@ function getNotReceivedInfo(unlock, maxProgress) {
       }
     }
   }
-  return stage == null ? null : { unlockName = name, stage, finalStage }
+  return stage == null ? null : { unlock = name, stage, finalStage }
 }
-
-function receiveBpRewardsImpl(toReceive) {
-  if (toReceive.len() == 0)
-    return
-  let { unlockName, stage, finalStage = null } = toReceive[0]
-  receiveUnlockRewards(unlockName, stage,
-    { finalStage, onSuccessCb = { id = "battlePass.grantMultiRewards", nextReceive = toReceive.slice(1) } })
-}
-
-eventbus_subscribe("battlePass.grantMultiRewards", @(msg) receiveBpRewardsImpl(msg.nextReceive))
 
 let sendBpBqEvent = @(action, params = {}) sendCustomBqEvent("battlepass_1", params.__merge({
   action
@@ -209,7 +199,7 @@ function receiveBpRewards(progress) {
 
   let fullList = [
     !bpPurchasedUnlock.get()?.hasReward ? null
-      : { unlockName = bpPurchasedUnlock.get().name, stage = bpPurchasedUnlock.get().stage }
+      : { unlock = bpPurchasedUnlock.get().name, stage = bpPurchasedUnlock.get().stage }
     getNotReceivedInfo(bpFreeRewardsUnlock.get(), progress)
     isBpActive.get() ? getNotReceivedInfo(bpPaidRewardsUnlock.get(), progress) : null
   ].filter(@(v) v != null)
@@ -222,7 +212,8 @@ function receiveBpRewards(progress) {
     paramInt1 = progress,
     paramInt2 = total
   })
-  receiveBpRewardsImpl(fullList)
+
+  batchReceiveRewards(fullList.map(@(c) { unlock = c.unlock, up_to_stage = c?.finalStage ?? c.stage }))
 }
 
 function buyBPLevel() {

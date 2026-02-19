@@ -951,6 +951,11 @@ return {
     params = { sessionId, campaign, timestamp, maxMRank }
   }, cb)
 
+  debug_reset_deserters = @(cb = null) request({
+    method = "debug_reset_deserters"
+    params = {}
+  }, cb)
+
   buy_decal = @(decalName, currencyId, price, cb = null) request({
     method = "buy_decal"
     params = { decalName, currencyId, price }

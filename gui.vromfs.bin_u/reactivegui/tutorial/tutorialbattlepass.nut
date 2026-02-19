@@ -5,7 +5,7 @@ let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isCampaignWithUnitsResearch, curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
+let { receiveUnlockRewards, batchReceiveRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -14,7 +14,8 @@ let { battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonActive
 let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection, getStarsTotalNonUpdatable,
-  progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, } = require("%rGui/quests/questsState.nut")
+  progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, tutorialQuestBtnKey
+} = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
@@ -64,6 +65,7 @@ let isFullProgressBar = Computed(function() {
 
 let needShowTutorial = Computed(@() almostReadyToShowTutorial.get() && !isFullProgressBar.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
+  && tutorialQuestBtnKey.get() != null
   && isMainMenuTopScene.get()
   && isBpSeasonActive.get()
   && !isTutorialActive.get())
@@ -110,7 +112,7 @@ function startTutorial() {
         id = "s1_press_quest_wnd_btn"
         text = loc("tutorial/battlePass/openQuestWnd")
         objects = [{
-          keys = "quest_wnd_btn"
+          keys = tutorialQuestBtnKey
           function onClick() {
             tutorialSectionId.set(DAILY_SECTION)
             openQuestsWndOnTab(tabId)
@@ -171,7 +173,7 @@ function startTutorial() {
           stepObjectsForKeyReward.append({
             keys = $"quest_bar_stage_{stageIdx}"
             function onClick() {
-              receiveUnlockRewards(name, stage, { stage, finalStage = stage })
+              batchReceiveRewards([{ unlock = name, up_to_stage = stage }])
               let unlock = progressUnlock.__merge({ tabId, sectionId = sectionId.get() })
               sendBqQuestsStage(unlock, getStarsTotalNonUpdatable(unlock), count, id)
             }
@@ -265,6 +267,8 @@ register_command(
       console_print("Unable to start tutorial, because of no avaiable rewards to get") 
     else if (!isBpSeasonActive.get())
       console_print("Unable to start tutorial, because of no active battle pass season") 
+    else if (tutorialQuestBtnKey.get() == null)
+      console_print("Unable to start tutorial, because of broken quest button in main menu") 
     else
       isDebugMode.set(true)
   }

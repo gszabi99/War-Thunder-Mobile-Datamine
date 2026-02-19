@@ -12,6 +12,7 @@ let medalsPresentation = {
   lb_air_top_10            = { ctor = "lbTop10", image = "leaderboard_trophy_01.avif", campaign = "air" }
   cbt_air_medal            = { image = "leaderboard_trophy_06.avif", campaign = "air" }
   japan_air_early_access   = { image = "medal_air_early_access_japan.avif", campaign = "air" }
+  china_tank_early_access  = { image = "medal_tank_early_access_china.avif", campaign = "tanks" }
 }
   .map(@(p, id) mkPresentation(id, p))
 

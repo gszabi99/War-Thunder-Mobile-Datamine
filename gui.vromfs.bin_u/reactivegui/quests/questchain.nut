@@ -25,15 +25,30 @@ let questChainIconCurrent = Picture($"ui/gameuiskin/quest_chain_icon_current.svg
 let questChainIconCompleted = Picture($"ui/gameuiskin/quest_chain_icon_completed.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
 let questChainIconComing = Picture($"ui/gameuiskin/quest_chain_icon_coming.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
 
-let mkProgresImage = @(isCompleted, isComming = false) {
+let P_COMPLETED = 0x1
+let P_CURRENT = 0x2
+let P_PERIODIC = 0x4
+
+let mkProgresImage = memoize(@(mask) {
   size = questChainIconSize
   rendObj = ROBJ_IMAGE
-  image = isCompleted ? questChainIconCompleted
-    : isComming ? questChainIconComing
-    : questChainIconCurrent
-  color = isCompleted ? iconColor : 0xFFFFFFFF
+  image = mask & P_COMPLETED ? questChainIconCompleted
+    : mask & P_CURRENT ? questChainIconCurrent
+    : questChainIconComing
+  color = mask & P_COMPLETED ? iconColor : 0xFFFFFFFF
   keepAspect = true
-}
+
+  children = !(mask & P_PERIODIC) ? null
+    : {
+        size = flex()
+        pos = [0, -hdpx(3)]
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        rendObj = ROBJ_TEXT
+        color = mask & P_COMPLETED ? 0xFF000000 : 0xFFFFFFFF
+        text = "∞"
+      }.__update(fontTinyAccented)
+})
 
 let onClick = @(quests) addModalWindow(bgShaded.__merge({
   key = WND_UID
@@ -72,7 +87,8 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
                 size = [quests.len() * (questChainIconSize[0] + questIconGap), SIZE_TO_CONTENT]
                 flow = FLOW_HORIZONTAL
                 gap = questIconGap
-                children = array(idx + 1).map(@(_) mkProgresImage(true))
+                children = array(idx, mkProgresImage(P_COMPLETED))
+                  .append(mkProgresImage(q?.periodic ? P_COMPLETED | P_PERIODIC : P_COMPLETED))
               }
               {
                 rendObj = ROBJ_BOX
@@ -119,7 +135,10 @@ let mkChainProgress = @(item, ovr = {}) {
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = hdpx(15)
-      children = item.chainQuests.map(@(q, idx) mkProgresImage(q.isCompleted, idx > item.pos))
+      children = item.chainQuests.map(@(q, idx) mkProgresImage(
+        (q.isCompleted ? P_COMPLETED : 0)
+          | (idx == item.pos ? P_CURRENT : 0)
+          | (q?.periodic ? P_PERIODIC : 0)))
     }
   ]
 }.__update(ovr)

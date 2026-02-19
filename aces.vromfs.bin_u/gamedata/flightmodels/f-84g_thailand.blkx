@@ -2960,6 +2960,28 @@
       0.00473701
     ]
   },
+  "vehicleSkins": {
+    "camo": {
+      "replace_tex": [
+        {
+          "from": "f_84g_late_usaf_aluminum_c*",
+          "to": "f_84g_fourqueens_c*"
+        },
+        {
+          "from": "f_84g_late_usaf_aluminum_n*",
+          "to": "f_84g_fourqueens_n*"
+        },
+        {
+          "from": "f_84g_tank_c*",
+          "to": "f_84g_tank_fourqueens_c*"
+        },
+        {
+          "from": "f_84g_tank_n*",
+          "to": "f_84g_tank_fourqueens_n*"
+        }
+      ]
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "f-84g_thailand_default",

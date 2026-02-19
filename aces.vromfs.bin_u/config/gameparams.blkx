@@ -8902,6 +8902,16 @@
   "commonClientScenes": {
     "scene": "gameData/scenes/common_client_scene.blk"
   },
+  "prandtlEffect": {
+    "machRange": [
+      0.98,
+      1.02
+    ],
+    "timeOut": [
+      1.0,
+      10.0
+    ]
+  },
   "shipBigCaliberPenetrationDistances": {
     "dist": [
       1000.0,

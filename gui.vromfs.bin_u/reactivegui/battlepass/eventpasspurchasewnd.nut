@@ -6,7 +6,7 @@ let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isEPPurchaseWndOpened, closeEPPurchaseWnd, isEpSeasonActive, curStage, sendEpBqEvent,
   purchasedEp, eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, eventPassGoods, getEpIcon,
-  EP_NONE, EP_COMMON, EP_VIP, getEpName, seasonEndTime, eventBgImage, curEventId
+  EP_NONE, EP_COMMON, EP_VIP, getEpName, seasonEndTime, eventBgImage, curEventId, eventPassVipLevels
 } = require("%rGui/battlePass/eventPassState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -144,7 +144,8 @@ function rewardsToViewInfo(rewards, servConfigs) {
 let rewardsList = @(selBpInfo) function() {
   let res = {
     watch = [eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, curStage,
-      serverConfigs, selBpInfo, purchasedEp, servProfile]
+      serverConfigs, selBpInfo, purchasedEp, servProfile, eventPassVipLevels
+    ]
     size = FLEX_H
   }
   if (eventPaidRewardsUnlock.get() == null)
@@ -156,7 +157,7 @@ let rewardsList = @(selBpInfo) function() {
   let tgtStage = curStage.get()
   let maxProgress = max((eventPaidRewardsUnlock.get()?.stages.top().progress ?? tgtStage),
     (eventFreeRewardsUnlock.get()?.stages.top().progress ?? tgtStage))
-  let levelsToAdd = selBpInfo.get()?.bpType != EP_VIP ? 0 : min(7, maxProgress - tgtStage)
+  let levelsToAdd = selBpInfo.get()?.bpType != EP_VIP ? 0 : min(eventPassVipLevels.get(), maxProgress - tgtStage)
   let tgtStageAdd = tgtStage + levelsToAdd
 
   let rewardsOnPurchase = purchasedEp.get() != EP_NONE ? {}

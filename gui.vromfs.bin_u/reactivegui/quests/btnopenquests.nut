@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasUnseenQuestsBySection, questsBySection, progressUnlockByTab, progressUnlockBySection,
-  questsCfg, openQuestsWnd, openQuestsWndOnTab
+  questsCfg, openQuestsWnd, openQuestsWndOnTab, tutorialQuestBtnKey
 } = require("%rGui/quests/questsState.nut")
 
 let statusMark = @(_) @() {
@@ -16,14 +16,21 @@ let statusMark = @(_) @() {
     : null
 }
 
-let btnOpenQuests = @() {
-  watch = questsBySection
-  children = questsBySection.get().findindex(@(s) s.len() > 0) == null ? null
-    : translucentButton("ui/gameuiskin#quests.svg",
-        "",
-        openQuestsWnd,
-        statusMark,
-        { key = "quest_wnd_btn" }) 
+function btnOpenQuests(keyPostfix) {
+  let key = $"quest_wnd_btn_{keyPostfix}" 
+  return @() {
+    watch = questsBySection
+    children = questsBySection.get().findindex(@(s) s.len() > 0) == null ? null
+      : translucentButton("ui/gameuiskin#quests.svg",
+          "",
+          openQuestsWnd,
+          statusMark,
+          {
+            key,
+            onAttach = @() tutorialQuestBtnKey.set(key),
+            onDetach = @() tutorialQuestBtnKey.set(null)
+          })
+  }
 }
 
 function mkBtnOpenTabQuests(tabId, ovr = {}) {

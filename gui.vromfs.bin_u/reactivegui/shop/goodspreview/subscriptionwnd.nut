@@ -163,7 +163,7 @@ let toggleSubsBtn = @(subs, subsList) mkCustomButton(
     image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
     keepAspect = true
   },
-  @() openSubsPreview(getNextFromList(subsList, subs.id)),
+  @() openSubsPreview(getNextFromList(subsList, subs.id), null),
   mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight } }))
 
 let btnRow = @(children) {
@@ -321,7 +321,7 @@ let subsIcons = @(list) function() {
     size = [iconSize[0] * (list.len() + 1) / 2, iconSize[1]]
     hplace = ALIGN_CENTER
     behavior = list.len() <= 1 ? null : Behaviors.Button
-    onClick = @() openSubsPreview(getNextFromList(list, openedSubsId.get()))
+    onClick = @() openSubsPreview(getNextFromList(list, openedSubsId.get()), null)
     children
   }
 }
@@ -415,4 +415,4 @@ if(isOpened.get())
   openImpl()
 isOpened.subscribe(@(v) v ? openImpl() : removeModalWindow(WND_UID))
 
-register_command(@() openSubsPreview("vip"), "ui.subs_wnd")
+register_command(@() openSubsPreview("vip", "debug"), "ui.subs_wnd")

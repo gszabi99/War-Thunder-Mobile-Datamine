@@ -70,7 +70,7 @@ let onClickNotVip = @() openMsgBox({
       id = "view_subscription"
       styleId = "PRIMARY"
       isDefault = true
-      cb = @() openSubsPreview("vip")
+      cb = @() openSubsPreview("vip", "offer_skip")
     }
   ]
 })

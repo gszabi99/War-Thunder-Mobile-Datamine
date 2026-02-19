@@ -46,11 +46,11 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
 let appsFlyerSaveId = "DefaultSkinWasReplaced"
 let SKINS_IN_ROW = 4
-let SKINS_IN_ROW_TAGS = 3
+let SKINS_IN_ROW_TAGS = 3.4
 let skinSize = hdpxi(100)
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
 let skinGap = evenPx(15)
-let tagNameSize = hdpx(210)
+let tagNameSize = hdpx(170)
 let skinsRowPadding = hdpx(20)
 let skinsRowWidth = skinSize * SKINS_IN_ROW + skinGap * (SKINS_IN_ROW - 1)
 let rowHeight = skinSize + skinGap
@@ -333,8 +333,8 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
       || unit.platoonUnits.findvalue(@(v) (unit.currentSkins?[v.name] ?? "") != skinName) != null)
   return @() {
     watch = campMyUnits
-    hplace = ALIGN_RIGHT
-    padding = [0, saBorders[0], 0, 0]
+    size = flex()
+    halign = cSkin == skinName ? ALIGN_CENTER : ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
     children = [
@@ -348,8 +348,7 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
               enable_unit_skin(unit.name, vehicleName, skinName)
               if (skinName != "")
                 sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
-            },
-            { hplace = ALIGN_CENTER })
+            })
     ]
   }
 }
@@ -431,13 +430,13 @@ let skinActionBtn = @() {
   watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, unitToShow,
     skinsInProgress, baseUnit, isOwnUnit, campMyUnits]
   size = [flex(), defButtonHeight]
-  halign = ALIGN_CENTER
+  halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
   children = !isOwnUnit.get() || !selectedSkin.get() || unitToShow.get() == null
       ? null
     : skinsInProgress.get() ? spinner
     : selectedSkin.get() == "upgraded" && !baseUnit.get()?.isUpgraded
-      ? mkGradText(loc("attrib_section/upgradeBattleRewards"))
+      ? mkGradText(loc("attrib_section/upgradeBattleRewards")).__update({ hplace = ALIGN_CENTER })
     : currentSkin.get() == selectedSkin.get() || selectedSkin.get() in availableSkins.get()
       ? selectBtns(baseUnit.get(), unitToShow.get().name, selectedSkin.get(), currentSkin.get())
     : selectedSkinCfg.get()?.currencyId != null && canChangeSkin(unitToShow.get(), campMyUnits.get())

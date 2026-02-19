@@ -40,7 +40,7 @@ function openSubsWnd() {
   if (allow_subscriptions.get())
     foreach (sList in subsByCategory.get())
       if (sList.len() > 0) {
-        openSubsPreview(sList.top().id)
+        openSubsPreview(sList.top().id, "missing_prem_acc")
         return
       }
   openShopWnd(SC_PREMIUM)

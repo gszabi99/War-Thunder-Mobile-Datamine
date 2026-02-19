@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { unitRewardTypes, G_UNIT, G_UNIT_UPGRADE, G_BLUEPRINT, G_CURRENCY, G_LOOTBOX, G_PREMIUM, G_SKIN
 } = require("%appGlobals/rewardType.nut")
@@ -169,6 +170,12 @@ servProfile.subscribe(function(servProfileV){
       return validate_active_offer(curCampaign.get())
 })
 
+function openSubsPreview(id, bqSourceId) {
+  openedSubsId.set(id)
+  if(bqSourceId)
+    sendUiBqEvent("open_subscription_window", {id = bqSourceId})
+}
+
 return {
   GPT_UNIT
   GPT_CURRENCY
@@ -195,7 +202,7 @@ return {
   getNotLoadedTagsUnitsToShowGoods
   getPreviewType
 
-  openSubsPreview = @(id) openedSubsId.set(id)
+  openSubsPreview
   closeSubsPreview = @() openedSubsId.set(null)
   openedSubsId
 }

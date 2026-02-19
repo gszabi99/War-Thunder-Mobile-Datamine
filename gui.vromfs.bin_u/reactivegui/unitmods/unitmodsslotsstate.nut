@@ -41,8 +41,9 @@ let weaponSlots = Computed(@() openedUnitId.get() == null ? [] : loadUnitWeaponS
 let curSlot = Computed(@() weaponSlots.get()?[curSlotIdx.get()])
 let curWeapons = Computed(@() curSlot.get()?.wPresets ?? {})
 
-openedUnitId.subscribe(function(v) {
-  unitModSlotsOpenCount.set(v == null ? 0 : unitModSlotsOpenCount.get() + 1)
+function openUnitId(unitId) {
+  openedUnitId.set(unitId)
+  unitModSlotsOpenCount.set(unitId == null ? 0 : unitModSlotsOpenCount.get() + 1)
   if (needSetSlotOnOpen.get()) {
     if (weaponSlots.get().len() > 1)
       curSlotIdx.set(DEFAULT_SLOT_IDX)
@@ -51,14 +52,14 @@ openedUnitId.subscribe(function(v) {
     needSetSlotOnOpen.set(false)
   }
   seenIndexedSlotMods.set({})
-})
+}
 
 curBeltsWeaponIdx.subscribe(@(v) v < 0 ? null : curSlotIdx.set(-1))
 curSlotIdx.subscribe(@(v) v < 0 ? null : curBeltsWeaponIdx.set(-1))
 
-function openUnitModsSlotsWndByName(name) {
-  openedUnitId.set(name)
+function openUnitModsSlotsWnd() {
   needSetSlotOnOpen.set(true)
+  openUnitId(hangarUnitName.get())
 }
 
 function isBeltWeapon(weapon) {
@@ -530,7 +531,7 @@ curBelt.subscribe(function(v) {
 
 function closeUnitModsSlotsWnd() {
   setAllSeenMods()
-  openedUnitId.set(null)
+  openUnitId(null)
 }
 
 let curBeltsIds = Computed(@() curWeaponBeltsOrdered.get().filter(@(w) w.id != "").map(@(w) w.id))
@@ -581,8 +582,7 @@ function findSlotWeaponsToBuyNonUpdatable() {
 }
 
 return {
-  openUnitModsSlotsWnd = @() openUnitModsSlotsWndByName(hangarUnitName.get())
-  openUnitModsSlotsWndByName
+  openUnitModsSlotsWnd
   closeUnitModsSlotsWnd
   unitModSlotsOpenCount
   isHangarUnitHasWeaponSlots = mkHasUnitWeaponSlots(hangarUnit)

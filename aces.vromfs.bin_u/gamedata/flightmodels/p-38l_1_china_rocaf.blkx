@@ -2748,13 +2748,123 @@
     "replace_tex": [
       {
         "from": "p38l_usaaf_aluminium_body_c*",
-        "to": "p38l_china_rocaf_aluminum_body_c*"
+        "to": "p38l_usaaf_horse_c*"
       },
       {
         "from": "p38l_usaaf_aluminium_body_n*",
-        "to": "p38l_china_rocaf_aluminum_body_n*"
+        "to": "p38l_usaaf_horse_n*"
+      },
+      {
+        "from": "p38l_usaaf_aluminium_flaps_c*",
+        "to": "p38l_usaaf_horse_flaps_c*"
+      },
+      {
+        "from": "p38l_usaaf_aluminium_flaps_n*",
+        "to": "p38l_usaaf_horse_flaps_n*"
+      },
+      {
+        "from": "p38_pylon_metal_c*",
+        "to": "p38_pylon_horse_metal_c*"
+      },
+      {
+        "from": "p38_pylon_metal_n*",
+        "to": "p38_pylon_horse_metal_n*"
+      },
+      {
+        "from": "p38l_aluminium_christmas_tree_c*",
+        "to": "p38l_aluminium_christmas_tree_horse_c*"
+      },
+      {
+        "from": "p38l_aluminium_christmas_tree_n*",
+        "to": "p38l_aluminium_christmas_tree_horse_n*"
+      },
+      {
+        "from": "p38l_aluminium_camera_pylon_c*",
+        "to": "p38l_aluminium_camera_pylon_horse_c*"
+      },
+      {
+        "from": "p38l_aluminium_camera_pylon_n*",
+        "to": "p38l_aluminium_camera_pylon_horse_n*"
+      },
+      {
+        "from": "dgp_1_c*",
+        "to": "dgp_1_horse_c*"
+      },
+      {
+        "from": "dgp_1_n*",
+        "to": "dgp_1_horse_n*"
+      },
+      {
+        "from": "dgp1pylon_p38_c*",
+        "to": "dgp1pylon_p38_horse_c*"
+      },
+      {
+        "from": "dgp1pylon_p38_n*",
+        "to": "dgp1pylon_p38_horse_n*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "china": {
+      "replace_tex": [
+        {
+          "from": "p38l_usaaf_aluminium_body_c*",
+          "to": "p38l_china_rocaf_aluminum_body_c*"
+        },
+        {
+          "from": "p38l_usaaf_aluminium_body_n*",
+          "to": "p38l_china_rocaf_aluminum_body_n*"
+        },
+        {
+          "from": "p38l_usaaf_aluminium_flaps_c*",
+          "to": "p38l_usaaf_aluminium_flaps_c*"
+        },
+        {
+          "from": "p38l_usaaf_aluminium_flaps_n*",
+          "to": "p38l_usaaf_aluminium_flaps_n*"
+        },
+        {
+          "from": "p38_pylon_metal_c*",
+          "to": "p38_pylon_metal_c*"
+        },
+        {
+          "from": "p38_pylon_metal_n*",
+          "to": "p38_pylon_metal_n*"
+        },
+        {
+          "from": "p38l_aluminium_christmas_tree_c*",
+          "to": "p38l_aluminium_christmas_tree_c*"
+        },
+        {
+          "from": "p38l_aluminium_christmas_tree_n*",
+          "to": "p38l_aluminium_christmas_tree_n*"
+        },
+        {
+          "from": "p38l_aluminium_camera_pylon_c*",
+          "to": "p38l_aluminium_camera_pylon_c*"
+        },
+        {
+          "from": "p38l_aluminium_camera_pylon_n*",
+          "to": "p38l_aluminium_camera_pylon_n*"
+        },
+        {
+          "from": "dgp_1_c*",
+          "to": "dgp_1_c*"
+        },
+        {
+          "from": "dgp_1_n*",
+          "to": "dgp_1_n*"
+        },
+        {
+          "from": "dgp1pylon_p38_c*",
+          "to": "dgp1pylon_p38_c*"
+        },
+        {
+          "from": "dgp1pylon_p38_n*",
+          "to": "dgp1pylon_p38_n*"
+        }
+      ]
+    }
   },
   "default_skin_tomoe": {
     "replace_tex": [

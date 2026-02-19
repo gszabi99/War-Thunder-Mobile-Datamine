@@ -2238,5 +2238,45 @@
     "lod0": "avr74dqj2ecurja3joxvt2n635ew6y4g-dfra",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "gdgpgd3lnnusfzvz5kubfqkxoeamkl7j-6jq"
+  },
+  "fiery_horseshoe_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "3mh5cwjlbfu5wurhnup6zzios5p7ysqx-evwa",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "p65gb3pkswjwwhgycqnrxl43cuphaax3-bmei"
+  },
+  "fiery_horse_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "lrpxxefrilbxambim5eft6xnf4rx7yqe-fvyi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "dr5a6piewtyrlvp4avdx5boxgseglbae-bsna"
+  },
+  "steel_dragons_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "rsils7b475knfg7f55hkgtlnbibdjhco-e4ii",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ehpxt7zs3bcxa3jk5kuydposw2zoqxb4-bm4i"
+  },
+  "mace_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "wovnwuxhx7kykel3o6uzkvx367juzign-dpga",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "rhexnfarht43dprs4slj6ouwmlfwdk36-bauq"
+  },
+  "teutonic_helmet_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "tl67i2vuys27wainm62jrj7qt7xmrdmc-en5y",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ufajwuf5xfztpctjdct7x3leonuhvb5g-bi3a"
   }
 }

@@ -35,6 +35,10 @@ let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { btnOpenQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
+let { isFitSeasonRewardsRequirements, isEventActive } = require("%rGui/event/eventState.nut")
+let { isBpSeasonActive } = require("%rGui/battlePass/battlePassState.nut")
+let { isOPSeasonActive } = require("%rGui/battlePass/operationPassState.nut")
+let { isEpSeasonActive } = require("%rGui/battlePass/eventPassState.nut")
 let bpBanner = require("%rGui/battlePass/bpBanner.nut")
 let premDailyBonusWnd = require("%rGui/shop/premDailyBonusWnd.nut")
 let btnOpenUnitsTree = require("%rGui/unitsTree/btnOpenUnitsTree.nut")
@@ -227,6 +231,9 @@ let leftBottomButtons = {
       }
 }
 
+let isPassActive = Computed(@() isBpSeasonActive.get() || isOPSeasonActive.get() || isEpSeasonActive.get())
+let hasBanner = Computed(@() isFitSeasonRewardsRequirements.get() && (isPassActive.get() || isEventActive.get()))
+
 let leftTopButtons = {
   vplace = ALIGN_TOP
   flow = FLOW_VERTICAL
@@ -255,14 +262,16 @@ let leftTopButtons = {
         ]
       }
       @() {
-        watch = newbieOfflineMissions
-        children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null : btnVerRow([
-          bpBanner
-          btnHorRow([
-            btnOpenQuests
-            btnsOpenSpecialEvents
-          ])
-        ])
+        watch = [newbieOfflineMissions, hasBanner, isPassActive, isEventActive]
+        children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null
+          : !hasBanner.get() ? btnHorRow([btnOpenQuests("no_banner"), btnsOpenSpecialEvents])
+          : btnVerRow([
+              bpBanner(isPassActive.get(), isEventActive.get())
+              btnHorRow([
+                btnOpenQuests("banner")
+                btnsOpenSpecialEvents
+              ])
+            ])
       }
       btnHorRow([
         btnVerRow([

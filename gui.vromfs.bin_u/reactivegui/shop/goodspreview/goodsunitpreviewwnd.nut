@@ -37,12 +37,12 @@ let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitPlatesGap, unitPlateSmall, mkUnitInfo,
+let { unitPlatesGap, unitPlateTiny, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
   unitPlateWidth, unitPlateHeight, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
@@ -69,9 +69,7 @@ let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let TIME_TO_SHOW_UI = 5.0 
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
 
-let unitPlateSize = unitPlateSmall
-let unitPlateSizeMain = unitPlateSize.map(@(v) v * 1.16)
-let unitPlateSizeSingle = unitPlateSize.map(@(v) v * 1.3)
+let unitPlateSize = unitPlateTiny
 let verticalGap = hdpx(20)
 let maxInfoPanelHeight = saSize[1] - hdpx(380)
 
@@ -318,9 +316,7 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let p = getUnitPresentation(platoonUnit)
   let platoonUnitFull = unit.__merge(platoonUnit)
   let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.get() == platoonUnit.name)
-  let size = idx != 0 ? unitPlateSize
-    : onSelectUnit == null ? unitPlateSizeSingle
-    : unitPlateSizeMain
+  let size = unitPlateSize
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
   return {
@@ -379,7 +375,7 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
   children = [
     {
       size = flex()
-      pos = [-saBorders[0], REWARD_STYLE_MEDIUM.boxSize * 1.1 * hintOffsetMulY]
+      pos = [0, REWARD_STYLE_TINY.boxSize * 1.1 * hintOffsetMulY]
       valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
       children = activeItemHint
     }
@@ -422,7 +418,7 @@ let balanceBlock = @() {
 }
 
 let itemsDescText = {
-  padding = hdpx(20)
+  padding = [hdpx(20), 0]
   rendObj = ROBJ_TEXT
   valign = ALIGN_CENTER
   text = loc("offer/itemsDesc")
@@ -519,8 +515,6 @@ let rightBlock = {
       size = FLEX_V
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_BOTTOM
       children = mkPriceWithTimeBlock(aTimePriceStart, skipOfferBtn)
     }
   ]
@@ -618,7 +612,7 @@ let leftBlock = {
       watch = needScroll
       size = !needScroll.get()
         ? flex()
-        : [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
+        : [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
       children = [
         !needScroll.get() ? leftBlockUnits
           : pannableArea(leftBlockUnits, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })

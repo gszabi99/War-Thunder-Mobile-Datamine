@@ -639,7 +639,7 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
     flow = FLOW_VERTICAL
     children = [
       mkText(loc("events/lootboxContains"),
-        { hplace = ALIGN_CENTER })
+        { size = flex(), halign = ALIGN_CENTER, valign = ALIGN_CENTER })
       lootboxImageWithTimer(lootbox)
       itemsBlock(
         rewards.get(),
