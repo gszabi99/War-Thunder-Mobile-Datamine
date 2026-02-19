@@ -3,7 +3,7 @@ let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime
+let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime, shopGoods
 } = require("%rGui/shop/shopState.nut")
 let { getEventPresentationId, getEventLoc, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
@@ -35,6 +35,12 @@ let parentEventName = Computed(function() {
     if (event_id != null && hasUnlockReward(u, isFit))
       return event_id
   }
+  
+  foreach (s in shopGoods.get())
+    if ("event_id" in s.meta
+        && (s.price.currencyId == cId || null != s.rewards.findvalue(@(g) g.id == cId && g.gType == G_CURRENCY)))
+      return s.meta.event_id
+
   
   foreach(name, u in allUnlocksDesc.get()) {
     if (name in activeUnlocksV)
