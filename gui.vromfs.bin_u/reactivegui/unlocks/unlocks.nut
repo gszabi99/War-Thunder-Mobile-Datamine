@@ -230,6 +230,7 @@ userstatRegisterHandler("BatchGrantRewards", function(result, context) {
     return
   }
   log("BatchGrantRewards result success: ", context)
+  forceRefreshUnlocks()
   callExtCb(onSuccessCb)
 })
 

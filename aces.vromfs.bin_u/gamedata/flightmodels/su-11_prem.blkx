@@ -2,6 +2,7 @@
   "model": "su_11",
   "fmFile": "fm/su-11.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "useTouchTargeting": true,
   "gearSinkRangeLR": 0.208,
   "gearSinkRangeC": 0.164,
   "gyroSight": false,
