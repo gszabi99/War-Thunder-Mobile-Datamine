@@ -309,6 +309,7 @@
     "lap_time_faster": 0.0,
     "lap_time_fastest": 0.0,
     "userstat_battle_score": false,
+    "userstat_rating": false,
     "allow_spend_items": true,
     "penalty_id": "",
     "userstat_modes:list<t>": {},
