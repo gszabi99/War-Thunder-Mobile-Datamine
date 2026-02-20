@@ -2578,6 +2578,8 @@
     }
   },
   "stcode": {
+    "useBytecodeForDynstcode": true,
+    "useBytecodeForStblkcode": true,
     "tag": "$version"
   },
   "consent": {
