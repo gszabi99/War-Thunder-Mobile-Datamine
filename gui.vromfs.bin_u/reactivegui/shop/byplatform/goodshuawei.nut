@@ -85,6 +85,7 @@ let skusInfo = hardPersistWatched("goodsHuawei.skusInfo", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let restoreStatus = mkWatched(persist, "restoreStatus", RESTORE_NOT_STARTED)
 let pendingTransactions = hardPersistWatched("goodsHuawei.pendingTransactions", [])
+let pendingPurchaseEvents = hardPersistWatched("goodsHuawei.pendingPurchaseEvents", {})
 let isRegisterInProgress = hardPersistWatched("goodsHuawei.isRegisterInProgress", false)
 let lastYu2TimeoutErrorTime = hardPersistWatched("goodsHuawei.lastYu2TimeoutErrorTime", 0)
 let nextRefreshTime = Watched(-1)
@@ -276,30 +277,41 @@ function changeSubscription(subsOrId, _) {
 
 let noNeedLogerr = [ HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_DEFAULT_CODE ]
 
-function sendLogPurchaseData(json_value) {
-  
-  local resp = parse_json(json_value)
-  let { orderId = null, productId = null } = resp
-  local af = {
+function sendPurchaseLogEvent(purchaseToken, isAdded) {
+  if (pendingPurchaseEvents.get().len() == 0 || !purchaseToken){
+    return
+  }
+  let { productId = null, orderId = null } = pendingPurchaseEvents.get().rawdelete(purchaseToken)
+  if (!productId || !orderId || !isAdded)
+    return
+  let price = availableSkusPrices.get()?[productId].price ?? -1
+  let currency = (availableSkusPrices.get()?[productId].currencyId ?? "USD").toupper()
+  logEvent("af_purchase", object_to_json_string({
     af_order_id = orderId
     af_content_id = productId
-    af_revenue = availableSkusPrices.get()?[productId].price ?? -1
-    af_price = availableSkusPrices.get()?[productId].price ?? -1
-    af_currency = availableSkusPrices.get()?[productId].currencyId ?? "USD" 
-  }
-  logEvent("af_purchase", object_to_json_string(af, true))
+    af_revenue = price
+    af_price = price
+    af_currency = currency
+  }, true))
 
-  local firebase_event = {
-    value = availableSkusPrices.get()?[productId].price ?? -1
+  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string( {
+    value = price
     quantity = 1
     product_id = productId
     free_trial = false
     subscription = subsIdByPlanId.get()?[productId] != null
-    currency = (availableSkusPrices.get()?[productId].currencyId ?? "USD").toupper()
+    currency = currency
     price_is_discounted = false
-  }
-  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string(firebase_event, true))
+  }, true))
 }
+
+function addPurchaseDataToQueue(json_value) {
+  local googleResp = parse_json(json_value)
+  let { orderId = null, productId = null, purchaseToken = null } = googleResp
+  if (orderId && purchaseToken && productId)
+    pendingPurchaseEvents.mutate(@(v) v[purchaseToken] <- {productId, orderId})
+}
+
 
 function onFinishRestore() {
   logG("Restore finished")
@@ -351,7 +363,7 @@ function registerNextTransaction() {
     isRegisterInProgress.set(true)
     register_huawei_purchase(value, false, "auth.onRegisterHuaweiPurchase")
     if (DBGLEVEL == 0)
-      sendLogPurchaseData(value)
+      addPurchaseDataToQueue(value);
   } else {
     let statusName = getStatusName(status)
     purchaseInProgress.set(null)
@@ -414,7 +426,8 @@ let showErrorMsg = @(text, wndOvr = {}) restoreStatus.get() == RESTORE_STARTED_S
 
 eventbus_subscribe("auth.onRegisterHuaweiPurchase", function(result) {
   isRegisterInProgress.set(false)
-  let {status, item_id = null, purch_token = null } = result
+  let {status, item_id = null, purch_token = null, added = 0 } = result
+  sendPurchaseLogEvent(purch_token, added)
   if (status == YU2_OK && item_id && purch_token) {
     logG($"register_huawei_purchase success")
     local purchase = {

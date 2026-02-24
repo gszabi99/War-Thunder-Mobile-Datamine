@@ -78,6 +78,7 @@ const RESTORE_STARTED_SILENT = 2
 let lastInitStatus = hardPersistWatched("goodsIos.lastInitStatus", AS_NOT_INITED)
 let products = hardPersistWatched("goodsIos.products", {})
 let pendingTransactions = hardPersistWatched("goodsIos.pendingTransactions", [])
+let pendingPurchaseEvents = hardPersistWatched("goodsIos.pendingPurchaseEvents", {})
 let isRegisterInProgress = hardPersistWatched("goodsIos.isRegisterInProgress", false)
 let lastYu2TimeoutErrorTime = hardPersistWatched("goodsIos.lastYu2TimeoutErrorTime", 0)
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
@@ -160,28 +161,40 @@ let platformGoods = Computed(function() {
   return res
 })
 
-function sendLogPurchaseData(product_id,transaction_id) {
-  
-  local af = {
-    af_order_id = transaction_id
-    af_content_id = product_id
-    af_revenue = availablePrices.get()?[product_id].price ?? -1
-    af_price = availablePrices.get()?[product_id].price ?? -1
-    af_currency = availablePrices.get()?[product_id].currencyId ?? "USD"
-  }
-  logEvent("af_purchase", object_to_json_string(af, true))
 
-  local firebase_event = {
-    value = availablePrices.get()?[product_id].price ?? -1
+function sendPurchaseLogEvent(transactionId, isAdded) {
+  if (pendingPurchaseEvents.get().len() == 0 || !transactionId)
+    return
+
+  let { productId = null } = pendingPurchaseEvents.get().rawdelete(transactionId)
+  if (!productId || !isAdded)
+    return
+
+  let price = availablePrices.get()?[productId].price ?? -1
+  let currency = (availablePrices.get()?[productId].currencyId ?? "USD").toupper()
+  logEvent("af_purchase", object_to_json_string({
+    af_order_id = transactionId
+    af_content_id = productId
+    af_revenue = availablePrices.get()?[productId].price ?? -1
+    af_price = availablePrices.get()?[productId].price ?? -1
+    af_currency = currency
+  }, true))
+  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string({
+    value = price
     quantity = 1
-    product_id = product_id
-    currency = (availablePrices.get()?[product_id].currencyId ?? "USD").toupper()
+    product_id = productId
+    currency = currency
     price_is_discounted = false
     free_trial = false
-    subscription = subsIdByProductId.get()?[product_id] != null
-  }
-  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string(firebase_event, true))
+    subscription = subsIdByProductId.get()?[productId] != null
+  }, true))
 }
+
+function addPurchaseDataToQueue(productId, transactionId) {
+  if (productId && transactionId)
+    pendingPurchaseEvents.mutate(@(v) v[transactionId] <- {productId})
+}
+
 
 function onFinishRestore() {
   logG("Restore finished")
@@ -235,7 +248,7 @@ function registerNextTransaction() {
     isRegisterInProgress.set(true)
     register_apple_purchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
     if (DBGLEVEL == 0)
-      sendLogPurchaseData(id, transaction_id)
+      addPurchaseDataToQueue(id, transaction_id)
   } else {
     purchaseInProgress.set(null)
     if (status != AS_CANCELED) {
@@ -266,11 +279,12 @@ let showErrorMsg = @(text, wndOvr = {}) restoreStatus.get() == RESTORE_STARTED_S
 
 eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
   isRegisterInProgress.set(false)
-  let {status, purchase_transaction_id = null } = result
+  let {status, purchase_transaction_id = null, added = 0 } = result
 
   if ((status == YU2_OK || status == YU2_EXPIRED) && purchase_transaction_id) {
     logG($"register_apple_purchase success")
     confirmPurchase(purchase_transaction_id)
+    sendPurchaseLogEvent(purchase_transaction_id, added)
     return
   }
 

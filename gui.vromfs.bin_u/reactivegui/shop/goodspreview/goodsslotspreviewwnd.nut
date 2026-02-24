@@ -57,6 +57,7 @@ let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 let MAX_BIG_SLOTS = 8
+let RETRY_EMPTY_REFRESH_SEC = 300 
 let maxWndWidth = min(saSize[0], hdpxi(2200))
 let blockGap = buttonsHGap
 
@@ -83,6 +84,7 @@ let goodsRewardSlots = Computed(@() serverConfigs.get()?.goodsRewardSlots[previe
 let rerollCost = Computed(@() goodsRewardSlots.get()?.rerollCost)
 let rewardSlots = Computed(@() servProfile.get()?.rewardSlots[previewGoods.get()?.id])
 let selIndex = Watched(-1)
+let autoRefreshLocks = Watched({})
 let previewGoodsWithUpdatedPrice = Computed(function() {
   let goods = previewGoods.get()
   if (goods == null)
@@ -98,14 +100,17 @@ let previewGoodsWithUpdatedPrice = Computed(function() {
 let AUTO_REQUEST_AFTER_ERROR_TIME = 10
 let freeRefreshErrorSoon = Watched(null)
 let needFreeRefreshSlots = keepref(Computed(function() {
+  let { id = null } = previewGoods.get()
   if (!isAttached.get()
-      || freeRefreshErrorSoon.get() == previewGoods.get()?.id
-      || shopPurchaseInProgress.get() == previewGoods.get()?.id
-      || shopGenSlotInProgress.get() == previewGoods.get()?.id
-      || rerollCost.get() == null) 
+      || id == null
+      || freeRefreshErrorSoon.get() == id
+      || shopPurchaseInProgress.get() == id
+      || shopGenSlotInProgress.get() == id
+      || rerollCost.get() == null 
+      || (autoRefreshLocks.get()?[id] ?? false))
     return false
   let { time = 0, isPurchased = false, goods = [] } = rewardSlots.get()
-  return getDay(time, dayOffset.get()) != serverTimeDay.get()
+  return (getDay(time, dayOffset.get()) != serverTimeDay.get() || goods.len() == 0)
     || isPurchased
     || (goods.len() > 0 && null == goods.findvalue(@(g) !isRewardEmpty(g, servProfile.get())))
 }))
@@ -118,8 +123,15 @@ selIndex.subscribe(function(_) {
 let resetError = @() freeRefreshErrorSoon.set(null)
 registerHandler("autoGenerateGoodsSlots",
   function(res, context) {
-    if (res?.error == null)
+    if (res?.error == null) {
+      let needLock = isAttached.get() && (rewardSlots.get()?.goods.len() ?? 0) == 0
+      autoRefreshLocks.mutate(@(v) v.$rawset(context.goodsId, needLock))
+      if (needLock) {
+        let id = context.goodsId
+        resetTimeout(RETRY_EMPTY_REFRESH_SEC, @() autoRefreshLocks.mutate(@(v) v.$rawset(id, false)))
+      }
       return
+    }
     freeRefreshErrorSoon.set(context.goodsId)
     resetTimeout(AUTO_REQUEST_AFTER_ERROR_TIME, resetError)
   })

@@ -44,11 +44,15 @@ function handleShowAds(rInfo) {
 }
 
 function initProviders() {
-  if (!isGoogleConsentAllowAds.get())
+  if (!isGoogleConsentAllowAds.get()) {
+    logA($"Skip init providers because no consent allowed")
     return
+  }
   let { providers, countryCode } = providerPriorities.get()
-  if (providers.len() == 0)
+  if (providers.len() == 0) {
+    logA($"Skip init providers because empty providers list")
     return
+  }
 
   logA($"Init providers for {countryCode}")
   let pStatus = parse_json(getProvidersStatus())
@@ -196,7 +200,13 @@ eventbus_subscribe("android.ads.onReward", function (params) {
 
 function showAdsForReward(rInfo) {
   if (!isInited.get()) {
-    logerr("Trying to show ads when there is no initialized provider")
+    let { providers, countryCode } = providerPriorities.get()
+    let info = {
+      isGoogleConsentAllowAds = isGoogleConsentAllowAds.get()
+      countryCode
+      providers = providers.keys()
+    }
+    logerr($"Trying to show ads when there is no initialized provider. /*{object_to_json_string(info)}*/")
     return
   }
   providersStatuses.clear()

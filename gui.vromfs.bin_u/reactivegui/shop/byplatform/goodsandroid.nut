@@ -100,6 +100,7 @@ let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let restoreStatus = mkWatched(persist, "restoreStatus", RESTORE_NOT_STARTED)
 let nextRefreshTime = Watched(-1)
 let pendingTransactions = hardPersistWatched("goodsAndroid.pendingTransactions", [])
+let pendingPurchaseEvents = hardPersistWatched("goodsAndroid.pendingPurchaseEvents", {})
 let isRegisterInProgress = hardPersistWatched("goodsAndroid.isRegisterInProgress", false)
 let lastYu2TimeoutErrorTime = hardPersistWatched("goodsAndroid.lastYu2TimeoutErrorTime", 0)
 
@@ -321,29 +322,39 @@ function changeSubscription(subsTo, subsFrom) {
 
 let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR, GP_BILLING_UNAVAILABLE ]
 
-function sendLogPurchaseData(json_value) {
+function sendPurchaseLogEvent(purchaseToken, isAdded) {
+  if (pendingPurchaseEvents.get().len() == 0 || !purchaseToken){
+    return
+  }
+  let { productId = null, orderId = null } = pendingPurchaseEvents.get().rawdelete(purchaseToken)
+  if (!productId || !orderId || !isAdded)
+    return
+  let price = availableSkusPrices.get()?[productId].price ?? -1
+  let currency = (availableSkusPrices.get()?[productId].currencyId ?? "USD").toupper()
   
-  local googleResp = parse_json(json_value)
-  let { orderId = null, productId = null } = googleResp
-  local af = {
+  logEvent("af_purchase", object_to_json_string({
     af_order_id = orderId
     af_content_id = productId
-    af_revenue = availableSkusPrices.get()?[productId].price ?? -1
-    af_price = availableSkusPrices.get()?[productId].price ?? -1
-    af_currency = availableSkusPrices.get()?[productId].currencyId ?? "USD" 
-  }
-  logEvent("af_purchase", object_to_json_string(af, true))
-
-  local firebase_event = {
-    value = availableSkusPrices.get()?[productId].price ?? -1
+    af_revenue = price
+    af_price = price
+    af_currency = currency
+  }, true))
+  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string({
+    value = price
     quantity = 1
     free_trial = false
     product_id = productId
     subscription = subsIdBySku.get()?[productId] != null
-    currency = (availableSkusPrices.get()?[productId].currencyId ?? "USD").toupper()
+    currency = currency
     price_is_discounted = false
-  }
-  logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string(firebase_event, true))
+  }, true))
+}
+
+function addPurchaseDataToQueue(json_value) {
+  local googleResp = parse_json(json_value)
+  let { orderId = null, productId = null, purchaseToken = null } = googleResp
+  if (orderId && purchaseToken && productId)
+    pendingPurchaseEvents.mutate(@(v) v[purchaseToken] <- {productId, orderId})
 }
 
 function onFinishRestore() {
@@ -407,7 +418,7 @@ function registerNextTransaction() {
     isRegisterInProgress.set(true)
     register_googleplay_purchase(value, false, "auth.onRegisterGooglePurchase")
     if (DBGLEVEL == 0)
-      sendLogPurchaseData(value)
+      addPurchaseDataToQueue(value)
     return
   }
 
@@ -471,8 +482,9 @@ let showErrorMsg = @(text, wndOvr = {}) restoreStatus.get() == RESTORE_STARTED_S
 
 eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
   isRegisterInProgress.set(false)
-  let {status, item_id = null, purch_token = null } = result
+  let {status, item_id = null, purch_token = null, added = 0 } = result
 
+  sendPurchaseLogEvent(purch_token, added)
   if (status == YU2_OK && item_id && purch_token) {
     logG($"register_googleplay_purchase success")
     local purchase = {

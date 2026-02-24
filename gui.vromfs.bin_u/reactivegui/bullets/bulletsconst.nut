@@ -7,10 +7,11 @@ return {
   BULLETS_LOW_AMOUNT = 5,
   BULLETS_LOW_PERCENT = 25.0,
 
-  ammoReductionFactorDef = 0.6,
+  ammoReductionFactorDef = 0.40,
   ammoReductionSecFactorDef = 1,
+  ammoReductionSpecFactorDef = 1,
   ammoReductionFactorsByIdx = {
-    [0] = 0.45, 
-    [1] = 0.15 
+    [0] = 0.35, 
+    [1] = 0.05 
   }
 }

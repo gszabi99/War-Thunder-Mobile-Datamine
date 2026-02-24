@@ -2059,8 +2059,8 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "f_84g_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_84g_default.blk"
+        "name": "f-84g_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
       },
       {
         "name": "f_84g_24hvar",

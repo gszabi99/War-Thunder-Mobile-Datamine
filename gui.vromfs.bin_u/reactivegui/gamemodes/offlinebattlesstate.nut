@@ -51,8 +51,6 @@ function resetSavedParams() {
   selectedUnit.set(null)
   selectedMission.set("")
   initOfflineBattlesData.set(null)
-  savedBotsCount.set(defMaxBotsCount - NUMBER_OF_PLAYERS)
-  savedBotsRank.set(defMaxBotsRank)
   savedUnitPresetLevel.set(unitPresetsLevelList[1])
 }
 
