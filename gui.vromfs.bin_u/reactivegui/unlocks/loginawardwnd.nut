@@ -16,13 +16,14 @@ let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { mkRewardImage, getRewardName } = require("%rGui/unlocks/rewardsView/rewardsPresentation.nut")
 let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { textButtonBattle, textButtonPrimary, buttonsHGap
+let { textButtonBattle, textButtonPrimary, textButtonInactive, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { playSound } = require("sound_wt")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -203,20 +204,20 @@ let receiveBtn = textButtonBattle(
   btnStyle
 )
 
-let watchAdsBtn = textButtonPrimary(
-  utf8ToUpper(!hasVip.get() ? loc("shop/watchAdvert/short") : loc("shop/vip/get_rewards")),
+let mkWatchAdsBtn = @(isProviderInitedV, hasVipV) (isProviderInitedV ? textButtonPrimary : textButtonInactive)(
+  utf8ToUpper(!hasVipV ? loc("shop/watchAdvert/short") : loc("shop/vip/get_rewards")),
   null,
   btnStyle.__merge({ childOvr = adsButtonCounter.__merge(fontVeryTiny) })
 )
 
-let activePlateButtonBlock = function() {
+function activePlateButtonBlock() {
   let targetButtonComponent = @() {
-    watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed]
+    watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed, isProviderInited, hasVip]
     size = flex()
     children = isShowUnseenDelayed.get() ? null 
       : loginAwardUnlock.get()?.hasReward ? mkBtnBackground(receiveBtn)
       : !hasLoginAwardByAds.get() ? null
-      : mkBtnBackground(watchAdsBtn)
+      : mkBtnBackground(mkWatchAdsBtn(isProviderInited.get(), hasVip.get()))
   }
   let blockOvr = {
     size = [flex(), buttonHeight]
@@ -230,6 +231,7 @@ let activePlateButtonBlock = function() {
 let onActivePlateClick = @() isShowUnseenDelayed.get() ? null
   : loginAwardUnlock.get()?.hasReward ? receiveLoginAward()
   : !hasLoginAwardByAds.get() ? null
+  : !isProviderInited.get() ? openMsgBox({ text = loc("shop/notAvailableAds") })
   : showLoginAwardAds()
 
 function activePlateHotkeyComp() {

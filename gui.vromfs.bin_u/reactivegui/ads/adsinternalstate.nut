@@ -2,13 +2,15 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let { isDownloadedFromGooglePlay } = require("android.platform")
+let { get_game_version_str } = require("app")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { is_ios, is_android } = require("%sqstd/platform.nut")
+let { is_ios, is_android, platformId } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
+let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isTcfConsentAutoSkipped, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
 let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
 let { set_mute_sound } = require("soundOptions")
@@ -27,6 +29,7 @@ let rewardInfo = mkWatched(persist, "rewardInfo", null)
 let debugAdsWndParams = Watched(null)
 let attachedAdsButtons = Watched(0)
 let isAnyAdsButtonAttached = Computed(@() attachedAdsButtons.get() > 0)
+let failedProviders = mkWatched(persist, "failedProviders", {})
 
 isLoggedIn.subscribe(@(v) !v? adsPreloadParams.set(null) : null)
 
@@ -120,6 +123,23 @@ function openAdsPreloader(rInfo) {
   adsPreloadParams.set(rInfo)
 }
 
+failedProviders.subscribe(function(f) {
+  let { providers, countryCode } = providerPriorities.get()
+  if (f.len() == 0 || providers.len() == 0)
+    return
+  foreach (id, _ in providers)
+    if (id not in f)
+      return
+
+  sendCustomBqEvent("ads", {
+    status = "failed to init"
+    provider = ";".join(providers.keys().sort())
+    platform = platformId
+    location = countryCode
+    gameVersion = get_game_version_str()
+  })
+})
+
 return {
   RETRY_LOAD_TIMEOUT
   RETRY_INC_TIMEOUT
@@ -132,6 +152,7 @@ return {
   attachedAdsButtons
   isAnyAdsButtonAttached
   providerPriorities
+  failedProviders
   isOpenedAdsPreloaderWnd
   openAdsPreloader
   closeAdsPreloader = @() adsPreloadParams.set(null)

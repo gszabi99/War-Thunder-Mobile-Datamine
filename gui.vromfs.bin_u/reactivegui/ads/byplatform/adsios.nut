@@ -7,7 +7,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
 let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
-  hasAdsPreloadError, adsPreloadParams
+  hasAdsPreloadError, adsPreloadParams, failedProviders
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_ios ? require("ios.ads") : require("%rGui/ads/byPlatform/adsIosDbg.nut")
@@ -17,7 +17,6 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUE
   setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds
 } = ads
-let { isGoogleConsentAllowAds } = require("%appGlobals/loginState.nut")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
 
@@ -27,8 +26,7 @@ let loadedProvider = hardPersistWatched("adsIos.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsIos.failsInARow", 0)
 
-let needAdsLoad = Computed(@() isGoogleConsentAllowAds.get() && isInited.get() && !isLoaded.get()
-  && isOpenedAdsPreloaderWnd.get())
+let needAdsLoad = Computed(@() isInited.get() && !isLoaded.get() && isOpenedAdsPreloaderWnd.get())
 
 function isAllProvidersFailed(providers, statuses) {
   foreach(key, _ in providers)
@@ -44,10 +42,6 @@ function handleShowAds(rInfo) {
 }
 
 function initProviders() {
-  if (!isGoogleConsentAllowAds.get()) {
-    logA($"Skip init providers because no consent allowed")
-    return
-  }
   let { providers, countryCode } = providerPriorities.get()
   if (providers.len() == 0) {
     logA($"Skip init providers because empty providers list")
@@ -74,7 +68,6 @@ function initProviders() {
 }
 initProviders()
 providerPriorities.subscribe(@(_) initProviders())
-isGoogleConsentAllowAds.subscribe(@(_) initProviders())
 
 let statusNames = {}
 foreach(id, val in ads)
@@ -86,8 +79,12 @@ let getStatusName = @(v) statusNames?[v] ?? v
 
 eventbus_subscribe("ios.ads.onInit", function(msg) {
   let { status, provider } = msg
-  if (status != ADS_STATUS_OK)
+  if (status != ADS_STATUS_OK) {
+    logA($"Provider {provider} init failed")
+    if (provider not in failedProviders.get())
+      failedProviders.mutate(@(v) v[provider] <- true)
     return
+  }
   logA($"Provider {provider} inited")
   isInited.set(true)
 })
@@ -201,7 +198,6 @@ function showAdsForReward(rInfo) {
   if (!isInited.get()) {
     let { providers, countryCode } = providerPriorities.get()
     let info = {
-      isGoogleConsentAllowAds = isGoogleConsentAllowAds.get()
       countryCode
       providers = providers.keys()
     }

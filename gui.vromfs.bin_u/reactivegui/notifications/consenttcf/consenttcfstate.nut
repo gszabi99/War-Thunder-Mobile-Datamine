@@ -293,7 +293,10 @@ function onInited(isSuccess) {
 
   isVendorDataLoading.set(true)
   if (!isVendorDataLoaded())
-    loadVendorData(userLangId)
+    if (loadVendorData.getfuncinfos().required_params == 3)
+      loadVendorData(userLangId, getCountryCode() == "RU")
+    else
+      loadVendorData(userLangId) 
   else
     onVendorDataLoaded(true)
 }

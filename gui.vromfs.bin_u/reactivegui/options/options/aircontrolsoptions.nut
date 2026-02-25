@@ -261,8 +261,8 @@ let CAM_VISC_LIMITS = {
   [OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK] = [0.003, 10.0]
 }
 
-currentAircraftCtrlType.subscribe( function(v) {
-  let isMouseAimV = v == isMouseAim.get()
+currentAircraftCtrlType.subscribe(function(_) {
+  let isMouseAimV = isMouseAim.get()
   set_mouse_aim(isMouseAimV)
   let optId = isMouseAimV ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
   let limits = CAM_VISC_LIMITS[optId]

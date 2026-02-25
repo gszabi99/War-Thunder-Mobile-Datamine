@@ -55,7 +55,6 @@ let isMatchingOnline = sharedWatched("isMatchingOnline", @() false)
 let isConsentAllowLogin = sharedWatched("isConsentAllowLogin", @() false)
 let goodleConsent = sharedWatched("googleConsent", @() null)
 let isGoogleConsentShowed = Computed(@() goodleConsent.get()?.isShowed ?? false)
-let isGoogleConsentAllowAds = Computed(@() goodleConsent.get()?.canRequest ?? false)
 let isPreviewIDFAShowed = sharedWatched("isPreviewIDFAShowed", @() false)
 let isReadyForShowPreviewIdfa = sharedWatched("isReadyForShowPreviewIdfa", @() false)
 let isTcfConsentAllowLogin = sharedWatched("isTcfConsentAllowLogin", @() false)
@@ -120,7 +119,6 @@ return loginTypes.__merge(secondStepTypes, {
   isConsentAllowLogin
   goodleConsent
   isGoogleConsentShowed
-  isGoogleConsentAllowAds
   isReadyForShowPreviewIdfa
   isPreviewIDFAShowed
   isTcfConsentAllowLogin

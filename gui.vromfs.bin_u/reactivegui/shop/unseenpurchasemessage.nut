@@ -218,33 +218,40 @@ let stackData = Computed(function() {
   battleMod.each(@(v, i) v.startDelay <- bModeStartDelay + (i * aRewardAnimTotalTime))
   rewardIcons.each(@(v, i) v.startDelay <- rewardIconsStartDelay + (i * aRewardAnimTotalTime))
 
+  let discounts = discount.filter(@(r) !isDisabledGoods(r, allShopGoods.get(), serverCfg))
+
   return {
     outroDelay
+    needShowCommon = rewardIcons.len() + unitPlates.len() + battleMod.len() > 0
+    needShowAdd = convertions.len() + discounts.len() > 0
   }.__update({
     rewardIcons
     unitPlates
     battleMod
     convertions
-    discounts = discount.filter(@(r) !isDisabledGoods(r, allShopGoods.get(), serverCfg))
+    discounts
   }.filter(@(v) v.len() != 0))
 })
 
-let needShow = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
-  && ((stackData.get()?.rewardIcons.len() ?? 0) > 0
-    || (stackData.get()?.unitPlates.len() ?? 0) > 0
-    || (stackData.get()?.battleMod.len() ?? 0) > 0)
+let needShowAny = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
+  && (stackData.get().needShowCommon || stackData.get().needShowAdd)
   && activeUnseenPurchasesGroup.get().list.len() != 0
   && isInMenu.get()
   && isLoggedIn.get()
   && !isTutorialActive.get()
   && !isInQueue.get()))
 
+let addWndOpenedFor = mkWatched(persist, "addWndOpenedFor", {})
+let needShowCommonWnd = keepref(Computed(@() needShowAny.get() && addWndOpenedFor.get().len() == 0 && stackData.get().needShowCommon))
+let needShowAddWnd = keepref(Computed(@() needShowAny.get() && (addWndOpenedFor.get().len() != 0 || !stackData.get().needShowCommon)))
+
 let WND_UID = "unseenPurchaseWindow"
+let WND_ADD_UID = "unseenPurchaseWindow_add"
 
 let close = @() removeModalWindow(WND_UID)
 
 let isAnimFinished = Watched(false)
-needShow.subscribe(@(v) v ? isAnimFinished.set(false) : null)
+needShowCommonWnd.subscribe(@(v) v ? isAnimFinished.set(false) : null)
 
 let mkRewardAnimProps = @(startDelay, scaleTo) {
   transform = {}
@@ -1164,6 +1171,7 @@ function onCloseRequest() {
   }
   
   markPurchasesSeen(activeUnseenPurchasesGroup.get().list.keys())
+  addWndOpenedFor.set({})
 }
 
 function mkMsgContent(stackDataV, purchGroup, onClick) {
@@ -1237,22 +1245,25 @@ let addRewardMessageWnd = @(onClick) modalWndBg.__merge({
   animations = wndAnimations
 })
 
-let showAddRewardMessage = @() addModalWindow(bgShadedDark.__merge({
-  key = $"{WND_UID}_add"
-  size = flex()
-  function onAttach() {
-    if (!skipUnseenMessageAnimOnce.get())
-      return
-    skipUnseenMessageAnimOnce.set(false)
-    skipAnims()
-  }
-  onClick = onCloseRequest
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  children = addRewardMessageWnd(onCloseRequest)
-  animations = wndSwitchAnim
-  sound = { detach  = "meta_reward_window_close" }
-}))
+function showAddRewardMessage() {
+  isAnimFinished.set(true)
+  addModalWindow(bgShadedDark.__merge({
+    key = WND_ADD_UID
+    size = flex()
+    function onAttach() {
+      if (!skipUnseenMessageAnimOnce.get())
+        return
+      skipUnseenMessageAnimOnce.set(false)
+      skipAnims()
+    }
+    onClick = onCloseRequest
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    children = addRewardMessageWnd(onCloseRequest)
+    animations = wndSwitchAnim
+    sound = { detach  = "meta_reward_window_close" }
+  }))
+}
 
 let messageWnd = @(onClick) modalWndBg.__merge({
   children =  @() {
@@ -1266,9 +1277,9 @@ function onClick(){
   if (ticketToShow.get())
     showPrizeSelectDelayed()
 
-  if ((stackData.get()?.convertions.len() ?? 0) > 0 || (stackData.get()?.discounts.len() ?? 0) > 0) {
+  if (stackData.get().needShowAdd && activeUnseenPurchasesGroup.get().list.len() > 0) {
     close()
-    showAddRewardMessage()
+    addWndOpenedFor.set(activeUnseenPurchasesGroup.get().list.map(@(_) true))
   }
   else
     onCloseRequest()
@@ -1289,22 +1300,17 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
   sound = { detach  = "meta_reward_window_close" }
 }))
 
-if (((stackData.get()?.convertions.len() ?? 0) > 0
-  || (stackData.get()?.discounts.len() ?? 0) > 0)
-    && (stackData.get()?.rewardIcons.len() ?? 0) == 0) {
-  showAddRewardMessage()
-  isAnimFinished.set(true)
-}
-
 stackData.subscribe(function(v) {
-  if (((v?.convertions.len() ?? 0) > 0 || (v?.discounts.len() ?? 0) > 0) && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
-    showAddRewardMessage()
-    isAnimFinished.set(true)
-  }
-  else
-    removeModalWindow($"{WND_UID}_add")
+  if (!v.needShowCommon || addWndOpenedFor.get().len() == 0)
+    return
+  if (!isEqual(activeUnseenPurchasesGroup.get().list.map(@(_) true), addWndOpenedFor.get()))
+    addWndOpenedFor.set({})
 })
 
-if (needShow.get())
+if (needShowCommonWnd.get())
   showMessage()
-needShow.subscribe(@(v) v ? showMessage() : close())
+needShowCommonWnd.subscribe(@(v) v ? showMessage() : close())
+
+if (needShowAddWnd.get())
+  showAddRewardMessage()
+needShowAddWnd.subscribe(@(v) v ? showAddRewardMessage() : removeModalWindow(WND_ADD_UID))

@@ -2278,5 +2278,13 @@
     "lod0": "tl67i2vuys27wainm62jrj7qt7xmrdmc-en5y",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "ufajwuf5xfztpctjdct7x3leonuhvb5g-bi3a"
+  },
+  "rookies_award_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "22koskxhojtj6vbjy3pwi4bj3yfalsby-enby",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "7s7mnolfetm4niqimlrffl7rljyd7qyt-bhxa"
   }
 }
