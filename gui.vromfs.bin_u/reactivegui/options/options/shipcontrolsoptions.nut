@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { OPT_AUTO_ZOOM_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP, OPT_CAMERA_SENSE_SHIP, OPT_CAMERA_SENSE, OPT_CAMERA_SENSE_IN_ZOOM,
-  OPT_STRATEGY_CAMERA_BY_DRAG,
-  mkOptionValue, getOptValue} = require("%rGui/options/guiOptions.nut")
+let { OPT_AUTO_ZOOM_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP, OPT_CAMERA_SENSE_SHIP, OPT_STRATEGY_CAMERA_BY_DRAG,
+  mkOptionValue
+} = require("%rGui/options/guiOptions.nut")
 let { set_auto_zoom , CAM_TYPE_NORMAL_SHIP, CAM_TYPE_BINOCULAR_SHIP} = require("controlsOptions")
 let { optMoveCameraByDrag } = require("%rGui/hud/strategyMode/strategyState.nut")
 let { has_strategy_mode } = require("%appGlobals/permissions.nut")
@@ -46,8 +46,8 @@ let currentAutoZoomType = {
 
 return {
   shipControlsOptions = [
-    cameraSenseSlider(CAM_TYPE_NORMAL_SHIP, "options/camera_sensitivity", OPT_CAMERA_SENSE_SHIP, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
-    cameraSenseSlider(CAM_TYPE_BINOCULAR_SHIP, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_SHIP, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
+    cameraSenseSlider(CAM_TYPE_NORMAL_SHIP, "options/camera_sensitivity", OPT_CAMERA_SENSE_SHIP)
+    cameraSenseSlider(CAM_TYPE_BINOCULAR_SHIP, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_SHIP)
     currentAutoZoomType
     
 

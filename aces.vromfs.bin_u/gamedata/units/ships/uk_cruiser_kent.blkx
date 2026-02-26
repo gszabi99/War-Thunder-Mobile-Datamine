@@ -646,7 +646,7 @@
           "engine_room_03_dm"
         ],
         "onHit": {
-          "damageType": "explosion",
+          "damageType": "generic",
           "damage": 500.0,
           "moduleStatusEffect": {
             "name": "throttleBlock",

@@ -61,7 +61,7 @@ let parentEventId = Computed(function() {
 let isParentEventActive = Computed(@() parentEventId.get() == MAIN_EVENT_ID ? isEventActive.get()
   : parentEventId.get() != null)
 
-let currencyId = Computed(@() (parentEventName.get() == null || isParentEventActive.get()) ? currencyIdToOpen.get() : null)
+let currencyId = Computed(@() (parentEventName.get() != null || isParentEventActive.get()) ? currencyIdToOpen.get() : null)
 let currencyWndOpenCount = Computed(function(prev) {
   if (currencyId.get() == null)
     return 0

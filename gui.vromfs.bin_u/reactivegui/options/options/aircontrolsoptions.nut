@@ -4,7 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { OPT_AIRCRAFT_FIXED_AIM_CURSOR, OPT_CAMERA_SENSE_IN_ZOOM_PLANE, OPT_CAMERA_SENSE_PLANE,
-  OPT_CAMERA_SENSE, OPT_CAMERA_SENSE_IN_ZOOM, OPT_FREE_CAMERA_PLANE, OPT_CAMERA_VISC_PLANE,
+  OPT_FREE_CAMERA_PLANE, OPT_CAMERA_VISC_PLANE,
   OPT_CAMERA_VISC_IN_ZOOM_PLANE, OPT_CAMERA_VISC_PLANE_STICK, OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
   OPT_AIRCRAFT_INVERTED_Y, OPT_AIRCRAFT_MOVEMENT_CONTROL, OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
   OPT_AIRCRAFT_THROTTLE_STICK, OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
@@ -335,7 +335,7 @@ return {
     currentFixedAimCursorType
     currentinvertedYOptionType
     currentAdditionalFlyControlsType
-    cameraSenseSlider(CAM_TYPE_NORMAL_PLANE, "options/cursor_sensitivity", OPT_CAMERA_SENSE_PLANE, getOptValue(OPT_CAMERA_SENSE)?? 1.0, 0.33, 5.67, 0.0267)
+    cameraSenseSlider(CAM_TYPE_NORMAL_PLANE, "options/cursor_sensitivity", OPT_CAMERA_SENSE_PLANE, 1.0, 0.33, 5.67, 0.0267)
     cameraViscositySlider(isMouseAim, false, "options/cursor_folowing_camera_sensitivity", OPT_CAMERA_VISC_PLANE,
       getOptValue(OPT_CAMERA_VISC_PLANE) ?? 1.0,
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE][0],
@@ -346,7 +346,7 @@ return {
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][0],
       0.03,  
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][1])
-    cameraSenseSlider(CAM_TYPE_BINOCULAR_PLANE, "options/cursor_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_PLANE, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0, 0.33, 5.67, 0.0267)
+    cameraSenseSlider(CAM_TYPE_BINOCULAR_PLANE, "options/cursor_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_PLANE, 1.0, 0.33, 5.67, 0.0267)
     cameraViscositySlider(isMouseAim, true, "options/camera_sensitivity_in_zoom", OPT_CAMERA_VISC_IN_ZOOM_PLANE,
       getOptValue(OPT_CAMERA_VISC_IN_ZOOM_PLANE) ?? 1.0,
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE][0],

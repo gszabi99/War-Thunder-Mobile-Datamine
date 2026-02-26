@@ -50,7 +50,7 @@
   "guidanceAutoUnlockTime": 8.0,
   "type": "typeSPAA",
   "minRelativeTankCameraThreshold": 1.32,
-  "rearmTimeOnField": 5.0,
+  "rearmTimeOnField": 40.0,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2083,7 +2083,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "coaxial",
+        "triggerGroup": "special",
         "blk": "gameData/Weapons/groundModels_weapons/70mm_Hydra_70_user_cannon.blk",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -3606,7 +3606,7 @@
             },
             {
               "trigger": "gunner3",
-              "triggerGroup": "coaxial",
+              "triggerGroup": "special",
               "blk": "gameData/Weapons/groundModels_weapons/70mm_Hydra_70_user_cannon.blk",
               "flash": "emtr_gun_flame_05",
               "useEmitter": true,

@@ -24,14 +24,14 @@
   "useSimpleDeathConditionsAndEffects": false,
   "hitCamOnSimpleUnitSubsystems": true,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 105200.0,
+  "multHpFromMetaparts": 119150.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_medium",
-  "asmCaptureDuration": 5.0,
+  "asmCaptureDuration": 4.0,
   "addTorpedoesCountPack": 3,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
@@ -272,7 +272,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 105200.0,
+      "hp": 119150.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -298,7 +298,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 105200.0,
+      "hp": 119150.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -308,7 +308,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 105200.0,
+      "hp": 119150.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {}
@@ -317,7 +317,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 105200.0,
+      "hp": 119150.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -338,7 +338,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 105200.0,
+      "hp": 119150.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -368,6 +368,16 @@
       "explosionDamageMult": 0.0001,
       "genericDamageMult": 1.0,
       "ammunition_storage_01_dm": {}
+    },
+    "fire_control": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 119150.0,
+      "genericDamageMult": 1.0,
+      "explosionDamageMult": 0.05,
+      "fireParamsPreset": "ship_aux_fire",
+      "fire_director_01_dm": {},
+      "fire_director_02_dm": {}
     }
   },
   "tank_crew": {
@@ -429,7 +439,9 @@
         "name": [
           "compartment_04_dm",
           "compartment_05_dm",
-          "compartment_06_dm"
+          "compartment_06_dm",
+          "fire_director_01_dm",
+          "fire_director_02_dm"
         ],
         "onHit": {
           "damageType": "explosion",
@@ -567,7 +579,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 105200.0,
+      "hp": 119150.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -576,6 +588,8 @@
         "compartment_04_dm",
         "compartment_05_dm",
         "compartment_06_dm",
+        "fire_director_01_dm",
+        "fire_director_02_dm",
         "funnel_01_dm",
         "bridge_dm",
         "steering_gear_01_dm",
@@ -725,7 +739,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.385,
+        "shotFreq": 0.5,
         "speedYaw": 30.0,
         "speedPitch": 30.0,
         "bullets": 300,
@@ -751,7 +765,18 @@
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
           "barrel": "gun_barrel_01",
-          "gunnerDm": "main_caliber_turret_01_dm"
+          "gunnerDm": "main_caliber_turret_01_dm",
+          "linkedAnimPart": {
+            "horNode": "fire_director_01",
+            "horLimits": [
+              -180.0,
+              180.0
+            ],
+            "horOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -875,7 +900,18 @@
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
-          "gun": "auxiliary_caliber_gun_05"
+          "gun": "auxiliary_caliber_gun_05",
+          "linkedAnimPart": {
+            "horNode": "fire_director_02",
+            "horLimits": [
+              -180.0,
+              180.0
+            ],
+            "horOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -911,7 +947,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 10.0,
+        "allowableDelta": 30.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -955,7 +991,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 10.0,
+        "allowableDelta": 30.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1218,7 +1254,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.385,
+              "shotFreq": 0.5,
               "speedYaw": 30.0,
               "speedPitch": 30.0,
               "bullets": 300,
@@ -1244,7 +1280,18 @@
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
                 "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "gunnerDm": "main_caliber_turret_01_dm",
+                "linkedAnimPart": {
+                  "horNode": "fire_director_01",
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -1368,7 +1415,18 @@
               "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
-                "gun": "auxiliary_caliber_gun_05"
+                "gun": "auxiliary_caliber_gun_05",
+                "linkedAnimPart": {
+                  "horNode": "fire_director_02",
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -1404,7 +1462,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 10.0,
+              "allowableDelta": 30.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1448,7 +1506,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 10.0,
+              "allowableDelta": 30.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1695,7 +1753,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.385,
+              "shotFreq": 0.5,
               "speedYaw": 30.0,
               "speedPitch": 30.0,
               "bullets": 300,
@@ -1721,7 +1779,18 @@
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
                 "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "gunnerDm": "main_caliber_turret_01_dm",
+                "linkedAnimPart": {
+                  "horNode": "fire_director_01",
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -1845,7 +1914,18 @@
               "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
-                "gun": "auxiliary_caliber_gun_05"
+                "gun": "auxiliary_caliber_gun_05",
+                "linkedAnimPart": {
+                  "horNode": "fire_director_02",
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -1881,7 +1961,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 10.0,
+              "allowableDelta": 30.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1925,7 +2005,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 10.0,
+              "allowableDelta": 30.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -2222,6 +2302,8 @@
             "compartment_04_dm": {},
             "compartment_05_dm": {},
             "compartment_06_dm": {},
+            "fire_director_01_dm": {},
+            "fire_director_02_dm": {},
             "bridge_dm": {},
             "main_caliber_turret_01_dm": {},
             "engine_room_01_dm": {},

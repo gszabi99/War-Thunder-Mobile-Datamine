@@ -24,7 +24,7 @@
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 57050.0,
+  "multHpFromMetaparts": 67190.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -293,7 +293,7 @@
     "hull": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 57050.0,
+      "hp": 67190.0,
       "genericDamageMult": 1.0,
       "compartment_02_dm": {
         "pressureDamageMult": 30.0
@@ -309,7 +309,7 @@
     "bridge": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 57050.0,
+      "hp": 67190.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
       "pressureDamageMult": 30.0,
@@ -318,7 +318,7 @@
     "engine_rooms": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 57050.0,
+      "hp": 67190.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
       "engine_room_01_dm": {}
@@ -326,7 +326,7 @@
     "rudder": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 57050.0,
+      "hp": 67190.0,
       "fireDamageMult": 0.001,
       "genericDamageMult": 1.0,
       "steering_gear_01_dm": {},
@@ -343,7 +343,7 @@
     "citadel_armor": {
       "armorClass": "ship_RHA",
       "armorThickness": 100.0,
-      "hp": 57050.0,
+      "hp": 67190.0,
       "fireDamageMult": 0.001,
       "armor_cit_01_dm": {}
     }
@@ -432,7 +432,7 @@
   },
   "MetaParts": {
     "upper_hull": {
-      "hp": 57050.0,
+      "hp": 67190.0,
       "maxDamageMode": true,
       "part": [
         "compartment_02_dm",
@@ -454,7 +454,7 @@
       ]
     },
     "lower_and_inner_hull": {
-      "hp": 57050.0,
+      "hp": 67190.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -647,7 +647,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "bulletsCartridge": 4,
-        "reloadTime": 15.0,
+        "reloadTime": 12.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -703,7 +703,7 @@
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.067,
+        "shotFreq": 0.071,
         "turret": {
           "head": "tt_head_01",
           "gun": "tt_01"
@@ -952,7 +952,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "bulletsCartridge": 4,
-              "reloadTime": 15.0,
+              "reloadTime": 12.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1008,7 +1008,7 @@
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.067,
+              "shotFreq": 0.071,
               "turret": {
                 "head": "tt_head_01",
                 "gun": "tt_01"

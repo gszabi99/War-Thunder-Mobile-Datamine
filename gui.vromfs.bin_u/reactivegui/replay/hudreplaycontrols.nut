@@ -7,7 +7,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { register_command } = require("console")
 let { abs, round } = require("math")
 let { format } =  require("string")
-let { setInterval, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { TouchScreenStick } = require("wt.behaviors")
 let { Point2 } = require("dagor.math")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
@@ -48,6 +48,7 @@ let squadLabelHeight = hdpx(41)
 
 let isReplaysManageButtonOn = Watched(true)
 let isPlayerOptionsOpen = Watched(true)
+let needShowPlayerOptions = Watched(true)
 
 let replayTimeSpeed = Watched(0.0)
 let replayTimeTotal = Watched(0)
@@ -106,6 +107,14 @@ let replayVideoControlsList = [
 
 let replayHudControlsList = [
   {
+    shortcutId = ""
+    img = "ui/gameuiskin#hud_tank_arrow_segment.svg"
+    locId = "hudTuning/toggle/desc/hide"
+    isActive = isPlayerOptionsOpen
+    isDisabled = Computed(@() !isPlayerOptionsOpen.get())
+    iconOvr = { transform = { rotate = 180 } }
+  },
+  {
     shortcutId = "ID_HIDE_HUD"
     img = "ui/gameuiskin#hud_replay_toggle.svg"
     locId = "mainmenu/replay/hud"
@@ -147,6 +156,7 @@ function updateControls() {
 function initReplay() {
   isReplaysManageButtonOn.set(true)
   isPlayerOptionsOpen.set(true)
+  needShowPlayerOptions.set(true)
 
   replayTimeSpeed.set(get_time_speed())
   replayMplayersList.set(getMplayersList())
@@ -451,7 +461,7 @@ let bottomPanel = @() {
         }
       ]
     }
-    transform = { translate = [0, isPlayerOptionsOpen.get() ? 0 : hdpx(-800)] }
+    transform = { translate = [0, isPlayerOptionsOpen.get() ? 0 : hdpx(800)] }
     transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
   }
 }
@@ -469,6 +479,19 @@ let hudReplayControls = @() {
     ? [
         centerPanel
         bottomPanel
+        @() {
+          watch = needShowPlayerOptions
+          size = needShowPlayerOptions.get() ? null : FLEX_H
+          children = needShowPlayerOptions.get() ? null
+            : {
+                size = [optBtnSize, hdpx(15)]
+                margin = [0, saBorders[0]]
+                rendObj = ROBJ_SOLID
+                color = cellTextColor
+                behavior = Behaviors.Button
+                onClick = @() isPlayerOptionsOpen.set(!isPlayerOptionsOpen.get())
+              }
+        }
       ]
     : null
 }
@@ -497,6 +520,10 @@ function replayShowHudAction() {
         }
   }
 }
+
+isPlayerOptionsOpen.subscribe(@(v) !v
+  ? resetTimeout(TIME_TO_UPDATE_CONTROLLS, @() needShowPlayerOptions.set(v))
+  : needShowPlayerOptions.set(v))
 
 isPlayingReplay.subscribe(@(v) v ? initReplay() : null)
 if (isPlayingReplay.get())

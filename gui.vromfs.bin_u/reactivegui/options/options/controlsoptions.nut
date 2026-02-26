@@ -2,22 +2,27 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send } = require("eventbus")
 let { DBGLEVEL } = require("dagor.system")
+let { defer } = require("dagor.workcycle")
+let { set_camera_sens, set_camera_rotation_assist } = require("controlsOptions")
+let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION, useGamepadHaptic } = require("hapticVibration")
+let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
+let { isOnlineSettingsAvailable, isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { hasGamepadConnected } = require("%rGui/controlsMenu/gamepadVendor.nut")
 let { OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
   OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue, OPT_GAMEPAD_VIBRATION
 } = require("%rGui/options/guiOptions.nut")
-let { set_camera_sens, set_camera_rotation_assist } = require("controlsOptions")
-let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION, useGamepadHaptic } = require("hapticVibration")
-let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
 let { openVoiceMsgPieEditor } = require("%rGui/hud/voiceMsg/voiceMsgPieEditor.nut")
 let { hudReloadStyleOption } = require("%rGui/options/options/hudStyleOptions.nut")
 
-function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 5.97, stepVal = 0.0297) {
-  let value = mkOptionValue(optId, cur)
+function cameraSenseSlider(camType, locId, optId, defVal = 1.0, minVal = 0.03, maxVal = 5.97, stepVal = 0.0297) {
+  let value = mkOptionValue(optId, defVal)
   set_camera_sens(camType, value.get())
   value.subscribe(@(v) set_camera_sens(camType, v))
+  isSettingsAvailable.subscribe(function(v) {
+    if (v)
+      defer(@() set_camera_sens(camType, value.get()))
+  })
   return {
     locId
     value
@@ -35,6 +40,10 @@ function hapticIntensitySlider(locId, optId, intensityType = -1) {
   let value = mkOptionValue(optId, 1.0)
   setHapticIntensity(value.get(), intensityType)
   value.subscribe(@(v) setHapticIntensity(v, intensityType))
+  isSettingsAvailable.subscribe(function(v) {
+    if (v)
+      defer(@() setHapticIntensity(value.get(), intensityType))
+  })
   return {
     locId
     value

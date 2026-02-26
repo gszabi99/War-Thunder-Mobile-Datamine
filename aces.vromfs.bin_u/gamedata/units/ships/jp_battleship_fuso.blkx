@@ -405,7 +405,9 @@
       "explosionDamageMult": 0.0001,
       "genericDamageMult": 1.0,
       "ammunition_storage_01_dm": {},
-      "ammunition_storage_02_dm": {}
+      "ammunition_storage_02_dm": {},
+      "ammunition_storage_03_dm": {},
+      "ammunition_storage_04_dm": {}
     },
     "citadel_armor": {
       "armorClass": "ship_RHA",
@@ -663,6 +665,42 @@
             "damageType": "explosion",
             "fxEvent": "ammo_expl",
             "parts": {
+              "part": "compartment_02_dm"
+            }
+          }
+        }
+      },
+      {
+        "name": "ammunition_storage_03_dm",
+        "onHit": {
+          "damage": 1190.0,
+          "damageType": "generic",
+          "isSingleAction": true,
+          "action": {
+            "type": "forcedExplosion",
+            "probability": 1.0,
+            "relativeDamage": 0.3,
+            "damageType": "explosion",
+            "fxEvent": "ammo_expl",
+            "parts": {
+              "part": "compartment_02_dm"
+            }
+          }
+        }
+      },
+      {
+        "name": "ammunition_storage_04_dm",
+        "onHit": {
+          "damage": 1190.0,
+          "damageType": "generic",
+          "isSingleAction": true,
+          "action": {
+            "type": "forcedExplosion",
+            "probability": 1.0,
+            "relativeDamage": 0.3,
+            "damageType": "explosion",
+            "fxEvent": "ammo_expl",
+            "parts": {
               "part": "compartment_03_dm"
             }
           }
@@ -715,7 +753,9 @@
         "fire_director_02_dm",
         "fire_director_03_dm",
         "ammunition_storage_01_dm",
-        "ammunition_storage_02_dm"
+        "ammunition_storage_02_dm",
+        "ammunition_storage_03_dm",
+        "ammunition_storage_04_dm"
       ],
       "effect": {
         "conditionDead": true,
