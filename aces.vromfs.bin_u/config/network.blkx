@@ -47,6 +47,7 @@
       "connectTimeoutSec": 60,
       "mainThreadTimeoutSec": 30,
       "banUnresponsiveUrlForTimeoutInSec": 100,
+      "silentMode": true,
       "allowCacheVromFallback": true,
       "baseUrls": {
         "url": [

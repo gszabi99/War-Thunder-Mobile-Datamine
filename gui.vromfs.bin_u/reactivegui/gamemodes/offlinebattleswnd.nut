@@ -21,7 +21,7 @@ let { offlineBattlesCfg, openOfflineBattleMenu, isOfflineBattlesActive, unitSear
   isDebugListMapsActive, canAccessForDebug, runOfflineBattle, initOfflineBattlesData, selectedMission,
   refreshOfflineMissionsList, skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList,
   savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
-  countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit
+  countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit, savedUnitForReturn
 } = require("%rGui/gameModes/offlineBattlesState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
@@ -31,13 +31,14 @@ let { OCT_LIST } = require("%rGui/options/optCtrlType.nut")
 let mkOption = require("%rGui/options/mkOption.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { mkFoldableSelector, mkListItem, headerBgColor, itemGap, contentPadding, contentBgColor,
-  headerH } = require("%rGui/components/foldableSelector.nut")
+  headerH, mkFoldableList } = require("%rGui/components/foldableSelector.nut")
 let { mkGradRank, mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
 let { mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
+let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 
 
 let SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
@@ -52,7 +53,11 @@ let maxTextWidth = hdpx(400)
 let flagSizeHeader = hdpx(54)
 let searchIconSize = hdpxi(50)
 
-let close = @() isOfflineBattlesActive.set(false)
+function close() {
+  isOfflineBattlesActive.set(false)
+  savedUnitForReturn.set(null)
+}
+
 function setHangarUnit() {
   let curUnitName = curUnit.get()?.name
   let realUnitName = $"{getTagsUnitName(curUnitName)}_nc"
@@ -194,6 +199,61 @@ let searchUnitResults = @() {
       })
 }
 
+let mkUnitHeadItem = @(v) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  padding = [0, itemGap, 0, 0]
+  gap = itemGap
+  children = [
+    {
+      size = textItemH
+      behavior = Behaviors.Button
+      function onClick() {
+        savedUnitForReturn.set(getTagsUnitName(selectedUnit.get()?.name ?? ""))
+        unitDetailsWnd({ name = selectedUnit.get().name })
+      }
+      rendObj = ROBJ_BOX
+      borderWidth = hdpx(2)
+      borderColor = 0xFFA0A0A0
+      children = {
+        rendObj = ROBJ_TEXT
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        text = "i"
+      }.__update(fontSmallShaded)
+    }
+    mkText(loc(getUnitLocId(v ?? "")), { size = [maxTextWidth - (textItemH + itemGap), SIZE_TO_CONTENT] })
+  ]
+}
+
+let mkUnitFoldableContent = @(listValues, columns, curValue, curOpenedSel) @() {
+  watch = listValues
+  flow = FLOW_VERTICAL
+  gap = itemGap
+  children = arrayByRows(listValues.get().map(function(value) {
+    let isSelected = Computed(@() curValue.get()?.name == value?.name)
+
+    function onSelect() {
+      curValue.set(value)
+      curOpenedSel?.set("")
+    }
+
+    return mkListItem(value, isSelected, onSelect, unitPlateW, itemSize, mkUnitPlate(value, isSelected))
+  }), columns)
+    .map(@(children) {
+      flow = FLOW_HORIZONTAL
+      gap = itemGap
+      children
+    })
+}
+
+let mkUnitFoldableHeader = @(curValue) @() {
+  watch = curValue
+  size = FLEX_H
+  children = mkUnitHeadItem(curValue.get())
+}
+
 let mkFlagImage = @(countryId, sz) mkImage(sz, sz, $"ui/gameuiskin#{countryId}.svg:{sz}:{sz}:P")
 
 let mkCountryHeadItem = @(v) v == "" ? null
@@ -209,11 +269,13 @@ let mkMRankListItem = @(v, isSelected, onClick)
 let mkSelectorMRank = @(list, mRank) mkFoldableSelector(list, mRank, 4,
   mkMRankListItem, mkMRankHeadItem, curOpenedSelector, "mRank")
 
-let mkUnitHeadItem = @(v) mkText(loc(getUnitLocId(v ?? "")))
-let mkUnitListItem = @(v, isSelected, onClick)
-  mkListItem(v, isSelected, onClick, unitPlateW, itemSize, mkUnitPlate(v, isSelected))
-let mkSelectorUnit = @(list, unit) mkFoldableSelector(list, unit, 2,
-  mkUnitListItem, mkUnitHeadItem, curOpenedSelector, "unit")
+let mkUnitFoldableSelector = @(listValues, curValue, columns, curOpenedSel, selectorId) mkFoldableList(
+  mkUnitFoldableContent(listValues, columns, curValue, curOpenedSel),
+  mkUnitFoldableHeader(curValue),
+  curOpenedSel,
+  selectorId
+)
+let mkSelectorUnit = @(list, unit) mkUnitFoldableSelector(list, unit, 2, curOpenedSelector, "unit")
 
 let mkMissionHeadItem = @(v) mkText(loc(getMissionName(v)), { size = [maxTextWidth, SIZE_TO_CONTENT] })
 let mkMissionListItem = @(v, isSelected, onClick)
@@ -413,12 +475,15 @@ let content = {
     if (initOfflineBattlesData.get() != null) {
       let { unitName, missionName } = initOfflineBattlesData.get()
       if (unitName in offlineBattlesCfg.get())
-        selectedUnit.set(offlineBattlesCfg.get()?[unitName])
+        selectedUnit.set(offlineBattlesCfg.get()[unitName])
       else
         setHangarUnit()
       selectedMission.set(missionName)
     } else {
-      setHangarUnit()
+      if (savedUnitForReturn.get() != null && savedUnitForReturn.get() in offlineBattlesCfg.get())
+        selectedUnit.set(offlineBattlesCfg.get()[savedUnitForReturn.get()])
+      else
+        setHangarUnit()
       selectedMission.set(missionsList.get()?.findvalue(@(_) true) ?? "")
     }
 

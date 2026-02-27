@@ -35,6 +35,8 @@ let selectedMRank = mkWatched(persist, "selectedMRank", 0)
 let selectedUnit = mkWatched(persist, "selectedUnit", null)
 let selectedMission = mkWatched(persist, "selectedMission", "")
 
+let savedUnitForReturn = mkWatched(persist, "savedUnitForReturn", null)
+
 let offlineMissionsList = mkWatched(persist, "offlineMissionsList", {})
 let offlineDebugMissionsList = mkWatched(persist, "offlineDebugMissionsList", {})
 
@@ -207,5 +209,6 @@ return {
   missionsList,
   selectedMission,
   getMissionName,
-  unitSearchResults
+  unitSearchResults,
+  savedUnitForReturn
 }

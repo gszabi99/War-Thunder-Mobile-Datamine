@@ -3,20 +3,15 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL
 from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo, isOpenedManage, isOpenedPartnersExt,
-  doAnswerAllAndClose, doSaveAndClose, doAskSaveAndClose, needSkipIntroPage, getPurposesList, getSpecialPurposesList, getFeaturesList,
-  debugShowIds
+  doAnswerAllAndClose, doSaveAndClose, getPurposesList, getSpecialPurposesList, getFeaturesList,
+  debugShowIds, PRIVACY_CHOICES_SAVED_MONTHS
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkTextarea,
   mkTextareaWithLinks, mkLink, openUrl, separatorLine, gapAbove, gapBelow, fadedAndMinor, fontMinor
 from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkExpandableSwitch, mkSwitch, mkExpandable
 
 const BQ_WND_ID = "consentManage"
 
-function quitManage() {
-  if (needSkipIntroPage.get())
-    doAskSaveAndClose(BQ_WND_ID, @() isOpenedManage.set(false))
-  else
-    isOpenedManage.set(false)
-}
+let quitManage = @() isOpenedManage.set(false)
 
 function mkPurposeSwitchComp(purpose, onManualSwitch, needShowId) {
   let { info, getVendorList, isExpanded, isEnabled, isEnabledLIT } = purpose
@@ -97,8 +92,9 @@ let mkManageDesc = @() function() {
   let children = [
     mkTextarea(loc("consent_tcf/manage/desc/p1"), fadedAndMinor.__merge(gapBelow))
     mkTextarea(loc("consent_tcf/manage/desc/p2"), fadedAndMinor.__merge(gapBelow))
-    mkTextareaWithLinks(loc("consent_tcf/manage/desc/p3"), {
-      ["{privacyPolicyLink}"] = mkLink(loc("consent_tcf/manage/desc/p3/privacyPolicyLink"), 
+    mkTextarea(loc("consent_tcf/manage/desc/p3v2"), fadedAndMinor.__merge(gapBelow))
+    mkTextareaWithLinks(loc("consent_tcf/manage/desc/p4", { monthsCount = PRIVACY_CHOICES_SAVED_MONTHS }), {
+      ["{privacyPolicyLink}"] = mkLink(loc("consent_tcf/manage/desc/p4/privacyPolicyLink"), 
         @() openUrl(PRIVACY_POLICY_URL), fontMinor)
     }, fadedAndMinor)
     mkTextarea(nbsp)

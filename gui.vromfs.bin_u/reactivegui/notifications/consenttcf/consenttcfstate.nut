@@ -46,8 +46,10 @@ let PURPOSES_WITH_LEGITIMATE_INTEREST = [
   11, 
 ]
 
+let userLangId = loc("current_lang")
+let PRIVACY_CHOICES_SAVED_MONTHS = 13
+
 let isOpenForProfileWnd = mkWatched(persist, "isOpenForProfileWnd", false)
-let needSkipIntroPage = isOpenForProfileWnd
 let isTcfConsentAutoSkipped = mkWatched(persist, "isTcfConsentAutoSkipped", false)
 let isConsentInitializing = mkWatched(persist, "isConsentInitializing", false)
 let isVendorDataLoading = mkWatched(persist, "isVendorDataLoading", false)
@@ -62,8 +64,6 @@ let vendorsLists = mkWatched(persist, "vendorsLists", [])
 let totalPartners = Computed(@() vendorsLists.get().reduce(@(res, v) res + v.len(), 0))
 let initialSnapshot = mkWatched(persist, "initialSnapshot", null)
 let debugShowIds = mkWatched(persist, "debugShowIds", false)
-
-let userLangId = loc("current_lang")
 
 let dataCache = {}
 
@@ -267,8 +267,6 @@ function onVendorDataLoaded(isSuccess) {
   vendorsLists.set(vendorsListsCfg.map(@(v) v.getInfo()))
   isVendorDataLoading.set(false)
   isOpenedConsentTcfWnd.set(true)
-  if (needSkipIntroPage.get())
-    isOpenedManage.set(true)
 }
 
 function onInited(isSuccess) {
@@ -490,7 +488,6 @@ register_command(function() {
 return {
   isTcfConsentRequiredForCountry
   openTcfConsentWnd
-  needSkipIntroPage
   isTcfConsentAutoSkipped
 
   isOpenedConsentTcfWnd
@@ -499,6 +496,8 @@ return {
   isLoadError
 
   userLangId
+  PRIVACY_CHOICES_SAVED_MONTHS
+
   isOpenedPartners
   isOpenedPartnersExt
   isOpenedManage
