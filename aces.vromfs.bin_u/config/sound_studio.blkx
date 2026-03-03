@@ -1258,6 +1258,53 @@
       }
     }
   },
+  "engine_fireball_ai": {
+    "engines": {
+      "effects": {
+        "path": "aircraft/engines",
+        "wep": "engine_wep",
+        "overheatOutside": "engine_overheat_camera",
+        "overheatCockpit": "engine_overheat_cockpit",
+        "dive": "engine_dive",
+        "timeFallingDown": 2.0,
+        "engineVolumeOnOverheat": 0.8
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "eventFront": "",
+        "eventBack": "engine_jet_ai",
+        "eventSurround": "",
+        "rpm2Type": "jetTrue",
+        "rpm2Bias": 0.0,
+        "rpm2Scale": 2700.0,
+        "rpmSmooth": 0.014,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    },
+    "propellers": {
+      "effects": {
+        "path": "aircraft/engines"
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "event_1": "engine_radial_ai",
+        "pos_1": [
+          3.0,
+          0.5,
+          0.0
+        ],
+        "propIndex_1": 1,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 0.8
+      }
+    }
+  },
   "engine_jet_ai": {
     "effects": {
       "path": "aircraft/engines",
@@ -2990,6 +3037,41 @@
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8
       }
+    }
+  },
+  "engine_fireball": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_start",
+      "eventStop": "engine_jet_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack_1": "engine_radial",
+      "eventBack_2": "engine_jet",
+      "eventSurround": "",
+      "pos_1": [
+        2.0,
+        0.0,
+        0.0
+      ],
+      "pos_2": [
+        -4.0,
+        0.0,
+        0.0
+      ],
+      "rpmSmooth": 0.001,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
     }
   },
   "engine_jet": {

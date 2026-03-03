@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { number_of_set_bits, is_bit_set } = require("%sqstd/math.nut")
+let { is_pc } = require("%sqstd/platform.nut")
 let { OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK } = require("%rGui/options/optCtrlType.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
@@ -148,7 +149,7 @@ let filterCtors = {
       fillColor = 0xFF606060
     }
     setValue = filter.setValue
-    onAttach = @() set_kb_focus(filter.value) 
+    onAttach = is_pc ? @() set_kb_focus(filter.value) : null 
   }),
 
   [OCT_MULTISELECT] = function(filter, width) {

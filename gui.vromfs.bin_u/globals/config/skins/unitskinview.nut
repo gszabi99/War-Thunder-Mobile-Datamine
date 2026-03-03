@@ -412,6 +412,10 @@ return {
       "": "cn_camo_sand_ltgreen_dkgreen_lines",
       "forest": "ussr_camo_green"
     },
+    "cn_qn506": {
+      "": "cn_camo_winter_lines",
+      "forest": "ussr_camo_green"
+    },
     "cn_su_100_1945": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_green_yellow_black"
@@ -782,6 +786,9 @@ return {
     "f8f1b": {
       "": "usa_f8f1b_bearcat",
       "upgraded": "usa_am_1_mauler"
+    },
+    "fr_1_fireball": {
+      "": "usa_f8f1b_bearcat"
     },
     "fr_amx_10p": {
       "": "fr_camo_vert_olive_arme",
@@ -3263,6 +3270,9 @@ return {
     },
     "uk_battlecruiser_tiger": {
       "": "camo_nord_bluegreen"
+    },
+    "uk_battleship_agincourt": {
+      "": "camo_bluewhite_geometry"
     },
     "uk_battleship_ajax": {
       "upgraded": "camo_nord_bluegreen"

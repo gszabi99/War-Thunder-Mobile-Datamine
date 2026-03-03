@@ -214,6 +214,7 @@ let skinsByTag = {
     "cn_ztz_99_w_event"
     "se_camo_modern_urban"
     "cn_hj_9_valentines_day"
+    "cn_camo_winter_lines"
   ],
 
   [NAVAL] = [
@@ -273,6 +274,7 @@ let skinsByTag = {
     "camo_mtb_spots"
     "camo_nord_bluegreen"
     "camo_polish_bluegeometry"
+    "camo_bluewhite_geometry"
 
     "camo_blackgray_spots"
     "camo_blue_spots"
