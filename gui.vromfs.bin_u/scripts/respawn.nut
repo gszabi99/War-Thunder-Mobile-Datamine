@@ -34,7 +34,7 @@ let respawnData = mkWatched(persist, "respawnData", null)
 let wantedRespawnData = mkWatched(persist, "wantedRespawnData", null)
 let isRespawnDataActual = Computed(@() isEqual(respawnData.get(), wantedRespawnData.get()))
 
-isInBattle.subscribe(@(v) v ? null : isInRespawn.set(false))
+isInBattle.subscribe(@(v) v ? respawnUnitInfo.set(null) : isInRespawn.set(false))
 
 function updateRespawnUnitInfo() {
   respawnUnitInfo.set(unitToSpawn.get())

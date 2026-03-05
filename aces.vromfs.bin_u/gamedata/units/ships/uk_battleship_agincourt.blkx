@@ -954,7 +954,7 @@
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -990,6 +990,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -130.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -130.0,
+            -45.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -45.0,
+            45.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            45.0,
+            130.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            130.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1015,7 +1047,7 @@
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1051,6 +1083,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -130.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -130.0,
+            -45.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -45.0,
+            45.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            45.0,
+            130.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            130.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1076,7 +1140,7 @@
         "breechDP": "main_caliber_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1112,6 +1176,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -130.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -130.0,
+            -45.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -45.0,
+            45.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            45.0,
+            130.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            130.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1137,7 +1233,7 @@
         "breechDP": "main_caliber_gun_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1173,6 +1269,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -130.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -130.0,
+            -45.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -45.0,
+            45.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            45.0,
+            130.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            130.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1198,7 +1326,7 @@
         "breechDP": "main_caliber_gun_05_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1234,6 +1362,38 @@
             150.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -150.0,
+            -115.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -115.0,
+            -60.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -60.0,
+            60.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            60.0,
+            115.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            115.0,
+            150.0,
             -3.0,
             13.0
           ]
@@ -1244,7 +1404,7 @@
             30.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1269,7 +1429,7 @@
         "breechDP": "main_caliber_gun_06_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1305,6 +1465,38 @@
             150.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -150.0,
+            -115.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -115.0,
+            -60.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -60.0,
+            60.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            60.0,
+            115.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            115.0,
+            150.0,
             -3.0,
             13.0
           ]
@@ -1315,7 +1507,7 @@
             30.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1340,7 +1532,7 @@
         "breechDP": "main_caliber_gun_07_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1376,6 +1568,38 @@
             150.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -150.0,
+            -115.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -115.0,
+            -60.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -60.0,
+            60.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            60.0,
+            115.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            115.0,
+            150.0,
             -3.0,
             13.0
           ]
@@ -1386,7 +1610,7 @@
             30.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1411,7 +1635,7 @@
         "breechDP": "main_caliber_gun_08_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1447,6 +1671,38 @@
             150.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -150.0,
+            -115.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -115.0,
+            -60.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -60.0,
+            60.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            60.0,
+            115.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            115.0,
+            150.0,
             -3.0,
             13.0
           ]
@@ -1457,7 +1713,7 @@
             30.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1482,7 +1738,7 @@
         "breechDP": "main_caliber_gun_09_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1518,6 +1774,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -120.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -120.0,
+            -55.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -55.0,
+            55.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            55.0,
+            120.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            120.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1528,7 +1816,7 @@
             25.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1553,7 +1841,7 @@
         "breechDP": "main_caliber_gun_10_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1589,6 +1877,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -120.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -120.0,
+            -55.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -55.0,
+            55.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            55.0,
+            120.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            120.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1599,7 +1919,7 @@
             25.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1624,7 +1944,7 @@
         "breechDP": "main_caliber_gun_11_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1660,7 +1980,7 @@
             165.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1685,7 +2005,7 @@
         "breechDP": "main_caliber_gun_12_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1721,7 +2041,7 @@
             165.0
           ],
           "pitch": [
-            -3.0,
+            -6.0,
             13.0
           ]
         },
@@ -1746,7 +2066,7 @@
         "breechDP": "main_caliber_gun_13_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1782,6 +2102,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -135.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -135.0,
+            -30.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -30.0,
+            30.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            30.0,
+            135.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            135.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1807,7 +2159,7 @@
         "breechDP": "main_caliber_gun_14_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.071,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
         "bullets": 110,
@@ -1843,6 +2195,38 @@
             147.0
           ],
           "pitch": [
+            -6.0,
+            13.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -147.0,
+            -135.0,
+            -3.0,
+            13.0
+          ],
+          "lim2": [
+            -135.0,
+            -30.0,
+            -6.0,
+            13.0
+          ],
+          "lim3": [
+            -30.0,
+            30.0,
+            -3.0,
+            13.0
+          ],
+          "lim4": [
+            30.0,
+            135.0,
+            -6.0,
+            13.0
+          ],
+          "lim5": [
+            135.0,
+            147.0,
             -3.0,
             13.0
           ]
@@ -1868,7 +2252,7 @@
         "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1929,7 +2313,7 @@
         "breechDP": "auxiliary_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1990,7 +2374,7 @@
         "breechDP": "auxiliary_caliber_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2051,7 +2435,7 @@
         "breechDP": "auxiliary_caliber_gun_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2112,7 +2496,7 @@
         "breechDP": "auxiliary_caliber_gun_05_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2173,7 +2557,7 @@
         "breechDP": "auxiliary_caliber_gun_06_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2234,7 +2618,7 @@
         "breechDP": "auxiliary_caliber_gun_07_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2295,7 +2679,7 @@
         "breechDP": "auxiliary_caliber_gun_08_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2356,7 +2740,7 @@
         "breechDP": "auxiliary_caliber_gun_09_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2417,7 +2801,7 @@
         "breechDP": "auxiliary_caliber_gun_10_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2478,7 +2862,7 @@
         "breechDP": "auxiliary_caliber_gun_11_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2539,7 +2923,7 @@
         "breechDP": "auxiliary_caliber_gun_12_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2600,7 +2984,7 @@
         "breechDP": "auxiliary_caliber_gun_13_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2661,7 +3045,7 @@
         "breechDP": "auxiliary_caliber_gun_14_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2722,7 +3106,7 @@
         "breechDP": "auxiliary_caliber_gun_15_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2783,7 +3167,7 @@
         "breechDP": "auxiliary_caliber_gun_16_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2844,7 +3228,7 @@
         "breechDP": "auxiliary_caliber_gun_17_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -2905,7 +3289,7 @@
         "breechDP": "auxiliary_caliber_gun_18_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.222,
+        "shotFreq": 0.2,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -3088,7 +3472,7 @@
               "breechDP": "main_caliber_gun_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3124,6 +3508,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3149,7 +3565,7 @@
               "breechDP": "main_caliber_gun_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3185,6 +3601,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3210,7 +3658,7 @@
               "breechDP": "main_caliber_gun_03_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3246,6 +3694,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3271,7 +3751,7 @@
               "breechDP": "main_caliber_gun_04_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3307,6 +3787,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3332,7 +3844,7 @@
               "breechDP": "main_caliber_gun_05_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3368,6 +3880,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -3378,7 +3922,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3403,7 +3947,7 @@
               "breechDP": "main_caliber_gun_06_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3439,6 +3983,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -3449,7 +4025,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3474,7 +4050,7 @@
               "breechDP": "main_caliber_gun_07_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3510,6 +4086,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -3520,7 +4128,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3545,7 +4153,7 @@
               "breechDP": "main_caliber_gun_08_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3581,6 +4189,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -3591,7 +4231,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3616,7 +4256,7 @@
               "breechDP": "main_caliber_gun_09_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3652,6 +4292,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -120.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -120.0,
+                  -55.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -55.0,
+                  55.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  55.0,
+                  120.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  120.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3662,7 +4334,7 @@
                   25.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3687,7 +4359,7 @@
               "breechDP": "main_caliber_gun_10_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3723,6 +4395,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -120.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -120.0,
+                  -55.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -55.0,
+                  55.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  55.0,
+                  120.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  120.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3733,7 +4437,7 @@
                   25.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3758,7 +4462,7 @@
               "breechDP": "main_caliber_gun_11_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3794,7 +4498,7 @@
                   165.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3819,7 +4523,7 @@
               "breechDP": "main_caliber_gun_12_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3855,7 +4559,7 @@
                   165.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -3880,7 +4584,7 @@
               "breechDP": "main_caliber_gun_13_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3916,6 +4620,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -135.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -135.0,
+                  -30.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -30.0,
+                  30.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  30.0,
+                  135.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  135.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -3941,7 +4677,7 @@
               "breechDP": "main_caliber_gun_14_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -3977,6 +4713,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -135.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -135.0,
+                  -30.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -30.0,
+                  30.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  30.0,
+                  135.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  135.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -4002,7 +4770,7 @@
               "breechDP": "auxiliary_caliber_gun_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4063,7 +4831,7 @@
               "breechDP": "auxiliary_caliber_gun_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4124,7 +4892,7 @@
               "breechDP": "auxiliary_caliber_gun_03_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4185,7 +4953,7 @@
               "breechDP": "auxiliary_caliber_gun_04_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4246,7 +5014,7 @@
               "breechDP": "auxiliary_caliber_gun_05_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4307,7 +5075,7 @@
               "breechDP": "auxiliary_caliber_gun_06_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4368,7 +5136,7 @@
               "breechDP": "auxiliary_caliber_gun_07_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4429,7 +5197,7 @@
               "breechDP": "auxiliary_caliber_gun_08_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4490,7 +5258,7 @@
               "breechDP": "auxiliary_caliber_gun_09_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4551,7 +5319,7 @@
               "breechDP": "auxiliary_caliber_gun_10_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4612,7 +5380,7 @@
               "breechDP": "auxiliary_caliber_gun_11_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4673,7 +5441,7 @@
               "breechDP": "auxiliary_caliber_gun_12_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4734,7 +5502,7 @@
               "breechDP": "auxiliary_caliber_gun_13_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4795,7 +5563,7 @@
               "breechDP": "auxiliary_caliber_gun_14_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4856,7 +5624,7 @@
               "breechDP": "auxiliary_caliber_gun_15_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4917,7 +5685,7 @@
               "breechDP": "auxiliary_caliber_gun_16_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -4978,7 +5746,7 @@
               "breechDP": "auxiliary_caliber_gun_17_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -5039,7 +5807,7 @@
               "breechDP": "auxiliary_caliber_gun_18_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -5224,7 +5992,7 @@
               "breechDP": "main_caliber_gun_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5260,6 +6028,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -5285,7 +6085,7 @@
               "breechDP": "main_caliber_gun_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5321,6 +6121,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -5346,7 +6178,7 @@
               "breechDP": "main_caliber_gun_03_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5382,6 +6214,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -5407,7 +6271,7 @@
               "breechDP": "main_caliber_gun_04_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5443,6 +6307,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -130.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -130.0,
+                  -45.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -45.0,
+                  45.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  45.0,
+                  130.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  130.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -5468,7 +6364,7 @@
               "breechDP": "main_caliber_gun_05_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5504,6 +6400,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -5514,7 +6442,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5539,7 +6467,7 @@
               "breechDP": "main_caliber_gun_06_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5575,6 +6503,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -5585,7 +6545,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5610,7 +6570,7 @@
               "breechDP": "main_caliber_gun_07_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5646,6 +6606,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -5656,7 +6648,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5681,7 +6673,7 @@
               "breechDP": "main_caliber_gun_08_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5717,6 +6709,38 @@
                   150.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -150.0,
+                  -115.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -115.0,
+                  -60.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -60.0,
+                  60.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  60.0,
+                  115.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  115.0,
+                  150.0,
                   -3.0,
                   13.0
                 ]
@@ -5727,7 +6751,7 @@
                   30.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5752,7 +6776,7 @@
               "breechDP": "main_caliber_gun_09_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5788,6 +6812,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -120.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -120.0,
+                  -55.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -55.0,
+                  55.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  55.0,
+                  120.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  120.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -5798,7 +6854,7 @@
                   25.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5823,7 +6879,7 @@
               "breechDP": "main_caliber_gun_10_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5859,6 +6915,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -120.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -120.0,
+                  -55.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -55.0,
+                  55.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  55.0,
+                  120.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  120.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -5869,7 +6957,7 @@
                   25.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5894,7 +6982,7 @@
               "breechDP": "main_caliber_gun_11_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5930,7 +7018,7 @@
                   165.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -5955,7 +7043,7 @@
               "breechDP": "main_caliber_gun_12_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -5991,7 +7079,7 @@
                   165.0
                 ],
                 "pitch": [
-                  -3.0,
+                  -6.0,
                   13.0
                 ]
               },
@@ -6016,7 +7104,7 @@
               "breechDP": "main_caliber_gun_13_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -6052,6 +7140,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -135.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -135.0,
+                  -30.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -30.0,
+                  30.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  30.0,
+                  135.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  135.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -6077,7 +7197,7 @@
               "breechDP": "main_caliber_gun_14_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.071,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
               "bullets": 110,
@@ -6113,6 +7233,38 @@
                   147.0
                 ],
                 "pitch": [
+                  -6.0,
+                  13.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -147.0,
+                  -135.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim2": [
+                  -135.0,
+                  -30.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim3": [
+                  -30.0,
+                  30.0,
+                  -3.0,
+                  13.0
+                ],
+                "lim4": [
+                  30.0,
+                  135.0,
+                  -6.0,
+                  13.0
+                ],
+                "lim5": [
+                  135.0,
+                  147.0,
                   -3.0,
                   13.0
                 ]
@@ -6138,7 +7290,7 @@
               "breechDP": "auxiliary_caliber_gun_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6199,7 +7351,7 @@
               "breechDP": "auxiliary_caliber_gun_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6260,7 +7412,7 @@
               "breechDP": "auxiliary_caliber_gun_03_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6321,7 +7473,7 @@
               "breechDP": "auxiliary_caliber_gun_04_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6382,7 +7534,7 @@
               "breechDP": "auxiliary_caliber_gun_05_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6443,7 +7595,7 @@
               "breechDP": "auxiliary_caliber_gun_06_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6504,7 +7656,7 @@
               "breechDP": "auxiliary_caliber_gun_07_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6565,7 +7717,7 @@
               "breechDP": "auxiliary_caliber_gun_08_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6626,7 +7778,7 @@
               "breechDP": "auxiliary_caliber_gun_09_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6687,7 +7839,7 @@
               "breechDP": "auxiliary_caliber_gun_10_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6748,7 +7900,7 @@
               "breechDP": "auxiliary_caliber_gun_11_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6809,7 +7961,7 @@
               "breechDP": "auxiliary_caliber_gun_12_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6870,7 +8022,7 @@
               "breechDP": "auxiliary_caliber_gun_13_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6931,7 +8083,7 @@
               "breechDP": "auxiliary_caliber_gun_14_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -6992,7 +8144,7 @@
               "breechDP": "auxiliary_caliber_gun_15_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -7053,7 +8205,7 @@
               "breechDP": "auxiliary_caliber_gun_16_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -7114,7 +8266,7 @@
               "breechDP": "auxiliary_caliber_gun_17_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,
@@ -7175,7 +8327,7 @@
               "breechDP": "auxiliary_caliber_gun_18_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.222,
+              "shotFreq": 0.2,
               "speedYaw": 70.0,
               "speedPitch": 80.0,
               "bullets": 200,

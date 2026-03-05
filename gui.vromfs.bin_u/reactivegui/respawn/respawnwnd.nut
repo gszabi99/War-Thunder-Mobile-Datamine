@@ -405,24 +405,16 @@ let weaponryBlockByUnitType = {
   [AIR] = respawnAirWeaponry,
 }
 
-function respawnBulletsPlace() {
-  let res = { watch = [slotAABB, selSlotUnitType, selSlot], onAttach = @() deferOnce(updateSlotAABB) }
-  if (slotAABB.get() == null)
-    return res
-  let contentAABB = gui_scene.getCompAABBbyKey("respawnWndContent")
-  if (contentAABB == null)
-    return res
-
-  let content = selSlotUnitType.get() == null ? null
-    : (weaponryBlockByUnitType?[selSlotUnitType.get()](selSlot.get()) ?? respawnBullets)
-  return res.__update({
-    size = FLEX_V
-    children = {
-      key = slotAABB.get()
-      onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
-      children = content
-    }
-  })
+let respawnBulletsPlace = @() {
+  watch = [slotAABB, selSlotUnitType, selSlot]
+  size = FLEX_V
+  onAttach = @() deferOnce(updateSlotAABB)
+  children = {
+    key = slotAABB.get()
+    onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
+    children = selSlotUnitType.get() == null ? null
+      : (weaponryBlockByUnitType?[selSlotUnitType.get()](selSlot.get()) ?? respawnBullets)
+  }
 }
 
 let skinsList = @() {

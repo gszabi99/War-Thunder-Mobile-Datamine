@@ -50072,7 +50072,7 @@
         "305mm_45_12inch_mark13_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1800.0,
-          "shotFreq": 0.083,
+          "shotFreq": 0.071,
           "gunsCount": 14,
           "caliber": 305.0,
           "ammoCount": 1540,
@@ -50081,7 +50081,7 @@
         "152mm_6inch_50_bl_mk_13_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 461.212,
-          "shotFreq": 0.222,
+          "shotFreq": 0.2,
           "gunsCount": 18,
           "caliber": 152.0,
           "ammoCount": 3600,
