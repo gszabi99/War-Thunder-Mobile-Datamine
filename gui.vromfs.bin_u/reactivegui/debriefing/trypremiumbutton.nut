@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { set_session_id_for_premium_bonus } = require("%appGlobals/pServer/pServerApi.nut")
 let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
+let { PURCH_SRC_DEBRIEFING, PURCH_TYPE_PREMIUM } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { gradTranspDoubleSideX, gradRadial } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
@@ -92,6 +94,7 @@ function mkTryPremiumButton(mulComps, sessionId = null) {
       if (sessionId)
         set_session_id_for_premium_bonus(sessionId)
       openShopWnd(SC_PREMIUM)
+      sendUiBqEvent("open_shop", { id = "open", from = PURCH_SRC_DEBRIEFING, status = PURCH_TYPE_PREMIUM} )
     }
     onElemState = @(v) stateFlags.set(v)
     transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }

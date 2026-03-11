@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "math" import min
 
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
@@ -16,8 +17,11 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 let WND_UID = "quest_chain_info_wnd"
 
-let questChainIconSize = [hdpxi(40), hdpxi(45)]
+let maxVisibleQuestChains = 6
+let iconWidth = hdpxi(40)
 let questIconGap = hdpx(10)
+let chainIconBlockWidth = iconWidth * maxVisibleQuestChains + questIconGap * (maxVisibleQuestChains - 1)
+let questChainIconSize = [iconWidth, hdpxi(45)]
 let iconColor = 0xFFFF9C11
 let rewardPlateFullWidth = REWARD_STYLE_SMALL.boxSize + REWARD_STYLE_SMALL.boxGap
 
@@ -73,6 +77,8 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
         gap = hdpx(20)
         children = quests.map(function(q, idx) {
           let rewardsPreview = Computed(@() getRewardsPreviewInfo(q, serverConfigs.get()))
+          let blockWidth = min(chainIconBlockWidth, quests.len() < 1 ? 0 : iconWidth * quests.len() + questIconGap * (quests.len() - 1))
+          let gap = min(questIconGap, idx == 0 ? 0 : (chainIconBlockWidth - (iconWidth * (idx + 1))) / idx)
           return {
             size = FLEX_H
             rendObj = ROBJ_SOLID
@@ -84,11 +90,26 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
             children = [
               {
                 rendObj = ROBJ_BOX
-                size = [quests.len() * (questChainIconSize[0] + questIconGap), SIZE_TO_CONTENT]
-                flow = FLOW_HORIZONTAL
+                size = [blockWidth, SIZE_TO_CONTENT]
+                flow = FLOW_VERTICAL
                 gap = questIconGap
-                children = array(idx, mkProgresImage(P_COMPLETED))
-                  .append(mkProgresImage(q?.periodic ? P_COMPLETED | P_PERIODIC : P_COMPLETED))
+                children = [
+                  {
+                    rendObj = ROBJ_TEXT
+                    size = FLEX_H
+                    halign = ALIGN_CENTER
+                    color = iconColor
+                    text = $"{idx + 1}/{quests.len()}"
+                  }.__update(fontSmall)
+                  {
+                    size = FLEX_H
+                    gap
+                    halign = ALIGN_CENTER
+                    flow = FLOW_HORIZONTAL
+                    children = array(idx, mkProgresImage(P_COMPLETED))
+                      .append(mkProgresImage(q?.periodic ? P_COMPLETED | P_PERIODIC : P_COMPLETED))
+                  }
+                ]
               }
               {
                 rendObj = ROBJ_BOX
@@ -117,31 +138,41 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
   animations = wndSwitchAnim
 }))
 
-let mkChainProgress = @(item, ovr = {}) {
-  rendObj = ROBJ_BOX
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(20)
-  children = [
-    mkSquareIconBtn("⌡", @() onClick(item.chainQuests),
+let mkChainProgress = function(item, ovr = {}) {
+  let gap = min(questIconGap,
+    item.chainQuests.len() < 2 ? 0 : (chainIconBlockWidth - (iconWidth * item.chainQuests.len())) / (item.chainQuests.len() - 1))
+  return {
+    rendObj = ROBJ_BOX
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap = hdpx(20)
+    children = [
+      mkSquareIconBtn("⌡", @() onClick(item.chainQuests),
+        {
+          size = hdpx(50)
+          borderColor = 0xFFFFFFFF
+          borderWidth = 2
+          rendObj = ROBJ_BOX
+        }, fontSmall)
       {
-        size = hdpx(50)
-        borderColor = 0xFFFFFFFF
-        borderWidth = 2
+        rendObj = ROBJ_TEXT
+        color = iconColor
+        text = $"{item.pos}/{item.chainQuests.len()}"
+      }.__update(fontSmall)
+      {
+        size = [chainIconBlockWidth, SIZE_TO_CONTENT]
         rendObj = ROBJ_BOX
-      }, fontSmall)
-    {
-      rendObj = ROBJ_BOX
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_CENTER
-      gap = hdpx(15)
-      children = item.chainQuests.map(@(q, idx) mkProgresImage(
-        (q.isCompleted ? P_COMPLETED : 0)
-          | (idx == item.pos ? P_CURRENT : 0)
-          | (q?.periodic ? P_PERIODIC : 0)))
-    }
-  ]
-}.__update(ovr)
+        flow = FLOW_HORIZONTAL
+        gap
+        valign = ALIGN_CENTER
+        children = item.chainQuests.map(@(q, idx) mkProgresImage(
+          (q.isCompleted ? P_COMPLETED : 0)
+            | (idx == item.pos ? P_CURRENT : 0)
+            | (q?.periodic ? P_PERIODIC : 0)))
+      }
+    ]
+  }.__update(ovr)
+}
 
 return {
   mkChainProgress

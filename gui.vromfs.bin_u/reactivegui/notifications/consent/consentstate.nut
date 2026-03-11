@@ -11,7 +11,7 @@ let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
-let { setAppsFlyerConsent, startAppsFlyer } = require("appsFlyer")
+let { setAppsFlyerConsent, startAppsFlyer, enableTCFCollection = @(_) null } = require("appsFlyer")
 let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
@@ -63,6 +63,7 @@ function setupAnalytics() {
   if (!isEnabled.get())
     return
   let v = savedPoints.get()
+  enableTCFCollection(false)
   logC("analytics starting with consent:", v)
   setFirebaseConsent(object_to_json_string(v))
   setCollectionEnabled(true)

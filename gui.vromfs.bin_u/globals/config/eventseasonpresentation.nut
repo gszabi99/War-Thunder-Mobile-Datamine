@@ -46,9 +46,10 @@ let presentations = {
     bg = "ui/images/event_bg_lunar.avif",
     gamercardItems = [ "firework_kit" ]
   }
-  event_patrick_day            = { icon = "ui/gameuiskin#icon_event_patrick_day2.svg" }
-  event_patrick_daily          = { icon = "ui/gameuiskin#icon_event_patrick_day.svg" }
-  event_april_2025             = {
+  patrick_day_2026  = {
+    icon = "ui/gameuiskin#icon_event_patrick_day.svg"
+  }
+  event_april_2025  = {
     icon = "ui/gameuiskin#icon_event_april_2025.svg",
     bg = "ui/images/event_bg_event_april_2025.avif"
   }

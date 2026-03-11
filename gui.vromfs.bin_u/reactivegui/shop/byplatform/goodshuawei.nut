@@ -12,7 +12,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 let { parse_duration } = require("%sqstd/iso8601.nut")
 let { getYu2CodeName, yu2BadConnectionCodes } = require("%appGlobals/yu2ErrCodes.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
+let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases, severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
@@ -328,9 +328,6 @@ function restorePurchasesExt(isSilent = true) {
   restoreStatus.set(isSilent ? RESTORE_STARTED_SILENT : RESTORE_STARTED)
   restorePurchases()
 }
-
-let needAutoRestore = keepref(Computed(@() isLoggedIn.get() && lastInitStatus.get() == HMS_ORDER_STATE_SUCCESS))
-needAutoRestore.subscribe(@(v) v ? restorePurchasesExt() : null)
 
 let startSilentRestorePurchases = @() restorePurchasesExt()
 function startRestorePurchasesTimer() {

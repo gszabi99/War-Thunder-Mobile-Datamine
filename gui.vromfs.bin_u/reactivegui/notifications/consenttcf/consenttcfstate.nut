@@ -5,7 +5,6 @@ from "json" import parse_json, object_to_json_string
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "console" import register_command
 from "dagor.workcycle" import resetTimeout
-from "appsFlyer" import startAppsFlyer
 from "auth_wt" import getCountryCode
 from "blkGetters" import get_local_custom_settings_blk
 from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData, unloadVendorData,
@@ -27,6 +26,7 @@ let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
+let { startAppsFlyer, enableTCFCollection = @(_) null } = require("appsFlyer")
 
 let logC = log_with_prefix("[consent] ")
 
@@ -132,6 +132,7 @@ function setupAnalytics() {
   }
   setFirebaseConsent(object_to_json_string(firebaseConsent))
   setCollectionEnabled(true)
+  enableTCFCollection(true)
   startAppsFlyer()
 }
 

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
@@ -66,7 +67,10 @@ let function boostersListActive() {
     watch = [activeBoosters, stateFlags]
     size = [SIZE_TO_CONTENT, iconSize]
     vplace = ALIGN_CENTER
-    onClick = @() isOpenedBoosterWnd.set(true)
+    function onClick() {
+      isOpenedBoosterWnd.set(true)
+      sendUiBqEvent("open_boosters_window", { id = "open", from = "hangar" })
+    }
     behavior = Behaviors.Button
     sound = { click  = "click" }
     onElemState = @(v) stateFlags.set(v)

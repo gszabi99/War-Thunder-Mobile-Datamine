@@ -32,6 +32,7 @@ let PURCH_SRC_BLUEPRINTS = "blueprints"
 let PURCH_SRC_BRANCH = "branch"
 let PURCH_SRC_DECALS = "decals"
 let PURCH_SRC_RESET_SLOT_LEVEL = "reset_slot_lvl"
+let PURCH_SRC_DEBRIEFING = "debriefing"
 
 let PURCH_TYPE_UNIT = "unit"
 let PURCH_TYPE_UNIT_MOD = "unit_mod"
@@ -120,6 +121,7 @@ return {
   PURCH_SRC_BRANCH
   PURCH_SRC_DECALS
   PURCH_SRC_RESET_SLOT_LEVEL
+  PURCH_SRC_DEBRIEFING
 
   PURCH_TYPE_UNIT
   PURCH_TYPE_UNIT_MOD

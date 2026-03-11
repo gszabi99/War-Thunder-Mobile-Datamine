@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
@@ -35,7 +36,10 @@ let battleItemsBtn = @() {
   watch = [itemsOrder, hangarUnit, stateFlags]
   behavior = Behaviors.Button
   onElemState = @(sf) stateFlags.set(sf)
-  onClick = @() isOpenedItemWnd.set(true)
+  function onClick() {
+    isOpenedItemWnd.set(true)
+    sendUiBqEvent("open_items_window", { id = "open", from = "hangar" })
+  }
   hplace = ALIGN_RIGHT
   children = [
     stateFlags.get() & S_HOVER ? hoverBg : null
