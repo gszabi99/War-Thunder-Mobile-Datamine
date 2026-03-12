@@ -157,7 +157,7 @@ let mkChainProgress = function(item, ovr = {}) {
       {
         rendObj = ROBJ_TEXT
         color = iconColor
-        text = $"{item.pos}/{item.chainQuests.len()}"
+        text = $"{item.chainQuests.filter(@(v) v.isCompleted).len()}/{item.chainQuests.len()}"
       }.__update(fontSmall)
       {
         size = [chainIconBlockWidth, SIZE_TO_CONTENT]
