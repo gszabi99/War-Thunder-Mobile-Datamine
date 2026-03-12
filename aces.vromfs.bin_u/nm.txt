@@ -59727,3 +59727,11 @@ qn_201dd_rocket_deployed
 qn_201dd_rocket_char
 70mm_QN201DD
 engine_fireball_ai
+lepricon_decal
+tropic_raid_decal
+uq54bnzrsxxugrlbmkolevfo22va2aui-ft7y
+ij5sar5rkknnzlujo6uoceflz7xtvjwy-brpi
+cyujzvvxv3yqvppqzhmharng2wlkesi5-eniy
+r7wnp6vv4gl7mpjwdh5sgy3mt5jflf6x-bima
+gy5uwkye54jk7adtvn73hv4tuepeofbn-fnqi
+r3klngbsgt4kj6qmrjq43q6svjchv2ts-brpi

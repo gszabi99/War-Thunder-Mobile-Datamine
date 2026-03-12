@@ -2286,5 +2286,29 @@
     "lod0": "22koskxhojtj6vbjy3pwi4bj3yfalsby-enby",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "7s7mnolfetm4niqimlrffl7rljyd7qyt-bhxa"
+  },
+  "clover_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "uq54bnzrsxxugrlbmkolevfo22va2aui-ft7y",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ij5sar5rkknnzlujo6uoceflz7xtvjwy-brpi"
+  },
+  "lepricon_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "cyujzvvxv3yqvppqzhmharng2wlkesi5-eniy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "r7wnp6vv4gl7mpjwdh5sgy3mt5jflf6x-bima"
+  },
+  "tropic_raid_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "gy5uwkye54jk7adtvn73hv4tuepeofbn-fnqi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "r3klngbsgt4kj6qmrjq43q6svjchv2ts-brpi"
   }
 }
