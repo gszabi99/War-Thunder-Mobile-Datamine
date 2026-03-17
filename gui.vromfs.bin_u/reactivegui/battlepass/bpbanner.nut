@@ -5,7 +5,7 @@ let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradie
 let { seenPasses, isPassGoodsUnseen } = require("%rGui/battlePass/passState.nut")
 let { hasBpRewardsToReceive, battlePassGoods } = require("%rGui/battlePass/battlePassState.nut")
 let { isOPSeasonActive, hasOPRewardsToReceive, operationPassGoods, OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
-let { hasEpRewardsToReceive, eventPassGoods } = require("%rGui/battlePass/eventPassState.nut")
+let { hasAnyEpRewardsToReceive, allEventPassGoods } = require("%rGui/battlePass/eventPassState.nut")
 let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_EVENT_ID,
 } = require("%rGui/event/eventState.nut")
 let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
@@ -27,12 +27,12 @@ let mainEventBtn = translucentButton("ui/gameuiskin#icon_events.svg", "",
         : null
 })
 
-let hasAnyPassRewards = Computed(@() hasBpRewardsToReceive.get() || hasOPRewardsToReceive.get() || hasEpRewardsToReceive.get())
+let hasAnyPassRewards = Computed(@() hasBpRewardsToReceive.get() || hasOPRewardsToReceive.get() || hasAnyEpRewardsToReceive.get())
 
 let hasUnseenOP = Computed(@() isPassGoodsUnseen(operationPassGoods.get(), seenPasses.get()))
 let hasAnyUnseenPass = Computed(@() isPassGoodsUnseen(battlePassGoods.get(), seenPasses.get())
   || hasUnseenOP.get()
-  || isPassGoodsUnseen(eventPassGoods.get(), seenPasses.get()))
+  || null != allEventPassGoods.get().findindex(@(v) isPassGoodsUnseen(v, seenPasses.get())))
 
 return @(isPassActive, isEventActive) function () {
   let { color, image, imageOffset } = getEventPresentation(eventSeason.get())

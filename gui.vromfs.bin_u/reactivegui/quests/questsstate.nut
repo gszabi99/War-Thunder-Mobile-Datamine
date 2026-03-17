@@ -5,7 +5,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
-let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress,
+let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress, emptyProgress,
   setLastSeenUnlocks, unseenUnlocks
 } = require("%rGui/unlocks/unlocks.nut")
 let { EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION,
@@ -52,7 +52,7 @@ let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFI
 
 let inactiveEventUnlocks = Computed(@() allUnlocksDesc.get()
   .filter(@(u) u?.meta.event_day != null && !(unlockTables.get()?[u?.table] ?? false))
-  .map(@(u, id) u.__merge(unlockProgress.get()?[id] ?? {})))
+  .map(@(u, id) u.__merge(unlockProgress.get()?[id] ?? emptyProgress)))
 
 let eventUnlocksByDays = Computed(function() {
   let days = {}

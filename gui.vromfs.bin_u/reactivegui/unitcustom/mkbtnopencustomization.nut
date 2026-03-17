@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { openUnitCustom } = require("%rGui/unitCustom/unitCustomState.nut")
@@ -31,20 +32,28 @@ let customizationBtnContent = {
   ]
 }
 
-let mkBtnOpenCustomization = @(unitW, ovr) @() {
-  watch = unitW
-  children = !unitW.get() ? null : [
-    mkCustomButton(customizationBtnContent,
-      @() (unitSizes.get()?[getTagsUnitName(unitW.get().name)] ?? 0) == 0 ? openUnitCustom()
-        : openDownloadAddonsWnd([], [getTagsUnitName(unitW.get().name)], "unitDownloadInfoBlock", {}, "openUnitCustom"),
-      mergeStyles(buttonStyles.COMMON, ovr))
-    @() {
-      watch = [unitW, unseenSkins, unseenDecals]
-      margin = hdpx(10)
-      hplace = ALIGN_RIGHT
-      children = (unitW.get()?.name in unseenSkins.get() || unseenDecals.get().len() > 0) ? priorityUnseenMark : null
-    }
-  ]
+function mkBtnOpenCustomization(unitW, ovr) {
+  let hasUnseenMark = Computed(function() {
+    let { name = null, canShowOwnUnit = true } = unitW.get()
+    return canShowOwnUnit
+      && name in campMyUnits.get()
+      && (name in unseenSkins.get() || unseenDecals.get().len() > 0)
+  })
+  return @() {
+    watch = unitW
+    children = !unitW.get() ? null : [
+      mkCustomButton(customizationBtnContent,
+        @() (unitSizes.get()?[getTagsUnitName(unitW.get().name)] ?? 0) == 0 ? openUnitCustom()
+          : openDownloadAddonsWnd([], [getTagsUnitName(unitW.get().name)], "unitDownloadInfoBlock", {}, "openUnitCustom"),
+        mergeStyles(buttonStyles.COMMON, ovr))
+      @() {
+        watch = hasUnseenMark
+        margin = hdpx(10)
+        hplace = ALIGN_RIGHT
+        children = hasUnseenMark.get() ? priorityUnseenMark : null
+      }
+    ]
+  }
 }
 
 eventbus_subscribe("openUnitCustom", @(_) openUnitCustom())

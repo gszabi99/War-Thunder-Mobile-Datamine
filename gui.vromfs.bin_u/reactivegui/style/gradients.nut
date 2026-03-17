@@ -36,6 +36,37 @@ let mkGradientCtorDoubleSideX = @(color1, color2, middle = 0.4) function(params,
   }
 }
 
+let mkGradientCtorTripleSideX = @(color1, color2, color3, edge = 0.1, middle = 0.45) function(params, bmp) {
+  let { w, h } = params
+  let c1 = colorParts(color1)
+  let c2 = colorParts(color2)
+  let c3 = colorParts(color3)
+
+  let leftSolidEnd = edge
+  let rightSolidStart = 1.0 - edge
+  let transTotal = 1.0 - (edge * 2 + middle)
+  let transHalf = transTotal * 0.5
+  let leftTransStart = leftSolidEnd
+  let leftTransEnd = leftSolidEnd + transHalf
+  let rightTransStart = rightSolidStart - transHalf
+
+  for (local x = 0; x < w; x++) {
+    let rel = x.tofloat() / (w - 1)
+    let color = rel <= leftSolidEnd
+        ? partsToColor(c1)
+      : rel < leftTransEnd
+        ? partsToColor(lerpColorParts(c1, c2, (rel - leftTransStart) / (leftTransEnd - leftTransStart)))
+      : rel <= rightTransStart
+        ? partsToColor(c2)
+      : rel < rightSolidStart
+        ? partsToColor(lerpColorParts(c2, c3, (rel - rightTransStart) / (rightSolidStart - rightTransStart))) 
+      : partsToColor(c3)
+
+    for (local y = 0; y < h; y++)
+      bmp.setPixel(x, y, color)
+  }
+}
+
 let mkGradientCtorDoubleSideY = @(color1, color2, middle = 0.4) function(params, bmp) {
   let { w, h } = params
   let c1 = colorParts(color1)
@@ -252,6 +283,7 @@ return {
   simpleHorGradInv
 
   
+  mkGradientCtorTripleSideX
   mkGradientCtorDoubleSideX
   mkGradientCtorDoubleSideY
   mkGradientCtorInclined

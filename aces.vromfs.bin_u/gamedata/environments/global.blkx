@@ -44,8 +44,16 @@
       10.0,
       10.0,
       10.0,
-      -100.0
+      0.0
     ],
+    "autodetect_land_selfillum_tolerance": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "land_selfillum_biome_group": -1,
+    "land_selfillum_microdetail_id": -1,
     "land_fade_specular": [
       0.5,
       1.0,

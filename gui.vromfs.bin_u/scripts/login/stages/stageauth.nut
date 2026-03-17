@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "app" import exitGame
-let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async
+let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async, convertExternalJwtToAuthJwt
 } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
@@ -22,7 +22,7 @@ let { getLocTextForLang } = require("dagor.localize")
 let { login_nswitch} = require("subStageAuthNSwitch.nut")
 let {parse_json} = require("json")
 let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
-
+let { get_cur_circuit_block } = require("blkGetters")
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
 subscribeFMsgBtns({
@@ -40,13 +40,30 @@ let mkInterruptWithRecoveryMsg = @(errCode) function(_loginType) {
     ])
 }
 
+eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(p) {
+  if (p.status == YU2_OK)
+    finalizeStage()
+  else {
+    send_counter("auth.jwt_convert_error", 1, { error = p.status })
+    interruptStage({ error = $"Convert external JWT failed: {p.status}" })
+    errorMsgBox(p.status,
+      [
+        { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
+        { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
+      ])
+  }
+})
+
 let proceedAuthByResult = {
   [YU2_OK] = function(loginType) {
     send_counter("sq.app.stage", 1, { stage = "auth_done" })
     sendLoadingStageBqEvent("auth_done")
     curLoginType.set(loginType)
     authTags.set(get_player_tags())
-    finalizeStage()
+    if (get_cur_circuit_block()?.operatorName != null)
+      convertExternalJwtToAuthJwt("ConvertExternalJwt")
+    else
+      finalizeStage()
   },
 
   [YU2_2STEP_AUTH] = function(_loginType) { 

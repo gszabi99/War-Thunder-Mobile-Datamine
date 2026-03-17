@@ -421,15 +421,17 @@ function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
   }
 }
 
-let advertMark = {
+let advertMark = @() {
+  watch = hasVip
   key = {}
   size = !hasVip.get() ? [advertSize, advertSize] : [vipIconW, vipIconH]
   rendObj = ROBJ_IMAGE
   image = !hasVip.get()
     ? Picture($"ui/gameuiskin#watch_ads.svg:{advertSize}:{advertSize}:P")
-    : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
+    : Picture($"ui/gameuiskin#gamercard_subs_vip.avif:{vipIconW}:{vipIconH}:P")
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
+  keepAspect = true
 }.__update(adsButtonCounter)
 
 let mkPlate = @(text, fontStyle = fontMedium) {
@@ -492,7 +494,7 @@ let subsUpgradePlate = {
 function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
   return @() {
-    watch = [state, isProviderInited]
+    watch = [state, isProviderInited, hasVip]
     size = flex()
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

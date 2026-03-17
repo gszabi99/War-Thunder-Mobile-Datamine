@@ -127,7 +127,7 @@ let nodesStyle = {
     opacity = 0.75
     edgeColor = 0xC0402000
     edgeColorSelected = 0xC0603000
-    valign = ALIGN_TOP
+    valign = ALIGN_BOTTOM
   }
 }
 

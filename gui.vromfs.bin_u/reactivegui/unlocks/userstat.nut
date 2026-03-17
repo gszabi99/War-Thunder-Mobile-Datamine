@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logU = log_with_prefix("[userstat] ")
 let { register_command } = require("console")
-let { resetTimeout, clearTimer, setTimeout, setInterval } = require("dagor.workcycle")
+let { clearTimer, setTimeout, setInterval } = require("dagor.workcycle")
 let { rnd_float, frnd } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -12,6 +12,7 @@ let { parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
 let { currentSteamLanguage } = require("%appGlobals/clientState/languageState.nut")
 let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let charClientEventExt = require("%rGui/charClientEventExt.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
@@ -36,9 +37,9 @@ let statsInProgress = hardPersistWatched("statsInProgress", {})
 let isStatsActualByBattle = hardPersistWatched("userstats.actualByBattle", true)
 isInBattle.subscribe(@(_) isStatsActualByBattle.set(false))
 
-function makeUpdatable(persistName, refreshAction, getRefreshParams = null, customRefreshRequests = []) {
+function makeUpdatable(persistName, refreshAction, getRefreshParams = null, customRefreshRequests = [], initData = @(v) v) {
   let defValue = {}
-  let data = hardPersistWatched($"userstat.{persistName}", defValue)
+  let data = hardPersistWatched($"userstat.{persistName}", defValue, true)
   let lastTime = hardPersistWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.get().request > lastTime.get().update
     && lastTime.get().request + STATS_REQUEST_TIMEOUT > get_time_msec()
@@ -46,7 +47,7 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
     && (!lastTime.get().update || (lastTime.get().update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
   function onRefresh(result, context) {
-    data.set(result?.error ? defValue : (result?.response ?? defValue))
+    data.set(initData(result?.error ? defValue : (result?.response ?? defValue)))
     lastTime.mutate(@(v) v.update = get_time_msec())
     if (context?.needPrint)
       console_print(result?.error ? result : result?.response) 
@@ -57,7 +58,7 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
     registerBeforeHandler(actionId, function(result, _) {
       if (result?.error || result?.response == null)
         return
-      data.set(result.response)
+      data.set(initData(result.response))
       lastTime.mutate(@(v) v.update = get_time_msec())
     })
 
@@ -79,7 +80,14 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
     refresh(context)
   }
 
-  isReadyToConnect.subscribe(@(v) v ? forceRefresh() : data.set(defValue))
+  isReadyToConnect.subscribe(function(v) {
+    if (v)
+      forceRefresh()
+    else {
+      this_subscriber_call_may_take_up_to_usec(10 * get_slow_subscriber_threshold_usec())
+      data.set(defValue)
+    }
+  })
 
   if (isReadyToConnect.get() && lastTime.get().update <= 0 && lastTime.get().request <= 0)
     refresh()
@@ -97,7 +105,14 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
 }
 
 let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
-  @() { headers = { language = currentSteamLanguage.get() } })
+  @() { headers = { language = currentSteamLanguage.get() } },
+  [],
+  @(descList) "unlocks" not in descList ? descList
+    : descList.__merge({
+        unlocks = descList.unlocks.map(@(u) u.__merge({
+          stages = (u?.stages ?? []).map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
+        }))
+      }))
 let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks", null,
   ["GrantRewards", "BuyUnlock", "BuyUnlockReroll", "OpenNextUnlockStage"])
 let statsUpdatable = makeUpdatable("stats", "GetStats",
@@ -145,8 +160,10 @@ updateValidationTimer(needValidateMissingData.get())
 needValidateMissingData.subscribe(updateValidationTimer)
 
 mnGenericSubscribe("userStat", function(ev) {
-  if (ev?.func == "changed")
+  if (ev?.func == "changed") {
     unlocksUpdatable.forceRefresh()
+    statsTablesUpdatable.forceRefresh() 
+  }
   else if (ev?.func == "updateConfig")
     needConfigsUpdate.set(true)
 })
@@ -162,7 +179,7 @@ function updateConfigsIfNeed() {
 }
 updateConfigsIfNeed()
 needConfigsUpdate.subscribe(@(_) isInBattle.get() ? null
-  : resetTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, updateConfigsIfNeed))
+  : resetExtTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, updateConfigsIfNeed))
 isInBattle.subscribe(@(v) v ? updateConfigsIfNeed() : null)
 
 
@@ -174,7 +191,7 @@ userstatStats.subscribe(function(_) {
   let timeLeft = getStatsActualTimeLeft()
   isStatsActualByTime.set(timeLeft > 0)
   if (timeLeft > 0)
-    resetTimeout(timeLeft, @() isStatsActualByTime.set(false))
+    resetExtTimeout(timeLeft, @() isStatsActualByTime.set(false))
 })
 
 let isStatsActual = Computed(@() isStatsActualByTime.get() && isStatsActualByBattle.get())
@@ -279,9 +296,9 @@ function resetUpdateTimer() {
   let { time } = nextUpdateIntervals.get()
   let left = time - serverTime.get()
   if (left <= 0)
-    clearTimer(updateActualSeasonsIntervals)
+    clearExtTimer(updateActualSeasonsIntervals)
   else
-    resetTimeout(left, updateActualSeasonsIntervals)
+    resetExtTimeout(left, updateActualSeasonsIntervals)
 }
 resetUpdateTimer()
 nextUpdateIntervals.subscribe(@(_) resetUpdateTimer())
@@ -318,14 +335,18 @@ function updateTableActivityTimer() {
   }
 
   if (nextTime != null && nextTime - curTime > 0)
-    resetTimeout(nextTime - curTime, updateTableActivityTimer)
+    resetExtTimeout(nextTime - curTime, updateTableActivityTimer)
   if (!isEqual(tablesActivityOvr.get(), activityOvr))
     tablesActivityOvr.set(activityOvr)
   if (needRefreshStats) {
     logU("Deactualize stats by tables time range")
     isStatsActualByTime.set(false)
-    resetTimeout(rnd_float(0.001, 1.0) * MAX_CONFIGS_UPDATE_DELAY,
+    resetExtTimeout(rnd_float(0.001, 1.0) * MAX_CONFIGS_UPDATE_DELAY,
       function() {
+        if (isInBattle.get()) {
+          needConfigsUpdate.set(true)
+          return
+        }
         statsTablesUpdatable.refresh()
         descListUpdatable.refresh()
       })

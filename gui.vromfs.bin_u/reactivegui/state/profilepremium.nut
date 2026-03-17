@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { premium, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let dailyCounter = require("%appGlobals/pServer/dailyCounter.nut")
 let { serverTime, isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 
 
 let havePremiumDeprecated = Watched(false)
@@ -34,9 +34,9 @@ function resetUpdateTimer() {
   let { time } = nextUpdate.get()
   let left = time - serverTime.get()
   if (left <= 0)
-    clearTimer(updateState)
+    clearExtTimer(updateState)
   else
-    resetTimeout(left, updateState)
+    resetExtTimeout(left, updateState)
 }
 resetUpdateTimer()
 nextUpdate.subscribe(@(_) resetUpdateTimer())
@@ -62,9 +62,9 @@ function updateInternalSubs() {
 
   let timeToUpdate = nextTime - time
   if (timeToUpdate <= 0)
-    clearTimer(updateInternalSubs)
+    clearExtTimer(updateInternalSubs)
   else
-    resetTimeout(timeToUpdate, updateInternalSubs)
+    resetExtTimeout(timeToUpdate, updateInternalSubs)
 }
 
 activeInternalSubs.whiteListMutatorClosure(updateInternalSubs)

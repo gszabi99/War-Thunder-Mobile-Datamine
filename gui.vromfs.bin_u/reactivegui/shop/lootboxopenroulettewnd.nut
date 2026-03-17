@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 let logR = log_with_prefix("[Roulette] ")
-let { resetTimeout, defer, deferOnce, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, defer, deferOnce } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { rnd_int } = require("dagor.random")
 let { playSound, startSound, stopSound } = require("sound_wt")
@@ -9,10 +9,11 @@ let { lerpClamped, cos, sin, PI, pow } = require("%sqstd/math.nut")
 let ln = require("math").log
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
 let { registerScene, scenesOrder, setSceneBg } = require("%rGui/navState.nut")
-let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJackpotInfo,
+let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount,
   rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
-  isCurRewardFixed, requestOpenCurLootbox, closeRoulette, lastJackpotIdx, logOpenConfig,
-  rouletteLastReward, isRouletteDebugMode, isAllJackpotsReceived, rouletteOpenRewards
+  isCurRewardFixed, requestOpenCurLootbox, closeRoulette, logOpenConfig,
+  rouletteLastReward, isRouletteDebugMode, rouletteOpenRewards,
+  isJackpotReceived, isJackpotCurrent
 } = require("%rGui/shop/lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
@@ -59,7 +60,6 @@ let delayBeforeClose = 0.5
 let aTimeFixedRewardScale = 1.0
 
 let aTimeHighlight = 0.9
-let aTimeDelayJackpotProgress = 0.1
 
 let rewardBoxSize = REWARD_STYLE_MEDIUM.boxSize
 let rewardBoxGap = REWARD_STYLE_MEDIUM.boxGap
@@ -81,6 +81,8 @@ let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.get()]
 let consistentReceivedRewardIdx = Watched(-1)
 let viewInfos = Computed(@() receivedRewardsAll.get().map(@(r) r.viewInfo[0]))
 let visibleInfos = Computed(@() joinViewInfo([], viewInfos.get().slice(0, resultOffsetIdx.get() + 1)))
+let nextFixedViewInfo = Computed(@() nextFixedReward.get()?.viewInfo)
+let shouldShowFixedRewardIcon = Watched(true)
 
 let isRewardSameDefault = @(received, info) info.id == received.id && info.count == received.count
   && (info.rType in ignoreSubIdRTypes || info.subId == received.subId)
@@ -147,13 +149,14 @@ rouletteOpenId.subscribe(function(_) {
   recevedRewardAnimIdx.set(-1)
   resultOffsetIdx.set(-1)
   consistentReceivedRewardIdx.set(-1)
+  shouldShowFixedRewardIcon.set(true)
 })
 
 function onChangeIndexes() {
-  if (!isAllJackpotsReceived.get())
-    return
   let indexes = allowedResultIndexes.get()
   if (rouletteOpenId.get() == null || indexes == null || indexes.len() > 0 || isResultLastReward.get())
+    return
+  if (isCurRewardFixed.get())
     return
   log($"Not found received reward to show in the roulette '{rouletteOpenId.get()}': ", curRewardViewInfo.get())
   logOpenConfig()
@@ -162,7 +165,6 @@ function onChangeIndexes() {
 }
 
 allowedResultIndexes.subscribe(@(_) deferOnce(onChangeIndexes))
-isAllJackpotsReceived.subscribe(@(_) deferOnce(onChangeIndexes))
 
 rouletteOpenResult.subscribe(function(v) {
   if (v == null)
@@ -456,9 +458,6 @@ let updAnimByStatus = {
   },
 
   [RS_REWARD_NO_ROLL] = function(_, state) {
-    if (!isAllJackpotsReceived.get())
-      return
-
     let { time, rewardNoRollTime = null, nextRewardTime = null } = state
     let isLastReward = (receivedRewardsAll.get().len() - 1) == rouletteOpenIdx.get()
 
@@ -679,6 +678,8 @@ let function mkRewardBlock(reward, rStyle, ovr = {}) {
 }
 
 function onRewardScaleFinish(viewInfo, rewardIdx) {
+  if (viewInfo.id == nextFixedViewInfo.get()?[0].id)
+    shouldShowFixedRewardIcon.set(false)
   addCompToCompAnim({
     component = mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM)
     from = isReceivedAnimFixed.get() ? FIXED_REWARD_ANIM_KEY : REWARD_RESULT_ANIM_KEY
@@ -686,12 +687,13 @@ function onRewardScaleFinish(viewInfo, rewardIdx) {
     easing = InOutQuad
     duration = aTimeRewardMove
   })
-
   resetTimeout(aTimeRewardMove, @() resultVisibleIdx.set(max(rewardIdx, resultVisibleIdx.get())))
   if (resultOffsetIdx.get() >= receivedRewardsAll.get().len() - 1)
     resetTimeout(aTimeRewardMove + delayBeforeClose, closeRoulette)
   else if (rouletteOpenIdx.get() == rewardIdx && (isReceivedAnimFixed.get() || isReceivedAnimLast.get()))
     rouletteOpenIdx.set(rewardIdx + 1)
+  else if(isReceivedAnimFixed.get())
+    rouletteOpenIdx.set(rouletteOpenIdx.get() + 1)
   recevedRewardAnimIdx.set(-1)
 }
 
@@ -705,6 +707,24 @@ let receiveRewardAnimBlock = @(viewInfo, key, duration)
         onFinish = @() onRewardScaleFinish(viewInfo, findIndexForJoin(visibleInfos.get(), viewInfo) ?? -1)
       }]
     })
+
+let fixedRewardIcon = @(viewInfo) {
+  children = [
+    @() {
+      watch = [needHighlight, isReceivedAnimFixed]
+      size = flex()
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      children = needHighlight.get() && isReceivedAnimFixed.get() ? highlight : null
+    }
+    mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM)
+    @() {
+      watch = [receiveRewardsAnimViewInfo, isReceivedAnimFixed]
+      children = receiveRewardsAnimViewInfo.get() == null || !isReceivedAnimFixed.get() ? null
+        : receiveRewardAnimBlock(receiveRewardsAnimViewInfo.get(), FIXED_REWARD_ANIM_KEY, aTimeFixedRewardScale)
+    }
+  ]
+}
 
 function rouletteRewardsBlock() {
   if (rouletteRewardsList.get().len() < 2)
@@ -884,7 +904,7 @@ let progressAnimations = [{
   duration = 0.5, trigger = progressTrigger, easing = Blink
 }]
 
-let mkOpenCountText = @(text, count) {
+let mkOpenCountText = @(text, curCount, totalCount) {
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -897,6 +917,13 @@ let mkOpenCountText = @(text, count) {
       text
     }.__update(fontTiny)
     {
+      rendObj = ROBJ_TEXT
+      text = $"{curCount}/{totalCount}"
+      minWidth = hdpx(50)
+      transform = { pivot = [0.0, 0.5] }
+      animations = progressAnimations
+    }.__update(fontTiny)
+    {
       size = [openCountIconSize, openCountIconSize]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#events_chest_icon.svg:{openCountIconSize}:{openCountIconSize}:P")
@@ -904,13 +931,6 @@ let mkOpenCountText = @(text, count) {
       transform = { pivot = [1.0, 0.5] }
       animations = progressAnimations
     }
-    {
-      rendObj = ROBJ_TEXT
-      text = count
-      minWidth = hdpx(50)
-      transform = { pivot = [0.0, 0.5] }
-      animations = progressAnimations
-    }.__update(fontTiny)
   ]
 }
 
@@ -947,8 +967,7 @@ let progressbar = @(value) {
 }
 
 let fixedRewardCurrent = Computed(@()
-  max(lastJackpotIdx.get(),
-    (nextFixedReward.get()?.current ?? -1) + (rouletteOpenIdx.get() == resultOffsetIdx.get() ? 0 : -1)))
+  (nextFixedReward.get()?.current ?? -1) + (rouletteOpenIdx.get() == resultOffsetIdx.get() ? 0 : -1))
 let fixedRewardTotal = Computed(@() (nextFixedReward.get()?.total ?? 1))
 
 local lastFixedRewardCurrent = fixedRewardCurrent.get()
@@ -962,62 +981,49 @@ function startOpenCountAnim() {
 fixedRewardCurrent.subscribe(@(_) deferOnce(startOpenCountAnim))
 
 let fixedProgressInfo = @() {
-  watch = [fixedRewardCurrent, fixedRewardTotal]
-  size = [progressbarWidth, SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  children = [
-    mkOpenCountText(loc("lootbox/totalOpened"), fixedRewardCurrent.get())
-    mkOpenCountText(loc("events/fixedReward"), fixedRewardTotal.get() - fixedRewardCurrent.get())
-    progressbar(fixedRewardCurrent.get().tofloat() / fixedRewardTotal.get())
-  ]
-}
-
-let isJackpotFinalProgress = Watched(false)
-let showJackpotFinalProgress = @() isJackpotFinalProgress.set(true)
-function onJackpotInfoChange(v) {
-  isJackpotFinalProgress.set(false)
-  if (v != null)
-    resetTimeout(aTimeDelayJackpotProgress, showJackpotFinalProgress)
-  else
-    clearTimer(showJackpotFinalProgress)
-}
-onJackpotInfoChange(curJackpotInfo.get())
-curJackpotInfo.subscribe(onJackpotInfoChange)
-let jackpotProgressInfo = @(startIdx, openIdx) @() {
-  watch = isJackpotFinalProgress
-  key = isJackpotFinalProgress
-  size = [progressbarWidth, SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  children = [
-    {
-      size = [flex(), openCountIconSize]
-      halign = ALIGN_CENTER
-      valign = ALIGN_BOTTOM
-      children = {
-        rendObj = ROBJ_TEXT
-        text = loc("jackpot/received")
-        transform = {}
-        animations = [
-          { prop = AnimProp.scale, to = [1.1, 1.1],
-            duration = 2.0, easing = CosineFull, play = true, loop = true, globalTimer = true }
+  watch = [fixedRewardCurrent, fixedRewardTotal, nextFixedViewInfo, curRewardViewInfo, nextFixedReward, shouldShowFixedRewardIcon]
+  size = [progressbarWidth, rewardBoxSize]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = nextFixedViewInfo.get() == null ? null
+    : fixedRewardTotal.get() - fixedRewardCurrent.get() >= 0 && shouldShowFixedRewardIcon.get() ? [{
+        flow = FLOW_VERTICAL
+        children = [
+          mkOpenCountText(loc("events/fixedReward"), fixedRewardCurrent.get(), fixedRewardTotal.get())
+          progressbar(fixedRewardCurrent.get().tofloat() / fixedRewardTotal.get())
         ]
-      }.__update(fontBig)
-    }
-    progressbar(isJackpotFinalProgress.get() ? 1.0 : startIdx.tofloat() / openIdx)
-  ]
+      },
+      nextFixedReward.get() == null || fixedRewardCurrent.get() != nextFixedReward.get().total || !shouldShowFixedRewardIcon.get() ? null
+        : fixedRewardIcon(nextFixedViewInfo.get()[0])
+    ]
+    : {
+        size = [flex(), openCountIconSize]
+        halign = ALIGN_CENTER
+        valign = ALIGN_BOTTOM
+        children = {
+          rendObj = ROBJ_TEXT
+          text = loc("fixedReward/received/desc", {openedLootboxForJackpot = fixedRewardTotal.get()})
+          transform = {}
+          animations = [
+            { prop = AnimProp.scale, to = [1.1, 1.1],
+              duration = 2.0, easing = CosineFull, play = true, loop = true, globalTimer = true }
+          ]
+        }.__update(fontBig)
+      }
 }
 
-let afterJackpotReceivedInfo = @(openedLootboxForJackpot) {
+let afterJackpotReceivedInfo = @() {
   size = [progressbarWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
-    {
+    @() {
+      watch = isJackpotCurrent
       size = [flex(), openCountIconSize]
       halign = ALIGN_CENTER
       valign = ALIGN_BOTTOM
       children = {
         rendObj = ROBJ_TEXT
-        text = loc("fixedReward/received", {openedLootboxForJackpot})
+        text = isJackpotCurrent.get() ? loc("jackpot/received") : loc("jackpot/alreadyReceived")
         transform = {}
         animations = [
           { prop = AnimProp.scale, to = [1.1, 1.1],
@@ -1028,40 +1034,15 @@ let afterJackpotReceivedInfo = @(openedLootboxForJackpot) {
   ]
 }
 
-let fixedRewardIcon = @(viewInfo) {
-  children = [
-    @() {
-      watch = [needHighlight, isReceivedAnimFixed]
-      size = flex()
-      valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      children = needHighlight.get() && isReceivedAnimFixed.get() ? highlight : null
-    }
-    mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM)
-    @() {
-      watch = [receiveRewardsAnimViewInfo, isReceivedAnimFixed]
-      children = receiveRewardsAnimViewInfo.get() == null || !isReceivedAnimFixed.get() ? null
-        : receiveRewardAnimBlock(receiveRewardsAnimViewInfo.get(), FIXED_REWARD_ANIM_KEY, aTimeFixedRewardScale)
-    }
-  ]
-}
-
-let nextFixedViewInfo = Computed(@() nextFixedReward.get()?.viewInfo)
 let fixedRewardInfo = @() {
-  watch = [curJackpotInfo, nextFixedViewInfo, lastJackpotIdx]
+  watch = [nextFixedReward, isJackpotReceived]
   size = [SIZE_TO_CONTENT, rewardBoxSize]
   valign = ALIGN_CENTER
   hplace = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = slotsGap
-  children = curJackpotInfo.get() != null ? jackpotProgressInfo(curJackpotInfo.get().startIdx, curJackpotInfo.get().openIdx)
-    : lastJackpotIdx.get() ? afterJackpotReceivedInfo(lastJackpotIdx.get())
-    : nextFixedViewInfo.get() != null
-      ? [
-          fixedProgressInfo
-          nextFixedViewInfo.get()[0].rType == "lootbox" ? null 
-            : fixedRewardIcon(nextFixedViewInfo.get()[0])
-        ]
+  children = isJackpotReceived.get() ? afterJackpotReceivedInfo
+    : nextFixedReward.get() ? fixedProgressInfo
     : null
 }
 

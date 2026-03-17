@@ -6375,32 +6375,6 @@
       "ri_extra__name": "lunar_ny_lantern_spheres",
       "transform": [
         [
-          -1.09959,
-          0.0,
-          0.594063
-        ],
-        [
-          0.0,
-          1.2498,
-          0.0
-        ],
-        [
-          -0.594063,
-          0.0,
-          -1.09959
-        ],
-        [
-          513.97,
-          135.059,
-          3613.48
-        ]
-      ]
-    },
-    {
-      "_template": "rendinst_replicated",
-      "ri_extra__name": "lunar_ny_lantern_spheres",
-      "transform": [
-        [
           1.13643,
           0.0,
           -0.520124

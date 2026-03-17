@@ -13,6 +13,8 @@ return {
     ["125mm_9M113_rocket_launcher"] = "ui/gameuiskin#icon_rocket_in_progress.svg",
     ["127mm_BGM_71_tow_launcher_user_cannon"] = "ui/gameuiskin#icon_rocket_in_progress.svg",
     ["127mm_bgm_71c_itow_rocket_launcher"] = "ui/gameuiskin#icon_rocket_in_progress.svg",
-    ["70mm_Hydra_70_user_cannon"] = "ui/gameuiskin#icon_rocket_in_progress.svg"
+    ["70mm_Hydra_70_user_cannon"] = "ui/gameuiskin#icon_rocket_in_progress.svg",
+    ["70mm_QN201DD_rocket_launcher"] = "ui/gameuiskin#icon_rocket_in_progress.svg",
+    ["151mm_QN502CDD_rocket_launcher"] = "ui/gameuiskin#icon_rocket_in_progress.svg"
   }
 }

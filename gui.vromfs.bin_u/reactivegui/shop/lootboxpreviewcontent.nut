@@ -203,47 +203,13 @@ let chancePartCtors = {
 let mkTextForChancePart = @(singleReward, chances, rType, rId)
   (chancePartCtors?[rType] ?? mkTextForChanceCurrency)(singleReward, chances, rId)
 
-function mkJackpotChanceText(id, chances, mainChances, stepsCount) {
-  if(chances == null || mainChances == null)
-    return loc("item/chance/error")
-
-  let chance = roundChance(chances.percents?[id] ?? 0)
-  let chanceForGuaranteed = $"{loc("item/chance/fixedReward", { count = stepsCount })}{colon}{chance}%"
-
-  if (!mainChances.percents?[id] && chances.percents?[id])
-    return chanceForGuaranteed
-
-  let mainChance = roundChance(mainChances.percents?[id] ?? 0)
-
-  return "\n".concat($"{loc("item/chance")}{colon}{mainChance}%", chanceForGuaranteed)
-}
-
-function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInProgress) { 
-  let { rewardId = null, parentSource = "", isLastReward = false } = reward
-
-  if (stepsCount < 0)
-    return loc("item/chance/alternativeRewardReceived")
+function mkFixedChanceContent(reward, stepsCount) {
+  let { isLastReward = false } = reward
 
   if (isLastReward)
-    return loc("item/chance/lastRewardFixed", { count = stepsCount })
+    return mkTooltipText(loc("item/chance/lastRewardFixed", { count = stepsCount }))
 
-  let jackpotChances = mkLootboxChancesComp(parentSource)
-
-  let jackpotInProgress = mkIsLootboxChancesInProgress(parentSource)
-  let isInProgress = Computed(@() mainChanceInProgress.get() || jackpotInProgress.get())
-
-  return @() {
-    watch = [isInProgress, mainPercents, jackpotChances]
-    flow = FLOW_VERTICAL
-    sound = { attach = "click" }
-    gap = tooltipTextGap
-    halign = ALIGN_LEFT
-    children = isInProgress.get() ? spinner
-      : mkTooltipText(mkJackpotChanceText(rewardId,
-          mainPercents.get(),
-          jackpotChances.get(),
-          stepsCount))
-    }
+  return mkTooltipText(loc("item/chance/fixedReward", { count = stepsCount }))
 }
 
 function mkChanceWithLimit(hasLimit, chance, infoLoc) {
@@ -253,20 +219,20 @@ function mkChanceWithLimit(hasLimit, chance, infoLoc) {
 
 function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) { 
   let { rewardId = null, agregatedRewards = null, source = "", isLastReward = false, rType, id } = reward
-  let { isAvailable, isAllReceived, isJackpot = false } = rewardStatus
+  let { isAvailable, isAllReceived, isFixed = false } = rewardStatus
 
-  if (!isAvailable.get() || isAllReceived)
+  if (!isAvailable.get() || (isAllReceived && stepsCount <= 0))
     return isAvailable.get() ? loc("battlepass/receivedRew")
       : loc("battlepass/unavailableRew", { unitName = loc(getUnitLocId(id)) })
 
-  if (isLastReward && !isJackpot)
+  if (isLastReward && !isFixed)
     return loc("item/chance/lastReward")
 
   let mainChances = mkLootboxChancesComp(source)
   let isInProgress = mkIsLootboxChancesInProgress(source)
 
-  if (isJackpot)
-    return mkJackpotChanceContent(reward, stepsCount, mainChances, isInProgress)
+  if (isFixed)
+    return mkFixedChanceContent(reward, stepsCount)
 
   let limitInfoCfg = limitInfoCfgByType?[rType]
 
@@ -301,7 +267,11 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
     halign = ALIGN_LEFT
     children = isInProgressFull.get() ? spinner
       : mainChances.get() == null || nestedChances.get() == null ? mkText(loc("item/chance/error"))
-      : dropFromNested.rewardId not in nestedChances.get().percents ? mkText(loc("jackpot/alreadyReceived"))
+      : dropFromNested.rewardId not in nestedChances.get().percents
+        && !dropFromNested?.isFixed ? mkText(loc("jackpot/alreadyReceived"))
+      : dropFromNested?.isFixed
+        && getStepsToNextFixed(serverConfigs.get()?.lootboxesCfg[dropFromNested.source], serverConfigs.get(), servProfile.get())[1] <= 0
+        ? mkText(loc("item/chance/alternativeRewardReceived"))
       : [ mkText(loc("item/chance/fromNested", { lootboxName = getLootboxName(dropFromNested.rewardId) })) ]
           .extend(
             agregatedRewards != null
@@ -309,13 +279,15 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
               : rewardId != null
                 ? mkChanceWithLimit(hasLimitInfo.get(), mainChances.get().percents?[rewardId] ?? 0, infoLoc)
               : [])
-          .append(
-            {  size = hdpx(20) },
-            mkText(loc("item/chance/withName",
-              {
-                name = getLootboxName(dropFromNested.id)
-                chance = roundChance(nestedChances.get().percents?[dropFromNested.rewardId] ?? 0)
-              })))
+          .extend(
+            dropFromNested?.isFixed ? []
+              : [
+                { size = hdpx(20) },
+                mkText(loc("item/chance/withName",
+                {
+                  name = getLootboxName(dropFromNested.id)
+                  chance = roundChance(nestedChances.get().percents?[dropFromNested.rewardId] ?? 0)
+                }))])
   }
 }
 
@@ -363,7 +335,7 @@ let mkPreviewIcon = @(reward, rStyle) mkPreviewIconImpl(reward, rStyle, previewI
 
 function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
   let { rType, id, dropLimit = NO_DROP_LIMIT, dropLimitRaw = NO_DROP_LIMIT, received = 0,
-    isJackpot = false, isOpenReward = false
+    isOpenReward = false, isFixed = false
   } = reward
   let stateFlags = Watched(0)
   let key = {}
@@ -377,7 +349,7 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
   let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
   let isAvailable = Computed(@() rType != "skin" || id in campMyUnits.get())
 
-  let stepsCount = !isJackpot || lootboxW == null ? Watched(0)
+  let stepsCount = !isFixed || lootboxW == null ? Watched(0)
     : Computed(function() {
         let stepsToFixed = getStepsToNextFixed(lootboxW.get(), serverConfigs.get(), servProfile.get())
         return stepsToFixed[1] - stepsToFixed[0]
@@ -391,11 +363,11 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
       mkRewardPlate(reward, rStyle)
       onClick == null ? null : mkPreviewIcon(reward, rStyle)
       !isAvailable.get() ? mkRewardLocked(rStyle)
-        : !isAllReceived && (reward?.isFixed ?? isJackpot) ? mkRewardFixedIcon(rStyle)
+        : !isAllReceived && isFixed ? mkRewardFixedIcon(rStyle)
         : !isAllReceived && dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
         : topLeftIconCtor?[rType](reward, rStyle)
-      isAllReceived ? mkRewardReceivedMark(rStyle) : null
-      isJackpot && stepsCount.get() < 0 && !isAllReceived ? mkRewardDisabledBkg : null
+      isAllReceived && stepsCount.get() <= 0 ? mkRewardReceivedMark(rStyle) : null
+      stepsCount.get() < 0 && !isAllReceived ? mkRewardDisabledBkg : null
     ]
   }.__update(ovr,
     mkButtonHoldTooltip(onClick, stateFlags, key,
@@ -405,7 +377,7 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
               {
                 isAvailable,
                 isAllReceived,
-                isJackpot
+                isFixed
               },
               stepsCount.get(),
               dropFromNested)
@@ -467,10 +439,11 @@ let mkMoreInfoButton = @(reward, style) reward.rType not in mkPlateClickByType ?
       mergeStyles(PRIMARY, { ovr = { size = [style.boxSize, style.boxSize], minWidth = style.boxSize } }))
 
 function mkRewardLootboxInfo(reward, width, style) {
-  let { id, dropLimit = NO_DROP_LIMIT, received = 0 } = reward
+  let { id, dropLimit = NO_DROP_LIMIT, received = 0, source = "" } = reward
   let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
   let slotsInRow = getSlotsInRow(width, style) - 1 - reward.slots
   let arrowSize = [style.boxSize * 2 / 3, (style.boxSize / 4) * 2]
+  let sourceLootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[source])
   let lootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[id])
   let rewards = Computed(@() lootbox.get() == null ? []
     : getLootboxRewardsAutoLast(lootbox.get(), servProfile.get(), serverConfigs.get(), isAllReceived))
@@ -495,7 +468,7 @@ function mkRewardLootboxInfo(reward, width, style) {
     gap = style.boxGap
     valign = ALIGN_CENTER
     children = [
-      mkReward(reward, style)
+      mkReward(reward, style, sourceLootbox)
       {
         size = [style.boxSize - style.boxGap, style.boxSize]
         valign = ALIGN_CENTER
@@ -561,15 +534,15 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
   let allRewards = Computed(@(prev) prevIfEqual(prev,
     lootbox.get() == null ? []
       : fillRewardsCounts(getAllLootboxRewardsViewInfo(lootbox.get()), servProfile.get(), serverConfigs.get())))
-  let jackpotCount = Computed(@() allRewards.get().findindex(@(r) !(r?.isFixed || r?.isJackpot)) ?? 0)
-  let jackpotRewards = Computed(function(prev) {
+  let guaranteedCount = Computed(@() allRewards.get().findindex(@(r) !r?.isFixed) ?? 0)
+  let guaranteedRewards = Computed(function(prev) {
     let { total = {} } = servProfile.get()?.lootboxStats[lootbox.get()?.name]
     return prevIfEqual(prev,
-      allRewards.get().slice(0, jackpotCount.get())
+      allRewards.get().slice(0, guaranteedCount.get())
         .filter(@(r) null == r.lockedBy.findvalue(@(l) (total?[l] ?? 0) > 0)))
   })
   let commonRewardsInfo = Computed(function() {
-    let full = jackpotCount.get() == 0 ? allRewards.get() : allRewards.get().slice(jackpotCount.get())
+    let full = guaranteedCount.get() == 0 ? allRewards.get() : allRewards.get().slice(guaranteedCount.get())
     let list = []
     let lootboxes = []
     foreach (r in full)
@@ -596,19 +569,19 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
   let openRewards = Computed(@() lootbox.get() == null ? []
     : getLootboxOpenRewardViewInfo(lootbox.get(), serverConfigs.get())
       .map(@(v) v.$rawset("isOpenReward", true)))
-  let lockedJackpotCount = Computed(@() jackpotRewards.get().findvalue(@(r) r.lockedBy.len() > 0) == null ? 0
+  let lockedJackpotCount = Computed(@() guaranteedRewards.get().findvalue(@(r) r.lockedBy.len() > 0) == null ? 0
     : getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())[1])
 
-  let style = mkStyleComp(width, openRewards, jackpotRewards, commonRewards, rewardLootboxes)
+  let style = mkStyleComp(width, openRewards, guaranteedRewards, commonRewards, rewardLootboxes)
   return @() {
     key = {}
-    watch = [style, jackpotRewards, commonRewards, lootBoxWithSameJackpot, openRewards, rewardLootboxes, lootboxName]
+    watch = [style, guaranteedRewards, commonRewards, lootBoxWithSameJackpot, openRewards, rewardLootboxes, lootboxName]
     size = [width, SIZE_TO_CONTENT]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = style.get().boxGap
     children = blockWithHeaderArray(loc("lootbox/eachOpenReward"), openRewards.get(), width, style.get())
-      .append(lootBoxWithSameJackpot.get() == null || jackpotRewards.get().len() == 0 ? null
+      .append(lootBoxWithSameJackpot.get() == null || guaranteedRewards.get().len() == 0 ? null
         : mkTextArea(loc("fixedReward/sameRewardHint", {
             current = getLootboxName(lootboxName.get())
             same = getLootboxName(lootBoxWithSameJackpot.get())
@@ -618,7 +591,7 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
             : null)
       .extend(
         blockWithLootboxesInfoArray(loc("events/lootboxContains/special"), rewardLootboxes.get(), width, style.get())
-        blockWithHeaderArray(loc("fixedReward/rewardsHeader"), jackpotRewards.get(), width, style.get(), lootbox)
+        blockWithLootboxesInfoArray(loc("fixedReward/rewardsHeader"), guaranteedRewards.get(), width, style.get())
         blockWithHeaderArray(rewardLootboxes.get().len() == 0 ? loc("events/lootboxContains") : loc("events/lootboxContains/other"),
           commonRewards.get(), width, style.get())
       )

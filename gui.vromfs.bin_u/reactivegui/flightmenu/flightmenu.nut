@@ -20,13 +20,13 @@ let { textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mer
 let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
 let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")
+let { mkCustomMsgBoxWnd, openMsgBox } = require("%rGui/components/msgBox.nut")
 let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON, PRIMARY, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { isUnitDelayed, isUnitAlive, unitType } = require("%rGui/hudState.nut")
+let { isUnitDelayed, isUnitAlive, isPlayingReplay, unitType } = require("%rGui/hudState.nut")
 let { respawnSlots, canUseSpare, isBailoutDeserter } = require("%rGui/respawn/respawnState.nut")
 let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { isAircraftControlByGyro } = require("%rGui/options/options/airControlsOptions.nut")
@@ -122,6 +122,14 @@ function openLeaveBattleMsg() {
   })
 }
 
+let openLeaveReplayMsg = @() openMsgBox({
+  text = loc("msgbox/leaveBattle/toReplaysList")
+  buttons = [
+    { text = loc("return_to_replay"), isCancel = true }
+    { text = loc("return_to_replays_list"), styleId = "PRIMARY", cb = quitMission }
+  ]
+})
+
 let optionsButton = textButtonMultiline(utf8ToUpper(loc("mainmenu/btnOptions")), optionsScene,
   mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 let helpButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
@@ -131,6 +139,8 @@ let gyroResetButton = textButtonMultiline(utf8ToUpper(loc("mainmenu/btnGyroReset
 let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeaveTheTank")), leaveVehicle,
   mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 let leaveBattleButton = textButtonMultiline(utf8ToUpper(loc("msgbox/leaveBattle/btn")), openLeaveBattleMsg,
+  mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
+let leaveReplayButton = textButtonMultiline(utf8ToUpper(loc("msgbox/leaveBattle/replayBtn")), openLeaveReplayMsg,
   mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 
 let customButtons = @() {
@@ -188,7 +198,7 @@ let flightMenu = @() bgShaded.__merge({
         ]
       })
       @() {
-        watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare, needShowDevMenu]
+        watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare, needShowDevMenu, isPlayingReplay]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         hplace = ALIGN_CENTER
@@ -204,7 +214,7 @@ let flightMenu = @() bgShaded.__merge({
                 : null
               customButtons
               gyroButtons
-              leaveBattleButton
+              !isPlayingReplay.get() ? leaveBattleButton : leaveReplayButton
               openDevMenuButton(menuBtnWidth)
             ]
       }

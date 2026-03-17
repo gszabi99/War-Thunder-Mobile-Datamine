@@ -106,6 +106,10 @@
         1.0,
         0.0
       ],
+      "ri_gpu_object__random_y_ofs": [
+        0.0,
+        0.0
+      ],
       "ri_gpu_object__hardness": 1.0,
       "ri_gpu_object__sparse_weight": 0.0,
       "ri_gpu_object__decal": false,
@@ -542,12 +546,5 @@
   "human_ext": {},
   "light_vehicle_ext": {},
   "fortification_ext": {},
-  "infantry_troop_ext": {},
-  "capsules_ao": {
-    "capsules_ao__max_units_per_cell": 4,
-    "_singleton": true,
-    "capsules_ao": {
-      "_tags": "render"
-    }
-  }
+  "infantry_troop_ext": {}
 }

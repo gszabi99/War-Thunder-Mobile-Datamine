@@ -10,6 +10,7 @@ foreach (name, payload in {
 let unicastEvents = {}
 foreach (name, payload in {
     CmdSetBattleJwtData = { jwtList = [] } 
+    CmdSetUserstatJwtStats = { jwtList = [] } 
     CmdGetMyBattleData = {} 
     CmdSetMyBattleData = {} 
     CmdSetDefaultBattleData = { dataId = "" } 

@@ -76,7 +76,7 @@
             "country": "ussr"
           },
           {
-            "name": "ki-27_otsu",
+            "name": "a5m4",
             "weight": 1.0,
             "country": "japan"
           }
@@ -104,7 +104,7 @@
             "country": "ussr"
           },
           {
-            "name": "a5m4",
+            "name": "a6m2_mod11",
             "weight": 1.0,
             "country": "japan"
           }
@@ -132,7 +132,7 @@
             "country": "ussr"
           },
           {
-            "name": "a6m2_mod11",
+            "name": "a6m2_zero",
             "weight": 1.0,
             "country": "japan"
           }
@@ -160,7 +160,7 @@
             "country": "ussr"
           },
           {
-            "name": "a6m2_zero",
+            "name": "a6m3_mod22_zero",
             "weight": 1.0,
             "country": "japan"
           }
@@ -188,7 +188,7 @@
             "country": "ussr"
           },
           {
-            "name": "a6m3_mod22_zero",
+            "name": "ki_61_2_early",
             "weight": 1.0,
             "country": "japan"
           }
@@ -372,11 +372,6 @@
             "name": "fr_panhard_ebr_1951",
             "weight": 1.0,
             "country": "france"
-          },
-          {
-            "name": "germ_pzkpfw_IV_ausf_F2",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -740,11 +735,6 @@
             "country": "sweden"
           },
           {
-            "name": "il_magach_6r",
-            "weight": 1.0,
-            "country": "israel"
-          },
-          {
             "name": "il_centurion_shot_kal_gimel",
             "weight": 1.0,
             "country": "israel"
@@ -796,16 +786,6 @@
             "name": "sw_strv_105",
             "weight": 1.0,
             "country": "sweden"
-          },
-          {
-            "name": "germ_kpz_70",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_leopard_I_a1",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -855,7 +835,7 @@
       {
         "range": [
           12,
-          50
+          12
         ],
         "tank": [
           {
@@ -870,6 +850,29 @@
           },
           {
             "name": "germ_leopard_2a4",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          13,
+          50
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_80u",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "us_m1_ip_abrams",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_leopard_2a4m_can",
             "weight": 1.0,
             "country": "germany"
           }

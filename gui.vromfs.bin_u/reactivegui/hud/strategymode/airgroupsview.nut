@@ -9,6 +9,7 @@ let { strategyDataRest, strategyDataShip, curGroupIndex, optDebugDraw } = requir
 let { getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
   iconShip, debugTextColor
 } = require("%rGui/hud/strategyMode/style.nut")
+let { pathSelectionReset } = require("%rGui/hud/strategyMode/strategyPathView.nut")
 let { onGroupSelected, NODE_SELF } = require("guiStrategyMode")
 let { mkSquareButtonBg } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkActionGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
@@ -171,6 +172,7 @@ let shipUi = {
 }
 
 function selectGroup(selectableIndex) {
+  pathSelectionReset()
   onGroupSelected(selectableIndex)
   curGroupIndex.set(selectableIndex)
 }
@@ -216,7 +218,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
             children = [
               actionItem == null ? null : mkActionGlare(actionItem.get(), buttonSize)
               actionItem == null || actionItem.get()?.count == 0 ? null
-                : mkSquareButtonBg(actionItem.get(), buttonSize, btnBgStyle.get(), isHudPrimaryStyle.get(), @() playSound("weapon_secondary_ready"))
+                : mkSquareButtonBg(actionItem.get(), isHudPrimaryStyle.get(), btnBgStyle.get(), buttonSize, @() playSound("weapon_secondary_ready"))
               {
                 size = flex()
                 padding = hdpx(5)

@@ -64,7 +64,6 @@
         30.0
       ],
       "extinguishChance": 1.0,
-      "allowMultipleFires": false,
       "allowMultipleFx": true,
       "fxPresetName": "local_fire",
       "checkAdditionalWater": true
@@ -83,7 +82,6 @@
         20.0
       ],
       "extinguishChance": 1.0,
-      "allowMultipleFires": false,
       "allowMultipleFx": true,
       "fxPresetName": "turret_fire"
     },
@@ -101,7 +99,6 @@
         30.0
       ],
       "extinguishChance": 1.0,
-      "allowMultipleFires": false,
       "allowMultipleFx": true,
       "fxPresetName": "turret_fire"
     },
@@ -119,7 +116,6 @@
         30.0
       ],
       "extinguishChance": 1.0,
-      "allowMultipleFires": false,
       "allowMultipleFx": true,
       "fxPresetName": "ammo_fire",
       "underwaterExtinguishTime": 5.0,

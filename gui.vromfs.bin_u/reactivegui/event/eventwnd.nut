@@ -10,7 +10,7 @@ let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight, leaderbordBtn, questsBtn
+let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, leaderbordBtn, questsBtn
 } = require("%rGui/event/eventPkg.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -43,7 +43,6 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
-let { getLootboxSizeMulBySlot } = require("%appGlobals/config/lootboxPresentation.nut")
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
@@ -118,10 +117,21 @@ let mkProgress = @(stepsToFixed) @() {
 }
 
 function mkLootboxBlock(lootbox, blockSize) {
-  let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
-  let sizeMul = getLootboxSizeMulBySlot(name, lootbox.meta?.event_slot ?? "")
+  let { name } = lootbox
   let stateFlags = Watched(0)
-  let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul)
+
+  let hasUnseen = Computed(@() name in unseenLootboxes.get()?[curEventName.get()] || unseenLootboxesShowOnce.get()?[name])
+  let unseenMark = @() {
+    watch = hasUnseen
+    size = 0
+    pos = [pw(10), ph(10)]
+    hplace = ALIGN_LEFT
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = hasUnseen.get() ? priorityUnseenMark : null
+  }
+  let lootboxImage = mkLootboxImageWithTimer(lootbox, blockSize, unseenMark)
+
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get()))
   let info = lootboxInfo(lootbox, stateFlags)
 
@@ -141,18 +151,6 @@ function mkLootboxBlock(lootbox, blockSize) {
     clickableInfo = loc("mainmenu/btnSelect")
     children = [
       info
-
-      @() {
-        watch = [unseenLootboxes, unseenLootboxesShowOnce, curEventName]
-        size = 0
-        transform = { translate = [-blockSize / 3, max(0, lootboxHeight * (1.0 - sizeMul) / 2)] }
-        hplace = ALIGN_CENTER
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = name in unseenLootboxes.get()?[curEventName.get()] || unseenLootboxesShowOnce.get()?[name]
-            ? priorityUnseenMark
-          : null
-      }
 
       {
         transform = { scale = (stateFlags.get() & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }

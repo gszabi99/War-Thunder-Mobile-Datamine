@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { baseUnit, openUnitOvr } = require("%rGui/unitDetails/unitDetailsState.nut")
+let { baseUnit, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { showDecalInfoWnd } = require("%rGui/unitCustom/unitCustomDecalInfoModalWnd.nut")
 
 
@@ -15,11 +14,7 @@ let openCount = Watched(openForUnit.get() == null ? 0 : 1)
 let unitCustomOpenCount = Computed(@() openForUnit.get() == null || openForUnit.get() != baseUnit.get()?.name ? 0
   : openCount.get())
 
-let sectionsList = Computed(@() openUnitOvr.get()?.name not in campMyUnits.get()
-    ? [SECTION_IDS.SKINS]
-  : !campMyUnits.get()[openUnitOvr.get().name].isUpgraded && (openUnitOvr.get()?.isUpgraded ?? false)
-    ? [SECTION_IDS.SKINS]
-  : [SECTION_IDS.SKINS, SECTION_IDS.DECALS])
+let sectionsList = Computed(@() isOwnUnit.get() ? [SECTION_IDS.SKINS, SECTION_IDS.DECALS] : [SECTION_IDS.SKINS])
 
 let curSelectedSectionId = Computed(@() (!selSectionId.get() || !sectionsList.get().contains(selSectionId.get()))
   ? sectionsList.get()[0]

@@ -381,6 +381,14 @@
     "_replicate": true,
     "buffered_hud_data:BufferedHudData": {}
   },
+  "ik_pilot_inertia_seats": {
+    "_tags": "gameClient",
+    "ik_pilot_inertia_seats__enabled": false,
+    "ik_pilot_inertia_seats__data": {
+      "_tags": "gameClient"
+    },
+    "ik_pilot_inertia_seats__pos:list<p3>": {}
+  },
   "unit_transferred_data": {
     "_singleton": true,
     "unit_transferred_data__componentsList:list<t>": {

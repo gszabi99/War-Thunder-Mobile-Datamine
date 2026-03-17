@@ -35,6 +35,7 @@
   "lastClip": true,
   "lastclip_horizon": true,
   "rendinstPreloadDistance": 8500.0,
+  "riMinSizeForReflections": 1000.0,
   "clipmap_tex_mips": 6,
   "addLandToSky": true,
   "max_wind_strength": 3.0,
@@ -82,12 +83,6 @@
   "tankGridSize": [
     2048.0,
     2048.0
-  ],
-  "tankMapColorMult": [
-    245,
-    255,
-    255,
-    200
   ],
   "customLevelMap": "avg_vietnam_hills_tankmap*",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",

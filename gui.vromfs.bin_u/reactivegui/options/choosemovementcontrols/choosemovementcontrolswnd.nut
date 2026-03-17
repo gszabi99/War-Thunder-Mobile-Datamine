@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { onControlsApply, isChooseMovementControlsOpened } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
-let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
-} = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
+} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let controlsTypesButton = require("%rGui/options/chooseMovementControls/controlsTypesButton.nut")
 let controlsTypesAnimsCtors = require("%rGui/options/chooseMovementControls/controlsTypesAnims.nut")
@@ -16,7 +16,7 @@ let defaultValue = "stick_static"
 let btnW = evenPx(380)
 let btnH = hdpx(510)
 let btnGap = hdpxi(30)
-let contentWidth = ((btnW + btnGap) * tankMoveCtrlTypesList.len()) - btnGap
+let contentWidth = ((btnW + btnGap) * groundMoveCtrlTypesList.len()) - btnGap
 
 let selectedValue = Watched("")
 
@@ -76,7 +76,7 @@ let mkOptButtonsRow = @() {
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = btnGap
-  children = reorderList(tankMoveCtrlTypesList, defaultValue).map(@(id) controlsTypesButton(
+  children = reorderList(groundMoveCtrlTypesList, defaultValue).map(@(id) controlsTypesButton(
     mkBtnContent(id, defaultValue == id),
     Computed(@() id == selectedValue.get()),
     @() selectedValue.set(id)))

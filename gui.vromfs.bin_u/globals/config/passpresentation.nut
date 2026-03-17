@@ -57,8 +57,25 @@ let epPresentations = {
   }
 }.map(@(c) defEpPresentation.__merge(c))
 
+let defNewbieBpPresentation = {
+  bg = "ui/images/blueprint_folder_bg_tanks.avif"
+}
+
+let newbieBpPresentations = {
+  tanks = {
+    bg = "ui/images/blueprint_folder_bg_tanks.avif"
+  }
+  ships = {
+    bg = "ui/images/ship_blueprint_bg.avif"
+  }
+  air = {
+    bg = "ui/images/air_beta_access_bg.avif"
+  }
+}.map(@(c) defNewbieBpPresentation.__merge(c))
+
 return {
   getOPPresentation = @(camp) opPresentations?[camp] ?? defOpPresentation
   getEpPresentation = @(eventId) epPresentations?[eventId] ?? defEpPresentation
   getBPPresentation = @(seasonNumber) bpPresentations?[$"season_{seasonNumber}"] ?? defBPPresentation
+  getNewbieBPPresentation = @(camp) newbieBpPresentations?[camp] ?? defNewbieBpPresentation
 }

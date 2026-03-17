@@ -1,3 +1,7 @@
+let {
+  this_subscriber_call_may_take_up_to_usec = @(_) null,
+  get_slow_subscriber_threshold_usec = @() 10000,
+} = require("frp")
 let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { WatchedImmediate } = require("%sqstd/frp.nut")
@@ -9,7 +13,7 @@ let persistSharedData = persist("PERSIST_SHARED_DATA", @() {})
 
 let mkNdbKey = @(name) $"SHARED_WATCHED_STATE__{name}"
 
-function make(name, ctor) {
+function make(name, ctor, slowNdbThrehsholdMul = 1) {
   if (sharedData?[name].watch != null) {
     assert(false, $"sharedWatched: duplicate name: {name}")
     return sharedData[name].watch
@@ -33,9 +37,13 @@ function make(name, ctor) {
   let data = { key, watch = res.weakref(), isExternalEvent = false }
   sharedData[name] <- data
 
+  let onSubscription = slowNdbThrehsholdMul == 1 ? null
+    : @() this_subscriber_call_may_take_up_to_usec(slowNdbThrehsholdMul * get_slow_subscriber_threshold_usec())
+
   res.subscribe(function(value) {
     if (data.isExternalEvent)
       return
+    onSubscription?()
     ndbWrite(key, value)
     persistSharedData[name] <- value
     try {

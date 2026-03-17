@@ -8,19 +8,18 @@ let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGE
   EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoomCtor,
+let { mkCircleTankPrimaryGun, mkCircleGroundSecondaryGun, mkCircleGroundMachineGun, mkCircleZoomCtor,
   mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn,
   mkCircleFireworkBtn
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { withActionBarButtonCtor, withAnyActionBarButtonCtor,
   withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
 } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { tankMoveStick, tankMoveStickView, tankGamepadMoveBlock
-} = require("%rGui/hud/tankMovementBlock.nut")
+let { tankMoveStick, moveStickView, tankGamepadMoveBlock } = require("%rGui/hud/groundMovementBlock.nut")
 let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
 } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
-let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsOptions.nut")
 let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
 let { moveArrowsView } = require("%rGui/components/movementArrows.nut")
@@ -44,14 +43,15 @@ let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns,
 } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
 let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isUnitAlive } = require("%rGui/hudState.nut")
+let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
 let { showRadarOverMap, IsRadarVisible, IsRadarHudVisible, IsBScopeVisible } = require("%rGui/radar/radarState.nut")
 let { mkRadarToggleButton, mkRadarToggleButtonEditView } = require("%rGui/radar/radarToggleButton.nut")
-let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
+let { radarHudWithOverlayCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
 let { isCompassVisible } = require("%rGui/compass/compassState.nut")
 let { mkCompass, mkCompassEditView } = require("%rGui/compass/compass.nut")
+
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.get() == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get()) && !isGamepad.get())
@@ -84,14 +84,14 @@ return {
     })
 
   secondaryGun = withActionButtonScaleCtor(AB_SECONDARY_WEAPON,
-    mkCircleTankSecondaryGun("ID_FIRE_GM_SECONDARY_GUN", AB_SECONDARY_WEAPON, "ui/gameuiskin#hud_main_weapon_fire.svg"),
+    mkCircleGroundSecondaryGun("ID_FIRE_GM_SECONDARY_GUN", AB_SECONDARY_WEAPON, "ui/gameuiskin#hud_main_weapon_fire.svg"),
     {
       defTransform = mkRBPos([hdpx(-81), hdpx(-425)])
       editView = mkCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
     })
 
   specialGun = withActionButtonScaleCtor(AB_SPECIAL_WEAPON,
-    mkCircleTankSecondaryGun("ID_FIRE_GM_SPECIAL_GUN", AB_SPECIAL_WEAPON, "ui/gameuiskin#icon_rocket_in_progress.svg"),
+    mkCircleGroundSecondaryGun("ID_FIRE_GM_SPECIAL_GUN", AB_SPECIAL_WEAPON, "ui/gameuiskin#icon_rocket_in_progress.svg"),
     {
       defTransform = mkRBPos([hdpx(-28), hdpx(-265)])
       editView = mkCircleBtnEditView("ui/gameuiskin#icon_rocket_in_progress.svg")
@@ -99,7 +99,7 @@ return {
     })
 
   machineGun = {
-    ctor = @(scale) mkCircleTankMachineGun(Computed(@() actionBarItems.get()?[AB_MACHINE_GUN]), AB_MACHINE_GUN, scale)
+    ctor = @(scale) mkCircleGroundMachineGun("ID_FIRE_GM_MACHINE_GUN", Computed(@() actionBarItems.get()?[AB_MACHINE_GUN]), AB_MACHINE_GUN, scale)
     priority = Z_ORDER.BUTTON
     defTransform = mkRBPos([hdpx(-155), hdpx(-155)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
@@ -109,6 +109,7 @@ return {
     ctor = mkCircleZoomCtor()
     defTransform = mkRBPos([hdpx(-426), hdpx(-188)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_binoculars.svg")
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -116,6 +117,7 @@ return {
     ctor = winchButton
     defTransform = mkLTPos([0, hdpx(100)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_winch.svg")
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -123,6 +125,7 @@ return {
     ctor = mkFreeCameraButton
     defTransform = mkLTPos([hdpx(0), hdpx(240)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -222,7 +225,7 @@ return {
       children = isGamepad.get() ? tankGamepadMoveBlock(scale) : tankMoveStick(scale)
     }
     defTransform = mkLBPos([0, 0])
-    editView = tankMoveStickView
+    editView = moveStickView
     isVisibleInEditor = Computed(@() !isViewMoveArrows.get())
     isVisibleInBattle = Computed(@() !isBattleMoveArrows.get())
     priority = Z_ORDER.STICK
@@ -328,20 +331,18 @@ return {
 
   radarToggle = {
     ctor = mkRadarToggleButton
-    defTransform = mkLTPos([tacticalMapPos + tacticalMapSize[0] + hdpx(10), 0])
+    defTransform = mkLTPos([tacticalMapPos + tacticalMapSize[0], 0])
     editView = mkRadarToggleButtonEditView
     priority = Z_ORDER.BUTTON
     isVisibleInBattle = Computed(@() isRadarExist.get())
-    isVisibleInEditor = IsRadarHudVisible
   }
 
   radarHud = {
-    ctor = radarHudCtor
+    ctor = radarHudWithOverlayCtor
     defTransform = mkLTPos([tacticalMapPos, 0])
     editView = radarHudEditView
     priority = Z_ORDER.BUTTON
     isVisibleInBattle = Computed(@() isRadarExist.get() && showRadarOverMap.get())
-    isVisibleInEditor = IsRadarHudVisible
   }
 
   compass = {
@@ -350,7 +351,6 @@ return {
     editView = mkCompassEditView
     priority = Z_ORDER.BUTTON
     isVisibleInBattle = Computed(@() isCompassVisible && isRadarExist.get())
-    isVisibleInEditor = IsRadarHudVisible
   }
 
 }.__update(cfgHudCommon).filter(@(v) v != null)

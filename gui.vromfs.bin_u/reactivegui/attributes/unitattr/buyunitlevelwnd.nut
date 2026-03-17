@@ -21,7 +21,8 @@ let WND_UID = "buyUnitLevelWnd"
 
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() campMyUnits.get()?[unitName.get()])
-let levelsToMax = Computed(@() (unit.get()?.levels.len() ?? 0) - (unit.get()?.level ?? 0))
+let unitLevels = Computed(@() campConfigs.get()?.unitLevels[unit.get()?.levelPreset] ?? [])
+let levelsToMax = Computed(@() unitLevels.get().len() - (unit.get()?.level ?? 0))
 let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
 
 let close = @() unitName.set(null)
@@ -44,7 +45,7 @@ function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold, sp) {
 }
 
 function wndContent() {
-  let res = { watch = [unit, levelsToMax, campConfigs] }
+  let res = { watch = [unit, levelsToMax, campConfigs, unitLevels] }
   let levelsSp = campConfigs.get()?.unitLevelsSp?[unit.get()?.attrPreset].levels
   if (levelsSp == null)
     return res
@@ -58,7 +59,7 @@ function wndContent() {
         {
           levels = v.levels,
           levelsSp,
-          maxLevels = unit.get().levels
+          maxLevels = unitLevels.get()
         },
         unitInProgress,
         onClickPurchase))

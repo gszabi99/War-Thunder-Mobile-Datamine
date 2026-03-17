@@ -18,18 +18,23 @@ function mkPurposeSwitchComp(purpose, onManualSwitch, needShowId) {
   let { id, name, description } = info
   let title = needShowId ? $"[{id}] {name}" : name
   return mkExpandableSwitch(title, null, isEnabled, onManualSwitch, isExpanded, @() [
-    mkTextarea(description, fadedAndMinor),
+    mkTextarea(description, fadedAndMinor.__merge(gapAbove)),
     mkLink(loc("readMore"), @() showPurposeInfo.set({ info, getVendorList })),
-    isEnabledLIT == null ? null : mkSwitch(loc("consent_tcf/manage/legitimateInterest"), null, isEnabledLIT, onManualSwitch)
+    mkTextarea(nbsp),
+    isEnabledLIT == null ? null : mkSwitch(loc("consent_tcf/manage/legitimateInterest"),
+      null, isEnabledLIT, onManualSwitch),
+    isEnabledLIT == null ? null : mkTextarea(nbsp),
   ])
 }
 
-function mkFeatureComp(feature) {
+function mkFeatureComp(feature, needShowId) {
   let { info, getVendorList, isExpanded } = feature
-  let { name, description } = info
-  return mkExpandable(name, isExpanded, @() [
-    mkTextarea(description, fadedAndMinor),
+  let { id, name, description } = info
+  let title = needShowId ? $"[{id}] {name}" : name
+  return mkExpandable(title, isExpanded, @() [
+    mkTextarea(description, fadedAndMinor.__merge(gapAbove)),
     mkLink(loc("readMore"), @() showPurposeInfo.set({ info, getVendorList })),
+    mkTextarea(nbsp),
   ])
 }
 
@@ -81,12 +86,12 @@ let mkManageDesc = @() function() {
 
   let specPurposes = []
   foreach (v in getSpecialPurposesList())
-    specPurposes.append(separatorLine, mkFeatureComp(v))
+    specPurposes.append(separatorLine, mkFeatureComp(v, debugShowIds.get()))
   specPurposes.append(separatorLine)
 
   let features = []
   foreach (v in getFeaturesList())
-    features.append(separatorLine, mkFeatureComp(v))
+    features.append(separatorLine, mkFeatureComp(v, debugShowIds.get()))
   features.append(separatorLine)
 
   let children = [
@@ -136,4 +141,4 @@ let manageButtons = [
 let lastScrollPosY = Watched(0)
 isOpenedManage.subscribe(@(v) v ? lastScrollPosY.set(0) : null)
 
-return @() mkContent(loc("consent_tcf/intro/managePreferences"), mkManageDesc, manageButtons, quitManage, lastScrollPosY)
+return @() mkContent(loc("consent_tcf/intro/managePreferences"), mkManageDesc, manageButtons, quitManage, false, lastScrollPosY)

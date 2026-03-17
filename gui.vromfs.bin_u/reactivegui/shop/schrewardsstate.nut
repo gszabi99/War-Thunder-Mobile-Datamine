@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { G_UNIT, G_UNIT_UPGRADE, G_ITEM } = require("%appGlobals/rewardType.nut")
-let { getShopCategory } = require("%rGui/shop/shopCommon.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
+let { getShopCategory, getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -44,7 +44,7 @@ let schRewardsByCategory = Computed(function() {
       continue
     }
 
-    let cat = getShopCategory(goods.gtype)
+    let cat = getShopCategory(getGoodsType(goods))
     if (cat not in res)
       res[cat] <- []
     res[cat].append(goods)
@@ -114,9 +114,9 @@ function resetUpdateTimer() {
   let { time } = nextUpdate.get()
   let left = time - serverTime.get()
   if (left <= 0)
-    clearTimer(updateActualSchRewards)
+    clearExtTimer(updateActualSchRewards)
   else
-    resetTimeout(left, updateActualSchRewards)
+    resetExtTimeout(left, updateActualSchRewards)
 }
 resetUpdateTimer()
 nextUpdate.subscribe(@(_) resetUpdateTimer())

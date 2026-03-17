@@ -77,6 +77,7 @@ function sendEvent(id) {
 
 myUserId.subscribe(function(v) {
   if (v != INVALID_USER_ID) {
+    this_subscriber_call_may_take_up_to_usec(10 * get_slow_subscriber_threshold_usec())
     let uid = v.tostring()
     setAppsFlyerCUID(uid)
     setBillingUUID(uid)

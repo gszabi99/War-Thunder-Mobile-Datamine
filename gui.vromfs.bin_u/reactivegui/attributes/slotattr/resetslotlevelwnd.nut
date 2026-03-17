@@ -44,24 +44,23 @@ let mkResetSlotInfo = @(text) {
   children = [
     mkSlotBgImg()
     {
+      size = [imgSize, imgSize]
+      rendObj = ROBJ_IMAGE
+      hplace = ALIGN_CENTER
+      pos = [0, ph(30)]
+      color = 0xFF65BC82
+      image = Picture($"ui/gameuiskin#experience_icon.svg:{imgSize}:{imgSize}:P")
+      keepAspect = true
+    }
+    {
       size = flex()
       padding = const [hdpx(10), hdpx(20)]
       flow = FLOW_VERTICAL
-      gap = hdpx(20)
       vplace = ALIGN_TOP
       hplace = ALIGN_CENTER
       halign = ALIGN_CENTER
-      children = [
-        mkGradText(text, fontTinyAccented, textGradient,
-          { size = FLEX_H, rendObj = ROBJ_TEXTAREA, behavior = Behaviors.TextArea })
-        {
-          size = [imgSize, imgSize]
-          rendObj = ROBJ_IMAGE
-          color = 0xFF65BC82
-          image = Picture($"ui/gameuiskin#experience_icon.svg:{imgSize}:{imgSize}:P")
-          keepAspect = true
-        }
-      ]
+      children = mkGradText(text, fontTinyAccented, textGradient,
+        { size = FLEX_H, rendObj = ROBJ_TEXTAREA, behavior = Behaviors.TextArea })
     }
   ]
 }

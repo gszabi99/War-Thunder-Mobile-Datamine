@@ -5,7 +5,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isEPPurchaseWndOpened, closeEPPurchaseWnd, isEpSeasonActive, curStage, sendEpBqEvent,
-  purchasedEp, eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, eventPassGoods, getEpIcon,
+  purchasedEp, eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, openedEventPassGoods, getEpIcon,
   EP_NONE, EP_COMMON, EP_VIP, getEpName, seasonEndTime, eventBgImage, curEventId, eventPassVipLevels
 } = require("%rGui/battlePass/eventPassState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
@@ -380,8 +380,8 @@ let mkGoodsCfg = @(bpType, goods, price, purchList = null) { bpType, goods, pric
 let function bpPurchaseWnd() {
   let bpList = Computed(function() {
     let res = []
-    let goodsCommon = eventPassGoods.get()[EP_COMMON]
-    let goodsVip = eventPassGoods.get()[EP_VIP]
+    let goodsCommon = openedEventPassGoods.get()[EP_COMMON]
+    let goodsVip = openedEventPassGoods.get()[EP_VIP]
 
     if (purchasedEp.get() == EP_NONE) {
       if (goodsCommon == null)

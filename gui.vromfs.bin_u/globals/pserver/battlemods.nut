@@ -1,10 +1,10 @@
 from "%globalScripts/logs.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
 let { Watched, Computed } = require("frp")
 let { isEqual } = require("%sqstd/underscore.nut")
 let servProfile = require("servProfile.nut")
 let { serverConfigs } = require("servConfigs.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 let activeBattleMods = Watched({})
 let blockedResearchByBattleMods = Watched({})
@@ -31,7 +31,7 @@ function updateBattleMods() {
   nextUpdateTime.set({ value = nextTime })
 }
 
-nextUpdateTime.subscribe(@(v) v.value < 0 ? null : resetTimeout(v.value - serverTime.get(), updateBattleMods))
+nextUpdateTime.subscribe(@(v) v.value < 0 ? null : resetExtTimeout(v.value - serverTime.get(), updateBattleMods))
 updateBattleMods()
 
 foreach (w in [isServerTimeValid, profileBattleMods])
@@ -62,7 +62,7 @@ function updateBlockedResearch() {
 
   let timeToUpdate = nextTime - time
   if (timeToUpdate > 0)
-    resetTimeout(timeToUpdate, updateBlockedResearch)
+    resetExtTimeout(timeToUpdate, updateBlockedResearch)
 }
 
 blockedResearchByBattleMods.whiteListMutatorClosure(updateBlockedResearch)

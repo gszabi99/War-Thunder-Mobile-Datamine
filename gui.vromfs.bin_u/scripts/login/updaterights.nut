@@ -4,7 +4,7 @@ let { isContactsLoggedIn } = require("%appGlobals/loginState.nut")
 let { rights, rightsError } = require("%appGlobals/permissions/userRights.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let client = require("contacts")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal } = require("auth_wt")
 let { APP_ID } = require("%appGlobals/gameIdentifiers.nut")
 let { applyRights } = require("%scripts/login/applyRights.nut")
 
@@ -16,7 +16,7 @@ function updateRightsImpl() {
 
   let rqData = {
     action = "cln_get_user_rights"
-    headers = { token = getPlayerToken(), appid = APP_ID },
+    headers = { token = getPlayerTokenGlobal(), appid = APP_ID },
   }
 
   client.request(rqData, function(result) {

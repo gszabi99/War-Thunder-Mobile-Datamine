@@ -21,12 +21,7 @@ let defaultProfileLevelInfo = {
   isStarProgress = false
 }
 
-let campUnitsCfg = Computed(function() {
-  let unitLevels = campConfigs.get()?.unitLevels ?? {}
-  return (campConfigs.get()?.allUnits ?? {}).map(@(u) u.__merge({
-    levels = unitLevels?[u?.levelPreset ?? "0"] ?? []
-  }))
-})
+let campUnitsCfg = Computed(@() campConfigs.get()?.allUnits ?? {})
 
 let campMyUnits = Computed(function() {
   let cfg = campUnitsCfg.get()

@@ -5,6 +5,9 @@ let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
+let { curCampaign, isCampaignWithUnitsResearch, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
@@ -12,7 +15,7 @@ let { openShopWnd, hasUnseenGoodsByShop } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
-let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
+let { accountOptionsScene } = require("%rGui/options/accountOptionsScene.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { textColor, premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
@@ -26,9 +29,6 @@ let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 let { CS_GAMERCARD, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -290,28 +290,31 @@ function platoonOrUnitTitle(unit) {
   }
 }
 
-let gamercardUnitLevelLine = @(unit, keyHintText){
-  children = [
-    platoonOrUnitTitle(unit)
-    {
-      size = 0
-      children = doubleSideGradient.__merge(
-        {
-          padding = const [hdpx(5), hdpx(50)]
-          pos = [hdpx(30) hdpx(55)]
-          children = @(){
-            watch = curCampaign
-            halign = ALIGN_LEFT
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            maxWidth = hdpx(700)
-            text = (unit?.level ?? -1) == unit?.levels.len() || unit?.isUpgraded || unit?.isPremium
-              ? loc(getCampaignPresentation(curCampaign.get()).unitLevelMaxLocId)
-              : loc(keyHintText)
-          }.__update(fontVeryTiny)
-        })
-    }
-  ]
+function gamercardUnitLevelLine(unit, keyHintText) {
+  let maxLevel = Computed(@() campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0)
+  return {
+    children = [
+      platoonOrUnitTitle(unit)
+      {
+        size = 0
+        children = doubleSideGradient.__merge(
+          {
+            padding = const [hdpx(5), hdpx(50)]
+            pos = [hdpx(30) hdpx(55)]
+            children = @() {
+              watch = [curCampaign, maxLevel]
+              halign = ALIGN_LEFT
+              rendObj = ROBJ_TEXTAREA
+              behavior = Behaviors.TextArea
+              maxWidth = hdpx(700)
+              text = (unit?.level ?? -1) == maxLevel.get() || unit?.isUpgraded || unit?.isPremium
+                ? loc(getCampaignPresentation(curCampaign.get()).unitLevelMaxLocId)
+                : loc(keyHintText)
+            }.__update(fontVeryTiny)
+          })
+      }
+    ]
+  }
 }
 
 let mkLeftBlock = @(backCb, menuBtn = null) {

@@ -929,10 +929,10 @@
       },
       "conditions": {},
       "actions": {
-        "varModify": {
-          "operator": "add",
-          "value": -1.0,
-          "var": "main_timer"
+        "varSetInt": {
+          "value": 0,
+          "var": "main_timer",
+          "source_var": "timeLeft"
         }
       },
       "else_actions": {}
@@ -1170,14 +1170,6 @@
           }
         },
         "actions": {
-          "varSetBool": {
-            "value": true,
-            "var": "t1_flag_stolen"
-          },
-          "missionSendVarToGui": {
-            "var_name": "t1_flag_stolen",
-            "bool_value": "@t1_flag_stolen"
-          },
           "varSetString": {
             "value": "",
             "var": "t2_capturer_name"
@@ -1189,6 +1181,106 @@
             "useForTriggerFiltered": true,
             "out_var_string": "t2_capturer_name"
           },
+          "playerAddScorePoints": {
+            "value": 0.25,
+            "target": "t2_players",
+            "reason": "stole_flag",
+            "useForTriggerFiltered": true
+          },
+          "unitMark": {
+            "target_marking": 1,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": true,
+            "time": 4.0,
+            "priority": 1,
+            "isOverFade": false,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_players",
+            "target_type": "isMarked",
+            "team": "B"
+          },
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "ignoreLineOfSight": true,
+            "mapScaleMul": 1.5,
+            "indicatorNotVisibleOpacity": 1.0,
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "addTextToUnit": {
+            "highlightFromGui": true,
+            "iconType": "icon_hud_gift.svg",
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": true,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "missionAddUserstatEvent": {
+            "userStatId": "ctf_item_pickup",
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "flag01_pickup_enemy_success"
+          }
+        },
+        "else_actions": {}
+      },
+      "flag01_pickup_enemy_success": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.03
+          }
+        },
+        "conditions": {
+          "triggerStatus": {
+            "status": "disabled",
+            "target": "flag01_pickup_enemy"
+          },
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "t2_players"
+          }
+        },
+        "actions": {
+          "varSetBool": {
+            "value": true,
+            "var": "t1_flag_stolen"
+          },
+          "missionSendVarToGui": {
+            "var_name": "t1_flag_stolen",
+            "bool_value": "@t1_flag_stolen"
+          },
           "triggerEnable": [
             {
               "target": "t1_killed_capturer"
@@ -1197,12 +1289,6 @@
               "target": "flag01_holder_dead"
             }
           ],
-          "playerAddScorePoints": {
-            "value": 0.25,
-            "target": "t2_players",
-            "reason": "stole_flag",
-            "useForTriggerFiltered": true
-          },
           "gameMPChangeScore": {
             "value": -5,
             "valueSystem": "amount",
@@ -1242,22 +1328,6 @@
               "object_var_value": 0,
               "target": "t1_players",
               "team": "A"
-            },
-            {
-              "hintType": "standard",
-              "name": "hints/ctf_captured_you",
-              "action": "show",
-              "shouldFadeOut": true,
-              "time": 4.0,
-              "priority": 1,
-              "isOverFade": false,
-              "target_marking": 1,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "target": "t2_players",
-              "target_type": "isMarked",
-              "team": "B"
             }
           ],
           "playSound": [
@@ -1280,39 +1350,6 @@
               "flag01_auto_return",
               "flag01_pickup_start_timer"
             ]
-          },
-          "unitMark": {
-            "target_marking": 1,
-            "target": "players_squad",
-            "useForTriggerFiltered": true
-          },
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "players_squad",
-            "ignoreLineOfSight": true,
-            "mapScaleMul": 1.5,
-            "indicatorNotVisibleOpacity": 1.0,
-            "useForTriggerFiltered": true,
-            "team": "Both"
-          },
-          "addTextToUnit": {
-            "highlightFromGui": true,
-            "iconType": "icon_hud_gift.svg",
-            "langID": "icon/xmas_tree",
-            "fontSize": "big",
-            "set": true,
-            "target_marking": 0,
-            "target": "players_squad",
-            "useForTriggerFiltered": true
-          },
-          "missionAddUserstatEvent": {
-            "userStatId": "ctf_item_pickup",
-            "target": "players_squad",
-            "useForTriggerFiltered": true
           },
           "unitPlayEffect": {
             "effect_type": "specify",
@@ -1339,7 +1376,14 @@
             "target": "flag_01"
           }
         },
-        "else_actions": {}
+        "else_actions": {
+          "triggerEnable": {
+            "target": "flag01_pickup_enemy"
+          },
+          "triggerDisable": {
+            "target": "flag01_pickup_enemy_success"
+          }
+        }
       },
       "flag01_holder_dead": {
         "is_enabled": false,
@@ -1627,7 +1671,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_01",
-            "target": "t1_players"
+            "target": "t1_players",
+            "unit_type_ex": "isUsefull"
           },
           "triggerStatus": {
             "status": "disabled",
@@ -1688,7 +1733,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_01",
-            "target": "t1_players"
+            "target": "t1_players",
+            "unit_type_ex": "isUsefull"
           }
         },
         "actions": {
@@ -1753,7 +1799,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_01",
-            "target": "t1_players"
+            "target": "t1_players",
+            "unit_type_ex": "isUsefull"
           },
           "varCompareInt": {
             "var_value": "t1_pickup_timer",
@@ -1891,7 +1938,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_01",
-            "target": "t1_players"
+            "target": "t1_players",
+            "unit_type_ex": "isUsefull"
           }
         },
         "actions": {
@@ -2219,14 +2267,6 @@
           }
         },
         "actions": {
-          "varSetBool": {
-            "value": true,
-            "var": "t2_flag_stolen"
-          },
-          "missionSendVarToGui": {
-            "var_name": "t2_flag_stolen",
-            "bool_value": "@t2_flag_stolen"
-          },
           "varSetString": {
             "value": "",
             "var": "t1_capturer_name"
@@ -2238,6 +2278,106 @@
             "useForTriggerFiltered": true,
             "out_var_string": "t1_capturer_name"
           },
+          "playerAddScorePoints": {
+            "value": 0.25,
+            "target": "t1_players",
+            "reason": "stole_flag",
+            "useForTriggerFiltered": true
+          },
+          "unitMark": {
+            "target_marking": 2,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": true,
+            "time": 4.0,
+            "priority": 1,
+            "isOverFade": false,
+            "target_marking": 2,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_players",
+            "target_type": "isMarked",
+            "team": "A"
+          },
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "ignoreLineOfSight": true,
+            "mapScaleMul": 1.5,
+            "indicatorNotVisibleOpacity": 1.0,
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "addTextToUnit": {
+            "highlightFromGui": true,
+            "iconType": "icon_hud_gift.svg",
+            "langID": "icon/xmas_tree",
+            "fontSize": "small_accented",
+            "set": true,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "missionAddUserstatEvent": {
+            "userStatId": "ctf_item_pickup",
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "flag02_pickup_enemy_success"
+          }
+        },
+        "else_actions": {}
+      },
+      "flag02_pickup_enemy_success": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "triggerStatus": {
+            "status": "disabled",
+            "target": "flag02_pickup_enemy"
+          },
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 2,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "t1_players"
+          }
+        },
+        "actions": {
+          "varSetBool": {
+            "value": true,
+            "var": "t2_flag_stolen"
+          },
+          "missionSendVarToGui": {
+            "var_name": "t2_flag_stolen",
+            "bool_value": "@t2_flag_stolen"
+          },
           "triggerEnable": [
             {
               "target": "t2_killed_capturer"
@@ -2246,12 +2386,6 @@
               "target": "flag02_holder_dead"
             }
           ],
-          "playerAddScorePoints": {
-            "value": 0.25,
-            "target": "t1_players",
-            "reason": "stole_flag",
-            "useForTriggerFiltered": true
-          },
           "gameMPChangeScore": {
             "value": -5,
             "valueSystem": "amount",
@@ -2291,22 +2425,6 @@
               "object_var_value": 0,
               "target": "t1_players",
               "team": "A"
-            },
-            {
-              "hintType": "standard",
-              "name": "hints/ctf_captured_you",
-              "action": "show",
-              "shouldFadeOut": true,
-              "time": 4.0,
-              "priority": 1,
-              "isOverFade": false,
-              "target_marking": 2,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "target": "t1_players",
-              "target_type": "isMarked",
-              "team": "A"
             }
           ],
           "playSound": [
@@ -2329,39 +2447,6 @@
               "flag02_auto_return",
               "flag02_pickup_start_timer"
             ]
-          },
-          "unitMark": {
-            "target_marking": 2,
-            "target": "players_squad",
-            "useForTriggerFiltered": true
-          },
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "players_squad",
-            "ignoreLineOfSight": true,
-            "mapScaleMul": 1.5,
-            "indicatorNotVisibleOpacity": 1.0,
-            "useForTriggerFiltered": true,
-            "team": "Both"
-          },
-          "addTextToUnit": {
-            "highlightFromGui": true,
-            "iconType": "icon_hud_gift.svg",
-            "langID": "icon/xmas_tree",
-            "fontSize": "small_accented",
-            "set": true,
-            "target_marking": 0,
-            "target": "players_squad",
-            "useForTriggerFiltered": true
-          },
-          "missionAddUserstatEvent": {
-            "userStatId": "ctf_item_pickup",
-            "target": "players_squad",
-            "useForTriggerFiltered": true
           },
           "unitPlayEffect": {
             "effect_type": "specify",
@@ -2388,7 +2473,14 @@
             "target": "flag_02"
           }
         },
-        "else_actions": {}
+        "else_actions": {
+          "triggerEnable": {
+            "target": "flag02_pickup_enemy"
+          },
+          "triggerDisable": {
+            "target": "flag02_pickup_enemy_success"
+          }
+        }
       },
       "flag02_holder_dead": {
         "is_enabled": false,
@@ -2676,7 +2768,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_02",
-            "target": "t2_players"
+            "target": "t2_players",
+            "unit_type_ex": "isUsefull"
           },
           "triggerStatus": {
             "status": "disabled",
@@ -2737,7 +2830,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_02",
-            "target": "t2_players"
+            "target": "t2_players",
+            "unit_type_ex": "isUsefull"
           }
         },
         "actions": {
@@ -2802,7 +2896,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_02",
-            "target": "t2_players"
+            "target": "t2_players",
+            "unit_type_ex": "isUsefull"
           },
           "varCompareInt": {
             "var_value": "t2_pickup_timer",
@@ -2940,7 +3035,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "flag_02",
-            "target": "t2_players"
+            "target": "t2_players",
+            "unit_type_ex": "isUsefull"
           }
         },
         "actions": {

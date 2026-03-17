@@ -1,14 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { is_ios, is_pc } = require("%sqstd/platform.nut")
-let { has_game_center } = require("%appGlobals/permissions.nut")
+let { has_game_center, can_view_replays } = require("%appGlobals/permissions.nut")
 let communityOptions = require("%rGui/options/options/communityOptions.nut")
 let accountPage = require("%rGui/options/accountPage.nut")
 let statisticsPage = require("%rGui/options/statisticsPage.nut")
 let privacyPage = require("%rGui/options/privacyPage.nut")
 let gameCenterPage = require("%rGui/options/gameCenterPage.nut")
+let replaysPage = require("%rGui/options/replaysPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { UNSEEN_HIGH, SEEN } = require("%rGui/unseenPriority.nut")
+
+
+let SCENE_ID = "accountOptionsScene"
+let isOpened = mkWatched(persist, $"{SCENE_ID}_isOpened", false)
+let curTabId = Watched(null)
 
 let tabs = [
   {
@@ -34,6 +40,14 @@ let tabs = [
     image = "ui/gameuiskin#icon_privacy.svg"
     content = privacyPage
   }
+  {
+    id = "replays"
+    locId = "mainmenu/btnReplays"
+    image = "ui/gameuiskin#watch_ads.svg"
+    isFullWidth = true
+    isVisible = can_view_replays
+    content = replaysPage
+  }
 ]
 
 if (is_ios || is_pc)
@@ -44,4 +58,7 @@ if (is_ios || is_pc)
     isVisible = has_game_center
   })
 
-return mkOptionsScene("accountOptionsScene", tabs)
+return {
+  accountOptionsScene = mkOptionsScene("accountOptionsScene", tabs, isOpened, curTabId)
+  setCurTabId = @(id) curTabId.set(id)
+}

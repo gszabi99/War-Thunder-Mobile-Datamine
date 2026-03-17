@@ -844,4 +844,12 @@ If a failure occurs, the operation of the electronic equipment is blocked.
 "engine_model/d-1a";"D-1a";"D-1a";"D-1a";"D-1a";"D-1a";"Д-1а";"Д-1а";"D-1a";"D-1a";"D-1a";"D-1a";"D-1a";"D-1a";"D-1a";"D-1a";"D-1A";"D-1a";"D-1A";;
 "engine_model/1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";"V-1710-111";;
 "engine_model/1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";"V-1710-113";;
+"engine_manufacturer/fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"피아트";"菲\t亚\t特";"フィアット";"菲\t亚\t特";;
+"engine_model/mtca";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";"MTCA 12V";;
+"counterMeasures/muss";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";"MUSS";;
+"engine_manufacturer/utmz";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"УТМЗ";"УТМЗ";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"UTMZ";"乌\t拉\t尔\t重\t型\t机\t械\t制\t造\t厂";"UTMZ";"烏\t拉\t爾\t重\t型\t機\t器\t製\t造\t廠";;
+"engine_model/2dg_8m";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2ДГ-8М";"2ДГ-8М";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";"2DG-8M";;
+"engine_model/6td1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6ТД-1";"6ТД-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";"6TD-1";;
 "engine_model/r-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";"R-1820-72w";;
+"engine_model/v_92s2f";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"В-92С2Ф";"В-92С2Ф";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";"V-92S2F";;
+"engine_model/ds_16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";"DS16";;

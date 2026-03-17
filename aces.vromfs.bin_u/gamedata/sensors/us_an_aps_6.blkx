@@ -36,7 +36,7 @@
         60.0
       ],
       "rollStabLimit": 60.0,
-      "period": 1.2,
+      "period": 2.4,
       "width": 60.0,
       "barHeight": 2.5,
       "barsCount": 24,
@@ -106,7 +106,7 @@
   },
   "scopeRangeSets": {
     "search": {
-      "range1": 5000.0,
+      "range1": 8000.0,
       "range2": 46250.0,
       "range3": 120000.25,
       "range4": 1850.0

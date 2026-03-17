@@ -12,6 +12,7 @@
   "reload_sound": "reload_rocket",
   "reload_sound_keyoff_timer": 2.0,
   "isBulletBelt": false,
+  "bulletsCartridge": 4,
   "helicopterGroup": 2,
   "reloadTime": 10.0,
   "allowHumanReload": true,

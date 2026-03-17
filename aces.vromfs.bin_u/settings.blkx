@@ -12,9 +12,13 @@
   "gameId": "wtm",
   "enableEmbeddedBrowser": false,
   "pc_app_id": 1180,
+  "pc_project_id": "war_thunder_mobile",
   "iOS_app_id": 1180,
+  "iOS_project_id": "war_thunder_mobile",
   "android_app_id": 1180,
+  "android_project_id": "war_thunder_mobile",
   "nswitch_app_id": 1280,
+  "nswitch_project_id": "war_thunder_mobile_switch",
   "entitiesBlk": "%gameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
   "game_das_loading_threads": 2,
@@ -183,6 +187,10 @@
       },
       {
         "vrom": "dldata.production.vromfs.bin",
+        "vromOptional": true
+      },
+      {
+        "vrom": "dldata.pc.vromfs.bin",
         "vromOptional": true
       },
       {
@@ -412,7 +420,6 @@
     "mobile_ssao_active": 1,
     "renderImmDecals": false,
     "renderImpostorsToDraftDepth": false,
-    "enableClipmapDecals": false,
     "underwaterFogUseShadows": 1,
     "sky_panorama_patch": false,
     "allowHmap": false,
@@ -452,7 +459,6 @@
     "taaSigmaScaleMaxHangar": 7.5,
     "taaSigmaScaleHdrMultiplier": 4.0,
     "taaMotionScale": 2500.0,
-    "motionVectorsDepthBias": 0.02,
     "shouldRenderLerxVapor": true,
     "volumetricAfterBurner": true,
     "backbufferHolderReadable": false,
@@ -486,13 +492,12 @@
     "vaporCalcSunTransmittance": false,
     "replaceEnviProbeWithLocal": true,
     "allowRIsInDynamicCube": false,
-    "tiledRenderLights": true,
-    "tiledRenderLightsUseRt": true,
+    "tiledRenderLights": false,
     "guiHdrTonemap": [
       1.25,
       1.2
     ],
-    "allowSceneSnowCover": true,
+    "allowRendinstMipLimit": false,
     "decalHack": false,
     "raytraced_shadows": {
       "maxBlasBuildFrames": 30,
@@ -582,8 +587,6 @@
     "noGuiFade": false,
     "disableHangar": false,
     "disableChat": false,
-    "workThreadsStackSize": 393216,
-    "dasLoadJobStackSize": 262144,
     "replayDofFar": [
       100.0,
       400.0,
@@ -710,6 +713,21 @@
   "general": {
     "environment": "day",
     "weather": "clear"
+  },
+  "shader_vars": {
+    "water_visibility_max_exp_fade": 6.0,
+    "underwater_depth_absorption": [
+      1.15,
+      1.19,
+      1.26,
+      0.0
+    ],
+    "underwater_dist_absorption": [
+      1.36,
+      0.41,
+      0.34,
+      0.1
+    ]
   },
   "texStreaming": {
     "enableStreaming": true,
@@ -863,7 +881,6 @@
   },
   "contentUpdater": {
     "flag": [
-      "--norespatch",
       "--noupdate",
       "--verbose"
     ],
@@ -914,6 +931,7 @@
       "shouldPatchVromsWithRemoteVersion": true,
       "shouldSaveGameVersionToCache": true,
       "flag": [
+        "--norespatch",
         "--clear",
         "--onlypacks",
         "--force_current",
@@ -929,6 +947,7 @@
       "stopMetric": "addons_update_stop",
       "package": "pkg_hangar_event",
       "flag": [
+        "--respatch",
         "--clear",
         "--onlypacks"
       ]
@@ -940,12 +959,16 @@
       "requireSameGameVersion": false,
       "startMetric": "background_addons_update_start",
       "stopMetric": "background_addons_update_stop",
-      "flag": "--onlypacks"
+      "flag": [
+        "--norespatch",
+        "--onlypacks"
+      ]
     },
     "optional_game_resources": {
       "strictVersionCheck": false,
       "disableFastVersionCheck": true,
       "flag": [
+        "--norespatch",
         "--verbose",
         "--onlypacks",
         "--seed"
@@ -1469,25 +1492,16 @@
         "checkMemoryLeaksMb": 500
       }
     },
-    "mali_broken_clipmap_baking": {
-      "gpu": "Mali-G610",
-      "android_presets": {
-        "high": {
-          "clipmap": {
-            "updateCountHigh": 4
-          }
-        },
-        "max": {
-          "clipmap": {
-            "updateCountHigh": 4
-          }
-        }
-      }
-    },
     "broken_snow_cover": {
       "gpu": "Adreno (TM) 660",
       "graphics": {
         "decalHack": true
+      }
+    },
+    "broken_sgsr": {
+      "gpu": "PowerVR BXM-8-256",
+      "graphics": {
+        "listAllAaOptions": false
       }
     }
   },
@@ -1533,7 +1547,6 @@
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
         "fxQuality": "nswitch",
-        "fxDensityMul": 0.8,
         "rendinstDistMul": 0.8,
         "compatibilityRendinstDistMul": 0.8,
         "tireTracksQuality": 1,
@@ -1625,7 +1638,6 @@
         "grassRadiusMul": 0.5,
         "grassDensityMul": 0.5,
         "fxQuality": "android_low",
-        "fxDensityMul": 0.2,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
         "tireTracksQuality": 0,
@@ -1710,7 +1722,6 @@
         "grassRadiusMul": 0.45,
         "grassDensityMul": 0.15,
         "fxQuality": "android_medium",
-        "fxDensityMul": 0.5,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
         "tireTracksQuality": 0,
@@ -1795,7 +1806,6 @@
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
         "fxQuality": "android_high",
-        "fxDensityMul": 0.8,
         "rendinstDistMul": 0.8,
         "compatibilityRendinstDistMul": 0.8,
         "tireTracksQuality": 1,
@@ -1828,7 +1838,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": false,
+        "useVapor": true,
         "planarReflectionTexDiv": 4
       },
       "render": {
@@ -1880,7 +1890,6 @@
         "grassRadiusMul": 1.0,
         "grassDensityMul": 1.0,
         "fxQuality": "android_max",
-        "fxDensityMul": 1.0,
         "rendinstDistMul": 1.0,
         "compatibilityRendinstDistMul": 1.0,
         "tireTracksQuality": 2,
@@ -1913,7 +1922,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": false,
+        "useVapor": true,
         "planarReflectionTexDiv": 4
       },
       "render": {
@@ -1965,7 +1974,6 @@
         "grassRadiusMul": 2.0,
         "grassDensityMul": 2.0,
         "fxQuality": "android_max",
-        "fxDensityMul": 1.0,
         "rendinstDistMul": 2.0,
         "compatibilityRendinstDistMul": 2.0,
         "tireTracksQuality": 2,
@@ -1998,7 +2006,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": false,
+        "useVapor": true,
         "planarReflectionTexDiv": 4
       },
       "render": {
@@ -2038,7 +2046,6 @@
         "sceneResolutionPreset": "low",
         "defaultPresetAA": "low_fxaa",
         "fxQuality": "ios_low",
-        "fxDensityMul": 0.2,
         "shadowQuality": "shadow_low",
         "hangarShadowQuality": "shadow_low",
         "limitPlayerAirplaneUnitsLod": 1,
@@ -2112,7 +2119,6 @@
         "sceneResolutionPreset": "low",
         "defaultPresetAA": "low_fxaa",
         "fxQuality": "ios_medium",
-        "fxDensityMul": 0.8,
         "shadowQuality": "shadow_high",
         "hangarShadowQuality": "shadow_high",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -2155,7 +2161,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": false,
-        "useVapor": false,
+        "useVapor": true,
         "planarReflectionTexDiv": 4
       },
       "clipmap": {
@@ -2186,7 +2192,6 @@
         "sceneResolutionPreset": "medium",
         "defaultPresetAA": "mobile_taa",
         "fxQuality": "ios_high",
-        "fxDensityMul": 1.0,
         "shadowQuality": "shadow_high",
         "hangarShadowQuality": "shadow_high",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -2229,7 +2234,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": false,
+        "useVapor": true,
         "planarReflectionTexDiv": 4
       },
       "clipmap": {
@@ -2260,7 +2265,6 @@
         "sceneResolutionPreset": "high",
         "defaultPresetAA": "mobile_taa",
         "fxQuality": "ios_high",
-        "fxDensityMul": 1.0,
         "shadowQuality": "shadow_max",
         "hangarShadowQuality": "shadow_max",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -2303,7 +2307,7 @@
         "applyCloudsShadow": true,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": true,
-        "useVapor": false,
+        "useVapor": true,
         "planarReflectionTexDiv": 4
       },
       "clipmap": {
@@ -2467,6 +2471,14 @@
               }
             }
           },
+          "barrierMerge": {
+            "entry": {
+              "gpu": "G610",
+              "data": {
+                "mode": 4
+              }
+            }
+          },
           "extensions": {
             "entry": {
               "gpu": [
@@ -2542,7 +2554,8 @@
   },
   "metal": {
     "enable_manual_hazard_tracking": true,
-    "enable_postmortem": true
+    "enable_postmortem": true,
+    "brokenUAVOnlyPasses": true
   },
   "win64": {
     "debug": {
@@ -2578,8 +2591,6 @@
     }
   },
   "stcode": {
-    "useBytecodeForDynstcode": true,
-    "useBytecodeForStblkcode": true,
     "tag": "$version"
   },
   "consent": {

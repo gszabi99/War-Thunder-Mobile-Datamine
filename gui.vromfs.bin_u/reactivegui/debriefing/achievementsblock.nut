@@ -63,6 +63,7 @@ function mkInfoButton(val) {
     behavior = Behaviors.Button
     size = [itemSize, itemSize]
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
     children = mkStreakWithMultiplier(id, completed, itemSize, val?.stage)
     onDetach = tooltipDetach(stateFlags)
     onElemState = withTooltip(stateFlags, key, @() {

@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 
 let unitDiscounts = Watched({})
 
@@ -34,9 +35,9 @@ function updateActualDiscounts() {
     .filter(@(_v, id) id in canBuyUnits.get()) ?? {})
 
   if (nextTime == maxTime || nextTime <= curTime)
-    clearTimer(updateActualDiscounts)
+    clearExtTimer(updateActualDiscounts)
   else
-    resetTimeout(nextTime - curTime, updateActualDiscounts)
+    resetExtTimeout(nextTime - curTime, updateActualDiscounts)
 }
 
 updateActualDiscounts()

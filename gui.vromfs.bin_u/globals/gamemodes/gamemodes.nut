@@ -2,7 +2,7 @@
 let { Computed } = require("frp")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
-let gameModesRaw = sharedWatched("gameModesRaw", @() {})
+let gameModesRaw = sharedWatched("gameModesRaw", @() {}, 10) 
 let totalRooms = sharedWatched("totalRooms", @() -1)
 let totalPlayers = sharedWatched("totalPlayers", @() -1)
 let allGameModes = Computed(@() gameModesRaw.get().filter(@(m) !(m?.disabled ?? false)))

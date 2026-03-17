@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import get_player_user_id
 let { setChardToken } = require("chard")
-let { getPlayerToken, get_user_info } = require("auth_wt")
+let { getPlayerTokenGlobal, get_user_info } = require("auth_wt")
 let contacts = require("contacts")
 let { BAN_USER_INFINITE_PENALTY } = require("penalty")
 let { format } =  require("string")
@@ -96,7 +96,7 @@ registerHandler("cln_cs_login", @(res) onlyActiveStageCb(onLoginResult)(res))
 
 let start = @() request("cln_cs_login",
   {
-    headers = { token = getPlayerToken(), appid = APP_ID },
+    headers = { token = getPlayerTokenGlobal(), appid = APP_ID },
     data = {
       game = CONTACTS_GAME_ID
       sysinfo = getSysInfo()

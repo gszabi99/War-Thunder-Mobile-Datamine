@@ -23,6 +23,7 @@ let behindScene = {
             children = mkAnimBgWithGyro(screensList[curSceneBg.get().bg].mkLayers() ?? [])
             animations = wndSwitchAnim
           }
+        : curSceneBg.get()?.bg == "" ? null
         : {
             key = curSceneBg.get()?.bg
             size = flex()

@@ -288,7 +288,7 @@
     "thicknessMapResolution": 32,
     "thicknessMapMinVoxelSize": 0.1,
     "thicknessMapRelLimits": [
-      0.7,
+      0.35,
       6.0
     ],
     "thicknessMapMinObstacleSize": 0.02,

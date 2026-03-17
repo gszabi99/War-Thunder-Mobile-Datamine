@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
-let { defer } = require("dagor.workcycle")
+let { defer, deferOnce } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -98,6 +98,10 @@ function mkShopContent() {
     }
     return res
   })
+
+  distances.subscribe(@(v) v.len() == 0 ? close() : null)
+  if (distances.get().len() == 0)
+    deferOnce(close)
 
   function tryDoActionForCurrentScroll(action) {
     let currentY = pageScrollHandler?.elem.getScrollOffsY()

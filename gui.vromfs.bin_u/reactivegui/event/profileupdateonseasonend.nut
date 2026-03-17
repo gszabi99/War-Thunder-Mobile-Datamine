@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
-let { allSpecialEvents, eventEndsAt } = require("%rGui/event/eventState.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { get_profile } = require("%appGlobals/pServer/pServerApi.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { allSpecialEvents, eventEndsAt } = require("%rGui/event/eventState.nut")
 
 
 let MAX_UPDATE_DELAY = 60.0
@@ -45,5 +45,5 @@ function onTimer() {
   updateTime()
 }
 
-nextTime.subscribe(@(v) v.time == 0 ? clearTimer(onTimer)
-  : resetTimeout((v.time - serverTime.get()) + frnd() * MAX_UPDATE_DELAY, onTimer))
+nextTime.subscribe(@(v) v.time == 0 ? clearExtTimer(onTimer)
+  : resetExtTimeout((v.time - serverTime.get()) + frnd() * MAX_UPDATE_DELAY, onTimer))

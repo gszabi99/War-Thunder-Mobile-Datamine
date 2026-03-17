@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("%rGui/shop/platformGoods.nut")
 let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { activeOffers, curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("%rGui/shop/goodsStates.nut")
-let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 
 
 const REQUEST_TIMEOUT_MSEC = 300000 
@@ -38,9 +38,9 @@ function updateOutdatedOffer() {
   let leftTime = (activeOffers.get()?.endTime ?? 0) - getServerTime()
   isOfferOutdated.set(leftTime <= 0)
   if (leftTime <= 0)
-    clearTimer(updateOutdatedOffer)
+    clearExtTimer(updateOutdatedOffer)
   else
-    resetTimeout(leftTime, updateOutdatedOffer)
+    resetExtTimeout(leftTime, updateOutdatedOffer)
 }
 updateOutdatedOffer()
 activeOffers.subscribe(@(_) updateOutdatedOffer())
@@ -71,17 +71,16 @@ function updateBlockRequestTimer() {
 
   local nextTime = (activeTimers.reduce(@(a, b) min(a, b)) ?? 0) - time
   if (nextTime > 0)
-    resetTimeout(nextTime * 0.001, updateBlockRequestTimer)
+    resetExtTimeout(nextTime * 0.001, updateBlockRequestTimer)
 }
 updateBlockRequestTimer()
 blockRequestMsec.subscribe(@(_) deferOnce(updateBlockRequestTimer))
 
-let addGType = @(offer) offer == null ? null : offer.__merge({ gtype = getGoodsType(offer) })
 let prevIfEqual = @(prev, new) isEqual(prev, new) ? prev : new
 let activeOffer = Computed(@(prev) prevIfEqual(prev,
   activeOffers.get() == null ? null
-    : isGoodsOnlyInternalPurchase(activeOffers.get()) ? addGType(activeOffers.get())
-    : addGType(platformOffer.get())))
+    : isGoodsOnlyInternalPurchase(activeOffers.get()) ? activeOffers.get()
+    : platformOffer.get()))
 let visibleOffer = Computed(@() isOfferOutdated.get() ? null : activeOffer.get())
 
 let offerPurchasingState = Computed(function() {

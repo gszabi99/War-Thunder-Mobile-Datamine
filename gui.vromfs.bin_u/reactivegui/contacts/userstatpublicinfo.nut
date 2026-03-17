@@ -3,7 +3,7 @@ let { get_time_msec } = require("dagor.time")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { userstatRequest, userstatRegisterHandler } = require("%rGui/unlocks/userstat.nut")
 let { APP_ID } = require("app")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal } = require("auth_wt")
 
 let AGEING_TIME_MSEC = 600000
 let allUserStatInfo = hardPersistWatched("allUserStatInfo", {})
@@ -20,7 +20,7 @@ function refreshUserStats(userId) {
       data = {}
       headers = {
         appid = APP_ID,
-        token = getPlayerToken()
+        token = getPlayerTokenGlobal()
         userId
       }},
       { userId })

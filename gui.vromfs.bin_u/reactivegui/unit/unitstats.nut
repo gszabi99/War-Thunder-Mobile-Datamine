@@ -4,7 +4,7 @@ let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
 let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { loadUnitWeaponSlots, loadUnitTorpedoSeriesDuration } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getWeaponShortNameWithCount, getWeaponTypeName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getSpeedText } = require("%rGui/measureUnits.nut")
 let { format } = require("string")
@@ -323,6 +323,11 @@ let mkDamageText = @(dmg, shotFreq, reloadTime = 0) reloadTime > 0 ? $"{round(dm
   : shotFreq <= 0 ? $"{round(dmg)}►"
   : $"{round(dmg)}► {round_by_value(1.0 / shotFreq, shotFreq > 1 ? 0.01 : 0.1)}▩"
 
+let mkTorpedoDamageText = @(dmg, shotFreq, torpedoSeriesDuration = 0) shotFreq <= 0
+  ? $"{round(dmg)}►"
+  : $"{round(dmg)}► {round_by_value((1.0 / shotFreq) + torpedoSeriesDuration , shotFreq > 1 ? 0.01
+    : 0.1)}▩"
+
 let mkGunStat = @(id) mkStat(id, {
   isAvailable = @(_) true
   getHeader = @(s, _) loc($"stats/{id}", { caliber = roundCaliber(s?.caliber ?? 0) })
@@ -353,7 +358,9 @@ let weaponsCfgShip = {
       valueToText = @(_, s) mkDamageText(s?.damage ?? 0, s?.shotFreq ?? 0, s?.reloadTime ?? 0)
       getHeader = @(s, _) loc($"stats/{s?.antiSubRocket ? "asm" : "rockets"}", { caliber = roundCaliber(s?.caliber ?? 0) })
     })
-    mkWeapStat("torpedo")
+    mkWeapStat("torpedo", {
+      valueToText = @(_, s) mkTorpedoDamageText(s?.damage ?? 0, s?.shotFreq ?? 0, s?.torpedoSeriesDuration ?? 0)
+    })
     mkWeapStat("mine")
     mkWeapStat("bomb")
   ]
@@ -575,6 +582,7 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   let unitStats = statsList.map(@(stat) mkUnitStat(unit, stat, shopCfg, stat.id, statsWithAttr))
 
   let weaponSlots = loadUnitWeaponSlots(unit.name)
+  let torpedoSeriesDuration = loadUnitTorpedoSeriesDuration(unit.name)
   let weapByType = weaponSlots.len() == 0
     ? (shopCfg?.weapons ?? {}).reduce(function(res, wCfg, wId) {
         let wtype = wCfg?.wtype ?? wCfg?.type ?? "null"
@@ -582,6 +590,10 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
         return res
       }, {})
     : getWeapByTypeFromSlots(weaponSlots)
+
+  if (torpedoSeriesDuration > 0)
+    foreach (wCfg in weapByType?["torpedo"] ?? [])
+      wCfg.torpedoSeriesDuration <- torpedoSeriesDuration
 
   local weaponsIdx = statsList.findindex(@(stat) stat.isAfterWeapons)
   let existingListStats = {}

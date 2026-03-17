@@ -42,12 +42,21 @@ let XmbContainer = @(ovr = {}) {
   wrap = false
 }.__update(ovr)
 
+let ext = {}
+if ("TEXFMT_SRGB" not in getconsttable())
+  ext.__update({ TEXFMT_SRGB_IN_UNORM = 0, TEXFMT_UNORM = 1, TEXFMT_SRGB = 2 })
+
 return dargBaseLib.__merge(
+  ext
   log
   screenUnits
   fontsStyle
   require("daRg")
-  require("frp")
+  {
+    this_subscriber_call_may_take_up_to_usec = @(_) null,
+    get_slow_subscriber_threshold_usec = @() 10000,
+    set_slow_subscriber_threshold_usec = @(_) null
+  }.__update(require("frp"))
   require("%sqstd/functools.nut")
 {
   max

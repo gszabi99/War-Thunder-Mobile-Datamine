@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 
-let { buyEPLevel, isEpActive, epPrograssUnlockId, curStage } = require("%rGui/battlePass/eventPassState.nut")
+let { buyEPLevel, isEpActive, epProgressUnlockId, curStage } = require("%rGui/battlePass/eventPassState.nut")
 let { PURCH_SRC_EVENT_PASS, PURCH_TYPE_EP_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { msgBoxText } = require("%rGui/components/msgBox.nut")
@@ -40,7 +40,7 @@ return function (priceVal, context) {
     text = purchaseContent(context),
     price = { price currencyId = currency },
     purchase = buyEPLevel,
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT_PASS, PURCH_TYPE_EP_LEVEL, epPrograssUnlockId.get()),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT_PASS, PURCH_TYPE_EP_LEVEL, epProgressUnlockId.get()),
     hasSpendingStat = false
   })
 }

@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 let hasPenaltyStatus = Watched({})
@@ -34,7 +35,7 @@ function updatePenaltyStatus() {
   hasPenaltyStatus.set(penaltyUpdate)
 
   if (minLeftTime > 0)
-    resetTimeout(minLeftTime, updatePenaltyStatus)
+    resetExtTimeout(minLeftTime, updatePenaltyStatus)
 }
 
 isServerTimeValid.subscribe(@(_) deferOnce(updatePenaltyStatus))

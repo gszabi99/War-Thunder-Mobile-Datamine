@@ -119,6 +119,10 @@ let mkTextInputField = @(textWatch, placeholderText, options = {}) textInput(tex
   placeholder = placeholderText
   onChange = @(value) textWatch.set(value)
   onEscape = @() textWatch.set("")
+  ovr = {
+    behavior = Behaviors.Button
+    onClick = @() set_kb_focus(textWatch)
+  }
 }.__update(options))
 
 let formBlock = {

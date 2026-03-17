@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_subscribe } = require("eventbus")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays,
   has_offline_battle_access
@@ -11,7 +12,7 @@ let debugQuirrelConsoleWnd = require("%rGui/debugTools/debugQuirrelConsoleWnd.nu
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
 let chooseBenchmarkWnd = require("%rGui/mainMenu/chooseBenchmarkWnd.nut")
-let replaysWnd = require("%rGui/replay/replaysWnd.nut")
+let { accountOptionsScene, setCurTabId } = require("%rGui/options/accountOptionsScene.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -46,6 +47,13 @@ let openConfirmationTutorialMsg = @() openMsgBox({
   ]
 })
 
+function openReplaysPage() {
+  setCurTabId("replays")
+  accountOptionsScene()
+}
+
+eventbus_subscribe("showReplaysPage", @(_) openReplaysPage())
+
 let OPTIONS = {
   name = loc("mainmenu/btnOptions")
   icon = "ui/gameuiskin#icon_menu_settings.svg"
@@ -77,7 +85,7 @@ let BENCHMARK = {
 let REPLAYS = {
   name = loc("mainmenu/btnReplays")
   icon = "ui/gameuiskin#watch_ads.svg"
-  cb = @() notAvailableForSquadMsg(replaysWnd)
+  cb = openReplaysPage
 }
 let SAVE_LAST_REPLAY = {
   name = loc("mainmenu/btnSaveReplay")

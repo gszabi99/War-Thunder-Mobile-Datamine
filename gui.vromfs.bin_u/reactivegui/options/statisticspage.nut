@@ -159,14 +159,14 @@ return function() {
       if (id not in units)
         continue
       let unit = units[id]
-      let levels = unitLevels?[levelPreset ?? "0"] ?? []
+      let maxLevel = unitLevels?[levelPreset].len() ?? 0
       if (isHidden)
         my[campaign].rare++
       if (isPremium && !isHidden)
         my[campaign].prem++
       else if ((costWp ?? 0) > 0)
         my[campaign].wp++
-      if (unit?.level == levels.len())
+      if (unit?.level == maxLevel)
         my[campaign].maxLevel++
     }
     return {all my}

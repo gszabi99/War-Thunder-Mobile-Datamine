@@ -8,6 +8,7 @@ let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { premiumTextColor, collectibleTextColor, selectColor } = require("%rGui/style/stdColors.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -301,7 +302,8 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr =
   return @() {
     watch = isCurrent
     size = [ flex(), rowHeight ]
-    rendObj = ROBJ_SOLID
+    rendObj = player?.isLocal ? ROBJ_IMAGE : ROBJ_SOLID
+    image = simpleHorGrad
     color = isCurrent.get() ? 0xA0000000
       : bgColorOvr != null ? bgColorOvr
       : (player?.isLocal ?? false) ? rowBgLocalPlayerColor

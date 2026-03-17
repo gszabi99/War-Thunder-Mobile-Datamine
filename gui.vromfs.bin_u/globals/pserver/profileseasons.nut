@@ -1,9 +1,10 @@
 from "%globalScripts/logs.nut" import *
 from "math" import min
-from "dagor.workcycle" import resetTimeout, clearTimer
-let { Watched, Computed } = require("frp")
-let { serverConfigs } = require("servConfigs.nut")
-let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+from "frp" import Watched, Computed
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
+
 
 let seasonsCfg = Computed(@() serverConfigs.get()?.seasons ?? {})
 let curSeasons = Watched({})
@@ -88,9 +89,9 @@ function updateSeasons() {
   }
 
   if (nextTime <= 0)
-    clearTimer(updateSeasons)
+    clearExtTimer(updateSeasons)
   else
-    resetTimeout(nextTime, updateSeasons)
+    resetExtTimeout(nextTime, updateSeasons)
 }
 updateSeasons()
 seasonsCfg.subscribe(@(_) updateSeasons())

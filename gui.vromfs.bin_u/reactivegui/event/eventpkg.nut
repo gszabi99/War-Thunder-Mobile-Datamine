@@ -19,10 +19,10 @@ let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
-let { getLootboxImage, lootboxFallbackPicture, customEventLootboxShiftPos } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxImage, lootboxFallbackPicture, getEventLootboxSizeMul, getEventLootboxShiftPos
+} = require("%appGlobals/config/lootboxPresentation.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+
 
 let REWARDS = 3
 let fillColor = 0x70000000
@@ -112,18 +112,26 @@ let lootboxInfo = @(lootbox, stateFlags) function() {
   }
 }
 
-let mkEventLoootboxImage = @(id, size = null, ovr = {}) @() {
-  watch = eventSeason
-  size = size ? [size, size] : SIZE_TO_CONTENT
-  rendObj = ROBJ_IMAGE
-  image = getLootboxImage(id, eventSeason.get(), size)
-  fallbackImage = lootboxFallbackPicture
-  keepAspect = true
-}.__update(ovr)
+let mkEventLoootboxImage = @(lootbox, blockSize, isActive, children) function() {
+  let { name } = lootbox
+  let sizeMul = getEventLootboxSizeMul(name, eventSeason.get(), lootbox.meta?.event_slot ?? "")
+  let size = blockSize.map(@(v) (v * sizeMul + 0.5).tointeger())
+  return {
+    watch = [eventSeason, isActive]
+    size
+    pos = getEventLootboxShiftPos(name, eventSeason.get()).map(@(v, a) size[a] * v)
+    rendObj = ROBJ_IMAGE
+    image = getLootboxImage(name, eventSeason.get())
+    fallbackImage = lootboxFallbackPicture
+    keepAspect = true
+    picSaturate = isActive.get() ? 1.0 : 0.2
+    brightness = isActive.get() ? 1.0 : 0.5
+    children
+  }
+}
 
-function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul = 1.0) {
-  let imageSize = [width, lootboxHeight].map(@(v) (v * sizeMul + 0.5).tointeger())
-  let pos = customEventLootboxShiftPos?[name].map(@(v, idx) imageSize[idx] * v)
+function mkLootboxImageWithTimer(lootbox, width, imgChild) {
+  let { timeRange = null, reqPlayerLevel = 0 } = lootbox
   let blockSize = [width, lootboxHeight]
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.get() >= reqPlayerLevel
@@ -135,19 +143,12 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
       ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
     : "")
 
-  return @() {
-    watch = isActive
+  return {
     size = blockSize
-    pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkEventLoootboxImage(name, null,
-        {
-          size = imageSize
-          picSaturate = isActive.get() ? 1.0 : 0.2
-          brightness = isActive.get() ? 1.0 : 0.5
-        })
+      mkEventLoootboxImage(lootbox, blockSize, isActive, imgChild)
       @() {
         watch = timeText
         size = FLEX_H
@@ -193,7 +194,7 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
       cost >= adBudget.get() ? mkBtnContent(null, loc("btn/adsLimitReached"))
         : !hasVip.get()
           ? mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter)
-        : mkBtnContent("ui/gameuiskin#gamercard_subs_vip.svg", loc("shop/vip/budget_rewards", { num = adBudget.get() }), adsButtonCounter),
+        : mkBtnContent("ui/gameuiskin#gamercard_subs_vip.avif", loc("shop/vip/budget_rewards", { num = adBudget.get() }), adsButtonCounter),
       @() bestCampLevel.get() >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
@@ -237,22 +238,13 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     && (end <= 0 || end > serverTime.get()))
   let adReward = Computed(@() schRewards.get().findvalue(
     @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
-  let canOpenX10 = Computed(function(){
-    let stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
-    if (stepsToFixed[1] == 0)
-      return true
-    if (stepsToFixed[1] - stepsToFixed[0] <= 10)
-      return false
-    return true
-  })
   let isInactive = Computed(@() !isActive.get()
     || (balance.get()?[currencyFullId.get()] ?? 0) < price)
   let isInactiveX10 = Computed(@() !isActive.get()
-    || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10
-    || !canOpenX10.get())
+    || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10)
 
   return @() {
-    watch = [isInactive, isInactiveX10, adReward, currencyFullId, canOpenX10]
+    watch = [isInactive, isInactiveX10, adReward, currencyFullId]
     key = name
     flow = FLOW_HORIZONTAL
     gap = hdpx(40)
@@ -266,10 +258,9 @@ function mkPurchaseBtns(lootbox, onPurchase) {
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
             mkCurrencyComp(price * 10, currencyFullId.get(), isInactiveX10.get()),
-            @() !canOpenX10.get() ? null : onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
+            @() onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
             (isInactiveX10.get() ? buttonStyles.INACTIVE : {})
-              .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() !canOpenX10.get() ? loc("x10Btn/desc") : null,
-                repayTime = 0 }))
+              .__merge({ hotkeys = ["^J:Y"], repayTime = 0 }))
     ]
   }
 }

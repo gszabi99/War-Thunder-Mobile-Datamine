@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -26,7 +27,6 @@ let helpEventBattleRoyale = require("%rGui/loading/complexScreens/helpEventBattl
 let helpEventChristmas2 = require("%rGui/loading/complexScreens/helpEventChristmas2.nut")
 let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
 let helpEventHalloween = require("%rGui/loading/complexScreens/helpEventHalloween.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
@@ -217,8 +217,8 @@ let cancelJoiningButton = @() {
   key = canCancelJoining
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
-  onAttach = @() resetTimeout(timeToShowCancelJoining, allowCancelJoining)
-  onDetach = @() clearTimer(allowCancelJoining)
+  onAttach = @() resetExtTimeout(timeToShowCancelJoining, allowCancelJoining)
+  onDetach = @() clearExtTimer(allowCancelJoining)
   children = !canCancelJoining.get()
     ? null
     : {

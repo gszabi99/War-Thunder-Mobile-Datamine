@@ -433,12 +433,15 @@ function addMember(member) {
 }
 
 function removeMember(member) {
-  let { userId } = member
+  let { userId, name = null } = member
   if (userId == myUserId.get()) {
     openFMsgBox({ text = loc("squad/kickedMsgbox") })
     reset()
   }
   else if (userId in squadMembers.get()) {
+    if (isSquadLeader.get())
+      openFMsgBox({ text = loc("squad/msgbox_left",
+        { name = name ?? getContactNick(allContacts.get()?[member.userId.tostring()]) }) })
     squadMembers.mutate(@(v) v.$rawdelete(userId))
     setOnlineBySquad(userId, null)
     checkDisbandEmptySquad()
@@ -583,13 +586,15 @@ let msubscribes = {
     if (!isSquadLeader.get())
       return
     removeInvitedSquadmate(p.invite.id)
-    pushNotification({ playerUid = p.invite.id, text = loc("squad/invite/reject") })
     checkDisbandEmptySquad()
   },
   ["msquad.notify_invite_expired"] = @(p) removeInvitedSquadmate(p.invite.id),
-  ["msquad.notify_disbanded"] = function(_) {
+  ["msquad.notify_disbanded"] = function(member) {
     if (!isSquadLeader.get())
       openFMsgBox({ text = loc("squad/msgbox_disbanded") })
+    else if (member != null )
+      openFMsgBox({ text = loc("squad/msgbox_left",
+        { name = member?.name ?? getContactNick(allContacts.get()?[member.userId.tostring()]) })})
     reset()
   },
   ["msquad.notify_member_joined"] = addMember,

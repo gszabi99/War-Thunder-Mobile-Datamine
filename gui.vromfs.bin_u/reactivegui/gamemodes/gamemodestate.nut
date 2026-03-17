@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
@@ -23,10 +22,8 @@ function findFitGameMode(list, gameModes, stats, maxMRank, abTestsV) {
   return null
 }
 
-let isDebugABTest = hardPersistWatched("tutorialTankOnline.isDebugMode", false)
 let curABTestOnlineTutorialMode = Computed(function() {
-  let abTestStatus = abTests.get()?.tutorialTankOnline ?? "false"
-  if (!((abTestStatus == "true") != isDebugABTest.get()))
+  if ((abTests.get()?.tutorialTankOnline ?? "false") != "true")
     return null
   let { gameMode = null, cfg = null } = findFitGameMode(newbieGameModesConfig?[curCampaign.get()], allGameModes.get(),
     newbieModeStats.get(), battleUnitsMaxMRank.get(), abTests.get())
@@ -87,12 +84,6 @@ register_command(
     log("curRandomBattleModeName = ", randomBattleMode.get()?.name)
   }
   "debug.forceNewbieModeIdx")
-register_command(
-  function() {
-    isDebugABTest.set(!isDebugABTest.get())
-    console_print("nextNewbieSingle = ", curABTestOnlineTutorialMode.get()?.name ?? "offline") 
-  },
-  "debug.toggleAbTest.tutorialTankOnline")
 
 let separateEventModes = Computed(function() {
   let res = {}

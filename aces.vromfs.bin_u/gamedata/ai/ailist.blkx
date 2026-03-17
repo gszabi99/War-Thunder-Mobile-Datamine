@@ -5666,11 +5666,16 @@
                 }
               },
               "sequencer": {
-                "not": {
-                  "findLeader": {
-                    "findOwnedUnit": false
+                "not": [
+                  {
+                    "findLeader": {
+                      "findOwnedUnit": false
+                    }
+                  },
+                  {
+                    "tryReplaceUnsuccesfullAttackCommand": {}
                   }
-                },
+                ],
                 "isPlayerOrderActive": {
                   "type": "attack",
                   "varName": "playerTarget"
@@ -5689,7 +5694,8 @@
               },
               "orbitHere": {
                 "speed": 250.0,
-                "alt": 600.0
+                "alt": 600.0,
+                "rollFactor": 1.5
               }
             }
           ],
@@ -5833,7 +5839,8 @@
               },
               "orbitHere": {
                 "speed": 250.0,
-                "alt": 600.0
+                "alt": 600.0,
+                "rollFactor": 1.5
               }
             }
           }
@@ -6054,16 +6061,19 @@
                         "fighterAttackGround": {
                           "instantAttack": true,
                           "fireMode": "salvo",
-                          "onlyRocketAttack": true
+                          "onlyRocketAttack": true,
+                          "reserveTimeMult": 0.0
                         },
                         "bombTarget": {
                           "instantAttack": true,
                           "fireMode": "salvo",
-                          "carpetBombing": false
+                          "carpetBombing": false,
+                          "reserveTimeMult": 0.0
                         },
                         "torpedoTarget": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "reserveTimeMult": 0.0
                         },
                         "sequencer": {
                           "hasDependentAttackers": {},
@@ -6090,12 +6100,14 @@
                         "selectStrategy": "ordered",
                         "fighterAttackGround": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "reserveTimeMult": 0.0
                         },
                         "bombTarget": {
                           "instantAttack": true,
                           "fireMode": "salvo",
-                          "carpetBombing": false
+                          "carpetBombing": false,
+                          "reserveTimeMult": 0.0
                         },
                         "sequencer": {
                           "hasDependentAttackers": {},
@@ -6118,11 +6130,16 @@
                 }
               },
               "sequencer": {
-                "not": {
-                  "findLeader": {
-                    "findOwnedUnit": false
+                "not": [
+                  {
+                    "findLeader": {
+                      "findOwnedUnit": false
+                    }
+                  },
+                  {
+                    "tryReplaceUnsuccesfullAttackCommand": {}
                   }
-                },
+                ],
                 "isPlayerOrderActive": {
                   "type": "attack",
                   "varName": "playerTarget"
@@ -6141,7 +6158,8 @@
               },
               "orbitHere": {
                 "speed": 250.0,
-                "alt": 600.0
+                "alt": 600.0,
+                "rollFactor": 1.5
               }
             }
           ],
@@ -6285,7 +6303,8 @@
               },
               "orbitHere": {
                 "speed": 250.0,
-                "alt": 600.0
+                "alt": 600.0,
+                "rollFactor": 1.5
               }
             }
           }
@@ -6505,11 +6524,13 @@
                         "selectStrategy": "ordered",
                         "torpedoTarget": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "reserveTimeMult": 0.0
                         },
                         "diveBombTarget": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "reserveTimeMult": 0.0
                         },
                         "sequencer": {
                           "hasDependentAttackers": {},
@@ -6535,11 +6556,13 @@
                         "selectStrategy": "ordered",
                         "diveBombTarget": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "reserveTimeMult": 0.0
                         },
                         "fighterAttackGround": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "reserveTimeMult": 0.0
                         },
                         "sequencer": {
                           "hasDependentAttackers": {},
@@ -6562,11 +6585,16 @@
                 }
               },
               "sequencer": {
-                "not": {
-                  "findLeader": {
-                    "findOwnedUnit": false
+                "not": [
+                  {
+                    "findLeader": {
+                      "findOwnedUnit": false
+                    }
+                  },
+                  {
+                    "tryReplaceUnsuccesfullAttackCommand": {}
                   }
-                },
+                ],
                 "isPlayerOrderActive": {
                   "type": "attack",
                   "varName": "playerTarget"
@@ -6585,7 +6613,8 @@
               },
               "orbitHere": {
                 "speed": 250.0,
-                "alt": 600.0
+                "alt": 600.0,
+                "rollFactor": 1.5
               }
             }
           ],
@@ -6729,7 +6758,8 @@
               },
               "orbitHere": {
                 "speed": 250.0,
-                "alt": 600.0
+                "alt": 600.0,
+                "rollFactor": 1.5
               }
             }
           }

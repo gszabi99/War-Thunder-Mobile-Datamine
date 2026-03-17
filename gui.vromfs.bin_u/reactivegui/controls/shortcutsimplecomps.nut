@@ -7,8 +7,11 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let defBtnHeight = hdpxi(50)
 
 const combinationButton = "J:LB"
-let combinationButtonState = Watched(0)
-let isCombinationModActive = Computed(@() (combinationButtonState.get() & S_ACTIVE) != 0)
+let combBtnInfo = resolve_button(combinationButton)
+let isCombinationModActive = Watched(false)
+
+if (combBtnInfo == null)
+  logerr("Failed to resolve combinationButton")
 
 let mkGamepadShortcutImage = @(shortcutId, ovr = {}, scale = 1.0) function() {
   let gKeys = getGamepadKeys(shortcutId)
@@ -69,13 +72,16 @@ function mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFla
   }
 }
 
-let mkLtButtonListener = @() {
-  watch = combinationButtonState
-  size = 0
-  behavior = Behaviors.Button
-  onElemState = @(v) combinationButtonState.set(v)
-  hotkeys = const [$"^{combinationButton}"]
-}
+let mkLtButtonListener = combBtnInfo == null ? null
+  : {
+      size = 0
+      behavior = Behaviors?.ProcessKeyInput 
+      onKeyPress = @(evt) evt.devId != combBtnInfo.devId || evt.btnId != combBtnInfo.btnId ? null
+        : isCombinationModActive.set(true)
+      onKeyRelease = @(evt) evt.devId != combBtnInfo.devId || evt.btnId != combBtnInfo.btnId ? null
+        : isCombinationModActive.set(false)
+      onDetach = @() isCombinationModActive.set(false)
+    }
 
 return {
   mkGamepadShortcutImage

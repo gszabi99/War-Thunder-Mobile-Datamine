@@ -3,6 +3,7 @@ let defCfg = {
   locId = ""
   image = "ui/gameuiskin#icon_primary_attention.svg"
   bgImage = "ui/images/event_bg.avif"
+  bgUnits = null 
   accessStat = ""
   hasConsumablePlate = false
 }

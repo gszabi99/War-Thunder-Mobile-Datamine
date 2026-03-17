@@ -5,7 +5,7 @@ let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
 let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
-let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera
+let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera, isInZoom
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
@@ -161,7 +161,8 @@ let arcadeCrosshair = @() {
     primaryRocketGun,
     isFreeCamera,
     allowShoot,
-    crosshairAmount
+    crosshairAmount,
+    isInZoom
   ]
   children = [
     primaryRocketGun.get() || isFreeCamera.get() ? null : arcadeCrosshairSight

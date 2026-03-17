@@ -6,7 +6,7 @@ let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer } = require("dagor.workcycle")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { object_to_json_string } = require("json")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let { INVALID_USER_ID } = require("matching.errors")
@@ -91,7 +91,7 @@ function sendAll() {
 
   nextCanSendMsec.set(max(nextCanSendMsec.get(), get_time_msec() + MIN_TIME_BETWEEN_MSEC))
 
-  let token = getPlayerToken()
+  let token = getPlayerTokenGlobal()
   let headers = {
     action = token == "" ? "noa_bigquery_client_noauth" : "cln_bq_put_batch_json"
     appid  = APP_ID

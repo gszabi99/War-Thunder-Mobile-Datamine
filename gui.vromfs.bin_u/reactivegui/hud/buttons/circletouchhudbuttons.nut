@@ -377,8 +377,8 @@ let mkCircleTankPrimaryGun = @(aType) function(actionItem, scale, key = "btn_wea
   }
 }
 
-function mkCircleTankMachineGun(actionItemW, aType, scale) {
-  let isDisabled = mkIsControlDisabled("ID_FIRE_GM_MACHINE_GUN")
+function mkCircleGroundMachineGun(shortcutId, actionItemW, aType, scale) {
+  let isDisabled = mkIsControlDisabled(shortcutId)
   let isOnCd = Computed(@() actionItemsInCd.get()?[aType] ?? false)
   let stateFlags = Watched(0)
   let bgSize = scaleEven(buttonSize, scale)
@@ -391,7 +391,7 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
         onDetach = function onDetach() {
           if (stateFlags.get() & S_ACTIVE) {
             stateFlags.set(0)
-            setShortcutOff("ID_FIRE_GM_MACHINE_GUN")
+            setShortcutOff(shortcutId)
           }
         }
       }
@@ -406,10 +406,10 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
         if (isWaitForAim && (!allowShoot.get() || isInDeadZone))
           addCommonHint(loc("hints/wait_for_aiming"))
         else if (!isOnCd.get() && isAvailableActionItem(actionItem))
-          useShortcutOn("ID_FIRE_GM_MACHINE_GUN")
+          useShortcutOn(shortcutId)
       },
-      @() setShortcutOff("ID_FIRE_GM_MACHINE_GUN"),
-      "ID_FIRE_GM_MACHINE_GUN",
+      @() setShortcutOff(shortcutId),
+      shortcutId,
       stateFlags
     )
     return res.__update({
@@ -424,13 +424,13 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
         mkBtnImage(imgSize, image, color)
         actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color, scale)
         isWaitForAim ? mkWaitForAimIcon(scale) : null
-        mkGamepadShortcutImage("ID_FIRE_GM_MACHINE_GUN", defShortcutOvr, scale)
+        mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
       ]
     })
   }
 }
 
-let mkCircleTankSecondaryGun = @(shortcutId, aType, img = null) function(actionItem, scale) {
+let mkCircleGroundSecondaryGun = @(shortcutId, aType, img = null) function(actionItem, scale) {
   let isOnCd = Computed(@() actionItemsInCd.get()?[aType] ?? false)
   let bgSize = scaleEven(buttonSize, scale)
   let imgSize = scaleEven(buttonImgSize, scale)
@@ -964,8 +964,8 @@ let mkCircleFireworkBtn = @(aType) function(actionItem, scale) {
 
 return {
   mkCircleTankPrimaryGun
-  mkCircleTankMachineGun
-  mkCircleTankSecondaryGun
+  mkCircleGroundMachineGun
+  mkCircleGroundSecondaryGun
   mkCircleZoomCtor
   mkCircleLockBtn
   mkSimpleCircleTouchBtn

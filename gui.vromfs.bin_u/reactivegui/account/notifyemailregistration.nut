@@ -2,17 +2,19 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_local_custom_settings_blk } = require("blkGetters")
+let { register_command } = require("console")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 let { isGuestLogin, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
 } = require("%rGui/account/emailRegistrationState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
-let { register_command } = require("console")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+
 
 let GUEST_MSG_UID = "guestEmailRegistration"
 let VERIFY_MSG_UID = "verifyEmail"
@@ -46,7 +48,7 @@ lastVerifyMsgTime.subscribe(function(value) {
   if (serverTime.get() > value + NOTIFY_PERIOD)
     setVerifyMsgTimerPassed()
   else
-    resetTimeout(value + NOTIFY_PERIOD - serverTime.get(), setVerifyMsgTimerPassed)
+    resetExtTimeout(value + NOTIFY_PERIOD - serverTime.get(), setVerifyMsgTimerPassed)
 })
 function loadVerifyMsgTime() { lastVerifyMsgTime.set(get_local_custom_settings_blk()?[VERIFY_MSG_UID] ?? 0) }
 if (isLoggedIn.get())

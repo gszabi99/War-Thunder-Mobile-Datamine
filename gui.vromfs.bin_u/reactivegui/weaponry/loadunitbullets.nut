@@ -321,6 +321,10 @@ function loadUnitBulletsFullImpl(unitName) {
   let triggersData = {}
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
   let { commonWeapons = null, weapon_presets = null, WeaponSlots = null } = unitBlk
+  let torpedoSeriesBlk = unitBlk?.torpedoSeries
+  let torpedoSeriesDuration = torpedoSeriesBlk != null
+    ? (torpedoSeriesBlk?.delay ?? 0) * max(((torpedoSeriesBlk?.count ?? 0) - 1), 0)
+    : 0
   let hasTriggerGroups = getUnitType(unitName) != AIR
   if (isDataBlock(commonWeapons))
     triggersData.commonWeapons <- gatherWeaponsFromBlk(commonWeapons, hasTriggerGroups)
@@ -412,7 +416,7 @@ function loadUnitBulletsFullImpl(unitName) {
       return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets }
     }))
 
-  let res = { presets, slots = [], slotsParams, reqModifications = {} }
+  let res = { presets, slots = [], slotsParams, reqModifications = {}, torpedoSeriesDuration }
 
   let { reqModifications } = res
   let { bullets = {} } = getUnitTagsCfg(unitName)
@@ -483,7 +487,7 @@ function loadUnitBulletsAndSlots(realUnitName) {
   let unitName = getTagsUnitName(realUnitName)
   if (unitName not in fullCache) {
     if (isLoginRequired.get() && !isReadyToFullLoad.get())
-      return { presets = {}, slots = [], slotsParams = {}, reqModifications = {} }
+      return { presets = {}, slots = [], slotsParams = {}, reqModifications = {}, torpedoSeriesDuration = 0 }
     fullCache[unitName] <- freeze(loadUnitBulletsFullImpl(unitName))
   }
   return fullCache[unitName]
@@ -493,6 +497,7 @@ let loadUnitBulletsFull = @(unitName) loadUnitBulletsAndSlots(unitName).presets
 let loadUnitWeaponSlots = @(unitName) loadUnitBulletsAndSlots(unitName).slots
 let loadUnitSlotsParams = @(unitName) loadUnitBulletsAndSlots(unitName).slotsParams
 let loadUnitReqModifications = @(unitName) loadUnitBulletsAndSlots(unitName).reqModifications
+let loadUnitTorpedoSeriesDuration = @(unitName) loadUnitBulletsAndSlots(unitName).torpedoSeriesDuration
 
 function loadUnitBulletsChoiceImpl(unitName) {
   let { bullets = {}, bulletsOrder = [] } = getUnitTagsCfg(unitName)
@@ -537,5 +542,6 @@ return {
   loadUnitBulletsAndSlots
   getWeaponId
   loadUnitReqModifications
+  loadUnitTorpedoSeriesDuration
   mustSlotHaveDefault
 }

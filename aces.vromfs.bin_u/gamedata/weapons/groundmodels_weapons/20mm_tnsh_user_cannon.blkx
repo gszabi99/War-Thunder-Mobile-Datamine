@@ -30,6 +30,7 @@
   "soundLoop": true,
   "sfxReloadBullet": "grd_cannon_belt_reload",
   "isBulletBelt": false,
+  "allowRearmOnField": true,
   "bullet": [
     {
       "mass": 0.096,

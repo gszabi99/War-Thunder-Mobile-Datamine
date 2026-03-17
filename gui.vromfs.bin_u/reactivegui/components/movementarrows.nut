@@ -6,6 +6,8 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { hudLightBlackColor, hudDarkGrayColor, hudRedColor, hudWhiteColor, hudAshGrayColor } = require("%rGui/style/hudColors.nut")
 let { mkContinuousButtonParams, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
+let { isUnitDelayed } = require("%rGui/hudState.nut")
+let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
 
 let toInt = @(list) list.map(@(v) v.tointeger())
 
@@ -15,8 +17,7 @@ let verSize = toInt([shHud(16), shHud(12.8)])
 let verCornerSizeMul = [0.61, 0.24]
 let ver2stepSizeMul = [0.85, 0.34]
 let stopSizeMul = [0.581, 0.726]
-let horSizeAir = toInt([shHud(9), shHud(12)])
-let verSizeAir = toInt([shHud(12), shHud(10)])
+let fullSizeAirBase = toInt([shHud(26.7), shHud(18.75)])
 
 let animTime = 0.3
 let bgColor = hudLightBlackColor
@@ -64,7 +65,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
             vplace = ALIGN_CENTER
-            opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 100 : 0
+            opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 1 : 0
             transform = {
               translate = (stateFlags.get() & S_ACTIVE) != 0
                 ? [flipX ? 0.6 * size[0] : 0.4 * size[0] - horAnimSize[0], 0]
@@ -97,6 +98,44 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
               : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] },
             scale)
         ])
+  }, ovrExt)
+})
+
+let mkAltMoveHorCtor = @(flipX, hplace) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null,
+  ovr = {}, isDisabled = Watched(false), scale = 1
+) {
+  let stateFlags = Watched(0)
+  let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
+
+  let size = scaleArr(ovr?.size ?? horSize, scale)
+  let ovrExt = clone ovr
+  if ("size" in ovrExt)
+    ovrExt.$rawdelete("size")
+
+  return @() res.__update({
+    watch = isDisabled
+    size
+    vplace = ALIGN_CENTER
+    hplace
+    behavior = Behaviors.Button
+    cameraControl = false
+    children = isDisabled.get() ? []
+      : [
+          @() {
+            watch = [stateFlags, isActiveWithPieMenu]
+            size
+            rendObj = ROBJ_IMAGE
+            image = Picture($"ui/gameuiskin#hud_movement_air_arrow_right.svg:{size[0]}:{size[1]}")
+            vplace = ALIGN_CENTER
+            opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 1 : 0
+            transitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
+            flipX
+          }
+          mkGamepadShortcutImage(shortcutId,
+            flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(-20), 0] }
+              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] },
+            scale)
+        ]
   }, ovrExt)
 })
 
@@ -197,6 +236,43 @@ function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
     color = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
     cameraControl = false
   }, ovr)
+}
+
+function mkAltMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
+  let stateFlags = Watched(0)
+  let { size = verSize } = ovr
+  let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
+
+  return @() res.__update({
+    watch = [stateFlags, isActiveWithPieMenu]
+    size
+    hplace = ALIGN_CENTER
+    behavior = Behaviors.Button
+    cameraControl = false
+    opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 1 : 0
+    transitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
+  }, ovr)
+}
+
+function mkAltMoveBg(btns, size, gamepadMouseAimAxisListener) {
+  let { topArrow = null, bottomArrow = null, leftArrow = null, rightArrow = null } = btns
+
+  return @() {
+    watch = [isUnitDelayed, isGamepad]
+    size
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_RIGHT
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#hud_control_air_bg.svg:{size[0]}:{size[1]}:K")
+    children = [
+      topArrow
+      leftArrow
+      rightArrow
+      bottomArrow
+      isGamepad.get() ? gamepadMouseAimAxisListener : null
+    ]
+    animations = dfAnimBottomLeft
+  }
 }
 
 function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(hudAshGrayColor),
@@ -335,29 +411,24 @@ let moveArrowsViewWithMode = mkMoveArrowsView(0,
   }.__update(fontTiny))
 
 let mkMoveArrowsAirView = @() {
+  size = fullSizeAirBase
   valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  children = [
-    mkMoveHorView(false, horSizeAir)
-    {
-      flow = FLOW_VERTICAL
-      halign = ALIGN_CENTER
-      children = [
-        mkMoveVertView(false, verSizeAir)
-        mkMoveVertView(true, verSizeAir)
-      ]
-    }
-    mkMoveHorView(true, horSizeAir)
-  ]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#hud_control_air_bg.svg:{fullSizeAirBase[0]}:{fullSizeAirBase[1]}:K")
 }
 
 let moveArrowsAirView = mkMoveArrowsAirView()
 
 return {
   arrowsVerSize = verSize
+  fullSizeAirBase
 
   mkMoveLeftBtn = mkMoveHorCtor(false)
   mkMoveRightBtn = mkMoveHorCtor(true)
+  mkAirMoveLeftBtn = mkAltMoveHorCtor(true, ALIGN_LEFT)
+  mkAirMoveRightBtn = mkAltMoveHorCtor(false, ALIGN_RIGHT)
+  mkAltMoveVertBtn
+  mkAltMoveBg
   mkMoveVertBtn
   mkMoveVertBtnAnimBg
   mkMoveVertBtnOutline

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 
@@ -27,9 +27,9 @@ function updateDaliyBonusActive() {
   let { start = 0, end = 0 } = dailyBonusRange.get()
   let timeToUpdate = start - time > 0 ? start - time : end - time
   if (timeToUpdate <= 0)
-    clearTimer(updateDaliyBonusActive)
+    clearExtTimer(updateDaliyBonusActive)
   else
-    resetTimeout(timeToUpdate, updateDaliyBonusActive)
+    resetExtTimeout(timeToUpdate, updateDaliyBonusActive)
 }
 
 dailyBonusRange.subscribe(@(_) updateDaliyBonusActive())

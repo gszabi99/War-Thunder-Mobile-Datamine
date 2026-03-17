@@ -13,6 +13,7 @@
   "helicopterGroup": 2,
   "reloadTime": 8.0,
   "allowHumanReload": true,
+  "bulletsCartridge": 6,
   "mesh": "nebelwerfer_42_rocket",
   "tags": {
     "antiTankRocket": true,

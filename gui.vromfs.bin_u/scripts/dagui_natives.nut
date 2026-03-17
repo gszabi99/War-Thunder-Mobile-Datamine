@@ -8,7 +8,6 @@ return freeze({
   is_online_available = r["is_online_available"]
   toggle_freecam = r?["toggle_freecam"]
   is_freecam_enabled = r["is_freecam_enabled"]
-  send_error_log = r["send_error_log"]
   disable_network = r["disable_network"]
   get_mission_progress = r["get_mission_progress"]
   set_hue = r["set_hue"]

@@ -2829,7 +2829,7 @@
       "camo_rotation": 0.0
     },
     "forest": {
-      "skin_condition": -50.0,
+      "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0,
       "decal0Line0": [

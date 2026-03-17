@@ -12,7 +12,14 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "tank_new_players_battle_coop"
-      isFit = @(s, mRank, abTests) (mRank <= 2 || abTests?.newbieExitByMRank == "false")
+      isFit = @(s, mRank, abTests) abTests?.tankCoopHalfBots != "true"
+        && (mRank <= 2 || abTests?.newbieExitByMRank == "false")
+        && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
+    }
+    {
+      gmName = "tank_new_players_battle_coop_half_bots"
+      isFit = @(s, mRank, abTests) abTests?.tankCoopHalfBots == "true"
+        && (mRank <= 2 || abTests?.newbieExitByMRank == "false")
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
   ]

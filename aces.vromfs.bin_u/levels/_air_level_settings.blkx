@@ -5,6 +5,7 @@
   "volumeCloudsActive": true,
   "z_far": 50000.0,
   "addLandToSky": false,
+  "riMinSizeForReflections": 1000.0,
   "clipmap": {
     "texelSize": 0.125,
     "lastClipSize": 512

@@ -110,11 +110,6 @@ function onGestureBegin(evt) {
 }
 
 function onGestureActive(evt) {
-  if (pointerState.active) {
-    pointerState.active = false
-    onZoneSelectionEnd()
-  }
-
   if (evt.type == GESTURE_DETECTOR_DRAG) {
     if (optMoveCameraByDrag.get()) {
       cameraAddOffset(Point2(evt.dx, evt.dy))
@@ -132,13 +127,6 @@ function onGestureActive(evt) {
 }
 
 function onGestureEnd(evt) {
-  if (evt.type == GESTURE_DETECTOR_DRAG) {
-    if (!optMoveCameraByDrag.get()) {
-      onZoneSelectionMove(evt.x0, evt.y0, evt.x, evt.y)
-      onZoneSelectionEnd()
-    }
-  }
-
   if (evt.type == GESTURE_DETECTOR_PINCH) {
     let finalZoom = clamp(cameraState.zoom / evt.scale, zoomMin, zoomMax)
     cameraSetZoom(finalZoom, zoomAnimateTime)

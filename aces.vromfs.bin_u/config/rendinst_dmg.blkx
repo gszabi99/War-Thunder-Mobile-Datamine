@@ -5270,11 +5270,6 @@
       "material": "metal"
     },
     {
-      "name": "searchlight_tower_a",
-      "immortal": true,
-      "material": "metal"
-    },
-    {
       "name": "watch_tower_a",
       "immortal": true,
       "material": "metal"
@@ -20597,6 +20592,13 @@
       "impulseThreshold": 20.0,
       "fx": "ad_dust_stucco",
       "material": "wood"
+    },
+    "searchlight_tower_a": {
+      "nextRes": "searchlight_tower_a_dmg",
+      "physRes": "searchlight_tower_a_destr_phobj",
+      "hp": 100.0,
+      "impulseThreshold": 3.0,
+      "fx": "ad_dust_bollard"
     },
     "tool_brezent_a": {
       "nextRes": "tools_brezent_a_dmg",

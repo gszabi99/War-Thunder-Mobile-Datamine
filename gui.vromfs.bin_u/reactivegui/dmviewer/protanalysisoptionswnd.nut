@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_subscribe
 from "wt.behaviors" import HangarCameraControl
+from "%darg/helpers/bitmap.nut" import mkBitmapPicture
 from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%sqstd/underscore.nut" import arrayByRows
 import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
@@ -16,7 +17,7 @@ from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/textInput.nut" import textInput
 from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
-from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, defButtonMinWidth, defButtonBorderWidth
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
 from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/components/slider.nut" import sliderWithButtons, sliderH
@@ -29,9 +30,13 @@ from "%rGui/dmViewer/protectionAnalysisState.nut" import isProtectionAnalysisAct
   isProtectionMapUpdating, protectionMapUpdProgress, FIRE_DISTANCE_MAX
 from "%rGui/dmViewer/protAnalysisOptionsComps.nut" import curOpenedSelector, mkSelectorCountry,
   mkSelectorMRank, mkSelectorUnit, mkSelectorBullet, mkUnitPlate
+from "%rGui/style/gradients.nut" import mkGradientCtorTripleSideX, gradTexSize
+
 
 const leftPanelW = hdpx(580)
 const rightPanelW = hdpx(520)
+let penetrationIconSize = [hdpxi(60), hdpxi(40)]
+let penetrationGradientHor = mkBitmapPicture(4, gradTexSize, mkGradientCtorTripleSideX(0xFF29EA3C, 0xFFF8C100, 0xFFFF3333))
 
 let close = @() inspectedUnit.set(null)
 
@@ -184,7 +189,8 @@ let fireDistanceSlider = sliderWithButtons(
   }
 )
 
-let protMapBtn = textButtonCommon(utf8ToUpper(loc("mainmenu/protectionMap")), @() protectionMapUpdate())
+let protMapBtn = textButtonCommon(utf8ToUpper(loc("mainmenu/protectionMap")), @() protectionMapUpdate(),
+  { useFlexText = true })
 let protMapWaiting = {
   size = calc_comp_size(protMapBtn)
   valign = ALIGN_CENTER
@@ -297,6 +303,49 @@ let similationBtn = {
     openSimulation, { hotkeys = ["^J:X | Enter"] })
 }
 
+let mkPenetrationIcon = @(img, ovr = {}) {
+  size = FLEX_H
+  halign = ALIGN_CENTER
+  children = {
+    size = penetrationIconSize
+    rendObj = ROBJ_IMAGE
+    keepAspect = true
+    image = Picture($"ui/gameuiskin#{img}:{penetrationIconSize[0]}:{penetrationIconSize[1]}:P")
+  }
+}.__update(ovr)
+
+let penetrationColorScale = {
+  size = [defButtonMinWidth, SIZE_TO_CONTENT]
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_CENTER
+  margin = saBordersRv
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  children = [
+    {
+      size = FLEX_H
+      flow = FLOW_HORIZONTAL
+      children = [
+        mkPenetrationIcon("icon_protection_penetration.svg", { halign = ALIGN_LEFT })
+        mkPenetrationIcon("icon_protection_ricochet.svg")
+        mkPenetrationIcon("icon_protection_non_penetration.svg", { halign = ALIGN_RIGHT })
+      ]
+    }
+    {
+      size = [flex(), hdpx(30)]
+      rendObj = ROBJ_BOX
+      borderColor = 0xFF000000
+      borderWidth = defButtonBorderWidth
+      padding = defButtonBorderWidth
+      children = {
+        size = flex()
+        rendObj = ROBJ_IMAGE
+        image = penetrationGradientHor
+      }
+    }
+  ]
+}
+
 let mkScene = @() {
   key = {}
   size = flex()
@@ -321,6 +370,7 @@ let mkScene = @() {
         }
       ]
     }
+    penetrationColorScale
   ]
 }
 

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logE = log_with_prefix("[GM_EVENT] ")
 let { eventbus_send } = require("eventbus")
+let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
@@ -30,6 +31,7 @@ let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+let { setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
 
 
 let headerGap = hdpx(30)
@@ -47,7 +49,12 @@ let curEventAccessStat = Computed(@() openedGmEventId.get() == null ? ""
 let curEventAccessStatValue = Computed(@() curEventAccessStat.get() == "" ? STAT_NO_NEED
   : userstatStats.get()?.stats["global"][statMode][curEventAccessStat.get()])
 let isAcceessStatInProgress = Computed(@() !!statsInProgress.get()?[curEventAccessStat.get()])
-let curGmEventBg = keepref(Computed(@() gmEventPresentation(openedGmEventId.get()).bgImage))
+let bgUnits = Computed(@() gmEventPresentation(openedGmEventId.get()).bgUnits)
+let curGmEventBg = keepref(Computed(@() bgUnits.get() != null ? ""
+  : gmEventPresentation(openedGmEventId.get()).bgImage))
+
+let unitsToSetInHangar = keepref(Computed(@() isWndAttached.get() ? bgUnits.get() : null))
+unitsToSetInHangar.subscribe(@(v) v == null ? null : setHangarUnitGroup(v, true))
 
 function setAccessStat(value, context = {}) {
   if (isAcceessStatInProgress.get())
@@ -266,10 +273,14 @@ let footer = @() {
 
 let wndKey = {}
 let gmEventWnd = @() {
-  watch = openedGmEventId
+  watch = [openedGmEventId, bgUnits]
   key = wndKey
   size = flex()
   padding = saBordersRv
+
+  behavior = bgUnits.get() == null ? null : HangarCameraControl
+  touchMarginPriority = TOUCH_BACKGROUND
+
   flow = FLOW_VERTICAL
   gap = headerGap
   children = [

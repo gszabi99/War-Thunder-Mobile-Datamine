@@ -37,6 +37,7 @@ let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
 let { shouldShowRadar, shouldShowAirTacticalMap } = require("%rGui/hudTuning/hudTuningState.nut")
 let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 
 let returnToShipShortcutIds = {
@@ -105,7 +106,7 @@ return cfgHudCommon.__merge({
     defTransform = mkLBPos([hdpx(0), hdpx(-445)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
-    isVisibleInBattle = notGtRace
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get() && notGtRace.get())
   }
 
 
@@ -230,6 +231,7 @@ return cfgHudCommon.__merge({
     ctor = mkViewBackButton
     defTransform = mkLTPos([hdpx(0), hdpx(130)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_look_back.svg")
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -237,6 +239,7 @@ return cfgHudCommon.__merge({
     ctor = mkFreeCameraButton
     defTransform = mkLTPos([hdpx(0), hdpx(255)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     priority = Z_ORDER.BUTTON
   }
 

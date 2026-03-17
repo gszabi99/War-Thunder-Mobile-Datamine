@@ -1,6 +1,6 @@
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let serverConfigs = hardPersistWatched("pserver.config", {})
+let serverConfigs = hardPersistWatched("pserver.config", {}, true)
 
 function updateAllConfigs(newValue) {
   let configs = newValue?.configs

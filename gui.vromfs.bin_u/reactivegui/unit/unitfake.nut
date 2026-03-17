@@ -16,7 +16,6 @@ return freeze({
   itemsPerUse = 0
   levelPreset = ""
   levelUpDiscount = 1.0
-  levels = []
   modPreset = ""
   platoonUnits = []
   rewardExpMul = 1.0

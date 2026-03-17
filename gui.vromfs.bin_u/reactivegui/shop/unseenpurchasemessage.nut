@@ -130,7 +130,7 @@ function defaultInfoText(id, paramInt) {
   return doesLocTextExist(locId) ? loc(locId, { count = paramInt }) : ""
 }
 
-function fillStackRawGoods(stackRaw, goods, source, campList, allUnits, conversionList, serverCfg, lboxes, countProp) {
+function fillStackRawGoods(stackRaw, goods, source, campList, allUnits, conversionList, lboxes, countProp) {
   foreach (data in goods) {
     let { id, gType, count, subId = ""} = data
     if ((gType == G_UNIT || gType == G_UNIT_UPGRADE) && !campList.contains(allUnits?[id].campaign))
@@ -144,7 +144,7 @@ function fillStackRawGoods(stackRaw, goods, source, campList, allUnits, conversi
       continue
     }
 
-    if (!isUnseenGoodsVisible(data, source, serverCfg, lboxes))
+    if (!isUnseenGoodsVisible(data, source, lboxes))
       continue
 
     if (gType not in stackRaw)
@@ -168,9 +168,9 @@ let stackData = Computed(function() {
     foreach(c in purch?.conversions ?? [])
       conversionList.append(c.to, c.from)
     fillStackRawGoods(stackRaw, purch.goods, purch.source, campaignsList.get(),
-      allUnits, conversionList, serverCfg, lboxes, "count")
+      allUnits, conversionList, lboxes, "count")
     fillStackRawGoods(stackRaw, purch.lostGoods, purch.source, campaignsList.get(),
-      allUnits, conversionList, serverCfg, lboxes, "lostCount")
+      allUnits, conversionList, lboxes, "lostCount")
   }
   if (stackRaw?.unit != null && stackRaw?.unitUpgrade != null)
     stackRaw.unit = stackRaw.unit.filter(@(_, unitName) stackRaw.unitUpgrade?[unitName] == null)

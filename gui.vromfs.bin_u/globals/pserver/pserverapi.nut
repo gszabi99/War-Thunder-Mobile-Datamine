@@ -288,6 +288,7 @@ return {
   get_cur_time = @(cb = null) request({ method = "get_cur_time" }, cb)
   debug_reset_unit_rent = @(cb = null) request({ method = "debug_reset_unit_rent" }, cb)
   get_gdpr_report = @(cb = null) request({ method = "get_gdpr_report_client" }, cb)
+  reset_ab_tests = @(cb = null) request({ method = "reset_ab_tests" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -999,5 +1000,15 @@ return {
     params = { campaign, itemConversions }
     progressId = PROGRESS_ITEM_CONVERSION
     progressValue = ""
+  }, cb)
+
+  userstat_start_personal_season = @(seasonId, index, cb = null) request({
+    method = "userstat_start_personal_season"
+    params = { seasonId, index }
+  }, cb)
+
+  toggle_ab_test = @(id, cb = null) request({
+    method = "toggle_ab_test"
+    params = { id }
   }, cb)
 }

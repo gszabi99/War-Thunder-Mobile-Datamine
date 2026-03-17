@@ -9,6 +9,10 @@ from "iostream" import blob
 
 
 
+let {
+  this_subscriber_call_may_take_up_to_usec = @(_) null,
+  get_slow_subscriber_threshold_usec = @() 10000,
+} = require("frp")
 
 let serialazableClasses = {}.__update(math)
 
@@ -194,7 +198,13 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
   }
   persistOnHardReloadData[key] <- val
   let res = Watched(val)
-  res.subscribe(@(v) persistOnHardReloadData[key] <- v)
+  if (!big_immutable_data)
+    res.subscribe(@(v) persistOnHardReloadData[key] <- v)
+  else
+    res.subscribe(function(v) {
+      this_subscriber_call_may_take_up_to_usec(10 * get_slow_subscriber_threshold_usec())
+      persistOnHardReloadData[key] <- v
+    })
   return res
 }
 

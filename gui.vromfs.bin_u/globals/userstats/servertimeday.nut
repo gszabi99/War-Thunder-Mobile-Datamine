@@ -1,7 +1,8 @@
 let { Watched, Computed } = require("frp")
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { serverTime, gameStartServerTimeMsec } = require("serverTime.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 let DAY = 24 * 3600
@@ -14,7 +15,7 @@ let dayOffset = Computed(@() serverConfigs.get()?.circuit.daySwitchOffset ?? 0)
 function updateDay() {
   serverTimeDay.set(getDay(serverTime.get(), dayOffset.get()))
   let nextTime = untilNextDaySec(serverTime.get(), dayOffset.get())
-  resetTimeout(nextTime, updateDay)
+  resetExtTimeout(nextTime, updateDay)
 }
 updateDay()
 gameStartServerTimeMsec.subscribe(@(_) deferOnce(updateDay))

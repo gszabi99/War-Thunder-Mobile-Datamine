@@ -23,6 +23,7 @@ let countryPriority = {
 }
 
 let nodes = Computed(@() campConfigs.get()?.unitTreeNodes ?? {})
+let needDebugNodes = mkWatched(persist, "needDebugNodes", false)
 
 let visibleNodes = Computed(@()
   needToShowHiddenUnitsDebug.get() ? nodes.get()
@@ -158,18 +159,38 @@ function remapNodesPositions(nodeList) {
   }
 }
 
-function remapLegacyNodesPositions(nodeList, serverConfigsV) {
+function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
   let { allUnits = {} } = serverConfigsV
   let nodesMap = [] 
+  let rankXRanges = {}
   let yHas = []
   foreach (node in nodeList) {
-    let { y, name } = node
+    let { y, x, name, reqUnits } = node
     if (yHas.len() <= y)
       yHas.resize(y + 1, 0)
     yHas[y] = 1
     let { mRank = 1 } = allUnits?[name]
-    getArraySubArray(getArraySubArray(nodesMap, mRank - 1), y)
-      .append(node)
+    let row = getArraySubArray(getArraySubArray(nodesMap, mRank - 1), y)
+    if (row.len() == 0 && reqUnits.len() > 0) {
+      local hasPrev = false
+      local hasPrevSameY = false
+      foreach (u in reqUnits)
+        if ((allUnits?[u].mRank ?? 1) == mRank && (nodeList?[u].x ?? 1) < x) {
+          hasPrev = true
+          hasPrevSameY = hasPrevSameY || (nodeList?[u].y ?? 1) == y
+        }
+      if (hasPrev && !hasPrevSameY)
+        row.append({ name = "", x = x - 1, y }) 
+    }
+    row.append(node)
+
+    let range = getSubArray(rankXRanges, mRank)
+    if (range.len() == 0)
+      range.resize(2, x)
+    else {
+      range[0] = min(range[0], x)
+      range[1] = max(range[1], x)
+    }
   }
 
   let offsetsX = []
@@ -186,11 +207,18 @@ function remapLegacyNodesPositions(nodeList, serverConfigsV) {
   let resNodes = {}
   foreach (r, rankRows in nodesMap)
     foreach (list in rankRows) {
-      let x = (offsetsX?[r - 1] ?? 0) + 1 
+      let rankX = (offsetsX?[r - 1] ?? 0) + 1 
+      let rankXNext = max((offsetsX?[r] ?? 0) + 1, rankX + list.len())
+      let range = getSubArray(rankXRanges, r + 1) 
       list.sort(@(a, b) a.x <=> b.x)
       foreach (i, node in list) {
-        let { name, y } = node
-        resNodes[name] <- node.__merge({ x = x + i, y = yRemap[y] })
+        let { name, y, x } = node
+        if (name == "")
+          continue
+        local nextX = rankX + i
+        if (range.len() != 0)
+          nextX = clamp(rankX + x - range[0], nextX, rankXNext - list.len() + i)
+        resNodes[name] <- node.__merge({ x = nextX, y = yRemap[y] })
       }
     }
 
@@ -203,7 +231,8 @@ function remapLegacyNodesPositions(nodeList, serverConfigsV) {
 
 let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
   let nodeList = allNodes.get().filter(@(n) n.country == curCountry.get())
-  let res = curCountry.get() == "legacy" ? remapLegacyNodesPositions(nodeList, campConfigs.get())
+  let res = !needDebugNodes.get() || curCountry.get() == "legacy"
+    ? remapNodesPositionsShiftX(nodeList, campConfigs.get())
     : remapNodesPositions(nodeList)
   return prevIfEqual(prev, res)
 })
@@ -344,6 +373,11 @@ register_command(function() {
   get_local_custom_settings_blk().removeBlock(SEEN_RESEARCHED_UNITS)
   eventbus_send("saveProfile", {})
 }, "debug.reset_seen_researched_units")
+
+register_command(function() {
+  needDebugNodes.set(!needDebugNodes.get())
+  console_print(needDebugNodes.get() ? "Show original positions" : "Show positions with offset") 
+}, "debug.tree_original_positions")
 
 return {
   visibleNodes

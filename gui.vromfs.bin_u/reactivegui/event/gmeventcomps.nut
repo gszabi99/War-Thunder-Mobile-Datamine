@@ -6,6 +6,7 @@ let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { SGT_UNIT } = require("%rGui/shop/shopConst.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let icons = {
@@ -61,7 +62,7 @@ function mkGmGoods(goods, mkOnClick, state, animParams) {
   let bgParticles = mkBgParticles(goodsBgSize)
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let canPurchase = mkCanPurchase(id, limit, dailyLimit).get()
-  let isUnit = goods.gtype == SGT_UNIT
+  let isUnit = getGoodsType(goods) == SGT_UNIT
   let onClick = mkOnClick(canPurchase, isUnit, unit)
   return mkGoodsWrap(
     goods,

@@ -131,6 +131,9 @@ isReadyForConsent.subscribe(function(isReady) {
     }
     return
   }
+
+  
+  this_subscriber_call_may_take_up_to_usec(3 * get_slow_subscriber_threshold_usec())
   if (isReady)
     loadPoints()
   else

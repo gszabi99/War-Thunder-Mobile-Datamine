@@ -176,13 +176,13 @@ function mkAdsBtn(unlock) {
             : {
                 size = !hasVip.get() ? [iconSize, iconSize] : [vipIconW, vipIconH]
                 rendObj = ROBJ_IMAGE
-                keepAspect = KEEP_ASPECT_FILL
+                keepAspect = true
                 image = !hasVip.get()
                   ? Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
-                  : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
+                  : Picture($"ui/gameuiskin#gamercard_subs_vip.avif:{vipIconW}:{vipIconH}:P")
               }
           {
-            maxWidth = hasAdBudget.get() ? (btnSize[0] - iconSize - btnGap) : btnSize[0]
+            maxWidth = hasAdBudget.get() ? (btnSize[0] - iconSize - btnGap * 2) : btnSize[0]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER

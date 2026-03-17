@@ -450,7 +450,7 @@
     "thicknessMapResolution": 32,
     "thicknessMapMinVoxelSize": 0.1,
     "thicknessMapRelLimits": [
-      0.7,
+      0.35,
       6.0
     ],
     "thicknessMapMinObstacleSize": 0.02,
@@ -3806,6 +3806,36 @@
       "modRequired": false
     },
     "wheel_r_drive_dm": {
+      "speed": 1.7,
+      "completely": true,
+      "modRequired": false
+    },
+    "suspension_l_01_dm": {
+      "speed": 1.7,
+      "completely": true,
+      "modRequired": false
+    },
+    "suspension_l_02_dm": {
+      "speed": 1.7,
+      "completely": true,
+      "modRequired": false
+    },
+    "suspension_l_03_dm": {
+      "speed": 1.7,
+      "completely": true,
+      "modRequired": false
+    },
+    "suspension_r_01_dm": {
+      "speed": 1.7,
+      "completely": true,
+      "modRequired": false
+    },
+    "suspension_r_02_dm": {
+      "speed": 1.7,
+      "completely": true,
+      "modRequired": false
+    },
+    "suspension_r_03_dm": {
       "speed": 1.7,
       "completely": true,
       "modRequired": false

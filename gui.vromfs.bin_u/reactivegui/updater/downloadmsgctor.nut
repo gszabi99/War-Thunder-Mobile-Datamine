@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "eventbus" import eventbus_send
 from "%appGlobals/pServer/bqClient.nut" import sendLoadingAddonsBqEvent
 from "%appGlobals/updater/addons.nut" import mbToString, toMB
 from "%rGui/notifications/foreignMsgBox.nut" import getFMsgButtons, registerFMsgCreator
@@ -44,3 +46,12 @@ registerFMsgCreator("downloadMsg",
       buttons = getFMsgButtons(msg)
     })
   })
+
+register_command(
+  function(addonsStr) {
+    let addons = addonsStr.replace(" ", ";")
+      .split(";")
+      .filter(@(v) v != "")
+    eventbus_send("fMsgBox.open", { viewType = "downloadMsg", addons, text = "Addons {0}\n\n{size}".subst(", ".join(addons)) })
+  },
+  "debug.downloadAddonsMsg")

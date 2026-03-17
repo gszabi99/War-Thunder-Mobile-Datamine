@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send, send } = require("eventbus")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 let { debugModes } = require("%rGui/gameModes/gameModeState.nut")
 let { curCampaign, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
@@ -8,7 +9,6 @@ let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { set_unit_to_slot } = require("%appGlobals/pServer/pServerApi.nut")
 let { rnd } = require("dagor.random")
 let { graphicOptions } = require("%rGui/options/options/graphicOptions.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { isInQueue } = require("%appGlobals/queueState.nut")
 
 function getIndexOrRandom(msg, size) {
@@ -34,7 +34,7 @@ function queueToRandomDebugGameMode(msg) {
   let mode = modes[index]
   log($"autotests: queueToRandomDebugGameMode: {mode?.name ?? mode?.gameModeId ?? "<unknown>"}")
   eventbus_send("queueToGameMode", { modeId = mode?.gameModeId })
-  resetTimeout(30, leaveQueueOnTimeout)
+  resetExtTimeout(30, leaveQueueOnTimeout)
 }
 eventbus_subscribe("queueToRandomDebugGameMode", queueToRandomDebugGameMode)
 

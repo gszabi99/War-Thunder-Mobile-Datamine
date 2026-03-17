@@ -18,6 +18,13 @@ let radarHudCtor = @(scale) {
   hasTxtBlock = true
 }
 
+let radarHudWithOverlayCtor = @(scale) {
+  size = scaleArr(radarSize, scale)
+  rendObj = ROBJ_BOX
+  fillColor = 0x40000000
+  children = radarHudCtor(scale)
+}
+
 let radarHudEditView = {
   size = radarSize
   flow = FLOW_VERTICAL
@@ -54,5 +61,6 @@ let radarHudEditView = {
 
 return {
   radarHudCtor
+  radarHudWithOverlayCtor
   radarHudEditView
 }

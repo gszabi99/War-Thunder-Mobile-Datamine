@@ -45,6 +45,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "minRelativeTankCameraThreshold": 1.15,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "controlDevices": {
@@ -2037,14 +2038,14 @@
         "wheel_r_04": 0.4
       },
       "wheelsDamageWeight": {
-        "wheel_l_01": 0.05,
-        "wheel_r_01": 0.05,
-        "wheel_l_02": 0.05,
-        "wheel_r_02": 0.05,
-        "wheel_l_03": 0.05,
-        "wheel_r_03": 0.05,
-        "wheel_l_04": 0.05,
-        "wheel_r_04": 0.05,
+        "wheel_l_01": 0.12,
+        "wheel_r_01": 0.12,
+        "wheel_l_02": 0.12,
+        "wheel_r_02": 0.12,
+        "wheel_l_03": 0.12,
+        "wheel_r_03": 0.12,
+        "wheel_l_04": 0.12,
+        "wheel_r_04": 0.12,
         "wheel_r_drive": 0.25,
         "wheel_l_drive": 0.25
       },

@@ -211,7 +211,7 @@
           {
             "ranks": [
               0,
-              7
+              5
             ],
             "initiator": [
               2900.0,
@@ -248,8 +248,8 @@
           },
           {
             "ranks": [
-              8,
-              13
+              6,
+              9
             ],
             "initiator": [
               3300.0,
@@ -286,7 +286,7 @@
           },
           {
             "ranks": [
-              14,
+              10,
               50
             ],
             "initiator": [
@@ -2849,6 +2849,8 @@
     "horsePowersToInfraRedBrightness": 0.42,
     "thrustKgsToInfraRedBrightness": 1.0,
     "afterburnerThrustKgsToInfraRedBrightness": 4.5,
+    "skipUpdateOnSleep": false,
+    "sleepDelay": 1.0,
     "analytics": {
       "precisionDisplay": {
         "speedSearchStep": 0.2,

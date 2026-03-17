@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
-let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
@@ -19,6 +19,7 @@ let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { G_PREMIUM, G_ITEM } = require("%appGlobals/rewardType.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("%rGui/shop/schRewardsState.nut")
@@ -73,7 +74,7 @@ let sortGoods = @(a, b)
   || b.meta?.order <=> a.meta?.order
   || b.slotsPreset <=> a.slotsPreset
   || sortByCurrencyId(a.price.currencyId, b.price.currencyId)
-  || a.gtype <=> b.gtype
+  || getGoodsType(a) <=> getGoodsType(b)
   || sortGoodsByReward(a.rewards?[0], b.rewards?[0])
   || a.price.price <=> b.price.price
   || a.id <=> b.id
@@ -178,9 +179,9 @@ function updateGoodsTimers() {
 nextUpdateTime.subscribe(function(v) {
   let { time } = v
   if (time == 0)
-    clearTimer(updateGoodsTimers)
+    clearExtTimer(updateGoodsTimers)
   else
-    resetTimeout(max(0.5, time - serverTime.get()), updateGoodsTimers)
+    resetExtTimeout(max(0.5, time - serverTime.get()), updateGoodsTimers)
 })
 
 updateGoodsTimers()
@@ -192,12 +193,10 @@ let allowWithSubs = @(goods) null == goods.rewards.findvalue(@(r) r.gType == G_P
 
 let shopGoodsInternal = Computed(@()(campConfigs.get()?.allGoods ?? {})
   .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
-    && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0)))
-  .map(@(g) g.__merge({ gtype = getGoodsType(g) })))
+    && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0))))
 
 let allCampaignsShopGoods = Computed(function() {
-  let res = shopGoodsInternal.get()
-    .__merge(platformGoods.get().map(@(g) g.__merge({ gtype = getGoodsType(g) })))
+  let res = shopGoodsInternal.get().__merge(platformGoods.get())
   return !allow_subscriptions.get() ? res : res.filter(allowWithSubs)
 })
 
@@ -221,7 +220,7 @@ let goodsByCategory = Computed(function() {
   foreach (goods in shopGoods.get()) {
     if (goods.isHidden) 
       continue
-    let cat = getShopCategory(goods.gtype)
+    let cat = getShopCategory(getGoodsType(goods))
     if (cat not in res)
       res[cat] <- []
     res[cat].append(goods)
@@ -236,7 +235,7 @@ let soonGoodsByShop = Computed(function() {
     if (id in soon) {
       let sId = getGoodsShopId(goods)
       if (sId in res)
-        getSubArray(res[sId], getShopCategory(goods.gtype)).append(goods)
+        getSubArray(res[sId], getShopCategory(getGoodsType(goods))).append(goods)
     }
   return res
 })
@@ -336,13 +335,16 @@ lastAppliedSchReward.subscribe(function(v) {
   let unmarkSeen = [rewardId]
   let unmarkCounters = {}
 
-  let { gtype = null, needAdvert = false } = schRewards.get()?[rewardId]
-  if (gtype != null && !needAdvert)
+  let reward = schRewards.get()?[rewardId]
+  let { needAdvert = false } = reward
+  if (reward != null && !needAdvert) {
+    let gtype = getGoodsType(reward)
     foreach(id, rew in schRewards.get())
-      if (rew.gtype == gtype && id != rewardId && rew.needAdvert) {
+      if (getGoodsType(rew) == gtype && id != rewardId && rew.needAdvert) {
         unmarkSeen.append(id)
         unmarkCounters[id] <- 1
       }
+  }
 
   unmarkSeenGoods(unmarkSeen, unmarkCounters)
 })
@@ -484,7 +486,7 @@ function openShopWnd(catId = null, bqPurchaseInfo = null, sId = "common") {
 }
 
 function openShopWndByGoods(goods) {
-  openShopWnd(getShopCategory(goods.gtype), null, getGoodsShopId(goods))
+  openShopWnd(getShopCategory(getGoodsType(goods)), null, getGoodsShopId(goods))
   deferOnce(@() anim_start($"attract_goods_{goods.id}"))
 }
 

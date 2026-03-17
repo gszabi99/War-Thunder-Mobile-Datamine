@@ -64,13 +64,12 @@ function resetAnim() {
 let unitsForExpAnim = mkWatched(persist, "unitsForExpAnim", {})
 
 function loadStatusesAnimUnits(){
-  let list = {}.__merge(unitsResearchStatus.get(), blueprintUnitsStatus.get())
   let res = {}
-  foreach(unitName, unit in list){
-    res[unitName] <- {
-      expStart = unit.exp
-    }
-  }
+
+  foreach (list in [unitsResearchStatus.get(), blueprintUnitsStatus.get()])
+    foreach(unitName, data in list)
+      res[unitName] <- { expStart = data.exp }
+
   unitsForExpAnim.set(res)
 }
 

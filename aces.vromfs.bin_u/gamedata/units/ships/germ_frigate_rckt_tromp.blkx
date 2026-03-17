@@ -32,7 +32,7 @@
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
   "addTorpedoesCountPack": 3,
-  "asmCaptureDuration": 5.0,
+  "asmCaptureDuration": 4.0,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,

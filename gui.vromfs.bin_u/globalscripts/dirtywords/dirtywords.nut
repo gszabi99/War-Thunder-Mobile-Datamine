@@ -20,12 +20,13 @@ from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clea
 
 
 local debugLogFunc = null
-local needDebugLogJustPatterns = true
+local verboseLogging = true
 
 let dict = {
   excludesdata    = null
   excludescore    = null
   foulcore        = null
+  foulcore_names  = null
   fouldata        = null
   badphrases      = null
   forbiddennames  = null
@@ -84,6 +85,8 @@ function init(myLocation, myLanguage, langSources) {
           v = clone vSrc
           if ("value" in v)
             v.value = mkRegexp(v.value)
+          if ("except" in v)
+            v.except = mkRegexp(v.except)
           if ("arr" in v)
             v.arr = v.arr.map(@(av) mkRegexp(av))
          }
@@ -275,11 +278,11 @@ function prepareWord(word) {
   return word
 }
 
-function checkRegexps(word, regexps, accuse) {
+function checkRegexps(word, regexps, accuse, isSimilarChars = false) {
   foreach (reg in regexps)
-    if ((reg?.value ?? reg).match(word)) {
+    if (!(isSimilarChars && reg?.skipSC) && (reg?.value ?? reg).match(word) && !reg?.except.match(word)) {
       let patternStr = (reg?.value ?? reg).pattern()
-      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+      debugLogFunc?(!verboseLogging ? $"p {patternStr}"
         : $"DirtyWordsFilter: Word \"{word}\" matched pattern \"{patternStr}\"")
       return !accuse
     }
@@ -287,14 +290,14 @@ function checkRegexps(word, regexps, accuse) {
 }
 
 
-function checkWordInternal(word, isName) {
+function checkWordInternal(word, isName, isSimilarChars) {
   word = prepareWord(word)
 
   local status = true
   let fl = utf8(word).slice(0, 1)
 
   if (status)
-    status = checkRegexps(word, dict.foulcore, true)
+    status = checkRegexps(word, isName ? dict.foulcore_names : dict.foulcore, true, isSimilarChars)
 
   if (status)
     foreach (section in dict.fouldata)
@@ -322,7 +325,7 @@ function checkWordInternal(word, isName) {
 }
 
 function checkWord(word, isName) {
-  let isPassed = checkWordInternal(word, isName)
+  let isPassed = checkWordInternal(word, isName, false)
   if (!isPassed || !isName)
     return isPassed
 
@@ -335,7 +338,7 @@ function checkWord(word, isName) {
     let tryName = "".join(nameChars.map(@(ch) alphabet?[ch] ?? ch))
     if (checkedNames.contains(tryName))
       continue
-    if (!checkWordInternal(tryName, isName))
+    if (!checkWordInternal(tryName, isName, true))
       return false
     checkedNames.append(tryName)
   }
@@ -365,7 +368,7 @@ function checkPhraseInternal(text, isName) {
       foreach (segment in segmentsList) {
         if (!phrase.contains(segment))
           continue
-        debugLogFunc?(needDebugLogJustPatterns ? segment
+        debugLogFunc?(!verboseLogging ? $"s {segment}"
           : $"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
         let utfPhrase = utf8(phrase)
@@ -391,7 +394,7 @@ function checkPhraseInternal(text, isName) {
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
       let patternStr = pattern.pattern()
-      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+      debugLogFunc?(!verboseLogging ? $"p {patternStr}"
         : $"DirtyWordsFilter: Phrase matched pattern \"{patternStr}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
@@ -416,7 +419,7 @@ let isPhrasePassing = @(text) checkPhrase(text) == text
 
 let checkName = function(name) {
   if (!isNameNormallyVisible(name)) {
-    debugLogFunc?(needDebugLogJustPatterns ? "Tricks"
+    debugLogFunc?(!verboseLogging ? "t Tricks"
       : $"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
     return getMaskedWord(name)
   }
@@ -434,9 +437,9 @@ let checkName = function(name) {
 let isNamePassing = @(name) name != "" && checkName(name) == name
 
 
-function setDebugLogFunc(funcOrNull, needJustPatterns = false) {
+function setDebugLogFunc(funcOrNull, needVerboseLogging = true) {
   debugLogFunc = funcOrNull
-  needDebugLogJustPatterns = needJustPatterns
+  verboseLogging = needVerboseLogging
 }
 
 

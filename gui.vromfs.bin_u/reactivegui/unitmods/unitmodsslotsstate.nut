@@ -7,9 +7,10 @@ let { loadUnitWeaponSlots, loadUnitSlotsParams, loadUnitReqModifications
 let { hangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
 } = require("%rGui/unit/unitSettings.nut")
 let { mkUnitAllModsCost, getModCurrency, getModCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
@@ -34,7 +35,7 @@ let curBeltIdx = mkWatched(persist, "curBeltIdx", 0)
 let slotBeltKey = @(idx) $"unit_mods_slot_belt_{idx}"
 let slotWeaponKey = @(idx) $"unit_mods_slot_weapon_{idx}"
 
-let curUnit = Computed(@() campMyUnits.get()?[openedUnitId.get()] || campUnitsCfg.get()?[openedUnitId.get()])
+let curUnit = Computed(@() campMyUnits.get()?[openedUnitId.get()] || serverConfigs.get()?.allUnits[openedUnitId.get()])
 let isOwn = Computed(@() openedUnitId.get() in campMyUnits.get())
 
 let weaponSlots = Computed(@() openedUnitId.get() == null ? [] : loadUnitWeaponSlots(openedUnitId.get()))

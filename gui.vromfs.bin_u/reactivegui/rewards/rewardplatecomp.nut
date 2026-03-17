@@ -39,7 +39,7 @@ let { allShopGoods } = require("%rGui/shop/shopState.nut")
 let { calculateNewGoodsDiscount } = require("%rGui/shop/discounts.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
-let { SGT_UNIT } = require("%rGui/shop/shopCommon.nut")
+let { SGT_UNIT, getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { mkBgImg, mkFitCenterImg, offerPad } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -835,9 +835,9 @@ let mkRewardPlateDiscountImage = @(reward, rStyle, rewardCtors) function() {
     watch = [serverConfigs, allShopGoods, activeOffersByGoods]
     size = flex()
     children = !previewReward ? null
-      : !needShowAsOffer || offer.gtype not in discountOfferCtors
+      : !needShowAsOffer || getGoodsType(offer) not in discountOfferCtors
         ? mkRewardPlateDiscount(previewReward, newDiscount, rewardCtors, rStyle)
-      : discountOfferCtors[offer.gtype](offer, newDiscount, rStyle)
+      : discountOfferCtors[getGoodsType(offer)](offer, newDiscount, rStyle)
   }
 }
 

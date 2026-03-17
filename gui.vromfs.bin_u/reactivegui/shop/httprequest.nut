@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { parse_json } = require("json")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal } = require("auth_wt")
 
 let hasLog = {}
 function logByUrlOnce(url, text) {
@@ -45,7 +45,7 @@ function requestData(url, params, onSuccess, onFailure = null) {
 
 let createGuidsRequestParams = @(guids) "&".join(
   guids.map(@(guid) $"guids[]={guid}")
-    .append($"jwt={getPlayerToken() ?? ""}&special=1"))
+    .append($"jwt={getPlayerTokenGlobal() ?? ""}&special=1"))
 
 return {
   requestData

@@ -26,9 +26,15 @@
     "externalArmor": true,
     "body": {},
     "body_front": {},
+    "body_front_01": {},
+    "body_front_02": {},
+    "body_front_03": {},
     "body_back": {},
     "body_side": {},
     "body_top": {},
+    "body_top_01": {},
+    "body_top_02": {},
+    "body_top_03": {},
     "body_bottom": {},
     "ship_hull": {},
     "body_NN_front": {
@@ -157,15 +163,22 @@
     },
     "at_bulge_NN": {
       "template": "at_bulge_#16#"
-    }
+    },
+    "legs_support": {},
+    "aw_none": {}
   },
   "superstructure": {
     "externalArmor": true,
     "superstructure_front": {},
     "superstructure_back": {},
     "superstructure_side": {},
+    "superstructure_side_01": {},
+    "superstructure_side_02": {},
     "superstructure_top": {},
-    "superstructure_bottom": {}
+    "superstructure_bottom": {},
+    "superstructure_top_01": {},
+    "superstructure_top_02": {},
+    "superstructure_top_03": {}
   },
   "engine": {
     "vital": true,

@@ -14,6 +14,7 @@
   "helicopterGroup": 2,
   "reloadTime": 8.0,
   "allowHumanReload": true,
+  "bulletsCartridge": 60,
   "mesh": "m8_rocket",
   "tags": {
     "antiTankRocket": true,

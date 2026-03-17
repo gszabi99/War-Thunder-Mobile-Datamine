@@ -9,6 +9,7 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 
 
 function purchasePersonalGoods(pGoods, shopGoods) { 
@@ -36,7 +37,7 @@ function purchasePersonalGoods(pGoods, shopGoods) {
     text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(shopGoods).replace(" ", nbsp)) }),
     price = { price = price, currencyId = currencyFullId },
     purchase,
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(shopGoods.gtype), $"pack {pGoods.id}")
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(getGoodsType(shopGoods)), $"pack {pGoods.id}")
   })
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
 }

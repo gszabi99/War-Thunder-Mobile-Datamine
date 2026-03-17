@@ -32,6 +32,7 @@ let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 let { isGuestLogin, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
 let { hasRestorePurchases, restorePurchases, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { subsByCategory } = require("%rGui/shop/shopState.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
@@ -212,20 +213,22 @@ let mkSubsIcon = @(status) @() {
   keepAspect = true
 }
 
-let mkPremAction = @(status) status == "prem_deprecated" || status == "vip"
-  ? null
-  : textButtonPurchase(utf8ToUpper(loc($"subscription/{status == "prem_inactive" ? "activate" : "upgrade"}")),
-    @() openSubsPreview("vip", "account_page"),
-    { hotkeys = [btnAUp], childOvr = fontTinyAccentedShadedBold })
+let mkPremAction = @(status) textButtonPurchase(
+  utf8ToUpper(loc($"subscription/{status == "prem_inactive" ? "activate" : "upgrade"}")),
+  @() openSubsPreview("vip", "account_page"),
+  { hotkeys = [btnAUp], childOvr = fontTinyAccentedShadedBold })
 
 function mkPremiumDescription() {
   let premStatus = Computed(@() !havePremium.get() ? "prem_inactive"
     : !hasPremiumSubs.get() ? "prem_deprecated"
     : hasVip.get() ? "vip"
     : "prem")
+  let hasAction = Computed(@() premStatus.get() != "prem_deprecated"
+    && premStatus.get() != "vip"
+    && null != subsByCategory.get().findvalue(@(v) v.len() > 0))
 
   return @() {
-    watch = [allow_subscriptions, premStatus]
+    watch = [allow_subscriptions, premStatus, hasAction]
     size = FLEX_H
     children = !allow_subscriptions.get() ? null
       : {
@@ -240,7 +243,7 @@ function mkPremiumDescription() {
           children = [
             mkSubsIcon(premStatus.get())
             mkPremDescText(premStatus.get())
-            mkPremAction(premStatus.get())
+            hasAction.get() ? mkPremAction(premStatus.get()) : null
           ]
         }
   }

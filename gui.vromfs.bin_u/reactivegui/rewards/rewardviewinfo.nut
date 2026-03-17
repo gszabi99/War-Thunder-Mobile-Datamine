@@ -267,22 +267,19 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
     let lockedBy = fr?.lockedBy ?? []
     let rewardCfg = serverConfigs.get()?.rewardsCfg[id]
     let content = getRewardsViewInfo(rewardCfg)?[0]
-    if (content?.rType == "lootbox") {
-      let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.get()?.lootboxesCfg[content.id], lockedBy)
-      foreach (r in rewards)
-        fixedRewards.append(r.__merge({ isJackpot = true, parentSource = lootbox?.name ?? "", parentRewardId = id, lockedBy }))
-    }
-    else
-      fixedRewards.append({
-        id
+    if (content != null)
+      fixedRewards.append(content.__update({
+        rewardId = id
         rewardCfg
         isFixed = true
         source = lootbox?.name ?? ""
         chance = 0
-        content
-        dropLimit = NO_DROP_LIMIT
+        dropLimit = 1
+        dropLimitRaw = lootbox?.dropLimit[id] ?? 1
         lockedBy
-      })
+        rewardOrder = lootbox?.rewardsOrder[id] ?? 0
+        parentSource = lootbox?.name ?? ""
+      }))
   }
   return fixedRewards
 }

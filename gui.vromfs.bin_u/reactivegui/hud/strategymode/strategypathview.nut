@@ -22,7 +22,6 @@ let { getNodeStyle, edgeColorDefault, edgeColorPending, edgeButtonColor, airGrou
 
 const iconEdge = "ui/gameuiskin#blink_sharp.svg"
 const iconSelectedUnit = "ui/gameuiskin#crew_gunner_indicator.svg"
-const iconPointPending = "ui/gameuiskin#pin.svg"
 
 local holdedNodeId = -1
 local movingNodeId = Watched(-1)
@@ -448,26 +447,26 @@ function mkNodesUi(data) {
   if (movingNodeId.get() == -1 && (selectedPosIsValid.get() || selectedUnitId.get() != -1)) {
     let pendingDstPos = getSelectionPos2d(selectedPos.get(), selectedUnitId.get())
     let pendingSrcPos = (selectedPosIsValid.get()) ? edgePrevPos : getSelectionPos2d(selectedPos.get(), -1)
-    let pendingIcon = (selectedUnitId.get() != -1) ? iconSelectedUnit : iconPointPending
-    let pendingIconVAlign = (selectedUnitId.get() != -1) ? ALIGN_CENTER : ALIGN_BOTTOM
-    let pendingIconSize = hdpxi(100)
 
     edgesUi.append([VECTOR_COLOR, edgeColorPending])
     edgesUi.append([VECTOR_LINE_DASHED, pendingSrcPos.x, pendingSrcPos.y, pendingDstPos.x, pendingDstPos.y, hdpx(10), hdpx(20)])
 
-    nodesUi.append({
-      size = 0
-      halign = ALIGN_CENTER
-      valign = pendingIconVAlign
-      pos = [pendingDstPos.x, pendingDstPos.y]
-      children = {
-        rendObj = ROBJ_IMAGE
-        size = [pendingIconSize, pendingIconSize]
-        image = Picture($"{pendingIcon}:{pendingIconSize}:{pendingIconSize}:P")
-        color = imageColor
-        keepAspect = KEEP_ASPECT_FIT
-      }
-    })
+    if (selectedUnitId.get() != -1) {
+      let pendingIconSize = hdpxi(100)
+      nodesUi.append({
+        size = 0
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        pos = [pendingDstPos.x, pendingDstPos.y]
+        children = {
+          rendObj = ROBJ_IMAGE
+          size = [pendingIconSize, pendingIconSize]
+          image = Picture($"{iconSelectedUnit}:{pendingIconSize}:{pendingIconSize}:P")
+          color = imageColor
+          keepAspect = KEEP_ASPECT_FIT
+        }
+      })
+    }
   }
 
   nodesUi.insert(0, {

@@ -6,7 +6,7 @@ let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCoun
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getLootboxName, lootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -34,7 +34,7 @@ let lootbox = Computed(@(prev) prevIfEqual(prev,
     previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).id
   ]))
 let lootboxAmount = Computed(@() previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).count)
-let bgImage = keepref(Computed(@() lootboxPreviewBg?[lootbox.get()?.name]))
+let bgImage = keepref(Computed(@() getLootboxPreviewBg(lootbox.get()?.name)))
 
 
 let header = mkPreviewHeader(

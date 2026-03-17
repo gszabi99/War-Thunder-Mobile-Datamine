@@ -59,6 +59,7 @@ let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let battleItemsBtn = require("battleItemsBtn.nut")
 let { blockedCountries } = require("%rGui/unit/unitAccess.nut")
+let { openNPWnd, isNPSeasonActive } = require("%rGui/battlePass/newPlayerBpState.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -207,6 +208,14 @@ let btnPremDailyBonus = @() {
         }, { iconSize = evenPx(84) })
 }
 
+let btnNewPlayerBpWnd = @() {
+  watch = isNPSeasonActive
+  children = isNPSeasonActive.get()
+    ? translucentButton("ui/gameuiskin#icon_newbie_pass.svg", "", openNPWnd)
+    : null
+}
+
+
 let btnHorRow = @(children) {
   flow = FLOW_HORIZONTAL
   gap = translucentButtonsVGap
@@ -264,12 +273,13 @@ let leftTopButtons = {
       @() {
         watch = [newbieOfflineMissions, hasBanner, isPassActive, isEventActive]
         children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null
-          : !hasBanner.get() ? btnHorRow([btnOpenQuests("no_banner"), btnsOpenSpecialEvents])
+          : !hasBanner.get() ? btnHorRow([btnOpenQuests("no_banner"), btnsOpenSpecialEvents, btnNewPlayerBpWnd])
           : btnVerRow([
               bpBanner(isPassActive.get(), isEventActive.get())
               btnHorRow([
                 btnOpenQuests("banner")
                 btnsOpenSpecialEvents
+                btnNewPlayerBpWnd
               ])
             ])
       }

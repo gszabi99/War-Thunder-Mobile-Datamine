@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -11,6 +10,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isLoggedIn, isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { SC_FEATURED, SC_SPECIAL } = require("%rGui/shop/shopConst.nut")
 
 
@@ -65,9 +65,9 @@ function updateRelevance() {
 
   let timeToUpdate = nextTime - time
   if (timeToUpdate <= 0)
-    clearTimer(updateRelevance)
+    clearExtTimer(updateRelevance)
   else
-    resetTimeout(timeToUpdate, updateRelevance)
+    resetExtTimeout(timeToUpdate, updateRelevance)
 }
 pGoodsRelevance.whiteListMutatorClosure(updateRelevance)
 updateRelevance()

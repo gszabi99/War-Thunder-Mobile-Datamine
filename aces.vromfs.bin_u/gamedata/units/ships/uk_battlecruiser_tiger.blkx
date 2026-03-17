@@ -933,7 +933,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1009,7 +1009,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1073,7 +1073,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1155,7 +1155,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1217,7 +1217,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1279,7 +1279,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1341,7 +1341,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -1403,7 +1403,7 @@
           30.0,
           20.0
         ],
-        "shotFreq": 0.067,
+        "shotFreq": 0.063,
         "speedPitch": 50.0,
         "bullets": 170,
         "useGunnerTargetingQuality": true,
@@ -2698,7 +2698,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -2774,7 +2774,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -2838,7 +2838,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -2920,7 +2920,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -2982,7 +2982,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -3044,7 +3044,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -3106,7 +3106,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -3168,7 +3168,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4461,7 +4461,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4537,7 +4537,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4601,7 +4601,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4683,7 +4683,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4745,7 +4745,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4807,7 +4807,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4869,7 +4869,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,
@@ -4931,7 +4931,7 @@
                 30.0,
                 20.0
               ],
-              "shotFreq": 0.067,
+              "shotFreq": 0.063,
               "speedPitch": 50.0,
               "bullets": 170,
               "useGunnerTargetingQuality": true,

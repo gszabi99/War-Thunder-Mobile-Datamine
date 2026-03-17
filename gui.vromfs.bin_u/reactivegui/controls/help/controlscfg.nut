@@ -67,7 +67,7 @@ let shortcutsByUnitTypes = {
     ]
     axes = ["gm_throttle", "gm_steering"]
       .extend(sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["gm_mouse_aim_x", "gm_mouse_aim_y"]))
-  }
+  },
 }
 
 return {

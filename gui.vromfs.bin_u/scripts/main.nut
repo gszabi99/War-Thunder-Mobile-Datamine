@@ -1,8 +1,11 @@
 from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import set_nested_observable_debug, warn_on_deprecated_methods
 from "dagor.system" import DBGLEVEL
+let { set_nested_observable_debug, warn_on_deprecated_methods,
+  this_subscriber_call_may_take_up_to_usec = @(_) null,
+  get_slow_subscriber_threshold_usec = @() 10000
+} = require("frp")
 
 let { get_time_msec, ref_time_ticks } = require("dagor.time")
 let startLoadTime = get_time_msec()
@@ -18,6 +21,7 @@ warn_on_deprecated_methods(DBGLEVEL > 0)
 clear_vm_entity_systems()
 start_es_loading()
 
+require("%appGlobals/frpDebug.nut")
 require("%globalScripts/ui_globals.nut")
 require("%appGlobals/sqevents.nut")
 require("%globalScripts/debugTools/matchingErrorDebug.nut")
@@ -76,6 +80,7 @@ let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 end_es_loading()
 
+
 let isLoadedOnce = keepref(mkWatched(persist, "isLoadedOnce", false))
 if (!isLoadedOnce.get()) {
   isLoadedOnce.set(true)
@@ -122,7 +127,12 @@ log($"DaGui scripts load before login {get_time_msec() - startLoadTime} msec")
 
 if (isReadyToFullLoad.get() || !isLoginRequired.get())
   loadScriptsAfterLoginOnce()
-isReadyToFullLoad.subscribe(@(v) v ? loadScriptsAfterLoginOnce() : null)
+isReadyToFullLoad.subscribe(function(v) {
+  if (!v)
+    return
+  this_subscriber_call_may_take_up_to_usec(100 * get_slow_subscriber_threshold_usec())
+  loadScriptsAfterLoginOnce()
+})
 isLoginRequired.subscribe(@(v) v ? null : loadScriptsAfterLoginOnce())
 
 

@@ -10,6 +10,7 @@ let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list,
   hangar_force_reload_model, set_allowed_decals_count
 } = require("hangar")
+let { rnd_int } = require("dagor.random")
 let { prevIfEqual, isEqual } = require("%sqstd/underscore.nut")
 let { decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -17,7 +18,6 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { mkHasUnitsResources } = require("%appGlobals/updater/addonsState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
@@ -51,15 +51,7 @@ local wasLoadBgModelsAfterLoading = false
 
 let mainHangarUnit = Computed(function() {
   let { name = loadedHangarUnitName.get(), custom = null } = hangarUnitData.get()
-  if (custom == null)
-    return campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name]
-
-  if (custom.name not in campUnitsCfg.get()) {
-    let mainName = allMainUnitsByPlatoon.get()?[custom.name].name
-    if (mainName != null)
-      return custom.__merge({ name = mainName })
-  }
-  return custom
+  return custom ?? campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name]
 })
 
 let mainHangarUnitName = Computed(@() mainHangarUnit.get()?.name)
@@ -85,12 +77,16 @@ let hangarUnit = Computed(function() {
   return mainUnit.__merge(mainUnit.platoonUnits.findvalue(@(pu) pu.name == name) ?? {})
 })
 
-let nameAndSkin = @(name, skin, currentSkins, defSkin) {
+let nameAndSkin = @(name, skin, currentSkins = null, defSkin = "") {
   name = getTagsUnitName(name)
   skin = skin ?? currentSkins?[name] ?? defSkin
 }
 
 let hangarBgUnits = Computed(function(prevC) {
+  let { bgUnits = [] } = hangarUnitData.get()
+  if (bgUnits.len() > 0)
+    return bgUnits.map(@(u) nameAndSkin(u, ""))
+
   let hUnit = hangarUnit.get()
   if (hUnit == null || !hasBgUnitsByCamp?[hUnit.campaign])
     return []
@@ -302,6 +298,15 @@ let setHangarUnit = @(unitName) hangarUnitData.set({ name = unitName ?? "" })
 
 let setHangarUnitWithSkin = @(name, skin) hangarUnitData.set({ name, skin })
 
+function setHangarUnitGroup(unitList, needRandomize) {
+  if (unitList.len() == 0)
+    return
+  let bgUnits = clone unitList
+  let mainIdx = needRandomize ? rnd_int(0, bgUnits.len() - 1) : 0
+  let main = bgUnits.remove(mainIdx)
+  hangarUnitData.set({ name = main, bgUnits })
+}
+
 function setCustomHangarUnit(customUnit) {
   if (hangarUnitDataBackup.get() == null)
     hangarUnitDataBackup.set(hangarUnitData.get())
@@ -408,6 +413,7 @@ return {
 
   setHangarUnit  
   setHangarUnitWithSkin
+  setHangarUnitGroup
   setCustomHangarUnit  
   resetCustomHangarUnit 
   isHangarUnitLoaded

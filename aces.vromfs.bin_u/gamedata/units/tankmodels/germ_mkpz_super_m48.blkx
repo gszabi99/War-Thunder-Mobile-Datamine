@@ -46,8 +46,11 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": [
+    1.3,
+    1.3
+  ],
   "autoSightDistanceCorrection": true,
-  "minRelativeTankCameraThreshold": 1.3,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "sound": {

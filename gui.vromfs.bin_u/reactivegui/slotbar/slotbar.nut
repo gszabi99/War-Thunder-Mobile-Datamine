@@ -3,11 +3,12 @@ let { playSound } = require("sound_wt")
 let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { balance, GOLD } = require("%appGlobals/currenciesState.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
+let { campMyUnits, campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
   COMMADN_STATE
 } = require("%rGui/components/translucentButton.nut")
-let { campMyUnits, campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow,
   mkUnitPlateBorder, mkProfileUnitDailyBonus, mkUnitSpinner
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -25,7 +26,7 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { slotBarTreeHeight, unitPlateSize, unitPlateHeader, slotsGap } = require("%rGui/slotBar/slotBarConsts.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openUnitModsSlotsWnd, mkListUnseenMods, mkHasUnitWeaponSlots } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { openUnitModsWnd, modsPresets, mkUnitAllModsCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
+let { openUnitModsWnd, mkUnitAllModsCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
 let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
 let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
 let { mkSlotLevel, levelHolderSize } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
@@ -411,7 +412,7 @@ let function mkSlotWithButtons(slot, idx) {
     let unseenUnitMods = unseenCampUnitMods.get()?[slot?.name] ?? {}
     if (unseenUnitMods.len() == 0)
       return false
-    let mods = modsPresets.get()?[unit.get()?.modPreset] ?? {}
+    let mods = campConfigs.get()?.unitModPresets[unit.get()?.modPreset]
     return null != unseenUnitMods.findvalue(@(_, k) hasEnoughCurrencies(mods?[k], unitAllModsCost.get(), balance.get()))
   })
 

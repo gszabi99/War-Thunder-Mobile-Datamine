@@ -18,12 +18,14 @@ let { hudElementBlink } = require("%rGui/tutorial/hudElementBlink.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
 let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
 let { hudReplayControls, replayShowHudAction } = require("%rGui/replay/hudReplayControls.nut")
+let { hudReplayCameraInfo } = require("%rGui/replay/hudReplayCameraInfo.nut")
 let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, HT_NONE, isHudAttached
 } = require("%appGlobals/clientState/hudState.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let battleResultsShort = require("%rGui/hud/battleResultsShort.ui.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 let { mkLtButtonListener } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 
 let hudByUnitType = {
@@ -52,12 +54,13 @@ let emptySceneWithMenuButton = {
 }
 
 let hudByType = {
-  [HT_HUD] = @(unitTypeV) [
+  [HT_HUD] = @(unitTypeV, isReplay) [
     hudVignette
     hudIndicators
     captureZoneIndicators
     hudByUnitType?[unitTypeV]
-    hudReplayControls
+    isReplay ? hudReplayControls : null
+    isReplay ? hudReplayCameraInfo : null
     hudElementShade
     hudElementBlink
     hudElementPointers
@@ -66,10 +69,10 @@ let hudByType = {
   ]
     .extend(hudOverShade?[unitTypeV] ?? [])
     .append(voiceMsgPie),
-  [HT_FREECAM] = @(_) freeCamHud,
-  [HT_CUTSCENE] = @(_) cutsceneHud,
-  [HT_BENCHMARK] = @(_) emptySceneWithMenuButton,
-  [HT_NONE] = @(_) replayShowHudAction
+  [HT_FREECAM] = @(_, __) freeCamHud,
+  [HT_CUTSCENE] = @(_, __) cutsceneHud,
+  [HT_BENCHMARK] = @(_, __) emptySceneWithMenuButton,
+  [HT_NONE] = @(_, isReplay) isReplay ? replayShowHudAction : null
 }
 
 let hudBase = {
@@ -91,13 +94,13 @@ let hudBase = {
       }
     }
     @() {
-      watch = [isInFlight, viewHudType, hudUnitType]
+      watch = [isInFlight, viewHudType, hudUnitType, isPlayingReplay]
       size = flex()
       children = !isInFlight.get() ? null
         : {
             key = viewHudType.get()
             size = flex()
-            children = hudByType?[viewHudType.get()](hudUnitType.get())
+            children = hudByType?[viewHudType.get()](hudUnitType.get(), isPlayingReplay.get())
             animations = wndSwitchAnim
           }
     }

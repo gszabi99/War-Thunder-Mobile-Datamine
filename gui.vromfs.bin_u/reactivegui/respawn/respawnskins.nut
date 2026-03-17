@@ -9,9 +9,9 @@ let { curLevelTags } = require("%rGui/unitCustom/unitSkins/levelSkinTags.nut")
 let { selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
 
 
-let skinSize = hdpxi(110)
-let skinBorderRadius = round(skinSize*0.2).tointeger()
-let skinGap = hdpx(20)
+let skinSize = hdpxi(90)
+let skinBorderRadius = round(skinSize * 0.2).tointeger()
+let skinGap = hdpx(16)
 let aTimeSelected = 0.2
 
 let unitName = Computed(@() selSlot.get()?.name)

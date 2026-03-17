@@ -48,7 +48,8 @@ let slotLevelResetPrice = Computed(@() campConfigs.get()?.campaignCfg.slotLevelR
 let slotSkillsResetPrice = Computed(@() campConfigs.get()?.campaignCfg.slotSkillsResetPrice)
 let isResetSlotLevelAllowed = Computed(@() (slotLevelResetPrice.get()?.price ?? 0) > 0 && slotLevel.get() > 0)
 let isResetSlotSkillsAllowed = Computed(@() (slotSkillsResetPrice.get()?.price ?? 0) > 0
-  && null != slotAttributes.get().findindex(@(c) null != c.findindex(@(a) a > 0)))
+  && null != slotAttributes.get().findindex(@(c) null != c.findindex(@(a) a > 0))
+  && slotLevelsToMax.get() > 0)
 
 function resetAttrState() {
   selAttributes.set({})

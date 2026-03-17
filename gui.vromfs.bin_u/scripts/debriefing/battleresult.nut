@@ -12,13 +12,13 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { register_command } = require("console")
 let { EventBattleResult, EventResultMPlayers } = require("%appGlobals/sqevents.nut")
 let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
-let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
+let { battleCampaign, hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { battleData } = require("%scripts/battleData/battleData.nut")
 let { singleMissionResult } = require("singleMissionResult.nut")
 let { lastBattles, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState/clientState.nut")
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
-let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
+let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { get_mp_local_team, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
@@ -235,7 +235,7 @@ function getPlayersCommonStats(players) {
     if (!player.isBot)
       continue
     let { userId, name, aircraftName = "" } = player
-    let unitCfg = getPlatoonUnitCfgNonUpdatable(aircraftName) ?? {}
+    let unitCfg = getUnitCfgByTagName(aircraftName, serverConfigs.get(), battleCampaign.get()) ?? {}
     res[userId.tostring()] <- genBotCommonStats(name, aircraftName, unitCfg, defLevel)
   }
   return res

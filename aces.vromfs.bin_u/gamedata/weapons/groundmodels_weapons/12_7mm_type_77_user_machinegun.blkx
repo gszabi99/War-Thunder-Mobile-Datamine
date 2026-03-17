@@ -28,6 +28,7 @@
   "sound_pathStudio": "ground/weapon/mguns",
   "sound": "13mm_dshk",
   "soundLoop": true,
+  "allowRearmOnField": true,
   "bullet": [
     {
       "mass": 0.0482,

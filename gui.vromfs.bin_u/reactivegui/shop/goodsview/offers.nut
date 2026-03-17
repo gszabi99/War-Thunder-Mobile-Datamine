@@ -16,7 +16,7 @@ function mkOffer(offer, onClick, state) {
   let { rewards } = offer
   let hasBattleMode = rewards.findvalue(@(r) r.gType == G_BATTLE_MOD) != null
   return hasBattleMode ? mkOfferBattleMode(offer, onClick, state)
-    : (constructors?[offer.gtype](offer, onClick, state) ?? mkGoods(offer, onClick, state, null))
+    : (constructors?[getGoodsType(offer)](offer, onClick, state) ?? mkGoods(offer, onClick, state, null))
 }
 
 return {

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 
 
@@ -47,9 +47,9 @@ function updateInactiveLootboxes() {
   if (!isEqual(inactiveLootboxes.get(), inactive))
     inactiveLootboxes.set(inactive)
   if (timeToUpdate <= 0)
-    clearTimer(updateInactiveLootboxes)
+    clearExtTimer(updateInactiveLootboxes)
   else
-    resetTimeout(timeToUpdate, updateInactiveLootboxes)
+    resetExtTimeout(timeToUpdate, updateInactiveLootboxes)
 }
 
 inactiveLootboxes.whiteListMutatorClosure(updateInactiveLootboxes)

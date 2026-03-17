@@ -4,6 +4,7 @@ from "blkGetters" import get_unittags_blk
 from "%sqstd/functools.nut" import memoize
 let { blk2SquirrelObjNoArrays, isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let { isReadyToFullLoad, isLoginRequired, isLoginStarted } = require("%appGlobals/loginState.nut")
+let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let getTagsUnitName = require("getTagsUnitName.nut")
 
 let unitTagsCfg = {}
@@ -64,8 +65,11 @@ let getUnitTagsCountry = memoize(function getUnitTagsCountryImpl(realUnitName) {
 let getUnitTagsClass = memoize(function getUnitTagsClassImpl(realUnitName) {
   let { tags } = getUnitTagsCfg(realUnitName)
   foreach(t, _ in tags)
-    if (t.startswith("type_"))
-      return t.slice(5)
+    if (t.startswith("type_")) {
+      let uClass = t.slice(5)
+      if (unitClassFontIcons?[uClass])
+        return uClass
+    }
   return null
 })
 

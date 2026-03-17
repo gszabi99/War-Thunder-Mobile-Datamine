@@ -3,8 +3,8 @@ let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team } = require("missi
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { squadLabels } = require("%appGlobals/squadLabelState.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { isGtFFA, gameType } = require("%rGui/missionState.nut")
 let { getSortAndFillPlayerPlacesFunc } = require("%rGui/mpStatistics/playersSortFunc.nut")
@@ -27,7 +27,9 @@ let playersByTeam = Computed(function() {
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
           hasVip = false, hasPrem = false } = !isBot
             ? playersCommonStats.get()?[userId.tointeger()]
-            : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get(), curCampaign.get()) ?? {}, playerLevelInfo.get().level)
+            : genBotCommonStats(name, unitName,
+                getUnitCfgByTagName(unitName, serverConfigs.get(), battleCampaign.get()) ?? {},
+                playerLevelInfo.get().level)
         let unit = units?[unitName]
         let { unitClass = "", mRank = null } = unit
         let isUnitCollectible = unit?.isCollectible ?? false

@@ -3,7 +3,6 @@ let { format } = require("string")
 let { skinSize } = require("%rGui/respawn/respawnSkins.nut")
 let { hasSkins } = require("%rGui/respawn/respawnState.nut")
 let { scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 
 let courseMenuKey = "courseMenuKey"
@@ -16,12 +15,12 @@ let secondaryTitleKey = "secondaryTitleKey"
 let textColor = 0xFFD0D0D0
 let headerHeight = hdpx(60)
 let gap = hdpx(10)
-let bulletsBlockWidth = hdpx(520)
+let bulletsBlockWidth = hdpx(500)
 let bulletsBlockMargin = hdpx(40)
-let bulletsLegendWidth = hdpx(260)
+let bulletsLegendWidth = hdpx(220)
 let contentOffset = hdpx(40)
 let headerMargin = [0, hdpx(20), 0, bulletsBlockMargin]
-let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - unitPlatesGap
+let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - gap
 
 let smallGap = hdpx(8)
 let beltImgSize = evenPx(75)
@@ -31,19 +30,19 @@ let defPadding = hdpxi(3)
 let weaponSize = imgSize + 2 * padding
 let weaponGroupWidth = hdpx(600)
 
-let headerSlotHeight = hdpx(108)
+let headerSlotHeight = hdpx(98)
 let skinTextHeight = hdpx(29)
 let topSkinPadding = hdpx(6)
 let skinPadding = hdpx(10)
 let skinGap = hdpx(12)
-let minBSlotHeight = hdpx(204)
-let maxBSlotHeight = hdpx(226)
+let minBSlotHeight = hdpx(194)
+let maxBSlotHeight = hdpx(216)
 let minGapHeight = hdpx(8)
-let maxGapHeight = unitPlatesGap
+let maxGapHeight = gap
 let skinsListHeight = skinTextHeight + topSkinPadding + skinPadding + skinSize
 
-let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots) Computed(function() {
-  let slots = primaryBulletSlots.get() + secondaryBulletSlots.get()
+let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots, specialBulletSlots) Computed(function() {
+  let slots = primaryBulletSlots.get() + secondaryBulletSlots.get() + specialBulletSlots.get()
   if (slots == 0)
     return { slotSliderHeight = 0, gapHeight = 0 }
   if (!hasSkins.get())
@@ -53,7 +52,7 @@ let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots) Computed(fu
     }
   let gaps = max(1, slots - 1)
   let currentBContentHeight = sh(100)- saBordersRv[0] * 2
-    - contentOffset - scoreBoardHeight - skinsListHeight - headerHeight - unitPlatesGap - skinGap
+    - contentOffset - scoreBoardHeight - skinsListHeight - headerHeight - gap - skinGap
   let slotBHeight = clamp(((currentBContentHeight - minGapHeight * gaps) / slots).tointeger(), minBSlotHeight, maxBSlotHeight)
   return {
     slotSliderHeight = slotBHeight - headerSlotHeight
@@ -139,8 +138,8 @@ let bulletsLegendBlock = @(text, bulletIcon, width, height) {
 let bulletsLegend = {
   key = "bulletsLegend" 
   rendObj = ROBJ_BOX
-  size = [ bulletsLegendWidth, hdpx(300) + unitPlatesGap ]
-  pos = [ 0, headerHeight + unitPlatesGap ]
+  size = [bulletsLegendWidth, hdpx(300) + gap]
+  pos = [0, headerHeight + gap]
   fillColor = 0x99000000
   borderWidth = hdpx(2)
   borderColor = textColor

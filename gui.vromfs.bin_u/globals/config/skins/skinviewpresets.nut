@@ -246,6 +246,7 @@ let skinsByTag = {
     "camo_greyblackblue_geometry"
     "camo_sboat_splotch"
     "camo_threegray_spots"
+    "camo_blackgreenwhite_spots"
 
     "camo_blackgray_geometry"
     "camo_blue_geometry"
@@ -275,6 +276,7 @@ let skinsByTag = {
     "camo_nord_bluegreen"
     "camo_polish_bluegeometry"
     "camo_bluewhite_geometry"
+    "camo_tropic_multicolor_spots"
 
     "camo_blackgray_spots"
     "camo_blue_spots"
@@ -328,8 +330,8 @@ let skinsByTag = {
     "camo_yellow"
     "gev_ann_camo"
     "camo_hw_25"
-    "camo_lny_26"
     "camo_force_z"
+    "camo_lny_26"
     "camo_bismarck_february_skin_c"
     "camo_pink"
   ],

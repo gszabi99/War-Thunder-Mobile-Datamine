@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.35,
   "arcadeTurnPowerMult": 1.0,
   "ikGunner": [
     {
@@ -2749,7 +2749,7 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      3.7,
+      3.6,
       -12.6
     ],
     "headPosOnShooting": [

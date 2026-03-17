@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
-} = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
+} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
@@ -121,7 +121,7 @@ let optTankMoveControlType = {
     selectedId.set(v == "arrows" ? "moveArrows" : "moveStick")
     sendSettingChangeBqEvent("tank_movement_control", "tanks", v)
   }
-  list = tankMoveCtrlTypesList
+  list = groundMoveCtrlTypesList
   valToString = ctrlTypeToString
   openInfo = openChooseMovementControls
 }

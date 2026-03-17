@@ -22,10 +22,9 @@ let curEventId = mkWatched(persist, "curEventId", "")
 
 let eventPassTables = Computed(function() {
   let res = []
-  foreach (unlock in activeUnlocks.get()) {
-    if(EVENTPASS_POINTS in unlock?.meta)
+  foreach (unlock in activeUnlocks.get())
+    if (EVENTPASS_POINTS in unlock?.meta)
       res.append(unlock.table)
-  }
   return res
 })
 
@@ -34,7 +33,7 @@ let getEventPassName = @(eventName) $"{EVENT_PASS}_{eventName}"
 let eventsPassList = Computed(@() allSpecialEvents.get().values().filter(@(v) eventPassTables.get().contains(v.tableId)))
 let curOpenEventPass = Computed(@() eventsPassList.get().findvalue(@(v) v.eventName == curEventId.get()))
 
-let epPrograssUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
+let epProgressUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
   EVENTPASS_POINTS in unlock?.meta && curOpenEventPass.get()?.tableId == unlock.table)?.name)
 
 let seasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
@@ -69,7 +68,7 @@ let getPresentationByType = @(epType) epPresentation?[epType] ?? epPresentation[
 let isEPPurchaseWndOpened = mkWatched(persist, "isEPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
 
-let eventProgressUnlock = Computed(@() activeUnlocks.get()?[epPrograssUnlockId.get()])
+let eventProgressUnlock = Computed(@() activeUnlocks.get()?[epProgressUnlockId.get()])
 let pointsPerStage   = Computed(@() eventProgressUnlock.get()?.stages[0].progress ?? 1)
 let eventLevelPrice = Computed(@() getUnlockPrice(eventProgressUnlock.get()))
 
@@ -88,29 +87,32 @@ let isEpRewardsInProgress = Computed(@()
     || eventPaidRewardsUnlock.get()?.name in unlockInProgress.get()
     || eventPurchasedUnlock.get()?.name in unlockInProgress.get())
 
-let eventPassGoods = Computed(function() {
-  let res = { [EP_COMMON] = null, [EP_VIP] = null }
-  let eventId = curEventId.get()
+let allEventPassGoods = Computed(function() {
+  let res = {}
+  foreach (v in eventsPassList.get())
+    res[v.eventName] <- { [EP_COMMON] = null, [EP_VIP] = null }
+  if (res.len() == 0)
+    return res
   foreach (g in shopGoods.get())
-    if ("event_pass" in g?.meta) {
-      let { event_id = null } = g.meta
-      if (event_id == eventId || (event_id == null && res[EP_COMMON] == null))
-        res[EP_COMMON] = g
-    }
-    else if ("event_pass_vip" in g?.meta) {
-      let { event_id = null } = g.meta
-      if (event_id == eventId || (event_id == null && res[EP_VIP] == null))
-        res[EP_VIP] = g
-    }
+    if ("event_pass" in g?.meta && res?[g.meta?.event_id] != null)
+      res[g.meta.event_id][EP_COMMON] = g
+    else if ("event_pass_vip" in g?.meta && res?[g.meta?.event_id] != null)
+      res[g.meta.event_id][EP_VIP] = g
   return res
 })
+let mkEventPassGoods = @(name) Computed(function() {
+  let { eventName = null } = eventsPassList.get().findvalue(@(v) getEventPassName(v.eventName) == name)
+  return allEventPassGoods.get()?[eventName] ?? { [EP_COMMON] = null, [EP_VIP] = null }
+})
+let openedEventPassGoods = Computed(@() allEventPassGoods.get()?[curEventId.get()]
+  ?? { [EP_COMMON] = null, [EP_VIP] = null })
 
-let eventPassVipLevels = Computed(@() (eventPassGoods.get()?[EP_VIP].meta.pass_levels ?? 7).tointeger())
+let eventPassVipLevels = Computed(@() (openedEventPassGoods.get()?[EP_VIP].meta.pass_levels ?? 7).tointeger())
 
 let isEpPurchasedByType = Computed(function() {
   let { purchasesCount = null } = servProfile.get()
   let seasons = curSeasons.get()
-  return eventPassGoods.get().map(function(goods) {
+  return openedEventPassGoods.get().map(function(goods) {
     if (goods == null)
       return null
 
@@ -137,9 +139,40 @@ let isEpActive = Computed(@() debugBp.get() == null
 
 purchasedEp.subscribe(@(_) isEPPurchaseWndOpened.set(false))
 
-let hasEpRewardsToReceive = Computed(@() !!eventFreeRewardsUnlock.get()?.hasReward
-  || !!eventPurchasedUnlock.get()?.hasReward
-  || (isEpActive.get() && !!eventPaidRewardsUnlock.get()?.hasReward))
+let hasEpRewardsToReceive = Computed(function() {
+  let res = {}
+  foreach (v in eventsPassList.get())
+    res[v.tableId] <- false
+  if (res.len() == 0)
+    return res
+
+  let freeRewardsUnlocks = {}
+  let paidRewardsUnlocks = {}
+  let purchasedUnlocks = {}
+  foreach (u in activeUnlocks.get())
+    if ("eventpass_free" in u?.meta && res?[u.table] != null)
+      freeRewardsUnlocks[u.table] <- u
+    else if ("eventpass_paid" in u?.meta && res?[u.table] != null)
+      paidRewardsUnlocks[u.table] <- u
+    else if ("eventpass_purchased" in u?.meta && res?[u.table] != null)
+      purchasedUnlocks[u.table] <- u
+
+  foreach (k, _ in res)
+    res[k] = freeRewardsUnlocks?[k].hasReward
+      || purchasedUnlocks?[k].hasReward
+      || (paidRewardsUnlocks?[k].hasReward
+            && (debugBp.get() == null
+                  ? (activeUnlocks.get()?[paidRewardsUnlocks?[k].requirement].isCompleted ?? false)
+                  : debugBp.get() != EP_NONE))
+  return res
+})
+
+let mkHasEpRewardsToReceive = @(name) Computed(function() {
+  let { tableId = null } = eventsPassList.get().findvalue(@(v) getEventPassName(v.eventName) == name.get())
+  return hasEpRewardsToReceive.get()?[tableId]
+})
+
+let hasAnyEpRewardsToReceive = Computed(@() null != hasEpRewardsToReceive.get().findvalue(@(v) v))
 
 let pointsCurStage = Computed(@() (eventProgressUnlock.get()?.current ?? 0)
   % pointsPerStage.get() )
@@ -166,7 +199,7 @@ let mkEpStagesList = @() Computed(function() {
 
   local addIdx = -1
   foreach(bpType in [EP_COMMON, EP_VIP]) {
-    let goods = eventPassGoods.get()[bpType]
+    let goods = openedEventPassGoods.get()[bpType]
     if (goods == null)
       continue
     foreach(viewInfo in shopGoodsToRewardsViewInfo(goods))
@@ -256,7 +289,7 @@ function receiveEpRewards(progress) {
 function buyEPLevel() {
   let price = eventLevelPrice.get()
   if ((eventProgressUnlock.get()?.periodic == true || !eventProgressUnlock.get()?.isCompleted ) && price.price > 0) {
-    buyUnlock(epPrograssUnlockId.get(), curStage.get() + 1, price.currency, price.price,
+    buyUnlock(epProgressUnlockId.get(), curStage.get() + 1, price.currency, price.price,
       { onSuccessCb = { id = "eventPass.buyUnlock" }})
   }
 }
@@ -297,7 +330,9 @@ return {
   eventFreeRewardsUnlock
   eventPaidRewardsUnlock
   eventPurchasedUnlock
-  eventPassGoods
+  openedEventPassGoods
+  allEventPassGoods
+  mkEventPassGoods
   isEpRewardsInProgress
   isEpSeasonActive = Computed(@() eventFreeRewardsUnlock.get() != null)
   lastStageEpProgress
@@ -316,12 +351,13 @@ return {
   pointsPerStage
   eventLevelPrice
   isEPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
-  epPrograssUnlockId
+  epProgressUnlockId
 
   eventsPassList
   curEventId
   seasonEndTime
-  hasEpRewardsToReceive
+  hasAnyEpRewardsToReceive
+  mkHasEpRewardsToReceive
 
   getEpIcon = @(epType, season) getPresentationByType(epType).icon(season)
   getEpName = @(epType) getPresentationByType(epType).name()

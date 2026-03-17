@@ -1965,8 +1965,8 @@
             "reqModification": "la-7_dz-40",
             "ShowNodes": {
               "node": [
-                "bomb_pylon2_l",
-                "bomb_pylon1_l"
+                "bomb_pylon2_r",
+                "bomb_pylon1_r"
               ]
             },
             "Weapon": [

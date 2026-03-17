@@ -1862,7 +1862,6 @@
       "model": "di_16"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 190000.0,
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,

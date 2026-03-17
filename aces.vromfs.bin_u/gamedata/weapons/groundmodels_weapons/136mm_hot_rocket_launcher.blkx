@@ -15,6 +15,7 @@
   "helicopterGroup": 2,
   "reloadTime": 10.0,
   "allowHumanReload": true,
+  "bulletsCartridge": 6,
   "mesh": "waffensystem_hot_rocket_deployed",
   "animChar": "waffensystem_hot_rocket_char",
   "reloadAnimParam": "cap_hide",

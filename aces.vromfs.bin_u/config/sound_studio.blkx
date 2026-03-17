@@ -1258,6 +1258,31 @@
       }
     }
   },
+  "engine_xf5u1_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_ai_start",
+      "eventStop": "engine_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_xf5u1_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_xf5u1_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine_fireball_ai": {
     "engines": {
       "effects": {
@@ -3037,6 +3062,32 @@
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8
       }
+    }
+  },
+  "engine_xf5u1": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_xf5u1_start",
+      "eventStop": "engine_xf5u1_stop",
+      "eventProp": "engine_xf5u1_prop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_xf5u1",
+      "eventSurround": "",
+      "eventLod1": "engine_xf5u1",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
     }
   },
   "engine_fireball": {

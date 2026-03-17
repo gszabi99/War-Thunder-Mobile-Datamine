@@ -260,7 +260,7 @@ let myRequirementsRow = @(emptyColor) function() {
   })
 }
 
-function lbTableFull(categories, lbData, selfRow) {
+function lbTableFull(categories, lbData, selfRow, hasRewards) {
   let selfIdx = selfRow?.idx ?? -1
   let startIdx = lbData?[0].idx ?? -1
   let endIdx = lbData.reduce(@(res, row) max(res, row.idx), startIdx)
@@ -285,7 +285,7 @@ function lbTableFull(categories, lbData, selfRow) {
       rows.append(mkRow(categories, selfRow))
     }
   }
-  else {
+  else if (hasRewards) {
     rows.append(dotsRow)
     needRequirementsRow = true
   }
@@ -386,11 +386,11 @@ function lbNoDataMsg() {
     .__update({ watch = [minRatingBattles, bestBattlesCount] })
 }
 
-let content = @() {
+let content = @(hasRewards) @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
   size = flex()
   children = curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
-      ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get())
+      ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get(), hasRewards)
     : isLbRequestInProgress.get() ? waitLeaderBoard
     : curLbErrName.get() == null ? lbNoDataMsg
     : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
@@ -429,7 +429,7 @@ let scene = bgShaded.__merge({
       flow = FLOW_HORIZONTAL
       gap = lbVGap
       children = [
-        content
+        content(hasCurLbRewards.get())
         hasCurLbRewards.get() ? lbRewardsBlock : lbRewardsWarning
       ]
     }

@@ -18,7 +18,7 @@ let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator, turre
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { playerUnitName, unitType, isUnitDelayed, isPlayingReplay } = require("%rGui/hudState.nut")
+let { playerUnitName, unitType, isPlayingReplay } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { currentControlByGyroAimMode, currentControlByGyroDirectControl,
   currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity,
@@ -27,17 +27,17 @@ let { currentControlByGyroAimMode, currentControlByGyroDirectControl,
 } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner, outlineColorDef
+let { mkAirMoveLeftBtn, mkAirMoveRightBtn, mkAltMoveVertBtn, mkAltMoveBg, fullSizeAirBase
 } = require("%rGui/components/movementArrows.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
+
 let { eventbus_subscribe, send } = require("eventbus")
 let { MechState, get_gears_current_state} = require("hudAircraftStates")
 let { ON } = MechState
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
-let { hudWhiteColor, hudCoralRedColor, hudSmokyGreyColor, hudRedColor, hudPearlGrayColor, hudTransparentColor
+let { hudWhiteColor, hudCoralRedColor, hudRedColor, hudPearlGrayColor, hudTransparentColor
 } = require("%rGui/style/hudColors.nut")
 
 let maxThrottle = 100
@@ -811,13 +811,13 @@ let aircraftIndicatorsEditView = {
   ]
 }
 
-let outlineColor = Watched(hudSmokyGreyColor)
 let isAircraftMoveArrowsAvailable = Computed(@() currentAdditionalFlyControls.get())
 let toInt = @(list) list.map(@(v) v.tointeger())
-let horSize = toInt([shHud(9), shHud(12)])
-let verSizeBase = toInt([shHud(12), shHud(10)])
 
-let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection) mkMoveVertBtn(
+let verBtnSizeInPercent = [0.6, 0.3]
+let horBtnSizeInPercent = [0.5, 0.48]
+
+let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection, vplace) mkAltMoveVertBtn(
   function onTouchBegin() {
     setShortcutOn(id)
   },
@@ -827,12 +827,18 @@ let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection) mkMoveVertB
     size = verSize
     key = id
     flipY = upDirection
+    vplace
     children = @() {
       watch = isControlDisabled
       children = isControlDisabled.get() ? null
         : [
-            mkMoveVertBtnCorner(upDirection, outlineColorDef, verSize)
-            mkMoveVertBtnOutline(upDirection, verSize, outlineColor)
+            {
+              size = verSize
+              rendObj = ROBJ_IMAGE
+              image = Picture($"ui/gameuiskin#hud_movement_air_arrow_forward.svg:{verSize[0]}:{verSize[1]}")
+              vplace = ALIGN_CENTER
+              flipY = upDirection
+            }
             mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, verSize)
           ]
     }
@@ -840,9 +846,8 @@ let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection) mkMoveVertB
 
 let mkHorizontalMovementParams = @(id, disableId, scale) {
   scale
-  ovr = { key = id, size = horSize }
+  ovr = { key = id, size = toInt(horBtnSizeInPercent.map(@(p, idx) p * fullSizeAirBase[idx])) }
   shortcutId = id
-  outlineColor
   function onTouchBegin() {
     setShortcutOn(id)
   }
@@ -856,33 +861,17 @@ function aircraftMoveArrows(scale) {
   let vertical_max = $"{vertical}_rangeMax"
   let vertical_min = $"{vertical}_rangeMin"
 
-  let leftArrow = mkMoveLeftBtn(mkHorizontalMovementParams($"{horizontal}_rangeMin", horizontal, scale))
-  let rightArrow = mkMoveRightBtn(mkHorizontalMovementParams($"{horizontal}_rangeMax", horizontal, scale))
+  let isVertControlDisabled = mkIsControlDisabled(vertical)
+  let verSize = scaleArr(toInt(verBtnSizeInPercent.map(@(p, idx) p * fullSizeAirBase[idx])), scale)
 
-  let isControlDisabled = mkIsControlDisabled(vertical)
-  let verSize = scaleArr(verSizeBase, scale)
-  let vertArrows = [
-    mkVerticalArrow(vertical_min, isControlDisabled, verSize, false)
-    mkVerticalArrow(vertical_max, isControlDisabled, verSize, true)
-  ]
+  let leftArrow = mkAirMoveLeftBtn(mkHorizontalMovementParams($"{horizontal}_rangeMin", horizontal, scale))
+  let rightArrow = mkAirMoveRightBtn(mkHorizontalMovementParams($"{horizontal}_rangeMax", horizontal, scale))
+  let topArrow = mkVerticalArrow(vertical_min, isVertControlDisabled, verSize, false, ALIGN_TOP)
+  let bottomArrow = mkVerticalArrow(vertical_max, isVertControlDisabled, verSize, true, ALIGN_BOTTOM)
+  let buttons = { topArrow, bottomArrow, leftArrow, rightArrow }
 
-  return @() {
-    watch = [isUnitDelayed, isGamepad]
-    vplace = ALIGN_BOTTOM
-    hplace = ALIGN_RIGHT
-    flow = FLOW_HORIZONTAL
-    children = [
-          leftArrow
-          {
-            flow = FLOW_VERTICAL
-            halign = ALIGN_CENTER
-            children = vertArrows
-          }
-          rightArrow
-          isGamepad.get() ? gamepadMouseAimAxisListener : null
-        ]
-    animations = dfAnimBottomLeft
-  }
+  let scaledFullSize = scaleArr(fullSizeAirBase, scale)
+  return mkAltMoveBg(buttons, scaledFullSize, gamepadMouseAimAxisListener)
 }
 
 return {

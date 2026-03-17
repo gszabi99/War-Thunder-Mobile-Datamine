@@ -164,19 +164,41 @@
             "distGateSearchRange": 300.0
           }
         },
+        "orientationAutopilot": {
+          "timeOut": 0.3,
+          "controlTime": 1.0,
+          "finalSpeed": 420.0,
+          "finalDist": 10.0,
+          "elevationAdd": 0.0,
+          "elevationToHeadingMult": [
+            1.0,
+            0.5,
+            0.5,
+            0.0
+          ],
+          "angleToAngularRate": 7.5,
+          "accelControlProp": 0.137,
+          "accelControlIntg": 0.0,
+          "accelControlIntgLim": 0.0,
+          "accelControlDiff": 0.0
+        },
         "guidanceAutopilot": {
           "loftEnabled": true,
           "loftElevation": 5.0,
           "loftTargetElevation": -5.0,
           "loftAngleToAccelMult": 2.0,
           "loftTargetOmegaMax": 5.0,
-          "altitudeHoldEnabled": true,
+          "altitudeHoldEnabled": false,
           "timeToHitToAltitude0": [
-            10.0,
-            50.0
+            20.0,
+            2.5
           ],
-          "altitudeDiffToClimb": 0.025,
-          "altitudeRateRateToClimb": 0.02,
+          "timeToHitToAltitude1": [
+            30.0,
+            15.0
+          ],
+          "altitudeDiffToClimb": 0.1,
+          "altitudeRateRateToClimb": 0.08,
           "climbDiffToAccelMult": 0.05,
           "propNavMult": 5.0,
           "reqAccelMax": 15.0,

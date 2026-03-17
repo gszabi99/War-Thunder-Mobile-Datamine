@@ -306,11 +306,8 @@ let cfgRowTotal = {
 let cfgRowTotalWithPrem = {
   needShow = @(ri) ri.totalWithPrem != 0
   getVal = @(ri) ri.totalWithPrem
-  getLabelText = @(_ri) loc("debriefing/battleReward/withPremium")
-  getLabelIcon = @(ri) mkSubsIcon(ri?.hasVip ? "vip"
-    : ri?.hasPrem ? "prem"
-    : "prem_deprecated"
-    labelIconSize)
+  getLabelText = @(_ri) loc("debriefing/battleReward/withSubscription")
+  getLabelIcon = @(ri) mkSubsIcon(ri?.hasPrem ? "prem" : "vip", labelIconSize)
   labelOvr = fontTotal
   getIsDisabled = @(ri) !ri.isPremiumIncluded
 }

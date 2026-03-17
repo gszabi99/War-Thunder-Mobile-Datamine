@@ -4,6 +4,7 @@ from "%rGui/components/expandArrow.nut" import expandArrow, defaultExpandAnimati
 from "%rGui/style/gradients.nut" import mkColoredGradientY
 
 let headerH = hdpx(90)
+let headerGap = hdpx(20)
 let itemGap = hdpx(8)
 let contentPadding = itemGap
 
@@ -37,7 +38,7 @@ function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorI
     onElemState = @(v) stateFlags.set(v)
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(20)
+    gap = headerGap
     children = [
       expandArrow(isExpanded, defaultExpandAnimationDuration, arrowSize, arrowOvr)
       headerContent
@@ -139,4 +140,6 @@ return {
   contentPadding
   contentBgColor
   headerBgColor
+  headerGap
+  arrowFullSizeW = arrowSize[0] + arrowOvr.margin[1] * 2
 }

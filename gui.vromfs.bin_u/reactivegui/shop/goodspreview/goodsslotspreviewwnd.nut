@@ -199,8 +199,10 @@ function headerText() {
         text = previewG == null ? null : getGoodsLocName(previewG)
       }.__update(fontBig)
       infoTooltipButton(
-        @() mkTooltipText(allLeftSlotNames.len() == 0 ? description
-          : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })), fontTinyAccented),
+        @() mkTooltipText(
+          allLeftSlotNames.len() == 0 ? description
+            : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })),
+          { maxWidth = hdpx(1000) }.__update(fontTinyAccented)),
         { halign = ALIGN_RIGHT },
         {
           size = hdpx(52)

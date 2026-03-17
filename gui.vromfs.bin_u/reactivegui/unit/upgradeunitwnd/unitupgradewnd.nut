@@ -64,26 +64,29 @@ let commonTitle = {
 
 let mkCardTitle = @(unit) unit?.isUpgraded ? upgradeTitle : commonTitle
 
-let mkLevelMark = @(unit) {
-  vplace = ALIGN_BOTTOM
-  margin = hdpx(10)
-  size = hdpx(45)
-  children = mkLevelBg({
-    childOvr = {
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      borderColor = unit?.isUpgraded ? 0xFFFFB70B : selectColor
-      children = {
-        transform = { rotate = -45 }
-        children = @() {
-          watch = campMyUnits
-          rendObj = ROBJ_TEXT
-          text = !unit?.isUpgraded
-            ? campMyUnits.get()?[unit.name].level ?? 0
-            : unit?.levels.len()
-        }.__update(fontTiny)}
-    }
-  })
+function mkLevelMark(unit) {
+  let level = Computed(@() unit?.isUpgraded
+    ? campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0
+    : campMyUnits.get()?[unit.name].level ?? 0)
+  return {
+    vplace = ALIGN_BOTTOM
+    margin = hdpx(10)
+    size = hdpx(45)
+    children = mkLevelBg({
+      childOvr = {
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        borderColor = unit?.isUpgraded ? 0xFFFFB70B : selectColor
+        children = {
+          transform = { rotate = -45 }
+          children = @() {
+            watch = level
+            rendObj = ROBJ_TEXT
+            text = level.get()
+          }.__update(fontTiny)}
+      }
+    })
+  }
 }
 
 let mkUnitPlate = @(unit) {

@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
-let { resetTimeout } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { frnd } = require("dagor.random")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -8,6 +7,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoginStarted, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 const MAX_DELAY = 30 
@@ -40,7 +40,7 @@ function updateTimeAlready() {
   let timeLeft = allClientsRelogin.get() - serverTime.get()
   isReloginTimeAlready.set(timeLeft <= 0)
   if (timeLeft > 0)
-    resetTimeout(timeLeft, updateTimeAlready)
+    resetExtTimeout(timeLeft, updateTimeAlready)
 }
 updateTimeAlready()
 isServerTimeValid.subscribe(@(_) updateTimeAlready())
@@ -62,5 +62,5 @@ needReloginRightNow.subscribe(function(_) {
   let time = wasDelayedOnce.get() ? 0.1 : max(0.1, MAX_DELAY * frnd())
   wasDelayedOnce.set(true)
   log($"[LOGIN] Start timer for auto relogin by profile server allClientsRelogin {time}")
-  resetTimeout(time, startRelogin)
+  resetExtTimeout(time, startRelogin)
 })

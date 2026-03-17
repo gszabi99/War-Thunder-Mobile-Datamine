@@ -64,7 +64,7 @@
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
-      "showCScope": true,
+      "showCScope": false,
       "distance": {
         "presents": true,
         "minValue": 1000.0,
@@ -81,7 +81,7 @@
   },
   "scopeRangeSets": {
     "search": {
-      "range1": 5000.0,
+      "range1": 8000.0,
       "range2": 45000.0,
       "range3": 110000.0,
       "range4": 220000.0,

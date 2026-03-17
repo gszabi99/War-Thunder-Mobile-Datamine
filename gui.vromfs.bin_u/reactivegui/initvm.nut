@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "frp" import warn_on_deprecated_methods
 from "dagor.system" import DBGLEVEL
 from "controlsOptions" import enable_gyroscope
 import "%globalScripts/isAppLoaded.nut" as isAppLoaded

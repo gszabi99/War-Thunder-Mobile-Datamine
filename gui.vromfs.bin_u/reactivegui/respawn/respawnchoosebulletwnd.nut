@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, setOrSwapCurUnitBullet,
-  visibleBullets, visibleBulletsSec
+let { bulletsInfo, bulletsSecInfo, bulletsSpecInfo, chosenBullets, chosenBulletsSec, chosenBulletsSpec, setOrSwapCurUnitBullet,
+  visibleBullets, visibleBulletsSec, visibleBulletsSpec
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
@@ -11,7 +11,7 @@ let { textButtonCommon, textButtonPrimary, textButtonInactive } = require("%rGui
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
 let { mkBulletsList, mkCurListBulletInfo } = require("%rGui/bullets/bulletsSelectorComps.nut")
 
 
@@ -22,10 +22,15 @@ let openedSlot = Watched(-1)
 let openParams = mkWatched(persist, "openParams", null)
 let curSlotName = mkWatched(persist, "curSlotName", "")
 let isBulletSec = Computed(@() openedSlot.get() >= BULLETS_PRIM_SLOTS)
+let isBulletSpec = Computed(@() openedSlot.get() >= BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)
 let savedSlotName = Computed(function() {
-  let bullets = isBulletSec.get() ? chosenBulletsSec.get() : chosenBullets.get()
+  let bullets = isBulletSpec.get()
+      ? chosenBulletsSpec.get()
+    : isBulletSec.get()
+      ? chosenBulletsSec.get()
+    : chosenBullets.get()
   return openParams.get()?.slotIdx == null ? curSlotName.get()
-    : (bullets?[openParams.get().slotIdx % BULLETS_PRIM_SLOTS].name ?? curSlotName.get())
+    : (bullets?[openParams.get().slotIdx % (BULLETS_PRIM_SLOTS + (isBulletSpec.get() ? BULLETS_SEC_SLOTS : 0))].name ?? curSlotName.get())
 })
 let wndAABB = Watched(null)
 
@@ -37,6 +42,7 @@ function close(){
 savedSlotName.subscribe(@(v) curSlotName.set(v))
 chosenBullets.subscribe(@(_) curSlotName.set(savedSlotName.get()))
 chosenBulletsSec.subscribe(@(_) curSlotName.set(savedSlotName.get()))
+chosenBulletsSpec.subscribe(@(_) curSlotName.set(savedSlotName.get()))
 openParams.subscribe(@(_) wndAABB.set(null))
 curSlotName.subscribe(@(_) defer( function() {
   let aabb = gui_scene.getCompAABBbyKey(wndKey)
@@ -53,7 +59,11 @@ function applyBullet() {
 
 let applyText = utf8ToUpper(loc("msgbox/btn_choose"))
 function applyButton() {
-  let { fromUnitTags = null } = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
+  let { fromUnitTags = null } = isBulletSpec.get()
+      ? bulletsSpecInfo.get()
+    : isBulletSec.get()
+      ? bulletsSecInfo.get()
+    : bulletsInfo.get()
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.get()]
   let isEnoughLevel = reqLevel <= (selSlot.get()?.level ?? 0)
   let children = savedSlotName.get() == curSlotName.get()
@@ -68,7 +78,7 @@ function applyButton() {
       applyBullet,
       { ovr = { key = "applyButton" }}) 
   return {
-    watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, isBulletSec, selSlot]
+    watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, isBulletSec, isBulletSpec, selSlot]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     size = const [flex(), hdpx(110)]
@@ -82,9 +92,21 @@ function onClickBulletBtn(name) {
 }
 
 function bulletContent() {
-  let bInfo = Computed(@() isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get())
-  let visBullets = Computed(@() isBulletSec.get() ? visibleBulletsSec.get() : visibleBullets.get())
-  let cBullets = Computed(@() isBulletSec.get() ? chosenBulletsSec.get() : chosenBullets.get())
+  let bInfo = Computed(@() isBulletSpec.get()
+      ? bulletsSpecInfo.get()
+    : isBulletSec.get()
+      ? bulletsSecInfo.get()
+    : bulletsInfo.get())
+  let visBullets = Computed(@() isBulletSpec.get()
+      ? visibleBulletsSpec.get()
+    : isBulletSec.get()
+      ? visibleBulletsSec.get()
+    : visibleBullets.get())
+  let cBullets = Computed(@() isBulletSpec.get()
+      ? chosenBulletsSpec.get()
+    : isBulletSec.get()
+      ? chosenBulletsSec.get()
+    : chosenBullets.get())
   return @() {
     watch = [bInfo, visBullets, cBullets]
     halign = ALIGN_CENTER

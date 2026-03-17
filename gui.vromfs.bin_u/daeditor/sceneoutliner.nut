@@ -12,16 +12,15 @@ let nameFilter = require("components/nameFilter.nut")
 let mkCheckBox = require("components/mkCheckBox.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let textInput = require("%daeditor/components/textInput.nut")
-let { getSceneLoadTypeText, loadTypeConst, sceneGenerated, sceneSaved, getNumMarkedScenes, matchSceneEntity,
-  getScenePrettyName, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
-let { defaultScenesSortMode, mkSceneSortModeButton } = require("components/mkSortSceneModeButton.nut")
+let { getSceneLoadTypeText, getNumMarkedScenes, getScenePrettyName, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
+let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
-let {scan_folder, mkpath, file_exists} = require("dagor.fs")
-let {get_arg_value_by_name} = require("dagor.system")
-let datablock = require("DataBlock")
 let { Point3 } = require("dagor.math")
 let { isStringFloat } = require("%sqstd/string.nut")
 let { fileName } = require("%sqstd/path.nut")
+let { addImportDialog } = require("%daeditor/addImportDialog.nut")
+let { deferOnce } = require("dagor.workcycle")
+let { setTooltip } = require("components/cursors.nut")
 let ecs = require("%sqstd/ecs.nut")
 
 const TREE_CONTROL_CONTROL_WIDTH = 20
@@ -37,29 +36,19 @@ let showCommonScenes = mkWatched(persist, "showCommonScenes", true)
 let showOtherScenes = mkWatched(persist, "showOtherScenes", true)
 let itemDragData = Watched(null)
 let dragDestData = Watched(null)
-let dragDropPositionData = Watched(null)
 let markedStateScenes = mkWatched(persist, "markedStateScenes", {})
 let expandedStateScenes = mkWatched(persist, "expandedStateScenes", {})
 let filterString = mkWatched(persist, "filterString", "")
-let filterImportString = mkWatched(persist, "filterImportString", "")
 let selectionStateEntities = mkWatched(persist, "selectionStateEntities", {})
 let allEntities = mkWatched(persist, "allEntities", {})
 let scrollHandler = ScrollHandler()
-let sceneSortState = Watched(defaultScenesSortMode)
 
 let statusAnimTrigger = { lastN = null }
 
 let UNUSED = @(...) null
 
-
-local sceneSortFuncCache = defaultScenesSortMode.func
-
 function sceneToText(scene) {
-  if (scene.loadType == loadTypeConst) {
-    return scene.asText
-  }
-
-  local prettyName = getScenePrettyName(scene.loadType, scene.id)
+  local prettyName = getScenePrettyName(scene.id)
   local strippedPath = fileName(scene.path)
   local sceneName = prettyName.len() == 0 ? strippedPath : $"{prettyName} ({strippedPath})"
 
@@ -75,7 +64,7 @@ function entityToTxt(eid) {
 }
 
 let isFilteringEnabled = Computed(function (){
-  return (filterSelectedEntities?.get() ?? false) || (filterString?.get() != null && filterString.get().len() != 0)
+  return (filterSelectedEntities?.get() ?? false) || (filterString?.get() != null && filterString.get().len() != 0) || !showEntities.get()
 })
 
 let fakeScene = {
@@ -89,6 +78,31 @@ let fakeScene = {
   id = ecs.INVALID_SCENE_ID
   hasChildren = false
 }
+
+let isFakeSceneHidden = Computed(function() {
+  UNUSED(edObjectFlagsUpdateTrigger)
+
+  let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
+  foreach (id in entities) {
+    if (!entity_editor?.get_instance().isEntityHidden(id)) {
+      return false
+    }
+  }
+  return true
+})
+
+let isFakeSceneLocked = Computed(function() {
+  UNUSED(edObjectFlagsUpdateTrigger)
+
+  let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
+  foreach (id in entities) {
+    if (!entity_editor?.get_instance().isEntityLocked(id)) {
+      return false
+    }
+  }
+
+  return true
+})
 
 function getScene(id) {
   return id != ecs.INVALID_SCENE_ID ? sceneIdMap?.get()[id] : fakeScene
@@ -194,7 +208,7 @@ function gatherSceneItems(scene, order, isParentExpanded, depth, items, expanded
   local isAnythingFilteredIn = filterItem(sceneItem)
   let isExpanded = isParentExpanded && expandedStateCb(scene)
 
-  local entries = entity_editor?.get_instance().getSceneOrderedEntries(scene.loadType, scene.id) ?? []
+  local entries = entity_editor?.get_instance().getSceneOrderedEntries(scene.id) ?? []
   local i = 0
   foreach (entry in entries) {
     if (entry.isEntity) {
@@ -232,6 +246,15 @@ function gatherSceneItems(scene, order, isParentExpanded, depth, items, expanded
   return isAnythingFilteredIn
 }
 
+function getEntityCount(scene) {
+  if (scene.id == fakeScene.id) {
+    return allEntities.get()?[scene.id].len()
+  }
+  else {
+    return entity_editor?.get_instance().getSceneEntityCount(scene.id)
+  }
+}
+
 let filteredItems = Computed(function() {
   UNUSED(showEntities)
   UNUSED(showClientScenes)
@@ -254,8 +277,7 @@ let filteredItems = Computed(function() {
     return !scene.hasParent
   })
 
-  if (sceneSortFuncCache != null)
-    rootScenes.sort(sceneSortFuncCache)
+  rootScenes.sort(sortScenesByLoadType)
 
   local i = 0
   foreach (scene in rootScenes) {
@@ -274,7 +296,9 @@ let filteredScenesCount = Computed(@() filteredItems.get().filter(@(item) item?.
 let filteredScenesEntityCount = Computed(function() {
   local eCount = 0
   foreach (item in filteredItems.get()) {
-    eCount += item?.scene.entityCount ?? 0
+    if (item?.scene != null) {
+      eCount += getEntityCount(item.scene)
+    }
   }
   return eCount
 })
@@ -292,12 +316,6 @@ markedStateScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   markedScenes.trigger()
 })
 
-function calculateSceneEntityCount(saved, generated) {
-  local entities = allEntities.get()
-  entities = entities.filter(@(eid) matchSceneEntity(eid, saved, generated))
-  return entities.len()
-}
-
 let numMarkedScenesEntityCount = Computed(function() {
   local nSaved = 0
   local nGenerated = 0
@@ -305,14 +323,7 @@ let numMarkedScenesEntityCount = Computed(function() {
     if (item?.scene) {
       local scene = item.scene
       if (markedStateScenes.get()?[scene.id]) {
-        if (scene.loadType == loadTypeConst) {
-          if (scene.id == sceneSaved.id)
-            nSaved = calculateSceneEntityCount(true, false)
-          if (scene.id == sceneGenerated.id)
-            nGenerated = calculateSceneEntityCount(false, true)
-        } else {
-            nSaved += scene.entityCount
-        }
+        nSaved += getEntityCount(scene)
       }
     }
   }
@@ -406,12 +417,13 @@ function getIcon(name) {
   return $"!%daeditor/images/{name}.tga"
 }
 
-function mkIconButton(icon, onClick = null, visible = true, parentHovered = false, opacity = 0.9) {
+function mkIconButton(icon, onClick = null, visible = true, parentHovered = false, opacity = 0.9, tooltip = null) {
   return watchElemState( @(sf) {
     rendObj = ROBJ_BOX
-    behavior = (onClick != null && visible) ? Behaviors.Button : null
+    behavior = (onClick != null && visible) ? Behaviors.Button : Behaviors.TrackMouse
     onClick = onClick
     size = SIZE_TO_CONTENT
+    onHover = @(on) setTooltip(on ? tooltip : null)
     children = @() {
       rendObj = ROBJ_IMAGE
       image = !visible ? null : ((sf & S_HOVER) || parentHovered ? Picture(icon) : null)
@@ -438,6 +450,8 @@ function gatherItemsAndModifySelection(op) {
   }
 }
 
+let hasFilteredItems = Computed(@() isFilteringEnabled.get() && filteredItems.get().len() != 0)
+
 let filter = nameFilter(filterString, {
   placeholder = "Filter and search"
   onChange = @(text) filterString.set(text)
@@ -454,9 +468,11 @@ let filter = nameFilter(filterString, {
       size = SIZE_TO_CONTENT
       pad = fsh(0.5)
       watch = [isFilteringEnabled, filteredItems]
-      children = mkIconButton(getIcon("layer_entity"),
-        isFilteringEnabled.get() && filteredItems.get().len() != 0 ? @() gatherItemsAndModifySelection(true) : null,
-        true, true, isFilteringEnabled.get() && filteredItems.get().len() != 0 ? 1.0 : 0.5)
+      children = mkIconButton(getIcon("filter_selected"),
+        hasFilteredItems.get() ? @() gatherItemsAndModifySelection(true) : null,
+        true, true, hasFilteredItems.get() ? 1.0 : 0.5, hasFilteredItems.get()
+          ? "Select all currently filtered items"
+          : "There are no matches for selection")
     }
     @() {
       halign = ALIGN_CENTER
@@ -464,9 +480,11 @@ let filter = nameFilter(filterString, {
       size = SIZE_TO_CONTENT
       pad = fsh(0.5)
       watch = [isFilteringEnabled, filteredItems]
-      children = mkIconButton(getIcon("layer_entity"),
-        isFilteringEnabled.get() && filteredItems.get().len() != 0 ? @() gatherItemsAndModifySelection(false) : null,
-        true, true, isFilteringEnabled.get() && filteredItems.get().len() != 0 ? 0.9 : 0.5)
+      children = mkIconButton(getIcon("filter_unselected"),
+        hasFilteredItems.get() ? @() gatherItemsAndModifySelection(false) : null,
+        true, true, hasFilteredItems.get() ? 0.9 : 0.5, hasFilteredItems.get()
+          ? "Unselect all currently filtered items"
+          : "There are no matches for unselection")
     }
   ]
 })
@@ -481,7 +499,7 @@ function getAllSelectedItems() {
     let item = {}
     item.id <- value
     item.isEntity <- false
-    item.loadType <- sceneIdMap?.get()[value].loadType
+    item.loadType <- sceneIdMap?.get()[value].loadType ?? 0
     return item
   }))
 
@@ -547,12 +565,12 @@ function initLists() {
   initEntitiesList();
 }
 
-sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) updateAllScenes())
-entitiesListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) updateAllScenes())
-allScenesWatcher.subscribe_with_nasty_disregard_of_frp_update(@(_v) initLists())
+sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) deferOnce(updateAllScenes))
+allScenesWatcher.subscribe_with_nasty_disregard_of_frp_update(@(_v) deferOnce(initLists))
 
-addEntityCreatedCallback(@(_eid) initEntitiesList())
-addEntityRemovedCallback(@(_eid) initEntitiesList())
+entitiesListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) deferOnce(initEntitiesList))
+addEntityCreatedCallback(@(_eid) deferOnce(initEntitiesList))
+addEntityRemovedCallback(@(_eid) deferOnce(initEntitiesList))
 
 const setSceneNameUID = "set_scene_name_modal_window"
 
@@ -676,7 +694,7 @@ function getTreeControl(item, ind) {
     ++currentOffset
   }
 
-  if ((isScene && !(item.scene?.importDepth == 0 || (item.scene?.importDepth != 0 && !entity_editor?.get_instance().isChildScene(3, item.scene.id))))
+  if ((isScene && !(item.scene?.importDepth == 0 || (item.scene?.importDepth != 0 && !entity_editor?.get_instance().isChildScene(item.scene.id))))
     || !isScene) {
     if (ind + 1 == filteredItems.get().len() || item.depth > filteredItems.get()[ind + 1].depth) {
       objs.append(
@@ -753,7 +771,7 @@ function getTreeControl(item, ind) {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           rendObj = ROBJ_TEXT
-          text = expandedStateScenes.get()[item.scene.id] ? "-" : "+"
+          text = expandedStateScenes?.get()[item.scene.id] ? "-" : "+"
           color = Color(0, 0, 0)
         }
 
@@ -781,7 +799,7 @@ function getRowText(item) {
   }
 }
 
-function mkTag(icon, bgColor, color, text, maxTextString) {
+function mkTag(icon, bgColor, color, text, maxTextString, tooltip = null) {
   return {
     rendObj = ROBJ_BOX
     fillColor = bgColor
@@ -790,6 +808,8 @@ function mkTag(icon, bgColor, color, text, maxTextString) {
     valign = ALIGN_CENTER
     padding = [0, fsh(0.5), 0, fsh(0.5)]
     gap = fsh(0.25)
+    behavior = Behaviors.TrackMouse
+    onHover = @(on) setTooltip(on ? tooltip : null)
     children = [
       {
         halign = icon != null ? ALIGN_RIGHT : ALIGN_CENTER
@@ -813,6 +833,8 @@ function mkTag(icon, bgColor, color, text, maxTextString) {
 
 function mkDataRow(item, textColor, hovered) {
   let isRealScene = item?.scene != null && item.scene.id != fakeScene.id
+  let isEntity = item?.entity != null
+  let isScene = item?.scene != null
   let isOtherItem = item?.text != null
 
   function getTagWidth(hasIcon, maxTextString) {
@@ -820,10 +842,10 @@ function mkDataRow(item, textColor, hovered) {
   }
 
   function canBeModified() {
-    if (item?.scene != null) {
+    if (isScene) {
       return canSceneBeModified(item.scene)
     }
-    else if (item?.entity != null) {
+    else if (isEntity) {
       return item.entity.parentSceneId == fakeScene.id || canSceneBeModified(sceneIdMap.get()[item.entity.parentSceneId])
     }
 
@@ -835,10 +857,14 @@ function mkDataRow(item, textColor, hovered) {
   }
 
   function isTransformable() {
-    if (item?.scene != null) {
+    if (isScene) {
+      if (!canBeModified() || !isRealScene) {
+        return false
+      }
+
       return entity_editor?.get_instance().isSceneInTransformableHierarchy(item.scene.id)
     }
-    else if (item?.entity != null) {
+    else if (isEntity) {
       return entity_editor?.get_instance().isEntityTransformable(item.entity.id)
     }
 
@@ -846,14 +872,14 @@ function mkDataRow(item, textColor, hovered) {
   }
 
   function getTransformableIconOpacity() {
-    if (item?.scene != null) {
+    if (isScene) {
       if (!canBeModified() || !isRealScene) {
         return 0.5
       }
 
       return isTransformable() ? 0.9 : 0.75
     }
-    else if (item?.entity != null) {
+    else if (isEntity) {
       return isTransformable() ? 0.9 : 0.5
     }
     else {
@@ -862,11 +888,33 @@ function mkDataRow(item, textColor, hovered) {
   }
 
   function isHidden() {
-    if (item?.scene != null) {
-      return entity_editor?.get_instance().isSceneHidden(item.scene.id)
+    if (isScene) {
+      if (item.scene.id == fakeScene.id) {
+        return isFakeSceneHidden.get()
+      }
+      else {
+        return entity_editor?.get_instance().isSceneHidden(item.scene.id)
+      }
     }
-    else if (item?.entity != null) {
+    else if (isEntity) {
       return entity_editor?.get_instance().isEntityHidden(item.entity.id)
+    }
+    else {
+      return true
+    }
+  }
+
+  function isLocked() {
+    if (isScene) {
+      if (item.scene.id == fakeScene.id) {
+       return isFakeSceneLocked.get()
+      }
+      else {
+        return entity_editor?.get_instance().isSceneLocked(item.scene.id)
+      }
+    }
+    else if (isEntity) {
+      return entity_editor?.get_instance().isEntityLocked(item.entity.id)
     }
     else {
       return true
@@ -884,12 +932,16 @@ function mkDataRow(item, textColor, hovered) {
     return data
   }
 
+  function getSceneTypeTagText(scene) {
+    return scene.id != fakeScene.id ? getSceneLoadTypeText(scene) : "OTHER"
+  }
+
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     gap = fsh(0.5)
     children = [
-      item?.scene != null
+      isScene
         ? {
           rendObj = ROBJ_TEXT
           text = item.scene.id != fakeScene.id ? item.scene.id : ""
@@ -914,19 +966,21 @@ function mkDataRow(item, textColor, hovered) {
           getIcon("rename"),
           isRealScene && canSceneBeModified(item.scene) ? @() setScenePrettyName(item.scene.id) : null,
           isRealScene && canSceneBeModified(item.scene)
-          hovered)
+          hovered, 0.9, "Rename alias")
       }
-      item?.scene != null
+      isScene
         ? mkTag(null, Color(67, 67, 67), Color(154, 154, 154),
-          item.scene.id != fakeScene.id ? getSceneLoadTypeText(item.scene) : "OTHER", "COMMON")
+          getSceneTypeTagText(item.scene), "COMMON", $"{getSceneTypeTagText(item.scene)} scene")
         : { rendObj = ROBJ_BOX, size = [ getTagWidth(false, "COMMON"), flex() ] }
-      item?.scene != null
-        ? mkTag(getIcon("select_none"), Color(75, 51, 49), Color(174, 143, 109), item.scene.entityCount, "88888")
+      isScene
+        ? mkTag(getIcon("select_none"), Color(75, 51, 49), Color(174, 143, 109), getEntityCount(item.scene), "88888",
+          $"{getEntityCount(item.scene)} entities")
         : { rendObj = ROBJ_BOX, size = [ getTagWidth(true, "88888"), flex() ] }
       {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
-        children = mkIconButton(getIcon("move"), null, true, true, getTransformableIconOpacity())
+        children = mkIconButton(getIcon("move"), null, true, true, getTransformableIconOpacity(),
+          isTransformable() ? "Transformable" : "Not transformable")
       }
       {
         halign = ALIGN_LEFT
@@ -936,24 +990,30 @@ function mkDataRow(item, textColor, hovered) {
           markObject(item)
           selectObjects()
           entity_editor?.get_instance().zoomAndCenter()
-        }, !isOtherItem, hovered)
+        }, !isOtherItem, hovered, 0.9, "Zoom in at center in the viewport")
       }
       {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         children = mkIconButton(getIcon("layer_entity"), function() {
-          clearSelection()
-          if (item?.scene != null) {
+          local wasSelected = isItemSelected(item)
+          if (isScene) {
             let newSelectionItems = []
             gatherSceneItems(item.scene, 0, true, 0, newSelectionItems, @(_scene) true)
             foreach (selected in newSelectionItems) {
-              markObject(selected)
+              markObject(selected, !wasSelected)
             }
           }
-          else if (item?.entity != null) {
-            markObject(item)
+          else if (isEntity) {
+            markObject(item, !wasSelected)
           }
-        }, !isOtherItem, hovered)
+        }, !isOtherItem, hovered, 0.9, Computed(function() {
+          UNUSED(markedStateScenes)
+          UNUSED(selectionStateEntities)
+          return isItemSelected(item)
+            ? "Selected\nClick to unselect this item and all nested items in the viewport"
+            : "Not selected\nClick to select this item and all nested items in the viewport"
+        }))
       }
       @() {
         halign = ALIGN_LEFT
@@ -966,34 +1026,136 @@ function mkDataRow(item, textColor, hovered) {
           else {
             entity_editor?.get_instance().hideObjects([itemToObjectData()])
           }
-        }, !isOtherItem, hovered || isHidden())
+        }, !isOtherItem, hovered || isHidden(), 0.9, Computed(function() {
+          UNUSED(edObjectFlagsUpdateTrigger)
+          return isHidden()
+            ? "Hidden\nClick to show debug visualization in the viewport"
+            : "Visible\nClick to hide debug visualization in the viewport"
+        }))
       }
-      {
+      @() {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
-        children = mkIconButton(getIcon("lock_open"), null,
-        false, 
-        hovered)
+        watch = edObjectFlagsUpdateTrigger
+        children = mkIconButton(isLocked() ? getIcon("lock_close") : getIcon("lock_open"), function() {
+          if (isLocked()) {
+            entity_editor?.get_instance().unlockObjects([itemToObjectData()])
+          }
+          else {
+            entity_editor?.get_instance().lockObjects([itemToObjectData()])
+          }
+        },
+        !isOtherItem,
+        hovered || isLocked(), 0.9, Computed(function() {
+          UNUSED(edObjectFlagsUpdateTrigger)
+          return isLocked()
+            ? "Locked\nClick to unlock editing"
+            : "Unlocked\nClick to lock editing"
+        }))
       }
       {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         children = mkIconButton(getIcon("delete"), function() {
           entity_editor?.get_instance().removeObjects([itemToObjectData()])
-        }, !isOtherItem, hovered, canBeRemoved() ? 0.9 : 0.5)
+        }, !isOtherItem, hovered, canBeRemoved() ? 0.9 : 0.5, canBeRemoved()
+          ? "Remove item"
+          : "This item cannot be removed")
       }
     ]
   }
 }
 
+let sceneRowItemStateWatchers = {}
+markedStateScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
+  foreach (item, stateWatcher in sceneRowItemStateWatchers) {
+    if (item?.scene != null) {
+      let state = stateWatcher.get()
+      if (state.isMarked != v?[item.scene.id]) {
+        state.isMarked = v[item.scene.id]
+        stateWatcher.set(state)
+        stateWatcher.trigger()
+      }
+    }
+  }
+})
+
+selectionStateEntities.subscribe_with_nasty_disregard_of_frp_update(function(v) {
+  foreach (item, stateWatcher in sceneRowItemStateWatchers) {
+    if (item?.entity != null) {
+      let state = stateWatcher.get()
+      if (state.isMarked != v?[item.entity.id]) {
+        state.isMarked = v[item.entity.id]
+        stateWatcher.set(state)
+        stateWatcher.trigger()
+      }
+    }
+  }
+})
+
+dragDestData.subscribe_with_nasty_disregard_of_frp_update(function(v) {
+  if (v == null) {
+    foreach (_item, stateWatcher in sceneRowItemStateWatchers) {
+      let state = stateWatcher.get()
+      if (state.dropPosition != null) {
+        state.dropPosition = null
+        stateWatcher.trigger()
+      }
+    }
+  }
+  else {
+    function getDropPosForItem(item, itemIndex) {
+      if (v.dropPosition == null) {
+        return item == v.item ? 0 : null
+      }
+      else {
+        local destPos = v.dropPosition > 0 ? 0 : -1
+        if (itemIndex - 1 == v.index + destPos) {
+          return -1
+        }
+        else if (itemIndex == v.index + destPos) {
+          return 1
+        }
+      }
+
+      return null
+    }
+
+    foreach (item, stateWatcher in sceneRowItemStateWatchers) {
+      let state = stateWatcher.get()
+      let thisDropPosition = getDropPosForItem(item, state.index)
+      if (state.dropPosition != thisDropPosition) {
+        state.dropPosition = thisDropPosition
+        stateWatcher.trigger()
+      }
+    }
+  }
+})
+
+function updateDropPosition(newPosition) {
+  let dragDest = dragDestData.get()
+  if (dragDest != null && dragDest.dropPosition != newPosition) {
+    dragDest.dropPosition = newPosition
+    dragDestData.set(dragDest)
+    dragDestData.trigger()
+  }
+}
+
 function listSceneRow(item, idx) {
+  let stateData = { index = idx, isMarked = isItemSelected(item), dropPosition = null }
+  let stateWatcher = Watched(stateData)
+  sceneRowItemStateWatchers[item] <- stateWatcher
+
   return watchElemState(function(sf) {
     let isScene = item?.scene != null
-    let isMarked = isItemSelected(item)
-    let textColor = isMarked ? colors.TextDefault : (isScene ? Color(50, 166, 168) : colors.TextDarker)
-    let rowColor = isMarked ? colors.Active
-    : sf & S_TOP_HOVER ? colors.GridRowHover
-    : colors.GridBg[idx % colors.GridBg.len()]
+
+    let isMarked = Computed(@() stateWatcher.get().isMarked)
+    let textColor = Computed(@() isMarked.get() ? colors.TextDefault : (isScene ? Color(50, 166, 168) : colors.TextDarker))
+    let rowColor = Computed(function () {
+      return isMarked.get() ? colors.Active
+        : sf & S_TOP_HOVER ? colors.GridRowHover
+        : colors.GridBg[idx % colors.GridBg.len()]
+    })
 
     let canBeDropped = Computed(function () {
       if (itemDragData.get() == null || dragDestData.get() == null) {
@@ -1001,11 +1163,11 @@ function listSceneRow(item, idx) {
       }
 
       let dragDest = dragDestData.get()
-      if (dragDest.item?.entity != null && dragDropPositionData.get() == null) {
+      if (dragDest.item?.entity != null && dragDest.dropPosition == null) {
         return false
       }
 
-      if (dragDropPositionData.get() != null && isFilteringEnabled.get()) {
+      if (dragDest.dropPosition != null && isFilteringEnabled.get()) {
         return false
       }
 
@@ -1053,16 +1215,13 @@ function listSceneRow(item, idx) {
       return (sf & S_DRAG) ? Color(255,255,0) : (!canBeDropped.get() ? Color(255,0,0) : Color(255, 255, 255))
     })
 
-    function getSeparatorColor(position) {
-      if (dragDestData.get() != null && dragDropPositionData.get() != null) {
-        local destPos = dragDropPositionData.get() > 0 ? 0 : -1
-        if (position == dragDestData.get().index + destPos) {
-          if (canBeDropped.get()) {
-            return Color(255, 255, 255)
-          }
-          else {
-            return Color(255, 0, 0)
-          }
+    function getSeparatorColor(state, position) {
+      if (state.dropPosition != null && state.dropPosition != 0 && state.dropPosition == position) {
+        if (canBeDropped.get()) {
+          return Color(255, 255, 255)
+        }
+        else {
+          return Color(255, 0, 0)
         }
       }
 
@@ -1072,19 +1231,16 @@ function listSceneRow(item, idx) {
     return {
       rendObj = ROBJ_SOLID
       size = FLEX_H
-      color = rowColor
+      color = rowColor.get()
       item
-      watch = [selectedEntities, markedStateScenes, expandedStateScenes]
+      watch = [stateWatcher, expandedStateScenes]
       behavior = item?.text == null ? [Behaviors.TrackMouse, Behaviors.DragAndDrop] : []
       flow = FLOW_HORIZONTAL
       eventPassThrough = true
       dropData = item
 
       canDrop = function(_data) {
-        let data = {}
-        data.item <- item
-        data.index <- idx
-        dragDestData.set(data)
+        dragDestData.set({item, index = idx, dropPosition = dragDestData?.get().dropPosition })
         return canBeDropped.get()
       }
 
@@ -1093,8 +1249,8 @@ function listSceneRow(item, idx) {
           return
         }
 
-        if (dragDropPositionData.get() == null) {
-          let dragDest = dragDestData.get()
+        let dragDest = dragDestData.get()
+        if (dragDest.dropPosition == null) {
           if (dragDest.item?.entity != null) {
             return
           }
@@ -1102,15 +1258,13 @@ function listSceneRow(item, idx) {
           entity_editor?.get_instance().setSceneNewParent(dragDest.item.scene.id, itemDragData.get())
         }
         else {
-          let dragDest = dragDestData.get()
           entity_editor?.get_instance().setSceneNewParentAndOrder(getItemParentScene(dragDest.item),
-            dragDropPositionData.get() < 0 ? dragDest.item.order : dragDest.item.order + 1, itemDragData.get())
+            dragDest.dropPosition < 0 ? dragDest.item.order : dragDest.item.order + 1, itemDragData.get())
         }
       }
 
       onMouseMove = function (event) {
         if (sf & S_DRAG) {
-          dragDropPositionData.set(null)
           dragDestData.set(null)
         }
 
@@ -1121,13 +1275,13 @@ function listSceneRow(item, idx) {
           let relY = (event.screenY - rect.t)
 
           if (relY < borderSize) {
-            dragDropPositionData.set(-1)
+            updateDropPosition(-1)
           }
           else if (relY > elemH - borderSize) {
-            dragDropPositionData.set(1)
+            updateDropPosition(1)
           }
           else {
-            dragDropPositionData.set(null)
+            updateDropPosition(null)
           }
         }
       }
@@ -1135,13 +1289,16 @@ function listSceneRow(item, idx) {
       onDragMode = function(on, _val) {
         let selectedIds = getAllSelectedItems()
 
-        if (isMarked) {
+        if (isMarked.get()) {
           itemDragData.set(on ? selectedIds : null)
         }
         else {
           let dragItem = {}
           dragItem.id <- isScene ? item.scene.id : item.entity.id
           dragItem.isEntity <- !isScene
+          if (isScene) {
+            dragItem.loadType <- item.scene.loadType ?? 0
+          }
           itemDragData.set(on ? [dragItem] : null)
         }
 
@@ -1247,9 +1404,9 @@ function listSceneRow(item, idx) {
           children = [
             @() {
               rendObj = ROBJ_SOLID
-              watch = [itemDragData, dragDestData, dragDropPositionData]
+              watch = [stateWatcher]
               size = [flex(), 1]
-              color = getSeparatorColor(idx - 1)
+              color = getSeparatorColor(stateWatcher.get(), -1)
             }
             {
               flow = FLOW_HORIZONTAL
@@ -1265,18 +1422,18 @@ function listSceneRow(item, idx) {
                 }
                 @() {
                   size = [ flex(), SIZE_TO_CONTENT ]
-                  watch = [itemDragData, dragDestData, dragDropPositionData]
+                  watch = [stateWatcher]
                   padding = [fsh(0.5), fsh(0.5), fsh(0.5), 0]
-                  children = mkDataRow(item, (dragDestData?.get().item == item && dragDropPositionData.get() == null) || (sf & S_DRAG) ? dragColor.get() : textColor,
+                  children = mkDataRow(item, (stateWatcher?.get().dropPosition == 0) || (sf & S_DRAG) ? dragColor.get() : textColor.get(),
                     sf & S_HOVER)
                 }
               ]
             }
             @() {
               rendObj = ROBJ_SOLID
-              watch = [itemDragData, dragDestData, dragDropPositionData]
+              watch = [stateWatcher]
               size = [flex(), 1]
-              color = getSeparatorColor(idx)
+              color = getSeparatorColor(stateWatcher.get(), 1)
             }
           ]
         }
@@ -1285,237 +1442,39 @@ function listSceneRow(item, idx) {
   })
 }
 
-sceneSortState.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  sceneSortFuncCache = v?.func
-  selectedEntities.trigger()
-  markedStateScenes.trigger()
-  initLists()
-})
-
 de4workMode.subscribe(@(_) gui_scene.resetTimeout(0.1, initLists))
-
-const selectSceneUID = "select_scene_modal_window"
-
-let gamebase = get_arg_value_by_name("gamebase")
-let root     = gamebase != null ? $"{gamebase}/" : ""
-let selectedImport = Watched("")
-
-let addImportFilter = nameFilter(filterImportString, {
-  placeholder = "Filter by name"
-  onChange = @(text) filterImportString.set(text)
-  onEscape = @() set_kb_focus(null)
-  onReturn = @() set_kb_focus(null)
-  onClear = function() {
-    filterImportString.set("")
-    set_kb_focus(null)
-  }
-})
-
-function listImportSceneRow(scene, index) {
-  return watchElemState(function(sf) {
-    return {
-      rendObj = ROBJ_SOLID
-      size = FLEX_H
-      color = selectedImport.get() == scene ? colors.Active : sf & S_TOP_HOVER ? colors.GridRowHover : colors.GridBg[index % colors.GridBg.len()]
-      scene
-      behavior = Behaviors.Button
-      watch = selectedImport
-
-      onClick = @() selectedImport.set(scene)
-
-      children = {
-        rendObj = ROBJ_TEXT
-        text = scene
-        color = colors.TextDefault
-        margin = fsh(0.5)
-      }
-    }
-  })
-}
 
 function isAnyEntitySelected() {
   return selectionStateEntities?.get().filter(@(val, _) val).len() != 0
 }
 
-let doImportScene = function(scenePath) {
-  let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
-  if (selectedSceneIds?.len() == 1 && !isAnyEntitySelected()) {
-    entity_editor?.get_instance().addImportScene(selectedSceneIds[0], scenePath)
-    expandedStateScenes?.mutate(function(value) {
-      value[selectedSceneIds[0]] = true
-    })
-    markedScenes.trigger()
-    updateAllScenes()
-  }
-}
-
-let importScene = function() {
-  let close = function() {
-    removeModalWindow(selectSceneUID)
-    selectedImport.set("")
-  }
-
-  let isScenePathValid = Computed(@() selectedImport.get()!=null && selectedImport.get()!="")
-
-  let scenes = scan_folder({ root = $"{root}gamedata/scenes", vromfs = true, realfs = true, recursive = true, files_suffix = "*.blk" })
-    .map(function (f) {
-      return f.replace($"{root}", "")
-    })
-
-  let filteredImports = Computed(function() {
-    local scenesCopy = scenes.map(@(scene) scene)
-    if (filterImportString.get() != "")
-      scenesCopy = scenesCopy.filter(function(scene) {
-        local text = filterImportString.get()
-        if (text==null || text=="")
-          return true
-        if (scene.tolower().indexof(text.tolower()) != null)
-          return true
-        return false
-    })
-    return scenesCopy
-  })
-
-  function listImportContent() {
-    let sRows = filteredImports.get().map(@(scene, index) listImportSceneRow(scene, index))
-
-    return {
-      size = FLEX_H
-      flow = FLOW_VERTICAL
-      children = sRows
-      behavior = Behaviors.Button
-      watch = filteredImports
-    }
-  }
-
-  addModalWindow({
-    key = selectSceneUID
-    children =
-    {
-      behavior = Behaviors.Button
-      gap = fsh(0.5)
-      flow = FLOW_VERTICAL
-      rendObj = ROBJ_SOLID
-      size = const [hdpx(700), hdpx(768)]
-      color = Color(20,20,20,255)
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      padding = hdpx(10)
-      children = [
-        {
-          children = txt("Select a scene to import")
-        }
-        {
-          size = FLEX_H
-          flow = FLOW_HORIZONTAL
-          children = addImportFilter
-        }
-        {
-          size = flex()
-          children = makeVertScroll(listImportContent)
-        }
-        hflow(
-          textButton("Cancel", close, {hotkeys=[["Esc"]]})
-            @() {
-              watch = isScenePathValid
-              children = isScenePathValid.get() ? textButton("Add scene", function() {
-                doImportScene(selectedImport.get())
-                close()
-              }) : null
-            }
-        )
-      ]
-    }
-  })
-}
-
-const importNewSceneUID = "import_new_scene_modal_window"
-const baseScenePath = "gamedata/scenes/"
-
-let doImportNewScene = function(sceneName) {
-  let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
-  if (selectedSceneIds?.len() == 1 && !isAnyEntitySelected()) {
-    let path = $"{baseScenePath}{sceneName}.blk"
-    mkpath($"%gameBase/{path}")
-    let data = datablock()
-    data.saveToTextFile($"%gameBase/{path}");
-    entity_editor?.get_instance().addImportScene(selectedSceneIds[0], path)
-    expandedStateScenes?.mutate(function(value) {
-      value[selectedSceneIds[0]] = true
-    })
-    updateAllScenes()
-  }
-}
-
-function importNewScene() {
-  let close = @() removeModalWindow(importNewSceneUID)
-  let newSceneName = Watched("")
-  let isSceneValid = Computed(@() newSceneName.get()!=null && newSceneName.get()!="" && !file_exists($"%gameBase/{baseScenePath}{newSceneName.get()}.blk"))
-
-  addModalWindow({
-    key = importNewSceneUID
-    children =
-    {
-      behavior = Behaviors.Button
-      gap = fsh(0.5)
-      flow = FLOW_VERTICAL
-      rendObj = ROBJ_SOLID
-      size = SIZE_TO_CONTENT
-      color = Color(20,20,20,255)
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      padding = hdpx(10)
-      children = [
-        {
-          children = txt("Enter new scene name")
-        }
-        {
-          size = FLEX_H
-          children = textInput(newSceneName)
-        }
-        hflow(
-          textButton("Cancel", close, {hotkeys=[["Esc"]]})
-            @() {
-              watch = isSceneValid
-              children = textButton("Create and add", function() {
-                doImportNewScene(newSceneName.get())
-                close()
-              }, { off = !isSceneValid.get(), disabled = Computed(@() !isSceneValid.get()) })
-            }
-        )
-      ]
-    }
-  })
-}
-
 function createSelectButton() {
-  return textButton("Select", selectObjects)
+  return textButton("Select", selectObjects, {
+    boxStyle = {
+      normal = {
+        margin = 0
+      }},
+    onHover = @(on) setTooltip(on ? "Select items in the viewport" : null) })
 }
 
 let canAddImport = Computed(function() {
-    let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
-    if (selectedSceneIds?.len() != 1 || (selectionStateEntities.get() != null && isAnyEntitySelected())) {
-      return false
-    }
+  let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
+  if (selectedSceneIds?.len() != 1 || (selectionStateEntities.get() != null && isAnyEntitySelected())) {
+    return false
+  }
 
-    local scene = sceneIdMap?.get()[selectedSceneIds[0]]
-    if (scene?.loadType != 3) {
-      return false
-    }
+  local scene = sceneIdMap?.get()[selectedSceneIds[0]]
+  if (scene?.loadType != 3) {
+    return false
+  }
 
-    return canSceneBeModified(scene)
-  })
-
-function createImportExistingSceneButton() {
-  return textButton("Import existing", importScene, { off = !canAddImport.get(), disabled = Computed(@() !canAddImport.get() )})
-}
-
-function createImportNewSceneButton() {
-  return textButton("Import new", importNewScene, { off = !canAddImport.get(), disabled = Computed(@() !canAddImport.get() )})
-}
+  return canSceneBeModified(scene)
+})
 
 function createRemoveObjectsButton() {
   let canRemoveObjects = Computed(function() {
+    UNUSED(edObjectFlagsUpdateTrigger)
+
     let selectedItems = getAllSelectedItems()
     if (selectedItems.len() == 0) {
       return false;
@@ -1524,7 +1483,7 @@ function createRemoveObjectsButton() {
     foreach (item in selectedItems) {
       if (item.isEntity) {
         let parentSceneId = entity_editor?.get_instance().getEntityRecordSceneId(item.id)
-        if (parentSceneId != ecs.INVALID_SCENE_ID && !canSceneBeModified(sceneIdMap?.get()[parentSceneId])) {
+        if (entity_editor?.get_instance()?.isEntityLocked(item.id) || (parentSceneId != ecs.INVALID_SCENE_ID && !canSceneBeModified(sceneIdMap?.get()[parentSceneId]))) {
           return false
         }
       }
@@ -1539,9 +1498,21 @@ function createRemoveObjectsButton() {
     return true
   })
 
-  return textButton("Remove", function() {
+  return @() {
+    watch = [edObjectFlagsUpdateTrigger, canRemoveObjects]
+    children = textButton("Remove", function() {
       entity_editor?.get_instance().removeObjects(getAllSelectedItems())
-    }, { off = !canRemoveObjects.get(), disabled = Computed(@() !canRemoveObjects.get() )})
+      },
+      {
+        off = !canRemoveObjects.get()
+        disabled = Computed(@() !canRemoveObjects.get() )
+        onHover = @(on) setTooltip(on ? Computed(@() canRemoveObjects.get() ? "Remove selected items" : "First, select the target items") : null)
+        boxStyle = {
+          normal = {
+            margin = 0
+          }
+      }})
+  }
 }
 
 function createHideObjectsButton() {
@@ -1557,31 +1528,125 @@ function createHideObjectsButton() {
     return true
   })
 
-  return textButton("Hide", function() {
-      let selectedItems = getAllSelectedItems()
-      local allObjectsHidden = true
-      foreach (item in selectedItems) {
-        if (item.isEntity) {
-          if (!entity_editor?.get_instance().isEntityHidden(item.id)) {
-            allObjectsHidden = false
-            break;
-          }
-        }
-        else {
-          if (!entity_editor?.get_instance().isSceneHidden(item.id)) {
-            allObjectsHidden = false
-            break;
-          }
-        }
-      }
+  let isSelectionHidden = Computed(function() {
+    UNUSED(markedStateScenes)
+    UNUSED(selectionStateEntities)
+    UNUSED(edObjectFlagsUpdateTrigger)
 
-      if (allObjectsHidden) {
-        entity_editor?.get_instance().unhideObjects(selectedItems)
+    let selectedItems = getAllSelectedItems()
+    foreach (item in selectedItems) {
+      if (item.isEntity) {
+        if (!entity_editor?.get_instance().isEntityHidden(item.id)) {
+          return false
+        }
       }
       else {
-        entity_editor?.get_instance().hideObjects(selectedItems)
+        if (item.id == fakeScene.id) {
+          if (!isFakeSceneHidden.get()) {
+            return false
+          }
+        }
+        else if (!entity_editor?.get_instance().isSceneHidden(item.id)) {
+          return false
+        }
       }
-    }, { off = !canHideObjects.get(), disabled = Computed(@() !canHideObjects.get() )})
+    }
+
+    return true
+  })
+
+  return @() {
+    watch = [isSelectionHidden, canHideObjects]
+    children = textButton(isSelectionHidden.get() && canHideObjects.get() ? "Unhide" : "Hide", function() {
+      if (isSelectionHidden.get()) {
+        entity_editor?.get_instance().unhideObjects(getAllSelectedItems())
+      }
+      else {
+        entity_editor?.get_instance().hideObjects(getAllSelectedItems())
+      }
+    }, {
+      off = !canHideObjects.get(),
+      disabled = Computed(@() !canHideObjects.get() ),
+      onHover = @(on) setTooltip(on ? Computed(function() {
+        if (!canHideObjects.get()) {
+          return "First, select the target items"
+        }
+
+        return isSelectionHidden.get() ? "Show debug visualization for selected items in the viewport" : "Hide debug visualization for selected items in the viewport"
+      }) : null),
+      boxStyle = {
+        normal = {
+          margin = 0
+        }
+      }})
+  }
+}
+
+function createLockObjectsButton() {
+  let canLockObjects = Computed(function() {
+    UNUSED(markedStateScenes)
+    UNUSED(selectionStateEntities)
+
+    let selectedItems = getAllSelectedItems()
+    if (selectedItems.len() == 0) {
+      return false;
+    }
+
+    return true
+  })
+
+  let isSelectionLocked = Computed(function() {
+    UNUSED(markedStateScenes)
+    UNUSED(selectionStateEntities)
+    UNUSED(edObjectFlagsUpdateTrigger)
+
+    let selectedItems = getAllSelectedItems()
+    foreach (item in selectedItems) {
+      if (item.isEntity) {
+        if (!entity_editor?.get_instance().isEntityLocked(item.id)) {
+          return false
+        }
+      }
+      else {
+        if (item.id == fakeScene.id) {
+          if (!isFakeSceneLocked.get()) {
+            return false
+          }
+        }
+        else if (!entity_editor?.get_instance().isSceneLocked(item.id)) {
+          return false
+        }
+      }
+    }
+
+    return true
+  })
+
+  return @() {
+    watch = [isSelectionLocked, canLockObjects]
+    children = textButton(isSelectionLocked.get() && canLockObjects.get() ? "Unlock" : "Lock", function() {
+      if (isSelectionLocked.get()) {
+        entity_editor?.get_instance().unlockObjects(getAllSelectedItems())
+      }
+      else {
+        entity_editor?.get_instance().lockObjects(getAllSelectedItems())
+      }
+    }, {
+      off = !canLockObjects.get(),
+      disabled = Computed(@() !canLockObjects.get() )
+      onHover = @(on) setTooltip(on ? Computed(function() {
+        if (!canLockObjects.get()) {
+          return "First, select the target items"
+        }
+
+        return isSelectionLocked.get() ? "Locked\nClick to unlock selected items" : "Unlocked\nClick to lock selected items"
+      }) : null),
+      boxStyle = {
+        normal = {
+          margin = 0
+        }
+      }})
+  }
 }
 
 function createScenePropertiesControl() {
@@ -1688,6 +1753,14 @@ function createScenePropertiesControl() {
 
 function createFilterControls() {
   let stateFlags = Watched(0)
+  let toolTipText = Computed(function() {
+    if (filterSelectedEntities.get()) {
+      return "Only selected items are shown\nClick to show all items"
+    }
+    else {
+      return "All items are shown\nClick to show only selected items"
+    }
+  })
 
   return @() {
     size = FLEX_H
@@ -1717,6 +1790,8 @@ function createFilterControls() {
           behavior = Behaviors.Button
           onClick = @() filterSelectedEntities.set(!filterSelectedEntities.get())
           onElemState = @(nsf) stateFlags.set(nsf)
+
+          onHover = @(on) setTooltip(on ? toolTipText : null)
           children = {
             flow = FLOW_HORIZONTAL
             margin = hdpx(3)
@@ -1747,6 +1822,55 @@ function createFilterControls() {
         }
       ]
     }
+  }
+}
+
+function mkImportButton() {
+  return @() {
+    size = [SIZE_TO_CONTENT, flex()]
+    watch = [canAddImport]
+    children = textButton("Import", function() {
+        addImportDialog(function(path) {
+          let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
+          if (selectedSceneIds?.len() == 1 && !isAnyEntitySelected()) {
+            entity_editor?.get_instance().addImportScene(selectedSceneIds[0], path)
+            expandedStateScenes?.mutate(function(value) {
+              value[selectedSceneIds[0]] = true
+            })
+            updateAllScenes()
+          }
+        })
+      },
+      {
+        off = !canAddImport.get(),
+        disabled = Computed(@() !canAddImport.get() ),
+        onHover = function(on) {
+          local text = null
+          if (on) {
+            if (canAddImport.get()) {
+              let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
+              text = $"Add a new scene or import an existing one into {fileName(sceneIdMap?.get()[selectedSceneIds[0]].path)}"
+            }
+            else {
+              text = "Add a new scene or import an existing one\nFirst, select the target scene to import"
+            }
+          }
+          setTooltip(text)
+        },
+        boxStyle = {
+          normal = {
+            size = [SIZE_TO_CONTENT, flex()]
+            margin = 0
+            padding = [hdpx(1),hdpx(10)]
+          }
+        }
+        textStyle = {
+          normal = {
+            size = [SIZE_TO_CONTENT, flex()]
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+          }
+      }})
   }
 }
 
@@ -1797,13 +1921,14 @@ function mkFilterOptionsButton() {
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       eventPassThrough = false
+      gap = fsh(0.5)
       children = [
         mkCheckBox(watched, @() watched.set(!watched.get()))
         {
           size = SIZE_TO_CONTENT
           rendObj = ROBJ_TEXT
           text
-          color = Color(100, 100, 100)
+          color = colors.TextDefault
         }
       ]
     }
@@ -1813,7 +1938,7 @@ function mkFilterOptionsButton() {
     let content = {
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_BOX
-      fillColor = Color(21, 30, 37)
+      fillColor = const Color(50,50,50)
       borderColor = Color(80,80,80)
       borderWidth = 1
       stopMouse = true
@@ -1826,7 +1951,7 @@ function mkFilterOptionsButton() {
           size = SIZE_TO_CONTENT
           rendObj = ROBJ_TEXT
           text = "Show:"
-          color = Color(100, 100, 100)
+          color = colors.TextDefault
         }
         mkDropDownEntry(showEntities, "Entities")
         mkDropDownEntry(showImportScenes, "Import scenes")
@@ -1863,7 +1988,7 @@ function mkFilterOptionsButton() {
     watch = [dropDownOpen]
     fillColor = (sf & S_HOVER) ? Color(255, 255, 255, 255) : Color(0,0,0,64)
     onClick = @() toggleDropDown()
-
+    onHover = @(on) setTooltip(on ? "Outliner filter settings" : null)
 
     children = @() {
       rendObj = ROBJ_IMAGE
@@ -1881,6 +2006,8 @@ function mkFilterOptionsButton() {
 function mkScenesList() {
 
   function listSceneContent() {
+    sceneRowItemStateWatchers.clear()
+
     local sRows = filteredItems.get().map(@(item, idx) listSceneRow(item, idx))
 
     return {
@@ -1903,17 +2030,16 @@ function mkScenesList() {
   return  @() {
     flow = FLOW_VERTICAL
     gap = fsh(0.5)
-    watch = [allScenesWatcher, markedStateScenes, allEntities, selectionStateEntities, selectedEntities, sceneListUpdateTrigger]
+    watch = [allScenesWatcher, allEntities, selectionStateEntities, selectedEntities, sceneListUpdateTrigger]
     size = flex()
     children = [
       {
         size = FLEX_H
         flow = FLOW_HORIZONTAL
+        gap = fsh(0.5)
         children = [
-          mkSceneSortModeButton(sceneSortState)
-          const { size = [sw(0.2), SIZE_TO_CONTENT] }
+          mkImportButton()
           filter
-          const { size = [fsh(0.2), 0] }
           mkFilterOptionsButton()
         ]
       }
@@ -1930,14 +2056,14 @@ function mkScenesList() {
                   value[id] = true
                 }
               })
-            })
+            }, { onHover = @(on) setTooltip(on ? "Expand the entire hierarchy" : null)})
             textButton("Collapse all", function () {
               expandedStateScenes.mutate(function (value) {
                 foreach (id, _state in value) {
                   value[id] = false
                 }
               })
-            })
+            }, { onHover = @(on) setTooltip(on ? "Collapse the entire hierarchy" : null)})
           )
         ]
       }
@@ -1951,11 +2077,11 @@ function mkScenesList() {
         flow = FLOW_HORIZONTAL
         size = FLEX_H
         halign = ALIGN_CENTER
+        gap = fsh(0.5)
         children = [
-          createImportExistingSceneButton()
-          createImportNewSceneButton()
           createSelectButton()
           createHideObjectsButton()
+          createLockObjectsButton()
           createRemoveObjectsButton()
         ]
       }

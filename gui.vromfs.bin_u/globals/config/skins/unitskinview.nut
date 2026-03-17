@@ -722,6 +722,13 @@ return {
     "f2h-2_prem": {
       "": "jap_a7m1"
     },
+    "f3d_1": {
+      "": "usa_f4u_4b",
+      "camo": "usa_f_80a_5_blue_a"
+    },
+    "f3d_1_prem": {
+      "": "usa_f_82e"
+    },
     "f3f-2": {
       "": "usa_tbd_1_1938",
       "upgraded": "usa_sb2u_2"
@@ -1394,6 +1401,9 @@ return {
     "germ_frigate_rckt_karel_doorman": {
       "upgraded": "camo_blackgray_net"
     },
+    "germ_frigate_rckt_kortenaer": {
+      "upgraded": "camo_blackgreenwhite_spots"
+    },
     "germ_frigate_rckt_sachsen": {
       "upgraded": "camo_3gray_colors_geometry"
     },
@@ -1749,6 +1759,14 @@ return {
     "germ_schutzenpanzer_puma": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc"
+    },
+    "germ_schutzenpanzer_puma_vjtf": {
+      "": "ger_camo_bronzegruen",
+      "winter": "ger_camo_carc_winter"
+    },
+    "germ_schutzenpanzer_puma_vjtf_prem": {
+      "": "ger_camo_modern_threecolor",
+      "forest": "ger_camo_bronzegruen"
     },
     "germ_sdkfz_234_4": {
       "": "ger_camo_dunkelgelb"
@@ -2172,6 +2190,14 @@ return {
     "it_c13_t90": {
       "": "it_camo_olive_green",
       "forest": "it_camo_modern_three_color"
+    },
+    "it_c1_ariete_pso": {
+      "": "it_camo_green",
+      "forest": "it_camo_modern_three_color"
+    },
+    "it_c1_ariete_pso_prem": {
+      "": "it_camo_threecolor_modern",
+      "forest": "it_camo_green"
     },
     "it_centauro_mgs_120": {
       "": "it_camo_green",
@@ -2819,6 +2845,13 @@ return {
     "me-262a-1a": {
       "": "germ_bf_109k_4_a",
       "green": "germ_bf_109b_2"
+    },
+    "me-262a-1a_early": {
+      "": "germ_do335a_1",
+      "camo": "germ_me262a_2a_camo3"
+    },
+    "me-262a-1a_early_prem": {
+      "": "ussr_il_10"
     },
     "me-262a-1a_prem": {
       "": "germ_bf_109g_14_winter"
@@ -3490,6 +3523,9 @@ return {
     },
     "uk_frigate_rckt_type_21": {
       "upgraded": "camo_mtb_spots"
+    },
+    "uk_frigate_rckt_type_22": {
+      "upgraded": "camo_tropic_multicolor_spots"
     },
     "uk_fv102_striker": {
       "": "uk_camo_light_mud_slate_grey",

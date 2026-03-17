@@ -6,24 +6,24 @@
   "z_far": 50000.0,
   "addLandToSky": false,
   "mapCoord0": [
-    -5460.0,
-    -5460.0
+    -16384.0,
+    -16384.0
   ],
   "mapCoord1": [
-    5460.0,
-    5460.0
+    16384.0,
+    16384.0
   ],
   "minAreaSize": [
     1000.0,
     1000.0
   ],
   "aiMapCoord0": [
-    -16192.0,
-    -16192.0
+    -20384.0,
+    -20384.0
   ],
   "aiMapCoord1": [
-    16192.0,
-    16192.0
+    20384.0,
+    20384.0
   ],
   "water_level": 0.0,
   "numBorderCellsXPos": 0,
@@ -34,10 +34,9 @@
     3250.0,
     3250.0
   ],
-  "panoramaForced": true,
   "forceOcclusionForAllUnits": true,
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
-  "weatherTypes": "gameData/environments/weather_types_halloween_race.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
   "clipmap": {
     "texelSize": 0.125,
     "lastClipSize": 512

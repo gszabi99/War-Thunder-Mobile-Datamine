@@ -7,6 +7,8 @@ let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { bpProgressUnlock } = require("%rGui/battlePass/battlePassState.nut")
 let { eventsPassList, EVENT_PASS, getEventPassName, curEventId } = require("%rGui/battlePass/eventPassState.nut")
 let { OPProgressUnlock } = require("%rGui/battlePass/operationPassState.nut")
+let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
+
 
 let SEEN_PASSES = "seenPasses"
 let BATTLE_PASS = "battle_pass"
@@ -85,11 +87,15 @@ if (seenPasses.get().len() == 0)
   loadSeenPasses()
 isSettingsAvailable.subscribe(@(_) loadSeenPasses())
 
-register_command(function() {
+function resetAllPasses() {
   seenPasses.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_PASSES)
   eventbus_send("saveProfile", {})
-}, "debug.reset_seen_passes")
+}
+
+register_command(resetAllPasses, "debug.reset_seen_passes")
+
+subscribeResetProfile(resetAllPasses)
 
 
 return {

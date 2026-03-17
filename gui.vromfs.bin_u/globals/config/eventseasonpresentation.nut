@@ -26,6 +26,7 @@ let presentations = {
   season_28 = { color = 0xFF397EE6 }
   season_29 = { color = 0xFF36B388 }
   season_30 = { color = 0xFFBC0022 }
+  season_31 = { color = 0xFF8FDE16 }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
@@ -46,10 +47,9 @@ let presentations = {
     bg = "ui/images/event_bg_lunar.avif",
     gamercardItems = [ "firework_kit" ]
   }
-  patrick_day_2026  = {
-    icon = "ui/gameuiskin#icon_event_patrick_day.svg"
-  }
-  event_april_2025  = {
+  event_patrick_day            = { icon = "ui/gameuiskin#icon_event_patrick_day2.svg" }
+  event_patrick_daily          = { icon = "ui/gameuiskin#icon_event_patrick_day.svg" }
+  event_april_2025             = {
     icon = "ui/gameuiskin#icon_event_april_2025.svg",
     bg = "ui/images/event_bg_event_april_2025.avif"
   }

@@ -47,9 +47,14 @@
   "type": "typeLightTank",
   "minRelativeTankCameraThreshold": 0.9,
   "rearmSmokeTimeOnField": 60.0,
-  "canReloadNonGuns": true,
+  "canReloadNonGuns": [
+    true,
+    true
+  ],
   "radarCanLockTargetFromTPV": false,
+  "forceHideSearchRadar": true,
   "drowningCheckHeightMultiplier": 0.825,
+  "rearmTimeOnField": 45.0,
   "controlDevices": {
     "device": [
       {

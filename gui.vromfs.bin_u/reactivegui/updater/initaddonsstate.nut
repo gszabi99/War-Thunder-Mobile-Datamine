@@ -136,7 +136,12 @@ function requestUnitsSizes() {
 }
 if (needRequestUnitSizes.get())
   requestUnitsSizes()
-needRequestUnitSizes.subscribe(@(v) v ? requestUnitsSizes() : null)
+needRequestUnitSizes.subscribe(function(v) {
+  if (!v)
+    return
+  this_subscriber_call_may_take_up_to_usec(10 * get_slow_subscriber_threshold_usec())
+  requestUnitsSizes()
+})
 
 isUnitSizesActual.subscribe(@(v) ndbWrite(UNIT_SIZES_ACTUAL_NDB, v))
 

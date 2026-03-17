@@ -2371,7 +2371,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_01",
                 "gun": "tt_01",
@@ -2426,7 +2426,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_02",
                 "gun": "tt_02",
@@ -2481,7 +2481,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_03",
                 "gun": "tt_03",
@@ -2536,7 +2536,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_04",
                 "gun": "tt_04",
@@ -4071,7 +4071,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_01",
                 "gun": "tt_01",
@@ -4126,7 +4126,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_02",
                 "gun": "tt_02",
@@ -4181,7 +4181,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_03",
                 "gun": "tt_03",
@@ -4236,7 +4236,7 @@
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
-              "shotFreq": 0.2,
+              "shotFreq": 0.167,
               "turret": {
                 "head": "tt_head_04",
                 "gun": "tt_04",
@@ -6301,7 +6301,7 @@
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
         "speedYaw": 55.0,
-        "shotFreq": 0.2,
+        "shotFreq": 0.167,
         "turret": {
           "head": "tt_head_01",
           "gun": "tt_01",
@@ -6356,7 +6356,7 @@
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
         "speedYaw": 55.0,
-        "shotFreq": 0.2,
+        "shotFreq": 0.167,
         "turret": {
           "head": "tt_head_02",
           "gun": "tt_02",
@@ -6411,7 +6411,7 @@
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
         "speedYaw": 55.0,
-        "shotFreq": 0.2,
+        "shotFreq": 0.167,
         "turret": {
           "head": "tt_head_03",
           "gun": "tt_03",
@@ -6466,7 +6466,7 @@
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
         "speedYaw": 55.0,
-        "shotFreq": 0.2,
+        "shotFreq": 0.167,
         "turret": {
           "head": "tt_head_04",
           "gun": "tt_04",

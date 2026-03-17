@@ -76,6 +76,7 @@ let optListScriptOnly = [
   "USEROPT_ALLOW_JIP"
   "OPT_HUD_RELOAD_STYLE"
   "OPT_AUTO_OFFER_TO_BUY_UNIT"
+  "OPT_AUTO_DELETE_REPLAYS"
 ]
 
 let optListLocalScriptOnly = [

@@ -13,7 +13,8 @@ let { passOpenCounter, closePassScene, passPageId, playerSelectedScene, passPage
   BATTLE_PASS, EVENT_PASS, OPERATION_PASS, visibleTabs, seenPasses, markPassesSeen, isPassGoodsUnseen } = require("passState.nut")
 let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress, seasonNumber
 } = require("%rGui/battlePass/battlePassState.nut")
-let { mkEpStagesList, isEpVipActive, isEpCommonActive, eventBgImage, hasEpRewardsToReceive, eventPassGoods, lastStageEpProgress, curEventId
+let { mkEpStagesList, isEpVipActive, isEpCommonActive, eventBgImage, mkHasEpRewardsToReceive, mkEventPassGoods,
+  lastStageEpProgress, curEventId
 } = require("%rGui/battlePass/eventPassState.nut")
 let { mkOPStagesList, isOpVipActive, isOpCommonActive, OPCampaign, hasOPRewardsToReceive, operationPassGoods, lastStageOpProgress
 } = require("%rGui/battlePass/operationPassState.nut")
@@ -49,8 +50,8 @@ let tabs = {
     lastRewardProgress = lastStageEpProgress
     isVipActive = isEpVipActive
     isCommonActive = isEpCommonActive
-    hasReward = hasEpRewardsToReceive
-    goods = eventPassGoods
+    mkHasReward = mkHasEpRewardsToReceive
+    mkGoods = mkEventPassGoods
     scrollToCard = scrollToCardEP
     content = contentEP
     icon = @(_) "ui/gameuiskin#event_pass_icon.svg"
@@ -73,19 +74,25 @@ let getTabData = @(passName) passName == null ? null
   : tabs?[passName]
 
 passPageId.subscribe(function(v) {
-  let { goods = null } = getTabData(v)
-  if (goods != null)
-    markPassesSeen(goods.get().reduce(@(res, g) g?.id ? res.append(g.id) : res, []))
+  let { goods = null, mkGoods = null } = getTabData(v)
+  let pageGoods = goods ?? mkGoods?(v)
+  if (pageGoods == null || pageGoods.get() == null)
+    return
+
+  markPassesSeen(pageGoods.get().reduce(@(res, g) g?.id ? res.append(g.id) : res, []))
 })
 
 function mkTab(idx, name, campaign) {
   let data = getTabData(name)
   let icon = data.icon(campaign)
-  let { hasReward, goods } = data
+  let { hasReward = null, mkHasReward = null, goods = null, mkGoods = null } = data
   let isActive = Computed(@() passPageIdx.get() == idx)
-  let isUnseen = Computed(@() isPassGoodsUnseen(goods.get(), seenPasses.get()))
+
+  let hasAnyReward = hasReward ?? mkHasReward?(Watched(name)) ?? Watched(false)
+  let tabGoods = goods ?? mkGoods?(name) ?? Watched(null)
+  let isUnseen = Computed(@() isPassGoodsUnseen(tabGoods.get(), seenPasses.get()))
   return @() {
-    watch = [isActive, hasReward, isUnseen]
+    watch = [isActive, hasAnyReward, isUnseen]
     size = tabSize
     rendObj = ROBJ_IMAGE
     image = simpleHorGrad
@@ -102,7 +109,7 @@ function mkTab(idx, name, campaign) {
         image = Picture($"{icon}:{tabIconSize}:{tabIconSize}:P")
         keepAspect = true
       }
-      isActive.get() || (!hasReward.get() && !isUnseen.get()) ? null
+      isActive.get() || (!hasAnyReward.get() && !isUnseen.get()) ? null
         : priorityUnseenMark.__merge({ pos = [-0.35 * tabSize[0], -0.25 * tabSize[1]] })
     ]
   }

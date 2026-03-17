@@ -1275,6 +1275,9 @@
     "blinkingMouseAimScale": 1.1,
     "crosshairDmCheckIntervalmsec": 250.0,
     "crosshairReticleWidth": 1.0,
+    "visualAimingBorderLimit": 0.3,
+    "aimingBorderSize": 10.0,
+    "aimingBorderLineWidth": 2.0,
     "arcadeMissColor": [
       255,
       255,

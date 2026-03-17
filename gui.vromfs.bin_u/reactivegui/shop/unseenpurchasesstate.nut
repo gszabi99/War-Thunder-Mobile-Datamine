@@ -4,7 +4,6 @@ let { resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { unseenPurchases, lootboxes } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { G_STAT_SET, G_STAT_ADD, G_MEDAL } = require("%appGlobals/rewardType.nut")
 let unseenPurchasesDebug = require("%rGui/shop/unseenPurchasesDebug.nut")
@@ -16,14 +15,14 @@ let invisibleGoodsTypes = [G_STAT_SET, G_STAT_ADD, G_MEDAL]
 let ignoreUnseen = Watched({}) 
 let isShowDelayed = Watched(false)
 let skipUnseenMessageAnimOnce = Watched(false)
-let isUnseenGoodsVisible = @(goods, source, srvCfg, lboxes) (goods.gType not in invisibleGoodsTypes)
+let isUnseenGoodsVisible = @(goods, source, lboxes) (goods.gType not in invisibleGoodsTypes)
   && (goods.gType != "lootbox"
-    || (source == "lootbox" && (lboxes?[goods.id] ?? 0) > 0 && (srvCfg?.lootboxesCfg[goods.id].openType != "jackpot_only")))  
+    || (source == "lootbox" && (lboxes?[goods.id] ?? 0) > 0))  
 let seenPurchasesNoNeedToShow = Computed(function() {
   let lboxes = lootboxes.get()
   return unseenPurchases.get()
-    .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, serverConfigs.get(), lboxes)) == null
-      && data.lostGoods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, serverConfigs.get(), lboxes)) == null)
+    .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, lboxes)) == null
+      && data.lostGoods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, lboxes)) == null)
 })
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.get()
   ?? (isShowDelayed.get() ? {}

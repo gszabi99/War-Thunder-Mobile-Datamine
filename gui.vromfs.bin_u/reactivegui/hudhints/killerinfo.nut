@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { eventbus_subscribe } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
 let { HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { get_unittags_blk } = require("blkGetters")
 let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
+let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { mkGradientBlock, failBgColor } = require("%rGui/hudHints/hintCtors.nut")
@@ -37,7 +37,7 @@ let info = Computed(function() {
   let { killer, unitName, unitType } = killData.get()
   if (unitName == "")
     return 
-  local unitCfg = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get(), curCampaign.get())
+  local unitCfg = getUnitCfgByTagName(unitName, serverConfigs.get(), battleCampaign.get())
   if (unitCfg == null && unitName in get_unittags_blk())
     unitCfg = mkFakeUnitCfg(unitName, unitType, killer.country)
   if (unitCfg == null)

@@ -65,7 +65,9 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SHIP_ACTION_BAR_ITEM_14 = "J:D.Right | 2" 
   ID_SHIP_SMOKE_SCREEN_GENERATOR = "J:D.Right | 2"
   ID_IRCM_SWITCH_SHIP = "J:D.Up | 3"
-  ID_ELECTRONIC_WARFARE = "J:LB J:D.Up | 4"
+  ID_ELECTRONIC_WARFARE = "J:LB J:D.Left | 4"
+  ID_SHIP_ROCKET_ASW = "J:LB J:RB | U"
+
 
   ID_SHIP_MANUAL_ANTIAIR_TOGGLE = "J:LB J:Y | K"
 
@@ -80,6 +82,7 @@ let allShortcuts = isReplayShortcuts ? {}
 
   ID_SUBMARINE_ACTION_BAR_ITEM_40 = "J:D.Left | 1" 
   ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES = "J:D.Right | 2"
+  ID_SUBMARINE_ACOUSTIC_DECOY = "J:LB J:D.Left | 3"
 
   
   ID_CAMERA_VIEW_BACK = "J:D.Left | B"

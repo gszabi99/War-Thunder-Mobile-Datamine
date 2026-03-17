@@ -56,7 +56,7 @@ function getKillStreakUnitsByRank() {
 
   let res = {}
   let gameplayBlk = DataBlock()
-  gameplayBlk.tryLoad("config/gameplay.blk")
+  gameplayBlk.tryLoad("config/gameplay.blk") 
   let { killStreaksUnits = null } = gameplayBlk
   if (isDataBlock(killStreaksUnits)) {
     let tagsBlk = get_unittags_blk()

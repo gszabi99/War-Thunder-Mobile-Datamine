@@ -409,6 +409,10 @@ eventbus_subscribe("hint:have_potential_assistee", function(_) {
   addCommonHintWithTtl(loc("hints/have_potential_assistee"), 1)
 })
 
+eventbus_subscribe("hint:atgm_failed_to_lock_target", function(_) {
+  addCommonHintWithTtl(loc("hints/atgm_failed_to_lock_target"), 5)
+})
+
 eventbus_subscribe("hint:atgm_need_target_lock_to_shoot", function(_) {
   addCommonHintWithTtl(loc("hints/atgm_need_target_lock_to_shoot"), 5)
 })

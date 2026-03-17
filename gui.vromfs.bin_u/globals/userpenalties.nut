@@ -1,8 +1,9 @@
 let { Watched, Computed } = require("frp")
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { rights } = require("permissions/userRights.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 let defaults = {
@@ -35,7 +36,7 @@ function updatePenalties() {
   if (!isEqual(allPenalties.get(), res))
     allPenalties.set(res)
   if (nextTime > 0)
-    resetTimeout(nextTime - time, updatePenalties)
+    resetExtTimeout(nextTime - time, updatePenalties)
 }
 updatePenalties()
 

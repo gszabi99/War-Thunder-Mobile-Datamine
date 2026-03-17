@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import send_error_log
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_type } = require("urlType.nut")
@@ -68,8 +67,7 @@ eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
   else {
     urlToOpen = notAuthUrl
     logPrefix = "request open after fail authenticate"
-    send_error_log($"Authorize url: failed to get authenticated url with error {status}",
-      false, AUTH_ERROR_LOG_COLLECTION)
+    logerr($"[{AUTH_ERROR_LOG_COLLECTION}] Authorize url: failed to get authenticated url with error {status}")
     if (urlToOpen == "")
       return
   }
@@ -108,7 +106,7 @@ function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExter
     useExternalBrowser = false
 
   local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
-  let urlTags = split_by_chars(baseUrl, URL_TAGS_DELIMITER)
+  let urlTags = split_by_chars(url, URL_TAGS_DELIMITER)
   if (!urlTags.len()) {
     logUrl("Error: tried to open an empty url")
     return null

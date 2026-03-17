@@ -4,17 +4,18 @@ from "%globalsDarg/darg_library.nut" import *
 from "json" import parse_json, object_to_json_string
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "console" import register_command
+from "dagor.shell" import shell_execute
 from "dagor.workcycle" import resetTimeout
 from "auth_wt" import getCountryCode
 from "blkGetters" import get_local_custom_settings_blk
 from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData, unloadVendorData,
-  getAllIABVendors, getAllGoogleVendors, setConsentForAll, saveConsentData,
+  getAllIABVendors, getAllGoogleVendors, getAllCustomVendors, setConsentForAll, saveConsentData,
   getAllPurposes, getAllSpecialPurposes, getAllFeatures, hasConsentForPurpose, setConsentForPurpose,
   hasPurposeLIT, setPurposeLIT, getVendorListByPurposeId, getVendorListBySpecialPurposeId, getVendorListByFeatureId,
   isAbleConsentForIABVendor, hasConsentForIABVendor, setConsentForIABVendor,
   isAbleConsentForGoogleVendor, hasConsentForGoogleVendor, setConsentForGoogleVendor,
   isAbleLITForIABVendor, hasVendorLIT, setVendorLIT, getAllDataCategories
-from "%sqstd/platform.nut" import is_android, is_ios
+from "%sqstd/platform.nut" import is_android, is_ios, is_pc
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, isLoggedIn, TCF_CONSENT_ACCEPTED_SAVE_ID
 from "%appGlobals/permissions.nut" import tcf_consent_enabled, request_firebase_consent_eu_only
@@ -29,8 +30,6 @@ let { setCollectionEnabled = @(_) null,
 let { startAppsFlyer, enableTCFCollection = @(_) null } = require("appsFlyer")
 
 let logC = log_with_prefix("[consent] ")
-
-let { getAllCustomVendors = @() "[]" } = require("consent")
 
 
 let TCF_CONSENT_COUNTRIES = ["AT","BE","BG","CH","CY","CZ","DE","DK","EE","EL","ES","FI","FR","GB","GR",
@@ -292,10 +291,7 @@ function onInited(isSuccess) {
 
   isVendorDataLoading.set(true)
   if (!isVendorDataLoaded())
-    if (loadVendorData.getfuncinfos().required_params == 3)
-      loadVendorData(userLangId, getCountryCode() == "RU")
-    else
-      loadVendorData(userLangId) 
+    loadVendorData(userLangId, getCountryCode() == "RU")
   else
     onVendorDataLoaded(true)
 }
@@ -482,9 +478,12 @@ function getDataCategoiresList() {
 register_command(@() debugShowIds.set(!debugShowIds.get()), "ui.tcf_consent.debug_show_ids")
 
 register_command(function() {
+  if (is_pc)
+    shell_execute({ cmd = "open", file = "cmd.exe",
+      params = "/c del /Q %USERPROFILE%\\AppData\\Local\\WTM\\consent.data", hidden = true })
   get_local_custom_settings_blk()[TCF_CONSENT_ACCEPTED_SAVE_ID] <- null
   eventbus_send("saveProfile", {})
-}, "ui.tcf_consent.saved_status_reset")
+}, "ui.tcf_consent.saved_state_reset")
 
 return {
   isTcfConsentRequiredForCountry

@@ -2,10 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let logUpdate = log_with_prefix("[UPDATE]: ")
 let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { checkAppUpdateOnMarket } = require("android.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 const REQUEST_PERIOD_MSEC = 1800000
@@ -38,7 +39,7 @@ allowRequest.subscribe(@(v) v ? deferOnce(requestNeedUpdate) : null)
 let needRequestOn = @() needRequest.set(true)
 function startTimer() {
   if (!needRequest.get())
-    resetTimeout(max(0.1, 0.001 * (nextRequestTime.get() - get_time_msec())), needRequestOn)
+    resetExtTimeout(max(0.1, 0.001 * (nextRequestTime.get() - get_time_msec())), needRequestOn)
 }
 startTimer()
 nextRequestTime.subscribe(@(_) startTimer())

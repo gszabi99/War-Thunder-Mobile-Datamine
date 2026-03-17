@@ -3,6 +3,7 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { shopSeenGoods, goodsByCategory, isUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { SC_FEATURED, SGT_SLOTS, SGT_UNIT, SGT_LOOTBOX } = require("%rGui/shop/shopConst.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { actualSchRewards } = require("%rGui/shop/schRewardsState.nut")
 let { getPreviewType } = require("%rGui/shop/goodsPreviewState.nut")
 let { isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
@@ -16,7 +17,7 @@ let featureGoodsToShow = Computed(@() !isFitSeasonRewardsRequirements.get() ? []
   : goodsCategories
       .reduce(function(res, cat) {
           foreach (g in (goodsByCategory.get()?[cat] ?? [])) {
-            if (g?.gtype not in orderByGoodType
+            if (getGoodsType(g) not in orderByGoodType
                 || !isUnseenGoods(g.id, shopSeenGoods.get(), actualSchRewards.get())
                 || getPreviewType(g) == null)
               continue
@@ -27,7 +28,7 @@ let featureGoodsToShow = Computed(@() !isFitSeasonRewardsRequirements.get() ? []
           }
           return res
         }, [])
-      .sort(@(a, b) (orderByGoodType?[a?.gtype] ?? -1) <=> (orderByGoodType?[b?.gtype] ?? -1)))
+      .sort(@(a, b) (orderByGoodType?[getGoodsType(a)] ?? -1) <=> (orderByGoodType?[getGoodsType(b)] ?? -1)))
 
 return {
   featureGoodsToShow

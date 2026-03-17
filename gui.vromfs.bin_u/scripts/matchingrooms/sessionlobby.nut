@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import set_host_cb, is_online_available, send_error_log, script_net_assert, connect_to_host_list
+from "%scripts/dagui_natives.nut" import set_host_cb, is_online_available, script_net_assert, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 from "gameplayBinding" import inFlightMenu, isInFlight
@@ -1262,7 +1262,7 @@ let MRoomsHandlers = class {
       let roomMission = tostring_r(roomPub?.mission) 
       script_net_assert("missing room_key in room")
 
-      send_error_log("missing room_key in room", false, "log")
+      logerr("[log] missing room_key in room")
       return
     }
 

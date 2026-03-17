@@ -8,8 +8,7 @@ let { LogsWindowId, EntitySelectWndId, SceneOutlinerWndId, propPanelVisible, pro
   gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType,
   gizmoCenterTypeNames, sceneIdMap, updateAllScenes } = require("state.nut")
 
-let { sceneGenerated, sceneSaved } = require("%daeditor/daeditor_es.nut")
-let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
+let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 
 let pictureButton = require("components/pictureButton.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
@@ -217,7 +216,7 @@ let markedSceneText = Computed(function() {
       item.index <- ind
       return item
       }) ?? []
-  scenes.sort(defaultScenesSortMode.func)
+  scenes.sort(sortScenesByLoadType)
   foreach (scene in scenes) {
     local isMarked = markedScenes.get()?[scene?.id] ?? false
     if (isMarked) {
@@ -227,13 +226,10 @@ let markedSceneText = Computed(function() {
       nMrk++
     }
   }
-  local isMarkedSaved = markedScenes.get()?[sceneSaved.id] ?? false
-  local isMarkedGenerated = markedScenes.get()?[sceneGenerated.id] ?? false
-  local textSav = isMarkedSaved ? $"{sceneSaved.asText} " : ""
-  local textGen = isMarkedGenerated ? $"{sceneGenerated.asText} " : ""
-  if (nMrk > 0 || isMarkedSaved || isMarkedGenerated) {
+
+  if (nMrk > 0) {
     local andMore = nMrk > 1 ? $", and {nMrk - 1} more" : ""
-    return $"Editing: {textGen}{textSav}{path}{andMore}"
+    return $"Editing: {path}{andMore}"
   }
   return ""
 })

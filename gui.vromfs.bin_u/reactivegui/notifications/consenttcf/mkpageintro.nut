@@ -30,4 +30,4 @@ let introButtons = [
   textButtonPrimary(utf8ToUpper(loc("consentWnd/btns/consent")), @() doAnswerAllAndClose(BQ_WND_ID, true))
 ]
 
-return @() mkContent(loc("consent_tcf/intro/header"), mkIntroDesc, introButtons, @() doAskSaveAndClose(BQ_WND_ID))
+return @() mkContent(loc("consent_tcf/intro/header"), mkIntroDesc, introButtons, @() doAskSaveAndClose(BQ_WND_ID), true)

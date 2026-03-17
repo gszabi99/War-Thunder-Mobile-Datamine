@@ -35,7 +35,13 @@ function trySendQuestProgressDiff(diff) {
   if (diff == null)
     return
   saveSeenQuests(diff.keys())
-  eventbus_send("BattleResultQuestProgressDiff", diff.len() ? diff : null)
+  eventbus_send("BattleResultQuestProgressDiff", diff.len() == 0 ? null
+    : diff.map(function(v) {
+        let res = clone v
+        res.$rawdelete("$prog")
+        res.$rawdelete("$desc")
+        return res
+      }))
 }
 
 let questProgressDiff = keepref(Computed(function(prev) {
@@ -57,4 +63,7 @@ trySendQuestProgressDiff(questProgressDiff.get())
 
 isInBattle.subscribe(@(v) v ? savePrevProgress() : null)
 isInDebriefing.subscribe(@(v) v ? null : resetPrevProgress())
-questProgressDiff.subscribe(trySendQuestProgressDiff)
+questProgressDiff.subscribe(function(v) {
+  this_subscriber_call_may_take_up_to_usec(10 * get_slow_subscriber_threshold_usec())
+  trySendQuestProgressDiff(v)
+})

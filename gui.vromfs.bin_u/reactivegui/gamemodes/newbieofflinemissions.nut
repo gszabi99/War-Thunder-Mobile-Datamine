@@ -34,9 +34,7 @@ let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.get(), curDel
 let firstBattlesReward = Computed(@()
   serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()])
 
-let isDebugMode = hardPersistWatched("goodsAutoPreview.isDebugMode", false)
-let hasTankRestrictedOfflineMissionBase = Computed(@() (abTests.get()?.tankRestrictedOfflineMission ?? "false") == "true")
-let hasTankRestrictedOfflineMission = Computed(@() hasTankRestrictedOfflineMissionBase.get() != isDebugMode.get())
+let hasTankRestrictedOfflineMission = Computed(@() (abTests.get()?.tankRestrictedOfflineMission ?? "false") == "true")
 
 let missionsList = Computed(function() {
   let singleBattleCfg = newbieGameModesConfig?[curCampaign.get()]
@@ -231,11 +229,6 @@ let startLocalMultiplayerMission = function() {
 
 register_command(startDebugNewbieMission, "ui.startFirstBattlesOfflineMission")
 register_command(startLocalMultiplayerMission, "ui.startLocalMultiplayerMission")
-register_command(
-  function() {
-    isDebugMode.set(!isDebugMode.get())
-    console_print($"hasTankRestrictedOfflineMission = {hasTankRestrictedOfflineMission.get()}") 
-  }, "debug.toggleAbTest.restrictedMission")
 
 return {
   newbieOfflineMissions

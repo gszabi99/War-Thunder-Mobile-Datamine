@@ -28,7 +28,7 @@ let { shopGoods, openShopWnd, isDisabledGoods, allShopGoods } = require("%rGui/s
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
-let { eventsPassList, getEventPassName, hasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
+let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
 let { hasOPRewardsToReceive } = require("%rGui/battlePass/operationPassState.nut")
 let { openPassScene, BATTLE_PASS, OPERATION_PASS } = require("%rGui/battlePass/passState.nut")
 
@@ -126,6 +126,8 @@ function mkLinkToStoreBtnInfo(idx) {
   let hasGoods = Computed(@() eventName.get() != ""
     && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
   let isEventPassQuests = Computed(@() eventsPassList.get().findindex(@(v) v.eventName == eventName.get()) != null)
+  let hasEpRewardsToReceive = mkHasEpRewardsToReceive(
+    Computed(@() isEventPassQuests.get() ? getEventPassName(eventName.get()) : null))
   let hasComponent = Computed(@() isEventPassQuests.get() || hasGoods.get() || lootboxInfo.get())
   return {
     width = Computed(@() hasComponent.get() ? linkToEventWidth : 0)

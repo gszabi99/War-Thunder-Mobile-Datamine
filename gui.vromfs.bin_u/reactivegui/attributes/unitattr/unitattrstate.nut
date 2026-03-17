@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { add_unit_attributes } = require("%appGlobals/pServer/pServerApi.nut")
 let { selAttributes, curCategoryId, attrPresets, calcStatus, sumCost, MAX_AVAIL_STATUS
 } = require("%rGui/attributes/attrState.nut")
+let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 
 let isUnitAttrOpened = mkWatched(persist, "isUnitAttrOpened", false)
 
@@ -19,7 +20,8 @@ let attrUnitName = Computed(@() attrUnitData.get().unit?.name)
 let attrUnitType = Computed(@() attrUnitData.get().unit?.unitType)
 let unitAttributes = Computed(@() attrUnitData.get().unit?.attrLevels)
 let attrUnitPreset = Computed(@() attrUnitData.get().unit?.preset)
-let attrUnitLevelsToMax = Computed(@() (attrUnitData.get().unit?.levels.len() ?? 0) - (attrUnitData.get().unit?.level ?? 0))
+let attrUnitMaxLevel = Computed(@() campConfigs.get()?.unitLevels[attrUnitData.get().unit?.levelPreset].len() ?? 0)
+let attrUnitLevelsToMax = Computed(@() attrUnitMaxLevel.get() - (attrUnitData.get().unit?.level ?? 0))
 
 function resetAttrState() {
   selAttributes.set({})

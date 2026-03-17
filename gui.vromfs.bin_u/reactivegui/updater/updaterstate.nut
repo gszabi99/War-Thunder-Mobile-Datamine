@@ -41,6 +41,7 @@ let { mkDlSizeCompByTablesWatch } = require("%rGui/updater/downloadSize.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
+let { curHangarAddon, soonHangarAddons } = require("%rGui/initHangar.nut")
 
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
@@ -82,7 +83,10 @@ let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   (clone initialAddons).extend(initialAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? []),
   hasAddons.get(), prev))
 let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
-  (clone latestDownloadAddons).extend(latestDownloadAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? []),
+  (clone latestDownloadAddons)
+    .extend(latestDownloadAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? [])
+    .append(curHangarAddon.get())
+    .extend(soonHangarAddons.get().keys()),
   hasAddons.get(), prev))
 
 let errorNames = {}
@@ -177,6 +181,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
       units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, battleMRank + 1)
         .__merge(randomBattleCoreMisInfo.get().misUnits)
     }
+    @() { addons = { [curHangarAddon.get()] = true } }
     @() { addons = latestAddonsToDownload.get() }
     @() {
       addons = allAddons.filter(@(_, a) (getAddonCampaign(a) ?? campaignOrig) == campaignOrig)
@@ -346,6 +351,9 @@ isAddonsAndUnitsInfoActual.subscribe(function(v) {
   if (!is_updater_running())
     downloadInProgress.set({})
   if (!isDownloadFinishedSuccessfully) {
+    
+    
+    this_subscriber_call_may_take_up_to_usec(50 * get_slow_subscriber_threshold_usec())
     updateStartDownload()
     return
   }

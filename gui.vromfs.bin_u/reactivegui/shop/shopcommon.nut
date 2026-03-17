@@ -108,7 +108,7 @@ let rTypeToGTypeComplex = {
   [G_CURRENCY] = @(rewards) currencyToGoodsType?[rewards[0].id] ?? SGT_EVT_CURRENCY,
 }
 
-function getGoodsType(goods) {
+function getGoodsTypeImpl(goods) {
   if ((goods?.slotsPreset ?? "") != "")
     return SGT_SLOTS
   if ((goods?.meta.previewUnit ?? "") != "")
@@ -117,6 +117,8 @@ function getGoodsType(goods) {
   let { gType = null } = goods.rewards?[0]
   return rTypeToGTypeComplex?[gType](goods.rewards) ?? rTypeToGTypeCommon?[gType] ?? SGT_UNKNOWN
 }
+
+let getGoodsType = memoize(getGoodsTypeImpl, null, null, 3000)
 
 let isGoodsFit = {
   [G_UNIT] = @(r, cConfigs) r.id in cConfigs?.allUnits,

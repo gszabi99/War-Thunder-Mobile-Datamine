@@ -62,6 +62,7 @@
       "country_allies": "germany",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "missionProgressType": "split",
       "allowedUnitTypes": {
         "isAirplanesAllowed": false,
         "isTanksAllowed": false,

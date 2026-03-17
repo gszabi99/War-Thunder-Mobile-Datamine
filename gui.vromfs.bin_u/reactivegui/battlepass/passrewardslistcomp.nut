@@ -16,7 +16,7 @@ let emptySlot = { size = array(2, rewardBoxSize) }
 let lockedMarkIconSize = [hdpxi(25), hdpxi(32)]
 let purchBtnHeight = hdpx(60)
 
-let bgCard = mkColoredGradientY(0xFFC59E49, 0xFFCA7119)
+let bgCard = mkColoredGradientY(0xFFC49E4B, 0xFFCB7119)
 
 function markAvailableReward(slot){
   let defaulScale = 1.25
@@ -78,7 +78,7 @@ let freeMark = {
   }.__update(fontVeryTinyAccented)
 }
 
-function cardContent(stageInfo, stateFlags, isRewardsInProgress) {
+function cardContent(stageInfo, stateFlags, isRewardsInProgress, addChild = null) {
   let { canReceive, viewInfo, isPaid, isReceived, isVip = false } = stageInfo
   let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
   return @() {
@@ -104,6 +104,7 @@ function cardContent(stageInfo, stateFlags, isRewardsInProgress) {
               viewInfo == null ? emptySlot
                 : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
                 : mkRewardPlate(viewInfo, bpCardStyle)
+              addChild
               isReceived || isEmptyReward.get() ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
                 : canReceive ? null
                 : lockedMark

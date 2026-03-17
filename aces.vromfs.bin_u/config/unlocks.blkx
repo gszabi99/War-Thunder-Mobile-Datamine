@@ -173,6 +173,7 @@
         "maxVal": 4,
         "bestId": "trophy_near_wingman",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -284,6 +285,7 @@
         "bestId": "heroic_survivor",
         "includeBots": true,
         "noDeaths": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -307,6 +309,7 @@
         "minVal": 3,
         "bestId": "heroic_punisher",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -341,6 +344,7 @@
         "minVal": 2,
         "bestId": "heroic_punisher_ship",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -2218,6 +2222,7 @@
         "minVal": 12,
         "bestId": "heroic_fighter",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -2256,6 +2261,7 @@
         "maxVal": 11,
         "bestId": "trophy_near_fighter",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -2295,6 +2301,7 @@
         "bestId": "heroic_bomber",
         "includeBots": true,
         "isShip": false,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -2335,6 +2342,7 @@
         "bestId": "heroic_bomber_navy",
         "includeBots": true,
         "isShip": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -2375,6 +2383,7 @@
         "bestId": "trophy_near_bomber",
         "includeBots": true,
         "isShip": false,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -2415,6 +2424,7 @@
         "bestId": "trophy_near_bomber_navy",
         "includeBots": true,
         "isShip": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"

@@ -1,7 +1,7 @@
 from "frp" import Watched
-from "dagor.workcycle" import resetTimeout, clearTimer
 from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 
 
 let unreleasedUnits = Watched({})
@@ -27,9 +27,9 @@ function updateUnreleasedUnits() {
 
   let timeToUpdate = nextTime - time
   if (timeToUpdate <= 0)
-    clearTimer(updateUnreleasedUnits)
+    clearExtTimer(updateUnreleasedUnits)
   else
-    resetTimeout(timeToUpdate, updateUnreleasedUnits)
+    resetExtTimeout(timeToUpdate, updateUnreleasedUnits)
 }
 unreleasedUnits.whiteListMutatorClosure(updateUnreleasedUnits)
 updateUnreleasedUnits()

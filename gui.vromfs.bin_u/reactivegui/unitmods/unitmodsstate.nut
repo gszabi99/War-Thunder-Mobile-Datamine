@@ -30,18 +30,11 @@ let unit = Computed(@() !isUnitModsOpen.get() ? null
 let unitName = Computed(@() unit.get()?.name)
 let unitMods = Computed(@() unit.get()?.mods)
 
-let modsPresets = Computed(function() {
-  let { unitModPresets = {} } = campConfigs.get()
-  let result = {}
-  foreach(presetName, preset in unitModPresets) {
-    result[presetName] <- {}
-    foreach(modName, mod in preset)
-      result[presetName][modName] <- mod.__merge({ name = modName })
-  }
-  return result
+let mkMods = @(u) Computed(function() {
+  let preset = campConfigs.get()?.unitModPresets[u.get()?.modPreset] ?? {}
+  return preset.map(@(mod, name) mod.__merge({ name }))
 })
 
-let mkMods = @(u) Computed(@() modsPresets.get()?[u.get()?.modPreset] ?? {})
 let mods = mkMods(unit)
 let modsByCategory = Computed(function() {
   let result = {}
@@ -163,7 +156,6 @@ return {
   isCurModEnabled
   isCurModLocked
 
-  modsPresets
   mods
   modsSort
   modsSorted

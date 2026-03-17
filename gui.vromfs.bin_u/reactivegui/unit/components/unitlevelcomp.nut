@@ -1,7 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round, sqrt } = require("math")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { mkLevelBg, mkProgressLevelBg, unitExpColor, levelProgressBorderWidth,
-  levelProgressBarHeight, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
+  levelProgressBarHeight, maxLevelStarChar
+} = require("%rGui/components/levelBlockPkg.nut")
+
+
 let levelHolderSize = evenPx(84)
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
@@ -27,8 +31,9 @@ let mkUnitLevel = @(level){
   ]
 }
 
-function mkUnitLevelBlock(unit, override = {}) {
-  let { level = 0, exp = 0, levels = []} = unit
+let mkUnitLevelBlock = @(unit, override = {}) function() {
+  let { level = 0, exp = 0, levelPreset = "" } = unit
+  let levels = campConfigs.get()?.unitLevels[levelPreset] ?? []
   let isMaxLevel = (level == levels.len() && levels.len() != 0) || unit?.isUpgraded || unit?.isPremium
   let nextLevelExp = levels?[level].exp ?? 0
   let percent = isMaxLevel
@@ -37,6 +42,7 @@ function mkUnitLevelBlock(unit, override = {}) {
       ? 1.0 * clamp(exp, 0, nextLevelExp) / nextLevelExp
     : 0.0
   return {
+    watch = campConfigs
     size = FLEX_H
     valign = ALIGN_CENTER
     children = [

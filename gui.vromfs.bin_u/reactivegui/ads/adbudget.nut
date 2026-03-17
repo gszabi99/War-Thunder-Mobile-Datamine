@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
@@ -11,7 +11,7 @@ let nextResetTime = keepref(Computed(@() servProfile.get()?.adBudget.common.next
 function adBudgetClientUpdate() {
   isAdBudgetPastReset.set(serverTime.get() >= nextResetTime.get())
   if (!isAdBudgetPastReset.get())
-    resetTimeout(nextResetTime.get() - serverTime.get(), adBudgetClientUpdate)
+    resetExtTimeout(nextResetTime.get() - serverTime.get(), adBudgetClientUpdate)
 }
 adBudgetClientUpdate()
 nextResetTime.subscribe(@(_) adBudgetClientUpdate())

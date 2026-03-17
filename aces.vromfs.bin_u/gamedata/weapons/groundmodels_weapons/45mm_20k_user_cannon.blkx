@@ -27,6 +27,7 @@
   "sfxReloadBullet": "grd_cannon_reload",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
+  "allowRearmOnField": true,
   "bullet": {
     "bulletCount": 300,
     "mass": 1.43,

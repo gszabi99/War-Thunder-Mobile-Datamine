@@ -14,6 +14,7 @@
   "helicopterGroup": 2,
   "allowHumanReload": true,
   "reloadTime": 10.0,
+  "bulletsCartridge": 3,
   "allowRearmOnField": true,
   "mesh": "ss11_rocket_deployed",
   "tags": {

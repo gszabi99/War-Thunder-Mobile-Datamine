@@ -20,16 +20,18 @@ let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
-  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status,
+  quit_mission_after_complete, restart_mission, restart_replay, get_mission_restore_type, get_mission_status,
   is_ready_to_die, ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL,
   get_current_mission_desc
 } = require("guiMission")
+let { is_replay_playing, is_replay_paused = @() false } = require("replays")
 
 function canRestart() {
   return !is_multiplayer()
     && !is_benchmark_game_mode()
     && (get_game_type() & GT_COOPERATIVE) == 0
     && get_mission_status() != MISSION_STATUS_SUCCESS
+    && !is_replay_playing()
 }
 
 function canBailout() {
@@ -46,8 +48,9 @@ let isMissionFailed = @() get_mission_status() == MISSION_STATUS_FAIL
 function closeFlightMenu() {
   if (isMissionFailed())
     return
+  let wasReplayPaused = is_replay_playing() && is_replay_paused()
   inFlightMenu(false) 
-  if (isGamePaused())
+  if (isGamePaused() && !wasReplayPaused)
     pauseGame(false)
   isInFlightMenu.set(false)
 }
@@ -206,6 +209,11 @@ let flightMenuButtons = [
     name = "Resume"
     isVisible = @() !isMissionFailed()
     action = closeFlightMenu
+  }
+  {
+    name = "RestartReplay"
+    isVisible = is_replay_playing
+    action = restart_replay
   }
   {
     name = "Restart"

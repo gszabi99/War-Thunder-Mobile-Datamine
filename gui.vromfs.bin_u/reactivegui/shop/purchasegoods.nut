@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler, get_profile, get_all_configs
@@ -10,7 +9,9 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, G_BOOSTER, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
@@ -153,9 +154,9 @@ function getGoodsRemoveTime(goods) {
 function startRemoveTimer(goods) {
   let timeLeft = (getGoodsRemoveTime(goods) ?? 0) - serverTime.get()
   if (timeLeft <= 0)
-    clearTimer(closePurchaseAndBalanceBoxes)
+    clearExtTimer(closePurchaseAndBalanceBoxes)
   else
-    resetTimeout(timeLeft, closePurchaseAndBalanceBoxes)
+    resetExtTimeout(timeLeft, closePurchaseAndBalanceBoxes)
 }
 
 function mkLimitCountText(id, gType) {
@@ -213,14 +214,14 @@ function purchaseGoods(goodsId, description = "", locParam = null) {
   let textItem = colorize(userlogTextColor, getGoodsLocName(goods, locParam).replace(" ", nbsp))
 
   openMsgBoxPurchase({
-    text = goods.gtype == SGT_EVT_CURRENCY ? mkCurrencyWithIcon(goods)
+    text = getGoodsType(goods) == SGT_EVT_CURRENCY ? mkCurrencyWithIcon(goods)
       : description != ""
         ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
       : loc("shop/needMoneyQuestion", { item = textItem }),
     price = { price, currencyId = currencyFullId },
     limitCountText,
     purchase,
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}")
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(getGoodsType(goods)), $"pack {goods.id}")
     goodsId
   })
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
@@ -268,7 +269,7 @@ function purchaseGoodsSeq(goodsList, name, description = "") {
       : loc("shop/needMoneyQuestion", { item = textItem }),
     price = { price = sum, currencyId = currency },
     purchase,
-    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goodsList[0].gtype), $"pack {",".join(goodsList.map(@(v) v.id))}")
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(getGoodsType(goodsList[0])), $"pack {",".join(goodsList.map(@(v) v.id))}")
   })
   playSound(currency == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }

@@ -16,6 +16,7 @@ setIsScriptsLoading(true)
 let startLoadTime = get_time_msec()
 clear_vm_entity_systems()
 
+require("%appGlobals/frpDebug.nut")
 require("%appGlobals/sqevents.nut")
 require("%rGui/initVM.nut")
 require("%appGlobals/pServer/pServerApi.nut")
@@ -63,6 +64,7 @@ let { waitboxes } = require("%rGui/notifications/waitBox.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { spinnerOpacityAnim, spinner } = require("%rGui/components/spinner.nut")
 
+
 log($"DaRg scripts load before login {get_time_msec() - startLoadTime} msec")
 setIsScriptsLoading(false)
 
@@ -100,6 +102,7 @@ if (isReadyToFullLoad.get() || !isLoginRequired.get())
 function loadAfterLogin() {
   if (sceneAfterLogin != null)
     return
+  this_subscriber_call_may_take_up_to_usec(1000 * get_slow_subscriber_threshold_usec())
   start_es_loading()
   loadAfterLoginImpl()
   end_es_loading()

@@ -9,7 +9,7 @@
   "subclass": "warShip",
   "dustFx": "water_units_dust",
   "useBotForAi": true,
-  "asmCaptureDuration": 8.0,
+  "asmCaptureDuration": 6.0,
   "harmonizationSuffix": "_tomoe",
   "moveType": "ship",
   "maxFwdSpeed": 80.0,
@@ -380,7 +380,7 @@
   "DamageEffects": {
     "part": [
       {
-        "name": "engine_room_01_01_dm",
+        "name": "engine_room_01_dm",
         "onHit": {
           "damageType": "generic",
           "damage": 100.0,
@@ -651,7 +651,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "reloadTime": 25.0,
+        "reloadTime": 22.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1024,7 +1024,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 25.0,
+              "reloadTime": 22.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,

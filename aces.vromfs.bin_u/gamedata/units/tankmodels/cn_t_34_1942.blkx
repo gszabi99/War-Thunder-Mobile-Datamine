@@ -50,6 +50,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "steeringTable": {
     "point": [
       [
@@ -2474,7 +2475,7 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      3.8,
+      3.7,
       -13.0
     ],
     "headPosOnShooting": [

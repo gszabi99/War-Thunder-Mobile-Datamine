@@ -43,10 +43,7 @@ let unlockTablesSeasons = Computed(function(prev) {
 
 let unlockTables = Computed(@(prev) prevIfEqual(prev, unlockTablesSeasons.get().map(@(v) v >= 0)))
 
-let allUnlocksDesc = Computed(@() (userstatDescList.get()?.unlocks ?? {})
-  .map(@(u) u.__merge({
-    stages = (u?.stages ?? []).map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
-  })))
+let allUnlocksDesc = Computed(@() (userstatDescList.get()?.unlocks ?? {}))
 
 function calcUnlockProgress(progressData, unlockDesc) {
   let res = clone emptyProgress
@@ -103,11 +100,12 @@ let unseenUnlocks = Computed(@() unlockProgress.get()
   .reduce(@(res, v, k) ((v?.lastSeenStage ?? -1) < 0 && k not in ignoreUnseen.get()) ? res.$rawset(k, true) : res, {}))
 
 function isFitSeason(unlock, seasons) {
-  let { table = "", activity = null } = unlock
+  let { start_index = null, end_index = null, table = unlock?.table ?? "" } = unlock?.activity
+  if (table == "")
+    return true
   let season = seasons?[table] ?? -1
   if (season < 0)
     return false
-  let { start_index = null, end_index = null } = activity
   return (start_index == null || start_index <= season)
     && (end_index == null || end_index >= season)
 }
@@ -115,8 +113,7 @@ function isFitSeason(unlock, seasons) {
 let personalUnlocksData = Computed(@() userstatUnlocks.get()?.personalUnlocks ?? {})
 
 let activeUnlocks = Computed(@(prev) allUnlocksDesc.get()
-  .filter(@(u) (isFitSeason(u, unlockTablesSeasons.get()) || u?.type == "INDEPENDENT")
-    && (u?.activity.active ?? true)
+  .filter(@(u) isFitSeason(u, unlockTablesSeasons.get())
     && ((u?.personal ?? "") == "" || u.name in personalUnlocksData.get())
   )
   .map(function(u, id) {

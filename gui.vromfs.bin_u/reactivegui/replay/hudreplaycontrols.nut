@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_speed, get_replays_list, get_replay_info, get_temp_replay_info, is_replay_playing } = require("replays")
+let { get_time_speed, get_replays_list, get_replay_info, get_temp_replay_info, is_replay_paused = @() !require("replays")?.is_replay_playing() } = require("replays")
 let { get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { getSpectatorTargetId, switchSpectatorTargetById } = require("guiSpectator")
 let { is_replay_markers_enabled } = require("hudState")
@@ -17,10 +17,11 @@ let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { genBotDecorators } = require("%appGlobals/botUtils.nut")
 let { textColor, selectColor, premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
+let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { mkPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { simpleHorGradInv } = require("%rGui/style/gradients.nut")
@@ -151,6 +152,7 @@ function updateControls() {
 
   replayMplayersList.set(getMplayersList())
   replayCurrentTime.set(get_mission_time())
+  isPauseOptActive.set(is_replay_paused())
 }
 
 function initReplay() {
@@ -164,7 +166,7 @@ function initReplay() {
   replayTimeTotal.set(0)
   isHudVisibilityOptActive.set(isHudVisible.get())
   isPlayersListOptActive.set(false)
-  isPauseOptActive.set(!is_replay_playing())
+  isPauseOptActive.set(is_replay_paused())
   isMarkersOptActive.set(is_replay_markers_enabled())
   isFreeCameraOptActive.set(true)
 
@@ -336,10 +338,15 @@ function mkUnitName(player, halign) {
 }
 
 function mkAvatar(player) {
-  let info = player.isBot ? mkBotInfo(player) : mkPublicInfo(player.uid)
+  let { userId, isBot, name } = player
+  let userIdStr = userId.tostring()
+  let info = isBot
+    ? mkBotInfo(player.__merge({ decorators = genBotDecorators(name) }))
+    : mkPublicInfo(userIdStr)
 
   return @() {
     watch = info
+    onAttach = @() isBot ? null : refreshPublicInfo(userIdStr)
     size = [avatarHeight, avatarHeight]
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(info.get()?.decorators.avatar)}:{avatarHeight}:{avatarHeight}:P")
@@ -468,14 +475,14 @@ let bottomPanel = @() {
 
 let hudReplayControls = @() {
   key = "replay-controls"
-  watch = [isPlayingReplay, isReplaysManageButtonOn]
+  watch = isReplaysManageButtonOn
   size = flex()
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   gap = rowHeight
   onAttach = @() setInterval(TIME_TO_UPDATE_CONTROLLS, updateControls)
   onDetach = @() clearTimer(updateControls)
-  children = isPlayingReplay.get() && isReplaysManageButtonOn.get()
+  children = isReplaysManageButtonOn.get()
     ? [
         centerPanel
         bottomPanel
@@ -507,9 +514,9 @@ function replayShowHudAction() {
   }
 
   return {
-    watch = [isPlayingReplay, isHudVisible]
+    watch = isHudVisible
     size = flex()
-    children = !isPlayingReplay.get() || isHudVisible.get() ? null
+    children = isHudVisible.get() ? null
       : {
           size = flex()
           behavior = TouchScreenStick

@@ -11,7 +11,8 @@ let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getPlatoonUnitCfg, allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
 let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 let { dmViewerMode, isDebugBatchExportProcess } = require("%rGui/dmViewer/dmViewerState.nut")
 let { mkUnitDataForXray, mkPartTooltipInfo } = require("%rGui/dmViewer/modeXray.nut")
@@ -23,7 +24,7 @@ let onFinishActions = []
 let msToTimeStr = @(ms) format("%02dm%02ds", ms / 60000, (ms % 60000) / 1000)
 
 function collectItemInfo(unitName, partsWhitelist) {
-  let unit = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get(), curCampaign.get())
+  let unit = getUnitCfgByTagName(unitName, serverConfigs.get(), curCampaign.get())
   if (unit == null)
     return null
   let unitData = mkUnitDataForXray(unitName, unit, null)

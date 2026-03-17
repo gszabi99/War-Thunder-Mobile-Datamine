@@ -10,14 +10,24 @@ let quitPartnersExt = @() isOpenedPartnersExt.set(false)
 
 let bullet = loc("ui/bullet")
 
-function mkPurposesBulletedList(titleLocId, idList, dataList, isEnabledKey = "isEnabled") {
+function mkPurposesBulletedList(titleLocId, idList, dataList, retention, isEnabledKey, needShowId) {
   if (idList.len() == 0)
     return []
   let bulletedTextComps = dataList
     .filter(@(v) idList.contains(v.info.id))
-    .map(@(v) mkTextarea("".concat(bullet, v.info.name,
-      v?[isEnabledKey] == null ? "" : loc("ui/parentheses/space", { text = loc(v?[isEnabledKey].get() ? "options/on" : "options/off") })),
-        fadedAndMinor))
+    .map(function(v) {
+        let { id, name } = v.info
+        let title = needShowId ? $"[{id}] {name}" : name
+        let retentionDays = retention?[id.tostring()]
+        let retentionTxt = retentionDays == null ? ""
+          : "".concat(loc("consent_tcf/dataRetentionPeriod"), colon, loc("measureUnits/full/days", { n = retentionDays }))
+        let isEnabledVal = v?[isEnabledKey].get()
+        let enabledTxt = isEnabledVal == null ? "" : loc(isEnabledVal ? "options/on" : "options/off")
+        return mkTextarea("".concat(bullet, title,
+            retentionTxt == "" ? "" : loc("ui/parentheses/space", { text = retentionTxt }),
+            enabledTxt == "" ? "" : loc("ui/parentheses/space", { text = enabledTxt })
+          ), fadedAndMinor)
+      })
   return [ mkTextarea(loc(titleLocId), gapAbove) ].extend(bulletedTextComps)
 }
 
@@ -26,28 +36,43 @@ function mkPartnerSwitchComp(partner, onManualSwitch, needShowId) {
   let { itemToPartnerData } = listCfg
   let { policy, legIntClaim } = itemToPartnerData(info)
   let { id = null, name, purposes = [], specialPurposes = [], features = [], legIntPurposes = [], dataDeclaration = [],
-    deviceStorageDisclosureUrl = "", cookieMaxAgeSeconds = 0 } = info
+    dataRetention = {}, deviceStorageDisclosureUrl = "", cookieMaxAgeSeconds = 0 } = info
   let title = needShowId ? $"[{id}] {name}" : name
   let purposesAll = getPurposesList()
   let purposesSpecialAll = getSpecialPurposesList()
+  let purposesRetention = dataRetention?.purposes
+  let specialPurposesRetention = dataRetention?.specialPurposes
   let featuresAll = getFeaturesList()
   let dataCategoriesAll = getDataCategoiresList()
+  let needDeviceStorageSection = cookieMaxAgeSeconds != 0 || deviceStorageDisclosureUrl != ""
   let emptyLine = mkTextarea(nbsp)
   return mkExpandableSwitch(title, isAvailable, isEnabled, onManualSwitch, isExpanded, function() {
     let list = [
+      emptyLine
       mkLink(loc("consent_tcf/partners/policy"), @() openUrl(policy))
     ]
-      .extend(mkPurposesBulletedList("consent_tcf/partners/purposes/consent", purposes, purposesAll))
-      .extend(mkPurposesBulletedList("consent_tcf/manage/specialPurposes", specialPurposes, purposesSpecialAll))
-      .extend(mkPurposesBulletedList("consent_tcf/manage/features", features, featuresAll))
+      .extend(mkPurposesBulletedList("consent_tcf/partners/purposes/consent",
+        purposes, purposesAll, purposesRetention, "isEnabled", needShowId))
+      .extend(mkPurposesBulletedList("consent_tcf/manage/specialPurposes",
+        specialPurposes, purposesSpecialAll, specialPurposesRetention, null, needShowId))
+      .extend(mkPurposesBulletedList("consent_tcf/manage/features",
+        features, featuresAll, null, null, needShowId))
       .append(isEnabledLIT == null && legIntClaim == "" ? null : emptyLine)
-      .append(isEnabledLIT == null ? null : mkSwitch(loc("consent_tcf/manage/legitimateInterest"), isAvailableLIT, isEnabledLIT, onManualSwitch))
-      .append(legIntClaim == "" ? null : mkLink(loc("consent_tcf/partners/legitimateInterest"), @() openUrl(legIntClaim), gapBelow))
-      .extend(mkPurposesBulletedList("consent_tcf/partners/purposes/legitimateInterest", legIntPurposes, purposesAll, "isEnabledLIT"))
-      .extend(mkPurposesBulletedList("consent_tcf/partners/data", dataDeclaration, dataCategoriesAll))
-      .append(cookieMaxAgeSeconds == 0 ? null : mkTextarea(loc("consent_tcf/partners/storage"), gapAbove))
-      .append(cookieMaxAgeSeconds == 0 ? null : mkTextarea(loc("measureUnits/full/days", { n = cookieMaxAgeSeconds / 86400 }), fadedAndMinor))
-      .extend(deviceStorageDisclosureUrl == "" ? [] : [ emptyLine, mkLink(loc("consent_tcf/partners/device"), @() openUrl(deviceStorageDisclosureUrl)) ])
+      .append(isEnabledLIT == null ? null
+        : mkSwitch(loc("consent_tcf/manage/legitimateInterest"), isAvailableLIT, isEnabledLIT, onManualSwitch))
+      .append(legIntClaim == "" ? null
+        : mkLink(loc("consent_tcf/partners/legitimateInterest"), @() openUrl(legIntClaim), gapBelow))
+      .extend(mkPurposesBulletedList("consent_tcf/partners/purposes/legitimateInterest",
+        legIntPurposes, purposesAll, null, "isEnabledLIT", needShowId))
+      .extend(mkPurposesBulletedList("consent_tcf/partners/data",
+        dataDeclaration, dataCategoriesAll, null, null, needShowId))
+      .append(!needDeviceStorageSection ? null
+        : mkTextarea(loc("consent_tcf/partners/storage"), gapAbove))
+      .append(deviceStorageDisclosureUrl == "" ? null
+        : mkLink(loc("consent_tcf/partners/device"), @() openUrl(deviceStorageDisclosureUrl)))
+      .append(cookieMaxAgeSeconds == 0 ? null
+        : mkTextarea("".concat(loc("consent_tcf/maxDataRetentionPeriod"), colon,
+            loc("measureUnits/full/days", { n = cookieMaxAgeSeconds / 86400 })), fadedAndMinor))
       .append(emptyLine)
 
     return list
@@ -76,7 +101,8 @@ let mkPartnersExtDesc = @() function() {
 
   let list = [
     mkTextarea(loc("consent_tcf/partners/manage/desc"), fadedAndMinor.__merge(gapBelow))
-    mkSwitch(loc("consent_tcf/partners/consentToAll"), isAvailableAllSwitch, isPartnersAllEnabled, onManualPartnersAllSwitch)
+    mkSwitch(loc("consent_tcf/partners/consentToAll"),
+      isAvailableAllSwitch, isPartnersAllEnabled, onManualPartnersAllSwitch)
     mkTextarea(nbsp)
   ]
   foreach (idx, vl in partnersExtLists)

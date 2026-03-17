@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
 let { object_to_json_string } = require("json")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
+let { is_android, is_ios } = require("%sqstd/platform.nut")
 let { saveJson } = require("%sqstd/json.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
@@ -18,7 +20,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report,
-  get_purchases_list
+  get_purchases_list, userstat_start_personal_season
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -283,7 +285,13 @@ foreach (cmd in ["get_all_configs", "reset_profile",
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
 }
 
-register_command(@() get_profile({}, "consolePrintResult"), "meta.get_profile")
+let isHuaweiBuild = getBuildMarket() == "appgallery"
+let installStore = is_android && isHuaweiBuild ? "huawei"
+  : is_android && isDownloadedFromGooglePlay() ? "google"
+  : is_ios ? "iOS"
+  : "other"
+
+register_command(@() get_profile({ installStore }, "consolePrintResult"), "meta.get_profile")
 register_command(@() check_purchases_debug("onDebugCheckPurchases"), "meta.check_purchases_debug")
 register_command(@() get_purchases_list("onDebugPurchasesList"), "meta.get_purchases_list")
 
@@ -302,6 +310,7 @@ pPlayerTypes.each(@(pType, id) register_command(@() set_purch_player_type(pType)
 
 
 register_command(@(id, count) userstat_add_item(id, count, "userStat", "consolePrintResult"), "meta.userstat_add_item")
+register_command(@(id) userstat_start_personal_season(id, 1, "consolePrintResult"), "meta.userstat_start_season")
 register_command(function(id) {
     let tags = [
       { table = "ships_event_leaderboard", mode = "ships", tillPlaces = [10, 100], place = 8, tillPercent = [5, 10, 20], percent = 4 }

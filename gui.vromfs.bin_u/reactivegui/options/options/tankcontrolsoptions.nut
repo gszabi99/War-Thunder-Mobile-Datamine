@@ -13,8 +13,8 @@ let { has_option_tank_alternative_control } = require("%appGlobals/permissions.n
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
-let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
-} = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
+} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
 } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
 let { openChooseMovementControls
@@ -30,7 +30,7 @@ let tankMoveControlType = {
   ctrlType = OCT_LIST
   value = currentTankMoveCtrlType
   onChangeValue = @(v) sendChange("tank_movement_control", v)
-  list = tankMoveCtrlTypesList
+  list = groundMoveCtrlTypesList
   valToString = ctrlTypeToString
   openInfo = openChooseMovementControls
 }
@@ -49,7 +49,7 @@ let tankAltControlType = {
 }
 
 let autoTurnerOptionList = [false, true]
-let currentAutoTurner = mkOptionValue(OPT_TANK_AUTO_TURNER, false, @(v) validate(v, autoTurnerOptionList))
+let currentAutoTurner = mkOptionValue(OPT_TANK_AUTO_TURNER, true, @(v) validate(v, autoTurnerOptionList))
 let autoTurnerType = {
   locId = "options/auto_turner"
   ctrlType = OCT_LIST
@@ -81,6 +81,7 @@ let showReticleButtonTouch = {
     onChangeValue = @(v) sendChange("show_reticle", v)
     list = showReticleButtonList
     valToString = @(v) loc(v ? "options/enable" : "options/disable")
+    description = loc("options/desc/show_reticle")
 }
 
 

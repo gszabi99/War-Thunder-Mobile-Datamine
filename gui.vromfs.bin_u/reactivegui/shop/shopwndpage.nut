@@ -10,6 +10,7 @@ let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, good
   curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
   curShopSubsByCategory, curShopSoonGoodsByCategory, soonGoodsByShop, goodsIdsByShop
 } = require("%rGui/shop/shopState.nut")
+let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
 let { getPersonalGoodsBaseId, activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
 let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
@@ -153,7 +154,8 @@ function mkGoodsListWithBaseValue(goodsListBase) {
 }
 
 function onGoodsClick(goods) {
-  if (goods.gtype == SGT_UNIT || goods.gtype == SGT_BLUEPRINTS || goods.gtype == SGT_SKIN)
+  let gtype = getGoodsType(goods)
+  if (gtype == SGT_UNIT || gtype == SGT_BLUEPRINTS || gtype == SGT_SKIN)
     openGoodsPreview(goods.id)
   else
     purchaseFunc(goods)

@@ -565,7 +565,7 @@
       "else_actions": {}
     },
     "set_indicators": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -582,25 +582,25 @@
         },
         "unitSetIndication": [
           {
-            "indicatorOpacity": 0.9,
-            "blinksCount": 15,
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_quest_units_squad",
+            "indicatorOpacity": 0.9,
+            "blinksCount": 15,
             "team": "B"
           },
           {
-            "indicatorOpacity": 0.9,
-            "blinksCount": 15,
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t2_quest_units_squad",
+            "indicatorOpacity": 0.9,
+            "blinksCount": 15,
             "team": "A"
           }
         ]
@@ -608,7 +608,7 @@
       "else_actions": {}
     },
     "update_indicator": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -29767,7 +29767,7 @@
     "viewpt_01": {
       "pos": [
         5210.99,
-        -60.5553,
+        -59.0553,
         4591.6
       ],
       "ht": 1.5

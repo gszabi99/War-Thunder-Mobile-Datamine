@@ -929,10 +929,10 @@
       },
       "conditions": {},
       "actions": {
-        "varModify": {
-          "operator": "add",
-          "value": -1.0,
-          "var": "main_timer"
+        "varSetInt": {
+          "value": 0,
+          "var": "main_timer",
+          "source_var": "timeLeft"
         }
       },
       "else_actions": {}
@@ -1247,7 +1247,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
+          "conditionsType": "ALL",
           "enableAfterComplete": false
         },
         "events": {
@@ -2344,7 +2344,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
+          "conditionsType": "ALL",
           "enableAfterComplete": false
         },
         "events": {
@@ -3883,6 +3883,10 @@
           "varSetString": [
             {
               "value": "",
+              "var": "t1_capturer_name"
+            },
+            {
+              "value": "",
               "var": "t1_delivery_userstat"
             },
             {
@@ -4178,6 +4182,10 @@
             "bool_value": "@t1_flag_stolen"
           },
           "varSetString": [
+            {
+              "value": "",
+              "var": "t2_capturer_name"
+            },
             {
               "value": "",
               "var": "t2_delivery_userstat"
@@ -4513,7 +4521,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 2.0
+          "time": 1.0
         }
       },
       "conditions": {
@@ -4580,7 +4588,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 2.0
+          "time": 1.0
         }
       },
       "conditions": {
@@ -4637,8 +4645,8 @@
       },
       "else_actions": {}
     },
-    "tiebreaker_init": {
-      "is_enabled": false,
+    "time_is_up": {
+      "is_enabled": true,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -4648,6 +4656,77 @@
       "events": {
         "periodicEvent": {
           "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "main_timer",
+          "value": 5,
+          "comparasion_func": "notMore"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": [
+            "tiebreaker_not_equal_init",
+            "tiebreaker_equal_init"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "tiebreaker_not_equal_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "t1_score_int",
+            "value": 0,
+            "comparasion_func": "notEqual",
+            "var_value_other": "t2_score_int"
+          },
+          {
+            "var_value": "main_timer",
+            "value": 5,
+            "comparasion_func": "notMore"
+          }
+        ]
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": [
+            "t1_win_partial",
+            "t2_win_partial"
+          ]
+        },
+        "triggerDisable": {
+          "target": "tiebreaker_equal_init"
+        }
+      },
+      "else_actions": {}
+    },
+    "tiebreaker_equal_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
         }
       },
       "conditions": {
@@ -4671,6 +4750,145 @@
             "tiebreaker_t1_wins",
             "tiebreaker_t2_wins"
           ]
+        },
+        "triggerDisable": {
+          "target": "tiebreaker_not_equal_init"
+        }
+      },
+      "else_actions": {}
+    },
+    "t1_win_partial": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "t1_score_int",
+          "value": 1,
+          "comparasion_func": "more",
+          "var_value_other": "t2_score_int"
+        }
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "t1_flag02_delivered",
+              "t2_flag01_delivered",
+              "t1_flag_delivered_common",
+              "t2_flag_delivered_common"
+            ]
+          },
+          {
+            "target": [
+              "t2_win",
+              "t2_win_partial",
+              "tiebreaker_t2_wins"
+            ]
+          }
+        ],
+        "moSetObjectiveStatus": [
+          {
+            "target": "t1_ny_gift_ctf_objective",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "object_marking": 0,
+            "team": "A"
+          },
+          {
+            "target": "t2_ny_gift_ctf_objective",
+            "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "object_marking": 0,
+            "team": "B"
+          }
+        ],
+        "wait": {
+          "time": 3.0
+        },
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "B"
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_win_partial": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.05
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "t2_score_int",
+          "value": 5,
+          "comparasion_func": "more",
+          "var_value_other": "t1_score_int"
+        }
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": [
+              "t1_flag02_delivered",
+              "t2_flag01_delivered",
+              "t1_flag_delivered_common",
+              "t2_flag_delivered_common"
+            ]
+          },
+          {
+            "target": [
+              "t1_win",
+              "t1_win_partial",
+              "tiebreaker_t1_wins"
+            ]
+          }
+        ],
+        "moSetObjectiveStatus": [
+          {
+            "target": "t2_ny_gift_ctf_objective",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "object_marking": 0,
+            "team": "B"
+          },
+          {
+            "target": "t1_ny_gift_ctf_objective",
+            "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "object_marking": 0,
+            "team": "A"
+          }
+        ],
+        "wait": {
+          "time": 3.0
+        },
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "A"
         }
       },
       "else_actions": {}
@@ -4709,7 +4927,8 @@
           {
             "target": [
               "t2_win",
-              "tiebreaker_t2_wins"
+              "tiebreaker_t2_wins",
+              "t2_win_partial"
             ]
           }
         ],
@@ -4776,7 +4995,8 @@
           {
             "target": [
               "t1_win",
-              "tiebreaker_t1_wins"
+              "tiebreaker_t1_wins",
+              "t1_win_partial"
             ]
           }
         ],
@@ -5080,10 +5300,6 @@
           "varSetString": [
             {
               "value": "",
-              "var": "t2_capturer_name"
-            },
-            {
-              "value": "",
               "var": "t1_gift_defender_userstat"
             },
             {
@@ -5151,10 +5367,6 @@
             "team": "A"
           },
           "varSetString": [
-            {
-              "value": "",
-              "var": "t1_capturer_name"
-            },
             {
               "value": "",
               "var": "t2_gift_defender_userstat"

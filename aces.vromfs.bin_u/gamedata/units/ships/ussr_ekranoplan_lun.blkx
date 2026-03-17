@@ -31,7 +31,7 @@
   "hasExpl": false,
   "exhaustFx": "",
   "steamFx": "water_ship_cloud_back",
-  "asmCaptureDuration": 5.0,
+  "asmCaptureDuration": 6.0,
   "enemyAsmCaptureMult": 1.5,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,

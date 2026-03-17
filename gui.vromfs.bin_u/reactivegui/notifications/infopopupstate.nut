@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce, clearTimer, resetTimeout } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { eventbus_send } = require("eventbus")
 let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { campConfigs, curCampaign, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 
 
 const SAVE_ID = "infoPopups"
@@ -50,9 +51,9 @@ function updatePopupToShow() {
 
   popupToShow.set(popup)
   if (timeToUpdate <= 0)
-    clearTimer(updatePopupToShow)
+    clearExtTimer(updatePopupToShow)
   else
-    resetTimeout(timeToUpdate, updatePopupToShow)
+    resetExtTimeout(timeToUpdate, updatePopupToShow)
 }
 popupToShow.whiteListMutatorClosure(updatePopupToShow)
 

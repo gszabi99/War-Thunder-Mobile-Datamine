@@ -119,6 +119,18 @@
       ]
     }
   },
+  "walker_wtm": {
+    "_use": "walker",
+    "mods:list<t>": {
+      "mod": [
+        "tank_wtm_toolkit_ecs",
+        "tank_wtm_extinguisher_ecs",
+        "tank_wtm_medicalkit_ecs",
+        "tank_smokescreen_ecs",
+        "firework_wtm_ecs"
+      ]
+    }
+  },
   "base_camera": {
     "camera__active": false,
     "camera__wishActive": false,
@@ -195,13 +207,15 @@
       "_replicate": true,
       "deserterLockStart": 0,
       "isBattleDataReceived": false,
+      "isUserstatStatsReceived": false,
       "isUnitsOverrided": false,
       "ovrUnitUpgradesPreset": "",
       "unitSlots:list<t>": {},
       "commonStats:object": {}
     },
     "unitDailyApplied:object": {},
-    "battleData:object": {}
+    "battleData:object": {},
+    "userstatStats:object": {}
   },
   "wtm_local_player": {
     "localPlayer:tag": {

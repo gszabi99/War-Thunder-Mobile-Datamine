@@ -23,7 +23,6 @@ let actions = {
       && userId not in myBlacklistUids.get()
       && userId not in myRequestsUids.get()
       && userId not in botRequests.get()
-      && userId not in rejectedByMeUids.get()
     )
     action = @(userId) userId in requestsToMeUids.get() ? approveFriendRequest(userId) : addToFriendList(userId)
     mkIsInProgress = mkCommonInProgress

@@ -5,7 +5,7 @@ from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
-from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn, closeWndBtnSize
 
 const wndW = hdpx(1300)
 const wndH = saSize[1]
@@ -65,6 +65,27 @@ let separatorLine = {
   }
 }
 
+let backBtnH = closeWndBtnSize
+let backBtnW  = (78.0 / 59 * backBtnH).tointeger()
+
+function mkBackBtn(onClick, override = {}) {
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    size = [backBtnW, backBtnH]
+    margin = closeWndBtnSize / 2
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#back_icon.svg:{backBtnW}:{backBtnH}:P")
+
+    behavior = Behaviors.Button
+    onElemState = @(sf) stateFlags.set(sf)
+    sound = { click  = "click" }
+    onClick
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+  }.__update(override)
+}
+
 let gapAbove = freeze({ margin = [textGap, 0, 0, 0] })
 let gapBelow = freeze({ margin = [0, 0, textGap, 0] })
 let gapAboveAndBelow = freeze({ margin = [textGap, 0] })
@@ -82,7 +103,7 @@ let mkStatusContent = @(text) {
   children = mkTextarea(text, { halign = ALIGN_CENTER })
 }
 
-function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, lastScrollPosY = null) {
+function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWnd = false, lastScrollPosY = null) {
   let scrollHandler = ScrollHandler()
   local scrollPosY = 0
   return modalWndBg.__merge({
@@ -97,7 +118,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, lastScro
         valign = ALIGN_CENTER
         children = [
           modalWndHeader(titleStr)
-          onClose == null ? null : closeWndBtn(onClose, { hotkeys = [btnBEscUp] })
+          onClose == null ? null : (isRootWnd ? closeWndBtn : mkBackBtn)(onClose, { hotkeys = [btnBEscUp] })
         ]
       }
       {
@@ -112,6 +133,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, lastScro
           {
             rootBase = {
               behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
+              touchMarginPriority = TOUCH_BACKGROUND
               onScroll = function(elem) { scrollPosY = elem?.getScrollOffsY() ?? 0 }
             }
             scrollHandler

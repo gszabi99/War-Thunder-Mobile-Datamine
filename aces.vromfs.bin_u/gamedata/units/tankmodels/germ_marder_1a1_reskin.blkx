@@ -2416,7 +2416,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/103mm_MILAN_rocket_launcher.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/103mm_milan_launcher_user_cannon.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
