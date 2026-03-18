@@ -24,7 +24,7 @@ let isNPSeasonActive = Computed(@() npBpFreeRewardsUnlock.get() != null)
 let seasonEndTime = Computed(@() userstatStatsTables.get()?.stats[npBpFreeRewardsUnlock.get()?.table]["$endsAt"] ?? 0)
 
 let mkNPPaidStageList = Computed(function() {
-  let res = gatherUnlockStageInfo(npBpPaidRewardsUnlock.get(), true, true, winsCount.get())
+  let res = gatherUnlockStageInfo(npBpPaidRewardsUnlock.get(), true, isNPActive.get(), winsCount.get())
   fillViewInfo(res, serverConfigs.get())
   return res
 })

@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_replays_dir } = require("replays")
+let { file_exists } = require("dagor.fs")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -12,8 +14,10 @@ let { PRIMARY, COMMON } = require("%rGui/components/buttonStyles.nut")
 
 
 const WND_UID = "saveReplayWnd"
+const replayFileExt = "wrpl"
 let close = @() removeModalWindow(WND_UID)
 let replayName = Watched("")
+
 let isNameValid = Computed(function() {
   if (replayName.get() == "")
     return false
@@ -28,6 +32,10 @@ let editbox = textInput(replayName)
 function save() {
   if (!isNameValid.get()) {
     openMsgBox({ text = loc("msgbox/invalidReplayFileName") })
+    return
+  }
+  if (file_exists("\\".concat(get_replays_dir(), $"{replayName.get()}.{replayFileExt}"))) {
+    openMsgBox({ text = loc("msgbox/replayFileNameIsExists") })
     return
   }
   if (!saveLastReplay(replayName.get()))

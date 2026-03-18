@@ -134,7 +134,7 @@ return {
     defTransform = mkLBPos([hdpx(190), hdpx(-420)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_target_tracking.svg")
     isVisibleInEditor = isTargetTracking
-    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get())
+    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get() && !isPlayingReplay.get())
     priority = Z_ORDER.BUTTON
   }
 

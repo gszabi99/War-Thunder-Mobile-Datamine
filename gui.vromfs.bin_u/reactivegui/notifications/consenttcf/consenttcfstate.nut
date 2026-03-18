@@ -239,6 +239,7 @@ isOpenedConsentTcfWnd.subscribe(function(v) {
     sendUiBqEvent("ads_consent_tcf", { id = isStartup ? "consent_open_at_start" : "consent_open_from_privacy" })
   }
   else {
+    this_subscriber_call_may_take_up_to_usec(3 * get_slow_subscriber_threshold_usec()) 
     doOnFinish()
     isLoadError.set(false)
   }

@@ -180,6 +180,10 @@ let nickFrames = {
   dragon_claws = @(n) $"✞{n}✟"
   cadet_chevron = @(n) $"⋫{n}⋫"
   four_leaf_clover = @(n) $"✬{n}✭"
+  knife_machete = @(n) $"✤{n}✥"
+  skake_2 = @(n) $"✦{n}✧"
+  fern = @(n) $"✨{n}✩"
+  bungalow = @(n) $"✪{n}✫"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

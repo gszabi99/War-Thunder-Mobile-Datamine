@@ -98,7 +98,7 @@ return cfgHudCommon.__merge({
     }
     defTransform = mkLBPos([hdpx(0), hdpx(-220)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_target_tracking_off.svg")
-    isVisibleInBattle = Computed(@() !isActiveTurretCamera.get() && !raceForceCannotShoot.get())
+    isVisibleInBattle = Computed(@() !isActiveTurretCamera.get() && !raceForceCannotShoot.get() && !isPlayingReplay.get())
   }
 
   zoom = {

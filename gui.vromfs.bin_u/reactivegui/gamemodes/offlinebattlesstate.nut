@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { get_meta_missions_info_by_chapters } = require("guiMission")
+let DataBlock = require("DataBlock")
+let { isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { can_debug_configs, can_debug_missions } = require("%appGlobals/permissions.nut")
@@ -37,6 +39,7 @@ let selectedMission = mkWatched(persist, "selectedMission", "")
 
 let savedUnitForReturn = mkWatched(persist, "savedUnitForReturn", null)
 
+let unitsWithResources = mkWatched(persist, "unitsWithResources", {})
 let offlineMissionsList = mkWatched(persist, "offlineMissionsList", {})
 let offlineDebugMissionsList = mkWatched(persist, "offlineDebugMissionsList", {})
 
@@ -56,9 +59,19 @@ function resetSavedParams() {
   savedUnitPresetLevel.set(unitPresetsLevelList[1])
 }
 
-if (!isOfflineBattlesActive.get())
-  resetSavedParams()
-isOfflineBattlesActive.subscribe(@(v) !v ? resetSavedParams() : null)
+function refreshUnitsBlkRes() {
+  if (unitsWithResources.get().len() > 0)
+    return
+
+  let unitsBlkRes = DataBlock()
+  if (!unitsBlkRes.tryLoad("aces.vromfs.bin.deps.bin"))
+    return
+
+  let res = {}
+  if (isDataBlock(unitsBlkRes))
+    eachBlock(unitsBlkRes, @(blk) res[blk.getBlockName()] <- true)
+  unitsWithResources.set(res)
+}
 
 function refreshOfflineMissionsList() {
   let chapters = get_meta_missions_info_by_chapters(GM_DOMINATION).filter(@(m) m.len() > 0)
@@ -79,6 +92,17 @@ function refreshOfflineMissionsList() {
   offlineMissionsList.set(res.missions)
   offlineDebugMissionsList.set(res.debugMissions)
 }
+
+if (!isOfflineBattlesActive.get())
+  resetSavedParams()
+isOfflineBattlesActive.subscribe(function(v) {
+  if (v) {
+    refreshOfflineMissionsList()
+    refreshUnitsBlkRes()
+  }
+  else
+    resetSavedParams()
+})
 
 function runOfflineBattle(unitName = null, missionName = null) {
   unitName = unitName ?? selectedUnit.get()?.name
@@ -142,7 +166,7 @@ let offlineBattlesCfg = Computed(function() {
       allUnits[unitName] <- unit.__merge({ country = countryId })
   }
 
-  return allUnits.filter(@(_, unitName) $"{unitName}_prem" not in allUnits)
+  return allUnits.filter(@(_, unitName) $"{unitName}_prem" not in allUnits && unitName in unitsWithResources.get())
 })
 
 let searchableUnitsList = Computed(@() offlineBattlesCfg.get()?.values() ?? [])
@@ -189,7 +213,6 @@ return {
   runOfflineBattle,
   offlineMissionsList,
   openOfflineBattleMenu,
-  refreshOfflineMissionsList,
   savedBotsCount,
   savedBotsRank,
   savedUnitPresetLevel,

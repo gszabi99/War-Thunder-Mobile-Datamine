@@ -19,7 +19,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { offlineBattlesCfg, openOfflineBattleMenu, isOfflineBattlesActive, unitSearchName, unitSearchResults,
   isDebugListMapsActive, canAccessForDebug, runOfflineBattle, initOfflineBattlesData, selectedMission,
-  refreshOfflineMissionsList, skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList,
+  skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList,
   savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
   countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit, savedUnitForReturn
 } = require("%rGui/gameModes/offlineBattlesState.nut")
@@ -470,8 +470,6 @@ let content = {
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   function onAttach() {
-    refreshOfflineMissionsList()
-
     if (initOfflineBattlesData.get() != null) {
       let { unitName, missionName } = initOfflineBattlesData.get()
       if (unitName in offlineBattlesCfg.get())

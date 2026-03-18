@@ -1822,7 +1822,7 @@
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
-        "underwaterFogUseTAA": false,
+        "underwaterFogUseTAA": true,
         "texquality": "high",
         "fftWaterRenderResolution": 8,
         "allowNonSkyReflections": true,

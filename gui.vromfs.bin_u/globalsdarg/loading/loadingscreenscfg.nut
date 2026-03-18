@@ -258,7 +258,7 @@ let screensList = {
   }
   simple_tank_29 = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_37.avif")
   }
   simple_airplane_1 = {
@@ -290,6 +290,11 @@ let screensList = {
     camp = [ "air" ]
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_7.avif")
+  }
+  simple_airplane_8 = {
+    camp = [ "air" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_8.avif")
   }
 }.map(@(v) "timeRange" not in v ? v :
   v.__merge({timeRange = parseTime(v.timeRange)}))

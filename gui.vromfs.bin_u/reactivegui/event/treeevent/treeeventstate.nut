@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { activeUnlocks, unlockProgress, getUnlockPrice } = require("%rGui/unlocks/unlocks.nut")
+let { activeUnlocks, getUnlockPrice, isPrevUnlockCompleted
+} = require("%rGui/unlocks/unlocks.nut")
 let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -44,23 +44,7 @@ let curEventUnlocks = keepref(Computed(@() openedTreeEventId.get() != null
 
 let treeEventPresets = Computed(@() curEventUnlocks.get().filter(@(unlock) unlock?.meta.quest_cluster).keys())
 
-function isPrevUnlockCompleted(id, unlocks, unlockInProgress) {
-  if (id == null)
-    return true
-  let currentUnlock = unlocks?[id]
-  let requirements = "requirement" in currentUnlock ? currentUnlock.requirement.split("|").map(@(r) r.strip()) : [""]
-
-  if (requirements.len() == 0 || (requirements.len() == 1 && requirements[0] == ""))
-    return true
-
-  foreach (req in requirements)
-    if (unlocks?[req].isCompleted || unlockInProgress?[req].isCompleted)
-      return true
-
-  return false
-}
-
-let mkCompletedPrevElem = @(id) Computed(@() isPrevUnlockCompleted(id, curEventUnlocks.get(), unlockProgress.get()))
+let mkCompletedPrevElem = @(id) Computed(@() isPrevUnlockCompleted(id, curEventUnlocks.get()))
 
 let selectedBgElem = Computed(@() presetBgElems.get().findvalue(@(elem) elem.id == selectedElemId.get()))
 let selectedBgElemId = Computed(@() selectedBgElem.get()?.id)
@@ -68,25 +52,25 @@ let selectedBgElemId = Computed(@() selectedBgElem.get()?.id)
 let curEventEndsAt = Computed(@() specialEventsWithTree.get()?[openedTreeEventId.get()].endsAt ?? 0)
 let curGmList = Computed(@() separateEventModes.get()?[openedTreeEventId.get()] ?? [])
 
-let mkUnlockCompleteState = @(id, unlocks, unlockInProgress) {
-  isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks, unlockInProgress),
+let mkUnlockCompleteState = @(id, unlocks) {
+  isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks),
   isCompleted = unlocks?[id].isCompleted
 }
 
-let mkPresetUnlocksComplete = @(points, bgElems, unlocks, unlockProgressV)
-  points.map(@(_, id) mkUnlockCompleteState(id, unlocks, unlockProgressV))
+let mkPresetUnlocksComplete = @(points, bgElems, unlocks)
+  points.map(@(_, id) mkUnlockCompleteState(id, unlocks))
     .__merge(bgElems
       .reduce(@(res, e) (e?.id ?? "") == "" ? res
-          : res.$rawset(e.id, mkUnlockCompleteState(e.id, unlocks, unlockProgressV)),
+          : res.$rawset(e.id, mkUnlockCompleteState(e.id, unlocks)),
         {}))
 
 let subPresetUnlocksComplete = Computed(function() {
   let { points = {}, bgElements = [] } = currentSubPresetState.get()
-  return mkPresetUnlocksComplete(points, bgElements, curEventUnlocks.get(), unlockProgress.get())
+  return mkPresetUnlocksComplete(points, bgElements, curEventUnlocks.get())
 })
 
 let presetUnlocksComplete = Computed(@()
-  mkPresetUnlocksComplete(presetPoints.get(), presetBgElems.get(), curEventUnlocks.get(), unlockProgress.get()))
+  mkPresetUnlocksComplete(presetPoints.get(), presetBgElems.get(), curEventUnlocks.get()))
 
 let pointsStatusesByPresets = Computed(function () {
   let unlocks = curEventUnlocks.get()
@@ -103,7 +87,7 @@ let pointsStatusesByPresets = Computed(function () {
       if (quest_cluster_id not in res)
         res[quest_cluster_id] <- {}
 
-      let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks, unlockProgress.get())
+      let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks)
       let isCompleted = isCompletedPrevQuest && !!unlock?.isCompleted
       let isUnseen = unlock?.name in unseenUnlocks.get() && unlock?.name not in inactiveEventUnlocks.get()
 
@@ -126,7 +110,7 @@ let presetsStatuses = Computed(function () {
     if (!quest_cluster)
       continue
 
-    let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks, unlockProgress.get())
+    let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks)
     let price = getUnlockPrice(unlock)
     let isAvailable = isCompletedPrevQuest && ((price.price ?? 0) == 0)
     let isBlocked = !isCompletedPrevQuest
@@ -222,7 +206,6 @@ return {
   currentSubPresetState
   subPresetUnlocksComplete
   presetUnlocksComplete
-  isPrevUnlockCompleted
   openedSubPresetId
   isSubPresetOpened = Computed(@() openedSubPresetId.get() != null)
   closeSubPreset

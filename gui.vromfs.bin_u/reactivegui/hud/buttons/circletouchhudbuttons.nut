@@ -55,6 +55,8 @@ let zoneRadiusY = buttonSize
 let isWeaponAvailable = @(weapon) weapon.count != 0 || (weapon.endTime ?? 0) > get_mission_time()
 
 function useShortcut(shortcutId) {
+  if (isPlayingReplay.get())
+    return
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }

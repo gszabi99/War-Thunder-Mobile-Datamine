@@ -15,6 +15,7 @@ let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { hudPearlGrayColorFade } = require("%rGui/style/hudColors.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 let markStep = 5
 let marksTextStep = 4
@@ -185,6 +186,8 @@ function mkDepthSlider(scale) {
         mkMarksOfDepthTexts(countOfMarks, scale)
       ]
       onChange = function(val) {
+        if (isPlayingReplay.get())
+          return
         if (!isDeeperThanPeriscopeDepth.get() && wishDist.get() == 0) {
           toggleShortcut("ID_DIVING_LOCK")
           updateActionBarDelayed()

@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
+let { isEqual } = require("%sqstd/underscore.nut")
 let { g_url_type } = require("urlType.nut")
 let { register_command } = require("console")
 let { getShortName } = require("%scripts/language.nut")
@@ -54,7 +54,40 @@ function openUrlImpl(url, onCloseUrl) {
     openUrlExternalImpl(url)
 }
 
+local authUrlProgress = null
+let authUrlQueue = []
+
+function openAuthenticatedUrl(notAuthUrl, urlTags, onCloseUrl, useExternalBrowser) {
+  let cfg = { notAuthUrl, urlTags, onCloseUrl, useExternalBrowser }
+  if (authUrlProgress != null) {
+    if (!isEqual(authUrlProgress, cfg) && null == authUrlQueue.findvalue(@(v) isEqual(v, cfg)))
+      authUrlQueue.append(cfg)
+    return
+  }
+
+  let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
+  local autoLoginUrl = notAuthUrl
+  if (shouldEncode)
+    autoLoginUrl = base64.encodeString(autoLoginUrl)
+
+  let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
+  let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
+  authUrlProgress = cfg
+  get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
+    object_to_json_string({ onCloseUrl, useExternalBrowser, notAuthUrl, shouldEncode }))
+}
+
+function startNextAuth() {
+  if (authUrlQueue.len() == 0)
+    return
+  let { notAuthUrl, urlTags, onCloseUrl, useExternalBrowser } = authUrlQueue.remove(0)
+  openAuthenticatedUrl(notAuthUrl, urlTags, onCloseUrl, useExternalBrowser)
+}
+
 eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
+  authUrlProgress = null
+  startNextAuth()
+
   let { status, contextStr = "", url = null } = msg
   let { onCloseUrl = "", useExternalBrowser = true, notAuthUrl = "", shouldEncode = false
   } = contextStr != "" ? parse_json(contextStr) : null
@@ -83,18 +116,6 @@ eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
     }
   })
 })
-
-function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) {
-  let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
-  local autoLoginUrl = url
-  if (shouldEncode)
-    autoLoginUrl = base64.encodeString(autoLoginUrl)
-
-  let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
-  let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
-  get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
-    object_to_json_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
-}
 
 function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=true) {
   if (baseUrl == null || baseUrl == "") {

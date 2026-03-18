@@ -14,12 +14,14 @@ let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
 } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
 } = require("%rGui/hud/oxygenBlock.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = {
     ctor = mkRhombZoomButton
     defTransform = mkRBPos([hdpx(-506), hdpx(-220)])
     editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
   }
 
   divingLock = {

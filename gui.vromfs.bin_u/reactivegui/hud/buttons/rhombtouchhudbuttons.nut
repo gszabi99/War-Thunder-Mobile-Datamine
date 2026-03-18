@@ -10,7 +10,7 @@ let { updateActionBarDelayed, actionBarItems, actionItemsInCd } = require("%rGui
 let { touchButtonSize, touchSizeForRhombButton, imageColor, imageDisabledColor, borderWidth, btnBgStyle,
   borderColorPushed, borderColor, borderNoAmmoColor, textColor, textDisabledColor,
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { canZoom, isInZoom, groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir, isInAntiairMode
+let { canZoom, isInZoom, groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir, isInAntiairMode, isPlayingReplay
 } = require("%rGui/hudState.nut")
 let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold } = require("%rGui/hud/currentWeaponsStates.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
@@ -27,6 +27,8 @@ let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, po
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 
 function useShortcut(shortcutId) {
+  if (isPlayingReplay.get())
+    return
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }
@@ -210,7 +212,7 @@ function mkRhombZoomButton(scale) {
         hotkeys = mkGamepadHotkey(shortcutId)
         onElemState = @(v) stateFlags.set(v)
         function onClick() {
-          if (isDisabled.get())
+          if (isDisabled.get() || isPlayingReplay.get())
             return
           if (canZoom.get() && ((hasAimingModeForWeapon.get()) ||
               (isInZoom.get() && !hasAimingModeForWeapon.get()))) {

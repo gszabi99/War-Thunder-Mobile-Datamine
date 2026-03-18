@@ -183,15 +183,15 @@ let lootboxPreviewBg = {
 
 let defEventLootboxScaleBySlot = {
   ["0"] = 0.6,
-  ["1"] = 0.8,
-  ["2"] = 0.9,
+  ["1"] = 0.9,
+  ["2"] = 1.0,
 }
 
 let eventLootboxScale = {
   event_special_tanks_anniversary_2024 = 1.2,
   event_special_ships_anniversary_2024 = 1.2,
   ["event_ships_big_season_25.avif"] = 1.2,
-  ["event_ships_big_season_30.avif"] = 1.0,
+  ["event_ships_big_season_31.avif"] = 1.25,
 }
 
 let eventLootboxShiftPos = {

@@ -21,6 +21,8 @@ let { mkRhombFireworkBtn, mkRhombZoomButton, mkSupportPlaneBtn, mkAntiairButton,
 } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
+
 
 let consumableStart = hdpx(-372)
 let consumableGap = isWidescreen ? hdpx(-150) : hdpx(-128)
@@ -29,6 +31,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = mkRhombZoomButton
     defTransform = mkRBPos([hdpx(-380), hdpx(-220)])
     editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
   }
 
   plane1 = {
@@ -92,6 +95,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
       defTransform = mkRBPos([hdpx(-95), hdpx(-315)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
+
 
 
 

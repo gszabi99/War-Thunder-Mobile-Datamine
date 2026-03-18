@@ -12,6 +12,7 @@ let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.
 
 let ignoreUnseen = hardPersistWatched("unlocks.ignoreUnseen", {})
 let allowOpenUnlock = hardPersistWatched("allowOpenUnlock", false)
+let unlockInProgress = Watched({})
 
 let emptyProgress = {
   stage = 0
@@ -169,7 +170,14 @@ function getRelativeStageData(unlock) {
   }
 }
 
-let unlockInProgress = Watched({})
+function isPrevUnlockCompleted(id, unlocks) {
+  let { requirement = "" } = unlocks?[id]
+  if (requirement == "")
+    return true
+  let requirements = requirement.split("|").map(@(r) r.strip())
+  return requirements.len() == 0
+    || null != requirements.findvalue(@(r) unlocks?[r].isCompleted ?? false)
+}
 
 function callExtCb(context) {
   let { id = null } = context
@@ -386,6 +394,7 @@ return {
   unseenUnlocks
   setLastSeenUnlocks
   spendingUnlocks
+  isPrevUnlockCompleted
 
   unlockInProgress
   receiveUnlockRewards

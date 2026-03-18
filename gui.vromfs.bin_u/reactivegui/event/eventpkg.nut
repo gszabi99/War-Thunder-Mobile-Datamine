@@ -30,6 +30,7 @@ let hoverColor = 0xA0000000
 let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
 let lootboxHeight = hdpxi(320)
+let lootboxWidth = hdpxi(576) 
 let rewardGap = REWARD_STYLE_TINY.boxGap
 let vipIconW = CS_INCREASED_ICON.iconSize
 let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
@@ -112,10 +113,10 @@ let lootboxInfo = @(lootbox, stateFlags) function() {
   }
 }
 
-let mkEventLoootboxImage = @(lootbox, blockSize, isActive, children) function() {
+let mkEventLoootboxImage = @(lootbox, isActive, children) function() {
   let { name } = lootbox
   let sizeMul = getEventLootboxSizeMul(name, eventSeason.get(), lootbox.meta?.event_slot ?? "")
-  let size = blockSize.map(@(v) (v * sizeMul + 0.5).tointeger())
+  let size = [lootboxWidth, lootboxHeight].map(@(v) (v * sizeMul + 0.5).tointeger())
   return {
     watch = [eventSeason, isActive]
     size
@@ -148,7 +149,7 @@ function mkLootboxImageWithTimer(lootbox, width, imgChild) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkEventLoootboxImage(lootbox, blockSize, isActive, imgChild)
+      mkEventLoootboxImage(lootbox, isActive, imgChild)
       @() {
         watch = timeText
         size = FLEX_H
