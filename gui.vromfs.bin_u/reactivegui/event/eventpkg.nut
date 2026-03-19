@@ -19,8 +19,7 @@ let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
-let { getLootboxImage, lootboxFallbackPicture, getEventLootboxSizeMul, getEventLootboxShiftPos
-} = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkLootboxImageWithSlotScale } = require("%rGui/rewards/components/lootboxView.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 
@@ -113,24 +112,6 @@ let lootboxInfo = @(lootbox, stateFlags) function() {
   }
 }
 
-let mkEventLoootboxImage = @(lootbox, isActive, children) function() {
-  let { name } = lootbox
-  let sizeMul = getEventLootboxSizeMul(name, eventSeason.get(), lootbox.meta?.event_slot ?? "")
-  let size = [lootboxWidth, lootboxHeight].map(@(v) (v * sizeMul + 0.5).tointeger())
-  return {
-    watch = [eventSeason, isActive]
-    size
-    pos = getEventLootboxShiftPos(name, eventSeason.get()).map(@(v, a) size[a] * v)
-    rendObj = ROBJ_IMAGE
-    image = getLootboxImage(name, eventSeason.get())
-    fallbackImage = lootboxFallbackPicture
-    keepAspect = true
-    picSaturate = isActive.get() ? 1.0 : 0.2
-    brightness = isActive.get() ? 1.0 : 0.5
-    children
-  }
-}
-
 function mkLootboxImageWithTimer(lootbox, width, imgChild) {
   let { timeRange = null, reqPlayerLevel = 0 } = lootbox
   let blockSize = [width, lootboxHeight]
@@ -149,7 +130,7 @@ function mkLootboxImageWithTimer(lootbox, width, imgChild) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkEventLoootboxImage(lootbox, isActive, imgChild)
+      mkLootboxImageWithSlotScale(lootbox, [lootboxWidth, lootboxHeight], eventSeason, isActive, imgChild)
       @() {
         watch = timeText
         size = FLEX_H

@@ -1,9 +1,7 @@
-from "%globalsDarg/darg_library.nut" import *
 let regexp2 = require("regexp2")
-let { round } = require("math")
+let { loc } = require("dagor.localize")
 let { getRomanNumeral } = require("%sqstd/math.nut")
-
-let lootboxFallbackPicture = Picture("ui/gameuiskin#daily_box_small.avif:0:P")
+let { memoize } = require("%sqstd/functools.nut")
 
 let customLootboxImages = {
   every_day_award_first = "every_day_award_medium_pack.avif"
@@ -249,49 +247,27 @@ function getDefaultImgFilename(id) {
   return defaultImgFilenameCache[id]
 }
 
-function getLootboxImageBase(id, season) {
+function getLootboxImage(id, season) {
   let finalId = imgIdBySeason?[id](season) ?? id
   return customLootboxImages?[finalId] ?? getDefaultImgFilename(finalId)
 }
 
-function getLootboxImage(id, season = null, size = null) {
-  let img = getLootboxImageBase(id, season)
-  return !size ? Picture($"ui/gameuiskin/{img}:0:P") : Picture($"ui/gameuiskin/{img}:{size}:{size}:P")
-}
-
 let getRouletteImage = @(id) customRouletteImages?[id] ?? defaultBgImage
 
-let mkTagLayersCtor = @(image) function(size) {
-  let tagSize = round(0.35 * size).tointeger()
-  return {
-    size = [tagSize, tagSize]
-    pos = [-0.04 * size, 0.2 * size]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin/{image}:{tagSize}:{tagSize}:P")
-    keepAspect = true
-  }
-}
+let mkTagLayers = @(image) [{
+  image
+  size = [0.35, 0.35]
+  pos = [-0.04, 0.2]
+}]
 
 let lootboxLayers = {
-  event_special_gift_tanks_new_year_2025 = mkTagLayersCtor("event_christmas_gift_tag_tanks.avif")
-  event_special_gift_ships_new_year_2025 = mkTagLayersCtor("event_christmas_gift_tag_ships.avif")
-  event_special_gift_air_new_year_2025   = mkTagLayersCtor("event_christmas_gift_tag_planes.avif")
+  event_special_gift_tanks_new_year_2025 = mkTagLayers("event_christmas_gift_tag_tanks.avif")
+  event_special_gift_ships_new_year_2025 = mkTagLayers("event_christmas_gift_tag_ships.avif")
+  event_special_gift_air_new_year_2025   = mkTagLayers("event_christmas_gift_tag_planes.avif")
 
-  event_special_gift_tanks_anniversary_2025 = mkTagLayersCtor("event_christmas_gift_tag_tanks.avif")
-  event_special_gift_ships_anniversary_2025 = mkTagLayersCtor("event_christmas_gift_tag_ships.avif")
-  event_special_gift_air_anniversary_2025   = mkTagLayersCtor("event_christmas_gift_tag_planes.avif")
-}
-
-function mkLoootboxImage(id, size, scale = 1, ovr = {}) {
-  let scaledSize = (size * scale).tointeger()
-  return {
-    size = [scaledSize, scaledSize]
-    rendObj = ROBJ_IMAGE
-    image = getLootboxImage(id, null, scaledSize)
-    fallbackImage = lootboxFallbackPicture
-    keepAspect = true
-    children = lootboxLayers?[id](scaledSize)
-  }.__update(ovr)
+  event_special_gift_tanks_anniversary_2025 = mkTagLayers("event_christmas_gift_tag_tanks.avif")
+  event_special_gift_ships_anniversary_2025 = mkTagLayers("event_christmas_gift_tag_ships.avif")
+  event_special_gift_air_anniversary_2025   = mkTagLayers("event_christmas_gift_tag_planes.avif")
 }
 
 let isNum = regexp2(@"^\d+$")
@@ -318,22 +294,21 @@ let getLootboxName = memoize(function parseString(id) {
 })
 
 let getEventLootboxSizeMul = @(name, season, eventSlot) eventLootboxScale?[name]
-  ?? eventLootboxScale?[getLootboxImageBase(name, season)]
+  ?? eventLootboxScale?[getLootboxImage(name, season)]
   ?? defEventLootboxScaleBySlot?[eventSlot] ?? 1.0
 
 let getEventLootboxShiftPos = @(name, season) eventLootboxShiftPos?[name]
-  ?? eventLootboxShiftPos?[getLootboxImageBase(name, season)]
+  ?? eventLootboxShiftPos?[getLootboxImage(name, season)]
   ?? [0, 0]
 
 return {
   getLootboxImage
   getRouletteImage
-  lootboxFallbackPicture
-  mkLoootboxImage
   getLootboxName
   customGoodsLootboxScale
   getLootboxPreviewBg
 
   getEventLootboxSizeMul
   getEventLootboxShiftPos
+  lootboxLayers
 }

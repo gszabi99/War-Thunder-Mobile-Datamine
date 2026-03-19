@@ -21,8 +21,13 @@ let unlocksToAutoRecieveRaw = Computed(function() {
     if (!u.hasReward || !isPrevUnlockCompleted(u.name, allActive))
       continue
 
-    let { name, stage, stages } = u
-    let { rewards = {}, updStats = {} } = stages?[stage - 1]
+    let { name, stage, stages, startStageLoop = -1 } = u
+    let total = stages.len()
+    let loopPeriod = startStageLoop > 0 ? total - startStageLoop + 1 : 0
+    let rewardStage = loopPeriod <= 0 || stage <= startStageLoop ? stage
+      : startStageLoop + ((stage - startStageLoop) % loopPeriod)
+
+    let { rewards = {}, updStats = {} } = stages?[rewardStage - 1]
     if (updStats.len() > 0)
       continue
 

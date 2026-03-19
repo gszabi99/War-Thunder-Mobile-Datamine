@@ -698,9 +698,9 @@
         "name": "t1_cargo_ship_01",
         "tm": [
           [
-            0.999009,
+            -0.898743,
             0.0,
-            0.0445145
+            -0.438477
           ],
           [
             0.0,
@@ -708,14 +708,14 @@
             0.0
           ],
           [
-            -0.0445145,
+            0.438477,
             0.0,
-            0.999009
+            -0.898743
           ],
           [
-            2915.3,
-            -0.000488281,
-            -350.85
+            -2319.55,
+            -26.3,
+            601.05
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -755,9 +755,9 @@
         "name": "t1_cargo_ship_02",
         "tm": [
           [
-            0.997196,
+            -0.885009,
             0.0,
-            0.0748394
+            -0.465575
           ],
           [
             0.0,
@@ -765,14 +765,14 @@
             0.0
           ],
           [
-            -0.0748394,
+            0.465575,
             0.0,
-            0.997196
+            -0.885009
           ],
           [
-            2915.31,
-            -0.000488281,
-            -265.278
+            -2285.5,
+            2.51543,
+            522.545
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -812,9 +812,9 @@
         "name": "t1_cargo_ship_03",
         "tm": [
           [
-            0.996309,
+            -0.879817,
             0.0,
-            0.0858378
+            -0.475311
           ],
           [
             0.0,
@@ -822,14 +822,14 @@
             0.0
           ],
           [
-            -0.0858378,
+            0.475311,
             0.0,
-            0.996309
+            -0.879817
           ],
           [
-            2913.82,
-            -0.000488281,
-            -433.583
+            -2351.12,
+            -0.207226,
+            677.536
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -869,9 +869,9 @@
         "name": "t2_cargo_ship_01",
         "tm": [
           [
-            -0.922292,
+            0.991459,
             0.0,
-            -0.386491
+            0.130409
           ],
           [
             0.0,
@@ -879,14 +879,14 @@
             0.0
           ],
           [
-            0.386491,
+            -0.130409,
             0.0,
-            -0.922292
+            0.991459
           ],
           [
-            -2413.2,
+            3016.0,
             0.000976562,
-            690.45
+            -629.1
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -926,9 +926,9 @@
         "name": "t2_cargo_ship_02",
         "tm": [
           [
-            -0.905657,
+            0.985274,
             0.0,
-            -0.424011
+            0.170983
           ],
           [
             0.0,
@@ -936,14 +936,14 @@
             0.0
           ],
           [
-            0.424011,
+            -0.170983,
             0.0,
-            -0.905657
+            0.985274
           ],
           [
-            -2343.47,
+            2980.03,
             0.000976562,
-            571.369
+            -495.875
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -983,9 +983,9 @@
         "name": "t2_cargo_ship_03",
         "tm": [
           [
-            -0.901307,
+            0.983488,
             0.0,
-            -0.43318
+            0.180973
           ],
           [
             0.0,
@@ -993,14 +993,14 @@
             0.0
           ],
           [
-            0.43318,
+            -0.180973,
             0.0,
-            -0.901307
+            0.983488
           ],
           [
-            -2269.76,
+            2938.25,
             0.000976562,
-            459.784
+            -368.837
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -2357,7 +2357,7 @@
             -3246.1
           ]
         ],
-        "unit_class": "dynBase_ammunition_camp_square",
+        "unit_class": "dynBase_ammunition_camp_square_allow_ri",
         "objLayer": 2,
         "props": {
           "army": 2,
@@ -10329,7 +10329,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10358,7 +10358,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10387,7 +10387,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10416,7 +10416,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10445,7 +10445,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10474,7 +10474,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10503,7 +10503,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10532,7 +10532,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10561,7 +10561,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10590,7 +10590,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10619,7 +10619,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10648,7 +10648,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10677,7 +10677,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10706,7 +10706,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10735,7 +10735,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10764,7 +10764,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10793,7 +10793,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10822,7 +10822,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10851,7 +10851,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10880,7 +10880,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10909,7 +10909,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10938,7 +10938,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10967,7 +10967,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -10996,7 +10996,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11025,7 +11025,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11054,7 +11054,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11083,7 +11083,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11112,7 +11112,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -11148,7 +11148,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11177,7 +11177,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11206,7 +11206,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11235,7 +11235,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11264,7 +11264,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11293,7 +11293,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11322,7 +11322,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11351,7 +11351,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11380,7 +11380,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11409,7 +11409,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11438,7 +11438,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11467,7 +11467,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11496,7 +11496,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11525,7 +11525,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11554,7 +11554,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11583,7 +11583,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11612,7 +11612,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -11648,7 +11648,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11677,7 +11677,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11706,7 +11706,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11735,7 +11735,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11764,7 +11764,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11793,7 +11793,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11822,7 +11822,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11851,7 +11851,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -11887,7 +11887,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11916,7 +11916,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11945,7 +11945,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -11974,7 +11974,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12003,7 +12003,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -12039,7 +12039,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12068,7 +12068,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12097,7 +12097,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12126,7 +12126,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12155,7 +12155,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12184,7 +12184,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12213,7 +12213,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12242,7 +12242,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -12278,7 +12278,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12307,7 +12307,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12336,7 +12336,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12365,7 +12365,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12394,7 +12394,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12423,7 +12423,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -12459,7 +12459,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12488,7 +12488,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12517,7 +12517,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12546,7 +12546,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12575,7 +12575,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12604,7 +12604,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12633,7 +12633,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }
@@ -12669,7 +12669,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12698,7 +12698,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12727,7 +12727,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12756,7 +12756,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12785,7 +12785,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         },
@@ -12814,7 +12814,7 @@
             ]
           ],
           "props": {
-            "speed": 300.0,
+            "speed": 150.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }

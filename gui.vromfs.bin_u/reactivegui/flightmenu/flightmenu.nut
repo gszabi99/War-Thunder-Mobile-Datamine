@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_game_mode, GM_TRAINING, get_local_mplayer } = require("mission")
-let { is_ready_to_die } = require("guiMission")
+let { is_ready_to_die, restart_replay } = require("guiMission")
 let { getSpareSlotsMask } = require("guiRespawn")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -130,6 +130,14 @@ let openLeaveReplayMsg = @() openMsgBox({
   ]
 })
 
+let openRestartReplayMsg = @() openMsgBox({
+  text = loc("msgbox/leaveBattle/restartReplay")
+  buttons = [
+    { text = loc("return_to_replay"), isCancel = true }
+    { text = loc("msgbox/btn_restart"), styleId = "PRIMARY", cb = restart_replay }
+  ]
+})
+
 let optionsButton = textButtonMultiline(utf8ToUpper(loc("mainmenu/btnOptions")), optionsScene,
   mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 let helpButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
@@ -141,6 +149,8 @@ let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeav
 let leaveBattleButton = textButtonMultiline(utf8ToUpper(loc("msgbox/leaveBattle/btn")), openLeaveBattleMsg,
   mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 let leaveReplayButton = textButtonMultiline(utf8ToUpper(loc("msgbox/leaveBattle/replayBtn")), openLeaveReplayMsg,
+  mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
+let restartReplayButton = textButtonMultiline(utf8ToUpper(loc("msgbox/btn_restart")), openRestartReplayMsg,
   mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 
 let customButtons = @() {
@@ -214,6 +224,7 @@ let flightMenu = @() bgShaded.__merge({
                 : null
               customButtons
               gyroButtons
+              !isPlayingReplay.get() ? null : restartReplayButton
               !isPlayingReplay.get() ? leaveBattleButton : leaveReplayButton
               openDevMenuButton(menuBtnWidth)
             ]

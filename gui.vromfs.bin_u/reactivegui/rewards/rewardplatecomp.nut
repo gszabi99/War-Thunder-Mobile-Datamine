@@ -11,7 +11,6 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitLocId, getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
@@ -21,6 +20,7 @@ let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut"
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getDecalPresentation } = require("%appGlobals/config/decalsPresentation.nut")
+let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
@@ -457,7 +457,7 @@ function mkRewardPlateLootboxImage(r, rStyle) {
   let iconSize = round(size[1] * 0.67).tointeger()
   return {
     size
-    children = mkLoootboxImage(r.id, iconSize).__update({ pos = [ 0, iconShiftY ] }).__merge(iconBase)
+    children = mkLootboxImage(r.id, iconSize).__update({ pos = [ 0, iconShiftY ] }).__merge(iconBase)
   }
 }
 

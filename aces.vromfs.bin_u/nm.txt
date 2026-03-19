@@ -52020,3 +52020,5 @@ f3d_bomb_pylon_black_n*
 broken_sgsr
 PowerVR BXM-8-256
 showGuidanceLockTracker
+f3d_1_black_c*
+allowSelectFarAwayUnit

@@ -99,7 +99,7 @@ function bulletButton(bulletInfo, bulletCount, scale) {
       mkGamepadShortcutImage("ID_NEXT_BULLET_TYPE",
         { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
         scale)
-      @() {
+      @() bulletCount.get() < 0 ? { watch = bulletCount } : {
         watch = bulletCount
         padding = const [0, 0, 0, hdpx(4)]
         rendObj = ROBJ_TEXT

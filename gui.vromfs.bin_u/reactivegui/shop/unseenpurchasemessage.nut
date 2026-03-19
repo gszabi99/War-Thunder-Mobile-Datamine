@@ -55,7 +55,8 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkMsgConvert, mkMsgDiscount } = require("%rGui/shop/unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
-let { mkLoootboxImage, getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
 let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -643,7 +644,7 @@ let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) 
   valign = ALIGN_CENTER
   children = [
     mkHighlight(startDelay, aRewardIconFlareScale)
-    mkLoootboxImage(id, rewIconSize, 1, mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+    mkLootboxImage(id, rewIconSize, 1, mkRewardAnimProps(startDelay, aRewardIconSelfScale))
   ]
 }
 

@@ -2382,7 +2382,10 @@
             "iconType": "rocket_40kg",
             "name": "de_br20",
             "ShowNodes": {
-              "node": "210mm_tube_r"
+              "node": [
+                "210mm_tube_r",
+                "pylon1"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",
@@ -2739,7 +2742,10 @@
             "iconType": "rocket_40kg",
             "name": "de_br20",
             "ShowNodes": {
-              "node": "210mm_tube_l"
+              "node": [
+                "210mm_tube_l",
+                "pylon2"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",

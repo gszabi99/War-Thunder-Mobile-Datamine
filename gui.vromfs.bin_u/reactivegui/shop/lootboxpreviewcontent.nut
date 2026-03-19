@@ -6,7 +6,8 @@ let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { getLootboxImage, getLootboxName, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkLootboxImageWithSlotScale } = require("%rGui/rewards/components/lootboxView.nut")
 let { getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT,
   getLootboxOpenRewardViewInfo, isSingleViewInfoRewardEmpty
 } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -44,7 +45,7 @@ let { isProviderInited } = require("%rGui/ads/adsState.nut")
 
 let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
-let lootboxImageSize = hdpxi(400)
+let lootboxImageSize = [hdpxi(580), hdpxi(320)]
 let blueprintSize = hdpxi(30)
 
 let tooltipTextGap = hdpx(5)
@@ -115,48 +116,45 @@ function lootboxImageWithTimer(lootbox, lootboxAmount = null) {
     : null)
 
   let isAvailable = Computed(@() timeText.get() == null)
-  return @() {
-    watch = [isAvailable, eventSeason]
-    size = [lootboxImageSize, lootboxImageSize]
-    rendObj = ROBJ_IMAGE
-    image = getLootboxImage(name, eventSeason.get(), lootboxImageSize)
-    fallbackImage = lootboxFallbackPicture
-    keepAspect = true
-    brightness = isAvailable.get() ? 1.0 : 0.5
-    picSaturate = isAvailable.get() ? 1.0 : 0.2
-    children = [
-      lootboxAmount == null ? null
-        : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
-            .__update({
-              halign = ALIGN_RIGHT
-              valign = ALIGN_BOTTOM
-              vplace = ALIGN_BOTTOM
-              hplace = ALIGN_RIGHT
-            })
-      @() {
-        watch = [needAdtimeProgress, adReward, lootboxInProgress, isProviderInited]
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        children = [
-          lootboxInProgress.get() ? spinner : null
-          needAdtimeProgress.get()
-              ? mkFreeAdsGoodsTimeProgress(adReward.get())
-            : !isProviderInited.get()
-              ? disabledAdsGoodsPlate
-            : null
-        ]
-      }
+  return {
+    size = lootboxImageSize
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = mkLootboxImageWithSlotScale(lootbox, lootboxImageSize, eventSeason, isAvailable,
+      [
+        lootboxAmount == null ? null
+          : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
+              .__update({
+                pos = [pw(-10), ph(20)]
+                halign = ALIGN_RIGHT
+                valign = ALIGN_BOTTOM
+                vplace = ALIGN_BOTTOM
+                hplace = ALIGN_RIGHT
+              })
+        @() {
+          watch = [needAdtimeProgress, adReward, lootboxInProgress, isProviderInited]
+          hplace = ALIGN_CENTER
+          vplace = ALIGN_CENTER
+          children = [
+            lootboxInProgress.get() ? spinner : null
+            needAdtimeProgress.get()
+                ? mkFreeAdsGoodsTimeProgress(adReward.get())
+              : !isProviderInited.get()
+                ? disabledAdsGoodsPlate
+              : null
+          ]
+        }
 
-      @() {
-        watch = [timeText, needAdtimeProgress, lootboxInProgress]
-        size = FLEX_H
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        vplace = ALIGN_CENTER
-        halign = ALIGN_CENTER
-        text = lootboxInProgress.get() || needAdtimeProgress.get() ? null : timeText.get()
-      }.__update(fontTinyShaded)
-    ]
+        @() {
+          watch = [timeText, needAdtimeProgress, lootboxInProgress]
+          size = FLEX_H
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          vplace = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          text = lootboxInProgress.get() || needAdtimeProgress.get() ? null : timeText.get()
+        }.__update(fontTinyShaded)
+      ])
   }
 }
 

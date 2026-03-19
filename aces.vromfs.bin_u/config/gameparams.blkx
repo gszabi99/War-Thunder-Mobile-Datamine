@@ -18491,7 +18491,8 @@
   "replay": {
     "segmentLengthSec": 90,
     "replayRewind": true,
-    "showGuidanceLockTracker": true
+    "showGuidanceLockTracker": true,
+    "allowSelectFarAwayUnit": false
   },
   "wakeFromBullet": {
     "minCal": 0.076,

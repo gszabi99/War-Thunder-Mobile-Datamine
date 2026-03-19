@@ -958,7 +958,7 @@
         "maxSounds": 4
       },
       "lod_1": {
-        "radius": 200.0,
+        "radius": 230.0,
         "maxSounds": 4
       }
     }

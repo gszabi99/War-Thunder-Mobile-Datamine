@@ -282,7 +282,7 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
     let { name = null, isFake = false } = unit
     let children = []
     if (!isFake)
-      children.append(boostersListActive)
+      children.append(boostersListActive("debriefing"))
     return {
       watch = [newbieOfflineMissions, isInSquad, isSquadLeader, nextGMInfo, shouldStartNewbieSingleOnline]
       flow = FLOW_HORIZONTAL

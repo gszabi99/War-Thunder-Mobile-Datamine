@@ -5,7 +5,8 @@ let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn, mkGoo
    mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg,
    mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { getLootboxName, mkLoootboxImage, customGoodsLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxName, customGoodsLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 
@@ -65,7 +66,7 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
       border
       sf & S_HOVER ? bgHiglight : null
       lootboxId == null ? null
-        : mkLoootboxImage(lootboxId, lootboxIconSize, customGoodsLootboxScale?[lootboxId] ?? 1)
+        : mkLootboxImage(lootboxId, lootboxIconSize, customGoodsLootboxScale?[lootboxId] ?? 1)
             .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
       lootboxAmount <= 1
         ? null

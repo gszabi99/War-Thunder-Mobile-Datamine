@@ -25,6 +25,7 @@ let { mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { mkTooltipText } = require("%rGui/tooltip.nut")
 let logR = log_with_prefix("[REPLAYS] ")
 
@@ -43,6 +44,8 @@ let replaysList = Computed(@() replaysListRaw.get().filter(@(r) r.path not in re
 
 let openedReplayId = Watched(null)
 let openedReplayMissionName = keepref(Computed(@() replaysList.get().findvalue(@(r) r.path == openedReplayId.get())?.missionName ?? ""))
+
+let isReplayLoading = Watched(false)
 
 let resultTextByStatus = {
   success = {
@@ -83,6 +86,10 @@ function askActivateAutoDeleteOpt(list, cb) {
 }
 
 function startReplay(path) {
+  if (isReplayLoading.get())
+    return
+  isReplayLoading.set(true)
+
   hud_request_hud_tank_debuffs_state()
   hud_request_hud_ship_debuffs_state()
   hud_request_hud_crew_state()
@@ -220,6 +227,13 @@ let showReplayError = @(isCorrupted)
       ? loc("replays/corrupted")
       : loc("replays/versionMismatch")
   })
+
+let progressSpinner = {
+  size = [flex(), defButtonHeight]
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = spinner
+}
 
 let cellTextProps = {
   rendObj = ROBJ_TEXT
@@ -428,18 +442,21 @@ let mkFoldableContent = @(replay, isActive) @() {
             {
               size = FLEX_V
             }
-            {
+            @() {
+              watch = isReplayLoading
               size = FLEX_H
               flow = FLOW_HORIZONTAL
               gap = columnGap
               children = [
                 replay.isNotAvailable
-                  ? textButtonInactive(utf8ToUpper(loc("strategyMode/launch")), @() showReplayError(replay.corrupted),
-                      { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
-                  : textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")),
-                      @() notAvailableForSquadMsg(@() startReplay(replay.path)),
-                      { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
-                mkTrashButton(@() deleteReplayManually(replay.path))
+                    ? textButtonInactive(utf8ToUpper(loc("strategyMode/launch")),
+                        @() showReplayError(replay.corrupted), { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
+                  : !isReplayLoading.get()
+                    ? textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")),
+                        @() notAvailableForSquadMsg(@() startReplay(replay.path)),
+                        { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
+                  : progressSpinner
+                !isReplayLoading.get() ? mkTrashButton(@() deleteReplayManually(replay.path)) : null
               ]
             }
           ]
@@ -493,6 +510,7 @@ return @() {
   function onDetach() {
     dynamicUnloadPreview()
     openedReplayId.set(null)
+    isReplayLoading.set(false)
   }
   halign = ALIGN_CENTER
   valign = ALIGN_TOP

@@ -330,7 +330,7 @@ let toBattleButtonPlace = {
               watch = campConfigs
               size = [SIZE_TO_CONTENT, boostersHeight]
               valign = ALIGN_CENTER
-              children = (campConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive : null
+              children = (campConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive("hangar") : null
             }
           ]
         }

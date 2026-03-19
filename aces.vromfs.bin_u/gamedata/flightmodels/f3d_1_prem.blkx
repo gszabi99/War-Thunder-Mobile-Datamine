@@ -2329,6 +2329,10 @@
     "name": "prem",
     "replace_tex": [
       {
+        "from": "f3d_1_c*",
+        "to": "f3d_1_black_c*"
+      },
+      {
         "from": "f3d_1_n*",
         "to": "f3d_1_black_n*"
       },

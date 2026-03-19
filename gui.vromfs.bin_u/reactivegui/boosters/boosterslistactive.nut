@@ -59,17 +59,17 @@ let boostersList = @(boosters) {
   children = boosters.map(bstIcon)
 }
 
-let function boostersListActive() {
+let boostersListActive = @(from) function() {
   let content = activeBoosters.get().len() == 0
     ? emptyBst
     : boostersList(activeBoosters.get())
-  return{
+  return {
     watch = [activeBoosters, stateFlags]
     size = [SIZE_TO_CONTENT, iconSize]
     vplace = ALIGN_CENTER
     function onClick() {
       isOpenedBoosterWnd.set(true)
-      sendUiBqEvent("open_boosters_window", { id = "open", from = "hangar" })
+      sendUiBqEvent("open_boosters_window", { id = "open", from })
     }
     behavior = Behaviors.Button
     sound = { click  = "click" }

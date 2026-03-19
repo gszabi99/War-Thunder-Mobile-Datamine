@@ -8253,3 +8253,4 @@ gameData/missions/development/cta_qa/pacific_island_small/mainareas/qa_pacific_i
 missions/_GS/medium_tank;location/air_tropical_cliffs
 gamedata/missions/templates/plane_templates/bridges/tropical_cliffs_bridges.blk
 dynTrench_small_bunker_axis_allow_ri
+dynBase_ammunition_camp_square_allow_ri

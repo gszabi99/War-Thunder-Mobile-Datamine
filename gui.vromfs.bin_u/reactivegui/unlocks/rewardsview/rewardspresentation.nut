@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { G_LOOTBOX, G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { getLootboxName, mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
 let { mkCurrencyComp, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 
 let mkCurrencyImage = @(amount, size, currencyId) {
@@ -14,7 +15,7 @@ function mkRewardImage(reward, size) {
   
   foreach(g in reward)
     if (g.gType == G_LOOTBOX)
-      return mkLoootboxImage(g.id, size)
+      return mkLootboxImage(g.id, size)
     else if (g.gType == G_CURRENCY)
       return mkCurrencyImage(g.count, size, g.id)
 
