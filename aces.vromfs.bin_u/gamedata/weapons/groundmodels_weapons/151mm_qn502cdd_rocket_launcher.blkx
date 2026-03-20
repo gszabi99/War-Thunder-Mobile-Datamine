@@ -41,6 +41,7 @@
   "animChar": "gn_502cdd_rocket_char",
   "reloadAnimParam": "rocket_hide",
   "rocket": {
+    "bulletName": "151mm_QN502CDD",
     "statType": "hydra",
     "caliber": 0.151,
     "length": 1.25,

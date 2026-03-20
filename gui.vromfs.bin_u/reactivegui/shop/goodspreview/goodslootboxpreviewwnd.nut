@@ -101,8 +101,9 @@ let content = @() {
       halign = ALIGN_CENTER
       children = lootbox.get() == null ? null
         : [
-            lootboxImageWithTimer(lootbox.get(), lootboxAmount.get())
             { size = flex() }
+            lootboxImageWithTimer(lootbox.get(), lootboxAmount.get())
+            { size = flex(3) }
             mkJackpotProgress(Computed(@() getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())))
             { size = const [0, hdpx(10)] }
             mkTimeBlockCentered(aTimePriceStart)

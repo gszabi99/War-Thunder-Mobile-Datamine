@@ -7,7 +7,7 @@ let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT
+let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT, sortRewardsWithOrder
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel, eventSeason, curEvent } = require("%rGui/event/eventState.nut")
@@ -70,14 +70,14 @@ function canReceiveLastReward(lootbox, reward, profile) {
 }
 
 function isDropLimitReached(reward, profile) {
-  let { dropLimitRaw = NO_DROP_LIMIT, source, rewardId } = reward
+  let { dropLimitRaw = NO_DROP_LIMIT, source, rewardId = null } = reward
   return dropLimitRaw != NO_DROP_LIMIT && dropLimitRaw <= (profile?.lootboxStats[source].total?[rewardId] ?? 0)
 }
 
 let lootboxInfo = @(lootbox, stateFlags) function() {
   local rewards = []
   local slots = 0
-  let allRewards = getLootboxRewardsViewInfo(lootbox)
+  let allRewards = getLootboxRewardsViewInfo(lootbox, true).sort(sortRewardsWithOrder)
   let profile = servProfile.get()
   foreach (reward in allRewards) {
     if ((reward?.isLastReward && (rewards.len() != 0 || !canReceiveLastReward(lootbox, reward, profile)))

@@ -22,7 +22,6 @@ from "%appGlobals/permissions.nut" import tcf_consent_enabled, request_firebase_
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/login/stateIDFA.nut" import isIdfaDenied
 from "%rGui/style/stdAnimations.nut" import WND_REVEAL
-from "%rGui/components/msgBox.nut" import openMsgBox
 let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
@@ -371,30 +370,6 @@ function doSkipClose() {
   isOpenedConsentTcfWnd.set(false)
 }
 
-function doAskSaveAndClose(src, cbBeforeClose = null) {
-  if (!tcf_consent_enabled.get())
-    return isOpenedConsentTcfWnd.set(false)
-  function onSave() {
-    cbBeforeClose?()
-    doSaveAndClose(src)
-  }
-  function onDontSave() {
-    cbBeforeClose?()
-    doSkipClose()
-  }
-  if (!hasUserMadeChanges())
-    onDontSave()
-  else
-    openMsgBox({
-      text = loc("msgbox/saveChanges")
-      buttons = [
-        { id = "cancel", isCancel = true }
-        { text = loc("filesystem/btnDontSave"), cb = onDontSave }
-        { text = loc("filesystem/btnSave"), styleId = "PRIMARY", isDefault = true, cb = onSave }
-      ]
-    })
-}
-
 function mkPurposeCfg(purposeiInfo) {
   let { id } = purposeiInfo
   let isEnabled = Watched(hasConsentForPurpose(id))
@@ -516,7 +491,6 @@ return {
   doAnswerAllAndClose
   doSaveAndClose
   doSkipClose
-  doAskSaveAndClose
 
   mkStateSnapshot
   debugShowIds

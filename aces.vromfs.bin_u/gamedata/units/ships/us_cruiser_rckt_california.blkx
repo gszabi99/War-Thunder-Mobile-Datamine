@@ -370,6 +370,15 @@
       "genericDamageMult": 1.0,
       "ammunition_storage_01_dm": {},
       "ammunition_storage_02_dm": {}
+    },
+    "torpedo_tubes": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 103950.0,
+      "genericDamageMult": 1.0,
+      "fireParamsPreset": "ship_aux_fire",
+      "tt_01_dm": {},
+      "tt_02_dm": {}
     }
   },
   "tank_crew": {
@@ -503,6 +512,38 @@
         ]
       },
       {
+        "name": [
+          "tt_01_dm",
+          "tt_02_dm"
+        ],
+        "onHit": [
+          {
+            "damage": 300.0,
+            "damageType": "generic",
+            "isSingleAction": false,
+            "moduleStatusEffect": {
+              "name": "shotFreqMult",
+              "prob": 1.0
+            },
+            "action": {
+              "type": "forcedExplosion",
+              "probability": 0.5,
+              "damage": 2000.0,
+              "damageType": "explosion",
+              "fxEvent": "ammo_expl",
+              "parts": {
+                "part": "compartment_05_dm"
+              }
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 300.0,
+            "fire": 0.05
+          }
+        ]
+      },
+      {
         "name": "steering_gear_01_dm",
         "onHit": [
           {
@@ -596,6 +637,8 @@
         "compartment_06_dm",
         "funnel_01_dm",
         "bridge_dm",
+        "tt_01_dm",
+        "tt_02_dm",
         "engine_room_01_dm",
         "main_caliber_turret_01_dm",
         "main_caliber_turret_02_dm",
@@ -2883,7 +2926,9 @@
             "auxiliary_caliber_turret_03_dm": {},
             "auxiliary_caliber_turret_04_dm": {},
             "auxiliary_caliber_turret_05_dm": {},
-            "engine_room_01_dm": {}
+            "engine_room_01_dm": {},
+            "tt_01_dm": {},
+            "tt_02_dm": {}
           }
         }
       }

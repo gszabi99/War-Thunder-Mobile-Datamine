@@ -3,7 +3,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL
 from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedPartners, isOpenedManage,
-  totalPartners, doAnswerAllAndClose, doAskSaveAndClose
+  totalPartners, doAnswerAllAndClose, doSkipClose
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkTextarea, mkTextareaWithLinks,
   mkLink, openUrl, gapAbove, gapBelow, gapAboveAndBelow
 
@@ -30,4 +30,4 @@ let introButtons = [
   textButtonPrimary(utf8ToUpper(loc("consentWnd/btns/consent")), @() doAnswerAllAndClose(BQ_WND_ID, true))
 ]
 
-return @() mkContent(loc("consent_tcf/intro/header"), mkIntroDesc, introButtons, @() doAskSaveAndClose(BQ_WND_ID), true)
+return @() mkContent(loc("consent_tcf/intro/header"), mkIntroDesc, introButtons, doSkipClose, true)

@@ -419,4 +419,6 @@ return {
   fillRewardsCounts
   mkViewInfo
   filterHiddenViewInfo
+
+  sortRewardsWithOrder
 }

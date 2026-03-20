@@ -125,7 +125,7 @@ function lootboxImageWithTimer(lootbox, lootboxAmount = null) {
         lootboxAmount == null ? null
           : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
               .__update({
-                pos = [pw(-10), ph(20)]
+                pos = [pw(-10), ph(15)]
                 halign = ALIGN_RIGHT
                 valign = ALIGN_BOTTOM
                 vplace = ALIGN_BOTTOM

@@ -44,15 +44,15 @@ let txtBase = {
   behavior = Behaviors.TextArea
 }
 
-let mkHintTitle = @(textW) @() textW.get() == "" ? { watch = textW } : {
+let mkHintTitle = @(textW) @() textW.get() == "" ? { watch = textW, behavior = Behaviors.TextArea } : {
   watch = textW
-  margin = [0, 0, hitTitleGap, 0]
   text = textW.get()
   color = accentColor
 }.__update(txtBase, fontSmall)
 
-let mkHintDescText = @(textW) @() textW.get() == "" ? { watch = textW } : {
+let mkHintDescText = @(textW) @() textW.get() == "" ? { watch = textW, behavior = Behaviors.TextArea } : {
   watch = textW
+  margin = [hitTitleGap, 0, 0, 0]
   text = textW.get()
 }.__update(txtBase, fontVeryTiny)
 

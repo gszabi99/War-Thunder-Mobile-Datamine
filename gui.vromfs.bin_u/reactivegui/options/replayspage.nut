@@ -4,6 +4,8 @@ let { on_view_replay, get_replays_list, get_replay_info } = require("replays")
 let { dynamicLoadPreview, dynamicUnloadPreview } = require("dynamicMission")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { format, split_by_chars } = require("string")
+let { is_dev_version } = require("app")
+let regexp2 = require("regexp2")
 let { deferOnce } = require("dagor.workcycle")
 let { remove_file } = require("dagor.fs")
 let DataBlock = require("DataBlock")
@@ -122,16 +124,16 @@ function refreshReplaysList() {
   let replays = get_replays_list()
   let res = []
 
-  foreach (replay in replays) {
+  foreach (replay in replays.filter(@(rep) !is_dev_version() || (!regexp2(@"^\d{4}$").match(rep.name) || rep.name == "0000"))) {
     let replayInfo = get_replay_info(replay.path)
     let commentsBlk = replayInfo?.comments
-    if (!commentsBlk)
+    if (!commentsBlk && !is_dev_version())
       continue
 
     let alliesTeam = []
     let enemiesTeam = []
-    let playersBlkList = commentsBlk % "player"
-    let status = commentsBlk % "status"
+    let playersBlkList = commentsBlk == null ? [] : commentsBlk % "player"
+    let status = commentsBlk == null ? "" : commentsBlk % "status"
     let locName = getMissionLocName(replayInfo, "locName")
     let isNotAvailable = replay.isVersionMismatch || replay.corrupted
 

@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
+let { get_replay_props } = require("replays")
 let { isShowDebugInterface, is_dev_version, is_app_loaded, get_base_game_version_str } = require("app")
 let { dgs_get_settings } = require("dagor.system")
 let { format } = require("string")
 let { capitalize } = require("%sqstd/string.nut")
 let { isInBattle, isInMenu, battleSessionId, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
+
 
 let DEBUG_INTERFACE_SHIFT_PX = -hdpx(16)
 
@@ -50,6 +53,8 @@ let latencyText = Computed(@() latency.get() < 0 ? ""
   : format("%s:%5.1fms", loc("latency", "Latency"), latency.get())
 )
 
+let replaySessionId = Computed(@() isPlayingReplay.get() ? get_replay_props()?.sessionId ?? "" : "")
+
 let gap = hdpx(10)
 
 let defColor = 0xFFc0c0c0
@@ -82,8 +87,8 @@ let gpuBigComp = @() textStyle.__merge({
 }, fontVeryTinyShaded)
 
 let sessionComp = @() textStyle.__merge({
-  watch = sessionId
-  text = sessionId.get()
+  watch = [sessionId, replaySessionId]
+  text = sessionId.get() != "" ? sessionId.get() : replaySessionId.get()
 })
 
 let versionComp = @() textStyle.__merge({

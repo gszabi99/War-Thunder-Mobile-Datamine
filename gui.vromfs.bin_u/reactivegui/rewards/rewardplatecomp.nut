@@ -93,6 +93,8 @@ let mkCommonLabelText = @(text, rStyle) {
 
 let mkCommonLabelTextMarquee = @(text, rStyle) {
   maxWidth = rStyle.boxSize - textPadding[1] * 2
+  size = FLEX_H
+  halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   behavior = Behaviors.Marquee
   speed = hdpx(30)
@@ -335,7 +337,7 @@ function mkRewardPlateCurrencyTexts(r, rStyle) {
     : labelCurrencyNeedCompact
       ? shortTextFromNum(r.count)
     : decimalFormat(r.count)
-  return mkRewardLabel(mkCommonLabelText(countText, rStyle), rStyle)
+  return mkRewardLabel(mkCommonLabelTextMarquee(countText, rStyle), rStyle)
 }
 
 
@@ -757,7 +759,8 @@ let mkDiscountOfferText = @(title, rStyle) {
   rStyle.boxSize - textPadding[1] * 2, [rStyle.textStyleSmall, rStyle.textStyle]))
 
 function mkReceivedUnit(unit, rStyle) {
-  let isReceived = Computed(@() unit.name in campMyUnits.get())
+  let isReceived = Computed(@() !unit?.isUpgraded ? unit.name in campMyUnits.get()
+    : (campMyUnits.get()?[unit.name].isUpgraded ?? false))
 
   return @() {
     watch = isReceived

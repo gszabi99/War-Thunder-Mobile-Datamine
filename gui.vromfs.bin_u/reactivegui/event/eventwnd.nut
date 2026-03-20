@@ -336,8 +336,9 @@ function mkLootboxPreviewContent() {
         children = eventWndLootbox.get() == null ? null
           : [
               lootboxHeader(eventWndLootbox.get())
-              lootboxImageWithTimer(eventWndLootbox.get())
               { size = flex() }
+              lootboxImageWithTimer(eventWndLootbox.get())
+              { size = flex(3) }
               progressInfo
               { size = const [0, hdpx(50)] }
               @() {

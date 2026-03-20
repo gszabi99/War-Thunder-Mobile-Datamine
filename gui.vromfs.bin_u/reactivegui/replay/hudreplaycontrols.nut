@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_speed, get_replays_list, get_replay_info, get_temp_replay_info, is_replay_paused = @() !require("replays")?.is_replay_playing() } = require("replays")
+let { get_time_speed, get_replays_list, get_replay_info, get_temp_replay_info, is_replay_paused = @() !require("replays")?.is_replay_playing(),
+  get_replay_anchors, move_to_anchor } = require("replays")
 let { get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { getSpectatorTargetId, switchSpectatorTargetById } = require("guiSpectator")
 let { is_replay_markers_enabled } = require("hudState")
@@ -13,7 +14,6 @@ let { Point2 } = require("dagor.math")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { isHudVisible } = require("%appGlobals/clientState/clientState.nut")
-let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
@@ -57,6 +57,7 @@ let replayCurrentTime = Watched(0)
 
 let selectedPlayerIdx = Watched(-1)
 let replayMplayersList = Watched([])
+let replayAnchors = Watched([])
 
 let isPauseOptActive = Watched(false)
 let isMarkersOptActive = Watched(true)
@@ -76,12 +77,34 @@ let replayMplayersListSorted = Computed(function() {
 })
 
 let replayCurrentTimeRounded = Computed(@() round(replayCurrentTime.get()).tointeger())
-let replayCurrentTimeStr = Computed(@() preciseSecondsToString(replayCurrentTimeRounded.get()))
 let replayTimeProgress = Computed(@() (replayTimeTotal.get() > 0)
   ? ((100 * replayCurrentTimeRounded.get()) / replayTimeTotal.get()).tointeger()
   : 0)
 
+let curAnchorIdx = Computed(function() {
+  let count = replayAnchors.get().len()
+  if (count == 0)
+    return -1
+  return (replayAnchors.get().findindex(@(v) v > (replayCurrentTimeRounded.get() * 1000)) ?? count) - 1
+})
+
+function moveToNextAnchor(directionIdx) {
+  let nextIdx = curAnchorIdx.get() + directionIdx
+  if (nextIdx < 0 || nextIdx >= replayAnchors.get().len())
+    return
+
+  move_to_anchor(nextIdx)
+}
+
 let replayVideoControlsList = [
+  {
+    shortcutId = ""
+    img = "ui/gameuiskin#replay_forward.svg"
+    locId = "mainmenu/replay/nav/prev"
+    iconOvr = { transform = { rotate = 180 } }
+    isDisabled = Computed(@() curAnchorIdx.get() < 0)
+    cb = @() moveToNextAnchor(-1)
+  },
   {
     shortcutId = "ID_REPLAY_SLOWER"
     img = "ui/gameuiskin#replay_speed.svg"
@@ -99,6 +122,13 @@ let replayVideoControlsList = [
     shortcutId = "ID_REPLAY_FASTER"
     img = "ui/gameuiskin#replay_speed.svg"
     locId = "mainmenu/replay/speed/fast"
+  },
+  {
+    shortcutId = ""
+    img = "ui/gameuiskin#replay_forward.svg"
+    locId = "mainmenu/replay/nav/next"
+    isDisabled = Computed(@() curAnchorIdx.get() + 1 >= replayAnchors.get().len())
+    cb = @() moveToNextAnchor(1)
   }
 ]
 
@@ -160,6 +190,7 @@ function initReplay() {
   isPlayerOptionsOpen.set(true)
   needShowPlayerOptions.set(true)
 
+  replayAnchors.set(get_replay_anchors())
   replayTimeSpeed.set(get_time_speed())
   replayMplayersList.set(getMplayersList())
   selectedPlayerIdx.set(getSpectatorTargetId())
@@ -201,6 +232,26 @@ let cellTextProps = {
   color = cellTextColor
 }.__update(fontVeryTinyAccented)
 
+function mkReplayAnchorMarker(anchorMs, idx) {
+  let totalSec = replayTimeTotal.get()
+  if (totalSec <= 0)
+    return null
+
+  let anchorPercent = clamp((100.0 * anchorMs) / (totalSec * 1000.0), 0, 100)
+
+  return {
+    size = [hdpx(10), flex()]
+    hplace = ALIGN_LEFT
+    vplace = ALIGN_CENTER
+    pos = [pw(anchorPercent), 0]
+    behavior = Behaviors.Button
+    onClick = @() move_to_anchor(idx)
+    sound = { click = "click" }
+    rendObj = ROBJ_SOLID
+    color = bgColor
+  }
+}
+
 function mkOptBtn(opt, onClick, ovr = {}) {
   let { img = "", locId = "", activeImg = null, iconOvr = {}, isActive = Watched(false), isDisabled = Watched(false) } = opt
   let stateFlags = Watched(0)
@@ -223,18 +274,21 @@ function mkOptBtn(opt, onClick, ovr = {}) {
       color = textColor
     }.__update(iconOvr)
     onElemState = @(sf) stateFlags.set(sf)
-    sound = { click  = "click" }
+    sound = { click = "click" }
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }.__update(mkButtonHoldTooltip(onClick, stateFlags, key, @() { content = loc(locId) }), ovr)
 }
 
 function handleOptClick(opt) {
-  let { shortcutId, isActive = null } = opt
+  let { shortcutId, isActive = null, cb = null } = opt
   let hasDifferentShortcuts = type(shortcutId) == "array"
 
   if (isActive != null)
     isActive.set(!isActive.get())
+
+  if (cb != null)
+    return cb()
 
   if (hasDifferentShortcuts) {
     if (isActive != null)
@@ -243,30 +297,24 @@ function handleOptClick(opt) {
     toggleShortcut(shortcutId)
 }
 
-function replayProgressBar() {
-  let stateFlags = Watched(0)
-  let key = {}
-
-  return @() {
-    watch = [stateFlags, replayTimeProgress]
-    key
-    size = [flex(), hdpx(10)]
-    rendObj = ROBJ_BOX
-    fillColor = textColor
-    behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags.set(sf)
-    children = {
+let replayProgressBar = @() {
+  watch = [replayTimeProgress, replayAnchors, replayTimeTotal]
+  size = [flex(), hdpx(10)]
+  rendObj = ROBJ_BOX
+  fillColor = textColor
+  children = [
+    {
       size = [pw(replayTimeProgress.get()), flex()]
       rendObj = ROBJ_SOLID
       color = selectColor
     }
-  }.__update(mkButtonHoldTooltip(@() null, stateFlags, key, @() {
-      content = @() {
-        watch = replayCurrentTimeStr
-        rendObj = ROBJ_TEXT
-        text = replayCurrentTimeStr.get()
-      }.__update(fontSmall)
-    }))
+    {
+      size = flex()
+      children = replayAnchors.get()
+        .map(mkReplayAnchorMarker)
+        .filter(@(v) v != null)
+    }
+  ]
 }
 
 function mkSquadLabel(player, color) {
@@ -316,6 +364,7 @@ function mkUnitName(player, halign) {
 
   return @() {
     watch = unit
+    size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
@@ -325,7 +374,7 @@ function mkUnitName(player, halign) {
       cellTextProps.__merge({
         valign = ALIGN_CENTER
         halign
-        maxWidth = pw(100)
+        maxWidth = pw(90)
         behavior = Behaviors.Marquee
         delay = defMarqueeDelay
         speed = hdpx(30)
@@ -366,6 +415,7 @@ function mkPlayer(player, teamColor, halign) {
     mkAvatar(player)
     mkSquadLabel(player, nameColor)
     {
+      size = FLEX_H
       flow = FLOW_VERTICAL
       halign
       children = [
@@ -393,6 +443,7 @@ function mkPlayer(player, teamColor, halign) {
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         behavior = Behaviors.Button
+        sound = { click = "click" }
         padding = halign == ALIGN_RIGHT ? [hdpx(2), 0, hdpx(2), hdpx(4)] : [hdpx(2), hdpx(4), hdpx(2), 0]
         onClick = @() switchSpectatorTargetById(player.id)
         gap = hdpx(4)
@@ -426,6 +477,7 @@ let centerPanel = @() {
 
 let bottomPanel = @() {
   watch = isPlayerOptionsOpen
+  stopMouse = true
   size = FLEX_H
   children = {
     size = FLEX_H
@@ -438,7 +490,7 @@ let bottomPanel = @() {
       flow = FLOW_VERTICAL
       gap = optBtnGap
       children = [
-        replayProgressBar()
+        replayProgressBar
         {
           size = FLEX_H
           valign = ALIGN_CENTER
@@ -496,6 +548,7 @@ let hudReplayControls = @() {
                 rendObj = ROBJ_SOLID
                 color = cellTextColor
                 behavior = Behaviors.Button
+                sound = { click = "click" }
                 onClick = @() isPlayerOptionsOpen.set(!isPlayerOptionsOpen.get())
               }
         }
