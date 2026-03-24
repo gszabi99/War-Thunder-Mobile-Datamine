@@ -59,7 +59,7 @@ let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let battleItemsBtn = require("battleItemsBtn.nut")
 let { blockedCountries } = require("%rGui/unit/unitAccess.nut")
-let { openNPWnd, isNPSeasonActive } = require("%rGui/battlePass/newPlayerBpState.nut")
+let { openNPWnd, isNPSeasonActive, hasUnseenNpPass, hasNpBpRewardsToReceive } = require("%rGui/battlePass/newPlayerBpState.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -211,10 +211,14 @@ let btnPremDailyBonus = @() {
 let btnNewPlayerBpWnd = @() {
   watch = isNPSeasonActive
   children = isNPSeasonActive.get()
-    ? translucentButton("ui/gameuiskin#icon_newbie_pass.svg", "", openNPWnd)
+    ? translucentButton("ui/gameuiskin#icon_newbie_pass.svg", "", openNPWnd,
+        @(_) @() {
+          watch = [hasNpBpRewardsToReceive, hasUnseenNpPass]
+          children = !hasNpBpRewardsToReceive.get() && !hasUnseenNpPass.get() ? null
+            : priorityUnseenMark
+        })
     : null
 }
-
 
 let btnHorRow = @(children) {
   flow = FLOW_HORIZONTAL

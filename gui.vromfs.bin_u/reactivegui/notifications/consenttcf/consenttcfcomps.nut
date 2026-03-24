@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
 import "%darg/helpers/mkTextareaBlock.nut" as mkTextareaBlock
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn, closeWndBtnSize
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/notifications/consentTcf/consentTcfState.nut" import doAnswerAllAndClose, doSaveAndClose
 
 const wndW = hdpx(1300)
 const wndH = saSize[1]
@@ -152,6 +155,18 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
   })
 }
 
+let mkIntroButtons = @(bqWndId) [
+  textButtonCommon(utf8ToUpper(loc("consentWnd/btns/notConsent")), @() doAnswerAllAndClose(bqWndId, false))
+  {size = flex()}
+  textButtonPrimary(utf8ToUpper(loc("consentWnd/btns/consent")), @() doAnswerAllAndClose(bqWndId, true))
+]
+
+let mkManageButtons = @(bqWndId) [
+  textButtonPrimary(utf8ToUpper(loc("consentWnd/manage/acceptAll")), @() doAnswerAllAndClose(bqWndId, true))
+  {size = flex()}
+  textButtonCommon(utf8ToUpper(loc("consentWnd/manage/acceptChoosen")), @() doSaveAndClose(bqWndId))
+]
+
 let openUrl = @(baseUrl) eventbus_send("openUrl", { baseUrl })
 
 let mkTextareaProps = @(ovr) mkTextarea("", { size = [wndContentWidth, SIZE_TO_CONTENT] }.__update(ovr))
@@ -176,4 +191,7 @@ return {
 
   mkContent
   mkStatusContent
+
+  mkIntroButtons
+  mkManageButtons
 }

@@ -50,6 +50,8 @@
       "type": "domination",
       "environment": "Day",
       "weather": "good",
+      "missionProgressType": "airGS",
+      "showAIKilllog": true,
       "locName": "missions/_GS/medium_tank;location/zhengzhou",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,
@@ -126,13 +128,13 @@
               "icontype": "fighter",
               "side": "ally",
               "target": "t1_bombers_spawn",
-              "lookAt": "area_01"
+              "lookAt": "area_4000"
             },
             {
               "icontype": "fighter",
               "side": "enemy",
               "target": "t2_bombers_spawn",
-              "lookAt": "area_01"
+              "lookAt": "area_4000"
             },
             {
               "icontype": "artillery",
@@ -428,8 +430,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": [
-              "t1_trucks_squad",
-              "t2_trucks_squad",
+              "t1_truck_aaa_squad",
+              "t2_truck_aaa_squad",
               "t1_aaa_squad",
               "t2_aaa_squad"
             ],
@@ -503,9 +505,9 @@
         "name": "t1_airfield",
         "tm": [
           [
-            0.134113,
+            -0.643714,
             0.0,
-            -0.990966
+            -0.765266
           ],
           [
             0.0,
@@ -513,14 +515,14 @@
             0.0
           ],
           [
-            0.990966,
+            0.765266,
             0.0,
-            0.134113
+            -0.643714
           ],
           [
-            -4545.65,
-            206.8,
-            2188.9
+            -7286.95,
+            319.868,
+            -10812.1
           ]
         ],
         "unit_class": "dynaf_universal_1line_b_nolight",
@@ -534,9 +536,9 @@
         "name": "t2_airfield",
         "tm": [
           [
-            -0.0628579,
+            0.503715,
             0.0,
-            0.998023
+            0.863871
           ],
           [
             0.0,
@@ -544,14 +546,14 @@
             0.0
           ],
           [
-            -0.998023,
+            -0.863871,
             0.0,
-            -0.0628579
+            0.503715
           ],
           [
-            -4616.45,
-            131.859,
-            -6111.0
+            -8160.9,
+            163.049,
+            7093.25
           ]
         ],
         "unit_class": "dynaf_universal_1line_b_nolight",
@@ -581,7 +583,7 @@
           ],
           [
             -7561.65,
-            127.15,
+            122.15,
             -4393.6
           ]
         ],
@@ -643,7 +645,7 @@
           ],
           [
             -5413.05,
-            111.3,
+            107.65,
             -3189.8
           ]
         ],
@@ -751,9 +753,9 @@
         "name": "t1_bomb_target_02",
         "tm": [
           [
-            1.0,
+            -0.347852,
             0.0,
-            0.0
+            0.937549
           ],
           [
             0.0,
@@ -761,14 +763,14 @@
             0.0
           ],
           [
+            -0.937549,
             0.0,
-            0.0,
-            1.0
+            -0.347852
           ],
           [
-            -6022.75,
-            86.533,
-            2943.7
+            -7263.2,
+            190.06,
+            -3108.95
           ]
         ],
         "unit_class": "dynBase_oil_storage_large_square",
@@ -782,9 +784,9 @@
         "name": "t1_bomb_target_03",
         "tm": [
           [
-            1.0,
+            -0.347852,
             0.0,
-            0.0
+            0.937549
           ],
           [
             0.0,
@@ -792,14 +794,14 @@
             0.0
           ],
           [
+            -0.937549,
             0.0,
-            0.0,
-            1.0
+            -0.347852
           ],
           [
-            -6642.71,
-            93.6725,
-            2275.4
+            -7525.7,
+            126.15,
+            -2315.93
           ]
         ],
         "unit_class": "dynBase_hq_camp_square",
@@ -813,9 +815,9 @@
         "name": "t1_bomb_target_01",
         "tm": [
           [
-            0.793353,
+            -0.846713,
             0.0,
-            0.608761
+            0.532049
           ],
           [
             0.0,
@@ -823,14 +825,14 @@
             0.0
           ],
           [
-            -0.608761,
+            -0.532049,
             0.0,
-            0.793353
+            -0.846713
           ],
           [
-            -6700.4,
-            86.2926,
-            2947.99
+            -6795.1,
+            272.607,
+            -4548.68
           ]
         ],
         "unit_class": "dynBase_petrol_camp_square",
@@ -844,9 +846,9 @@
         "name": "t2_bomb_target_02",
         "tm": [
           [
-            1.0,
+            0.431701,
             0.0,
-            0.0
+            -0.902017
           ],
           [
             0.0,
@@ -854,14 +856,14 @@
             0.0
           ],
           [
+            0.902017,
             0.0,
-            0.0,
-            1.0
+            0.431701
           ],
           [
-            -4271.1,
-            176.532,
-            -7456.95
+            -8020.45,
+            102.05,
+            -909.05
           ]
         ],
         "unit_class": "dynBase_petrol_camp_square",
@@ -875,9 +877,9 @@
         "name": "t2_bomb_target_03",
         "tm": [
           [
-            1.0,
+            0.431701,
             0.0,
-            0.0
+            -0.902017
           ],
           [
             0.0,
@@ -885,14 +887,14 @@
             0.0
           ],
           [
+            0.902017,
             0.0,
-            0.0,
-            1.0
+            0.431701
           ],
           [
-            -4834.2,
-            180.738,
-            -7543.95
+            -8624.15,
+            115.646,
+            278.104
           ]
         ],
         "unit_class": "dynBase_military_base_square",
@@ -906,9 +908,9 @@
         "name": "t2_bomb_target_01",
         "tm": [
           [
-            0.819152,
+            -0.163747,
             0.0,
-            -0.573576
+            -0.986502
           ],
           [
             0.0,
@@ -916,14 +918,14 @@
             0.0
           ],
           [
-            0.573576,
+            0.986502,
             0.0,
-            0.819152
+            -0.163747
           ],
           [
-            -5658.15,
-            176.686,
-            -7660.55
+            -7785.12,
+            87.7996,
+            -1495.85
           ]
         ],
         "unit_class": "dynBase_ammunition_camp_square",
@@ -937,9 +939,9 @@
         "name": "t1_bomb_target_04",
         "tm": [
           [
-            1.0,
+            -0.347852,
             0.0,
-            0.0
+            0.937549
           ],
           [
             0.0,
@@ -947,14 +949,14 @@
             0.0
           ],
           [
+            -0.937549,
             0.0,
-            0.0,
-            1.0
+            -0.347852
           ],
           [
-            -5964.9,
-            94.2866,
-            2236.98
+            -7014.14,
+            265.197,
+            -3838.74
           ]
         ],
         "unit_class": "dynBase_small_factory_square",
@@ -968,9 +970,9 @@
         "name": "t2_bomb_target_04",
         "tm": [
           [
-            1.0,
+            0.431701,
             0.0,
-            0.0
+            -0.902017
           ],
           [
             0.0,
@@ -978,14 +980,14 @@
             0.0
           ],
           [
+            0.902017,
             0.0,
-            0.0,
-            1.0
+            0.431701
           ],
           [
-            -5277.15,
-            182.017,
-            -7201.5
+            -8339.05,
+            110.151,
+            -313.428
           ]
         ],
         "unit_class": "dynBase_hq_camp_square",
@@ -1511,7 +1513,7 @@
           ],
           [
             -5835.15,
-            118.3,
+            116.25,
             -4294.1
           ]
         ],
@@ -1604,7 +1606,7 @@
           ],
           [
             -10270.0,
-            129.8,
+            125.25,
             77.4121
           ]
         ],
@@ -2610,7 +2612,7 @@
           ],
           [
             -5820.45,
-            201.902,
+            102.951,
             676.462
           ]
         ],
@@ -3184,7 +3186,7 @@
         }
       },
       {
-        "name": "t2_tank_04",
+        "name": "t2_tank_03",
         "tm": [
           [
             0.247842,
@@ -3240,7 +3242,7 @@
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_tank_04_wp_01": {
+          "t2_tank_03_wp_01": {
             "type": "normal",
             "tm": [
               [
@@ -3272,7 +3274,7 @@
               "canUsePathFinder": false
             }
           },
-          "t2_tank_04_wp_02": {
+          "t2_tank_03_wp_02": {
             "type": "normal",
             "tm": [
               [
@@ -3304,7 +3306,7 @@
               "canUsePathFinder": false
             }
           },
-          "t2_tank_04_wp_03": {
+          "t2_tank_03_wp_03": {
             "type": "normal",
             "tm": [
               [
@@ -3336,7 +3338,7 @@
               "canUsePathFinder": false
             }
           },
-          "t2_tank_04_wp_04": {
+          "t2_tank_03_wp_04": {
             "type": "normal",
             "tm": [
               [
@@ -3427,14 +3429,14 @@
           [
             -8382.05,
             207.852,
-            1365.75
+            1154.55
           ]
         ],
         "props": {
           "squad_members": [
             "t2_tank_01",
             "t2_tank_02",
-            "t2_tank_04"
+            "t2_tank_03"
           ],
           "object_marking": 0
         }
@@ -3459,19 +3461,19 @@
           ],
           [
             -7940.45,
-            34.752,
+            827.45,
             -6542.75
           ]
         ],
         "props": {
           "squad_members": [
+            "t1_bunker_01",
             "t1_bunker_02",
             "t1_bunker_03",
             "t1_bunker_04",
             "t1_bunker_05",
             "t1_bunker_06",
-            "t1_bunker_07",
-            "t1_bunker_08"
+            "t1_bunker_07"
           ],
           "object_marking": 0
         }
@@ -3502,13 +3504,15 @@
         ],
         "props": {
           "squad_members": [
+            "t2_bunker_01",
             "t2_bunker_02",
             "t2_bunker_03",
             "t2_bunker_04",
+            "t2_bunker_05",
+            "t2_bunker_06",
             "t2_bunker_07",
             "t2_bunker_08",
-            "t2_bunker_09",
-            "t2_bunker_10"
+            "t2_bunker_09"
           ],
           "object_marking": 0
         }
@@ -3533,7 +3537,7 @@
           ],
           [
             -6234.45,
-            51.902,
+            498.35,
             -8050.75
           ]
         ],
@@ -3580,7 +3584,7 @@
         }
       },
       {
-        "name": "t1_trucks_squad",
+        "name": "t1_truck_aaa_squad",
         "tm": [
           [
             1.0,
@@ -3599,22 +3603,22 @@
           ],
           [
             -10208.2,
-            135.902,
+            332.8,
             -6060.95
           ]
         ],
         "props": {
           "squad_members": [
-            "t1_truck_01",
-            "t1_truck_02",
-            "t1_truck_03",
-            "t1_truck_04"
+            "t1_truck_aaa_01",
+            "t1_truck_aaa_02",
+            "t1_truck_aaa_03",
+            "t1_truck_aaa_04"
           ],
           "object_marking": 0
         }
       },
       {
-        "name": "t2_trucks_squad",
+        "name": "t2_truck_aaa_squad",
         "tm": [
           [
             1.0,
@@ -3639,9 +3643,9 @@
         ],
         "props": {
           "squad_members": [
-            "t2_truck_01",
-            "t2_truck_02",
-            "t2_truck_04"
+            "t2_truck_aaa_01",
+            "t2_truck_aaa_02",
+            "t2_truck_aaa_03"
           ],
           "object_marking": 0
         }
@@ -3742,7 +3746,7 @@
           ],
           [
             -11228.6,
-            47.802,
+            564.35,
             -9836.25
           ]
         ],
@@ -3770,13 +3774,13 @@
             1.0
           ],
           [
-            -11555.1,
-            32.352,
-            -8259.75
+            -9739.9,
+            146.55,
+            -7161.6
           ]
         ],
         "props": {
-          "squad_members": "t1_trucks_squad",
+          "squad_members": "t1_truck_aaa_squad",
           "object_marking": 0
         }
       },
@@ -3800,7 +3804,7 @@
           ],
           [
             -11881.7,
-            46.952,
+            866.4,
             -10250.3
           ]
         ],
@@ -3866,7 +3870,7 @@
           ]
         ],
         "props": {
-          "squad_members": "t2_trucks_squad",
+          "squad_members": "t2_truck_aaa_squad",
           "object_marking": 0
         }
       },
@@ -3928,7 +3932,7 @@
         ],
         "props": {
           "squad_members": [
-            "t1_trucks_squad",
+            "t1_truck_aaa_squad",
             "t1_aaa_squad",
             "t1_artillery_squad"
           ],
@@ -3961,7 +3965,7 @@
         ],
         "props": {
           "squad_members": [
-            "t2_trucks_squad",
+            "t2_truck_aaa_squad",
             "t2_aaa_squad",
             "t2_artillery_squad"
           ],
@@ -4159,15 +4163,15 @@
             1.0
           ],
           [
-            15865.5,
-            32.452,
-            3907.5
+            -9301.75,
+            654.9,
+            -8189.0
           ]
         ],
         "props": {
           "squad_members": [
             "t1_aaa_squad",
-            "t1_trucks_squad"
+            "t1_truck_aaa_squad"
           ]
         }
       },
@@ -4190,20 +4194,78 @@
             1.0
           ],
           [
-            15865.5,
-            32.452,
-            11528.4
+            -9022.55,
+            32.4502,
+            4004.55
           ]
         ],
         "props": {
           "squad_members": [
             "t2_aaa_squad",
-            "t2_trucks_squad"
+            "t2_truck_aaa_squad"
           ]
         }
       }
     ],
     "structures": [
+      {
+        "name": "t1_bunker_01",
+        "tm": [
+          [
+            0.727844,
+            -0.0177162,
+            0.685513
+          ],
+          [
+            0.0,
+            0.999666,
+            0.0258351
+          ],
+          [
+            -0.685742,
+            -0.0188039,
+            0.727601
+          ],
+          [
+            -10119.5,
+            178.804,
+            -3830.85
+          ]
+        ],
+        "unit_class": "uk_bunker",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
       {
         "name": "t1_bunker_02",
         "tm": [
@@ -4362,6 +4424,64 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_01",
+        "tm": [
+          [
+            -0.676737,
+            0.0418007,
+            -0.735038
+          ],
+          [
+            0.0274588,
+            0.999125,
+            0.0315381
+          ],
+          [
+            0.735714,
+            0.0011598,
+            -0.677293
+          ],
+          [
+            -4558.05,
+            123.483,
+            -268.402
+          ]
+        ],
+        "unit_class": "uk_bunker",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
@@ -6119,64 +6239,6 @@
         "way": {}
       },
       {
-        "name": "t1_bunker_08",
-        "tm": [
-          [
-            0.727844,
-            -0.0177162,
-            0.685513
-          ],
-          [
-            0.0,
-            0.999666,
-            0.0258351
-          ],
-          [
-            -0.685742,
-            -0.0188039,
-            0.727601
-          ],
-          [
-            -10119.5,
-            178.804,
-            -3830.85
-          ]
-        ],
-        "unit_class": "uk_bunker",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
         "name": "t1_art_13",
         "tm": [
           [
@@ -6815,64 +6877,6 @@
         "way": {}
       },
       {
-        "name": "t2_bunker_10",
-        "tm": [
-          [
-            -0.676737,
-            0.0418007,
-            -0.735038
-          ],
-          [
-            0.0274588,
-            0.999125,
-            0.0315381
-          ],
-          [
-            0.735714,
-            0.0011598,
-            -0.677293
-          ],
-          [
-            -4558.05,
-            123.483,
-            -268.402
-          ]
-        ],
-        "unit_class": "uk_bunker",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
         "name": "t2_art_17",
         "tm": [
           [
@@ -6991,7 +6995,7 @@
     ],
     "air_defence": [
       {
-        "name": "t1_truck_01",
+        "name": "t1_truck_aaa_01",
         "tm": [
           [
             -0.280112,
@@ -7046,234 +7050,10 @@
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": {
-          "t1_tank_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                1134.28,
-                78.1082,
-                -802.109
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                2730.5,
-                39.8,
-                1458.5
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                1680.35,
-                28.5,
-                2565.05
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                260.15,
-                27.75,
-                2143.25
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -620.45,
-                27.5,
-                2159.3
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1952.05,
-                44.25,
-                2026.65
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -2669.3,
-                44.85,
-                1513.3
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
+        "way": {}
       },
       {
-        "name": "t1_truck_02",
+        "name": "t1_truck_aaa_02",
         "tm": [
           [
             0.488546,
@@ -7328,235 +7108,10 @@
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": {
-          "t1_tank_03_wp_08": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -724.322,
-                91.8203,
-                -1144.44
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_09": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -2007.53,
-                45.9,
-                1017.17
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_10": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1582.2,
-                37.3,
-                2387.85
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_11": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -899.8,
-                29.35,
-                2693.6
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_12": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -113.45,
-                27.75,
-                2065.0
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_13": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                1202.8,
-                27.65,
-                1840.25
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_14": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                2344.7,
-                28.8,
-                1932.65
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
+        "way": {}
       },
       {
-        "name": "t1_truck_03",
+        "name": "t1_truck_aaa_03",
         "tm": [
           [
             -0.0871556,
@@ -7743,7 +7298,7 @@
         }
       },
       {
-        "name": "t1_truck_04",
+        "name": "t1_truck_aaa_04",
         "tm": [
           [
             -0.0871556,
@@ -7930,7 +7485,7 @@
         }
       },
       {
-        "name": "t2_truck_01",
+        "name": "t2_truck_aaa_01",
         "tm": [
           [
             0.559406,
@@ -8017,171 +7572,11 @@
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
-          },
-          "t2_tank_05_wp_01": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -2013.2,
-                51.55,
-                -1198.65
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1595.2,
-                35.2998,
-                -1842.47
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -997.55,
-                58.85,
-                -2790.6
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                648.65,
-                65.0,
-                -2793.1
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                2426.4,
-                51.1,
-                -2132.3
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
           }
         }
       },
       {
-        "name": "t2_truck_02",
+        "name": "t2_truck_aaa_02",
         "tm": [
           [
             -0.484694,
@@ -8200,7 +7595,7 @@
           ],
           [
             -5636.65,
-            201.902,
+            102.386,
             935.592
           ]
         ],
@@ -8268,139 +7663,11 @@
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
-          },
-          "t2_tank_05_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                2662.65,
-                55.4,
-                -1645.25
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                664.15,
-                66.4,
-                -2683.3
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_08": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -375.25,
-                67.65,
-                -2754.6
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_09": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1809.45,
-                41.6998,
-                -1972.37
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
           }
         }
       },
       {
-        "name": "t2_truck_04",
+        "name": "t2_truck_aaa_03",
         "tm": [
           [
             0.247842,
@@ -8455,136 +7722,65 @@
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": {
-          "t2_tank_05_wp_13": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -162.115,
-                35.75,
-                1714.03
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_14": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                309.24,
-                53.1997,
-                460.199
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_15": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1208.2,
-                61.45,
-                -2166.25
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_16": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                2231.7,
-                57.2,
-                -1742.5
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_01",
+        "tm": [
+          [
+            0.706922,
+            0.0,
+            0.707292
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.707292,
+            0.0,
+            0.706922
+          ],
+          [
+            -5372.25,
+            137.949,
+            -3217.0
+          ]
+        ],
+        "unit_class": "germ_88mm_flak36_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
       },
       {
         "name": "t1_aaa_02",
@@ -8666,64 +7862,6 @@
             -7552.75,
             138.948,
             -4442.3
-          ]
-        ],
-        "unit_class": "germ_88mm_flak36_noground",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_aaa_01",
-        "tm": [
-          [
-            0.706922,
-            0.0,
-            0.707292
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.707292,
-            0.0,
-            0.706922
-          ],
-          [
-            -5372.25,
-            137.949,
-            -3217.0
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -8953,9 +8091,9 @@
             0.170084
           ],
           [
-            -7201.0,
-            360.0,
-            -11775.8
+            -6941.6,
+            328.099,
+            -10163.1
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9011,9 +8149,9 @@
             0.170084
           ],
           [
-            -7928.85,
-            360.0,
-            -13031.7
+            -7829.6,
+            330.999,
+            -11099.8
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9069,9 +8207,9 @@
             0.170084
           ],
           [
-            -7721.45,
-            360.0,
-            -13532.0
+            -7767.2,
+            324.149,
+            -11560.2
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9127,9 +8265,9 @@
             0.170084
           ],
           [
-            -6624.4,
-            360.0,
-            -13337.5
+            -7557.7,
+            325.899,
+            -11436.5
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9185,9 +8323,9 @@
             0.170084
           ],
           [
-            -6560.65,
-            360.0,
-            -12871.5
+            -7300.05,
+            331.349,
+            -11173.0
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9243,9 +8381,9 @@
             0.170084
           ],
           [
-            -8111.2,
-            360.0,
-            -12150.7
+            -7999.45,
+            329.649,
+            -11319.8
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9301,9 +8439,9 @@
             0.170084
           ],
           [
-            -7777.15,
-            360.0,
-            -12507.2
+            -7466.95,
+            330.599,
+            -10620.1
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -9359,9 +8497,9 @@
             0.170084
           ],
           [
-            -7552.1,
-            360.0,
-            -11870.6
+            -7170.0,
+            326.399,
+            -10281.0
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -9417,9 +8555,9 @@
             0.170084
           ],
           [
-            -6738.5,
-            360.0,
-            -12316.0
+            -6949.9,
+            339.149,
+            -10775.6
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -9475,9 +8613,9 @@
             0.170084
           ],
           [
-            -6547.4,
-            360.0,
-            -11892.9
+            -6721.4,
+            342.449,
+            -10373.6
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -9518,9 +8656,9 @@
         "name": "t2_def_small_aaa_01",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9528,14 +8666,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -7587.35,
-            155.8,
-            9260.35
+            -7956.21,
+            109.449,
+            6824.4
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9576,9 +8714,9 @@
         "name": "t2_def_small_aaa_02",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9586,14 +8724,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -7714.85,
-            268.35,
-            8752.2
+            -7751.97,
+            111.099,
+            7302.43
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9634,9 +8772,9 @@
         "name": "t2_def_small_aaa_03",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9644,14 +8782,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -7906.55,
-            153.55,
-            8025.5
+            -7812.84,
+            111.468,
+            7984.34
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9692,9 +8830,9 @@
         "name": "t2_def_small_aaa_04",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9702,14 +8840,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -8733.95,
-            122.907,
-            8232.85
+            -8767.73,
+            111.099,
+            6496.51
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9750,9 +8888,9 @@
         "name": "t2_def_small_aaa_05",
         "tm": [
           [
-            0.197591,
+            0.710137,
             0.0,
-            0.980285
+            0.704064
           ],
           [
             0.0,
@@ -9760,14 +8898,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.704064,
             0.0,
-            0.197591
+            0.710137
           ],
           [
-            -8669.5,
-            139.675,
-            8758.8
+            -8541.22,
+            117.249,
+            7127.45
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9808,9 +8946,9 @@
         "name": "t2_def_small_aaa_06",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9818,14 +8956,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -8494.6,
-            147.05,
-            9636.8
+            -8409.79,
+            115.599,
+            6298.86
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -9866,9 +9004,9 @@
         "name": "t2_def_big_aaa_01",
         "tm": [
           [
-            0.197591,
+            0.710137,
             0.0,
-            0.980285
+            0.704064
           ],
           [
             0.0,
@@ -9876,14 +9014,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.704064,
             0.0,
-            0.197591
+            0.710137
           ],
           [
-            -8753.35,
-            148.29,
-            9210.3
+            -8297.29,
+            120.599,
+            7507.65
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -9924,9 +9062,9 @@
         "name": "t2_def_big_aaa_02",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9934,14 +9072,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -8354.6,
-            152.65,
-            8011.0
+            -8055.58,
+            115.071,
+            7780.68
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -9982,9 +9120,9 @@
         "name": "t2_def_big_aaa_03",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -9992,14 +9130,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -7556.45,
-            193.3,
-            8324.25
+            -7503.4,
+            110.549,
+            7712.64
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -10040,9 +9178,9 @@
         "name": "t2_def_big_aaa_04",
         "tm": [
           [
-            0.197591,
+            0.0409254,
             0.0,
-            0.980285
+            0.999163
           ],
           [
             0.0,
@@ -10050,14 +9188,14 @@
             0.0
           ],
           [
-            -0.980285,
+            -0.999163,
             0.0,
-            0.197591
+            0.0409254
           ],
           [
-            -7914.1,
-            161.537,
-            9699.4
+            -8185.32,
+            111.599,
+            6461.14
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -10677,175 +9815,13 @@
     ]
   },
   "areas": {
-    "bombers_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          20000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          20000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          20000.0
-        ],
-        [
-          -7633.85,
-          4000.0,
-          -1848.85
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_fighters_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7440.7,
-          2500.0,
-          -5609.6
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_fighters_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7588.4,
-          2500.0,
-          2365.15
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_bombers_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7509.45,
-          4000.0,
-          -5225.45
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_bombers_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7465.75,
-          4000.0,
-          2160.8
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          16000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          16000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          16000.0
-        ],
-        [
-          -7633.85,
-          2000.0,
-          -1848.85
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
     "t1_bomb_area_01": {
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          -156.533,
           0.0,
-          0.0
+          421.897
         ],
         [
           0.0,
@@ -10853,14 +9829,14 @@
           0.0
         ],
         [
+          -421.897,
           0.0,
-          0.0,
-          450.0
+          -156.533
         ],
         [
-          -6700.8,
-          86.3448,
-          2943.2
+          -6790.44,
+          147.9,
+          -4547.48
         ]
       ],
       "objLayer": 0,
@@ -10870,9 +9846,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          -156.533,
           0.0,
-          0.0
+          421.897
         ],
         [
           0.0,
@@ -10880,14 +9856,14 @@
           0.0
         ],
         [
+          -421.897,
           0.0,
-          0.0,
-          450.0
+          -156.533
         ],
         [
-          -6020.35,
-          86.5228,
-          2944.7
+          -7264.97,
+          119.75,
+          -3107.05
         ]
       ],
       "objLayer": 0,
@@ -10897,9 +9873,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          -156.533,
           0.0,
-          0.0
+          421.897
         ],
         [
           0.0,
@@ -10907,14 +9883,14 @@
           0.0
         ],
         [
+          -421.897,
           0.0,
-          0.0,
-          450.0
+          -156.533
         ],
         [
-          -6646.5,
-          93.6434,
-          2277.95
+          -7526.77,
+          130.45,
+          -2320.37
         ]
       ],
       "objLayer": 0,
@@ -10924,9 +9900,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          194.265,
           0.0,
-          0.0
+          -405.908
         ],
         [
           0.0,
@@ -10934,14 +9910,14 @@
           0.0
         ],
         [
+          405.908,
           0.0,
-          0.0,
-          450.0
+          194.265
         ],
         [
-          -5654.85,
-          176.81,
-          -7659.5
+          -7782.75,
+          169.7,
+          -1498.38
         ]
       ],
       "objLayer": 0,
@@ -10951,9 +9927,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          194.265,
           0.0,
-          0.0
+          -405.908
         ],
         [
           0.0,
@@ -10961,14 +9937,14 @@
           0.0
         ],
         [
+          405.908,
           0.0,
-          0.0,
-          450.0
+          194.265
         ],
         [
-          -4280.4,
-          177.359,
-          -7443.4
+          -8012.24,
+          150.3,
+          -894.812
         ]
       ],
       "objLayer": 0,
@@ -10978,9 +9954,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          194.265,
           0.0,
-          0.0
+          -405.908
         ],
         [
           0.0,
@@ -10988,14 +9964,14 @@
           0.0
         ],
         [
+          405.908,
           0.0,
-          0.0,
-          450.0
+          194.265
         ],
         [
-          -4831.8,
-          180.74,
-          -7547.65
+          -8626.45,
+          124.05,
+          274.342
         ]
       ],
       "objLayer": 0,
@@ -11005,9 +9981,9 @@
       "type": "Box",
       "tm": [
         [
-          -268.226,
+          1287.43,
           0.0,
-          1981.93
+          1530.53
         ],
         [
           0.0,
@@ -11015,14 +9991,14 @@
           0.0
         ],
         [
-          -743.225,
+          -573.95,
           0.0,
-          -100.585
+          482.785
         ],
         [
-          -4516.21,
-          71.6808,
-          2161.3
+          -7287.8,
+          183.403,
+          -10828.7
         ]
       ],
       "objLayer": 0,
@@ -11032,9 +10008,9 @@
       "type": "Box",
       "tm": [
         [
-          -125.716,
+          1029.12,
           0.0,
-          1996.05
+          1714.92
         ],
         [
           0.0,
@@ -11042,14 +10018,14 @@
           0.0
         ],
         [
-          -748.517,
+          -643.092,
           0.0,
-          -47.1441
+          385.918
         ],
         [
-          -4643.3,
-          135.539,
-          -6044.2
+          -8136.6,
+          19.426,
+          7071.5
         ]
       ],
       "objLayer": 0,
@@ -11217,115 +10193,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "area_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          12000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          12000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          12000.0
-        ],
-        [
-          -7633.85,
-          2000.0,
-          -1848.85
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          8000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          8000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          8000.0
-        ],
-        [
-          -7633.85,
-          2000.0,
-          -1848.85
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_fighters_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7676.65,
-          2000.0,
-          2439.4
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_fighters_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7689.95,
-          2000.0,
-          2430.25
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_fighters_spawn_middle": {
+    "t1_bombers_spawn": {
       "type": "Sphere",
       "tm": [
         [
@@ -11344,9 +10212,90 @@
           0.0000226494
         ],
         [
-          -7644.3,
-          2000.0,
-          -5763.4
+          -7635.35,
+          4000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bombers_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7634.05,
+          4000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_bombers_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7635.35,
+          3500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bombers_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7634.05,
+          3500.0,
+          1154.55
         ]
       ],
       "objLayer": 0,
@@ -11371,12 +10320,1038 @@
           0.0000226494
         ],
         [
-          -7819.5,
+          -7633.85,
           2000.0,
-          -5827.55
+          -4848.15
         ]
       ],
       "objLayer": 0,
+      "props": {}
+    },
+    "t1_fighters_spawn_near_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_fighters_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_fighters_spawn_middle_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_fighters_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_fighters_spawn_far_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_fighters_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7635.25,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_near_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7635.25,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7634.85,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_middle_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7634.85,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_far_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2000.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.85,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_near_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.85,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_middle_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_far_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_assaults_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          -4848.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7635.25,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_near_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7635.25,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7634.85,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_middle_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7634.85,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_far_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_assaults_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          -7633.35,
+          2500.0,
+          1154.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_3000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_4000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          8000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          8000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_5000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_6000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          12000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          12000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_7000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          14000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          14000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          14000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_8000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_10000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          20000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20000.0
+        ],
+        [
+          -7633.85,
+          2000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "area_at_2500": {
+      "type": "Sphere",
+      "tm": [
+        [
+          5000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5000.0
+        ],
+        [
+          -7633.85,
+          200.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "area_at_8000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0,
+          0.0,
+          16000.0
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          -16000.0,
+          0.0,
+          0.0
+        ],
+        [
+          -7633.85,
+          200.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "area_at_10000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          20000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20000.0
+        ],
+        [
+          -7633.85,
+          200.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "area_alt_4000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16000.0
+        ],
+        [
+          -7633.85,
+          4000.0,
+          -1848.85
+        ]
+      ],
+      "objLayer": 3,
       "props": {}
     },
     "spectator_point_01": {
@@ -11487,364 +11462,13 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_assaults_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7492.9,
-          2500.0,
-          -5580.6
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_assaults_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7591.15,
-          2500.0,
-          -5679.25
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_assaults_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7569.2,
-          3000.0,
-          -5589.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_assaults_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7655.5,
-          2500.0,
-          2375.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_assaults_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7624.8,
-          2500.0,
-          2375.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_assaults_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7531.25,
-          3000.0,
-          2308.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          22000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          22000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          22000.0
-        ],
-        [
-          -7633.85,
-          2000.0,
-          -1848.85
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_fighters_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7770.0,
-          2000.0,
-          -5840.35
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_assaults_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7418.55,
-          2500.0,
-          -5618.25
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_fighters_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7685.3,
-          2000.0,
-          2413.4
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_assaults_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7620.4,
-          2500.0,
-          2329.15
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_bombers_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7589.7,
-          3500.0,
-          -5346.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_bombers_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000226494,
-          0.0,
-          -300.0
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          300.0,
-          0.0,
-          0.0000226494
-        ],
-        [
-          -7495.65,
-          3500.0,
-          2231.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "t1_bomb_area_04": {
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          -156.533,
           0.0,
-          0.0
+          421.897
         ],
         [
           0.0,
@@ -11852,14 +11476,14 @@
           0.0
         ],
         [
+          -421.897,
           0.0,
-          0.0,
-          450.0
+          -156.533
         ],
         [
-          -5963.0,
-          94.2941,
-          2236.35
+          -7014.21,
+          123.85,
+          -3836.74
         ]
       ],
       "objLayer": 0,
@@ -11869,9 +11493,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          194.265,
           0.0,
-          0.0
+          -405.908
         ],
         [
           0.0,
@@ -11879,41 +11503,14 @@
           0.0
         ],
         [
+          405.908,
           0.0,
-          0.0,
-          450.0
+          194.265
         ],
         [
-          -5275.75,
-          182.01,
-          -7202.15
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          5000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          5000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          5000.0
-        ],
-        [
-          -7633.85,
-          500.002,
-          -1848.85
+          -8339.07,
+          131.9,
+          -314.881
         ]
       ],
       "objLayer": 0,
@@ -12025,60 +11622,6 @@
         ]
       ],
       "objLayer": 0,
-      "props": {}
-    },
-    "area_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          20000.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          20000.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          20000.0
-        ],
-        [
-          -7633.85,
-          156.94,
-          -1848.85
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "at_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0,
-          0.0,
-          16000.1
-        ],
-        [
-          0.0,
-          16000.0,
-          0.0
-        ],
-        [
-          -16000.1,
-          0.0,
-          0.0
-        ],
-        [
-          -7628.75,
-          500.002,
-          -1848.05
-        ]
-      ],
-      "objLayer": 3,
       "props": {}
     },
     "at_t1_spawn_01_01": {
@@ -12308,6 +11851,9 @@
       },
       {
         "enabled": true
+      },
+      {
+        "enabled": false
       },
       {
         "enabled": false

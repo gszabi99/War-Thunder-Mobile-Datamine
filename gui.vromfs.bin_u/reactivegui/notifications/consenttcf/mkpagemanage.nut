@@ -1,11 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL
-from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo, isOpenedManage, isOpenedPartnersExt,
-  doAnswerAllAndClose, doSaveAndClose, getPurposesList, getSpecialPurposesList, getFeaturesList,
+  getPurposesList, getSpecialPurposesList, getFeaturesList,
   debugShowIds, PRIVACY_CHOICES_SAVED_MONTHS
-from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkTextarea,
+from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkManageButtons, mkTextarea,
   mkTextareaWithLinks, mkLink, openUrl, separatorLine, gapAbove, gapBelow, fadedAndMinor, fontMinor
 from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkExpandableSwitch, mkSwitch, mkExpandable
 
@@ -132,11 +130,7 @@ let mkManageDesc = @() function() {
   }
 }
 
-let manageButtons = [
-  textButtonCommon(utf8ToUpper(loc("consentWnd/manage/acceptChoosen")), @() doSaveAndClose(BQ_WND_ID))
-  {size = flex()}
-  textButtonPrimary(utf8ToUpper(loc("consentWnd/manage/acceptAll")), @() doAnswerAllAndClose(BQ_WND_ID, true))
-]
+let manageButtons = mkManageButtons(BQ_WND_ID)
 
 let lastScrollPosY = Watched(0)
 isOpenedManage.subscribe(@(v) v ? lastScrollPosY.set(0) : null)

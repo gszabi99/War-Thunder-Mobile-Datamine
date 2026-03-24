@@ -1,10 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%sqstd/string.nut" import utf8ToUpper
-from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedPartnersExt,
-  doAnswerAllAndClose, doSaveAndClose, vendorsLists, vendorsListsCfg, getPurposesList, getSpecialPurposesList,
+  vendorsLists, vendorsListsCfg, getPurposesList, getSpecialPurposesList,
   getFeaturesList, getDataCategoiresList, mkPartnersExtLists, debugShowIds
-from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkTextarea, mkLink,
+from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkManageButtons, mkTextarea, mkLink,
   separatorLine, openUrl, gapAbove, gapBelow, fadedAndMinor
 from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkExpandableSwitch, mkSwitch
 
@@ -124,10 +122,6 @@ let mkPartnersExtDesc = @() function() {
   }
 }
 
-let partnersExtButtons = [
-  textButtonCommon(utf8ToUpper(loc("consentWnd/manage/acceptChoosen")), @() doSaveAndClose(BQ_WND_ID))
-  {size = flex()}
-  textButtonPrimary(utf8ToUpper(loc("consentWnd/manage/acceptAll")), @() doAnswerAllAndClose(BQ_WND_ID, true))
-]
+let partnersExtButtons = mkManageButtons(BQ_WND_ID)
 
 return @() mkContent(loc("consent_tcf/partners/manage"), mkPartnersExtDesc, partnersExtButtons, quitPartnersExt)

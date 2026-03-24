@@ -5,11 +5,13 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { getNewbieBPPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd, isNPWndOpened, curStatsCampaign,
-selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, seasonEndTime
+selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, seasonEndTime, sendNpBqEvent
 } = require("%rGui/battlePass/newPlayerBpState.nut")
 let { getRewardPlateSize, mkRewardPlate, REWARD_STYLE_MEDIUM  } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin} = require("%rGui/battlePass/bpCardsStyle.nut")
@@ -21,7 +23,7 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
 let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
+let { buyPlatformGoods, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 
@@ -66,14 +68,17 @@ function buyButton(goods) {
         color = 0xFFFFFFFF
         text = priceExt?.priceText
       }.__update(fontMediumShaded)
-  return {
-    hplace = ALIGN_CENTER
-    vplace = ALIGN_BOTTOM
-    children = textButtonPricePurchase(utf8ToUpper(loc("mainmenu/btnBuy")),
+  return mkSpinnerHideBlock(
+    price > 0 ? shopPurchaseInProgress : platformPurchaseInProgress,
+    textButtonPricePurchase(utf8ToUpper(loc("mainmenu/btnBuy")),
       priceComp,
-      @() price > 0 && currencyId != ""
-        ? purchaseGoods(id)
-        : buyPlatformGoods(id),
+      function() {
+        sendNpBqEvent("purchase_newbie_pass_press")
+        if(price > 0 && currencyId != "")
+          purchaseGoods(id)
+        else
+          buyPlatformGoods(id)
+      }
       {
         hotkeys = ["^J:X"]
         ovr = {
@@ -81,8 +86,8 @@ function buyButton(goods) {
           minWidth = hdpx(280)
         }
       }
-    )
-  }
+    ),
+    { size = [flex(), defButtonHeight], vplace = ALIGN_BOTTOM, halign = ALIGN_CENTER, valign = ALIGN_CENTER })
 }
 
 let passCard = @() {

@@ -1,10 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignActiveUnlocks, unlockInProgress, batchReceiveRewards } = require("%rGui/unlocks/unlocks.nut")
+let { campaignActiveUnlocks, unlockInProgress, batchReceiveRewards, unseenUnlocks, setLastSeenUnlocks
+} = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
 let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { seenPasses, isPassGoodsUnseen } = require("%rGui/battlePass/passState.nut")
 
 let isNPWndOpened = mkWatched(persist, "newPlayerBpSceneisNPWndOpened", false)
 
@@ -29,7 +32,6 @@ let mkNPPaidStageList = Computed(function() {
   return res
 })
 
-
 let mkNPFreeStageList = Computed(function() {
   let res = gatherUnlockStageInfo(npBpFreeRewardsUnlock.get(), false, true, winsCount.get())
   fillViewInfo(res, serverConfigs.get())
@@ -42,6 +44,10 @@ let isNPRewardsInProgress = Computed(@()
     || npPurchasedUnlock.get()?.name in unlockInProgress.get())
 
 let selectedStage = mkWatched(persist, "NPSelectedStage", 0)
+
+let hasNpBpRewardsToReceive = Computed(@() !!npBpFreeRewardsUnlock.get()?.hasReward
+  || !!npPurchasedUnlock.get()?.hasReward
+  || (isNPActive.get() && !!npBpPaidRewardsUnlock.get()?.hasReward))
 
 function getNotReceivedInfo(unlock, maxProgress) {
   let { stages = [], name = "", lastRewardedStage = 0, periodic = false, startStageLoop = 1 } = unlock
@@ -67,6 +73,12 @@ function getNotReceivedInfo(unlock, maxProgress) {
   return stage == null ? null : { unlock = name, stage, finalStage }
 }
 
+let sendNpBqEvent = @(action, params = {}) sendCustomBqEvent("newbie_battlepass_1", params.__merge({
+  action
+  stageProgress = winsCount.get()
+  isPassPurchased = isNPActive.get()
+}))
+
 function receiveNPRewards(progress) {
   if (isNPRewardsInProgress.get())
     return
@@ -82,9 +94,22 @@ function receiveNPRewards(progress) {
     return
 
   batchReceiveRewards(fullList.map(@(c) { unlock = c.unlock, up_to_stage = c?.finalStage ?? c.stage }))
+
+  let total = fullList.reduce(@(res, c) res + c.finalStage - c.stage + 1, 0)
+  sendNpBqEvent("receive_rewards", {
+    paramInt1 = progress
+    paramInt2 = total
+  })
 }
 
-let npPassGoods = Computed(@() shopGoods.get()?[$"new_player_pass_{curStatsCampaign.get()}"])
+let npPassGoods = Computed(@() shopGoods.get()?[$"new_player_pass_{curStatsCampaign.get()}"] ?? {})
+let hasUnseenNpPass = Computed(@() isPassGoodsUnseen(npPassGoods.get(), seenPasses.get())
+  || npBpFreeRewardsUnlock.get()?.name in unseenUnlocks.get()
+  || npBpPaidRewardsUnlock.get()?.name in unseenUnlocks.get())
+
+isNPWndOpened.subscribe(@(v) !v
+  ? setLastSeenUnlocks([npBpFreeRewardsUnlock.get()?.name, npBpPaidRewardsUnlock.get()?.name].filter(@(id) id != null))
+  : null)
 
 return {
   curStatsCampaign
@@ -103,4 +128,7 @@ return {
   isNPSeasonActive
   npPassGoods
   seasonEndTime
+  sendNpBqEvent
+  hasNpBpRewardsToReceive
+  hasUnseenNpPass
 }

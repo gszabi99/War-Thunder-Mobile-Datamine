@@ -148,22 +148,24 @@ function saveToLocalStorage() {
 function mkStateSnapshot() {
   if (vendorsLists.get().len() == 0)
     return null
-  let purposes = {}
+  let purposes = []
   foreach (p in parse_json(getAllPurposes()))
-    purposes[p.id] <- [
+    purposes.append([
+      p.id
       hasConsentForPurpose(p.id)
       !PURPOSES_WITH_LEGITIMATE_INTEREST.contains(p.id) ? null : hasPurposeLIT(p.id)
-    ]
+    ])
   let vendors = {}
   foreach (listIdx, list in vendorsLists.get()) {
     let { hasConsentForVendor, hasConsentForVendorLIT } = vendorsListsCfg[listIdx]
-    let vl = {}
+    let vl = []
     foreach (v in list)
       if ("id" in v)
-        vl[v.id] <- [
+        vl.append([
+          v.id
           hasConsentForVendor?(v.id)
           hasConsentForVendorLIT?(v.id)
-        ]
+        ])
     if (vl.len())
       vendors[listIdx] <- vl
   }
@@ -172,25 +174,25 @@ function mkStateSnapshot() {
 
 vendorsLists.subscribe(@(v) initialSnapshot.set(v ? mkStateSnapshot() : null))
 
-let hasUserMadeChanges = @() !isEqual(mkStateSnapshot(), initialSnapshot.get())
+let hasUserMadeChanges = @() initialSnapshot.get() != null && !isEqual(mkStateSnapshot(), initialSnapshot.get())
 
-function restoreInitialSnapshot() {
-  if (initialSnapshot.get() == null || !hasUserMadeChanges())
+function restoreLastSavedStateInClient() {
+  if (!hasUserMadeChanges())
     return
   let { purposes, vendors } = initialSnapshot.get()
-  foreach (id, vals in purposes) {
-    if (vals[0] != null)
-      setConsentForPurpose(id, vals[0])
-    if (vals[1] != null)
-      setPurposeLIT(id, vals[1])
+  foreach (v in purposes) {
+    if (v[1] != null)
+      setConsentForPurpose(v[0], v[1])
+    if (v[2] != null)
+      setPurposeLIT(v[0], v[2])
   }
   foreach (listIdx, vl in vendors) {
     let { setConsentForVendor, setConsentForVendorLIT } = vendorsListsCfg[listIdx]
-    foreach (id, vals in vl) {
-      if (vals[0] != null)
-        setConsentForVendor(id, vals[0])
-      if (vals[1] != null)
-        setConsentForVendorLIT(id, vals[1])
+    foreach (v in vl) {
+      if (v[1] != null)
+        setConsentForVendor(v[0], v[1])
+      if (v[2] != null)
+        setConsentForVendorLIT(v[0], v[2])
     }
   }
 }
@@ -226,7 +228,7 @@ function doOnFinish() {
     saveToLocalStorage()
   }
   else {
-    restoreInitialSnapshot()
+    restoreLastSavedStateInClient()
     onConsentDataSaved()
   }
 }
@@ -461,6 +463,29 @@ register_command(function() {
   eventbus_send("saveProfile", {})
 }, "ui.tcf_consent.saved_state_reset")
 
+register_command(function() {
+  let prn = console_print 
+  if (initialSnapshot.get() == null) {
+    prn("Empty")
+    return
+  }
+  let toStr = @(v) v == null ? " " : v ? "+" : "−"
+  function printList(lName, initialL, currentL) {
+    prn(lName)
+    foreach (i, v in initialL) {
+      let curV = currentL[i]
+      let comment = isEqual(v, curV) ? "" : $" -> [{toStr(curV[1])} {toStr(curV[2])}]  // Unsaved"
+      prn($"  {v[0]} = [{toStr(v[1])} {toStr(v[2])}]{comment}")
+    }
+  }
+  let curSnapshot = mkStateSnapshot()
+  let { purposes, vendors } = initialSnapshot.get()
+  printList("Purposes:", purposes, curSnapshot.purposes)
+  foreach (idx, l in vendors)
+    printList($"Vendors #{idx}:", l, curSnapshot.vendors[idx])
+  prn(nbsp)
+}, "ui.tcf_consent.print_snapshot")
+
 return {
   isTcfConsentRequiredForCountry
   openTcfConsentWnd
@@ -492,6 +517,5 @@ return {
   doSaveAndClose
   doSkipClose
 
-  mkStateSnapshot
   debugShowIds
 }

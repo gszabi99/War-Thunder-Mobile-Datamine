@@ -37,6 +37,11 @@
   ],
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
+  "fixedLocalProbePos": [
+    0.0,
+    2000.0,
+    0.0
+  ],
   "average_ground_level": 16.0,
   "clipmap": {
     "texelSize": 0.125,
