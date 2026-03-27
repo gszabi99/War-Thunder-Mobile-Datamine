@@ -214,6 +214,8 @@ let btnNewPlayerBpWnd = @() {
     ? translucentButton("ui/gameuiskin#icon_newbie_pass.svg", "", openNPWnd,
         @(_) @() {
           watch = [hasNpBpRewardsToReceive, hasUnseenNpPass]
+          hplace = ALIGN_RIGHT
+          pos = [hdpx(4), hdpx(-4)]
           children = !hasNpBpRewardsToReceive.get() && !hasUnseenNpPass.get() ? null
             : priorityUnseenMark
         })

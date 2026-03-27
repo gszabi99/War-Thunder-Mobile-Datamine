@@ -6,12 +6,23 @@ let { is_nswitch } = require("%sqstd/platform.nut")
 let { can_link_email_for_gaijin_login } = require("%appGlobals/permissions.nut")
 let { authTags, curLoginType, LT_GOOGLE, LT_APPLE, LT_HUAWEI } = require("%appGlobals/loginState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+
 
 let lang = loc("current_lang")
 let emailLinkUrlsCfg = {
-  [LT_GOOGLE] = { noEmailTag = "gplogin", url = $"https://login.gaijin.net/{lang}/account/link/googleplay?stoken=" },
-  [LT_APPLE] = { noEmailTag = "applelogin", url = $"https://login.gaijin.net/{lang}/account/link/apple?stoken=" },
-  [LT_HUAWEI] = { noEmailTag = "hwlogin", url = $"https://login.gaijin.net/{lang}/account/link/huawei?stoken=" },
+  [LT_GOOGLE] = {
+    noEmailTag = "gplogin",
+    url = getCurCircuitOverride("gpEmailLinkURL", "https://login.gaijin.net/{lang}/account/link/googleplay?stoken={stoken}") 
+  },
+  [LT_APPLE] = {
+    noEmailTag = "applelogin",
+    url = getCurCircuitOverride("appleEmailLinkURL", "https://login.gaijin.net/{lang}/account/link/apple?stoken={stoken}") 
+  },
+  [LT_HUAWEI] = {
+    noEmailTag = "hwlogin",
+    url = getCurCircuitOverride("hwEmailLinkURL", "https://login.gaijin.net/{lang}/account/link/huawei?stoken={stoken}") 
+  },
 }
 
 let canLinkEmailForGaijinLogin = Computed(@() can_link_email_for_gaijin_login.get() && !is_nswitch
@@ -19,7 +30,7 @@ let canLinkEmailForGaijinLogin = Computed(@() can_link_email_for_gaijin_login.ge
   && authTags.get().contains(emailLinkUrlsCfg[curLoginType.get()].noEmailTag))
 
 let openLinkEmailUrlImpl = @(stoken) curLoginType.get() in emailLinkUrlsCfg
-  ? eventbus_send("openUrl", { baseUrl = "".concat(emailLinkUrlsCfg[curLoginType.get()].url, stoken) })
+  ? eventbus_send("openUrl", { baseUrl = emailLinkUrlsCfg[curLoginType.get()].url.subst({ lang, stoken }) })
   : null
 
 eventbus_subscribe("onGetStokenToLinkEmailForGaijinLogin", function(msg) {

@@ -1,7 +1,8 @@
 from "%globalScripts/logs.nut" import *
-let { get_cur_circuit_name } = require("app")
+let { get_cur_circuit_name, get_base_game_version_str } = require("app")
 let { Computed } = require("frp")
 let { DBGLEVEL } = require("dagor.system")
+let { check_version } = require("%sqstd/version_compare.nut")
 let { trim } = require("%sqstd/string.nut")
 let { rights } = require("permissions/userRights.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -59,6 +60,8 @@ let allPermissions = Computed(function() {
       logerr($"Permission ID with whitespace detected: \"{id}\"")
     res[id] <- true
   }
+  if (res.tcf_consent_enabled && check_version($"<1.23.0.53", get_base_game_version_str()))
+    res.tcf_consent_enabled = false
   foreach(id, v in dbgPermissions.get())
     if (v && (id in res))
       res[id] = !res[id]

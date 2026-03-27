@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { is_android, is_ios, is_nswitch } = require("%sqstd/platform.nut")
 let { isDownloadedFromGooglePlay = @() false, getBuildMarket = @() "googleplay" } = require("android.platform")
 let { isGuestLogin, renewGuestRegistrationTags } = require("%rGui/account/emailRegistrationState.nut")
+let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPlatformGoods,
@@ -42,7 +43,8 @@ subscribeFMsgBtns({
   buyPlatformGoods = function(context) {
     let { goodsOrId } = context
     buyPlatformGoods(goodsOrId)
-  }
+  },
+  openLinkEmailForGaijinLogin = @(_) openLinkEmailForGaijinLogin()
 })
 
 function buyPlatformGoodsExt(goodsOrId) {
@@ -50,15 +52,16 @@ function buyPlatformGoodsExt(goodsOrId) {
     renewGuestRegistrationTags()
     openFMsgBox({
       text = "".concat(loc("msg/needRegistrationBeforePurchase"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
-      buttons = is_ios ? [
-          { id = "cancel", isCancel = true }
-          { id = "purchaseAsGuest", eventId = "buyPlatformGoods", styleId = "PURCHASE" context = { goodsOrId } }
-          { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
-        ]
+      buttons = is_ios || is_android
+        ? [
+            { id = "cancel", isCancel = true }
+            { id = "purchaseAsGuest", eventId = "buyPlatformGoods", styleId = "PURCHASE" context = { goodsOrId } }
+            { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
+          ]
         : [
-          { id = "cancel", isCancel = true }
-          { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
-        ]
+            { id = "cancel", isCancel = true }
+            { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
+          ]
     })
     return
   }
@@ -72,6 +75,17 @@ function buyPlatformGoodsExt(goodsOrId) {
       local baseUrl = goodsRuss?.purchaseUrl
       if (baseUrl == null)
         return
+
+      if (canLinkEmailForGaijinLogin.get()) {
+        openFMsgBox({
+          text = "".concat(loc("msg/ru_google_play_link_email"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
+          buttons = [
+            { id = "cancel", isCancel = true }
+            { id = "linkEmail", eventId = "openLinkEmailForGaijinLogin", styleId = "PRIMARY", isDefault = true }
+          ]
+        })
+        return
+      }
       baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
       eventbus_send("openUrl", { baseUrl, onCloseUrl = "https://store.gaijin.net/success_payment.php" })
     }
