@@ -2529,6 +2529,20 @@
           }
         }
       },
+      "Huawei": {
+        "driverProps": {
+          "extensions": {
+            "entry": {
+              "gpu": "Maleoon 935",
+              "data": {
+                "VK_KHR_ray_tracing_pipeline": false,
+                "VK_KHR_ray_query": false,
+                "VK_KHR_acceleration_structure": false
+              }
+            }
+          }
+        }
+      },
       "default": {
         "driverProps": {
           "hasTileBasedArchitecture": {

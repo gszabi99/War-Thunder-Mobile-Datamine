@@ -52022,3 +52022,12 @@ PowerVR BXM-8-256
 showGuidanceLockTracker
 f3d_1_black_c*
 allowSelectFarAwayUnit
+Huawei
+VK_KHR_ray_tracing_pipeline
+VK_KHR_ray_query
+VK_KHR_acceleration_structure
+Maleoon 935
+walkerInvulnerabilityTime
+walkerInvulnerabilityRadius
+walkerInvulnerabilityResetByZone
+wZMult
