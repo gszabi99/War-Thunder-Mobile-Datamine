@@ -67,10 +67,13 @@ let isHudVisibilityOptActive = Watched(true)
 let isPlayersListOptActive = Watched(false)
 
 let replayMplayersListSorted = Computed(function() {
+  let players = replayMplayersList.get()
+  let localPlayer = players.findvalue(@(p) p.isLocal)
+  let localTeam = localPlayer?.team ?? 1
   let alliesTeam = []
   let enemiesTeam = []
-  foreach (player in replayMplayersList.get())
-    if (player.team == 1)
+  foreach (player in players)
+    if (player.team == localTeam)
       alliesTeam.append(player)
     else
       enemiesTeam.append(player)

@@ -133,10 +133,12 @@ function refreshReplaysList() {
     let alliesTeam = []
     let enemiesTeam = []
     let playersBlkList = commentsBlk == null ? [] : commentsBlk % "player"
+    let authorUserId = (commentsBlk?.authorUserId ?? "0").tointeger()
     let status = commentsBlk == null ? "" : commentsBlk % "status"
     let locName = getMissionLocName(replayInfo, "locName")
     let isNotAvailable = replay.isVersionMismatch || replay.corrupted
 
+    let mplayers = []
     foreach (b in playersBlkList) {
       let userId = (b?.userId ?? "0").tointeger()
       if (userId == 0)
@@ -159,11 +161,16 @@ function refreshReplaysList() {
       if (mplayer?.isBot && mplayer?.name.indexof("/") != null)
         mplayer.name = loc(mplayer.name)
 
-      if (mplayer.team == 1)
+      mplayers.append(mplayer)
+    }
+
+    let localPlayer = mplayers.findvalue(@(p) p.userId == authorUserId)
+    let localTeam = localPlayer?.team ?? 1
+    foreach (mplayer in mplayers)
+      if (mplayer.team == localTeam)
         alliesTeam.append(mplayer)
       else
         enemiesTeam.append(mplayer)
-    }
 
     res.append({
       path = replay.path

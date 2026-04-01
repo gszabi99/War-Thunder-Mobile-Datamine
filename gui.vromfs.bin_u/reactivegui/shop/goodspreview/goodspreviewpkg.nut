@@ -289,7 +289,7 @@ let abTestDiscountViewCfg = {
 let purchaseButtonBlock = @(animStartTime, count = 1, ovr = {}) function() {
   let res = {
     watch = [previewGoods, abTests, discountsToApply]
-    size = [defButtonMinWidth, SIZE_TO_CONTENT]
+    size = [ovr?.size[0] ?? defButtonMinWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
   }

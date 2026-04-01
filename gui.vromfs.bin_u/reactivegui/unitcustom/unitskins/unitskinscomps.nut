@@ -8,6 +8,8 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
+let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { G_SKIN, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 
 let { unseenSkins, markAllUnitSkinsSeen, markSkinSeen } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
@@ -41,7 +43,7 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { chooseBetterGoods } = require("%rGui/shop/goodsUtils.nut")
+let { chooseBetterGoods, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
 
 
 let appsFlyerSaveId = "DefaultSkinWasReplaced"
@@ -344,7 +346,11 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
 
 let receiveSkinInfo = @(unitName, skinName) function() {
   let res = {
-    watch = [eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods, shopGoods]
+    watch = [
+      eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock,
+      bpPurchasedUnlock, battlePassGoods, shopGoods, goodsLimitReset, dayOffset, serverTimeDay,
+      purchasesCount, todayPurchasesCount
+    ]
     padding = [0, saBorders[0], 0, 0]
     hplace = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
@@ -363,10 +369,20 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 
   let goodsByLootboxId = {}
   foreach (goods in shopGoods.get()) {
-    let { rewards } = goods
-    foreach (r in rewards)
-      if (r.gType == G_LOOTBOX)
+    let { id, rewards, isHidden = false, limit = 0, dailyLimit = 0, showAsOffer = false } = goods
+    if (isHidden && !showAsOffer)
+      continue
+    if (!canPurchaseGoods(id, limit, dailyLimit, goodsLimitReset.get(), dayOffset.get(),
+          serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get()))
+      continue
+    foreach (r in rewards) {
+      if (r.gType != G_LOOTBOX)
+        continue
+      if (!isHidden)
         goodsByLootboxId[r.id] <- (r.id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[r.id], goods)
+      else if (showAsOffer && r.id not in goodsByLootboxId)
+        goodsByLootboxId[r.id] <- goods
+    }
   }
 
   let lootbox = findLootboxWithReward(goodsByLootboxId.keys().extend(eventLootboxesRaw.get().values()),

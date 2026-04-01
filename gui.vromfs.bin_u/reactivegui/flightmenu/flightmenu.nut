@@ -9,7 +9,7 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { battleCampaign, hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -27,11 +27,12 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON, PRIMARY, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { isUnitDelayed, isUnitAlive, isPlayingReplay, unitType } = require("%rGui/hudState.nut")
-let { respawnSlots, canUseSpare, isBailoutDeserter } = require("%rGui/respawn/respawnState.nut")
+let { respawnSlots, canUseSpare, isBailoutDeserter, spawnScoreCosts } = require("%rGui/respawn/respawnState.nut")
 let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { isAircraftControlByGyro } = require("%rGui/options/options/airControlsOptions.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
 
 
 let LEAVE_BATTLE_MSG_UID = "leaveBattleMsgUID"
@@ -45,9 +46,16 @@ let deserterLockStart = Watched(0)
 let spawnInfo = Watched(null)
 let canDeserter = Computed(function() {
   let { isAlive = false, hasSpawns = false } = spawnInfo.get()
-  return isAlive
-    || isBailoutDeserter.get()
-    || (hasSpawns && (null != respawnSlots.get().findvalue(@(s) s.canSpawn && !s.isSpawnBySpare)))
+  if (isAlive || isBailoutDeserter.get())
+    return true
+
+  let { useSpawnScore = false } = hudCustomRules.get()
+  if (!useSpawnScore)
+    return hasSpawns && (null != respawnSlots.get().findvalue(@(s) s.canSpawn && !s.isSpawnBySpare))
+
+  let costs = spawnScoreCosts.get()
+  return null != respawnSlots.get()
+    .findvalue(@(s) s.canSpawn && !s.isSpawnBySpare && (costs?[s.name] ?? 0) <= mySpawnScore.get())
 })
 register_es("on_change_lastBailoutTime", {
     [["onInit", "onChange"]] = function(_, comp) {
