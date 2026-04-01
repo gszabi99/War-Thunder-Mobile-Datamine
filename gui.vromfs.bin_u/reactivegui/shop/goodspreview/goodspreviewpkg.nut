@@ -174,14 +174,18 @@ let mkHighlight = @(duration, start, appear) {
 }
 
 let spinnerBlockOvr = {
-  size = [SIZE_TO_CONTENT, defButtonHeight]
+  size = [defButtonMinWidth, defButtonHeight]
   minWidth = defButtonMinWidth
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
 }
 
-let purchStyle = buttonStyles.PURCHASE.__merge({ hotkeys = ["^J:X"] }, {childOvr = fontMedium})
-function mkPurchButton(content, onClick, animStartTime) {
+let purchStyle = buttonStyles.PURCHASE.__merge({
+  hotkeys = ["^J:X"],
+  childOvr = fontMedium
+  ovr = { size = [defButtonMinWidth, defButtonHeight] }
+})
+function mkPurchButton(content, onClick, animStartTime, ovr = {}) {
   let start = animStartTime + aTimePriceMove + aTimePriceStrike
   let animations = opacityAnims(aTimeFinalPriceShow, start)
     .append(
@@ -197,11 +201,12 @@ function mkPurchButton(content, onClick, animStartTime) {
             {
               hotkeyBlockOvr = { transform = {}, animations }
               childOvr = { transform = {}, animations }
+              ovr
             })),
         mkHighlight(aTimeFinalPriceGlow, start, 0.1)
       ]
     },
-    spinnerBlockOvr)
+    spinnerBlockOvr.__update(ovr))
 }
 
 function unifyBasePrice(basePrice, finalPrice) {
@@ -210,7 +215,7 @@ function unifyBasePrice(basePrice, finalPrice) {
   return (100 * basePrice).tointeger() % 100 == 0 ? basePrice - 0.01 : basePrice
 }
 
-function getPriceInfo(goods, discountsToApplyV) {
+function getPriceInfo(goods, discountsToApplyV, count = 1) {
   if (goods == null)
     return null
   if (goods.price.price > 0) {
@@ -220,11 +225,11 @@ function getPriceInfo(goods, discountsToApplyV) {
     return {
       discountInPercent
       priceCtor = mkCurrencyComp
-      basePrice
-      finalPrice = price.price
+      basePrice = basePrice * count
+      finalPrice = price.price * count
       currencyId = price.currencyId
       function buy() {
-        purchaseGoods(goods.id)
+        purchaseGoods(goods.id, "", null, count)
         unhideModals(HIDE_PREVIEW_MODALS_ID)
       }
     }
@@ -281,14 +286,15 @@ let abTestDiscountViewCfg = {
   }
 }
 
-let purchaseButtonBlock = @(animStartTime) function() {
+let purchaseButtonBlock = @(animStartTime, count = 1, ovr = {}) function() {
   let res = {
     watch = [previewGoods, abTests, discountsToApply]
+    size = [defButtonMinWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
   }
   let goods = previewGoods.get()
-  let info = getPriceInfo(goods, discountsToApply.get())
+  let info = getPriceInfo(goods, discountsToApply.get(), count)
   if (info == null)
     return res
 
@@ -311,9 +317,20 @@ let purchaseButtonBlock = @(animStartTime) function() {
               duration = aTimeDiscountTagScale, delay = animStartTime + aTimePriceMove + aTimePriceStrike, trigger = ANIM_SKIP }
           )})
       mkPurchButton(
-        priceCtor(finalPrice, currencyId, currencyStyle),
+        {
+          flow = FLOW_VERTICAL
+          children = [
+            count == 1 ? null
+              : {
+                  rendObj = ROBJ_TEXT
+                  hplace = ALIGN_CENTER
+                  text = utf8ToUpper(loc("events/nRewards", { n = count }))
+                }.__update(fontTinyAccentedShaded)
+            priceCtor(finalPrice, currencyId, currencyStyle)
+          ]
+        },
         withBqEvent(goods, buy),
-        animStartTime)
+        animStartTime, ovr)
     ]
   })
 }
@@ -467,12 +484,12 @@ let mkTimeBlockCentered = @(animStartTime) doubleSideGradient.__merge({
   animations = opacityAnims(aTimeTime, animStartTime, "price")
 })
 
-let mkPriceBlockCentered = @(animStartTime) doubleSideGradient.__merge({
+let mkPriceBlockCentered = @(animStartTime, count = 1, ovr = {}) {
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = purchaseButtonBlock(animStartTime + aTimeTime)
+  children = purchaseButtonBlock(animStartTime + aTimeTime, count, ovr)
   animations = opacityAnims(aTimeTime, animStartTime, "price")
-})
+}
 
 let mkItemBlink = @(start) {
   size = flex()

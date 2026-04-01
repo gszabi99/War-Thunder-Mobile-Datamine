@@ -11,6 +11,9 @@ return {
     "a-26b_prem": {
       "": "usa_f_82e"
     },
+    "a2d": {
+      "": "ussr_i_15_1935_moscow"
+    },
     "a5m4": {
       "": "usa_p_40c_metal",
       "upgraded": "jap_a7m2"
@@ -794,6 +797,9 @@ return {
       "": "usa_f8f1b_bearcat",
       "upgraded": "usa_am_1_mauler"
     },
+    "fn_battleship_vainamoinen": {
+      "": "camo_3gray_colors_geometry"
+    },
     "fr_1_fireball": {
       "": "usa_f8f1b_bearcat"
     },
@@ -1197,6 +1203,9 @@ return {
     },
     "germ_battlecruiser_hindenburg": {
       "upgraded": "camo_3gray_colors_geometry"
+    },
+    "germ_battlecruiser_mackensen_class": {
+      "": "camo_blackgreen_spots"
     },
     "germ_battlecruiser_von_der_tann": {
       "": "camo_blackyellow_spots",
@@ -4790,6 +4799,13 @@ return {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
     },
+    "ussr_object_279": {
+      "": "ussr_camo_green",
+      "fiction_1002": "ussr_camo_object_279_1002",
+      "fiction_bulldog": "ussr_camo_object_279_bulldog",
+      "fiction_trixter": "ussr_camo_object_279_trixter",
+      "fiction_victor": "ussr_camo_object_279_victor"
+    },
     "ussr_object_685": {
       "": "ussr_camo_green",
       "desert": "ussr_modern_desert",
@@ -5100,6 +5116,10 @@ return {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_desert_sand_green_brown"
     },
+    "ussr_t_80ud": {
+      "": "ussr_camo_winter_white_olive",
+      "forest": "ussr_modern_green"
+    },
     "ussr_t_80uk": {
       "": "ussr_camo_green",
       "desert": "ussr_modern_desert"
@@ -5265,6 +5285,10 @@ return {
     },
     "xf5f": {
       "": "usa_tbd_1_1938"
+    },
+    "xf5u_1": {
+      "": "usa_xf5u_1_pancake_c",
+      "blue": "usa_f8f1b_bearcat"
     },
     "xp-50": {
       "": "usa_pby_5a_early_a"

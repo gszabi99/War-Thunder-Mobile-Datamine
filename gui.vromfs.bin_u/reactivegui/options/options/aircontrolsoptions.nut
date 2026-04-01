@@ -148,7 +148,17 @@ let controlByGyroAimMode = {
   value = currentControlByGyroAimMode
   onChangeValue = @(v) sendChange("aircraft_gyro_aim_mode", v)
   list = Computed(@() isOptAvailableControlByGyroAimMode.get() ? currentControlByGyroAimModeList : [])
-  valToString = airCtrlTypeToString
+  mkContentCtor = @(v, _, _) {
+    size = [flex(), hdpx(103)]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    color = 0xFFFFFFFF
+    margin = [0, hdpx(10)]
+    lineSpacing = -hdpx(5)
+    text = loc($"options/{v}")
+  }.__update(fontTinyAccented)
 }
 
 let isOptAvailableControlByGyroDirectControl = Computed(@() currentAircraftCtrlType.get() != "mouse_aim")

@@ -13,7 +13,10 @@
     "^.*water_pipes_heating_lower.*$": {},
     "^.*water_pipes_heating_angle_lower.*$": {},
     "^.*wood_fence.*$": {},
-    "^.*railroad_crane_.*$": {}
+    "^.*railroad_crane_.*$": {},
+    "^br_pipe_construction_a$": {},
+    "^br_pipe_construction_f$": {},
+    "^br_pipe_construction_i$": {}
   },
   "filter_exclude": {
     "^.*af_conveyor_front.*$": {},

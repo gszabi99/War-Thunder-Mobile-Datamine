@@ -213,7 +213,7 @@ let actionButtons = @() {
     slotLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
           slotLevel.get() + 1,
-          @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"] })
+          @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"], color = 0xFF65BC82})
     curCampSlotExp.get() <= 0 || slotLevelsToMax.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnBoostLevel")),
           openSlotExpWnd,

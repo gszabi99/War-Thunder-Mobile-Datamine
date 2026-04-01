@@ -7,6 +7,7 @@ let { BAN_USER_INFINITE_PENALTY } = require("penalty")
 let { format } =  require("string")
 let { get_cur_circuit_name } = require("app")
 let { APP_ID, CONTACTS_GAME_ID } = require("%appGlobals/gameIdentifiers.nut")
+let { addPublisherToHeaders } = require("%appGlobals/curCircuitOverride.nut")
 let { getSysInfo } = require("%scripts/login/sysInfo.nut")
 let { applyRights } = require("%scripts/login/applyRights.nut")
 let { rightsError } = require("%appGlobals/permissions/userRights.nut")
@@ -96,7 +97,7 @@ registerHandler("cln_cs_login", @(res) onlyActiveStageCb(onLoginResult)(res))
 
 let start = @() request("cln_cs_login",
   {
-    headers = { token = getPlayerTokenGlobal(), appid = APP_ID },
+    headers = addPublisherToHeaders({ token = getPlayerTokenGlobal(), appid = APP_ID }),
     data = {
       game = CONTACTS_GAME_ID
       sysinfo = getSysInfo()

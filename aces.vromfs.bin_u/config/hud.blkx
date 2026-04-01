@@ -487,7 +487,7 @@
     "bomber_outline": "objective_bomber_outline.svg:36:36:K",
     "helicopter": "objective_helicopter.svg:36:36:K",
     "helicopter_outline": "objective_helicopter_outline.svg:36:36:K",
-    "april_event_unit": "icon_hud_base_new_year.svg:48:48:K",
+    "april_event_unit": "mech_or_tank.svg:48:48:K",
     "exoskeleton": "icon_hud_gift.svg:30:30:K",
     "truck": "objective_truck",
     "mark": "objective_mark.svg:21:21:K",
@@ -853,7 +853,7 @@
     "airfieldLineBorderWidth": 1.0,
     "airfieldLineMinLength": 12.0,
     "specialIcons": {
-      "iconNYPresent": "icon_hud_gift.svg:60:60:K",
+      "iconWalker": "def_walker_radar.svg:12:10:K",
       "iconNYtree": "icon_hud_base_new_year.svg:72:72:K"
     },
     "tankHudIcons": {

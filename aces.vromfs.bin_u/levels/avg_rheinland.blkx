@@ -61,7 +61,7 @@
     4096.0,
     4096.0
   ],
-  "customLevelMap": "avg_poland_tankmap*",
+  "customLevelMap": "avg_rheinland_tankmap*",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "water_level": 0.0,

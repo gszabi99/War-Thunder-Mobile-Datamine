@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
-let { get_local_mplayer } = require("mission")
+let { resetTimeout } = require("dagor.workcycle")
 let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
@@ -10,6 +9,7 @@ let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatist
 let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { hudScoreTank } = require("%rGui/options/options/tankControlsOptions.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
+let { localMPlayer, addMPlayerUpdater, removeMPlayerUpdater } = require("%rGui/hud/localMPlayer.nut")
 
 let delayForUpdatePlace = 0.1
 let countImageSize = evenPx(60)
@@ -17,7 +17,6 @@ let counterBgSize = evenPx(40)
 let counterOffsets = hdpx(8)
 let blinkTime = 0.3
 let scoreTrigger = {}
-let localMPlayer = Watched(null)
 let defValueFont = fontVeryTiny
 
 let icons = {
@@ -48,6 +47,7 @@ function getViewScoreKey(campaign, unitClass, scoreTank) {
 let curUnitClass = Computed(@() battleUnitClasses.get()?[playerUnitName.get()] ?? "")
 let viewScoreKey = Computed(@() getViewScoreKey(getCampaignPresentation(battleCampaign.get()).campaign,
   curUnitClass.get(), hudScoreTank.get()))
+let needLocalMPlayerForScore = Computed(@() viewScoreKey.get() != "score" && viewScoreKey.get() != "damage")
 
 let myPlace = Computed(function() {
   let myValue = localPlayerDamageStats.get() == null ? 0 : getScoreFull(localPlayerDamageStats.get())
@@ -136,11 +136,6 @@ function mkMyPlaceUi(scale) {
   }
 }
 
-function updateLocalMPlayerForScore() {
-  if (viewScoreKey.get() != "score" && viewScoreKey.get() != "damage")
-    localMPlayer.set(get_local_mplayer())
-}
-
 let mkMyScoresUi = @(scale) function() {
   let res = { watch = [viewScoreKey, isScoreVisible] }
   if (!isScoreVisible.get())
@@ -158,11 +153,8 @@ let mkMyScoresUi = @(scale) function() {
     children = mkImageWithCount(score, icons?[key] ?? icons.score, scale, key)
       .__update({
         key = viewScoreKey
-        function onAttach() {
-          updateLocalMPlayerForScore()
-          setInterval(1.0, updateLocalMPlayerForScore)
-        }
-        onDetach = @() clearTimer(updateLocalMPlayerForScore)
+        onAttach = @() addMPlayerUpdater("myScores", needLocalMPlayerForScore)
+        onDetach = @() removeMPlayerUpdater("myScores")
         transform = {}
         animations = [{
           prop = AnimProp.scale, from = [1.0, 1.0], to = [2, 2], easing = Blink

@@ -4,6 +4,7 @@ let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
+let { getCampaignStatsId, purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -18,7 +19,10 @@ let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
 let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
 let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
-let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
+let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+
 let wndHeaderHeight = hdpx(110)
 let contentGap = hdpx(30)
 let wndContentHeight = saSize[1] - wndHeaderHeight - contentGap
@@ -28,6 +32,7 @@ let rewardsBlockWidth = saSize[0] - hdpx(500)
 let aTimeHeaderStart = 0.5
 let aTimePriceStart = aTimeHeaderStart + 0.3
 
+let countPurchases = 10
 let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
 let lootbox = Computed(@(prev) prevIfEqual(prev,
   serverConfigs.get()?.lootboxesCfg[
@@ -67,13 +72,32 @@ let headerPanel = {
         header
         @() {
           watch = [previewGoods, schRewards]
-          children = mkGiftSchRewardBtn(schRewards.get()?[$"gift_{previewGoods.get()?.meta.campaign}_goods_preview"],
+          children = mkGiftSchRewardBtn(
+            schRewards.get()?[$"gift_{getCampaignStatsId(previewGoods.get()?.meta.campaign)}_goods_preview"],
             aTimeHeaderStart)
         }
       ]
     }
     balanceButtons
   ]
+}
+
+function canBuyNGoods(goods, purchCount, todayPurchCount, dOffset, servTimeDay) {
+  let { id, limit = 0, dailyLimit = 0 } = goods
+  if (limit > 0 && limit <= (purchCount?[id].count ?? 0) + countPurchases)
+    return false
+  if (dailyLimit > 0) {
+    let { lastTime = 0, count = 0 } = todayPurchCount?[id]
+    let today = getDay(lastTime, dOffset) == servTimeDay ? count : 0
+    if (dailyLimit <= (today + countPurchases))
+      return false
+  }
+  return true
+}
+
+let btnOvr = {
+  size = [hdpx(300), defButtonHeight]
+  minWidth = hdpx(300)
 }
 
 let pannableArea = verticalPannableAreaCtor(wndContentHeight + contentGradientSize[0] + contentGradientSize[1],
@@ -95,7 +119,7 @@ let content = @() {
       ]
     }
     @() {
-      watch = [lootbox, lootboxAmount]
+      watch = [lootbox, lootboxAmount, purchasesCount, todayPurchasesCount, dayOffset, serverTimeDay, previewGoods]
       size = flex()
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
@@ -108,7 +132,19 @@ let content = @() {
             { size = const [0, hdpx(10)] }
             mkTimeBlockCentered(aTimePriceStart)
             { size = const [0, hdpx(10)] }
-            mkPriceBlockCentered(aTimePriceStart)
+            doubleSideGradient.__merge({
+              pos = [doubleSideGradientPaddingX, 0]
+              flow = FLOW_HORIZONTAL
+              gap = hdpx(20)
+              hplace = ALIGN_RIGHT
+              children = [
+                mkPriceBlockCentered(aTimePriceStart, 1, btnOvr)
+                  !canBuyNGoods(previewGoods.get(), purchasesCount.get(), todayPurchasesCount.get(),
+                      dayOffset.get(), serverTimeDay.get())
+                    ? null
+                    : mkPriceBlockCentered(aTimePriceStart + 0.3, countPurchases, btnOvr)
+              ]
+            })
           ]
     }
   ]

@@ -20,7 +20,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report,
-  get_purchases_list, userstat_start_personal_season
+  get_purchases_list, userstat_start_personal_season, add_unit_skin
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -241,6 +241,8 @@ register_command(@()
     !mainHangarUnit.get()?.isUpgraded ? "consolePrintResult"
       : { id = "downgradeUnit", name = mainHangarUnitName.get() })
   "meta.remove_all_skins_for_hangar_unit")
+register_command(@(skinName) add_unit_skin(mainHangarUnitName.get(), skinName, "consolePrintResult"),
+  "meta.add_unit_skin")
 register_command(@() add_all_decals("consolePrintResult"), "meta.add_all_decals")
 register_command(@(id) add_decal_by_name(id, "consolePrintResult"), "meta.add_decal_by_name")
 register_command(@() remove_all_decals("consolePrintResult"), "meta.remove_all_decals")

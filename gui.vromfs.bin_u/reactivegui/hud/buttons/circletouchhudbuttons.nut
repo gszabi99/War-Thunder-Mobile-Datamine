@@ -964,6 +964,64 @@ let mkCircleFireworkBtn = @(aType) function(actionItem, scale) {
   }
 }
 
+let primStateFlagsWalker = Watched(0)
+let primGroupWalker = ElemGroup()
+let mkCircleWalkerPrimaryGun = @(aType) function(actionItem, scale, key = "btn_weapon_primary", countCtor = mkCountTextLeft) {
+  let isDisabled = mkIsControlDisabled("ID_FIRE_WALKER")
+  let isOnCd = Computed(@() actionItemsInCd.get()?[aType] ?? false)
+  let bgSize = scaleEven(bigButtonSize, scale)
+  let imgSize = scaleEven(bigButtonImgSize, scale)
+  return function() {
+    let isAvailable = (isOnCd.get() || isAvailableActionItem(actionItem)) && !isDisabled.get()
+    let { count, countEx, isBulletBelt = false, isContinuous = false } = actionItem
+    let isWaitForAim = !(actionItem?.aimReady ?? true)
+    let isWaitToShoot = !allowShoot.get()
+    let isDisabledColor = !isAvailable || isWaitToShoot || isOnCd.get()
+    let color = isDisabledColor ? disabledColor : hudWhiteColor
+    let bgColor = isDisabledColor ? hudLightBlackColor : hudTranslucentBlackColor
+    let needContinuous = isBulletBelt || isContinuous
+    let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_main_weapon_fire.svg"
+    function onTouchBegin() {
+      if (isWaitForAim && isWaitToShoot)
+        addCommonHint(loc("hints/wait_for_aiming"))
+      else if (!isOnCd.get() && isAvailableActionItem(actionItem)) {
+        if (needContinuous)
+          useShortcutOn("ID_FIRE_WALKER")
+        else
+          useShortcut("ID_FIRE_WALKER")
+      }
+    }
+
+    let res = needContinuous
+      ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_WALKER"), "ID_FIRE_WALKER", primStateFlagsWalker)
+          .__update({ behavior = TouchAreaOutButton })
+      : {
+          behavior = Behaviors.Button
+          cameraControl = true
+          onElemState = @(v) primStateFlagsWalker.set(v)
+          hotkeys = mkGamepadHotkey("ID_FIRE_WALKER")
+          onClick = onTouchBegin
+        }
+
+    return res.__update({ 
+      watch = [allowShoot, isDisabled, isOnCd]
+      key
+      size = [bgSize, bgSize]
+      group = primGroupWalker
+      children = [
+        mkBtnBg(bgSize, bgColor)
+        mkCircleProgressBg(bgSize, actionItem)
+        mkWeaponBtnBorder(bgSize, isAvailable, primStateFlagsWalker)
+        mkBtnImage(imgSize, image, color)
+        count < 0 ? null : countCtor(isBulletBelt ? $"{count}/{countEx}" : count, color, scale)
+        isWaitForAim ? mkWaitForAimIcon(scale) : null
+        mkCircleGlare(bgSize, actionItem?.id)
+        mkGamepadShortcutImage("ID_FIRE_WALKER", defShortcutOvr, scale)
+      ]
+    })
+  }
+}
+
 return {
   mkCircleTankPrimaryGun
   mkCircleGroundMachineGun
@@ -978,6 +1036,7 @@ return {
   mkCirclePlaneCourseGunsSingle
   mkCirclePlaneTurretsGuns
   mkCircleWeaponryItemCtor
+  mkCircleWalkerPrimaryGun
 
   mkCircleBtnEditView
   mkCircleBtnPlaneEditView

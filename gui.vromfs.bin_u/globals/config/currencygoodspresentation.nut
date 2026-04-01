@@ -1,6 +1,6 @@
 let { max } = require("math")
 let { getBaseCurrency, getSeasonStr, getCurrencyBigIcon } = require("currencyPresentation.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND, APRILMAPPIECE, APRILDOUBLON,
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILINTEL, APRILMAPPIECE, APRILDOUBLON,
   BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, HALLOWEENBOND, VALENTINEBOND, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND
 } = require("%appGlobals/currenciesState.nut")
 
@@ -34,10 +34,10 @@ let presentations = {
     { img = "warbond_goods_christmas_02.avif", amountAtLeast = 500 }
     { img = "warbond_goods_christmas_03.avif", amountAtLeast = 1500 }
   ],
-  [APRILBOND] = [
-    { img = "warbond_april_01.avif", amountAtLeast = 0 }
-    { img = "warbond_april_02.avif", amountAtLeast = 600 }
-    { img = "warbond_april_03.avif", amountAtLeast = 3000 }
+  [APRILINTEL] = [
+    { img = "aprilintel_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "aprilintel_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "aprilintel_goods_2026_03.avif", amountAtLeast = 1500 }
   ],
   [APRILMAPPIECE] = [
     { img = "aprilmappiece_goods_01.avif", amountAtLeast = 0 }

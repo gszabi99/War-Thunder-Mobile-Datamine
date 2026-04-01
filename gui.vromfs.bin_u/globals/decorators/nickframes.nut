@@ -184,6 +184,7 @@ let nickFrames = {
   skake_2 = @(n) $"✦{n}✧"
   fern = @(n) $"✨{n}✩"
   bungalow = @(n) $"✪{n}✫"
+  april_event_2026_decorator = @(n) $"⋯{n}⋯"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

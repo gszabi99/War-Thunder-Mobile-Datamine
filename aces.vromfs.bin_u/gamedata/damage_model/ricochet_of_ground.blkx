@@ -123,6 +123,56 @@
       ]
     }
   },
+  "gauss_ground": {
+    "t1": {
+      "caliberToArmor": 1.0,
+      "ricochetProbability0deg": [
+        0.0,
+        1.0
+      ],
+      "ricochetProbability18deg": [
+        18.0,
+        1.0
+      ],
+      "ricochetProbability20deg": [
+        20.0,
+        0.5
+      ],
+      "ricochetProbability24deg": [
+        24.0,
+        0.0
+      ],
+      "ricochetProbability90deg": [
+        90.0,
+        0.0
+      ]
+    }
+  },
+  "laser_ground": {
+    "t1": {
+      "caliberToArmor": 1.0,
+      "ricochetProbability0deg": [
+        0.0,
+        0.0
+      ],
+      "ricochetProbability10deg": [
+        10.0,
+        0.0
+      ],
+      "ricochetProbability14deg": [
+        14.0,
+        0.0
+      ],
+      "ricochetProbability15deg": [
+        15.0,
+        0.0
+      ],
+      "ricochetProbability90deg": [
+        90.0,
+        0.0
+      ]
+    }
+  },
   "apds_fs_ground": {
     "t1": {
       "caliberToArmor": 1.0,

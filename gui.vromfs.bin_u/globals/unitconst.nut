@@ -7,9 +7,15 @@ let unitTypes = {
   BOAT = "boat"
   SUBMARINE = "submarine"
   SAILBOAT = "sailboat"
+  WALKER = "walker"
 }
 
-let bitsOrder = ["AIR", "TANK", "SHIP", "HELICOPTER", "BOAT", "SUBMARINE", "SAILBOAT"]
+let eventUnitTypes = {
+  event_april_2025 = unitTypes.SAILBOAT
+  april_event_2026 = unitTypes.WALKER
+}
+
+let bitsOrder = ["AIR", "TANK", "SHIP", "HELICOPTER", "BOAT", "SUBMARINE", "SAILBOAT", "WALKER"]
 let bits = {}
 let unitTypeToBitTbl = {}
 let bitToUnitTypeTbl = {}
@@ -34,6 +40,8 @@ function calcUnitTypeFromTags(tagsCfg) {
     return unitTypes.SHIP
   if ("tank" in tags)
     return unitTypes.TANK
+  if ("walker" in tags)
+    return unitTypes.WALKER
   if (tags?.type == "aircraft")
     return unitTypes.AIR
   return tags?.type ?? unitTypes.AIR
@@ -41,6 +49,7 @@ function calcUnitTypeFromTags(tagsCfg) {
 
 return freeze(unitTypes.__merge(bits, {
   ALL_UNIT_TYPE_MASK
+  eventUnitTypes
   unitTypeOrder = [unitTypes.SHIP, unitTypes.BOAT, unitTypes.SUBMARINE, unitTypes.AIR, unitTypes.HELICOPTER, unitTypes.TANK]
   unitTypeToBit = @(ut) unitTypeToBitTbl?[ut] ?? 0
   bitToUnitType = @(bit) bitToUnitTypeTbl?[bit] ?? ""

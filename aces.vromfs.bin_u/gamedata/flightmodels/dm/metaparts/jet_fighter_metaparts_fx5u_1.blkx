@@ -1,0 +1,26 @@
+{
+  "fuse_structure": {
+    "hpRel": 3.5,
+    "part": [
+      "fuse_dm",
+      "wing_r_dm",
+      "wing_l_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "kill": true
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 2.5,
+        "kill": true
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 2.5,
+        "kill": true
+      }
+    ]
+  }
+}

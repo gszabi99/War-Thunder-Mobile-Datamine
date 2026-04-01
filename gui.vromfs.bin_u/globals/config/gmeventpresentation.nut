@@ -25,6 +25,11 @@ let allPresentations = {
     bgMapImage = "ui/images/pirates/map_border_2.avif"
   }
 
+  april_event_2026 = {
+    image = "ui/gameuiskin#icon_event_april_2026.svg"
+    bgUnits = ["us_bulldog", "germ_trixter", "ussr_sht_1", "cn_victor"]
+  }
+
   anniversary_2025 = {
     image = "ui/gameuiskin#icon_event_anniversary_2025.svg"
     bgImage = "ui/images/event_bg_anniversary_2025.avif"

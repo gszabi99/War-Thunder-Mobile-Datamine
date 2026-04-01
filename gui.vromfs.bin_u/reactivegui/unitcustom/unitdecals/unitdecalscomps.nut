@@ -26,8 +26,8 @@ let isPictureSecondParamSupported = Picture.constructor.getfuncinfos().typecheck
 let mkDecalIcon = @(id, size = decalIconSize) {
   size
   rendObj = ROBJ_IMAGE
-  image = !isPictureSecondParamSupported
-    ? Picture($"!{getDecalImg(id)}*")
+  image = (id ?? "") == "" ? Picture($"ui/gameuiskin#icon_primary_attention.svg:{size}:P")
+    : !isPictureSecondParamSupported ? Picture($"!{getDecalImg(id)}*")
     : Picture($"!{getDecalImg(id)}*", {texFormat=TEXFMT_SRGB})
   keepAspect = true
 }
@@ -225,6 +225,7 @@ function mkDecalSlot(slot, selectedSlotId, editingDecalId, handleClick) {
 return {
   mkDecalCard
   decalCardWidth
+  decalIconSizeBig
   decalsGap
   commonBgColor
   decalsFooterHeight

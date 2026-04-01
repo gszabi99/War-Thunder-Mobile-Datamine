@@ -11,6 +11,7 @@ let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut"
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { updatePlayersByTeams, playersByTeam, startContinuousUpdate, stopContinuousUpdate
 } = require("%rGui/mpStatistics/playersByTeamState.nut")
+let { spawnScoreBalance } = require("%rGui/respawn/spawnScore.nut")
 
 
 let isAttached = Watched(false)
@@ -67,7 +68,6 @@ return bgShaded.__merge({
     {
       size = [saSize[0], SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
       children = [
         @() {
           watch = scoreBoardType
@@ -85,7 +85,13 @@ return bgShaded.__merge({
             cornerBackBtn
             wndTitle
           ]
-        }]
+        }
+        {
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_CENTER
+          children = spawnScoreBalance
+        }
+      ]
     }
     @() {
       watch = [playersByTeam, battleCampaign, isGtFFA, gameType, hudCustomRules]

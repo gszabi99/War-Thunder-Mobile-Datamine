@@ -12,8 +12,10 @@ let mkSingleImageLayers = @(image) [{
 }]
 
 let parseTime = @(timeRange) {
-  start = timeRange?.start == null ? 0 : parse_unix_time(timeRange.start) ?? 0,
-  end = timeRange?.end == null ? 0 : parse_unix_time(timeRange.end) ?? 0
+  start = typeof(timeRange?.start) == "string" ? parse_unix_time(timeRange.start) : timeRange?.start,
+  end = typeof(timeRange?.end) == "string" ? parse_unix_time(timeRange.end) : timeRange?.end,
+  season = timeRange?.season
+  seasonIdx = timeRange?.seasonIdx
 }
 
 
@@ -196,6 +198,13 @@ let screensList = {
     timeRange = {
       start = "2026-02-05T10:00"
       end = "2026-02-19T10:00"
+    }
+  }
+  april_event_2026 = {
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/images/event_bg_event_april_2026.avif")
+    timeRange = {
+      season = "event_april_fools_season"
     }
   }
   event_april_fools = {

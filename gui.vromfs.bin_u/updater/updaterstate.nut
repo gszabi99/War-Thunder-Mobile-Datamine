@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let logU = log_with_prefix("[UPDATER] ")
-let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 let { is_android, is_ios } = require("%sqstd/platform.nut")
+let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 
 
 let contentUpdater = (is_android || is_ios) ? require("contentUpdater") : require("dbgContentUpdater.nut")
@@ -30,6 +30,14 @@ let statusText = Computed(@() updaterError.get() != null ? loc($"updater/error/{
       getDownloadInfoText(totalSizeBytes.get(), progress.get().etaSec, progress.get().dspeed))
 )
 
+let errorNames = {}
+foreach(id, val in contentUpdater)
+  if (type(val) != "integer")
+    continue
+  else if (id.startswith("UPDATER_ERROR"))
+    errorNames[val] <- id
+let getErrorName = @(v) errorNames?[v] ?? v
+
 let updaterEvents = {
   [UPDATER_EVENT_STAGE]         = @(evt) updaterStage.set(evt.stage),
   [UPDATER_EVENT_DOWNLOAD_SIZE] = function (evt) {
@@ -47,7 +55,7 @@ let updaterEvents = {
     etaSec = evt.etaSec
     dspeed = evt.dspeed
   }),
-  [UPDATER_EVENT_ERROR]         = @(evt) updaterError.set(evt.error),
+  [UPDATER_EVENT_ERROR]         = @(evt) updaterError.set(getErrorName(evt.error)),
   [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg.set(true) : needRestartMsg.set(true),
 }
 
@@ -62,7 +70,7 @@ foreach(id, val in contentUpdater)
     stageNames[val] <- id
 
 updaterStage.subscribe(@(v) logU($"Stage change to {stageNames?[v] ?? v}"))
-updaterError.subscribe(@(v) logU($"Error: {v?.error}"))
+updaterError.subscribe(@(v) logU($"Error: {v}"))
 
 eventbus_subscribe("android.embedded.updater.event", function (evt) {
   let { eventType } = evt

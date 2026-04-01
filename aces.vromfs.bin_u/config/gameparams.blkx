@@ -40,7 +40,7 @@
   "sendInvulnerabilityEventToHitCam": true,
   "walkerInvulnerabilityTime": 20.0,
   "walkerInvulnerabilityRadius": 20.0,
-  "walkerInvulnerabilityResetByZone": false,
+  "walkerInvulnerabilityResetByZone": true,
   "suitInvulnerabilityTime": 10.0,
   "suitInvulnerabilityRadius": 100.0,
   "killDistFromBattleAreaForSuit": 50.0,
@@ -262,6 +262,10 @@
   "rocketShakeCamera": 0.2,
   "gunShakeCamera": 0.02,
   "cannonShakeCamera": 0.4,
+  "stepShakeCamera": [
+    1.5,
+    0.02
+  ],
   "autostartTime": 60.0,
   "autostartShowTime": 30.0,
   "autostartShowInColorTime": 10.0,
@@ -6809,6 +6813,37 @@
         "destroyedFxTtl": 5.0,
         "ricochetedFxTtl": 6.0
       }
+    },
+    "76mmLaser_blue": {
+      "halfSize": 80.0,
+      "distScaleStart": 10.0,
+      "distScaleEnd": 100.0,
+      "distScale": 2.0,
+      "radius": 0.13,
+      "hdrK": 90.0,
+      "minPixelSize": 2.0,
+      "color1": [
+        255,
+        150,
+        150,
+        220
+      ],
+      "color2": [
+        255,
+        0,
+        0,
+        220
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.13,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.15,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
+      }
     }
   },
   "tracerTrails": {
@@ -9646,6 +9681,10 @@
       34.0
     ],
     "tankCameraVRLimitDelay": 3.0,
+    "walkerCameraYLimits": [
+      -12.0,
+      75.0
+    ],
     "shipCameraYLimits": [
       -23.0,
       15.0
@@ -13526,6 +13565,18 @@
       "speed": 0.7,
       "completely": true
     },
+    "gun_a_gun_barrel": {
+      "speed": 0.9,
+      "completely": true
+    },
+    "gun_a_breech": {
+      "speed": 0.7,
+      "completely": true
+    },
+    "gun_a_cannon_breech": {
+      "speed": 0.7,
+      "completely": true
+    },
     "commander_panoramic_sight": {
       "my": "0.9",
       "completely": true
@@ -13579,6 +13630,12 @@
         "countermeasure",
         "antenna_target_tagging",
         "antenna_target_tagging",
+        "tr",
+        "ex_bm",
+        "ex_tr",
+        "gun_a",
+        "aw",
+        "gun_a_gun_barrel",
         {
           "name": "auxiliary_caliber_turret",
           "unit": "ship"
@@ -13614,6 +13671,14 @@
         {
           "name": "cannon_breech_",
           "useThicknessThrough": true
+        },
+        {
+          "name": "gun_a_breech_",
+          "useThicknessThrough": true
+        },
+        {
+          "name": "gun_a_cannon_breech_",
+          "useThicknessThrough": true
         }
       ]
     },
@@ -13637,6 +13702,8 @@
         "cannon_breech_",
         "fuel_tank_",
         "ammo_",
+        "gun_a_breech_",
+        "gun_a_cannon_breech_",
         "radiator_",
         "radio_station_",
         "sonar_",
@@ -16075,6 +16142,102 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "lav_ad"
+        },
+        {
+          "name": "suspension_r_01",
+          "modelNames": "object_1002"
+        },
+        {
+          "name": "suspension_r_02",
+          "modelNames": "object_1002"
+        },
+        {
+          "name": "suspension_r_03",
+          "modelNames": "object_1002"
+        },
+        {
+          "name": "suspension_l_01",
+          "modelNames": "object_1002"
+        },
+        {
+          "name": "suspension_l_02",
+          "modelNames": "object_1002"
+        },
+        {
+          "name": "suspension_l_03",
+          "modelNames": "object_1002"
+        },
+        {
+          "name": "suspension_r_01",
+          "modelNames": "ger_mbm_trixter"
+        },
+        {
+          "name": "suspension_r_02",
+          "modelNames": "ger_mbm_trixter"
+        },
+        {
+          "name": "suspension_r_03",
+          "modelNames": "ger_mbm_trixter"
+        },
+        {
+          "name": "suspension_l_01",
+          "modelNames": "ger_mbm_trixter"
+        },
+        {
+          "name": "suspension_l_02",
+          "modelNames": "ger_mbm_trixter"
+        },
+        {
+          "name": "suspension_l_03",
+          "modelNames": "ger_mbm_trixter"
+        },
+        {
+          "name": "suspension_r_01",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "suspension_r_02",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "suspension_r_03",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "suspension_l_01",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "suspension_l_02",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "suspension_l_03",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "suspension_r_01",
+          "modelNames": "ussr_mbm_victor"
+        },
+        {
+          "name": "suspension_r_02",
+          "modelNames": "ussr_mbm_victor"
+        },
+        {
+          "name": "suspension_r_03",
+          "modelNames": "ussr_mbm_victor"
+        },
+        {
+          "name": "suspension_l_01",
+          "modelNames": "ussr_mbm_victor"
+        },
+        {
+          "name": "suspension_l_02",
+          "modelNames": "ussr_mbm_victor"
+        },
+        {
+          "name": "suspension_l_03",
+          "modelNames": "ussr_mbm_victor"
         }
       ]
     },
@@ -16100,7 +16263,16 @@
     "outer": {
       "p": [
         "body_shield_",
-        "gun_mask_shield_"
+        "gun_mask_shield_",
+        "superstructure",
+        {
+          "name": "cannon_breech_03_dm",
+          "modelNames": "us_lbm_bulldog"
+        },
+        {
+          "name": "cannon_breech_04_dm",
+          "modelNames": "us_lbm_bulldog"
+        }
       ]
     },
     "inner": {
@@ -16340,6 +16512,15 @@
         {
           "name": "ex_era_turret_",
           "hideIfDead": true
+        },
+        {
+          "name": "gun_a_gun_barrel_dm"
+        },
+        {
+          "name": "gun_a_breech_"
+        },
+        {
+          "name": "gun_a_cannon_breech_"
         },
         {
           "name": "commander_panoramic_sight_dm"
@@ -17435,7 +17616,8 @@
         "gr_island_g",
         "gr_island_h",
         "gr_island_b_temple",
-        "gr_island_d_lighthouse"
+        "gr_island_d_lighthouse",
+        "zeppelin_whale"
       ]
     },
     "badLod1ForStaticShadow": {}

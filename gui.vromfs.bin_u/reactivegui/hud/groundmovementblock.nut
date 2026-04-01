@@ -3,12 +3,13 @@ from "%rGui/controls/shortcutConsts.nut" import *
 let { Point2 } = require("dagor.math")
 let { TouchScreenSteeringStick, TouchScreenGamepadStick } = require("wt.behaviors")
 let { setVirtualAxisValue } = require("controls")
-let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
+let { currentTankMoveCtrlType, currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 let { isStickActiveByStick, stickDelta } = require("%rGui/hud/stickState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { IsTracked } = require("%rGui/hud/tankState.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
-let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
+let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering, walker_throttle, walker_steering, walker_mouse_aim_x, walker_mouse_aim_y
+} = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { setMoveControlByArrows } = require("hudState")
 let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
 let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
@@ -31,6 +32,10 @@ let stickSize = shHud(11)
 let isTankMoveEnabled = Computed(@()
   isControlEnabled("gm_throttle", enabledControls.get(), isAllControlsEnabled.get())
   || isControlEnabled("gm_steering", enabledControls.get(), isAllControlsEnabled.get()))
+
+let isWalkerMoveEnabled = Computed(@()
+  isControlEnabled("walker_throttle", enabledControls.get(), isAllControlsEnabled.get())
+  || isControlEnabled("walker_steering", enabledControls.get(), isAllControlsEnabled.get()))
 
 let mkImgRotaion = @(size) {
   size = [size, size]
@@ -165,6 +170,7 @@ let moveStickBase = @(zoneSize, scale, touchStickAction, moveCtrlType) @() {
     setVirtualAxisValue("gm_brake_left", 0)
     setVirtualAxisValue("gm_brake_right", 0)
     setVirtualAxisValue("gm_steering", 0)
+    setVirtualAxisValue("walker_steering", 0)
     isStickActiveByStick.set(false)
     setMoveControlByArrows(true)
   }
@@ -191,6 +197,23 @@ function tankMoveStick(scale) {
   }
 }
 
+function walkerMoveStick(scale) {
+  let zoneSize = scaleEven(stickZoneSize, scale)
+  let touchStickAction = {
+    horizontal = "walker_steering"
+    vertical = "walker_throttle"
+  }
+  return @() {
+    watch = isWalkerMoveEnabled
+    size = [zoneSize, zoneSize]
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_LEFT
+    children = isWalkerMoveEnabled.get()
+      ? moveStickBase(zoneSize, scale, touchStickAction, currentWalkerMoveCtrlType)
+      : imgBg(scale)
+  }
+}
+
 function gamepadStick(scale) {
   let children = imgStick(scale)
   return function() {
@@ -209,7 +232,7 @@ function gamepadStick(scale) {
   }
 }
 
-let gamepadAxisListener = axisListener({
+let gamepadAxisListenerTank = axisListener({
   [gm_steering] = function(v) {
     if (isPlayingReplay.get())
         return
@@ -232,19 +255,47 @@ let gamepadAxisListener = axisListener({
   },
 })
 
+
+let gamepadAxisListenerWalker = axisListener({
+  [walker_steering] = function(v) {
+    if (isPlayingReplay.get())
+        return
+    stickDelta.set(Point2(-v, stickDelta.get().y))
+  },
+  [walker_throttle] = function(v) {
+    if (isPlayingReplay.get())
+      return
+    stickDelta.set(Point2(stickDelta.get().x, v))
+  },
+  [walker_mouse_aim_x] = function(v) {
+    if (isPlayingReplay.get())
+      return
+    setVirtualAxisValue("walker_mouse_aim_x", v)
+  },
+  [walker_mouse_aim_y] = function(v) {
+    if (isPlayingReplay.get())
+      return
+    setVirtualAxisValue("walker_mouse_aim_y", v)
+  },
+})
+
 let updateStickActive = @(delta) isStickActiveByStick.set(delta.lengthSq() > 0.04)
 
-let unitGamepadStick = @(scale, _) @(){
+let unitGamepadStick = @(scale, isTank) @(){
   key = {}
   watch = [isGamepad, isPieMenuActive]
   size = array(2, scaleEven(imgBgSize, scale))
 
   behavior = TouchScreenGamepadStick
-  touchStickAction = {
-      horizontal = "gm_steering"
-      vertical = "gm_throttle"
-    }
-
+  touchStickAction = isTank
+    ? {
+        horizontal = "gm_steering"
+        vertical = "gm_throttle"
+      }
+    : {
+        horizontal = "walker_steering"
+        vertical = "walker_throttle"
+      }
   deadZoneForTurnAround = 75
   deadZoneForStraightMove = 20
   valueAfterDeadZone = 0.34
@@ -272,7 +323,11 @@ let unitGamepadStick = @(scale, _) @(){
       children = fullImgBg(scale)
     }
     gamepadStick(scale)
-    isGamepad.get() && !isPieMenuActive.get() ? gamepadAxisListener : null
+    isGamepad.get() && !isPieMenuActive.get()
+     ? isTank
+       ? gamepadAxisListenerTank
+       : gamepadAxisListenerWalker
+     : null
   ]
 }
 
@@ -282,6 +337,14 @@ let tankGamepadMoveBlock = @(scale) @() {
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = isTankMoveEnabled.get() ? unitGamepadStick(scale, true) : null
+}
+
+let walkerGamepadMoveBlock = @(scale) @() {
+  watch = isWalkerMoveEnabled
+  size = array(2, scaleEven(stickZoneSize, scale))
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = isWalkerMoveEnabled.get() ? unitGamepadStick(scale, false) : null
 }
 
 let moveStickView = {
@@ -298,4 +361,6 @@ return {
   tankMoveStick
   tankGamepadMoveBlock
   moveStickView
+  walkerMoveStick
+  walkerGamepadMoveBlock
 }

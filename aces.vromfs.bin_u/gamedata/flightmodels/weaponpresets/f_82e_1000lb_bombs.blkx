@@ -1,6 +1,16 @@
 {
-  "Weapon": {
-    "slot": 3,
-    "preset": "1000lbs_x2"
-  }
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "hvar"
+    },
+    {
+      "slot": 3,
+      "preset": "1000lbs_x2"
+    },
+    {
+      "slot": 4,
+      "preset": "hvar"
+    }
+  ]
 }

@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign, purchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("%rGui/shop/platformGoods.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { PURCHASING, DELAYED } = require("%rGui/shop/goodsStates.nut")
@@ -18,9 +19,16 @@ let activeOffersByGoods = Computed(function() {
     let { showAsOffer = null } = g?.meta
     if (showAsOffer != "" && showAsOffer != campaign)
       return res
-    let { id, rewards } = g
-    if (purchasesCount.get()?[id])
+    let { id, rewards, limit, dailyLimit } = g
+    if (limit > 0 && limit <= (purchasesCount.get()?[id].count ?? 0))
       return res
+    if (dailyLimit > 0) {
+      let { lastTime = 0, count = 0 } = todayPurchasesCount.get()?[id]
+      let today = getDay(lastTime, dayOffset.get()) == serverTimeDay.get() ? count : 0
+      if (dailyLimit <= today)
+        return res
+    }
+
     let profile = servProfile.get()
     foreach(r in rewards)
       if (r.gType in unitRewardTypes

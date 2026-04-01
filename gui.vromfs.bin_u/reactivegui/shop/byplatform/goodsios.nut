@@ -107,7 +107,7 @@ foreach(id, val in billingModule)
     statusNames[val] <- id
 let getStatusName = @(status) statusNames?[status] ?? status
 
-lastInitStatus.subscribe(@(v) logG($"init status {v}"))
+lastInitStatus.subscribe(@(v) logG($"init status {getStatusName(v)}"))
 products.subscribe(@(v) logG($"available products: ", v.keys()))
 isAuthorized.subscribe(function(v) {
   if (v)

@@ -560,6 +560,11 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "impact_dust": {
+    "fx": "mech_steps_dust_small_cmps_fx",
+    "sfxPathStudio": "event/effects",
+    "sfxEvent": "impact_dust"
+  },
   "dust_ground_wave_dirt_med": {
     "fx": "dust_ground_wave_dirt_med_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -3887,6 +3892,15 @@
     "fx": "hit_tiny_dirt_he_cmps_fx",
     "sfxPathStudio": "event/explosions",
     "sfxEvent": "impact_aa"
+  },
+  "mech_lasergun_muzzle": {
+    "fx": "mech_lasergun_muzzle_cmps_fx"
+  },
+  "mech_railgun_muzzle": {
+    "fx": "mech_railgun_muzzle_cmps_fx"
+  },
+  "mech_hit_lasergun": {
+    "fx": "mech_hit_lasergun_cmps_fx"
   },
   "aerobatics_smoke_fxs": {
     "smoke_fx": [

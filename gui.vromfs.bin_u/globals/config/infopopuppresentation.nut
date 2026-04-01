@@ -27,6 +27,10 @@ let presentations = {
     image = "ui/images/event_bg_christmas_2024.avif"
     imageSize = [1200, 554]
   }
+  april_event_2026 = {
+    image = "ui/images/event_bg_event_april_2026.avif"
+    imageSize = [1200, 554]
+  }
   china_tanks_early_access = {
     image = "ui/images/tanks_china_tree_info.avif"
   }

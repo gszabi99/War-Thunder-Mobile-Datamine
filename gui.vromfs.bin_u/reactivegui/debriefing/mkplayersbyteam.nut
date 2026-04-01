@@ -25,15 +25,8 @@ function mkPlayersByTeam(debrData) {
     if (isBot)
       botDecorators = genBotDecorators(namePrepared)
 
-    local unitName = isSeparateSlots ? aircraftName : mainUnitName
-    if (isSeparateSlots) {
-      local maxMRank = units?[unitName].mRank ?? 0
-      foreach (uName, u in units)
-        if (maxMRank < (u?.mRank ?? 0)) {
-          unitName = uName
-          maxMRank = u?.mRank ?? 0
-        }
-    }
+    let unitName = isSeparateSlots ? aircraftName : mainUnitName
+
     let unit = units?[unitName]
     let { unitClass = "", mRank = null } = unit
     let isUnitCollectible = unit?.isCollectible ?? false

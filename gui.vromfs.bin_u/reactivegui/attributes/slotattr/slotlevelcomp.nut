@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
-let { mkProgressLevelBg, unitExpColor, slotExpColor, levelProgressBorderWidth,
-  levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
+let { mkProgressLevelBg, slotExpColor, levelProgressBorderWidth, levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
 
 
 let levelHolderSize = [evenPx(120), evenPx(40)]
@@ -66,7 +65,7 @@ function mkSlotLevelBlock(slot, levels, override = {}) {
         children = {
           size = [pw(100 * percent), flex()]
           rendObj = ROBJ_SOLID
-          color = unitExpColor
+          color = 0xFF65BC82
         }
       })
     ]

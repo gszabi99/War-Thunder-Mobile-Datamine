@@ -8,6 +8,7 @@ let config = {
   [SHIP] = require("%rGui/hudTuning/cfg/cfgHudShip.nut"),
   [SUBMARINE] = require("%rGui/hudTuning/cfg/cfgHudSubmarine.nut"),
   [SAILBOAT] = require("%rGui/hudTuning/cfg/cfgHudSailboat.nut"),
+  [WALKER] = require("%rGui/hudTuning/cfg/cfgHudWalker.nut"),
 }
 
 let reqFields = ["ctor", "defTransform", "editView"]

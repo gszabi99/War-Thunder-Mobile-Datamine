@@ -2,14 +2,16 @@ from "%globalsDarg/darg_library.nut" import *
 let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let dailyCounter = require("%appGlobals/pServer/dailyCounter.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { registerHandler, skip_offer } = require("%appGlobals/pServer/pServerApi.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { registerHandler, skip_offer, get_skip_offer_availability, skipOfferInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
 let { previewGoods, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { PRIMARY,COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { PRIMARY, COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 
 let iconSize = 2 * (defButtonHeight * 0.25).tointeger()
@@ -24,42 +26,38 @@ let ovrBtn = {
   hotkeys = ["^J:Y | Enter"]
 }
 
+let isAttached = Watched(false)
+let hasMoreOffer = Watched(false)
+let isMoreOfferActual = Watched(false)
+
 let needShowSkipButton = Computed(@() allow_subscriptions.get() && activeOffer.get()?.id == previewGoods.get()?.id)
 
 let leftSkipOfferCount = Computed(@() (serverConfigs.get()?.gameProfile.vipBonuses.offerSkips ?? 0)
   - (dailyCounter.get()?.offer_skip ?? 0))
 
-registerHandler("onSkipOffer", function(res) {
-  if(!activeOffer.get() && !res?.error)
-    openMsgBox({
-      text = loc("offer/skip/noOffers")
-      buttons = [
-        { id = "ok", styleId = "PRIMARY", isDefault = true }
-      ]})
+let canUpdateMoreOffer = keepref(Computed(@() needShowSkipButton.get()
+  && hasVip.get()
+  && leftSkipOfferCount.get() > 0
+  && isAttached.get()
+  && !isMoreOfferActual.get()
+  && !skipOfferInProgress.get()))
+
+let onClickGenNewOffer = @() openMsgBox({
+  text = loc("offer/genNewOffer", {count = leftSkipOfferCount.get()})
+  buttons = [
+    { id = "cancel", isCancel = true }
+    {
+      id = "apply"
+      styleId = "PRIMARY"
+      isDefault = true
+      cb = @() skip_offer(curCampaign.get(), "onSkipOffer")
+    }
+  ]
 })
 
-let onClickGenNewOffer = @() leftSkipOfferCount.get() < 1
-  ? openMsgBox({
-      text = loc("offer/skip/noOffersPerDay", { count = serverConfigs.get()?.gameProfile.vipBonuses.offerSkips ?? 0})
-      buttons = [
-        {
-          id = "ok"
-          styleId = "PRIMARY"
-          isDefault = true
-        }
-      ]
-  })
-  : openMsgBox({
-      text = loc("offer/genNewOffer", {count = leftSkipOfferCount.get()})
-      buttons = [
-        { id = "cancel", isCancel = true }
-        {
-          id = "apply"
-          styleId = "PRIMARY"
-          isDefault = true
-          cb = @() skip_offer(curCampaign.get(), "onSkipOffer")
-        }
-      ]
+let onClickNotActive = @() openMsgBox({ text = !hasMoreOffer.get()
+  ? loc("offer/skip/noOffers")
+  : loc("offer/skip/noOffersPerDay", { count = serverConfigs.get()?.gameProfile.vipBonuses.offerSkips ?? 0})
 })
 
 let onClickNotVip = @() openMsgBox({
@@ -73,6 +71,21 @@ let onClickNotVip = @() openMsgBox({
       cb = @() openSubsPreview("vip", "offer_skip")
     }
   ]
+})
+
+servProfile.subscribe(@(_) isMoreOfferActual.set(false))
+serverConfigs.subscribe(@(_) isMoreOfferActual.set(false))
+curCampaign.subscribe(@(_) isMoreOfferActual.set(false))
+canUpdateMoreOffer.subscribe(@(v) !v ? null
+  : get_skip_offer_availability(curCampaign.get(), "onGetSkipOfferAvailability"))
+
+registerHandler("onSkipOffer", @(res) (activeOffer.get() || res?.error) ? null
+  : openMsgBox({ text = loc("offer/skip/noOffers") }))
+registerHandler("onGetSkipOfferAvailability", function(res) {
+  if (res?.error)
+    return
+  isMoreOfferActual.set(true)
+  hasMoreOffer.set(res?.hasMoreOffer ?? false)
 })
 
 let skipsEnded = {
@@ -136,13 +149,24 @@ let contentCommon = @() {
 }
 
 let skipOfferBtn = @() {
-  watch = [hasVip, needShowSkipButton, leftSkipOfferCount]
+  watch = [hasVip, needShowSkipButton, leftSkipOfferCount, skipOfferInProgress, hasMoreOffer]
+  key = isAttached
   vplace = ALIGN_BOTTOM
+  onAttach = @() isAttached.set(true)
+  onDetach = @() isAttached.set(false)
   children = !needShowSkipButton.get() ? null
-    : !hasVip.get()
-      ? mkCustomButton(contentCommon, onClickNotVip, mergeStyles(COMMON, { ovr = ovrBtn }))
-    : mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickGenNewOffer,
-      mergeStyles(leftSkipOfferCount.get() < 1 ? COMMON : PRIMARY, { ovr = ovrBtn }))
+    : !hasVip.get() ? mkCustomButton(contentCommon, onClickNotVip, mergeStyles(COMMON, { ovr = ovrBtn }))
+    : skipOfferInProgress.get()
+      ? {
+          size = defButtonHeight
+          minWidth = defButtonHeight
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          children = spinner
+        }
+    : leftSkipOfferCount.get() < 1 || !hasMoreOffer.get()
+      ? mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickNotActive, mergeStyles(COMMON, { ovr = ovrBtn }))
+    : mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickGenNewOffer, mergeStyles(PRIMARY, { ovr = ovrBtn }))
   }
 
 return skipOfferBtn

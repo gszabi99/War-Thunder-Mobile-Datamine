@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
+let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString, currentWalkerMoveCtrlType
 } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { openChooseMovementControls
+let { openChooseMovementControls, openChooseWalkerMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
 } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
@@ -126,6 +126,16 @@ let optTankMoveControlType = {
   openInfo = openChooseMovementControls
 }
 
+let optWalkerMoveControlType = {
+  locId = "options/walker_movement_control"
+  ctrlType = OCT_LIST
+  value = currentWalkerMoveCtrlType
+  onChangeValue = @(v) sendSettingChangeBqEvent("walker_movement_control", "walker", v)
+  list = groundMoveCtrlTypesList
+  valToString = ctrlTypeToString
+  openInfo = openChooseWalkerMovementControls
+}
+
 let gearDownOnStopButtonTouch = {
   locId = "options/gear_down_on_stop_button"
   ctrlType = OCT_LIST
@@ -163,6 +173,7 @@ return {
   optTextWidth
   optFontSize
   optTankMoveControlType
+  optWalkerMoveControlType
   gearDownOnStopButtonTouch
   optDoubleRepairBtn
 

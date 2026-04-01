@@ -16,17 +16,17 @@ let textParams = {
   rendObj = ROBJ_TEXT
 }.__update(fontSmallShaded)
 
-let levelBg = mkLevelBg({
+let levelBg = @(borderColor) mkLevelBg({
   ovr = { size = [ rhombusSize, rhombusSize ] }
-  childOvr = { borderColor = unitExpColor }
+  childOvr = { borderColor }
 })
 
-let mkUnitLevel = @(level){
+let mkUnitLevel = @(level, borderColor = unitExpColor) {
   size = [ levelHolderSize, levelHolderSize ]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
-    levelBg
+    levelBg(borderColor)
     textParams.__merge({ text = level, pos = [hdpx(1), 0] })
   ]
 }

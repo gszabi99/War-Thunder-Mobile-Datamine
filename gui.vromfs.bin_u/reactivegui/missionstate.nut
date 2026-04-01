@@ -3,6 +3,7 @@ let DataBlock  = require("DataBlock")
 let { get_game_type, get_game_mode, GM_TRAINING } = require("mission")
 let { get_current_mission_desc } = require("guiMission")
 let { register_command } = require("console")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
@@ -33,20 +34,37 @@ interopGet({
 
 let raceForceCannotShoot = Watched(false)
 
+function addSpawnScoreParams(rules, misBlk) {
+  let { costs = null, spawn_pow = 1.0 } = misBlk?.customSpawnScore
+  if (!isDataBlock(costs))
+    return
+
+  let spawnCost = {}
+  rules.spawnCost <- spawnCost
+  eachParam(costs, @(cost, name) spawnCost[name] <- cost)
+  rules.spawnPow <- spawn_pow
+}
+
 function updateByMissionDesc() {
   if (!isAppLoaded.get())
     return
   log("Update hudCustomRules")
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  raceForceCannotShoot.set(misBlk?.raceForceCannotShoot)
 
-  hudCustomRules.set({
+  raceForceCannotShoot.set(misBlk?.raceForceCannotShoot)
+  let { useSpawnScore = false } = misBlk
+  let rules = {
     ctfFlagPreset = misBlk?.customRules.ctfFlagPreset ?? ""
     useKillStreaks = misBlk?.useKillStreaks ?? false
     allowSpare = misBlk?.allowSpare ?? true
     isUnlimRespawn = misBlk?.multiRespawn && misBlk?.maxRespawns == -1
-  })
+    useSpawnScore
+  }
+  if (useSpawnScore)
+    addSpawnScoreParams(rules, misBlk)
+
+  hudCustomRules.set(rules)
 }
 
 updateByMissionDesc()

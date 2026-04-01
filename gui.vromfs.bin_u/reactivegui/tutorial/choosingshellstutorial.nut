@@ -19,6 +19,7 @@ let { MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 
 const TUTORIAL_ID = "choosingShells"
 
+let isFakeUnit = Computed(@() selSlot.get()?.isFake ?? false)
 let unitLevel = Computed(@() selSlot.get()?.level ?? 0)
 let unitModsPresets = Computed(@() selSlot.get()?.mods ?? {})
 let choiceCount = Computed(@() chosenBullets.get().len())
@@ -32,6 +33,7 @@ let allowedBullets = Computed(@() choiceCount.get() > 1
   : {})
 let hasEnoughBullets = Computed(@() allowedBullets.get().len() >= 3)
 let needShowTutorial = Computed(@() hasEnoughBullets.get()
+  && !isFakeUnit.get()
   && !isInSquad.get()
   && !isFinished.get())
 let canStartTutorial = shouldDisableMenu ? Watched(false)

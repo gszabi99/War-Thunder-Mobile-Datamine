@@ -492,6 +492,356 @@
       }
     ]
   },
+  "killStreaks_aircraft_mecha_event": {
+    "expClass": [
+      "exp_bomber",
+      "exp_fighter",
+      "exp_assault",
+      "exp_tank",
+      "exp_heavy_tank",
+      "exp_tank_destroyer",
+      "exp_SPAA",
+      "exp_helicopter"
+    ],
+    "countCombinedKillStreakEvents": 2,
+    "timeDelayBetweenKillStreakEvent": 45.0,
+    "units": "mechaKillStreaksUnits",
+    "killStreak": [
+      {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 1,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "eventType": "ship",
+        "tag": "cl",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 180.0
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "eventType": "ship",
+        "tag": "dd",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 120.0
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 2,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "eventType": "bomber",
+        "tag": "bomber",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 3,
+        "spawnPos": [
+          {
+            "ranks": [
+              -1,
+              -1
+            ],
+            "initiator": [
+              2900.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1000.0,
+              1200.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              50.0,
+              150.0
+            ],
+            "ally_dist": [
+              1000.0,
+              1200.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              50.0,
+              150.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ]
+          },
+          {
+            "ranks": [
+              0,
+              50
+            ],
+            "initiator": [
+              2900.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1200.0,
+              1400.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              100.0,
+              200.0
+            ],
+            "ally_dist": [
+              1200.0,
+              1400.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              100.0,
+              200.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ]
+          },
+          {
+            "ranks": [
+              -1,
+              -1
+            ],
+            "initiator": [
+              3600.0,
+              1000.0
+            ],
+            "enemy_dist": [
+              1400.0,
+              1600.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1400.0,
+              1600.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ]
+          }
+        ],
+        "clearProgress": {
+          "count": 3,
+          "tag": [
+            "attacker",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "eventType": "bomber",
+        "tag": "attacker",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 2,
+        "spawnPos": [
+          {
+            "ranks": [
+              -1,
+              -1
+            ],
+            "initiator": [
+              2500.0,
+              700.0
+            ],
+            "enemy_dist": [
+              1000.0,
+              1200.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              50.0,
+              150.0
+            ],
+            "ally_dist": [
+              1000.0,
+              1200.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              50.0,
+              150.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ]
+          },
+          {
+            "ranks": [
+              0,
+              50
+            ],
+            "initiator": [
+              2700.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1200.0,
+              1400.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              100.0,
+              200.0
+            ],
+            "ally_dist": [
+              1200.0,
+              1400.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              100.0,
+              200.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ]
+          },
+          {
+            "ranks": [
+              -1,
+              -1
+            ],
+            "initiator": [
+              3000.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1400.0,
+              1600.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1400.0,
+              1600.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ]
+          }
+        ],
+        "clearProgress": {
+          "count": 2,
+          "tag": [
+            "bomber",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "eventType": "bomber",
+        "tag": "fighter",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "clearProgress": {
+          "count": 1,
+          "tag": [
+            "bomber",
+            "attacker"
+          ]
+        }
+      }
+    ]
+  },
   "killStreaksAircraftOrHelicopter_1": {
     "expClass": [
       "exp_bomber",
@@ -1957,6 +2307,68 @@
         "weap": "mig-19pt_killstreak_default",
         "rankRange": [
           10,
+          50
+        ]
+      }
+    ]
+  },
+  "mechaKillStreaksUnits": {
+    "bomber": [
+      {
+        "name": "xf5u_1",
+        "weap": "xf5u_1_1000lb_bombs",
+        "rankRange": [
+          49,
+          50
+        ]
+      },
+      {
+        "name": "f-82e",
+        "weap": "f_82e_1000lb_bombs",
+        "rankRange": [
+          49,
+          50
+        ]
+      },
+      {
+        "name": "tis_ma",
+        "weap": "tis_ma_streak",
+        "rankRange": [
+          49,
+          50
+        ]
+      }
+    ],
+    "fighter": [
+      {
+        "name": "xp-55",
+        "weap": "xp-55_default",
+        "rankRange": [
+          49,
+          50
+        ]
+      },
+      {
+        "name": "bv-155b-1",
+        "weap": "bv-155b-1_default",
+        "rankRange": [
+          49,
+          50
+        ]
+      },
+      {
+        "name": "bf-109z",
+        "weap": "bf-109z_default",
+        "rankRange": [
+          49,
+          50
+        ]
+      },
+      {
+        "name": "j7w1",
+        "weap": "j7w1_default",
+        "rankRange": [
+          49,
           50
         ]
       }

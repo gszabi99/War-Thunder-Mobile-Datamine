@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-
 let { setLoginPass } = require("auth_wt")
 let { LOGIN_STATE, LOGIN_UPDATER_EVENT_ID } = require("%appGlobals/loginState.nut")
+let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
 let { setAutologinType, setAutologinEnabled } = require("%scripts/login/autoLogin.nut")
 let { authState } = require("%scripts/login/authState.nut")
 let { send_counter } = require("statsd")
@@ -33,7 +33,7 @@ eventbus_subscribe(LOGIN_UPDATER_EVENT_ID,
       hasError = true
       openFMsgBox({
         uid = "login_updater_error"
-        text = loc($"updater/error/{evt?.error}")
+        text = loc($"updater/error/{getErrorName(evt?.error ?? 0)}")
         isPersist = true
       })
     }

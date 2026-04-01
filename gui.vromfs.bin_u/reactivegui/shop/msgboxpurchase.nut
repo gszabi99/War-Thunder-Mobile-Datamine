@@ -1,15 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { unitRewardTypes, statRewardTypes } = require("%appGlobals/rewardType.nut")
+let { unitRewardTypes, statRewardTypes, G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { balance, WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { activeOffers } = require("%appGlobals/pServer/campaign.nut")
+let { activeOffers, purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
+let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { getGoodsByCurrencyId } = require("%rGui/shop/goodsUtils.nut")
 let { commonTextColor } = require("%rGui/style/stdColors.nut")
 let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { openMsgBox, msgBoxText, closeMsgBox, wndWidthDefault } = require("%rGui/components/msgBox.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { openShopWndByCurrencyId, shopGoods } = require("%rGui/shop/shopState.nut")
+let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
@@ -41,6 +44,18 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
       children = mkCurrencyComp(notEnough.get(), currencyId, CS_NO_BALANCE)
     },
   }
+  let cId = getBaseCurrency(currencyId)
+  let hasCurrencyInShop = shopGoods.get().filter(@(g) g.rewards.len() == 1
+    && g.rewards[0].gType == G_CURRENCY
+    && g.rewards[0].id == cId).len() > 0
+  let goodsId = getGoodsByCurrencyId(cId, shopGoods.get(), serverConfigs.get(),
+    goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get()
+  )?.id
+  let replenishCb = cId in openBuyWnd ? @() openBuyWnd[cId](bqInfo)
+    : hasCurrencyInShop ? @() openBuyEventCurrenciesWnd(cId)
+    : goodsId != null ? @() openGoodsPreview(goodsId)
+    : null
+
   openMsgBox({
     uid = NO_BALANCE_UID
     text = {
@@ -57,18 +72,17 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
           children = mkTextRow(text.replace("\r", ""), mkText, replaceTable)
         })
     }
-    buttons = [
+    buttons = replenishCb != null ? [
       { id = "cancel", isCancel = true, cb = onCancel }
       { id = "replenish", styleId = "PRIMARY", isDefault = true,
         function cb() {
-          let cId = getBaseCurrency(currencyId)
-          if (cId in openBuyWnd)
-            openBuyWnd[cId](bqInfo)
-          else
-            openBuyEventCurrenciesWnd(cId)
+          replenishCb()
           onGoToShop?()
         }
       }
+    ]
+    : [
+      { id = "ok", isCancel = true, cb = onCancel }
     ]
   })
 }

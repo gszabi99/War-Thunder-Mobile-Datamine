@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { wndSwitchAnim, wndSwitchTrigger } = require("%rGui/style/stdAnimations.nut")
@@ -30,19 +31,29 @@ function updateWeights() {
   let time = getServerTime()
   local timeToUpdate = 0
   foreach (id, screenCfg in screensList) {
-    if ((campaign == null || (screenCfg?.camp.contains(commonCamp) ?? true))) {
-      let { start = 0, end = 0 } = screenCfg?.timeRange
-      if (end != 0 && end <= time)
-        continue
-      local nextTime = end - time
-      if (start > time)
-        nextTime = start - time
-      else {
-        weights[id] <- screenCfg.weight
-      }
-      if (nextTime > 0)
-        timeToUpdate = timeToUpdate == 0 ? nextTime : min(timeToUpdate, nextTime)
-    }
+    if ((campaign != null && !(screenCfg?.camp.contains(commonCamp) ?? true)))
+      continue
+
+    let curSeason = curSeasons.get()?[screenCfg?.timeRange.season]
+    let { seasonIdx = null } = screenCfg?.timeRange
+    let isActualSeasonIdx = seasonIdx == null || seasonIdx == curSeason?.idx
+    let rawStart = screenCfg?.timeRange.start
+      ?? (isActualSeasonIdx ? (curSeason?.start ?? 0) : null)
+    let rawEnd = screenCfg?.timeRange.end
+      ?? (isActualSeasonIdx ? (curSeason?.end ?? 0) : null)
+    if (rawEnd == null && rawStart == null)
+      continue
+    let start = rawStart ?? 0
+    let end = rawEnd ?? 0
+    if (end != 0 && end <= time)
+      continue
+    local nextTime = end - time
+    if (start > time)
+      nextTime = start - time
+    else
+      weights[id] <- screenCfg.weight
+    if (nextTime > 0)
+      timeToUpdate = timeToUpdate == 0 ? nextTime : min(timeToUpdate, nextTime)
   }
 
   if (timeToUpdate <= 0)
@@ -53,8 +64,9 @@ function updateWeights() {
   return screenWeights.set(weights)
 }
 updateWeights()
-curCampaign.subscribe(@(_) updateWeights())
-isServerTimeValid.subscribe(@(_) updateWeights())
+curCampaign.subscribe(@(_) deferOnce(updateWeights))
+curSeasons.subscribe(@(_) deferOnce(updateWeights))
+isServerTimeValid.subscribe(@(_) deferOnce(updateWeights))
 
 let lsKey = {}
 let loadingScreen = @() {

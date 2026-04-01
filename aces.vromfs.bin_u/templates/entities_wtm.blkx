@@ -120,7 +120,10 @@
     }
   },
   "walker_wtm": {
-    "_use": "walker",
+    "_use": [
+      "walker",
+      "gm_engine_sound"
+    ],
     "mods:list<t>": {
       "mod": [
         "tank_wtm_toolkit_ecs",

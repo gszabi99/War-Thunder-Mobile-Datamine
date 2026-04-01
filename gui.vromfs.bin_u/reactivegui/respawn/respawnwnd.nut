@@ -11,8 +11,9 @@ let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
-  needRespawnSlotsAndWeaponry
+  needRespawnSlotsAndWeaponry, spawnScoreCosts, isUseSpawnScore
 } = require("%rGui/respawn/respawnState.nut")
+let { mkSpawnScore, spawnScoreBalance } = require("%rGui/respawn/spawnScore.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets, hasZeroMainBullets
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("%rGui/respawn/respawnAnimState.nut")
@@ -22,12 +23,13 @@ let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, res
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
+let { collectibleTextColor, premiumTextColor, markTextColor, badTextColor2
+} = require("%rGui/style/stdColors.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { textButtonCommon, mkCustomButton, iconButtonPrimary, mkButtonTextMultiline } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, BATTLE } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, BATTLE, INACTIVE } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoardType, scoreBoardCfgByType, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow,
+let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow, mkPlateText,
   mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
   mkUnitSelectedUnderline, mkUnitInfo, plateTextsSmallPad, mkUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -45,6 +47,7 @@ let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGro
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
 let { respawnSkins, skinSize, skinGap } = require("%rGui/respawn/respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -62,6 +65,7 @@ let mapMaxSize = hdpx(610)
 let levelHolderSize = evenPx(84)
 let unitListGradientSize = [gap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
+let scoreIconSize = hdpxi(30)
 
 let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.get().len() > 1)
 let showLowBulletsWarning = Watched(true)
@@ -70,21 +74,33 @@ isRespawnStarted.subscribe(function(v) {
   if (v)
     startRespawnTime.set(get_mission_time())
 })
+let needSpareBalance = Computed(@() !!hudCustomRules.get()?.allowSpare && !!respawnUnitItems.get()?.spare)
 
-let balanceBlock = @() {
+let spareBalance = @() {
   watch = sparesNum
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_CENTER
-  size = FLEX_V
   children = [
     mkCurrencyComp(sparesNum.get(), SPARE)
     mkConsumableSpend(SPARE, hdpx(20), hdpx(80), @(count) sparesNum.set(sparesNum.get() - count))
   ]
 }
 
-let topPanel = @() {
+
+
+let balanceBlock = @() {
+  watch = needSpareBalance
+  size = FLEX_V
+  hplace = ALIGN_RIGHT
+  flow = FLOW_VERTICAL
+  valign = ALIGN_CENTER
+  gap = hdpx(10)
+  children = [
+    spawnScoreBalance
+    needSpareBalance.get() ? spareBalance : null
+  ]
+}
+
+let topPanel = {
   size = [flex(), scoreBoardHeight]
-  watch = [respawnUnitItems, hudCustomRules]
   children = [
     { size = FLEX_V, children = logerrHintsBlock }
     @() {
@@ -93,8 +109,7 @@ let topPanel = @() {
       children = scoreBoardCfgByType?[scoreBoardType.get()].comp
     }
     mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
-    hudCustomRules.get()?.allowSpare
-      && respawnUnitItems.get()?.spare ? balanceBlock : null
+    balanceBlock
   ]
 }
 
@@ -116,6 +131,34 @@ let sparePrice = {
   vplace = ALIGN_CENTER
   padding = const [hdpx(10), hdpx(20), 0, 0]
   children = mkCurrencyImage(SPARE, CS_RESPAWN.iconSize)
+}
+
+let notEnoughScoreStyle = { color = badTextColor2 }
+function mkSlotScorePrice(slot) {
+  let { name, canSpawn } = slot
+  if (!canSpawn)
+    return null
+
+  let score = Computed(@() spawnScoreCosts.get()?[name] ?? 0)
+  let isEnough = Computed(@() score.get() <= mySpawnScore.get())
+  return @() {
+    watch = [score, isEnough]
+    vplace = ALIGN_BOTTOM
+    margin = [ 0, 0, plateTextsSmallPad, plateTextsSmallPad ]
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap = hdpx(5)
+    children = score.get() <= 0 ? null
+      : [
+          {
+            size = scoreIconSize
+            rendObj = ROBJ_IMAGE
+            image = Picture($"ui/gameuiskin#icon_spawn_points.svg:{scoreIconSize}:P")
+            keepAspect = true
+          }
+          mkPlateText(score.get(), isEnough.get() ? {} : notEnoughScoreStyle)
+        ]
+  }
 }
 
 function mkSlotPlate(slot, baseUnit) {
@@ -140,6 +183,7 @@ function mkSlotPlate(slot, baseUnit) {
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
           mkUnitImage(unit, !canSpawn)
           mkUnitTexts(unit, loc(p.locId), !canSpawn)
+          mkSlotScorePrice(slot)
           canSpawn
               ? mkUnitInfo(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
             : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
@@ -309,9 +353,10 @@ let vehicleActionLangKeys = {
 
 function toBattleButton(onClick, styleOvr) {
   let needShowSpareDesc = Computed(@() selSlot.get()?.isSpawnBySpare ?? false)
-
+  let spawnCost = Computed(@() spawnScoreCosts.get()?[selSlot.get()?.name] ?? 0)
+  let btnStyle = Computed(@() isUseSpawnScore.get() && spawnCost.get() > mySpawnScore.get() ? INACTIVE : BATTLE)
   return @() {
-    watch = [selSlotUnitType, needShowSpareDesc]
+    watch = [selSlotUnitType, needShowSpareDesc, spawnCost, btnStyle]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
     gap
@@ -326,17 +371,17 @@ function toBattleButton(onClick, styleOvr) {
             ? mkText(utf8ToUpper(loc(vehicleActionLangKeys?[selSlotUnitType.get()] ?? "mainmenu/driveAgain")))
             : null
           mkCustomButton({
-              pos = [0, needShowSpareDesc.get() ? gap : 0]
               flow = FLOW_VERTICAL
               halign = ALIGN_CENTER
-              gap = -hdpx(15)
+              gap = hdpx(5)
               children = [
                 mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/toBattle/short")), fontTinyAccentedShadedBold)
                 needShowSpareDesc.get() ? mkCurrencyComp(1, SPARE, CS_GAMERCARD) : null
+                spawnCost.get() <= 0 ? null : mkSpawnScore(spawnCost.get(), CS_GAMERCARD)
               ]
             },
             onClick,
-            BATTLE.__merge(styleOvr))
+            btnStyle.get().__merge(styleOvr))
         ]
       }
     ]
@@ -365,7 +410,20 @@ function toBattle() {
     respawn(selSlot.get(), bulletsToSpawn.get())
 }
 
+function showSpawnScoreMsgIfNeed() {
+  if (!isUseSpawnScore.get())
+    return false
+  let cost = spawnScoreCosts.get()?[selSlot.get()?.name] ?? 0
+  if (cost <= mySpawnScore.get())
+    return false
+  openMsgBox({ text = loc("multiplayer/noSpawnScore", { cost = colorize(markTextColor, cost) }) })
+  return true
+}
+
 function checkAndBattle() {
+  if (showSpawnScoreMsgIfNeed())
+    return
+
   if (selSlot.get()?.unitClass != "bomber")
     return toBattle()
 

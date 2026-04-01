@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { SAILBOAT } = require("%appGlobals/unitConst.nut")
+let { eventUnitTypes } = require("%appGlobals/unitConst.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -293,15 +293,15 @@ let specialEventGamercardItems = Computed(function() {
   return res
 })
 
-let eventUnitTypes = {
-  event_april_2025 = SAILBOAT
-}
 let unitTypesByEvent = Computed(function() {
-  let res = []
-  foreach (eventName, unitType in eventUnitTypes)
+  let res = {}
+  foreach (eventName, unitType in eventUnitTypes) {
     if (allSpecialEvents.get().findvalue(@(e) e.eventName == eventName) != null)
-      res.append(unitType)
-  return res
+      res[unitType] <- true
+    if (separateEventModes.get().findvalue(@(_, gmEventName) gmEventName == eventName) != null)
+      res[unitType] <- true
+  }
+  return res.keys()
 })
 
 let isFitSeasonRewardsRequirements = Computed(function() {

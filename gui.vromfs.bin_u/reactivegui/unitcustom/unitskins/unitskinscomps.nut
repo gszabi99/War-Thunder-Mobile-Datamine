@@ -8,7 +8,6 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { G_SKIN, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 
 let { unseenSkins, markAllUnitSkinsSeen, markSkinSeen } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
@@ -42,6 +41,7 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { chooseBetterGoods } = require("%rGui/shop/goodsUtils.nut")
 
 
 let appsFlyerSaveId = "DefaultSkinWasReplaced"
@@ -304,17 +304,6 @@ function onPurchase() {
     purchase = @() buy_unit_skin(unitName, skinName, currencyId, price),
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SKINS, PURCH_TYPE_SKIN, skinName)
   })
-}
-
-function chooseBetterGoods(g1, g2) {
-  if ((g1.price.price > 0) != (g2.price.price > 0))
-    return g1.price.price > 0 ? g1 : g2
-
-  let currencyOrder = (orderByCurrency?[g1.price.currencyId] ?? 100) <=> (orderByCurrency?[g2.price.currencyId] ?? 100)
-  if (currencyOrder != 0)
-    return currencyOrder > 0 ? g2 : g1
-
-  return g1.price.price < g2.price.price ? g1 : g2
 }
 
 function openLootboxForEvent(lootbox) {

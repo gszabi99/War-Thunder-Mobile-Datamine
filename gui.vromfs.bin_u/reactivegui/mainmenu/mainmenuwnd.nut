@@ -23,7 +23,7 @@ let { chooseCampaignWnd } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor, textColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
-let { registerAutoDownloadUnits } = require("%rGui/updater/updaterState.nut")
+let { registerAutoDownloadUnits, DLP_MEDIUM } = require("%rGui/updater/updaterState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info, allow_subscriptions } = require("%appGlobals/permissions.nut")
@@ -87,24 +87,26 @@ let mainMenuUnitNameToShow = keepref(Computed(@() isMainMenuAttached.get() ? mai
 
 mainMenuUnitNameToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
 
-registerAutoDownloadUnits(Computed(function(prev) {
-  if (!isReadyToFullLoad.get() || mainMenuUnit.get() == null)
-    return prevIfEqual(prev, {})
+registerAutoDownloadUnits(
+  Computed(function(prev) {
+    if (!isReadyToFullLoad.get() || mainMenuUnit.get() == null)
+      return prevIfEqual(prev, {})
 
-  let { name, platoonUnits = [] } = mainMenuUnit.get()
-  let res = {}
-  res[getTagsUnitName(name)] <- true
-  foreach (p in platoonUnits)
-    res[getTagsUnitName(p.name)] <- true
+    let { name, platoonUnits = [] } = mainMenuUnit.get()
+    let res = {}
+    res[getTagsUnitName(name)] <- true
+    foreach (p in platoonUnits)
+      res[getTagsUnitName(p.name)] <- true
 
-  if (hasBgUnitsByCamp?[curCampaign.get()] && platoonUnits.len() == 0)
-    foreach (s in curSlots.get())
-      if (s.name != "" && s.name != name)
-        res[getTagsUnitName(s.name)] <- true
+    if (hasBgUnitsByCamp?[curCampaign.get()] && platoonUnits.len() == 0)
+      foreach (s in curSlots.get())
+        if (s.name != "" && s.name != name)
+          res[getTagsUnitName(s.name)] <- true
 
-  let sizes = unitSizes.get()
-  return prevIfEqual(prev, res.filter(@(_, u) (sizes?[u] ?? -1) != 0))
-}))
+    let sizes = unitSizes.get()
+    return prevIfEqual(prev, res.filter(@(_, u) (sizes?[u] ?? -1) != 0))
+  }),
+  DLP_MEDIUM)
 
 let mkUnitName = @(unit, sf) {
   size = FLEX_H

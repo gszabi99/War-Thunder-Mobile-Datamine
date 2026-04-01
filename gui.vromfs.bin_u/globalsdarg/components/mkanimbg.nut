@@ -24,7 +24,7 @@ function mkBgImageWithFallback(image) {
     fallbackImage = hasFallbackImg.get() ? Picture(fallbackLoadingImage) : null
     image = Picture(image)
     color = 0xFFFFFFFF
-    keepAspect = true
+    keepAspect = KEEP_ASPECT_FILL
     onAttach = @() resetTimeout(1.0, @() hasFallbackByImage.mutate(@(v) v[image] <- true))
     onDetach = @() hasFallbackByImage.mutate(@(v) v.$rawdelete(image))
   }

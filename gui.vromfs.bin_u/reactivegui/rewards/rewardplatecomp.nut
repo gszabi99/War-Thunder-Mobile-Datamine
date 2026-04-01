@@ -314,6 +314,7 @@ let currencyImgCtors = {
   gold = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) 
   wp = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) 
   eventKey = @(id, amount, size, iconShiftY) mkCommonCurrencyIcon(id, amount, size, iconShiftY, 0.65)
+  aprilintel = @(id, amount, size, iconShiftY) mkCommonCurrencyIcon(id, amount, size, iconShiftY, 1.1)
 }
 
 function mkRewardPlateCurrencyImage(r, rStyle) {

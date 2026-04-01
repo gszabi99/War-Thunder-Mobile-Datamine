@@ -68,6 +68,20 @@ let shortcutsByUnitTypes = {
     axes = ["gm_throttle", "gm_steering"]
       .extend(sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["gm_mouse_aim_x", "gm_mouse_aim_y"]))
   },
+  [WALKER] = {
+    shortcuts = [
+      "ID_FLIGHTMENU", "ID_ZOOM_TOGGLE",
+      cLoc("flightmenu/btnStats", "ID_MPSTATSCREEN"),
+      "walker_throttle_rangeMax", "walker_throttle_rangeMin",
+      "ID_FIRE_GM", "ID_FIRE_GM_SECONDARY_GUN", "ID_FIRE_GM_SPECIAL_GUN", "ID_FIRE_GM_MACHINE_GUN",
+      "ID_ACTION_BAR_ITEM_5", "ID_ACTION_BAR_ITEM_7", "ID_ACTION_BAR_ITEM_9", "ID_ACTION_BAR_ITEM_6",
+      "ID_ACTION_BAR_ITEM_10", "ID_SMOKE_SCREEN_GENERATOR", "ID_SMOKE_SCREEN", "ID_SHOW_HERO_MODULES",
+      "ID_CAMERA_NEUTRAL", "ID_TOGGLE_TARGET_TRACKING", "ID_NEXT_BULLET_TYPE",
+      cLoc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11", "ID_ACTION_BAR_ITEM_11"),
+    ]
+    axes = ["walker_throttle", "walker_steering"]
+      .extend(sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["walker_mouse_aim_x", "walker_mouse_aim_y"]))
+  }
 }
 
 return {

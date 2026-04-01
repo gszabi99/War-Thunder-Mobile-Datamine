@@ -36,6 +36,7 @@ let mkCurrencyText = @(value, style) {
 
 let mkCurrencyComp = @(value, currencyId, style = CS_COMMON, imgChild = null) {
   flow = FLOW_HORIZONTAL
+  size = [SIZE_TO_CONTENT, style.iconSize]
   valign = ALIGN_CENTER
   gap = style.iconGap
   children = [

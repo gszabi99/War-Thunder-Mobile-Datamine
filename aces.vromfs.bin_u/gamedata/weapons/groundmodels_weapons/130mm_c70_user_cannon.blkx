@@ -30,10 +30,11 @@
   "isBulletBelt": false,
   "bullet": {
     "bulletCount": 25,
-    "mass": 33.3,
+    "mass": 33.4,
     "explosiveType": "a_ix_2",
     "explosiveMass": 0.115,
     "caliber": 0.13,
+    "Cx": 0.35943,
     "speed": 900.0,
     "maxDistance": 15000.0,
     "normalizationPreset": "apbc",
@@ -59,6 +60,7 @@
       300.0,
       1000.0
     ],
+    "checkIntegrityAfterExplosion": true,
     "fuseDelayDist": 1.2,
     "explodeTreshold": 19.0,
     "relativeVelArmorShift": [
@@ -111,6 +113,47 @@
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
+      }
+    },
+    "testProperties": {
+      "checkIntegrityAfterExplosion": true,
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.6,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 0.75,
+              "damageScale": 1.5,
+              "angles": [
+                0.0,
+                180.0
+              ],
+              "countPortion": 0.4
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.75,
+              "angles": [
+                45.0,
+                105.0
+              ],
+              "countPortion": 0.5
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                130.0,
+                180.0
+              ],
+              "countPortion": 0.1
+            }
+          ]
+        }
       }
     },
     "pressureDamage": {
@@ -209,10 +252,11 @@
   "130mm_ussr_HE": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 33.7,
+      "mass": 33.4,
       "explosiveType": "tnt",
-      "explosiveMass": 2.645,
+      "explosiveMass": 3.64,
       "caliber": 0.13,
+      "Cx": 0.23899,
       "speed": 900.0,
       "maxDistance": 15000.0,
       "normalizationPreset": "heat",
@@ -234,9 +278,11 @@
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "130mm_of_482m",
-      "hitPowerMult": 40.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.3,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -259,6 +305,24 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "hitpower": {
         "HitPower0m": [

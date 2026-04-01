@@ -106,6 +106,8 @@ let skinsByTag = {
     "ussr_camo_t_80um2"
     "cn_camo_light_olive"
     "cn_plz_05_lunar_ny_26"
+    "ussr_camo_object_279_1002"
+    "ussr_camo_object_279_trixter"
   ],
 
   [DESERT] = [
@@ -165,6 +167,8 @@ let skinsByTag = {
     "ussr_camo_desert_sand_green_brown"
     "uk_camo_bheeshma"
     "cn_camo_vt_4"
+    "ussr_camo_object_279_bulldog"
+    "ussr_camo_object_279_victor"
   ],
 
   [WINTER] = [
@@ -247,6 +251,7 @@ let skinsByTag = {
     "camo_sboat_splotch"
     "camo_threegray_spots"
     "camo_blackgreenwhite_spots"
+    "camo_blackgreen_spots"
 
     "camo_blackgray_geometry"
     "camo_blue_geometry"
@@ -462,6 +467,7 @@ let skinsByTag = {
     "usa_tbd_1_1938"
     "usa_ventura_b_34_raf"
     "usa_xp_55_olive_drab_a"
+    "usa_xf5u_1_pancake_c"
     "ussr_db_3b"
     "ussr_i_15_1935_moscow"
     "ussr_i_180s"

@@ -930,8 +930,15 @@
     "autoZoomKByTargetBBox": true,
     "useGunShootPosAtZoom": true,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": [
+          {
+            "isFlightModel": {}
+          },
+          {
+            "isWalker": {}
+          }
+        ]
       }
     },
     "up": {
@@ -1021,86 +1028,146 @@
       }
     }
   },
-  "fps_suit": {
-    "type": "FpsFlightCamera",
-    "fov": 85.0,
-    "zoomFov": 10.0,
-    "sliderFovMult": 2.0,
+  "tps_walker": {
+    "type": "TurretCamera",
+    "fov": 90.0,
+    "zoomFov": 30.0,
+    "gunFov": 5.0,
     "targetOffset": [
-      500.0,
-      0.0,
+      [
+        500.0,
+        2.0,
+        0.0
+      ],
+      [
+        10.0,
+        4.0,
+        0.0
+      ]
+    ],
+    "cameraOffsetNeutral": [
+      -17.0,
+      2.0,
       0.0
     ],
-    "cameraFpXSmoothing": 0.05,
-    "cameraFpYSmoothing": 0.05,
-    "angleFpHorizontal": 160.0,
-    "angleFpVerticalUp": 90.0,
-    "angleFpVerticalDown": 90.0,
-    "angleFpRoll": 45.0,
-    "headAccelScale": [
-      0.03,
-      0.03,
-      0.1
-    ],
-    "headMoveLimits": [
-      0.12,
-      0.1,
-      0.12
-    ],
-    "headFovLimits": [
-      8.0,
-      30.0
-    ],
-    "headPosLookingDown": [
+    "cameraUpNeutral": [
       0.0,
-      0.0,
+      1.0,
       0.0
     ],
-    "headPosLookingBack": [
-      0.0,
-      0.0,
-      0.12
-    ],
-    "startDofDist": 2.0,
-    "maxDofDist": 0.5,
-    "maxDofEffect": 2.0,
-    "useDof": true,
-    "headAccelRotScale": [
-      0.25,
-      0.25,
-      0.25
-    ],
-    "headAccelRotGravScale": [
-      0.025,
-      0.045
-    ],
-    "headAccelRotLimits": [
-      0.3,
-      0.3,
-      0.78
-    ],
-    "immediateToRotVisc": 0.07,
-    "cameraShakePosInfluence": [
-      0.0,
-      0.5,
-      0.03
-    ],
-    "cameraShakeDirInfluence": [
-      0.3,
-      0.0,
+    "cameraOffsetSmoothing": 0.04,
+    "cameraUpSmoothing": 0.0,
+    "cameraFovSmoothing": 0.005,
+    "cameraOffsetElevatorUp": [
+      -14.0,
+      3.0,
       0.0
     ],
-    "shootingFov": 10.0,
-    "cameraShakeMultiplier": 0.35,
+    "cameraOffsetElevatorDown": [
+      -14.0,
+      3.0,
+      0.0
+    ],
+    "sensitivityElevatorDown": 1.0,
+    "sensitivityElevatorUp": 1.0,
+    "cameraOffsetRudderLeft": [
+      -14.0,
+      3.0,
+      -1.0
+    ],
+    "cameraOffsetRudderRight": [
+      -14.0,
+      3.0,
+      1.0
+    ],
+    "sensitivityRudder": 10.0,
+    "cameraUpAileronsLeft": [
+      0.0,
+      1.0,
+      0.7
+    ],
+    "cameraUpAileronsRight": [
+      0.0,
+      1.0,
+      -0.7
+    ],
+    "sensitivityAilerons": 0.3,
+    "maxAutoZoomFov": 2.5,
+    "tankAutoZoomRate": 0.8,
+    "autoZoomKByOmega": 8.0,
+    "minAutoZoomByOmega": 0.6,
+    "shipAutoZoomRate": 0.8,
+    "viscosityAtZoom": 0.05,
+    "changeAutoZoomSpeed": 3.0,
+    "tankTouchAimSpeedMult": 0.5,
+    "tankTouchTargetSpeedMult": 0.25,
+    "cameraOffset": [
+      0.0,
+      3.0,
+      -8.0
+    ],
+    "cameraOffsetZoomed": [
+      1.5,
+      2.3,
+      -5.0
+    ],
+    "useOffset": true,
+    "clipType": "trace",
+    "zoomToGun": false,
+    "useCockpitOffsets": true,
+    "fovVertAnglesOffsetPart": -0.15,
+    "isMouseView": true,
+    "cameraControlViewRadius": 5.0,
+    "cameraUpOffset": 1.0,
+    "cameraFovAccelerationPositive": 1.0,
+    "cameraFovAccelerationNegative": 2.0,
+    "sensitivityAcceleration": 10.0,
+    "cameraTpsSmoothing": 0.001,
+    "maxCameraSlowAngle": 9.0,
+    "cameraTpsAngleAccelaration": 2.0,
+    "minimumDistanceMultiplier": 1.2,
+    "targOffsMult": 0.0,
+    "cameraShakeMultiplier": 0.1,
     "cameraShakeMultiplierOnShooting": 1.0,
     "transitionFadeInTime": 0.12,
-    "transitionFadeOutTime": 0.2,
-    "viscosity": 0.0001,
-    "cameraControlSmooth": 0.15,
-    "accelAdaptationVisc": 0.94,
-    "schraegeMusikCameraScreenPart": 0.25,
+    "transitionFadeOutTime": 0.0,
+    "viscosity": 0.14,
+    "trackGunDirection": true,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "useShootingPosAtZoom": true,
+    "autoZoomKByTargetBBox": true,
+    "useGunShootPosAtZoom": true,
     "condition": {
-      "isSuit": {}
+      "isWalker": {}
+    },
+    "up": {
+      "angle": [
+        0.0,
+        -90.0
+      ],
+      "dist": 20.0
+    },
+    "down": {
+      "angle": [
+        180.0,
+        0.0
+      ],
+      "dist": 40.0
+    },
+    "left": {
+      "angle": [
+        -110.0,
+        0.0
+      ],
+      "dist": 20.0
+    },
+    "right": {
+      "angle": [
+        110.0,
+        0.0
+      ],
+      "dist": 20.0
     }
   },
   "camera_binoculars": {
@@ -1495,8 +1562,15 @@
     "viscosity": 0.05,
     "trackGunDirection": true,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": [
+          {
+            "isFlightModel": {}
+          },
+          {
+            "isWalker": {}
+          }
+        ]
       }
     },
     "up": {
@@ -1635,6 +1709,9 @@
           },
           {
             "isFlightModel": {}
+          },
+          {
+            "isWalker": {}
           }
         ]
       }
@@ -1774,9 +1851,14 @@
     "condition": {
       "and": {
         "isSight": {},
-        "not": {
-          "isFlightModel": {}
-        }
+        "not": [
+          {
+            "isFlightModel": {}
+          },
+          {
+            "isWalker": {}
+          }
+        ]
       }
     },
     "up": {
@@ -3989,7 +4071,7 @@
     },
     "ground_model": {
       "camName": [
-        "fps_suit",
+        "tps_walker",
         "tps_ground",
         "aim_ground",
         "aim_ground_from_sight",

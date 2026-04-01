@@ -4,12 +4,14 @@ let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
 let { getGoodsLocName, mkGoods } = require("%rGui/shop/goodsView/goods.nut")
 let { mkOfferGold } = require("%rGui/shop/goodsView/goodsGold.nut")
 let { mkOfferUnit, mkOfferBlueprint, mkOfferBranchUnit, mkOfferBattleMode } = require("%rGui/shop/goodsView/goodsUnit.nut")
+let { mkOfferLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
 
 let constructors = {
   [SGT_GOLD] = mkOfferGold,
   [SGT_UNIT] = mkOfferUnit,
   [SGT_BLUEPRINTS] = mkOfferBlueprint,
   [SGT_BRANCH] = mkOfferBranchUnit,
+  [SGT_LOOTBOX] = mkOfferLootbox,
 }
 
 function mkOffer(offer, onClick, state) {

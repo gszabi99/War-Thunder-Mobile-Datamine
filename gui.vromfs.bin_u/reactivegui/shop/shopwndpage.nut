@@ -6,7 +6,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, goodsLinks, subsGroups, shopId,
+let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, goodsLinks, subsGroups, curShopId,
   curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
   curShopSubsByCategory, curShopSoonGoodsByCategory, soonGoodsByShop, goodsIdsByShop
 } = require("%rGui/shop/shopState.nut")
@@ -170,7 +170,7 @@ let gamercardShopItemsBalanceBtns = @(items) {
     let category = curShopGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
       ?? curShopSoonGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
     if (category)
-      return openShopWnd(category, null, shopId.get())
+      return openShopWnd(category, null, curShopId.get())
     let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
     openShopWndByGoods(goods)
   }))
@@ -180,7 +180,7 @@ let mkShopGamercard = @(onClose) function() {
   let currencies = {}
   let items = {}
   local needShowPremium = false
-  let goodsIds = goodsIdsByShop.get()?[shopId.get()]
+  let goodsIds = goodsIdsByShop.get()?[curShopId.get()]
   foreach(goodsId in goodsIds?[curCategoryId.get()] ?? {}) {
     let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId] ?? soonGoodsByShop.get()?[goodsId]
     if(goods) {
@@ -200,7 +200,7 @@ let mkShopGamercard = @(onClose) function() {
   let orderItems = items.keys().sort(@(a,b)
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
   return {
-    watch = [ curCategoryId, shopId, activePersonalGoods, shopGoods, soonGoodsByShop ]
+    watch = [ curCategoryId, curShopId, activePersonalGoods, shopGoods, soonGoodsByShop ]
     size = [ saSize[0], gamercardHeight ]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER

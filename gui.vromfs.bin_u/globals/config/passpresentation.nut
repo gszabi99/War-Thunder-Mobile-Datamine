@@ -55,6 +55,10 @@ let epPresentations = {
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"
   }
+  event_april_2026 = {
+    bgColor = 0xFF999999
+    passWndCurrencies = [ APRILINTEL, APRILBOND ]
+  }
 }.map(@(c) defEpPresentation.__merge(c))
 
 let defNewbieBpPresentation = {

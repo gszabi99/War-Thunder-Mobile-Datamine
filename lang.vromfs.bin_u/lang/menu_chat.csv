@@ -55,7 +55,7 @@ Vuoi entrare in battaglia lo stesso?";"Spieler in Deiner Staffel haben Fahrzeuge
 Dies kann zu einer schlechten Spielqualität für Spieler mit einem niedrigeren Fahrzeugrang führen.
 Ziehst Du trotzdem in die Schlacht?";"Los jugadores de tu escuadrón han seleccionado vehículos con una gran diferencia de rango ({rankMin} y {rankMax}).
 Esto puede resultar en una mala calidad de juego para los jugadores con vehículos de menor rango.
-¿Ir a la batalla de todos modos?";"У игроков в вашем отряде выбрана техника с большой разницой рангов ({rankMin} и {rankMax}).
+¿Ir a la batalla de todos modos?";"У игроков в вашем отряде выбрана техника с большой разницей рангов ({rankMin} и {rankMax}).
 Это может привести к ухудшению качества игры для игроков с техникой меньшего ранга.
 Все равно идем в бой?";"Гравці вашої ланки вибрали техніку зі значною різницею в ранзі (від {rankMin} до {rankMax}).
 Це може призвести до погіршення ігрового досвіду для гравців із технікою нижчого рангу.
@@ -150,7 +150,7 @@ Try again later.";"조금 전에 다운로드를 요청했습니다.
 {addon} ({size})";"Chceš-li hrát v režimu {modeName}, velitel jednotky tě požádá o stažení {count=add-onu/add-onů/add-onů}:
 {addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
 {addon} ({size})";"Untuk bermain dalam mode {modeName}, pemimpin skuad memintamu untuk mengunduh {count=fitur tambahan}:
-{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on/add-ons}:
+{addon} ({size})";"To play in {modeName} mode, the squad leader asks you to download {count=add-on}:
 {addon} ({size})";"{modeName} 모드를 플레이하기 위해선 애드온을 다운받아야 합니다:
 {addon} ({size})";"游\t玩 {modeName} 模\t式\t需\t要\t额\t外\t下\t载 {count=\t附\t件}：
 {addon}\t（{size}）";"{modeName}モードで\tプレイするために、\t分隊長があなたに{count=アドオン}の\tダウンロードを\t求めています：\t

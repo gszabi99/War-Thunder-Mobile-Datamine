@@ -65,10 +65,10 @@ registerHandler("onShopGoodsPurchase",
       onGoodsError(res.error)
   })
 
-function purchaseGoodsImpl(goodsId, currencyId, price) {
+function purchaseGoodsImpl(goodsId, currencyId, price, count = 1) {
   if (shopPurchaseInProgress.get() != null)
     return "shopPurchaseInProgress"
-  buy_goods(goodsId, currencyId, price, 1, "onShopGoodsPurchase")
+  buy_goods(goodsId, currencyId, price, count, "onShopGoodsPurchase")
   return ""
 }
 
@@ -170,7 +170,7 @@ function mkLimitCountText(id, gType) {
   return $"{count}/{limit}"
 }
 
-function purchaseGoods(goodsId, description = "", locParam = null) {
+function purchaseGoods(goodsId, description = "", locParam = null, count = 1) {
   let personalGoods = activePersonalGoods.get()?[goodsId]
   if (personalGoods != null) {
     purchasePersonalGoods(personalGoods, personalGoodsToShopGoods(personalGoods))
@@ -186,7 +186,8 @@ function purchaseGoods(goodsId, description = "", locParam = null) {
   if (goods == null)
     return logShop($"ERROR: Goods not found: {goodsId}")
   let { price, currencyId } = applyDiscount(goods, discountsToApply.get()).price
-  let isPriceValid = price > 0 && currencyId != ""
+  let fullPrice = price * count
+  let isPriceValid = fullPrice > 0 && currencyId != ""
   if (!isPriceValid)
     return logShop("ERROR: Invalid price")
 
@@ -202,8 +203,8 @@ function purchaseGoods(goodsId, description = "", locParam = null) {
 
   let currencyFullId = currencyToFullId.get()?[currencyId] ?? currencyId
   function purchase() {
-    let errString = isOffer ? purchaseOfferImpl(goods, currencyFullId, price)
-      : purchaseGoodsImpl(goodsId, currencyFullId, price)
+    let errString = isOffer ? purchaseOfferImpl(goods, currencyFullId, fullPrice)
+      : purchaseGoodsImpl(goodsId, currencyFullId, fullPrice, count)
     if (errString != "")
       logShop($"ERROR: {errString}")
     if (isOffer)
@@ -218,7 +219,7 @@ function purchaseGoods(goodsId, description = "", locParam = null) {
       : description != ""
         ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
       : loc("shop/needMoneyQuestion", { item = textItem }),
-    price = { price, currencyId = currencyFullId },
+    price = { price = fullPrice, currencyId = currencyFullId },
     limitCountText,
     purchase,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(getGoodsType(goods)), $"pack {goods.id}")

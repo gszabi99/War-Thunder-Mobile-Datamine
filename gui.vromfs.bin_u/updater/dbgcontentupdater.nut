@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command  = @(_, __) null } = require_optional("console") 
 let { rnd_int, rnd_float } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
 let { eventbus_send } = require("eventbus")
@@ -80,6 +81,8 @@ let updateByStage = {
 
 setInterval(tick, @() updateByStage[state.stage](get_time_msec() - state.stageStartMsec))
 
+register_command(@(errId) sendEvent({ eventType = UPDATER_EVENT_ERROR, error = errId }), "debug.error")
+
 return {
   UPDATER_EVENT_STAGE
   UPDATER_EVENT_PROGRESS
@@ -91,6 +94,20 @@ return {
   UPDATER_CHECKING
   UPDATER_DOWNLOADING
   UPDATER_COPYING
+
+  UPDATER_ERROR = 0
+  UPDATER_ERROR_CONFIG = 1
+  UPDATER_ERROR_HTTP = 2
+  UPDATER_ERROR_FILE_ACCESS = 3
+  UPDATER_ERROR_DISK_SPACE = 4
+  UPDATER_ERROR_EXE_RUNNING = 5
+  UPDATER_ERROR_YUP = 6
+  UPDATER_ERROR_DISK = 7
+  UPDATER_ERROR_YUP_DOWNLOAD = 8
+  UPDATER_ERROR_UPDATE = 9
+  UPDATER_ERROR_ZIP = 10
+  UPDATER_ERROR_LOCK = 11
+  UPDATER_ERROR_NETWORK = 12
 
   get_progress_percent
   get_total_download_mb

@@ -7,6 +7,7 @@ let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { addPublisherToHeaders } = require("%appGlobals/curCircuitOverride.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
 let { currentSteamLanguage } = require("%appGlobals/clientState/languageState.nut")
@@ -113,7 +114,8 @@ let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
           stages = (u?.stages ?? []).map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
         }))
       }))
-let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks", null,
+let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks",
+  @() { headers = addPublisherToHeaders({}) },
   ["GrantRewards", "BuyUnlock", "BuyUnlockReroll", "OpenNextUnlockStage"])
 let statsUpdatable = makeUpdatable("stats", "GetStats",
   @() { data = hasStatsFilter.get() ? GET_STATS_FILTER : {} })

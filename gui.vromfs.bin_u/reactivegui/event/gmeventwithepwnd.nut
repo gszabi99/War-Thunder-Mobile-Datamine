@@ -1,12 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { registerScene, setSceneBg } = require("%rGui/navState.nut")
+let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { openedGMEvenPassCounter, closeGmEPWnd, curGmList, openedGMEvenPasstId, hasAccessCurGmEvent
 } = require("%rGui/event/gmEventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
+let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { defButtonHeight, COMMON } = require("%rGui/components/buttonStyles.nut")
 let { textButtonCommon, mkCustomButton, ICON_SIZE } = require("%rGui/components/textButton.nut")
@@ -21,9 +25,26 @@ let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { openPassScene } = require("%rGui/battlePass/passState.nut")
+let { setHangarUnitGroup, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
+let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
+let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 
 
 let headerGap = hdpx(30)
+
+let chosenUnitIdx = Watched(null)
+let isWndAttached = Watched(false)
+
+let bgUnits = Computed(@() gmEventPresentation(openedGMEvenPasstId.get()).bgUnits)
+let hasBgUnits = Computed(@() bgUnits.get() != null)
+let curEventBgImage = keepref(Computed(@() hasBgUnits.get() ? "" : eventBgImage.get()))
+
+let unitsToSetInHangar = keepref(Computed(@() isWndAttached.get() ? bgUnits.get() : null))
+unitsToSetInHangar.subscribe(@(v) v == null ? null
+  : chosenUnitIdx.set(setHangarUnitGroup(v, chosenUnitIdx.get() == null, chosenUnitIdx.get())))
+isMainMenuAttached.subscribe(@(v) v ? chosenUnitIdx.set(null) : null)
+registerAutoDownloadUnits(Computed(@() (unitsToSetInHangar.get() ?? []).reduce(@(res, u) res.$rawset(u, true), {})),
+  DLP_HIGH)
 
 let toBattleHint = @(text) {
   maxWidth = hdpx(550)
@@ -149,20 +170,38 @@ let footer = @() {
 }
 
 let wndKey = {}
-let gmEventWnd = {
+let gmEventWnd = @() {
+  watch = hasBgUnits
   key = wndKey
   size = flex()
   padding = saBordersRv
+
+  behavior = !hasBgUnits.get() ? null : HangarCameraControl
+  touchMarginPriority = TOUCH_BACKGROUND
+
   flow = FLOW_VERTICAL
   gap = headerGap
+
+  onAttach = @() isWndAttached.set(true)
+  onDetach = @() isWndAttached.set(false)
+
   children = [
     header
-    { size = flex() }
+    @() {
+      watch = [unitsToSetInHangar, hasHangarUnitResources]
+      size = flex()
+      valign = ALIGN_BOTTOM
+      halign = ALIGN_CENTER
+      children = unitsToSetInHangar.get() == null || hasHangarUnitResources.get() ? null
+        : downloadInfoBlock
+    }
     footer
   ]
   animations = wndSwitchAnim
 }
 
-registerScene("gmEventEPWnd", gmEventWnd, closeGmEPWnd, openedGMEvenPassCounter)
-setSceneBg("gmEventEPWnd", eventBgImage.get())
-eventBgImage.subscribe(@(v) setSceneBg("gmEventEPWnd", v))
+let sceneId = "gmEventEPWnd"
+registerScene(sceneId, gmEventWnd, closeGmEPWnd, openedGMEvenPassCounter)
+setSceneBgFallback(sceneId, eventBgFallback)
+setSceneBg(sceneId, curEventBgImage.get())
+curEventBgImage.subscribe(@(v) setSceneBg(sceneId, v))

@@ -2,14 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 let logR = log_with_prefix("[RESPAWN] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
+let { pow } = require("math")
 let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
   getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, selectRespawnBase
 } = require("guiRespawn")
 let { onSpectatorMode } = require("guiSpectator")
 let { getUnitFileName } = require("vehicleModel")
+let { get_user_custom_state, get_unit_spawn_type } = require("mission")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { blkOptFromPath, isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
@@ -19,6 +22,7 @@ let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitI
 let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { AIR, TANK } = require("%appGlobals/unitConst.nut")
 let { isInBattle, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
+let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -32,6 +36,7 @@ let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGu
 let { seenShells, SEEN_SHELLS } = require("%rGui/unitMods/unseenBullets.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
 let { decalsPenalty } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
+let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
 
 let unitListScrollHandler = ScrollHandler()
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.get()?.items[SPARE].count ?? 0)
@@ -43,6 +48,8 @@ let playerSelectedSlotIdx = mkWatched(persist, "playerSelectedSlotIdx", -1)
 let spawnUnitName = mkWatched(persist, "spawnUnitName", null)
 let selSlotContentGenId = Watched(0)
 let isBailoutDeserter = Watched(false)
+let numSpawnByType = Watched({})
+
 isRespawnStarted.subscribe(@(v) v ? null : spawnUnitName.set(null))
 
 let selectedSkins = Watched({})
@@ -71,6 +78,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     isCurrent = info?.isCurrent ?? false
     skins = info?.skins ?? {}
     hasDailyBonus = info?.hasDailyBonus ?? false
+    isFake = info?.isFake ?? false
   }
 
 let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
@@ -117,6 +125,20 @@ let hasUnseenShellsBySlot = Computed(@() respawnSlots.get().map(@(slot) slot?.is
       && (slot.level >= (v?.reqLevel ?? 0))
       && !(seenShells.get()?[slot.name][id] ?? false))))
 
+let isUseSpawnScore = Computed(@() !!hudCustomRules.get()?.useSpawnScore)
+
+let spawnScoreCosts = Computed(function() {
+  let { useSpawnScore = false, spawnCost = {}, spawnPow = 1.0 } = hudCustomRules.get()
+  if (!useSpawnScore)
+    return {}
+  return spawnCost.map(function(cost, name) {
+    let spawns = numSpawnByType.get()?[get_unit_spawn_type(name)] ?? 0
+    if (spawns <= 0)
+      return cost
+    return (cost * pow(1 + spawns, spawnPow)).tointeger()
+  })
+})
+
 function markShellsSeenInBattle(unitNameRaw, idsExt) {
   let unseen = hasUnseenShellsBySlot.get()?[selSlot.get().id]
   let ids = idsExt.filter(@(bName) unseen?[bName])
@@ -136,7 +158,14 @@ function markShellsSeenInBattle(unitNameRaw, idsExt) {
   eventbus_send("saveProfile", {})
 }
 
-let hasAvailableSlot = Computed(@() respawnsLeft.get() != 0 && respawnSlots.get().findvalue(@(s) s.canSpawn) != null)
+let hasAvailableSlot = Computed(function() {
+  let { useSpawnScore = false } = hudCustomRules.get()
+  if (!useSpawnScore)
+    return respawnsLeft.get() != 0 && respawnSlots.get().findvalue(@(s) s.canSpawn) != null
+  let costs = spawnScoreCosts.get()
+  return null != respawnSlots.get().findvalue(@(s) s.canSpawn && (costs?[s.name] ?? 0) <= mySpawnScore.get())
+})
+
 let needRespawnSlotsAndWeaponry = Computed(@() respawnSlots.get().len() > 1
   || (respawnSlots.get().len() == 1 && !isGtRace.get() &&
     (unitTypesRequireWeaponryChoice?[getUnitType(respawnSlots.get()[0].name)] ?? false)))
@@ -169,13 +198,32 @@ let curRespBase = Computed(@() playerSelectedRespBase.get() in availRespBases.ge
   ? playerSelectedRespBase.get() : -1)
 
 let updateRespawnBases = @() respawnBases.set(getFullRespawnBasesList())
+updateRespawnBases()
 
 eventbus_subscribe("on_mission_changed", @(...) updateRespawnBases())
+
+function getNumSpawnByType() {
+  let numSpawnByTypeBlk = get_user_custom_state(-1, false)?.numSpawnByType
+  if (!isDataBlock(numSpawnByTypeBlk))
+    return {}
+  let res = {}
+  eachParam(numSpawnByTypeBlk, @(v, k) res[k] <- v)
+  return res
+}
+
+function updateNumSpawnByType() {
+  let v = getNumSpawnByType()
+  if (!isEqual(numSpawnByType.get(), v))
+    numSpawnByType.set(v)
+}
+
+
 isRespawnAttached.subscribe(function(v) {
   if (!v)
     return
   updateRespawnBases()
   selectRespawnBase(curRespBase.get())
+  updateNumSpawnByType()
 })
 curRespBase.subscribe(@(v) isRespawnAttached.get() ? selectRespawnBase(v) : null)
 isInBattle.subscribe( function (v) {
@@ -327,6 +375,9 @@ return {
   isBailoutDeserter
   hasSkins
   needRespawnSlotsAndWeaponry
+
+  isUseSpawnScore
+  spawnScoreCosts
 
   respawn
   cancelRespawn

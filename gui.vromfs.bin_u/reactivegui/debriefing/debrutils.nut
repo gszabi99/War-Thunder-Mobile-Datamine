@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 function getLevelProgress(curLevelConfig, reward) {
   let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [] } = curLevelConfig
@@ -63,6 +64,16 @@ function getUnitsSet(debrData) {
     return [ unit ]
   
   return [ unit.__merge({ platoonUnits = [] }) ].extend(unit?.platoonUnits ?? [])
+}
+
+function getBgUnits(debrData) {
+  let unitSpawnsListWithExp = (debrData?.damageLogPlayers[debrData?.userId.tostring()].unitSpawnsList ?? {})
+    .map(@(_, uName) debrData?.reward.units.findvalue(@(u) getTagsUnitName(u.name) == uName).exp.totalExp ?? 0)
+  return getUnitsSet(debrData)
+    .sort(@(a, b) (unitSpawnsListWithExp?[b.name] ?? -1) <=> (unitSpawnsListWithExp?[a.name] ?? -1)
+      || b.mRank <=> a.mRank)
+    .map(@(u) getTagsUnitName(u.name))
+    .slice(0, 4)
 }
 
 function getUnit(unitName, debrData) {
@@ -195,6 +206,7 @@ return {
 
   isDebrWithUnitsResearch
   getBestUnitName
+  getBgUnits
   getUnitsSet
   getUnit
   getUnitRewards

@@ -31,6 +31,7 @@ const PROGRESS_QUEUE_PENALTY = "QueuePenaltyInProgress"
 const PROGRESS_SLOTS_UNITS = "CampaignSlotsInProgress"
 const PROGRESS_AD_BUDGET = "AdBudgetInProgress"
 const PROGRESS_ITEM_CONVERSION = "ItemConversionInProgress"
+const PROGRESS_SKIP_OFFER = "SkipOfferInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -262,6 +263,7 @@ return {
   campaignSlotsInProgress = mkProgress(PROGRESS_SLOTS_UNITS)
   adBudgetInProgress = mkProgress(PROGRESS_AD_BUDGET)
   ItemConversionInProgress = mkProgress(PROGRESS_ITEM_CONVERSION)
+  skipOfferInProgress = mkProgress(PROGRESS_SKIP_OFFER)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -663,11 +665,20 @@ return {
   skip_offer = @(campaign, cb = null) request({
     method = "skip_offer"
     params = { campaign }
+    progressId = PROGRESS_SKIP_OFFER
+    progressValue = ""
   }, cb)
 
   check_new_offer = @(campaign, cb = null) request({
     method = "check_new_offer"
     params = { campaign }
+  }, cb)
+
+  get_skip_offer_availability = @(campaign, cb = null) request({
+    method = "get_skip_offer_availability"
+    params = { campaign }
+    progressId = PROGRESS_SKIP_OFFER
+    progressValue = ""
   }, cb)
 
   buy_offer = @(campaign, offerId, currencyId, price, cb = null) request({
@@ -788,6 +799,13 @@ return {
   remove_all_skins_for_unit = @(unitName, cb = null) request({
     method = "remove_all_skins_for_unit"
     params = { unitName }
+    progressId = PROGRESS_SKINS
+    progressValue = unitName
+  }, cb)
+
+  add_unit_skin = @(unitName, skinName, cb = null) request({
+    method = "add_unit_skin_common"
+    params = { unitName, skinName }
     progressId = PROGRESS_SKINS
     progressValue = unitName
   }, cb)

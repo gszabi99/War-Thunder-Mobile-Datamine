@@ -64,7 +64,8 @@ function wndContent() {
           maxLevels = maxSlotLevels.get()
         },
         slotInProgress,
-        onClickPurchase))
+        onClickPurchase,
+        0xFF65BC82))
   })
 }
 

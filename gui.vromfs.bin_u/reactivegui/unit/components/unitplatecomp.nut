@@ -418,7 +418,8 @@ let function mkUnitFlag(unit, isLocked = false) {
 
 let unitPlateNameOvr = {
   size = FLEX_H
-  padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad * 2, 0, 0]
+  padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad, 0, plateTextsSmallPad]
+  margin = [0, plateTextsSmallPad, 0, 0]
   halign = ALIGN_RIGHT
   behavior = Behaviors.Marquee
   speed = hdpx(30)

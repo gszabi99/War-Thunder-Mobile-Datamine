@@ -8,10 +8,11 @@ let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { curCampaign, isCampaignWithUnitsResearch, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, hasUnseenGoodsByShop } = require("%rGui/shop/shopState.nut")
+let { openShopWnd, hasUnseenGoodsByShop, shopGoods } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
@@ -443,16 +444,27 @@ let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = ownHangarUnit) {
   ]
 }
 
+let hasAction = @(cId, goods) cId in openCfg
+  || goods.filter(@(g) g.rewards.len() == 1
+    && g.rewards[0].gType == G_CURRENCY
+    && g.rewards[0].id == cId).len() > 0
+
 let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
   size = FLEX_H
-  flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = !currencies ? null
+  children = @() {
+    watch = shopGoods
+    flow = FLOW_HORIZONTAL
+    halign = ALIGN_RIGHT
+    valign = ALIGN_CENTER
+    gap = gamercardGap
+    children = !currencies ? null
     : [].extend(currencies)
         .sort(@(a, b) sortByCurrencyId(b, a)) 
-        .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null : openBuyCurrencyWnd(c)))
+        .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] || !hasAction(c, shopGoods.get()) ? null
+          : openBuyCurrencyWnd(c)))
+  }
 }
 
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])

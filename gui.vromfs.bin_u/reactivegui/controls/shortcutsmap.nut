@@ -96,6 +96,25 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_ROCKETS = "J:A | X"
   ID_WTM_AIRCRAFT_TORPEDOES = "J:Y | C"
   ID_COUNTERMEASURES_FLARES = "J:LB J:A | Q"
+
+  
+  walker_steering_rangeMax = "A | Left"
+  walker_steering_rangeMin = "D | Right"
+  walker_throttle_rangeMax = "J:LS.Up | W | Up"
+  walker_throttle_rangeMin = "J:LS.Down | S | Down"
+
+  ID_FIRE_WALKER = "J:RT | Space"
+  ID_FIRE_WALKER_SECONDARY_GUN = "J:LB J:RB | L.Ctrl"
+  ID_FIRE_WALKER_SPECIAL_GUN = "J:LT | Z"
+  ID_FIRE_WALKER_MACHINE_GUN = "J:RB | X"
+
+  ID_WALKER_ACTION_BAR_ITEM_7 = "J:B | 1" 
+  ID_WALKER_ACTION_BAR_ITEM_9 = "J:A | 2" 
+  ID_WALKER_ACTION_BAR_ITEM_5 = "J:D.Down | 3" 
+  ID_WALKER_ACTION_BAR_ITEM_11 = "J:D.Left | 5" 
+  ID_WALKER_ACTION_BAR_ITEM_40 = "J:D.Left | 5" 
+  ID_WALKER_ACTION_BAR_ITEM_6 = "J:D.Up | 7" 
+  ID_WALKER_ACTION_BAR_ITEM_10 = "J:LB J:D.Right | Q" 
 }
 
 let gamepadAxes = {
@@ -123,6 +142,12 @@ let gamepadAxes = {
   elevator = JOY_XBOX_REAL_AXIS_R_THUMB_V
   turret_x = JOY_XBOX_REAL_AXIS_R_THUMB_H
   turret_y = JOY_XBOX_REAL_AXIS_R_THUMB_V
+
+  
+  walker_mouse_aim_x = JOY_XBOX_REAL_AXIS_R_THUMB_H
+  walker_mouse_aim_y = JOY_XBOX_REAL_AXIS_R_THUMB_V
+  walker_throttle = JOY_XBOX_REAL_AXIS_L_THUMB_V
+  walker_steering = JOY_XBOX_REAL_AXIS_L_THUMB_H
 }
 
 let imuAxes = {

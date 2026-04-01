@@ -27,6 +27,7 @@ let presentations = {
   season_29 = { color = 0xFF36B388 }
   season_30 = { color = 0xFFBC0022 }
   season_31 = { color = 0xFF8FDE16 }
+  season_32 = { color = 0xFFFE5D18 }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
@@ -52,6 +53,12 @@ let presentations = {
   event_april_2025             = {
     icon = "ui/gameuiskin#icon_event_april_2025.svg",
     bg = "ui/images/event_bg_event_april_2025.avif"
+  }
+  april_event_2026  = {
+    image = $"ui/gameuiskin/icon_event_april_2026_shop.avif",
+    icon = "ui/gameuiskin#icon_event_april_2026.svg",
+    bg = "ui/images/event_bg_event_april_2026.avif"
+    bgUnits = ["us_bulldog", "germ_trixter", "ussr_sht_1", "cn_victor"]
   }
   hot_may                      = {
     icon = "ui/gameuiskin#icon_event_hot_may.svg",
@@ -79,6 +86,7 @@ let presentations = {
     bg = "ui/images/event_bg_lunar_ny_2026.avif",
     gamercardItems = [ "firework_kit" ]
   }
+  aprilintel                   = { bg = "ui/images/event_bg_event_april_2026.avif" }
   halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
   valentinebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
   candybond                    = { bg = "ui/images/event_bg_valentine_day_2026.avif" }

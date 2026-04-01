@@ -7,6 +7,7 @@ let { controlsOptions } = require("%rGui/options/options/controlsOptions.nut")
 let { tankControlsOptions } = require("%rGui/options/options/tankControlsOptions.nut")
 let { shipControlsOptions } = require("%rGui/options/options/shipControlsOptions.nut")
 let { airControlsOptions } = require("%rGui/options/options/airControlsOptions.nut")
+let { walkerControlsOptions } = require("%rGui/options/options/walkerControlsOptions.nut")
 let { systemOptions } = require("%rGui/options/options/systemOptions.nut")
 let { gameOptions } = require("%rGui/options/options/gameOptions.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
@@ -46,6 +47,11 @@ let tabs = [
         locId = "options/airControls"
         image = "ui/gameuiskin#unit_air.svg"
         options = airControlsOptions
+      }
+      {
+        locId = "options/walkerControls"
+        image = "ui/gameuiskin#unit_walker.svg"
+        options = walkerControlsOptions
       }
     ]
   }

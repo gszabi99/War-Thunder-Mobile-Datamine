@@ -723,6 +723,26 @@
       ]
     },
     {
+      "hangarPlace": "walker",
+      "modelPos": [
+        473.4,
+        139.6,
+        3602.11
+      ],
+      "modelRotation": -26.5,
+      "unitOffset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "cameraEllipsoidWeights": [
+        0.3,
+        0.0,
+        0.0,
+        0.9
+      ]
+    },
+    {
       "hangarPlace": "hydroplane",
       "modelPos": [
         2927.2,

@@ -23,6 +23,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { inactiveLootboxes } = require("%rGui/event/eventLootboxes.nut")
 
 
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
@@ -228,16 +229,25 @@ let buyEventCurrenciesHeader = @() {
   text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))
 }.__update(fontBig)
 
-let buyEventCurrenciesDesc = @() {
-  watch = [currencyId, currencySeasons]
-  size = [saSize[0], SIZE_TO_CONTENT]
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  text = getCurrencyConvertInfo(currencySeasons.get()?[currencyId.get()].convertion.currencyId ?? "")
-}.__update(fontMedium)
+let hasLootboxesForConvertion = @(cId, inactLootboxes, servConfigs) !!servConfigs?.lootboxesCfg
+  .findvalue(@(v, id) (id not in inactLootboxes) && v.currencyId == cId)
+
+let buyEventCurrenciesDesc = function() {
+  let convertionCurrencyId = currencySeasons.get()?[currencyId.get()].convertion.currencyId ?? ""
+  return {
+    watch = [currencyId, currencySeasons, inactiveLootboxes, serverConfigs]
+    size = [saSize[0], SIZE_TO_CONTENT]
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    text = convertionCurrencyId == ""
+        && !hasLootboxesForConvertion(currencyId.get(), inactiveLootboxes.get(), serverConfigs.get())
+      ? null
+      : getCurrencyConvertInfo(convertionCurrencyId)
+  }.__update(fontMedium)
+}
 
 let buyEventCurrenciesGamercard = @() {
   watch = currencyId

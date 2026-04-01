@@ -513,7 +513,7 @@
     },
     "ammo_body": {},
     "ammo_body_NN": {
-      "template": "ammo_body_#60#"
+      "template": "ammo_body_#90#"
     },
     "ammo_body_l_NN": {
       "template": "ammo_body_l_#22#"

@@ -60,10 +60,28 @@ function actualizeSquadQueueOnce() {
   queueDataCheckTime.set(serverTime.get())
 }
 
+function findFirstGameMode(allGms, queueParams) {
+  let { mode = null, game_modes_list = null } = queueParams
+  if (mode != null)
+    return allGms?.findvalue(@(m) m.name == mode)
+  if (game_modes_list != null)
+    return allGms?[game_modes_list.findvalue(@(id) id in allGms)]
+  return null
+}
+
+function isModeInParams(modeName, allGms, queueParams) {
+  let { mode = null, game_modes_list = null } = queueParams
+  if (mode != null)
+    return modeName == mode
+  if (game_modes_list != null)
+    return null != game_modes_list.findvalue(@(id) allGms?[id].name == modeName)
+  return false
+}
+
 function tryWriteMembersData() {
   let playersUpd = {}
   let campaign = squadLeaderCampaign.get()
-  let curGm = allGameModes.get()?.findvalue(@(m) m.name == curQueue.get()?.params.mode)
+  let curGm = findFirstGameMode(allGameModes.get(), curQueue.get()?.params)
   let { penaltyId = "" } = curGm?.mission_decl
 
   foreach(uid, m in squadMembers.get()) {
@@ -123,7 +141,7 @@ let queueSteps = {
   },
 
   [QS_CHECK_PENALTY] = function() {
-    let curGm = allGameModes.get()?.findvalue(@(m) m.name == curQueue.get()?.params.mode)
+    let curGm = findFirstGameMode(allGameModes.get(), curQueue.get()?.params)
     let { penaltyId = "" } = curGm?.mission_decl
     let byMissionPenaltyId = penaltyId != ""
     if (!byMissionPenaltyId && curGm?.campaign == null)
@@ -244,12 +262,17 @@ matching.subscribe("match.notify_queue_join", function(params) {
     curQueue.set({ state = QS_IN_QUEUE, params })
     return
   }
-  if (curQueue.get().params?.mode != params?.mode)
+  let { mode = "" } = params
+  if (!isModeInParams(mode, allGameModes.get(), curQueue.get().params))
     return
-  curQueue.mutate(@(v) v.__update({
-    state = QS_IN_QUEUE,
-    joinedClusters = (v?.joinedClusters ?? {}).__merge({ [params?.cluster ?? ""] = true })
-  }))
+  curQueue.mutate(function(v) {
+    let { cluster = "" } = params
+    let joinedClusters = clone (v?.joinedClusters ?? {})
+    let joinedCur = clone (joinedClusters?[cluster] ?? {})
+    joinedCur[mode] <- true
+    joinedClusters[cluster] <- joinedCur
+    v.__update({ state = QS_IN_QUEUE, joinedClusters })
+  })
 })
 
 matching.subscribe("match.notify_queue_leave", function(params) {
@@ -262,7 +285,8 @@ matching.subscribe("match.notify_queue_leave", function(params) {
     return
   }
 
-  if (curQueue.get().params?.mode != params?.mode)
+  let { mode = "" } = params
+  if (!isModeInParams(mode, allGameModes.get(), curQueue.get().params))
     return
 
   let { joinedClusters = {} } = curQueue.get()
@@ -270,14 +294,20 @@ matching.subscribe("match.notify_queue_leave", function(params) {
     destroyQueue()
     return
   }
-  if (cluster not in joinedClusters)
+  let clusterModes = joinedClusters?[cluster] ?? {}
+  if (mode not in clusterModes)
     return
-  if (joinedClusters.len() == 1)
+  if (clusterModes.len() == 1 && joinedClusters.len() == 1)
     destroyQueue() 
   else
     curQueue.mutate(function(v) {
       let newClusters = clone joinedClusters
-      newClusters.$rawdelete(cluster)
+      if (clusterModes.len() == 1)
+        newClusters.$rawdelete(cluster)
+      else {
+        newClusters[cluster] = clone clusterModes
+        newClusters[cluster].$rawdelete(mode)
+      }
       v.joinedClusters = newClusters
     })
 })

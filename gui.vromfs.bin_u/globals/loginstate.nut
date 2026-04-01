@@ -7,6 +7,7 @@ let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/init
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 let { isHMSAvailable = @() false } = require("android.account.huawei")
 let { getBuildMarket = @() "googleplay" } = require("android.platform")
+let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
 
 let LOGIN_STATE = { 
   
@@ -94,7 +95,9 @@ if (is_ios) {
 } else if (is_android) {
   if (isOnlyGuestLogin)
     availableLoginTypes = { [loginTypes.LT_FIREBASE] = true }
-  else
+  else if (isExternalOperator()) {
+     availableLoginTypes[loginTypes.LT_FIREBASE] <- true
+  } else
     availableLoginTypes.__update({
       [loginTypes.LT_GOOGLE] = isGoogleBuild,
       [loginTypes.LT_FIREBASE] = true,

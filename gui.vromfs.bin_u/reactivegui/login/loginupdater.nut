@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_base_game_version_str } = require("app")
 let { UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
 } = require("contentUpdater")
+let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
 let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
 let { updaterState } = require("%rGui/login/loginUpdaterState.nut")
 let { gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
@@ -30,7 +31,7 @@ let statusByStage = {
 
 let statusText = Computed(function() {
   let { stage = null, errorCode = null } = updaterState.get()
-  return errorCode != null ? loc($"updater/error/{errorCode}")
+  return errorCode != null ? loc($"updater/error/{getErrorName(errorCode)}")
     : stage != null ? (statusByStage?[stage] ?? defaultStatusText)(updaterState.get())
     : ""
 })

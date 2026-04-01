@@ -132,7 +132,7 @@ let onClick = @(quests) addModalWindow(bgShaded.__merge({
               }
             ]
           }})
-      }, { size = [SIZE_TO_CONTENT, saSize[1] - wndHeaderHeight], isBarOutside = true })
+      }, { size = SIZE_TO_CONTENT, maxHeight = saSize[1] - wndHeaderHeight, isBarOutside = true })
     ]
   })
   animations = wndSwitchAnim

@@ -172,6 +172,14 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   return true
 }
 
+function getAllModeIds(economicName) {
+  let res = []
+  foreach (id, gm in allGameModes.get())
+    if (gm?.economicName == economicName)
+      res.append(id)
+  return res
+}
+
 function queueToGameModeImpl(mode) {
   if (isInQueue.get())
     return
@@ -250,7 +258,8 @@ function queueToGameModeImpl(mode) {
 
   
   
-  joinQueue({ mode = mode.name })
+  let modeList = getAllModeIds(mode?.economicName ?? mode.name)
+  joinQueue(modeList.len() <= 1 ? { mode = mode.name } : { game_modes_list = modeList })
 }
 
 function queueModeOnRandomUnit(mode) {

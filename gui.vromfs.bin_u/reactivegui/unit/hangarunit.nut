@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 require("%rGui/onlyAfterLogin.nut")
+let logH = log_with_prefix("[HANGAR] ")
 let DataBlock = require("DataBlock")
 let { set_weapon_visual_custom_blk, apply_skin_decals_blk, set_default_skin_decals } = require("unitCustomization")
 let { eventbus_subscribe } = require("eventbus")
@@ -146,8 +147,8 @@ let hangarUnitSkin = Computed(@() hangarUnitData.get()?.skin
   ?? hangarUnit.get()?.currentSkins[hangarUnit.get()?.name]
   ?? (hangarUnit.get()?.isUpgraded ? "upgraded" : ""))
 
-let downloadUnitNames = Computed(@() hangarUnit.get() == null ? []
-  : [hangarUnit.get().name].extend(hangarBgUnits.get().map(@(s) (s.name))))
+let downloadUnitNames = Computed(@() hangarUnitName.get() == null ? []
+  : [hangarUnitName.get()].extend(hangarBgUnits.get().map(@(s) (s.name))))
 let hasHangarUnitResources = mkHasUnitsResources(downloadUnitNames)
 let canReloadModel = keepref(Computed(@() !isInBattle.get() && !isInLoadingScreen.get()))
 
@@ -243,8 +244,9 @@ isInMpSession.subscribe(function(v) {
 })
 
 function reloadAllBgModels() {
-  change_background_models_list_with_skin(getTagsUnitName(hangarUnitName.get()),
-    hasHangarUnitResources.get() ? hangarBgUnits.get() : [])
+  let unitsList = hasHangarUnitResources.get() ? hangarBgUnits.get() : []
+  logH("load hangar bg units: ", unitsList.map(@(v) v.name))
+  change_background_models_list_with_skin(getTagsUnitName(hangarUnitName.get()), unitsList)
 }
 
 function loadBGModels() {
@@ -282,6 +284,7 @@ function loadBGModels() {
   if (changedIdx == null)
     return
 
+  logH($"Change one hangar bg unit from {wasBgUnits[changedIdx].name} to {bgUnits[changedIdx].name}")
   change_one_background_model_with_skin(wasBgUnits[changedIdx].name, bgUnits[changedIdx].name, bgUnits[changedIdx].skin)
 }
 deferOnce(loadBGModels)
@@ -298,13 +301,20 @@ let setHangarUnit = @(unitName) hangarUnitData.set({ name = unitName ?? "" })
 
 let setHangarUnitWithSkin = @(name, skin) hangarUnitData.set({ name, skin })
 
-function setHangarUnitGroup(unitList, needRandomize) {
+function selectMainUnitIdx(bgUnits, needRandomize, chosenIdx) {
+  if (chosenIdx == null)
+    return needRandomize ? rnd_int(0, bgUnits.len() - 1) : 0
+  return chosenIdx < bgUnits.len() ? chosenIdx : rnd_int(0, bgUnits.len() - 1)
+}
+
+function setHangarUnitGroup(unitList, needRandomize, chosenIdx = null) {
   if (unitList.len() == 0)
-    return
+    return null
   let bgUnits = clone unitList
-  let mainIdx = needRandomize ? rnd_int(0, bgUnits.len() - 1) : 0
+  let mainIdx = selectMainUnitIdx(bgUnits, needRandomize, chosenIdx)
   let main = bgUnits.remove(mainIdx)
   hangarUnitData.set({ name = main, bgUnits })
+  return mainIdx
 }
 
 function setCustomHangarUnit(customUnit) {

@@ -10,6 +10,8 @@ let { raceLeadershipEditView, raceLeadershipCtor } = require("%rGui/hud/raceLead
 let { optFontSize, optTextWidth } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
 let { isCTFProgressType, isNotCTFProgressType } = require("%rGui/hud/missionScoreState.nut")
+let { spawnScoreEditView, hudSpawnScoreCtor } = require("%rGui/respawn/spawnScore.nut")
+let { isUseSpawnScore } = require("%rGui/respawn/respawnState.nut")
 
 
 return {
@@ -38,6 +40,15 @@ return {
     hideForDelayed = false
     isVisibleInBattle = isNotCTFProgressType
     isVisibleInEditor = isNotCTFProgressType
+  }
+
+  spawnScore = {
+    ctor = hudSpawnScoreCtor
+    defTransform = mkCTPos([hdpx(170), hdpx(42)])
+    editView = spawnScoreEditView
+    hideForDelayed = false
+    isVisibleInBattle = isUseSpawnScore
+    isVisibleInEditor = isUseSpawnScore
   }
 
   eventMissionMessageBox = {

@@ -15,12 +15,13 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let { isGtRace } = require("%rGui/missionState.nut")
+let { currentTankMoveCtrlType, currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 
 
 const SAVE_ID = "hudTuning"
 const MAX_HISTORY_LEN = 200
 const VERSION = 2
-let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE, SAILBOAT]
+let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE, SAILBOAT, WALKER]
   .reduce(@(res, v) res.__update({ [v] = true }), {})
 
 let tuningUnitType = mkWatched(persist, "tuningUnitType", null)
@@ -62,6 +63,8 @@ let mkEmptyTuningState = @() { transforms = {}, options = {} }
 
 selectedId.subscribe(@(v) v != null ? isAllElemsOptionsOpened.set(false) : null)
 isAllElemsOptionsOpened.subscribe(@(v) v ? selectedId.set(null) : null)
+currentTankMoveCtrlType.subscribe(@(v) isTuningOpened.get() ? selectedId.set(v == "arrows" ? "moveArrows" : "moveStick") : null)
+currentWalkerMoveCtrlType.subscribe(@(v) isTuningOpened.get() ? selectedId.set(v == "arrows" ? "moveArrows" : "moveStick") : null)
 
 let isCurPresetChanged = Computed(function() {
   let ut = tuningUnitType.get()

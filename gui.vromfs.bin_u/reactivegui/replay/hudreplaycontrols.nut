@@ -18,6 +18,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { genBotDecorators } = require("%appGlobals/botUtils.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { textColor, selectColor, premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
@@ -81,16 +82,16 @@ let replayTimeProgress = Computed(@() (replayTimeTotal.get() > 0)
   ? ((100 * replayCurrentTimeRounded.get()) / replayTimeTotal.get()).tointeger()
   : 0)
 
+let replayAnchorsCount = Computed(@() replayAnchors.get().len())
 let curAnchorIdx = Computed(function() {
-  let count = replayAnchors.get().len()
-  if (count == 0)
+  if (replayAnchorsCount.get() == 0)
     return -1
-  return (replayAnchors.get().findindex(@(v) v > (replayCurrentTimeRounded.get() * 1000)) ?? count) - 1
+  return (replayAnchors.get().findindex(@(v) v > (replayCurrentTimeRounded.get() * 1000)) ?? replayAnchorsCount.get()) - 1
 })
 
 function moveToNextAnchor(directionIdx) {
-  let nextIdx = curAnchorIdx.get() + directionIdx
-  if (nextIdx < 0 || nextIdx >= replayAnchors.get().len())
+  let nextIdx = curAnchorIdx.get() + directionIdx < 0 ? 0 : curAnchorIdx.get() + directionIdx
+  if (nextIdx >= replayAnchorsCount.get())
     return
 
   move_to_anchor(nextIdx)
@@ -102,7 +103,8 @@ let replayVideoControlsList = [
     img = "ui/gameuiskin#replay_forward.svg"
     locId = "mainmenu/replay/nav/prev"
     iconOvr = { transform = { rotate = 180 } }
-    isDisabled = Computed(@() curAnchorIdx.get() < 0)
+    isLocked = Computed(@() curAnchorIdx.get() < 0)
+    isHidden = Computed(@() replayAnchorsCount.get() == 0)
     cb = @() moveToNextAnchor(-1)
   },
   {
@@ -127,7 +129,8 @@ let replayVideoControlsList = [
     shortcutId = ""
     img = "ui/gameuiskin#replay_forward.svg"
     locId = "mainmenu/replay/nav/next"
-    isDisabled = Computed(@() curAnchorIdx.get() + 1 >= replayAnchors.get().len())
+    isLocked = Computed(@() curAnchorIdx.get() + 1 >= replayAnchorsCount.get())
+    isHidden = Computed(@() replayAnchorsCount.get() == 0)
     cb = @() moveToNextAnchor(1)
   }
 ]
@@ -253,31 +256,35 @@ function mkReplayAnchorMarker(anchorMs, idx) {
 }
 
 function mkOptBtn(opt, onClick, ovr = {}) {
-  let { img = "", locId = "", activeImg = null, iconOvr = {}, isActive = Watched(false), isDisabled = Watched(false) } = opt
+  let { img = "", locId = "", activeImg = null, iconOvr = {}, isActive = Watched(false), isDisabled = Watched(false),
+    isLocked = Watched(false), isHidden = Watched(false) } = opt
   let stateFlags = Watched(0)
   let key = {}
 
   return @() {
-    watch = [stateFlags, isActive, isDisabled]
-    key
-    size = optBtnSize
-    behavior = Behaviors.Button
-    rendObj = ROBJ_BOX
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    opacity = isDisabled.get() ? 0.5 : 1
-    children = {
-      size = optImgSize
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{isActive.get() ? (activeImg ?? img) : img}:{optImgSize}:{optImgSize}:P")
-      keepAspect = true
-      color = textColor
-    }.__update(iconOvr)
-    onElemState = @(sf) stateFlags.set(sf)
-    sound = { click = "click" }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }.__update(mkButtonHoldTooltip(onClick, stateFlags, key, @() { content = loc(locId) }), ovr)
+    watch = [stateFlags, isActive, isDisabled, isLocked, isHidden]
+    children = isHidden.get() ? null
+      : {
+          key
+          size = optBtnSize
+          behavior = Behaviors.Button
+          rendObj = ROBJ_BOX
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          opacity = isDisabled.get() || isLocked.get() ? 0.5 : 1
+          children = {
+            size = optImgSize
+            rendObj = ROBJ_IMAGE
+            image = Picture($"{isActive.get() ? (activeImg ?? img) : img}:{optImgSize}:{optImgSize}:P")
+            keepAspect = true
+            color = textColor
+          }.__update(iconOvr)
+          onElemState = @(sf) stateFlags.set(sf)
+          sound = { click = "click" }
+          transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
+          transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+        }.__update(mkButtonHoldTooltip(isLocked.get() ? @() null : onClick, stateFlags, key, @() { content = loc(locId) }), ovr)
+  }
 }
 
 function handleOptClick(opt) {
@@ -298,7 +305,7 @@ function handleOptClick(opt) {
 }
 
 let replayProgressBar = @() {
-  watch = [replayTimeProgress, replayAnchors, replayTimeTotal]
+  watch = [replayTimeProgress, replayAnchors, replayTimeTotal, replayAnchorsCount]
   size = [flex(), hdpx(10)]
   rendObj = ROBJ_BOX
   fillColor = textColor
@@ -308,12 +315,13 @@ let replayProgressBar = @() {
       rendObj = ROBJ_SOLID
       color = selectColor
     }
-    {
-      size = flex()
-      children = replayAnchors.get()
-        .map(mkReplayAnchorMarker)
-        .filter(@(v) v != null)
-    }
+    replayAnchorsCount.get() == 0 ? null
+      : {
+          size = flex()
+          children = replayAnchors.get()
+            .map(mkReplayAnchorMarker)
+            .filter(@(v) v != null)
+        }
   ]
 }
 
@@ -358,8 +366,9 @@ function mkUnitName(player, halign) {
     let { allUnits = {} } = serverConfigs.get()
     let unitName = player.aircraftName
     let realUnitName = $"{getTagsUnitName(unitName)}_nc"
+    let unitTags = getUnitTagsCfg(unitName)
 
-    return allUnits?[unitName] ?? allUnits?[realUnitName]
+    return allUnits?[unitName] ?? allUnits?[realUnitName] ?? unitTags.__merge({ name = unitName })
   })
 
   return @() {

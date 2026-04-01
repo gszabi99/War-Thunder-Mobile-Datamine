@@ -6,6 +6,7 @@ let { isInFlight } = require("%rGui/globalState.nut")
 let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let tankHudTouch = require("%rGui/hud/tankHudTouch.nut")
+let walkerHudTouch = require("%rGui/hud/walkerHudTouch.nut")
 let { aircraftHud, aircraftHudElemsOverShade, aircraftOnTouchBegin, aircraftOnTouchEnd } = require("%rGui/hud/aircraftHudTouch.nut")
 let submarineHudTouch = require("%rGui/hud/submarineHudTouch.nut")
 let cutsceneHud = require("%rGui/hud/cutsceneHud.nut")
@@ -34,6 +35,7 @@ let hudByUnitType = {
   [SUBMARINE] = submarineHudTouch,
   [TANK] = tankHudTouch,
   [SAILBOAT] = shipHudTouch,
+  [WALKER] = walkerHudTouch,
 }
 
 let onTouchBeginByUnitType = {

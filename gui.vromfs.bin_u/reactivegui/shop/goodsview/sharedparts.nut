@@ -10,7 +10,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, HAS_UPGRADE, IS_ACTIVE, LIMIT_REACHED
 } = require("%rGui/shop/goodsStates.nut")
-let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
+let { getAdjustedPriceInfo, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
 let { discountsToApply } = require("%rGui/shop/discounts.nut")
 let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
@@ -575,10 +575,8 @@ function mkSubsPricePlate(subs, state, animParams = null) {
 let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = Watched(true)) Computed(function() {
   if (!isPurchaseFull.get())
     return false
-  let { time = 0, count = 0 } = goodsLimitReset.get()?[id]
-  let limitInc = getDay(time, dayOffset.get()) == serverTimeDay.get() ? count : 0
-  return (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit + limitInc)
-    && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit + limitInc)
+  return canPurchaseGoods(id, limit, dailyLimit,
+    goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get())
 })
 
 let mkCanShowTimeProgress = @(goods) Computed(function() {

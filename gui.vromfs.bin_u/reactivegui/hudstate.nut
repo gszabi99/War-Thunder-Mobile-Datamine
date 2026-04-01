@@ -60,6 +60,7 @@ let nativeToUnitType = {
   tank = TANK
   ship = SHIP
   shipEx = SUBMARINE
+  walker = WALKER
 }
 
 let nativeUnitType = hudStateNative.unitType

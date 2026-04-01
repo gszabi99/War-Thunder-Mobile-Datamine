@@ -43,37 +43,34 @@ function addSupportUnits(resTbl) {
   return resTbl
 }
 
-function getSubTable(mainTbl, key) {
-  if (key not in mainTbl)
-    mainTbl[key] <- {}
-  return mainTbl[key]
-}
+local killStreakUnitsByRank = {} 
+function getKillStreakUnitsByRank(preset = "") {
+  if (preset in killStreakUnitsByRank)
+    return killStreakUnitsByRank[preset]
 
-local killStreakUnitsByRank = null 
-function getKillStreakUnitsByRank() {
-  if (killStreakUnitsByRank != null)
-    return killStreakUnitsByRank
-
-  let res = {}
+  let res = []
   let gameplayBlk = DataBlock()
   gameplayBlk.tryLoad("config/gameplay.blk") 
-  let { killStreaksUnits = null } = gameplayBlk
+
+  let unitsBlockId = gameplayBlk?[preset].units ?? "killStreaksUnits"
+  let killStreaksUnits = gameplayBlk?[unitsBlockId]
   if (isDataBlock(killStreaksUnits)) {
     let tagsBlk = get_unittags_blk()
     eachBlock(killStreaksUnits, function(blk) {
       let { name = "", rankRange = null } = blk
       if (name not in tagsBlk || rankRange == null)
         return
-      let tag = blk.getBlockName()
-      let from = max(1, rankRange.x)
-      let to = min(30, rankRange.y)
-      for (local r = from; r <= to; r++)
-        getSubTable(getSubTable(res, r), tag)[name] <- true
+      res.append({
+        name
+        tag = blk.getBlockName()
+        rankFrom = rankRange.x
+        rankTo = rankRange.y
+      })
     })
   }
 
-  killStreakUnitsByRank = freeze(res)
-  return killStreakUnitsByRank
+  killStreakUnitsByRank[preset] <- freeze(res)
+  return killStreakUnitsByRank[preset]
 }
 
 function appendActionsUnits(resTbl, blk) {
@@ -131,13 +128,28 @@ let getMissionUnitsAndAddons = memoize(function getMissionUnitsImpl(missionId) {
   })
 })
 
-function getKillStreakUnits(mRankFrom, mRankTo) {
-  let all = getKillStreakUnitsByRank()
+function getKillStreakUnits(preset, mRankFrom, mRankTo) {
+  let all = getKillStreakUnitsByRank(preset)
   let res = {}
-  for (local i = mRankFrom; i <= mRankTo; i++)
-    foreach (list in all?[i] ?? {})
-      res.__update(list)
+  foreach (c in all)
+    if (c.rankFrom <= mRankTo && c.rankTo >= mRankFrom)
+      res[c.name] <- true
   return res
+}
+
+function getHighestRankRange(mode, mRankFrom, mRankTo) {
+  let { mmRanges = [] } = mode?.matchmaking
+  local from = mRankTo
+  local to = mRankTo
+  foreach (r in mmRanges) {
+    if (r.len() < 2)
+      continue
+    if (mRankFrom >= r[0] && mRankFrom <= r[1])
+      from = max(from, r[1])
+    if (mRankTo >= r[0] && mRankTo <= r[1])
+      to = max(to, r[1])
+  }
+  return { from, to }
 }
 
 function getMGameModeMissionUnitsAndAddons(mode, mRankFrom, mRankTo) {
@@ -166,8 +178,10 @@ function getMGameModeMissionUnitsAndAddons(mode, mRankFrom, mRankTo) {
     resAddons.__update(misAddons)
   }
 
-  if (mission_decl?.useKillStreaks ?? useKillStreaksMision)
-    resUnits.__update(getKillStreakUnits(mRankFrom, mRankTo))
+  if (mission_decl?.useKillStreaks ?? useKillStreaksMision) {
+    let { from, to } = getHighestRankRange(mode, mRankFrom, mRankTo)
+    resUnits.__update(getKillStreakUnits(mission_decl?.nameKillStreaks ?? "", from, to))
+  }
 
   let tagsBlk = get_unittags_blk()
   return {

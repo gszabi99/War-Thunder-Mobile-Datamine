@@ -318,6 +318,42 @@
       "material": "wood"
     },
     {
+      "name": "storage_gsm_fuel_tank_horizontal_b",
+      "destroyedModelName": "storage_gsm_fuel_tank_horizontal_b_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "material": "metal"
+    },
+    {
+      "name": "box_pile_a",
+      "destroyedModelName": "box_pile_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    {
+      "name": "box_pile_b",
+      "destroyedModelName": "box_pile_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    {
+      "name": "coil_cable_a",
+      "destroyedModelName": "coil_cable_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_dust_stucco"
+    },
+    {
+      "name": "cable_coil_tool_a",
+      "destroyedModelName": "cable_coil_tool_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "isParent": true
+    },
+    {
       "name": "debris_trash_concrete_a",
       "destroyedModelName": "debris_trash_concrete_a_destr_phobj",
       "destructionImpulse": 40000.0,

@@ -37,9 +37,9 @@ let customLootboxImages = {
   event_special_gift_ships_anniversary_2025      = "event_anniversary_gift_box.avif"
   event_special_gift_air_anniversary_2025        = "event_anniversary_gift_box.avif"
 
-  event_special_tanks_april_fools_2025      = "event_special_ships_april_2025.avif"
-  event_special_ships_april_fools_2025      = "event_special_ships_april_2025.avif"
-  event_special_air_april_fools_2025        = "event_special_ships_april_2025.avif"
+  april_event_2026_tanks      = "event_special_april_event_2026.avif"
+  april_event_2026_ships      = "event_special_april_event_2026.avif"
+  april_event_2026_air        = "event_special_april_event_2026.avif"
 
   operation_pass_infinite_lootbox_tanks           = "battle_pass_infinite_lootbox.avif"
   operation_pass_infinite_lootbox_ships           = "battle_pass_infinite_lootbox.avif"
@@ -131,6 +131,10 @@ let customRouletteImages = {
   event_special_ships_april_fools_2025 = "ui/images/event_bg_roulette_event_april_2025.avif"
   event_special_air_april_fools_2025   = "ui/images/event_bg_roulette_event_april_2025.avif"
 
+  april_event_2026_tanks = "ui/images/event_bg_event_april_2026.avif"
+  april_event_2026_ships = "ui/images/event_bg_event_april_2026.avif"
+  april_event_2026_air   = "ui/images/event_bg_event_april_2026.avif"
+
   event_special_gift_tanks_anniversary_2025 = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
   event_special_gift_ships_anniversary_2025 = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
   event_special_gift_air_anniversary_2025   = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
@@ -177,6 +181,10 @@ let lootboxPreviewBg = {
 
   valentine_day_candy_lootbox                      = "ui/images/event_bg_valentine_day_2026.avif"
   valentine_day_extra_reward_lootbox               = "ui/images/event_bg_valentine_day_2026.avif"
+
+  april_event_2026_tanks = "ui/images/event_bg_event_april_2026.avif"
+  april_event_2026_ships = "ui/images/event_bg_event_april_2026.avif"
+  april_event_2026_air   = "ui/images/event_bg_event_april_2026.avif"
 }
 
 let defEventLootboxScaleBySlot = {
@@ -186,10 +194,17 @@ let defEventLootboxScaleBySlot = {
 }
 
 let eventLootboxScale = {
+  ["battle_pass_infinite_lootbox.avif"] = 0.8,
+  ["lucky_box.avif"] = 0.8,
+  ["guaranteed_box.avif"] = 0.8,
+  ["every_day_award_medium_pack.avif"] = 0.5,
+  ["every_day_award_big_pack_1.avif"] = 0.8,
+  ["every_day_award_big_pack_2.avif"] = 0.9,
   event_special_tanks_anniversary_2024 = 1.2,
   event_special_ships_anniversary_2024 = 1.2,
   ["event_ships_big_season_25.avif"] = 1.2,
   ["event_ships_big_season_31.avif"] = 1.25,
+  ["event_special_april_event_2026.avif"] = 1.5,
 }
 
 let eventLootboxShiftPos = {

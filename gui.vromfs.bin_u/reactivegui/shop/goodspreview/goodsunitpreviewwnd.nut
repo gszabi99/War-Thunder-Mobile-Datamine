@@ -495,11 +495,10 @@ function leftBlockEarlyAccess() {
 
 let rightBlock = {
   size = flex()
-  flow = FLOW_VERTICAL
-  gap = verticalGap
   children = [
     {
       size = [flex(), maxInfoPanelHeight]
+      vplace = ALIGN_TOP
       children = unitInfoPanel({
         maxHeight = maxInfoPanelHeight
         padding = const [hdpx(30), hdpx(30), hdpx(20), hdpx(30)]
@@ -512,7 +511,6 @@ let rightBlock = {
       animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
     }
     {
-      size = FLEX_V
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       children = mkPriceWithTimeBlock(aTimePriceStart, skipOfferBtn)

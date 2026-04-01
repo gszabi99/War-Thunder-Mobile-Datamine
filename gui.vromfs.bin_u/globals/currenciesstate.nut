@@ -12,6 +12,7 @@ let SLOT_EXP_AIR = "slot_exp_air"
 let NYBOND = "nybond"
 let LUNARBOND = "lunarbond"
 let APRILBOND = "aprilbond"
+let APRILINTEL = "aprilintel"
 let PLATINUM = "platinum"
 let BLACKFRIDAYBOND = "blackfridaybond"
 let APRILMAPPIECE = "aprilMapPiece"
@@ -49,6 +50,7 @@ let currenciesRes = {
   NYBOND
   LUNARBOND
   APRILBOND
+  APRILINTEL
   APRILMAPPIECE
   APRILDOUBLON
   BLACKFRIDAYBOND

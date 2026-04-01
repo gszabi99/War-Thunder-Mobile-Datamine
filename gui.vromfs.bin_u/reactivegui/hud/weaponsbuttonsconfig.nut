@@ -14,6 +14,7 @@ function getActionBarShortcut(unitType, itemConfig) {
 
   return unitType == TANK ? $"ID_ACTION_BAR_ITEM_{shortcutIdx + 1}"
     : unitType == SUBMARINE ? $"ID_SUBMARINE_ACTION_BAR_ITEM_{shortcutIdx + 1}"
+    : unitType == WALKER ? $"ID_WALKER_ACTION_BAR_ITEM_{shortcutIdx + 1}"
     : $"ID_SHIP_ACTION_BAR_ITEM_{shortcutIdx + 1}"
 }
 
@@ -87,8 +88,10 @@ let actionBarItemsConfig = {
     haptPatternId = HAPT_IRCM
   },
   EII_SMOKE_GRENADE = {
-    getShortcut = @(unitType, __) unitType == TANK ? "ID_SMOKE_SCREEN" : "ID_SHIP_SMOKE_GRENADE"
-    getImage = @(unitType) unitType == TANK
+    getShortcut = @(unitType, __) unitType == TANK ? "ID_SMOKE_SCREEN"
+      : unitType == WALKER ? "ID_WALKER_SMOKE_SCREEN"
+      : "ID_SHIP_SMOKE_GRENADE"
+    getImage = @(unitType) unitType == TANK || unitType == WALKER
       ? "ui/gameuiskin#hud_smoke_grenade_tank.svg"
       : "ui/gameuiskin#hud_consumable_smoke.svg"
     actionType = AB_SMOKE_GRENADE

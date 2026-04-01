@@ -2365,8 +2365,8 @@
         "blk": "gameData/FlightModels/weaponPresets/tis_ma_2xfab250.blk"
       },
       {
-        "name": "tis_ma_2xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/tis_ma_2xfab500.blk"
+        "name": "tis_ma_streak",
+        "blk": "gameData/FlightModels/weaponPresets/tis_ma_streak.blk"
       },
       {
         "name": "tis_ma_8xro132",

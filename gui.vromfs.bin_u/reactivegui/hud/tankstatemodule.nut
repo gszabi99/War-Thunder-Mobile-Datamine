@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs, round } = require("math")
+let { fabs, round, PI } = require("math")
 let { XrayDoll, TouchAreaOutButton } = require("wt.behaviors")
 let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, speed,
@@ -11,7 +11,8 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { isInZoom } = require("%rGui/hudState.nut")
+let { isInZoom, unitType } = require("%rGui/hudState.nut")
+let { WALKER } = require("%appGlobals/unitConst.nut")
 let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
 
 let damagePanelSize = hdpxi(175)
@@ -140,6 +141,7 @@ let xrayDoll = @(stateFlags, moveChild, size) @() {
       drawSilhouette = false
       drawTargetingSightLine = true
       modulateSilhouetteColor = true
+      dmIndViewYawOffset = unitType.get() == WALKER ? PI : 0
       children = {
         size = flex()
         behavior = XrayDoll

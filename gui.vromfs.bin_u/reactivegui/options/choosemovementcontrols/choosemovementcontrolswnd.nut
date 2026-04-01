@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { onControlsApply, isChooseMovementControlsOpened } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
+let { reorderList, applyCtrlType, isChooseMovementControlsOpened, isChooseWalkerMovementControlsOpened, getCurCtrlTypeW,
+  closeChooseMovementControls } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
-let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
-} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
+let { groundMoveCtrlTypesList, ctrlTypeToString } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let controlsTypesButton = require("%rGui/options/chooseMovementControls/controlsTypesButton.nut")
 let controlsTypesAnimsCtors = require("%rGui/options/chooseMovementControls/controlsTypesAnims.nut")
@@ -12,6 +12,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
+let isWndOpened = Computed(@() isChooseMovementControlsOpened.get() || isChooseWalkerMovementControlsOpened.get())
 let defaultValue = "stick_static"
 let btnW = evenPx(380)
 let btnH = hdpx(510)
@@ -19,24 +20,6 @@ let btnGap = hdpxi(30)
 let contentWidth = ((btnW + btnGap) * groundMoveCtrlTypesList.len()) - btnGap
 
 let selectedValue = Watched("")
-
-let close = @() isChooseMovementControlsOpened.set(false)
-
-function apply() {
-  currentTankMoveCtrlType.set(selectedValue.get())
-  onControlsApply()
-}
-
-let orderByFirstVal = {
-  stick         = [ "stick", "stick_static", "arrows" ]
-  stick_static  = [ "stick_static", "stick", "arrows" ]
-  arrows        = [ "arrows", "stick", "stick_static" ]
-}
-
-function reorderList(list, valToPlaceFirst) {
-  return (orderByFirstVal?[valToPlaceFirst] ?? orderByFirstVal.stick)
-    .filter(@(v) list.contains(v))
-}
 
 let txtBase = {
   rendObj = ROBJ_TEXT
@@ -93,14 +76,12 @@ let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
   loc("option_can_be_changed_later")
 )
 
-let onAttach = @() selectedValue.set(currentTankMoveCtrlType.get())
-
 let mkChooseMoveControlsWnd = bgShaded.__merge({
   key = {}
   size = flex()
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  onAttach
+  onAttach = @() selectedValue.set(getCurCtrlTypeW()?.get() ?? defaultValue)
   children = {
     size = FLEX_H
     valign = ALIGN_CENTER
@@ -110,7 +91,7 @@ let mkChooseMoveControlsWnd = bgShaded.__merge({
         halign = ALIGN_CENTER
         flow = FLOW_VERTICAL
         children = [
-          modalWndHeaderWithClose(loc("options/choose_movement_controls"), close)
+          modalWndHeaderWithClose(loc("options/choose_movement_controls"), closeChooseMovementControls)
           {
             size = [contentWidth, SIZE_TO_CONTENT]
             margin = [btnGap, btnGap*3]
@@ -129,7 +110,7 @@ let mkChooseMoveControlsWnd = bgShaded.__merge({
                 padding = const [hdpx(10), 0]
                 children = selectedValue.get() == ""
                   ? { size = [0, buttonStyles.defButtonHeight] }
-                  : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), apply, { hotkeys = ["^J:X | Enter"] })
+                  : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), @() applyCtrlType(selectedValue.get()), { hotkeys = ["^J:X | Enter"] })
               }
             ]
           }
@@ -140,4 +121,4 @@ let mkChooseMoveControlsWnd = bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-registerScene("chooseMovementControls", mkChooseMoveControlsWnd, close, isChooseMovementControlsOpened)
+registerScene("chooseMovementControls", mkChooseMoveControlsWnd, closeChooseMovementControls, isWndOpened)

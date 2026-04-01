@@ -2,13 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let logA = log_with_prefix("[ADDONS] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
-let contentUpdater = require("contentUpdater")
 let { get_free_disk_space = @() -1,
   download_content_in_background, stop_updater, is_updater_running,
   remove_addons_resources_async = @(_) null,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
-} = contentUpdater
+} = require("contentUpdater")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isEqual, prevIfEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -29,6 +28,7 @@ let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getPkgs
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
+let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
 let { getMGameModeMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
@@ -46,6 +46,9 @@ let { curHangarAddon, soonHangarAddons } = require("%rGui/initHangar.nut")
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let SIZE_INCREASE_MULTIPLIER = 1.2
+let DLP_COMMON = 0
+let DLP_MEDIUM = 1
+let DLP_HIGH = 2
 
 let addonsToDownload = hardPersistWatched("updater.addonsToDownload", {})
 let unitsToDownload = hardPersistWatched("updater.unitsToDownload", {})
@@ -54,7 +57,28 @@ let currentStage = hardPersistWatched("updater.currentStage", null)
 let updaterError = hardPersistWatched("updater.updaterError", null)
 let awaitingAddonsInfoUpd = hardPersistWatched("updater.awaitingAddonsInfoUpd", null)
 let isIncompatibleVersion = Watched(false)
-let extAutoDownloadUnits = Watched({})
+
+let extAutoDownloadUnitsByPriority = Watched({})
+let extAutoDownloadUnitsByPriorityFiltered = Computed(function(prev) {
+  let sizes = unitSizes.get()
+  return prevIfEqual(prev,
+    extAutoDownloadUnitsByPriority.get()
+      .map(@(l) l.filter(@(_, u) (sizes?[u] ?? -1) != 0))
+      .filter(@(l) l.len() > 0))
+})
+let extAutoDownloadFirstPriority = Computed(@() DLP_HIGH in extAutoDownloadUnitsByPriorityFiltered.get()
+  ? DLP_HIGH
+  : DLP_MEDIUM)
+let extAutoDownloadUnitsFirst = Computed(@()
+  extAutoDownloadUnitsByPriorityFiltered.get()?[extAutoDownloadFirstPriority.get()] ?? {})
+let extAutoDownloadUnits = Computed(function() {
+  let first = extAutoDownloadFirstPriority.get()
+  let res = {}
+  foreach (p, list in extAutoDownloadUnitsByPriorityFiltered.get())
+    if (p != first)
+      res.__update(list)
+  return res
+})
 
 let firstPriorityAddons = mkWatched(persist, "firstPriorityAddons", {})
 let firstPriorityUnits = mkWatched(persist, "firstPriorityUnits", {})
@@ -89,34 +113,29 @@ let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
     .extend(soonHangarAddons.get().keys()),
   hasAddons.get(), prev))
 
-let errorNames = {}
-foreach(id, val in contentUpdater)
-  if (type(val) != "integer")
-    continue
-  else if (id.startswith("UPDATER_ERROR"))
-    errorNames[val] <- id
-let getErrorName = @(v) errorNames?[v] ?? v
-
-let extAutoDownloadUnitsWatches = []
+let extAutoDownloadUnitsWatches = [] 
 
 function recalcExtAutoUnits() {
-  let units = {}
-  foreach (list in extAutoDownloadUnitsWatches)
-    units.__update(list.get())
-  extAutoDownloadUnits.set(units)
+  let unitsByPriority = {}
+  foreach (c in extAutoDownloadUnitsWatches) {
+    let list = c.list.get()
+    if (list.len() > 0)
+      getSubTable(unitsByPriority, c.priority).__update(list)
+  }
+  extAutoDownloadUnitsByPriority.set(unitsByPriority)
 }
 let deferRecalcExtAutoUnits = @() deferOnce(recalcExtAutoUnits)
 
-function registerAutoDownloadUnits(unitsW) {
+function registerAutoDownloadUnits(unitsW, priority = DLP_COMMON) {
   if (!isScriptsLoading.get() && !__static_analysis__) {
     logerr("registerAutoDownloadUnits call not on scripts load")
     return
   }
-  if (extAutoDownloadUnitsWatches.contains(unitsW)) {
+  if (null != extAutoDownloadUnitsWatches.findvalue(@(v) v.list == unitsW)) {
     logerr("duplicate registerAutoDownloadUnits")
     return
   }
-  extAutoDownloadUnitsWatches.append(unitsW)
+  extAutoDownloadUnitsWatches.append({ list = unitsW, priority })
   unitsW.subscribe(@(_) deferRecalcExtAutoUnits())
   deferRecalcExtAutoUnits()
 }
@@ -156,6 +175,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
       addons = firstPriorityAddons.get() 
       units = firstPriorityUnits.get()
     }
+    @() { units = extAutoDownloadUnitsFirst.get() }
     @() { addons = initialAddonsToDownload.get() }
     @() requiredSquadAddons.get().map(@(v) v.totable())
     @() { units = extAutoDownloadUnits.get() }
@@ -250,6 +270,10 @@ function updateStartDownload() {
   }
 
   if (is_updater_running()) { 
+    if ((downloadState.get()?.percent ?? 0).tointeger() == 100) {
+      logA("Addons list changed, but do not stop download because of already 100% progress")
+      return
+    }
     logA("stop download to change addons list")
     stop_updater()
     downloadInProgress.set({})
@@ -274,6 +298,7 @@ function updateStartDownload() {
     msgBoxError({ text = loc("msgbox/notEnoughSpace", {space = totalSizeText(((totalSize - freeSpace) * SIZE_INCREASE_MULTIPLIER).tointeger())}) })
     return
   }
+  downloadState.set(null)
   isStarted = totalSize > 0 && download_content_in_background(DOWNLOAD_ADDONS_EVENT_ID, units, addons)
   logA(isStarted ? "start download "
       : totalSize <= 0 ? "ignore download cause empty size "
@@ -337,6 +362,8 @@ eventbus_subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     awaitingAddonsInfoUpd.set({ isDownloadFinishedSuccessfully = isSuccess })
     isAddonsSizesActual.set(false)
     isUnitSizesActual.set(false)
+    if (isSuccess)
+      updaterError.set(null)
   }
 })
 
@@ -435,7 +462,7 @@ addonsToAutoDownload.subscribe(startDownloadAddons)
 let unitsToAutoDownload = keepref(Computed(function(prev) {
   if (!isAnyCampaignSelected.get() || !isAllowedDownloadUnits.get())
     return {}
-  let res = clone extAutoDownloadUnits.get()
+  let res = extAutoDownloadUnits.get().__merge(extAutoDownloadUnitsFirst.get())
   let mRank = max(battleUnitsMaxMRank.get(), maxMyMRank.get())
   let tgtRank = clamp(maxReleasedUnitRanks.get()?[curCampaign.get()] ?? (mRank + 1), mRank, mRank + 1)
   foreach (rank, list in missingUnitResourcesByRank.get()?[getCampaignOrig(curCampaign.get())] ?? {})
@@ -543,6 +570,10 @@ return {
     && ((isConnectionLimited.get() && !allowLimitedDownload.get())
       || !hasConnection.get()))
   isDownloadInProgress = Computed(@() downloadInProgress.get().len() > 0)
+
+  DLP_COMMON
+  DLP_MEDIUM
+  DLP_HIGH
   registerAutoDownloadUnits
 
   addonsToDownload = Computed(@() addonsToDownload.get())

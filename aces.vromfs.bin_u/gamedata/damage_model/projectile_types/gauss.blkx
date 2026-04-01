@@ -1,0 +1,30 @@
+{
+  "normalizationPreset": "gauss",
+  "ricochetPreset": "gauss",
+  "groundRicochetPreset": "apcr_ground",
+  "secondaryShattersPreset": "gauss",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.0,
+  "stucking": 0.7,
+  "stuckingAngle": 45.0,
+  "bulletType": "gauss",
+  "slopeEffectPreset": "gauss",
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "shellAnimation": "video/shells_animations/apcr.ivf",
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.2
+    ],
+    "mod2": [
+      20.0,
+      0.45
+    ]
+  }
+}

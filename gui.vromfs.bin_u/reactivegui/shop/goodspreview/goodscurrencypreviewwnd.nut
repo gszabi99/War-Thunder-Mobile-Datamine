@@ -160,7 +160,11 @@ let previewWnd = @() {
         currencyEffectBw
         currencyImage
         currencyEffectFw
-        rightBottomBlock
+        {
+          vplace = ALIGN_BOTTOM
+          hplace = ALIGN_RIGHT
+          children = rightBottomBlock
+        }
       ]
     }
     mkLensFlare()

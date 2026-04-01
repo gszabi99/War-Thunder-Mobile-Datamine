@@ -27,6 +27,7 @@ let helpEventBattleRoyale = require("%rGui/loading/complexScreens/helpEventBattl
 let helpEventChristmas2 = require("%rGui/loading/complexScreens/helpEventChristmas2.nut")
 let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
 let helpEventHalloween = require("%rGui/loading/complexScreens/helpEventHalloween.nut")
+let helpEventWalkers = require("%rGui/loading/complexScreens/helpEventWalkers.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
@@ -280,6 +281,7 @@ let mkBgImageByGameMode = {
   event_1_april_pirates = @() helpEventPirates
   tank_event_battle_royale = @() helpEventBattleRoyale
   plane_event_halloween_po2_race = @() helpEventHalloween
+  event_1_april_mechas = @() helpEventWalkers
 }
 
 let bgImage = @() {

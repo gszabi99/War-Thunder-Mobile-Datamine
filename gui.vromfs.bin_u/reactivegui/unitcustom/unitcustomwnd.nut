@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
+let { round } = require("math")
 let { HangarCameraControl } = require("wt.behaviors")
 let { getUnitPresentation, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -7,6 +8,7 @@ let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentation.nut")
 let { skinActionBtn, skinsBlockNoTags, skinsBlockWithTags } = require("%rGui/unitCustom/unitSkins/unitSkinsComps.nut")
 let { decalsCollection, selectedDecalId, availableDecals, decalsSlots, selectedSlotId, isPreparingToEditDecal,
   isEditingDecal, shouldSaveDecal, isAvailableSlot, exitDecalMode, customizationDecalId, editSelectedSlot,
@@ -26,7 +28,8 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { selectedLineVertUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let unitDecalsSlotsActions = require("%rGui/unitCustom/unitDecals/unitDecalsSlotsActions.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { decalsFooterHeight, getDecalTitle, getDecalDesc, mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
+let { decalsFooterHeight, getDecalTitle, getDecalDesc, mkDecalIcon, decalIconSizeBig
+} = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
 let { unseenDecals, markDecalSeen } = require("%rGui/unitCustom/unitDecals/unseenDecals.nut")
 let { decalsEditor } = require("%rGui/unitCustom/unitDecals/unitDecalsEditor.nut")
 let { hasTagsChoice } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
@@ -157,8 +160,6 @@ let mkDecalText = @(text, ovr = {}) text == null ? null : {
   text
 }.__update(fontSmallShadedBold, ovr)
 
-let decalBlockGap = hdpx(10)
-
 function decalDescriptionBlock() {
   let decalId = Computed(@() selectedDecalId.get() ?? selectedSlot.get()?.decalId ?? "")
   let decalDesc = mkDecalText(getDecalDesc(decalId.get()), fontSmallShaded)
@@ -168,25 +169,31 @@ function decalDescriptionBlock() {
     vplace = ALIGN_TOP
     hplace = ALIGN_LEFT
     flow = FLOW_VERTICAL
-    gap = decalBlockGap
-    children = curSelectedSectionId.get() != SECTION_IDS.DECALS || decalId.get() == "" ? null : {
-      padding = decalBlockGap
-      rendObj = ROBJ_IMAGE
-      image = simpleHorGrad
-      color = 0xAA000000
-      flipX = true
-      flow = FLOW_VERTICAL
-      gap = decalBlockGap
-      children = [
-        mkDecalText(getDecalTitle(decalId.get())),
-        makeVertScroll(
-          decalDesc,
+    gap = hdpx(20)
+    children = curSelectedSectionId.get() != SECTION_IDS.DECALS || decalId.get() == "" ? null
+      : [
           {
-            size = [SIZE_TO_CONTENT, decalDescHeight]
-            isBarOutside = true
-        }),
-        mkDecalIcon(decalId.get())
-      ]}}}
+            padding = sectionBtnGap
+            rendObj = ROBJ_IMAGE
+            image = simpleHorGrad
+            color = 0xAA000000
+            flipX = true
+            flow = FLOW_VERTICAL
+            gap = sectionBtnGap
+            children = [
+              mkDecalText(getDecalTitle(decalId.get()))
+              makeVertScroll(
+                decalDesc,
+                {
+                  size = [SIZE_TO_CONTENT, decalDescHeight]
+                  isBarOutside = true
+              })
+            ]
+          }
+          mkDecalIcon(decalId.get(), round(decalIconSizeBig * getDecalDescPresentation(decalId.get()).scale).tointeger())
+        ]
+  }
+}
 
 let platoonUnitsBlock = @() {
   watch = [baseUnit, platoonUnitsList, isEditingDecal, isDecalSelected]

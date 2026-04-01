@@ -7,7 +7,7 @@ let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { seenPasses, isPassGoodsUnseen } = require("%rGui/battlePass/passState.nut")
+
 
 let isNPWndOpened = mkWatched(persist, "newPlayerBpSceneisNPWndOpened", false)
 
@@ -77,6 +77,7 @@ let sendNpBqEvent = @(action, params = {}) sendCustomBqEvent("newbie_battlepass_
   action
   stageProgress = winsCount.get()
   isPassPurchased = isNPActive.get()
+  campaign = curStatsCampaign.get()
 }))
 
 function receiveNPRewards(progress) {
@@ -102,9 +103,8 @@ function receiveNPRewards(progress) {
   })
 }
 
-let npPassGoods = Computed(@() shopGoods.get()?[$"new_player_pass_{curStatsCampaign.get()}"] ?? {})
-let hasUnseenNpPass = Computed(@() isPassGoodsUnseen(npPassGoods.get(), seenPasses.get())
-  || npBpFreeRewardsUnlock.get()?.name in unseenUnlocks.get()
+let npPassGoods = Computed(@() shopGoods.get()?[$"new_player_pass_{curStatsCampaign.get()}"])
+let hasUnseenNpPass = Computed(@() npBpFreeRewardsUnlock.get()?.name in unseenUnlocks.get()
   || npBpPaidRewardsUnlock.get()?.name in unseenUnlocks.get())
 
 isNPWndOpened.subscribe(@(v) !v

@@ -1421,6 +1421,276 @@
       }
     },
     {
+      "name": "walkerBot",
+      "selectStrategy": "ordered",
+      "walkerBotSetup": {},
+      "walkerSetupAngerParams": {
+        "baseRate": -1.0,
+        "visibilityRate": 20.0,
+        "damageValue": 100.0,
+        "outOfSightRate": -100.0,
+        "distanceMultiplierMax": 2.0,
+        "distanceBoundsMin": 5.0,
+        "distanceBoundsMax": 100.0
+      },
+      "sequencer": {
+        "parallel": {
+          "walkerUpdateAnger": {},
+          "cycle": {
+            "selector": {
+              "selectStrategy": "ordered",
+              "selectOnSuccess": true,
+              "sequencer": {
+                "walkerFindEnemies": {
+                  "outListName": "targets",
+                  "maxDistance": 300.0
+                },
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "walkerFindTargetByAnger": {
+                        "inListName": "targets",
+                        "outVarName": "priorityTarget",
+                        "angerThreshold": 20.0
+                      },
+                      "walkerSetAsEnemyTarget": {
+                        "inVarName": "priorityTarget",
+                        "minTimeBetweenSwitch": 15.0,
+                        "resetIfAngerLessThen": 5.0,
+                        "angerDeltaThreshold": 40.0
+                      },
+                      "walkerSwitchAutoShoot": {
+                        "isEnabledShooting": true
+                      }
+                    },
+                    {
+                      "walkerResetEnemyTarget": {},
+                      "walkerSwitchAutoShoot": {
+                        "isEnabledShooting": false
+                      }
+                    }
+                  ]
+                }
+              },
+              "success": {}
+            }
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "sequencer": [
+              {
+                "or": {
+                  "walkerCheckTeamTickets": {
+                    "op": "less",
+                    "allyTeam": true,
+                    "ticketsPercent": 0.3
+                  },
+                  "walkerCheckCapturePoint": {
+                    "dist": 100000.0,
+                    "canCapture": true,
+                    "timeCaptured": 90.0
+                  }
+                },
+                "walkerSetCapturePointAsDest": {
+                  "dist": 10.0,
+                  "canCapture": true,
+                  "stayOnPointTime": 60.0,
+                  "canUseIndirectPath": false,
+                  "includeSpawnPoints": true
+                },
+                "walkerDriveToPosExtend": {
+                  "dist": 5.0,
+                  "cornersAngleFactorDist": [
+                    20.0,
+                    0.0
+                  ],
+                  "cornersSpeedMultiplier": 1.0,
+                  "cornersSteeringOffset": 4.0,
+                  "obstacleAvoidAngle": 4.0,
+                  "obstacleAvoidDistMultiplier": 1.0,
+                  "maxTimeIgnoreObstacle": 7.0,
+                  "obstacleAvoidDistMin": 10.0,
+                  "obstacleAvoidDistMax": 20.0,
+                  "deflectPath": true,
+                  "deflectionRadius": 100.0,
+                  "suspendIfTargetChanged": true
+                }
+              },
+              {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "not": {
+                        "walkerCheckShoot": {}
+                      },
+                      "walkerSelectRandomPosition": {
+                        "radius": 250.0,
+                        "minRadius": 200.0
+                      },
+                      "walkerDriveToPosExtend": {
+                        "dist": 5.0,
+                        "obstacleAvoidAngle": 7.0,
+                        "obstacleAvoidDistMultiplier": 1.0,
+                        "obstacleAvoidDistMin": 10.0,
+                        "obstacleAvoidDistMax": 30.0,
+                        "deflectPath": false,
+                        "deflectionRadius": 100.0,
+                        "suspendIfTargetChanged": false
+                      }
+                    },
+                    {
+                      "walkerCheckEnemy": {},
+                      "parallel": [
+                        {
+                          "cycle": [
+                            {
+                              "or": {
+                                "not": [
+                                  {
+                                    "walkerCheckDistanceToTarget": {
+                                      "distance": 40.0
+                                    }
+                                  },
+                                  {
+                                    "walkerCheckShoot": {}
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "walkerPursueTarget": {
+                                "distanceMin": 40.0,
+                                "distanceMax": 200.0,
+                                "includeEnemySpawn": true
+                              }
+                            }
+                          ],
+                          "walkerDriveToPosExtend": {
+                            "dist": 7.0,
+                            "obstacleAvoidAngle": 10.0,
+                            "obstacleAvoidDistMultiplier": 1.0,
+                            "obstacleAvoidDistMin": 10.0,
+                            "obstacleAvoidDistMax": 30.0,
+                            "deflectPath": false,
+                            "deflectionRadius": 100.0,
+                            "suspendIfTargetChanged": false
+                          }
+                        },
+                        {
+                          "cycle": {
+                            "sequencer": {
+                              "walkerCheckEnemy": {},
+                              "walkerCheckDistanceToTarget": {
+                                "distance": 40.0
+                              }
+                            }
+                          },
+                          "parallel": {
+                            "cycle": [
+                              {
+                                "walkerRotateToEnemy": {}
+                              },
+                              {
+                                "sequencer": {
+                                  "walkerDelay": {
+                                    "range": [
+                                      90.0,
+                                      120.0
+                                    ],
+                                    "resetable": true
+                                  },
+                                  "walkerResetEnemyTarget": {
+                                    "resetAnger": true
+                                  },
+                                  "walkerSelectRandomPosition": {
+                                    "radius": 150.0,
+                                    "minRadius": 100.0
+                                  },
+                                  "walkerDriveToPosExtend": {
+                                    "dist": 5.0,
+                                    "obstacleAvoidAngle": 7.0,
+                                    "obstacleAvoidDistMultiplier": 1.0,
+                                    "obstacleAvoidDistMin": 10.0,
+                                    "obstacleAvoidDistMax": 30.0,
+                                    "deflectPath": false,
+                                    "deflectionRadius": 100.0,
+                                    "suspendIfTargetChanged": false
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "selector": {
+                        "selectOnSuccess": true,
+                        "sequencer": [
+                          {
+                            "walkerCheckCapturePoint": {
+                              "dist": 100000.0,
+                              "canCapture": true
+                            },
+                            "walkerSetCapturePointAsDest": {
+                              "dist": 20.0,
+                              "canCapture": true,
+                              "stayOnPointTime": 30.0,
+                              "includeSpawnPoints": false
+                            }
+                          },
+                          {
+                            "not": {
+                              "walkerCheckEnemy": {}
+                            },
+                            "walkerCheckCapturePoint": {
+                              "dist": 100000.0,
+                              "canCapture": false
+                            },
+                            "walkerSetCapturePointAsDest": {
+                              "dist": 20.0,
+                              "canCapture": false,
+                              "stayOnPointTime": 5.0,
+                              "includeSpawnPoints": false
+                            }
+                          }
+                        ]
+                      },
+                      "walkerSelectExplicitDestination": {
+                        "minDist": 5.0
+                      },
+                      "walkerDriveToPosExtend": {
+                        "dist": 5.0,
+                        "cornersAngleFactorDist": [
+                          30.0,
+                          0.0
+                        ],
+                        "cornersSpeedMultiplier": 0.4,
+                        "cornersSteeringOffset": 4.0,
+                        "obstacleAvoidAngle": 7.0,
+                        "obstacleAvoidDistMultiplier": 1.0,
+                        "maxTimeIgnoreObstacle": 10.0,
+                        "obstacleAvoidDistMin": 5.0,
+                        "obstacleAvoidDistMax": 30.0,
+                        "deflectPath": true,
+                        "deflectionRadius": 100.0,
+                        "suspendIfTargetChanged": true
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "name": "shipMissionUnit",
       "selectStrategy": "ordered",
       "selector": {

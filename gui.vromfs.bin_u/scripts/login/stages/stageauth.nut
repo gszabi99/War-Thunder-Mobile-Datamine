@@ -22,7 +22,7 @@ let { getLocTextForLang } = require("dagor.localize")
 let { login_nswitch} = require("subStageAuthNSwitch.nut")
 let {parse_json} = require("json")
 let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
-let { get_cur_circuit_block } = require("blkGetters")
+let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
 subscribeFMsgBtns({
@@ -60,7 +60,7 @@ let proceedAuthByResult = {
     sendLoadingStageBqEvent("auth_done")
     curLoginType.set(loginType)
     authTags.set(get_player_tags())
-    if (get_cur_circuit_block()?.operatorName != null)
+    if (isExternalOperator())
       convertExternalJwtToAuthJwt("ConvertExternalJwt")
     else
       finalizeStage()

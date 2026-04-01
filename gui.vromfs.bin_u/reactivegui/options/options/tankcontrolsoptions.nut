@@ -19,6 +19,8 @@ let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownCo
 } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
 let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
+let { WALKER } = require("%appGlobals/unitConst.nut")
+let { unitType } = require("%rGui/hudState.nut")
 
 let autoZoomDefaultTrueStart = 1699894800 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
@@ -95,8 +97,9 @@ let showReticleButtonTouch = {
 
 let targetTrackingList = [false, true]
 let currentTargetTrackingType = mkOptionValue(OPT_TARGET_TRACKING, true, @(v) validate(v, targetTrackingList))
-set_should_target_tracking(currentTargetTrackingType.get())
-currentTargetTrackingType.subscribe(@(v) set_should_target_tracking(v))
+let nativeTargetTrackingVal = keepref(Computed(@() unitType.get() == WALKER || currentTargetTrackingType.get()))
+set_should_target_tracking(nativeTargetTrackingVal.get())
+nativeTargetTrackingVal.subscribe(@(v) set_should_target_tracking(v))
 let targetTrackingType = {
   locId = "options/target_tracking"
   ctrlType = OCT_LIST

@@ -16,6 +16,7 @@ let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
+let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
@@ -32,6 +33,7 @@ let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
+let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
 
 
 let headerGap = hdpx(30)
@@ -43,6 +45,7 @@ let STAT_REQUESTED = 1
 let STAT_HAS_ACCESS = 2
 let MAX_GOODS_COUNT = 3
 
+let chosenUnitIdx = Watched(null)
 let isWndAttached = Watched(false)
 let curEventAccessStat = Computed(@() openedGmEventId.get() == null ? ""
   : gmEventPresentation(openedGmEventId.get()).accessStat)
@@ -54,7 +57,11 @@ let curGmEventBg = keepref(Computed(@() bgUnits.get() != null ? ""
   : gmEventPresentation(openedGmEventId.get()).bgImage))
 
 let unitsToSetInHangar = keepref(Computed(@() isWndAttached.get() ? bgUnits.get() : null))
-unitsToSetInHangar.subscribe(@(v) v == null ? null : setHangarUnitGroup(v, true))
+unitsToSetInHangar.subscribe(@(v) v == null ? null
+  : chosenUnitIdx.set(setHangarUnitGroup(v, chosenUnitIdx.get() == null, chosenUnitIdx.get())))
+isMainMenuAttached.subscribe(@(v) v ? chosenUnitIdx.set(null) : null)
+registerAutoDownloadUnits(Computed(@() (unitsToSetInHangar.get() ?? []).reduce(@(res, u) res.$rawset(u, true), {})),
+  DLP_HIGH)
 
 function setAccessStat(value, context = {}) {
   if (isAcceessStatInProgress.get())

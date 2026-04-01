@@ -120,41 +120,41 @@ function lootboxImageWithTimer(lootbox, lootboxAmount = null) {
     size = lootboxImageSize
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = mkLootboxImageWithSlotScale(lootbox, lootboxImageSize, eventSeason, isAvailable,
-      [
-        lootboxAmount == null ? null
-          : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
-              .__update({
-                pos = [pw(-10), ph(15)]
-                halign = ALIGN_RIGHT
-                valign = ALIGN_BOTTOM
-                vplace = ALIGN_BOTTOM
-                hplace = ALIGN_RIGHT
-              })
-        @() {
-          watch = [needAdtimeProgress, adReward, lootboxInProgress, isProviderInited]
-          hplace = ALIGN_CENTER
-          vplace = ALIGN_CENTER
-          children = [
-            lootboxInProgress.get() ? spinner : null
-            needAdtimeProgress.get()
-                ? mkFreeAdsGoodsTimeProgress(adReward.get())
-              : !isProviderInited.get()
-                ? disabledAdsGoodsPlate
-              : null
-          ]
-        }
+    children = [
+      mkLootboxImageWithSlotScale(lootbox, lootboxImageSize, eventSeason, isAvailable,
+        [
+          @() {
+            watch = [needAdtimeProgress, adReward, lootboxInProgress, isProviderInited]
+            hplace = ALIGN_CENTER
+            vplace = ALIGN_CENTER
+            children = [
+              lootboxInProgress.get() ? spinner : null
+              needAdtimeProgress.get()
+                  ? mkFreeAdsGoodsTimeProgress(adReward.get())
+                : !isProviderInited.get()
+                  ? disabledAdsGoodsPlate
+                : null
+            ]
+          }
 
-        @() {
-          watch = [timeText, needAdtimeProgress, lootboxInProgress]
-          size = FLEX_H
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          vplace = ALIGN_CENTER
-          halign = ALIGN_CENTER
-          text = lootboxInProgress.get() || needAdtimeProgress.get() ? null : timeText.get()
-        }.__update(fontTinyShaded)
-      ])
+          @() {
+            watch = [timeText, needAdtimeProgress, lootboxInProgress]
+            size = FLEX_H
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            vplace = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            text = lootboxInProgress.get() || needAdtimeProgress.get() ? null : timeText.get()
+          }.__update(fontTinyShaded)
+        ])
+      lootboxAmount == null ? null
+        : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
+          .__update({
+            pos = [pw(-10), ph(15)]
+            vplace = ALIGN_BOTTOM
+            hplace = ALIGN_RIGHT
+          })
+    ]
   }
 }
 
@@ -606,11 +606,12 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
     watch = rewards
     size = flex()
     halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
+    valign = ALIGN_TOP
     flow = FLOW_VERTICAL
+    gap = hdpx(15)
     children = [
       mkText(loc("events/lootboxContains"),
-        { size = flex(), halign = ALIGN_CENTER, valign = ALIGN_CENTER })
+        { size = [flex(), hdpx(80)], halign = ALIGN_CENTER, valign = ALIGN_CENTER })
       lootboxImageWithTimer(lootbox)
       itemsBlock(
         rewards.get(),

@@ -35,23 +35,22 @@ let EXPIRATION_DAYS = 28
 
 let pageScrollHandler = ScrollHandler()
 
-let isShopOpened = mkWatched(persist, "isShopOpened", false)
-let shopOpenCount = Watched(0)
-let shopId = mkWatched(persist, "shopId", null)
-let prevShopId = mkWatched(persist, "prevShopId", null)
-let prevCategoryId = mkWatched(persist, "prevCategoryId", null)
-let curCategoryId = mkWatched(persist, "curCategoryId", null)
+let shopOpenCount = mkWatched(persist, "shopOpenCount", {}) 
+let shopCurCategories = mkWatched(persist, "shopCurCategories", {}) 
+let curShopId = Computed(function() {
+  local res = null
+  local counter = 0
+  foreach (id, c in shopOpenCount.get())
+    if (c > counter) {
+      res = id
+      counter = c
+    }
+  return res
+})
+let isShopOpened = Computed(@() curShopId.get() != null)
+let curCategoryId = Computed(@() shopCurCategories.get()?[curShopId.get()])
 let shopSeenGoods = mkWatched(persist, "shopSeenGoods", {})
 let unmarkSeenCounters = mkWatched(persist, "unmarkSeenCounters", {})
-
-isShopOpened.subscribe(function(v) {
-  if (v)
-    return
-  shopId.set(null)
-  prevShopId.set(null)
-  curCategoryId.set(null)
-  prevCategoryId.set(null)
-})
 
 let categoryByCurrency = {
   [WP] = SC_WP,
@@ -468,21 +467,33 @@ let hasGoodsCategoryNonUpdatable = @(catId) catId in goodsByCategory.get()
   || catId in actualSchRewardByCategory.get()
   || catId in subsByCategory.get()
 
+function setShopCategory(catId, sId = null) {
+  let shopId = sId ?? curShopId.get()
+  if (shopId != null)
+    shopCurCategories.mutate(@(v) v[shopId] <- catId)
+}
+
 function openShopWnd(catId = null, bqPurchaseInfo = null, sId = "common") {
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
   }
-  if (shopId.get() != sId){
-    prevShopId.set(shopId.get())
-    prevCategoryId.set(curCategoryId.get())
-    shopId.set(sId)
+  if (null == shopsCfgOrdered.findvalue(@(c) c.id == sId)) {
+    logerr($"Shop type {sId} does not exists")
+    return
   }
-  curCategoryId.set(hasGoodsCategoryNonUpdatable(catId) ? catId
-    : shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id)
-  shopOpenCount.set(shopOpenCount.get() + 1)
+  shopOpenCount.mutate(@(v) v[sId] <- (v?[curShopId.get()] ?? 0) + 1)
+  setShopCategory(
+    hasGoodsCategoryNonUpdatable(catId) ? catId
+      : shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id,
+    sId)
   sendBqEventOnOpenCurrencyShop(bqPurchaseInfo)
-  isShopOpened.set(true)
+}
+
+function closeShopWnd(sId = null) {
+  let shopId = sId ?? curShopId.get()
+  if ((shopOpenCount.get()?[shopId] ?? 0) != 0)
+    shopOpenCount.mutate(@(v) v.$rawdelete(shopId))
 }
 
 function openShopWndByGoods(goods) {
@@ -493,26 +504,26 @@ function openShopWndByGoods(goods) {
 let curShopActualSchRewardsByCategory = Computed(function() {
   let res = {}
   foreach(catId, goods in actualSchRewardByCategory.get())
-    if(shopId.get() != null && getGoodsShopId(goods) == shopId.get()) {
+    if(curShopId.get() != null && getGoodsShopId(goods) == curShopId.get()) {
       res.$rawset(catId, goods)
     }
   return res
 })
 
-let curShopGoodsByCategory = Computed(@() goodsByShop.get()?[shopId.get()])
-let curShopSoonGoodsByCategory = Computed(@() soonGoodsByShop.get()?[shopId.get()])
+let curShopGoodsByCategory = Computed(@() goodsByShop.get()?[curShopId.get()])
+let curShopSoonGoodsByCategory = Computed(@() soonGoodsByShop.get()?[curShopId.get()])
 
 let getCurShopGoodsByCategory = @(goodsByCategoryW) Computed(function() {
   let res = {}
   foreach(catId, goodsList in goodsByCategoryW.get())
     foreach (goods in goodsList)
-      if(getGoodsShopId(goods) == shopId.get()) {
+      if(getGoodsShopId(goods) == curShopId.get()) {
         getSubArray(res, catId).append(goods)
       }
   return res
 })
 
-let curShopPersonalGoodsByCategory = Computed(@() personalGoodsByShop.get()?[shopId.get()])
+let curShopPersonalGoodsByCategory = Computed(@() personalGoodsByShop.get()?[curShopId.get()])
 
 let curShopSubsByCategory = getCurShopGoodsByCategory(subsByCategory)
 
@@ -522,11 +533,11 @@ let hasUnseenGoodsByShop = Computed(function() {
     idsByCat.map(@(ids) null != ids.findvalue(@(id) id in unseen)))
 })
 
-let saveSeenGoodsCurrent = @() saveSeenGoods(goodsIdsByShop.get()?[shopId.get()][curCategoryId.get()] ?? [])
+let saveSeenGoodsCurrent = @() saveSeenGoods(goodsIdsByShop.get()?[curShopId.get()][curCategoryId.get()] ?? [])
 
 function onTabChange(id) {
   saveSeenGoodsCurrent()
-  curCategoryId.set(id)
+  setShopCategory(id)
 }
 
 let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo = null)
@@ -556,11 +567,12 @@ return {
   openShopWnd
   openShopWndByCurrencyId
   openShopWndByGoods
+  closeShopWnd
   isShopOpened
   shopOpenCount
 
   curCategoryId
-  prevCategoryId
+  setShopCategory
   goodsByCategory
   allShopGoods
   shopGoodsAllCampaigns
@@ -587,8 +599,8 @@ return {
   pageScrollHandler
   isDisabledGoods
 
-  shopId
-  prevShopId
+  shopsCfgOrdered
+  curShopId
   goodsByShop
   goodsIdsByShop
   soonGoodsByShop

@@ -13,9 +13,10 @@ let { spinner } = require("%rGui/components/spinner.nut")
 
 let blockSize = [hdpx(500), hdpx(220)]
 let numberSize = hdpx(100)
-let textGradient = mkFontGradient(textColor, selectColor, 11, 6, 2)
 
-let numberBox = @(text) {
+let textGradient = memoize(@(gradColor) mkFontGradient(textColor, gradColor, 11, 6, 2))
+
+let numberBox = @(text, gradColor) {
   size = ph(90)
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -24,11 +25,11 @@ let numberBox = @(text) {
       size = ph(71)
       rendObj = ROBJ_BOX
       fillColor = 0xFF33363A
-      borderColor = selectColor
+      borderColor = gradColor
       borderWidth = hdpx(5)
       transform = { rotate = 45 }
     }
-    mkGradGlowText(text, fontWtLarge, textGradient, {
+    mkGradGlowText(text, fontWtLarge, textGradient(gradColor), {
       pos = [-0.1 * numberSize, 0]
     })
   ]
@@ -43,7 +44,7 @@ let spIconText = {
   fontFxColor = 0x40000000
 }.__update(fontSmall)
 
-let mkLevelInfo = @(levels, sp) {
+let mkLevelInfo = @(levels, sp, gradColor) {
   size = blockSize
   rendObj = ROBJ_BOX
   borderColor = textColor
@@ -58,7 +59,7 @@ let mkLevelInfo = @(levels, sp) {
       halign = ALIGN_LEFT
       gap = hdpx(20)
       children = [
-        numberBox($"+{levels}")
+        numberBox($"+{levels}", gradColor)
         {
           flow = FLOW_VERTICAL
           vplace = ALIGN_TOP
@@ -68,7 +69,7 @@ let mkLevelInfo = @(levels, sp) {
             mkGradGlowText(
               utf8ToUpper(loc("purchase/levels", { levels }))
               fontWtLarge
-              textGradient
+              textGradient(gradColor)
             )
             sp == 0 ? null
               : {
@@ -77,7 +78,7 @@ let mkLevelInfo = @(levels, sp) {
                   gap = hdpx(5)
                   children = [
                     spIconText
-                    mkGradText(sp, fontWtSmall, textGradient)
+                    mkGradText(sp, fontWtSmall, textGradient(gradColor))
                   ]
                 }
           ]
@@ -115,7 +116,7 @@ let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
       ]
 }
 
-function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick) {
+function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick, gradColor = selectColor) {
   if (!value)
     return null
   let { levels, levelsSp, maxLevels } = levelParams
@@ -148,7 +149,7 @@ function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick) {
         size = flex()
         children = bgParticles
       }
-      mkLevelInfo(levels, sp)
+      mkLevelInfo(levels, sp, gradColor)
       mkLevelPrice(fullCostGold, costGold, costMul, isInProgress)
     ]
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }

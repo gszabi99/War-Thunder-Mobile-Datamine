@@ -21,6 +21,7 @@ let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rG
 let { playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
 let { hudWhiteColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor, hudAshGrayColor
 } = require("%rGui/style/hudColors.nut")
+let { spawnScoreBalance } = require("%rGui/respawn/spawnScore.nut")
 
 
 let bgButtonColor = hudGraphiteColor
@@ -59,6 +60,11 @@ let topLeft = {
     menuButton
     tacticalMap
   ]
+}
+
+let topRight = {
+  hplace = ALIGN_RIGHT
+  children = spawnScoreBalance
 }
 
 let isActive = @(sf) (sf & S_ACTIVE) != 0
@@ -201,6 +207,7 @@ return {
       touchMarginPriority = TOUCH_BACKGROUND
     }
     topLeft
+    topRight
     hudTopCenter
     hudTopMainLog
     spectatorControlsBlock

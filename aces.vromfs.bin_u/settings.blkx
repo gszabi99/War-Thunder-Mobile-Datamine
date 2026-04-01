@@ -2506,15 +2506,32 @@
             }
           },
           "pipelineCompiler": {
-            "entry": {
-              "driverMinVer0": 49,
-              "driverMinVer1": 1,
-              "gpu": "G925",
-              "data": {
-                "maxSecondaryThreads": 0,
-                "usePipelineCacheMutex": true
+            "entry": [
+              {
+                "driverMinVer0": 49,
+                "driverMinVer1": 1,
+                "gpu": "G925",
+                "data": {
+                  "maxSecondaryThreads": 0,
+                  "usePipelineCacheMutex": true
+                }
+              },
+              {
+                "driverMaxVer0": [
+                  25,
+                  2
+                ],
+                "driverMinVer1": [
+                  25,
+                  1
+                ],
+                "gpu": "G52",
+                "data": {
+                  "maxSecondaryThreads": 0,
+                  "usePipelineCacheMutex": true
+                }
               }
-            }
+            ]
           }
         }
       },

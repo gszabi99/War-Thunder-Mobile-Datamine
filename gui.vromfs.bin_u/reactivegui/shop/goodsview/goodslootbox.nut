@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn, mkGoodsTimeLeftText,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg,
-   mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle
+let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn, mkGoodsTimeLeftText, mkBgImg,
+   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkOfferCommonParts,
+   mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle, mkOfferWrap, mkOfferTexts, offerW, offerH
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { getLootboxName, customGoodsLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
 let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
@@ -13,6 +13,7 @@ let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let lootboxIconSize = (goodsSmallSize[0] * 0.65).tointeger()
+let offerLootboxIconSize = offerW
 let fonticonPreview = "⌡"
 let contentMargin = hdpx(20)
 let textMargin = [hdpx(15), contentMargin]
@@ -78,7 +79,25 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
     mkPricePlate(goods, state, animParams), { size = goodsSmallSize })
 }
 
+function mkOfferLootbox(goods, onClick, state) {
+  let { isShowDebugOnly = false } = goods
+  let { lootboxId } = getGoodsLootbox(goods)
+  let bgParticles = mkBgParticles([offerW, offerH])
+  return mkOfferWrap(onClick,
+    @(sf) [
+      mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
+      isShowDebugOnly ? underConstructionBg : null
+      bgParticles
+      borderBg.__merge({ size = [flex(), offerH], borderColor = 0xFFD2A51E })
+      sf & S_HOVER ? bgHiglight : null
+      lootboxId == null ? null : mkLootboxImage(lootboxId, offerLootboxIconSize, 0.5)
+        .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, offerH * 0.05] })
+      mkOfferTexts(getLocNameLootbox(goods), goods)
+    ].extend(mkOfferCommonParts(goods, state)))
+}
+
 return {
   mkGoodsLootbox
+  mkOfferLootbox
   getLocNameLootbox
 }

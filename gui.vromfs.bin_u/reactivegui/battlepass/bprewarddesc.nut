@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
@@ -113,7 +115,19 @@ let infoImageCtors = {
   decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
   currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
   booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
-  decal = @(viewInfo, _) mkDecalIcon(viewInfo.id, [1.5 * REWARD_STYLE_BIG.boxSize, REWARD_STYLE_BIG.boxSize])
+  decal = function(viewInfo, _) {
+    let size = [1.5 * REWARD_STYLE_BIG.boxSize, REWARD_STYLE_BIG.boxSize]
+    return {
+      size
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/images/decal_preview_bg.avif:{size[0]}:{size[1]}:P")
+      keepAspect = true
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = mkDecalIcon(viewInfo.id,
+        round(REWARD_STYLE_BIG.boxSize * getDecalDescPresentation(viewInfo.id).scale).tointeger())
+    }
+  }
 }
 
 let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() {

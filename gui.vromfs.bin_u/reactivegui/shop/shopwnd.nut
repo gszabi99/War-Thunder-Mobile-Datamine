@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
 let { defer, deferOnce } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
+let { registerScene } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { shopCategoriesCfg } = require("%rGui/shop/shopCommon.nut")
-let { isShopOpened, curCategoryId, prevCategoryId, shopOpenCount, saveSeenGoodsCurrent, curShopSubsByCategory,
-  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, hasUnseenGoodsByShop, shopId, prevShopId,
+let { isShopOpened, curCategoryId, shopOpenCount, saveSeenGoodsCurrent, curShopSubsByCategory,
+  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, hasUnseenGoodsByShop, curShopId,
   curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
-  curShopSoonGoodsByCategory
+  curShopSoonGoodsByCategory, closeShopWnd, setShopCategory, shopsCfgOrdered
 } = require("%rGui/shop/shopState.nut")
 let { mkShopTabs } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage, mkShopGamercard } = require("%rGui/shop/shopWndPage.nut")
@@ -29,16 +29,9 @@ let shopContentH = saSize[1] + saBorders[1] - gapFromGamercard - gamercardHeight
 
 local lastScrollPosY = 0
 let resetScrollPos = @() lastScrollPosY = 0
-function close() {
-  if (prevShopId.get() != null && prevShopId.get() != shopId.get()) {
-    shopId.set(prevShopId.get())
-    curCategoryId.set(prevCategoryId.get())
-    return prevShopId.set(null)
-  }
-  isShopOpened.set(false)
-}
+
 isShopOpened.subscribe(@(v) v ? null : resetScrollPos())
-isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? close() : null)
+isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? closeShopWnd() : null)
 
 let pannable = @(ovr) {
   size = flex()
@@ -54,7 +47,7 @@ let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchLis
 
 function onClose() {
   saveSeenGoodsCurrent()
-  close()
+  closeShopWnd()
 }
 
 let pannableArea = verticalPannableAreaCtor(shopContentH, [shopContentGradient, saBorders[1] + shopContentGradient])
@@ -99,9 +92,11 @@ function mkShopContent() {
     return res
   })
 
-  distances.subscribe(@(v) v.len() == 0 ? close() : null)
-  if (distances.get().len() == 0)
-    deferOnce(close)
+  distances.subscribe(@(v) v.len() == 0 ? closeShopWnd() : null)
+  if (distances.get().len() == 0) {
+    let id = curShopId.get()
+    deferOnce(@() closeShopWnd(id))
+  }
 
   function tryDoActionForCurrentScroll(action) {
     let currentY = pageScrollHandler?.elem.getScrollOffsY()
@@ -116,7 +111,7 @@ function mkShopContent() {
     : pageScrollHandler.scrollToY(distances.get()[curCategoryId.get()].scrollTo)
   let onPageScroll = @(_) tryDoActionForCurrentScroll(@(idx) onTabChange(idx))
   let onChangeCategory = @(_) tryDoActionForCurrentScroll(@(_) scrollToCurCategory())
-  let hasUnseenGoodsByCategory = Computed(@() hasUnseenGoodsByShop.get()?[shopId.get()])
+  let hasUnseenGoodsByCategory = Computed(@() hasUnseenGoodsByShop.get()?[curShopId.get()])
 
   return {
     key = distances
@@ -125,7 +120,7 @@ function mkShopContent() {
     clipChildren = true
     function onAttach() {
       if (!hasGoodsCategoryNonUpdatable(curCategoryId.get()))
-        curCategoryId.set(shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id)
+        setShopCategory(shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id)
 
       pageScrollHandler.scrollToY(lastScrollPosY)
       resetScrollPos()
@@ -176,5 +171,7 @@ let shopScene = @() bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-registerScene("shopWnd", shopScene, close, isShopOpened)
-shopOpenCount.subscribe(@(_) moveSceneToTop("shopWnd"))
+foreach (cfg in shopsCfgOrdered) {
+  let { id } = cfg
+  registerScene($"shopWnd_{id}", shopScene, @() closeShopWnd(id), Computed(@() shopOpenCount.get()?[id] ?? 0))
+}

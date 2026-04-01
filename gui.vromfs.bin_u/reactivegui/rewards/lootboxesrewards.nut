@@ -140,4 +140,5 @@ function findLootboxWithReward(lootboxes, configs, isRewardFit) {
 return {
   findLootboxWithReward
   UnitsSearcher
+  RewardSearcher
 }

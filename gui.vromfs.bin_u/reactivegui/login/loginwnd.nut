@@ -20,6 +20,7 @@ let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
 let { isHMSAvailable = @() false } = require("android.account.huawei")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let gpButtonVisible = getGPStatus() == GP_SUCCESS
@@ -149,10 +150,10 @@ let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#me
     }
   })
 
-let mkGaijinLogo = @() {
+let mkOperatorLogo = @(picName) {
   size = [ gaijinLogoWidth, defButtonHeight ]
   rendObj = ROBJ_IMAGE
-  image = Picture($"!ui/gaijin_logo.svg:{gaijinLogoWidth}:{defButtonHeight}")
+  image = Picture($"!ui/{picName}.svg:{gaijinLogoWidth}:{defButtonHeight}")
   keepAspect = KEEP_ASPECT_FIT
 }
 
@@ -238,7 +239,7 @@ let gaijinAuthorization = @() {
       size = FLEX_H
       valign = ALIGN_CENTER
       children = [
-        mkGaijinLogo()
+        mkOperatorLogo(getCurCircuitOverride("operatorLogo", "gaijin_logo"))
         sighUp
       ]
     }
@@ -375,7 +376,7 @@ let firebaseLoginButtonContent = freeze({
 let guestLoginButtonContent = firebaseLoginButtonContent
 
 let loginButtonCtors = {
-  [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(),
+  [LT_GAIJIN] = @() mkCustomButton(mkOperatorLogo(getCurCircuitOverride("operatorLogo", "gaijin_logo")),
     @() isLoginByGajin.set(true),
     loginButtonStyle),
   [LT_GOOGLE] = !gpButtonVisible ? null : @() mkCustomButton(googleLoginButtonContent,

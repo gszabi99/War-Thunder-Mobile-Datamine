@@ -21,6 +21,7 @@ let unitClassFontIcons = {
   heavy_tank    = "\u2528"
   SPAA          = "\u2530"
   tank_destroyer = "\u2534"
+  walker        = "\u2528"
 }
 
 let unitTypeFontIcons = {
