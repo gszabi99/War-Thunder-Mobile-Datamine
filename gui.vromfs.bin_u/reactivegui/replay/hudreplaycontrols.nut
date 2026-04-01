@@ -364,7 +364,7 @@ let mkPlayerName = @(player, teamColor, halign) {
 function mkUnitName(player, halign) {
   let unit = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()
-    let unitName = player.aircraftName
+    let unitName = player?.aircraftName ?? ""
     let realUnitName = $"{getTagsUnitName(unitName)}_nc"
     let unitTags = getUnitTagsCfg(unitName)
 

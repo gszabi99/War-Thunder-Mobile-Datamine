@@ -9,7 +9,7 @@ function mkPlayersByTeam(debrData) {
     players = {}, playersCommonStats = {} } = debrData
   let localUserName = debrData?.userName ?? ""
   let mplayersList = players.values().map(function(p) {
-    let { userId, name, isLocal = 0, isBot, aircraftName, damage = 0.0, dmgScoreBonus = 0.0 } = p
+    let { userId, name, isLocal = 0, isBot, aircraftName = "", damage = 0.0, dmgScoreBonus = 0.0 } = p
     let userIdStr = userId.tostring()
     let { level = 1, starLevel = 0, hasPremium = false, decorators = {}, mainUnitName = "",
       units = {}, hasVip = false, hasPrem = false

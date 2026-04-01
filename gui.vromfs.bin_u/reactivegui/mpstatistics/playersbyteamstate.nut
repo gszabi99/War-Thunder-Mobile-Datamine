@@ -21,7 +21,7 @@ let playersByTeam = Computed(function() {
     .map(@(list) sortFunction(battleCampaign.get(),
       list.map(function(p) {
         
-        let { id, userId, name, isBot, aircraftName, ownedUnitName = "" } = p
+        let { id, userId, name, isBot, aircraftName = "", ownedUnitName = "" } = p
         let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
         let { damage = 0.0, score = 0.0, flagsDelivered = 0 } = playersDamageStats.get()?[id]
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
