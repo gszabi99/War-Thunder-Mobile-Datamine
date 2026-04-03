@@ -53,7 +53,8 @@
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
-    "stopChanceOnDeadPart": 1.0,
+    "hp": 10000.0,
+    "stopChanceOnDeadPart": 0.0,
     "hull_CHA": {
       "body_side_dm": {
         "armorThickness": 60.0

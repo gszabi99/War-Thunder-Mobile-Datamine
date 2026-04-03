@@ -64,7 +64,7 @@ function setupAnalytics() {
     return
   let v = savedPoints.get()
   enableTCFCollection(false)
-  logC("analytics starting with consent:", v)
+  logC("Firebase consent, analytics starting:", v)
   setFirebaseConsent(object_to_json_string(v))
   setCollectionEnabled(true)
   setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
@@ -75,16 +75,16 @@ function autoSkipConsent() {
   if (!isEnabled.get() || isConsentAcceptedOnce.get())
     return
   savedPoints.set(defaultPointsTable.map(@(_) false))
-  logC("consent skipped by denied IDFA")
+  isConsentWasAutoSkipped.set(true)
+  logC("Firebase consent skipped by denied IDFA")
   sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_denied_idfa" })
   setupAnalytics()
-  isConsentWasAutoSkipped.set(true)
 }
 
 function autoAcceptForNonEURegion() {
   if (!isEnabled.get() || isConsentAcceptedOnce.get())
     return
-  logC("consent auto accepted for non EU region",getCountryCode())
+  logC($"Firebase consent auto accepted for non EU region: {getCountryCode()}")
   savedPoints.set(defaultPointsTable.map(@(_) true))
   sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_region" })
   setupAnalytics()
@@ -119,9 +119,10 @@ if (isConsentAcceptedOnce.get())
 if (savedPoints.get() == null && isReadyForConsent.get())
   loadPoints()
 
-function onOnlineSettingsNOTAvailable(){
+function onOnlineSettingsNOTAvailable() {
   isConsentAllowLogin.set(false)
   savedPoints.set(null)
+  isConsentWasAutoSkipped.set(false)
 }
 isReadyForConsent.subscribe(function(isReady) {
   if (!isEnabled.get()) {
@@ -140,27 +141,26 @@ isReadyForConsent.subscribe(function(isReady) {
     onOnlineSettingsNOTAvailable()
 })
 
-savedPoints.subscribe(@(_) isConsentWasAutoSkipped.set(false))
-
 let isOpenedManage = mkWatched(persist, "consentManage", false)
 let isOpenedPartners = mkWatched(persist, "consentPartners", false)
 
 isOpenedConsentWnd.subscribe(function(v){
   if (v) {
-    logC($"run consent at startup")
-    sendUiBqEvent("ads_consent_firebase", { id = "consent_open_at_start" })
+    let isAtStartup = !isConsentAllowLogin.get()
+    logC(isAtStartup ? "Firebase consent run at startup" : "Firebase consent run from menu")
+    sendUiBqEvent("ads_consent_firebase", { id = isAtStartup ? "consent_open_at_start" : "consent_open_from_privacy" })
   }
 })
 
 isOpenedManage.subscribe(function(v) {
   if (v && !isOpenedConsentWnd.get()) {
-    logC("run manage consent from privacy")
+    logC("Firebase consent run manage from privacy")
     sendUiBqEvent("ads_consent_firebase", { id = "consent_open_from_privacy" })
   }
 })
 
 function applyConsent(pointsTable, source){
-  logC($"consent saved from windows {source.wnd} action {source.action}", pointsTable)
+  logC($"Firebase consent saved from windows {source.wnd} action {source.action}", pointsTable)
   sendUiBqEvent("ads_consent_firebase", {
     id = "consent_save",
     from = source.wnd,
@@ -168,6 +168,7 @@ function applyConsent(pointsTable, source){
     values = object_to_json_string(pointsTable)
   })
   savedPoints.set(pointsTable)
+  isConsentWasAutoSkipped.set(false)
   let sBlk = get_local_custom_settings_blk()
   let blk = sBlk.addBlock(CONSENT_OPTIONS_SAVE_ID)
   foreach(k, v in pointsTable){

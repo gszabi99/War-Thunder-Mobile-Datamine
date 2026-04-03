@@ -94,6 +94,16 @@
       "tracer": "76mmLaser_blue",
       "trail": "noTrail"
     },
+    "hitpower": {
+      "HitPower0m": [
+        1.0,
+        1000.0
+      ],
+      "HitPower10000m": [
+        0.8,
+        10000.0
+      ]
+    },
     "armorpower": {
       "ArmorPower0m": [
         1000.0,
@@ -247,6 +257,16 @@
         "traceFreq": 1,
         "tracer": "76mmLaser_blue",
         "trail": "noTrail"
+      },
+      "hitpower": {
+        "HitPower0m": [
+          1.0,
+          1000.0
+        ],
+        "HitPower10000m": [
+          0.8,
+          10000.0
+        ]
       },
       "armorpower": {
         "ArmorPower0m": [

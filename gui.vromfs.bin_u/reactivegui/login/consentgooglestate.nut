@@ -23,7 +23,7 @@ let getConsentName = @(v) consentNames?[v] ?? v
 
 function onConsentResponse(bq_id, msg) {
   let { status = "" } = msg
-  logC("Request google consent result = ", msg.__merge({ status = getConsentName(status) }))
+  logC("Google consent request result = ", msg.__merge({ status = getConsentName(status) }))
   sendUiBqEvent("ads_consent_google", { id = bq_id, status = getConsentName(status) })
   goodleConsent.set(msg.__merge({ isShowed = true }))
 }

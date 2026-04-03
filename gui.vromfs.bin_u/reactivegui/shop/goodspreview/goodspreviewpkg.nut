@@ -330,7 +330,8 @@ let purchaseButtonBlock = @(animStartTime, count = 1, ovr = {}) function() {
           ]
         },
         withBqEvent(goods, buy),
-        animStartTime, ovr)
+        priceBlock == null ? animStartTime - aTimePriceMove - aTimePriceStrike : animStartTime,
+        ovr)
     ]
   })
 }

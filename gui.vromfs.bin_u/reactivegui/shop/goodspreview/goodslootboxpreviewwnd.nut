@@ -30,7 +30,7 @@ let contentGradientSize = [contentGap, saBorders[1]]
 let rewardsBlockWidth = saSize[0] - hdpx(500)
 
 let aTimeHeaderStart = 0.5
-let aTimePriceStart = aTimeHeaderStart + 0.3
+let aTimePriceStart = aTimeHeaderStart + 0.1
 
 let countPurchases = 10
 let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
@@ -142,7 +142,7 @@ let content = @() {
                   !canBuyNGoods(previewGoods.get(), purchasesCount.get(), todayPurchasesCount.get(),
                       dayOffset.get(), serverTimeDay.get())
                     ? null
-                    : mkPriceBlockCentered(aTimePriceStart + 0.3, countPurchases, btnOvr)
+                    : mkPriceBlockCentered(aTimePriceStart + 0.2, countPurchases, btnOvr)
               ]
             })
           ]

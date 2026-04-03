@@ -17,7 +17,7 @@ from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorData
   isAbleLITForIABVendor, hasVendorLIT, setVendorLIT, getAllDataCategories
 from "%sqstd/platform.nut" import is_android, is_ios, is_pc
 from "%sqstd/underscore.nut" import isEqual
-from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, isLoggedIn, TCF_CONSENT_ACCEPTED_SAVE_ID
+from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, TCF_CONSENT_ACCEPTED_SAVE_ID
 from "%appGlobals/permissions.nut" import tcf_consent_enabled, request_firebase_consent_eu_only
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/login/stateIDFA.nut" import isIdfaDenied
@@ -118,8 +118,7 @@ let onFinishCbById = {
 }
 
 function setupAnalytics() {
-  logC("TCF Consent, analytics starting")
-
+  logC("TCF Consent, analytics starting:")
   let hasPurpose4 = hasConsentForPurpose(4)
   let hasPurpose5 = hasConsentForPurpose(5)
   let firebaseConsent = {
@@ -128,6 +127,7 @@ function setupAnalytics() {
     ad_user_data = hasPurpose5
     ad_personalization = hasPurpose5
   }
+  logC(firebaseConsent)
   setFirebaseConsent(object_to_json_string(firebaseConsent))
   setCollectionEnabled(true)
   enableTCFCollection(true)
@@ -233,6 +233,26 @@ function doOnFinish() {
   }
 }
 
+function resetAtLogout() {
+  doOnceOnFinishCbId.set("")
+  isOpenForProfileWnd.set(false)
+  isOpenedPartners.set(false)
+  isOpenedPartnersExt.set(false)
+  isOpenedManage.set(false)
+  showPurposeInfo.set(null)
+  needSaveChoices.set(false)
+  isTcfConsentAutoSkipped.set(false)
+  vendorsLists.set([])
+  isConsentInitializing.set(false)
+  isVendorDataLoading.set(false)
+  isLoadError.set(false)
+  isOpenedConsentTcfWnd.set(false)
+  initialSnapshot.set(null)
+  dataCache.clear()
+  if (isVendorDataLoaded())
+    unloadVendorData()
+}
+
 isOpenedConsentTcfWnd.subscribe(function(v) {
   if (v) {
     let isStartup = !isOpenForProfileWnd.get()
@@ -283,7 +303,7 @@ function onInited(isSuccess) {
     return
   }
 
-  if (!isGiven && isIdfaDenied.get()) {
+  if (!isGiven && isIdfaDenied.get() && !isOpenForProfileWnd.get()) {
     logC("TCF Consent auto skipped by denied IDFA")
     sendUiBqEvent("ads_consent_tcf", { id = "consent_skip_by_denied_idfa" })
     isTcfConsentAutoSkipped.set(true) 
@@ -318,20 +338,19 @@ eventbus_subscribe("consent.onInit", function(p) {
 })
 
 function onReadyTcf(isReady) {
-  if (!isReady)
-    return
-  if (isLoggedIn.get()) {
-    onFinishCbById[CONTINUE_LOGIN]()
-    return
+  if (isReady) {
+    if (!tcf_consent_enabled.get()) {
+      logC("TCF Consent disabled")
+      onFinishCbById[CONTINUE_LOGIN]()
+      return
+    }
+    startInit(CONTINUE_LOGIN, false)
   }
-  if (!tcf_consent_enabled.get()) {
-    logC("TCF Consent disabled")
-    onFinishCbById[CONTINUE_LOGIN]()
-    return
-  }
-  startInit(CONTINUE_LOGIN, false)
+  else
+    resetAtLogout()
 }
-onReadyTcf(isReadyForTcfConsent.get())
+if (isReadyForTcfConsent.get() && !isTcfConsentAllowLogin.get())
+  onReadyTcf(isReadyForTcfConsent.get())
 isReadyForTcfConsent.subscribe(onReadyTcf)
 
 function openTcfConsentWnd() {

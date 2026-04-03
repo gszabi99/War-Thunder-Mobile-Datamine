@@ -73,7 +73,7 @@ let content = modalWndBg.__merge({
           ? closeWndBtn(function(){
             if (!isConsentAcceptedOnce.get()) {
               savedPoints.set(defaultPointsTable.map(@(_) false))
-              logC("consent skipped")
+              logC("Firebase consent skipped")
               sendUiBqEvent("ads_consent_firebase", { id = "consent_skip" })
               setupAnalytics()
             }

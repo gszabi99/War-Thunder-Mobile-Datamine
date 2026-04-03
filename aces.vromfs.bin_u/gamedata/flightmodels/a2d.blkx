@@ -3615,6 +3615,12 @@
       "from": "a2d_metal_c*"
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_aps_19.blk",
+      "dmPart": "radar_dm"
+    }
+  },
   "cutting": {
     "_emtr_break_wing0_l_from": [
       0.926936,
