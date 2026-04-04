@@ -145,7 +145,7 @@ function getHighestRankRange(mode, mRankFrom, mRankTo) {
     if (r.len() < 2)
       continue
     if (mRankFrom >= r[0] && mRankFrom <= r[1])
-      from = max(from, r[1])
+      from = min(from, r[1])
     if (mRankTo >= r[0] && mRankTo <= r[1])
       to = max(to, r[1])
   }

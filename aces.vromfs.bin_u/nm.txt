@@ -52454,3 +52454,4 @@ cable_coil_tool_a
 cable_coil_tool_a_destr_phobj
 snapshotPeriod
 gameData/sensors/us_an_aps_19.blk
+nearGroundTexMips

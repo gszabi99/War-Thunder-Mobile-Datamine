@@ -1492,12 +1492,33 @@
         "checkMemoryLeaksMb": 500
       }
     },
-    "broken_snow_cover": {
-      "gpu": "Adreno (TM) 660",
-      "graphics": {
-        "decalHack": true
+    "broken_snow_cover": [
+      {
+        "gpu": "Adreno (TM) 660",
+        "graphics": {
+          "decalHack": true
+        }
+      },
+      {
+        "gpu": "Adreno (TM) 660",
+        "android_presets": {
+          "medium": {
+            "clipmap": {
+              "texSize": [
+                3072,
+                3072
+              ],
+              "texTileSize": 192,
+              "swFeedbackMipTiles0": 10,
+              "swFeedbackMipTiles1": 8,
+              "swFeedbackInnerMipTiles": 4,
+              "virtualTextureAnisotropy": 4,
+              "nearGroundTexMips": 10
+            }
+          }
+        }
       }
-    },
+    ],
     "broken_sgsr": {
       "gpu": "PowerVR BXM-8-256",
       "graphics": {
