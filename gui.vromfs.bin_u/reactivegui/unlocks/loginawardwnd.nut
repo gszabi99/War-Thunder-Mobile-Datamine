@@ -12,7 +12,7 @@ let { loginAwardUnlock, isLoginAwardOpened, receiveLoginAward, isLoginAwardInPro
   hasLoginAwardByAds, showLoginAwardAds
 } = require("%rGui/unlocks/loginAwardState.nut")
 let { getRelativeStageData } = require("%rGui/unlocks/unlocks.nut")
-let { userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { userstatStats, registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -514,7 +514,9 @@ let awardScene = bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-registerScene("loginAwardWnd", awardScene, close, isLoginAwardOpened)
+let sceneId = "loginAwardWnd"
+registerScene(sceneId, awardScene, close, isLoginAwardOpened)
+registerUnlocksSceneToUpdate(sceneId)
 
 register_command(
   function() {

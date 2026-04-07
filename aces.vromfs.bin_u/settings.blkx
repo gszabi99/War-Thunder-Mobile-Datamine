@@ -885,7 +885,6 @@
       "--verbose"
     ],
     "android": {
-      "flag": "--notime",
       "addons": {
         "flag": [
           "--noversion",
@@ -901,7 +900,6 @@
       }
     },
     "iOS": {
-      "flag": "--notime",
       "addons": {
         "flag": [
           "--noversion",

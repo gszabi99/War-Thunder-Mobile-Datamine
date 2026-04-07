@@ -3,7 +3,8 @@ let logG = log_with_prefix("[GOODS] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
-let { YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, YU2_ALREADY, registerApplePurchase } = require("auth_wt")
+let { YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, YU2_ALREADY, registerApplePurchase, getCountryCode
+} = require("auth_wt")
 let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -15,12 +16,14 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { object_to_json_string, parse_json } = require("json")
 let { logEvent } = require("appsFlyer")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 let { DBGLEVEL } = require("dagor.system")
+
+let APPSTORE_PAYMENTS_IN_RUSSIA_URL = "auto_local auto_login https://wtmobile.com/news/important-about-app-store-payments"
 
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 let billingModule = require("ios.billing.appstore")
@@ -233,6 +236,22 @@ startRestorePurchasesTimer()
 lastYu2TimeoutErrorTime.subscribe(@(_) startRestorePurchasesTimer())
 isInBattle.subscribe(@(_) startRestorePurchasesTimer())
 
+let openMsgboxAppstorePaymentErrorRussia = @(errText) getCountryCode() != "RU" ? null : openFMsgBox({
+  uid = "appstorePaymentErrorRussia"
+  text = "".concat(errText, "\n\n", loc("msg/inAppPurchasesInRussia"))
+  viewType = "withWndClose"
+  buttons = [{
+    id = "readMoreOnline"
+    eventId = "openInfoForRussia"
+    styleId = "PRIMARY"
+    isDefault = true
+  }]
+})
+
+subscribeFMsgBtns({
+  openInfoForRussia = @(_) eventbus_send("openUrl", { baseUrl = APPSTORE_PAYMENTS_IN_RUSSIA_URL })
+})
+
 function registerNextTransaction() {
   if (isRegisterInProgress.get())
     return
@@ -251,10 +270,17 @@ function registerNextTransaction() {
       addPurchaseDataToQueue(id, transaction_id)
   } else {
     purchaseInProgress.set(null)
+    let isRussia = getCountryCode() == "RU"
     if (status != AS_CANCELED) {
-      local error_text = data ?? "fail"
-      openFMsgBox({ text = loc($"msg/onApplePurchaseError/{error_text}") })
+      let error_text = data ?? "fail"
+      let text = loc($"msg/onApplePurchaseError/{error_text}")
+      if (isRussia)
+        openMsgboxAppstorePaymentErrorRussia(text)
+      else
+        openFMsgBox({ text })
     }
+    else if (isRussia)
+      openMsgboxAppstorePaymentErrorRussia(loc("question/somethingWentWrong"))
     if (status == AS_FAILED || status == AS_CANT_BUY)
       logerr($"onIOSPurchaseCallback fail: status = {getStatusName(status)}")
     registerNextTransaction()

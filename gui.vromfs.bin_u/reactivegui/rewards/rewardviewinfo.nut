@@ -322,6 +322,9 @@ function isRewardEmpty(reward, profile) {
   return res
 }
 
+let isSingleRewardEmpty = @(r, profile, configs)
+  isEmptyByRType?[r.gType](r.id, r.subId, profile, configs) ?? false
+
 function isSingleViewInfoRewardEmpty(reward, profile) {
   let { id, rType, subId = "" } = reward
   return isEmptyByRType?[rType](id, subId, profile, serverConfigs.get()) ?? false
@@ -413,6 +416,7 @@ return {
   getLootboxOpenRewardViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty
+  isSingleRewardEmpty
   isViewInfoRewardEmpty
   isSingleViewInfoRewardEmpty
   canReceiveFixedReward

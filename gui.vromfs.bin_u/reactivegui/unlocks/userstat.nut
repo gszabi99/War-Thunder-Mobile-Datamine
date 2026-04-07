@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logU = log_with_prefix("[userstat] ")
 let { register_command } = require("console")
-let { clearTimer, setTimeout, setInterval } = require("dagor.workcycle")
+let { clearTimer, setTimeout, setInterval, resetTimeout } = require("dagor.workcycle")
 let { rnd_float, frnd } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -15,9 +15,11 @@ let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState
 let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let charClientEventExt = require("%rGui/charClientEventExt.nut")
+let { scenesOrder } = require("%rGui/navState.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
+const STATS_REPEAT_AFTER_ERROR_TIMEOUT = 60000
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 const MAX_CONFIGS_UPDATE_DELAY = 10 
 const STATS_ACTUAL_TIMEOUT = 900
@@ -32,24 +34,48 @@ let { request, registerHandler, registerExecutor, registerBeforeHandler } = char
 
 
 let isReadyToConnect = Computed(@() isProfileReceived.get() && isMatchingConnected.get())
-let needConfigsUpdate = hardPersistWatched("userstats.needConfigsUpdate", false)
 let hasStatsFilter = hardPersistWatched("userstats.hasStatsFilter", true)
 let statsInProgress = hardPersistWatched("statsInProgress", {})
 let isStatsActualByBattle = hardPersistWatched("userstats.actualByBattle", true)
+let unlocksUpdaters = Watched({})
+let unlocksScenes = Watched({})
+let hasUnlockUpdater = Computed(@() unlocksUpdaters.get().len() > 0
+  || scenesOrder.get()?[scenesOrder.get().len() - 1] in unlocksScenes.get())
+
 isInBattle.subscribe(@(_) isStatsActualByBattle.set(false))
+
+function mkIsTimePassed(timeComp, timeAdd = 0, calcTime = @(v) v) {
+  let res = Watched(false)
+  function update() {
+    let time = calcTime(timeComp.get())
+    let timeLeft = time <= 0 ? 0 : time + timeAdd - get_time_msec()
+    res.set(timeLeft <= 0)
+    if (timeLeft > 0)
+      resetTimeout(0.001 * timeLeft, update)
+  }
+  update()
+  timeComp.subscribe(@(_) update())
+  return res
+}
 
 function makeUpdatable(persistName, refreshAction, getRefreshParams = null, customRefreshRequests = [], initData = @(v) v) {
   let defValue = {}
   let data = hardPersistWatched($"userstat.{persistName}", defValue, true)
   let lastTime = hardPersistWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
-  let isRequestInProgress = @() lastTime.get().request > lastTime.get().update
-    && lastTime.get().request + STATS_REQUEST_TIMEOUT > get_time_msec()
-  let canRefresh = @() !isRequestInProgress()
+  let changeEventTime = hardPersistWatched($"userstats.{persistName}.changeEventTime", 0)
+  let lastErrorTime = hardPersistWatched($"userstats.{persistName}.lastErrorTime", 0)
+  let canRepeatAfterError = mkIsTimePassed(lastErrorTime, STATS_REPEAT_AFTER_ERROR_TIMEOUT)
+  lastErrorTime.setDeferred(false) 
+  let isTimeoutAfterRequest = mkIsTimePassed(lastTime, STATS_REQUEST_TIMEOUT, @(v) v.request)
+  let isRequestInProgress = Computed(@() lastTime.get().request > lastTime.get().update && !isTimeoutAfterRequest.get())
+
+  let canRefresh = @() !isRequestInProgress.get()
     && (!lastTime.get().update || (lastTime.get().update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
   function onRefresh(result, context) {
     data.set(initData(result?.error ? defValue : (result?.response ?? defValue)))
     lastTime.mutate(@(v) v.update = get_time_msec())
+    lastErrorTime.set(result?.error ? get_time_msec() : 0)
     if (context?.needPrint)
       console_print(result?.error ? result : result?.response) 
   }
@@ -61,6 +87,7 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
         return
       data.set(initData(result.response))
       lastTime.mutate(@(v) v.update = get_time_msec())
+      lastErrorTime.set(0)
     })
 
   let prepareToRequest = @() lastTime.mutate(@(v) v.request = get_time_msec())
@@ -93,6 +120,11 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
   if (isReadyToConnect.get() && lastTime.get().update <= 0 && lastTime.get().request <= 0)
     refresh()
 
+  let isActual = Computed(@() lastTime.get().update > changeEventTime.get() && data.get().len() != 0)
+  let shouldUpdate = Computed(@() !isInBattle.get() && hasUnlockUpdater.get()
+    && !isActual.get() && !isRequestInProgress.get() && canRepeatAfterError.get())
+  shouldUpdate.subscribe(@(v) v ? forceRefresh() : null)
+
   register_command(@() forceRefresh({ needPrint = true }), $"userstat.get.{persistName}")
   register_command(@() debugTableData(data.get()) ?? console_print("Done"), $"userstat.debug.{persistName}") 
 
@@ -102,6 +134,8 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
     refresh
     forceRefresh
     lastUpdateTime = Computed(@() lastTime.get().update)
+    changeEventTime
+    shouldUpdate
   }
 }
 
@@ -162,28 +196,18 @@ updateValidationTimer(needValidateMissingData.get())
 needValidateMissingData.subscribe(updateValidationTimer)
 
 mnGenericSubscribe("userStat", function(ev) {
+  let time = get_time_msec()
   if (ev?.func == "changed") {
-    unlocksUpdatable.forceRefresh()
-    statsTablesUpdatable.forceRefresh() 
+    unlocksUpdatable.changeEventTime.set(time)
+    statsTablesUpdatable.changeEventTime.set(time)
   }
-  else if (ev?.func == "updateConfig")
-    needConfigsUpdate.set(true)
+  else if (ev?.func == "updateConfig") {
+    descListUpdatable.changeEventTime.set(time)
+    unlocksUpdatable.changeEventTime.set(time)
+    statsTablesUpdatable.changeEventTime.set(time)
+    infoTablesUpdatable.changeEventTime.set(time)
+  }
 })
-
-function updateConfigsIfNeed() {
-  if (!needConfigsUpdate.get() || isInBattle.get())
-    return
-  needConfigsUpdate.set(false)
-  descListUpdatable.forceRefresh()
-  unlocksUpdatable.forceRefresh()
-  infoTablesUpdatable.forceRefresh()
-  statsTablesUpdatable.forceRefresh()
-}
-updateConfigsIfNeed()
-needConfigsUpdate.subscribe(@(_) isInBattle.get() ? null
-  : resetExtTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, updateConfigsIfNeed))
-isInBattle.subscribe(@(v) v ? updateConfigsIfNeed() : null)
-
 
 let tablesActivityOvr = Watched({}) 
 
@@ -345,12 +369,8 @@ function updateTableActivityTimer() {
     isStatsActualByTime.set(false)
     resetExtTimeout(rnd_float(0.001, 1.0) * MAX_CONFIGS_UPDATE_DELAY,
       function() {
-        if (isInBattle.get()) {
-          needConfigsUpdate.set(true)
-          return
-        }
-        statsTablesUpdatable.refresh()
-        descListUpdatable.refresh()
+        statsTablesUpdatable.changeEventTime.set(get_time_msec())
+        descListUpdatable.changeEventTime.set(get_time_msec())
       })
   }
 }
@@ -386,6 +406,9 @@ return {
   userstatRequest = requestExt
   userstatRegisterHandler = registerHandler 
   userstatRegisterExecutor = registerExecutor 
+  addUnlocksUpdater = @(id) unlocksUpdaters.mutate(@(v) v.$rawset(id, true))
+  removeUnlocksUpdater = @(id) unlocksUpdaters.mutate(@(v) v.$rawdelete(id))
+  registerUnlocksSceneToUpdate = @(sceneId) unlocksScenes.mutate(@(v) v.$rawset(sceneId, true))
 
   userstatSetStat
   statsInProgress

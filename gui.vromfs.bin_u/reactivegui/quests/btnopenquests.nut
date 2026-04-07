@@ -4,9 +4,14 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasUnseenQuestsBySection, questsBySection, progressUnlockByTab, progressUnlockBySection,
   questsCfg, openQuestsWnd, openQuestsWndOnTab, tutorialQuestBtnKey
 } = require("%rGui/quests/questsState.nut")
+let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/userstat.nut")
 
+let statusKey = "btnOpenQuestsStatus"
 let statusMark = @(_) @() {
   watch = [hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]
+  key = statusKey
+  onAttach = @() addUnlocksUpdater(statusKey)
+  onDetach = @() removeUnlocksUpdater(statusKey)
   hplace = ALIGN_RIGHT
   pos = [hdpx(4), hdpx(-4)]
   children = hasUnseenQuestsBySection.get().findindex(@(v) v) != null
@@ -35,8 +40,12 @@ function btnOpenQuests(keyPostfix) {
 
 function mkBtnOpenTabQuests(tabId, ovr = {}) {
   let sections = Computed(@() questsCfg.get()?[tabId] ?? [])
+  let key = $"btnOpenTabQuests_{tabId}"
   let status = @() {
     watch = [sections, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]
+    key
+    onAttach = @() addUnlocksUpdater(key)
+    onDetach = @() removeUnlocksUpdater(key)
     hplace = ALIGN_RIGHT
     pos = [hdpx(4), hdpx(-4)]
     children = (progressUnlockByTab.get()?[tabId]?.hasReward ?? false)

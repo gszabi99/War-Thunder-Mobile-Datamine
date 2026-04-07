@@ -22,6 +22,7 @@ let { contentBP, scrollToCardBP } = require("battlePassWnd.nut")
 let { contentEP, scrollToCardEP } = require("eventPassWnd.nut")
 let { contentOP, scrollToCardOP } = require("operationPassWnd.nut")
 let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize, sideTabPadding } = require("battlePassPkg.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 let sceneBg = keepref(Computed(function() {
   let id = passPageId.get()
@@ -195,7 +196,9 @@ function wnd() {
     animations = wndSwitchAnim
   }
 }
-registerScene("passScene", wnd, closePassScene, passOpenCounter)
 
-setSceneBg("passScene", sceneBg.get()?.bg, sceneBg.get()?.bgColor)
-sceneBg.subscribe(@(v) setSceneBg("passScene", v?.bg, v?.bgColor))
+let sceneId = "passScene"
+registerScene(sceneId, wnd, closePassScene, passOpenCounter)
+setSceneBg(sceneId, sceneBg.get()?.bg, sceneBg.get()?.bgColor)
+sceneBg.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))
+registerUnlocksSceneToUpdate(sceneId)

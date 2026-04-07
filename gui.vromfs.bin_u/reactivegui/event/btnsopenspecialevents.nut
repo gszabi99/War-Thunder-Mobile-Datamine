@@ -6,18 +6,26 @@ let { gmEventsList, openGmEventWnd, hasFinishedFirstBattle, canOpenGmEventWnd } 
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { openQuestsWndOnTab, questsCfg, progressUnlockByTab, progressUnlockBySection,
-  hasUnseenQuestsBySection } = require("%rGui/quests/questsState.nut")
+  hasUnseenQuestsBySection
+} = require("%rGui/quests/questsState.nut")
+let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/userstat.nut")
 
 
-let statusMark = @(eventId) @() {
-  watch = [hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]
-  hplace = ALIGN_RIGHT
-  pos = [hdpx(4), hdpx(-4)]
-  children = progressUnlockByTab.get()?[eventId].hasReward
-      || questsCfg.get()?[eventId].findvalue(@(s) !!hasUnseenQuestsBySection.get()?[s]
-        || !!progressUnlockBySection.get()?[s].hasReward) != null
-    ? priorityUnseenMark
-    : null
+function statusMark(eventId) {
+  let key = $"eventStatus_{eventId}"
+  return @() {
+    watch = [hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]
+    key
+    onAttach = @() addUnlocksUpdater(key)
+    onDetach = @() removeUnlocksUpdater(key)
+    hplace = ALIGN_RIGHT
+    pos = [hdpx(4), hdpx(-4)]
+    children = progressUnlockByTab.get()?[eventId].hasReward
+        || questsCfg.get()?[eventId].findvalue(@(s) !!hasUnseenQuestsBySection.get()?[s]
+          || !!progressUnlockBySection.get()?[s].hasReward) != null
+      ? priorityUnseenMark
+      : null
+  }
 }
 
 function btnsOpenSpecialEvents() {

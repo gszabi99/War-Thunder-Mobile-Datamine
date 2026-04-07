@@ -12,10 +12,13 @@ let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openPassScene, BATTLE_PASS, OPERATION_PASS } = require("passState.nut")
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
+let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/userstat.nut")
 
 
 let bannerIconSize = [hdpxi(216), hdpxi(127)]
 let horPadding = hdpx(80)
+let bpBannerStatusKey = "bpBannerStatusKey"
+let opBannerStatusKey = "opBannerStatusKey"
 
 let mainEventBtn = translucentButton("ui/gameuiskin#icon_events.svg", "",
   @() openEventWnd(),
@@ -87,6 +90,9 @@ return @(isPassActive, isEventActive) function () {
                   @() openPassScene(BATTLE_PASS),
                   @(_) @() {
                     watch = [hasAnyPassRewards, hasAnyUnseenPass]
+                    key = bpBannerStatusKey
+                    onAttach = @() addUnlocksUpdater(bpBannerStatusKey)
+                    onDetach = @() removeUnlocksUpdater(bpBannerStatusKey)
                     children = !hasAnyPassRewards.get() && !hasAnyUnseenPass.get() ? null
                       : priorityUnseenMark
                   })
@@ -96,6 +102,9 @@ return @(isPassActive, isEventActive) function () {
                       @() openPassScene(OPERATION_PASS),
                       @(_) @() {
                         watch = [hasOPRewardsToReceive, hasUnseenOP]
+                        key = opBannerStatusKey
+                        onAttach = @() addUnlocksUpdater(opBannerStatusKey)
+                        onDetach = @() removeUnlocksUpdater(opBannerStatusKey)
                         children = !hasOPRewardsToReceive.get() && !hasUnseenOP.get() ? null
                           : priorityUnseenMark
                       })

@@ -56,6 +56,8 @@ let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+
 
 let footerGap = hdpx(30)
 let footerHeight = defButtonHeight
@@ -474,4 +476,6 @@ function debriefingWnd() {
   })
 }
 
-registerScene("debriefingWnd", debriefingWnd, closeDebriefing, isInDebriefing)
+let sceneId = "debriefingWnd"
+registerScene(sceneId, debriefingWnd, closeDebriefing, isInDebriefing)
+registerUnlocksSceneToUpdate(sceneId)

@@ -46,7 +46,8 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
 let { REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
-let { ignoreSubIdRTypes, getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty
+} = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText,
   mkRewardPlate, mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
@@ -63,7 +64,7 @@ let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/uni
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { curUnitInProgress, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { isDisabledGoods, allShopGoods } = require("%rGui/shop/shopState.nut")
+let { allShopGoods } = require("%rGui/shop/shopState.nut")
 let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkGradText } =  require("%rGui/unitCustom/unitCustomComps.nut")
 let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
@@ -157,6 +158,14 @@ function fillStackRawGoods(stackRaw, goods, source, campList, allUnits, conversi
   }
 }
 
+function isDiscountRewardEmpty(discountId, allGoods, configs, profile) {
+  let goodsId = configs?.personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == discountId) != null)
+  let mainReward = allGoods?[goodsId].rewards[0]
+  if (mainReward == null)
+    return true
+  return isSingleRewardEmpty(mainReward, profile, configs)
+}
+
 let stackData = Computed(function() {
   let stackRaw = {}
   local convertions = []
@@ -219,23 +228,26 @@ let stackData = Computed(function() {
   battleMod.each(@(v, i) v.startDelay <- bModeStartDelay + (i * aRewardAnimTotalTime))
   rewardIcons.each(@(v, i) v.startDelay <- rewardIconsStartDelay + (i * aRewardAnimTotalTime))
 
-  let discounts = discount.filter(@(r) !isDisabledGoods(r, allShopGoods.get(), serverCfg))
-
   return {
     outroDelay
-    needShowCommon = rewardIcons.len() + unitPlates.len() + battleMod.len() > 0
-    needShowAdd = convertions.len() + discounts.len() > 0
-  }.__update({
     rewardIcons
     unitPlates
     battleMod
     convertions
-    discounts
-  }.filter(@(v) v.len() != 0))
+    discount
+  }
 })
 
+let activeDiscounts = Computed(@() stackData.get()
+  .discount.filter(@(r) !isDiscountRewardEmpty(r.id, allShopGoods.get(), serverConfigs.get(), servProfile.get())))
+let needShowCommon = Computed(@() 0 <
+  stackData.get().rewardIcons.len()
+    + stackData.get().unitPlates.len()
+    + stackData.get().battleMod.len())
+let needShowAdd = Computed(@() stackData.get().convertions.len() + activeDiscounts.get().len() > 0)
+
 let needShowAny = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
-  && (stackData.get().needShowCommon || stackData.get().needShowAdd)
+  && (needShowCommon.get() || needShowAdd.get())
   && activeUnseenPurchasesGroup.get().list.len() != 0
   && isInMenu.get()
   && isLoggedIn.get()
@@ -243,8 +255,8 @@ let needShowAny = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
   && !isInQueue.get()))
 
 let addWndOpenedFor = mkWatched(persist, "addWndOpenedFor", {})
-let needShowCommonWnd = keepref(Computed(@() needShowAny.get() && addWndOpenedFor.get().len() == 0 && stackData.get().needShowCommon))
-let needShowAddWnd = keepref(Computed(@() needShowAny.get() && (addWndOpenedFor.get().len() != 0 || !stackData.get().needShowCommon)))
+let needShowCommonWnd = keepref(Computed(@() needShowAny.get() && addWndOpenedFor.get().len() == 0 && needShowCommon.get()))
+let needShowAddWnd = keepref(Computed(@() needShowAny.get() && (addWndOpenedFor.get().len() != 0 || !needShowCommon.get())))
 
 let WND_UID = "unseenPurchaseWindow"
 let WND_ADD_UID = "unseenPurchaseWindow_add"
@@ -1159,9 +1171,10 @@ function onCloseRequest() {
     skipAnims()
     return
   }
-  let unitId = stackData.get()?.unitPlates
+  let unitId = stackData.get().unitPlates
     .filter(@(v) v?.id && (campMyUnits.get()?[v.id].isCurrent || curSlots.get().findvalue(@(slot) slot.name == v.id)))
-    .findvalue(@(_) true)?.id
+    .findvalue(@(_) true)
+    ?.id
   let unit = campMyUnits.get()?[unitId]
   if (unit != null && canResetToMainScene()) {
     tryResetToMainScene()
@@ -1176,7 +1189,7 @@ function onCloseRequest() {
 }
 
 function mkMsgContent(stackDataV, purchGroup, onClick) {
-  let { rewardIcons = [], unitPlates = [], outroDelay, battleMod = [] } = stackDataV
+  let { rewardIcons, unitPlates, outroDelay, battleMod } = stackDataV
   let modifiedRewardIcons = rewardIcons.reduce(function(res, v) {
     if (!gTypesLost?[v.gType])
       return res.append(v)
@@ -1236,11 +1249,11 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
 
 let addRewardMessageWnd = @(onClick) modalWndBg.__merge({
   children = @() {
-    watch = [stackData, activeUnseenPurchasesGroup]
-    children = stackData.get()?.convertions != null
+    watch = [stackData, activeDiscounts]
+    children = stackData.get().convertions.len() != 0
         ? mkMsgConvert(stackData.get().convertions, onClick)
-      : stackData.get()?.discounts != null
-        ? mkMsgDiscount(stackData.get().discounts, onClick)
+      : activeDiscounts.get() != null
+        ? mkMsgDiscount(activeDiscounts.get(), onClick)
       : null
   }
   animations = wndAnimations
@@ -1278,7 +1291,7 @@ function onClick(){
   if (ticketToShow.get())
     showPrizeSelectDelayed()
 
-  if (stackData.get().needShowAdd && activeUnseenPurchasesGroup.get().list.len() > 0) {
+  if (needShowAdd.get() && activeUnseenPurchasesGroup.get().list.len() > 0) {
     close()
     addWndOpenedFor.set(activeUnseenPurchasesGroup.get().list.map(@(_) true))
   }
@@ -1301,8 +1314,8 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
   sound = { detach  = "meta_reward_window_close" }
 }))
 
-stackData.subscribe(function(v) {
-  if (!v.needShowCommon || addWndOpenedFor.get().len() == 0)
+stackData.subscribe(function(_) {
+  if (!needShowCommon.get() || addWndOpenedFor.get().len() == 0)
     return
   if (!isEqual(activeUnseenPurchasesGroup.get().list.map(@(_) true), addWndOpenedFor.get()))
     addWndOpenedFor.set({})

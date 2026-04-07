@@ -27,7 +27,7 @@ let wndHeaderHeight = hdpx(110)
 let contentGap = hdpx(30)
 let wndContentHeight = saSize[1] - wndHeaderHeight - contentGap
 let contentGradientSize = [contentGap, saBorders[1]]
-let rewardsBlockWidth = saSize[0] - hdpx(500)
+let rewardsBlockWidth = saSize[0] - hdpx(650)
 
 let aTimeHeaderStart = 0.5
 let aTimePriceStart = aTimeHeaderStart + 0.1

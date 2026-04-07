@@ -100116,9 +100116,12 @@
       "canRepairAnyAlly": true
     },
     "bullets": {
-      "75mm_M6_user_cannon": {
+      "75mm_M6_event_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
+        },
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_ap2_he0"
         }
       }
     },
@@ -100140,7 +100143,7 @@
       "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.087,
       "weapons": {
-        "75mm_M6_user_cannon": {
+        "75mm_M6_event_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
           "armorPower": 90.9827,

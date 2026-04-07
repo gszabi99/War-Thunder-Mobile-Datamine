@@ -60,6 +60,7 @@ let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let battleItemsBtn = require("battleItemsBtn.nut")
 let { blockedCountries } = require("%rGui/unit/unitAccess.nut")
 let { openNPWnd, isNPSeasonActive, hasUnseenNpPass, hasNpBpRewardsToReceive } = require("%rGui/battlePass/newPlayerBpState.nut")
+let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/userstat.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -216,6 +217,9 @@ let btnNewPlayerBpWnd = @() {
     ? translucentButton("ui/gameuiskin#icon_newbie_pass.svg", "", openNPWnd,
         @(_) @() {
           watch = [hasNpBpRewardsToReceive, hasUnseenNpPass]
+          key = isNPSeasonActive
+          onAttach = @() addUnlocksUpdater("npPassUnseen")
+          onDetach = @() removeUnlocksUpdater("npPassUnseen")
           hplace = ALIGN_RIGHT
           pos = [hdpx(4), hdpx(-4)]
           children = !hasNpBpRewardsToReceive.get() && !hasUnseenNpPass.get() ? null

@@ -52455,3 +52455,5 @@ cable_coil_tool_a_destr_phobj
 snapshotPeriod
 gameData/sensors/us_an_aps_19.blk
 nearGroundTexMips
+75mm_M6_event_user_cannon
+gameData/Weapons/groundModels_weapons/75mm_M6_event_user_cannon.blk

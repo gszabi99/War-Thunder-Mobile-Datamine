@@ -32,6 +32,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { questsBySection } = require("%rGui/quests/questsState.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 isOPSeasonActive.subscribe(@(isActive) isActive ? null : closeOPPurchaseWnd())
 
@@ -437,6 +438,8 @@ let function opPurchaseWnd() {
   }
 }
 
-registerScene("opPurchaseWnd", opPurchaseWnd, closeOPPurchaseWnd, isOPPurchaseWndOpened)
-setSceneBg("opPurchaseWnd", getOPPresentation(OPCampaign.get()).bg)
-OPCampaign.subscribe(@(v) setSceneBg("opPurchaseWnd", getOPPresentation(v).bg))
+let sceneId = "opPurchaseWnd"
+registerScene(sceneId, opPurchaseWnd, closeOPPurchaseWnd, isOPPurchaseWndOpened)
+setSceneBg(sceneId, getOPPresentation(OPCampaign.get()).bg)
+OPCampaign.subscribe(@(v) setSceneBg(sceneId, getOPPresentation(v).bg))
+registerUnlocksSceneToUpdate(sceneId)

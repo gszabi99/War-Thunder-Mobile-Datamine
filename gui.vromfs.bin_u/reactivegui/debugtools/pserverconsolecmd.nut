@@ -1,3 +1,4 @@
+
 from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
 let { object_to_json_string } = require("json")
@@ -29,7 +30,7 @@ let { campMyUnits, campUnitsCfg, battleUnitsMaxMRank } = require("%appGlobals/pS
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, setCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
@@ -92,11 +93,18 @@ registerHandler("onDebugCheckPurchases",
 
 registerHandler("onDebugPurchasesList",
   function(res) {
-    let { purchases = {}, purchaseApplyErrors = {}, totalPurchases = 0 } = res
+    let { purchases = {}, purchaseApplyErrors = {}, totalPurchases = 0, subscriptions = [] } = res
     let textArr = []
     if (res?.error != null)
       textArr.append("FAILED")
     else {
+      if (subscriptions.len() > 0)
+        textArr.append("\n".join(
+          subscriptions
+            .sort()
+            .map(@(v) $"  {v}")
+            .insert(0, "Subscriptions:")))
+
       textArr.append($"Total purchases: {totalPurchases}")
 
       if (purchases.len() > 0)
@@ -373,3 +381,36 @@ registerHandler("onGetGDPR",
     data.$rawdelete("isCustom")
     saveJson("wtmGDPR.json", data, { logger = console_print })
   })
+
+function printAllCampData(printFunc) {
+  let wasCampaign = curCampaign.get()
+  foreach (c in campaignsList.get()) {
+    setCampaign(c)
+    let data = clone campProfile.get()
+    data.$rawdelete("prevUnits")
+    data.$rawdelete("prevItems")
+    data.$rawdelete("prevCampaign")
+    printFunc(c, data)
+  }
+  setCampaign(wasCampaign)
+}
+
+register_command(@(folder) printAllCampData(@(camp, data) saveJson($"{folder}/{camp}.json", data, { logger = console_print })),
+  "meta.save_all_campaigns_to_json")
+
+register_command(@() printAllCampData(function(camp, data) {
+    console_print($"Campaign {camp} data:")
+    console_print(object_to_json_string(data, true))
+  }),
+  "meta.print_all_campaigns_data")
+
+register_command(function() {
+    let { units = {} } = servProfile.get()
+    let { allUnits = {} } = serverConfigs.get()
+    let res = {}
+    foreach(u, _ in units)
+      getSubArray(res, allUnits?[u].campaign ?? "unknown").append(u)
+    res.each(@(l) l.sort())
+    console_print(object_to_json_string(res, true))
+  },
+  "meta.print_all_units_list")

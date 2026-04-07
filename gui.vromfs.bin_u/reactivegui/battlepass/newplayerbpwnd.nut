@@ -26,6 +26,7 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { buyPlatformGoods, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 
 let fontIconPreview = "⌡"
@@ -292,3 +293,4 @@ let sceneId = "newPlayerBpScene"
 registerScene(sceneId, wnd, closeNPWnd, isNPWndOpened)
 setSceneBg(sceneId, getNewbieBPPresentation(curStatsCampaign.get()).bg)
 curStatsCampaign.subscribe(@(v) setSceneBg(sceneId, getNewbieBPPresentation(v).bg))
+registerUnlocksSceneToUpdate(sceneId)

@@ -31,6 +31,7 @@ let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
 let { hasOPRewardsToReceive } = require("%rGui/battlePass/operationPassState.nut")
 let { openPassScene, BATTLE_PASS, OPERATION_PASS } = require("%rGui/battlePass/passState.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
@@ -358,4 +359,6 @@ let gamercardQuestBtns = @() {
   children = mkCurrenciesBtns(curTabParams.get()?.currencies ?? [])
 }
 
-mkOptionsScene("questsWnd", tabs, isQuestsOpen, curTabId, gamercardQuestBtns)
+let sceneId = "questsWnd"
+mkOptionsScene(sceneId, tabs, isQuestsOpen, curTabId, gamercardQuestBtns)
+registerUnlocksSceneToUpdate(sceneId)

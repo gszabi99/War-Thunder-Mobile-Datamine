@@ -30,6 +30,7 @@ let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBPPurchaseWnd())
 
@@ -424,5 +425,7 @@ let function bpPurchaseWnd() {
   }
 }
 
-registerScene("bpPurchaseWnd", bpPurchaseWnd, closeBPPurchaseWnd, isBPPurchaseWndOpened)
-setSceneBg("bpPurchaseWnd", "ui/images/bp_bg_01.avif")
+let sceneId = "bpPurchaseWnd"
+registerScene(sceneId, bpPurchaseWnd, closeBPPurchaseWnd, isBPPurchaseWndOpened)
+setSceneBg(sceneId, "ui/images/bp_bg_01.avif")
+registerUnlocksSceneToUpdate(sceneId)

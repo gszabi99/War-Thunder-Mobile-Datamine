@@ -87,6 +87,9 @@ let proceedAuthByResult = {
 }
 
 function proceedAuthorizationResult(result, loginType) {
+  if (loginType != LT_GAIJIN && result == YU2_WRONG_LOGIN)
+    result = YU2_FAIL
+
   let action = proceedAuthByResult?[result]
   if (action != null) {
     action(loginType)

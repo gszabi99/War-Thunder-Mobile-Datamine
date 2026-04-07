@@ -34,6 +34,7 @@ let { openEventWnd, unseenLootboxes, MAIN_EVENT_ID } = require("%rGui/event/even
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
 let { subPresetContainer } = require("%rGui/event/treeEvent/treeEventSubPreset/subPresetContainer.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 
 let lootboxIconSize = CS_INCREASED_ICON.iconSize
@@ -347,4 +348,6 @@ let treeEventWnd = @() {
   animations = wndSwitchAnim
 }
 
-registerScene("treeEventWnd", treeEventWnd, closeTreeEventWnd, isTreeEventWndOpened)
+let sceneId = "treeEventWnd"
+registerScene(sceneId, treeEventWnd, closeTreeEventWnd, isTreeEventWndOpened)
+registerUnlocksSceneToUpdate(sceneId)
