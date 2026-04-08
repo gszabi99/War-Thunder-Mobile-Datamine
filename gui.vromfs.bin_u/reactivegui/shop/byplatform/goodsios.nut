@@ -18,7 +18,6 @@ let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { object_to_json_string, parse_json } = require("json")
-let { logEvent } = require("appsFlyer")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 let { DBGLEVEL } = require("dagor.system")
@@ -175,13 +174,6 @@ function sendPurchaseLogEvent(transactionId, isAdded) {
 
   let price = availablePrices.get()?[productId].price ?? -1
   let currency = (availablePrices.get()?[productId].currencyId ?? "USD").toupper()
-  logEvent("af_purchase", object_to_json_string({
-    af_order_id = transactionId
-    af_content_id = productId
-    af_revenue = availablePrices.get()?[productId].price ?? -1
-    af_price = availablePrices.get()?[productId].price ?? -1
-    af_currency = currency
-  }, true))
   logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string({
     value = price
     quantity = 1
@@ -190,7 +182,7 @@ function sendPurchaseLogEvent(transactionId, isAdded) {
     price_is_discounted = false
     free_trial = false
     subscription = subsIdByProductId.get()?[productId] != null
-  }, true))
+  }, false))
 }
 
 function addPurchaseDataToQueue(productId, transactionId) {

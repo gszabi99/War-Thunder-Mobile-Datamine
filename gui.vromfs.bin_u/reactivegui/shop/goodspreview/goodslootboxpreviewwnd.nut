@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { defer } = require("dagor.workcycle")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
@@ -11,7 +12,8 @@ let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootbo
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims, horGap
+let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims, horGap,
+  ANIM_SKIP, ANIM_SKIP_DELAY
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
@@ -28,11 +30,17 @@ let contentGap = hdpx(30)
 let wndContentHeight = saSize[1] - wndHeaderHeight - contentGap
 let contentGradientSize = [contentGap, saBorders[1]]
 let rewardsBlockWidth = saSize[0] - hdpx(650)
+let btnW = hdpx(300)
+let gapBtn = hdpx(20)
+
 
 let aTimeHeaderStart = 0.5
 let aTimePriceStart = aTimeHeaderStart + 0.1
 
 let countPurchases = 10
+
+let skipAnimsOnce = Watched(false)
+
 let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
 let lootbox = Computed(@(prev) prevIfEqual(prev,
   serverConfigs.get()?.lootboxesCfg[
@@ -96,8 +104,8 @@ function canBuyNGoods(goods, purchCount, todayPurchCount, dOffset, servTimeDay) 
 }
 
 let btnOvr = {
-  size = [hdpx(300), defButtonHeight]
-  minWidth = hdpx(300)
+  size = [btnW, defButtonHeight]
+  minWidth = btnW
 }
 
 let pannableArea = verticalPannableAreaCtor(wndContentHeight + contentGradientSize[0] + contentGradientSize[1],
@@ -133,16 +141,16 @@ let content = @() {
             mkTimeBlockCentered(aTimePriceStart)
             { size = const [0, hdpx(10)] }
             doubleSideGradient.__merge({
-              pos = [doubleSideGradientPaddingX, 0]
+              size = [btnW * 2 + gapBtn, SIZE_TO_CONTENT]
               flow = FLOW_HORIZONTAL
-              gap = hdpx(20)
-              hplace = ALIGN_RIGHT
+              gap = gapBtn
+              halign = ALIGN_CENTER
               children = [
                 mkPriceBlockCentered(aTimePriceStart, 1, btnOvr)
-                  !canBuyNGoods(previewGoods.get(), purchasesCount.get(), todayPurchasesCount.get(),
-                      dayOffset.get(), serverTimeDay.get())
-                    ? null
-                    : mkPriceBlockCentered(aTimePriceStart + 0.2, countPurchases, btnOvr)
+                canBuyNGoods(previewGoods.get(), purchasesCount.get(), todayPurchasesCount.get(),
+                    dayOffset.get(), serverTimeDay.get())
+                  ? mkPriceBlockCentered(aTimePriceStart + 0.2, countPurchases, btnOvr)
+                  : null
               ]
             })
           ]
@@ -154,6 +162,17 @@ let previewWnd = @() {
   key = openCount
   size = flex()
 
+  function onAttach() {
+    if (!skipAnimsOnce.get())
+      return
+
+    skipAnimsOnce.set(false)
+    defer(function() {
+      anim_skip(ANIM_SKIP)
+      anim_skip_delay(ANIM_SKIP_DELAY)
+    })
+  }
+  onDetach = @() skipAnimsOnce.set(openCount.get() > 0)
   children = {
     size = saSize
     vplace = ALIGN_CENTER

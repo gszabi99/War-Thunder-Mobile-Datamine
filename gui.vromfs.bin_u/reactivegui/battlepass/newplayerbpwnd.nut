@@ -134,7 +134,7 @@ let passCard = @() {
   ]
 }
 
-let previewComp = @(viewInfo) viewInfo.rType != "unit" ? null : {
+let previewComp = @(viewInfo) viewInfo?.rType != "unit" ? null : {
   size = [hdpx(80), hdpx(80)]
   margin = hdpx(10)
   rendObj = ROBJ_SOLID
@@ -156,7 +156,7 @@ let previewComp = @(viewInfo) viewInfo.rType != "unit" ? null : {
 
 function rewardInfoMsg(reward) {
   let viewInfo = reward.viewInfo
-  if (viewInfo.rType != "unit")
+  if (viewInfo?.rType != "unit")
     return
   openMsgBox({
     uid = "npRewardInfo"
