@@ -7,7 +7,7 @@ let { eventbus_send } = require("eventbus")
 let storeId = "UpdateAuthStatsCalled"
 let needCall = Watched(false)
 
-let statsUpdateAuthTags = ["fblogin", "gplogin", "applelogin"]
+let statsUpdateAuthTags = ["fblogin", "gplogin", "applelogin", "hwlogin"]
   .reduce(@(res, v) res.$rawset(v, true), {})
 
 let needCheck = Computed(@() needCall.get()

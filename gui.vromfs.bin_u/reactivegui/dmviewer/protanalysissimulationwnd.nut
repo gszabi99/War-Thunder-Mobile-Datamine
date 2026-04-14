@@ -1,14 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/unitPresentation.nut" import getUnitLocId
 from "%rGui/cursor.nut" import needShowCursor, cursor
 from "%rGui/navState.nut" import registerScene
 from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText
 from "%rGui/dmViewer/protectionAnalysisState.nut" import inspectedBaseUnit, isSimulationMode,
-  isHintVisible, doFire
+  threatUnit, threatBulletData, fireDistance, isHintVisible, doFire
 import "%rGui/dmViewer/protectionAnalysisControl.nut" as protectionAnalysisControl
 import "%rGui/dmViewer/protectionAnalysisCrosshair.nut" as protectionAnalysisCrosshair
 from "%rGui/dmViewer/protectionAnalysisHint.nut" import strTitle, strAngle, strHeadingAngle,
@@ -25,6 +27,25 @@ let sceneHeader = @() {
     getCampaignPresentation(inspectedBaseUnit.get()?.campaign).levelUnitDetailsLocId,
     inspectedBaseUnit,
     needShowCursor.get() ? { cursor } : {})
+}
+
+let mkInfoStr = @(watch, toStr, ovr = {}) @() {
+  watch
+  hplace = ALIGN_RIGHT
+  rendObj = ROBJ_TEXT
+  text = toStr(watch?.get())
+}.__update(fontSmallShaded, ovr)
+
+let threatInfoComp = {
+  hplace = ALIGN_RIGHT
+  flow = FLOW_VERTICAL
+  children = [
+    mkInfoStr(null, @(_) loc("protection_analysis/attacker"),
+      { margin = [0, 0, hdpx(24), 0] }.__update(fontTinyAccentedShaded))
+    mkInfoStr(threatUnit, @(v) loc(getUnitLocId(v?.name ?? "")))
+    mkInfoStr(threatBulletData, @(v) getAmmoNameShortText(v?.bSet))
+    mkInfoStr(fireDistance, @(v) " ".concat(v, loc("measureUnits/meters_alt")))
+  ]
 }
 
 let mkHintStr = @(watch, ovr = {}) @() {
@@ -73,6 +94,7 @@ let mkScene = @() {
         {
           size = flex()
           children = [
+            threatInfoComp
             hintComp
             fireBtn
           ]

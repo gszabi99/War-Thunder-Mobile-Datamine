@@ -134,8 +134,8 @@ function getUnitFmBlk(commonData) {
 }
 
 function getTankMainWeaponStats(commonData) {
-  let { weapons = {}, mainWeaponCaliber = 0 } = getUnitStats(commonData)
-  let name = weapons.findindex(@(v) v?.caliber == mainWeaponCaliber)
+  let { weapons = {}, mainWeaponCaliber = 0, mainWeaponType = "mainCannon" } = getUnitStats(commonData)
+  let name = weapons.findindex(@(v) v?.caliber == mainWeaponCaliber && v?.wtype == mainWeaponType)
   return weapons?[name].__merge({ name })
 }
 

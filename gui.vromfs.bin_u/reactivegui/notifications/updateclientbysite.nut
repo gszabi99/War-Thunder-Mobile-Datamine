@@ -8,11 +8,7 @@ let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion, DOW
   DOWNLOAD_STATUS_FAILED } = require("android.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { actualGameVersion, actualGameHash, getApkLinkWithHash } = require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
 let { get_base_game_version_str } = require("app")
 let { isConnectionLimited } = require("%appGlobals/clientState/connectionStatus.nut")
@@ -28,14 +24,7 @@ let getApkName = @() $"wtm_production_{actualGameVersion.get()}.apk"
 let hasDownloadedApk = Watched(false)
 let isDownloadInProgress = Watched(false)
 
-let needShowModal = keepref(Computed(@() !hasModalWindows.get()
-  && !isDownloadInProgress.get()
-  && !isInLoadingScreen.get()
-  && !isTutorialActive.get()
-  && !isSuggested.get()
-  && hasDownloadedApk.get()
-  && isMainMenuAttached.get()
-  && isLoggedIn.get()))
+let needShowModal = Watched(false)
 
 function saveDownloadId(id) {
   let blk = get_local_custom_settings_blk()

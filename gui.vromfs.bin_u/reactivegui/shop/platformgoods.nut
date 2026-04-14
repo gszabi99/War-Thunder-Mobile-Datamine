@@ -78,7 +78,7 @@ function buyPlatformGoodsExt(goodsOrId) {
 
       if (canLinkEmailForGaijinLogin.get()) {
         openFMsgBox({
-          text = "".concat(loc("msg/ru_google_play_link_email"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
+          text = "".concat(loc("mainmenu/ru_google_play_link_email"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
           buttons = [
             { id = "cancel", isCancel = true }
             { id = "linkEmail", eventId = "openLinkEmailForGaijinLogin", styleId = "PRIMARY", isDefault = true }
