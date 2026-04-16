@@ -182,6 +182,10 @@
         "src": "../../skyquake/prog/gamebase_wtm/mis_vrom"
       },
       {
+        "vrom": "dldata.pc.vromfs.bin",
+        "vromOptional": true
+      },
+      {
         "vrom": "game-dev.vromfs.bin",
         "vromOptional": true
       },

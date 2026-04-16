@@ -1,9 +1,9 @@
-from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "dagor.time" import get_time_msec
 from "math" import fabs
 from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, isDebriefingAnimFinished, DEBR_TAB_SCORES, stopDebriefingAnimation,
   showReleaseToContinueBtn
+let { sh, Behaviors, sw, anim_pause = @(_, _) null } = require("%globalsDarg/darg_library.nut")
 
 
 local pointer = null
