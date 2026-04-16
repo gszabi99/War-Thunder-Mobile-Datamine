@@ -398,11 +398,11 @@ function debriefingWnd() {
   let debrTabComps = debrTabsInfo.map(@(v) [ v.id, v.comp ]).totable()
   let tabsShowTime = debrTabsInfo.filter(@(v) v.needAutoAnim).map(@(v)  { id = v.id, timeShow = v.timeShow })
   let debrAnimTime = tabsShowTime.reduce(@(res, v) res + v.timeShow, 0)
+  debrTabsShowTime.set(tabsShowTime)
 
   function reinitScene() {
     if (!needReinitScene.get())
       return
-    debrTabsShowTime.set(tabsShowTime)
     curDebrTabId.set(debrTabsInfo?[0].id ?? DEBR_TAB_SCORES)
     isDebriefingAnimFinished.set(debrAnimTime <= 0)
     let hangarUnitName = unitName != "" ? unitName : (debrData?.reward.unitName ?? "")

@@ -56,16 +56,13 @@ function mkDebrTabsInfo(debrData, params) {
   let lastAnimTabId = res.findvalue(@(v) v.forceStopAnim)?.id
     ?? res?[res.len() - 1].id
     ?? 0
-  foreach (idx, v in res) {
-    let nextId = res?[idx + 1].id
+  foreach (v in res)
     v.__update({
       needAutoAnim = v.id <= lastAnimTabId
-      nextTabId = (nextId != null && nextId <= lastAnimTabId) ? nextId : null
       timeShow = v.id < lastAnimTabId ? (v.timeShow + tabFinalPauseTime)
         : v.id == lastAnimTabId ? v.timeShow
         : 0
     })
-  }
   return res
 }
 

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { curDebrTabId, isDebriefingAnimFinished, stopDebriefingAnimation } = require("%rGui/debriefing/debriefingState.nut")
+from "math" import round
+from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, nextDebrTabId,
+  isDebriefingAnimFinished, stopDebriefingAnimation
 
 let tabSize = hdpx(75).tointeger()
 let tabGap = hdpx(30)
@@ -14,7 +15,7 @@ let fadedColor = 0x80808080
 function tabBase(info, debrData, sf, isSelected, isInAnim) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = sf & S_HOVER
-  let { id, timeShow, nextTabId, getIcon, iconScale } = info
+  let { id, timeShow, getIcon, iconScale } = info
   let iconSize = round(tabSize * iconScale).tointeger()
   return {
     size = [tabSize, tabSize + tabLineGap + tabLineH]
@@ -56,7 +57,9 @@ function tabBase(info, debrData, sf, isSelected, isInAnim) {
           transform = { pivot = [0, 0] }
           animations = [{
             prop = AnimProp.scale, from = [0, 1], duration = timeShow, play = true,
-            onFinish = nextTabId != null ? @() curDebrTabId.set(nextTabId) : stopDebriefingAnimation,
+            onFinish = @() nextDebrTabId.get() != null
+              ? curDebrTabId.set(nextDebrTabId.get())
+              : stopDebriefingAnimation()
             trigger = $"progress_anim_{id}"
           }]
         })
