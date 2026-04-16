@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hudTuning/hudTuningConsts.nut" import *
 let { get_time_speed, get_replay_info,
   is_replay_paused = @() !require("replays")?.is_replay_playing(),
-  get_replay_anchors, move_to_anchor, is_anchor_loading
+  get_replay_anchors, move_to_anchor,
+  is_anchor_loading = @() false
 } = require("replays")
 let { get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { getSpectatorTargetId, switchSpectatorTargetById } = require("guiSpectator")
@@ -54,7 +55,7 @@ let avatarHeight = rowHeight - hdpx(2)
 let squadLabelWidth = hdpx(34)
 let squadLabelHeight = hdpx(41)
 
-let startedReplayPath = keepref(Watched(""))
+let startedReplayPath = mkWatched(persist, "startedReplayPath", "")
 
 let stickDelta = Watched(Point2(0, 0))
 
