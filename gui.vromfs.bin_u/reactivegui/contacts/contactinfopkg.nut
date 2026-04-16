@@ -25,7 +25,7 @@ let avatarSize = hdpxi(90)
 let contactLevelSize = avatarSize * 0.8
 let rowHeight = avatarSize + 2 * borderWidth
 let gap = hdpx(10)
-let premIconSize = hdpxi(30)
+let premIconSize = hdpxi(25)
 
 
 function contactNameBlock(contact, info, addChildren = [], styles = {}) {
@@ -36,26 +36,24 @@ function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   return {
     size = FLEX_V
     flow = FLOW_VERTICAL
+    valign = ALIGN_CENTER
     children = [
       @() {
         watch = [myUserRealName, myUserName]
-        size = FLEX_V
-        valign = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         behavior = Behaviors.Marquee
         color = nameColor
+        vplace = title || hasPremium ? ALIGN_TOP : ALIGN_CENTER
         text = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
       }.__update(nameStyle)
       {
-        size = FLEX_V
-        valign = ALIGN_CENTER
+        valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
         gap
         children = [
           !title ? null
             : {
-                size = FLEX_V
-                valign = ALIGN_CENTER
+                valign = ALIGN_BOTTOM
                 rendObj = ROBJ_TEXT
                 color = titleColor
                 text = loc($"title/{title}")

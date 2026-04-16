@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
+let { contentHeight } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
 
 const topMargin = hdpx(20)
@@ -10,14 +11,13 @@ function alignTeamLengths(playersByTeam) {
   return playersByTeam
 }
 
-function mkDebriefingWndTabMpStats(debrData, params) {
+function mkDebriefingWndTabMpStats(debrData, _params) {
   if ((debrData?.isSingleMission ?? false) || (debrData?.players ?? {}).len() == 0)
     return null
 
   let { campaign = "", mission = "", gameType = 0, hudCustomRules = {} } = debrData
   let isFFA = !!(gameType & (GT_FFA_DEATHMATCH | GT_FFA))
   let playersByTeamAligned = alignTeamLengths(mkPlayersByTeam(debrData))
-  let { contentHeight } = params
   let tableHeight = contentHeight - topMargin
   let comp = {
     size = const [sw(100), flex()]

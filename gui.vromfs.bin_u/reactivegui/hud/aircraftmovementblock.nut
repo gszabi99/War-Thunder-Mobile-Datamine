@@ -135,9 +135,6 @@ function showIncreaseThrottleHint() {
 }
 
 function changeThrottleValue(val) {
-  if (isPlayingReplay.get())
-    return
-
   val = clamp(val, sliderWepValue, maxThrottle)
   needOpacityThrottle.set(false)
   resetTimeout(idleTimeForThrottleOpacity, makeOpacityThrottle)
@@ -662,11 +659,11 @@ let aircraftMovement = @(scale) {
   children = [
     throttleSlider(getSizes(scale))
     @() {
-      watch = [ currentAircraftCtrlType, currentControlByGyroAimMode, currentControlByGyroDirectControl,
+      watch = [ currentAircraftCtrlType, currentControlByGyroAimMode, currentControlByGyroDirectControl, isPlayingReplay,
         currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive]
       children = [
         getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroDirectControl.get()),
-        isGamepad.get() && !isPieMenuActive.get() ? mkGamepadAxisListener() : null
+        isGamepad.get() && !isPieMenuActive.get() && !isPlayingReplay.get() ? mkGamepadAxisListener() : null
       ]
     }
   ]

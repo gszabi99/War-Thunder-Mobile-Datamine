@@ -1,22 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { can_write_replays } = require("%appGlobals/permissions.nut")
-let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { translucentButton } = require("%rGui/components/translucentButton.nut")
+let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { mkAdsButton } = require("%rGui/components/adsButton.nut")
 let { mkDebriefingStats } = require("%rGui/debriefing/mkDebriefingStats.nut")
-let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
-let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let { mkMissionResultTitle, missionResultTitleAnimTime } = require("%rGui/debriefing/missionResultTitle.nut")
 let achievementsBlock = require("%rGui/debriefing/achievementsBlock.nut")
-let mkDebrQuestsProgress = require("%rGui/debriefing/mkDebrQuestsProgress.nut")
 let { mkTotalRewardCountsScores } = require("%rGui/debriefing/totalRewardCounts.nut")
 
 let rewardsAnimStartTime = 0.5
-let questsAnimStartTime = 0.5
 
-let btnSaveReplay = @() {
-  watch = [can_write_replays, hasUnsavedReplay]
-  children = !can_write_replays.get() || !hasUnsavedReplay.get() ? null
-    : translucentButton("ui/gameuiskin#icon_save.svg", "", saveReplayWindow)
+let scoreBgPanel = {
+  rendObj = ROBJ_IMAGE
+  image = mkColoredGradientY(0x80000000, 0x00000000, 12)
+  padding = const [hdpx(10), 0, hdpx(10), 0]
+  flow = FLOW_VERTICAL
 }
 
 function mkDebriefingWndTabScores(debrData, _params) {
@@ -26,60 +22,74 @@ function mkDebriefingWndTabScores(debrData, _params) {
   let achievementsAnimStartTime = missionResultTitleAnimTime / 2
   let { achievementsAnimTime, achievementsComp } = achievementsBlock(debrData, achievementsAnimStartTime)
   let statsAnimStartTime = achievementsAnimStartTime + achievementsAnimTime
-  let { statsAnimEndTime, debriefingStats } = mkDebriefingStats(debrData, statsAnimStartTime)
+  let { statsAnimEndTime, debriefingStats, usedItems } = mkDebriefingStats(debrData, statsAnimStartTime)
 
   let { totalRewardCountsComp, totalRewardsShowTime, btnTryPremium
   } = mkTotalRewardCountsScores(debrData, rewardsAnimStartTime)
 
-  let { questsProgressComps, questsProgressShowTime } = mkDebrQuestsProgress(debrData, questsAnimStartTime)
-
   let timeShow = max(
     statsAnimEndTime,
     rewardsAnimStartTime + totalRewardsShowTime,
-    questsAnimStartTime + questsProgressShowTime
   )
 
-  if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null && questsProgressComps == null)
+  if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null)
     return null
 
   let comp = {
     size = flex()
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
     children = [
-      {
-        size = flex()
-        flow = FLOW_VERTICAL
-        halign = ALIGN_CENTER
-        children = [
-          mkMissionResultTitle(debrData, true)
-          achievementsComp
-          {
-            size = const [hdpx(1600), SIZE_TO_CONTENT]
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(100)
-            children = [
-              totalRewardCountsComp
-              debriefingStats
-            ]
-          }
-          questsProgressComps == null ? null : makeSideScroll({
-            size = FLEX_H
-            halign = ALIGN_CENTER
-            flow = FLOW_VERTICAL
-            gap = hdpx(8)
-            children = questsProgressComps
-          })
-        ]
-      }
-      {
-        vplace = ALIGN_BOTTOM
-        valign = ALIGN_BOTTOM
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(40)
-        children = [
-          btnTryPremium
-          btnSaveReplay
-        ]
-      }
+      mkMissionResultTitle(debrData, true)
+      achievementsComp
+      scoreBgPanel.__merge(
+        {
+          size = flex()
+          gap = hdpx(10)
+          children = [
+            {
+              size = FLEX_H
+              flow = FLOW_HORIZONTAL
+              padding = const [0, hdpx(40)]
+              halign = ALIGN_CENTER
+              gap = hdpx(40)
+              children = [
+                totalRewardCountsComp == null ? null
+                  : totalRewardCountsComp
+                debriefingStats == null ? null
+                  : debriefingStats
+              ]
+            }
+            {
+              size = [hdpx(1000), hdpx(9)]
+              hplace = ALIGN_CENTER
+              rendObj = ROBJ_IMAGE
+              image = gradTranspDoubleSideX
+              color = 0xFF808080
+            }
+            {
+              size = flex()
+              children = [
+                usedItems == null ? null
+                  : usedItems.__merge(
+                    {
+                      hplace = ALIGN_CENTER,
+                      vplace = ALIGN_TOP,
+                    })
+                {
+                  size = flex()
+                  flow = FLOW_HORIZONTAL
+                  valign = ALIGN_BOTTOM
+                  children = [
+                    mkAdsButton(debrData)
+                    {size = flex()}
+                    btnTryPremium
+                  ]}
+              ]
+            }
+          ]
+        }
+      )
     ]
   }
 

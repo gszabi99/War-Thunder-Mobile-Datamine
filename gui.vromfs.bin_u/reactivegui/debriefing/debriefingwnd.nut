@@ -1,8 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_time_msec } = require("dagor.time")
 let { eventbus_send } = require("eventbus")
 let { playSound } = require("sound_wt")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
+let { can_write_replays } = require("%appGlobals/permissions.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
+let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
@@ -14,13 +18,13 @@ let { curUnits, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/p
 let { setHangarUnit, setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { textButtonPrimary, textButtonCommon, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { textButtonPrimary, textButtonCommon, textButtonBattle, buttonsHGap, iconButtonCommon } = require("%rGui/components/textButton.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openUnitAttrWnd } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
-  DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, stopDebriefingAnimation,
+  DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, showReleaseToContinueBtn,
   needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final, needReinitScene
+  activatingTimeBtns_Campaign, activatingTimeBtns_Unit, activatingTimeBtns_Final
 } = require("%rGui/debriefing/debriefingState.nut")
 let { randomBattleMode, allGameModes, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
@@ -38,11 +42,13 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
+let { footerGap, footerHeight } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { isPlayerReceiveLevel, getResearchedUnit, getBestUnitName, isUnitReceiveLevel, getNewPlatoonUnit,
   getSlotOrUnitLevelUnlockRewards, getBgUnits
 } = require("%rGui/debriefing/debrUtils.nut")
+let tapListener = require("%rGui/debriefing/tapListener.nut")
 let mkDebrTabsInfo = require("%rGui/debriefing/mkDebrTabsInfo.nut")
-let debriefingTabBar = require("%rGui/debriefing/debriefingTabBar.nut")
+let { debriefingTabBar } = require("%rGui/debriefing/debriefingTabBar.nut")
 let mkDebriefingEmpty = require("%rGui/debriefing/mkDebriefingEmpty.nut")
 let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
 let { openEventWnd, allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
@@ -56,12 +62,11 @@ let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
 let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 
-let footerGap = hdpx(30)
-let footerHeight = defButtonHeight
-let contentHeight = saSize[1] - footerGap - footerHeight
+let rightButtonOvr = { minWidth = hdpx(400) }
 
 local isAttached = false
 
@@ -93,6 +98,19 @@ let upgradeUnitLocIdByCampaign = {
   air   = "mainmenu/btnUpgradeAircraft"
   tanks = "mainmenu/btnUpgradePlatoon"
   ships = "mainmenu/btnUpgradeShip"
+}
+
+let btnSaveReplay = @() {
+  watch = [can_write_replays, hasUnsavedReplay]
+  children = !can_write_replays.get() || !hasUnsavedReplay.get() ? null
+    : iconButtonCommon(
+      "ui/gameuiskin#icon_save.svg",
+      saveReplayWindow
+      {ovr = {
+        size = const [hdpxi(109), hdpxi(109)],
+        minWidth = hdpxi(109)
+      }}
+    )
 }
 
 let buttonDescText = @(needShowW, text) @() !needShowW.get() ? { watch = needShowW } : {
@@ -132,6 +150,8 @@ let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppear
       : "return_to_hangar/short"
     )),
     function() {
+      if (activatingTimeBtns_Final.get() > get_time_msec())
+        return
       isNoExtraScenesAfterDebriefing.set(true)
       if (needRateGame.get())
         requestShowRateGame()
@@ -143,33 +163,39 @@ let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppear
       closeDebriefing()
       openSpecialEvent()
     },
-    { hotkeys = isMainBtn ? ["^J:X | Enter"] : [btnBEscUp] }))
+    { hotkeys = isMainBtn ? ["^J:X | Enter"] : [btnBEscUp], ovr = rightButtonOvr }))
 
 let mkBtnToOfflineBattles = @(needShow, debrData) mkBtnAppearAnim(false, needShow,
   textButtonCommon(
     utf8ToUpper(loc("return_to_offline_battles")),
     function() {
+      if (activatingTimeBtns_Final.get() > get_time_msec())
+        return
       isNoExtraScenesAfterDebriefing.set(true)
       if (needRateGame.get())
         requestShowRateGame()
       closeDebriefing()
       openOfflineBattleMenu(debrData)
     },
-    { hotkeys = ["^J:Y"] }))
+    { hotkeys = ["^J:Y"], ovr = rightButtonOvr }))
 
 let mkBtnLevelUp = @(needShow) mkBtnAppearAnim(true, needShow, textButtonBattle(
   utf8ToUpper(loc("msgbox/btn_get")),
   function() {
+    if (activatingTimeBtns_Campaign.get() > get_time_msec())
+      return
     isNoExtraScenesAfterDebriefing.set(false)
     if (needRateGame.get())
       requestShowRateGame()
     closeDebriefing()
   },
-  { hotkeys = ["^J:X | Enter"] }))
+  { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr }))
 
 let mkBtnNewUnitResearched = @(needShow, researchedUnit) mkBtnAppearAnim(true, needShow, textButtonBattle(
   utf8ToUpper(loc("msgbox/btn_get")),
   function() {
+    if (activatingTimeBtns_Campaign.get() > get_time_msec())
+      return
     isNoExtraScenesAfterDebriefing.set(false)
     let nextAction = @() openUnitsTreeAtUnit(researchedUnit?.name)
     if (needRateGame.get())
@@ -178,7 +204,7 @@ let mkBtnNewUnitResearched = @(needShow, researchedUnit) mkBtnAppearAnim(true, n
       nextAction()
     closeDebriefing()
   },
-  { hotkeys = ["^J:X | Enter"] }))
+  { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr }))
 
 let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel, campaign) function() {
   let res = {
@@ -206,6 +232,8 @@ registerHandler(cbId, @(res, context) res?.error == null ? toBattle(context.gmId
 
 let toBattleButton = @(gmId, campaign)
   mkToBattleButtonWithSquadManagement(function() {
+    if (activatingTimeBtns_Final.get() > get_time_msec())
+      return
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
     let nextAction = @() tryOpenQueuePenaltyWnd(campaign, allGameModes.get()?[gmId], { id = cbId, gmId }) ? null : toBattle(gmId)
@@ -215,10 +243,12 @@ let toBattleButton = @(gmId, campaign)
       nextAction()
   },
   Computed(@() allGameModes.get()?[gmId]),
-  { hotkeys = ["^J:X | Enter"] })
+  { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr })
 
 let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    if (activatingTimeBtns_Final.get() > get_time_msec())
+      return
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "offline_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
     let nextAction = startCurNewbieMission
@@ -228,10 +258,12 @@ let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBat
       nextAction()
     closeDebriefing()
   },
-  { hotkeys = ["^J:X | Enter"] })
+  { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr })
 
 let mkStartCustomOfflineBattleButton = @(unitName, missionName) textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    if (activatingTimeBtns_Final.get() > get_time_msec())
+      return
     isNoExtraScenesAfterDebriefing.set(true)
     let nextAction = @() runOfflineBattle(unitName, missionName)
     if (needRateGame.get())
@@ -240,7 +272,7 @@ let mkStartCustomOfflineBattleButton = @(unitName, missionName) textButtonBattle
       nextAction()
     closeDebriefing()
   },
-  { hotkeys = ["^J:X | Enter"] })
+  { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr })
 
 let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, textButtonPrimary(
   utf8ToUpper(loc(upgradeUnitLocIdByCampaign?[campaign] ?? upgradeUnitLocIdByCampaign.tanks)),
@@ -265,6 +297,7 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
   {
     hotkeys = [btnBEscUp]
     hasGlare = true
+    ovr = rightButtonOvr
   }
 ))
 
@@ -303,6 +336,8 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
 let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, needShow, textButtonBattle(
   utf8ToUpper(loc("msgbox/btn_get")),
   function() {
+    if (activatingTimeBtns_Unit.get() > get_time_msec())
+      return
     isNoExtraScenesAfterDebriefing.set(false)
     function nextAction() {
       let unit = campUnitsCfg.get()?[getBestUnitName(debriefingData.get())]
@@ -317,18 +352,14 @@ let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, need
       nextAction()
     closeDebriefing()
   },
-  { hotkeys = ["^J:X | Enter"] }))
+  { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr }))
 
-let btnSkip = function() {
+let btnNextTab = function() {
   let res = { watch = [ isDebriefingAnimFinished, nextDebrTabId ] }
   return isDebriefingAnimFinished.get() || nextDebrTabId.get() == null ? res : res.__update({
-    children = textButtonCommon(utf8ToUpper(loc("msgbox/btn_skip")),
-      function() {
-        let nextTabId = nextDebrTabId.get()
-        if (nextTabId != null)
-          curDebrTabId.set(nextTabId)
-      },
-      { hotkeys = ["^J:X | Enter"] })
+    children = textButtonCommon(utf8ToUpper(loc("mainmenu/btnPageNext")),
+      @() curDebrTabId.set(nextDebrTabId.get()),
+      { hotkeys = ["^J:X | Enter"], ovr = rightButtonOvr })
   })
 }
 
@@ -360,7 +391,6 @@ function debriefingWnd() {
   let newPlatoonUnit = needForceQuitToHangar ? null : getNewPlatoonUnit(unitName, debrData)
 
   let tabsParams = {
-    contentHeight
     needBtnCampaign = hasPlayerLevelUp || researchedUnit != null
     needBtnUnit = newPlatoonUnit != null || (!hasPlayerLevelUp && !researchedUnit && hasUnitLevelUp)
   }
@@ -375,8 +405,6 @@ function debriefingWnd() {
     debrTabsShowTime.set(tabsShowTime)
     curDebrTabId.set(debrTabsInfo?[0].id ?? DEBR_TAB_SCORES)
     isDebriefingAnimFinished.set(debrAnimTime <= 0)
-    if (debrAnimTime > 0)
-      resetTimeout(debrAnimTime, stopDebriefingAnimation)
     let hangarUnitName = unitName != "" ? unitName : (debrData?.reward.unitName ?? "")
     if (bgUnits.len() > 0)
       setHangarUnitGroup(bgUnits, false, bgUnits.findindex(@(n) n == getTagsUnitName(hangarUnitName)) ?? 0)
@@ -402,75 +430,104 @@ function debriefingWnd() {
     size = flex()
     padding = saBordersRv
     children = [
-      debriefingTabBar(debrData, debrTabsInfo)
+      @() {
+        watch = isDebriefingAnimFinished
+        children = !isDebriefingAnimFinished.get() ? null : tapListener(debrTabsInfo)
+      }
       {
         size = flex()
         flow = FLOW_VERTICAL
         gap = footerGap
+        padding = [0, 0, footerHeight + footerGap, 0]
+        children = @() {
+          watch = curDebrTabId
+          size = flex()
+          halign = ALIGN_CENTER
+          children = debrTabComps?[curDebrTabId.get()] ?? mkDebriefingEmpty(debrData)
+        }
+      }
+      @() {
+        watch = isDebriefingAnimFinished
+        children = isDebriefingAnimFinished.get() ? null : tapListener(debrTabsInfo)
+      }
+      debriefingTabBar(debrData, debrTabsInfo)
+      
+      @() {
+        watch = countUpgradeButtonPushed
+        size = [flex(), footerHeight]
+        vplace = ALIGN_BOTTOM
+        valign = ALIGN_BOTTOM
+        flow = FLOW_HORIZONTAL
         children = [
-          @() {
-            watch = curDebrTabId
-            size = flex()
-            halign = ALIGN_CENTER
-            children = debrTabComps?[curDebrTabId.get()] ?? mkDebriefingEmpty(debrData)
-          }
-          
-          @() {
-            watch = countUpgradeButtonPushed
-            size = [flex(), footerHeight]
-            vplace = ALIGN_BOTTOM
-            valign = ALIGN_BOTTOM
+          {
+            size = FLEX_H
+            halign = ALIGN_LEFT
             flow = FLOW_HORIZONTAL
+            gap = footerGap
             children = [
-              {
-                size = FLEX_H
-                halign = ALIGN_LEFT
-                children = newPlatoonUnit != null || hasPlayerLevelUp || researchedUnit != null || needForceQuitToHangar ? null
-                  : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
-                  : {
-                      size = FLEX_H
-                      flow = FLOW_HORIZONTAL
-                      gap = buttonsHGap
-                      children = [
-                        mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
-                        isCustomOfflineBattle ? mkBtnToOfflineBattles(needShowBtns_Final, debrData) : null
-                      ]
-                    }
-              }
-              {
-                size = FLEX_H
-                halign = ALIGN_RIGHT
-                children = {
+              newPlatoonUnit != null || hasPlayerLevelUp || researchedUnit != null || needForceQuitToHangar ? null
+              : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
+              : {
                   flow = FLOW_HORIZONTAL
-                  gap = buttonsHGap
-                  children = (needForceQuitToHangar ? [ 
-                        mkBtnToHangar(needShowBtns_Final, debrData, true, unlockedReward)
-                      ]
-                    : hasPlayerLevelUp ? [
-                        buttonDescText(needShowBtns_Campaign, loc("levelUp/playerLevelUp"))
-                        mkBtnLevelUp(needShowBtns_Campaign)
-                      ]
-                    : researchedUnit != null ? [
-                        buttonDescText(needShowBtns_Campaign, loc("unitsTree/researchCompleted"))
-                        mkBtnNewUnitResearched(needShowBtns_Campaign, researchedUnit)
-                      ]
-                    : newPlatoonUnit != null ? [
-                        buttonDescText(needShowBtns_Unit, loc("levelUp/receiveNewPlatoonUnit"))
-                        mkBtnNewPlatoonUnit(needShowBtns_Unit, newPlatoonUnit)
-                      ]
-                    : hasUnitLevelUp && countUpgradeButtonPushed.get() < minCountUpgradeButtonPushed ? [
-                      ]
-                    : [
-                        mkBtnBuyNextPlayerLevel(Computed(@() curDebrTabId.get() == DEBR_TAB_CAMPAIGN),
-                          debrData?.player.level ?? -1, campaign)
-                        mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
-                      ]
-                  ).append(btnSkip)  
-                }
-              }
+                  gap = footerGap
+                  children = [
+                    mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
+                    isCustomOfflineBattle ? mkBtnToOfflineBattles(needShowBtns_Final, debrData) : null
+                  ]
+                },
+              mkBtnAppearAnim(false, needShowBtns_Final, btnSaveReplay)
             ]
           }
+          {
+            size = FLEX_H
+            halign = ALIGN_RIGHT
+            children = {
+              flow = FLOW_HORIZONTAL
+              gap = buttonsHGap
+              children = (needForceQuitToHangar ? [ 
+                    mkBtnToHangar(needShowBtns_Final, debrData, true, unlockedReward)
+                  ]
+                : hasPlayerLevelUp ? [
+                    buttonDescText(needShowBtns_Campaign, loc("levelUp/playerLevelUp"))
+                    mkBtnLevelUp(needShowBtns_Campaign)
+                  ]
+                : researchedUnit != null ? [
+                    buttonDescText(needShowBtns_Campaign, loc("unitsTree/researchCompleted"))
+                    mkBtnNewUnitResearched(needShowBtns_Campaign, researchedUnit)
+                  ]
+                : newPlatoonUnit != null ? [
+                    buttonDescText(needShowBtns_Unit, loc("levelUp/receiveNewPlatoonUnit"))
+                    mkBtnNewPlatoonUnit(needShowBtns_Unit, newPlatoonUnit)
+                  ]
+                : hasUnitLevelUp && countUpgradeButtonPushed.get() < minCountUpgradeButtonPushed ? [
+                  ]
+                : [
+                    mkBtnBuyNextPlayerLevel(Computed(@() curDebrTabId.get() == DEBR_TAB_CAMPAIGN),
+                      debrData?.player.level ?? -1, campaign)
+                    mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
+                  ]
+              ).append(btnNextTab)  
+            }
+          }
         ]
+      }
+      @() {
+        watch = showReleaseToContinueBtn
+        hplace = ALIGN_RIGHT
+        children = !showReleaseToContinueBtn.get() ? null
+          : panelBg.__merge({
+              size = [hdpx(400), hdpx(90)]
+              valign = ALIGN_CENTER
+              halign = ALIGN_CENTER
+              padding = 0
+              children = {
+                rendObj = ROBJ_TEXTAREA
+                behavior = Behaviors.TextArea
+                halign = ALIGN_CENTER
+                maxWidth = hdpx(360)
+                text = utf8ToUpper(loc("debriefing/ReleaseToContinue"))
+              }.__update(fontTinyAccentedShaded)
+            })
       }
     ]
   })

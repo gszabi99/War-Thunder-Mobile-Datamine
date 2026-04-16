@@ -12,7 +12,6 @@ let { getFirebaseAppInstanceId = @() null}  = is_android ? require_optional ("an
                                             : is_ios ? require_optional ("ios.firebase.analytics")
                                             : {}
 
-let fieldsToClear = ["MAC", "uuid0", "uuid1", "uuid2", "uuid3"]
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 function getSysInfo() {
@@ -33,9 +32,6 @@ function getSysInfo() {
     : is_android && isDownloadedFromGooglePlay() ? "google"
     : is_ios ? "iOS"
     : "other"
-
-  foreach (key in fieldsToClear)
-    tbl?.$rawdelete(key)
 
   if ("cpuFeatures" in tbl)
     if (type(tbl.cpuFeatures) == "table") {

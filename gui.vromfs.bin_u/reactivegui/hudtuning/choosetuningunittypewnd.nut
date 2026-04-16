@@ -6,7 +6,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { unitTypeOrder } = require("%appGlobals/unitConst.nut")
-let { tuningUnitType, isCurPresetChanged, saveCurrentTransform } = require("%rGui/hudTuning/hudTuningState.nut")
+let { tuningUnitType, isCurPresetChanged, saveCurrentTransform, openTuning } = require("%rGui/hudTuning/hudTuningState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
@@ -23,21 +23,21 @@ function changeUnitType(unitType) {
   if (unitType == tuningUnitType.get())
     return
   if (!isCurPresetChanged.get()) {
-    tuningUnitType.set(unitType)
+    openTuning(unitType)
     return
   }
   openMsgBox({
     text = loc("hudTuning/apply"),
     buttons = [
       { id = "cancel", isCancel = true }
-      { id = "reset", cb = @() tuningUnitType.set(unitType) }
+      { id = "reset", cb = @() openTuning(unitType) }
       {
         text = loc("filesystem/btnSave")
         styleId = "PRIMARY"
         isDefault = true
         cb = function() {
           saveCurrentTransform()
-          tuningUnitType.set(unitType)
+          openTuning(unitType)
         }
       }
     ]
@@ -64,7 +64,7 @@ return @() addModalWindow(bgShaded.__merge({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close }]]
   children = {
-    size = const [sh(65), SIZE_TO_CONTENT]
+    size = const [hdpx(700), SIZE_TO_CONTENT]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

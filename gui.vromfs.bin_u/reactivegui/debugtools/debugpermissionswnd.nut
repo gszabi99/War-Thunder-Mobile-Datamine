@@ -9,7 +9,7 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 
 
-let wndWidth = sh(130)
+let wndWidth = hdpx(1500)
 let gap = hdpx(10)
 
 let wndUid = "permissionsWnd"

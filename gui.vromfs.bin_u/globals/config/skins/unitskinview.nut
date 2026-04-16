@@ -2873,6 +2873,13 @@ return {
       "": "germ_me262a_2a",
       "upgraded": "germ_me262a_2a_camo3"
     },
+    "me-262c-2b": {
+      "": "germ_bf_109b_2",
+      "camo": "germ_bf_109k_4_a"
+    },
+    "me-262c-2b_prem": {
+      "": "germ_me262c_2b_graygreen"
+    },
     "me-410a-1": {
       "": "germ_me_410a_1"
     },
@@ -3233,6 +3240,13 @@ return {
     },
     "tu-2_postwar_late_prem": {
       "": "ussr_il_2m"
+    },
+    "tu_4": {
+      "": "ussr_la_11_standard",
+      "camo": "ussr_yak_1_early_green"
+    },
+    "tu_4_prem": {
+      "": "ussr_la_11_standard"
     },
     "uk_17_pdr_m10_achilles": {
       "": "uk_camo_light_stone_light_grey_slate_grey",
@@ -3671,6 +3685,9 @@ return {
       "forest": "uk_camo_standart_modern_bicolor",
       "winter": "fr_camo_winter_green_white"
     },
+    "uk_sub_astute": {
+      "upgraded": "camo_blackbrown_spots"
+    },
     "uk_sub_m1": {
       "": "sub_m1_ny_camo"
     },
@@ -3708,6 +3725,14 @@ return {
       "desert": "uk_camo_standart_modern_desert_bicolor",
       "forest": "uk_camo_standart_modern_bicolor",
       "winter": "fr_camo_winter_green_white"
+    },
+    "uk_vickers_mk7": {
+      "": "uk_camo_very_dark_drab",
+      "desert": "uk_camo_standart_modern_desert_bicolor"
+    },
+    "uk_vickers_mk7_prem": {
+      "": "uk_camo_winter_modern_bicolor",
+      "forest": "uk_camo_very_dark_drab"
     },
     "uk_vickers_mk_11": {
       "": "uk_camo_standart_modern_desert_bicolor",
@@ -3946,6 +3971,14 @@ return {
     },
     "us_m1a1_abrams_prem": {
       "": "us_camo_modern_winter_tan",
+      "forest": "us_camo_modern_green"
+    },
+    "us_m1a1_aim_abrams": {
+      "": "us_camo_modern_green",
+      "forest": "usa_modern_red_desert"
+    },
+    "us_m1a1_aim_abrams_prem": {
+      "": "us_camo_m1a1_aim_abrams",
       "forest": "us_camo_modern_green"
     },
     "us_m1a1_hc_abrams": {
@@ -4600,6 +4633,9 @@ return {
     },
     "ussr_cruiser_maxim_gorky": {
       "upgraded": "camo_northern_fleet"
+    },
+    "ussr_cruiser_rckt_pr1144": {
+      "upgraded": "camo_arcticfleet"
     },
     "ussr_cruiser_rckt_pr58": {
       "upgraded": "camo_northern_fleet_contrast"

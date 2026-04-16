@@ -33,13 +33,15 @@ let campMyUnits = Computed(function() {
   return res
 })
 
+let selectedUnitByPlayer = Watched(null)
 let curUnitInProgressExt = Watched(curUnitInProgress.get())
 curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt.set(v)
   : deferOnce(@() curUnitInProgressExt.set(curUnitInProgress.get())))
 
 let curUnit = Computed(function() {
   let my = campMyUnits.get()
-  local res = my?[curUnitInProgressExt.get()]
+  local res = my?[selectedUnitByPlayer.get()]
+    ?? my?[curUnitInProgressExt.get()]
     ?? my.findvalue(@(u) u?.isCurrent)
   let slots = curCampaignSlotUnits.get()
   if (slots != null) {
@@ -87,6 +89,7 @@ let curUnits = Computed(@()
   (curCampaignSlotUnits.get()?.map(@(u) campMyUnits.get()?[u]) ?? [curUnit.get()]).filter(@(u) u != null))
 
 return {
+  selectedUnitByPlayer
   campUnitsCfg
   campMyUnits
   curUnit

@@ -4,8 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
-let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { getEventPresentation, eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { isGmEventWndOpened, closeGmEventWnd, curGmList, openedGmEventId, reqBattleMods, hasAccessCurGmEvent
 } = require("%rGui/event/gmEventState.nut")
@@ -48,13 +47,13 @@ let MAX_GOODS_COUNT = 3
 let chosenUnitIdx = Watched(null)
 let isWndAttached = Watched(false)
 let curEventAccessStat = Computed(@() openedGmEventId.get() == null ? ""
-  : gmEventPresentation(openedGmEventId.get()).accessStat)
+  : getEventPresentation(openedGmEventId.get()).accessStat)
 let curEventAccessStatValue = Computed(@() curEventAccessStat.get() == "" ? STAT_NO_NEED
   : userstatStats.get()?.stats["global"][statMode][curEventAccessStat.get()])
 let isAcceessStatInProgress = Computed(@() !!statsInProgress.get()?[curEventAccessStat.get()])
-let bgUnits = Computed(@() gmEventPresentation(openedGmEventId.get()).bgUnits)
+let bgUnits = Computed(@() getEventPresentation(openedGmEventId.get()).bgUnits)
 let curGmEventBg = keepref(Computed(@() bgUnits.get() != null ? ""
-  : gmEventPresentation(openedGmEventId.get()).bgImage))
+  : getEventPresentation(openedGmEventId.get()).bg))
 
 let unitsToSetInHangar = keepref(Computed(@() isWndAttached.get() ? bgUnits.get() : null))
 unitsToSetInHangar.subscribe(@(v) v == null ? null
@@ -169,22 +168,25 @@ let content = @() {
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
           children = [
-            gmEventSubTitleText(loc($"{openedGmEventId.get()}/accessPacks/header"))
+            "descHeaderLocId" not in getEventPresentation(openedGmEventId.get()) ? null
+              : gmEventSubTitleText(loc(getEventPresentation(openedGmEventId.get()).descHeaderLocId))
             gmEventContent(Computed(@() reqBattleMods.get().len() == 0 ? []
               : shopGoodsAllCampaigns.get()
                 .filter(@(goods)
                   null != (goods.rewards.findvalue(@(v) v.gType == G_BATTLE_MOD && reqBattleMods.get().contains(v.id))))
                 .values()))
-            gmEventDescriptionText(loc($"{openedGmEventId.get()}/accessPacks/description"))
+            "descLocId" not in getEventPresentation(openedGmEventId.get()) ? null
+              : gmEventDescriptionText(loc(getEventPresentation(openedGmEventId.get()).descLocId))
           ]
         }
-      ].append(!hasAccessCurGmEvent.get() ?
-        {
-          hplace = ALIGN_LEFT
-          vplace = ALIGN_TOP
-          children = gmEventStatusText(loc($"{openedGmEventId.get()}/freeAccess/resultMsg"))
-        }
-      : null)
+        !hasAccessCurGmEvent.get()
+          ? {
+              hplace = ALIGN_LEFT
+              vplace = ALIGN_TOP
+              children = gmEventStatusText(loc($"{openedGmEventId.get()}/freeAccess/resultMsg"))
+            }
+          : null
+      ]
 }
 
 let toBattleHint = @(text) {
@@ -225,7 +227,7 @@ let header = @() {
   valign = ALIGN_CENTER
   children = [
     backButton(closeGmEventWnd)
-    gmEventTitle(loc($"{openedGmEventId.get()}/title"))
+    gmEventTitle(loc(getEventPresentation(openedGmEventId.get()).locId))
     {
       size = FLEX_H
       flow = FLOW_HORIZONTAL

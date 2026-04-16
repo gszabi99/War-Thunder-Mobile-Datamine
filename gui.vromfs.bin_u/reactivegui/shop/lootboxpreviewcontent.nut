@@ -25,7 +25,6 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { eventSeason, bestCampLevel, curEventLootboxes } = require("%rGui/event/eventState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { mkFreeAdsGoodsTimeProgress, disabledAdsGoodsPlate } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
@@ -40,7 +39,6 @@ let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { isProviderInited } = require("%rGui/ads/adsState.nut")
 
 
 let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
@@ -124,17 +122,10 @@ function lootboxImageWithTimer(lootbox, lootboxAmount = null) {
       mkLootboxImageWithSlotScale(lootbox, lootboxImageSize, eventSeason, isAvailable,
         [
           @() {
-            watch = [needAdtimeProgress, adReward, lootboxInProgress, isProviderInited]
+            watch = lootboxInProgress
             hplace = ALIGN_CENTER
             vplace = ALIGN_CENTER
-            children = [
-              lootboxInProgress.get() ? spinner : null
-              needAdtimeProgress.get()
-                  ? mkFreeAdsGoodsTimeProgress(adReward.get())
-                : !isProviderInited.get()
-                  ? disabledAdsGoodsPlate
-                : null
-            ]
+            children = lootboxInProgress.get() ? spinner : null
           }
 
           @() {

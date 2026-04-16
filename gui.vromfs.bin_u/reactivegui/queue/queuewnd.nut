@@ -64,7 +64,13 @@ let canCancelJoining = Watched(false)
 isInJoiningGame.subscribe(@(_) canCancelJoining.set(false))
 
 let lastQueueMode = mkWatched(persist, "lastQueueMode", "")
-curQueue.subscribe(@(v) (v?.params.mode ?? "") == "" ? null : lastQueueMode.set(v.params.mode))
+curQueue.subscribe(function(v) {
+  let { mode = null, game_modes_list = [] } = v?.params
+  if (mode != null)
+    lastQueueMode.set(mode)
+  if (game_modes_list.len() > 0)
+    lastQueueMode.set(allGameModes.get()?[game_modes_list[0]].name)
+})
 
 let campaignByMode = Computed(@() allGameModes.get().findvalue(@(gm) gm?.name == lastQueueMode.get())?.campaign)
 

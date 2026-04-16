@@ -21,9 +21,10 @@ let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
 let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
 let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 let wndHeaderHeight = hdpx(110)
 let contentGap = hdpx(30)
@@ -59,6 +60,11 @@ function balanceButtons() {
   let { currencyId = "" } = previewGoods.get()?.price
   return {
     watch = previewGoods
+    pos = [saBorders[0], 0]
+    padding = [hdpx(10), saBorders[0]]
+    rendObj = ROBJ_IMAGE
+    image = simpleHorGrad
+    color = 0x70000000
     hplace = ALIGN_RIGHT
     children = currencyId == "" ? null : mkCurrenciesBtns([currencyId])
     animations = opacityAnims(1, aTimePriceStart + 0.5)
@@ -72,7 +78,7 @@ let headerPanel = {
   valign = ALIGN_CENTER
   children = [
     {
-      pos = [-doubleSideGradientPaddingX, 0]
+      pos = [-saBordersRv[1], 0]
       size = flex()
       flow = FLOW_HORIZONTAL
       gap = horGap

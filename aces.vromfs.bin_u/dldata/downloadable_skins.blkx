@@ -1,0 +1,22 @@
+{
+  "bf-110g-2#bee": {
+    "modelName": "bf-110g-2",
+    "mangledID": "bee",
+    "bf_110g_2_c*": {
+      "lod0": "yynsrgh4ux625zaq4c5pbnlivtntuomq-eci4a",
+      "lod1": "odftxcm6ircctklwztpafz7ladqvpdti-vna",
+      "lod2": "oeattur5zu7pjtuwskfqhhtcoaqppvqd-jgyy",
+      "texProps": "?Q0-1-1Na16"
+    }
+  },
+  "bf-110g-2#bones": {
+    "modelName": "bf-110g-2",
+    "mangledID": "bones",
+    "bf_110g_2_c*": {
+      "lod0": "hpfybqvndfsuhunjnbmtf4ykxwnbsxou-ecidq",
+      "lod1": "sn6iqjm7sq7bgylqcd5wkfeyjbi7ezkh-vna",
+      "lod2": "bayx2t3h4tr2edlxdn3fwlvawb42ag4z-jgwq",
+      "texProps": "?Q0-1-1Na16"
+    }
+  }
+}

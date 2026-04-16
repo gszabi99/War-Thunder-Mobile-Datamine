@@ -166,7 +166,9 @@ let offlineBattlesCfg = Computed(function() {
       allUnits[unitName] <- unit.__merge({ country = countryId })
   }
 
-  return allUnits.filter(@(_, unitName) $"{unitName}_prem" not in allUnits && unitName in unitsWithResources.get())
+  let unitResources = unitsWithResources.get()
+  return allUnits.filter(@(_, unitName) $"{unitName}_prem" not in allUnits
+    && (unitName in unitResources || unitName.tolower() in unitResources))
 })
 
 let searchableUnitsList = Computed(@() offlineBattlesCfg.get()?.values() ?? [])

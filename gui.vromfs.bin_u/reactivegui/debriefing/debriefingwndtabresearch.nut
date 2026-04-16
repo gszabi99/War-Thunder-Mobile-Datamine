@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
 let { mkResearchProgressLine } = require("%rGui/debriefing/levelProgressLine.nut")
@@ -12,7 +13,7 @@ let researchUnlocksAnimStartTime = 1.0
 let rewardsAnimStartTime = 0.5
 
 function getUnitResearchInfo(debrData) {
-  local totalExpLeft = debrData?.reward.playerExp.totalExp ?? 0
+  local totalExpLeft = (debrData?.reward.playerExp.totalExp ?? 0) + (debrData?.adsBonuses.expDif ?? 0) + (debrData?.subsBonuses.expDif ?? 0)
   let { exp = 0, reqExp = 0, unit = null } = debrData?.researchingUnit
   if (totalExpLeft <= 0 || reqExp <= 0 || unit == null)
     return null
@@ -64,18 +65,20 @@ function mkDebriefingWndTabResearch(debrData, params) {
         children = [
           mkMissionResultTitle(debrData, false)
           {
-            size = const [hdpx(1600), flex()]
+            size = const [SIZE_TO_CONTENT, flex()]
             halign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             children = [
               researchProgressLineComp
               {
                 size = flex()
-                flow = FLOW_HORIZONTAL
-                gap = hdpx(100)
+                gap = hdpx(120)
                 children = [
-                  totalRewardCountsComp.__update({ pos = [0, hdpx(145)] })
-                  mkLevelUnlockPlatesContainer(researchUnlocksComp)
+                  panelBg.__merge(totalRewardCountsComp.__update({
+                    size = SIZE_TO_CONTENT,
+                    pos = [hdpx(85), hdpx(145)]
+                  }))
+                  mkLevelUnlockPlatesContainer(researchUnlocksComp).__update({ pos = [hdpx(1000), 0] })
                 ]
               }
             ]
@@ -84,6 +87,7 @@ function mkDebriefingWndTabResearch(debrData, params) {
       }
       {
         vplace = ALIGN_BOTTOM
+        hplace = ALIGN_RIGHT
         children = btnTryPremium
       }
     ]

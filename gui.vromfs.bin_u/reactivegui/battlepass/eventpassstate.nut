@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
@@ -37,14 +36,8 @@ let epProgressUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
   EVENTPASS_POINTS in unlock?.meta && curOpenEventPass.get()?.tableId == unlock.table)?.name)
 
 let seasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
-
-let eventBgImage = Computed(@() allSpecialEvents.get().findvalue(@(e) e.eventName == curEventId.get()) != null
-  ? getEventPresentation(curEventId.get()).bg
-  : gmEventPresentation(curEventId.get()).bgImage)
-
-let eventTitle = Computed(@() allSpecialEvents.get().findvalue(@(e) e.eventName == curEventId.get()) != null
-  ? $"events/name/{curEventId.get()}"
-  : gmEventPresentation(curEventId.get()).locId)
+let eventBgImage = Computed(@() getEventPresentation(curEventId.get()).bg)
+let eventTitle = Computed(@() getEventPresentation(curEventId.get()).locId)
 
 let EP_NONE = "none"
 let EP_COMMON = "common"

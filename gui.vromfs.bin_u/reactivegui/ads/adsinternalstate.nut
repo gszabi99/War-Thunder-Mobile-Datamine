@@ -19,6 +19,7 @@ let { set_mute_sound } = require("soundOptions")
 let RETRY_LOAD_TIMEOUT = 120
 let RETRY_INC_TIMEOUT = 60 
 
+let isShowStarted = hardPersistWatched("ads.isShowStarted", false)
 let hasAdsPreloadError = Watched(false)
 let adsPreloadParams = Watched(null)
 let isOpenedAdsPreloaderWnd = Computed(@() adsPreloadParams.get() != null
@@ -154,6 +155,7 @@ return {
   providerPriorities
   failedProviders
   isOpenedAdsPreloaderWnd
+  isShowStarted
   openAdsPreloader
   closeAdsPreloader = @() adsPreloadParams.set(null)
   hasAdsPreloadError

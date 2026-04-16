@@ -126,7 +126,19 @@ function onDelete() {
   if (isNotSavedPreset.get())
     return openMsgBox({text = loc("msgbox/presets/cannot_delete")})
   let activIdx = activePresetIdx.get()
-  setSavedWeaponPresets(deep_clone(savedWeaponPresets.get()).filter(@(p) p.name != presets.get()[activIdx].name))
+  let name = presets.get()[activIdx].name
+  openMsgBox({
+    text = loc("presets/confirmUserPresetDeletion", { name })
+    buttons = [
+      { id = "cancel", isCancel = true }
+      {
+        id = "delete",
+        cb = @() setSavedWeaponPresets(deep_clone(savedWeaponPresets.get())
+          .filter(@(p) p.name != name)),
+        styleId = "PRIMARY"
+      }
+    ]
+  })
 }
 
 function onApply() {

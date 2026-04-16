@@ -8,7 +8,7 @@ let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState
 let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { joinRoom, lastRoomId } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
+let { allGameModes, gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString, missingUnitResourcesByRank, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -51,7 +51,7 @@ function getDownloadLists(attribs) {
   log("modeInfo = ", getModeAddonsDbgString(mode))
 
   return getModeAddonsInfo({
-    mode,
+    modeList = getGameModeQueueGroup(mode, gameModeQueueGroups.get()),
     unitNames = [unitName],
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),

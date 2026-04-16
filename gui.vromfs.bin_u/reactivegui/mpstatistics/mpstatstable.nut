@@ -31,6 +31,7 @@ let rowStickyBgLocalPlayerColor = selectColor
 let rowBgOddColor = Color(20, 20, 20, 20)
 let rowBgEvenColor = Color(0, 0, 0, 0)
 
+let tableWidth = hdpx(1000)
 let rowHeight = hdpx(76)
 let rowHeadIconSize = hdpx(44)
 let avatarHeight = rowHeight - hdpx(2)
@@ -202,11 +203,11 @@ function mirrorColumn(column) {
 let mkColumnsCfg = @(columns) [
   {
     columns = columns.map(@(c) cellDefaults.__merge(c)),
-    rowOvr = { padding = [ 0, 0, 0, saBordersRv[1] ] }
+    rowOvr = { padding = [ 0, 0, 0, saBordersRv[1] ], halign = ALIGN_RIGHT }
   }
   {
     columns = columns.map(@(c) mirrorColumn(cellDefaults.__merge(c))).reverse(),
-    rowOvr = { padding = [ 0, saBordersRv[1], 0, 0 ] }
+    rowOvr = { padding = [ 0, saBordersRv[1], 0, 0 ], halign = ALIGN_LEFT}
   }
 ]
 
@@ -321,6 +322,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr =
           }
       sound = { click = "click" }
       size = [ flex(), rowHeight ]
+      maxWidth = tableWidth
       flow = FLOW_HORIZONTAL
       children = player == null ? null : columns.map(function(c) {
         let { width, halign, valign = null, contentCtor = null, getText = null } = c

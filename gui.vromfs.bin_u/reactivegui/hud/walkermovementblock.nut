@@ -7,7 +7,7 @@ let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { getHeroWalkerMaxSpeedBySteps } = require("hudState")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let { playerUnitName, isUnitDelayed, isPlayingReplay } = require("%rGui/hudState.nut")
+let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
 let { speed } = require("%rGui/hud/tankState.nut")
 let { playSound } = require("sound_wt")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
@@ -98,10 +98,8 @@ let mkSteerParams = @(id, disableId, scale) {
   ovr = { key = id }
   shortcutId = id
   function onTouchBegin() {
-    if (!isPlayingReplay.get()) {
-      setShortcutOn(id)
-      playSound("steer")
-    }
+    setShortcutOn(id)
+    playSound("steer")
   }
   onTouchEnd = @() setShortcutOff(id)
   isDisabled = mkIsControlDisabled(disableId)
@@ -113,8 +111,6 @@ function mkStopParams(verSize) {
     ovr = { key = "gm_brake", size = verSize }
     shortcutId
     function onTouchBegin() {
-      if (isPlayingReplay.get())
-        return
       toNeutral()
       if (fullStopOnTouchButton.get())
         isStopButtonVisible.set(false)
@@ -122,8 +118,6 @@ function mkStopParams(verSize) {
         resetTimeout(delayReverse, toReverse)
     }
     function onTouchEnd() {
-      if (isPlayingReplay.get())
-        return
       clearTimer(toReverse)
       isStopButtonVisible.set(false)
     }
@@ -134,16 +128,12 @@ function mkEngineBtn(isBackward, id, verSize, children) {
   let onTouchUpdate = @() updateAxeleration(isBackward)
   return mkMoveVertBtn(
     function onTouchBegin() {
-      if (isPlayingReplay.get())
-        return
       setGmBrakeAxis(0)
       playHapticPattern(isBackward ? HAPT_BACKWARD : HAPT_FORWARD)
       if (axelerate(isBackward))
         resetTimeout(delayLow, onTouchUpdate)
     },
     function onTouchEnd() {
-      if (isPlayingReplay.get())
-        return
       prevCruiseControl = CRUISE_CONTROL_UNDEF
       clearTimer(onTouchUpdate)
     },

@@ -6,7 +6,7 @@ let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelec
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campMyUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { apply_client_mission_reward } = require("%appGlobals/pServer/pServerApi.nut")
+let { apply_client_mission_reward, clientMissionRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -18,9 +18,20 @@ let { currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
 
-let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{campaign}_1"
-  : $"tutorial_{campaign.slice(0, -4)}_1_nc"
-let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.get()))
+
+function getFirstBattleTutor(campaign, sConfigs) {
+  if (campaign.endswith("_new")) {  
+    let baseCamp = campaign.slice(0, -4)
+    local res = $"tutorial_{baseCamp}_1_nc"
+    if (res in sConfigs?.clientMissionRewards)
+      return res
+    res = $"tutorial_{baseCamp}_1"
+    if (res in sConfigs?.clientMissionRewards)
+      return res
+  }
+  return $"tutorial_{campaign}_1"
+}
+let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.get(), serverConfigs.get()))
 
 let forceTutorTankMissionV2 = mkWatched(persist, "forceTutorTankMissionV2", null)
 let tutorialMissions = Computed(@() {
@@ -49,10 +60,10 @@ let needFirstBattleTutor = Computed(@()
   )
   != isDebugMode.get())
 
-let setSkippedTutor = @(campaign) isSkippedTutor.mutate(@(v) v[getFirstBattleTutor(campaign)] <- true)
+let setSkippedTutor = @(campaign) isSkippedTutor.mutate(@(v) v[getFirstBattleTutor(campaign, serverConfigs.get())] <- true)
 
 function needFirstBattleTutorForCampaign(campaign) {
-  if (getFirstBattleTutor(campaign) not in missionsWithRewards.get())
+  if (getFirstBattleTutor(campaign, serverConfigs.get()) not in missionsWithRewards.get())
     return false
   let sUnits = serverConfigs.get()?.allUnits ?? {}
   let ownCampUnit = (servProfile.get()?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
@@ -82,7 +93,8 @@ function startTutor(id, currentUnitName = null) {
   if (id not in tutorialMissions.get())
     return
   if (id in missionsWithRewards.get()) {
-    apply_client_mission_reward(curCampaign.get(), id)
+    if (id != clientMissionRewardInProgress.get())
+      apply_client_mission_reward(curCampaign.get(), id)
     eventbus_send("lastSingleMissionRewardData", {
       battleData = mkRewardBattleData(missionsWithRewards.get()[id])
       needAddUnit = true
@@ -109,8 +121,8 @@ function startTutor(id, currentUnitName = null) {
 }
 
 function rewardTutorialMission(campaign) {
-  let id = getFirstBattleTutor(campaign)
-  if (id in missionsWithRewards.get())
+  let id = getFirstBattleTutor(campaign, serverConfigs.get())
+  if (id in missionsWithRewards.get() && id != clientMissionRewardInProgress.get())
     apply_client_mission_reward(campaign, id)
 }
 

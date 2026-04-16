@@ -13,13 +13,13 @@ let newbieGameModesConfig = {
     {
       gmName = "tank_new_players_battle_coop"
       isFit = @(s, mRank, abTests) abTests?.tankCoopHalfBots != "true"
-        && (mRank <= 2 || abTests?.newbieExitByMRank == "false")
+        && mRank <= 2
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
     {
       gmName = "tank_new_players_battle_coop_half_bots"
       isFit = @(s, mRank, abTests) abTests?.tankCoopHalfBots == "true"
-        && (mRank <= 2 || abTests?.newbieExitByMRank == "false")
+        && mRank <= 2
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
   ]
@@ -34,7 +34,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "ship_new_players_battle_coop"
-      isFit = @(s, mRank, abTests) (mRank <= 1 || abTests?.newbieExitByMRank == "false")
+      isFit = @(s, mRank, __) mRank <= 1
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 3))
     }
   ]
@@ -49,7 +49,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "plane_new_players_battle_coop"
-      isFit = @(s, mRank, abTests) (mRank <= 2 || abTests?.newbieExitByMRank == "false")
+      isFit = @(s, mRank, __) mRank <= 2
         && (s.anyBattles < 3 || (s.anyBattles < 6 && s.kills < 10))
     }
   ]

@@ -30,7 +30,11 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { mkTooltipText } = require("%rGui/tooltip.nut")
 let logR = log_with_prefix("[REPLAYS] ")
+let { startedReplayPath } = require("%rGui/replay/hudReplayControls.nut")
 
+
+let isDevVersion = is_dev_version()
+let devReplayNameRegexp = regexp2(@"^\d{4}$")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let allowAutoDeleteReplaysList = [false, true]
@@ -92,6 +96,7 @@ function startReplay(path) {
     return
   isReplayLoading.set(true)
 
+  startedReplayPath.set(path)
   hud_request_hud_tank_debuffs_state()
   hud_request_hud_ship_debuffs_state()
   hud_request_hud_crew_state()
@@ -124,10 +129,10 @@ function refreshReplaysList() {
   let replays = get_replays_list()
   let res = []
 
-  foreach (replay in replays.filter(@(rep) !is_dev_version() || (!regexp2(@"^\d{4}$").match(rep.name) || rep.name == "0000"))) {
+  foreach (replay in replays.filter(@(rep) !isDevVersion || (!devReplayNameRegexp.match(rep.name) || rep.name == "0000"))) {
     let replayInfo = get_replay_info(replay.path)
     let commentsBlk = replayInfo?.comments
-    if (!commentsBlk && !is_dev_version())
+    if (!commentsBlk && !isDevVersion)
       continue
 
     let alliesTeam = []
@@ -220,11 +225,23 @@ function deleteReplayManually(path) {
   deleteReplayFile(path)
 }
 
+function onDeleteReplay(replay) {
+  openMsgBox({
+    text = loc("mainmenu/replay/confirmUserReplayDeletion", {name = replay.name})
+    buttons = [
+      { id = "cancel", isCancel = true }
+      { id = "delete", cb = @() deleteReplayManually(replay.path), styleId = "PRIMARY" }
+    ]
+  })
+}
+
 function removeUnavailableReplays() {
   let pathsList = notAvailableReplaysList.get().filter(@(v) v not in removedReplays.get())
+  if (pathsList.len() == 0)
+    return
   removedReplays.set(removedReplays.get().__merge(pathsList.reduce(@(acc, v) acc.$rawset(v, true), {})))
 
-  pathsToDelete = pathsList
+  pathsToDelete.extend(pathsList)
   deleteReplaysList()
 }
 
@@ -465,7 +482,7 @@ let mkFoldableContent = @(replay, isActive) @() {
                         @() notAvailableForSquadMsg(@() startReplay(replay.path)),
                         { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
                   : progressSpinner
-                !isReplayLoading.get() ? mkTrashButton(@() deleteReplayManually(replay.path)) : null
+                !isReplayLoading.get() ? mkTrashButton(@() onDeleteReplay(replay)) : null
               ]
             }
           ]
@@ -475,7 +492,7 @@ let mkFoldableContent = @(replay, isActive) @() {
 }
 
 function mkRow(replay, columnsCfg, idx) {
-  let isActive = Computed(@() openedReplayId.get() != null && openedReplayId.get() == replay.path)
+  let isActive = Computed(@() openedReplayId.get() == replay.path)
 
   return {
     size = FLEX_H

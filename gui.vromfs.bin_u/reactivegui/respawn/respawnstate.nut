@@ -34,7 +34,7 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { seenShells, SEEN_SHELLS } = require("%rGui/unitMods/unseenBullets.nut")
-let { isGtRace } = require("%rGui/missionState.nut")
+let { isGtRace, localTeam } = require("%rGui/missionState.nut")
 let { decalsPenalty } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
 let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
 
@@ -224,6 +224,13 @@ isRespawnAttached.subscribe(function(v) {
   updateRespawnBases()
   selectRespawnBase(curRespBase.get())
   updateNumSpawnByType()
+})
+localTeam.subscribe(function(_) {
+  if (!isRespawnAttached.get())
+    return
+  updateRespawnBases()
+  playerSelectedRespBase.set(-1)
+  selectRespawnBase(curRespBase.get())
 })
 curRespBase.subscribe(@(v) isRespawnAttached.get() ? selectRespawnBase(v) : null)
 isInBattle.subscribe( function (v) {

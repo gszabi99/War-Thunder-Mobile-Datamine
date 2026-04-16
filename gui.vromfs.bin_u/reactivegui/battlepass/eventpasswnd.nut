@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
@@ -26,7 +27,6 @@ let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
@@ -124,7 +124,7 @@ let leftMiddle = {
           mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB)
           curOpenEventPass.get()?.eventName not in gmEventsList.get()
             ? null
-            : translucentButton(gmEventPresentation(curOpenEventPass.get()?.eventName).image,
+            : translucentButton(getEventPresentation(curOpenEventPass.get()?.eventName).icon,
               "",
               @() openGmEventWnd(curOpenEventPass.get()?.eventName))
         ]

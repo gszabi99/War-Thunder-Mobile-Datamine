@@ -7,7 +7,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
 let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
-  hasAdsPreloadError, adsPreloadParams, failedProviders
+  hasAdsPreloadError, adsPreloadParams, failedProviders, isShowStarted
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_ios ? require("ios.ads") : require("%rGui/ads/byPlatform/adsIosDbg.nut")
@@ -36,9 +36,14 @@ function isAllProvidersFailed(providers, statuses) {
 }
 
 function handleShowAds(rInfo) {
+  if (isShowStarted.get()) {
+    logA("Skip show ads because another ad started before")
+    return
+  }
   rewardInfo.set(rInfo)
   onShowAds(loadedProvider.get())
   showAds()
+  isShowStarted.set(true)
 }
 
 function initProviders() {

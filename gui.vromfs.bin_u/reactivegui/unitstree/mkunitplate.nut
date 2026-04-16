@@ -75,19 +75,22 @@ function triggerAnim() {
 function openBuyUnitWnd(name, price) {
   let researchStatus = unitsResearchStatus.get()?[name]
   let blueprintStatus = blueprintUnitsStatus.get()?[name]
-  if ((isAllowAutoOfferToBuyUnitEnabled.get() ?? true) && name not in shownUnitsOffersForPurchase.get()
-      && (researchStatus?.canBuy || blueprintStatus?.canBuy)) {
-    let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, name)
-    markUnitOfferShown(name)
-    purchaseUnit({
-      unitId = name,
-      bqInfo = bqPurchaseInfo,
-      price,
-      content = unitBuyWnd(name),
-      title = loc("unitsTree/researchCompleted"),
-      onCancel = @() triggerAnim()})
-  } else
-    triggerAnim()
+  if (!researchStatus?.canBuy && !blueprintStatus?.canBuy)
+    return triggerAnim()
+
+  if ((!(isAllowAutoOfferToBuyUnitEnabled.get() ?? true) || name in shownUnitsOffersForPurchase.get()))
+    return triggerAnim()
+
+  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, name)
+  markUnitOfferShown(name)
+  purchaseUnit({
+    unitId = name,
+    bqInfo = bqPurchaseInfo,
+    price,
+    content = unitBuyWnd(name),
+    title = loc("unitsTree/researchCompleted"),
+    onCancel = @() triggerAnim()
+  })
 }
 
 function mkPlatoonPlates(unit) {

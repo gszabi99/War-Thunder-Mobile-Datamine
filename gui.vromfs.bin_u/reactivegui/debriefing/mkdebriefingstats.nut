@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
 let { doesLocTextExist } = require("dagor.localize")
 let { roundToDigits } = require("%sqstd/math.nut")
 let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
@@ -12,9 +11,10 @@ let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
 let mkAnimatedCountText = require("%rGui/debriefing/mkAnimatedCountText.nut")
 
 let statIncreaseAnimTimeMsec = 500
-let iconSize = hdpxi(30)
+let iconSize = hdpxi(35)
+let rowHeight = hdpx(35)
+let specialRowHeight = hdpx(65)
 let iconInlineSize = fontTiny.fontSize
-let iconInlineGap = round(iconInlineSize * 0.4).tointeger()
 let endHeaderLineAnim = 1.0
 let offsetTime = 0.1
 
@@ -154,27 +154,27 @@ let animCountBaseComp = {
     rendObj = ROBJ_TEXT
     halign = ALIGN_RIGHT
     color = 0xFFFFFFFF
-}.__update(fontTiny)
+}.__update(fontTinyAccented)
 
 let mkAnimatedCount = @(uid, value, printVal, startTime, baseComp = animCountBaseComp)
   mkAnimatedCountText(uid, value, printVal, startTime, statIncreaseAnimTimeMsec, setCounterActive, baseComp)
 
 let mkText = @(text) {
+  size = [hdpx(620), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
   text
-}.__update(fontTiny)
+}.__update(fontTinyAccented)
 
 let mkInlineIcon = @(children) {
   size = [iconInlineSize, iconInlineSize]
-  margin = [0, 0, 0, iconInlineGap]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children
 }
 
 let mkStat = @(uid, text, value, startTime, printVal, valueCtor) {
-  size = FLEX_H
+  size = [flex(), valueCtor ? specialRowHeight : rowHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
@@ -183,7 +183,8 @@ let mkStat = @(uid, text, value, startTime, printVal, valueCtor) {
       text
       color = 0xFFFFFFFF
       hplace = ALIGN_LEFT
-    }.__update(fontTiny),
+    }.__update(fontTinyAccented),
+    {size = flex()},
     (valueCtor ?? mkAnimatedCount)(uid, value, printVal, startTime)
   ]
 }
@@ -200,13 +201,23 @@ function mkItemsUsedRows(itemsUsed, delay) {
     if (!doesLocTextExist(locId))
       locId = "debriefing/spent/default"
     return {
-      size = FLEX_H
+      size = [flex(), rowHeight]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children = [
         mkText(loc(locId))
-        mkAnimatedCount($"count_{id}", count, null, startTime)
-        mkInlineIcon(mkCurrencyImage(id, iconSize))
+        {
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = hdpx(20)
+          children = [
+            mkInlineIcon(mkCurrencyImage(id, iconSize))
+            mkAnimatedCount($"count_{id}", count, null, startTime, animCountBaseComp.__merge({
+              size = const [hdpx(70), SIZE_TO_CONTENT]
+              halign = ALIGN_LEFT
+            }))
+          ]
+        }
       ]
     }
   })
@@ -241,20 +252,26 @@ function mkDebriefingStats(debrData, startAnimTime) {
       : mkStat(uid, s?.getLoc(debrData) ?? loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.printVal, s?.valueCtor)
   }).filter(@(v) v != null)
 
-  let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * offsetTime)))
+  let usedItems = mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * offsetTime))
 
-  return children.len() == 0
+  return statsContent.len() + usedItems.len() == 0
     ? {
         debriefingStats = null
+        usedItems = null
         statsAnimEndTime = 0
       }
     : {
         debriefingStats = {
+          size = const [hdpx(700), SIZE_TO_CONTENT]
+          flow = FLOW_VERTICAL
+          children = statsContent
+        }
+        usedItems = {
           size = const [hdpx(750), SIZE_TO_CONTENT]
           flow = FLOW_VERTICAL
-          children
+          children = usedItems
         }
-        statsAnimEndTime = endHeaderLineAnim + offsetTime * children.len()
+        statsAnimEndTime = endHeaderLineAnim + offsetTime * statsContent.len()
       }
 }
 

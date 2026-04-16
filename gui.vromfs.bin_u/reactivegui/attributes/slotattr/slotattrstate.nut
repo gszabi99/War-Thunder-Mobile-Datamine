@@ -7,7 +7,7 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
+let { add_slot_attributes, slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { balance, SLOT_EXP_TANKS, SLOT_EXP_AIR } = require("%appGlobals/currenciesState.nut")
@@ -162,7 +162,7 @@ function mkUnseenSlotAttrByIdx(idx) {
 }
 
 function applyAttributes() {
-  if (selAttrSpCost.get() <= 0)
+  if (selAttrSpCost.get() <= 0 || slotInProgress.get() != null)
     return
   add_slot_attributes(curCampaign.get(), selectedSlotIdx.get(), selAttributes.get(), selAttrSpCost.get())
 }

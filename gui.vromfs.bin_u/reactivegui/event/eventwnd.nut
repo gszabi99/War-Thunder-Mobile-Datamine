@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { getEventPresentation, eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
@@ -37,14 +38,12 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
-let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
@@ -189,12 +188,13 @@ function mkCurrencies() {
         .keys()
   return {
     watch = [curEventLootboxes, eventWndLootbox]
+    hplace = ALIGN_RIGHT
     children = currensiesByLootbox.len() < 1 ? null
       : {
-        pos = [saBorders[0] * 0.5, 0]
-        padding = [saBorders[0] * 0.025, saBorders[0] * 0.5]
-        rendObj = ROBJ_9RECT
-        image = gradTranspDoubleSideX
+        pos = [saBorders[0], 0]
+        padding = [hdpx(10), saBorders[0]]
+        rendObj = ROBJ_IMAGE
+        image = simpleHorGrad
         color = 0x70000000
         children = mkCurrenciesBtns(currensiesByLootbox).__update({ size = SIZE_TO_CONTENT })
       }
@@ -244,7 +244,7 @@ let toBattleHint = @(battleCampaign, itemsByGameMode, eventName) battleCampaign 
       behavior = Behaviors.TextArea
       text = loc("events/toBattle")
     }.__update(fontTinyAccented)
-    gmEventPresentation(eventName).hasConsumablePlate ? consumablesPlate(battleCampaign, itemsByGameMode) : null
+    getEventPresentation(eventName).hasConsumablePlate ? consumablesPlate(battleCampaign, itemsByGameMode) : null
   ]
 }
 
@@ -258,40 +258,47 @@ let mkToBattleButton = @(gameMode, modeName, campaign) mkToBattleButtonWithSquad
   gameMode)
 
 let eventGamercard = {
-  size = [saSize[0], gamercardHeight]
-  flow = FLOW_HORIZONTAL
+  size = [flex(), gamercardHeight]
   valign = ALIGN_CENTER
   gap = headerGap
   children = [
-    backButton(onClose)
     {
-      flow = FLOW_VERTICAL
-      gap = hdpx(-10)
-      vplace = ALIGN_TOP
+      pos = [-saBordersRv[1], 0]
+      rendObj = ROBJ_IMAGE
+      image = simpleHorGrad
+      color = 0x80000000
+      padding = const [hdpx(20), hdpx(50), hdpx(17), saBordersRv[1]]
+      flipX = true
+      flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
+      gap = hdpx(20)
       children = [
+        backButton(onClose)
         {
-          flow = FLOW_HORIZONTAL
-          gap = headerGap
-          valign = ALIGN_BOTTOM
+          flow = FLOW_VERTICAL
           children = [
-            @() {
-              watch = curEventLoc
-              rendObj = ROBJ_TEXT
-              text = curEventLoc.get()
-            }.__update(fontBig)
-            infoEllipseButton(@() openNewsWndTagged($"event_{curEventName.get()}_{curEventSeason.get()}"))
-          ]
-        }
+            {
+              flow = FLOW_HORIZONTAL
+              gap = headerGap
+              valign = ALIGN_BOTTOM
+              children = [
+                @() {
+                  watch = curEventLoc
+                  rendObj = ROBJ_TEXT
+                  text = curEventLoc.get()
+                }.__update(fontBig)
+                infoEllipseButton(@() openNewsWndTagged($"event_{curEventName.get()}_{curEventSeason.get()}"))
+              ]
+            }
 
-        @() {
-          watch = [serverTime, curEventEndsAt]
-          halign = ALIGN_CENTER
-          valign = ALIGN_BOTTOM
-          children = !curEventEndsAt.get() || (curEventEndsAt.get() - serverTime.get() < 0) ? null
-            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.get() - serverTime.get()),
-                "quests/untilTheEnd",
-                { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
+            @() {
+              watch = [serverTime, curEventEndsAt]
+              children = !curEventEndsAt.get() || (curEventEndsAt.get() - serverTime.get() < 0) ? null
+                : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.get() - serverTime.get()),
+                    "quests/untilTheEnd",
+                    { key = "event_time" }.__update(fontTinyAccented))
+            }
+          ]
         }
       ]
     }

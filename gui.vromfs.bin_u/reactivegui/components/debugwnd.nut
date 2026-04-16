@@ -7,7 +7,7 @@ let textInput = require("%rGui/components/textInputBase.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
-let wndWidth = min(sw(95), sh(150))
+let wndWidth = min(sw(95), hdpx(1820))
 
 let gap = hdpx(5)
 let defaultColor = 0xFFA0A0A0

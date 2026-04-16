@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { is_android, is_pc, is_ios } = require("%sqstd/platform.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { attachedAdsButtons } = require("%rGui/ads/adsInternalState.nut")
 let debugAs = require("dagor.system").get_arg_value_by_name("debugAs")
 let {
@@ -15,6 +16,8 @@ let {
 
 isInMenu.subscribe(@(_) isAdsVisible.set(false)) 
 
+let battleAdsBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.battleAdBonuses ?? {})
+
 let changeAttachedAdsButtons = @(v) attachedAdsButtons.set(attachedAdsButtons.get() + v)
 
 return {
@@ -28,4 +31,5 @@ return {
     onAttach = @() changeAttachedAdsButtons(1)
     onDetach = @() changeAttachedAdsButtons(-1)
   }
+  battleAdsBonusesCfg
 }

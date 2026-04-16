@@ -210,6 +210,7 @@ let sendOPBqEvent = @(action, params = {}) sendCustomBqEvent("operationpass_1", 
   stageProgress = curStage.get()
   operationpassPoints = pointsCurStage.get()
   isPassPurchased = isOPActive.get()
+  campaign = OPCampaign.get()
 }))
 
 function receiveOPRewards(progress) {

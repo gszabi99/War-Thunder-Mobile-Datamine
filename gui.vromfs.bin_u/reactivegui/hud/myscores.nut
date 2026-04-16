@@ -7,9 +7,10 @@ let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { battleCampaign, battleUnitClasses } = require("%appGlobals/clientState/missionState.nut")
 let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { hudScoreTank } = require("%rGui/options/options/tankControlsOptions.nut")
+let { OPT_HUD_TANK_SHOW_SCORE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { localMPlayer, addMPlayerUpdater, removeMPlayerUpdater } = require("%rGui/hud/localMPlayer.nut")
+
 
 let delayForUpdatePlace = 0.1
 let countImageSize = evenPx(60)
@@ -34,6 +35,12 @@ let getValueByKey = {
   score = getScoreFull
   damage = getScoreFull
 }
+
+let validate = @(val, list) list.contains(val) ? val : list[0]
+
+let hudScoreTankList = ["score", "kills"]
+let hudScoreTankRaw = mkOptionValue(OPT_HUD_TANK_SHOW_SCORE)
+let hudScoreTank = Computed(@() validate(hudScoreTankRaw.get() ?? "kills", hudScoreTankList))
 
 function getViewScoreKey(campaign, unitClass, scoreTank) {
   if (campaign == "tanks" && scoreTank == "kills")
@@ -169,6 +176,10 @@ return {
   isPlaceVisible
   isScoreVisible
   icons
+
+  hudScoreTankList
+  hudScoreTankRaw
+  hudScoreTank
 
   mkMyScores
   mkMyDamage

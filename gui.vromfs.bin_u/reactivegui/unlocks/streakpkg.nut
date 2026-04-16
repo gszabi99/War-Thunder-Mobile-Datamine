@@ -70,7 +70,7 @@ let mkStreakWithMultiplier = @(unlockId, mult, mSize, numParam = null) {
           text = mult
           halign = ALIGN_CENTER
           pos = [mSize * 0.8, mSize * 0.8]
-        }.__update(fontVeryTinyAccented)
+        }.__update(fontTinyAccented)
   ]
 }
 

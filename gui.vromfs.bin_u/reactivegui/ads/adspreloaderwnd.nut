@@ -2,7 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { isLoaded } = require("%rGui/ads/adsState.nut")
-let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
+let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWndParams,
+  isShowStarted
+} = require("%rGui/ads/adsInternalState.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -71,8 +73,10 @@ let content = @()
 
 isOpenedAdsPreloaderWnd.subscribe(function(v) {
   removeModalWindow(PRELOAD_WND_UID)
-  if (!v)
+  if (!v) {
+    isShowStarted.set(false)
     return closeMsgBox(MSG_UID_LEAVE_WINDOW)
+  }
   addModalWindow(bgShaded.__merge({
     key = PRELOAD_WND_UID
     animations = wndSwitchAnim

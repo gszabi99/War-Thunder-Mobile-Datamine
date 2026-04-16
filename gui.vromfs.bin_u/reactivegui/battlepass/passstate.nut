@@ -4,9 +4,15 @@ let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { bpProgressUnlock } = require("%rGui/battlePass/battlePassState.nut")
-let { eventsPassList, EVENT_PASS, getEventPassName, curEventId } = require("%rGui/battlePass/eventPassState.nut")
-let { OPProgressUnlock } = require("%rGui/battlePass/operationPassState.nut")
+let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods,
+  lastStageBpProgress, bpProgressUnlock
+} = require("%rGui/battlePass/battlePassState.nut")
+let { mkEpStagesList, isEpVipActive, isEpCommonActive, mkHasEpRewardsToReceive, mkEventPassGoods,
+  lastStageEpProgress, curEventId, getEventPassName, EVENT_PASS, eventsPassList
+} = require("%rGui/battlePass/eventPassState.nut")
+let { mkOPStagesList, isOpVipActive, isOpCommonActive, hasOPRewardsToReceive, operationPassGoods,
+  lastStageOpProgress, OPProgressUnlock
+} = require("%rGui/battlePass/operationPassState.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
 
@@ -17,6 +23,37 @@ let OPERATION_PASS = "operation_pass"
 let seenPasses = mkWatched(persist, SEEN_PASSES, {})
 let playerSelectedScene = mkWatched(persist, "playerSelectedScene", null)
 let passOpenCounter = mkWatched(persist, "passOpenCounter", 0)
+
+let tabsState = {
+  [BATTLE_PASS] = {
+    mkStagesList = mkBpStagesList
+    lastRewardProgress = lastStageBpProgress
+    isVipActive = isBpVipActive
+    isCommonActive = isBpCommonActive
+    hasReward = hasBpRewardsToReceive
+    goods = battlePassGoods
+  },
+  [EVENT_PASS] = {
+    mkStagesList = mkEpStagesList
+    lastRewardProgress = lastStageEpProgress
+    isVipActive = isEpVipActive
+    isCommonActive = isEpCommonActive
+    mkHasReward = mkHasEpRewardsToReceive
+    mkGoods = mkEventPassGoods
+  },
+  [OPERATION_PASS] = {
+    mkStagesList = mkOPStagesList
+    lastRewardProgress = lastStageOpProgress
+    isVipActive = isOpVipActive
+    isCommonActive = isOpCommonActive
+    hasReward = hasOPRewardsToReceive
+    goods = operationPassGoods
+  },
+}
+
+let getTabStateData = @(passName) passName == null ? null
+  : passName.startswith(EVENT_PASS) ? tabsState[EVENT_PASS]
+  : tabsState?[passName]
 
 let visibleTabs = Computed(function() {
   let res = []
@@ -38,8 +75,6 @@ function openPassScene(id) {
   passOpenCounter.set(passOpenCounter.get() + 1)
   playerSelectedScene.set(id)
 }
-
-let closePassScene = @() passOpenCounter.set(0)
 
 function updateCurEventId() {
   let curEventPassName = playerSelectedScene.get()
@@ -79,9 +114,23 @@ function isPassGoodsUnseen(passes, sPasses) {
   return passes.len() == 0
 }
 
+function tryMarkPassesSeenByPageId(v) {
+  let { goods = null, mkGoods = null } = getTabStateData(v)
+  let pageGoods = goods ?? mkGoods?(v)
+  if (pageGoods == null || pageGoods.get() == null)
+    return
+
+  markPassesSeen(pageGoods.get().reduce(@(res, g) g?.id ? res.append(g.id) : res, []))
+}
+
+function closePassScene() {
+  tryMarkPassesSeenByPageId(passPageId.get())
+  passOpenCounter.set(0)
+}
+
 eventsPassList.subscribe(@(_) updateCurEventId())
 playerSelectedScene.subscribe(@(_) updateCurEventId())
-passPageId.subscribe(@(v) v == null ? closePassScene() : null)
+passPageId.subscribe(@(v) v == null ? closePassScene() : tryMarkPassesSeenByPageId(v))
 
 if (seenPasses.get().len() == 0)
   loadSeenPasses()
@@ -108,11 +157,12 @@ return {
   closePassScene
 
   seenPasses
-  markPassesSeen
   isPassGoodsUnseen
 
   passPageId
   passPageIdx
   playerSelectedScene
   visibleTabs
+
+  getTabStateData
 }

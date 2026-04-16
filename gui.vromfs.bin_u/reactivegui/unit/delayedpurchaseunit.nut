@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { deferOnce } = require("dagor.workcycle")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
@@ -52,8 +52,7 @@ function showPurchases() {
   if (!unit)
     return
 
-  if (curUnit.get()?.name != unit.name)
-    setCurrentUnit(unit.name)
+  setCurrentUnit(unit.name)
   showPurchasedUnit(unit)
 
   let index = delayedPurchaseList.findindex(@(p) p == unit.name)

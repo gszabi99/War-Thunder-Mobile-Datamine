@@ -6,7 +6,7 @@ let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
+let { allGameModes, gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
 let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { sendUiBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
@@ -172,14 +172,6 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   return true
 }
 
-function getAllModeIds(economicName) {
-  let res = []
-  foreach (id, gm in allGameModes.get())
-    if (gm?.economicName == economicName)
-      res.append(id)
-  return res
-}
-
 function queueToGameModeImpl(mode) {
   if (isInQueue.get())
     return
@@ -197,8 +189,10 @@ function queueToGameModeImpl(mode) {
 
   log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", allBattleUnits.get())
   log("modeInfo = ", getModeAddonsDbgString(mode))
+  let modeList = getGameModeQueueGroup(mode, gameModeQueueGroups.get())
+
   let { addonsToDownload, allReqAddons, unitsToDownload } = getModeAddonsInfo({
-    mode,
+    modeList,
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),
@@ -258,8 +252,7 @@ function queueToGameModeImpl(mode) {
 
   
   
-  let modeList = getAllModeIds(mode?.economicName ?? mode.name)
-  joinQueue(modeList.len() <= 1 ? { mode = mode.name } : { game_modes_list = modeList })
+  joinQueue(modeList.len() <= 1 ? { mode = mode.name } : { game_modes_list = modeList.map(@(m) m.gameModeId) })
 }
 
 function queueModeOnRandomUnit(mode) {
@@ -317,7 +310,7 @@ function queueToGameModeAfterAddons(modeId) {
   if (mode == null)
     return 
   let { addonsToDownload, unitsToDownload } = getModeAddonsInfo({
-    mode,
+    modeList = getGameModeQueueGroup(mode, gameModeQueueGroups.get()),
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),

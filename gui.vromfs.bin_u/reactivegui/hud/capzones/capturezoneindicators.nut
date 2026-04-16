@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { CaptureZone } = require("wt.behaviors")
 let { capZones, capZonesCount } = require("%rGui/hud/capZones/capZonesState.nut")
 let { capZoneCtr, getZoneIcon } = require("%rGui/hud/capZones/capZones.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 
 let zoneSize = evenPx(45)
@@ -44,8 +45,10 @@ function mkCapZoneIndicator(idx) {
 
 
 let captureZoneIndicators = @() {
+  key = "capture-zone-indicator"
   watch = capZonesCount
   children = array(capZonesCount.get()).map(@(_, i) mkCapZoneIndicator(i))
+  animations = wndSwitchAnim
 }
 
 return captureZoneIndicators

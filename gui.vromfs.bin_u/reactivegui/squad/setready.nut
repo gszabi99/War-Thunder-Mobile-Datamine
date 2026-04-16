@@ -10,6 +10,7 @@ let { localizeUnitsResources } = require("%appGlobals/updater/campaignAddons.nut
 let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { allUnitsRanks, allBattleUnits, missingUnitResourcesByRank, getModeAddonsInfo, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
+let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { requiredSquadAddons } = require("%rGui/updater/randomBattleModeAddons.nut")
 
@@ -45,7 +46,7 @@ function showChangeCampaignMsg() {
 
 function getRequiredAddonsNotUpdatable(mGMode) {
   let { addonsToDownload, unitsToDownload } = getModeAddonsInfo({
-    mode = mGMode,
+    modeList = getGameModeQueueGroup(mGMode, gameModeQueueGroups.get()),
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),

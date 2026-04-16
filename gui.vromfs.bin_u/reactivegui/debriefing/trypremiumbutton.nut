@@ -10,10 +10,10 @@ let { gradTranspDoubleSideX, gradRadial } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 
-let btnW = hdpxi(340)
+let btnW = hdpx(400)
 let btnH = hdpxi(180)
-let premIconW = hdpxi(160)
-let premIconH = hdpxi(110)
+let premIconW = hdpxi(225)
+let premIconH = hdpxi(155)
 
 let glareAnimDuration = 0.4
 let glareRepeatDelay = 2
@@ -57,8 +57,7 @@ let btnText = @() {
   size = FLEX_H
   margin = const [0, hdpx(10)]
   halign = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  pos = [0, ph(35)]
+  vplace = ALIGN_TOP
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA
   text = loc(allow_subscriptions.get() ? "debriefing/trySubs" : "debriefing/tryPremium")
@@ -101,29 +100,30 @@ function mkTryPremiumButton(mulComps, sessionId = null) {
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     sound = { click  = "click" }
 
-    rendObj = ROBJ_MASK
-    image = Picture($"!ui/gameuiskin#debr_prem_btn_mask.svg:{btnW}:{btnH}:K")
+    rendObj = ROBJ_BOX
+    borderWidth = hdpx(3)
+    borderColor = 0xFFEEEEEE
+    padding = hdpx(3)
     clipChildren = true
 
     children = [
       btnBg
       btnGlow
+      btnText
       {
-        pos = [0, ph(-10)]
         hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        valign = ALIGN_CENTER
+        vplace = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
         gap = hdpx(20)
         children = [
           btnIcon
           {
             flow = FLOW_VERTICAL
+            vplace = ALIGN_CENTER
             children = mulComps
           }
         ]
       }
-      btnText
       glare
     ]
   }

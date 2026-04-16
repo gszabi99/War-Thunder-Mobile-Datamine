@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
@@ -202,7 +203,7 @@ return {
   size = saSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  key = "tank-hud-touch"
+  key = "walker-hud-touch"
   onAttach = @() startActionBarUpdate("tankHud")
   onDetach = @() stopActionBarUpdate("tankHud")
   children = [
@@ -218,4 +219,5 @@ return {
     rocketAgmAim
     radarIndication
   ]
+  animations = wndSwitchAnim
 }

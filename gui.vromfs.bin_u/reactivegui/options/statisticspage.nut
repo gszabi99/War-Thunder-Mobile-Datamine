@@ -144,7 +144,7 @@ return function() {
     }
 
     foreach (id, v in allUnits) {
-      let { levelPreset = "0", campaign = "", isHidden = false, isPremium = false, costWp = 0 } = v
+      let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false, isPremium = false, costWp = 0 } = v
       if (id in unreleasedUnits.get())
         continue
       if (campaign not in all)
@@ -160,7 +160,7 @@ return function() {
         continue
       let unit = units[id]
       let maxLevel = unitLevels?[levelPreset].len() ?? 0
-      if (isHidden)
+      if (isCollectible)
         my[campaign].rare++
       if (isPremium && !isHidden)
         my[campaign].prem++

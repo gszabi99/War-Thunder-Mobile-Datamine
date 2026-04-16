@@ -32,6 +32,7 @@ const PROGRESS_SLOTS_UNITS = "CampaignSlotsInProgress"
 const PROGRESS_AD_BUDGET = "AdBudgetInProgress"
 const PROGRESS_ITEM_CONVERSION = "ItemConversionInProgress"
 const PROGRESS_SKIP_OFFER = "SkipOfferInProgress"
+const PROGRESS_CLIENT_MISSION_REWARD = "ClientMissionRewardInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -264,6 +265,7 @@ return {
   adBudgetInProgress = mkProgress(PROGRESS_AD_BUDGET)
   ItemConversionInProgress = mkProgress(PROGRESS_ITEM_CONVERSION)
   skipOfferInProgress = mkProgress(PROGRESS_SKIP_OFFER)
+  clientMissionRewardInProgress = mkProgress(PROGRESS_CLIENT_MISSION_REWARD)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -291,6 +293,7 @@ return {
   debug_reset_unit_rent = @(cb = null) request({ method = "debug_reset_unit_rent" }, cb)
   get_gdpr_report = @(cb = null) request({ method = "get_gdpr_report_client" }, cb)
   reset_ab_tests = @(cb = null) request({ method = "reset_ab_tests" }, cb)
+  pp_get_config = @(cb = null) request({ method = "pp_get_config_client" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -622,6 +625,8 @@ return {
   apply_client_mission_reward = @(campaign, missionId, cb = null) request({
     method = "apply_client_mission_reward"
     params = { campaign, missionId }
+    progressId = PROGRESS_CLIENT_MISSION_REWARD
+    progressValue = missionId
   }, cb)
 
   apply_first_battles_reward = @(campaign, unitName, rewardId, kills, cb = null) request({
@@ -1028,5 +1033,25 @@ return {
   toggle_ab_test = @(id, cb = null) request({
     method = "toggle_ab_test"
     params = { id }
+  }, cb)
+
+  apply_last_battle_ad_reward = @(sessionId, cb = null) request({
+    method = "apply_last_battle_ad_reward"
+    params = { sessionId }
+  }, cb)
+
+  pp_get_units = @(units, cb = null) request({
+    method = "pp_get_units_client"
+    params = { units }
+  }, cb)
+
+  pp_add_units = @(units, cb = null) request({
+    method = "pp_add_units_client"
+    params = { units }
+  }, cb)
+
+  pp_add_currencies = @(currencies, cb = null) request({
+    method = "pp_add_currencies_client"
+    params = { currencies }
   }, cb)
 }

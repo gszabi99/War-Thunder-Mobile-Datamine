@@ -151,16 +151,12 @@ let moveStickBase = @(zoneSize, scale, touchStickAction, moveCtrlType) @() {
   onChange = @(v) stickDelta.set(Point2(v.x, v.y))
 
   function onTouchBegin() {
-    if (isPlayingReplay.get())
-      return
     setVirtualAxisValue("gm_brake_left", 0)
     setVirtualAxisValue("gm_brake_right", 0)
     isStickActiveByStick.set(true)
     setMoveControlByArrows(false)
   }
   function onTouchEnd() {
-    if (isPlayingReplay.get())
-      return
     setVirtualAxisValue("gm_brake_left", 1)
     setVirtualAxisValue("gm_brake_right", 1)
     isStickActiveByStick.set(false)
@@ -233,57 +229,25 @@ function gamepadStick(scale) {
 }
 
 let gamepadAxisListenerTank = axisListener({
-  [gm_steering] = function(v) {
-    if (isPlayingReplay.get())
-        return
-    stickDelta.set(Point2(-v, stickDelta.get().y))
-  },
-  [gm_throttle] = function(v) {
-    if (isPlayingReplay.get())
-      return
-    stickDelta.set(Point2(stickDelta.get().x, v))
-  },
-  [gm_mouse_aim_x] = function(v) {
-    if (isPlayingReplay.get())
-      return
-    setVirtualAxisValue("gm_mouse_aim_x", v)
-  },
-  [gm_mouse_aim_y] = function(v) {
-    if (isPlayingReplay.get())
-      return
-    setVirtualAxisValue("gm_mouse_aim_y", v)
-  },
+  [gm_steering] = @(v) stickDelta.set(Point2(-v, stickDelta.get().y)),
+  [gm_throttle] = @(v) stickDelta.set(Point2(stickDelta.get().x, v)),
+  [gm_mouse_aim_x] = @(v) setVirtualAxisValue("gm_mouse_aim_x", v),
+  [gm_mouse_aim_y] = @(v) setVirtualAxisValue("gm_mouse_aim_y", v),
 })
 
 
 let gamepadAxisListenerWalker = axisListener({
-  [walker_steering] = function(v) {
-    if (isPlayingReplay.get())
-        return
-    stickDelta.set(Point2(-v, stickDelta.get().y))
-  },
-  [walker_throttle] = function(v) {
-    if (isPlayingReplay.get())
-      return
-    stickDelta.set(Point2(stickDelta.get().x, v))
-  },
-  [walker_mouse_aim_x] = function(v) {
-    if (isPlayingReplay.get())
-      return
-    setVirtualAxisValue("walker_mouse_aim_x", v)
-  },
-  [walker_mouse_aim_y] = function(v) {
-    if (isPlayingReplay.get())
-      return
-    setVirtualAxisValue("walker_mouse_aim_y", v)
-  },
+  [walker_steering] = @(v) stickDelta.set(Point2(-v, stickDelta.get().y)),
+  [walker_throttle] = @(v) stickDelta.set(Point2(stickDelta.get().x, v)),
+  [walker_mouse_aim_x] = @(v) setVirtualAxisValue("walker_mouse_aim_x", v),
+  [walker_mouse_aim_y] = @(v) setVirtualAxisValue("walker_mouse_aim_y", v),
 })
 
 let updateStickActive = @(delta) isStickActiveByStick.set(delta.lengthSq() > 0.04)
 
 let unitGamepadStick = @(scale, isTank) @(){
   key = {}
-  watch = [isGamepad, isPieMenuActive]
+  watch = [isGamepad, isPieMenuActive, isPlayingReplay]
   size = array(2, scaleEven(imgBgSize, scale))
 
   behavior = TouchScreenGamepadStick
@@ -323,7 +287,7 @@ let unitGamepadStick = @(scale, isTank) @(){
       children = fullImgBg(scale)
     }
     gamepadStick(scale)
-    isGamepad.get() && !isPieMenuActive.get()
+    isGamepad.get() && !isPieMenuActive.get() && !isPlayingReplay.get()
      ? isTank
        ? gamepadAxisListenerTank
        : gamepadAxisListenerWalker

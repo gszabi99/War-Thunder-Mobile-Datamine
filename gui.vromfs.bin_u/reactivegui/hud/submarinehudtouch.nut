@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
@@ -24,4 +25,5 @@ return {
     currentWeaponNameText
     threatTorpedosBlock
   ]
+  animations = wndSwitchAnim
 }

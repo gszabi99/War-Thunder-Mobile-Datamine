@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
@@ -223,4 +224,5 @@ return {
     rocketAgmAim
     radarIndication
   ]
+  animations = wndSwitchAnim
 }

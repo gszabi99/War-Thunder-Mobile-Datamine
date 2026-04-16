@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
@@ -195,6 +196,7 @@ let aircraftHud = {
     hudBottomCenter
     currentWeaponNameText
   ]
+  animations = wndSwitchAnim
 }
 
 function aircraftOnTouchBegin() {

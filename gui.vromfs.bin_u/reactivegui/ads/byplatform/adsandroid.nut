@@ -6,7 +6,7 @@ let { parse_json, object_to_json_string } = require("json")
 let { is_android } = require("%sqstd/platform.nut")
 let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
-  hasAdsPreloadError, adsPreloadParams, failedProviders
+  hasAdsPreloadError, adsPreloadParams, failedProviders, isShowStarted
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_android ? require("android.ads") : require("%rGui/ads/byPlatform/adsAndroidDbg.nut")
@@ -35,9 +35,14 @@ function isAllProvidersFailed(providers, statuses) {
 }
 
 function handleShowAds(rInfo) {
+  if (isShowStarted.get()) {
+    logA("Skip show ads because another ad started before")
+    return
+  }
   rewardInfo.set(rInfo)
   onShowAds(loadedProvider.get())
   showAds()
+  isShowStarted.set(true)
 }
 
 function initProviders() {

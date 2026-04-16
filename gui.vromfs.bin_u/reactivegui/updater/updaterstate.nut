@@ -29,6 +29,7 @@ let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getPkgs
 let { allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
 let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
+let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
 let { getMGameModeMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
@@ -140,13 +141,30 @@ function registerAutoDownloadUnits(unitsW, priority = DLP_COMMON) {
   deferRecalcExtAutoUnits()
 }
 
+function getMGMListMissionUnitsAndAddons(mode, maxRank, gameModeQueueGroupsV, allLowKillStreak = false) {
+  let modeList = getGameModeQueueGroup(mode, gameModeQueueGroupsV)
+  let minRank = allLowKillStreak ? 0 : maxRank
+  if (modeList.len() == 1)
+    return getMGameModeMissionUnitsAndAddons(mode, minRank, maxRank, allLowKillStreak)
+  let resAddons = {}
+  let resUnits = {}
+  foreach (m in modeList) {
+    let { misAddons, misUnits } = getMGameModeMissionUnitsAndAddons(m, minRank, maxRank, allLowKillStreak)
+    resAddons.__update(misAddons)
+    resUnits.__update(misUnits)
+  }
+  return { misAddons = resAddons, misUnits = resUnits }
+}
+
 let randomBattleMisInfo = Computed(@(prev) prevIfEqual(prev,
-  getMGameModeMissionUnitsAndAddons(randomBattleMode.get(), 0, battleUnitsMaxMRank.get())))
+  getMGMListMissionUnitsAndAddons(randomBattleMode.get(), battleUnitsMaxMRank.get(), gameModeQueueGroups.get())))
 let randomBattleCoreMisInfo = Computed(@(prev) prevIfEqual(prev,
-  getMGameModeMissionUnitsAndAddons(randomBattleModeCore.get(), 0, battleUnitsMaxMRank.get() + 1)))
+  getMGMListMissionUnitsAndAddons(randomBattleModeCore.get(), battleUnitsMaxMRank.get(), gameModeQueueGroups.get())))
 let randomBattleMaxMisInfo = Computed(@(prev) prevIfEqual(prev,
-  getMGameModeMissionUnitsAndAddons(randomBattleModeCore.get(), 0,
-    clamp(maxReleasedUnitRanks.get()?[curCampaign.get()] ?? (maxMyMRank.get() + 1), maxMyMRank.get(), maxMyMRank.get() + 1))))
+  getMGMListMissionUnitsAndAddons(randomBattleModeCore.get(),
+    maxMyMRank.get(),
+    gameModeQueueGroups.get(),
+    true)))
 
 function getMissingUnits(byRank, maxMRank) {
   let res = {}
@@ -440,8 +458,8 @@ let addonsToAutoDownload = keepref(Computed(function() {
     list[a] <- true
   foreach (a in coopNewbieByCampaign?[getCampaignOrig(curCampaign.get())] ?? [])
     list[a] <- true
-  list.__update(getMGameModeMissionUnitsAndAddons(randomBattleMode.get(), 0, maxMRank).misAddons)
-  list.__update(getMGameModeMissionUnitsAndAddons(randomBattleModeCore.get(), 0, maxMRank + 1).misAddons)
+  list.__update(getMGMListMissionUnitsAndAddons(randomBattleMode.get(), maxMRank, gameModeQueueGroups.get()).misAddons)
+  list.__update(getMGMListMissionUnitsAndAddons(randomBattleModeCore.get(), maxMRank, gameModeQueueGroups.get()).misAddons)
   return list.keys()
 }))
 

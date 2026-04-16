@@ -204,6 +204,7 @@
     }
   },
   "player_battle_data": {
+    "squadId": -1,
     "isBoostersApplied": false,
     "isOfflineUser": false,
     "_group": {
@@ -227,6 +228,7 @@
   },
   "server_player": {
     "_use": "replicating",
+    "lockToReady": true,
     "server_player__playerId": -1,
     "server_player__localTemplate": "wtm_local_player",
     "serverPlayer:tag": {},
@@ -306,6 +308,19 @@
     "battleRoyaleLog:array": {},
     "raceLog:array": {},
     "missionScoreLog:array": {}
+  },
+  "team_balancer": {
+    "min_wait_time": 10.0,
+    "max_wait_time": 60.0,
+    "stats_wait_time": 15.0,
+    "areTeamsBalanced": false,
+    "leaveDefaultOrder": false,
+    "statsReceived": 0,
+    "balancerLifeTime": -1.0,
+    "timeAfterAdd": 0.0,
+    "lateTeamA": 0,
+    "lateTeamB": 0,
+    "allIds:object": {}
   },
   "statistic_players": {
     "statisticPlayers:object": {},

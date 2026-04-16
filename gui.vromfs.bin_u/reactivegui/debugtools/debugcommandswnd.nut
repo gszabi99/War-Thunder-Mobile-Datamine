@@ -37,7 +37,7 @@ let debugPermissionsWnd = require("%rGui/debugTools/debugPermissionsWnd.nut")
 let { removeAddonsForCampaign } = require("%rGui/updater/updaterState.nut")
 
 
-let wndWidth = sh(130)
+let wndWidth = hdpx(1500)
 let gap = hdpx(10)
 
 let wndUid = "debugCommandsWnd"

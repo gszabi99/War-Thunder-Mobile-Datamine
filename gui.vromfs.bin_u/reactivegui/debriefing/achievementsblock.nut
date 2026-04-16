@@ -96,7 +96,6 @@ function mkInfoButton(val) {
 
 let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem, offset) streaksArr.len() == 0 ? null : {
   size = FLEX_H
-  margin = const [0, 0, hdpx(30), 0]
   children = [
     {
       size = [gradientWidth, flex()]

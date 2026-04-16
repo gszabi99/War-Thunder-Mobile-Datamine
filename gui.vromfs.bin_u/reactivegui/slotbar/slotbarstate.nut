@@ -21,8 +21,9 @@ let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
 let selectedTreeSlotIdx = mkWatched(persist, "selectedTreeSlotIdx", null)
 let attachedSlotBarArsenalIdx = mkWatched(persist, "selectedSlotBarArsenalIdx", null)
 let maxSlotLevels = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"])
+let hangarUnitName = Computed(@() hangarUnit.get()?.name)
 let actualSlotIdx = Computed(@() curSlots.get().findindex(@(s) s?.name == curUnitName.get())
-  ?? curSlots.get().findindex(@(s) s?.name == hangarUnit.get()?.name))
+  ?? curSlots.get().findindex(@(s) s?.name == hangarUnitName.get()))
 
 let slotBarArsenalKey = "slot_bar_arsenal"
 let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
@@ -30,9 +31,9 @@ let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
 let selectSlotByHangarUnit = @() selectedSlotIdx.set(actualSlotIdx.get())
 let selectTreeSlotByUnitName = @(unitName) selectedTreeSlotIdx.set(curSlots.get().findindex(@(s) s?.name == unitName))
 
-if (hangarUnit.get())
+if (hangarUnitName.get())
   selectSlotByHangarUnit()
-hangarUnit.subscribe(@(_) selectSlotByHangarUnit())
+hangarUnitName.subscribe(@(_) selectSlotByHangarUnit())
 
 let slotsNeedAddAnim = mkWatched(persist, "slotsNeedAddAnim", {})
 let isAnimChangedSoon = mkWatched(persist, "isAnimChangedSoon", false)

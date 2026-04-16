@@ -106,6 +106,7 @@ let skinsByTag = {
     "ussr_camo_t_80um2"
     "cn_camo_light_olive"
     "cn_plz_05_lunar_ny_26"
+    "us_camo_m1a1_aim_abrams"
     "ussr_camo_object_279_1002"
     "ussr_camo_object_279_trixter"
   ],
@@ -219,6 +220,7 @@ let skinsByTag = {
     "se_camo_modern_urban"
     "cn_hj_9_valentines_day"
     "cn_camo_winter_lines"
+    "uk_camo_winter_modern_bicolor"
   ],
 
   [NAVAL] = [
@@ -270,6 +272,7 @@ let skinsByTag = {
     "camo_darkgrey_big_spots"
     "camo_fourgreencolors"
     "camo_redgreen_spots"
+    "camo_blackgray_lines"
 
     "camo_blackgreen_geometry"
     "camo_bluegray_geometry"
@@ -282,6 +285,7 @@ let skinsByTag = {
     "camo_polish_bluegeometry"
     "camo_bluewhite_geometry"
     "camo_tropic_multicolor_spots"
+    "camo_blackbrown_spots"
 
     "camo_blackgray_spots"
     "camo_blue_spots"
@@ -302,6 +306,7 @@ let skinsByTag = {
     "camo_northern_fleet_contrast"
     "camo_violetgray_geometry"
     "camo_bluegray_blotch"
+    "camo_arcticfleet"
 
     "camo_lightblue_splotch"
     "camo_dark_spots"
@@ -404,6 +409,7 @@ let skinsByTag = {
     "germ_me262a_2a_camo3"
     "germ_me_410a_1"
     "germ_me_410a_1_grey"
+    "germ_me262c_2b_graygreen"
     "germ_me_410b_6_re"
     "germ_ta_154a_1"
     "germ_ta152c"

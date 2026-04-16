@@ -3,7 +3,6 @@ let { translucentButton, translucentButtonsVGap } = require("%rGui/components/tr
 let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { gmEventsList, openGmEventWnd, hasFinishedFirstBattle, canOpenGmEventWnd } = require("%rGui/event/gmEventState.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { openQuestsWndOnTab, questsCfg, progressUnlockByTab, progressUnlockBySection,
   hasUnseenQuestsBySection
@@ -54,7 +53,7 @@ function btnsOpenSpecialEvents() {
     )))
   gmEventsList.get().keys().each(function(id) {
     if (canOpenGmEventWnd(id, hasFinishedFirstBattle.get()))
-      children.append(translucentButton(gmEventPresentation(id).image,
+      children.append(translucentButton(getEventPresentation(id).icon,
       "",
       @() openGmEventWnd(id)))
   })

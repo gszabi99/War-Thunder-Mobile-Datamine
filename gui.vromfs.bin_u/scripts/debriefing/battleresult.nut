@@ -52,6 +52,39 @@ function realNameToName(unit) {
   return res
 }
 
+eventbus_subscribe("adsBonusToApply",function(adsBonuses) {
+  if(!adsBonuses)
+    return
+
+  baseBattleResult.set(baseBattleResult.get().__merge({ adsBonuses }))
+})
+
+hasPremiumSubs.subscribe(function(hasSubs) {
+  let baseResult = baseBattleResult.get()
+  let sessionId = baseResult?.sessionId.tostring()
+  let lastBattle = lastBattles.get()?[sessionId]
+  if(!hasSubs || baseResult?.hasPrem || !lastBattle)
+    return
+  let { adsBonuses = {}, reward } = baseResult
+  let expDif = lastBattle.playerExp - reward.playerExp.totalExp - (adsBonuses?.expDif ?? 0)
+  let wpDif = lastBattle.wp - reward.playerWp.totalWp - (adsBonuses?.wpDif ?? 0)
+  let unitsDif = lastBattle.unitsProgress.map(function(unit, uName) {
+    let debrUnit = reward.units.findvalue(@(u) u.name == uName)
+    return unit.__merge({
+      expDif = unit.exp - (debrUnit?.exp.totalExp ?? 0) - (adsBonuses?.unitsDif[uName].uExpDif ?? 0)
+      slotExpDif = unit.slotExp - (debrUnit?.slotExp.totalExp ?? 0) - (adsBonuses?.unitsDif[uName].slotExpDif ?? 0)
+      goldDif = unit.gold - (debrUnit?.gold.totalGold ?? 0) - (adsBonuses?.unitsDif[uName].uGoldDif ?? 0)
+    })})
+
+  baseBattleResult.set(baseResult.__merge({
+    subsBonuses = {
+      expDif
+      wpDif
+      unitsDif
+    }}))
+})
+
+
 let battleResult = Computed(function() {
   if (debugBattleResult.get())
     return debugBattleResult.get()
@@ -60,29 +93,6 @@ let battleResult = Computed(function() {
     return singleMissionResult.get()
   else {
     res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
-    if (res?.sessionId
-        && lastBattles.get()?[$"{res.sessionId}"]
-        && !res?.hasPrem
-        && hasPremiumSubs.get()) {
-      let lastBattle = lastBattles.get()[$"{res.sessionId}"]
-      let premiumBonus = clone res?.premiumBonusNotApplied
-      res.premiumBonus <- premiumBonus
-      res.hasPrem <- true
-      res.$rawdelete("premiumBonusNotApplied")
-      res.reward.playerWp.premWp = lastBattle.wp - res.reward.playerWp.totalWp
-      res.reward.playerWp.totalWp = lastBattle.wp
-      res.reward.playerExp.premExp = lastBattle.playerExp - res.reward.playerExp.totalExp
-      res.reward.playerExp.totalExp = lastBattle.playerExp
-      res.reward.units = res.reward.units.map(function(u) {
-        let totalExpWithPrem = u.exp.totalExp * (res.premiumBonus?.expMul ?? 1.0)
-        let totalGoldWithPrem = u.gold.totalGold * (res.premiumBonus?.goldMul ?? 1.0)
-        u.exp.premExp <- totalExpWithPrem - u.exp.totalExp
-        u.gold.premGold <- totalGoldWithPrem - u.gold.totalGold
-        u.exp.totalExp <- totalExpWithPrem
-        u.gold.totalGold <- totalGoldWithPrem
-        return u
-      })
-    }
     if ("realName" in res?.unit) 
       res.unit = realNameToName(res.unit)
     if (type(res?.unit.platoonUnits) == "array")
@@ -264,6 +274,7 @@ register_command(function() {
 }, "debriefing.save_current_battle_result")
 
 return {
+  hasPremiumSubs
   battleResult
   debugBattleResult
   requestEarlyExitRewards

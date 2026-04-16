@@ -44,6 +44,8 @@ let hudTuningStateByUnitType = Computed(@() presetsSaved.get().map(
       options
     }
   }))
+let optionsToElemIds = mkWatched(persist, "optionsToElemIds", {})
+let tuningStateOnOpen = mkWatched(persist, "tuningStateOnOpen", null)
 let tuningStateWithLastChange = mkWatched(persist, "tuningStateWithLastChange", null) 
 let tuningState = Computed(@() tuningStateWithLastChange.get()?.ts)
 let tuningTransform = Computed(@() tuningState.get()?.transforms)
@@ -140,7 +142,15 @@ function setByHistory(historyIdx) {
 
 tuningUnitType.subscribe(function(ut) {
   history.set([])
-  setTuningState(ut == null ? null : freeze(hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState()))
+  optionsToElemIds.set({})
+  if (ut == null) {
+    setTuningState(null)
+    tuningStateOnOpen.set(null)
+  } else {
+    let newTuningState = freeze(hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState())
+    setTuningState(newTuningState)
+    tuningStateOnOpen.set(newTuningState)
+  }
 })
 
 let clearTuningState = @() setTuningState(mkEmptyTuningState())
@@ -160,11 +170,26 @@ function applyTransformProgress() {
   transformInProgress.set(null)
 }
 
+local beforeUnitTypeChangeCbs = []
+let registerBeforeUnitTypeChangeCb = @(cb) beforeUnitTypeChangeCbs.append(cb)
+
+function openTuning(unitType) {
+  foreach (cb in beforeUnitTypeChangeCbs)
+    cb()
+  tuningUnitType.set(unitType)
+}
+
+function closeTuning() {
+  foreach (cb in beforeUnitTypeChangeCbs)
+    cb()
+  tuningUnitType.set(null)
+}
+
 function openTuningRecommended() {
   let uType = isInBattle.get() ? hudUnitType.get()
     : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
     : null
-  tuningUnitType.set(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
+  openTuning(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
 }
 
 let logSelElem = @(id) dlog("Hud tuning selectedId: ", id)  
@@ -185,11 +210,13 @@ return {
   isTuningOpened
   tuningUnitType
   tuningState
+  tuningStateOnOpen
   tuningTransform
   tuningOptions
   setTuningState
   setByHistory
   transformInProgress
+  optionsToElemIds
   isElemHold
   selectedId
   isAllElemsOptionsOpened
@@ -200,10 +227,13 @@ return {
   shouldShowRadar
   shouldShowAirTacticalMap
 
-  openTuning = @(unitType) tuningUnitType.set(unitType)
+  openTuning
   openTuningRecommended
-  closeTuning = @() tuningUnitType.set(null)
+  closeTuning
   applyTransformProgress
   saveCurrentTransform
   clearTuningState
+  mkEmptyTuningState
+
+  registerBeforeUnitTypeChangeCb
 }

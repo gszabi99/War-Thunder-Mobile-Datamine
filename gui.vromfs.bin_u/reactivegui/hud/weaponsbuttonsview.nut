@@ -15,7 +15,7 @@ let { touchButtonSize, touchSizeForRhombButton, borderWidth, btnBgStyle, imageCo
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
-let { hasTarget, targetState, torpedoDistToLive, unitType, isInAntiairMode, repairAssistAllow, isPlayingReplay
+let { hasTarget, targetState, torpedoDistToLive, unitType, isInAntiairMode, repairAssistAllow
 } = require("%rGui/hudState.nut")
 let { playHapticPattern } = require("hapticVibration")
 let { fire, isFullBuoyancy, isAsmCaptureAllowed } = require("%rGui/hud/shipState.nut")
@@ -67,8 +67,6 @@ let weaponryButtonRotate = 45
 let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
 
 function useShortcut(shortcutId) {
-  if (isPlayingReplay.get())
-    return
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }

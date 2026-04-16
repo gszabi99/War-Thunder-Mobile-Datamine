@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
-let { curDebrTabId, isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
+let { curDebrTabId, isDebriefingAnimFinished, stopDebriefingAnimation } = require("%rGui/debriefing/debriefingState.nut")
 
 let tabSize = hdpx(75).tointeger()
 let tabGap = hdpx(30)
 let tabLineGap = hdpx(0)
 let tabLineH = hdpx(10)
+let tabBarHeight = tabSize + tabLineGap + tabLineH
 
 let activeColor = 0xFFFFFFFF
 let fadedColor = 0x80808080
@@ -55,7 +56,8 @@ function tabBase(info, debrData, sf, isSelected, isInAnim) {
           transform = { pivot = [0, 0] }
           animations = [{
             prop = AnimProp.scale, from = [0, 1], duration = timeShow, play = true,
-            onFinish = nextTabId != null ? @() curDebrTabId.set(nextTabId) : null
+            onFinish = nextTabId != null ? @() curDebrTabId.set(nextTabId) : stopDebriefingAnimation,
+            trigger = $"progress_anim_{id}"
           }]
         })
     ]
@@ -82,10 +84,13 @@ function mkTab(info, debrData) {
 }
 
 let debriefingTabBar = @(debrData, debrTabsInfo) debrTabsInfo.len() == 0 ? null : {
-  size = [SIZE_TO_CONTENT, tabSize + tabLineGap + tabLineH]
+  size = [SIZE_TO_CONTENT, tabBarHeight]
   flow = FLOW_HORIZONTAL
   gap = tabGap
   children = debrTabsInfo.map(@(v) mkTab(v, debrData))
 }
 
-return debriefingTabBar
+return {
+  tabBarHeight
+  debriefingTabBar
+}

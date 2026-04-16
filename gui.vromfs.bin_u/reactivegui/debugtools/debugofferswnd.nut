@@ -19,7 +19,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 
-let wndWidth = sh(130)
+let wndWidth = hdpx(1500)
 let gap = hdpx(10)
 
 let wndUid = "debugOffersWnd"

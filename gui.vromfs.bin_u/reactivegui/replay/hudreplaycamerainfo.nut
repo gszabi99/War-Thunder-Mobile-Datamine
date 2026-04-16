@@ -4,6 +4,7 @@ let { format } =  require("string")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { textColor } = require("%rGui/style/stdColors.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
 let bgColor = 0xC0000000
@@ -57,6 +58,7 @@ let hudReplayCameraInfo = @() {
   valign = ALIGN_TOP
   halign = ALIGN_RIGHT
   children = can_use_debug_console.get() ? replayCameraInfo : null
+  animations = wndSwitchAnim
 }
 
 return {

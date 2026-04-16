@@ -4,7 +4,7 @@ let {
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_TANK_ALTERNATIVE_CONTROL_TYPE,
   OPT_TANK_AUTO_TURNER, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
-  OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING, mkOptionValue
+  OPT_SHOW_RETICLE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, set_enable_auto_healing, get_enable_auto_healing,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
@@ -12,6 +12,7 @@ let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, se
 let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { hudScoreTankList, hudScoreTankRaw, hudScoreTank } = require("%rGui/hud/myScores.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
@@ -21,6 +22,7 @@ let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { WALKER } = require("%appGlobals/unitConst.nut")
 let { unitType } = require("%rGui/hudState.nut")
+
 
 let autoZoomDefaultTrueStart = 1699894800 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
@@ -187,9 +189,6 @@ let showGrassInTankVision = {
   description = loc("options/desc/grass_in_tank_vision")
 }
 
-let hudScoreTankList = ["score", "kills"]
-let hudScoreTankRaw = mkOptionValue(OPT_HUD_TANK_SHOW_SCORE)
-let hudScoreTank = Computed(@() validate(hudScoreTankRaw.get() ?? "kills", hudScoreTankList))
 let optHudScoreTank = {
   locId = "options/tankHudScores"
   ctrlType = OCT_LIST
@@ -216,7 +215,6 @@ let enableCrewAutoHealingType = {
 return {
   currentTargetTrackingType
   currentArmorPiercingFixed
-  hudScoreTank
   tankControlsOptions = [
     tankMoveControlType
     tankAltControlType

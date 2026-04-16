@@ -8,7 +8,7 @@ let { openChooseMovementControls, openChooseWalkerMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
 } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
-let { selectedId } = require("%rGui/hudTuning/hudTuningState.nut")
+let { tuningStateDefault, fontsList } = require("%rGui/hudTuning/hudTuningConsts.nut")
 
 
 let mkSetValue = @(key) function setValue(options, id, value) {
@@ -17,8 +17,9 @@ let mkSetValue = @(key) function setValue(options, id, value) {
   options[key][id] <- value
 }
 
-let hasDoublePrimaryGuns = @(options, _ = null) options?.doublePrimaryGuns ?? true
+let hasDoublePrimaryGuns = @(options, _ = null) options?.doublePrimaryGuns ?? tuningStateDefault.customOptions.doublePrimaryGuns
 let optDoublePrimaryGuns = {
+  id = "doublePrimaryGuns"
   locId = "options/courseGun"
   ctrlType = OCT_LIST
   has = hasDoublePrimaryGuns
@@ -30,8 +31,9 @@ let optDoublePrimaryGuns = {
   valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
 }
 
-let hasDoubleCourseGuns = @(options, _ = null) !!options?.doubleCourseGuns
+let hasDoubleCourseGuns = @(options, _ = null) options?.doubleCourseGuns ?? tuningStateDefault.customOptions.doubleCourseGuns
 let optDoubleCourseGuns = {
+  id = "doubleCourseGuns"
   locId = "options/courseGun"
   ctrlType = OCT_LIST
   has = hasDoubleCourseGuns
@@ -43,8 +45,9 @@ let optDoubleCourseGuns = {
   valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
 }
 
-let hasDoubleRepair = @(options, _ = null) !!options?.hasDoubleRepair
+let hasDoubleRepair = @(options, _ = null) options?.hasDoubleRepair ?? tuningStateDefault.customOptions.hasDoubleRepair
 let optDoubleRepairBtn = {
+  id = "hasDoubleRepair"
   locId = "options/repair"
   ctrlType = OCT_LIST
   has = hasDoubleRepair
@@ -57,9 +60,10 @@ let optDoubleRepairBtn = {
 }
 
 let optScale = {
+  id = "scale"
   locId = "options/scale"
   ctrlType = OCT_SLIDER
-  getValue = @(options, id) options?.scale[id] ?? 1
+  getValue = @(options, id) options?.scale[id] ?? tuningStateDefault.options.scale
   setValue = mkSetValue("scale")
   valToString = @(v) $"{(v * 100).tointeger()}%"
   ctrlOverride = {
@@ -69,9 +73,10 @@ let optScale = {
   }
 }
 
-let getTextWidth = @(options, id) options?.textWidth[id] ?? 1
+let getTextWidth = @(options, id) options?.textWidth[id] ?? tuningStateDefault.options.textWidth
 
 let optTextWidth = {
+  id = "textWidth"
   locId = "options/width"
   ctrlType = OCT_SLIDER
   getValue = getTextWidth
@@ -84,14 +89,7 @@ let optTextWidth = {
   }
 }
 
-let fontsList = [
-  { id = "tiny", font = fontVeryVeryTinyShaded }
-  { id = "small", font = fontVeryTinyShaded }
-  { id = "medium", font = fontTinyShaded, isDefault = true }
-  { id = "big", font = fontSmallShaded }
-]
 let defFontByElemId = { raceLeadership = "small" }
-let defFontId = (fontsList.findvalue(@(f) f?.isDefault ?? false) ?? fontsList[0]).id
 let fontsById = fontsList.reduce(@(res, f) res.$rawset(f.id, f), {})
 
 defFontByElemId.each(@(fontId) fontId in fontsById ? null
@@ -99,12 +97,13 @@ defFontByElemId.each(@(fontId) fontId in fontsById ? null
 
 function getElemFontId(options, elemId) {
   let id = options?.fontSize[elemId]
-  return id in fontsById ? id : (defFontByElemId?[elemId] ?? defFontId)
+  return id in fontsById ? id : (defFontByElemId?[elemId] ?? tuningStateDefault.options.fontSize)
 }
 
 let getElemFont = @(options, id) fontsById[getElemFontId(options, id)].font
 
 let optFontSize = {
+  id = "fontSize"
   locId = "options/fontSize"
   ctrlType = OCT_LIST
   list = fontsList.map(@(f) f.id)
@@ -117,10 +116,7 @@ let optTankMoveControlType = {
   locId = "options/tank_movement_control"
   ctrlType = OCT_LIST
   value = currentTankMoveCtrlType
-  function onChangeValue(v) {
-    selectedId.set(v == "arrows" ? "moveArrows" : "moveStick")
-    sendSettingChangeBqEvent("tank_movement_control", "tanks", v)
-  }
+  onChangeValue = @(v) sendSettingChangeBqEvent("tank_movement_control", "tanks", v)
   list = groundMoveCtrlTypesList
   valToString = ctrlTypeToString
   openInfo = openChooseMovementControls
@@ -145,8 +141,9 @@ let gearDownOnStopButtonTouch = {
   valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
 }
 
-let isBulletsRight = @(options, elemId) !!options?.bulletsRight[elemId]
+let isBulletsRight = @(options, elemId) options?.bulletsRight[elemId] ?? tuningStateDefault.customOptions.bulletsRight
 let optBulletsRight = {
+  id = "bulletsRight"
   locId = "options/bulletsAlign"
   ctrlType = OCT_LIST
   list = [false, true]

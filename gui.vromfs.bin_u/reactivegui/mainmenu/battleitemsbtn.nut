@@ -22,7 +22,7 @@ let plus = {
 }.__update(fontBigShaded)
 
 let hoverBg = {
-  size = flex()
+  size = [pw(150), flex()]
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   color = hoverColor
@@ -34,6 +34,7 @@ let hoverBg = {
 
 let battleItemsBtn = @() {
   watch = [itemsOrder, hangarUnit, stateFlags]
+  size = FLEX_V
   behavior = Behaviors.Button
   onElemState = @(sf) stateFlags.set(sf)
   function onClick() {
@@ -41,6 +42,7 @@ let battleItemsBtn = @() {
     sendUiBqEvent("open_items_window", { id = "open", from = "hangar" })
   }
   hplace = ALIGN_RIGHT
+  valign = ALIGN_CENTER
   children = [
     stateFlags.get() & S_HOVER ? hoverBg : null
     {
@@ -59,7 +61,7 @@ let battleItemsBtn = @() {
           children = mkCurrencyImage(id, CS_GAMERCARD.iconSize)
         })
         .append(plus)
-      transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.8, 0.8] : [1, 1] }
+      transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     }
   ]
 }

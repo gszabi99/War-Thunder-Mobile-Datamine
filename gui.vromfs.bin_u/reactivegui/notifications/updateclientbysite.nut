@@ -9,7 +9,8 @@ let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion, DOW
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { actualGameVersion, actualGameHash, getApkLinkWithHash } = require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
+let { actualGameVersion, actualGameHash, getApkLinkWithHash, apkTag
+} = require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
 let { get_base_game_version_str } = require("app")
 let { isConnectionLimited } = require("%appGlobals/clientState/connectionStatus.nut")
 let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateOption.nut")
@@ -19,7 +20,7 @@ let cachedDownloadId = hardPersistWatched("suggestInstall.downloadId", null)
 let SUGGEST_INSTALL_APK = "suggestInstallApk"
 let DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
 let TIME_TO_CHECK_DOWNLOAD_STATUS = 2
-let getApkName = @() $"wtm_production_{actualGameVersion.get()}.apk"
+let getApkName = @() $"wtm_{apkTag}_{actualGameVersion.get()}.apk"
 
 let hasDownloadedApk = Watched(false)
 let isDownloadInProgress = Watched(false)

@@ -209,7 +209,7 @@ let shipAttrs = {
   }
   attrib_ship_max_speed = {
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].mulMaxSpeed ?? 1.0
-    valueToText = @(v) "".concat(round(v * 3.6), loc("measureUnits/kmh"))
+    valueToText = @(v) "".concat(round_by_value(v * 3.6, 0.1), loc("measureUnits/kmh"))
     relatedStat = "maxSpeed"
     function updateStats(stats, mul) {
       mulStat(stats, "surfaceSpeed", mul * (get_game_params_blk()?.difficulty_settings.noArcadeBoost.off.submarineSurfaceSlowMult ?? 1))
@@ -389,6 +389,7 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
   if (stats == null || attrPreset == null)
     return stats
 
+  let baseStats = deep_clone(shopCfg)
   foreach (preset in attrPreset) {
     let catId = preset.id
     foreach(attr in preset.attrList) {
@@ -402,7 +403,10 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
       if ("periscopeSpeed" in shopCfg && attrId == "attrib_ship_max_speed") {
         submarineMul = get_game_params()?.submarineMaxSpeedMult ?? 1.
       }
-      cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul)
+      let mul = getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul
+      let baseMul = getAttrMul(cfg, attrId, 0, stepsTotal) * modsMul(attrId, mods) * submarineMul
+      cfg.updateStats(stats, mul)
+      cfg.updateStats(baseStats, baseMul)
     }
   }
 
@@ -410,7 +414,10 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
     let tankGearMult = 1 + (1 - (get_game_params_blk()?.difficulty_settings.baseDifficulty.easy.tankMainGearRatioMult ?? 1))
     stats.maxSpeedForward *= tankGearMult
     stats.maxSpeedBackward *= tankGearMult
+    baseStats.maxSpeedForward *= tankGearMult
+    baseStats.maxSpeedBackward *= tankGearMult
   }
+  stats.baseStats <- baseStats
   return stats
 }
 

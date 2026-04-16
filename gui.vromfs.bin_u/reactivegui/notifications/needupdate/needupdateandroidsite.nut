@@ -20,7 +20,7 @@ let proj = {
   ["wtm-staging"] = "wtm_staging",
   ["wtm-stable"] = "wtm_stable",
 }?[get_cur_circuit_name()]
-let tag = {
+let apkTag = {
   ["wtm-production"] = "production",
   ["wtm-staging"] = "staging",
   ["wtm-stable"] = "stable",
@@ -36,12 +36,12 @@ let allowRequest = Computed(@() needRequest.get() && !isInBattle.get() && !isInL
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime.set(get_time_msec() + REQUEST_PERIOD_MSEC))
 
-let getApkLinkWithHash = @(gameHash) $"https://gdn.gaijin.net/apk/download?proj={proj}&tag={tag}&hash={gameHash}"
+let getApkLinkWithHash = @(gameHash) $"https://gdn.gaijin.net/apk/download?proj={proj}&tag={apkTag}&hash={gameHash}"
 
 let updateGameVersionImpl = proj == null ? @() null
   : @() httpRequest({
       method = "GET"
-      url = $"https://gdn.gaijin.net/apk/version?proj={proj}&tag={tag}"
+      url = $"https://gdn.gaijin.net/apk/version?proj={proj}&tag={apkTag}"
       respEventId = ACTUAL_VERSION_ID
     })
 
@@ -95,4 +95,5 @@ return {
   actualGameHash
   getApkLinkWithHash
   needSuggestToUpdate
+  apkTag
 }

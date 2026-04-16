@@ -150,7 +150,7 @@ function mkDepthSlider(scale) {
     }
 
     return {
-      watch = [wishDist, periscopeDepthCtrl, maxControlDepth]
+      watch = [wishDist, periscopeDepthCtrl, maxControlDepth, isPlayingReplay]
       size = [fullWidth, height]
       padding = sliderPadding
       behavior = Behaviors.Slider
@@ -176,7 +176,7 @@ function mkDepthSlider(scale) {
             knob
             inc
             dec
-            axisListener({[gamepadAxes.submarine_depth] = function(v) {
+            isPlayingReplay.get() ? null : axisListener({[gamepadAxes.submarine_depth] = function(v) {
               let newVal = lerpClamped(axisDeadZone, 1, 0, 1, fabs(v))
               submarineDepthAxisValue.set(v > 0 ? -newVal : newVal)
             }})
@@ -186,8 +186,6 @@ function mkDepthSlider(scale) {
         mkMarksOfDepthTexts(countOfMarks, scale)
       ]
       onChange = function(val) {
-        if (isPlayingReplay.get())
-          return
         if (!isDeeperThanPeriscopeDepth.get() && wishDist.get() == 0) {
           toggleShortcut("ID_DIVING_LOCK")
           updateActionBarDelayed()

@@ -130,7 +130,7 @@ return @() addModalWindow({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
-    size = const [sh(130), sh(90)]
+    size = const [hdpx(1500), sh(90)]
     padding = hdpx(10)
     stopMouse = true
     vplace = ALIGN_CENTER

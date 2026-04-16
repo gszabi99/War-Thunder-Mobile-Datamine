@@ -115,7 +115,7 @@ return ads.__merge({
     }
   }
   function showAds() {
-    eventbus_send("ios.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() })
+    setTimeout(1.0, @() eventbus_send("ios.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() }))
     debugAdsWndParams.set({
       rewardEvent = "ios.ads.onReward"
       rewardData = { amount = 1, type = "debug", provider = loadedProvider.get() }

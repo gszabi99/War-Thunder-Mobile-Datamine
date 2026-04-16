@@ -24,8 +24,7 @@ let { REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
-} = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
@@ -412,8 +411,13 @@ function previewGoodsTimeLeft(halign, width = hdpx(350)) {
       }
 }
 
-let mkPreviewHeader = @(textW, onBack, animStartTime) doubleSideGradient.__merge({
-  pos = [-doubleSideGradientPaddingX, 0]
+let mkPreviewHeader = @(textW, onBack, animStartTime) {
+  pos = [-saBordersRv[1], 0]
+  rendObj = ROBJ_IMAGE
+  image = simpleHorGrad
+  color = 0x80000000
+  padding = const [hdpx(20), hdpx(50), hdpx(17), saBordersRv[1]]
+  flipX = true
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = horGap
@@ -434,7 +438,7 @@ let mkPreviewHeader = @(textW, onBack, animStartTime) doubleSideGradient.__merge
     }.__update(fontBig)
   ]
   animations = colorAnims(aTimePackNameBack, animStartTime)
-})
+}
 
 let mkTimeBlock = @(animStartTime, child) {
   padding = hdpx(10)

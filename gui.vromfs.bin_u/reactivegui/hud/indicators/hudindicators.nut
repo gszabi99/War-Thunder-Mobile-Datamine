@@ -4,6 +4,7 @@ let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { isHudIndicatorsAttached, hudIndicatorsByPlayerSorted, playerTitlesVisibility
 } = require("%rGui/hud/indicators/hudIndicatorsState.nut")
 let { indicatorTypes, INDICATOR_ICON_SIZE } = require("%rGui/hud/indicators/hudIndicatorTypes.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let PLAYER_LOCAL_INDICATOR_SHIFT_Y = 0
 let PLAYER_WITHOUT_TITLE_INDICATOR_SHIFT_Y = hdpx(-88)
@@ -70,6 +71,7 @@ let hudIndicators = @() {
   onAttach = @() isHudIndicatorsAttached.set(true)
   onDetach = @() isHudIndicatorsAttached.set(false)
   children = hudIndicatorsByPlayerSorted.get().map(@(v) mkHudIndicatorsContainer(v.playerId, v.teamColor, v.data.map(mkIndicator)))
+  animations = wndSwitchAnim
 }
 
 return hudIndicators

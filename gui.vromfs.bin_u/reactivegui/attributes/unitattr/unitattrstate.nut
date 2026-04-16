@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { add_unit_attributes } = require("%appGlobals/pServer/pServerApi.nut")
+let { add_unit_attributes, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { selAttributes, curCategoryId, attrPresets, calcStatus, sumCost, MAX_AVAIL_STATUS
 } = require("%rGui/attributes/attrState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
@@ -90,7 +90,7 @@ let availableAttributes = Computed(function() {
 })
 
 function applyAttributes() {
-  if (selAttrSpCost.get() <= 0)
+  if (selAttrSpCost.get() <= 0 || unitInProgress.get() != null)
     return
   add_unit_attributes(attrUnitName.get(), selAttributes.get(), selAttrSpCost.get())
 }

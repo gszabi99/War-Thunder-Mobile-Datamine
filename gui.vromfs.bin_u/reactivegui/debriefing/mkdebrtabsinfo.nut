@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT, DEBR_TAB_MPSTATS
+let { DEBR_TAB_MPSTATS, DEBR_TAB_QUESTS, DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT, DEBR_TAB_SCORES
 } = require("%rGui/debriefing/debriefingState.nut")
 let { isDebrWithUnitsResearch } = require("%rGui/debriefing/debrUtils.nut")
 let { tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let mkDebriefingWndTabScores = require("%rGui/debriefing/debriefingWndTabScores.nut")
-let mkDebriefingWndTabCampaign = require("%rGui/debriefing/debriefingWndTabCampaign.nut")
+let mkDebriefingWndTabMpStats = require("%rGui/debriefing/debriefingWndTabMpStats.nut")
+let debriefingWndTabQuests = require("%rGui/debriefing/debriefingWndTabQuests.nut")
 let mkDebriefingWndTabResearch = require("%rGui/debriefing/debriefingWndTabResearch.nut")
+let mkDebriefingWndTabCampaign = require("%rGui/debriefing/debriefingWndTabCampaign.nut")
 let mkDebriefingWndTabUnit = require("%rGui/debriefing/debriefingWndTabUnit.nut")
 let mkDebriefingWndTabUnitSet = require("%rGui/debriefing/debriefingWndTabUnitSet.nut")
-let mkDebriefingWndTabMpStats = require("%rGui/debriefing/debriefingWndTabMpStats.nut")
+let mkDebriefingWndTabScores = require("%rGui/debriefing/debriefingWndTabScores.nut")
 
 let tabsCfgOrdered = [
   {
@@ -17,6 +18,12 @@ let tabsCfgOrdered = [
     getIcon = @(_debrData) "ui/gameuiskin#menu_stats.svg"
     iconScale = 0.85
     dataCtor = mkDebriefingWndTabMpStats
+  }
+  {
+    id = DEBR_TAB_QUESTS
+    getIcon = @(_debrData) "ui/gameuiskin#quests.svg"
+    iconScale = 0.75
+    dataCtor = debriefingWndTabQuests
   }
   {
     id = DEBR_TAB_CAMPAIGN

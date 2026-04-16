@@ -3,7 +3,7 @@ let { playSound } = require("sound_wt")
 let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { balance, GOLD } = require("%appGlobals/currenciesState.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { campMyUnits, campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
@@ -383,11 +383,7 @@ function onUnitSlotClick(unit, idx) {
   if (unit.get() == null || selectedSlotIdx.get() == idx)
     return
 
-  let unitName = unit.get().name
-
-  if (unitName != curUnit.get()?.name)
-    setCurrentUnit(unitName)
-
+  setCurrentUnit(unit.get().name)
   selectedSlotIdx.set(idx)
 }
 

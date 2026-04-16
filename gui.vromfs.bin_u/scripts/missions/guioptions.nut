@@ -7,6 +7,7 @@ let optModeTraining = addOptionMode("OPTIONS_MODE_TRAINING")
 let optModeGameplay = addOptionMode("OPTIONS_MODE_GAMEPLAY") 
 let bulletOptions = array(BULLETS_SETS_QUANTITY).map(@(_, idx) {
   bulletOption = addUserOption($"USEROPT_BULLETS{idx}")
+  bulletWeaponOption = addUserOption($"USEROPT_BULLETS_WEAPON{idx}")
   bulletCountOption = addUserOption($"USEROPT_BULLET_COUNT{idx}")
 })
 let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
@@ -21,11 +22,13 @@ function changeTrainingUnit(realUnitName, skin = "", bullets = null) {
   set_gui_option(USEROPT_SKIN, skin)
   foreach (idx, opts in bulletOptions) {
     set_gui_option(opts.bulletOption, bullets?[idx].name ?? "")
+    set_gui_option(opts.bulletWeaponOption, bullets?[idx].weaponId ?? "")
     set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
   }
   setGuiOptionsMode(optModeGameplay)
   foreach (idx, opts in bulletOptions) { 
     set_gui_option(opts.bulletOption, bullets?[idx].name ?? "")
+    set_gui_option(opts.bulletWeaponOption, bullets?[idx].weaponId ?? "")
     set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
   }
 }

@@ -11,7 +11,7 @@ let { speedValue, speedUnits, averageSpeed, machineSpeedLoc, isStoppedSpeedStep,
 } = require("%rGui/hud/shipStateView.nut")
 let { getHeroShipMaxSpeedBySteps } = require("hudState")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let { playerUnitName, isUnitDelayed, isPlayingReplay } = require("%rGui/hudState.nut")
+let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
 let { speed, hasDebuffEngines, hasDebuffMoveControl, currentMaxThrottle } = require("%rGui/hud/shipState.nut")
 let { playSound } = require("sound_wt")
 let { btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
@@ -69,7 +69,7 @@ let mkSteerParams = @(id, disableId, scale) {
   shortcutId = id
   outlineColor
   function onTouchBegin() {
-    if (!isControlsBlocked.get() && !isPlayingReplay.get()) {
+    if (!isControlsBlocked.get()) {
       setShortcutOn(id)
       playSound("steer")
     }
@@ -86,7 +86,7 @@ function calcBackSpeedPart() {
 }
 let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
-    if (isControlsBlocked.get() || isPlayingReplay.get() || (isGamepad.get() && isPieMenuActive.get()))
+    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
       return
     setShortcutOn(id)
     playHapticPattern(HAPT_BACKWARD)
@@ -130,7 +130,7 @@ function calcForwSpeedPart2() {
 let fwdDirections = { forward = true, forward2 = true }
 let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
-    if (isControlsBlocked.get() || isPlayingReplay.get() || (isGamepad.get() && isPieMenuActive.get()))
+    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
       return
     setShortcutOn(id)
     playHapticPattern(HAPT_FORWARD)

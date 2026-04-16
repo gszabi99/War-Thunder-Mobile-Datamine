@@ -6,6 +6,27 @@ let ALIGN_R = 0x02
 let ALIGN_T = 0x04
 let ALIGN_B = 0x08
 
+let fontsList = [
+  { id = "tiny", font = fontVeryVeryTinyShaded }
+  { id = "small", font = fontVeryTinyShaded }
+  { id = "medium", font = fontTinyShaded, isDefault = true }
+  { id = "big", font = fontSmallShaded }
+]
+
+let tuningStateDefault = {
+  options = {
+    scale = 1.0
+    textWidth = 1.0
+    fontSize = (fontsList.findvalue(@(f) f?.isDefault ?? false) ?? fontsList[0]).id
+  }
+  customOptions = {
+    doublePrimaryGuns = true
+    doubleCourseGuns = false
+    hasDoubleRepair = false
+    bulletsRight = false
+  }
+}
+
 function alignToDargPlaceImpl(align) {
   let hplace = (align & ALIGN_L) ? ALIGN_LEFT
     : (align & ALIGN_R) ? ALIGN_RIGHT
@@ -43,6 +64,9 @@ return {
   ALIGN_CB = ALIGN_C | ALIGN_B
 
   alignToDargPlace
+
+  fontsList
+  tuningStateDefault
 
   optionWidth = hdpx(870)
 }

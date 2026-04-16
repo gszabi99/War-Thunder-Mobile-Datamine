@@ -28,9 +28,9 @@ function getDefaultBulletsForSpawn(unitName, level, mods = null) {
   let res = []
   let unitType = getUnitType(unitName)
   if (unitType == AIR) {
-    let belts = getUnitBeltsNonUpdatable(unitName, mods)
-    foreach(name in belts)
-      res.append({ name, count = 10000 })
+    foreach (weaponId, name in getUnitBeltsNonUpdatable(unitName, mods))
+      res.append({ weaponId, name, count = 10000 })
+
     return res
   }
 

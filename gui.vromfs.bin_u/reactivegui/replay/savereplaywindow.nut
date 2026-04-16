@@ -29,24 +29,34 @@ let isNameValid = Computed(function() {
 
 let editbox = textInput(replayName)
 
-function save() {
-  if (!isNameValid.get()) {
-    openMsgBox({ text = loc("msgbox/invalidReplayFileName") })
-    return
-  }
-  if (file_exists("\\".concat(get_replays_dir(), $"{replayName.get()}.{replayFileExt}"))) {
-    openMsgBox({ text = loc("msgbox/replayFileNameIsExists") })
-    return
-  }
+function saveReplay() {
   if (!saveLastReplay(replayName.get()))
     return
   close()
   replayName.set("")
 }
 
+function save() {
+  if (!isNameValid.get()) {
+    openMsgBox({ text = loc("msgbox/invalidReplayFileName") })
+    return
+  }
+  if (file_exists("\\".concat(get_replays_dir(), $"{replayName.get()}.{replayFileExt}"))) {
+    openMsgBox({
+      text = loc("msgbox/replayFileNameIsExists")
+      buttons = [
+        { id = "no", isCancel = true }
+        { id = "yes", cb = saveReplay, styleId = "PRIMARY" }
+      ]
+    })
+    return
+  }
+  saveReplay()
+}
+
 let applyButton = @() {
   watch = isNameValid
-  children = textButton(utf8ToUpper(loc("mainmenu/btnApply")), save,
+  children = textButton(utf8ToUpper(loc("filesystem/btnSave")), save,
     isNameValid.get() ? PRIMARY : COMMON)
 }
 

@@ -278,6 +278,16 @@ let textButton = @(text, onClick, style = buttonStyles.PRIMARY)
 let textButtonMultiline = @(text, onClick, style = buttonStyles.COMMON)
   mkCustomButton(mkButtonTextMultiline(text), onClick, style)
 
+let iconWithText = @(iconPath, text, style) {
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(5)
+  valign = ALIGN_CENTER
+  children = [
+    mkIcon(iconPath, style?.iconSize)
+    mkButtonText(text, style, style?.textOvr ?? {})
+  ]
+}
+
 return {
   paddingX
   mkFrameImg
@@ -318,4 +328,7 @@ return {
     mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.COMMON, styleOvr))
   iconButtonInactive = @(iconPath, onClick, styleOvr = null)
     mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.INACTIVE, styleOvr))
+
+  iconTextButton = @(iconPath, text, onClick, styleOvr = buttonStyles.SECONDARY)
+    mkCustomButton(iconWithText(iconPath, text, mergeStyles(buttonStyles.SECONDARY, styleOvr)), onClick, mergeStyles(buttonStyles.SECONDARY, styleOvr))
   }

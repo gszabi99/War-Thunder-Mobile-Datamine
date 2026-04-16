@@ -32,7 +32,7 @@ return @(targetRect, unitTypes, curUnitType, onChange) modalPopupWnd.add(targetR
   hotkeys = [[btnBEscUp, close]]
   popupBg = bgShaded
   children = {
-    size = const [sh(65), SIZE_TO_CONTENT]
+    size = const [hdpx(700), SIZE_TO_CONTENT]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

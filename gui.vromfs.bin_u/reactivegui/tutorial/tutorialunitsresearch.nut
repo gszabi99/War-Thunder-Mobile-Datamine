@@ -31,12 +31,14 @@ let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { btnBEsc, btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOptions.nut")
 
 
 let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
 let STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
+let savedAutoOfferOption = mkWatched(persist, "savedAutoOfferOption", null)
 
 let lastResearchedUnit = Computed(@() servProfile.get()?.levelInfo[curCampaign.get()].lastResearchedUnit ?? "")
 let hasGotFirstPredifinedReward = Computed(@()
@@ -115,8 +117,13 @@ function startTutorial() {
     id = TUTORIAL_UNITS_RESEARCH_ID
     function onStepStatus(stepId, status) {
       logFB($"{stepId}: {status}")
-      if (status == "tutorial_finished")
+      if (status == "tutorial_finished") {
         markTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
+        if (savedAutoOfferOption.get() != null) {
+          isAllowAutoOfferToBuyUnitEnabled.set(savedAutoOfferOption.get())
+          savedAutoOfferOption.set(null)
+        }
+      }
     }
     steps = [
       {
@@ -127,6 +134,10 @@ function startTutorial() {
       {
         id = "s2_units_wnd_animation"
         function beforeStart() {
+          if (!isAllowAutoOfferToBuyUnitEnabled.get()) {
+            savedAutoOfferOption.set(isAllowAutoOfferToBuyUnitEnabled.get())
+            isAllowAutoOfferToBuyUnitEnabled.set(true)
+          }
           needSaveUnitDataForTutorial.set(true)
           needDelayAnimation.set(false)
           resetTimeout(5.0, forcedUnitPurchaseSkip)

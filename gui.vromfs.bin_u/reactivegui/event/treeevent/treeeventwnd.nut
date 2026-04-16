@@ -6,7 +6,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
 let { registerScene } = require("%rGui/navState.nut")
 let { isTreeEventWndOpened, closeTreeEventWnd, openedTreeEventId, presetBgElems, closeSubPreset,
@@ -131,7 +131,7 @@ let mapInsideBg = @() {
   rendObj = ROBJ_9RECT
   texOffs = bgTexOffs
   screenOffs = [0, 0, 0, 0]
-  image = Picture(gmEventPresentation(openedTreeEventId.get()).bgMapImage)
+  image = Picture(getEventPresentation(openedTreeEventId.get())?.bgMapImage ?? "ui/gameuiskin#icon_primary_attention.svg")
 }
 
 function mapContainer() {
@@ -306,7 +306,7 @@ let treeEventWnd = @() {
   key = {}
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = Picture(gmEventPresentation(openedTreeEventId.get()).bgImage)
+  image = Picture(getEventPresentation(openedTreeEventId.get()).bg)
   onAttach = @() resetTimeout(delayToLoadBgElems, allowSubPreset)
   onDetach = @() isShowSubPresetAllowed.set(false)
   children = [
@@ -316,7 +316,7 @@ let treeEventWnd = @() {
       rendObj = ROBJ_9RECT
       texOffs = bgTexOffs
       screenOffs = bgScreenOffs
-      image = Picture(gmEventPresentation(openedTreeEventId.get()).bgMapImage)
+      image = Picture(getEventPresentation(openedTreeEventId.get())?.bgMapImage ?? "ui/gameuiskin#icon_primary_attention.svg")
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       padding = bgScreenOffs

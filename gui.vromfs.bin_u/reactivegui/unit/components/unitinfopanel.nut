@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
+let { round, abs } = require("math")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { getUnitLocId, getUnitClassFontIcon, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
 let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
@@ -30,7 +30,7 @@ let statsWidth = hdpx(495)
 let textColor = 0xFFFFFFFF
 let progressBgColor = 0xFF606060
 let progressFgColor = 0xFFFFFFFF
-let progressFgPositiveColor = 0xFF00D427
+let progressFgPositiveColor = 0xFF7BAFFF
 let progressFgNegativeColor = 0xFFFF0202
 let progressBorderW = hdpx(2)
 let progressHt = hdpx(5) + 2 * progressBorderW
@@ -125,6 +125,7 @@ function setScrollStr(text){
 function mkStatRow(data, prevProgress) {
   let { header = null, value = null, progress = null,
     progressColor = null, uid = null, isMultiline = false, progressAttr = 0 } = data
+  let progressAttrDiff = progress == null || progressAttr == 0 ? 0 : abs(progress - progressAttr)
   return {
     size = FLEX_H
     flow = FLOW_VERTICAL
@@ -157,12 +158,13 @@ function mkStatRow(data, prevProgress) {
                 : prevProgress > progress
                   ? diffProgress(pw((prevProgress - progress) * 100), pw(progress * 100), 0.0, progressFgNegativeColor)
                 : diffProgress(pw((progress - prevProgress) * 100), pw(prevProgress * 100), 1.0, progressFgPositiveColor),
-              {
-                size = [pw(progress * 100 * progressAttr), flex()]
-                pos = [pw(progress * 100), flex()]
-                rendObj = ROBJ_SOLID
-                color = addedFromSlot
-              }
+              progressAttrDiff == 0 ? null
+                : {
+                    size = [pw(progressAttrDiff * 100), flex()]
+                    pos = [pw((progress - progressAttrDiff) * 100), flex()]
+                    rendObj = ROBJ_SOLID
+                    color = addedFromSlot
+                  }
             ]
           }
     ].filter(@(v) v != null)

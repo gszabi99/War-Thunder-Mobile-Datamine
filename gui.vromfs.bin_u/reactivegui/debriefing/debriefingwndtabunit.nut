@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlatoonName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
@@ -104,18 +105,20 @@ function mkDebriefingWndTabUnit(debrData, params) {
         children = [
           mkMissionResultTitle(debrData, false)
           {
-            size = const [hdpx(1600), flex()]
+            size = const [SIZE_TO_CONTENT, flex()]
             halign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             children = [
               levelProgressLineComp
               {
                 size = flex()
-                flow = FLOW_HORIZONTAL
                 gap = hdpx(100)
                 children = [
-                  totalRewardCountsComp.__update({ pos = [0, hdpx(145)] })
-                  mkLevelUnlockPlatesContainer(levelUnlocksComps)
+                  panelBg.__merge(totalRewardCountsComp.__update({
+                    size = SIZE_TO_CONTENT
+                    pos = [hdpx(85), hdpx(145)]
+                  }))
+                  mkLevelUnlockPlatesContainer(levelUnlocksComps).__update({ pos = [hdpx(1000), 0] })
                 ]
               }
             ]
@@ -124,6 +127,7 @@ function mkDebriefingWndTabUnit(debrData, params) {
       }
       {
         vplace = ALIGN_BOTTOM
+        hplace = ALIGN_RIGHT
         children = btnTryPremium
       }
     ]

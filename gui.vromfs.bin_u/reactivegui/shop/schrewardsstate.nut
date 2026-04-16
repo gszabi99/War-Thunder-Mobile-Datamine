@@ -61,14 +61,17 @@ let actualSchRewards = Computed(function() {
   return res
 })
 
-let nextUpdate = Watched({ time = 0 }) 
-
 let READY_ADVERT      = 10000000000
 let READY_NOT_ADVERT  = 20000000000
-let getRewardPriority = @(rew) - rew.readyTime
-  + (!rew.isReady ? 0
-    : rew.needAdvert ? READY_ADVERT
+let getRewardPriority = @(readyTime, isReady, needAdvert) - readyTime
+  + (!isReady ? 0
+    : needAdvert ? READY_ADVERT
     : READY_NOT_ADVERT)
+
+function getReadyInfo(reward, received, curTime) {
+  let readyTime = (received?[reward.id] ?? 0) + reward.interval
+  return { readyTime, isReady = readyTime <= curTime }
+}
 
 function updateActualSchRewards() {
   if (!isServerTimeValid.get())
@@ -76,50 +79,46 @@ function updateActualSchRewards() {
   let received = receivedSchRewards.get()
   let curTime = serverTime.get()
   local nextTime = 0
-  local actual = {}
-  local status = {}
-  foreach (r in schRewardsBase.get()) {
-    let readyTime = (received?[r.id] ?? 0) + r.interval
-    status[r.id] <- { isReady = readyTime <= curTime, readyTime }
-  }
-  foreach (catId, list in schRewardsByCategory.get().shop) {
+  let actual = {}
+  let status = {}
+  let { shop, hidden } = schRewardsByCategory.get()
+  foreach (catId, list in shop) {
     local schReward = null
     local priority = 0
     foreach (r in list) {
-      let reward = r.__merge(status?[r.id])
-      let pr = getRewardPriority(reward)
-      if (!reward.isReady)
-        nextTime = nextTime == 0 ? reward.readyTime : min(nextTime, reward.readyTime)
+      status[r.id] <- getReadyInfo(r, received, curTime)
+      let { readyTime, isReady } = status[r.id]
+      if (!isReady)
+        nextTime = nextTime <= 0 ? readyTime : min(nextTime, readyTime)
+      let pr = getRewardPriority(readyTime, isReady, r.needAdvert)
       if (schReward != null && priority >= pr)
         continue
-      schReward = reward
+      schReward = r.__merge(status[r.id])
       priority = pr
     }
     actual[catId] <- schReward
   }
-  foreach (r in schRewardsByCategory.get().hidden)
-    if (r.id in status && !status[r.id].isReady)
-      nextTime = nextTime == 0 ? status[r.id].readyTime : min(nextTime, status[r.id].readyTime)
+  foreach (r in hidden) {
+    status[r.id] <- getReadyInfo(r, received, curTime)
+    let { readyTime, isReady } = status[r.id]
+    if (!isReady)
+      nextTime = nextTime <= 0 ? readyTime : min(nextTime, readyTime)
+  }
 
-  nextUpdate.set({ time = nextTime })
   actualSchRewardByCategory.set(actual)
   schRewardsStatus.set(status)
-}
-updateActualSchRewards()
-schRewardsByCategory.subscribe(@(_) updateActualSchRewards())
-receivedSchRewards.subscribe(@(_) updateActualSchRewards())
-isServerTimeValid.subscribe(@(v) v ? updateActualSchRewards() : null)
 
-function resetUpdateTimer() {
-  let { time } = nextUpdate.get()
-  let left = time - serverTime.get()
+  let left = nextTime - curTime
   if (left <= 0)
     clearExtTimer(updateActualSchRewards)
   else
     resetExtTimeout(left, updateActualSchRewards)
 }
-resetUpdateTimer()
-nextUpdate.subscribe(@(_) resetUpdateTimer())
+
+updateActualSchRewards()
+schRewardsByCategory.subscribe(@(_) updateActualSchRewards())
+receivedSchRewards.subscribe(@(_) updateActualSchRewards())
+isServerTimeValid.subscribe(@(v) v ? updateActualSchRewards() : null)
 
 registerHandler("onSchRewardApplied", function(res, context) {
   if (res?.error != null)
@@ -168,7 +167,6 @@ eventbus_subscribe("adsRewardApply", function(data) {
 
 return {
   schRewards
-  schRewardsStatus
   actualSchRewardByCategory
   actualSchRewards
   onSchRewardReceive

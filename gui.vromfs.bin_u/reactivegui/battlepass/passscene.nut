@@ -9,15 +9,12 @@ let { selectColor } = require("%rGui/style/stdColors.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { passOpenCounter, closePassScene, passPageId, playerSelectedScene, passPageIdx
-  BATTLE_PASS, EVENT_PASS, OPERATION_PASS, visibleTabs, seenPasses, markPassesSeen, isPassGoodsUnseen } = require("passState.nut")
-let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress, seasonNumber
-} = require("%rGui/battlePass/battlePassState.nut")
-let { mkEpStagesList, isEpVipActive, isEpCommonActive, eventBgImage, mkHasEpRewardsToReceive, mkEventPassGoods,
-  lastStageEpProgress, curEventId
-} = require("%rGui/battlePass/eventPassState.nut")
-let { mkOPStagesList, isOpVipActive, isOpCommonActive, OPCampaign, hasOPRewardsToReceive, operationPassGoods, lastStageOpProgress
-} = require("%rGui/battlePass/operationPassState.nut")
+let { passOpenCounter, closePassScene, passPageId, playerSelectedScene, passPageIdx,
+  BATTLE_PASS, EVENT_PASS, OPERATION_PASS, visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData
+} = require("passState.nut")
+let { seasonNumber } = require("%rGui/battlePass/battlePassState.nut")
+let { eventBgImage, curEventId } = require("%rGui/battlePass/eventPassState.nut")
+let { OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
 let { contentBP, scrollToCardBP } = require("battlePassWnd.nut")
 let { contentEP, scrollToCardEP } = require("eventPassWnd.nut")
 let { contentOP, scrollToCardOP } = require("operationPassWnd.nut")
@@ -36,34 +33,16 @@ let sceneBg = keepref(Computed(function() {
 
 let tabs = {
   [BATTLE_PASS] = {
-    mkStagesList = mkBpStagesList
-    lastRewardProgress = lastStageBpProgress
-    isVipActive = isBpVipActive
-    isCommonActive = isBpCommonActive
-    hasReward = hasBpRewardsToReceive
-    goods = battlePassGoods
     scrollToCard = scrollToCardBP
     content = contentBP
     icon = @(_) "ui/gameuiskin#icon_bp.svg"
   },
   [EVENT_PASS] = {
-    mkStagesList = mkEpStagesList
-    lastRewardProgress = lastStageEpProgress
-    isVipActive = isEpVipActive
-    isCommonActive = isEpCommonActive
-    mkHasReward = mkHasEpRewardsToReceive
-    mkGoods = mkEventPassGoods
     scrollToCard = scrollToCardEP
     content = contentEP
     icon = @(_) "ui/gameuiskin#event_pass_icon.svg"
   },
   [OPERATION_PASS] = {
-    mkStagesList = mkOPStagesList
-    lastRewardProgress = lastStageOpProgress
-    isVipActive = isOpVipActive
-    isCommonActive = isOpCommonActive
-    hasReward = hasOPRewardsToReceive
-    goods = operationPassGoods
     scrollToCard = scrollToCardOP
     content = contentOP
     icon = @(camp) getOPPresentation(camp).iconTab
@@ -74,19 +53,9 @@ let getTabData = @(passName) passName == null ? null
   : passName.startswith(EVENT_PASS) ? tabs[EVENT_PASS]
   : tabs?[passName]
 
-passPageId.subscribe(function(v) {
-  let { goods = null, mkGoods = null } = getTabData(v)
-  let pageGoods = goods ?? mkGoods?(v)
-  if (pageGoods == null || pageGoods.get() == null)
-    return
-
-  markPassesSeen(pageGoods.get().reduce(@(res, g) g?.id ? res.append(g.id) : res, []))
-})
-
 function mkTab(idx, name, campaign) {
-  let data = getTabData(name)
-  let icon = data.icon(campaign)
-  let { hasReward = null, mkHasReward = null, goods = null, mkGoods = null } = data
+  let dataState = getTabStateData(name)
+  let { hasReward = null, mkHasReward = null, goods = null, mkGoods = null } = dataState
   let isActive = Computed(@() passPageIdx.get() == idx)
 
   let hasAnyReward = hasReward ?? mkHasReward?(Watched(name)) ?? Watched(false)
@@ -107,7 +76,7 @@ function mkTab(idx, name, campaign) {
       {
         size = tabIconSize
         rendObj = ROBJ_IMAGE
-        image = Picture($"{icon}:{tabIconSize}:{tabIconSize}:P")
+        image = Picture($"{getTabData(name).icon(campaign)}:{tabIconSize}:{tabIconSize}:P")
         keepAspect = true
       }
       isActive.get() || (!hasAnyReward.get() && !isUnseen.get()) ? null
@@ -123,14 +92,16 @@ function wnd() {
     return { watch = [passPageId, visibleTabs] }
 
   let data = getTabData(passPageId.get())
-  if (!data)
+  let dataState = getTabStateData(passPageId.get())
+  if (!data || !dataState)
     return {
       watch = [passPageId, visibleTabs]
       padding = saBordersRv
       children = backButton(closePassScene)
     }
 
-  let { mkStagesList, scrollToCard, content, isVipActive, isCommonActive, lastRewardProgress } = data
+  let { content, scrollToCard } = data
+  let { mkStagesList, isVipActive, isCommonActive, lastRewardProgress } = dataState
   let stagesList = mkStagesList()
   let recommendInfo = Computed(function(prev) {
     local scrollX = -bpCardMargin

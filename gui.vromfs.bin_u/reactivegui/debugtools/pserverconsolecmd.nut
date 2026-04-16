@@ -21,7 +21,8 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report,
-  get_purchases_list, userstat_start_personal_season, add_unit_skin
+  get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_units,
+  pp_add_currencies
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -30,7 +31,8 @@ let { campMyUnits, campUnitsCfg, battleUnitsMaxMRank } = require("%appGlobals/pS
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
-let { curCampaign, campProfile, setCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, setCampaign, campaignsList, campConfigs
+} = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
@@ -368,19 +370,34 @@ register_command(
 
 register_command(@() get_campaign_copy_exceptions("onGetCopyExceptions"), "meta.get_campaign_copy_exceptions")
 
-register_command(@() get_gdpr_report("onGetGDPR"), "meta.get_gdpr_report")
-
-registerHandler("onGetGDPR",
-  function(res) {
+registerHandler("saveJson",
+  function(res, context) {
     if (res?.error != null) {
       console_print(console_print(res)) 
       return
     }
 
-    let data = clone res
+    let data = clone (res?.custom_info ?? res)
     data.$rawdelete("isCustom")
-    saveJson("wtmGDPR.json", data, { logger = console_print })
+    saveJson(context.file, data, { logger = console_print })
   })
+
+register_command(@() get_gdpr_report({ id = "saveJson", file = "wtmGDPR.json" }), "meta.get_gdpr_report")
+register_command(@() pp_get_config({ id = "saveJson", file = "wtmPPCfg.json" }), "meta.pp_get_config")
+register_command(@(unitsStr)
+    pp_get_units(unitsStr.replace(" ", ";").split(";"), { id = "saveJson", file = "wtmPPUnits.json" }),
+  "meta.pp_get_units")
+
+register_command(@(unitsStr, isUpgraded)
+    pp_add_units(
+      unitsStr.replace(" ", ";").split(";").reduce(@(res, id) res.$rawset(id, isUpgraded), {}),
+      { id = "saveJson", file = "wtmPPAddUnits.json" }),
+  "meta.pp_add_units")
+register_command(@(currenciesStr, count)
+    pp_add_currencies(
+      currenciesStr.replace(" ", ";").split(";").reduce(@(res, id) res.$rawset(id, count), {}),
+      { id = "saveJson", file = "wtmPPAddCurrencies.json" }),
+  "meta.pp_add_currencies")
 
 function printAllCampData(printFunc) {
   let wasCampaign = curCampaign.get()
@@ -414,3 +431,21 @@ register_command(function() {
     console_print(object_to_json_string(res, true))
   },
   "meta.print_all_units_list")
+
+function printAllCampConfigs(printFunc) {
+  let wasCampaign = curCampaign.get()
+  foreach (c in campaignsList.get()) {
+    setCampaign(c)
+    printFunc(c, campConfigs.get())
+  }
+  setCampaign(wasCampaign)
+}
+
+register_command(@(folder) printAllCampConfigs(@(camp, data) saveJson($"{folder}/{camp}_config.json", data, { logger = console_print })),
+  "meta.save_all_campaigns_configs_to_json")
+
+register_command(@() printAllCampConfigs(function(camp, data) {
+    console_print($"Campaign {camp} config:")
+    console_print(object_to_json_string(data, true))
+  }),
+  "meta.print_all_campaigns_configs")

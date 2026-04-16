@@ -35,7 +35,7 @@ let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkSlotLevelBlock } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let buySlotLevelWnd = require("%rGui/attributes/slotAttr/buySlotLevelWnd.nut")
@@ -44,6 +44,9 @@ let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 
 
+let SLOT_ATTR_WND_MSG_UID = "msgSlotAttrWnd"
+
+slotInProgress.subscribe(@(_) closeMsgBox(SLOT_ATTR_WND_MSG_UID))
 isSlotAttrOpened.subscribe(function(v) {
   resetAttrState()
   sendNewbieBqEvent(v ? "openSlotAttributesWnd" : "closeSlotAttributesWnd")
@@ -241,6 +244,7 @@ function onClose() {
     isSlotAttrOpened.set(false)
   else
     openMsgBox({
+      uid = SLOT_ATTR_WND_MSG_UID
       text = loc("unitUpgrades/apply"),
       buttons = [
         { id = "cancel", isCancel = true }

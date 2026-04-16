@@ -30,7 +30,6 @@ let scrollBoxMarginV = ceil(plateH * (plateBlinkScale - 1) / 2) + hdpx(2)
 let scrollBoxMarginL = scrollBoxMarginR + (platoonPlatesCustomGap * maxPlatoonExtraPlatesCount)
 
 let mkLevelUnlockPlatesContainer = @(children) {
-  margin = const [0, 0, 0, hdpx(212)]
   size = FLEX_V
   children = makeSideScroll({
     margin = [scrollBoxMarginV, scrollBoxMarginR, scrollBoxMarginV, scrollBoxMarginL]

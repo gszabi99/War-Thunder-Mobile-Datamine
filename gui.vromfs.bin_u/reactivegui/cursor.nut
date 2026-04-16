@@ -3,13 +3,17 @@ from "console" import register_command
 from "%appGlobals/activeControls.nut" import needCursorForActiveInputDevice, isGamepad
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isHudVisible
 from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/cursorSharedStates.nut" import isReplayPlayerOptionsOpen
 from "%rGui/components/modalWindows.nut" import hasModalWindows
 
 let forceHideCursor = Watched(false)
 let needCursorInHud = Computed(@() !isGamepad.get() || !isHudAttached.get() || hasModalWindows.get())
 let needShowCursor  = Computed(@() !forceHideCursor.get()
   && needCursorForActiveInputDevice.get()
-  && (!isInBattle.get() || (isHudVisible.get() && needCursorInHud.get())))
+  && (!isInBattle.get()
+    || (isHudVisible.get() && needCursorInHud.get())
+    || (isPlayingReplay.get() && isReplayPlayerOptionsOpen.get())))
 
 register_command(@() forceHideCursor.set(!forceHideCursor.get()), "ui.force_hide_mouse_pointer")
 

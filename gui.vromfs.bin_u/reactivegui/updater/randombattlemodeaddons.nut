@@ -3,9 +3,10 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { getModeAddonsInfo, allBattleUnits, missingUnitResourcesByRank, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
+let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
+let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 
 
 let EMPTY_ADDONS_INFO = freeze({ addons = [], units = [] })
@@ -14,7 +15,7 @@ let requiredRandomBattleAddons = Computed(function() {
   if (randomBattleMode.get() == null)
     return EMPTY_ADDONS_INFO
   let { addonsToDownload, unitsToDownload } = getModeAddonsInfo({
-    mode = randomBattleMode.get(),
+    modeList = getGameModeQueueGroup(randomBattleMode.get(), gameModeQueueGroups.get()),
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),

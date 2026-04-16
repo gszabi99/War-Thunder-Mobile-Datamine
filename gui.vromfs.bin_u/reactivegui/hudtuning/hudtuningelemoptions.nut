@@ -3,7 +3,7 @@ from "%rGui/hudTuning/hudTuningConsts.nut" import *
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { isElemHold, tuningState, setTuningState, tuningOptions, tuningTransform, tuningUnitType, selectedId,
-  isAllElemsOptionsOpened
+  isAllElemsOptionsOpened, optionsToElemIds
 } = require("%rGui/hudTuning/hudTuningState.nut")
 let { tuningBtnGap, tuningBtnSize } = require("%rGui/hudTuning/tuningBtn.nut")
 let { mkElemOption, mkAllElemsOption } = require("%rGui/hudTuning/mkElemOption.nut")
@@ -34,6 +34,9 @@ function modifyOptions(modify, changeUid = "", changeStackTime = 0) {
   let optionsVal = deep_clone(ts.options)
   modify(optionsVal)
   setTuningState(ts.__merge({ options = optionsVal }), changeUid, changeStackTime)
+  foreach (k, _ in optionsVal)
+    if (k in tuningStateDefault.customOptions)
+      optionsToElemIds.set(optionsToElemIds.get().__merge({ [k] = selectedId.get() }))
 }
 
 let optionsBlock = @(id, options) optionsBlockBg.__merge({

@@ -136,7 +136,20 @@ function onDelete(presets, presetIdx, isNotSaved, campaign) {
     return
   if (isNotSaved)
     return openMsgBox({text = loc("msgbox/presets/cannot_delete")})
-  setSavedSlotPresets(deep_clone(savedSlotPresets.get()).filter(@(p) p.name != presets[presetIdx].name), campaign)
+
+  let name = presets[presetIdx].name
+  openMsgBox({
+    text = loc("presets/confirmUserPresetDeletion", { name })
+    buttons = [
+      { id = "cancel", isCancel = true }
+      {
+        id = "delete",
+        cb = @() setSavedSlotPresets(deep_clone(savedSlotPresets.get())
+          .filter(@(p) p.name != name), campaign),
+        styleId = "PRIMARY"
+      }
+    ]
+  })
 }
 
 function onApply(presets, presetIdx, campaign, isCurrent) {

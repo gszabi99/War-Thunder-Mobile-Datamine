@@ -471,6 +471,11 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "booster_fire": {
+    "fx": "fire_powder_accelerator_fire_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "ship_model_fire": {
     "fx": "fire_base_massive_cmps_fx",
     "sfxPath": "tanks/explosions_tanks",

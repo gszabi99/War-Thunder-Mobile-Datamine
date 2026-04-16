@@ -12,6 +12,7 @@ let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { unitsBlockedByBattleMode, blockedCountries } = require("%rGui/unit/unitAccess.nut")
+let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
 
 let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
@@ -368,16 +369,23 @@ if (seenResearchedUnits.get().len() == 0)
 
 isSettingsAvailable.subscribe(@(_) loadSeenResearchedUnits())
 
-register_command(function() {
+function resetSeenResearchedUnit() {
   seenResearchedUnits.set({})
   get_local_custom_settings_blk().removeBlock(SEEN_RESEARCHED_UNITS)
   eventbus_send("saveProfile", {})
-}, "debug.reset_seen_researched_units")
+}
+
+register_command(@() resetSeenResearchedUnit(), "debug.reset_seen_researched_units")
 
 register_command(function() {
   needDebugNodes.set(!needDebugNodes.get())
   console_print(needDebugNodes.get() ? "Show original positions" : "Show positions with offset") 
 }, "debug.tree_original_positions")
+
+subscribeResetProfile(function() {
+  shownUnitsOffersForPurchase.set({})
+  resetSeenResearchedUnit()
+})
 
 return {
   visibleNodes

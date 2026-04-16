@@ -2,8 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
-let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { getEventPresentation, eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { openedGMEvenPassCounter, closeGmEPWnd, curGmList, openedGMEvenPasstId, hasAccessCurGmEvent
 } = require("%rGui/event/gmEventState.nut")
@@ -23,11 +22,11 @@ let { curOpenEventPass, eventBgImage, getEventPassName } = require("%rGui/battle
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { openPassScene } = require("%rGui/battlePass/passState.nut")
 let { setHangarUnitGroup, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
 let headerGap = hdpx(30)
@@ -35,7 +34,7 @@ let headerGap = hdpx(30)
 let chosenUnitIdx = Watched(null)
 let isWndAttached = Watched(false)
 
-let bgUnits = Computed(@() gmEventPresentation(openedGMEvenPasstId.get()).bgUnits)
+let bgUnits = Computed(@() getEventPresentation(openedGMEvenPasstId.get()).bgUnits)
 let hasBgUnits = Computed(@() bgUnits.get() != null)
 let curEventBgImage = keepref(Computed(@() hasBgUnits.get() ? "" : eventBgImage.get()))
 
@@ -71,18 +70,20 @@ let gmEventTitle = @() {
 }
 
 let header = {
-  size = [flex(), gamercardHeight]
+  size = [SIZE_TO_CONTENT, gamercardHeight]
+  pos = [-saBordersRv[1], 0]
+  rendObj = ROBJ_IMAGE
+  image = simpleHorGrad
+  color = 0x80000000
+  flipX = true
+  padding = const [hdpx(20), hdpx(50), hdpx(17), saBordersRv[1]]
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
   valign = ALIGN_CENTER
-  children = doubleSideGradient.__merge({
-    padding = const [hdpx(20), hdpx(200), hdpx(17), 0]
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(20)
-    valign = ALIGN_CENTER
-    children = [
-      backButton(closeGmEPWnd)
-      gmEventTitle
-    ]
-  })
+  children = [
+    backButton(closeGmEPWnd)
+    gmEventTitle
+  ]
 }
 
 let buttonsContent = @(image, text) {

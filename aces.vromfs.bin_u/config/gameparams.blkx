@@ -18674,7 +18674,9 @@
     ]
   },
   "replay": {
-    "segmentLengthSec": 90,
+    "useReplayDir": true,
+    "segmentLengthSec": 0,
+    "snapshotPeriod": 60,
     "replayRewind": true,
     "showGuidanceLockTracker": true,
     "allowSelectFarAwayUnit": false

@@ -60,7 +60,6 @@ let { backButtonHeight } = require("%rGui/components/backButton.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut")
 let mkPersonalDiscountBtn = require("%rGui/shop/goodsPreview/mkPersonalDiscountBtn.nut")
-let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
@@ -681,7 +680,7 @@ let previewWnd = @() {
           valign = ALIGN_CENTER
           children = [
             {
-              pos = [-doubleSideGradientPaddingX, 0]
+              pos = [-saBordersRv[1], 0]
               flow = FLOW_HORIZONTAL
               children = [
                 mkHeader

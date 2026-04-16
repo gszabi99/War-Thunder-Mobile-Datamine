@@ -16,7 +16,7 @@ let { isUnitAttrOpened, attrUnitData, attrUnitName, attrUnitLevelsToMax, curCate
 let { hasUpgradedAttrUnitNotUpdatable } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { mkAttrTabs, contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
 let { unitAttrPage } = require("%rGui/attributes/unitAttr/unitAttrWndPage.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
@@ -32,6 +32,10 @@ let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
 let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
 let { mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
+
+let UNIT_ATTR_WND_MSG_UID = "msgUnitAttrWnd"
+
+unitInProgress.subscribe(@(_) closeMsgBox(UNIT_ATTR_WND_MSG_UID))
 isUnitAttrOpened.subscribe(function(v) {
   resetAttrState()
   sendNewbieBqEvent(v ? "openUnitAttributesWnd" : "closeUnitAttributesWnd")
@@ -226,6 +230,7 @@ function onClose() {
     isUnitAttrOpened.set(false)
   else
     openMsgBox({
+      uid = UNIT_ATTR_WND_MSG_UID
       text = loc("unitUpgrades/apply"),
       buttons = [
         { id = "cancel", isCancel = true }

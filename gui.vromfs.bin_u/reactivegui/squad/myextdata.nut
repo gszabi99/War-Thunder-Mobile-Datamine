@@ -12,6 +12,7 @@ let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { missingUnitResourcesByRank, allUnitsRanks, getModeAddonsInfo, maxReleasedUnitRanks
 } = require("%appGlobals/updater/gameModeAddons.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
+let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
 let { bindSquadROVar } = require("%rGui/squad/squadManager.nut")
 let { readyCheckTime } = require("%rGui/squad/readyCheck.nut")
 let { mRankCheckTime } = require("%rGui/squad/mRankCheck.nut")
@@ -71,7 +72,7 @@ let readyOvrGameModes = Computed(function(prev) {
   let res = {}
   foreach (modeId, mode in ovrUnitsGameModes.get()) {
     let { addonsToDownload, unitsToDownload } = getModeAddonsInfo({
-      mode,
+      modeList = getGameModeQueueGroup(mode, gameModeQueueGroups.get()),
       unitNames = [],
       serverConfigsV = serverConfigs.get(),
       hasAddonsV = hasAddons.get(),

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_time_msec } = require("dagor.time")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { resetTimeout } = require("dagor.workcycle")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 
 let debriefingData = mkWatched(persist, "debriefingData", null)
@@ -12,14 +12,16 @@ eventbus_subscribe("BattleResult", @(res) debriefingData.set(res))
 eventbus_send("RequestBattleResult", {})
 
 let DEBR_TAB_MPSTATS  = 1
-let DEBR_TAB_CAMPAIGN = 2
-let DEBR_TAB_UNIT     = 3
-let DEBR_TAB_SCORES   = 4
+let DEBR_TAB_QUESTS   = 2
+let DEBR_TAB_CAMPAIGN = 3
+let DEBR_TAB_UNIT     = 4
+let DEBR_TAB_SCORES   = 5
 
 let curDebrTabId = mkWatched(persist, "curDebrTabId", DEBR_TAB_MPSTATS)
 
 let debrTabsShowTime = Watched([])
 let needReinitScene = Watched(true)
+let showReleaseToContinueBtn = Watched(false)
 
 let nextDebrTabId = Computed(function() {
   let list = debrTabsShowTime.get()
@@ -30,41 +32,32 @@ let nextDebrTabId = Computed(function() {
 let stopDebriefingAnimation = @() isDebriefingAnimFinished.set(true)
 
 let maxDebrAnimTime = 20 
+let maxDelayWithPause = 60
+let btnActivationDelay = 300
 
-let getBtnsDelayForTab = @(tabId, isAnimFinished, curTabId, tabsShowTime) isAnimFinished || tabId < curTabId ? 0
-  : tabId == curTabId ? max(0, (tabsShowTime.findvalue(@(v) v.id == tabId)?.timeShow ?? 0) - buttonsShowTime)
-  : maxDebrAnimTime
+let finalTabId = Computed(@() debrTabsShowTime.get()?[debrTabsShowTime.get().len() - 1].id ?? DEBR_TAB_SCORES)
 
-let getFinalTabId = @(tabsShowTime) tabsShowTime?[tabsShowTime.len() - 1].id
-
-let delayToDebrAnimFinish = keepref(Computed(function() {
-  if (isDebriefingAnimFinished.get())
-    return 0
-  let idx = debrTabsShowTime.get().findindex(@(v) v.id == curDebrTabId.get())
-  if (idx == null)
-    return 0
-  local res = 0
-  let tabsShowTime = debrTabsShowTime.get()
-  for (local i = idx; i < tabsShowTime.len(); i++) 
-    res += tabsShowTime[i].timeShow
-  return res
-}))
-delayToDebrAnimFinish.subscribe(@(v) v <= 0
-  ? defer(stopDebriefingAnimation)
-  : resetTimeout(v, stopDebriefingAnimation)
+let mkBtnsDelayComp = @(tabId = null) Computed(function() {
+  let id = tabId ?? finalTabId.get()
+  return isDebriefingAnimFinished.get() || id < curDebrTabId.get() ? 1
+    : id == curDebrTabId.get() ? max(0, (debrTabsShowTime.get().findvalue(@(v) v.id == id)?.timeShow ?? 0) - buttonsShowTime)
+    : showReleaseToContinueBtn.get() ? maxDelayWithPause : maxDebrAnimTime
+  }
 )
-isInDebriefing.subscribe(@(v) v ? null : clearTimer(stopDebriefingAnimation))
 
-let delayToBtns_Campaign = keepref(Computed(@() getBtnsDelayForTab(DEBR_TAB_CAMPAIGN,
-  isDebriefingAnimFinished.get(), curDebrTabId.get(), debrTabsShowTime.get())))
-let delayToBtns_Unit = keepref(Computed(@() getBtnsDelayForTab(DEBR_TAB_UNIT,
-  isDebriefingAnimFinished.get(), curDebrTabId.get(), debrTabsShowTime.get())))
-let delayToBtns_Final = keepref(Computed(@() getBtnsDelayForTab(getFinalTabId(debrTabsShowTime.get()),
-  isDebriefingAnimFinished.get(), curDebrTabId.get(), debrTabsShowTime.get())))
+let delayToBtns_Campaign = keepref(mkBtnsDelayComp(DEBR_TAB_CAMPAIGN))
+let delayToBtns_Unit = keepref(mkBtnsDelayComp(DEBR_TAB_UNIT))
+let delayToBtns_Final = keepref(mkBtnsDelayComp())
 
 let needShowBtns_Campaign = Watched(true)
 let needShowBtns_Unit = Watched(true)
 let needShowBtns_Final = Watched(true)
+let activatingTimeBtns_Campaign = Watched(0)
+let activatingTimeBtns_Unit = Watched(0)
+let activatingTimeBtns_Final = Watched(0)
+needShowBtns_Campaign.subscribe(@(v) activatingTimeBtns_Campaign.set(v ? get_time_msec() + btnActivationDelay : 0))
+needShowBtns_Unit.subscribe(@(v) activatingTimeBtns_Unit.set(v ? get_time_msec() + btnActivationDelay : 0))
+needShowBtns_Final.subscribe(@(v) activatingTimeBtns_Final.set(v ? get_time_msec() + btnActivationDelay : 0))
 isDebriefingAnimFinished.subscribe(function(v) {
   needShowBtns_Campaign.set(v)
   needShowBtns_Unit.set(v)
@@ -77,26 +70,22 @@ let showBtns_Final = @() needShowBtns_Final.set(true)
 delayToBtns_Campaign.subscribe(@(v) resetTimeout(v, showBtns_Campaign))
 delayToBtns_Unit.subscribe(@(v) resetTimeout(v, showBtns_Unit))
 delayToBtns_Final.subscribe(@(v) resetTimeout(v, showBtns_Final))
-isInDebriefing.subscribe(function(v) {
-  if (!v) {
-    clearTimer(showBtns_Campaign)
-    clearTimer(showBtns_Unit)
-    clearTimer(showBtns_Final)
-  }
-})
+
 isDebriefingAnimFinished.subscribe(@(v) !v ? needReinitScene.set(false) : null)
 
 return {
   debriefingData
   isDebriefingAnimFinished
   isNoExtraScenesAfterDebriefing
+  showReleaseToContinueBtn
 
   curDebrTabId
   nextDebrTabId
-  DEBR_TAB_SCORES
+  DEBR_TAB_MPSTATS
+  DEBR_TAB_QUESTS
   DEBR_TAB_CAMPAIGN
   DEBR_TAB_UNIT
-  DEBR_TAB_MPSTATS
+  DEBR_TAB_SCORES
 
   stopDebriefingAnimation
 
@@ -104,5 +93,8 @@ return {
   needShowBtns_Campaign
   needShowBtns_Unit
   needShowBtns_Final
+  activatingTimeBtns_Campaign
+  activatingTimeBtns_Unit
+  activatingTimeBtns_Final
   needReinitScene
 }

@@ -1,7 +1,7 @@
 let { loc } = require("dagor.localize")
 let { Computed } = require("frp")
-let { set_current_unit, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { campMyUnits, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { set_current_unit, curUnitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { campMyUnits, playerLevelInfo, campUnitsCfg, selectedUnitByPlayer, curUnitName } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
@@ -88,16 +88,23 @@ function getUnitLockedShortText(unit, status, reqPlayerLevel) {
 }
 
 function setCurrentUnit(unitName) {
-  if (curUnitInProgress.get() != null)
-    return "unitInProgress"
   if (unitName not in campMyUnits.get())
     return "unitNotOwn"
-  if (campMyUnits.get()[unitName].isCurrent)
+  if (curUnitName.get() == unitName)
     return "unitIsAlreadyCurrent"
-
-  set_current_unit(unitName)
+  selectedUnitByPlayer.set(unitName)
   return ""
 }
+
+registerHandler("onSetCurrentUnit", function(_, context) {
+  if (context.unit == selectedUnitByPlayer.get())
+    selectedUnitByPlayer.set(null)
+  else if (selectedUnitByPlayer.get() != null)
+    set_current_unit(selectedUnitByPlayer.get(), { id = "onSetCurrentUnit", unit = selectedUnitByPlayer.get() })
+})
+
+selectedUnitByPlayer.subscribe(@(v) v == null || curUnitInProgress.get() != null ? null
+  : set_current_unit(v, { id = "onSetCurrentUnit", unit = v }))
 
 function getUnitGroupMask(unit) {
   local mask = 0

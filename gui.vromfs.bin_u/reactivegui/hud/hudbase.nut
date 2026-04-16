@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { TouchCameraControl } = require("wt.behaviors")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
@@ -18,7 +17,7 @@ let { hudElementShade } = require("%rGui/tutorial/hudElementShade.nut")
 let { hudElementBlink } = require("%rGui/tutorial/hudElementBlink.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
 let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
-let { hudReplayControls, replayShowHudAction } = require("%rGui/replay/hudReplayControls.nut")
+let { hudReplayControls } = require("%rGui/replay/hudReplayControls.nut")
 let { hudReplayCameraInfo } = require("%rGui/replay/hudReplayCameraInfo.nut")
 let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, HT_NONE, isHudAttached
 } = require("%appGlobals/clientState/hudState.nut")
@@ -74,7 +73,9 @@ let hudByType = {
   [HT_FREECAM] = @(_, __) freeCamHud,
   [HT_CUTSCENE] = @(_, __) cutsceneHud,
   [HT_BENCHMARK] = @(_, __) emptySceneWithMenuButton,
-  [HT_NONE] = @(_, isReplay) isReplay ? replayShowHudAction : null
+  [HT_NONE] = @(_, isReplay) [
+    isReplay ? hudReplayControls : null
+  ]
 }
 
 let hudBase = {
@@ -99,12 +100,7 @@ let hudBase = {
       watch = [isInFlight, viewHudType, hudUnitType, isPlayingReplay]
       size = flex()
       children = !isInFlight.get() ? null
-        : {
-            key = viewHudType.get()
-            size = flex()
-            children = hudByType?[viewHudType.get()](hudUnitType.get(), isPlayingReplay.get())
-            animations = wndSwitchAnim
-          }
+        : hudByType?[viewHudType.get()](hudUnitType.get(), isPlayingReplay.get())
     }
     battleResultsShort
     {

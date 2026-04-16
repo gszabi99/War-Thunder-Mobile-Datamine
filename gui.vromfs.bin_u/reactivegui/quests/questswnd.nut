@@ -2,8 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { G_DISCOUNT, unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize } = require("%rGui/style/gradients.nut")
 let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
   COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB,
@@ -16,6 +14,7 @@ let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, openEventWnd, getSpecialEventName,
    specialEventsLootboxesState } = require("%rGui/event/eventState.nut")
+let { getSpecialEventLocName, getSpecialEventRewardUnitName } = require("%rGui/event/specialEventLocName.nut")
 let { hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -24,8 +23,7 @@ let { mkQuestsHeaderBtn, linkToEventWidth } = require("%rGui/quests/questsPkg.nu
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { shopGoods, openShopWnd, isDisabledGoods, allShopGoods } = require("%rGui/shop/shopState.nut")
-let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { shopGoods, openShopWnd, allShopGoods } = require("%rGui/shop/shopState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
@@ -224,26 +222,10 @@ function splitByCenterSpace(text) {
 function mkSpecialEventTabContent(idx) {
   let endsAt = Computed(@() specialEventsOrdered.get()?[idx].endsAt)
   let eventNameTexts = Computed(function() {
-    let allGoods = allShopGoods.get()
-    let servConfigs = serverConfigs.get()
     let { eventName = null, eventId = null } = specialEventsOrdered.get()?[idx]
-    let { locId } = getEventPresentation(eventName)
-    let defaultLoc = loc(locId)
-    if (!defaultLoc.contains("{name}")) 
-      return splitByCenterSpace(defaultLoc)
-
     let { stages = [] } = progressUnlockByTab.get()?[eventId]
-    foreach (stage in stages) {
-      let reward = getUnlockRewardsViewInfo(stage, servConfigs)
-        .findvalue(@(r) r.rType == G_DISCOUNT && !isDisabledGoods(r, allGoods, servConfigs))
-      if (reward == null)
-        continue
-      let goodsId = servConfigs?.personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == reward.id) != null)
-      let { id = null } = allGoods?[goodsId].rewards.findvalue(@(r) r.gType in unitRewardTypes)
-      if (id != null)
-        return splitByCenterSpace(defaultLoc.subst({ name = getUnitName(id, loc).replace(" ", nbsp) }))
-    }
-    return splitByCenterSpace(defaultLoc)
+    let rewardUnitName = getSpecialEventRewardUnitName(stages, serverConfigs.get(), allShopGoods.get())
+    return splitByCenterSpace(getSpecialEventLocName(eventName, rewardUnitName))
   })
   let eventNameFirstRow = Computed(@() eventNameTexts.get()?[0])
   let eventNameSecondRow = Computed(@() eventNameTexts.get()?[1])

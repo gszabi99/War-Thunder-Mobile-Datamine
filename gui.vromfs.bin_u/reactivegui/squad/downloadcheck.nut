@@ -12,7 +12,7 @@ from "%appGlobals/updater/addons.nut" import localizeAddons
 from "%appGlobals/updater/campaignAddons.nut" import localizeUnitsResources
 from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInBattle, isInLoadingScreen
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes, gameModeQueueGroups, getGameModeQueueGroup
 import "%rGui/squad/setReady.nut" as setReady
 from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 from "%rGui/debriefing/debriefingState.nut" import isDebriefingAnimFinished
@@ -59,7 +59,7 @@ function showDownloadCheck() {
     return
 
   let { addonsToDownload, unitsToDownload } = getModeAddonsInfo({
-    mode = leaderWantedMode.get(),
+    modeList = getGameModeQueueGroup(leaderWantedMode.get(), gameModeQueueGroups.get()),
     unitNames = allBattleUnits.get(),
     serverConfigsV = serverConfigs.get(),
     hasAddonsV = hasAddons.get(),

@@ -8,23 +8,23 @@ let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%
 let verticalGap = hdpx(20)
 
 function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = null) {
+  if (!giftSchReward?.isReady)
+    return null
   let giftBoxAnimDur = 0.2
   let giftBoxAnimDelay = aTimeHeaderStart + 0.5
-  local { isReady = false } = giftSchReward
-  function schRewardAndSkipAnim(){
-    onSchRewardReceive(giftSchReward)
-    skipAnimsOnce?.set(true)
-  }
-  if (!isReady)
-    return null
-  local isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
+  let isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
     size = hdpx(130)
     pos = [verticalGap,0]
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
     behavior = Behaviors.Button
-    onClick = schRewardAndSkipAnim
+    function onClick() {
+      if (isPurchasing.get())
+        return
+      onSchRewardReceive(giftSchReward)
+      skipAnimsOnce?.set(true)
+    }
     children = [
       {
         hplace = ALIGN_RIGHT

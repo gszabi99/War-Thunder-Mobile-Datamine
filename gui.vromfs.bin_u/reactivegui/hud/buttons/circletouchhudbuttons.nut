@@ -10,7 +10,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { canZoom, isInZoom, isTrackingActive, isPlayingReplay } = require("%rGui/hudState.nut")
+let { canZoom, isInZoom, isTrackingActive } = require("%rGui/hudState.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
@@ -19,7 +19,7 @@ let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
-  TurretsVisible, TurretsReloading, TurretsEmpty
+  TurretsVisible, TurretsReloading, TurretsEmpty, HasBooster
 } = require("%rGui/hud/airState.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
@@ -55,8 +55,6 @@ let zoneRadiusY = buttonSize
 let isWeaponAvailable = @(weapon) weapon.count != 0 || (weapon.endTime ?? 0) > get_mission_time()
 
 function useShortcut(shortcutId) {
-  if (isPlayingReplay.get())
-    return
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }
@@ -863,7 +861,7 @@ let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.sv
       cameraControl = true
       hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
       function onClick() {
-        if (isDisabled.get() || isPlayingReplay.get())
+        if (isDisabled.get())
           return
         if (canZoom.get())
           toggleShortcut("ID_ZOOM_TOGGLE")
@@ -879,6 +877,35 @@ let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.sv
           isDisabled.get() ? disabledColor : hudWhiteColor)
         isDisabled.get() ? null
           : mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr, scale)
+      ]
+    }
+  }
+
+let mkBoosterCtorBtn = function(scale) {
+  let stateFlags = Watched(0)
+  let isDisabled = mkIsControlDisabled("ID_IGNITE_BOOSTERS")
+  let bgSize = scaleEven(buttonSize, scale)
+  let imgSize = scaleEven(buttonImgSize, scale)
+  return !HasBooster.get() ? @() { watch = HasBooster, key = "ID_IGNITE_BOOSTERS" }
+    : @() {
+      watch = [HasBooster, isDisabled]
+      key = "btn_booster_circle"
+      size = [bgSize, bgSize]
+      behavior = Behaviors.Button
+      cameraControl = true
+      hotkeys = mkGamepadHotkey("ID_IGNITE_BOOSTERS")
+      function onClick() {
+        if (isDisabled.get())
+          return
+        toggleShortcut("ID_IGNITE_BOOSTERS")
+      }
+      onElemState = @(v) stateFlags.set(v)
+      children = [
+        mkBtnBg(bgSize, hudLightBlackColor)
+        mkBtnBorder(bgSize, !isDisabled.get(), stateFlags)
+        mkBtnImage(imgSize, "ui/gameuiskin#hud_booster.svg", isDisabled.get() ? disabledColor: hudWhiteColor)
+        isDisabled.get() ? null
+          : mkGamepadShortcutImage("ID_IGNITE_BOOSTERS", defShortcutOvr, scale)
       ]
     }
   }
@@ -1030,6 +1057,7 @@ return {
   mkCircleLockBtn
   mkSimpleCircleTouchBtn
   mkCircleTargetTrackingBtn
+  mkBoosterCtorBtn
   mkCircleFireworkBtn
   mkCirclePlaneCourseGuns
   mkCircleSecondaryGuns

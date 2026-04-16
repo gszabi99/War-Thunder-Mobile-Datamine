@@ -1,5 +1,25 @@
 let eventBgFallback = "ui/images/event_bg.avif"
 
+let genParams = {
+  name = @(name) name
+  locId = @(name) $"events/name/{name}"
+  icon = @(name) $"ui/gameuiskin#icon_event_{name}.svg"
+  image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
+  color = @(_) 0xA5FF2B00
+  imageOffset = @(_) [0, 0]
+  imageSizeMul = @(_) 1.0
+  imageTabOffset = @(_) [0, 0]
+  bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
+  gamercardItems = @(_) []
+
+  
+  bgUnits = @(_) null 
+  accessStat = @(_) ""
+  hasConsumablePlate = @(_) false
+  
+  
+}
+
 let presentations = {
   season_5 = { color = 0xA500A556 }
   season_6 = { imageOffset = [0, -0.06] }
@@ -99,19 +119,6 @@ let presentations = {
   premiere_challenge_first     = { locId = "events/name/challenge" }
   premiere_challenge_second    = { locId = "events/name/challenge" }
   rerun_offers_event           = { locId = "events/name/challenge" }
-}
-
-let genParams = {
-  name = @(name) name
-  locId = @(name) $"events/name/{name}"
-  icon = @(name) $"ui/gameuiskin#icon_event_{name}.svg"
-  image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
-  color = @(_) 0xA5FF2B00
-  imageOffset = @(_) [0, 0]
-  imageSizeMul = @(_) 1.0
-  imageTabOffset = @(_) [0, 0]
-  bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
-  gamercardItems = @(_) []
 }
 
 let seasonFlagsRotation = {

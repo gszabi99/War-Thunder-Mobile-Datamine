@@ -72,6 +72,7 @@ let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 let urlColor = Color(0, 204, 255)
 let loginButtonStyle = isHMSAvailable() ? HUAWEI : PRIMARY
 let loginButtonsHGap = isHMSAvailable() ? hdpx(16) : buttonsHGap
+let guestLoginButtonColor = isHMSAvailable() ? HUAWEI.childOvr.color : textColor
 
 let resendTimeout = 30
 
@@ -363,12 +364,12 @@ let firebaseLoginButtonContent = freeze({
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#guest_login.svg:{googleLogoWidth}:{googleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = textColor
+      color = guestLoginButtonColor
     }
     {
       rendObj = ROBJ_TEXT
       text = loc("authorization_method/guest")
-      color = isHMSAvailable() ? 0xFF000000 : textColor
+      color = guestLoginButtonColor
     }.__update(fontSmallAccented)
   ]
 })

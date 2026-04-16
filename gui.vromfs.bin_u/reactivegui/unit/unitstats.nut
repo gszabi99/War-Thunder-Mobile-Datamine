@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round, round_by_value, lerpClamped } = require("%sqstd/math.nut")
+let { round, round_by_value, lerpClamped, abs } = require("%sqstd/math.nut")
 let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
@@ -47,10 +47,10 @@ let valueRangeShip = {
 }
 
 let valueRangeTank = {
-  mainWeaponCaliber = [13, 153]
-  armorPower = [30, 800]
+  mainWeaponCaliber = [13, 183]
+  armorPower = [30, 1200]
   reloadTime = [0, 45]
-  gunnerTurretRotationSpeed = [2, 75]
+  gunnerTurretRotationSpeed = [2, 120]
   maxSpeedForward = [0, 31] 
   maxSpeedBackward = [0, 31] 
   powerToWeightRatio = [0, 50]
@@ -348,6 +348,12 @@ let calcSalvoRocketDamage = @(s) (s?.damage ?? 0) * (
   (s?.reloadTime ?? 0) > 0 ? ((s?.rocketsSalvo ?? 1) / s.reloadTime) : ((s?.gunsCount ?? 1) * (s?.shotFreq ?? 0))
 )
 
+function valueWithDiff(modifiedValue, value, text) {
+  let diff = value - modifiedValue
+  let sign = diff >= 0 ? "-" : "+"
+  return " ".concat(value, colorize(addedFromSlot, $"{sign} {abs(diff)}"), text)
+}
+
 let weaponsCfgShip = {
   full = [
     mkGunStat("mainCannon")
@@ -378,15 +384,18 @@ let weaponsCfgTank = {
     mkStat("armorPower", {
       getHeader = @(_, __) " ".concat(cannonMark, loc("stats/armorPower"))
       valueToText = @(v, _) "".concat(round(v), loc("measureUnits/mm"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round(modifiedValue), round(value), loc("measureUnits/mm"))
       isAvailable = @(_) true
     }, TANK)
     mkStat("reloadTime", {
-      valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
+      valueToText = @(v, _) "".concat(round_by_value(v, 0.01), loc("measureUnits/seconds"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round_by_value(modifiedValue, 0.1), round_by_value(value, 0.01), loc("measureUnits/seconds"))
       getProgress = mkGetProgressInv(TANK, "reloadTime")
       isAvailable = @(_) true
     }, TANK)
     mkStat("gunnerTurretRotationSpeed", {
       valueToText = @(v, _) "".concat(round(v), loc("measureUnits/deg_per_sec"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round(modifiedValue), round(value), loc("measureUnits/deg_per_sec"))
       isAvailable = @(_) true
     }, TANK)
   ]
@@ -523,15 +532,18 @@ function mkUnitStat(unit, stat, shopCfg, uid, statsWithAttr = {}) {
   let header = stat.getHeader(shopCfg, unit)
   if (header == "")
     return null
-  local value = stat.getValue(shopCfg)
+  local modifiedValue = stat.getValue(shopCfg)
   local valueWithAttr = stat.getValue(statsWithAttr)
   return {
     uid 
     header
-    value = stat.valueToText(value, shopCfg)
-    valueAttr = stat.valueToTextAttr(value, valueWithAttr)
-    progress = stat.getProgress?(value)
-    progressColor = stat.getProgressColor(unit, value)
+    value = valueWithAttr == null || !stat?.valueToTextWithDiff || valueWithAttr == modifiedValue
+      ? stat.valueToText(modifiedValue, shopCfg)
+      : stat.valueToTextWithDiff(modifiedValue, valueWithAttr)
+    valueAttr = stat.valueToTextAttr(modifiedValue, valueWithAttr)
+    progress = stat.getProgress?(modifiedValue)
+    progressAttr = valueWithAttr == null ? null : stat.getProgress?(valueWithAttr)
+    progressColor = stat.getProgressColor(unit, modifiedValue)
     isMultiline = fullGunWeaponId == stat?.id
   }
 }
@@ -573,12 +585,75 @@ let getWeapByTypeFromSlots = @(slots) slots
     {})
 
 
+function getWeaponList(unit, stat, weapByType, shopCfg) {
+  if (unit.unitType == TANK)
+    return [weapByType?[shopCfg?.mainWeaponType ?? "mainCannon"]]
+
+  return stat.getListTitle()
+    ? (weapByType?.filter(@(_, k) isWeaponById(stat, k)) ?? [])
+    : [weapByType?[stat.id]]
+}
+
+let getWeaponStat = @(unit, stat, wCfg, list, weapListIdx, i)
+  mkUnitStat(unit, stat, wCfg, $"{stat.id}{list.len() == 1 ? i : $"{weapListIdx}{i}"}", wCfg?.baseWCfg ?? {})
+
+function addMultiRowStatTitle(unitStats, unit, stat, weapStatsList, weapByType, weaponsIdx) {
+  let headers = {}
+
+  foreach (aggregateStat in weapStatsList.filter(@(v) v.id == stat.id)) {
+    let list = weapByType?.filter(@(_, k) isWeaponById(aggregateStat, k)) ?? []
+    if (list.filter(@(v) v != null).len() == 0)
+      continue
+
+    foreach (weap in list)
+      foreach (wCfg in weap) {
+        if (!aggregateStat.isAvailable(wCfg))
+          return weaponsIdx
+
+        let header = aggregateStat.getHeader(wCfg, unit)
+        if (header != null)
+          headers[header] <- true
+      }
+  }
+
+  if (headers.len() == 0)
+    return weaponsIdx
+
+  let title = " ".join(headers.keys())
+  let { posOffset = null } = stat
+  let pos = weaponsIdx == null ? null
+    : posOffset != null ? weaponsIdx + posOffset
+    : weaponsIdx++
+
+  mutateUnitStats(unitStats, pos, mkTitle(stat.id, stat.getRowListHeader(title), stat.getRowListValue(title)))
+
+  return weaponsIdx
+}
+
+function appendWeaponStats(unitStats, unit, stat, list, weaponsIdx, existingListStats) {
+  let listTitle = stat.getListTitle()
+  if (listTitle && !existingListStats?[stat.id]) {
+    existingListStats[stat.id] <- true
+    mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
+      mkTitle(mkTitleId(stat.id), listTitle))
+  }
+
+  foreach (weapListIdx, weap in list) {
+    if (!sortedUnitTypesByWeapDmg?[unit.unitType])
+      weap.sort(@(a, b) b.damage <=> a.damage)
+
+    foreach (i, wCfg in weap)
+      mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
+        getWeaponStat(unit, stat, wCfg, list, weapListIdx, i))
+  }
+
+  return weaponsIdx
+}
 
 function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
-  if (shopCfg == null)
+  if (shopCfg == null || statsWithAttr == null)
     return []
-  if (statsWithAttr == null)
-    return []
+
   let unitStats = statsList.map(@(stat) mkUnitStat(unit, stat, shopCfg, stat.id, statsWithAttr))
 
   let weaponSlots = loadUnitWeaponSlots(unit.name)
@@ -586,7 +661,7 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   let weapByType = weaponSlots.len() == 0
     ? (shopCfg?.weapons ?? {}).reduce(function(res, wCfg, wId) {
         let wtype = wCfg?.wtype ?? wCfg?.type ?? "null"
-        res[wtype] <- (res?[wtype] ?? []).append(wCfg.__update({ wId }))
+        res[wtype] <- (res?[wtype] ?? []).append(wCfg.__update({ wId, baseWCfg = shopCfg?.baseStats.weapons[wId] }))
         return res
       }, {})
     : getWeapByTypeFromSlots(weaponSlots)
@@ -598,67 +673,30 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   local weaponsIdx = statsList.findindex(@(stat) stat.isAfterWeapons)
   let existingListStats = {}
   let existingRowLists = {}
+
   foreach (stat in weapStatsList) {
     if (stat.hasSeveralValueRows && !existingRowLists?[stat.id]) {
       existingRowLists[stat.id] <- true
-      let aggregatedStats = weapStatsList.filter(@(v) v.id == stat.id)
-      let headers = {}
-      foreach (aggregateStat in aggregatedStats) {
-        let list = weapByType?.filter(@(_, k) isWeaponById(aggregateStat, k)) ?? []
-        if (list.filter(@(v) v != null).len() == 0)
-          continue
-
-        foreach (weap in list)
-          foreach (wCfg in weap) {
-            if (!aggregateStat.isAvailable(wCfg))
-              return null
-            let header = aggregateStat.getHeader(wCfg, unit)
-            if (header != null)
-              headers[header] <- true
-          }
-      }
-
-      if (headers.len() > 0) {
-        let title = " ".join(headers.keys())
-        let { posOffset = null } = stat
-        let pos = weaponsIdx == null ? null
-          : posOffset != null ? weaponsIdx + posOffset
-          : weaponsIdx++
-        mutateUnitStats(unitStats, pos,
-          mkTitle(stat.id, stat.getRowListHeader(title), stat.getRowListValue(title)))
-      }
+      weaponsIdx = addMultiRowStatTitle(unitStats, unit, stat, weapStatsList, weapByType, weaponsIdx)
       continue
     }
 
-    let list = unit.unitType == TANK ? [weapByType?[shopCfg?.mainWeaponType ?? "mainCannon"]]
-      : stat.getListTitle() ? (weapByType?.filter(@(_, k) isWeaponById(stat, k)) ?? [])
-      : [weapByType?[stat.id]]
+    let list = getWeaponList(unit, stat, weapByType, shopCfg)
     if (list.filter(@(v) v != null).len() == 0)
       continue
 
-    let listTitle = stat.getListTitle()
-    if (listTitle && !existingListStats?[stat.id]) {
-      existingListStats[stat.id] <- true
-      mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
-        mkTitle(mkTitleId(stat.id), listTitle))
-    }
-
-    foreach (weapListIdx, weap in list) {
-      if (!sortedUnitTypesByWeapDmg?[unit.unitType])
-        weap.sort(@(a, b) b.damage <=> a.damage)
-      foreach (i, wCfg in weap)
-        mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
-          mkUnitStat(unit, stat, wCfg, $"{stat.id}{list.len() == 1 ? i : $"{weapListIdx}{i}"}"))
-    }
+    weaponsIdx = appendWeaponStats(unitStats, unit, stat, list, weaponsIdx, existingListStats)
   }
+
   return unitStats.filter(@(v) v != null)
 }
 
 function mkUnitStats(unit, attrLevels, attrPreset, cfgKey) {
   let { unitType, name, mods = null } = unit
+  let shopCfg = applyAttrLevels(unitType, getUnitTagsShop(name), attrLevels, attrPreset, mods)
   return getUnitStats(unit,
-    applyAttrLevels(unitType, getUnitTagsShop(name), attrLevels, attrPreset, mods),
-    getUnitTagsShop(name),
+    shopCfg,
+    shopCfg?.baseStats ?? getUnitTagsShop(name),
     statsCfg?[unitType][cfgKey] ?? [],
     weaponsCfg?[unitType][cfgKey] ?? [])
 }

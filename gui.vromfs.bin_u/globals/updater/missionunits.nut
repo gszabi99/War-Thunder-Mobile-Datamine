@@ -152,7 +152,9 @@ function getHighestRankRange(mode, mRankFrom, mRankTo) {
   return { from, to }
 }
 
-function getMGameModeMissionUnitsAndAddons(mode, mRankFrom, mRankTo) {
+
+
+function getMGameModeMissionUnitsAndAddons(mode, mRankFrom, mRankTo, allLowKillStreak = false) {
   let resUnits = {}
   let resAddons = {}
   let { mission_decl = {}, soonMissionRanks = {} } = mode
@@ -180,7 +182,7 @@ function getMGameModeMissionUnitsAndAddons(mode, mRankFrom, mRankTo) {
 
   if (mission_decl?.useKillStreaks ?? useKillStreaksMision) {
     let { from, to } = getHighestRankRange(mode, mRankFrom, mRankTo)
-    resUnits.__update(getKillStreakUnits(mission_decl?.nameKillStreaks ?? "", from, to))
+    resUnits.__update(getKillStreakUnits(mission_decl?.nameKillStreaks ?? "", allLowKillStreak ? mRankFrom : from, to))
   }
 
   let tagsBlk = get_unittags_blk()
@@ -251,4 +253,5 @@ return {
   getBotUnits
   getCommonBots
   addSupportUnits
+  getHighestRankRange
 }
