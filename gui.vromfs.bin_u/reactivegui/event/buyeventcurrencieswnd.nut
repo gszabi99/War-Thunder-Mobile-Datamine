@@ -23,7 +23,9 @@ let buyEventCurrenciesWnd = {
       valign = ALIGN_CENTER
       children = [
         buyEventCurrenciesHeader
+        { size = flex() }
         mkEventCurrenciesGoods
+        { size = flex(2) }
         buyEventCurrenciesDesc
       ]
     }

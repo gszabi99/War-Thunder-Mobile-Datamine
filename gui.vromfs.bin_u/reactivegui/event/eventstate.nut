@@ -301,7 +301,7 @@ let unitTypesByEvent = Computed(function() {
     if (separateEventModes.get().findvalue(@(_, gmEventName) gmEventName == eventName) != null)
       res[unitType] <- true
   }
-  return res.keys()
+  return res
 })
 
 let isFitSeasonRewardsRequirements = Computed(function() {

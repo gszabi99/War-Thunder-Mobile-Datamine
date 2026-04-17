@@ -54,9 +54,10 @@ function mkTabImage(image, imageSizeMul) {
 }
 
 function tabData(tab, idx) {
-  let { locId  = "", image = null } = tab
+  let { locId  = "", image = null, isVisible = null } = tab
   return {
     id = idx
+    isVisible
     content = {
       size = [flex(), tabHeight]
       padding = const [hdpx(10), hdpx(20)]
@@ -86,8 +87,8 @@ function tabData(tab, idx) {
 
 function mkTab(data, curTabIdx) {
   let stateFlags = Watched(0)
-  let isActive = Computed (@() curTabIdx.get() == data.id || (stateFlags.get() & S_ACTIVE) != 0)
-  let isHover = Computed (@() stateFlags.get() & S_HOVER)
+  let isActive = Computed(@() curTabIdx.get() == data.id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isHover = Computed(@() stateFlags.get() & S_HOVER)
 
   return {
     size = FLEX_H
@@ -100,12 +101,23 @@ function mkTab(data, curTabIdx) {
   }
 }
 
-let mkHorizontalTabs = @(tabs, curTabIdx) {
+let tabsRoot = {
   size = FLEX_H
   halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(8)
-  children = tabs.map(@(tab, idx) mkTab(tabData(tab, idx), curTabIdx))
+}
+
+function mkHorizontalTabs(tabs, curTabIdx) {
+  let tabsData = tabs.map(@(tab, idx) tabData(tab, idx))
+  let watch = tabsData.map(@(t) t?.isVisible).filter(@(v) v != null)
+  return watch.len() == 0 ? tabsRoot.__merge({ children = tabsData.map(@(tab) mkTab(tab, curTabIdx)) })
+    : @() tabsRoot.__merge({
+        watch
+        children = tabsData
+          .filter(@(tab) tab?.isVisible.get() ?? true)
+          .map(@(tab) mkTab(tab, curTabIdx))
+      })
 }
 
 return { mkHorizontalTabs }

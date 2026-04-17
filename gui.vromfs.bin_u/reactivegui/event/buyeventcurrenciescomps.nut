@@ -200,8 +200,7 @@ function mkEventCurrenciesGoods() {
 
   return {
     watch = [eventCurrenciesGoods, currencyId, currencyToFullId, needUseScroll]
-    padding = const [hdpx(45), 0, 0, 0]
-    size = flex()
+    size = FLEX_H
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = !needUseScroll.get() ? mkCurrenciesList(cId, eventCurrenciesGoods.get(), showQuestsLink, needUseScroll.get())
@@ -239,8 +238,6 @@ let buyEventCurrenciesDesc = function() {
     size = [saSize[0], SIZE_TO_CONTENT]
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
-    hplace = ALIGN_CENTER
-    vplace = ALIGN_CENTER
     halign = ALIGN_CENTER
     text = convertionCurrencyId == ""
         && !hasLootboxesForConvertion(currencyId.get(), inactiveLootboxes.get(), serverConfigs.get())

@@ -16,7 +16,7 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { backButtonHeight } = require("%rGui/components/backButton.nut")
 
-let infoBlockPadding = [hdpx(10), hdpx(50)]
+let infoBlockPadding = [hdpx(5), hdpx(50), hdpx(10), hdpx(50)]
 let scrollMedalsPadding = [hdpx(20), hdpx(20), 0, hdpx(10)]
 let medalsGap = hdpx(25)
 let infoBlockPartsGap = hdpx(50)
@@ -73,6 +73,14 @@ let mkMedals = @(selCampaign) function() {
   }
 }
 
+let premIcon = {
+  size = iconSize
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FIT
+  image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
+  vplace = ALIGN_CENTER
+}
+
 let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
   minWidth = SIZE_TO_CONTENT
   size = FLEX_H
@@ -90,26 +98,27 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
       children = [
         mkMedals(campaign)
         function() {
-          let my = unitsStats.get().my[campaign]
-          let all = unitsStats.get().all[campaign]
+          let { myResearch = 0, allResearch = 0, myMaxLevel = 0, my = 0, myPremium = 0,
+            allPremium = 0, mySeasonPrem = 0, myCollectible = 0, myOther = 0,
+            allBlueprint = 0, myBlueprint = 0
+          } = unitsStats.get()?[campaign]
           return {
             watch = unitsStats
             size = FLEX_H
             valign = ALIGN_CENTER
             flow = FLOW_VERTICAL
-            gap = hdpx(5)
             children = [
               mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
-              mkMarqueeRow(loc("stats/line"), $"{my.wp}/{all.wp}")
-              mkMarqueeRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
-              mkMarqueeRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
-                size = iconSize
-                rendObj = ROBJ_IMAGE
-                keepAspect = KEEP_ASPECT_FIT
-                image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
-                vplace = ALIGN_CENTER
-              })
-              mkMarqueeRow(loc("stats/rare"), $"{my.rare}")
+              mkMarqueeRow(loc("stats/maxLevel"), $"{myMaxLevel}/{my}")
+              mkMarqueeRow(loc("stats/research"), $"{myResearch}/{allResearch}")
+              mkMarqueeRow(loc("stats/blueprint"), $"{myBlueprint}/{allBlueprint}")
+              mkMarqueeRow(loc("stats/premium"), $"{myPremium}/{allPremium}", premIcon)
+              mySeasonPrem == 0 ? null
+                : mkMarqueeRow(loc("stats/seasonPremium"), $"{mySeasonPrem}", premIcon)
+              myCollectible == 0 ? null
+                : mkMarqueeRow(loc("stats/rare"), $"{myCollectible}")
+              myOther == 0 ? null
+                : mkMarqueeRow(loc("stats/other"), $"{myOther}")
             ]
           }
         }
@@ -121,7 +130,6 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
             size = FLEX_H
             valign = ALIGN_CENTER
             flow = FLOW_VERTICAL
-            gap = hdpx(5)
             children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
               .extend(viewStats.map(@(conf) mkStatRow(stats, conf, camp, mkMarqueeRow)))
           }
@@ -131,45 +139,37 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
   ]
 })
 
+let inc = @(res, key) res.$rawset(key, (res?[key] ?? 0) + 1)
+
 return function() {
   let unitsStats = Computed(function() {
-    let { unitLevels = {}, allUnits = {} } = serverConfigs.get()
+    let { unitLevels = {}, allUnits = {}, unitResearchExp = {}, allBlueprints = {} } = serverConfigs.get()
     let { units = {} } = servProfile.get()
-    let all = {}
-    let my = {}
-
-    foreach (v in campaignsList.get()) {
-      all[v] <- { prem = 0, wp = 0 }
-      my[v] <- { prem = 0 wp = 0 maxLevel = 0 rare = 0 }
-    }
-
-    foreach (id, v in allUnits) {
-      let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false, isPremium = false, costWp = 0 } = v
-      if (id in unreleasedUnits.get())
+    let res = {}
+    foreach (name, u in allUnits) {
+      let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false, isPremium = false } = u
+      if (name in unreleasedUnits.get())
         continue
-      if (campaign not in all)
-        all[campaign] <- { prem = 0, wp = 0 }
-      if (campaign not in my)
-        my[campaign] <- { prem = 0 wp = 0 maxLevel = 0 rare = 0 }
-      if (isPremium && !isHidden)
-        all[campaign].prem++
-      else if (costWp > 0)
-        all[campaign].wp++
+      let counts = getSubTable(res, campaign)
+      let listId = name in unitResearchExp ? "Research"
+        : name in allBlueprints ? "Blueprint"
+        : isPremium && !isHidden ? "Premium"
+        : isPremium ? "SeasonPrem"
+        : isCollectible ? "Collectible"
+        : "Other"
+      inc(counts, "all")
+      inc(counts, $"all{listId}")
 
-      if (id not in units)
+      if (name not in units)
         continue
-      let unit = units[id]
+      inc(counts, "my")
+      inc(counts, $"my{listId}")
+      let { level } = units[name]
       let maxLevel = unitLevels?[levelPreset].len() ?? 0
-      if (isCollectible)
-        my[campaign].rare++
-      if (isPremium && !isHidden)
-        my[campaign].prem++
-      else if ((costWp ?? 0) > 0)
-        my[campaign].wp++
-      if (unit?.level == maxLevel)
-        my[campaign].maxLevel++
+      if (level >= maxLevel)
+        inc(counts, "myMaxLevel")
     }
-    return {all my}
+    return res
   })
 
   return {
@@ -181,7 +181,7 @@ return function() {
         {
           flow = FLOW_VERTICAL
           size = FLEX_H
-          gap = hdpx(20)
+          gap = hdpx(10)
           children = campaignsList.get()
             .map(@(v) mkInfo(v, unitsStats))},
         {},

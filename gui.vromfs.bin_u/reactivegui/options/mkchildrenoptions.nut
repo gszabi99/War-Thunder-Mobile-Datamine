@@ -36,7 +36,17 @@ let scrollArrowsBlock = {
 
 function mkChildrenOptions(tabs) {
   let curTabIdx = mkWatched(persist, $"childrenOptions_curTabIdx", 0)
-  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(_) true))
+  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(t) t?.isVisible.get() ?? true))
+
+  foreach(idx, tab in tabs) {
+    let { isVisible = null } = tab
+    if (isVisible == null)
+      continue
+    let tabIdx = idx
+    isVisible.subscribe(@(v) v || tabIdx != curTabIdx.get() ? null : resetCurTabIdx())
+    if (tabIdx == curTabIdx.get() && !isVisible.get())
+      resetCurTabIdx()
+  }
 
   curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
   let gap = hdpx(50)
@@ -68,7 +78,7 @@ function mkChildrenOptions(tabs) {
   return {
     size = flex()
     function onAttach() {
-      if (curTabIdx.get() not in tabs)
+      if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.get() ?? true))
         resetCurTabIdx()
     }
     children = {

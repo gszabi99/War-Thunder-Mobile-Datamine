@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_game_version_str, get_base_game_version_str } = require("app")
+let { WALKER } = require("%appGlobals/unitConst.nut")
 let { soundOptions } = require("%rGui/options/options/soundOptions.nut")
 let { graphicOptions } = require("%rGui/options/options/graphicOptions.nut")
 let { langOptions } = require("%rGui/options/options/langOptions.nut")
@@ -11,6 +12,8 @@ let { walkerControlsOptions } = require("%rGui/options/options/walkerControlsOpt
 let { systemOptions } = require("%rGui/options/options/systemOptions.nut")
 let { gameOptions } = require("%rGui/options/options/gameOptions.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
+let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
+
 
 let tabs = [ 
   {
@@ -52,6 +55,7 @@ let tabs = [
         locId = "options/walkerControls"
         image = "ui/gameuiskin#unit_walker.svg"
         options = walkerControlsOptions
+        isVisible = Computed(@() unitTypesByEvent.get()?[WALKER] ?? false)
       }
     ]
   }

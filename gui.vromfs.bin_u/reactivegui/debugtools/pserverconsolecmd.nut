@@ -26,6 +26,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { campMyUnits, campUnitsCfg, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -431,6 +432,57 @@ register_command(function() {
     console_print(object_to_json_string(res, true))
   },
   "meta.print_all_units_list")
+
+register_command(function() {
+    let { allUnits = {}, unitResearchExp = {}, allBlueprints = {}, ovrOnlyUnits = {} } = serverConfigs.get()
+    let unreleased = unreleasedUnits.get()
+    let all = {}
+    foreach (name, u in allUnits) {
+      let { campaign = "", isCollectible = false, isPremium = false, isHidden = false } = u
+      if (name in unreleased || name in ovrOnlyUnits)
+        continue
+      let listId = name in unitResearchExp ? "research"
+        : name in allBlueprints ? "blueprint"
+        : isPremium && !isHidden ? "premium"
+        : isPremium ? "seasonPremimum"
+        : isCollectible ? "collectible"
+        : "other"
+      getSubArray(getSubTable(all, campaign), listId).append(name)
+    }
+
+    let order = ["research", "blueprint", "premium", "seasonPremimum", "collectible", "other"]
+    let campaigns = all.keys().sort()
+    let countsText = "\n".join(campaigns.map(function(c) {
+      let resArr = [$"{c}:"]
+      foreach (id in order)
+        if (id in all[c])
+          resArr.append($"  {id} = {all[c][id].len()}")
+      return "\n".join(resArr)
+    }))
+    let listText = "\n\n".join(campaigns.map(function(c) {
+      let resArr = [$"{c}:"]
+      foreach (id in order)
+        if (id in all[c]) {
+          resArr.append($"  {id}:")
+          all[c][id].sort()
+          foreach (u in all[c][id])
+            resArr.append($"    {u}")
+        }
+      return "\n".join(resArr)
+    }))
+    let fullText = "\n\n".concat(countsText, listText)
+
+    openMsgBox({
+      uid = "debug_all_units_by_type"
+      text = makeSideScroll(msgBoxText(fullText, infoTextOvr))
+      wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
+      buttons = [
+        { text = "COPY", cb = @() set_clipboard_text(fullText) }   
+        { id = "ok", styleId = "PRIMARY", isDefault = true }   
+      ]
+    })
+  },
+  "meta.show_all_units_by_type")
 
 function printAllCampConfigs(printFunc) {
   let wasCampaign = curCampaign.get()

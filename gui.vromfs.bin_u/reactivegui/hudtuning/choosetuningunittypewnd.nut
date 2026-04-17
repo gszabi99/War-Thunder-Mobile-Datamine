@@ -50,7 +50,7 @@ let content = @() {
   padding = gap
   flow = FLOW_VERTICAL
   gap
-  children = [].extend(unitTypes, unitTypesByEvent.get()).map(@(ut)
+  children = [].extend(unitTypes, unitTypesByEvent.get().keys()).map(@(ut)
     (ut == tuningUnitType.get() ? textButtonCommon : textButtonPrimary)(
       utf8ToUpper(loc($"mainmenu/type_{ut}")),
       @() changeUnitType(ut),
