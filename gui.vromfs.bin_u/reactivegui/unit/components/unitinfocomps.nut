@@ -73,11 +73,11 @@ function mkUnitBonuses(unit, override = {}, bonusCtor = mkBonus) {
   }.__update(override)
 }
 
-function mkUnitDailyLimit(unit, unitsGold, override = {}, bonusDailyCtor = mkDailyBonus) {
-  let { name = "", dailyGoldLimit = 0 } = unit
-  let { lastDay = 0, time = 0 } = unitsGold?[name]
-  return @(){
-    watch = [serverTimeDay, dayOffset]
+let mkUnitDailyLimit = @(unit, unitGold, override = {}, bonusDailyCtor = mkDailyBonus) function() {
+  let { dailyGoldLimit = 0 } = unit
+  let { lastDay = 0, time = 0 } = unitGold.get()
+  return {
+    watch = [serverTimeDay, dayOffset, unitGold]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = hdpx(20)

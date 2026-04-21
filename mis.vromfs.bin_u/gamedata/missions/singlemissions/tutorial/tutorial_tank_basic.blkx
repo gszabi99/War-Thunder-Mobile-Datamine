@@ -853,9 +853,6 @@
           },
           {
             "time": 0.5
-          },
-          {
-            "time": 2.0
           }
         ],
         "unitSetProperties": [
@@ -884,11 +881,11 @@
           "object_var_value": 0,
           "target": "target_tanks_squad"
         },
-        "tacticalMapForceZoom": {
+        "__tacticalMapForceZoom": {
           "zoom": 1.0
         },
-        "hudElementSelectionShade": {
-          "drawFromGui": true,
+        "__hudElementSelectionShade": {
+          "drawFromGui": false,
           "element": "tactical_map",
           "object": [
             "target_tank01",
@@ -896,36 +893,35 @@
             "target_tank03"
           ]
         },
-        "triggerActivate": [
-          {
-            "target": "shootingP1_player_teleport",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          },
-          {
-            "target": "hint_pause_show",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
-        ],
-        "missionSetTimeSpeed": [
-          {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        ],
+        "triggerActivate": {
+          "target": "shootingP1_player_teleport",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
         "playerSetMouseAim": {
           "lookat": "look_at_01"
         },
-        "varSetString": {
+        "__missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": false
+        },
+        "__varSetString": {
           "value": "hints/wtm_tutorial_tank/minimap",
           "var": "hint_current"
+        },
+        "__triggerActivate": {
+          "target": "hint_pause_show",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        },
+        "__wait": {
+          "time": 1.0
         },
         "triggerEnable": {
           "target": "shootingVideo_correct_shooting"

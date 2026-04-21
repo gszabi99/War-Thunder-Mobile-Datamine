@@ -16,16 +16,6 @@ let wndHeader = {
   valign = ALIGN_CENTER
   children = [
     backButton(closeLootboxPreview)
-    @() {
-      watch = previewLootbox
-      rendObj = ROBJ_TEXT
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      color = 0xFFFFFFFF
-      text = getLootboxName(previewLootbox.get()?.name)
-      margin = const [0, 0, 0, hdpx(15)]
-    }.__update(fontBigShaded)
   ]
 }
 
@@ -41,7 +31,19 @@ let lootboxPreviewWnd = @() {
     gap = wndHeaderGap
     children = [
       wndHeader
+      { size = flex() }
+      @() {
+        watch = previewLootbox
+        rendObj = ROBJ_TEXT
+        size = FLEX_H
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        color = 0xFFFFFFFF
+        text = getLootboxName(previewLootbox.get()?.name)
+        margin = const [0, 0, 0, hdpx(15)]
+      }.__update(fontBigShaded)
       lootboxPreviewContent(previewLootbox.get())
+      { size = flex(2) }
     ]
   }
   animations = wndSwitchAnim

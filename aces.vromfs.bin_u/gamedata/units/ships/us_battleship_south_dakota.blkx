@@ -393,7 +393,7 @@
     },
     "citadel_armor": {
       "armorClass": "ship_RHA",
-      "armorThickness": 229.0,
+      "armorThickness": 310.0,
       "hp": 136910.0,
       "fireDamageMult": 0.001,
       "armor_cit_01_dm": {},

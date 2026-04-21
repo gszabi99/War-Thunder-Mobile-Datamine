@@ -350,8 +350,9 @@ let calcSalvoRocketDamage = @(s) (s?.damage ?? 0) * (
 
 function valueWithDiff(modifiedValue, value, text) {
   let diff = value - modifiedValue
-  let sign = diff >= 0 ? "-" : "+"
-  return " ".concat(value, colorize(addedFromSlot, $"{sign} {abs(diff)}"), text)
+  let sign = diff > 0 ? "-" : "+"
+  return diff == 0 ? " ".concat(value, text)
+    : " ".concat(value, colorize(addedFromSlot, $"{sign} {abs(diff)}"), text)
 }
 
 let weaponsCfgShip = {
@@ -389,7 +390,7 @@ let weaponsCfgTank = {
     }, TANK)
     mkStat("reloadTime", {
       valueToText = @(v, _) "".concat(round_by_value(v, 0.01), loc("measureUnits/seconds"))
-      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round_by_value(modifiedValue, 0.1), round_by_value(value, 0.01), loc("measureUnits/seconds"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round_by_value(modifiedValue, 0.01), round_by_value(value, 0.01), loc("measureUnits/seconds"))
       getProgress = mkGetProgressInv(TANK, "reloadTime")
       isAvailable = @(_) true
     }, TANK)

@@ -50,7 +50,7 @@
     "wingAreaMult": 11.0,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 1.2,
+    "distFromCmToStab": 0.075,
     "massEnd": 1625.0,
     "massEnd1": 1475.0,
     "timeFire": 2.0,
@@ -175,11 +175,24 @@
         "loftTargetElevation": -5.0,
         "loftAngleToAccelMult": 2.0,
         "loftTargetOmegaMax": 5.0,
-        "propNavMult": 6.0,
+        "altitudeHoldEnabled": false,
+        "timeToHitToAltitude0": [
+          20.0,
+          2.5
+        ],
+        "timeToHitToAltitude1": [
+          30.0,
+          15.0
+        ],
+        "altitudeDiffToClimb": 0.1,
+        "altitudeRateRateToClimb": 0.08,
+        "climbDiffToAccelMult": 0.05,
+        "propNavMult": 5.0,
+        "reqAccelMax": 15.0,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.0041,
-        "accelControlIntg": 0.021,
-        "accelControlDiff": 0.0004,
+        "accelControlProp": 0.0295,
+        "accelControlIntg": 0.0225,
+        "accelControlDiff": 0.0058,
         "accelControlIntgLim": 1.0
       }
     },

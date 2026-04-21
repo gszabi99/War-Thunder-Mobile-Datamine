@@ -133,16 +133,16 @@ function openLeaveBattleMsg() {
 let openLeaveReplayMsg = @() openMsgBox({
   text = loc("msgbox/leaveBattle/toReplaysList")
   buttons = [
+    { text = loc("msgbox/leaveBattle/replayBtn"), styleId = "PRIMARY", cb = quitMission, hotkeys = ["^J:LB"] }
     { text = loc("return_to_replay"), isCancel = true }
-    { text = loc("return_to_replays_list"), styleId = "PRIMARY", cb = quitMission }
   ]
 })
 
 let openRestartReplayMsg = @() openMsgBox({
   text = loc("msgbox/leaveBattle/restartReplay")
   buttons = [
+    { text = loc("msgbox/btn_restart"), styleId = "PRIMARY", cb = restart_replay, hotkeys = ["^J:LB"] }
     { text = loc("return_to_replay"), isCancel = true }
-    { text = loc("msgbox/btn_restart"), styleId = "PRIMARY", cb = restart_replay }
   ]
 })
 

@@ -314,13 +314,13 @@
       "pressureDamageMult": 30.0,
       "bridge_dm": {}
     },
-    "turrets": {
+    "aux_turrets": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
+      "armorThrough": 30.0,
       "hp": 24670.0,
-      "fireParamsPreset": "ship_turrets",
+      "fireParamsPreset": "ship_aux_fire",
       "genericDamageMult": 1.0,
-      "main_caliber_turret_01_dm": {},
       "auxiliary_caliber_turret_03_dm": {}
     },
     "engine_rooms": {
@@ -377,6 +377,23 @@
     "part": [
       {
         "name": "main_caliber_turret_01_dm",
+        "onHit": {
+          "damageType": "generic",
+          "damage": 150.0,
+          "fire": 0.05,
+          "action": {
+            "type": "fxEvent",
+            "probability": 0.6,
+            "fxEventName": "fire_after_hit_med"
+          },
+          "moduleStatusEffect": {
+            "name": "shotFreqMult",
+            "prob": 1.0
+          }
+        }
+      },
+      {
+        "name": "auxiliary_caliber_turret_03_dm",
         "onHit": {
           "damageType": "generic",
           "damage": 150.0,

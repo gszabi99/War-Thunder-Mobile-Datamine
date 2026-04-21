@@ -152,10 +152,10 @@ return @() {
   size = flex()
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  gap = { size = flex() }
   children = [
     canShowSocialNetworks ? header : null
     canShowSocialNetworks ? socNetworks : null
+    { size = flex() }
     feedBack
   ]
 }

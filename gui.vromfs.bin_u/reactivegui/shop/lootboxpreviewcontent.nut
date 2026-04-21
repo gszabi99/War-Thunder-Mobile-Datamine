@@ -595,7 +595,7 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
   let rewards = Computed(@() getLootboxRewardsAutoLast(lootbox, servProfile.get(), serverConfigs.get()))
   return @() {
     watch = rewards
-    size = flex()
+    size = FLEX_H
     halign = ALIGN_CENTER
     valign = ALIGN_TOP
     flow = FLOW_VERTICAL

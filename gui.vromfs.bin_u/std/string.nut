@@ -313,7 +313,7 @@ function tostring_r(inp, params=defTostringParams) {
     if (typ == "array" && val.len() == 0)
       return [true, "[]"]
     if (typ == "instance") {
-      let str = val?.tostring()
+      let str = type(val?.tostring) == "function" ? val.tostring() : null
       return [str != null && str.indexof("(instance : 0x") != 0, str]
     }
     return [false, null]
@@ -391,7 +391,8 @@ function tostring_r(inp, params=defTostringParams) {
         stream.writestring(newline)
         stream.writestring(indent)
         if (!arrayElem) {
-          stream.writestring(tostring_any(key,null, compact)," = ")
+          stream.writestring(tostring_any(key,null, compact))
+          stream.writestring(" = ")
         }
         stream.writestring(brOp)
         write_to_string(value, $"{indent}{indentOnNewline}", curdeeplevel+1)

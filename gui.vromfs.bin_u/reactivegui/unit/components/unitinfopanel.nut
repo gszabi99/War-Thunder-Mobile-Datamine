@@ -446,7 +446,7 @@ let unitRewardsBlock = @(unit, title) {
   ]
 }
 
-let unitRewardsDailyBlock = @(unit, title, unitsGold) unit?.dailyGoldLimit == 0 ? null : {
+let unitRewardsDailyBlock = @(unit, title) unit?.dailyGoldLimit == 0 ? null : {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   size = [ statsWidth, hdpx(40) ]
@@ -460,7 +460,7 @@ let unitRewardsDailyBlock = @(unit, title, unitsGold) unit?.dailyGoldLimit == 0 
       delay = defMarqueeDelay
       speed = hdpx(50)
     }.__update(fontVeryTinyAccented)
-    mkUnitDailyLimit(unit, unitsGold, {})
+    mkUnitDailyLimit(unit, Computed(@() servProfile.get()?.unitsGold[unit.name]), {})
   ]
 }
 
@@ -532,7 +532,7 @@ function unitInfoPanel(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hanga
           : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium
-          ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
+          ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"))
           : null
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.get(), false)
@@ -595,7 +595,7 @@ function unitInfoPanelFull(unit = hangarUnit, ovr = {}) {
                   : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
                     { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
                 unit.get()?.isUpgraded || unit.get()?.isPremium
-                  ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
+                  ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"))
                   : null
                 unitStatsBlock(unitStats, prevStats)
                 unitArmorBlock(unit.get(), false)

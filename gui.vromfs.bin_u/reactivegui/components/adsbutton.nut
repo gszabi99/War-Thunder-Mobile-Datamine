@@ -7,6 +7,7 @@ let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { iconTextButton } = require("%rGui/components/textButton.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
+let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 
 
 let bonusIconSize = hdpxi(35)
@@ -64,7 +65,7 @@ function mkBonusesText(debrData, adBonuses) {
 let mkAdsButton = @(debrData) @() {
   watch = [hasVip, isAdsAvailable, adBudget]
   children = (debrData?.reward.playerWp.totalWp ?? 0) == 0 || debrData?.adsBonuses || !isAdsAvailable.get() || adBudget.get() <= 0
-      || debrData?.predefinedReward != null
+      || debrData?.predefinedReward != null || !debrData?.sessionId
     ? null
     : {
         flow = FLOW_VERTICAL
@@ -84,30 +85,41 @@ let mkAdsButton = @(debrData) @() {
             hasVip.get() ? "ui/gameuiskin#gamercard_subs_vip.avif"
               : "ui/gameuiskin#watch_ads.svg",
             utf8ToUpper(loc("debriefing/improveReward"))
-            @() hasVip.get() ? apply_last_battle_ad_reward(debrData.sessionId, { id = "debriefing.adShowed", debrData })
-              : showAdsForReward({ debrData = debrData }),
+            @() hasVip.get() ? apply_last_battle_ad_reward(debrData.sessionId, { id = "debriefing.adShowed", sessionId = debrData.sessionId })
+              : showAdsForReward({
+                  bqId = "after_battle",
+                  bqParams = { details = debrData?.campaign ?? "" },
+                  cost = 1,
+                  sessionId = debrData?.sessionId,
+                }),
             { ovr = { size = [hdpx(400), hdpxi(109)]} })
         ]
       }
 }
 
 eventbus_subscribe("adsShowFinish", function(data) {
-  if (data?.debrData.sessionId != null) {
-    apply_last_battle_ad_reward(data?.debrData.sessionId, { id = "debriefing.adShowed", debrData = data.debrData })
+  if (data?.sessionId != null) {
+    apply_last_battle_ad_reward(data.sessionId, {
+      id = "debriefing.adShowed",
+      sessionId = data.sessionId
+    })
   }
 })
 
 registerHandler("debriefing.adShowed", function(res, context) {
-  let { debrData } = context
-  let sessionId = debrData?.sessionId.tostring()
-  if (res?.error == null && sessionId && res?.lastBattles[sessionId])
+  let sessionId = context?.sessionId
+  if (!sessionId)
+    return
+
+  let battle = res?.lastBattles[sessionId.tostring()]
+  if (res?.error == null && battle && debriefingData.get().sessionId == sessionId)
     eventbus_send("adsBonusToApply",
       {
         goldDif = res?.unseenPurchases.findvalue(@(_) true).goods.findvalue(@(g) g.id == "gold").count ?? 0
         wpDif = res?.unseenPurchases.findvalue(@(_) true).goods.findvalue(@(g) g.id == "wp").count ?? 0
-        expDif = res.lastBattles[sessionId].playerExp - debrData.reward.playerExp.totalExp
-        unitsDif = res.lastBattles[sessionId].unitsProgress.map(function(unit, uName) {
-          let debrUnit = debrData.reward.units.findvalue(@(u) u.name == uName)
+        expDif = battle.playerExp - debriefingData.get().reward.playerExp.totalExp
+        unitsDif = battle.unitsProgress.map(function(unit, uName) {
+          let debrUnit = debriefingData.get().reward.units.findvalue(@(u) u.name == uName)
           return unit.__merge({
             expDif = unit.exp - (debrUnit?.exp.totalExp ?? 0)
             slotExpDif = unit.slotExp - (debrUnit?.slotExp.totalExp ?? 0)

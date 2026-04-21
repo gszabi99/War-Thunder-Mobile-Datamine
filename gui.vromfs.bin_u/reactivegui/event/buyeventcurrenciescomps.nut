@@ -223,6 +223,7 @@ let buyEventCurrenciesHeader = @() {
   watch = [currencyId, parentEventLoc]
   size = FLEX_H
   halign = ALIGN_CENTER
+  margin = const [0, 0, hdpx(20), 0]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))

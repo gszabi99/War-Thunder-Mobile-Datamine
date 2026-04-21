@@ -3,7 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } = require("%appGlobals/legal.nut")
 let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
-let { textButtonPrimary, textButtonCommon, buttonsHGap, buttonsVGap, mkCustomButton,
+let { textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,
   mkButtonTextMultiline, mergeStyles
 } = require("%rGui/components/textButton.nut")
 let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
@@ -38,7 +38,6 @@ let logoutToDeleteAccountMsgBox = @() openMsgBox({
 return @() {
   size = flex()
   watch = [tcf_consent_enabled, isTcfConsentRequiredForCountry, consentRequiredForCurrentRegion]
-  padding = [buttonsHGap, 0, 0, 0]
   flow = FLOW_VERTICAL
   gap = buttonsVGap
   halign = ALIGN_CENTER

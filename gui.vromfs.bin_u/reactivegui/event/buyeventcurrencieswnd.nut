@@ -22,8 +22,8 @@ let buyEventCurrenciesWnd = {
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       children = [
-        buyEventCurrenciesHeader
         { size = flex() }
+        buyEventCurrenciesHeader
         mkEventCurrenciesGoods
         { size = flex(2) }
         buyEventCurrenciesDesc

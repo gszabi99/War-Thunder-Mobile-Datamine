@@ -22,7 +22,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report,
   get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_units,
-  pp_add_currencies
+  pp_add_currencies, add_unit_gold_today
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -186,6 +186,17 @@ register_command(function(exp) {
   add_unit_exp(name, exp, "consolePrintResult")
   return "OK"
 }, "meta.add_cur_unit_exp")
+
+register_command(@(gold) add_unit_gold_today(mainHangarUnitName.get(), gold, "consolePrintResult"),
+  "meta.add_cur_unit_gold_today")
+register_command(function(unitName, gold) {
+  if (unitName not in campUnitsCfg.get())
+    return $"Unit '{unitName}' not exists"
+  if (unitName not in campMyUnits.get())
+    return $"Unit '{unitName}' not own"
+  add_unit_gold_today(unitName, gold, "consolePrintResult")
+  return "Unit found"
+}, "meta.add_unit_gold_today")
 
 register_command(@() resetCustomSettings(), "meta.reset_custom_settings")
 

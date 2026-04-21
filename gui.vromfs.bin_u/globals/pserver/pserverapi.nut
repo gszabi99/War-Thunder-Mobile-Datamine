@@ -1054,4 +1054,9 @@ return {
     method = "pp_add_currencies_client"
     params = { currencies }
   }, cb)
+
+  add_unit_gold_today = @(unitName, diff, cb = null) request({
+    method = "add_unit_gold_today"
+    params = { unitName, diff }
+  }, cb)
 }
