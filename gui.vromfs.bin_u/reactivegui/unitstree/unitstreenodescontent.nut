@@ -553,7 +553,7 @@ let function mkUnitsNode(node, pos, hasDarkScreenV) {
                       if (hasDarkScreenV && !currentResearch.get() && !unitsResearchStatus.get()?[name].canResearch)
                         return
                       curSelectedUnit.set(name)
-                      markUnitSeen(curUnit)
+                      markUnitSeen(name)
                       markBranchSeen(curCampaign.get(), curUnit.country)
                       if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
                         setResearchedUnitsSeen({ [name] = true })

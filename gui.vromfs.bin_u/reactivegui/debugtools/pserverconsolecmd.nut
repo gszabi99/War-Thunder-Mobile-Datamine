@@ -20,7 +20,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
-  add_currency_no_popup_by_full_id, get_campaign_copy_exceptions, get_profile, debug_apply_unit_rent, get_gdpr_report,
+  add_currency_no_popup_by_full_id, get_profile, debug_apply_unit_rent, get_gdpr_report,
   get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_units,
   pp_add_currencies, add_unit_gold_today
 } = pServerApi
@@ -138,34 +138,6 @@ registerHandler("onDebugPurchasesList",
       buttons = [
         { text = "COPY", cb = @() set_clipboard_text(text) }   
         { id = "ok", styleId = "PRIMARY", isDefault = true }   
-      ]
-    })
-  })
-
-registerHandler("onGetCopyExceptions",
-  function(res) {
-    let { copyExceptions = {} } = res
-    let textArr = []
-    let sortedList = copyExceptions.map(@(v, name) v.__merge({ name }))
-      .values()
-      .sort(@(a, b) a.name <=> b.name)
-    let upgradedMark = colorize("@mark", "(upgraded) ")
-    foreach(cfg in sortedList) {
-      let { name, targetName, skinsRemap, isOnlyForUpgraded = false } = cfg
-      textArr.append($"{name} {isOnlyForUpgraded ? upgradedMark : ""}=> {targetName}")
-      foreach (sFrom, sTo in skinsRemap)
-        textArr.append($"      {sFrom == "" ? "default" : sFrom} => {sTo}")
-    }
-    let text = "\n".join(textArr)
-    openMsgBox({
-      uid = "debug_check_purchases"
-      text = makeSideScroll(msgBoxText(text, infoTextOvr))
-      wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
-      buttons = [
-        { text = "COPY",
-          cb = @() set_clipboard_text(text.replace("<color=@mark>", "").replace("</color>", ""))
-        }
-        { id = "ok", styleId = "PRIMARY", isDefault = true }
       ]
     })
   })
@@ -379,8 +351,6 @@ register_command(
     console_print(mainHangarUnitName.get()) 
   },
   "meta.copy_hangar_unit_name_to_clipboard")
-
-register_command(@() get_campaign_copy_exceptions("onGetCopyExceptions"), "meta.get_campaign_copy_exceptions")
 
 registerHandler("saveJson",
   function(res, context) {

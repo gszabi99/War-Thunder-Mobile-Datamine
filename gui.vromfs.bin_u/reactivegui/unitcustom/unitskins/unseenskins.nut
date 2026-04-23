@@ -3,7 +3,8 @@ let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { deferOnce } = require("dagor.workcycle")
-let { blk2SquirrelObjNoArrays, isDataBlock } = require("%sqstd/datablock.nut")
+let { blk2SquirrelObjNoArrays, isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -11,6 +12,8 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let SEEN_SKINS = "seenSkins"
 let SEEN_SKINS_VERSIONS = "seenSkinsVersions"
+let SEEN_SKINS_VERSION_KEY = "seenSkinsVersion"
+let ACTUAL_VERSION = 2
 let seenVersions = {
   tanks_new = 1
 }
@@ -37,13 +40,41 @@ let mySkinsToMark = Computed(function() {
 let unseenSkins = Computed(function() {
   let seen = seenSkins.get()
   return mySkinsToMark.get()
-    .map(@(list, unitName) list.filter(@(_, skinName) skinName not in seen?[unitName]))
+    .map(@(list, unitName) list.filter(@(_, skinName) getTagsUnitName(skinName) not in seen?[unitName]))
     .filter(@(v) v.len() != 0)
 })
+
+function applyCompatibility() {
+  let sBlk = get_local_custom_settings_blk()
+  if ((sBlk?[SEEN_SKINS_VERSION_KEY] ?? 0) == ACTUAL_VERSION)
+    return
+
+  sBlk[SEEN_SKINS_VERSION_KEY] = ACTUAL_VERSION
+  let toRemove = {}
+  let toAdd = {}
+  let blk = sBlk.addBlock(SEEN_SKINS)
+  eachBlock(blk, function(b) {
+    let name = b.getBlockName()
+    if (getTagsUnitName(name) == name)
+      return
+    toRemove[name] <- true
+    let add = {}
+    eachParam(b, @(v, k) add.$rawset(k, v))
+    toAdd[getTagsUnitName(name)] <- add
+  })
+  foreach (u, _ in toRemove)
+    blk.removeBlock(u)
+  foreach (u, add in toAdd) {
+    let b = blk.addBlock(u)
+    foreach (k, v in add)
+      b[k] <- v
+  }
+}
 
 function loadSeenSkins() {
   if (!isLoggedIn.get())
     return
+  applyCompatibility()
   let sBlk = get_local_custom_settings_blk()
   let seenBlk = sBlk?[SEEN_SKINS]
   seenSkins.set(isDataBlock(seenBlk) ? blk2SquirrelObjNoArrays(seenBlk) : {})
@@ -61,14 +92,15 @@ function markSkinsSeen(unitName, skinsList) {
   if (skins.len() == 0)
     return
 
+  let tagName = getTagsUnitName(unitName)
   let sBlk = get_local_custom_settings_blk()
-  let blk = sBlk.addBlock(SEEN_SKINS).addBlock(unitName)
+  let blk = sBlk.addBlock(SEEN_SKINS).addBlock(tagName)
   foreach(s in skins)
     blk[s] = true
   eventbus_send("saveProfile", {})
 
   seenSkins.mutate(function(v) {
-    v[unitName] <- (v?[unitName] ?? {}).__merge(skins.reduce(@(res, s) res.$rawset(s, true), {}))
+    v[tagName] <- (v?[tagName] ?? {}).__merge(skins.reduce(@(res, s) res.$rawset(s, true), {}))
   })
 }
 
@@ -81,11 +113,12 @@ function markCurCampaignSkinsSeen() {
   let seenUpdate = {}
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_SKINS)
   foreach (unitName, list in unseenSkins.get()) {
-    let blk = sBlk.addBlock(unitName)
-    seenUpdate[unitName] <- clone seenSkins.get()?[unitName] ?? {}
+    let tagName = getTagsUnitName(unitName)
+    let blk = sBlk.addBlock(tagName)
+    seenUpdate[tagName] <- clone seenSkins.get()?[tagName] ?? {}
     foreach(s, _ in list) {
       blk[s] = true
-      seenUpdate[unitName][s] <- true
+      seenUpdate[tagName][s] <- true
     }
   }
 

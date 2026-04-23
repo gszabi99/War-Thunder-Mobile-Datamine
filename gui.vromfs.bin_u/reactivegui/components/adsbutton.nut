@@ -1,10 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { apply_last_battle_ad_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { battleAdsBonusesCfg, isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
+let { battleAdsBonusesCfg, isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/adsState.nut")
+let { SECONDARY, COMMON } = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { iconTextButton } = require("%rGui/components/textButton.nut")
+let { iconTextButton, mergeStyles } = require("%rGui/components/textButton.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
@@ -62,39 +65,51 @@ function mkBonusesText(debrData, adBonuses) {
   return res
 }
 
-let mkAdsButton = @(debrData) @() {
-  watch = [hasVip, isAdsAvailable, adBudget]
-  children = (debrData?.reward.playerWp.totalWp ?? 0) == 0 || debrData?.adsBonuses || !isAdsAvailable.get() || adBudget.get() <= 0
-      || debrData?.predefinedReward != null || !debrData?.sessionId
-    ? null
+function onNotInitedProviderClick() {
+  openMsgBox({ text = loc("shop/notAvailableAds") })
+  sendErrorLocIdBqEvent("shop/notAvailableAds")
+}
+
+function mkAdsButton(debrData) {
+  let { reward = null, predefinedReward = null, sessionId = null, campaign = "" } = debrData
+  let { totalWp = 0 } = reward?.playerWp
+  if (totalWp == 0 || debrData?.adsBonuses || predefinedReward != null || sessionId == null)
+    return null
+  let hasAdBudget = Computed(@() adBudget.get() > 0)
+  return @() !isAdsAvailable.get() ? { watch = isAdsAvailable }
     : {
-        flow = FLOW_VERTICAL
-        halign = ALIGN_CENTER
-        gap = hdpx(5)
-        children = [
-          {
-            rendObj = ROBJ_TEXT
-            text = loc("debriefing/improveReward")
-          }.__update(fontTinyAccented)
-          @() {
-            watch = adsBonuses
-            flow = FLOW_HORIZONTAL
-            children = mkBonusesText(debrData, adsBonuses.get())
-          }
-          iconTextButton(
-            hasVip.get() ? "ui/gameuiskin#gamercard_subs_vip.avif"
-              : "ui/gameuiskin#watch_ads.svg",
-            utf8ToUpper(loc("debriefing/improveReward"))
-            @() hasVip.get() ? apply_last_battle_ad_reward(debrData.sessionId, { id = "debriefing.adShowed", sessionId = debrData.sessionId })
-              : showAdsForReward({
-                  bqId = "after_battle",
-                  bqParams = { details = debrData?.campaign ?? "" },
-                  cost = 1,
-                  sessionId = debrData?.sessionId,
-                }),
-            { ovr = { size = [hdpx(400), hdpxi(109)]} })
-        ]
-      }
+        watch = [hasVip, isAdsAvailable, hasAdBudget, isProviderInited]
+        children = {
+          flow = FLOW_VERTICAL
+          halign = ALIGN_CENTER
+          gap = hdpx(5)
+          children = [
+            {
+              rendObj = ROBJ_TEXT
+              text = loc("debriefing/improveReward")
+            }.__update(fontTinyAccented)
+            @() {
+              watch = adsBonuses
+              flow = FLOW_HORIZONTAL
+              children = mkBonusesText(debrData, adsBonuses.get())
+            }
+            iconTextButton(
+              hasVip.get() ? "ui/gameuiskin#gamercard_subs_vip.avif" : "ui/gameuiskin#watch_ads.svg",
+              utf8ToUpper(hasAdBudget.get() ? loc("debriefing/improveReward") : loc("btn/adsLimitReached")),
+              @() !hasAdBudget.get() ? openMsgBox({ text = loc("msg/adsLimitReached") })
+                : hasVip.get() ? apply_last_battle_ad_reward(sessionId, { id = "debriefing.adShowed", sessionId })
+                : !isProviderInited.get() ? onNotInitedProviderClick()
+                : showAdsForReward({
+                    bqId = "after_battle",
+                    bqParams = { details = campaign },
+                    cost = 1,
+                    sessionId,
+                  }),
+              mergeStyles(hasAdBudget.get() && isProviderInited.get() ? SECONDARY : COMMON,
+                { ovr = { size = [hdpx(400), hdpxi(109)]} }))
+          ]
+        }
+  }
 }
 
 eventbus_subscribe("adsShowFinish", function(data) {

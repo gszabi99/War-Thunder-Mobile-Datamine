@@ -5,6 +5,7 @@ let { object_to_json_string } = require("json")
 let io = require("io")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
+let { get_time_msec } = require("dagor.time")
 let { sendNetEvent, CmdApplyMyBattleResultOnExit } = require("dasevents")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -56,7 +57,7 @@ eventbus_subscribe("adsBonusToApply",function(adsBonuses) {
   if(!adsBonuses)
     return
 
-  baseBattleResult.set(baseBattleResult.get().__merge({ adsBonuses }))
+  baseBattleResult.set(baseBattleResult.get().__merge({ adsBonuses = adsBonuses.__merge({ time = get_time_msec() }) }))
 })
 
 hasPremiumSubs.subscribe(function(hasSubs) {
@@ -81,6 +82,7 @@ hasPremiumSubs.subscribe(function(hasSubs) {
       expDif
       wpDif
       unitsDif
+      time = get_time_msec()
     }}))
 })
 

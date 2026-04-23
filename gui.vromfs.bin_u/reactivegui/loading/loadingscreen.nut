@@ -34,7 +34,11 @@ function updateWeights() {
     if ((campaign != null && !(screenCfg?.camp.contains(commonCamp) ?? true)))
       continue
 
-    let curSeason = curSeasons.get()?[screenCfg?.timeRange.season]
+    let { season = null } = screenCfg?.timeRange
+    let curSeason = curSeasons.get()?[season]
+    if (season != null && curSeason == null)
+      continue
+
     let { seasonIdx = null } = screenCfg?.timeRange
     let isActualSeasonIdx = seasonIdx == null || seasonIdx == curSeason?.idx
     let rawStart = screenCfg?.timeRange.start

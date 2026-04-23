@@ -8,7 +8,8 @@ let { screensList } = require("loadingScreensCfg.nut")
 let curScreenId = mkWatched(persist, "curScreenId", null)
 let lastAttachedTime = mkWatched(persist, "lastAttachedTime", -1000000)
 let isBgAttached = Watched(false)
-let screenWeights = Watched(screensList.map(@(s) s.weight))
+let screenWeights = Watched(screensList.reduce(@(res, s, idx)
+  s?.timeRange == null && s.weight > 0.0 ? res.$rawset(idx, s.weight) : res, {}))
 
 local lastChooseWeights = null
 

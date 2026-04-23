@@ -376,23 +376,6 @@
   "DamageEffects": {
     "part": [
       {
-        "name": "main_caliber_turret_01_dm",
-        "onHit": {
-          "damageType": "generic",
-          "damage": 150.0,
-          "fire": 0.05,
-          "action": {
-            "type": "fxEvent",
-            "probability": 0.6,
-            "fxEventName": "fire_after_hit_med"
-          },
-          "moduleStatusEffect": {
-            "name": "shotFreqMult",
-            "prob": 1.0
-          }
-        }
-      },
-      {
         "name": "auxiliary_caliber_turret_03_dm",
         "onHit": {
           "damageType": "generic",
@@ -508,7 +491,6 @@
         "compartment_02_dm",
         "compartment_03_dm",
         "engine_room_01_dm",
-        "main_caliber_turret_01_dm",
         "auxiliary_caliber_turret_03_dm",
         "ammunition_storage_01_dm",
         "ammunition_storage_02_dm"
@@ -1647,7 +1629,6 @@
             "compartment_04_dm": {},
             "bridge_dm": {},
             "engine_room_01_dm": {},
-            "main_caliber_turret_01_dm": {},
             "auxiliary_caliber_turret_03_dm": {}
           }
         }

@@ -150,8 +150,12 @@ function mkSlotColumn(unit, debrData) {
   if (unit == null)
     return null
   let slotLevelCfg = getSlotLevelCfg(unit, debrData)
-  local slotExp = getSlotExpByUnit(unit?.name, debrData)
-  slotExp = slotExp.__merge({totalExp = slotExp.totalExp + (slotExp?.adBonus ?? 0) + (slotExp?.subsBonus ?? 0)})
+  local slotExp = getSlotExpByUnit(unit.name, debrData)
+  slotExp = slotExp.__merge({
+    totalExp = slotExp.totalExp
+      + (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0)
+      + (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
+  })
   let { plateWithLevelProgressComp, levelProgressAnimTime
   } = mkPlateWithLevelProgress(debrData, slotLevelCfg, slotExp, levelProgressAnimStartTime, slotExpColor)
   let { levelUnlocksComps, levelUnlocksAnimTime } = mkSlotLevelUnlockLines(unit, debrData, levelUnlocksAnimStartTime)
@@ -161,8 +165,12 @@ function mkSlotColumn(unit, debrData) {
 function mkUnitColumn(unit, debrData) {
   if (unit == null)
     return null
-  local unitExp = getUnitRewards(unit?.name, debrData)?.exp ?? 0
-  unitExp = unitExp.__merge({totalExp = unitExp.totalExp + (unitExp?.adBonus ?? 0) + (unitExp?.subsBonus ?? 0)})
+  local unitExp = getUnitRewards(unit.name, debrData)?.exp ?? {}
+  unitExp = unitExp.__merge({
+    totalExp = unitExp.totalExp
+      + (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0)
+      + (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
+  })
   let { plateWithLevelProgressComp, levelProgressAnimTime
   } = mkPlateWithLevelProgress(debrData, unit, unitExp, levelProgressAnimStartTime, unitExpColor)
   let { levelUnlocksComps, levelUnlocksAnimTime } = mkUnitLevelUnlockLines(unit, debrData, levelUnlocksAnimStartTime)

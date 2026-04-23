@@ -6,13 +6,12 @@ let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { reset_campaigns, campaignInProgress, registerHandler, copy_campaign_progress
+let { reset_campaigns, campaignInProgress, registerHandler
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { campaignsList, setCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { needFirstBattleTutorForCampaign, rewardTutorialMission, setSkippedTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
@@ -150,36 +149,15 @@ registerHandler("onResetCampaign",
 function onResetCampaign(campaign) {
   if (campaignInProgress.get() != null)
     return
-
-  let { campaignCfg = {} } = serverConfigs.get()
-  let { convertFrom = "" } = campaignCfg?[campaign]
-  let campGroup = [convertFrom]
-  foreach(c, cfg in campaignCfg)
-    if (cfg?.convertFrom == campaign)
-      campGroup.append(c)
-  let otherCamps = campGroup.filter(@(c) c != campaign && campaignsList.get().contains(c))
-
-  let otherNames = comma.join(otherCamps)
-  let buttons = [
-    { text = $"Reset {campaign}", styleId = "PRIMARY", isDefault = true,
-      cb = @() reset_campaigns([campaign], { id = "onResetCampaign", campaign })
-    }
-  ]
-  if (campaignsList.get().contains(convertFrom))
-    buttons.append({ text = $"Fill by {convertFrom}",
-      styleId = "PRIMARY",
-      cb = @() copy_campaign_progress(campaign, convertFrom, { id = "onResetCampaign", campaign }),
-    })
-  if (otherCamps.len() > 0)
-    buttons.append({ text = "Reset with linked",
-      cb = @() reset_campaigns([campaign].extend(otherCamps), { id = "onResetCampaign", campaign })
-    })
   openMsgBox({
     uid = RESET_MSG_UID
     title = modalWndHeaderWithClose($"Reset campaign {campaign} progress", @() closeMsgBox(RESET_MSG_UID))
-    text = otherCamps.len() == 0 ? $"Reset campaign {campaign}?"
-      : $"Campaign {campaign} has linked campaigns:\n{otherNames}\nYou can reset them all at once."
-    buttons
+    text = $"Reset campaign {campaign}?"
+    buttons = [
+      { text = $"Reset {campaign}", styleId = "PRIMARY", isDefault = true,
+        cb = @() reset_campaigns([campaign], { id = "onResetCampaign", campaign })
+      }
+    ]
   })
 }
 

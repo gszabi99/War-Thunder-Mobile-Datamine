@@ -288,7 +288,6 @@ return {
   process_currency_write_off = @(cb = null) request({ method = "process_currency_write_off" }, cb)
   add_all_decals = @(cb = null) request({ method = "add_all_decals" }, cb)
   remove_all_decals = @(cb = null) request({ method = "remove_all_decals" }, cb)
-  get_campaign_copy_exceptions = @(cb = null) request({ method = "get_campaign_copy_exceptions" }, cb)
   get_cur_time = @(cb = null) request({ method = "get_cur_time" }, cb)
   debug_reset_unit_rent = @(cb = null) request({ method = "debug_reset_unit_rent" }, cb)
   get_gdpr_report = @(cb = null) request({ method = "get_gdpr_report_client" }, cb)
@@ -300,13 +299,6 @@ return {
     params = { campaigns }
     progressId = PROGRESS_CAMPAIGN
     progressValue = campaigns[0]
-  }, cb)
-
-  copy_campaign_progress = @(campaignTo, campaignFrom, cb = null) request({
-    method = "copy_campaign_progress"
-    params = { campaignTo, campaignFrom }
-    progressId = PROGRESS_CAMPAIGN
-    progressValue = campaignTo
   }, cb)
 
   add_player_exp = @(campaign, playerExp, cb = null) request({

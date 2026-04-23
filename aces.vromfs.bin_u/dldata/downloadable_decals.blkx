@@ -2422,5 +2422,45 @@
     "lod0": "a75wv6ztobgrdooyeunexegdkgx5yfim-dvai",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "6u7jsktm45lzuyr26xh2tsqtckgbduin-6ry"
+  },
+  "victory_britain_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "qcmisgd66lzozwuw7ppvhv7bbthkhvhy-hrgi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "cxmjdbpd6t2u3nfwdkvekdjc5tj6c7we-b7qy"
+  },
+  "victory_china_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "dalvnmehevo2cyzu3bqvtmqsdwoxn2oo-f56q",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "iwmkr5ervkvqqndmkquycokpay7gk3bg-bs7i"
+  },
+  "victory_france_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "6sjgj6jtf632x6rypshd577lgxfvsi4e-hnbi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "all46esju5rkcrk7jg4mezgaioo6crb4-b65q"
+  },
+  "victory_usa_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "conanbjr5t6kx6zayx4mjz2smanqkb5h-hs6q",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "hmgaz532akrbev2vnemyumvi6xm3gsan-caga"
+  },
+  "victory_ussr_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "jb4qnoc5kstspkusnbxgia3w5hu5xfj7-hoti",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "lsj74o646tpcw6o653v4vpqwmxfdisj3-b7ka"
   }
 }

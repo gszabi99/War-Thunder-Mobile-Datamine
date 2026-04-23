@@ -92,21 +92,7 @@ function getUnitRewards(unitName, debrData) {
     return {}
   if (debrData?.reward.unitExp != null && unitName == getBestUnitName(debrData))
     return { name = unitName, exp = debrData.reward.unitExp } 
-  let unitReward = (debrData?.reward.units ?? []).findvalue(@(v) v?.name == unitName) ?? {}
-  if(debrData?.subsBonuses.unitsDif[unitName]) {
-    let unitSubBonusDif = debrData.subsBonuses.unitsDif[unitName]
-    unitReward.exp.subsBonus <- unitSubBonusDif.expDif
-    unitReward.gold.subsBonus <- unitSubBonusDif.goldDif
-    unitReward.slotExp.subsBonus <- unitSubBonusDif.slotExpDif
-  }
-  if(debrData?.adsBonuses.unitsDif[unitName]) {
-    let unitAdsBonusDif = debrData.adsBonuses.unitsDif[unitName]
-    unitReward.exp.adBonus <- unitAdsBonusDif.expDif
-    unitReward.gold.adBonus <- unitAdsBonusDif.goldDif
-    unitReward.slotExp.adBonus <- unitAdsBonusDif.slotExpDif
-  }
-
-  return unitReward
+  return (debrData?.reward.units ?? []).findvalue(@(v) v?.name == unitName) ?? {}
 }
 
 function getSlotExpByUnit(unitName, debrData) {

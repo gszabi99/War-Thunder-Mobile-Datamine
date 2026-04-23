@@ -137,7 +137,7 @@ function setupAnalytics() {
 function saveToLocalStorage() {
   local res = false
   foreach (p in parse_json(getAllPurposes()))
-    if (hasConsentForPurpose(p.id) || (PURPOSES_WITH_LEGITIMATE_INTEREST.contains(p.id) && hasPurposeLIT(p.id))) {
+    if (hasConsentForPurpose(p.id)) {
       res = true
       break
     }

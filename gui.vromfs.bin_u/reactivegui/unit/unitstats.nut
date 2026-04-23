@@ -348,11 +348,13 @@ let calcSalvoRocketDamage = @(s) (s?.damage ?? 0) * (
   (s?.reloadTime ?? 0) > 0 ? ((s?.rocketsSalvo ?? 1) / s.reloadTime) : ((s?.gunsCount ?? 1) * (s?.shotFreq ?? 0))
 )
 
-function valueWithDiff(modifiedValue, value, text) {
-  let diff = value - modifiedValue
+function valueWithDiff(modifiedValue, value, text, roundBy = 1) {
+  let roundedValue = round_by_value(value, roundBy)
+  let roundedModified = round_by_value(modifiedValue, roundBy)
+  let diff = round_by_value(roundedValue - roundedModified, roundBy)
   let sign = diff > 0 ? "-" : "+"
-  return diff == 0 ? " ".concat(value, text)
-    : " ".concat(value, colorize(addedFromSlot, $"{sign} {abs(diff)}"), text)
+  return diff == 0 ? " ".concat(roundedValue, text)
+    : " ".concat(roundedValue, colorize(addedFromSlot, $"{sign} {abs(diff)}"), text)
 }
 
 let weaponsCfgShip = {
@@ -385,18 +387,18 @@ let weaponsCfgTank = {
     mkStat("armorPower", {
       getHeader = @(_, __) " ".concat(cannonMark, loc("stats/armorPower"))
       valueToText = @(v, _) "".concat(round(v), loc("measureUnits/mm"))
-      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round(modifiedValue), round(value), loc("measureUnits/mm"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(modifiedValue, value, loc("measureUnits/mm"))
       isAvailable = @(_) true
     }, TANK)
     mkStat("reloadTime", {
       valueToText = @(v, _) "".concat(round_by_value(v, 0.01), loc("measureUnits/seconds"))
-      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round_by_value(modifiedValue, 0.01), round_by_value(value, 0.01), loc("measureUnits/seconds"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(modifiedValue, value, loc("measureUnits/seconds"), 0.01)
       getProgress = mkGetProgressInv(TANK, "reloadTime")
       isAvailable = @(_) true
     }, TANK)
     mkStat("gunnerTurretRotationSpeed", {
       valueToText = @(v, _) "".concat(round(v), loc("measureUnits/deg_per_sec"))
-      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(round(modifiedValue), round(value), loc("measureUnits/deg_per_sec"))
+      valueToTextWithDiff = @(modifiedValue, value) valueWithDiff(modifiedValue, value, loc("measureUnits/deg_per_sec"))
       isAvailable = @(_) true
     }, TANK)
   ]

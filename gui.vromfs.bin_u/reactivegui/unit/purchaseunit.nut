@@ -22,7 +22,7 @@ registerHandler("onUnitPurchaseResult",
     if (res?.error != null)
       return
     let { unitId } = context
-    if (curUnit.get() == null || curUnit.get().name == unitId) {
+    if (curUnit.get() == null) {
       let errString = setCurrentUnit(unitId)
       if (errString != "") {
         logerr($"On choose unit after purchase: {errString}")

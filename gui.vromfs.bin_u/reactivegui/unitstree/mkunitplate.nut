@@ -144,7 +144,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       if (isLvlUpAnimated.get())
         return
       curSelectedUnit.set(unit.name)
-      markUnitSeen(unit)
+      markUnitSeen(unit.name)
     }
     onAttach = unitsTreeOpenRank.get() != null
       && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
@@ -471,7 +471,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
       onDragMode = @(on, data) draggedData.set(on ? data : null)
       function onClick() {
         curSelectedUnit.set(unit.name)
-        markUnitSeen(unit)
+        markUnitSeen(unit.name)
       }
       dragStartDelay = 0.5
       key = treeNodeUnitPlateKey(unit.name)

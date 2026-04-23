@@ -9,7 +9,7 @@ let { playerExpColor, unitExpColor, slotExpColor } = require("%rGui/components/l
 let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
-let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitsSet, getUnitRewards, getSlotExpByUnit
+let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitRewards, getSlotExpByUnit
 } = require("%rGui/debriefing/debrUtils.nut")
 
 let REWARDS_SCORES = "wp"
@@ -26,18 +26,17 @@ let specialRowHeight = hdpx(45)
 let rewardAnimTime = 0.5
 let deltaStartTimeRewards = rewardAnimTime / 2
 
-let getIsMultiplayerMission = @(debrData) debrData?.sessionId != null
-let canUnitEarnGold = @(unit) (unit?.isPremium ?? false) || (unit?.isUpgraded ?? false)
-
 let getIsPremiumIncludedWp  = @(debrData) (debrData?.premiumBonus.wpMul  ?? 1.0) > 1.0 || debrData?.subsBonuses != null
 let getIsPremiumIncludedExp = @(debrData) (debrData?.premiumBonus.expMul ?? 1.0) > 1.0 || debrData?.subsBonuses != null
-let getIsPremiumIncludedGold = @(debrData) (debrData?.premiumBonus.goldMul ?? 1.0) > 1.0 || debrData?.subsBonuses != null
 
 let getPremMulWp  = @(debrData) debrData?.premiumBonus.wpMul  ?? debrData?.premiumBonusNotApplied.wpMul  ?? 1.0
 let getPremMulExp = @(debrData) debrData?.premiumBonus.expMul ?? debrData?.premiumBonusNotApplied.expMul ?? 1.0
 let getPremMulGold = @(debrData) debrData?.premiumBonus.goldMul ?? debrData?.premiumBonusNotApplied.goldMul ?? 1.0
 
 let isAdsBonusApplied = @(debrData) debrData?.adsBonuses != null
+let isAdsBeforePremium = @(debrData) debrData?.premiumBonus == null
+  && ((debrData?.adsBonuses != null && debrData?.subsBonuses == null)
+    || (debrData?.adsBonuses.time ?? 0) < (debrData?.subsBonuses.time ?? 0))
 
 let rewardsInfoCfg = {
   [REWARDS_SCORES] = {
@@ -50,33 +49,41 @@ let rewardsInfoCfg = {
     getStreaks = @(debrData) debrData?.reward.playerWp.streaksWp ?? 0
     getIsPremiumIncluded = getIsPremiumIncludedWp
     getPremMul = getPremMulWp
-    getTotalWithoutPremium = @(debrData) getIsMultiplayerMission(debrData) && getIsPremiumIncludedWp(debrData)
-      ? (debrData?.reward.playerWp.totalWp ?? 0) - (debrData?.reward.playerWp.premWp ?? 0) + (debrData?.adsBonuses.wpDif ?? 0)
-      : (debrData?.reward.playerWp.totalWp ?? 0) + (debrData?.adsBonuses.wpDif ?? 0)
-    getTotalWithPremium = @(debrData) !getIsMultiplayerMission(debrData) || getIsPremiumIncludedWp(debrData)
-      ? (debrData?.reward.playerWp.totalWp ?? 0) + (debrData?.subsBonuses.wpDif ?? 0) + (debrData?.adsBonuses.wpDif ?? 0)
-      : round(((debrData?.reward.playerWp.totalWp ?? 0) + (debrData?.adsBonuses.wpDif ?? 0)) * getPremMulWp(debrData)).tointeger()
-    getAdsBonus = @(debrData) debrData?.adsBonuses.wpDif ?? 0
+    getTotalWithoutPremium = @(debrData) debrData?.premiumBonus
+      ? (debrData?.reward.playerWp.totalWp ?? 0) - (debrData?.reward.playerWp.premWp ?? 0)
+      : (debrData?.reward.playerWp.totalWp ?? 0)
+    function getTotalWithPremium(debrData) {
+      let ads = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.wpDif ?? 0) : 0
+      return debrData?.subsBonuses || debrData?.premiumBonus
+        ? (debrData?.reward.playerWp.totalWp ?? 0) + (debrData?.subsBonuses.wpDif ?? 0) + ads
+        : round(((debrData?.reward.playerWp.totalWp ?? 0) + ads) * getPremMulWp(debrData)).tointeger()
+    }
+    function getTotalWithAds(debrData) {
+      let prem = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.wpDif ?? 0)
+      return (debrData?.reward.playerWp.totalWp ?? 0) + (debrData?.adsBonuses.wpDif ?? 0) + prem
+    }
     function getTotalGoldWithoutPremium(debrData) {
-      let calc = getIsMultiplayerMission(debrData) && getIsPremiumIncludedGold(debrData) && !debrData?.subsBonuses
-        ? @(v) min(v?.limitLeft ?? 0, (v?.totalBeforeLimit ?? 0) - (v?.premGold ?? 0))
-        : @(v) (v?.totalGold ?? 0)
-      let { goldDif = 0 } = debrData?.adsBonuses
-      return getUnitsSet(debrData)
-          .filter(canUnitEarnGold)
-          .reduce(@(res, unit) res + calc(getUnitRewards(unit.name, debrData)?.gold), 0)
-        + goldDif
+      let calc = debrData?.subsBonuses ? @(v) (v?.totalGold ?? 0)
+        : @(v) min(v?.limitLeft ?? 0, (v?.totalBeforeLimit ?? 0) - (v?.premGold ?? 0))
+      let { units = [] } = debrData?.reward
+      return units.reduce(@(res, u) res + calc(u?.gold), 0)
     }
     function getTotalGoldWithPremium(debrData) {
       let premMulGold = getPremMulGold(debrData)
-      let calc = getIsMultiplayerMission(debrData) && getIsPremiumIncludedGold(debrData) && !debrData?.subsBonuses
-        ? @(v) (v?.totalGold ?? 0)
-        : @(v) min(v?.limitLeft ?? 0, round((v?.totalGold ?? 0) * premMulGold).tointeger())
-      let { goldDif = 0 } = debrData?.adsBonuses
-      return getUnitsSet(debrData)
-          .filter(canUnitEarnGold)
-          .reduce(@(res, unit) res + calc(getUnitRewards(unit.name, debrData)?.gold), 0)
-        + round(goldDif * premMulGold).tointeger()
+      let subsUnitsDif = debrData?.subsBonuses.unitsDif
+      let adsUnitsDif = isAdsBeforePremium(debrData) ? debrData?.adsBonuses.unitsDif : null
+      let calc = debrData?.subsBonuses || debrData?.premiumBonus
+        ? @(v, name) (v?.totalGold ?? 0) + (subsUnitsDif?[name].goldDif ?? 0) + (adsUnitsDif?[name].goldDif ?? 0)
+        : @(v, name) round((min(v?.limitLeft ?? 0, v?.totalGold ?? 0) + (adsUnitsDif?[name].goldDif ?? 0)) * premMulGold).tointeger()
+      let { units = [] } = debrData?.reward
+      return units.reduce(@(res, u) res + calc(u?.gold, u.name), 0)
+    }
+    function getTotalGoldWithAds(debrData) {
+      let subsUnitsDif = isAdsBeforePremium(debrData) ? null : debrData?.subsBonuses.unitsDif
+      let calc = @(v, name) (v?.totalGold ?? 0) + (subsUnitsDif?[name].goldDif ?? 0)
+      let { units = [] } = debrData?.reward
+      return units.reduce(@(res, u) res + calc(u?.gold, u.name), 0)
+        + (debrData?.adsBonuses.goldDif ?? 0)
     }
     mkCurrComp = @(val, style) mkCurrencyComp(val, WP, style)
   },
@@ -92,13 +99,19 @@ let rewardsInfoCfg = {
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
     getPremMul = getPremMulExp
-    getTotalWithoutPremium = @(debrData) getIsMultiplayerMission(debrData) && getIsPremiumIncludedExp(debrData)
-      ? (debrData?.reward.playerExp.totalExp ?? 0) - (debrData?.reward.playerExp.premExp ?? 0) + (debrData?.adsBonuses.expDif ?? 0)
-      : (debrData?.reward.playerExp.totalExp ?? 0) + (debrData?.adsBonuses.expDif ?? 0)
-    getTotalWithPremium = @(debrData) !getIsMultiplayerMission(debrData) || getIsPremiumIncludedExp(debrData)
-      ? (debrData?.reward.playerExp.totalExp ?? 0) + (debrData?.subsBonuses.expDif ?? 0) + (debrData?.adsBonuses.expDif ?? 0)
-      : round(((debrData?.reward.playerExp.totalExp ?? 0) + (debrData?.adsBonuses.expDif ?? 0))* getPremMulExp(debrData)).tointeger()
-    getAdsBonus = @(debrData) debrData?.adsBonuses.expDif ?? 0
+    getTotalWithoutPremium = @(debrData) debrData?.premiumBonus
+      ? (debrData?.reward.playerExp.totalExp ?? 0) - (debrData?.reward.playerExp.premExp ?? 0)
+      : (debrData?.reward.playerExp.totalExp ?? 0)
+    function getTotalWithPremium(debrData) {
+      let ads = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.expDif ?? 0) : 0
+      return debrData?.subsBonuses || debrData?.premiumBonus
+        ? (debrData?.reward.playerExp.totalExp ?? 0) + (debrData?.subsBonuses.expDif ?? 0) + ads
+        : round(((debrData?.reward.playerExp.totalExp ?? 0) + ads) * getPremMulExp(debrData)).tointeger()
+    }
+    function getTotalWithAds(debrData) {
+      let prem = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.expDif ?? 0)
+      return (debrData?.reward.playerExp.totalExp ?? 0) + (debrData?.adsBonuses.expDif ?? 0) + prem
+    }
     mkCurrComp = @(val, style) mkExp(val, playerExpColor, style)
   },
   [REWARDS_UNIT] = {
@@ -113,18 +126,23 @@ let rewardsInfoCfg = {
     getIsPremiumIncluded = getIsPremiumIncludedExp
     getPremMul = getPremMulExp
     function getTotalWithoutPremium(debrData) {
-      let { totalExp = 0, premExp = 0, adBonus = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
-      return getIsMultiplayerMission(debrData) && getIsPremiumIncludedExp(debrData)
-        ? totalExp - premExp + adBonus
-        : totalExp + adBonus
+      let { totalExp = 0, premExp = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
+      return debrData?.premiumBonus ? totalExp - premExp : totalExp
     }
     function getTotalWithPremium(debrData) {
-      let { totalExp = 0, adBonus = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
-      return !getIsMultiplayerMission(debrData) || getIsPremiumIncludedExp(debrData)
-        ? totalExp + adBonus
-        : round((totalExp + adBonus) * getPremMulExp(debrData)).tointeger()
+      let unitName = getBestUnitName(debrData)
+      let { totalExp = 0 } = getUnitRewards(unitName, debrData)?.exp
+      let ads = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.unitsDif[unitName].expDif ?? 0) : 0
+      return debrData?.subsBonuses || debrData?.premiumBonus
+        ? totalExp + ads
+        : round((totalExp + ads) * getPremMulExp(debrData)).tointeger()
     }
-    getAdsBonus = @(debrData) getUnitRewards(getBestUnitName(debrData), debrData)?.exp.adBonus ?? 0
+    function getTotalWithAds(debrData) {
+      let unitName = getBestUnitName(debrData)
+      let { totalExp = 0 } = getUnitRewards(unitName, debrData)?.exp
+      let prem = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.unitsDif[unitName].expDif ?? 0)
+      return totalExp + prem + (debrData?.adsBonuses.unitsDif[unitName].expDif ?? 0)
+    }
     mkCurrComp = @(val, style) mkExp(val, unitExpColor, style)
   },
   [REWARDS_SLOT] = {
@@ -149,26 +167,51 @@ let unitOrSlotRewardsCfg = {
   getIsPremiumIncluded = getIsPremiumIncludedExp
   getPremMul = getPremMulExp
   function getTotalWithoutPremium(debrData, unit) {
-    let { totalExp = 0, premExp = 0, adBonus = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
-    return getIsMultiplayerMission(debrData) && getIsPremiumIncludedExp(debrData)
-      ? totalExp - premExp + adBonus
-      : totalExp + adBonus
+    let { totalExp = 0, premExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
+    return debrData?.premiumBonus ? totalExp - premExp : totalExp
   }
   function getTotalWithPremium(debrData, unit) {
-    let { totalExp = 0, adBonus = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
-    return !getIsMultiplayerMission(debrData) || getIsPremiumIncludedExp(debrData)
-      ? totalExp + adBonus
-      : round((totalExp + adBonus) * getPremMulExp(debrData)).tointeger()
+    let { totalExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
+    let ads = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0) : 0
+    return debrData?.subsBonuses || debrData?.premiumBonus
+      ? totalExp + ads + (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
+      : round((totalExp + ads) * getPremMulExp(debrData)).tointeger()
   }
-  getAdsBonus = @(debrData, unit) getUnitOrSlotRewardsExp(unit, debrData)?.adBonus ?? 0
+  function getTotalWithAds(debrData, unit) {
+    let { totalExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
+    let prem = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
+    let ads = unit?.isSlot ? (debrData?.adsBonuses.unitsDif[unit.name].slotExpDif ?? 0)
+      : (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0)
+    return totalExp + prem + ads
+  }
+  function getTotalGoldWithoutPremium(debrData, unit) {
+    let r = getUnitRewards(unit.name, debrData)?.gold
+    return debrData?.subsBonuses ? (r?.totalGold ?? 0)
+      : min(r?.limitLeft ?? 0, (r?.totalBeforeLimit ?? 0) - (r?.premGold ?? 0))
+  }
+  function getTotalGoldWithPremium(debrData, unit) {
+    let subsGold = debrData?.subsBonuses.unitsDif[unit.name].goldDif ?? 0
+    let adsGold = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.unitsDif[unit.name].goldDif ?? 0) : 0
+    let { totalGold = 0, limitLeft = 0 } = getUnitRewards(unit.name, debrData)?.gold
+    return debrData?.subsBonuses || debrData?.premiumBonus
+      ? totalGold + subsGold + adsGold
+      : round((min(limitLeft, totalGold) + adsGold) * getPremMulGold(debrData)).tointeger()
+  }
+  function getTotalGoldWithAds(debrData, unit) {
+    let subsGold = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.unitsDif[unit.name].goldDif ?? 0)
+    let adsGold = debrData?.adsBonuses.unitsDif[unit.name].goldDif ?? 0
+    let { totalGold = 0 } = getUnitRewards(unit.name, debrData)?.gold
+    return totalGold + subsGold + adsGold
+  }
   mkCurrComp = @(val, style) mkExp(val, unitExpColor, style)
 }
 
 function getRewardsInfoUnit(preset, debrData, unit) {
   let isSlot = unit?.isSlot ?? false
-  let { getHasUnitProgress, getBasic, getBooster, getStreaks, getDailyBonus, getAdsBonus,
-    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium,
-    getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null } = unitOrSlotRewardsCfg
+  let { getHasUnitProgress, getBasic, getBooster, getStreaks, getDailyBonus, getTotalWithAds,
+    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium, getTotalGoldWithPremium,
+    getTotalGoldWithoutPremium, getTotalGoldWithAds
+  } = unitOrSlotRewardsCfg
   let isPremiumIncluded = getIsPremiumIncluded(debrData)
 
   if (!getHasUnitProgress(unit))
@@ -181,10 +224,7 @@ function getRewardsInfoUnit(preset, debrData, unit) {
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
   let streaks = getStreaks(debrData)
   let dailyBonus = getDailyBonus(debrData, unit)
-  let totalGoldWithPremium = getTotalGoldWithPremium ? getTotalGoldWithPremium(debrData) : 0
-  let totalGoldWithoutPremium = getTotalGoldWithoutPremium ? getTotalGoldWithoutPremium(debrData) : 0
-  let adsBonus = !isAdsBonusApplied(debrData) ? 0 : getAdsBonus(debrData, unit)
-  let goldAdsBonus = !isAdsBonusApplied(debrData) ? 0 : debrData?.adsBonuses.unitsDif[unit.name].goldDif ?? 0
+  let totalWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalWithAds(debrData, unit)
   return {
     isSlot,
     preset,
@@ -195,30 +235,30 @@ function getRewardsInfoUnit(preset, debrData, unit) {
     dailyBonus
     total
     totalWithPrem
-    totalGoldWithPremium
-    totalGoldWithoutPremium
-    goldAdsBonus
-    adsBonus
+    totalWithAds
+    totalGoldWithPremium = getTotalGoldWithPremium(debrData, unit)
+    totalGoldWithoutPremium = getTotalGoldWithoutPremium(debrData, unit)
+    totalGoldsWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalGoldWithAds(debrData, unit)
   }
 }
 
 function getRewardsInfo(preset, debrData) {
   let { getHasProgress, getBasic, getBooster, getStreaks, getDailyBonus,
-    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium, getAdsBonus
-    getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null } = rewardsInfoCfg[preset]
+    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium, getTotalWithAds
+    getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null, getTotalGoldWithAds = null } = rewardsInfoCfg[preset]
   let hasProgress = getHasProgress(debrData)
   let basic = hasProgress ? getBasic(debrData) : 0
   let booster = hasProgress ? getBooster(debrData) : 0
   let streaks = hasProgress ? getStreaks(debrData) : 0
   let isPremiumIncluded = getIsPremiumIncluded(debrData)
   let dailyBonus = hasProgress ? getDailyBonus(debrData) : 0
-  let adsBonus = !isAdsBonusApplied(debrData) ? 0 : getAdsBonus(debrData)
-  let goldAdsBonus = !isAdsBonusApplied(debrData) ? 0 : debrData.adsBonuses.goldDif
+  let totalWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalWithAds(debrData)
   let total = hasProgress ? getTotalWithoutPremium(debrData) : 0
   let totalWithPremRaw = hasProgress ? getTotalWithPremium(debrData) : 0
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
-  let totalGoldWithPremium = (getTotalGoldWithPremium && hasProgress ? getTotalGoldWithPremium(debrData) : 0)
-  let totalGoldWithoutPremium = (getTotalGoldWithoutPremium && hasProgress ? getTotalGoldWithoutPremium(debrData) : 0)
+  let totalGoldWithPremium = !hasProgress ? 0 : getTotalGoldWithPremium?(debrData) ?? 0
+  let totalGoldWithoutPremium = !hasProgress ? 0 : getTotalGoldWithoutPremium?(debrData) ?? 0
+  let totalGoldsWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalGoldWithAds?(debrData) ?? 0
   return {
     preset
     isPremiumIncluded
@@ -230,8 +270,8 @@ function getRewardsInfo(preset, debrData) {
     totalWithPrem
     totalGoldWithPremium
     totalGoldWithoutPremium
-    adsBonus
-    goldAdsBonus
+    totalWithAds
+    totalGoldsWithAds
   }
 }
 
@@ -275,9 +315,9 @@ let ovrCtorWpPremTotal = {
 }
 
 let ovrCtorWpTotalAdsBonus = {
-  getVal = @(ri) { wp = ri.adsBonus, gold = ri.goldAdsBonus }
+  getVal = @(ri) { wp = ri.totalWithAds, gold = ri.totalGoldsWithAds }
   valueCtor = @(value) [
-    mkCurrencyComp($"+ {decimalFormat(value.wp)}", WP, CS_DEBR_REWARD_TOTAL)
+    mkCurrencyComp($"{decimalFormat(value.wp)}", WP, CS_DEBR_REWARD_TOTAL)
     value.gold == 0
       ? null
       : mkCurrencyComp(value.gold, GOLD, CS_DEBR_REWARD_TOTAL.__merge({ textColor = premiumTextColor }))
@@ -286,12 +326,29 @@ let ovrCtorWpTotalAdsBonus = {
 let ovrCtorGold = { valueCtor = @(value) mkCurrencyComp($"+ {value}", GOLD, CS_DEBR_REWARD.__merge({ textColor = premiumTextColor })) }
 let ovrCtorExpPlayer = { valueCtor = @(value) mkExp($"+ {decimalFormat(value)}", playerExpColor, CS_DEBR_REWARD) }
 let ovrCtorExpPlayerTotal = { valueCtor = @(value) mkExp(value, playerExpColor, CS_DEBR_REWARD_TOTAL) }
+
 let ovrCtorExpUnit = { valueCtor = @(color) @(value) mkExp($"+ {decimalFormat(value)}", color, CS_DEBR_REWARD) }
-let ovrCtorExpUnitTotal = { valueCtor = @(color) @(value) mkExp(value, color, CS_DEBR_REWARD_TOTAL) }
+let ovrCtorGoldUnit = {
+  valueCtor = @(_) @(value) mkCurrencyComp($"+ {value}", GOLD, CS_DEBR_REWARD.__merge({ textColor = premiumTextColor }))
+}
+let ovrCtorExpUnitTotal = {
+  getVal = @(ri) { exp = ri.total, gold = ri.totalGoldWithoutPremium }
+  valueCtor = @(color) @(value) [
+    mkExp(value.exp, color, CS_DEBR_REWARD_TOTAL)
+    value.gold == 0
+      ? null
+      : mkCurrencyComp(value.gold, GOLD, CS_DEBR_REWARD_TOTAL.__merge({ textColor = premiumTextColor }))
+  ]
+}
+let ovrCtorExpUnitTotalPrem = ovrCtorExpUnitTotal
+  .__merge({ getVal = @(ri) { exp = ri.totalWithPrem, gold = ri.totalGoldWithPremium } })
+let ovrCtorExpUnitTotalAds = ovrCtorExpUnitTotal
+  .__merge({ getVal = @(ri) { exp = ri.totalWithAds, gold = ri.totalGoldsWithAds } })
+
 
 let cfgRowGold = {
   needShow = @(ri) ri.totalGoldWithoutPremium != 0
-  getVal = @(ri) ri.totalGoldWithoutPremium - ri.goldAdsBonus
+  getVal = @(ri) ri.totalGoldWithoutPremium
   getLabelText = @(_ri) loc("debriefing/rewards/premiumVehicle")
   getLabelIcon = @(_ri) iconPremVehicle
 }
@@ -344,39 +401,40 @@ let cfgRowTotalWithPrem = {
 }
 
 let cfgRowWithAds = {
-  needShow = @(ri) ri.adsBonus != 0
-  getVal = @(ri) ri.adsBonus
-  getLabelText = @(_ri) loc("debriefing/battleReward/improvedReward")
+  needShow = @(ri) ri.totalWithAds != 0
+  getVal = @(ri) ri.totalWithAds
+  getLabelText = @(_ri) loc("debriefing/battleReward/totalWithAds")
   getLabelIcon = @(_ri) mkLabelIcon("ui/gameuiskin#watch_ads.svg", labelIconSize, labelIconSize)
   labelOvr = fontTotal
 }
 
 let rewardRowsCfg = {
-  [REWARDS_SCORES] = [
+  [REWARDS_SCORES] = @(isAdsBefore) [
     cfgRowGold.__merge(ovrCtorGold)
     cfgRowBasic.__merge(ovrCtorWp)
     cfgRowDailyBonus.__merge(ovrCtorWp)
     cfgRowBooster.__merge(ovrCtorWp)
     cfgRowStreaks.__merge(ovrCtorWp)
-    cfgRowWithAds.__merge(ovrCtorWpTotalAdsBonus)
     cfgRowTotal.__merge(ovrCtorWpTotal)
-    cfgRowTotalWithPrem.__merge(ovrCtorWpPremTotal)
+    !isAdsBefore ? cfgRowTotalWithPrem.__merge(ovrCtorWpPremTotal) : cfgRowWithAds.__merge(ovrCtorWpTotalAdsBonus)
+    isAdsBefore  ? cfgRowTotalWithPrem.__merge(ovrCtorWpPremTotal) : cfgRowWithAds.__merge(ovrCtorWpTotalAdsBonus)
   ],
-  [REWARDS_CAMPAIGN] = [
+  [REWARDS_CAMPAIGN] = @(isAdsBefore) [
     cfgRowBasic.__merge(ovrCtorExpPlayer)
     cfgRowDailyBonus.__merge(ovrCtorExpPlayer)
     cfgRowBooster.__merge(ovrCtorExpPlayer)
-    cfgRowWithAds.__merge(ovrCtorExpPlayerTotal)
     cfgRowTotal.__merge(ovrCtorExpPlayerTotal)
-    cfgRowTotalWithPrem.__merge(ovrCtorExpPlayerTotal)
+    !isAdsBefore ? cfgRowTotalWithPrem.__merge(ovrCtorExpPlayerTotal) : cfgRowWithAds.__merge(ovrCtorExpPlayerTotal)
+    isAdsBefore  ? cfgRowTotalWithPrem.__merge(ovrCtorExpPlayerTotal) : cfgRowWithAds.__merge(ovrCtorExpPlayerTotal)
   ],
-  [REWARDS_UNIT] = [
+  [REWARDS_UNIT] = @(isAdsBefore) [
+    cfgRowGold.__merge(ovrCtorGoldUnit)
     cfgRowBasic.__merge(ovrCtorExpUnit)
     cfgRowDailyBonus.__merge(ovrCtorExpUnit)
     cfgRowBooster.__merge(ovrCtorExpUnit)
-    cfgRowWithAds.__merge(ovrCtorExpUnitTotal)
     cfgRowTotal.__merge(ovrCtorExpUnitTotal)
-    cfgRowTotalWithPrem.__merge(ovrCtorExpUnitTotal)
+    !isAdsBefore ? cfgRowTotalWithPrem.__merge(ovrCtorExpUnitTotalPrem) : cfgRowWithAds.__merge(ovrCtorExpUnitTotalAds)
+    isAdsBefore  ? cfgRowTotalWithPrem.__merge(ovrCtorExpUnitTotalPrem) : cfgRowWithAds.__merge(ovrCtorExpUnitTotalAds)
   ],
 }
 
@@ -394,6 +452,7 @@ let mkRewardWithAnimation = @(value, valueCtor, idx, rewardsStartTime, isDisable
   ]
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
+  valign = ALIGN_CENTER
   children = valueCtor(value)
 }
 
@@ -470,7 +529,7 @@ function mkPremBonusMulComps(debrData) {
 function mkTotalRewardCounts(preset, rewardsInfo, debrData, rewardsStartTime) {
   if (rewardsInfo == null)
     return null
-  let rowsCfg = (rewardRowsCfg?[preset] ?? []).filter(@(c) c.needShow(rewardsInfo))
+  let rowsCfg = (rewardRowsCfg?[preset](isAdsBeforePremium(debrData)) ?? []).filter(@(c) c.needShow(rewardsInfo))
   if (rowsCfg.len() == 0)
     return {
       totalRewardsShowTime = 0
