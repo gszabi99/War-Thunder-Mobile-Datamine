@@ -166,7 +166,7 @@ function getUnitPresentationByName(unitName) {
   return cache[unitName ?? ""]
 }
 
-let getUnitPresentation = @(unitOrName) getUnitPresentationByName(unitOrName?.name ?? unitOrName)
+let getUnitPresentation = @(unitOrName) getUnitPresentationByName(unitOrName?.name ?? unitOrName ?? "")
 let getUnitLocId = @(u) getUnitPresentation(u).locId
 let getUnitName = @(u, loc) loc(getUnitLocId(u))
 let getPlatoonName = @(unitName, loc) unitName in platoonNames ? loc(platoonNames[unitName])

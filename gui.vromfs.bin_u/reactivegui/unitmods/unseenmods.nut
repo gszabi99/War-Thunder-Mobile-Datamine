@@ -14,7 +14,7 @@ let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut"
 
 let SEEN_MODS = "seenMods"
 let SEEN_MODS_VERSION_KEY = "seenModsVersion"
-let ACTUAL_VERSION = 2
+let ACTUAL_VERSION = 3
 let SEEN_MODS_VERSIONS = "seenModsVersions"
 let seenVersions = {
   tanks_new = 2

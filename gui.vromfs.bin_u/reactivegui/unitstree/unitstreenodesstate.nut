@@ -3,11 +3,12 @@ let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { isDataBlock, eachParam, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campConfigs, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
@@ -16,6 +17,8 @@ let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut"
 
 
 let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
+let SEEN_VERSION_KEY = "seenResearchedUnitsVersion"
+let ACTUAL_VERSION = 3
 
 let countryPriority = {
   country_usa = 10
@@ -283,7 +286,7 @@ let unseenResearchedUnits = Computed(function() {
 
   foreach(unitName, node in unitTreeNodes) {
     let unit = campUnitsCfg.get()?[unitName]
-    if (!unit || unit.isHidden || unitName in seenUnits)
+    if (!unit || unit.isHidden || getTagsUnitName(unitName) in seenUnits)
       continue
 
     let { country = "" } = node
@@ -336,38 +339,56 @@ unitToScroll.subscribe(function(v) {
 })
 
 function setResearchedUnitsSeen(units) {
-  if (!units || units.len() == 0)
+  let unseen = unseenResearchedUnits.get()
+  let list = units.filter(@(_, u) null != unseen.findvalue(@(c) u in c))
+  if (list.len() == 0)
     return
 
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_RESEARCHED_UNITS)
-
   seenResearchedUnits.mutate(function(v) {
-    foreach(unit, _ in units) {
-      v[unit] <- true
-      sBlk[unit] = true
+    foreach (u, _ in units) {
+      let tagName = getTagsUnitName(u)
+      v[tagName] <- true
+      sBlk[tagName] = true
     }
   })
-
   eventbus_send("saveProfile", {})
 }
 
-function loadSeenResearchedUnits() {
-  if (!isSettingsAvailable.get())
-    return seenResearchedUnits.set({})
-  let blk = get_local_custom_settings_blk()
-  let htBlk = blk?[SEEN_RESEARCHED_UNITS]
-  if (!isDataBlock(htBlk))
-    return seenResearchedUnits.set({})
+function applyCompatibility() {
+  let sBlk = get_local_custom_settings_blk()
+  if ((sBlk?[SEEN_VERSION_KEY] ?? 0) == ACTUAL_VERSION)
+    return
 
-  let res = {}
-  eachParam(htBlk, @(isSeen, id) res[id] <- isSeen)
-  seenResearchedUnits.set(res)
+  sBlk[SEEN_VERSION_KEY] = ACTUAL_VERSION
+  let toRemove = {}
+  let toAdd = {}
+  let blk = sBlk.addBlock(SEEN_RESEARCHED_UNITS)
+  eachParam(blk, function(v, name) {
+    if (getTagsUnitName(name) != name) {
+      toRemove[name] <- true
+      if (v)
+        toAdd[getTagsUnitName(name)] <- true
+    }
+  })
+  foreach (u, _ in toRemove)
+    blk.removeParam(u)
+  foreach (u, _ in toAdd)
+    blk[u] <- true
+}
+
+function loadSeenResearchedUnits() {
+  if (!isLoggedIn.get())
+    return seenResearchedUnits.set({})
+  applyCompatibility()
+  let seenBlk = get_local_custom_settings_blk()?[SEEN_RESEARCHED_UNITS]
+  seenResearchedUnits.set(isDataBlock(seenBlk) ? blk2SquirrelObjNoArrays(seenBlk) : {})
 }
 
 if (seenResearchedUnits.get().len() == 0)
   loadSeenResearchedUnits()
 
-isSettingsAvailable.subscribe(@(_) loadSeenResearchedUnits())
+isLoggedIn.subscribe(@(_) loadSeenResearchedUnits())
 
 function resetSeenResearchedUnit() {
   seenResearchedUnits.set({})

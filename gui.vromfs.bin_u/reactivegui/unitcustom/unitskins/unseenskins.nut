@@ -13,7 +13,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let SEEN_SKINS = "seenSkins"
 let SEEN_SKINS_VERSIONS = "seenSkinsVersions"
 let SEEN_SKINS_VERSION_KEY = "seenSkinsVersion"
-let ACTUAL_VERSION = 2
+let ACTUAL_VERSION = 3
 let seenVersions = {
   tanks_new = 1
 }
@@ -40,7 +40,7 @@ let mySkinsToMark = Computed(function() {
 let unseenSkins = Computed(function() {
   let seen = seenSkins.get()
   return mySkinsToMark.get()
-    .map(@(list, unitName) list.filter(@(_, skinName) getTagsUnitName(skinName) not in seen?[unitName]))
+    .map(@(list, unitName) list.filter(@(_, skinName) skinName not in seen?[getTagsUnitName(unitName)]))
     .filter(@(v) v.len() != 0)
 })
 

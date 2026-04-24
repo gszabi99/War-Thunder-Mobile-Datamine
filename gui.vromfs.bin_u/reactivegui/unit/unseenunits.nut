@@ -11,7 +11,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let SEEN_UNIT = "seenUnit"
 let SEEN_UNIT_VERSION_KEY = "seenUnitVersion"
-let ACTUAL_VERSION = 2
+let ACTUAL_VERSION = 3
 let seenUnits = mkWatched(persist, "seenUnits", {})
 let justReceivedUnseen = mkWatched(persist, "justReceivedUnseen", {})
 let maxTimeShowingUnseenMark = TIME_DAY_IN_SECONDS * 14
@@ -84,8 +84,9 @@ function markUnitSeen(unitName) {
 
   if (unitName not in unseenUnits.get())
     return
-  seenUnits.mutate(@(v) v.$rawset(unitName, true))
-  get_local_custom_settings_blk().addBlock(SEEN_UNIT)[unitName] = true
+  let tagName = getTagsUnitName(unitName)
+  seenUnits.mutate(@(v) v.$rawset(tagName, true))
+  get_local_custom_settings_blk().addBlock(SEEN_UNIT)[tagName] = true
   eventbus_send("saveProfile", {})
 }
 
@@ -100,10 +101,10 @@ function markUnitsSeen(unitsList) {
   if (list.len() == 0)
     return
 
-  seenUnits.mutate(@(v) list.each(@(_, u) v.$rawset(u, true)))
+  seenUnits.mutate(@(v) list.each(@(_, u) v.$rawset(getTagsUnitName(u), true)))
   let blk = get_local_custom_settings_blk().addBlock(SEEN_UNIT)
   foreach (u, _ in list)
-    blk[u] = true
+    blk[getTagsUnitName(u)] = true
   eventbus_send("saveProfile", {})
 }
 
