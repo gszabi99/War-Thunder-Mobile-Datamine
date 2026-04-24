@@ -6,7 +6,11 @@ let KB = 1 << 10
 let MB = 1 << 20
 let GB = 1 << 30
 
-let totalSizeText = @(bytes) "".concat((bytes + (MB / 2)) / MB, loc("measureUnits/MB"))
+let totalSizeText = @(bytes) bytes > 10 * GB ? "".concat(round_by_value(bytes.tofloat() / GB, 0.1), loc("measureUnits/GB"))
+  : bytes > 10 * MB ? "".concat((bytes + (MB / 2)) / MB, loc("measureUnits/MB"))
+  : bytes > 500 * KB ? "".concat(round_by_value(bytes.tofloat() / MB, 0.1), loc("measureUnits/MB"))
+  : bytes > KB ? "".concat((bytes + (KB / 2)) / KB, loc("measureUnits/KB"))
+  : "".concat(bytes == 0 ? 0 : 1, loc("measureUnits/KB"))
 
 let speedWithText = @(speed, locId) "".concat(round_by_value(speed, 0.1), loc(locId))
 let getDSpeedText = @(dspeed)

@@ -12,7 +12,7 @@ let { set_accept_user_react, get_total_download_mb, get_progress_percent, get_et
 } = contentUpdater
 
 let updaterStage = Watched(null)
-let totalSizeBytes = Watched(get_total_download_mb() * MB)
+let totalSizeBytes = Watched((get_total_download_mb() * MB).tointeger())
 let progress = Watched({
   percent = get_progress_percent()
   etaSec = get_eta()

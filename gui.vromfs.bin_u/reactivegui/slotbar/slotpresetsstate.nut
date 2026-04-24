@@ -3,14 +3,44 @@ let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { object_to_json_string, parse_json } = require("json")
 let { isEqual } = require("%sqstd/underscore.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
 let SAVE_ID = "slotSavedPresets"
-let loadedSlotPresets = Watched({})
+let SLOT_PRESETS_VERSION_KEY = "slotPresetsVersion"
+let ACTUAL_VERSION = 2
+let loadedSlotPresets = mkWatched(persist, "loadedSlotPresets", {})
+
+function removeNC() {
+  let sBlk = get_local_custom_settings_blk()
+  if ((sBlk?[SLOT_PRESETS_VERSION_KEY] ?? 0) == ACTUAL_VERSION)
+    return
+
+  sBlk[SLOT_PRESETS_VERSION_KEY] = ACTUAL_VERSION
+  let slotBlk = sBlk?[SAVE_ID]
+  if (type(slotBlk) != "string" || slotBlk == "")
+    return
+
+  local slotPresets = {}
+  try {
+    slotPresets = parse_json(slotBlk)
+  }
+  catch(e) {
+    logerr($"Failed to load slot presets data")
+  }
+
+  foreach (presets in slotPresets)
+    foreach (p in presets)
+      if ("presetUnits" in p)
+        p.presetUnits = p.presetUnits.map(getTagsUnitName)
+  sBlk[SAVE_ID] = object_to_json_string(slotPresets)
+  eventbus_send("saveProfile", {})
+}
 
 function loadSlotPresets() {
+  removeNC()
   let blk = get_local_custom_settings_blk()
   let settingsString = blk?[SAVE_ID]
   local res = {}

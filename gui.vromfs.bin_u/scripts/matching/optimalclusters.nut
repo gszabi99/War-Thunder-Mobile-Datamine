@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
 let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
+let { round } =  require("math")
 let { format } =  require("string")
 let { blob } = require("iostream")
 let { get_time_msec } = require("dagor.time")
@@ -12,7 +13,8 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { gameStartServerTimeMsec } = require("%appGlobals/userstats/serverTime.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { myClustersRTT } = require("%appGlobals/squadState.nut")
+let { isInQueue } = require("%appGlobals/queueState.nut")
+let { myClustersRTT, isInSquad, squadMembers } = require("%appGlobals/squadState.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
 let { clusterHosts } = require("%scripts/matching/clusterHosts.nut")
 
@@ -29,7 +31,7 @@ const SAMPLES_COUNT_MAX = 5
 const RETRY_PROBE_DELAY_SEC = 30 
 const MAX_ERRORS = 3 
 const OPTIMAL_RTT_LIMIT_MS = 100 
-const OPTIMAL_RTT_LIMIT_MS_SQUAD = 150 
+const OPTIMAL_RTT_LIMIT_MS_SQUAD = 100 
 const INSIGNIFICANT_RTT_DIFF_MS = 25 
 const MINOR_MS = 1000 
 
@@ -183,6 +185,11 @@ function tryProbeHosts() {
   scheduleNextProbeTime(callee())
 }
 
+function calcAvgRttBySortedList(rttSortedList) {
+  let res = median(rttSortedList)
+  return res != null ? round(res).tointeger() : null
+}
+
 function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
   let { rttSamples } = hostInfo
   if (rttSamples.len() == SAMPLES_COUNT_MAX)
@@ -192,7 +199,7 @@ function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
     lastRequestId = 0
     lastRequestTimeMs = 0
     errors = 0
-    avgRTT = median((clone rttSamples).sort())
+    avgRTT = calcAvgRttBySortedList((clone rttSamples).sort())
     lastAnswerTimeMs = receivedTimeMs
   })
 }
@@ -212,10 +219,9 @@ function getClusterStats() {
   let res = clustersToHostsMap
     .map(function(hosts, clusterId) {
         let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
-        measuredHostsRTT.sort()
         return {
           clusterId
-          hostsRTT = median(measuredHostsRTT)
+          hostsRTT = calcAvgRttBySortedList(measuredHostsRTT.sort())
         }
       })
     .values()
@@ -299,6 +305,14 @@ clusterStats.subscribe(function(val) {
   let newMyClustersRTT = val.filter(@(v) v.hostsRTT != null).map(@(v) [ v.clusterId, v.hostsRTT ]).totable()
   if (!isEqual(newMyClustersRTT, myClustersRTT.get()))
     myClustersRTT.set(newMyClustersRTT)
+})
+
+isInQueue.subscribe(function(val) {
+  if (!val || !isInSquad.get())
+    return
+  let info = squadMembers.get().map(@(m) m?.clustersRTT ?? {}).values()
+    .map(@(v) ",".join(v.map(@(rtt, clusterId) $"{clusterId}={rtt}").values().sort()))
+  logOC("\n".join([ $"Squad members clusters RTT:" ].extend(info)))
 })
 
 function logBadAnswer(evt, hostInfo, reason) {

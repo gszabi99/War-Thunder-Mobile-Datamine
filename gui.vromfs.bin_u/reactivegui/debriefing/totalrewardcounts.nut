@@ -172,16 +172,17 @@ let unitOrSlotRewardsCfg = {
   }
   function getTotalWithPremium(debrData, unit) {
     let { totalExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
-    let ads = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0) : 0
+    let expKey = unit?.isSlot ? "slotExpDif" : "expDif"
+    let ads = isAdsBeforePremium(debrData) ? (debrData?.adsBonuses.unitsDif[unit.name][expKey] ?? 0) : 0
     return debrData?.subsBonuses || debrData?.premiumBonus
-      ? totalExp + ads + (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
+      ? totalExp + ads + (debrData?.subsBonuses.unitsDif[unit.name][expKey] ?? 0)
       : round((totalExp + ads) * getPremMulExp(debrData)).tointeger()
   }
   function getTotalWithAds(debrData, unit) {
     let { totalExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
-    let prem = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
-    let ads = unit?.isSlot ? (debrData?.adsBonuses.unitsDif[unit.name].slotExpDif ?? 0)
-      : (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0)
+    let expKey = unit?.isSlot ? "slotExpDif" : "expDif"
+    let prem = isAdsBeforePremium(debrData) ? 0 : (debrData?.subsBonuses.unitsDif[unit.name][expKey] ?? 0)
+    let ads = debrData?.adsBonuses.unitsDif[unit.name][expKey] ?? 0
     return totalExp + prem + ads
   }
   function getTotalGoldWithoutPremium(debrData, unit) {

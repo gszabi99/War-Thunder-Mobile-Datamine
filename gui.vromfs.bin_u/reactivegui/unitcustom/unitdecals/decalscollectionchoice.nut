@@ -92,7 +92,17 @@ function mkDecalsCollectionChoice(decalsCollection, availableDecals, selectedDec
 
   return @() {
     watch = decalsCollection
+    key = decalsCollection
     size = FLEX_H
+
+    function onDetach() {
+      let id = openedCategoryId.get()
+      let subId = openedSubCategoryId.get()
+      let cat = decalsCollection.get().findvalue(@(v) v.category == id)
+      let { decals = [] } = cat?.subCategories.findvalue(@(v) v.category == subId) ?? cat
+      markDecalsSeen(decals.reduce(@(res, l) res.extend(l), []))
+    }
+
     halign = ALIGN_CENTER
     rendObj = ROBJ_BOX
     children = decalsCollection.get().len() == 0 ? null

@@ -153,8 +153,8 @@ function mkSlotColumn(unit, debrData) {
   local slotExp = getSlotExpByUnit(unit.name, debrData)
   slotExp = slotExp.__merge({
     totalExp = slotExp.totalExp
-      + (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0)
-      + (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
+      + (debrData?.adsBonuses.unitsDif[unit.name].slotExpDif  ?? 0)
+      + (debrData?.subsBonuses.unitsDif[unit.name].slotExpDif  ?? 0)
   })
   let { plateWithLevelProgressComp, levelProgressAnimTime
   } = mkPlateWithLevelProgress(debrData, slotLevelCfg, slotExp, levelProgressAnimStartTime, slotExpColor)
