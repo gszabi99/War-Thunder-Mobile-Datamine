@@ -4,6 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout, deferOnce } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
+let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { mark_offer_seen, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -693,7 +694,7 @@ let previewWnd = @() {
                       watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
                       children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
                         mkGiftSchRewardBtn(
-                          schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"]
+                          schRewards.get()?[$"gift_{getCampaignStatsId(previewGoodsUnit.get()?.campaign)}_offer"]
                           aTimeHeaderStart,
                           skipAnimsOnce)
                     }
