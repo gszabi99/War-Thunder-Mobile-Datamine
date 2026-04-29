@@ -45,7 +45,7 @@ let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
 let { activeInternalSubs } = require("%rGui/state/profilePremium.nut")
 
 
-let soonPersonalGoodsDelay = 4.0
+let soonPersonalGoodsDelay = 7.0
 let goodsGlareRepeatDelay = 3
 let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
 let glareColOffsetMul    = 0.62 * goodsGlareAnimDuration

@@ -54,7 +54,7 @@ function updateRelevance() {
   let soon = {}
   local nextTime = 0
   foreach (baseId, cfg in personalGoodsCfg.get()) {
-    let { timeRange, showTimeBeforeActivate } = cfg
+    let { timeRange, showTimeBeforeActivate = 0 } = cfg
     let { start, end } = timeRange
     if (showTimeBeforeActivate > 0) {
       if (start - showTimeBeforeActivate > time) {
