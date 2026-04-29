@@ -31,8 +31,7 @@ let buttonFrames = {
 let patternImage = {
   size = ph(100)
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#button_pattern.svg:{defButtonHeight}:{defButtonHeight}")
-  keepAspect = KEEP_ASPECT_NONE
+  image = Picture($"ui/gameuiskin#button_pattern.svg:{defButtonHeight}:{defButtonHeight}:P")
   color = Color(0, 0, 0, 35)
 }
 

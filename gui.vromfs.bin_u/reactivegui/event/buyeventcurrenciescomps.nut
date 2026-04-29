@@ -104,7 +104,8 @@ function mkTimeTextComputed(goods) {
         return null 
     }
     return nextStart == null ? loc("events/buyCurrency/noLongerAvailable")
-      : loc("events/buyCurrency/availableAfter", { time = secondsToHoursLoc(nextStart - time) })
+      : loc("events/buyCurrency/availableAfter",
+          { time = secondsToHoursLoc(nextStart - time).replace(" ", nbsp) })
   })
 }
 

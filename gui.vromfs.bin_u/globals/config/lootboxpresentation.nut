@@ -178,6 +178,7 @@ let lootboxPreviewBg = {
   event_special_gift_air_anniversary_2025           = "ui/images/event_bg_anniversary_2025.avif"
 
   event_special_china_tanks_spending_event         = "ui/images/event_bg_lunar.avif"
+  uk_air_spending_event_box                        = "ui/images/event_bg_uk_air_early_access.avif"
 
   valentine_day_candy_lootbox                      = "ui/images/event_bg_valentine_day_2026.avif"
   valentine_day_extra_reward_lootbox               = "ui/images/event_bg_valentine_day_2026.avif"

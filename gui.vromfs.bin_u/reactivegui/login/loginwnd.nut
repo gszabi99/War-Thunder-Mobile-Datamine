@@ -160,7 +160,6 @@ let mkOperatorLogo = @(picName) {
 
 let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch, {
   placeholder = nameText
-  onChange = @(value) textWatch.set(value)
   onEscape = @() textWatch.set("")
 }.__update(options))
 

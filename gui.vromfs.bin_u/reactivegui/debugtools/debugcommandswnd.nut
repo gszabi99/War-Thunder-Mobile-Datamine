@@ -200,7 +200,6 @@ let consoleTextInput = {
   children = [
     textInput(consoleText, {
       placeholder = loc("Enter console commands here")
-      onChange = @(value) consoleText.set(value)
       onReturn = consoleExecute
     })
     textButtonCommon("Enter", consoleExecute, { ovr = { minWidth = hdpx(170), size = [hdpx(170), defButtonHeight] } })

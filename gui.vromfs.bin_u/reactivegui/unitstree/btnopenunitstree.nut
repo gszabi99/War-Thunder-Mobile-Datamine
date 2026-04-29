@@ -27,7 +27,6 @@ function discountTagUnitTree(dis) {
     size = [SIZE_TO_CONTENT, height]
     rendObj = ROBJ_9RECT
     image = Picture($"ui/gameuiskin#tag_popular.svg:{height}:{height}:P")
-    keepAspect = KEEP_ASPECT_NONE
     screenOffs = markTexOffs
     texOffs = markTexOffs
     color = 0xFFD22A19

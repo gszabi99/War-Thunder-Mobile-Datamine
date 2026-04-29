@@ -4,12 +4,14 @@ let genParams = {
   name = @(name) name
   locId = @(name) $"events/name/{name}"
   icon = @(name) $"ui/gameuiskin#icon_event_{name}.svg"
-  image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
+  image = @(name)  name.startswith("season_")
+    ? $"ui/gameuiskin#banner_event_{name}.avif"
+    : $"ui/gameuiskin#icon_{name}_shop.avif"
   color = @(_) 0xA5FF2B00
   imageOffset = @(_) [0, 0]
   imageSizeMul = @(_) 1.0
   imageTabOffset = @(_) [0, 0]
-  bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
+  bg = @(name) name == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
   gamercardItems = @(_) []
 
   
@@ -106,6 +108,10 @@ let presentations = {
     bg = "ui/images/event_bg_lunar_ny_2026.avif",
     gamercardItems = [ "firework_kit" ]
   }
+  uk_spending                = {
+    image = $"ui/gameuiskin/icon_uk_spending_shop.avif",
+    bg = "ui/images/event_bg_uk_air_early_access.avif",
+  }
   aprilintel                   = { bg = "ui/images/event_bg_event_april_2026.avif" }
   halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
   valentinebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
@@ -138,9 +144,10 @@ function mkEventPresentation(name) {
 let cache = {}
 
 function getEventPresentation(name) {
-  if (name not in cache)
-    cache[name ?? ""] <- mkEventPresentation(name)
-  return cache[name ?? ""]
+  let n = name ?? ""
+  if (n not in cache)
+    cache[n] <- mkEventPresentation(n)
+  return cache[n]
 }
 
 return {

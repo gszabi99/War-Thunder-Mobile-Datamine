@@ -325,9 +325,9 @@ let mapContainer = {
 
 let scPressedMonitor = @(sc, watch) {
   behavior = Behaviors.Button
-  onElemState = @(sf) watch((sf & S_ACTIVE) != 0)
+  onElemState = @(sf) watch.set((sf & S_ACTIVE) != 0)
   hotkeys = [[sc]]
-  onDetach = @() watch(false)
+  onDetach = @() watch.set(false)
 }
 let shiftPressedMonitor = scPressedMonitor("^L.Shift | R.Shift", isShiftPressed)
 

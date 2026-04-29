@@ -151,10 +151,7 @@ let pageComment = {
       size = FLEX_H
       padding = const [0, hdpx(60)]
       pos = [0, hdpx(300)]
-      children = textInput(fieldComment, {
-        placeholder = loc("feedback/editbox/placeholder")
-        onChange = @(value) fieldComment.set(value)
-      })
+      children = textInput(fieldComment, { placeholder = loc("feedback/editbox/placeholder") })
     }
     mkBtnPlace(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_leave_feedback")), onBtnApply))
   ]

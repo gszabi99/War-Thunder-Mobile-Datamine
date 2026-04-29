@@ -45,8 +45,7 @@ let cardBgGradient = {
 let mkOfferCardBgPatternChunk = {
   size = patternSize
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#button_pattern.svg:{patternSize[0]}:{patternSize[1]}")
-  keepAspect = KEEP_ASPECT_NONE
+  image = Picture($"ui/gameuiskin#button_pattern.svg:{patternSize[0]}:{patternSize[1]}:P")
   color = 0x23000000
 }
 

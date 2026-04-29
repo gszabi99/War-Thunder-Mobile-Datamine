@@ -3,7 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { isCampaignWithUnitsResearch, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
@@ -15,6 +15,7 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -73,7 +74,7 @@ function purchaseUnit(unitId, bqInfo, price, executeAfter = null, content = null
   openMsgBoxPurchase({
     text, price, purchase, bqInfo, title, onCancel,
     purchaseLocId = isCampaignWithUnitsResearch.get() ? "msgbox/btn_build" : "msgbox/btn_purchase"
-    spendingCountry = campConfigs.get()?.unitTreeNodes?[unitId].country ?? ""
+    spendingCountry = campUnitsCfg.get()?[unitId].country ?? ""
   })
   playSound("meta_new_technics_for_gold")
 }

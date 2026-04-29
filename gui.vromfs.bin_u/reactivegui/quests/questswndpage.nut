@@ -143,7 +143,6 @@ function buyRewardMsgBox(item, rewardsPreview, price, currencyId, currencyReward
     purchase = @() buyUnlock(name, stage + 1, currencyId, price,
       { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }}),
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, name),
-    hasSpendingStat = false
   })
 }
 
@@ -154,7 +153,6 @@ let rerollQuestMsgBox = @(unlockName, price, currencyId)
     purchase = @() buyUnlockReroll(unlockName, price, currencyId,
       { onSuccessCb = { id = "quests.buyUnlockReroll", unlockName }})
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_OPERATION_PASS, PURCH_TYPE_QUEST_REROLL, unlockName),
-    hasSpendingStat = false
   })
 
 function exploreRewardMsgBox(item, rewardsPreview, price, currencyId, currencyReward) {
@@ -166,7 +164,6 @@ function exploreRewardMsgBox(item, rewardsPreview, price, currencyId, currencyRe
         { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, name)
     purchaseLocId = "msgbox/btn_explore",
-    hasSpendingStat = false
   })
 }
 

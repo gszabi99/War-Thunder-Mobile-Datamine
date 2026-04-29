@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { doesLocTextExist } = require("dagor.localize")
+let { resetTimeout } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -8,11 +9,12 @@ let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGl
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, goodsLinks, subsGroups, curShopId,
   curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
-  curShopSubsByCategory, curShopSoonGoodsByCategory, soonGoodsByShop, goodsIdsByShop
+  curShopSubsByCategory, curShopSoonGoodsByCategory, soonGoodsByShop, goodsIdsByShop,
+  curShopSoonPGoodsByCategory, soonPersonalGoodsByShop
 } = require("%rGui/shop/shopState.nut")
 let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { getPersonalGoodsBaseId, activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
+let { getPersonalGoodsBaseId, activePersonalGoods, pGoodsOffsetIdx } = require("%rGui/shop/personalGoodsState.nut")
 let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
@@ -43,6 +45,7 @@ let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
 let { activeInternalSubs } = require("%rGui/state/profilePremium.nut")
 
 
+let soonPersonalGoodsDelay = 4.0
 let goodsGlareRepeatDelay = 3
 let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
 let glareColOffsetMul    = 0.62 * goodsGlareAnimDuration
@@ -169,6 +172,7 @@ let gamercardShopItemsBalanceBtns = @(items) {
     let has = @(g) null != g.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM)
     let category = curShopGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
       ?? curShopSoonGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
+      ?? curShopSoonPGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
     if (category)
       return openShopWnd(category, null, curShopId.get())
     let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
@@ -181,22 +185,32 @@ let mkShopGamercard = @(onClose) function() {
   let items = {}
   local needShowPremium = false
   let goodsIds = goodsIdsByShop.get()?[curShopId.get()]
-  foreach(goodsId in goodsIds?[curCategoryId.get()] ?? {}) {
-    let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId] ?? soonGoodsByShop.get()?[goodsId]
-    if(goods) {
-      if(goods.price.currencyId != "")
-        currencies[goods.price.currencyId] <- true
-      if ((goods?.rewards.len() ?? 0) != 1)
-        continue 
-      let { gType, id } = goods.rewards[0]
-      if (gType == G_PREMIUM)
-        needShowPremium = true
-      else if (gType == G_ITEM)
-        items[id] <- true
-      else if (gType == G_CURRENCY)
-        currencies[id] <- true
-    }
+  foreach (goodsId in goodsIds?[curCategoryId.get()] ?? {}) {
+    let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId]
+    if (goods == null)
+      continue
+
+    if (goods.price.currencyId != "")
+      currencies[goods.price.currencyId] <- true
+    if ((goods?.rewards.len() ?? 0) != 1)
+      continue 
+    let { gType, id } = goods.rewards[0]
+    if (gType == G_PREMIUM)
+      needShowPremium = true
+    else if (gType == G_ITEM)
+      items[id] <- true
+    else if (gType == G_CURRENCY)
+      currencies[id] <- true
   }
+  foreach (goods in soonGoodsByShop.get()?[curShopId.get()][curCategoryId.get()] ?? {}) {
+    if (goods.price.currencyId != "")
+      currencies[goods.price.currencyId] <- true
+    if (goods.rewards.len() == 1 && goods.rewards[0].gType == G_CURRENCY)
+      currencies[goods.rewards[0].id] <- true
+  }
+  foreach (goods in soonPersonalGoodsByShop.get()?[curShopId.get()][curCategoryId.get()] ?? {})
+    if (goods.price.currencyId != "")
+      currencies[goods.price.currencyId] <- true
   let orderItems = items.keys().sort(@(a,b)
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
   return {
@@ -282,6 +296,50 @@ function mkPersonalGoodsCard(pGoods, animParams) {
     addChildren)
 }
 
+function mkSoonPersonalGoodsCard(pGoods, idx, listLen, animParams) {
+  let { lifeTime, timeRange, id, groupId, varId } = pGoods
+  let combinationId = $"{groupId}&{varId}"
+  let popLocId = $"shop/{getPersonalGoodsBaseId(id)}"
+  let goods = personalGoodsToShopGoods(pGoods).__update({
+    endTime = 0  
+    isPopular = true
+    popularText = loc(doesLocTextExist(popLocId) ? popLocId
+      : (personalTextByLifeTime?[lifeTime] ?? popLocId))
+  })
+
+  let sec = Computed(@() max(0, timeRange.start - serverTime.get()))
+  let addChildren = [
+    mkGoodsTimeProgress(
+      Computed(@() clamp(1.0 - sec.get().tofloat() / lifeTime, 0, 1)),
+      Computed(@() secondsToHoursLoc(sec.get()))
+    )
+  ]
+  let isWithUnitOrSkin = null != pGoods.goods.findvalue(@(g) g.gType in unitRewardTypes || g.gType == G_SKIN)
+  if (!isWithUnitOrSkin)
+    addChildren.append({
+      margin = bottomPad
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      children = mkLimitText(1, 1)
+    })
+
+  return {
+    key = combinationId
+    onAttach = idx != 0 ? null : @() resetTimeout(soonPersonalGoodsDelay, @() pGoodsOffsetIdx.modify(@(v) v + listLen))
+    children = mkGoods(
+      goods,
+      @() null,
+      Watched(NOT_READY),
+      animParams,
+      addChildren)
+    transform = {}
+    animations = [
+      { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.8, easing = OutQuad, play = true }
+      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.4, easing = OutQuad, playFadeOut = true }
+    ]
+  }
+}
+
 let mkSubscriptionCardExt = @(subs, animParams) mkSubscriptionCard(
   subs,
   @() openSubsPreview(subs.id, "shop"),
@@ -312,13 +370,32 @@ function mkShopCategoryGoods(categoryCfg, distances) {
   let subsList = Computed(@() curShopSubsByCategory.get()?[id])
   let rowsBefore = Computed(@() distances.get()?[id].rowsBefore ?? 0)
   let headersBefore = Computed(@() distances.get()?[id].headersBefore ?? 0)
-  let watch = [ goodsListBase, soonList, schReward, curCampaign, personalList, subsList, rowsBefore, headersBefore ]
+
+  let personalSoonList = Computed(function() {
+    let res = []
+    let offsetIdx = pGoodsOffsetIdx.get()
+    let soonPGoods = curShopSoonPGoodsByCategory.get()?[id] ?? []
+    let slotsByBaseId = {}
+    foreach (soonPGoodsV in soonPGoods)
+      slotsByBaseId[soonPGoodsV.baseId] <- soonPGoodsV.slots
+    let soonPGoodsLen = slotsByBaseId.reduce(@(resV, v) resV + v, 0)
+    for (local i = 0; i < soonPGoodsLen; i++) {
+      let idx = (i + offsetIdx) % soonPGoods.len()
+      res.append(soonPGoods[idx])
+    }
+    return res
+  })
+
+  let res = {
+    key = id,
+    watch = [ goodsListBase, soonList, schReward, curCampaign, personalList, subsList, rowsBefore, headersBefore, personalSoonList ]
+  }
   return function() {
     let goodsListByCategory = goodsListBase.get()
     let hasSchReward = schReward.get() != null
     if (goodsListByCategory.len() == 0 && !hasSchReward && !personalList.get() && !subsList.get()
-        && soonList.get().len() == 0)
-      return { watch }
+        && soonList.get().len() == 0 && personalSoonList.get().len() == 0)
+      return res
 
     let goodsList = mkGoodsListWithBaseValue(goodsListByCategory)
     goodsList.sort(sortGoods)
@@ -346,11 +423,13 @@ function mkShopCategoryGoods(categoryCfg, distances) {
       allCards.append(
         mkSoonGoodsCard(goods, mkAnimParams(allCards.len() + animIdxOffset, headers)))
 
+    foreach (idx, goods in personalSoonList.get())
+      allCards.append(
+        mkSoonPersonalGoodsCard(goods, idx, personalSoonList.get().len(), mkAnimParams(allCards.len() + animIdxOffset, headers)))
+
     let rows = arrayByRows(allCards, goodsPerRow)
 
-    return {
-      key = id
-      watch
+    return res.__merge({
       children = {
         flow = FLOW_VERTICAL
         gap = titleGap
@@ -374,7 +453,7 @@ function mkShopCategoryGoods(categoryCfg, distances) {
         transform = {}
         animations = tabTranslateWithOpacitySwitchAnim
       }
-    }
+    })
   }
 }
 

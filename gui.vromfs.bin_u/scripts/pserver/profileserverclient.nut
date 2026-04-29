@@ -13,6 +13,7 @@ let { register_command } = require("console")
 let { APP_ID } = require("%appGlobals/gameIdentifiers.nut")
 let { offlineActions } = require("offlineMenuProfile.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { getSubTable } = require("%sqstd/underscore.nut")
 let { startRelogin } = require("%scripts/login/loginStart.nut")
 
 const MAX_REQUESTS_HISTORY = 20
@@ -22,7 +23,12 @@ let debugDelay = hardPersistWatched("pserver.debugDelay", 0.0)
 let lastRequests = hardPersistWatched("pserver.lastRequests", [])
 let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) 
 let nextTimeout = keepref(Computed(@() progressTimeouts.get()
-  .reduce(@(res, v) res <= 0 ? v.timeout : min(res, v.timeout), 0)))
+  .reduce(function(res, v) {
+    local timeout = res
+    foreach (timeoutV in v)
+      timeout = min(timeout, timeoutV)
+    return timeout
+  }, 0)))
 
 let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressChange", { id, value, isInProgress })
 let get_time_sec = @() (get_time_msec() * 0.001).tointeger()
@@ -45,23 +51,23 @@ let retryActionsCounter = {}
 function startProgress(id, value) {
   if (id == null)
     return
-  progressTimeouts.mutate(@(v) v[id] <- {
-    value
-    timeout = get_time_sec() + PROGRESS_TIMEOUT_SEC
-  })
+  progressTimeouts.mutate(@(v) getSubTable(v, id)[value] <- get_time_sec() + PROGRESS_TIMEOUT_SEC)
   sendProgress(id, value, true)
 }
 
-function stopProgress(id) {
+function stopProgress(id, value) {
   if (id not in progressTimeouts.get())
     return
-  let { value } = progressTimeouts.get()[id]
-  progressTimeouts.mutate(@(v) v.$rawdelete(id))
+  progressTimeouts.mutate(function(timeoutValues) {
+    timeoutValues[id].$rawdelete(value)
+    if (timeoutValues[id].len() == 0)
+      timeoutValues.$rawdelete(id)
+  })
   sendProgress(id, value, false)
 }
 
-function sendResult(resData, id, progressId, method) {
-  stopProgress(progressId)
+function sendResult(resData, id, progressId, progressValue, method) {
+  stopProgress(progressId, progressValue)
   eventbus_send("profile_srv.response", { data = resData, id, method })
 }
 
@@ -115,7 +121,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
     return
   }
 
-  let { id, params, progressId, action } = context
+  let { id, params, progressId, progressValue, action } = context
 
   local err = debugError ?? result?.error
   debugError = null
@@ -131,7 +137,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
       serverTimeUpdate(timeMs, reqTime)
     retryActionsCounter.$rawdelete(action)
 
-    sendResult(result, id, progressId, action)
+    sendResult(result, id, progressId, progressValue, action)
     return
   }
 
@@ -150,7 +156,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
     let count = retryActionsCounter?[action] ?? 0
     if (count < MAX_RETRIES) {
       retryActionsCounter[action] <- count + 1
-      doRequest(action, params, id, progressId)
+      doRequest(action, params, id, progressId, progressValue)
       return
     }
   }
@@ -158,16 +164,16 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
   retryActionsCounter.$rawdelete(action)
   if (errId not in noNeedLogerrOnErrors)
     logerr($"[profileServerClient] {action} returned error: {logErr} /*params = {getParamsLog(params)}*/")
-  sendResult({ error = err }, id, progressId, action)
+  sendResult({ error = err }, id, progressId, progressValue, action)
 
   if (errId == "NO_TOKEN")
     deferOnce(startRelogin)
 })
 
-function doRequestOnline(action, params, id, progressId) {
+function doRequestOnline(action, params, id, progressId, progressValue) {
   if (!isAuthorized.get()) {
     logPSC($"Skip action {action}, no token")
-    sendResult({ error = "Not authorized" }, id, progressId, action)
+    sendResult({ error = "Not authorized" }, id, progressId, progressValue, action)
     return
   }
 
@@ -190,17 +196,17 @@ function doRequestOnline(action, params, id, progressId) {
   }
 
   logPSC($"Sending request {id}, method: {action}, params: {getParamsLog(params)}")
-  profile.requestEventBus(requestData, RESULT_ID, { id, params, progressId, action })
+  profile.requestEventBus(requestData, RESULT_ID, { id, params, progressId, progressValue, action })
 }
 
-function doRequestOffline(action, params, id, progressId) {
+function doRequestOffline(action, params, id, progressId, progressValue) {
   logPSC($"Offline request {id}, method: {action}, params: {getParamsLog(params)}")
   defer(function() {
     let actionHandler = offlineActions?[action]
     eventbus_send(RESULT_ID,
       {
         ["$action"] = $"das.{action}",
-        ["$context"] = { id, params, progressId, action },
+        ["$context"] = { id, params, progressId, progressValue, action },
         error = actionHandler == null ? "Method does not supported offline" : null,
         result = actionHandler?(params),
       })
@@ -213,7 +219,7 @@ function requestImpl(msg) {
   let { id, data } = msg
   let { progressId = null, progressValue = null } = data
   startProgress(progressId, progressValue)
-  doRequest(data.method, data?.params, id, progressId)
+  doRequest(data.method, data?.params, id, progressId, progressValue)
 }
 
 local request = requestImpl
@@ -232,13 +238,28 @@ function debugLastRequests() {
   debugTableData(lastRequests.get(), { recursionLevel = 7 })
 }
 
+function debugProgressTimeouts() {
+  log("progressTimeouts: ")
+  debugTableData(progressTimeouts.get(), { recursionLevel = 1 })
+}
+
 function checkTimeouts() {
   let time = get_time_sec()
-  let finished = progressTimeouts.get().filter(@(v) v.timeout <= time)
+  let finished = []
+  foreach (id, timeoutValues in progressTimeouts.get())
+    foreach (value, timeout in timeoutValues)
+      if (timeout <= time)
+        finished.append({ id, value })
   if (finished.len() == 0)
     return
-  progressTimeouts.set(progressTimeouts.get().filter(@(_, id) id not in finished))
-  finished.each(@(v, id) sendProgress(id, v.value, false))
+  progressTimeouts.mutate(function(timeoutValues) {
+    foreach (v in finished) {
+      timeoutValues[v.id].$rawdelete(v.value)
+      if (timeoutValues[v.id].len() == 0)
+        timeoutValues.$rawdelete(v.id)
+    }
+  })
+  finished.each(@(v) sendProgress(v.id, v.value, false))
 }
 checkTimeouts()
 let startNextTimer = @(t) t <= 0 ? null : resetTimeout(t - get_time_sec(), checkTimeouts)
@@ -251,4 +272,5 @@ eventbus_subscribe("profile_srv.debugLastRequests", debugLastRequests)
 
 register_command(@(delay) debugDelay.set(delay), "pserver.delay_requests")
 register_command(debugLastRequests, "pserver.debug_last_requests")
+register_command(debugProgressTimeouts, "pserver.debug_progress_timeouts")
 register_command(function(errId) { debugError = errId }, "pserver.debug_next_request_error")

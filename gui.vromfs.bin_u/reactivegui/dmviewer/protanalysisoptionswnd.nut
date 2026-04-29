@@ -121,7 +121,6 @@ let threatUnitSearchTextInput = {
         fillColor = headerBgColor
       }
       placeholder = loc("unit_search")
-      onChange = @(v) threatUnitSearchString.set(v)
       onEscape = @() threatUnitSearchString.get() != "" ? threatUnitSearchString.set("") : close()
       maxChars = 40
     })

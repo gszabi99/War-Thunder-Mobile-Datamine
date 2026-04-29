@@ -1005,7 +1005,9 @@
     "aircraft_elevator": {
       "elevator": {},
       "elevator0": {},
-      "elevator1": {}
+      "elevator1": {},
+      "elevator2": {},
+      "elevator3": {}
     },
     "aircraft_rudder": {
       "rudder": {},

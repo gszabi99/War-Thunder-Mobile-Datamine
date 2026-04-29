@@ -8,7 +8,8 @@ let { shopCategoriesCfg } = require("%rGui/shop/shopCommon.nut")
 let { isShopOpened, curCategoryId, shopOpenCount, saveSeenGoodsCurrent, curShopSubsByCategory,
   pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, hasUnseenGoodsByShop, curShopId,
   curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
-  curShopSoonGoodsByCategory, closeShopWnd, setShopCategory, shopsCfgOrdered
+  curShopSoonGoodsByCategory, closeShopWnd, setShopCategory, shopsCfgOrdered,
+  curShopSoonPGoodsByCategory,
 } = require("%rGui/shop/shopState.nut")
 let { mkShopTabs } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage, mkShopGamercard } = require("%rGui/shop/shopWndPage.nut")
@@ -57,11 +58,13 @@ function mkShopContent() {
     .filter(@(c) c.id in curShopActualSchRewardsByCategory.get()
       || c.id in curShopGoodsByCategory.get()
       || c.id in curShopSoonGoodsByCategory.get()
+      || c.id in curShopSoonPGoodsByCategory.get()
       || c.id in curShopPersonalGoodsByCategory.get()
       || c.id in curShopSubsByCategory.get()))
   let distances = Computed(function() {
     let allGoodsLists = curShopGoodsByCategory.get()
     let soonGoods = curShopSoonGoodsByCategory.get()
+    let soonPGoods = curShopSoonPGoodsByCategory.get()
     let allRewards = curShopActualSchRewardsByCategory.get()
     let allPersonal = curShopPersonalGoodsByCategory.get()
     let allSubs = curShopSubsByCategory.get()
@@ -71,8 +74,12 @@ function mkShopContent() {
     let res = {}
     foreach (cfg in curCategoriesCfg.get()) {
       let { id = "" } = cfg
+      let slotsByBaseId = {}
+      foreach (soonPGoodsV in (soonPGoods?[id] ?? []))
+        slotsByBaseId[soonPGoodsV.baseId] <- soonPGoodsV.slots
+      let soonPGoodsLen = slotsByBaseId.reduce(@(resV, v) resV + v, 0)
       let goodsRewardLen = (allGoodsLists?[id] ?? []).len() + (allRewards?[id] == null ? 0 : 1) + (allPersonal?[id].len() ?? 0)
-         + (allSubs?[id].len() ?? 0) + (soonGoods?[id].len() ?? 0)
+         + (allSubs?[id].len() ?? 0) + (soonGoods?[id].len() ?? 0) + soonPGoodsLen
       let rows = ceil(1.0 * goodsRewardLen / goodsPerRow)
       let bottom = top + titleH + titleGap + rows * goodsH + (rows - 1) * goodsGap + categoryGap
       let additionalTriggerSpace = categoryGap + goodsH / 3

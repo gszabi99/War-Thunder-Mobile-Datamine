@@ -89,7 +89,7 @@ let function mkPrice() {
 
 function mkContent() {
   let stateFlags = Watched(0)
-  let country = Computed(@() visibleNodes.get()?[unitName.get()].country)
+  let country = Computed(@() unit.get()?.country ?? "")
   return @() {
     watch = stateFlags
     size = flex()

@@ -117,7 +117,6 @@ function categoryComp() {
 
 let mkTextInputField = @(textWatch, placeholderText, options = {}) textInput(textWatch, {
   placeholder = placeholderText
-  onChange = @(value) textWatch.set(value)
   onEscape = @() textWatch.set("")
   ovr = {
     behavior = Behaviors.Button

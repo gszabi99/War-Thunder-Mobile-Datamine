@@ -15,7 +15,7 @@ let discountTag = @(discountPrc, ovr = {}, textOvr = {}) discountPrc <= 0 || dis
   hplace = ALIGN_RIGHT
   vplace = ALIGN_TOP
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#tag_discount.svg:{discountTagW}:{discountTagH}")
+  image = Picture($"ui/gameuiskin#tag_discount.svg:{discountTagW}:{discountTagH}:P")
   color = 0xE0E00000
   children = {
     pos = [ 0, hdpx(4) ]
@@ -29,7 +29,7 @@ let discountTag = @(discountPrc, ovr = {}, textOvr = {}) discountPrc <= 0 || dis
 let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
   size  = [ discountTagBigW, discountTagBigH ]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#tag_discount.svg:{discountTagBigW}:{discountTagBigH}")
+  image = Picture($"ui/gameuiskin#tag_discount.svg:{discountTagBigW}:{discountTagBigH}:P")
   color = 0xFFD22A19
   children = {
     pos = [ 0, hdpx(5) ]
@@ -43,8 +43,7 @@ let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >=
 let discountTagOffer = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
   size  = [ discountOfferTagW, discountOfferTagH ]
   rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{discountOfferTagW}:{discountOfferTagH}")
-  keepAspect = KEEP_ASPECT_NONE
+  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{discountOfferTagW}:{discountOfferTagH}:P")
   screenOffs = discountOfferTagHTexOffs
   texOffs = discountOfferTagHTexOffs
   color = 0xFFD22A19
@@ -63,7 +62,6 @@ function discountTagUnitCtor(discount, height, ovr) {
     size = [SIZE_TO_CONTENT, height]
     rendObj = ROBJ_9RECT
     image = Picture($"ui/gameuiskin#tag_popular.svg:{height}:{height}:P")
-    keepAspect = KEEP_ASPECT_NONE
     screenOffs = markTexOffs
     texOffs = markTexOffs
     color = 0xFFD22A19

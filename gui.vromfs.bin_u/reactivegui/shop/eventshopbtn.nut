@@ -3,7 +3,9 @@ let { serverTime, getServerTime } = require("%appGlobals/userstats/serverTime.nu
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { openShopWnd, hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop } = require("%rGui/shop/shopState.nut")
+let { openShopWnd, hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop,
+  soonPersonalGoodsByShop,
+} = require("%rGui/shop/shopState.nut")
 
 
 let eventShopBtnIconSize = hdpx(150)
@@ -57,6 +59,13 @@ function mkBtn(sId) {
         if (start > 0)
           inc(timeEndCounts, start)
       }
+    foreach (goodsList in soonPersonalGoodsByShop.get()[sId])
+      foreach (goods in goodsList) {
+        inc(eventIdCounts, goods.meta?.eventId ?? "")
+        let { start = 0 } = goods.timeRange
+        if (start > 0)
+          inc(timeEndCounts, start)
+      }
 
     eventIdCounts.$rawdelete("")
     return {
@@ -100,13 +109,13 @@ function mkBtn(sId) {
 }
 
 function mkEventShopBtn () {
-  let isEventShopBtnVisible = Computed(@()
-    goodsByShop.get().events.len() +
-    soonGoodsByShop.get().events.len() > 0)
+  let isEventShopBtnVisible = Computed(@() goodsByShop.get().events.len()
+    + soonGoodsByShop.get().events.len()
+    + soonPersonalGoodsByShop.get().events.len() > 0)
 
-  let isEventShop2BtnVisible = Computed(@()
-    goodsByShop.get().events2.len() +
-    soonGoodsByShop.get().events2.len() > 0)
+  let isEventShop2BtnVisible = Computed(@() goodsByShop.get().events2.len()
+    + soonGoodsByShop.get().events2.len()
+    + soonPersonalGoodsByShop.get().events2.len() > 0)
 
   return @() {
     watch = [isEventShopBtnVisible, isEventShop2BtnVisible]

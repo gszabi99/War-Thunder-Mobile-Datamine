@@ -41,6 +41,5 @@ return function (priceVal, context) {
     price = { price currencyId = currency },
     purchase = buyEPLevel,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT_PASS, PURCH_TYPE_EP_LEVEL, epProgressUnlockId.get()),
-    hasSpendingStat = false
   })
 }

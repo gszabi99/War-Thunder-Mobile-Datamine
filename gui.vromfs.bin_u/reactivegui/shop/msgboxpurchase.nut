@@ -118,7 +118,7 @@ function mkSpendingText(currencyId, goodsId, spendingCountry) {
   }
 }
 
-let msgContent = @(text, priceComp, limitCountText, price, goodsId, hasSpendingStat, spendingCountry) {
+let msgContent = @(text, priceComp, limitCountText, price, goodsId, spendingCountry) {
   size = flex()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -136,7 +136,7 @@ let msgContent = @(text, priceComp, limitCountText, price, goodsId, hasSpendingS
       text = utf8ToUpper(loc("item/balance", {count = limitCountText}))
       color = commonTextColor
     }.__update(fontSmall)
-    hasSpendingStat ? mkSpendingText(price.currencyId, goodsId, spendingCountry) : null
+    mkSpendingText(price.currencyId, goodsId, spendingCountry)
   ].filter(@(v) v != null)
 }
 
@@ -151,7 +151,6 @@ function openMsgBoxPurchase(
   onGoToShop = null,
   limitCountText = null,
   goodsId = null,
-  hasSpendingStat = true,
   spendingCountry = null,
 ) {
   let priceComp = []
@@ -167,7 +166,7 @@ function openMsgBoxPurchase(
 
   openMsgBox({
     uid = PURCHASE_BOX_UID
-    text = msgContent(text, priceComp, limitCountText, price, goodsId, hasSpendingStat, spendingCountry),
+    text = msgContent(text, priceComp, limitCountText, price, goodsId, spendingCountry),
     buttons = [
       { id = "cancel", cb = onCancel, isCancel = true, key = "purchase_cancel_btn" }
       { text = loc(purchaseLocId), cb = purchase, styleId = "PURCHASE", isDefault = true, key = "purchase_tutor_btn" }

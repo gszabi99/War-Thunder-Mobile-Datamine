@@ -20,6 +20,9 @@ let seenPerosnalGoods = mkWatched(persist, "seenPersonalGoods", {})
 let personalGoodsCfg = Computed(@() serverConfigs.get()?.personalGoodsCfg ?? {})
 let personalGoods = Computed(@() servProfile.get()?.personalGoods ?? {})
 let pGoodsRelevance = Watched({})
+let pGoodsSoon = Watched({})
+let pGoodsOffsetIdx = Watched(0)
+let pGoodsSoonSeen = Watched({})
 
 let getPersonalGoodsFullId = @(goodsId, idx) idx == 0 ? goodsId : $"{goodsId}&{idx}"
 let getPersonalGoodsBaseId = memoize(function getPersonalGoodsBaseIdImpl(fullId) {
@@ -42,14 +45,26 @@ let shouldRefreshRequest = keepref(Computed(@() needRefresh.get() && isInMenu.ge
 function updateRelevance() {
   if (!isServerTimeValid.get()) {
     pGoodsRelevance.set({})
+    pGoodsSoon.set({})
     return
   }
 
   let time = getServerTime()
   let relevance = {}
+  let soon = {}
   local nextTime = 0
   foreach (baseId, cfg in personalGoodsCfg.get()) {
-    let { start, end } = cfg.timeRange
+    let { timeRange, showTimeBeforeActivate } = cfg
+    let { start, end } = timeRange
+    if (showTimeBeforeActivate > 0) {
+      if (start - showTimeBeforeActivate > time) {
+        nextTime = min(nextTime, start - showTimeBeforeActivate)
+        continue
+      }
+      else if (time < start)
+        soon[baseId] <- true
+    }
+
     if (time < start || (end > 0 && time >= end))
       continue
 
@@ -61,6 +76,7 @@ function updateRelevance() {
         nextTime = endTime
     }
   }
+  pGoodsSoon.set(soon)
   pGoodsRelevance.set(relevance)
 
   let timeToUpdate = nextTime - time
@@ -106,9 +122,33 @@ let activePersonalGoods = Computed(function(prev) {
   return prevIfEqual(prev, res)
 })
 
-let personalGoodsByShopCategory = Computed(function() {
+let soonPersonalGoods = Computed(function(prev) {
   let res = {}
-  foreach (g in activePersonalGoods.get())
+  let campaign = curCampaign.get()
+  foreach (baseId, cfg in personalGoodsCfg.get()) {
+    if ((cfg.meta?.campaign ?? campaign) != campaign)
+      continue
+    if (!(pGoodsSoon.get()?[baseId] ?? false))
+      continue
+    foreach (groupId, groupCfg in cfg.groups) {
+      let { price, discountInPercent, variants, lifeTime } = groupCfg
+      foreach (varId, variant in variants) {
+        let { goods, discountInPercentOvr } = variant
+        res[$"{groupId}&{varId}"] <- {
+          groupId, varId, baseId, id = $"{groupId}&{varId}", goods, price, slots = cfg.slots,
+          discountInPercent = discountInPercentOvr ? discountInPercentOvr : discountInPercent,
+          lifeTime, meta = cfg.meta, endTime = cfg.timeRange.start, timeRange = cfg.timeRange,
+        }
+      }
+    }
+  }
+
+  return prevIfEqual(prev, res)
+})
+
+let mkPGoodsByShopCategory = @(activeGoods) Computed(function() {
+  let res = {}
+  foreach (g in activeGoods.get())
     getSubArray(res, "eventId" in g.meta ? SC_SPECIAL : SC_FEATURED).append(g)
   res.each(@(l) l.sort(@(a, b)
     a.lifeTime <=> b.lifeTime
@@ -116,6 +156,9 @@ let personalGoodsByShopCategory = Computed(function() {
       || a.id <=> b.id))
   return res
 })
+
+let personalGoodsByShopCategory = mkPGoodsByShopCategory(activePersonalGoods)
+let personalGoodsSoonByShopCategory = mkPGoodsByShopCategory(soonPersonalGoods)
 
 let personalGoodsUnseenIds = Computed(function() {
   let unseenIds = {}
@@ -172,8 +215,12 @@ if (shouldRefreshRequest.get() && personalGoodsInProgress.get() == null)
 
 
 return {
+  pGoodsSoonSeen
+  pGoodsOffsetIdx
+  personalGoodsCfg
   activePersonalGoods
   personalGoodsByShopCategory
+  personalGoodsSoonByShopCategory
   getPersonalGoodsBaseId
   personalGoodsUnseenIds
   markPersonalGoodsSeen

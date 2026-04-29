@@ -44,7 +44,6 @@ let newMark = {
   size  = [SIZE_TO_CONTENT, newMarkH]
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#tag_popular.svg:{newMarkH}:{newMarkH}:P")
-  keepAspect = KEEP_ASPECT_NONE
   screenOffs = newMarkTexOffs
   texOffs = newMarkTexOffs
   color = tagRedColor

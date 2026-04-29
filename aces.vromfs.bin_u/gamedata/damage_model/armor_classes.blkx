@@ -2118,6 +2118,15 @@
     "ricochetDamage": 0.3,
     "oneSided": true
   },
+  "armor_fireplate": {
+    "armorThickness": 2.0,
+    "armorThrough": 2.0,
+    "restrainDamage": 0.2,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.3,
+    "oneSided": true
+  },
   "tank_textolite": {
     "armorThickness": 1.0,
     "armorThrough": 1.0,

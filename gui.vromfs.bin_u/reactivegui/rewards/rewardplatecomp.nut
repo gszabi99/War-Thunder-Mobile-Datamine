@@ -1042,6 +1042,7 @@ return {
   mkRewardPlateVip
   mkRewardPlateBg
   mkRewardPlateImage
+  mkRewardPlateUnknownImage
   mkRewardCurrencyImage
   mkRewardPlateTexts
   mkRewardReceivedMark

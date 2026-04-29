@@ -88,7 +88,6 @@ let consoleTextInput = {
   children = [
     textInput(consoleInputText, {
       placeholder = loc("Enter Quirrel code here")
-      onChange = @(v) consoleInputText.set(v)
       onReturn = consoleExecute
     })
     textButtonCommon("CLR", consoleInputClear,

@@ -25,6 +25,7 @@ let VALENTINEBOND = "valentinebond"
 let CANDYBOND = "candybond"
 let LOLLIPOPBOND = "lollipopbond"
 let CHOCOLATEBOND = "chocolatebond"
+let UKBOND = "ukbond"
 
 let balance = sharedWatched("balance", @() {})
 let isBalanceReceived = sharedWatched("isBalanceReceived", @() false)
@@ -62,6 +63,7 @@ let currenciesRes = {
   CANDYBOND
   LOLLIPOPBOND
   CHOCOLATEBOND
+  UKBOND
 }
 
 let allCurrencies = currenciesRes.values()

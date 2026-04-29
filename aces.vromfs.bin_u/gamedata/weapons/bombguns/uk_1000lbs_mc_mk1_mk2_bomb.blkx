@@ -1,0 +1,104 @@
+{
+  "bombGun": true,
+  "preset_cost": 250,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "uk_1000lb_mc_mk1_mk2_bomb",
+  "tags": {
+    "antiTankBomb": true,
+    "antiShipBomb": true
+  },
+  "bomb": {
+    "mass": 463.1,
+    "mass_lbs": 1021.0,
+    "caliber": 0.45,
+    "length": 1.844,
+    "distFromCmToStab": 1.05,
+    "dragCx": 0.042,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "bomb_ground",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "he_bomb",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
+    "explosiveType": "rdx_tnt",
+    "explosiveMass": 227.7,
+    "explodeTreshold": 0.00001,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "sound": "weapon.bomb_std",
+    "iconType": "bombs_large",
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    }
+  }
+}

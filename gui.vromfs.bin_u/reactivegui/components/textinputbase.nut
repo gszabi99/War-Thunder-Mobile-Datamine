@@ -92,7 +92,7 @@ function textInput(text_state, options = {}) {
 
     
     onBlur = null, onReturn = null,
-    onEscape = @() set_kb_focus(null), onChange = null, onFocus = null, onAttach = null,
+    onEscape = @() set_kb_focus(null), onFocus = null, onAttach = null,
     onHover = null, onImeFinish = null
   } = options
 
@@ -126,8 +126,7 @@ function textInput(text_state, options = {}) {
     onEscape()
   }
 
-  function onChangeExt(new_val) {
-    onChange?(new_val)
+  function onChange(new_val) {
     if (!isValidChange(new_val)) {
       anim_start(text_state)
       errorCount.set(errorCount.get() + 1)
@@ -171,7 +170,7 @@ function textInput(text_state, options = {}) {
     hotkeys
     charMask
 
-    onChange = onChangeExt
+    onChange
 
     onFocus
     onBlur   = onBlurExt

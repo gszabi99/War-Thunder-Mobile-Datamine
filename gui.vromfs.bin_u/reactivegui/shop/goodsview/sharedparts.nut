@@ -213,7 +213,7 @@ let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? n
   size  = [ pricePlateH, pricePlateH ]
   hplace = ALIGN_LEFT
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#tag_corner_left_top.svg:{pricePlateH}:{pricePlateH}")
+  image = Picture($"ui/gameuiskin#tag_corner_left_top.svg:{pricePlateH}:{pricePlateH}:P")
   color = tagRedColor
   children = txt({
     text = $"−{round(discountPrc)}%"
@@ -232,8 +232,7 @@ let popularMarkTexOffs = [ 0, popularMarkH / 2, 0, popularMarkH / 10 ]
 let popularMark = @(text = null) {
   size  = [ SIZE_TO_CONTENT, popularMarkH ]
   rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}")
-  keepAspect = KEEP_ASPECT_NONE
+  image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}:P")
   screenOffs = popularMarkTexOffs
   texOffs = popularMarkTexOffs
   color = tagRedColor
@@ -264,8 +263,7 @@ function dailyBonusTag(wpMul, expMul, hasSlots) {
   return {
     size  = [ SIZE_TO_CONTENT, dailyBonusTagH ]
     rendObj = ROBJ_9RECT
-    image = Picture($"ui/gameuiskin#tag_popular.svg:{dailyBonusTagH}:{dailyBonusTagH}")
-    keepAspect = KEEP_ASPECT_NONE
+    image = Picture($"ui/gameuiskin#tag_popular.svg:{dailyBonusTagH}:{dailyBonusTagH}:P")
     screenOffs = dailyBonusTagHTexOffs
     texOffs = dailyBonusTagHTexOffs
     color = 0xFFB02020
@@ -312,8 +310,7 @@ let purchBonusBg = {
   vplace = ALIGN_RIGHT
   valign = ALIGN_CENTER
   rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{purchBonusMarkH}:{purchBonusMarkH}")
-  keepAspect = KEEP_ASPECT_NONE
+  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{purchBonusMarkH}:{purchBonusMarkH}:P")
   screenOffs = purchBonusMarkTexOffs
   texOffs = purchBonusMarkTexOffs
   color = tagRedColor
@@ -687,7 +684,7 @@ let mkGoodsTimeProgress = @(fValue, text) disabledBg.__merge({
       watch = fValue
       size = [timerSize, timerSize]
       rendObj = ROBJ_PROGRESS_CIRCULAR
-      image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}")
+      image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}:P")
       fgColor = 0xFFFFFFFF
       bgColor = 0x33555555
       fValue = fValue.get()

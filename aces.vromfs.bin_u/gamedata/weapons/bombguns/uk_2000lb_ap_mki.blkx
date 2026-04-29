@@ -1,0 +1,207 @@
+{
+  "bombGun": true,
+  "preset_cost": 100,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "uk_2000lb_mk1_ap",
+  "tags": {
+    "antiTankBomb": true,
+    "antiShipBomb": true
+  },
+  "bomb": {
+    "mass": 877.2,
+    "mass_lbs": 1934.0,
+    "caliber": 0.343,
+    "length": 2.87,
+    "dragCx": 0.0257,
+    "distFromCmToStab": 1.45,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "groundRicochetPreset": "ap_ground",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "ke_bomb",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
+    "explosiveType": "shellite",
+    "explosiveMass": 75.3,
+    "useDelayExplosion": false,
+    "fuseDelayDist": 12.0,
+    "explodeTreshold": 11.0,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "penetrationBySpeed": true,
+    "waterExplosionEffect": "water_explosion_medium",
+    "sound": "weapon.bomb_std",
+    "iconType": "bombs_heavy_high_drag",
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.2
+      ],
+      "mod2": [
+        20.0,
+        0.4
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 1.0,
+        "demarreSpeedPow": 1.38,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      }
+    },
+    "ballisticsTable": {
+      "velocity500m": [
+        500.0,
+        140.316
+      ],
+      "velocity1000m": [
+        1000.0,
+        171.408
+      ],
+      "velocity1500m": [
+        1500.0,
+        197.597
+      ],
+      "velocity2000m": [
+        2000.0,
+        220.634
+      ],
+      "velocity2500m": [
+        2500.0,
+        241.424
+      ],
+      "velocity3000m": [
+        3000.0,
+        260.503
+      ],
+      "velocity3500m": [
+        3500.0,
+        278.22
+      ],
+      "velocity4000m": [
+        4000.0,
+        294.817
+      ],
+      "velocity4500m": [
+        4500.0,
+        310.47
+      ],
+      "velocity5000m": [
+        5000.0,
+        325.31
+      ],
+      "velocity5500m": [
+        5500.0,
+        339.439
+      ],
+      "velocity6000m": [
+        6000.0,
+        352.42
+      ],
+      "velocity6500m": [
+        6500.0,
+        364.767
+      ],
+      "velocity7000m": [
+        7000.0,
+        376.667
+      ],
+      "velocity7500m": [
+        7500.0,
+        388.19
+      ],
+      "velocity8000m": [
+        8000.0,
+        399.373
+      ],
+      "velocity8500m": [
+        8500.0,
+        410.254
+      ],
+      "velocity9000m": [
+        9000.0,
+        420.855
+      ],
+      "velocity9500m": [
+        9500.0,
+        431.202
+      ],
+      "velocity10000m": [
+        10000.0,
+        441.308
+      ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    }
+  }
+}

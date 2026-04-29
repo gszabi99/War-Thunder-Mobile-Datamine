@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
+let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -49,7 +50,7 @@ let { mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY } = require("%rGui/st
 let panelBg = require("%rGui/components/panelBg.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+
 
 let iconSizeH = hdpxi(80)
 let iconSizeW = iconSizeH * 2.3
@@ -346,7 +347,7 @@ function onPurchase() {
     price = { price, currencyId },
     purchase = @() buy_unit_mod(unitName, modName, currencyId, price),
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}")
-    spendingCountry = campConfigs.get()?.unitTreeNodes?[unitName].country ?? ""
+    spendingCountry = campConfigs.get()?.allUnits[unitName].country ?? ""
   })
 }
 

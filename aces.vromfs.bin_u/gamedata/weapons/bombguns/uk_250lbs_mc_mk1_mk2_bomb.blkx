@@ -1,0 +1,108 @@
+{
+  "bombGun": true,
+  "preset_cost": 75,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "uk_250lb_mc_mk1_mk2_bomb",
+  "offsetForDemonstration": [
+    0.0,
+    0.035,
+    0.0
+  ],
+  "tags": {
+    "antiTankBomb": true
+  },
+  "bomb": {
+    "mass": 102.0,
+    "mass_lbs": 225.0,
+    "caliber": 0.254,
+    "length": 1.41,
+    "distFromCmToStab": 0.013,
+    "dragCx": 0.015,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "bomb_ground",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "he_bomb",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
+    "explosiveType": "amatol",
+    "explosiveMass": 51.0,
+    "explodeTreshold": 0.00001,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "sound": "weapon.bomb_mid",
+    "iconType": "bombs_small",
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    }
+  }
+}

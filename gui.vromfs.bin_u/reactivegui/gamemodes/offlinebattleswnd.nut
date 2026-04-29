@@ -155,7 +155,6 @@ let unitSearchTextInput = {
         fillColor = headerBgColor
       }
       placeholder = loc("unit_search")
-      onChange = @(v) unitSearchName.set(v)
       onEscape = @() unitSearchName.get() != "" ? unitSearchName.set("") : close()
       maxChars = 40
     })

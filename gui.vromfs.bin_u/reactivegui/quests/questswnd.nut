@@ -44,7 +44,7 @@ let personalTabImageByCamp = {
 }
 
 let iconPersonal = Computed(@() personalTabImageByCamp?[curCampaign.get()])
-let iconSeason = Computed(@() $"ui/gameuiskin#banner_event_{eventSeason.get()}.avif")
+let iconSeason = Computed(@() getEventPresentation(eventSeason.get()).image)
 let imageSizeMul = Computed(@() getEventPresentation(eventSeason.get()).imageSizeMul)
 let imageTabOffset = Computed(@() getEventPresentation(eventSeason.get()).imageTabOffset)
 

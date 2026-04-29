@@ -73,6 +73,10 @@ return {
     "arado-234": {
       "": "germ_ta_154a_1"
     },
+    "attaker_fb1": {
+      "": "usa_pby_5a_early_a",
+      "upgraded": "ussr_la_11_standard"
+    },
     "b-17e": {
       "": "usa_p43a_1_usaaf",
       "upgraded": "ussr_p_47d_ussr"
@@ -124,8 +128,26 @@ return {
       "": "usa_p_400",
       "upgraded": "usa_sb2u_3"
     },
+    "b_48_firecrest": {
+      "": "usa_pby_5a_early_a"
+    },
+    "b_48_firecrest_prem": {
+      "": "germ_bf_110g_2_night"
+    },
     "bb-1": {
       "": "ussr_yak_2_kabb"
+    },
+    "beaufighter_mk21": {
+      "": "usa_pby_5a_early_a",
+      "upgraded": "jap_ki_43_3_otsu"
+    },
+    "beaufighter_mk6c": {
+      "": "uk_spitfire_mk5b",
+      "upgraded": "uk_spitfire_mk1a_raf_camo"
+    },
+    "beaufighter_mkx": {
+      "": "usa_pby_5a_early_a",
+      "upgraded": "jap_aichi_b7a2_dark_green"
     },
     "bf-109a_1": {
       "": "germ_he51c1"
@@ -208,6 +230,14 @@ return {
     },
     "bi": {
       "": "ussr_la_5f_type39"
+    },
+    "blenheim_mkiv": {
+      "": "uk_blenheim_mk4",
+      "upgraded": "uk_blenheim_mk4_egypt"
+    },
+    "brigand_b1": {
+      "": "usa_sb2u_2",
+      "upgraded": "usa_sb2u_3_gray"
     },
     "bv-155b-1": {
       "": "germ_do335a_1"
@@ -615,6 +645,9 @@ return {
       "": "ussr_db_3b",
       "upgraded": "ussr_tu2_a"
     },
+    "db_lk": {
+      "": "ussr_tandem_mai"
+    },
     "do_17e_1": {
       "": "germ_dornier_do_17e_1",
       "upgraded": "usa_sb2u_2"
@@ -740,6 +773,9 @@ return {
       "": "usa_sb2u_3",
       "upgraded": "usa_sb2u_3_gray"
     },
+    "f4f-4_martlet_mk4": {
+      "": "uk_spitfire_mk1a_summer"
+    },
     "f4f_4": {
       "": "usa_sb2u_3"
     },
@@ -796,6 +832,13 @@ return {
     "f8f1b": {
       "": "usa_f8f1b_bearcat",
       "upgraded": "usa_am_1_mauler"
+    },
+    "firebrand_tf4": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "usa_pby_5a_early_a"
+    },
+    "firefly_mk5": {
+      "": "ussr_la_11_standard"
     },
     "fn_battleship_vainamoinen": {
       "": "camo_3gray_colors_geometry"
@@ -1116,6 +1159,10 @@ return {
       "desert": "fr_camo_desert_brown",
       "forest": "fr_camo_carc",
       "winter": "fr_camo_carc_winter"
+    },
+    "fury_mk2": {
+      "": "ussr_i_15_1935_moscow",
+      "upgraded": "ussr_i_180s_red"
     },
     "fw-189a-1": {
       "": "germ_fw_189a_1"
@@ -1890,8 +1937,16 @@ return {
       "": "ger_camo_modern_threecolor",
       "forest": "ger_camo_bronzegruen"
     },
+    "gladiator_mk2": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "uk_hurricane_mk2b"
+    },
     "go229_v3": {
       "": "germ_bf_109g_14_winter"
+    },
+    "halifax_mk3": {
+      "": "uk_spitfire_mk1a_raf_camo",
+      "upgraded": "ussr_il_10_winter44"
     },
     "he-111h-16_winter": {
       "": "germ_he_111h_16_a_winter",
@@ -1935,6 +1990,14 @@ return {
     "he_219a_7": {
       "": "germ_he51c1"
     },
+    "hornet_mk3": {
+      "": "usa_tbd_1_1938",
+      "upgraded": "ussr_la_11_standard"
+    },
+    "hp52_hampden_mk1_late": {
+      "": "usa_p_400_83",
+      "upgraded": "usa_pby_5a_early_a"
+    },
     "hs-123a-1": {
       "": "germ_hs_123a1_late",
       "upgraded": "jap_aichi_b7a2_dark_green"
@@ -1946,6 +2009,17 @@ return {
       "": "germ_hs_129b_2_bloody_c",
       "bat": "ger_hs_129b_2_bat",
       "standart": "germ_me_410a_1"
+    },
+    "hudson_mk_v": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "hurricane_mk1c": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "germ_he_111h_16_a_winter"
+    },
+    "hurricanemkii": {
+      "": "uk_spitfire_mk1a_raf_camo",
+      "upgraded": "uk_hurricane_mk2b_africa"
     },
     "i-153_m62": {
       "": "ussr_i_180s",
@@ -2368,6 +2442,9 @@ return {
     },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
+    },
+    "jp_armoredcruiser_kurama": {
+      "": "camo_blackgray_lines"
     },
     "jp_battlecruiser_amagi": {
       "": "camo_darkblue_waves"
@@ -2844,6 +2921,17 @@ return {
     "lagg-i-301": {
       "": "ussr_i_301"
     },
+    "lancaster_mk3": {
+      "": "usa_sb2u_2",
+      "upgraded": "uk_lancaster_raf"
+    },
+    "lincoln_b2": {
+      "": "uk_spitfire_mk1a_raf_camo",
+      "upgraded": "usa_sb2u_2"
+    },
+    "mb_5": {
+      "": "uk_spitfire_mk1a_summer"
+    },
     "me-163b": {
       "": "germ_do335a_1",
       "camo": "germ_me_410b_6_re"
@@ -2897,6 +2985,10 @@ return {
       "": "germ_ta152c",
       "upgraded": "usa_sb2u_2"
     },
+    "meteor_fmk3": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "germ_bf_110g_2_night"
+    },
     "mig-9": {
       "": "ussr_la_11_standard",
       "upgraded": "ussr_tandem_mai"
@@ -2908,12 +3000,26 @@ return {
     "mig-9_ussr_prem": {
       "": "ussr_yak_3t_gray"
     },
+    "mosquito_b_mk16": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "mosquito_b_mk16_prem": {
+      "": "usa_sb2u_2"
+    },
+    "mosquito_fb_mk6": {
+      "": "usa_p_400",
+      "upgraded": "uk_spitfire_mk1a_summer"
+    },
     "n1k2_j": {
       "": "jap_ki_43_3_otsu",
       "number": "jap_aichi_b7a2_dark_green"
     },
     "n1k2_j_prem": {
       "": "jap_a6m2"
+    },
+    "nimrod_mk2": {
+      "": "ussr_i_180s_red",
+      "upgraded": "usa_tbd_1_1938"
     },
     "p-36a": {
       "": "usa_p_40c_metal",
@@ -3062,6 +3168,67 @@ return {
       "": "usa_f4u_4b",
       "upgraded": "usa_sb2u_3"
     },
+    "sea_fury_fb11": {
+      "": "usa_pby_5a_early_a",
+      "upgraded": "uk_seafury_fb11_raaf_blue"
+    },
+    "seafire_mk17": {
+      "": "uk_seafury_fb11",
+      "upgraded": "usa_pby_5a_early_a"
+    },
+    "seafire_mk3": {
+      "": "usa_pby_5a_early_a"
+    },
+    "seafire_mk3_prem": {
+      "": "uk_seafury_fb11"
+    },
+    "shackleton_mr_mk_2": {
+      "": "usa_pby_5a_early_a",
+      "upgraded": "uk_shackleton_mr_mk_2_grey_37b"
+    },
+    "spitfire_f22": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "germ_bf_109a"
+    },
+    "spitfire_f24": {
+      "": "germ_bf_110g_2_night"
+    },
+    "spitfire_f24_prem": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "spitfire_ix_early": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "germ_bf_109a"
+    },
+    "spitfire_mk1": {
+      "": "uk_spitfire_mk1a_raf_camo",
+      "upgraded": "uk_spitfire_mk1a_summer"
+    },
+    "spitfire_mk14c": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "spitfire_mk14c_prem": {
+      "": "usa_p_400"
+    },
+    "spitfire_mk5b": {
+      "": "uk_spitfire_mk5b",
+      "upgraded": "usa_pby_5a_early_a"
+    },
+    "spitfire_mk9c_4cannons": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "spitfire_xvi": {
+      "": "uk_hurricane_mk2b_africa",
+      "upgraded": "ussr_la_11_standard"
+    },
+    "spitfiremkii": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "uk_spitfire_mk1a_raf_camo"
+    },
+    "stirling_mk3": {
+      "": "uk_spitfire_mk1a_raf_camo",
+      "upgraded": "ussr_la_11_standard"
+    },
     "su-11": {
       "": "ussr_i_15_1935_moscow",
       "camo": "ussr_lagg_3_series_11"
@@ -3101,6 +3268,10 @@ return {
     "sw_cv_90120_prem": {
       "": "se_camo_modern_urban",
       "forest": "se_camo_green"
+    },
+    "sw_cv_90_mk4": {
+      "": "se_camo_modern_urban",
+      "forest": "se_camo_modern_m90"
     },
     "sw_itpsv_90": {
       "": "se_camo_green",
@@ -3220,6 +3391,19 @@ return {
       "": "usa_f8f1b_bearcat",
       "upgraded": "ussr_i_180s_red"
     },
+    "tempest_mkv": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "jap_a7m2"
+    },
+    "tempest_mkv_vikkers": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "tempest_mkv_vikkers_prem": {
+      "": "ussr_i_15_1935_moscow"
+    },
+    "thunderbolt_mk1": {
+      "": "usa_p43a_1_usaaf"
+    },
     "tis_ma": {
       "": "ussr_la_7"
     },
@@ -3247,6 +3431,18 @@ return {
     },
     "tu_4_prem": {
       "": "ussr_la_11_standard"
+    },
+    "typhoon_mk1a": {
+      "": "uk_typhoon_mk1a",
+      "upgraded": "usa_a_20g_25_usaaf"
+    },
+    "typhoon_mk1b": {
+      "": "uk_spitfire_mk1a_summer",
+      "upgraded": "uk_spitfire_mk5b"
+    },
+    "typhoon_mk1b_late": {
+      "": "uk_typhoon_mk1a",
+      "upgraded": "usa_a_20g_25_usaaf"
     },
     "uk_17_pdr_m10_achilles": {
       "": "uk_camo_light_stone_light_grey_slate_grey",
@@ -5318,6 +5514,27 @@ return {
     "ussr_zsu_57_2_reskin3": {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
+    "v_156_b1": {
+      "": "usa_pby_5a_early_a"
+    },
+    "v_156_b1_prem": {
+      "": "uk_spitfire_mk1a_summer"
+    },
+    "wellington_mk10": {
+      "": "usa_sb2u_2",
+      "upgraded": "uk_spitfire_mk1a_summer"
+    },
+    "wellington_mk1c": {
+      "": "usa_sb2u_2",
+      "upgraded": "uk_spitfire_mk1a_raf_camo"
+    },
+    "whirlwind_mk1": {
+      "": "uk_spitfire_mk1a_raf_camo",
+      "upgraded": "uk_spitfire_mk1a_summer"
+    },
+    "wirraway": {
+      "": "germ_fw_190a_5_u14_yellow_1"
     },
     "xf5f": {
       "": "usa_tbd_1_1938"

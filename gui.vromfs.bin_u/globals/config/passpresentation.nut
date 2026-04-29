@@ -59,6 +59,12 @@ let epPresentations = {
     bgColor = 0xFF999999
     passWndCurrencies = [ APRILINTEL, APRILBOND ]
   }
+  uk_spending = {
+    bgColor = 0xFF999999
+    descLocId = "events/desc/tasksAndBattlesScore"
+    shortDescLocId = "events/desc/short/tasksAndBattlesScore"
+    bg = "ui/images/event_bg_uk_air_early_access.avif"
+  }
 }.map(@(c) defEpPresentation.__merge(c))
 
 let defNewbieBpPresentation = {

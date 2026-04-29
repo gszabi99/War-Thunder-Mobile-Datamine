@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_replays_dir } = require("replays")
 let { file_exists } = require("dagor.fs")
+let regexp2 = require("regexp2")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -15,19 +16,17 @@ let { PRIMARY, COMMON } = require("%rGui/components/buttonStyles.nut")
 
 const WND_UID = "saveReplayWnd"
 const replayFileExt = "wrpl"
+const MAX_REPLAY_NAME_LEN = 24
 let close = @() removeModalWindow(WND_UID)
 let replayName = Watched("")
+let invalidCharsRe = regexp2("[\\\\|/<>:?*\"@$%^&]")
 
-let isNameValid = Computed(function() {
-  if (replayName.get() == "")
-    return false
-  foreach (c in "\\|/<>:?*\"")  
-    if (replayName.get().indexof(c.tochar()) != null)
-      return false
-  return true
+let isNameValid = Computed(@() replayName.get() != "" && replayName.get().slice(0, 1) != "#")
+
+let editbox = textInput(replayName, {
+  maxChars = MAX_REPLAY_NAME_LEN,
+  setValue = @(v) replayName.set(invalidCharsRe.replace("", v))
 })
-
-let editbox = textInput(replayName)
 
 function saveReplay() {
   if (!saveLastReplay(replayName.get()))

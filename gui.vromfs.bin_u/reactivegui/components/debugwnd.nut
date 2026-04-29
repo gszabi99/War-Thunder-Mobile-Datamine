@@ -214,7 +214,6 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
           placeholder = "filter..."
           textStyle = fontVeryTiny
           ovr = { padding = const [hdpx(5), hdpx(10)] }
-          onChange = @(value) filterText.set(value)
           onEscape = @() filterText.get() == "" ? close() : filterText.set("")
           hotkeys = [["L.Ctrl C", { action = @() set_clipboard_text(textWatch.get()) }]]
         }.__update(fontVeryTiny))

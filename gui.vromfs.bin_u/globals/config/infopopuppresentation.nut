@@ -37,6 +37,9 @@ let presentations = {
   spend_event_lunar_ny = {
     image = "ui/images/spending_event_lunar_info.avif"
   }
+  uk_air_early_access = {
+    image = "ui/images/event_bg_uk_air_early_access.avif"
+  }
 }
 
 return memoize(@(id) mkDefPresentation(id).__update(presentations?[id] ?? {}))

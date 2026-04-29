@@ -24,7 +24,8 @@ let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("%rGui/shop/schRewardsState.nut")
 let { platformGoods, platformSubs } = require("%rGui/shop/platformGoods.nut")
-let { personalGoodsByShopCategory, personalGoodsUnseenIds, markPersonalGoodsSeen, resetSeenPersonalGoods
+let { personalGoodsByShopCategory, personalGoodsUnseenIds, markPersonalGoodsSeen, resetSeenPersonalGoods,
+  personalGoodsSoonByShopCategory
 } = require("%rGui/shop/personalGoodsState.nut")
 let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
@@ -227,6 +228,11 @@ let goodsByCategory = Computed(function() {
   return res
 })
 
+let soonGoods = Computed(function() {
+  let soon = soonGoodsByTime.get()
+  return allShopGoods.get().filter(@(_, id) id in soon)
+})
+
 let soonGoodsByShop = Computed(function() {
   let res = shopsCfgOrdered.reduce(@(res, v) res.$rawset(v.id, {}), {})
   let soon = soonGoodsByTime.get()
@@ -250,6 +256,7 @@ let mkGoodsByShop = @(gByCategoryW) Computed(function() {
 let goodsByShop = mkGoodsByShop(goodsByCategory)
 
 let personalGoodsByShop = mkGoodsByShop(personalGoodsByShopCategory)
+let soonPersonalGoodsByShop = mkGoodsByShop(personalGoodsSoonByShopCategory)
 
 let subsGroups = {
   prem = ["premium", "vip"]
@@ -512,6 +519,7 @@ let curShopActualSchRewardsByCategory = Computed(function() {
 
 let curShopGoodsByCategory = Computed(@() goodsByShop.get()?[curShopId.get()])
 let curShopSoonGoodsByCategory = Computed(@() soonGoodsByShop.get()?[curShopId.get()])
+let curShopSoonPGoodsByCategory = Computed(@() soonPersonalGoodsByShop.get()?[curShopId.get()])
 
 let getCurShopGoodsByCategory = @(goodsByCategoryW) Computed(function() {
   let res = {}
@@ -578,6 +586,7 @@ return {
   shopGoodsAllCampaigns
   shopGoods
   shopGoodsInternal
+  soonGoods
   goodsLinks
   sortGoods
   inactiveGoodsByTime
@@ -604,9 +613,11 @@ return {
   goodsByShop
   goodsIdsByShop
   soonGoodsByShop
+  soonPersonalGoodsByShop
   curShopActualSchRewardsByCategory
   curShopGoodsByCategory
   curShopSoonGoodsByCategory
+  curShopSoonPGoodsByCategory
   curShopPersonalGoodsByCategory
   curShopSubsByCategory
 

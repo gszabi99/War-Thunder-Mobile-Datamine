@@ -49,7 +49,7 @@ let { REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots } = requ
 let { ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText,
-  mkRewardPlate, mkRewardUnitFlag
+  mkRewardPlate, mkRewardUnitFlag, mkRewardPlateUnknownImage
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -875,7 +875,7 @@ function mkBattleModText(bmp, reward) {
         valign = ALIGN_CENTER
         children = [
           mkHighlight(startDelay, aRewardIconFlareScale)
-          icon == null ? null
+          icon == null ? mkRewardPlateUnknownImage({ slots = 2 }, REWARD_STYLE_MEDIUM)
             : {
                 size = [rewIconSize, rewIconSize]
                 rendObj = ROBJ_IMAGE

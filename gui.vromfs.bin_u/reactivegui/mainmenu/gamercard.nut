@@ -12,7 +12,7 @@ let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, hasUnseenGoodsByShop, shopGoods } = require("%rGui/shop/shopState.nut")
+let { openShopWnd, hasUnseenGoodsByShop, shopGoods, soonGoods } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
@@ -444,26 +444,29 @@ let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = ownHangarUnit) {
   ]
 }
 
-let hasAction = @(cId, goods) cId in openCfg
-  || goods.filter(@(g) g.rewards.len() == 1
-    && g.rewards[0].gType == G_CURRENCY
-    && g.rewards[0].id == cId).len() > 0
+let isGoodsForCurrency = @(g, cId) g.rewards.len() == 1
+  && g.rewards[0].gType == G_CURRENCY
+  && g.rewards[0].id == cId
+
+let hasCurrencyShop = @(cId, goods, soon) cId in openCfg
+  || null != goods.findvalue(@(g) isGoodsForCurrency(g, cId))
+  || null != soon.findvalue(@(g) isGoodsForCurrency(g, cId))
 
 let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
   size = FLEX_H
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
   children = @() {
-    watch = shopGoods
+    watch = [shopGoods, soonGoods]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
     gap = gamercardGap
     children = !currencies ? null
-    : [].extend(currencies)
-        .sort(@(a, b) sortByCurrencyId(b, a)) 
-        .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] || !hasAction(c, shopGoods.get()) ? null
-          : openBuyCurrencyWnd(c)))
+      : [].extend(currencies)
+          .sort(@(a, b) sortByCurrencyId(b, a)) 
+          .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] || !hasCurrencyShop(c, shopGoods.get(), soonGoods.get()) ? null
+            : openBuyCurrencyWnd(c)))
   }
 }
 

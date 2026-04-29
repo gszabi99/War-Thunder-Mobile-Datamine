@@ -29,6 +29,7 @@ let iconsScale = {
   independencebond = 1.4
   ircm_kit = 1.4
   platinum = 1.2
+  ukbond = 1.3
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
 
@@ -57,6 +58,7 @@ let icons = {
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
   hotmaybond = "ui/gameuiskin#warbond_icon_hotmaybond.avif"
   independencebond = "ui/gameuiskin#warbond_icon_independencebond.avif"
+  ukbond = "ui/gameuiskin#warbond_icon_ukbond.avif"
   
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -86,6 +88,7 @@ let bigIcons = {
   candybond = "ui/gameuiskin#candybond_goods_2026_01.avif"
   lollipopbond = "ui/gameuiskin#lollipopbond_goods_2026_01.avif"
   chocolatebond = "ui/gameuiskin#chocolatebond_goods_2026_01.avif"
+  ukbond = "ui/gameuiskin#ukbond_goods_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"

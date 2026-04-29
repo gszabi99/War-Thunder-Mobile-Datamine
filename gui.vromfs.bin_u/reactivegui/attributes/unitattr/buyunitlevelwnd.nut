@@ -39,7 +39,7 @@ function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold, sp) {
       : loc("shop/needUnitUpgrade"),
     price = { price = costGold, currencyId = GOLD },
     purchase = @() buy_unit_level(unitName.get(), curLevel, tgtLevel, nextLevelExp, costGold, "closeBuyUnitLevelWnd"),
-    spendingCountry = campConfigs.get()?.unitTreeNodes?[unitName.get()].country ?? ""
+    spendingCountry = campConfigs.get()?.allUnits[unitName.get()].country ?? ""
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, $"{unitName.get()} {curLevel} +{tgtLevel - curLevel}")
   })
 }
