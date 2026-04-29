@@ -26,7 +26,7 @@ let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut"
 let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
   bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
-  buttonAirImgSize, mkCircleSecondaryGuns
+  buttonAirImgSize, mkCircleSecondaryGuns, mkBoosterCtorBtn, mkCircleBtnEditView
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let flaresButton = require("%rGui/hud/buttons/flaresButton.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera, hasBombs,
@@ -341,6 +341,13 @@ return cfgHudCommon.__merge({
     ctor = radarHudCtor
     defTransform = mkRTPos([-hdpx(20), 0])
     editView = radarHudEditView
+    priority = Z_ORDER.BUTTON
+  }
+
+  booster = {
+    ctor = mkBoosterCtorBtn
+    defTransform = mkRTPos([hdpx(-10), hdpx(630)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_booster.svg")
     priority = Z_ORDER.BUTTON
   }
 

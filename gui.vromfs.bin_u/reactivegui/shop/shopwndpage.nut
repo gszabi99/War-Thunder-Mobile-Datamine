@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { doesLocTextExist } = require("dagor.localize")
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -297,8 +297,7 @@ function mkPersonalGoodsCard(pGoods, animParams) {
 }
 
 function mkSoonPersonalGoodsCard(pGoods, idx, listLen, animParams) {
-  let { lifeTime, timeRange, id, groupId, varId } = pGoods
-  let combinationId = $"{groupId}&{varId}"
+  let { lifeTime, id } = pGoods
   let popLocId = $"shop/{getPersonalGoodsBaseId(id)}"
   let goods = personalGoodsToShopGoods(pGoods).__update({
     endTime = 0  
@@ -307,13 +306,7 @@ function mkSoonPersonalGoodsCard(pGoods, idx, listLen, animParams) {
       : (personalTextByLifeTime?[lifeTime] ?? popLocId))
   })
 
-  let sec = Computed(@() max(0, timeRange.start - serverTime.get()))
-  let addChildren = [
-    mkGoodsTimeProgress(
-      Computed(@() clamp(1.0 - sec.get().tofloat() / lifeTime, 0, 1)),
-      Computed(@() secondsToHoursLoc(sec.get()))
-    )
-  ]
+  let addChildren = []
   let isWithUnitOrSkin = null != pGoods.goods.findvalue(@(g) g.gType in unitRewardTypes || g.gType == G_SKIN)
   if (!isWithUnitOrSkin)
     addChildren.append({
@@ -323,9 +316,15 @@ function mkSoonPersonalGoodsCard(pGoods, idx, listLen, animParams) {
       children = mkLimitText(1, 1)
     })
 
+  function modifyOffset() {
+    pGoodsOffsetIdx.modify(@(v) v + listLen)
+    resetTimeout(soonPersonalGoodsDelay, modifyOffset)
+  }
+
   return {
-    key = combinationId
-    onAttach = idx != 0 ? null : @() resetTimeout(soonPersonalGoodsDelay, @() pGoodsOffsetIdx.modify(@(v) v + listLen))
+    key = modifyOffset
+    onAttach = idx != 0 ? null : @() resetTimeout(soonPersonalGoodsDelay, modifyOffset)
+    onDetach = idx != 0 ? null : @() clearTimer(modifyOffset)
     children = mkGoods(
       goods,
       @() null,

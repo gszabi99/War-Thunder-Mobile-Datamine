@@ -116,7 +116,9 @@ let questsBySection = Computed(function() {
       res[section] <- {}
 
   foreach (name, u in campaignActiveUnlocks.get())
-    if (u?.meta.event_id in res)
+    if (u?.meta.event_progress)
+      continue
+    else if (u?.meta.event_id in res)
       res[u.meta.event_id][name] <- u
     else
       foreach (section in sectionMetaMarks)

@@ -19,7 +19,7 @@ let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
-  TurretsVisible, TurretsReloading, TurretsEmpty
+  TurretsVisible, TurretsReloading, TurretsEmpty, HasBooster
 } = require("%rGui/hud/airState.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
@@ -881,6 +881,35 @@ let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.sv
     }
   }
 
+let mkBoosterCtorBtn = function(scale) {
+  let stateFlags = Watched(0)
+  let isDisabled = mkIsControlDisabled("ID_IGNITE_BOOSTERS")
+  let bgSize = scaleEven(buttonSize, scale)
+  let imgSize = scaleEven(buttonImgSize, scale)
+  return !HasBooster.get() ? @() { watch = HasBooster, key = "ID_IGNITE_BOOSTERS" }
+    : @() {
+      watch = [HasBooster, isDisabled]
+      key = "btn_booster_circle"
+      size = [bgSize, bgSize]
+      behavior = Behaviors.Button
+      cameraControl = true
+      hotkeys = mkGamepadHotkey("ID_IGNITE_BOOSTERS")
+      function onClick() {
+        if (isDisabled.get())
+          return
+        toggleShortcut("ID_IGNITE_BOOSTERS")
+      }
+      onElemState = @(v) stateFlags.set(v)
+      children = [
+        mkBtnBg(bgSize, hudLightBlackColor)
+        mkBtnBorder(bgSize, !isDisabled.get(), stateFlags)
+        mkBtnImage(imgSize, "ui/gameuiskin#hud_booster.svg", isDisabled.get() ? disabledColor: hudWhiteColor)
+        isDisabled.get() ? null
+          : mkGamepadShortcutImage("ID_IGNITE_BOOSTERS", defShortcutOvr, scale)
+      ]
+    }
+  }
+
 function mkCircleTargetTrackingBtn(scale) {
   let stateFlags = Watched(0)
   let bgSize = scaleEven(buttonSize, scale)
@@ -1028,6 +1057,7 @@ return {
   mkCircleLockBtn
   mkSimpleCircleTouchBtn
   mkCircleTargetTrackingBtn
+  mkBoosterCtorBtn
   mkCircleFireworkBtn
   mkCirclePlaneCourseGuns
   mkCircleSecondaryGuns

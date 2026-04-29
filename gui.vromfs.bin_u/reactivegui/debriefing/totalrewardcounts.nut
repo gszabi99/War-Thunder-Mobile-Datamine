@@ -253,10 +253,10 @@ function getRewardsInfo(preset, debrData) {
   let streaks = hasProgress ? getStreaks(debrData) : 0
   let isPremiumIncluded = getIsPremiumIncluded(debrData)
   let dailyBonus = hasProgress ? getDailyBonus(debrData) : 0
-  let totalWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalWithAds(debrData)
   let total = hasProgress ? getTotalWithoutPremium(debrData) : 0
   let totalWithPremRaw = hasProgress ? getTotalWithPremium(debrData) : 0
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
+  let totalWithAds = hasProgress && isAdsBonusApplied(debrData) ? getTotalWithAds(debrData) : 0
   let totalGoldWithPremium = !hasProgress ? 0 : getTotalGoldWithPremium?(debrData) ?? 0
   let totalGoldWithoutPremium = !hasProgress ? 0 : getTotalGoldWithoutPremium?(debrData) ?? 0
   let totalGoldsWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalGoldWithAds?(debrData) ?? 0

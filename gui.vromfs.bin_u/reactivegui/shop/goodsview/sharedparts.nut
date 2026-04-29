@@ -735,7 +735,7 @@ function mkFreeAdsGoodsTimeProgress(goods) {
 }
 
 function mkSoonGoodsAvailableTime(goods, state) {
-  let { showTimeBeforeActivate = 0, timeRanges = [] } = goods
+  let { showTimeBeforeActivate = 0, timeRanges = [], timeRange = null } = goods
   if (showTimeBeforeActivate <= 0)
     return null
   let needTimer = Computed(@() (state.get() & NOT_READY) != 0)
@@ -743,7 +743,7 @@ function mkSoonGoodsAvailableTime(goods, state) {
     if (!needTimer)
       return ""
     let time = serverTime.get()
-    local nextTime = timeRanges.findvalue(@(tr) tr.start > time)?.start ?? 0
+    local nextTime = timeRanges.findvalue(@(tr) tr.start > time)?.start ?? timeRange?.start ?? 0
     let timeLeft = nextTime - time
     return timeLeft <= 0 ? "" : secondsToHoursLoc(timeLeft)
   })

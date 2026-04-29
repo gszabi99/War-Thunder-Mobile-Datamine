@@ -138,6 +138,7 @@ let soonPersonalGoods = Computed(function(prev) {
           groupId, varId, baseId, id = $"{groupId}&{varId}", goods, price, slots = cfg.slots,
           discountInPercent = discountInPercentOvr ? discountInPercentOvr : discountInPercent,
           lifeTime, meta = cfg.meta, endTime = cfg.timeRange.start, timeRange = cfg.timeRange,
+          showTimeBeforeActivate = cfg.showTimeBeforeActivate
         }
       }
     }

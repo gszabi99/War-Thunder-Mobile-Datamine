@@ -74,6 +74,8 @@ let airState = {
   DmStateMask
   isTorpedoReady
 
+  HasBooster = Watched(false)
+
   FlaresState
   IsPeriodicFlaresEnabled = Watched(false)
 }

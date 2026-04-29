@@ -3123,16 +3123,6 @@
             }
           },
           {
-            "iconType": "bomb_500kg",
-            "name": "uk_mk2_cookie",
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_mk2_cookie.blk",
-              "emitter": "mine3",
-              "bullets": 1
-            }
-          },
-          {
             "iconType": "bomb_1000kg",
             "name": "uk_8000lb",
             "Weapon": {

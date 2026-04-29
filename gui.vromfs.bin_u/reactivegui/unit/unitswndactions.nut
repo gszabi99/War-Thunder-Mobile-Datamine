@@ -277,7 +277,7 @@ let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
         @() goToReceive(receiveType, receiveData),
         { hotkeys = ["^J:X"] }))
     }
-    else {
+    else if (!isOwned) {
       let requiredBattleModeForUnlock = unitsBlockedByBattleMode.get()?[unitNameW.get()]
       let offerId = shopGoods.get().findindex(@(offer)
         null != offer.rewards.findvalue(@(v) v.gType == G_BATTLE_MOD && v.id == requiredBattleModeForUnlock))

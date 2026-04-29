@@ -39064,11 +39064,11 @@
           "ammoCount": 2000,
           "shotFreq": 15.8333
         },
-        "250lbs": {},
-        "500lbs": {
+        "uk_250lbs": {},
+        "uk_500lbs": {
           "reqModification": "aircraft_mod_7"
         },
-        "500lbs_sap": {
+        "uk_500lb_sap": {
           "reqModification": "aircraft_mod_7"
         }
       }
