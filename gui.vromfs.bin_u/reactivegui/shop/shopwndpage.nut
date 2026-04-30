@@ -449,18 +449,21 @@ function mkShopCategoryGoods(categoryCfg, distances) {
             })
           }
         ]
-        transform = {}
-        animations = tabTranslateWithOpacitySwitchAnim
       }
     })
   }
 }
 
 let mkShopPage = @(curCategoriesCfg, distances) @() {
-  watch = curCategoriesCfg
-  flow = FLOW_VERTICAL
-  gap = categoryGap
-  children = curCategoriesCfg.get().map(@(categoryCfg) mkShopCategoryGoods(categoryCfg, distances))
+  watch = [curCategoriesCfg, curShopId]
+  children = {
+    key = curShopId.get()
+    flow = FLOW_VERTICAL
+    gap = categoryGap
+    children = curCategoriesCfg.get().map(@(categoryCfg) mkShopCategoryGoods(categoryCfg, distances))
+    transform = {}
+    animations = tabTranslateWithOpacitySwitchAnim
+  }
 }
 
 return {

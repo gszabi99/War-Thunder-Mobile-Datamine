@@ -116,8 +116,9 @@ function mkShopContent() {
 
   let scrollToCurCategory = @() curCategoryId.get() not in distances.get() ? null
     : pageScrollHandler.scrollToY(distances.get()[curCategoryId.get()].scrollTo)
+  let scrollToCurCategoryDelayed = @(_) deferOnce(scrollToCurCategory)
   let onPageScroll = @(_) tryDoActionForCurrentScroll(@(idx) onTabChange(idx))
-  let onChangeCategory = @(_) tryDoActionForCurrentScroll(@(_) scrollToCurCategory())
+  let onChangeCategory = @(_) tryDoActionForCurrentScroll(scrollToCurCategoryDelayed)
   let hasUnseenGoodsByCategory = Computed(@() hasUnseenGoodsByShop.get()?[curShopId.get()])
 
   return {
@@ -133,11 +134,13 @@ function mkShopContent() {
       resetScrollPos()
       pageScrollHandler.subscribe(onPageScroll)
       curCategoryId.subscribe(onChangeCategory)
+      curShopId.subscribe(scrollToCurCategoryDelayed)
       scrollToCurCategory()
     }
     function onDetach() {
       pageScrollHandler.unsubscribe(onPageScroll)
       curCategoryId.unsubscribe(onChangeCategory)
+      curShopId.unsubscribe(scrollToCurCategoryDelayed)
     }
     children = [
       {

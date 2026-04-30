@@ -289,13 +289,16 @@ function mkGoodsNewPopularMark(goods, state) {
   let isNew = Computed(@() goods.id in shopUnseenGoods.get() || (personalGoodsUnseenIds.get()?[goods.id] ?? false) )
   let isPurchased = Computed(@() (state.get() & ALL_PURCHASED) != 0)
 
-  return @() {
-    watch = [isNew, isPurchased]
-    margin = isNew.get() && !isPurchased.get() ? hdpx(30) : null
-    children = isPurchased.get() ? null
-      : isNew.get() ? priorityUnseenMark
-      : isPopular ? popularMark(goods?.popularText)
-      : null
+  return function() {
+    if (isPurchased.get())
+      return { watch = isPurchased }
+
+    let children = []
+    if (isPopular)
+      children.append(popularMark(goods?.popularText))
+    if (isNew.get())
+      children.append(priorityUnseenMark.__merge({ margin = hdpx(30) }))
+    return { watch = [isNew, isPurchased], children }
   }
 }
 

@@ -67,7 +67,7 @@ let dataCache = {}
 
 let vendorsListsCfg = [
   {
-    getInfo = @() parse_json(getAllIABVendors())
+    getInfo = @() parse_json(getAllIABVendors()) ?? []
     isAbleConsentForVendor = isAbleConsentForIABVendor
     hasConsentForVendor = hasConsentForIABVendor
     setConsentForVendor = setConsentForIABVendor
@@ -84,7 +84,7 @@ let vendorsListsCfg = [
     }
   }
   {
-    getInfo = @() parse_json(getAllGoogleVendors())
+    getInfo = @() parse_json(getAllGoogleVendors()) ?? []
     isAbleConsentForVendor = isAbleConsentForGoogleVendor
     hasConsentForVendor = hasConsentForGoogleVendor
     setConsentForVendor = setConsentForGoogleVendor
@@ -96,7 +96,7 @@ let vendorsListsCfg = [
     itemToPartnerData = @(v) v.__merge({ legIntClaim = "" })
   }
   {
-    getInfo = @() parse_json(getAllCustomVendors())
+    getInfo = @() parse_json(getAllCustomVendors()) ?? []
     isAbleConsentForVendor = null
     hasConsentForVendor = null
     setConsentForVendor = null
@@ -136,7 +136,7 @@ function setupAnalytics() {
 
 function saveToLocalStorage() {
   local res = false
-  foreach (p in parse_json(getAllPurposes()))
+  foreach (p in parse_json(getAllPurposes()) ?? [])
     if (hasConsentForPurpose(p.id)) {
       res = true
       break
@@ -149,7 +149,7 @@ function mkStateSnapshot() {
   if (vendorsLists.get().len() == 0)
     return null
   let purposes = []
-  foreach (p in parse_json(getAllPurposes()))
+  foreach (p in parse_json(getAllPurposes()) ?? [])
     purposes.append([
       p.id
       hasConsentForPurpose(p.id)
@@ -172,7 +172,7 @@ function mkStateSnapshot() {
   return { purposes, vendors }
 }
 
-vendorsLists.subscribe(@(v) initialSnapshot.set(v ? mkStateSnapshot() : null))
+vendorsLists.subscribe(@(v) initialSnapshot.set(v.len() != 0 ? mkStateSnapshot() : null))
 
 let hasUserMadeChanges = @() initialSnapshot.get() != null && !isEqual(mkStateSnapshot(), initialSnapshot.get())
 
@@ -399,7 +399,7 @@ function mkPurposeCfg(purposeiInfo) {
   isEnabledLIT?.subscribe(@(v) setPurposeLIT(id, v))
   return {
     info = purposeiInfo
-    getVendorList = @() parse_json(getVendorListByPurposeId(id))
+    getVendorList = @() parse_json(getVendorListByPurposeId(id)) ?? []
     isEnabled
     isEnabledLIT
     isExpanded = Watched(false)
@@ -410,7 +410,7 @@ function mkSpecPurposeCfg(specPurposeInfo) {
   let { id } = specPurposeInfo
   return {
     info = specPurposeInfo
-    getVendorList = @() parse_json(getVendorListBySpecialPurposeId(id))
+    getVendorList = @() parse_json(getVendorListBySpecialPurposeId(id)) ?? []
     isExpanded = Watched(false)
   }
 }
@@ -419,7 +419,7 @@ function mkFeatureCfg(featureInfo) {
   let { id } = featureInfo
   return {
     info = featureInfo
-    getVendorList = @() parse_json(getVendorListByFeatureId(id))
+    getVendorList = @() parse_json(getVendorListByFeatureId(id)) ?? []
     isExpanded = Watched(false)
   }
 }
@@ -448,19 +448,19 @@ function mkPartnerExtCfg(partnerInfo, partnersListIdx) {
 
 function getPurposesList() {
   if (dataCache?.purposesList == null)
-    dataCache.purposesList <- parse_json(getAllPurposes()).map(mkPurposeCfg)
+    dataCache.purposesList <- (parse_json(getAllPurposes()) ?? []).map(mkPurposeCfg)
   return dataCache.purposesList
 }
 
 function getSpecialPurposesList() {
   if (dataCache?.specialPurposesList == null)
-    dataCache.specialPurposesList <- parse_json(getAllSpecialPurposes()).map(mkSpecPurposeCfg)
+    dataCache.specialPurposesList <- (parse_json(getAllSpecialPurposes()) ?? []).map(mkSpecPurposeCfg)
   return dataCache.specialPurposesList
 }
 
 function getFeaturesList() {
   if (dataCache?.featuresList == null)
-    dataCache.featuresList <- parse_json(getAllFeatures()).map(mkFeatureCfg)
+    dataCache.featuresList <- (parse_json(getAllFeatures()) ?? []).map(mkFeatureCfg)
   return dataCache.featuresList
 }
 
@@ -468,7 +468,7 @@ let mkPartnersExtLists = @(vendorsListsVal) vendorsListsVal.map(@(l, lIdx) l.map
 
 function getDataCategoiresList() {
   if (dataCache?.dataCategoriesList == null)
-    dataCache.dataCategoriesList <- parse_json(getAllDataCategories()).map(@(info) { info })
+    dataCache.dataCategoriesList <- (parse_json(getAllDataCategories()) ?? []).map(@(info) { info })
   return dataCache.dataCategoriesList
 }
 
