@@ -955,7 +955,6 @@
       ]
     },
     "optional_game_resources": {
-      "strictVersionCheck": false,
       "disableFastVersionCheck": true,
       "flag": [
         "--norespatch",
