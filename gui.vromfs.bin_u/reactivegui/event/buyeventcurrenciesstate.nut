@@ -92,7 +92,7 @@ let buyCurrencyWndGamercardCurrencies = Computed(function() {
 
 let bgImage = Computed(@()
   getEventPresentation(
-    getEventPresentationId(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()) ?? currencyId.get()
+    getEventPresentationId(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()) ?? parentEventName.get() ?? currencyId.get()
   ).bg)
 let parentEventLoc = Computed(@() getEventLoc(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()))
 

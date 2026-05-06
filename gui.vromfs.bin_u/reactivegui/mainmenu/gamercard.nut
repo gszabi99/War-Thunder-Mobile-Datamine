@@ -233,7 +233,6 @@ let gamercardProfile = @() {
   onElemState = @(sf) profileStateFlags.set(sf)
   onClick = @() accountOptionsScene()
   sound = { click  = "meta_profile_button" }
-  touchMarginPriority = TOUCH_MINOR
   children = [
     {
       size = [levelProgressBarWidth + avatarSize, flex()]

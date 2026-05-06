@@ -67,7 +67,7 @@ let dataCache = {}
 
 let vendorsListsCfg = [
   {
-    getInfo = @() parse_json(getAllIABVendors()) ?? []
+    getInfo = getAllIABVendors
     isAbleConsentForVendor = isAbleConsentForIABVendor
     hasConsentForVendor = hasConsentForIABVendor
     setConsentForVendor = setConsentForIABVendor
@@ -84,7 +84,7 @@ let vendorsListsCfg = [
     }
   }
   {
-    getInfo = @() parse_json(getAllGoogleVendors()) ?? []
+    getInfo = getAllGoogleVendors
     isAbleConsentForVendor = isAbleConsentForGoogleVendor
     hasConsentForVendor = hasConsentForGoogleVendor
     setConsentForVendor = setConsentForGoogleVendor
@@ -96,7 +96,7 @@ let vendorsListsCfg = [
     itemToPartnerData = @(v) v.__merge({ legIntClaim = "" })
   }
   {
-    getInfo = @() parse_json(getAllCustomVendors()) ?? []
+    getInfo = getAllCustomVendors
     isAbleConsentForVendor = null
     hasConsentForVendor = null
     setConsentForVendor = null
@@ -223,9 +223,9 @@ function doOnFinish() {
   if (needSaveChoices.get()) {
     logC($"TCF Consent saving... (isVendorDataLoaded() = {isVendorDataLoaded()})")
     needSaveChoices.set(false)
-    saveConsentData()
     isTcfConsentAutoSkipped.set(false)
     saveToLocalStorage()
+    saveConsentData()
   }
   else {
     restoreLastSavedStateInClient()
@@ -286,7 +286,28 @@ function onVendorDataLoaded(isSuccess) {
     return
   }
 
-  vendorsLists.set(vendorsListsCfg.map(@(v) v.getInfo()))
+  
+  let vendorsListsJson = vendorsListsCfg.map(@(v) v.getInfo())
+  let vendorsListsVal = vendorsListsJson.map(@(v) parse_json(v) ?? [])
+  let dataAvailability = []
+  foreach (i, v in vendorsListsVal)
+    dataAvailability.append(v.len() || vendorsListsJson[i])
+  foreach (f in [ getAllPurposes, getAllSpecialPurposes, getAllFeatures, getAllDataCategories ]) {
+    let jsonStr = f()
+    dataAvailability.append((parse_json(jsonStr) ?? []).len() || jsonStr)
+  }
+  if (dataAvailability.findindex(@(v) type(v) == "string") != null) {
+    let dataMap = "|".join(dataAvailability.map(@(v) type(v) == "string" ? $"\"{v}\"" : v))
+    let errorStr = $"TCF Consent loaded data is incomplete: /*{dataMap}*/"
+    logC(errorStr)
+    logerr(errorStr)
+    isLoadError.set(true)
+    isVendorDataLoading.set(false)
+    doOnFinish()
+    return
+  }
+
+  vendorsLists.set(vendorsListsVal)
   isVendorDataLoading.set(false)
   isOpenedConsentTcfWnd.set(true)
 }
@@ -355,6 +376,7 @@ isReadyForTcfConsent.subscribe(onReadyTcf)
 
 function openTcfConsentWnd() {
   
+  isLoadError.set(false)
   isOpenForProfileWnd.set(true)
   isOpenedConsentTcfWnd.set(true)
   resetTimeout(WND_REVEAL, @() startInit(null, true))

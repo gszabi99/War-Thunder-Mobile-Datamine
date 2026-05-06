@@ -17,7 +17,7 @@ const key = "consentTcf"
 let mkIntroStatus = @(text, onClose = null)
   mkContent(loc("consent_tcf/intro/header"), mkStatusContent(text), null, onClose, true)
 
-let mkPageStatusWait = @() mkIntroStatus(loc("msgbox/please_wait"), doSkipClose)
+let mkPageStatusWait = @() mkIntroStatus(loc("msgbox/please_wait"))
 let mkPageStatusInitializing = @() mkIntroStatus(loc("wait/common/initializing"))
 let mkPageStatusLoading = @() mkIntroStatus(loc("wait/common/loading"))
 let mkPageStatusLoadError = @() mkIntroStatus("\n".concat(loc("failed_to_load_data"), loc("try_again_later")), doSkipClose)

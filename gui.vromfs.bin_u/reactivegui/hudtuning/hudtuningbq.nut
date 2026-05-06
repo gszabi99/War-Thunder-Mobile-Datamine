@@ -67,10 +67,16 @@ function trySendToBq() {
 
     let width = sw(100).tointeger()
     let height = sh(100).tointeger()
+    let rawPosX = (align & ALIGN_L) ? pos[0] + saBorders[0]
+      : (align & ALIGN_R) ? -pos[0] + saBorders[0]
+      : pos[0]
+    let rawPosY = (align & ALIGN_T) ? pos[1] + saBorders[1]
+      : (align & ALIGN_B) ? -pos[1] + saBorders[1]
+      : pos[1]
     let baseData = {
       elemId,
-      posX = round_by_value(pos[0].tofloat() / width, 0.01),
-      posY = round_by_value(pos[1].tofloat() / height, 0.01),
+      posX = round_by_value(rawPosX.tofloat() / width, 0.01),
+      posY = round_by_value(rawPosY.tofloat() / height, 0.01),
       align = alignToString?[align] ?? "?"
       scale = newState?.options.scale[elemId].tofloat() ?? tuningStateDefault.options.scale,
       resolution = $"{width} x {height}",
