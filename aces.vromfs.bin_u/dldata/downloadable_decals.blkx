@@ -2462,5 +2462,21 @@
     "lod0": "jb4qnoc5kstspkusnbxgia3w5hu5xfj7-hoti",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "lsj74o646tpcw6o653v4vpqwmxfdisj3-b7ka"
+  },
+  "s33_100squadron_decal": {
+    "category": "uk",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "642mblcjpq3c23ftnxfqgcy57srpch3b-dswa",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "wtlix5czqngvwn2wop6jccg36heb72tj-bcli"
+  },
+  "s33_lion_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "kbfoiiruwdvsklhmsjiwnffpwifuqyh6-gvci",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "rp4sorif5xqovbqfupmkkddmtfp35drn-byvq"
   }
 }
