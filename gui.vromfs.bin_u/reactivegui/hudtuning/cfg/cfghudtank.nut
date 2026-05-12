@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { raceForceCannotShoot } = require("%rGui/missionState.nut")
-let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
+let { AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
@@ -68,8 +68,8 @@ let actionBarTransform = @(idx, isBullet = false)
 let tacticalMapPos = hdpx(155)
 
 return {
-  primaryGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON,
-    @(a, scale) mkCircleTankPrimaryGun(AB_PRIMARY_WEAPON)(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
+  primaryGun = withActionButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA],
+    @(a, scale) mkCircleTankPrimaryGun([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA])(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
       defTransform = mkLBPos([0, hdpx(-420)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
@@ -77,7 +77,7 @@ return {
       options = [ optDoublePrimaryGuns ]
     })
 
-  primaryExtraGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun(AB_PRIMARY_WEAPON),
+  primaryExtraGun = withActionButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA], mkCircleTankPrimaryGun([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA]),
     {
       defTransform = mkRBPos([hdpx(-250), hdpx(-303)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")

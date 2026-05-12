@@ -2,6 +2,12 @@
   "rocketGun": true,
   "preset_cost": 50,
   "mesh": "uk_60lb_sap_mk1_rocket_4a_late",
+  "bombCart": "missile_stand_heavy_bicaliber_rp3",
+  "offsetForDemonstration": [
+    0.0,
+    -0.005,
+    0.0
+  ],
   "helicopterGroup": 2,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
@@ -10,42 +16,40 @@
     "antiShipRocket": true
   },
   "rocket": {
-    "caliber": 0.076,
-    "length": 1.4,
-    "explosiveType": "tnt",
-    "explosiveMass": 30.0,
-    "mass": 43.0,
-    "massEnd": 32.0,
+    "bulletName": "uk_rp3",
     "statType": "hydra",
+    "caliber": 0.152,
+    "length": 1.955,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.2,
+    "distFromCmToStab": 0.01,
+    "mass": 43.1,
+    "massEnd": 37.42,
+    "timeFire": 1.5,
+    "force": 7040.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "maxSpeed": 260.0,
+    "endSpeed": 0.0,
+    "maxDistance": 7500.0,
+    "minDistance": 30.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 6.35,
     "explodeHitPower": 600.0,
     "explodeArmorPower": 75.0,
     "explodeRadius": [
       1.0,
       3.5
     ],
-    "rendinstDamageRadius": 15.0,
     "hitPowerMult": 400.0,
     "fuseDelayDist": 1.0,
     "explodeTreshold": 10.0,
-    "maxDistance": 7500.0,
-    "minDistance": 30.0,
-    "force": 13000.0,
-    "timeFire": 1.5,
-    "spawnExplosionFx": false,
-    "spawnExplosionWreckage": false,
     "distanceFuse": false,
-    "distFromCmToStab": 0.01,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
     "dragCx": 0.016,
-    "CxK": 0.01,
-    "useStartSpeed": true,
-    "startSpeed": 20.0,
-    "endSpeed": 800.0,
-    "maxSpeed": 350.0,
     "amountPerTier": 4.0,
     "iconType": "rockets_he_small_group",
     "maxDeltaAngle": 3.5,
@@ -82,12 +86,16 @@
     "shellAnimation": "video/shells_animations/rocket_he.ivf",
     "armorpower": {
       "ArmorPower0m": [
-        60.0,
+        41.0,
         10.0
       ],
-      "ArmorPower100m": [
-        55.0,
-        100.0
+      "ArmorPower350m": [
+        41.0,
+        350.0
+      ],
+      "ArmorPower2000m": [
+        29.0,
+        2000.0
       ],
       "ArmorPower7000m": [
         10.0,

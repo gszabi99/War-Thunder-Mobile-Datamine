@@ -45,6 +45,7 @@
   "minRelativeTankCameraThreshold": 1.15,
   "bladeAnimVar": "bmpt_terminator_dozer_blade_action",
   "autoSightDistanceCorrection": true,
+  "rearmTimeOnField": 45.0,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,

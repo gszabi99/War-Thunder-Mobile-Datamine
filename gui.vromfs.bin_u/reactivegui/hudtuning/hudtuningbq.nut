@@ -23,7 +23,8 @@ let alignToString = {
 function fillChangedElems(elemIds, s1, s2, uType) {
   foreach (id, v in s1?.options ?? {})
     if (id in tuningStateDefault.customOptions) {
-      if (v != (s2?.options[id] ?? tuningStateDefault.customOptions[id]))
+      if (v != (s2?.options[id] ?? tuningStateDefault.customOptions[id])
+          && id in optionsToElemIds.get())
         elemIds[optionsToElemIds.get()[id]] <- true
     }
     else if (id in tuningStateDefault.options) {

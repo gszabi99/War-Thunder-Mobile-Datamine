@@ -164,7 +164,8 @@ isOwn.subscribe(@(_) applySavedBulletsForOwn(unitName.get()))
 let setOrSwapCurUnitBullet = @(slotIdx, bName) !isOwn.get() ? null
   : setOrSwapUnitBullet(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), chosenBulletsSpec.get(),
       maxBulletsCountForExtraAmmo.get(), maxBulletsSecCountForExtraAmmo.get(), maxBulletsSpecCountForExtraAmmo.get()
-      hasExtraBullets.get(), hasExtraBulletsSec.get(), hasExtraBulletsSpec.get(), slotIdx, bName)
+      hasExtraBullets.get(), hasExtraBulletsSec.get(), hasExtraBulletsSpec.get(),
+      bulletsInfo.get(), bulletsSecInfo.get(), bulletsSpecInfo.get(), slotIdx, bName)
 
 let setCurUnitBullets = @(slotIdx, bName, bCount) !isOwn.get() ? null
   : setUnitBullets(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), chosenBulletsSpec.get(), slotIdx, bName, bCount)

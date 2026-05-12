@@ -19345,6 +19345,7 @@
       "extra_gun_4": true,
       "rockets": true,
       "rockets_secondary": true,
+      "rockets_tertiary": true,
       "machinegun": true,
       "special": true
     },

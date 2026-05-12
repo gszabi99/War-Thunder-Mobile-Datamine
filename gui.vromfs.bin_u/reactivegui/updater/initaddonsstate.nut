@@ -90,7 +90,7 @@ function getUnitsList() {
 
 function onGetUnitsSizes(evt) {
   let prevSizes = unitSizes.get()
-  let newSizes = evt.filter(@(v, k) v != prevSizes?[k])
+  let newSizes = (evt ?? {}).filter(@(v, k) v != prevSizes?[k])
   if (newSizes.len() > 0) {
     local messageArr = [ "Get units sizes:" ]
     if (DBGLEVEL > 0) {
@@ -114,7 +114,7 @@ function onGetUnitsSizes(evt) {
     else
       messageArr.append($"Received {newSizes.len()} unit sizes. {newSizes.reduce(@(res, v) v == 0 ? res + 1 : res, 0)} already downloaded")
 
-    unitSizes.set(unitSizes.get().__merge(evt))
+    unitSizes.set(unitSizes.get().__merge(evt ?? {}))
     ndbWrite(UNIT_SIZES_NDB, unitSizes.get())
     for (local i = 0; i < messageArr.len(); i += 10)
       logA("\n".join(messageArr.slice(i, i + 10)))

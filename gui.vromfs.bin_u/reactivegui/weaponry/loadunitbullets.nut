@@ -68,7 +68,9 @@ function getWeaponId(blkPath) {
 function gatherWeaponsFromBlk(weaponsBlk, hasTriggerGroups, res = null) {
   res = res ?? {}
   foreach (wBlk in (weaponsBlk % "Weapon")) {
-    let { dummy = false, blk = null, triggerGroup = null, trigger = "", bullets = 0, turret = null } = wBlk
+    let { dummy = false, blk = null, triggerGroup = null, trigger = "", bullets = 0, turret = null,
+      bulletSetAvailiable = null
+    } = wBlk
     let triggerGroupExt = hasTriggerGroups ? (triggerGroup ?? "primary") : trigger
     if (dummy || blk == null)
       continue
@@ -76,8 +78,10 @@ function gatherWeaponsFromBlk(weaponsBlk, hasTriggerGroups, res = null) {
       res[triggerGroupExt] <- {}
     if (blk not in res[triggerGroupExt])
       res[triggerGroupExt][blk] <- { totalBullets = 0, guns = 0, weaponId = getWeaponId(blk), trigger, triggerGroup,
-        turrets = 0
+        turrets = 0, bulletSetAvailiable = []
       }
+    if (bulletSetAvailiable != null)
+      res[triggerGroupExt][blk].bulletSetAvailiable.extend(wBlk % "bulletSetAvailiable")
     res[triggerGroupExt][blk].totalBullets += bullets
     res[triggerGroupExt][blk].guns++
     if (turret != null)
@@ -393,6 +397,7 @@ function loadUnitBulletsFullImpl(unitName) {
   let presets = triggersData.map(@(presetTriggers)
     presetTriggers.map(function(triggerWeapons) {
       let bulletSets = {}
+      let bulletSetAvailiable = []
       local weaponId = ""
       local guns = 0
       local catridge = 1
@@ -412,8 +417,9 @@ function loadUnitBulletsFullImpl(unitName) {
         total += wData.totalBullets
         turrets += wData.turrets
         bulletSets.__update(bulletsData?.bulletSets)
+        bulletSetAvailiable.extend(wData.bulletSetAvailiable)
       }
-      return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets }
+      return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets, bulletSetAvailiable }
     }))
 
   let res = { presets, slots = [], slotsParams, reqModifications = {}, torpedoSeriesDuration }

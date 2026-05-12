@@ -22,16 +22,18 @@ let slotNumberText = @(slotNumber) slotNumber == null ? "" : "".concat(loc("icon
 function tabData(tab, ovr = {}) {
   let { id, visIdx = null, bSlot, bInfo, bSet, bTotalSteps, bStep, maxBullets, withExtraBullets, bLeftSteps, isOwn } = tab
   let { count = 0, name = null } = bSlot
-  let { image = null, icon = null, maxCount = null } = bInfo?.fromUnitTags[name]
+  let { bulletSetAvailiable = [], fromUnitTags = null } = bInfo
+  let { image = null, icon = null, maxCount = null } = fromUnitTags?[name]
 
   let imageBulletName = getBulletImage(image, bSet?.bullets ?? [])
   let ammoTypeName = getAmmoTypeShortText(bSet?.bullets[0] ?? "")
   let iconBulletType = getBulletTypeIcon(icon, bSet)
 
+  let bStepWithBSetAvail = Computed(@() bulletSetAvailiable.len() == 0 ? bStep.get() : (bStep.get() / bulletSetAvailiable.len()))
   let realMaxCount = min(bTotalSteps, maxCount ?? bTotalSteps)
-  let maxCountByStep = Computed(@() realMaxCount * bStep.get())
+  let maxCountByStep = Computed(@() realMaxCount * bStepWithBSetAvail.get())
 
-  let unitValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : bStep.get())
+  let unitValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : bStepWithBSetAvail.get())
   let maxValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : maxCountByStep.get())
   let countText = Computed(@() $"{count}/{maxValue.get()}")
 
@@ -42,7 +44,7 @@ function tabData(tab, ovr = {}) {
     if (bSlot == null)
       return
     let newVal = clamp(value, 0, !withExtraBullets.get()
-      ? (count + bLeftSteps.get() * bStep.get())
+      ? (count + bLeftSteps.get() * bStepWithBSetAvail.get())
       : maxBullets.get())
     if (newVal == count)
       return

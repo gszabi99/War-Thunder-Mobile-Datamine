@@ -60,18 +60,21 @@ function emptyBullet() {
 }
 
 function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec, chosenBulletsSpec,
-  maxBullets, maxBulletsSec, maxBulletsSpec, hasExtraBullets, hasExtraBulletsSec, hasExtraBulletsSpec, slotIdx, bName
+  maxBullets, maxBulletsSec, maxBulletsSpec, hasExtraBullets, hasExtraBulletsSec, hasExtraBulletsSpec,
+  bInfo, bInfoSec, bInfoSpec, slotIdx, bName
 ) {
   if (unitName == null)
     return false
 
   let isBulletsSpec = slotIdx >= BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS
+  let isBulletsSec = slotIdx >= BULLETS_PRIM_SLOTS
 
-  let bullets = isBulletsSpec
-      ? chosenBulletsSpec
-    : slotIdx >= BULLETS_PRIM_SLOTS
-      ? chosenBulletsSec
+  let bullets = isBulletsSpec ? chosenBulletsSpec
+    : isBulletsSec ? chosenBulletsSec
     : chosenBullets
+  let canHaveSameBullets = isBulletsSpec ? (bInfoSpec?.bulletSetAvailiable.len() ?? 0) > 0
+    : isBulletsSec ? (bInfoSec?.bulletSetAvailiable.len() ?? 0) > 0
+    : (bInfo?.bulletSetAvailiable.len() ?? 0) > 0
 
   let actualBulletIdx = slotIdx % (BULLETS_PRIM_SLOTS + (isBulletsSpec ? BULLETS_SEC_SLOTS : 0))
   if (actualBulletIdx not in bullets)
@@ -82,7 +85,7 @@ function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec, chosenBu
     return false
 
   let newNames = { [slotIdx] = bName }
-  if (prevIdx != null)
+  if (!canHaveSameBullets && prevIdx != null)
     newNames[prevIdx] <- bullets[actualBulletIdx].name
 
   let blk = DataBlock()

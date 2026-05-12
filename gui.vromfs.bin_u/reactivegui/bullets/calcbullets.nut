@@ -39,9 +39,11 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
   let res = []
   if (bInfo == null)
     return res
-  let { fromUnitTags, bulletsOrder } = bInfo
-  let bulletSlots = min(bSlots, bTotalSteps)
-  local leftSteps = bTotalSteps
+  let { fromUnitTags, bulletsOrder, bulletSetAvailiable } = bInfo
+  let defBulletSlots = min(bSlots, bTotalSteps)
+  let differentBulletSlots = bulletSetAvailiable.len()
+  let allBulletSlots = max(defBulletSlots, differentBulletSlots)
+  local leftSteps = max(bTotalSteps, differentBulletSlots)
   local bulletIdx = 0
   let used = {}
   if (sBullets != null)
@@ -51,9 +53,9 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
         return
       let { name = null, count = 0 } = blk
       let { reqLevel = 0, isExternalAmmo = false, maxCount = leftSteps } = fromUnitTags?[name]
-      if (res.len() >= bulletSlots
+      if (res.len() >= allBulletSlots
           || !visible?[name]
-          || name in used
+          || (name in used && differentBulletSlots == 0)
           || reqLevel > level
           || (res.len() == 0 && isExternalAmmo))
         return
@@ -62,22 +64,35 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
       leftSteps -= steps
       let countBullets = steps * stepSize
       let maxBulletsCount = maxBullets?[res.len()] ?? 0
-      res.append({ name, idx = res.len() + addIndex, count = !hasExtra ? countBullets
+      let bulletsCount = !hasExtra ? countBullets
         : count == 0 ? count
-        : maxBulletsCount })
+        : maxBulletsCount
+      res.append({ name, idx = res.len() + addIndex,
+        count = differentBulletSlots == 0 ? bulletsCount : (bulletsCount / differentBulletSlots) })
       used[name] <- true
     })
 
-  if (res.len() < bulletSlots)
+  if (res.len() < defBulletSlots)
     foreach (bName in bulletsOrder)
       if ((bName not in used)
           && visible?[bName]
           && (fromUnitTags?[bName].reqLevel ?? 0) <= level
       ) {
         res.append({ name = bName, count = -1, idx = res.len() + addIndex })
-        if (res.len() >= bulletSlots)
+        if (res.len() >= defBulletSlots)
           break
       }
+
+  if (res.len() < differentBulletSlots) {
+    for (local i = res.len(); i < differentBulletSlots; i++) {
+      foreach (bName in bulletsOrder) {
+        if (visible?[bName] && (fromUnitTags?[bName].reqLevel ?? 0) <= level) {
+          res.append({ name = bName, count = -1, idx = res.len() + addIndex })
+          break
+        }
+      }
+    }
+  }
 
   local notInitedCount = res.reduce(@(accum, bData) bData.count < 0 ? accum + 1 : accum, 0)
   if (notInitedCount > 0) {
@@ -90,7 +105,8 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
             : (bulletSlotsCount == 1 && leftSteps > 1) ? min(ceil(bTotalSteps * ammoReductionFactor), leftSteps)
             : (bulletSlotsCount > 1) ? min(ceil(bTotalSteps * (ammoReductionFactorsBySlot?[bData.idx] ?? 1)), leftSteps)
             : min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
-          bData.count = hasExtra ? min(steps * stepSize, (maxBullets?[bData.idx] ?? 0)) : steps * stepSize
+          let defCount = differentBulletSlots == 0 ? steps * stepSize : (steps * stepSize / differentBulletSlots)
+          bData.count = hasExtra ? min(defCount, (maxBullets?[bData.idx] ?? 0)) : defCount
           leftSteps -= steps
           notInitedCount--
         }

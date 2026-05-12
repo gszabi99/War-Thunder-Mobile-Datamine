@@ -127,7 +127,7 @@ registerHandler("debriefing.adShowed", function(res, context) {
     return
 
   let battle = res?.lastBattles[sessionId.tostring()]
-  if (res?.error == null && battle && debriefingData.get().sessionId == sessionId)
+  if (res?.error == null && battle && debriefingData.get()?.sessionId == sessionId)
     eventbus_send("adsBonusToApply",
       {
         goldDif = res?.unseenPurchases.findvalue(@(_) true).goods.findvalue(@(g) g.id == "gold").count ?? 0

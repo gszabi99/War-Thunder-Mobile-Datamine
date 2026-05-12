@@ -19,8 +19,12 @@ enum Z_ORDER {
 
 let withActionButtonScaleCtor = @(aType, actionCtor, cfg) {
   function ctor(scale) {
-    let action = Computed(@() actionBarItems.get()?[aType]
-      ?? (cfg?.shouldShowDisabled ? emptyActionItem : null))
+    let action = Computed(function() {
+      if (typeof(aType) == "array")
+        return actionBarItems.get()?[aType.findvalue(@(v) actionBarItems.get()?[v].selected)]
+                ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
+      return actionBarItems.get()?[aType] ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
+    })
     return @() {
       watch = action
       children = action.get() == null ? null : actionCtor(action.get(), scale)

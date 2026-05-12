@@ -7,7 +7,7 @@ let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE
 
 
 
-
+  AB_ROCKET_TERTIARY
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
 
@@ -158,17 +158,15 @@ let actionBarItemsConfig = {
     needCheckRocket = true
     relImageSize = 0.85
   },
-
-
-
-
-
-
-
-
-
-
-
+  EII_ROCKET_TERTIARY = {
+    getShortcut = @(_, __) "ID_SHIP_WEAPON_ROCKETS_TERTIARY"
+    getImage = @(_) "ui/gameuiskin#hud_missile_ship_tertiary.svg"
+    actionType = AB_ROCKET_TERTIARY
+    mkButtonFunction = "mkSubmarineWeaponryItem"
+    hasAim = true
+    needCheckRocket = true
+    relImageSize = 0.85
+  },
   EII_ROCKET_ASW = {
     getShortcut = @(_, __) "ID_SHIP_ROCKET_ASW"
     getImage = @(_) "ui/gameuiskin#hud_asroc.svg"

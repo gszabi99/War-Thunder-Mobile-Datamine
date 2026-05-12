@@ -4,7 +4,7 @@ let { get_mission_time } = require("mission")
 let { tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera } = require("%rGui/hudState.nut")
 let { hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
 } = require("%rGui/hud/currentWeaponsStates.nut")
-let { primaryAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { primaryAction, primaryExtraAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isSecondaryBulletsSame } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
@@ -16,6 +16,7 @@ let { hudBlueColor, hudBlueDeepColor, hudGrayColor, hudMediumGrayColor, hudTrans
 
 let crosshairColorFire = hudGrayColor
 let reloadColorPrimary = hudBlueColor
+let reloadColorPrimaryExtra = hudBlueColor
 let reloadColorSecondary = hudBlueDeepColor
 let crosshairLineWidth = hdpx(2)
 let sightColor = hudMediumGrayColor
@@ -92,6 +93,7 @@ let reloadIndicator = @() {
   vplace = ALIGN_CENTER
   children = [
     mkReloadPartData(primaryAction.get(), reloadColorPrimary)
+    mkReloadPartData(primaryExtraAction.get(), reloadColorPrimaryExtra)
     mkReloadPartData(reloadSecAction.get(), reloadColorSecondary)
   ]
     .filter(@(v) v != null)

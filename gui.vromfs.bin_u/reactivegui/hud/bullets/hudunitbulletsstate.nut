@@ -6,7 +6,7 @@ let { setTimeout, deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { playerUnitName, isUnitDelayed, isVisibleOnHud } = require("%rGui/hudState.nut")
-let { primaryAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { primaryAction, primaryExtraAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { eventbus_subscribe } = require("eventbus")
 
 let nextBulletIdx = Watched(getNextBulletType(TRIGGER_GROUP_PRIMARY))
@@ -39,6 +39,7 @@ let nextBulletName = Computed(@() bulletsNamePrim.get()?[nextBulletIdx.get()] ??
 let currentBulletName = Computed(@() bulletsNamePrim.get()?[currentBulletIdxPrim.get()] ?? "")
 let mainBulletInfo = Computed(@() bulletsInfo.get()?.bulletSets[bulletsNamePrim.get()[0]])
 let extraBulletInfo = Computed(@() bulletsInfo.get()?.bulletSets[bulletsNamePrim.get()[1]])
+let withExtraPrimary = Computed(@() (bulletsInfo.get()?.bulletSetAvailiable.len() ?? 0) > 0)
 
 let mkUpdateBulletsState = @(trigger, watch, getter) function updateBulletsState() {
   let newVal = array(3, trigger).map(getter)
@@ -72,6 +73,11 @@ primaryAction.subscribe(function(_) {
   nextBulletIdx.set(getNextBulletType(TRIGGER_GROUP_PRIMARY))
   updateAllBulletsCount()
 })
+primaryExtraAction.subscribe(function(_) {
+  currentBulletIdxPrim.set(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
+  nextBulletIdx.set(getNextBulletType(TRIGGER_GROUP_PRIMARY))
+  updateAllBulletsCount()
+})
 secondaryAction.subscribe(@(_) currentBulletIdxSec.set(getCurrentBulletType(TRIGGER_GROUP_SECONDARY)))
 
 let MAX_BULLETS = 2
@@ -100,6 +106,7 @@ return {
   toggleNextBullet
   isSecondaryBulletsSame
 
+  withExtraPrimary
   mainBulletInfo
   extraBulletInfo
   mainBulletCount

@@ -51,7 +51,7 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [
-          @() mkBulletSlot(chosenBullets, bSet.get(), fromUnitTags.get(), {}, {}, { watch = [fromUnitTags, bSet] })
+          @() mkBulletSlot(chosenBullets, bSet.get(), fromUnitTags.get(), {}, {}, { watch = [fromUnitTags, bSet] }, idx)
           @() {
             watch = openedSlot
             size = [flex(), headerSlotHeight]
@@ -150,7 +150,12 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
     bInfo.get()?.fromUnitTags[bSlot.get()?.name]?.maxCount ?? bTotalSteps.get()))
   let maxCountByStep = Computed(@() maxCount.get() * bStep.get())
   let maxBulletsWithExtraCount = Computed(@() maxBullets.get()?[idx])
-  let maxCountText = Computed(@() $"{!withExtraBullets.get() ? maxCountByStep.get() : maxBulletsWithExtraCount.get()}")
+  let maxCountText = Computed(function() {
+    if (withExtraBullets.get())
+      return $"{maxBulletsWithExtraCount.get()}"
+    let differentBulletSlots = bInfo.get()?.bulletSetAvailiable.len() ?? 0
+    return differentBulletSlots == 0 ? $"{maxCountByStep.get()}" : $"{maxCountByStep.get() / differentBulletSlots}"
+  })
   let countText = Computed(@() $"{bSlot.get()?.count ?? 0}/{maxCountText.get()}")
 
   return @() {

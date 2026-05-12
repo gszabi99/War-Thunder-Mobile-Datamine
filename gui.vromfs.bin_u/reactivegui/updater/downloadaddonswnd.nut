@@ -75,7 +75,7 @@ let openLimitConnectionMsgBox = @() openMsgBox({
     { id = "cancel", isCancel = true }
     { id = "download", styleId = "PRIMARY", isDefault = true,
       function cb() {
-        allowLimitedDownload(true)
+        allowLimitedDownload.set(true)
         isDownloadPaused.set(false)
       }
     }

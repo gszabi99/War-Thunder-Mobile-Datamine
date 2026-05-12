@@ -6,19 +6,19 @@ let ICON_SIZE = hdpxi(60)
 let headerHeight = hdpxi(98)
 let bulletIconSize = [hdpxi(214), headerHeight]
 
-function getSlotNumber(chosenBulletsList, id) {
+function getSlotNumber(chosenBulletsList, id, sIdx) {
   let { idx = null, visIdx = null } = chosenBulletsList.findvalue(@(b) b.name == id)
-  let slotNumber = visIdx ?? idx
+  let slotNumber = visIdx ?? sIdx ?? idx
   return slotNumber == null ? "" : "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
 }
 
-let mkSlotNumber = @(id, chosenBullets) @() {
+let mkSlotNumber = @(id, chosenBullets, sIdx) @() {
   watch = chosenBullets
   hplace = ALIGN_LEFT
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_TEXT
   padding = hdpx(5)
-  text = getSlotNumber(chosenBullets.get(), id)
+  text = getSlotNumber(chosenBullets.get(), id, sIdx)
 }.__update(fontTiny)
 
 let nameBullet = @(bSet) {
@@ -42,7 +42,7 @@ let imageBullet = @(imageBulletName) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-function mkBulletSlot(chosenBullets, bSet, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
+function mkBulletSlot(chosenBullets, bSet, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}, sIdx = null) {
   if (bSet == null)
     return null
   let icon = getBulletTypeIcon(bInfoFromUnitTags?.icon, bSet)
@@ -58,7 +58,7 @@ function mkBulletSlot(chosenBullets, bSet, bInfoFromUnitTags, ovrBulletImage = {
         hplace = ALIGN_CENTER
         children = [
           imageBullet(imageBulletName)
-          mkSlotNumber(bSet.id, chosenBullets)
+          mkSlotNumber(bSet.id, chosenBullets, sIdx)
           nameBullet(bSet)
         ]
       }.__update(ovrBulletImage)

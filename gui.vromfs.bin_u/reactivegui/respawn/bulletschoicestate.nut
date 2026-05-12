@@ -147,7 +147,8 @@ function setCurUnitBullets(slotIdx, bName, bCount) {
 function setOrSwapCurUnitBullet(slotIdx, bName) {
   if (!setOrSwapUnitBullet(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), chosenBulletsSpec.get(),
       maxBulletsCountForExtraAmmo.get(), maxBulletsSecCountForExtraAmmo.get(), maxBulletsSpecCountForExtraAmmo.get(),
-      hasExtraBullets.get(), hasExtraBulletsSec.get(), hasExtraBulletsSpec.get(), slotIdx, bName))
+      hasExtraBullets.get(), hasExtraBulletsSec.get(), hasExtraBulletsSpec.get(),
+      bulletsInfo.get(), bulletsSecInfo.get(), bulletsSpecInfo.get(), slotIdx, bName))
     return
   hasChangedCurSlotBullets.set(true)
   cancelRespawn() 

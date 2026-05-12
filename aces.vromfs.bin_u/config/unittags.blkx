@@ -57813,7 +57813,7 @@
           "wtype": "rockets",
           "damage": 5500.0,
           "shotFreq": 4.2,
-          "reloadTime": 14.0,
+          "reloadTime": 16.0,
           "rocketsSalvo": 2,
           "distToLive": 10000.0,
           "gunsCount": 2,
@@ -57857,7 +57857,7 @@
           "wtype": "rockets",
           "damage": 9500.0,
           "shotFreq": 4.2,
-          "reloadTime": 16.0,
+          "reloadTime": 18.0,
           "rocketsSalvo": 4,
           "distToLive": 10000.0,
           "gunsCount": 1,
@@ -107312,24 +107312,14 @@
       "maxSpeedBackward": 1.16161,
       "powerToWeightRatio": 20.8333,
       "weapons": {
-        "30mm_2A42_BMPT_user_cannon": [
-          {
-            "wtype": "mainCannon",
-            "caliber": 30.0,
-            "armorPower": 35.1221,
-            "reloadTime": 0.10917,
-            "gunnerTurretRotationSpeed": 45.0,
-            "isBeltAmmo": true
-          },
-          {
-            "wtype": "auxCannon",
-            "caliber": 30.0,
-            "armorPower": 35.1221,
-            "reloadTime": 0.10917,
-            "gunnerTurretRotationSpeed": 45.0,
-            "isBeltAmmo": true
-          }
-        ],
+        "30mm_2A42_BMPT_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 35.1221,
+          "reloadTime": 0.10917,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": true
+        },
         "130mm_9M120_BMPT_launcher_user_cannon": {
           "wtype": "auxCannon",
           "caliber": 130.0,
@@ -107357,48 +107347,26 @@
       }
     },
     "bullets": {
-      "30mm_2A42_BMPT_user_cannon": [
-        {
-          "default": {
-            "icon": "hud_ammo_bullet_ap_he"
-          },
-          "30mm_2a42_AP": {
-            "icon": "hud_ammo_bullet_ap"
-          },
-          "30mm_2a42_HE": {
-            "icon": "hud_ammo_bullet_he",
-            "reqLevel": 4
-          },
-          "30mm_2a42_APDS": {
-            "icon": "hud_ammo_bullet_ap",
-            "reqLevel": 8
-          },
-          "30mm_2a42_HE_VT": {
-            "icon": "hud_ammo_bullet_he",
-            "reqLevel": 12
-          }
+      "30mm_2A42_BMPT_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
         },
-        {
-          "default": {
-            "icon": "hud_ammo_bullet_ap_he"
-          },
-          "30mm_2a42_AP": {
-            "icon": "hud_ammo_bullet_ap"
-          },
-          "30mm_2a42_HE": {
-            "icon": "hud_ammo_bullet_he",
-            "reqLevel": 4
-          },
-          "30mm_2a42_APDS": {
-            "icon": "hud_ammo_bullet_ap",
-            "reqLevel": 8
-          },
-          "30mm_2a42_HE_VT": {
-            "icon": "hud_ammo_bullet_he",
-            "reqLevel": 12
-          }
+        "30mm_2a42_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_2a42_HE": {
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 4
+        },
+        "30mm_2a42_APDS": {
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 8
+        },
+        "30mm_2a42_HE_VT": {
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 12
         }
-      ],
+      },
       "130mm_9M120_BMPT_launcher_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_tandem_ap2_he1"
@@ -107441,24 +107409,14 @@
       "maxSpeedBackward": 1.16161,
       "powerToWeightRatio": 20.8333,
       "weapons": {
-        "30mm_2A42_BMPT_user_cannon": [
-          {
-            "wtype": "mainCannon",
-            "caliber": 30.0,
-            "armorPower": 35.1221,
-            "reloadTime": 0.10917,
-            "gunnerTurretRotationSpeed": 45.0,
-            "isBeltAmmo": true
-          },
-          {
-            "wtype": "auxCannon",
-            "caliber": 30.0,
-            "armorPower": 35.1221,
-            "reloadTime": 0.10917,
-            "gunnerTurretRotationSpeed": 45.0,
-            "isBeltAmmo": true
-          }
-        ],
+        "30mm_2A42_BMPT_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 35.1221,
+          "reloadTime": 0.10917,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": true
+        },
         "130mm_9M120_BMPT_launcher_user_cannon": {
           "wtype": "auxCannon",
           "caliber": 130.0,
@@ -107486,42 +107444,23 @@
       }
     },
     "bullets": {
-      "30mm_2A42_BMPT_user_cannon": [
-        {
-          "30mm_2a42_APDS": {
-            "icon": "hud_ammo_bullet_ap"
-          },
-          "30mm_2a42_HE_VT": {
-            "icon": "hud_ammo_bullet_he"
-          },
-          "default": {
-            "icon": "hud_ammo_bullet_ap_he"
-          },
-          "30mm_2a42_AP": {
-            "icon": "hud_ammo_bullet_ap"
-          },
-          "30mm_2a42_HE": {
-            "icon": "hud_ammo_bullet_he"
-          }
+      "30mm_2A42_BMPT_user_cannon": {
+        "30mm_2a42_APDS": {
+          "icon": "hud_ammo_bullet_ap"
         },
-        {
-          "30mm_2a42_APDS": {
-            "icon": "hud_ammo_bullet_ap"
-          },
-          "30mm_2a42_HE_VT": {
-            "icon": "hud_ammo_bullet_he"
-          },
-          "default": {
-            "icon": "hud_ammo_bullet_ap_he"
-          },
-          "30mm_2a42_AP": {
-            "icon": "hud_ammo_bullet_ap"
-          },
-          "30mm_2a42_HE": {
-            "icon": "hud_ammo_bullet_he"
-          }
+        "30mm_2a42_HE_VT": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "30mm_2a42_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_2a42_HE": {
+          "icon": "hud_ammo_bullet_he"
         }
-      ],
+      },
       "130mm_9M120_BMPT_launcher_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_tandem_ap2_he1"

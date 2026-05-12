@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { touchButtonSize, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
-  mainBulletCount, extraBulletCount } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
+  mainBulletCount, extraBulletCount, withExtraPrimary, nextBulletIdx
+} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
@@ -81,11 +82,12 @@ let bulletStatus = @(isNext, isCurrent, scale) {
     : null
 }.__update(getScaledFont(bulletStatusFont, scale))
 
-function bulletButton(bulletInfo, bulletCount, scale) {
+function bulletButton(bulletInfo, bulletCount, scale, idx) {
   let name = Computed(@() bulletInfo.get()?.bullets[0])
   let id = Computed(@() bulletInfo.get()?.id)
-  let isNext = Computed(@() id.get() == nextBulletName.get())
-  let isCurrent = Computed(@() id.get() == currentBulletName.get())
+  let isNext = Computed(@() !withExtraPrimary.get() && id.get() == nextBulletName.get())
+  let isCurrent = Computed(@() withExtraPrimary.get() ? idx == nextBulletIdx.get()
+    : id.get() == currentBulletName.get())
   let isBulletBelt = Computed(@() bulletInfo.get()?.isBulletBelt)
   let btnSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
@@ -111,6 +113,6 @@ function bulletButton(bulletInfo, bulletCount, scale) {
 
 return {
   bulletButton
-  bulletMainButton = @(scale) bulletButton(mainBulletInfo, mainBulletCount, scale)
-  bulletExtraButton = @(scale) bulletButton(extraBulletInfo, extraBulletCount, scale)
+  bulletMainButton = @(scale) bulletButton(mainBulletInfo, mainBulletCount, scale, 0)
+  bulletExtraButton = @(scale) bulletButton(extraBulletInfo, extraBulletCount, scale, 1)
 }

@@ -13,7 +13,7 @@ let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { actionBarItems, updateActionBarDelayed, primaryAction, secondaryAction, actionItemsInCd
+let { actionBarItems, updateActionBarDelayed, primaryAction, primaryExtraAction, secondaryAction, actionItemsInCd
 } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { mkBigCircleBtnEditView, mkCircleProgressBg, mkBtnBorder, mkBtnImage, mkCircleGlare } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
@@ -115,6 +115,7 @@ function subscribeCdUpdate(action, cdList, cdEnd, trigger) {
 }
 
 subscribeCdUpdate(primaryAction, cdPrim, cdEndPrim, TRIGGER_GROUP_PRIMARY)
+subscribeCdUpdate(primaryExtraAction, cdPrim, cdEndPrim, TRIGGER_GROUP_PRIMARY)
 subscribeCdUpdate(secondaryAction, cdSec, cdEndSec, TRIGGER_GROUP_SECONDARY)
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur

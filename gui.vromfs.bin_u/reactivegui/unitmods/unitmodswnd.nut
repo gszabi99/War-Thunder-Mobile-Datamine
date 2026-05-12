@@ -86,7 +86,7 @@ function bulletsCategoriesBlock() {
       let bSlot = bullets?[idx]
       let bSet = bInfoPrim?.bulletSets[bSlot?.name]
       return {
-        id = bullets.findvalue(@(b) b.name == bSet?.id)?.idx ?? idx
+        id = bSlot?.idx ?? bullets.findvalue(@(b) b.name == bSet?.id)?.idx ?? idx
         bInfo = bInfoPrim
         bSlot
         bSet

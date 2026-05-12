@@ -324,7 +324,9 @@ let primStateFlags = Watched(0)
 let primGroup = ElemGroup()
 let mkCircleTankPrimaryGun = @(aType) function(actionItem, scale, key = "btn_weapon_primary", countCtor = mkCountTextLeft) {
   let isDisabled = mkIsControlDisabled("ID_FIRE_GM")
-  let isOnCd = Computed(@() actionItemsInCd.get()?[aType] ?? false)
+  let isOnCd = Computed(@() typeof(aType) == "array"
+    ? (actionItemsInCd.get()?[actionItem?.aType] ?? false)
+    : (actionItemsInCd.get()?[aType] ?? false))
   let bgSize = scaleEven(bigButtonSize, scale)
   let imgSize = scaleEven(bigButtonImgSize, scale)
   return function() {

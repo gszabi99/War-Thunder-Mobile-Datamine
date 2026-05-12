@@ -18,9 +18,7 @@ const REPAY_TIME = 0.3
 let shipWeaponsList = [
   "EII_ROCKET"
   "EII_ROCKET_SECONDARY"
-
-
-
+  "EII_ROCKET_TERTIARY"
   "EII_TORPEDO"
   "EII_MINE"
   "EII_DEPTH_CHARGE"
@@ -52,9 +50,7 @@ let shipSelectShortcuts = {
 let shipRocketShortcuts = {
   EII_ROCKET = "ID_SHIP_WEAPON_ROCKETS",
   EII_ROCKET_SECONDARY = "ID_SHIP_WEAPON_ROCKETS_SECONDARY",
-
-
-
+  EII_ROCKET_TERTIARY = "ID_SHIP_WEAPON_ROCKETS_TERTIARY",
 }
 
 let shipGunHudModes = {
@@ -112,10 +108,7 @@ let gunsList = Computed(function() {
 })
 
 function isRocket(weapon) {
-  return weapon == "EII_ROCKET" || weapon == "EII_ROCKET_SECONDARY"
-
-
-
+  return weapon == "EII_ROCKET" || weapon == "EII_ROCKET_SECONDARY" || weapon == "EII_ROCKET_TERTIARY"
 }
 
 local visibleWeaponsList = Computed(function(prev) {

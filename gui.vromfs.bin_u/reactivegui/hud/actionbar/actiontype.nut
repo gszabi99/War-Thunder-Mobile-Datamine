@@ -12,7 +12,7 @@ let actions = [
 
 
 
-
+  "ROCKET_TERTIARY",
 ]
 
 let simpleActionTypes = {}
@@ -25,7 +25,8 @@ foreach (a in actions) {
 }
 
 let correlation = { 
-  AB_PRIMARY_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_PRIMARY,
+  AB_PRIMARY_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_PRIMARY && a?.id == 1,
+  AB_PRIMARY_WEAPON_EXTRA = @(a) a?.triggerGroupNo == TRIGGER_GROUP_PRIMARY && a?.id != 1,
   AB_SECONDARY_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_SECONDARY,
   AB_SPECIAL_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_SPECIAL_GUN,
   AB_MACHINE_GUN = @(a) a?.triggerGroupNo == TRIGGER_GROUP_MACHINE_GUN

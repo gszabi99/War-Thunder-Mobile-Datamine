@@ -146,7 +146,7 @@ let hdrStateOnStart = get_settings_blk()?.video.enableHdr ?? false;
 let hdrSupported = hdr_available() && (is_android ? hasHdrScreen() : true)
 let hdrValue = mkOptionValue(OPT_HDR, hdrStateOnStart);
 let disableHdrOnIosIfRequired = @(isAllowedHdrOnIos)
-  (hdrSupported && is_ios && !isAllowedHdrOnIos) ? hdrValue(false) : null
+  (hdrSupported && is_ios && !isAllowedHdrOnIos) ? hdrValue.set(false) : null
 allow_hdr_on_ios.subscribe(disableHdrOnIosIfRequired)
 disableHdrOnIosIfRequired(allow_hdr_on_ios.get())
 let optHDR = {

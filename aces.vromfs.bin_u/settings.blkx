@@ -2322,8 +2322,6 @@
               {
                 "driverMinVer0": 512,
                 "driverMinVer1": 530,
-                "driverMaxVer0": 512,
-                "driverMaxVer1": 654,
                 "data": {
                   "affected": true
                 }

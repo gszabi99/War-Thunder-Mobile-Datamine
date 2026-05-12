@@ -38,6 +38,8 @@
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
+  "bulletsCartridge": 4,
+  "allowRearmOnField": true,
   "canChangeLoadedBullet": true,
   "drawRocketInBullet": true,
   "mesh": "9m120_rocket_deployed",
