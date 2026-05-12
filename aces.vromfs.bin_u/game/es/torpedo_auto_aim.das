@@ -6,7 +6,7 @@ require WarShipModel
 require WTBallistics
 require DagorMathUtils
 require WTNetUnit
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require %game.utils.utils_common
 require %game.events
 

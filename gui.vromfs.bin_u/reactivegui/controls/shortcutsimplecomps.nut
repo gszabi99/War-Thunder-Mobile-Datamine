@@ -75,7 +75,7 @@ function mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFla
 let mkLtButtonListener = combBtnInfo == null ? null
   : {
       size = 0
-      behavior = Behaviors?.ProcessKeyInput 
+      behavior = Behaviors.ProcessKeyInput
       onKeyPress = @(evt) evt.devId != combBtnInfo.devId || evt.btnId != combBtnInfo.btnId ? null
         : isCombinationModActive.set(true)
       onKeyRelease = @(evt) evt.devId != combBtnInfo.devId || evt.btnId != combBtnInfo.btnId ? null

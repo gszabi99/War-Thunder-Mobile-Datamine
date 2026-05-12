@@ -4,12 +4,10 @@ let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut"
 let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { curCampaign, isCampaignWithUnitsResearch, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByShop, shopGoods, soonGoods } = require("%rGui/shop/shopState.nut")
@@ -22,7 +20,6 @@ let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { textColor, premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
-let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
@@ -38,11 +35,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let nextLevelBorderColor = 0xFFDADADA
 let nextLevelBgColor = 0xFF464646
 let nextLevelTextColor = 0xFFFFFFFF
-let receivedExpProgressColor = 0xFFFFFFFF
-let levelUpTextColor = 0xFF000000
 
-let levelStateFlags = Watched(0)
-let nextLevelStateFlags = Watched(0)
 let profileStateFlags = Watched(0)
 
 
@@ -80,138 +73,75 @@ let name =  @() textParams.__merge({
   color = havePremium.get() ? premiumTextColor : textColor
 })
 
-let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
-let levelUpReadyAnimsCur = [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
-let levelUpReadyAnimsNext = [ levelUpReadyAnim.__merge({ from = 0.0, to = 1.0 }) ]
-
 let starLevelOvr = {
   pos = [pw(40), ph(40)]
   transform = { rotate = -45 }
 }
 
 let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function() {
-  let { exp, nextLevelExp, level, isReadyForLevelUp, starLevel, isNextStarLevel, historyStarLevel,
+  let { exp, nextLevelExp, level, starLevel, historyStarLevel,
     isStarProgress, isMaxLevel
   } = playerLevelInfo.get()
   let progresOffset = levelHolderSize * rotateCompensate
-  let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
-    : !isMaxLevel && !isCampaignWithUnitsResearch.get()
-        && canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), unreleasedUnits.get())
-      ? openExpWnd
-    : null
   let showStarLevel = max(starLevel, historyStarLevel)
   let nextStarLevel = isStarProgress ? starLevel + 1 : 0
   return {
-    watch = [playerLevelInfo, isCampaignWithUnitsResearch, buyUnitsData, unreleasedUnits]
+    watch = [playerLevelInfo, unreleasedUnits]
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     padding = [0, progresOffset]
     children = [
       mkProgressLevelBg({
         key = playerLevelInfo.get()
-        opacity = 1.0,
-        animations = isReadyForLevelUp
-          ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
-          : null
         children = {
-          size = isMaxLevel || isReadyForLevelUp ? flex() : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
+          size = isMaxLevel ? flex() : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
           rendObj = ROBJ_SOLID
           color = playerExpColor
         }
       }.__update(progressOvr))
-      @() mkLevelBg({
+      mkLevelBg({
         ovr = {
-          watch = levelStateFlags
           size = [levelHolderSize, levelHolderSize]
           pos = [-progresOffset, 0]
-          onElemState = @(sf) levelStateFlags.set(sf)
-          behavior = onLevelClick != null ? Behaviors.Button : null
-          onClick = onLevelClick
-          sound = { click  = "meta_profile_button" }
-          color = levelStateFlags.get() & S_HOVER ? hoverColor : 0xFF000000
-          transform = {
-            rotate = 45
-            scale = levelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
-          }
+          color = 0xFF000000
+          transform = { rotate = 45 }
         }
         childOvr = {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [
-            @() textParams.__merge({
-              watch = levelStateFlags
-              key = playerLevelInfo.get()
+            textParams.__merge({
               text = level - starLevel
-              animations = isReadyForLevelUp && !isNextStarLevel ? levelUpReadyAnimsCur : null
-              transform = {
-                rotate = -45
-                scale = levelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
-              }
+              transform = { rotate = -45 }
             })
-            isReadyForLevelUp && !isNextStarLevel
-              ? textParams.__merge({
-                  key = playerLevelInfo.get()
-                  text = level + 1
-                  opacity = 0.0
-                  transform = {
-                    rotate = -45
-                  }
-                  animations = levelUpReadyAnimsNext
-                })
-              : null
-            starLevelSmall(showStarLevel,
-              isReadyForLevelUp && nextStarLevel != showStarLevel
-                ? starLevelOvr.__merge({ animations = levelUpReadyAnimsCur })
-                : starLevelOvr)
-            isReadyForLevelUp && nextStarLevel != showStarLevel
-              ? starLevelSmall(nextStarLevel, starLevelOvr.__merge({ animations = levelUpReadyAnimsNext }))
-              : null
+            starLevelSmall(showStarLevel, starLevelOvr)
           ]
         }
       })
       !needTargetLevel || isMaxLevel ? null
-        : @() mkLevelBg({
+        : mkLevelBg({
             ovr = {
-              watch = nextLevelStateFlags
               size = [levelHolderSize, levelHolderSize]
               hplace = ALIGN_RIGHT
               pos = [progresOffset, 0]
-              onElemState = @(sf) nextLevelStateFlags.set(sf)
-              behavior = onLevelClick != null ? Behaviors.Button : null
-              onClick = onLevelClick
-              color = nextLevelStateFlags.get() & S_HOVER ? hoverColor : 0xFF000000
-              transform = {
-                rotate = 45
-                scale = nextLevelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
-              }
+              color = 0xFF000000
+              transform = { rotate = 45 }
             }
             childOvr = {
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
-              fillColor = isReadyForLevelUp ? receivedExpProgressColor : nextLevelBgColor
+              fillColor = nextLevelBgColor
               borderColor = nextLevelBorderColor
               children = [
-                @() textParams.__merge({
-                  watch = nextLevelStateFlags
-                  key = playerLevelInfo.get()
+                textParams.__merge({
                   text = level - starLevel + (isStarProgress ? 0 : 1)
-                  color = isReadyForLevelUp ? levelUpTextColor : nextLevelTextColor
-                  transform = {
-                    rotate = -45
-                    scale = nextLevelStateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
-                  }
+                  color = nextLevelTextColor
+                  transform = { rotate = -45 }
                 })
                 starLevelSmall(nextStarLevel, starLevelOvr)
               ]
             }
           })
-      !isReadyForLevelUp ? null
-        : {
-            size = flex()
-            hplace = ALIGN_LEFT
-            behavior = Behaviors.Button
-            onClick = openLvlUpWndIfCan
-          }
     ]
   }.__update(ovr)
 }

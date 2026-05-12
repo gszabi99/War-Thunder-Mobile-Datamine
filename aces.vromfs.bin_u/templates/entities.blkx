@@ -1,7 +1,7 @@
 {
   "import": [
+    "lib_entities.blk",
     "%danetlibs/route_prober/templates/route_prober.blk",
-    "%danetlibs/assets_import/templates/assets_import.blk",
     "%wtlibs/templates/essentials.blk",
     "%wtlibs/templates/net.blk",
     "%wtlibs/templates/rendinst.blk",

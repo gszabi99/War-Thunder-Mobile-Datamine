@@ -163,7 +163,7 @@ function riSortUserGroups() {
   riGroupsData.sort(function(a,b) {
     if (a?.index != null) {
       if (b?.index != null)
-        return a.index < b.index ? -1 : 1
+        return a.index <=> b.index
       return -1
     }
     if (b?.index != null)
@@ -979,7 +979,7 @@ function riGroupUpdate(v) {
 }
 let riGroupCombo = combobox({value=riGroup, changeVarOnListUpdate=false, update=riGroupUpdate}, riGroups)
 
-let riSelectWindow = function() {
+function riSelectWindow() {
   let mkRI = mkSelectLine({
     selected = riSelectValue
     onSelect = @(v) riSelectChange(v)

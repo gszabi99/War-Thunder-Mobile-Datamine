@@ -815,7 +815,7 @@
       }
     }
   ],
-  "hispano_turret_ap": {
+  "hispano_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.13,
@@ -1401,7 +1401,7 @@
       }
     ]
   },
-  "hispano_turret_ap_he": {
+  "hispano_turret_universal": {
     "bullet": [
       {
         "mass": 0.141,

@@ -1,4 +1,4 @@
-﻿options gen2
+options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
@@ -411,8 +411,8 @@ var private linqCalls = {
     "select_to_array" => LinqCall(name = "select"),
     "select_many" => LinqCall(name = "select_many"),
     "select_many_to_array" => LinqCall(name = "select_many"),
-    "zip" => LinqCall(name = "zip", recursive = [1]),
-    "zip_to_array" => LinqCall(name = "zip", recursive = [1]),
+    "zip" => LinqCall(name = "zip", recursive = [1, 2]),
+    "zip_to_array" => LinqCall(name = "zip", recursive = [1, 2]),
 
     "reverse" => LinqCall(name = "reverse", inplace = true),
     "reverse_to_array" => LinqCall(name = "reverse", inplace = true),
@@ -503,7 +503,7 @@ var private linqCalls = {
     "contains" => LinqCall(name = "contains"),
 
     "to_table" => LinqCall(name = "to_table"),
-    "to_array" => LinqCall(name = "to_array", moduleName = "$", skip = true),
+    "to_array" => LinqCall(name = "to_array", moduleName = "builtin", skip = true),
     "to_sequence" => LinqCall(name = "to_sequence", skip = true),
 }
 
@@ -518,7 +518,7 @@ def private is_linq_call(var expr : Expression?) : bool {
         }
         if (linqCalls.key_exists(funcName)) {
             let linqCall & = unsafe(linqCalls?[funcName] ?? default<LinqCall>)
-            if (linqCall.moduleName == string(call.func._module.name)) {
+            if (linqCall.moduleName == call.func._module.name) {
                 return true
             }
         }
@@ -542,7 +542,7 @@ def private flatten_linq(var expr : ExpressionPtr)  {
                 break
             }
             var linqCall & = unsafe(linqCalls?[funcName] ?? default<LinqCall>)
-            if (linqCall.moduleName != string(topFunc._module.name)) {
+            if (linqCall.moduleName != topFunc._module.name) {
                 break
             }
             if (!linqCall.skip) {
@@ -688,7 +688,6 @@ def private fold_select_where(argIndex : int; var topValue : ExpressionPtr; var 
     }
     var inscope comprehension <- qmacro(invoke($($i(srcName) : typedecl($e(topValue)) - const) {
             var $i(arrName) : array<$t(iterType)>
-            unsafe(set_verify_array_locks($i(arrName), false))
             for ($i(itName) in $i(srcName)) {
                 static_if (typeinfo is_workhorse($e(selectExpr))) {
                     var $i(valName) = $e(selectExpr)
@@ -702,7 +701,6 @@ def private fold_select_where(argIndex : int; var topValue : ExpressionPtr; var 
                     }
                 }
             }
-            unsafe(set_verify_array_locks($i(arrName), true))
             return <- $i(arrName)
         }, $e(topValue)))
     return <- append_comprehension(argIndex, topValue, comprehension, blk, calls[0]._0.at)
@@ -734,7 +732,7 @@ def private fold_linq_default(var expr : ExpressionPtr) : ExpressionPtr {
     var argIndex = 0
     let argMax = length(calls)
     while (argIndex < argMax) {
-        if (true) {
+        {
             var cll & = unsafe(calls[argIndex])
             let newArgName = "pass_{argIndex}"
             var callName = cll._1.name
@@ -770,7 +768,7 @@ def private fold_linq_default(var expr : ExpressionPtr) : ExpressionPtr {
                     }
                 }
                 for (i in cll._1.recursive) {   
-                    if (i >= 1 && i < cll._0.arguments |> length) {
+                    if (i >= 1 && i < cll._0.arguments |> length && is_linq_call(cll._0.arguments[i].get_ptr())) {
                         var inscope argExpr <- make_call(cll._0.at, "_fold")
                         (argExpr as ExprCallMacro).arguments |> emplace <| cll._0.arguments[i]
                         cll._0.arguments[i] |> move <| argExpr

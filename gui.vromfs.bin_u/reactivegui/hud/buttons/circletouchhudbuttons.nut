@@ -19,7 +19,7 @@ let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
-  TurretsVisible, TurretsReloading, TurretsEmpty, HasBooster
+  TurretsVisible, TurretsReloading, TurretsEmpty, IsBoosterActive
 } = require("%rGui/hud/airState.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
@@ -32,6 +32,7 @@ let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
 let { hudSmokyGreyColor, hudGreenColor, hudWhiteColor, hudVeilGrayColor, hudLightBlackColor,
   hudTranslucentBlackColor, hudGrayColor } = require("%rGui/style/hudColors.nut")
+let { primaryIconToggle, secondaryIconToggle } = require("%rGui/components/toggle.nut")
 
 
 let bigButtonSize = hdpxi(150)
@@ -886,29 +887,32 @@ let mkBoosterCtorBtn = function(scale) {
   let isDisabled = mkIsControlDisabled("ID_IGNITE_BOOSTERS")
   let bgSize = scaleEven(buttonSize, scale)
   let imgSize = scaleEven(buttonImgSize, scale)
-  return !HasBooster.get() ? @() { watch = HasBooster, key = "ID_IGNITE_BOOSTERS" }
-    : @() {
-      watch = [HasBooster, isDisabled]
-      key = "btn_booster_circle"
-      size = [bgSize, bgSize]
-      behavior = Behaviors.Button
-      cameraControl = true
-      hotkeys = mkGamepadHotkey("ID_IGNITE_BOOSTERS")
-      function onClick() {
-        if (isDisabled.get())
-          return
-        toggleShortcut("ID_IGNITE_BOOSTERS")
-      }
-      onElemState = @(v) stateFlags.set(v)
-      children = [
-        mkBtnBg(bgSize, hudLightBlackColor)
-        mkBtnBorder(bgSize, !isDisabled.get(), stateFlags)
-        mkBtnImage(imgSize, "ui/gameuiskin#hud_booster.svg", isDisabled.get() ? disabledColor: hudWhiteColor)
-        isDisabled.get() ? null
-          : mkGamepadShortcutImage("ID_IGNITE_BOOSTERS", defShortcutOvr, scale)
-      ]
+  return @() {
+    watch = [isDisabled, isHudPrimaryStyle]
+    key = "btn_booster_switch"
+    size = bgSize
+    behavior = Behaviors.Button
+    cameraControl = true
+    hotkeys = mkGamepadHotkey("ID_IGNITE_BOOSTERS")
+    function onClick() {
+      if (isDisabled.get())
+        return
+      toggleShortcut("ID_IGNITE_BOOSTERS")
     }
+    onElemState = @(v) stateFlags.set(v)
+    children = [
+      isHudPrimaryStyle.get()
+        ? primaryIconToggle(IsBoosterActive, stateFlags.get(), "ui/gameuiskin#hud_rocket_engine.svg", imgSize)
+        : secondaryIconToggle(IsBoosterActive, stateFlags.get(), "ui/gameuiskin#hud_rocket_engine.svg", imgSize)
+      isDisabled.get() ? null
+        : mkGamepadShortcutImage("ID_IGNITE_BOOSTERS", defShortcutOvr, scale)
+    ]
   }
+}
+
+let boosterBtnEditView = {
+  children = primaryIconToggle(Watched(true), 0, "ui/gameuiskin#hud_rocket_engine.svg", buttonImgSize)
+}
 
 function mkCircleTargetTrackingBtn(scale) {
   let stateFlags = Watched(0)
@@ -1070,6 +1074,7 @@ return {
   mkCircleBtnPlaneEditView
   mkBigCircleBtnEditView
   mkBigCirclePlaneBtnEditView
+  boosterBtnEditView
 
   mkBorderPlane
   mkBtnImage

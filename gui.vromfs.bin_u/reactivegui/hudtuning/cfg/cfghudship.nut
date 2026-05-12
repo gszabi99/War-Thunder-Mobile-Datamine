@@ -1,7 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { has_strategy_mode } = require("%appGlobals/permissions.nut")
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM,
+
+
+
+} = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { AB_FIREWORK, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3,
 
 
@@ -96,6 +100,12 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
+  weapon7 = weaponryButtonDynamicCtor(6,
+    {
+      defTransform = mkRBPos([hdpx(-190), hdpx(-410)])
+      priority = Z_ORDER.BUTTON_PRIMARY
+    })
+
 
 
 
@@ -116,6 +126,11 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   abCaptureBlocker = withActionBarButtonCtor(EII_ELECTRONIC_WARFARE, SHIP,
      { defTransform = mkRBPos([consumableStart + consumableGap * 3, hdpx(43)]) })
+
+
+
+
+
 
   firework = withActionButtonScaleCtor(AB_FIREWORK, mkRhombFireworkBtn,
     {

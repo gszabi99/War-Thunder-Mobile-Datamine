@@ -28,7 +28,7 @@
   "sound_pathStudio": "ground/weapon/atgm",
   "sound": "atgm_LPC",
   "sound_inside": "atgm_LPC_interior",
-  "sfxReloadBullet": "grd_roland_reload",
+  "sfxReloadBullet": "grd_cannon_reload_auto",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "bulletsCartridge": 2,

@@ -15,8 +15,8 @@ module ast_boost shared public
 
 
 
-require rtti
-require ast public
+require daslib/rtti
+require daslib/ast public
 require strings
 require daslib/strings_boost
 
@@ -84,7 +84,7 @@ def isExpression(t : TypeDeclPtr; top : bool = true) : bool {
     } elif (t.dim |> length != 0) {
         return false
     } elif (t.baseType == Type.tHandle) {
-        if (t.annotation._module.name == "ast") {
+        if (t.annotation._module.name == "ast_core") {
             return starts_with("{t.annotation.name}", "Expr")
         } else {
             return false
@@ -263,7 +263,7 @@ def private apply_tag_annotation(tag : string; var ann : FunctionAnnotationPtr) 
         funcs |> push_clone(func)
     }
     for (func in funcs) {
-        if (true) {
+        {
             var inscope tagAnn := ann
             add_function_annotation(func, tagAnn)
         }
@@ -1233,7 +1233,8 @@ def public isCMRESType(blockT : TypeDeclPtr) {
 
 bitfield DebugExpressionFlags {
     
-    refCount
+    refCount,
+    lineInfo
 }
 
 def private debug_expression_impl(var writer : StringBuilderWriter; expr : ExpressionPtr; deFlags : DebugExpressionFlags; tabs : int) {
@@ -1248,6 +1249,19 @@ def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expre
     writer |> write("({expr.__rtti}")
     if (deFlags.refCount) {
         writer |> write("<{smart_ptr_use_count(expr)}>")
+    }
+    if (deFlags.lineInfo) {
+        let e = get_ptr(expr)
+        writer |> write(" at={int(e.at.line)}:{int(e.at.column)}-{int(e.at.last_line)}:{int(e.at.last_column)}")
+        if (e.at.fileInfo != null) {
+            writer |> write(" file=\"{e.at.fileInfo.name}\"")
+        }
+        if (string(e.__rtti) == "ExprCall" || string(e.__rtti) == "ExprInvoke") {
+            let enc = unsafe(reinterpret<ExprLooksLikeCall?> e)
+            if (int(enc.atEnclosure.line) != 0 || int(enc.atEnclosure.last_line) != 0) {
+                writer |> write(" atEnclosure={int(enc.atEnclosure.line)}:{int(enc.atEnclosure.column)}-{int(enc.atEnclosure.last_line)}:{int(enc.atEnclosure.last_column)}")
+            }
+        }
     }
     if (string(expr.__rtti) |> starts_with("ExprConst")) {
         writer |> write(" {describe(expr)})")
@@ -1265,7 +1279,7 @@ def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expre
             unsafe {
                 p8 = (reinterpret<int8?> expr) + int(offset)
             }
-            if (tstr == "smart_ptr<ast::Expression>") {
+            if (tstr == "smart_ptr<ast_core::Expression>") {
                 let pv = unsafe(reinterpret<ExpressionPtr?> p8)
                 let ts = repeat("  ", tabs + 2)
                 writer |> write("\n{ts}({name} ")

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/frp.nut" import ComputedImmediate
 let { eventbus_send } = require("eventbus")
-let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { lastBattles, sharedStats, curCampaign, campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
@@ -24,14 +24,14 @@ let tutorialResultEvent = keepref(Computed(function() {
 
 tutorialResultEvent.subscribe(function(name) {
   if (name != null)
-    sendAppsFlyerEvent(name)
+    sendTelemetryEvent(name)
 })
 
 function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
   local prev = watch.get()
   watch.subscribe(function(v) {
     if (prev != notInitedValue && v == valueToSend)
-      sendAppsFlyerEvent(eventId)
+      sendTelemetryEvent(eventId)
     prev = v
   })
 }
@@ -75,7 +75,7 @@ function saveAndSendBattlesCount() {
       return
     get_local_custom_settings_blk()[LAST_SUBMITTED_COUNT_OF_BATTLES] = closestCount
     eventbus_send("saveProfile", {})
-    sendAppsFlyerEvent($"battles_{closestCount}_1")
+    sendTelemetryEvent($"battles_{closestCount}_1")
   }
 }
 totalProfileBattles.subscribe(@(_) saveAndSendBattlesCount())
@@ -84,7 +84,7 @@ let level = keepref(Computed(@() playerLevelInfo.get().level))
 sendEventByValue("level_3", level, 3, 1)
 sendEventByValue("level_10", level, 10, 1)
 
-isLoggedIn.subscribe(@(v) v ? sendAppsFlyerEvent("login") : null)
+isLoggedIn.subscribe(@(v) v ? sendTelemetryEvent("login") : null)
 
 let loginCount = keepref(Computed(@() sharedStats.get()?.loginDaysCount ?? 0))
 loginCount.subscribe(function(count) {
@@ -92,7 +92,7 @@ loginCount.subscribe(function(count) {
     return
   let todayFirstLogin = sharedStats.get()?.lastLoginDayFirstTime ?? 0
   if (serverTime.get() - todayFirstLogin <= 60)
-    sendAppsFlyerEvent("login_day_2")
+    sendTelemetryEvent("login_day_2")
 })
 
 let bpLevelsUserstat = ComputedImmediate(@() playerStats.get()?.meta_common.battlepass_stage_progress ?? 0)

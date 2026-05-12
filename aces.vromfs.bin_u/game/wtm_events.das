@@ -37,6 +37,7 @@ struct EventOnPlayerDamage
   victimUnitId : int
   dmg : float
   fullHp : float
+  byNonAutomaticWeapon : bool
 
 [cpp_event(broadcast)]
 struct EventOnZoneDamage

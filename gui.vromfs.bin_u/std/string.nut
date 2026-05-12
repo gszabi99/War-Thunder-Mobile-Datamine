@@ -647,8 +647,8 @@ function [pure] isStringFloat(str, separator=".") {
   if (numListLen == 2 && numList[1] == "")
     numList[1] = "0"
   local lastSeg = numList[numListLen - 1]
-  local expMark = lastSeg.indexof("e") != null ? "e"
-    : lastSeg.indexof("E") != null ? "E"
+  local expMark = lastSeg.contains("e") ? "e"
+    : lastSeg.contains("E") ? "E"
     : null
   if (expMark) {
     local eList = split(lastSeg, expMark)
@@ -901,19 +901,19 @@ function validateEmail(no_dump_email) {
   if (quotes && quotes != 0)
     return false 
 
-  if (quotes == null && locpart.indexof("@")!=null)
+  if (quotes == null && locpart.contains("@"))
     return false 
 
-  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) 
+  if (!dompart.contains(".") || dompart.indexof(".") > dompart.len() - 3) 
     return false  
 
   return true
 }
 
 function clearBorderSymbols(value, symList = [" "]) {
-  while(value != "" && symList.indexof(value.slice(0,1)) != null)
+  while(value != "" && symList.contains(value.slice(0,1)))
     value = value.slice(1)
-  while(value!="" && symList.indexof(value.slice(-1)) != null)
+  while(value!="" && symList.contains(value.slice(-1)))
     value = value.slice(0, -1)
   return value
 }

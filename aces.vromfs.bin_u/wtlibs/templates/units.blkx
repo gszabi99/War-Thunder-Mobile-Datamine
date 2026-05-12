@@ -375,7 +375,11 @@
     "unit_params__initUnitVersion": 0,
     "unit_params__fireType": -1,
     "unit_params__cloneCount": 1,
-    "unit_params__behTreeName": ""
+    "unit_params__behTreeName": "",
+    "unit_params__rearmOnFieldTime": -1.0,
+    "unit_params__modList:list<t>": {},
+    "unit_params__bulletNames:list<t>": {},
+    "unit_params__bulletsCount:list<i>": {}
   },
   "buffered_hud_data": {
     "_replicate": true,
@@ -399,13 +403,19 @@
         "unit_target_list",
         "unit_current_route__routeEid",
         "unit_current_route__curWayPoint",
+        "unit_init_attack_type__attack_type",
+        "unit_init_attack_type__targets",
+        "on_death_substract_team_tickets_num",
         "loot_carrier__rage"
       ]
     },
     "unit_transferred_data__subTemplatesList:list<t>": {
       "name": [
         "unit_current_route",
-        "unit_target_list"
+        "unit_target_list",
+        "unit_fire_and_change_pos",
+        "unit_init_attack_type",
+        "unit_death_substract_team_tickets"
       ]
     }
   },
@@ -421,6 +431,7 @@
       "buffered_hud_data"
     ],
     "uid": -1,
+    "unit__ownsUnitId": false,
     "transform": [
       [
         1.0,
@@ -629,6 +640,23 @@
     "unit_storage__barrage_balloon": {},
     "unit_tag__barrage_balloon:tag": {},
     "unit_tag__gm:tag": {}
+  },
+  "aimer_custom_setting": {
+    "aimer_custom_setting__checkVisibilityTarget": true,
+    "aimer_custom_setting__ignoreStopForFire": false,
+    "aimer_custom_setting__targetAAA": true,
+    "aimer_custom_setting__moveSpeedKAtShooting": 1.0
+  },
+  "custom_gun_properties": {
+    "custom_gun_properties__aimMinDist": -1.0,
+    "custom_gun_properties__aimMaxDist": -1.0,
+    "custom_gun_properties__attackMaxDist": -1.0,
+    "custom_gun_properties__attackMinHeight": -1.0,
+    "custom_gun_properties__attackMaxHeight": -1.0,
+    "custom_gun_properties__tiggerGroupNo:list<i>": {}
+  },
+  "disable_radar_on_start": {
+    "disable_radar_on_start:tag": {}
   },
   "ground_unit": {
     "_use": [
@@ -845,6 +873,20 @@
       "_replicate": true,
       "mod__total_count": 0,
       "mod__count": 0
+    }
+  },
+  "delayed_destroy_dead_unit": {
+    "delayed_destroy_dead_unit__time": 30.0,
+    "entity_destroyer__destroyAtTime": -1.0
+  },
+  "object_group_spawn_units": {
+    "object_group_spawn_units__names:list<t>": {},
+    "object_group_spawn_units__positions:list<m>": {}
+  },
+  "unit_death_substract_team_tickets": {
+    "_group": {
+      "_tags": "server",
+      "on_death_substract_team_tickets_num": 0
     }
   }
 }

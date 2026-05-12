@@ -38,7 +38,6 @@ require("%rGui/activeControls.nut")
 require("%rGui/login/consentGoogleState.nut")
 require("%rGui/login/previewIDFAWnd.nut")
 require("%rGui/login/reloginAuto.nut")
-require("%rGui/debugTools/debugSafeArea.nut")
 
 let { get_platform_string_id } = require("platform")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")

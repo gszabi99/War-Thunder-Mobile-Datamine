@@ -9469,7 +9469,8 @@
     "numOfDestrBodiesForScaleDt": 50,
     "distForScaleDt": 100.0,
     "maxScaleDt": 3.0,
-    "errorOnBodiesOverflow": true
+    "errorOnBodiesOverflow": true,
+    "warnOnBodiesOverflow": false
   },
   "clouds": {
     "mapTexWidth": 256,

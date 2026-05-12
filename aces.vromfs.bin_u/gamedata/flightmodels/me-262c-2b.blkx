@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "ForceFiniteFuel1": true,
+  "ForceFiniteFuelAmountRel1": 2.0,
   "useTouchTargeting": true,
   "gyroSight": false,
   "type": "typeFighter",

@@ -1051,4 +1051,9 @@ return {
     method = "add_unit_gold_today"
     params = { unitName, diff }
   }, cb)
+
+  get_configs_set = @(idx, cb = null) request({
+    method = "get_configs_set"
+    params = { idx }
+  }, cb)
 }

@@ -1103,6 +1103,7 @@
       "userstat_stat_id": "squad_best",
       "mode": {
         "type": "squadBest",
+        "useBestScoreWTM": true,
         "condition": {
           "type": "online"
         }

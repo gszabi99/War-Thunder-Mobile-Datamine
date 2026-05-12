@@ -2,7 +2,6 @@ module fire_system_common shared public
 require ecs
 require dm
 require WTDamageModel
-require DmFire
 require DagorMath
 require GeomNodeTree
 require AmmoStowage

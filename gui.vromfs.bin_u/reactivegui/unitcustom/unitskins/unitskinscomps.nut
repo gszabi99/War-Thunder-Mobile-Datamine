@@ -27,7 +27,7 @@ let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp
 let changeSkinTagWnd = require("%rGui/unitCustom/unitSkins/changeSkinTagWnd.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkIsAutoSkin, mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
-let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetrySavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { userlogTextColor, markTextColor, selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
@@ -46,7 +46,7 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { chooseBetterGoods, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
 
 
-let appsFlyerSaveId = "DefaultSkinWasReplaced"
+let telemetrySaveId = "DefaultSkinWasReplaced"
 let SKINS_IN_ROW = 4
 let SKINS_IN_ROW_TAGS = 3.4
 let skinSize = hdpxi(100)
@@ -67,7 +67,7 @@ function applyToPlatoon(unit, skinName) {
     if ((unit?.currentSkins[pu.name] ?? "") != skinName)
       enable_unit_skin(unit.name, pu.name, skinName)
   if (skinName != "")
-    sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
+    sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
 }
 
 let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + skinsRowPadding * 2, [skinsRowPadding, skinsRowPadding])
@@ -338,7 +338,7 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
             function() {
               enable_unit_skin(unit.name, vehicleName, skinName)
               if (skinName != "")
-                sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
+                sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
             })
     ]
   }

@@ -3,8 +3,8 @@ options persistent_heap
 module ecs_inspectors_common shared
 
 require ecs
-require rtti
-require debugapi
+require daslib/rtti
+require daslib/debugger
 require strings
 require daslib/apply_in_context
 

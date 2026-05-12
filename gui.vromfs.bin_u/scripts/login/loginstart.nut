@@ -20,6 +20,7 @@ let { logoutFB = @() null } = is_ios ? require("ios.account.facebook")
       : is_android ? require("android.account.fb")
       : {}
 let { authState } = require("authState.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 
 let DELETE_ACCOUNT_URL = "auto_local auto_login https://store.gaijin.net/login.php?return_enc=L3Byb2ZpbGUucGhwP3Byb2ZpbGVTZXR0aW5ncz1wcm9maWxlLXNldHRpbmdzX2RlbGV0ZSZ2aWV3PXNldHRpbmdz"
@@ -99,7 +100,7 @@ eventbus_subscribe("logOut", @(_) startLogout())
 eventbus_subscribe("relogin", @(_) startRelogin())
 
 eventbus_subscribe("changeName", function(_) {
-  openUrl(loc("url/changeName"))
+  openUrl(getCurCircuitOverride("changeNameURL",loc("url/changeName")))
   callbackWhenAppWillActive(@() eventbus_send("logOut", {}))
 })
 

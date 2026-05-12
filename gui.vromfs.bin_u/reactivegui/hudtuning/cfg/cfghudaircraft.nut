@@ -26,11 +26,11 @@ let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut"
 let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
   bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
-  buttonAirImgSize, mkCircleSecondaryGuns, mkBoosterCtorBtn, mkCircleBtnEditView
+  buttonAirImgSize, mkCircleSecondaryGuns, mkBoosterCtorBtn, boosterBtnEditView
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let flaresButton = require("%rGui/hud/buttons/flaresButton.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera, hasBombs,
-  RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare
+  RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare, HasBooster
 } = require("%rGui/hud/airState.nut")
 let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
@@ -347,7 +347,8 @@ return cfgHudCommon.__merge({
   booster = {
     ctor = mkBoosterCtorBtn
     defTransform = mkRTPos([hdpx(-10), hdpx(630)])
-    editView = mkCircleBtnEditView("ui/gameuiskin#hud_booster.svg")
+    editView = boosterBtnEditView
+    isVisibleInBattle = HasBooster
     priority = Z_ORDER.BUTTON
   }
 

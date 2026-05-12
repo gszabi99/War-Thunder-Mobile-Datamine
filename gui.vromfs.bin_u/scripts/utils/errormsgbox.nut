@@ -9,13 +9,14 @@ let { register_command } = require("console")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { authState } = require("%scripts/login/authState.nut")
 let { SST_MAIL } = require("%appGlobals/loginState.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let matching = require("%appGlobals/matching_api.nut")
 
 let curtomUrls = {
-  [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",
+  [SERVER_ERROR_MAINTENANCE] =  getCurCircuitOverride("newsURL","https://www.wtmobile.com/news"),
   ["CANNOT_LOGIN_WITH_LINKED_ACCOUNT"] = "",
-  [YU2_WRONG_2STEP_CODE] = loc($"url/profile/security"),
-  [YU2_PROFILE_DELETED] = loc($"url/feedback/support"),
+  [YU2_WRONG_2STEP_CODE] = getCurCircuitOverride("securitySettingsURL", loc($"url/profile/security")),
+  [YU2_PROFILE_DELETED] = getCurCircuitOverride("feedbackSupportURL", loc($"url/feedback/support"))
 }
 
 function matchingErrData(error_text) {

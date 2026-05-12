@@ -877,7 +877,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -968,7 +967,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_02",
@@ -1044,7 +1042,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_03",
@@ -1120,7 +1117,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_04",
@@ -1196,7 +1192,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_05",
@@ -1272,7 +1267,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_06",
@@ -1348,7 +1342,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_04",
           "gun": "main_caliber_gun_07",
@@ -1436,7 +1429,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_04",
           "gun": "main_caliber_gun_08",
@@ -1526,7 +1518,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
@@ -1598,7 +1589,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_02",
@@ -1670,7 +1660,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
           "gun": "auxiliary_caliber_gun_05",
@@ -1742,7 +1731,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_06",
           "gun": "auxiliary_caliber_gun_06",
@@ -1814,7 +1802,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_11",
           "gun": "auxiliary_caliber_gun_11",
@@ -1886,7 +1873,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_12",
           "gun": "auxiliary_caliber_gun_12",
@@ -1958,7 +1944,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_15",
           "gun": "auxiliary_caliber_gun_15",
@@ -2016,7 +2001,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_16",
           "gun": "auxiliary_caliber_gun_16",
@@ -2074,7 +2058,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_17",
           "gun": "auxiliary_caliber_gun_17",
@@ -2152,7 +2135,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_18",
           "gun": "auxiliary_caliber_gun_18",
@@ -2219,8 +2201,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2232,7 +2213,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
           "gun": "auxiliary_caliber_gun_03"
@@ -2316,8 +2296,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2329,7 +2308,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
           "gun": "auxiliary_caliber_gun_04"
@@ -2413,8 +2391,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2426,7 +2403,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_07",
           "gun": "auxiliary_caliber_gun_07"
@@ -2532,8 +2508,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2545,7 +2520,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_08",
           "gun": "auxiliary_caliber_gun_08"
@@ -2651,8 +2625,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2664,7 +2637,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_09",
           "gun": "auxiliary_caliber_gun_09"
@@ -2776,8 +2748,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2789,7 +2760,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_10",
           "gun": "auxiliary_caliber_gun_10"
@@ -2901,8 +2871,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -2914,7 +2883,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_13",
           "gun": "auxiliary_caliber_gun_13"
@@ -3020,8 +2988,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3033,7 +3000,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_14",
           "gun": "auxiliary_caliber_gun_14"
@@ -3135,8 +3101,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3148,7 +3113,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01"
@@ -3240,8 +3204,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3253,7 +3216,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01"
@@ -3345,8 +3307,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3358,7 +3319,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02"
@@ -3450,8 +3410,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3463,7 +3422,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02"
@@ -3555,8 +3513,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3568,7 +3525,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_17",
           "gun": "aa_gun_17"
@@ -3678,8 +3634,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3691,7 +3646,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_17",
           "gun": "aa_gun_17"
@@ -3801,8 +3755,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3814,7 +3767,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_18",
           "gun": "aa_gun_18"
@@ -3924,8 +3876,7 @@
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
-        "aimMinDist": 10.0,
-        "aimMaxDist": 3500.0,
+        "AimMaxDist": 1750.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
@@ -3937,7 +3888,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_18",
           "gun": "aa_gun_18"
@@ -4083,7 +4033,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -4174,7 +4123,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_02",
@@ -4250,7 +4198,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_03",
@@ -4326,7 +4273,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_04",
@@ -4402,7 +4348,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_05",
@@ -4478,7 +4423,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_06",
@@ -4554,7 +4498,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_04",
                 "gun": "main_caliber_gun_07",
@@ -4642,7 +4585,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_04",
                 "gun": "main_caliber_gun_08",
@@ -4732,7 +4674,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01",
@@ -4804,7 +4745,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_02",
@@ -4876,7 +4816,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05",
@@ -4948,7 +4887,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_06",
@@ -5020,7 +4958,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_11",
                 "gun": "auxiliary_caliber_gun_11",
@@ -5092,7 +5029,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_12",
                 "gun": "auxiliary_caliber_gun_12",
@@ -5164,7 +5100,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_15",
                 "gun": "auxiliary_caliber_gun_15",
@@ -5222,7 +5157,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_16",
                 "gun": "auxiliary_caliber_gun_16",
@@ -5280,7 +5214,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_17",
                 "gun": "auxiliary_caliber_gun_17",
@@ -5358,7 +5291,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_18",
                 "gun": "auxiliary_caliber_gun_18",
@@ -5425,8 +5357,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -5438,7 +5369,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
                 "gun": "auxiliary_caliber_gun_03"
@@ -5522,8 +5452,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -5535,7 +5464,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
                 "gun": "auxiliary_caliber_gun_04"
@@ -5619,8 +5547,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -5632,7 +5559,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_07",
                 "gun": "auxiliary_caliber_gun_07"
@@ -5738,8 +5664,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -5751,7 +5676,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_08",
                 "gun": "auxiliary_caliber_gun_08"
@@ -5857,8 +5781,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -5870,7 +5793,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_09",
                 "gun": "auxiliary_caliber_gun_09"
@@ -5982,8 +5904,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -5995,7 +5916,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_10",
                 "gun": "auxiliary_caliber_gun_10"
@@ -6107,8 +6027,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6120,7 +6039,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_13",
                 "gun": "auxiliary_caliber_gun_13"
@@ -6226,8 +6144,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6239,7 +6156,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_14",
                 "gun": "auxiliary_caliber_gun_14"
@@ -6341,8 +6257,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6354,7 +6269,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_01",
                 "gun": "aa_gun_01"
@@ -6446,8 +6360,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6459,7 +6372,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_01",
                 "gun": "aa_gun_01"
@@ -6551,8 +6463,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6564,7 +6475,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_02",
                 "gun": "aa_gun_02"
@@ -6656,8 +6566,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6669,7 +6578,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_02",
                 "gun": "aa_gun_02"
@@ -6761,8 +6669,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6774,7 +6681,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_17",
                 "gun": "aa_gun_17"
@@ -6884,8 +6790,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -6897,7 +6802,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_17",
                 "gun": "aa_gun_17"
@@ -7007,8 +6911,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -7020,7 +6923,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_18",
                 "gun": "aa_gun_18"
@@ -7130,8 +7032,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -7143,7 +7044,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_18",
                 "gun": "aa_gun_18"
@@ -7291,7 +7191,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -7382,7 +7281,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_02",
@@ -7458,7 +7356,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_03",
@@ -7534,7 +7431,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_04",
@@ -7610,7 +7506,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_05",
@@ -7686,7 +7581,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_06",
@@ -7762,7 +7656,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_04",
                 "gun": "main_caliber_gun_07",
@@ -7850,7 +7743,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_04",
                 "gun": "main_caliber_gun_08",
@@ -7940,7 +7832,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01",
@@ -8012,7 +7903,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_02",
@@ -8084,7 +7974,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05",
@@ -8156,7 +8045,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_06",
@@ -8228,7 +8116,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_11",
                 "gun": "auxiliary_caliber_gun_11",
@@ -8300,7 +8187,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_12",
                 "gun": "auxiliary_caliber_gun_12",
@@ -8372,7 +8258,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_15",
                 "gun": "auxiliary_caliber_gun_15",
@@ -8430,7 +8315,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_16",
                 "gun": "auxiliary_caliber_gun_16",
@@ -8488,7 +8372,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_17",
                 "gun": "auxiliary_caliber_gun_17",
@@ -8566,7 +8449,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_18",
                 "gun": "auxiliary_caliber_gun_18",
@@ -8633,8 +8515,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -8646,7 +8527,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
                 "gun": "auxiliary_caliber_gun_03"
@@ -8730,8 +8610,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -8743,7 +8622,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
                 "gun": "auxiliary_caliber_gun_04"
@@ -8827,8 +8705,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -8840,7 +8717,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_07",
                 "gun": "auxiliary_caliber_gun_07"
@@ -8946,8 +8822,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -8959,7 +8834,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_08",
                 "gun": "auxiliary_caliber_gun_08"
@@ -9065,8 +8939,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9078,7 +8951,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_09",
                 "gun": "auxiliary_caliber_gun_09"
@@ -9190,8 +9062,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9203,7 +9074,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_10",
                 "gun": "auxiliary_caliber_gun_10"
@@ -9315,8 +9185,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9328,7 +9197,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_13",
                 "gun": "auxiliary_caliber_gun_13"
@@ -9434,8 +9302,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9447,7 +9314,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_14",
                 "gun": "auxiliary_caliber_gun_14"
@@ -9549,8 +9415,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9562,7 +9427,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_01",
                 "gun": "aa_gun_01"
@@ -9654,8 +9518,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9667,7 +9530,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_01",
                 "gun": "aa_gun_01"
@@ -9759,8 +9621,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9772,7 +9633,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_02",
                 "gun": "aa_gun_02"
@@ -9864,8 +9724,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9877,7 +9736,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_02",
                 "gun": "aa_gun_02"
@@ -9969,8 +9827,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -9982,7 +9839,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_17",
                 "gun": "aa_gun_17"
@@ -10092,8 +9948,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -10105,7 +9960,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_17",
                 "gun": "aa_gun_17"
@@ -10215,8 +10069,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -10228,7 +10081,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_18",
                 "gun": "aa_gun_18"
@@ -10338,8 +10190,7 @@
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
-              "aimMinDist": 10.0,
-              "aimMaxDist": 3500.0,
+              "AimMaxDist": 1750.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
@@ -10351,7 +10202,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "aa_turret_18",
                 "gun": "aa_gun_18"

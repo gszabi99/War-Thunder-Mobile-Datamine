@@ -1,0 +1,526 @@
+{
+  "entity": [
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2023.53,
+          26.8235,
+          2244.14
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2072.6,
+          26.8235,
+          2209.24
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2152.97,
+          26.8235,
+          2149.16
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2128.64,
+          26.8235,
+          2083.43
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2103.39,
+          26.8235,
+          2038.88
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2065.39,
+          26.8235,
+          1998.53
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          1994.42,
+          26.8235,
+          2016.6
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          1906.92,
+          26.8235,
+          2088.28
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          1976.96,
+          26.8235,
+          2025.94
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          1927.77,
+          26.8235,
+          2145.69
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          1846.16,
+          26.8235,
+          2188.12
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2050.26,
+          33.8678,
+          2084.6
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          1994.37,
+          33.8678,
+          2114.33
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2016.45,
+          33.8678,
+          2152.45
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2065.35,
+          33.8678,
+          2129.53
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2345.94,
+          33.8678,
+          1962.33
+        ]
+      ],
+      "camera_fx__radius": 150.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2314.68,
+          33.8678,
+          1913.86
+        ]
+      ],
+      "camera_fx__radius": 250.0,
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    },
+    {
+      "_template": "camera_fx",
+      "transform": [
+        [
+          3.69093,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.69093,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.69093
+        ],
+        [
+          2406.22,
+          33.8678,
+          1924.17
+        ]
+      ],
+      "camera_fx__res": "location_camera_leaves_pink_cmps_fx",
+      "camera_fx__radius": 250.0,
+      "camera_fx__is_cylindrical": false,
+      "camera_fx__height": 0.0
+    }
+  ]
+}

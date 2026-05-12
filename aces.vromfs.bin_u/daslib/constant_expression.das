@@ -12,7 +12,7 @@ module constant_expression shared private
 
 
 
-require ast
+require daslib/ast
 require daslib/ast_boost
 require daslib/strings_boost
 require daslib/templates_boost
@@ -100,10 +100,12 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
             return <- default<ExpressionPtr>
         }
         var inscope func_copy <- clone_function(expr.func)
-        var func_name = "{func_copy.name}`constant_expression"
-        for (i in argi) {
-            let fhash = hash(describe(expr.arguments[i]))
-            func_name += "`{fhash}"
+        let func_name = build_string() <| $(var w) {
+            w |> write("{func_copy.name}`constant_expression")
+            for (i in argi) {
+                let fhash = hash(describe(expr.arguments[i]))
+                w |> write("`{fhash}")
+            }
         }
         func_copy.name := func_name
         if (expr.func.fromGeneric != null) {

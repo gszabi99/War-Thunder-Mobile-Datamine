@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { playSound } = require("sound_wt")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -9,7 +10,7 @@ let { playerExpColor, unitExpColor, slotExpColor } = require("%rGui/components/l
 let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
-let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitRewards, getSlotExpByUnit
+let { getBestUnitName, getUnit, getUnitRewards, getSlotExpByUnit
 } = require("%rGui/debriefing/debrUtils.nut")
 
 let REWARDS_SCORES = "wp"
@@ -88,9 +89,7 @@ let rewardsInfoCfg = {
     mkCurrComp = @(val, style) mkCurrencyComp(val, WP, style)
   },
   [REWARDS_CAMPAIGN] = {
-    getHasProgress = @(debrData) isDebrWithUnitsResearch(debrData)
-      ? debrData?.researchingUnit != null
-      : (debrData?.player.nextLevelExp ?? 0) > 0
+    getHasProgress = @(debrData) debrData?.researchingUnit != null
     getBasic = @(debrData) (debrData?.reward.playerExp.baseExp ?? 0)
       + (debrData?.reward.playerExp.misStatusExp ?? 0)
       + (debrData?.reward.playerExp.bonusExp ?? 0)
@@ -519,7 +518,7 @@ function mkRewardRow(rewardLabelComp, cfg, rewardsInfo, idx, rewardsStartTime) {
 let premBonusesList = [ REWARDS_CAMPAIGN, REWARDS_UNIT, REWARDS_SCORES ]
 function mkPremBonusMulComps(debrData) {
   let res = clone premBonusesList
-  return (debrData?.campaign != "ships_new" ? res.insert(2, REWARDS_SLOT) : premBonusesList)
+  return (getCampaignPresentation(debrData?.campaign).campaign != "ships" ? res.insert(2, REWARDS_SLOT) : premBonusesList)
     .map(function(p) {
       let { getPremMul, mkCurrComp } = rewardsInfoCfg[p]
       let premMul = getPremMul(debrData)

@@ -26,8 +26,8 @@ return freeze({
   set_host_cb = r["set_host_cb"]
   script_net_assert = r["script_net_assert"]
   connect_to_host_list = r["connect_to_host_list"]
-  get_player_army_for_hud = r["get_player_army_for_hud"]
   set_show_attachables = r["set_show_attachables"]
   save_short_token = r["save_short_token"]
   restart_game = r["restart_game"]
+  load_local_settings = r["load_local_settings"]
 })

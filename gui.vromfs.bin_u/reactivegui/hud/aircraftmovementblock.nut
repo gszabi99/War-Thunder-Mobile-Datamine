@@ -1,15 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
+let { format } = require("string")
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { setAxisValue, setVirtualAxisValue, setVirtualAxesAim,
   setVirtualAxesAileronsAssist, setVirtualAxesDirectControl
 } = require("controls")
 let { Point3 } = require("dagor.math")
-let { fabs, lerp } = require("%sqstd/math.nut")
+let { fabs, lerp, floor } = require("%sqstd/math.nut")
+let { TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { getScaledFont, prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
+let { TemperatureState } = require("%globalScripts/sharedEnums.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
+let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera,
+  wheelBrake, hasFuel, Fuel, FuelState, HasExternalFuel, ExternalFuel
+} = require("%rGui/hud/airState.nut")
 let { getSvgImage, borderColor, btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let axisListener = require("%rGui/controls/axisListener.nut")
@@ -718,12 +723,27 @@ let txtSpeedLabel = loc("HUD/REAL_SPEED_SHORT")
 let txtSpeedUnits = loc("measureUnits/kmh")
 let txtAltitudeLabel = loc("HUD/ALTITUDE_SHORT")
 let txtAltitudeUnits = loc("measureUnits/meters_alt")
+let txtFuelShort = loc("HUD/FUEL_SHORT")
 
 let altitudeMeters = Computed(@() DistanceToGround.get().tointeger())
+
+let formatFuelText = @(fuel) format("%d:%02d", floor(fuel / 60), fuel % 60)
+let getFuelState = @(fuel, hasExternalFuel, externalFuel, fuelState) fuelState == TemperatureState.FUEL_LEAK
+    ? loc("HUD_FUEL_LEAK")
+  : fuelState == TemperatureState.FUEL_DUMPING ? loc("HUD_FUEL_DUMPING")
+  : fuelState == TemperatureState.FUEL_SEALING ? loc("HUD_TANK_IS_SEALING")
+  : fuelState == TemperatureState.EMPTY_TANK ? loc("HUD_TANK_IS_EMPTY")
+  : hasExternalFuel ? loc("ui/slash").concat(formatFuelText(fuel), formatFuelText(externalFuel))
+  : formatFuelText(fuel)
 
 function aircraftIndicators(scale) {
   let font = prettyScaleForSmallNumberCharVariants(fontTinyAccentedShaded, scale)
   let fontMono = prettyScaleForSmallNumberCharVariants(fontMonoTinyAccentedShaded, scale)
+  let fuelText = Computed(@() !hasFuel.get() ? ""
+    : getFuelState(Fuel.get(), HasExternalFuel.get(), ExternalFuel.get(), FuelState.get()))
+  let fuelColor = Computed(@() !hasFuel.get() ? null
+    : Fuel.get() < TIME_MINUTE_IN_SECONDS ? redColor
+    : neutralColor)
   return {
     size = [hdpx(250 * scale), hdpx(150 * scale)]
     valign = ALIGN_BOTTOM
@@ -781,6 +801,26 @@ function aircraftIndicators(scale) {
           }.__update(font)
         ]
       }
+      @() !hasFuel.get() ? { watch = hasFuel }
+        : {
+            watch = hasFuel
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(8 * scale)
+            children = [
+              @() {
+                watch = fuelColor
+                rendObj = ROBJ_TEXT
+                color = fuelColor.get()
+                text = txtFuelShort
+              }.__update(font)
+              @() {
+                watch = [fuelText, fuelColor]
+                rendObj = ROBJ_TEXT
+                color = fuelColor.get()
+                text = fuelText.get()
+              }.__update(font)
+            ]
+          }
     ]
   }
 }
@@ -799,11 +839,16 @@ let aircraftIndicatorsEditView = {
     {
       rendObj = ROBJ_TEXT
       color = neutralColor
-      text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), "xxx", loc("measureUnits/kmh"))
+      text = " ".concat(txtSpeedLabel, "xxx", txtSpeedUnits)
     }.__update(fontTinyAccentedShaded)
     {
       rendObj = ROBJ_TEXT
-      text = " ".concat(loc("HUD/ALTITUDE_SHORT"), "xxxx", loc("measureUnits/meters_alt"))
+      text = " ".concat(txtAltitudeLabel, "xxxx", txtAltitudeUnits)
+    }.__update(fontTinyAccentedShaded)
+    {
+      rendObj = ROBJ_TEXT
+      color = redColor
+      text = " ".concat(txtFuelShort, "xx:xx")
     }.__update(fontTinyAccentedShaded)
   ]
 }

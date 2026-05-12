@@ -136,10 +136,7 @@
       "flag": [
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
-      ],
-      "addons": {
-        "enabled": true
-      }
+      ]
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -383,9 +380,9 @@
     "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "matching_ws": {
       "server": [
-        "wss://mgate-wtm-01.warthunder.com:8080",
-        "wss://mgate-wtm-02.warthunder.com:8080",
-        "wss://mgate-wtm-03.warthunder.com:8080"
+        "wss://mgate-wtm-01.warthunder.com:8443",
+        "wss://mgate-wtm-02.warthunder.com:8443",
+        "wss://mgate-wtm-03.warthunder.com:8443"
       ]
     },
     "matching": {
@@ -396,7 +393,7 @@
       ]
     },
     "matching_fallback": {
-      "server": "wss://mgate-wtm-fallback-01.warthunder.com:8080"
+      "server": "mgate-wtm-fallback-01.warthunder.com:7853"
     },
     "androidExitOnANR": {
       "APP_CMD_INIT_WINDOW": true,

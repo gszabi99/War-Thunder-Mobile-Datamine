@@ -20,7 +20,7 @@ let { slotAttrPage } = require("%rGui/attributes/slotAttr/slotAttrWndPage.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
-let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
@@ -196,7 +196,7 @@ let pageBlock = {
 
 let applyAction = function() {
   if (!hasUpgradedAttrUnitNotUpdatable() && curSlots.get().findindex(@(slot) slot.attrLevels.len() > 0 ) == null)
-    sendAppsFlyerEvent("slot_upgrade_crew_1")
+    sendTelemetryEvent("slot_upgrade_crew_1")
   applyAttributes()
   backButtonBlink("UnitAttr")
 }

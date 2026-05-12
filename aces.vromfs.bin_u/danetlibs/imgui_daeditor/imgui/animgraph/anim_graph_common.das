@@ -77,7 +77,7 @@ def get_link_node(link : int)
   return link / nodeScale - 1
 
 
-def in_pin(id : int; blk : block<() : void>)
+def in_pin(id : int)
   
   
   
@@ -95,8 +95,6 @@ def in_pin(id : int; blk : block<() : void>)
     PinRect(min - offset, max + offset)
     let pin = float2(min.x, (min.y + max.y) * 0.5) + float2(1, 0)
     PinPivotRect(pin, pin)
-
-    blk |> invoke()
 
   
   
@@ -377,7 +375,7 @@ def render_AnimFifo3QueueParam(paramId : int; var graph : AnimationGraph; var st
     imgui::Text("Current time: {gtime:.2f}")
     imgui::Text("Morph time 1 to 2: {queue.morphTime[0]}")
     imgui::Text("Morph time 2 to 3: {queue.morphTime[1]}")
-    let fifoBlendWeight = saturate((gtime - queue.t0) / queue.morphTime[0])
+    let fifoBlendWeight = saturate(safediv((gtime - queue.t0), queue.morphTime[0]))
 
     for idx in range(3)
       var childNode = *queue |> AnimFifo3Queue_get_node(idx)
@@ -651,6 +649,24 @@ def render_AnimPostBlendCtrl(var nod : IAnimBlendNode?; var graph : AnimationGra
   imgui::Text("--- Missing node specific render ---\nThis node has more parameters than displayed")
 
 
+def render_AnimPostBlendSetParam(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
+  unsafe
+    render_general_post_blend_controller(nod, graph, state, context, weight)
+    assume node = reinterpret<AnimPostBlendSetParam?> nod
+    imgui::Spacing()
+    let step = 0.1f
+    imgui::Text("Min Weight:")
+    imgui::SameLine()
+    SetNextItemWidth(150.0f)
+    InputScalar("##{node}_minWeight", ImGuiDataType.Float, unsafe(addr(node.minWeight)), safe_addr(step), safe_addr(step), "%.4f", ImGuiInputTextFlags.None)
+    imgui::Text("Source Value: {node.val}")
+    draw_param_info(graph, state, node.srcVarId, "Source Param")
+    imgui::Text("Destination Var Name: {node.destVarName}")
+    imgui::Text("Destination Slot: {node.destSlotId} ({animchar_getSlotName(node.destSlotId)})")
+    draw_param_info(graph, state, node.destVarId, "Destination Param:")
+    imgui::Text("Is Pull: {node.pullParamValueFromSlot}")
+
+
 def render_AnimPostBlendParamFromNode(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
     render_general_post_blend_controller(nod, graph, state, context, weight)
@@ -718,6 +734,55 @@ def param_type_to_text(typ : uint)
     return "Unknown type id: {typ}"
   return text[typ]
 
+let anim_tree_class_names = fixed_array<string>(
+    
+    
+    
+    
+    "fifo3",
+    "linear",
+    "linearPoly",
+    "randomSwitch",
+    "paramSwitch",
+    "paramSwitchS",
+    "setMotionMatchingTag",
+    "hub",
+    "null",
+    "stub",
+    "blender",
+    "BIS",
+    "deltaAnglesCalc",
+    "alignNode",
+    "alignEx",
+    "rotateNode",
+    "rotateAroundNode",
+    "scaleNode",
+    "moveNode",
+    "paramsCtrl",
+    "defClampCtrl",
+    "condHide",
+    "animateNode",
+    "legsIK",
+    "twoBonesIK",
+    "multiChainFABRIK",
+    "attachNode",
+    "aim",
+    "lookat",
+    "lookatNode",
+    "effFromAttachment",
+    "nodesFromAttachement",
+    "paramFromNode",
+    "matFromNode",
+    "compoundRotateShift",
+    "setParam",
+    "twistCtrl",
+    "eyeCtrl",
+    "effectorFromChildIK",
+    "deltaRotateShiftCalc",
+    "footLockerIK",
+    "hasAttachment",
+    "humanAim",
+  )
 
 def class_name_to_anim_tree_class_name(class_name : string)
   
@@ -884,6 +949,7 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
   
   push(renderers, tuple(AnimBlendNodeStillLeafCID, @@render_AnimBlendNodeStillLeaf))
 
+  push(renderers, tuple(AnimPostBlendSetParamCID, @@render_AnimPostBlendSetParam))
   push(renderers, tuple(AnimPostBlendParamFromNodeCID, @@render_AnimPostBlendParamFromNode))
   push(renderers, tuple(AttachGeomNodeCtrlCID, @@render_AttachGeomNodeCtrl))
   push(renderers, tuple(AnimPostBlendCtrlCID, @@render_AnimPostBlendCtrl)) 
@@ -967,7 +1033,7 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
 
   SetCurrentEditor(context)
 
-  imgui::BeginChild("__params__", float2(-FLT_MIN, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
+  imgui::BeginChild("__params__", float2(-FLT_MIN, -FLT_MIN), ImGuiChildFlags.Borders, ImGuiWindowFlags.None)
 
   autoAlign ||= imgui::Button("Align")
   imgui::SameLine()
@@ -975,6 +1041,8 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
   imgui::SameLine()
   focusRoot ||= imgui::Button("Focus root")
   imgui::Checkbox("Disable auto align", safe_addr(disableAutoAlign))
+
+  var newNodesToCreate : array<tuple<string; int>>
 
   graph |> anim_graph_getAnimNodeNames <| $(nodes)
     graph |> animchar_getAnimBlendNodeWeights(state) <| $(abn_wt; bnl_wt; pbc_wt)
@@ -1036,14 +1104,28 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
 
       let drawParam = $ <| (id : int; prefix : string; name : string; showHiddenParams : bool)
         let paramType = graph |> anim_graph_getParamType(id)
+        let isBasicType = paramType == PT_ScalarParam || paramType == PT_ScalarParamInt || paramType == PT_TimeParam
+        let isParamPaused = isBasicType && state |> anim_state_holder_getParamFlags(id, int(PF_Paused)) == int(PF_Paused)
+        let isParamChanged = isBasicType && state |> anim_state_holder_getParamFlags(id, int(PF_Changed)) == int(PF_Changed)
         let typeText = param_type_to_text(paramType)
         let typeTextFormatted = "  <{typeText}>"
-        let nameText = "{name} ({id})"
+        let nameText = "{name} ({id}){isParamPaused ? " [P]" : ""}{isParamChanged ? " [C]" : ""}"
 
         let popup = $ <| ()
           if imgui::BeginPopupContextItem("ParamContextMenu##{prefix}params_{name}")
-            imgui::Text(nameText)
-            imgui::Text("{typeText} ({int(paramType)})")
+            imgui::Text("Name: {nameText}")
+            imgui::Text("Type: {typeText} ({int(paramType)})")
+            if paramType == PT_TimeParam
+              let timeScaleParamId = state |> anim_state_holder_getTimeScaleParamId(id)
+              if timeScaleParamId > 0
+                let timeScaleParamName = graph |> anim_graph_getParamName(timeScaleParamId)
+                let timeScaleParamValue = state |> anim_state_holder_getParam(timeScaleParamId)
+                imgui::Text("Time Scale Param: {timeScaleParamName} ({timeScaleParamId}) = {timeScaleParamValue:.2f}")
+              else
+                imgui::Text("Time Scale Param: NONE (0)")
+            if isBasicType
+              imgui::Text("PF_Paused: {isParamPaused}")
+              imgui::Text("PF_Changed: {isParamChanged}")
             imgui::Separator()
             let bookmarkIndex = bookmarkedParams |> find_index(name)
             if bookmarkIndex < 0 && imgui::MenuItem("Bookmark")
@@ -1058,6 +1140,11 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
                 state |> anim_state_holder_setParamInt(id, 0)
               else
                 state |> anim_state_holder_setParam(id, 0.0)
+
+            if imgui::MenuItem("Copy name ({name})")
+              imgui::SetClipboardText(name)
+            if imgui::MenuItem("Copy type ({typeText})")
+              imgui::SetClipboardText(typeText)
             imgui::EndPopup()
 
         if paramType == PT_Reserved
@@ -1096,17 +1183,9 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
             let timeValue = state |> anim_state_holder_getParam(id)
             let min = -1e8
             let max = 1e8
-            let availableWidth = imgui::GetContentRegionAvail().x
-            SetNextItemWidth(availableWidth * 0.5f)
+            SetNextItemWidth(-FLT_MIN)
             if imgui::DragScalar("##{name}_time", ImGuiDataType.Float, safe_addr(timeValue),  0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
               state |> anim_state_holder_setParam(id, timeValue)
-            imgui::SameLine()
-            let value = state |> anim_state_holder_getTimeScaleParamId(id)
-            let step = 1
-            let fastStep = 5
-            SetNextItemWidth(availableWidth * 0.5f)
-            if imgui::InputScalar("##{name}_scale", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
-              state |> anim_state_holder_setTimeScaleParamId(id, value)
             imgui::EndGroup()
             invoke(popup)
             Spacing()
@@ -1392,8 +1471,7 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
               isNodeRendered |> back() = true
 
               let inId = get_input_node_idx(node.id)
-              in_pin(inId) <|
-                pass
+              in_pin(inId)
 
               if nodePtr == null
                 imgui::Text("\nThis node has failed to load.\nProbably there was in error in this char's animTree.")
@@ -1537,10 +1615,13 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
             NavigateToContent(0.2f)
 
           imgui_node_editor::Suspend()
+
           static_let <|
             var contextMenuLinkId = -1
           if imgui_node_editor::ShowLinkContextMenu(safe_addr(contextMenuLinkId))
             imgui::OpenPopup("link_context_menu")
+          elif imgui_node_editor::ShowBackgroundContextMenu()
+            imgui::OpenPopup("background_context_menu")
 
           if imgui::BeginPopup("link_context_menu")
             var startPinId = -1
@@ -1557,6 +1638,53 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
                 imgui_node_editor::SelectNode(get_node_idx(nodeId))
                 NavigateToSelection(false, -1f)
             imgui::EndPopup()
+
+          if imgui::BeginPopup("background_context_menu")
+            if imgui::BeginMenu("Create Node")
+              imgui::Text("Create New Anim Node")
+              static_let <|
+                var newNodeNameBuffer = ImGuiInputTextBuffer("new_name", 128)
+                var newNodeSelectedType = 0
+                var newNodeTypeFilterBuffer = ImGuiInputTextBuffer("", 128)
+              static_let_finalize <|
+                var newNodeTypeFilter = new ImGuiTextFilter
+              InputText("Node Name", newNodeNameBuffer, ImGuiInputTextFlags.AutoSelectAll)
+
+              let maxComboSize = 200.0
+              imgui::SetNextWindowSizeConstraints(ImVec2(0.0, 0.0), ImVec2(FLT_MAX, FLT_MAX))
+              if imgui::BeginCombo("Node Type", anim_tree_class_names[newNodeSelectedType])
+                *newNodeTypeFilter |> Draw("##newNodeTypeFilter")
+
+                var filteredNodeTypeIndexes : array<int>
+                filteredNodeTypeIndexes.reserve(length(anim_tree_class_names))
+                for i in range(length(anim_tree_class_names))
+                  if *newNodeTypeFilter |> PassFilter(anim_tree_class_names[i])
+                    filteredNodeTypeIndexes.push(i)
+
+                imgui::SetNextWindowSizeConstraints(ImVec2(0.0, 0.0), ImVec2(FLT_MAX, maxComboSize))
+                if imgui::BeginChild("##ComboOptions", ImVec2(-FLT_MIN, 0.0), ImGuiChildFlags.AutoResizeY | ImGuiChildFlags.AlwaysAutoResize)
+                  using() <| $(var clipper : ImGuiListClipper)
+                    Begin(clipper, length(filteredNodeTypeIndexes), imgui::GetTextLineHeightWithSpacing())
+                    while Step(clipper)
+                      for i in range(clipper.DisplayStart, clipper.DisplayEnd)
+                        let isSelected = newNodeSelectedType == filteredNodeTypeIndexes[i]
+                        if imgui::Selectable(anim_tree_class_names[filteredNodeTypeIndexes[i]], isSelected)
+                          newNodeSelectedType = filteredNodeTypeIndexes[i]
+                          imgui::CloseCurrentPopup()
+
+                  imgui::EndChild()
+                imgui::EndCombo()
+
+              if imgui::Button("Create")
+                newNodesToCreate |> push(tuple(to_string(newNodeNameBuffer), newNodeSelectedType))
+              imgui::EndMenu()
+
+            if imgui::Button("Test Node Creation")
+              for i in range(length(anim_tree_class_names))
+                let nodeName = "test_name_{i}"
+                newNodesToCreate |> push(tuple(nodeName, i))
+            imgui::EndPopup()
+
           imgui_node_editor::Resume()
 
           
@@ -1630,7 +1758,7 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
       if imgui::BeginTabItem("Skeleton")
         defer <|
           imgui::EndTabItem()
-        imgui::BeginChild("__skeleton__", float2(-FLT_MIN, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.HorizontalScrollbar)
+        imgui::BeginChild("__skeleton__", float2(-FLT_MIN, -FLT_MIN), ImGuiChildFlags.Borders, ImGuiWindowFlags.HorizontalScrollbar)
         defer <|
           imgui::EndChild()
 
@@ -1667,6 +1795,54 @@ def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : Animati
         
         
         
+
+  
+  
+  
+  
+  
+  
+  if length(newNodesToCreate) > 0
+    let gameresFactory = find_gameres_factory(CharacterGameResClassId)
+
+    let for_each_char_with_graph_res_id = $ <| (resId : int; cb : block<(var animchar : AnimcharBaseComponent) : void>)
+      
+      
+      
+      
+      
+      iterate_gameres_factory_resources(gameresFactory) <| $(var res : void?)
+        var other_animchar & = unsafe(reinterpret<IAnimCharacter2?>(res)).base
+        if other_animchar.animGraph != null && other_animchar.animState != null && other_animchar.animGraph.resId == resId
+          invoke(cb, other_animchar)
+      query() <| $ [es] (var animchar aka other_animchar : AnimcharBaseComponent&)
+        if other_animchar.animGraph != null && other_animchar.animState != null && other_animchar.animGraph.resId == resId
+          invoke(cb, other_animchar)
+
+    
+    
+    for_each_char_with_graph_res_id(graph.resId) <| $(var other_animchar : AnimcharBaseComponent)
+      anim_state_holder_term(*other_animchar.animState)
+
+    for node in newNodesToCreate
+      let nodeName = node._0
+      let classIdx = node._1
+      visual_log("Creating node {nodeName} of type {anim_tree_class_names[classIdx]}")
+      
+      using() <| $(var nodeBlk : DataBlock)
+        datablock_change_block_name(nodeBlk, anim_tree_class_names[classIdx])
+        nodeBlk |> set("name", nodeName)
+        AnimResManagerV20_add_bn(graph, nodeBlk, "")
+
+    
+    for_each_char_with_graph_res_id(graph.resId) <| $(var other_animchar : AnimcharBaseComponent)
+      
+      anim_state_holder_init(*other_animchar.animState)
+      
+      
+      
+      
+      other_animchar |> animchar_reset()
 
 
 def draw_skeleton_node_in_tree_recursive(var graph : AnimationGraph;

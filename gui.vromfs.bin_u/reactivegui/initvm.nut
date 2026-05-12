@@ -19,7 +19,6 @@ gui_scene.setConfigProps({
   gamepadCursorHoverMaxTime = 1.0
 })
 
-set_nested_observable_debug(DBGLEVEL > 0)
 
 warn_on_deprecated_methods(DBGLEVEL > 0)
 if (is_pc)

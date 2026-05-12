@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import load_local_settings
+
 from "app" import exitGame
 let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async, convertExternalJwtToAuthJwt
 } = require("auth_wt")
@@ -41,8 +43,10 @@ let mkInterruptWithRecoveryMsg = @(errCode) function(_loginType) {
 }
 
 eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(p) {
-  if (p.status == YU2_OK)
+  if (p.status == YU2_OK) {
     finalizeStage()
+    load_local_settings()
+  }
   else {
     send_counter("auth.jwt_convert_error", 1, { error = p.status })
     interruptStage({ error = $"Convert external JWT failed: {p.status}" })

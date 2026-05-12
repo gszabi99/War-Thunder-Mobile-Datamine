@@ -3,7 +3,6 @@ let { selectColor } = require("%rGui/style/stdColors.nut")
 
 let darkBorderWidth = hdpx(2)
 let lightBorderWidth = hdpx(3)
-let levelBorder = darkBorderWidth + lightBorderWidth
 let levelBgColor = Color(51, 54, 58)
 let playerExpColor = 0xFFFFB70B
 let unitExpColor = selectColor
@@ -48,8 +47,6 @@ let mkProgressLevelBg = @(override = {}) {
 return {
   darkBorderWidth
   lightBorderWidth
-  levelBorder
-  levelBgColor
   levelProgressBarHeight
   levelProgressBarWidth
   levelProgressBorderWidth

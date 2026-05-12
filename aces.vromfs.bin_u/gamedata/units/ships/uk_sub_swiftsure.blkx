@@ -626,7 +626,6 @@
         "weaponType": "rockets",
         "emitter": "bone_torpedo_05",
         "flash": "bone_torpedo_05",
-        "emitterGenFmt": "bone_torpedo_%02d",
         "useEmitter": true,
         "allowableDelta": [
           180.0,
@@ -658,7 +657,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "tt_head_01",
           "gun": "tt_01"
@@ -927,7 +925,6 @@
               "weaponType": "rockets",
               "emitter": "bone_torpedo_05",
               "flash": "bone_torpedo_05",
-              "emitterGenFmt": "bone_torpedo_%02d",
               "useEmitter": true,
               "allowableDelta": [
                 180.0,
@@ -959,7 +956,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "tt_head_01",
                 "gun": "tt_01"

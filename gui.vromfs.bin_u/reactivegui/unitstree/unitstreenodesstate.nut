@@ -6,10 +6,9 @@ let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isDataBlock, eachParam, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campConfigs, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { unitsBlockedByBattleMode, blockedCountries } = require("%rGui/unit/unitAccess.nut")
@@ -42,9 +41,6 @@ let unitToScroll = Computed(@() unitInfoToScroll.get()?.name)
 
 let unitsResearchStatus = Computed(function(prev) {
   let list = {}
-  if (!isCampaignWithUnitsResearch.get())
-    return list
-
   local hasChanges = false
   let { unitResearchExp = {} } = campConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
@@ -101,29 +97,6 @@ let mkCountries = @(nodeList) Computed(function(prev) {
 })
 
 let markUnitOfferShown = @(unitName) shownUnitsOffersForPurchase.mutate(@(v) v[unitName] <- true)
-
-function mkFilteredNodes(nodeList) {
-  let res = Computed(@() filterGenId.get() == 0 ? nodeList.get()
-    : nodeList.get().filter(function(node) {
-        let unit = campUnitsCfg.get()?[node.name]
-        if (!unit)
-          return false
-        foreach (f in filters) {
-          let value = f.value.get()
-          if (value != null && !f.isFit(unit, value))
-            return false
-        }
-        return true
-      }))
-  foreach (f in filters) {
-    let { allValues = null, valueWatch = null } = f
-    if (allValues != null)
-      res._noComputeErrorFor(allValues) 
-    if (valueWatch != null)
-      res._noComputeErrorFor(valueWatch) 
-  }
-  return res
-}
 
 function sumRemap(has) {
   let res = []
@@ -249,9 +222,6 @@ let availableBlueprints = Computed(@() allBlueprints.get()
 
 let blueprintUnitsStatus = Computed(function(prev) {
   let list = {}
-  if (!isCampaignWithUnitsResearch.get())
-    return list
-
   local hasChanges = false
   foreach (unitName, data in availableBlueprints.get()) {
     let { targetCount = 1 } = data
@@ -275,9 +245,6 @@ let blueprintUnitsStatus = Computed(function(prev) {
 
 let unseenResearchedUnits = Computed(function() {
   let res = {}
-  if (!isCampaignWithUnitsResearch.get())
-    return res
-
   let { unitTreeNodes = {}, unitResearchExp = {} } = campConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
   let blueprints = availableBlueprints.get()
@@ -415,7 +382,6 @@ return {
   unitInfoToScroll
   setUnitToScroll = @(name, isAnimated = false) unitInfoToScroll.set({ name, isAnimated })
   mkCountries
-  mkFilteredNodes
   mkCountryNodesCfg
   unitsResearchStatus
   currentResearch

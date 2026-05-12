@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { Indicator } = require("wt.behaviors")
-let { hasTarget, targetUnitName, aircraftCrosshairColor, areSightHidden
+let { hasTarget, aircraftCrosshairColor, areSightHidden
 } = require("%rGui/hudState.nut")
+let { targetUnitName } = require("hudIndicators")
 let { startCrosshairAnimationTime, pointCrosshairScreenPosition, crosshairDestinationScreenPosition
 } = require("%rGui/hud/commonState.nut")
 let { TargetLockTime } = require("%rGui/hud/airState.nut")

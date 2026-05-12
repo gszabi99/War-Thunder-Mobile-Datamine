@@ -11,8 +11,8 @@ module if_not_null shared private
 
 
 
-require ast
-require rtti
+require daslib/ast
+require daslib/rtti
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/defer

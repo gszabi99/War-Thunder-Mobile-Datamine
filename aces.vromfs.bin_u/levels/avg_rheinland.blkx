@@ -95,6 +95,9 @@
       32768.0
     ]
   },
+  "graphics": {
+    "riExMinSizeForHeightmap": 3.0
+  },
   "stars": {
     "latitude": 51.0,
     "longitude": 16.0,

@@ -68,7 +68,7 @@ let optScale = {
   valToString = @(v) $"{(v * 100).tointeger()}%"
   ctrlOverride = {
     min = 0.5
-    max = 1.5
+    max = 2.0
     unit = 0.01
   }
 }
@@ -92,8 +92,10 @@ let optTextWidth = {
 let defFontByElemId = { raceLeadership = "small" }
 let fontsById = fontsList.reduce(@(res, f) res.$rawset(f.id, f), {})
 
-defFontByElemId.each(@(fontId) fontId in fontsById ? null
-  : logerr($"Not found fontId {fontId} which listed in defFontByElemId"))
+defFontByElemId.each(function(fontId) {
+  if (fontId not in fontsById)
+    logerr($"Not found fontId {fontId} which listed in defFontByElemId")
+})
 
 function getElemFontId(options, elemId) {
   let id = options?.fontSize[elemId]

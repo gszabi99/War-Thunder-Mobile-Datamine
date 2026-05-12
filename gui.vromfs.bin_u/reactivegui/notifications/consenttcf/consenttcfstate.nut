@@ -6,6 +6,7 @@ from "eventbus" import eventbus_send, eventbus_subscribe
 from "console" import register_command
 from "dagor.shell" import shell_execute
 from "dagor.workcycle" import resetTimeout
+from "appsFlyer" import startAppsFlyer, enableTCFCollection
 from "auth_wt" import getCountryCode
 from "blkGetters" import get_local_custom_settings_blk
 from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData, unloadVendorData,
@@ -26,8 +27,7 @@ let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
-let { startAppsFlyer, enableTCFCollection = @(_) null } = require("appsFlyer")
-
+let { setOnlineAdjust = @(_) null } = require_optional("adjust")
 let logC = log_with_prefix("[consent] ")
 
 
@@ -132,6 +132,7 @@ function setupAnalytics() {
   setCollectionEnabled(true)
   enableTCFCollection(true)
   startAppsFlyer()
+  setOnlineAdjust(true)
 }
 
 function saveToLocalStorage() {

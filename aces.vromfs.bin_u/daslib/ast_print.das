@@ -12,8 +12,8 @@ options rtti = true
 options strict_smart_pointers = false
 
 
-require rtti
-require ast
+require daslib/rtti
+require daslib/ast
 require daslib/ast_boost
 require daslib/strings_boost
 
@@ -154,7 +154,7 @@ class PrintVisitor : AstVisitor {
                 
             }
         }
-        let bfa : FunctionFlags = fun.flags & function_annotation_flags;
+        
         
         
         if (fun.annotations |> length != 0) {
@@ -1105,7 +1105,7 @@ def Foo(x, y : int) {
 def add(a, b : int) {
     
     
-    var add_extra = 13;
+    let add_extra = 13;
     print("a={a} b={b}");
     return a + b + add_extra;
 }
@@ -1194,7 +1194,7 @@ def allExpr(arg : int) {
         verify(ta == tg);
     }
     
-    var tinfo = typeinfo rtti_typeinfo(type<int>).basicType;
+    let tinfo = typeinfo rtti_typeinfo(type<int>).basicType;
     print("{tinfo}\n");
     
     print("{*pFoo1}");

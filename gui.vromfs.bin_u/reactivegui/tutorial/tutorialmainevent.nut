@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isCampaignWithUnitsResearch, curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -26,8 +26,7 @@ let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let tabId = EVENT_TAB
 let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 
-let canShowTutorialByCampaign = Computed(@() !isCampaignWithUnitsResearch.get()
-  || (isFinishedSlotAttributes.get() && isFinishedArsenal.get()))
+let canShowTutorialByCampaign = Computed(@() isFinishedSlotAttributes.get() && isFinishedArsenal.get())
 
 let hasFirstBattles = Computed(function() {
   let idx = (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1) + 1

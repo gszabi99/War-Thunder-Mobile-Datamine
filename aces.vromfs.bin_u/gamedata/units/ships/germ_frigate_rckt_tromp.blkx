@@ -754,7 +754,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -811,7 +810,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -882,7 +880,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_turret_02"
@@ -941,7 +938,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01"
@@ -959,7 +955,7 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "rockets_secondary",
+        "triggerGroup": "rockets_tertiary",
         "blk": "gameData/weapons/rocketGuns/340mm_sm_er_alike_single_arm_rocket_naval_bullet.blk",
         "weaponType": "rockets",
         "emitter": "bone_rocket_05",
@@ -995,7 +991,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_06",
           "gun": "auxiliary_caliber_gun_02"
@@ -1303,9 +1298,6 @@
     "delay": 0.3,
     "count": 3
   },
-  "rocketSecondarySequence": {
-    "isSingleShots": false
-  },
   "rocketBlocker": {
     "duration": 5.0,
     "cooldown": 80.0,
@@ -1361,7 +1353,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -1418,7 +1409,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -1489,7 +1479,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_turret_02"
@@ -1548,7 +1537,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01"
@@ -1566,7 +1554,7 @@
             },
             {
               "trigger": "gunner4",
-              "triggerGroup": "rockets_secondary",
+              "triggerGroup": "rockets_tertiary",
               "blk": "gameData/weapons/rocketGuns/340mm_sm_er_alike_single_arm_rocket_naval_bullet.blk",
               "weaponType": "rockets",
               "emitter": "bone_rocket_05",
@@ -1602,7 +1590,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_02"
@@ -1945,7 +1932,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2002,7 +1988,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2073,7 +2058,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_turret_02"
@@ -2132,7 +2116,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01"
@@ -2150,7 +2133,7 @@
             },
             {
               "trigger": "gunner4",
-              "triggerGroup": "rockets_secondary",
+              "triggerGroup": "rockets_tertiary",
               "blk": "gameData/weapons/rocketGuns/340mm_sm_er_alike_single_arm_rocket_naval_bullet.blk",
               "weaponType": "rockets",
               "emitter": "bone_rocket_05",
@@ -2186,7 +2169,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_02"

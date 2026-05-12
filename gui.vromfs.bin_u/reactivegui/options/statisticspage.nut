@@ -153,9 +153,9 @@ return function() {
       let counts = getSubTable(res, campaign)
       let listId = name in unitResearchExp ? "Research"
         : name in allBlueprints ? "Blueprint"
+        : isCollectible ? "Collectible"
         : isPremium && !isHidden ? "Premium"
         : isPremium ? "SeasonPrem"
-        : isCollectible ? "Collectible"
         : "Other"
       inc(counts, "all")
       inc(counts, $"all{listId}")

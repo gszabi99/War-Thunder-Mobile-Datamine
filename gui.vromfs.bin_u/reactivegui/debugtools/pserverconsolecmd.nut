@@ -22,7 +22,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_profile, debug_apply_unit_rent, get_gdpr_report,
   get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_units,
-  pp_add_currencies, add_unit_gold_today
+  pp_add_currencies, add_unit_gold_today, get_configs_set
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -291,6 +291,11 @@ register_command(@() get_profile({ installStore }, "consolePrintResult"), "meta.
 register_command(@() check_purchases_debug("onDebugCheckPurchases"), "meta.check_purchases_debug")
 register_command(@() get_purchases_list("onDebugPurchasesList"), "meta.get_purchases_list")
 
+register_command(@() get_configs_set(0, "consolePrintResult"), "meta.get_all_configs_set_0")
+register_command(@() get_configs_set(1, "consolePrintResult"), "meta.get_all_configs_set_1")
+register_command(@() get_configs_set(2, "consolePrintResult"), "meta.get_all_configs_set_full")
+
+
 register_command(function() {
   reset_profile_with_stats("consolePrintResult")
   resetUserstatAppData()
@@ -424,9 +429,9 @@ register_command(function() {
         continue
       let listId = name in unitResearchExp ? "research"
         : name in allBlueprints ? "blueprint"
+        : isCollectible ? "collectible"
         : isPremium && !isHidden ? "premium"
         : isPremium ? "seasonPremimum"
-        : isCollectible ? "collectible"
         : "other"
       getSubArray(getSubTable(all, campaign), listId).append(name)
     }

@@ -29,7 +29,7 @@
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
   "sound": "cannon_medium",
-  "sfxReloadBullet": "grd_cannon_reload_2a70",
+  "sfxReloadBullet": "grd_cannon_reload_auto",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,

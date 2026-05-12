@@ -559,12 +559,6 @@
     "delayedDownloadContent": {
       "condition": ""
     },
-    "reactivGuiForAircraft": {
-      "condition": ""
-    },
-    "reactivGuiForArbitrer": {
-      "condition": ""
-    },
     "replayRewind": {
       "condition": ""
     }

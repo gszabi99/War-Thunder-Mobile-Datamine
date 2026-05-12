@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
-let { AirThrottleMode, AirParamsMain } = require("%globalScripts/sharedEnums.nut")
+let { AirThrottleMode, AirParamsMain, AirParamsTertiary } = require("%globalScripts/sharedEnums.nut")
 let interopGen = require("%rGui/interopGen.nut")
 let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO, CANNON_ADDITIONAL, FLARES } = AirParamsMain
 let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
 let { isUnitAlive, isUnitDelayed, playerUnitName } = require("%rGui/hudState.nut")
+let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 let { FlightCameraType, getCameraViewType } = require("camera_control")
 let debugDebuff = mkWatched(persist, "debugDebuff", 0)
 let { rnd_int } = require("dagor.random")
@@ -16,6 +17,7 @@ use_mgun_as_cannon_by_trigger(true)
 const NUM_TURRETS_MAX = 10
 
 let MainMask         = Watched(0)
+let TertiaryMask     = Watched(0)
 let Trt0             = Watched(0)
 let TrtMode0         = Watched(0)
 let Cannon0          = Watched({ count = 0, time = -1, endTime = -1 })
@@ -42,6 +44,7 @@ let airState = {
   Trt0
   IsTrtWep0 = Computed(@() TrtMode0.get() == AirThrottleMode.AIRCRAFT_WEP)
   MainMask
+  TertiaryMask
   Cannon0
   MGun0
   AddGun
@@ -61,6 +64,11 @@ let airState = {
   RocketsState
   TorpedoesState
 
+  Fuel = Watched(0)
+  FuelState = Watched(0)
+  HasExternalFuel = Watched(false)
+  ExternalFuel = Watched(0)
+
   hasBombs = Computed(@() (MainMask.get() & (1 << BOMBS)) != 0)
   hasRockets = Computed(@() (MainMask.get() & (1 << ROCKET)) != 0)
   hasTorpedos = Computed(@() (MainMask.get() & (1 << TORPEDO)) != 0)
@@ -75,6 +83,7 @@ let airState = {
   isTorpedoReady
 
   HasBooster = Watched(false)
+  IsBoosterActive = Watched(false)
 
   FlaresState
   IsPeriodicFlaresEnabled = Watched(false)
@@ -163,15 +172,16 @@ eventbus_subscribe("onSetCamera", @(v) activeCameraView.set(v.newType))
 foreach(w in [isUnitAlive, isUnitDelayed, MainMask, playerUnitName])
   w.subscribe(@(_) activeCameraView.set(getCameraViewType()))
 
-let logMask = @() log("MainMask = ",
+let logMask = @(mask, params, text) log($"{text} = ",
   ", ".join(
-    AirParamsMain
-      .filter(@(v) (MainMask.get() & (1 << v)) != 0)
+    params
+      .filter(@(v) (mask & (1 << v)) != 0)
       .reduce(@(res, v, k) res.append({ v, k }), [])
       .sort(@(a, b) a.v <=> b.v)
       .map(@(v) v.k)))
 
-register_command(logMask, "debug.airWeaponMask")
+register_command(@() logMask(MainMask.get(), AirParamsMain, "MainMask"), "debug.airWeaponMask")
+register_command(@() logMask(TertiaryMask.get(), AirParamsTertiary, "TertiaryMask"), "debug.airTertiaryMask")
 
 let maxDebugDebuff = 1023
 register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.airDebuffsAll")
@@ -185,6 +195,8 @@ register_command(function(idx) {
 
 let export = planeState.__merge(airState).__merge({
   DmStateMask = Computed(@() DmStateMask.get() | debugDebuff.get())
+  hasFuel = Computed(@() (TertiaryMask.get() & (1 << AirParamsTertiary.FUEL)) != 0
+    || ((playerUnitName.get() ?? "") != "" && getUnitBlkDetails(playerUnitName.get()).hasFuel))
 })
 
 return export

@@ -255,7 +255,7 @@ def private _lexer(var stext : string implicit) {
                                     push(str, uint8('\\'))
                                     push(str, uint8('u'))
                                     for (b in hex_str) {
-                                        push(str, b)
+                                        push(str, b) 
                                     }
                                     if (!valid_hex) {
                                         push(str, uint8(ahead))

@@ -7,9 +7,10 @@ let { register_command } = require("console")
 let { setUnitBullets, setOrSwapUnitBullet, resetSavedBullets, applySavedBullets, savedBullets
 } = require("%rGui/bullets/savedBullets.nut")
 let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_LOW_AMOUNT, BULLETS_LOW_PERCENT, BULLETS_SPEC_SLOTS,
-  ammoReductionFactorDef, ammoReductionSecFactorDef, ammoReductionSpecFactorDef
+  ammoReductionSecFactorDef, ammoReductionSpecFactorDef
 } = require("%rGui/bullets/bulletsConst.nut")
-let { calcBulletStep, calcVisibleBullets, calcChosenBullets, calcMaxBullets, calcLeftSteps
+let { calcBulletStep, calcVisibleBullets, calcChosenBullets, calcMaxBullets, calcLeftSteps,
+  ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
 } = require("%rGui/bullets/calcBullets.nut")
 
 
@@ -71,7 +72,8 @@ let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unitLevel.
   visibleBullets.get(), maxBulletsCountForExtraAmmo.get(), hasExtraBullets.get(), bulletTotalSteps.get(),
   savedBullets.get(),
   @(idx) idx > BULLETS_PRIM_SLOTS,
-  ammoReductionFactorDef,
+  ammoReductionFactorDefExt.get(),
+  ammoReductionFactorsByIdxExt.get(),
   BULLETS_PRIM_SLOTS))
 let primaryCount = Computed(@() chosenBullets.get().len())
 
@@ -81,6 +83,7 @@ let chosenBulletsSec = Computed(@()
     savedBullets.get(),
     @(idx) idx <= BULLETS_PRIM_SLOTS,
     ammoReductionSecFactorDef,
+    ammoReductionFactorsByIdxExt.get(),
     BULLETS_SEC_SLOTS,
     BULLETS_PRIM_SLOTS
   ).map(@(s) s.$rawset("visIdx", s.idx - BULLETS_PRIM_SLOTS + primaryCount.get())))
@@ -92,6 +95,7 @@ let chosenBulletsSpec = Computed(@()
     savedBullets.get(),
     @(idx) idx <= BULLETS_PRIM_SLOTS + secondaryCount.get(),
     ammoReductionSpecFactorDef,
+    ammoReductionFactorsByIdxExt.get(),
     BULLETS_SPEC_SLOTS,
     BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS
   ).map(@(s) s.$rawset("visIdx", (s.idx - (BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)) + primaryCount.get() + secondaryCount.get())))

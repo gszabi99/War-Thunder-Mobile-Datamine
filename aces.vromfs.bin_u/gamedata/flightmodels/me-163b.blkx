@@ -4,6 +4,8 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "useTouchTargeting": true,
+  "ForceFiniteFuel0": true,
+  "ForceFiniteFuelAmountRel0": 0.75,
   "tpsCameraOffset": [
     3.0,
     0.0,
@@ -1603,7 +1605,7 @@
     "LinkedToAttached": true
   },
   "Sound": {
-    "Engine": "engine_jet",
+    "Engine": "engine_rocket",
     "gun": "gun_default"
   },
   "cockpit": {

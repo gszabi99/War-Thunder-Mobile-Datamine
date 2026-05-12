@@ -220,7 +220,7 @@ function batchReceiveRewards(unlocksToReward, context = null) {
   log($"receiveRewards: ", unlocksToReward, context)
   unlockInProgress.mutate(@(u) u.__update(uTbl))
   userstatRequest("BatchGrantRewards",
-    { data = { unlocksToReward } },
+    { data = { unlocksToReward, skipRewardResults = true } },
     (context ?? {}).__merge({ unlocksToReward }))
 }
 
@@ -235,7 +235,6 @@ userstatRegisterHandler("BatchGrantRewards", function(result, context) {
     return
   }
   log("BatchGrantRewards result success: ", context)
-  forceRefreshUnlocks()
   callExtCb(onSuccessCb)
 })
 

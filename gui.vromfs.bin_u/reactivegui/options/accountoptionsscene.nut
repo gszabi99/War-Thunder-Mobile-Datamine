@@ -43,7 +43,7 @@ let tabs = [
   {
     id = "replays"
     locId = "mainmenu/btnReplays"
-    image = "ui/gameuiskin#watch_ads.svg"
+    image = "ui/gameuiskin#icon_menu_replay.svg"
     isFullWidth = true
     isVisible = can_view_replays
     content = replaysPage

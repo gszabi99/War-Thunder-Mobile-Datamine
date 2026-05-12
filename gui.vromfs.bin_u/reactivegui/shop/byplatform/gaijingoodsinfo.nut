@@ -7,7 +7,7 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { requestData, createGuidsRequestParams } = require("%rGui/shop/httpRequest.nut")
-
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const REPEAT_ON_ERROR_SEC = 60
 const NO_ANSWER_TIMEOUT_SEC = 60
@@ -40,7 +40,7 @@ function refreshAvailableGuids() {
   logG("requestData: ", guidsForRequest.get())
   isGoodsRequested.set(true)
   requestData(
-    "https://api.gaijinent.com/item_info.php",
+    getCurCircuitOverride("goodsInfoURL","https://api.gaijinent.com/item_info.php"),
     createGuidsRequestParams(guidsForRequest.get()),
     function(data) {
       isGoodsRequested.set(false)

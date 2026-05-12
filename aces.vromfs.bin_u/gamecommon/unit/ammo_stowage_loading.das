@@ -614,6 +614,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
 
       stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REMOVE_LOADED_AMMO, "removeLoadedAmmo", true)
       stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REPLENISH_ONLY_EMPTY, "replenishOnlyIfEmpty", false)
+      stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REVERSE_REPLENISHMENT, "reverseReplenishment", false)
 
       let stowage_munition = stowage_blk |> datablock_getStr("entityMunition", "")
 

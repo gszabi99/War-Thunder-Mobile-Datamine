@@ -661,6 +661,7 @@ def private mk_union(var left, right : ReNode?) : ReNode? {
     if (left.op == ReOp.Union) {
         left.at.y = right.at.y
         if (right.op == ReOp.Union) {
+            left.all |> reserve(length(left.all) + length(right.all))
             for (x in right.all) {
                 push(left.all, x)
             }
@@ -1707,9 +1708,9 @@ def private re_match2_repeat_lazy(var regex : Regex; var node : ReNode?; str : u
 
 def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
     if (node.op == ReOp.Char) {
-        set_or_char(cset, character_at(node.text, 0))
+        let fc = first_character(node.text)
+        set_or_char(cset, fc)
         
-        let fc = character_at(node.text, 0)
         if (fc >= 'A' && fc <= 'Z') {
             set_or_char(cset, fc + 32)
         } elif (fc >= 'a' && fc <= 'z') {
@@ -1953,53 +1954,58 @@ def private expand_replacement(var regex : Regex; str : string; replacement : st
     
     
     return build_string() $(writer) {
-        var i = 0
         let rlen = length(replacement)
-        while (i < rlen) {
-            let ch = character_at(replacement, i)
-            if (ch == '$' && i + 1 < rlen) {
-                let nch = character_at(replacement, i + 1)
-                if (nch == '$') {
-                    writer |> write_char('$')
-                    i += 2
-                } elif (nch == '&' || nch == '0') {
-                    writer |> write(slice(str, match_start, match_end))
-                    i += 2
-                } elif (nch >= '1' && nch <= '9') {
-                    let group_num = nch - '0'
-                    if (group_num < length(regex.groups)) {
-                        let grng = regex.groups[group_num]._0
-                        writer |> write(slice(str, grng.x, grng.y))
-                    }
-                    i += 2
-                } elif (nch == '{') {
-                    let close = find(replacement, "}", i + 2)
-                    if (close != -1) {
-                        let name = slice(replacement, i + 2, close)
-                        
-                        var is_numeric = !empty(name)
-                        for (nc in name) {
-                            if (nc < '0' || nc > '9') {
-                                is_numeric = false
-                                break
-                            }
+        peek_data(replacement) $(rdata) {
+            var i = 0
+            while (i < rlen) {
+                let ch = int(rdata[i])
+                if (ch == '$' && i + 1 < rlen) {
+                    let nch = int(rdata[i + 1])
+                    if (nch == '$') {
+                        writer |> write_char('$')
+                        i += 2
+                    } elif (nch == '&' || nch == '0') {
+                        writer |> write(slice(str, match_start, match_end))
+                        i += 2
+                    } elif (nch >= '1' && nch <= '9') {
+                        let group_num = nch - '0'
+                        if (group_num < length(regex.groups)) {
+                            let grng = regex.groups[group_num]._0
+                            writer |> write(slice(str, grng.x, grng.y))
                         }
-                        if (is_numeric) {
-                            var group_num = 0
+                        i += 2
+                    } elif (nch == '{') {
+                        let close = find(replacement, "}", i + 2)
+                        if (close != -1) {
+                            let name = slice(replacement, i + 2, close)
+                            
+                            var is_numeric = !empty(name)
                             for (nc in name) {
-                                group_num = group_num * 10 + (nc - '0')
+                                if (nc < '0' || nc > '9') {
+                                    is_numeric = false
+                                    break
+                                }
                             }
-                            if (group_num == 0) {
-                                writer |> write(slice(str, match_start, match_end))
-                            } elif (group_num < length(regex.groups)) {
-                                let grng = regex.groups[group_num]._0
-                                writer |> write(slice(str, grng.x, grng.y))
+                            if (is_numeric) {
+                                var group_num = 0
+                                for (nc in name) {
+                                    group_num = group_num * 10 + (nc - '0')
+                                }
+                                if (group_num == 0) {
+                                    writer |> write(slice(str, match_start, match_end))
+                                } elif (group_num < length(regex.groups)) {
+                                    let grng = regex.groups[group_num]._0
+                                    writer |> write(slice(str, grng.x, grng.y))
+                                }
+                            } else {
+                                let grp = regex_group_by_name(regex, name, str)
+                                writer |> write(grp)
                             }
+                            i = close + 1
                         } else {
-                            let grp = regex_group_by_name(regex, name, str)
-                            writer |> write(grp)
+                            writer |> write_char(ch)
+                            i++
                         }
-                        i = close + 1
                     } else {
                         writer |> write_char(ch)
                         i++
@@ -2008,9 +2014,6 @@ def private expand_replacement(var regex : Regex; str : string; replacement : st
                     writer |> write_char(ch)
                     i++
                 }
-            } else {
-                writer |> write_char(ch)
-                i++
             }
         }
     }

@@ -2,14 +2,17 @@ require ecs
 require %appGame.wtm_events
 require DagorConsole
 
+
 def change_major_banner(eid : EntityId;
                         template_name : string;
                         name : string;
                         transform : float3x4)
-  createEntity(template_name) <| $(var init)
-    init |> set("ri_extra__name", name)
-    init |> set("transform", transform)
+  if name != ""
+    createEntity(template_name) <| $(var init)
+      init |> set("ri_extra__name", name)
+      init |> set("transform", transform)
   destroyEntity(eid)
+
 
 [es(tag=hangar, REQUIRE=hangarMajorBannerTank)]
 def hangar_major_banner_change_tank(evt : EventChangeHangarBanners;

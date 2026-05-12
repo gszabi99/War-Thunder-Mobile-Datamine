@@ -12,7 +12,7 @@ require Weapon
 require WTDamageModel
 require IGroundModel
 require WTHangar
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require %game.utils.utils_common
 require %game.utils.component_bundle_macro
 require %game.dm.fire_system_events
@@ -243,8 +243,11 @@ def find_next_slots_to_replenish(stowage_id : int; amount : int;
   let replenishment_in_progress = v.ammo_stowages__replenishmentStartEnd[stowage_id].y > 0.f
   let replenish_only_empty = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REPLENISH_ONLY_EMPTY)
   let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
-  for to_cluster_id in clusters_range.x..clusters_range.y
+  let cluster_range_size = clusters_range.y - clusters_range.x;
+  let reverseOrder = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REVERSE_REPLENISHMENT);
+  for i in 0..cluster_range_size
     
+    let to_cluster_id = reverseOrder ? clusters_range.y - i - 1 : clusters_range.x + i;
     let to_cluster_stage = get_ammo_cluster_stage(to_cluster_id, v)
     let to_cluster_type = get_ammo_cluster_type(to_cluster_id, v)
     if to_cluster_stage > replenished_stage || to_cluster_stage < int(AmmoClusterStage.FIRST_STAGE)

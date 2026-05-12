@@ -12,7 +12,7 @@ module enum_trait shared private
 
 
 
-require ast
+require daslib/ast
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/templates
@@ -61,7 +61,7 @@ def public to_enum(ent : auto(EnumT), name : string; defaultValue : EnumT) : Enu
     return defaultValue
 }
 
-[template(ent), unused_argument(ent), skip_lock_check]
+[template(ent), unused_argument(ent)]
 def public enum_to_table(ent : auto(EnumT)) : table<string, EnumT -const -&> {
     
     
@@ -138,7 +138,7 @@ class TypeInfoGetEnumNames : AstTypeInfoMacro {
         }
         var inscope arr <- new ExprMakeArray(at = expr.at, makeType <- typeinfo ast_typedecl(type<string>))
         for (i in iter_range(expr.typeexpr.enumType.list)) {
-            if (true) {
+            {
                 assume name = expr.typeexpr.enumType.list[i].name
                 var inscope nameExpr <- new ExprConstString(at = expr.at, value := name)
                 arr.values |> emplace <| nameExpr

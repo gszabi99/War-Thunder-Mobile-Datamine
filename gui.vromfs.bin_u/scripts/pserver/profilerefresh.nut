@@ -1,5 +1,6 @@
-
 from "%scripts/dagui_library.nut" import *
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+let logPR = log_with_prefix("[profileRefresh] ")
 let { frnd } = require("dagor.random")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { object_to_json_string } = require("json")
@@ -8,8 +9,9 @@ let { battleResult } = require("%scripts/debriefing/battleResult.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 let { get_profile, get_all_configs, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let logPR = log_with_prefix("[profileRefresh] ")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 
 const MAX_CONFIGS_UPDATE_DELAY = 120 
   
@@ -30,6 +32,7 @@ let hasLastBattleReward = Computed(@() (battleResult.get()?.reward.playerExp.tot
 )
 let isWaitProfile = keepref(Computed(@()
   !isInBattle.get() && hasLastBattleReward.get() && !isProfileReceivedAfterBattle.get()))
+let nextProfileChange = keepref(Computed(@() serverConfigs.get()?.nextConfigTime ?? 0))
 
 function checkUpdateProfile() {
   if (isInBattle.get()) {
@@ -113,6 +116,21 @@ isWaitProfile.subscribe(function(v) {
   else
     resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
 })
+
+function updateNextProfileChangeTimer() {
+  let nextTime = nextProfileChange.get()
+  if (nextTime <= 0)
+    return
+  let timeLeft = nextTime - getServerTime()
+  if (timeLeft <= 0) {
+    logPR("Mark configs changed by configs time mark")
+    isConfigsChanged.set(true)
+  }
+  else
+    resetExtTimeout(timeLeft, updateNextProfileChangeTimer)
+}
+updateNextProfileChangeTimer()
+nextProfileChange.subscribe(@(_) updateNextProfileChangeTimer())
 
 function updateConfigsTimer() {
   if (isConfigsChanged.get())

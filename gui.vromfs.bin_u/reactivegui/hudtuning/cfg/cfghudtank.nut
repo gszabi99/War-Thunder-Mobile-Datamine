@@ -43,7 +43,7 @@ let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns,
 } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
 let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
+let { isUnitAlive, isPlayingReplay, isInHangarChallenge } = require("%rGui/hudState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
 let { showRadarOverMap, IsRadarVisible, IsRadarHudVisible, IsBScopeVisible } = require("%rGui/radar/radarState.nut")
@@ -58,6 +58,9 @@ let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get(
 let isTargetTracking = Computed(@() !currentTargetTrackingType.get())
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 let isRadarExist = Computed(@() IsBScopeVisible.get() && IsRadarVisible.get() && IsRadarHudVisible.get())
+let notInHangarChallenge = Computed(@() !isInHangarChallenge.get())
+let notInReplayNotChallenge = Computed(@() !isPlayingReplay.get() && notInHangarChallenge.get())
+let isUnitAliveInBattle = Computed(@() isUnitAlive.get() && notInHangarChallenge.get())
 
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
@@ -117,7 +120,7 @@ return {
     ctor = winchButton
     defTransform = mkLTPos([0, hdpx(100)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_winch.svg")
-    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
+    isVisibleInBattle = notInReplayNotChallenge
     priority = Z_ORDER.BUTTON
   }
 
@@ -125,7 +128,7 @@ return {
     ctor = mkFreeCameraButton
     defTransform = mkLTPos([hdpx(0), hdpx(240)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
-    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
+    isVisibleInBattle = notInReplayNotChallenge
     priority = Z_ORDER.BUTTON
   }
 
@@ -134,7 +137,7 @@ return {
     defTransform = mkLBPos([hdpx(190), hdpx(-420)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_target_tracking.svg")
     isVisibleInEditor = isTargetTracking
-    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get() && !isPlayingReplay.get())
+    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get() && !isPlayingReplay.get() && notInHangarChallenge.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -142,7 +145,7 @@ return {
     {
       defTransform = actionBarTransform(0),
       shouldShowDisabled = true
-      isVisibleInBattle = isUnitAlive
+      isVisibleInBattle = isUnitAliveInBattle
     })
 
   abToolkit = {
@@ -167,7 +170,7 @@ return {
       return mkActionItemEditView(image)
     }
     priority = Z_ORDER.STICK
-    isVisibleInBattle = isUnitAlive
+    isVisibleInBattle = isUnitAliveInBattle
     options = [ optDoubleRepairBtn ]
   }
 
@@ -175,7 +178,7 @@ return {
     defTransform = mkRBPos([hdpx(-300), hdpx(-130)])
     priority = Z_ORDER.STICK
     isVisible = @(options) optDoubleRepairBtn.has(options)
-    isVisibleInBattle = isUnitAlive
+    isVisibleInBattle = isUnitAliveInBattle
     options = [ optDoubleRepairBtn ]
   })
 
@@ -193,7 +196,7 @@ return {
       defTransform = mkRBPos([hdpx(-240), hdpx(-490)])
       editView = mkCircleBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg")
       isVisibleInEditor = fwVisibleInEditor
-      isVisibleInBattle = fwVisibleInBattle
+      isVisibleInBattle = Computed(@() fwVisibleInBattle.get() && notInHangarChallenge.get())
     })
 
   bulletMain = {
@@ -227,7 +230,7 @@ return {
     defTransform = mkLBPos([0, 0])
     editView = moveStickView
     isVisibleInEditor = Computed(@() !isViewMoveArrows.get())
-    isVisibleInBattle = Computed(@() !isBattleMoveArrows.get())
+    isVisibleInBattle = Computed(@() !isBattleMoveArrows.get() && notInHangarChallenge.get())
     priority = Z_ORDER.STICK
     options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
@@ -240,7 +243,7 @@ return {
     defTransform = mkLBPos([0, 0])
     editView = moveArrowsView
     isVisibleInEditor = isViewMoveArrows
-    isVisibleInBattle = isBattleMoveArrows
+    isVisibleInBattle = Computed(@() isBattleMoveArrows.get() && notInHangarChallenge.get())
     priority = Z_ORDER.STICK
     options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
@@ -258,7 +261,7 @@ return {
     ctor = mkTacticalMapForHud
     defTransform = mkLTPos([tacticalMapPos, 0])
     editView = tacticalMapEditView
-    isVisibleInBattle = Computed(@() !showRadarOverMap.get() || !isRadarExist.get())
+    isVisibleInBattle = Computed(@() (!showRadarOverMap.get() || !isRadarExist.get()) && notInHangarChallenge.get())
     hideForDelayed = false
   }
 
@@ -282,6 +285,7 @@ return {
     ctor = mkDoll
     defTransform = mkLBPos([hdpx(540), 0])
     editView = dollEditView
+    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -290,6 +294,7 @@ return {
         ctor = mkMoveIndicator
         defTransform = mkCBPos([0, -sh(20)])
         editView = moveIndicatorTankEditView
+        isVisibleInBattle = notInHangarChallenge
         hideForDelayed = false
       }
   : null
@@ -298,6 +303,7 @@ return {
     ctor = mkSpeedText
     defTransform = mkLBPos([hdpx(420), hdpx(-105)])
     editView = speedTextEditView
+    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -305,6 +311,7 @@ return {
     ctor = mkCrewDebuffs
     defTransform = mkLBPos([hdpx(365), hdpx(-50)])
     editView = crewDebuffsEditView
+    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -312,6 +319,7 @@ return {
     ctor = mkTechDebuffs
     defTransform = mkLBPos([hdpx(210), 0])
     editView = techDebuffsEditView
+    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -334,7 +342,7 @@ return {
     defTransform = mkLTPos([tacticalMapPos + tacticalMapSize[0], 0])
     editView = mkRadarToggleButtonEditView
     priority = Z_ORDER.BUTTON
-    isVisibleInBattle = Computed(@() isRadarExist.get())
+    isVisibleInBattle = Computed(@() isRadarExist.get() && notInHangarChallenge.get())
   }
 
   radarHud = {
@@ -342,7 +350,7 @@ return {
     defTransform = mkLTPos([tacticalMapPos, 0])
     editView = radarHudEditView
     priority = Z_ORDER.BUTTON
-    isVisibleInBattle = Computed(@() isRadarExist.get() && showRadarOverMap.get())
+    isVisibleInBattle = Computed(@() isRadarExist.get() && showRadarOverMap.get() && notInHangarChallenge.get())
   }
 
   compass = {

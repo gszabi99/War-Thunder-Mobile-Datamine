@@ -38,16 +38,15 @@
   "minDistBetween": 10.0,
   "expClass": "exp_heavy_tank",
   "mass": 50250.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "exhaustNode": "emtr_exhaust",
   "type": "typeHeavyTank",
   "rightLegName": "suspension_r_01",
   "leftLegName": "suspension_l_01",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmTimeOnField": 45.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -106,6 +105,9 @@
       },
       "superstructure_side_dm": {
         "armorThickness": 70.0
+      },
+      "superstructure_side_01_dm": {
+        "armorThickness": 80.0
       },
       "superstructure_top_dm": {
         "armorThickness": 30.0
@@ -180,6 +182,7 @@
       "hp": 40.0,
       "genericDamageMult": 3.0,
       "pressureDamageMult": 1.0,
+      "napalmDamageMult": 0.0,
       "ignoreSolidDimension": true,
       "driver_dm": {},
       "loader_dm": {},
@@ -195,7 +198,15 @@
       "machine_gunner_01_dm": {},
       "machine_gunner_02_dm": {},
       "machine_gunner_03_dm": {},
-      "machine_gunner_04_dm": {}
+      "machine_gunner_04_dm": {},
+      "machine_gunner_05_dm": {},
+      "machine_gunner_06_dm": {},
+      "machine_gunner_07_dm": {},
+      "machine_gunner_08_dm": {},
+      "machine_gunner_09_dm": {},
+      "machine_gunner_10_dm": {},
+      "machine_gunner_11_dm": {},
+      "machine_gunner_12_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -1275,9 +1286,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
         "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1286,7 +1295,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret_01",
           "gun": "bone_gun_01",
@@ -1331,7 +1339,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "turret": {
           "head": "bone_turret_01",
@@ -1379,7 +1386,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "reuseYawTrigger": 10,
         "reusePitchTrigger": 10,
@@ -1427,9 +1433,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
         "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1438,7 +1442,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret_01",
           "gun": "bone_turret_02"

@@ -766,7 +766,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -823,7 +822,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -902,7 +900,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
           "gun": "auxiliary_caliber_turret_04"
@@ -960,7 +957,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
           "gun": "auxiliary_caliber_turret_03"
@@ -978,7 +974,7 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "rockets_secondary",
+        "triggerGroup": "rockets_tertiary",
         "blk": "gameData/weapons/rocketGuns/206mm_9m33_alike_rocket_naval_bullet.blk",
         "weaponType": "rockets",
         "emitter": "bone_rocket_15",
@@ -1003,7 +999,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 100.0,
-        "reloadTime": 18.0,
+        "reloadTime": 16.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1018,7 +1014,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
           "gun": "auxiliary_caliber_gun_05"
@@ -1036,7 +1031,7 @@
       },
       {
         "trigger": "gunner5",
-        "triggerGroup": "rockets_secondary",
+        "triggerGroup": "rockets_tertiary",
         "blk": "gameData/weapons/rocketGuns/206mm_9m33_alike_rocket_naval_bullet.blk",
         "weaponType": "rockets",
         "emitter": "bone_rocket_17",
@@ -1061,7 +1056,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 100.0,
-        "reloadTime": 18.0,
+        "reloadTime": 16.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1076,7 +1071,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_06",
           "gun": "auxiliary_caliber_gun_06"
@@ -1137,7 +1131,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_02",
@@ -1364,7 +1357,7 @@
       "blk": "gameData/units/ships/weaponPresets/ussr_cruiser_rckt_pr1144_default.blk"
     }
   },
-  "rocketSecondarySeries": {
+  "rocketTertiarySeries": {
     "count": 1
   },
   "rocketBlocker": {
@@ -1438,7 +1431,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -1495,7 +1487,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -1574,7 +1565,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
                 "gun": "auxiliary_caliber_turret_04"
@@ -1632,7 +1622,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
                 "gun": "auxiliary_caliber_turret_03"
@@ -1650,7 +1639,7 @@
             },
             {
               "trigger": "gunner4",
-              "triggerGroup": "rockets_secondary",
+              "triggerGroup": "rockets_tertiary",
               "blk": "gameData/weapons/rocketGuns/206mm_9m33_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
               "emitter": "bone_rocket_15",
@@ -1675,7 +1664,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 18.0,
+              "reloadTime": 16.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1690,7 +1679,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05"
@@ -1708,7 +1696,7 @@
             },
             {
               "trigger": "gunner5",
-              "triggerGroup": "rockets_secondary",
+              "triggerGroup": "rockets_tertiary",
               "blk": "gameData/weapons/rocketGuns/206mm_9m33_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
               "emitter": "bone_rocket_17",
@@ -1733,7 +1721,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 18.0,
+              "reloadTime": 16.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1748,7 +1736,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_06"
@@ -1809,7 +1796,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_02",
@@ -2095,7 +2081,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2152,7 +2137,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -2231,7 +2215,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
                 "gun": "auxiliary_caliber_turret_04"
@@ -2289,7 +2272,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
                 "gun": "auxiliary_caliber_turret_03"
@@ -2307,7 +2289,7 @@
             },
             {
               "trigger": "gunner4",
-              "triggerGroup": "rockets_secondary",
+              "triggerGroup": "rockets_tertiary",
               "blk": "gameData/weapons/rocketGuns/206mm_9m33_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
               "emitter": "bone_rocket_15",
@@ -2332,7 +2314,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 18.0,
+              "reloadTime": 16.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2347,7 +2329,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05"
@@ -2365,7 +2346,7 @@
             },
             {
               "trigger": "gunner5",
-              "triggerGroup": "rockets_secondary",
+              "triggerGroup": "rockets_tertiary",
               "blk": "gameData/weapons/rocketGuns/206mm_9m33_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
               "emitter": "bone_rocket_17",
@@ -2390,7 +2371,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 18.0,
+              "reloadTime": 16.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2405,7 +2386,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_06"
@@ -2466,7 +2446,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_02",

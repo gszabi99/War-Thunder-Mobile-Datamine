@@ -22,6 +22,7 @@ require PropsManager
 struct ParallelUpdateFrameDelayed
   curTime : float
   dt : float
+  curTimeD : double
 
 [cpp_event(broadcast)]
 struct ActUpdateAlways

@@ -1274,6 +1274,9 @@ return {
     "germ_battleship_kaiser": {
       "upgraded": "camo_threegray_spots"
     },
+    "germ_battleship_konig": {
+      "": "camo_browngray_modern"
+    },
     "germ_battleship_rheinland": {
       "upgraded": "camo_greyblack_geometry"
     },
@@ -2190,6 +2193,14 @@ return {
       "": "isr_camo_sandgreen",
       "forest": "isr_camo_green"
     },
+    "il_namer_tsrikhon": {
+      "": "isr_camo_sandgray",
+      "desert": "isr_camo_sandgreen"
+    },
+    "il_namer_tsrikhon_prem": {
+      "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
+    },
     "il_sabra_mk1": {
       "": "isr_camo_sandgreen",
       "desert": "isr_camo_sandgray"
@@ -2989,6 +3000,13 @@ return {
       "": "uk_spitfire_mk1a_summer",
       "upgraded": "germ_bf_110g_2_night"
     },
+    "meteor_fmk3_navy": {
+      "": "uk_seafury_fb11",
+      "camo": "usa_a_20g_25_usaaf"
+    },
+    "meteor_fmk3_navy_prem": {
+      "": "usa_b_17g_8af_yellow"
+    },
     "mig-9": {
       "": "ussr_la_11_standard",
       "upgraded": "ussr_tandem_mai"
@@ -3201,7 +3219,6 @@ return {
       "upgraded": "germ_bf_109a"
     },
     "spitfire_mk1": {
-      "": "uk_spitfire_mk1a_raf_camo",
       "upgraded": "uk_spitfire_mk1a_summer"
     },
     "spitfire_mk14c": {
@@ -4021,6 +4038,9 @@ return {
     "us_cruiser_rckt_california": {
       "upgraded": "camo_measure_12mod"
     },
+    "us_cruiser_rckt_long_beach": {
+      "upgraded": "camo_blackwhite_cubes"
+    },
     "us_cruiser_rckt_truxtun": {
       "upgraded": "camo_blackgray_spots"
     },
@@ -4768,6 +4788,14 @@ return {
       "forest": "ussr_modern_green",
       "winter": "ussr_camo_arctic"
     },
+    "ussr_bmpt": {
+      "": "ussr_camo_green",
+      "forest": "ussr_camo_deform"
+    },
+    "ussr_bmpt_prem": {
+      "": "ussr_camo_bmpt",
+      "forest": "ussr_camo_green"
+    },
     "ussr_bt_7a_f32": {
       "": "camo_ny_24",
       "forest": "ussr_camo_green"
@@ -4871,6 +4899,9 @@ return {
     },
     "ussr_frigate_rckt_pr11352": {
       "upgraded": "camo_geometry_longdiag"
+    },
+    "ussr_frigate_rckt_pr11540": {
+      "upgraded": "camo_multicolor_fleet"
     },
     "ussr_frigate_rckt_pr11661k": {
       "upgraded": "camo_violetgray_geometry"
@@ -5520,6 +5551,9 @@ return {
     },
     "v_156_b1_prem": {
       "": "uk_spitfire_mk1a_summer"
+    },
+    "vampire_fb5_prem": {
+      "": "uk_vampire_fb5_raf"
     },
     "wellington_mk10": {
       "": "usa_sb2u_2",

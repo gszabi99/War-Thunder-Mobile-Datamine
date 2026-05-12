@@ -4,6 +4,7 @@ options unsafe_table_lookup = false
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 options strict_smart_pointers = true
+options threadlock_context
 
 module profiler shared private
 
@@ -14,13 +15,12 @@ module profiler shared private
 
 
 
-require debugapi
-require fio
+require daslib/debugger
+require daslib/fio
 require strings
 require uriparser
-require ast
+require daslib/ast
 
-[skip_field_lock_check]
 struct PerfNode {
     
     fun : SimFunction?
@@ -43,19 +43,26 @@ struct PerfEvent {
     stringHeapBytes : uint64
 }
 
-[skip_field_lock_check]
 struct PerfContext {
     
     events : array<PerfEvent>
     enabled : bool
+    silent : bool = false
 }
 
-var @do_not_delete g_d_agent : ProfilerDebugAgent?
-
-def public set_enable_profiler(var ctxId : uint64; enabled : bool) {
+def public set_enable_profiler(ctxId : uint64, enabled : bool) {
     
-    if (g_d_agent != null) {
-        g_d_agent->enable_profiler(ctxId, enabled)
+    unsafe {
+        
+        invoke_debug_agent_method("", "enable_profiler", ctxId, enabled)
+    }
+}
+
+def public set_enable_profiler_log(ctxId : uint64, enabled : bool) {
+    
+    unsafe {
+        
+        invoke_debug_agent_method("", "enable_profiler_log", ctxId, enabled)
     }
 }
 
@@ -70,10 +77,6 @@ class ProfilerDebugAgent : DapiDebugAgent {
     instrumented : table<uint64>
     map_time_units : table<string; int64> <- {"ns" => 1l, "us" => 1_000l, "ms" => 1_000_000l, "s" => 1_000_000_000l}
     time_unit : string = "ns"
-
-    def dependency {
-        return @@set_enable_profiler
-    }
 
     def is_time_unit_correct(unit : string) {
         return key_exists(map_time_units, unit)
@@ -106,7 +109,6 @@ class ProfilerDebugAgent : DapiDebugAgent {
             }
         }
         write("[")
-        g_d_agent = unsafe(addr(self))
         us0 = ref_time_ticks()
     }
     def override onUninstall(agent : DebugAgent?) : void {
@@ -131,13 +133,18 @@ class ProfilerDebugAgent : DapiDebugAgent {
     def enable_profiler(ctxId : uint64; enabled : bool) : void {
         events[ctxId].enabled = enabled
     }
+    def enable_profiler_log(ctxId : uint64; enabled : bool) : void {
+        events[ctxId].silent = !enabled
+    }
     def override onDestroyContext(var ctx : Context) : void {
         if (!isProfileable(ctx)) {
             return
         }
         let tid = intptr(unsafe(addr(ctx)))
         if (events |> key_exists(tid)) {
-            dump_context(ctx, tid)
+            if (!events[tid].silent) {
+                dump_context(ctx, tid)
+            }
             delete events[tid]
         }
         instrumented |> erase(ctx.getCodeAllocatorId)
@@ -267,8 +274,6 @@ class ProfilerDebugAgent : DapiDebugAgent {
         events |> erase(tid)
     }
 }
-
-
 
 def debug_agent(ctx : Context) {
     assert(this_context().category.debug_context)

@@ -49,7 +49,8 @@
       "%appGame",
       "%daslib",
       "%dasImgui",
-      "%dasGameLibs",
+      "%gameLibs",
+      "%gameLibs/das",
       "%dedScripts"
     ]
   },
@@ -121,10 +122,6 @@
     "%gameLibs": {
       "forSource": "../../prog/gameLibs",
       "forVromfs": "gameLibs"
-    },
-    "%dasGameLibs": {
-      "forSource": "../../prog/gameLibs/das",
-      "forVromfs": "das"
     },
     "%lang": {
       "forSource": "../../skyquake/prog/gamebase_wtm/lang_src/lang",
@@ -442,7 +439,7 @@
     "allowETC2": true,
     "varyingTexFilterSupportForcePointFilter": true,
     "riexCanIncreaseRenderBuffer": false,
-    "riExMinSizeForHeighmap": 2.5,
+    "riExMinSizeForHeightmap": 2.5,
     "riMaxModelsPerLevel": 1024,
     "riAllowGenJobsQueueReorder": true,
     "taaSigmaScaleMin": 1.5,
@@ -490,7 +487,8 @@
       1.2
     ],
     "allowRendinstMipLimit": false,
-    "decalHack": false,
+    "forceGlobalShadowUpdateOnSunDirChange": true,
+    "shadowSunDirDeltaThreshold": 0.999,
     "raytraced_shadows": {
       "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,
@@ -632,8 +630,6 @@
     "water3d": true,
     "clipmap": true,
     "fxReflection": true,
-    "waterEffectsTAA": false,
-    "wakeFoamWithoutAA": true,
     "ssrQuality": 0,
     "haze": false,
     "ssaoQuality": 0,
@@ -674,9 +670,12 @@
     "updateFeedbackSameThread": true,
     "dynamicDDScaleTarget": 0.75,
     "dynamicDDProportionalTerm": 0.1,
+    "dynamicDDAtlasUsageRatioHysteresisLow": 0.3,
+    "dynamicDDAtlasUsageRatioHysteresisHigh": 0.9,
     "useFeedbackTexFilter": true,
     "allowPrebakedLastclip": true,
-    "allowFallback": false
+    "allowFallback": false,
+    "useFramegraphBuffers": false
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -877,13 +876,6 @@
       "--verbose"
     ],
     "android": {
-      "addons": {
-        "flag": [
-          "--noversion",
-          "--enable_tag",
-          "min_core"
-        ]
-      },
       "background_addons": {
         "flag": "--noversion"
       },
@@ -892,13 +884,6 @@
       }
     },
     "iOS": {
-      "addons": {
-        "flag": [
-          "--noversion",
-          "--enable_tag",
-          "min_core"
-        ]
-      },
       "background_addons": {
         "flag": "--noversion"
       },
@@ -927,19 +912,6 @@
         "--force_current",
         "--enable_tag",
         "update_vroms"
-      ]
-    },
-    "addons": {
-      "disableFastVersionCheck": true,
-      "shouldSaveGameVersionToCache": true,
-      "shouldReportIncompatibleVersion": true,
-      "startMetric": "addons_update_start",
-      "stopMetric": "addons_update_stop",
-      "package": "pkg_hangar_event",
-      "flag": [
-        "--respatch",
-        "--clear",
-        "--onlypacks"
       ]
     },
     "background_addons": {
@@ -1481,37 +1453,16 @@
         "checkMemoryLeaksMb": 500
       }
     },
-    "broken_snow_cover": [
-      {
-        "gpu": "Adreno (TM) 660",
-        "graphics": {
-          "decalHack": true
-        }
-      },
-      {
-        "gpu": "Adreno (TM) 660",
-        "android_presets": {
-          "medium": {
-            "clipmap": {
-              "texSize": [
-                3072,
-                3072
-              ],
-              "texTileSize": 192,
-              "swFeedbackMipTiles0": 10,
-              "swFeedbackMipTiles1": 8,
-              "swFeedbackInnerMipTiles": 4,
-              "virtualTextureAnisotropy": 4,
-              "nearGroundTexMips": 10
-            }
-          }
-        }
-      }
-    ],
     "broken_sgsr": {
       "gpu": "PowerVR BXM-8-256",
       "graphics": {
         "listAllAaOptions": false
+      }
+    },
+    "broken_taa": {
+      "codename": "motorola moto g(20) ",
+      "graphics": {
+        "disallowTaa": true
       }
     }
   },
@@ -1704,7 +1655,8 @@
         "cachesCount": 1,
         "buffersCount": 1,
         "shaderlodMode": "always_low",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": -1
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -1788,7 +1740,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": -1
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -1872,7 +1825,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": 10
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -1956,7 +1910,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": 10
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2040,7 +1995,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 8
+        "updateCountHigh": 8,
+        "nearGroundTexMips": 11
       },
       "debug": {
         "lodDistanceScale": 0.5
@@ -2118,7 +2074,8 @@
         "cachesCount": 1,
         "buffersCount": 1,
         "shaderlodMode": "always_low",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": -1
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": false
@@ -2162,7 +2119,7 @@
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
-        "underwaterFogUseTAA": false,
+        "underwaterFogUseTAA": true,
         "texquality": "high",
         "fftWaterRenderResolution": 7,
         "infiniteSkiesInAirplane": false,
@@ -2191,7 +2148,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": -1
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": false
@@ -2264,7 +2222,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": 10
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": false
@@ -2337,7 +2296,8 @@
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
-        "updateCountHigh": 4
+        "updateCountHigh": 4,
+        "nearGroundTexMips": 10
       },
       "video": {
         "compatibilityFxGpuSparksEnabled": true
@@ -2362,6 +2322,8 @@
               {
                 "driverMinVer0": 512,
                 "driverMinVer1": 530,
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 654,
                 "data": {
                   "affected": true
                 }
@@ -2547,6 +2509,14 @@
       },
       "AMD": {
         "driverProps": {
+          "multiQueue": {
+            "entry": {
+              "gpu": "RX 6600",
+              "data": {
+                "allow": false
+              }
+            }
+          },
           "clearColorBug": {
             "entry": {
               "data": {
@@ -2654,6 +2624,36 @@
         "name": "AppsFlyer Ltd.",
         "policy": "https://www.appsflyer.com/legal/services-privacy-policy/"
       }
+    }
+  },
+  "firebase_consent": {
+    "partners": {
+      "p": [
+        {
+          "name": "Google LLC",
+          "policy": "https://business.safety.google/privacy/"
+        },
+        {
+          "name": "Meta Platforms, Inc.",
+          "policy": "https://www.facebook.com/privacy/policy/"
+        },
+        {
+          "name": "Unity LLC",
+          "policy": "https://unity.com/legal/privacy-policy"
+        },
+        {
+          "name": "AppLovin Corporation",
+          "policy": "https://www.applovin.com/privacy"
+        },
+        {
+          "name": "Pangle (Bytedance Pte. Ltd.)",
+          "policy": "https://www.pangleglobal.com/privacy/enduser-en"
+        },
+        {
+          "name": "ironSource Mobile Ltd.",
+          "policy": "https://cdn.iads.unity3d.com/privacy-policy/privacypolicy.html"
+        }
+      ]
     }
   }
 }

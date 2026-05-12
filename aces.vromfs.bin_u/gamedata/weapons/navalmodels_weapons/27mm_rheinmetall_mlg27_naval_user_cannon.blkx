@@ -9,7 +9,7 @@
     0.25
   ],
   "shotFreq": 28.33,
-  "bullets": 180,
+  "bullets": 2160,
   "bulletsCluster": 1,
   "reloadTime": 10.0,
   "bulletsCartridge": 90,

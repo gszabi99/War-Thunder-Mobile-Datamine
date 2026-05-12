@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getReplayTotalTime, getCameraFov, getCameraRoll = @() 0 } = require("replays")
+let { getReplayTotalTime, getCameraFov, getCameraRoll } = require("replays")
 let { format } =  require("string")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")

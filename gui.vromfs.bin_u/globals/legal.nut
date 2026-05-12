@@ -1,10 +1,11 @@
 let { loc } = require("dagor.localize")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let curLang = loc("current_lang")
-let TERMS_OF_SERVICE_URL = $"https://legal.gaijin.net/{curLang}/termsofservice"
-let PRIVACY_POLICY_URL = $"https://legal.gaijin.net/{curLang}/privacypolicy"
-let FORGOT_PASSWORD_URL = $"https://login.gaijin.net/{curLang}/sso/forgotPassword"
-let REGISTER_URL = $"https://login.gaijin.net/{curLang}/profile/register"
+let TERMS_OF_SERVICE_URL = getCurCircuitOverride("termsOfServiceURL", $"https://legal.gaijin.net/{curLang}/termsofservice")
+let PRIVACY_POLICY_URL = getCurCircuitOverride("privacyPolicyURL", $"https://legal.gaijin.net/{curLang}/privacypolicy")
+let FORGOT_PASSWORD_URL = getCurCircuitOverride("recoveryPasswordURL", $"https://login.gaijin.net/{curLang}/sso/forgotPassword")
+let REGISTER_URL = getCurCircuitOverride("signUpURL", $"https://login.gaijin.net/{curLang}/profile/register")
 
 let legalSorted = [
   {

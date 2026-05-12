@@ -140,7 +140,7 @@ function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
   return function() {
     let res = {
       watch = [isGamepad, isHovered, isHotkeyDisabled]
-      padding = [0, paddingX]
+      padding = ovr?.padding ?? [0, paddingX]
       children = content
     }
     let hotkey = isHovered.get() ? btnA

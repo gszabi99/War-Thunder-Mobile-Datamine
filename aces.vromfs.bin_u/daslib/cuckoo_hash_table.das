@@ -43,7 +43,7 @@ def public hash_extra(data) {
 
 
 
-[skip_field_lock_check, template_structure(KeyType, ValueType, hashFunction0Name=@@hash0, hashFunction1Name=@@hash_extra)]
+[template_structure(KeyType, ValueType, hashFunction0Name=@@hash0, hashFunction1Name=@@hash_extra)]
 struct template TCuckooHashTable {
     
     typedef KHV_TCuckooHashTable = tuple<key : KeyType; hash : uint64; value : ValueType>

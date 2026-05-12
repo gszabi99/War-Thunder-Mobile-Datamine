@@ -24,7 +24,7 @@ let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_
   is_ready_to_die, ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL,
   get_current_mission_desc
 } = require("guiMission")
-let { is_replay_playing, is_replay_paused = @() false } = require("replays")
+let { is_replay_playing, is_replay_paused } = require("replays")
 
 function canRestart() {
   return !is_multiplayer()

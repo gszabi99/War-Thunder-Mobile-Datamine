@@ -15,7 +15,7 @@ module decs_state shared private
 
 require daslib/decs
 require daslib/strings_boost
-require debugapi
+require daslib/debugger
 
 def report_to_debugger(var ctx : Context; category, name : string; value : auto(TT)) {
     let tinfo = typeinfo rtti_typeinfo(value)
@@ -60,6 +60,7 @@ class ContextStateAgent : DapiDebugAgent {
             var arq : EcsArchetypeView
             arq.hash = arch.hash
             arq.size = arch.size
+            arq.components |> reserve(length(arch.components))
             for (c in arch.components) {
                 var cv : EcsComponentView
                 cv.name = c.name

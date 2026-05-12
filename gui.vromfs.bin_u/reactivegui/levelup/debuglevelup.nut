@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { levelUpSizePx, levelUpFlag } = require("%rGui/levelUp/levelUpFlag.nut")
+let { levelUpSizePx, levelUpUnitFlag } = require("%rGui/levelUp/levelUpFlag.nut")
 let { register_command } = require("console")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
@@ -11,7 +11,7 @@ let animKey = Watched(0)
 
 let flag = @() {
   watch = animKey
-  children = levelUpFlag(levelUpSizePx[1], 16, 2, 0.5, { key = animKey.get() })
+  children = levelUpUnitFlag(levelUpSizePx[1], 16, 2, 0.5, { key = animKey.get() })
 }
 
 let openImpl = @() addModalWindow({

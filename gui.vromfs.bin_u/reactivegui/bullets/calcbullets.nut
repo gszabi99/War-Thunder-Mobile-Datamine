@@ -1,8 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { ammoReductionFactorsByIdx } = require("%rGui/bullets/bulletsConst.nut")
+let { ammoReductionFactorsByIdx, ammoReductionFactorDef } = require("%rGui/bullets/bulletsConst.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
+
+
+let ammoReductionFactorDefExt = Computed(@() abTests.get()?.ammoReductionFactorDef.tofloat() ?? ammoReductionFactorDef)
+let ammoReductionFactorsByIdxExt = Computed(@() ammoReductionFactorsByIdx
+  .map(@(v, i) abTests.get()?[$"ammoReductionFactorsByIdx{i}"].tofloat() ?? v))
 
 let calcBulletStep = @(bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)
 let calcLeftSteps = @(bStep, bTotalSteps, bullets) bullets.reduce(@(res, bData) res - bData.count / bStep, bTotalSteps)
@@ -28,7 +34,7 @@ function calcMaxBullets(bTotalSteps, bInfo, bTotalCount, bSlots) {
 }
 
 function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
-  hasExtra, bTotalSteps, sBullets, sBulletLimit, ammoReductionFactor, bSlots, addIndex = 0
+  hasExtra, bTotalSteps, sBullets, sBulletLimit, ammoReductionFactor, ammoReductionFactorsBySlot, bSlots, addIndex = 0
 ) {
   let res = []
   if (bInfo == null)
@@ -82,7 +88,7 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
         if (leftSteps > 0) {
           let steps = hasExtra ? min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
             : (bulletSlotsCount == 1 && leftSteps > 1) ? min(ceil(bTotalSteps * ammoReductionFactor), leftSteps)
-            : (bulletSlotsCount > 1) ? min(ceil(bTotalSteps * (ammoReductionFactorsByIdx?[bData.idx] ?? 1)), leftSteps)
+            : (bulletSlotsCount > 1) ? min(ceil(bTotalSteps * (ammoReductionFactorsBySlot?[bData.idx] ?? 1)), leftSteps)
             : min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
           bData.count = hasExtra ? min(steps * stepSize, (maxBullets?[bData.idx] ?? 0)) : steps * stepSize
           leftSteps -= steps
@@ -109,4 +115,7 @@ return {
   calcChosenBullets
 
   mkVisibleBulletsList
+
+  ammoReductionFactorDefExt
+  ammoReductionFactorsByIdxExt
 }

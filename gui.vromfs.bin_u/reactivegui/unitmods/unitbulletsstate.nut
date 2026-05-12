@@ -2,10 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { calcVisibleBullets, calcBulletStep, calcChosenBullets, calcMaxBullets, calcLeftSteps,
-  mkVisibleBulletsList
+  mkVisibleBulletsList, ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
 } = require("%rGui/bullets/calcBullets.nut")
 let { applySavedBullets, savedBullets, setOrSwapUnitBullet, setUnitBullets } = require("%rGui/bullets/savedBullets.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_SPEC_SLOTS, ammoReductionFactorDef, ammoReductionSecFactorDef,
+let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_SPEC_SLOTS, ammoReductionSecFactorDef,
   ammoReductionSpecFactorDef } = require("%rGui/bullets/bulletsConst.nut")
 let { unit, unitName, isOwn, unitMods, curBullet, curModId, curBulletCategoryId,
   changeModTabWithUnseenTrigger, changeBulletTabWithUnseenTrigger
@@ -77,7 +77,8 @@ let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unit.get()
   visibleBullets.get(), maxBulletsCountForExtraAmmo.get(), hasExtraBullets.get(), bulletTotalSteps.get(),
   savedBullets.get(),
   @(idx) idx > BULLETS_PRIM_SLOTS,
-  ammoReductionFactorDef,
+  ammoReductionFactorDefExt.get(),
+  ammoReductionFactorsByIdxExt.get(),
   BULLETS_PRIM_SLOTS))
 let primaryCount = Computed(@() chosenBullets.get().len())
 
@@ -87,6 +88,7 @@ let chosenBulletsSec = Computed(@()
     savedBullets.get(),
     @(idx) idx <= BULLETS_PRIM_SLOTS,
     ammoReductionSecFactorDef,
+    ammoReductionFactorsByIdxExt.get(),
     BULLETS_SEC_SLOTS,
     BULLETS_PRIM_SLOTS
   ).map(@(s) s.$rawset("visIdx", s.idx - BULLETS_PRIM_SLOTS + primaryCount.get())))
@@ -98,6 +100,7 @@ let chosenBulletsSpec = Computed(@()
     savedBullets.get(),
     @(idx) idx <= BULLETS_PRIM_SLOTS + secondaryCount.get(),
     ammoReductionSpecFactorDef,
+    ammoReductionFactorsByIdxExt.get(),
     BULLETS_SPEC_SLOTS,
     BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS
   ).map(@(s) s.$rawset("visIdx", (s.idx - (BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)) + primaryCount.get() + secondaryCount.get())))

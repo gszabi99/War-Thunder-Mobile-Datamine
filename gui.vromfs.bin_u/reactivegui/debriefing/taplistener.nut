@@ -1,16 +1,26 @@
+from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "dagor.time" import get_time_msec
 from "math" import fabs
 from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, isDebriefingAnimFinished, DEBR_TAB_SCORES, stopDebriefingAnimation,
   showReleaseToContinueBtn
-let { sh, Behaviors, sw, anim_pause = @(_, _) null } = require("%globalsDarg/darg_library.nut")
 
 
 local pointer = null
 let doubleTapDifTime = 500
+let swipeDifTime = 700
 let posDif = sh(4)
+let swipeDistance = hdpx(200)
 
 let showReleaseToContinueClue = @() showReleaseToContinueBtn.set(true)
+
+function changeTab(curTabIdx, nextTabIdx, debrTabsInfo) {
+  if (nextTabIdx < curTabIdx)
+    stopDebriefingAnimation()
+  let nextTabId = debrTabsInfo?[nextTabIdx].id
+  if (nextTabId)
+    curDebrTabId.set(nextTabId)
+}
 
 let tapListener = @(debrTabsInfo) {
   behavior = Behaviors.ProcessPointingInput
@@ -52,23 +62,26 @@ let tapListener = @(debrTabsInfo) {
         clearTimer(showReleaseToContinueClue)
     }
 
+    let curTabIdx = debrTabsInfo.findindex(@(v) v.id == curDebrTabId.get()) ?? DEBR_TAB_SCORES
+    let currentTime = get_time_msec()
+    let { doubleTapCount, firstTouchTime } = pointer
+    let releaseDifTime = currentTime - firstTouchTime
+    if (fabs(pointer.x - evt.x) > swipeDistance && releaseDifTime < swipeDifTime) {
+      let nextTabIdx = curTabIdx + ((evt.x - pointer.x) > 0 ? -1 : 1)
+      changeTab(curTabIdx, nextTabIdx, debrTabsInfo)
+      pointer = null
+      return
+    }
+
     if (fabs(pointer.x - evt.x) > posDif || fabs(pointer.y - evt.y) > posDif) {
       pointer = null
       return
     }
 
-    let { doubleTapCount, firstTouchTime } = pointer
     if (doubleTapCount == 2) {
-      let currentTime = get_time_msec()
-      let releaseDif = currentTime - firstTouchTime
-      if (releaseDif < doubleTapDifTime) {
-        let curTabIdx = debrTabsInfo.findindex(@(v) v.id == curDebrTabId.get()) ?? DEBR_TAB_SCORES
+      if (releaseDifTime < doubleTapDifTime) {
         let nextTabIdx = curTabIdx + (evt.x > sw(100) / 2 ? 1 : -1)
-        if (nextTabIdx < curTabIdx)
-          stopDebriefingAnimation()
-        let nextTabId = debrTabsInfo?[nextTabIdx].id
-        if (nextTabId)
-          curDebrTabId.set(nextTabId)
+        changeTab(curTabIdx, nextTabIdx, debrTabsInfo)
       }
 
       pointer = null

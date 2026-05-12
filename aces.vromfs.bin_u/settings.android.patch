@@ -1,0 +1,3 @@
+"@override:vulkan" {
+  cachefile:t="extra_storage/vulkan.bin"
+}

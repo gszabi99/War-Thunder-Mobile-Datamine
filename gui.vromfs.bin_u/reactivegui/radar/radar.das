@@ -10,6 +10,7 @@ require hud
 require FlightModelWrap
 require HeroManager
 require Unit
+require Localization
 
 let modeNames = fixed_array<string>(
   "hud/standby",

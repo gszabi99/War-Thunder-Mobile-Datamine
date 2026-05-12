@@ -10,12 +10,10 @@ let { unitInProgress, levelInProgress} = require("%appGlobals/pServer/pServerApi
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { upgradeCommonUnitName, buyExpUnitName, buyLevelUpUnitName, isChosenUnitUpgarde } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
+let { upgradeCommonUnitName, isChosenUnitUpgarde } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding, offerCardHeight} = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
 let mkBuyUpgardeUnit = require("%rGui/unit/upgradeUnitWnd/mkBuyUpgardeUnit.nut")
-let mkBuyExpBtn = require("%rGui/unit/upgradeUnitWnd/mkBuyExpBtn.nut")
-let mkBuyLevelupBtn = require("%rGui/unit/upgradeUnitWnd/mkBuyLevelupBtn.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -26,9 +24,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let WND_UID = "chooseUpgradeUnitWnd"
 
 function close() {
-  buyExpUnitName.set(null)
   upgradeCommonUnitName.set(null)
-  buyLevelUpUnitName.set(null)
 }
 
 let upgradeTitle = {
@@ -120,11 +116,7 @@ let upgradeDesc = {
 function buyBtn(unit){
   if(upgradeCommonUnitName.get())
     return mkBuyUpgardeUnit(unit)
-  if(buyExpUnitName.get())
-    return mkBuyExpBtn(unit)
-  if(buyLevelUpUnitName.get())
-    return mkBuyLevelupBtn(unit)
-  return
+  return null
 }
 
 let mkCardContent = @(unit) {
@@ -154,8 +146,8 @@ let mkCardContent = @(unit) {
 }
 
 function offerCards() {
-  let watch = [campUnitsCfg, campConfigs, upgradeCommonUnitName, buyExpUnitName, buyLevelUpUnitName]
-  let unit = campUnitsCfg.get()?[upgradeCommonUnitName.get() ?? buyExpUnitName.get() ?? buyLevelUpUnitName.get()]
+  let watch = [campUnitsCfg, campConfigs, upgradeCommonUnitName]
+  let unit = campUnitsCfg.get()?[upgradeCommonUnitName.get()]
   if (unit == null)
     return { watch }
   let upgradedUnit = unit?.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}

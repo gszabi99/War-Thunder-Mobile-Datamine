@@ -12,8 +12,8 @@ module lpipe shared private
 
 
 
-require ast
-require rtti
+require daslib/ast
+require daslib/rtti
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/macro_boost
@@ -49,7 +49,7 @@ def lpipe_expr(var fnCall : ExpressionPtr&; var arg : ExpressionPtr&) : Expressi
         return <- cLet
     } elif (fnCall |> is_expr_like_call()) {
         var pCall = unsafe(reinterpret<ExprLooksLikeCall?> fnCall)
-        if (string(pCall.name) == "lpipe") {
+        if (pCall.name == "lpipe") {
             return <- default<ExpressionPtr>
         }
         pCall.arguments |> emplace(arg)

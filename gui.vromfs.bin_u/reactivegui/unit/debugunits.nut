@@ -21,9 +21,10 @@ function debugUnitStats() {
 
   let stats = unitsByCamp.map(function(units) {
     let uArr = units.keys()
-    units.each(@(u) u.platoonUnits.len() != 0
-      ? uArr.extend(u.platoonUnits.map(@(pu) pu.name))
-      : null)
+    units.each(function(u) {
+      if (u.platoonUnits.len() != 0)
+        uArr.extend(u.platoonUnits.map(@(pu) pu.name))
+    })
     return gatherUnitStatsLimits(uArr)
   })
   log("Unit stats ranges:", stats)

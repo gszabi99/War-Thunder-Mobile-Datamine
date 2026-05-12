@@ -5,14 +5,11 @@ from "eventbus" import eventbus_send_foreign, eventbus_subscribe
 from "dagor.debug" import logerr
 from "dagor.memtrace" import is_quirrel_object_larger_than, set_huge_alloc_threshold
 from "dagor.time" import get_time_msec
+from "frp" import this_subscriber_call_may_take_up_to_usec, get_slow_subscriber_threshold_usec
 from "iostream" import blob
 
 
 
-let {
-  this_subscriber_call_may_take_up_to_usec = @(_) null,
-  get_slow_subscriber_threshold_usec = @() 10000,
-} = require("frp")
 
 let serialazableClasses = {}.__update(math)
 

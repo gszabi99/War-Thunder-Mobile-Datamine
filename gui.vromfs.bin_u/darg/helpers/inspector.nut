@@ -12,7 +12,7 @@ let wndHalign      = persist("wndHalign", @() Watched(ALIGN_RIGHT))
 let pickerActive   = persist("pickerActive", @() Watched(false))
 let highlight      = persist("highlight", @() Watched(null))
 let animHighlight  = Watched(null)
-let pickedList     = persist("pickedList", @() Watched([], FRP_DONT_CHECK_NESTED))
+let pickedList     = persist("pickedList", @() Watched([]))
 let viewIdx        = persist("viewIdx", @() Watched(0))
 let showRootsInfo  = persist("showRoots", @() Watched(false))
 let showChildrenInfo=persist("showChildrenInfo", @() Watched(false))
@@ -70,7 +70,7 @@ function mkDirBtn(text, dir) {
   return @() {
     watch = [isVisible, isEnabled]
     children = !isVisible.get() ? null
-      : textButton(text, @() isEnabled.get() ? viewIdx.set(viewIdx.get() + dir) : null, isEnabled.get())
+      : textButton(text, @() isEnabled.get() ? viewIdx.modify(@(v) v + dir) : null, isEnabled.get())
   }
 }
 
@@ -141,7 +141,7 @@ function getPropValueTexts(desc, key, textLimit = 0) {
   } else if (key in IMAGE_KEYS) {
     text = val.tostring()
     valCtor = mkImageCtor(val)
-  } else if (tp == "integer" && key.tolower().indexof("color") != null) {
+  } else if (tp == "integer" && key.tolower().contains("color")) {
     text = "".concat("0x", format("%16X", val).slice(8))
     valCtor = mkColorCtor(val)
   } else if (tp == "userdata" || tp == "userpointer") {

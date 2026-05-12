@@ -22,7 +22,7 @@ let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 let { DBGLEVEL } = require("dagor.system")
 
-let APPSTORE_PAYMENTS_IN_RUSSIA_URL = "auto_local auto_login https://wtmobile.com/news/important-about-app-store-payments"
+let APPSTORE_PAYMENTS_IN_RUSSIA_URL = "auto_login https://wtmobile.com/news/important-about-app-store-payments?skin_lang=ru"
 
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 let billingModule = require("ios.billing.appstore")

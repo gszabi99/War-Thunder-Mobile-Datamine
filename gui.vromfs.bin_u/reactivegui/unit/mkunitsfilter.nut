@@ -9,8 +9,8 @@ let { mkOvrTooltipContent } = require("%rGui/options/tooltipCtors.nut")
 let textColor = 0xFFFFFFFF
 let inactiveTextColor = 0xFFD96363
 let checkBorderColor = 0xFF9FA7AF
-let ctrlHeight = hdpx(80)
-let vGap = hdpx(20)
+let ctrlHeight = hdpx(70)
+let vGap = hdpx(15)
 let hGap = hdpx(15)
 let incHGap = hdpx(30)
 let inputFullHeight = hdpx(60)
@@ -18,8 +18,8 @@ let inputPadding = [hdpx(10), hdpx(20)]
 let checkIconSize = hdpxi(60)
 let closeIconSize = hdpxi(80)
 let clearIconSize = hdpxi(50)
-let MAX_CHECK_BUTTONS_IN_ROW = 15
-let leftColWidth = (ctrlHeight + hGap) * MAX_CHECK_BUTTONS_IN_ROW - hGap
+let leftColWidth = hdpx(1500)
+
 
 let mkCheckIcon = @(isChecked, isActive, opacity, inBoxValue) {
   size = ctrlHeight
@@ -208,12 +208,12 @@ let mkFilter = @(filter) {
   key = filter?.id
   size = [leftColWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  gap = hdpx(10)
+  gap = hdpx(5)
   children = [
     {
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
-      gap = hdpx(20)
+      gap = hGap
       children = [
         !filter?.locId ? null
           : {
@@ -277,10 +277,10 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilter
             .extend(filters.map(@(f) mkFilter(f)))
         }
         {
-          size = FLEX_V
+          size = [closeIconSize, flex()]
           flow = FLOW_VERTICAL
           gap = hdpx(10)
-          halign = ALIGN_CENTER
+          halign = ALIGN_RIGHT
           children = [
             mkFilterIcon(closeFilters, closeIconSize, "btn_close.svg")
 

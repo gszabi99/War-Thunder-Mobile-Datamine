@@ -15,7 +15,7 @@ let { accountLink } = require("%rGui/contacts/contactLists.nut")
 let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let AUTH_TAG_REQUEST_TIME = 60
 let MAX_ATTEMPTS_TO_UPDATE_TAGS = 3
@@ -45,7 +45,7 @@ let needShowModalToRelogin = keepref(Computed(@() isInMenuNoModals.get()
   && isLoggedIn.get()))
 
 let openGuestEmailRegistrationImpl = @(stoken) eventbus_send("openUrl",
-  { baseUrl = $"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}" })
+  { baseUrl = getCurCircuitOverride("guestLinkURL",$"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}") })
 
 eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
   let { status, stoken = null } = msg
@@ -74,7 +74,7 @@ function reloginToLinkedEmail(needShowMsg = true) {
 
 function openVerifyEmail() {
   logGuest("Open verify message")
-  let url = $"https://store.gaijin.net/user.php?skin_lang={loc("current_lang")}"
+  let url = getCurCircuitOverride("verifyEmailURL",$"https://store.gaijin.net/user.php?skin_lang={loc("current_lang")}")
   get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", object_to_json_string({ notAuthUrl = url }))
 }
 

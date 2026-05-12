@@ -9,7 +9,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame, mkUni
   bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
+let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { discountTagUnitSmall } = require("%rGui/components/discountTag.nut")
@@ -17,7 +17,6 @@ let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature, priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { ceil } = require("math")
 let { nodeToScroll } = require("%rGui/unitsTree/unitsTreeScroll.nut")
@@ -126,8 +125,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.get())
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
-  let canBuyForLvlUp = Computed(@() playerLevelInfo.get().isReadyForLevelUp && (unit?.name in buyUnitsData.get().canBuyOnLvlUp))
-  let price = Computed(@() canPurchase.get() ? getUnitAnyPrice(unit, canBuyForLvlUp.get(), unitDiscounts.get()) : null)
+  let price = Computed(@() canPurchase.get() ? getUnitAnyPrice(unit, unitDiscounts.get()) : null)
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
@@ -141,8 +139,6 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     size = unitPlateSize
     behavior = Behaviors.Button
     function onClick() {
-      if (isLvlUpAnimated.get())
-        return
       curSelectedUnit.set(unit.name)
       markUnitSeen(unit.name)
     }
@@ -434,7 +430,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let canDrag = Computed(@() isOwned.get() && isCampaignWithSlots.get())
   let isDraggedUnit = Computed(@() draggedData.get() != null && draggedData.get()?.unitName == unit.name)
   let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in campMyUnits.get())
-      ? getUnitAnyPrice(unit, false, unitDiscounts.get())
+      ? getUnitAnyPrice(unit, unitDiscounts.get())
     : null)
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
@@ -592,6 +588,5 @@ return {
   mkUnitPlate
   mkTreeNodesUnitPlate
   mkTreeNodesUnitPlateDefault
-  framesGapMul
   treeNodeUnitPlateKey
 }

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
-let { curCampaign, isAnyCampaignSelected, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
 let { set_research_unit, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -43,7 +43,6 @@ let flagBgColor = 0xFF000000
 let flagBgColorSelected = 0x99405780
 
 let needSelectResearch = keepref(Computed(@() isAnyCampaignSelected.get()
-  && isCampaignWithUnitsResearch.get()
   && currentResearch.get() == null
   && null != unitsResearchStatus.get().findvalue(@(r) r.canResearch || r.isResearched)
   && null == campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))))

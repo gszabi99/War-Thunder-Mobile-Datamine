@@ -15,9 +15,7 @@ let defaultProfileLevelInfo = {
   seenLevel = 1
   nextLevelExp = 0
   costGold = 0
-  isReadyForLevelUp = false
   isMaxLevel = false
-  isNextStarLevel = false
   isStarProgress = false
 }
 
@@ -72,11 +70,6 @@ let playerLevelInfo = Computed(function() {
     res.isMaxLevel = true
   else {
     res.__update(levelCfg)
-    if (res.exp >= res.nextLevelExp) {
-      res.isReadyForLevelUp = true
-      if (maxBaseLevel != null && res.level >= maxBaseLevel)
-        res.isNextStarLevel = true
-    }
     if (res.starLevel == 0)
       foreach(h in res?.starLevelHistory ?? [])
         if (h.baseLevel == res.level)

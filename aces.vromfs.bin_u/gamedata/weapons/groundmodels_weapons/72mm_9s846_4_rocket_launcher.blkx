@@ -38,7 +38,7 @@
   "sound_inside": "atgm_LPC_interior",
   "reload_sound_path": "tanks/effects_tanks",
   "reload_sound_pathStudio": "ground/effects",
-  "sfxReloadBullet": "grd_ozelot_reload",
+  "sfxReloadBullet": "grd_cannon_reload_auto",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,

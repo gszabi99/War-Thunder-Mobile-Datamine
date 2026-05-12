@@ -10,6 +10,7 @@ let queueStates = {
   QS_IN_QUEUE = 4
   QS_LEAVING = 5
   QS_CHECK_PENALTY = 6
+  QS_REQUEST_STATS = 7
 }
 let { QS_NOT_IN_QUEUE } = queueStates
 
@@ -17,6 +18,7 @@ let curQueue = sharedWatched("curQueue", @() null)
 let queueInfo = sharedWatched("queueInfo", @() null)
 let curQueueState = Computed(@() curQueue.get()?.state ?? QS_NOT_IN_QUEUE)
 let myQueueToken = sharedWatched("myQueueToken", @() "")
+let jwtUserstat = sharedWatched("jwtUserstat", @() "")
 
 return queueStates.__merge({
   queueStates
@@ -25,4 +27,5 @@ return queueStates.__merge({
   curQueueState
   isInQueue = Computed(@() curQueueState.get() != QS_NOT_IN_QUEUE)
   myQueueToken
+  jwtUserstat
 })

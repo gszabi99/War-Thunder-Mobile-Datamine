@@ -4114,6 +4114,9 @@
       "acoustic_decoy_activate": {
         "shortcutIdx": -1
       },
+      "ciws_activate": {
+        "shortcutIdx": -1
+      },
       "depth_charge_activate": {
         "shortcutIdx": -1
       },

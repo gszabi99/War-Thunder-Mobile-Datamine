@@ -2230,7 +2230,6 @@
             "iconType": "rocket_7kg_group",
             "name": "25lbs_slot1",
             "reqModification": "gloster_rc",
-            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_rocket3"
             },
@@ -2339,7 +2338,7 @@
           {
             "iconType": "rocket_7kg_group",
             "name": "25lbs_slot2",
-            "isDefault": true,
+            "reqModification": "gloster_rc",
             "ShowNodes": {
               "node": "pylon_rocket1"
             },
@@ -2586,7 +2585,7 @@
           {
             "iconType": "rocket_7kg_group",
             "name": "25lbs_slot5",
-            "isDefault": true,
+            "reqModification": "gloster_rc",
             "ShowNodes": {
               "node": "pylon_rocket2"
             },
@@ -2726,7 +2725,6 @@
             "iconType": "rocket_7kg_group",
             "name": "25lbs_slot6",
             "reqModification": "gloster_rc",
-            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_rocket4"
             },

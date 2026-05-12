@@ -33083,10 +33083,7 @@
     "tags": {
       "axis": true,
       "country_japan": true,
-      "type_bomber": true,
-      "type_dive_bomber": true,
-      "type_torpedo": true,
-      "bomberview": true,
+      "type_fighter": true,
       "far_eastern_front": true,
       "pacific": true,
       "air": true
@@ -34799,7 +34796,7 @@
       "pilotsCount": 1,
       "gunnersCount": 0,
       "pylonCount": 2,
-      "massPerSec": 6.6,
+      "massPerSec": 13.2,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -37383,6 +37380,7 @@
       "gunnersCount": 0,
       "pylonCount": 0,
       "massPerSec": 6.6,
+      "rocketfuel": 3,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -37451,6 +37449,7 @@
       "gunnersCount": 0,
       "pylonCount": 0,
       "massPerSec": 6.6,
+      "rocketfuel": 3,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -37516,6 +37515,7 @@
       "gunnersCount": 0,
       "pylonCount": 0,
       "massPerSec": 2.572,
+      "rocketfuel": 2,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -38570,6 +38570,7 @@
       "gunnersCount": 0,
       "pylonCount": 0,
       "massPerSec": 13.2,
+      "rocketfuel": 3,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -38655,6 +38656,7 @@
       "gunnersCount": 0,
       "pylonCount": 0,
       "massPerSec": 13.2,
+      "rocketfuel": 3,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -44731,6 +44733,348 @@
       }
     }
   },
+  "vampire_fb5": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "de-haviland",
+        "model": "goblin-2",
+        "mass": 705.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 10668.0,
+      "maxSpeed": 237.5,
+      "turnTime": 24.0,
+      "airfieldLen": 650.0,
+      "climbTime": 360.0,
+      "maxSpeedAlt": 4572.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 20.0,
+      "wingLoading": 194.0,
+      "thrustToWeightRatio": 0.27,
+      "rollRate": 106.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 4,
+      "massPerSec": 6.4625,
+      "weapons": {
+        "cannonHispanoMkV": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 600,
+          "shotFreq": 12.5
+        },
+        "uk_rp3": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "uk_500lbs": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "uk_1000lbs": {
+          "reqModification": "aircraft_mod_7"
+        },
+        "uk_500lb_mc": {
+          "reqModification": "aircraft_mod_4"
+        }
+      }
+    },
+    "bullets": {
+      "cannonHispanoMkV": {
+        "default": {
+          "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+        },
+        "hispano_universal": {
+          "icon": "he_frag_i/sapi/ap/t_shell/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "hispano_air_targets": {
+          "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/",
+          "reqModification": "aircraft_mod_8"
+        },
+        "hispano_tracers": {
+          "icon": "ap/t_shell/he_frag_i/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "hispano_ground_targets": {
+          "icon": "ap/ap/ap/he_frag_i/t_shell/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "hispano_stealth": {
+          "icon": "he_frag_i/he_frag_i/sapi/ap/",
+          "reqModification": "aircraft_mod_5"
+        }
+      }
+    }
+  },
+  "vampire_fb5_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "de-haviland",
+        "model": "goblin-2",
+        "mass": 705.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 10668.0,
+      "maxSpeed": 237.5,
+      "turnTime": 24.0,
+      "airfieldLen": 650.0,
+      "climbTime": 360.0,
+      "maxSpeedAlt": 4572.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 20.0,
+      "wingLoading": 194.0,
+      "thrustToWeightRatio": 0.27,
+      "rollRate": 106.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 4,
+      "massPerSec": 6.4625,
+      "weapons": {
+        "cannonHispanoMkV": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 600,
+          "shotFreq": 12.5
+        },
+        "uk_rp3": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "uk_500lbs": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "uk_1000lbs": {
+          "reqModification": "aircraft_mod_7"
+        },
+        "uk_500lb_mc": {
+          "reqModification": "aircraft_mod_4"
+        }
+      }
+    },
+    "bullets": {
+      "cannonHispanoMkV": {
+        "default": {
+          "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+        },
+        "hispano_universal": {
+          "icon": "he_frag_i/sapi/ap/t_shell/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "hispano_air_targets": {
+          "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/",
+          "reqModification": "aircraft_mod_8"
+        },
+        "hispano_tracers": {
+          "icon": "ap/t_shell/he_frag_i/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "hispano_ground_targets": {
+          "icon": "ap/ap/ap/he_frag_i/t_shell/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "hispano_stealth": {
+          "icon": "he_frag_i/he_frag_i/sapi/ap/",
+          "reqModification": "aircraft_mod_5"
+        }
+      }
+    }
+  },
+  "meteor_fmk3_navy": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlightShip": "uk_aircraftcarrier_ark_royal",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "derwent-5",
+        "mass": 443.0
+      },
+      "engine2_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "derwent-5",
+        "mass": 443.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "type_naval_aircraft": true,
+      "carrier_take_off": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12500.0,
+      "maxSpeed": 257.5,
+      "turnTime": 20.0,
+      "airfieldLen": 325.0,
+      "climbTime": 215.0,
+      "maxSpeedAlt": 2439.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 36.0,
+      "wingLoading": 197.0,
+      "thrustToWeightRatio": 0.24,
+      "rollRate": 77.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 5.17,
+      "weapons": {
+        "cannonHispanoMkII": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 720,
+          "shotFreq": 10.0
+        },
+        "uk_1000lbs": {
+          "reqModification": "aircraft_mod_5"
+        }
+      }
+    },
+    "bullets": {
+      "cannonHispanoMkII": {
+        "default": {
+          "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+        },
+        "hispano_universal": {
+          "icon": "he_frag_i/sapi/ap/t_shell/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "hispano_air_targets": {
+          "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "hispano_tracers": {
+          "icon": "ap/t_shell/he_frag_i/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "hispano_ground_targets": {
+          "icon": "ap/ap/ap/he_frag_i/t_shell/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "hispano_stealth": {
+          "icon": "he_frag_i/he_frag_i/sapi/ap/",
+          "reqModification": "aircraft_mod_3"
+        }
+      }
+    }
+  },
+  "meteor_fmk3_navy_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlightShip": "uk_aircraftcarrier_ark_royal",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "derwent-5",
+        "mass": 443.0
+      },
+      "engine2_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "derwent-5",
+        "mass": 443.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "type_naval_aircraft": true,
+      "carrier_take_off": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12500.0,
+      "maxSpeed": 257.5,
+      "turnTime": 20.0,
+      "airfieldLen": 325.0,
+      "climbTime": 215.0,
+      "maxSpeedAlt": 2439.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 36.0,
+      "wingLoading": 197.0,
+      "thrustToWeightRatio": 0.24,
+      "rollRate": 77.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 5.17,
+      "weapons": {
+        "cannonHispanoMkII": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 720,
+          "shotFreq": 10.0
+        },
+        "uk_1000lbs": {
+          "reqModification": "aircraft_mod_5"
+        }
+      }
+    },
+    "bullets": {
+      "cannonHispanoMkII": {
+        "default": {
+          "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+        },
+        "hispano_universal": {
+          "icon": "he_frag_i/sapi/ap/t_shell/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "hispano_air_targets": {
+          "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "hispano_tracers": {
+          "icon": "ap/t_shell/he_frag_i/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "hispano_ground_targets": {
+          "icon": "ap/ap/ap/he_frag_i/t_shell/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "hispano_stealth": {
+          "icon": "he_frag_i/he_frag_i/sapi/ap/",
+          "reqModification": "aircraft_mod_3"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",
@@ -44780,7 +45124,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 3,
           "caliber": 20.0,
           "ammoCount": 6000,
@@ -44790,7 +45134,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 20.0,
           "ammoCount": 4000,
@@ -44843,7 +45187,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 2.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 28.0,
           "ammoCount": 7800,
@@ -44908,7 +45252,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 40.0,
           "ammoCount": 12000,
@@ -44963,7 +45307,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 28,
           "caliber": 40.0,
           "ammoCount": 56000,
@@ -45016,7 +45360,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 16,
           "caliber": 37.0,
           "ammoCount": 32000,
@@ -45069,7 +45413,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 9.17,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 7.7,
           "ammoCount": 11640,
@@ -45125,7 +45469,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 10.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 3,
           "caliber": 12.7,
           "ammoCount": 6000,
@@ -45171,7 +45515,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.66,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 40.0,
           "ammoCount": 2000,
@@ -45181,7 +45525,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 20.0,
           "ammoCount": 1800,
@@ -45227,7 +45571,7 @@
           "wtype": "aaa",
           "damage": 21.0,
           "shotFreq": 4.166,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 37.0,
           "ammoCount": 2000,
@@ -45237,7 +45581,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 20.0,
           "ammoCount": 4000,
@@ -45293,7 +45637,7 @@
           "wtype": "aaa",
           "damage": 50.0,
           "shotFreq": 1.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 45.0,
           "ammoCount": 1000,
@@ -45375,7 +45719,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 20.0,
           "ammoCount": 8000,
@@ -45474,7 +45818,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 20.0,
           "ammoCount": 12000,
@@ -45536,7 +45880,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 5,
           "caliber": 37.0,
           "ammoCount": 10000,
@@ -45589,7 +45933,7 @@
           "wtype": "aaa",
           "damage": 32.0,
           "shotFreq": 2.666,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 45.0,
           "ammoCount": 8000,
@@ -45642,7 +45986,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 40.0,
           "ammoCount": 2240,
@@ -45695,7 +46039,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 20.0,
           "ammoCount": 32000,
@@ -45757,7 +46101,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8960,
@@ -45820,7 +46164,7 @@
           "wtype": "aaa",
           "damage": 100.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 76.2,
           "ammoCount": 300,
@@ -45873,7 +46217,7 @@
           "wtype": "aaa",
           "damage": 100.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 76.2,
           "ammoCount": 150,
@@ -45926,7 +46270,7 @@
           "wtype": "aaa",
           "damage": 125.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 75.0,
           "ammoCount": 1000,
@@ -45979,7 +46323,7 @@
           "wtype": "aaa",
           "damage": 52.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 47.0,
           "ammoCount": 250,
@@ -45989,7 +46333,7 @@
           "wtype": "aaa",
           "damage": 125.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 75.0,
           "ammoCount": 500,
@@ -46044,7 +46388,7 @@
           "wtype": "aaa",
           "damage": 80.0,
           "shotFreq": 0.316,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 76.2,
           "ammoCount": 1600,
@@ -46087,7 +46431,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 5,
           "caliber": 20.0,
           "ammoCount": 9000,
@@ -46151,7 +46495,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8960,
@@ -46213,7 +46557,7 @@
           "wtype": "aaa",
           "damage": 21.0,
           "shotFreq": 4.166,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 37.0,
           "ammoCount": 8000,
@@ -46275,7 +46619,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 37.0,
           "ammoCount": 12000,
@@ -46339,7 +46683,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 25.0,
           "ammoCount": 6000,
@@ -46401,7 +46745,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 4480,
@@ -46466,7 +46810,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8000,
@@ -46565,7 +46909,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 25.0,
           "ammoCount": 9000,
@@ -46719,7 +47063,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 16,
           "caliber": 20.0,
           "ammoCount": 68000,
@@ -46772,7 +47116,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 25.0,
           "ammoCount": 3000,
@@ -46825,7 +47169,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 25.0,
           "ammoCount": 3000,
@@ -46878,7 +47222,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.93,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 13.2,
           "ammoCount": 3600,
@@ -46943,7 +47287,7 @@
           "wtype": "aaa",
           "damage": 400.0,
           "shotFreq": 0.385,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 102.0,
           "ammoCount": 1600,
@@ -46953,7 +47297,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8960,
@@ -47006,7 +47350,7 @@
           "wtype": "aaa",
           "damage": 32.0,
           "shotFreq": 2.666,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 45.0,
           "ammoCount": 12000,
@@ -47061,7 +47405,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 40.0,
           "ammoCount": 13440,
@@ -47114,7 +47458,7 @@
           "wtype": "aaa",
           "damage": 400.0,
           "shotFreq": 0.18,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 127.0,
           "ammoCount": 800,
@@ -47176,7 +47520,7 @@
           "wtype": "aaa",
           "damage": 95.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 76.2,
           "ammoCount": 1800,
@@ -47229,7 +47573,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 13,
           "caliber": 40.0,
           "ammoCount": 26000,
@@ -47285,7 +47629,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 10,
           "caliber": 20.0,
           "ammoCount": 80000,
@@ -47350,7 +47694,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 37.0,
           "ammoCount": 16000,
@@ -47402,7 +47746,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 37.0,
           "ammoCount": 12000,
@@ -47464,7 +47808,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 20.0,
           "ammoCount": 7200,
@@ -47527,7 +47871,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 40.0,
           "ammoCount": 12000,
@@ -47586,7 +47930,7 @@
           "wtype": "aaa",
           "damage": 205.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 105.0,
           "ammoCount": 2520,
@@ -47651,7 +47995,7 @@
           "wtype": "aaa",
           "damage": 450.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 127.0,
           "ammoCount": 1600,
@@ -47730,7 +48074,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 5,
           "caliber": 20.0,
           "ammoCount": 9000,
@@ -47783,7 +48127,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 40.0,
           "ammoCount": 2240,
@@ -47831,10 +48175,19 @@
           "ammoCount": 1280,
           "isBeltAmmo": false
         },
+        "120mm_45_3rd_year_type_ww1_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 244.2,
+          "shotFreq": 0.33,
+          "gunsCount": 12,
+          "caliber": 120.0,
+          "ammoCount": 1800,
+          "isBeltAmmo": false
+        },
         "152mm_45_41st_year_type_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 450.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.33,
           "gunsCount": 6,
           "gunsTotalCount": 12,
           "gunsMult": 0.5,
@@ -47846,7 +48199,7 @@
           "wtype": "aaa",
           "damage": 95.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 600,
@@ -47899,7 +48252,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.66,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 10,
           "caliber": 40.0,
           "ammoCount": 20000,
@@ -47954,7 +48307,7 @@
           "wtype": "aaa",
           "damage": 250.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 100.0,
           "ammoCount": 2400,
@@ -47964,7 +48317,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 2.1,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 7,
           "caliber": 37.0,
           "ammoCount": 14000,
@@ -48065,7 +48418,7 @@
           "wtype": "aaa",
           "damage": 350.0,
           "shotFreq": 0.83,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 24,
           "caliber": 76.2,
           "ammoCount": 36000,
@@ -48118,7 +48471,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 24,
           "caliber": 25.0,
           "ammoCount": 36000,
@@ -48171,7 +48524,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 10.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 7.92,
           "ammoCount": 3000,
@@ -48214,7 +48567,7 @@
           "wtype": "aaa",
           "damage": 32.0,
           "shotFreq": 2.666,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 45.0,
           "ammoCount": 8000,
@@ -48279,7 +48632,7 @@
           "wtype": "aaa",
           "damage": 18.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 37.0,
           "ammoCount": 16000,
@@ -48289,7 +48642,7 @@
           "wtype": "aaa",
           "damage": 205.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 16,
           "caliber": 105.0,
           "ammoCount": 6720,
@@ -48299,7 +48652,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 20.0,
           "ammoCount": 16000,
@@ -48354,7 +48707,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 2.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 24,
           "caliber": 28.0,
           "ammoCount": 46800,
@@ -48408,7 +48761,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8960,
@@ -48464,7 +48817,7 @@
           "wtype": "aaa",
           "damage": 30.0,
           "shotFreq": 1.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 37.0,
           "ammoCount": 2000,
@@ -48521,7 +48874,7 @@
           "wtype": "aaa",
           "damage": 39.0,
           "shotFreq": 5.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 40.0,
           "ammoCount": 16000,
@@ -48606,7 +48959,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 88.0,
           "ammoCount": 600,
@@ -48660,7 +49013,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 25.0,
           "ammoCount": 6000,
@@ -48723,7 +49076,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 40,
           "caliber": 40.0,
           "ammoCount": 80000,
@@ -48776,7 +49129,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 28,
           "caliber": 37.0,
           "ammoCount": 56000,
@@ -48911,7 +49264,7 @@
           "wtype": "aaa",
           "damage": 400.0,
           "shotFreq": 0.18,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 127.0,
           "ammoCount": 2400,
@@ -48964,7 +49317,7 @@
           "wtype": "aaa",
           "damage": 300.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 76.2,
           "ammoCount": 1800,
@@ -48974,7 +49327,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 37.0,
           "ammoCount": 12000,
@@ -48984,7 +49337,7 @@
           "wtype": "aaa",
           "damage": 300.0,
           "shotFreq": 0.334,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 1200,
@@ -49021,7 +49374,7 @@
           "wtype": "aaa",
           "damage": 21.0,
           "shotFreq": 4.166,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 37.0,
           "ammoCount": 2000,
@@ -49031,7 +49384,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 20.0,
           "ammoCount": 4000,
@@ -49185,7 +49538,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 20.0,
           "ammoCount": 8000,
@@ -49195,7 +49548,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 5.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 15.0,
           "ammoCount": 4000,
@@ -49248,7 +49601,7 @@
           "wtype": "aaa",
           "damage": 95.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 600,
@@ -49362,7 +49715,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 2.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 28.0,
           "ammoCount": 7800,
@@ -49417,7 +49770,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 24,
           "caliber": 40.0,
           "ammoCount": 48000,
@@ -49463,7 +49816,7 @@
           "wtype": "aaa",
           "damage": 50.0,
           "shotFreq": 1.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 45.0,
           "ammoCount": 500,
@@ -49562,7 +49915,7 @@
           "wtype": "aaa",
           "damage": 100.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 57.0,
           "ammoCount": 24000,
@@ -49648,7 +50001,7 @@
           "wtype": "aaa",
           "damage": 30.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 37.0,
           "ammoCount": 8000,
@@ -49714,7 +50067,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 25.0,
           "ammoCount": 9000,
@@ -49777,7 +50130,7 @@
           "wtype": "aaa",
           "damage": 156.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 100.0,
           "ammoCount": 4000,
@@ -49787,7 +50140,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 37.0,
           "ammoCount": 24000,
@@ -49843,7 +50196,7 @@
           "wtype": "aaa",
           "damage": 23.0,
           "shotFreq": 3.334,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 30.0,
           "ammoCount": 900,
@@ -49920,7 +50273,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8960,
@@ -49930,7 +50283,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 5,
           "caliber": 20.0,
           "ammoCount": 9000,
@@ -49994,7 +50347,7 @@
           "wtype": "aaa",
           "damage": 97.0,
           "shotFreq": 0.333,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 76.2,
           "ammoCount": 2400,
@@ -50059,7 +50412,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 24,
           "caliber": 40.0,
           "ammoCount": 48000,
@@ -50182,7 +50535,7 @@
           "wtype": "aaa",
           "damage": 100.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 76.2,
           "ammoCount": 300,
@@ -50247,7 +50600,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 40.0,
           "ammoCount": 16000,
@@ -50300,7 +50653,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 88.0,
           "ammoCount": 300,
@@ -50424,7 +50777,7 @@
           "wtype": "aaa",
           "damage": 30.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 37.0,
           "ammoCount": 6000,
@@ -50434,7 +50787,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.93,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 13.2,
           "ammoCount": 7200,
@@ -50500,7 +50853,7 @@
           "wtype": "aaa",
           "damage": 50.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 9,
           "caliber": 45.0,
           "ammoCount": 4500,
@@ -50643,7 +50996,7 @@
           "wtype": "aaa",
           "damage": 52.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 47.0,
           "ammoCount": 1200,
@@ -50697,7 +51050,7 @@
           "wtype": "aaa",
           "damage": 205.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 102.0,
           "ammoCount": 800,
@@ -50753,7 +51106,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.66,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 40.0,
           "ammoCount": 2000,
@@ -50763,7 +51116,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 20.0,
           "ammoCount": 1800,
@@ -50818,7 +51171,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 20.0,
           "ammoCount": 3600,
@@ -50906,7 +51259,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 25.0,
           "ammoCount": 6000,
@@ -51013,7 +51366,7 @@
           "wtype": "aaa",
           "damage": 21.0,
           "shotFreq": 4.166,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 14,
           "caliber": 37.0,
           "ammoCount": 28000,
@@ -51147,7 +51500,7 @@
           "wtype": "aaa",
           "damage": 300.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 120.0,
           "ammoCount": 1000,
@@ -51222,7 +51575,7 @@
           "wtype": "aaa",
           "damage": 18.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 37.0,
           "ammoCount": 8000,
@@ -51285,7 +51638,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 16,
           "caliber": 40.0,
           "ammoCount": 32000,
@@ -51434,7 +51787,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 25.0,
           "ammoCount": 18000,
@@ -51554,7 +51907,7 @@
           "wtype": "aaa",
           "damage": 30.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 37.0,
           "ammoCount": 4000,
@@ -51610,7 +51963,7 @@
           "wtype": "aaa",
           "damage": 100.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 76.2,
           "ammoCount": 150,
@@ -51675,7 +52028,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 20,
           "caliber": 40.0,
           "ammoCount": 40000,
@@ -51815,7 +52168,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.93,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 13.2,
           "ammoCount": 1500,
@@ -51825,7 +52178,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 25.0,
           "ammoCount": 3000,
@@ -51891,7 +52244,7 @@
           "wtype": "aaa",
           "damage": 22.0,
           "shotFreq": 3.333,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 37.0,
           "ammoCount": 12000,
@@ -51935,7 +52288,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 40.0,
           "ammoCount": 8000,
@@ -51945,7 +52298,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 40.0,
           "ammoCount": 24000,
@@ -51998,7 +52351,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 88.0,
           "ammoCount": 600,
@@ -52071,7 +52424,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 3,
           "caliber": 40.0,
           "ammoCount": 6720,
@@ -52081,7 +52434,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 20,
           "caliber": 20.0,
           "ammoCount": 36000,
@@ -52134,7 +52487,7 @@
           "wtype": "aaa",
           "damage": 210.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 102.0,
           "ammoCount": 1600,
@@ -52155,7 +52508,7 @@
           "wtype": "aaa",
           "damage": 32.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 40.0,
           "ammoCount": 18000,
@@ -52198,7 +52551,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 2.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 28.0,
           "ammoCount": 7800,
@@ -52342,7 +52695,7 @@
           "wtype": "aaa",
           "damage": 100.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 76.2,
           "ammoCount": 300,
@@ -52501,7 +52854,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 40.0,
           "ammoCount": 13440,
@@ -52646,7 +52999,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 88.0,
           "ammoCount": 1200,
@@ -52709,7 +53062,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 10.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 12.7,
           "ammoCount": 2000,
@@ -52766,7 +53119,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 20.0,
           "ammoCount": 3600,
@@ -52855,7 +53208,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 20,
           "caliber": 40.0,
           "ammoCount": 40000,
@@ -52910,7 +53263,7 @@
           "wtype": "aaa",
           "damage": 350.0,
           "shotFreq": 0.83,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 24,
           "caliber": 76.2,
           "ammoCount": 36000,
@@ -52965,7 +53318,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 40.0,
           "ammoCount": 16000,
@@ -53019,7 +53372,7 @@
           "wtype": "aaa",
           "damage": 18.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 37.0,
           "ammoCount": 8000,
@@ -53082,7 +53435,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 88.0,
           "ammoCount": 300,
@@ -53135,7 +53488,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 88.0,
           "ammoCount": 600,
@@ -53178,7 +53531,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 88.0,
           "ammoCount": 600,
@@ -53240,7 +53593,7 @@
           "wtype": "aaa",
           "damage": 32.0,
           "shotFreq": 2.666,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 45.0,
           "ammoCount": 8000,
@@ -53296,7 +53649,7 @@
           "wtype": "aaa",
           "damage": 50.0,
           "shotFreq": 1.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 45.0,
           "ammoCount": 500,
@@ -53361,7 +53714,7 @@
           "wtype": "aaa",
           "damage": 250.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 100.0,
           "ammoCount": 2400,
@@ -53371,7 +53724,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 2.1,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 7,
           "caliber": 37.0,
           "ammoCount": 14000,
@@ -53576,7 +53929,7 @@
           "wtype": "aaa",
           "damage": 205.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 102.0,
           "ammoCount": 800,
@@ -53642,7 +53995,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 25.0,
           "ammoCount": 9000,
@@ -53705,7 +54058,7 @@
           "wtype": "aaa",
           "damage": 95.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 600,
@@ -53760,7 +54113,7 @@
           "wtype": "aaa",
           "damage": 400.0,
           "shotFreq": 0.18,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 127.0,
           "ammoCount": 800,
@@ -53815,7 +54168,7 @@
           "wtype": "aaa",
           "damage": 250.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 100.0,
           "ammoCount": 2400,
@@ -53825,7 +54178,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 2.1,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 7,
           "caliber": 37.0,
           "ammoCount": 14000,
@@ -53879,7 +54232,7 @@
           "wtype": "aaa",
           "damage": 26.0,
           "shotFreq": 2.66,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 4000,
@@ -53943,7 +54296,7 @@
           "wtype": "aaa",
           "damage": 125.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 75.0,
           "ammoCount": 2000,
@@ -54007,7 +54360,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 40.0,
           "ammoCount": 13440,
@@ -54109,7 +54462,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 40.0,
           "ammoCount": 26880,
@@ -54198,7 +54551,7 @@
           "wtype": "aaa",
           "damage": 50.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 45.0,
           "ammoCount": 1000,
@@ -54343,7 +54696,7 @@
           "wtype": "aaa",
           "damage": 30.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 10,
           "caliber": 37.0,
           "ammoCount": 10000,
@@ -54516,7 +54869,7 @@
           "wtype": "aaa",
           "damage": 118.0,
           "shotFreq": 0.267,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 10,
           "caliber": 90.0,
           "ammoCount": 4200,
@@ -54526,7 +54879,7 @@
           "wtype": "aaa",
           "damage": 22.0,
           "shotFreq": 3.333,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 3,
           "caliber": 37.0,
           "ammoCount": 4500,
@@ -54536,7 +54889,7 @@
           "wtype": "aaa",
           "damage": 22.0,
           "shotFreq": 3.333,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 37.0,
           "ammoCount": 12000,
@@ -54617,7 +54970,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 28.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 27.0,
           "ammoCount": 1800,
@@ -54672,7 +55025,7 @@
           "wtype": "aaa",
           "damage": 23.0,
           "shotFreq": 3.334,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 30.0,
           "ammoCount": 900,
@@ -54759,7 +55112,7 @@
           "wtype": "aaa",
           "damage": 450.0,
           "shotFreq": 0.125,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 127.0,
           "ammoCount": 1600,
@@ -54769,7 +55122,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 2.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 28.0,
           "ammoCount": 15600,
@@ -54827,7 +55180,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 28.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 27.0,
           "ammoCount": 1800,
@@ -54949,7 +55302,7 @@
           "wtype": "aaa",
           "damage": 212.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 13,
           "caliber": 76.2,
           "ammoCount": 3354,
@@ -55004,7 +55357,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 20.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 23.0,
           "ammoCount": 3600,
@@ -55210,7 +55563,7 @@
           "wtype": "aaa",
           "damage": 77.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 76.2,
           "ammoCount": 2880,
@@ -55220,7 +55573,7 @@
           "wtype": "aaa",
           "damage": 60.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 960,
@@ -55230,7 +55583,7 @@
           "wtype": "aaa",
           "damage": 32.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 3000,
@@ -55310,7 +55663,7 @@
           "wtype": "aaa",
           "damage": 50.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 45.0,
           "ammoCount": 1000,
@@ -55356,7 +55709,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.66,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 4000,
@@ -55452,7 +55805,7 @@
           "wtype": "aaa",
           "damage": 38.0,
           "shotFreq": 3.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 300,
@@ -55462,7 +55815,7 @@
           "wtype": "aaa",
           "damage": 250.0,
           "shotFreq": 0.33,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 102.0,
           "ammoCount": 600,
@@ -55687,7 +56040,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 7.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 20.0,
           "ammoCount": 21600,
@@ -55697,7 +56050,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 40.0,
           "ammoCount": 24000,
@@ -55707,7 +56060,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 4000,
@@ -55761,7 +56114,7 @@
           "wtype": "aaa",
           "damage": 97.0,
           "shotFreq": 0.333,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 1600,
@@ -55969,7 +56322,7 @@
           "wtype": "aaa",
           "damage": 205.0,
           "shotFreq": 0.2,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 14,
           "caliber": 105.0,
           "ammoCount": 5880,
@@ -55979,7 +56332,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 8.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 12,
           "caliber": 20.0,
           "ammoCount": 90000,
@@ -55989,7 +56342,7 @@
           "wtype": "aaa",
           "damage": 18.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 13,
           "caliber": 37.0,
           "ammoCount": 32000,
@@ -56054,7 +56407,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 34,
           "caliber": 40.0,
           "ammoCount": 68000,
@@ -56170,7 +56523,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 10.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 14.5,
           "ammoCount": 4000,
@@ -56317,7 +56670,7 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 4.35,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 25.0,
           "ammoCount": 3000,
@@ -56567,7 +56920,7 @@
           "wtype": "aaa",
           "damage": 52.0,
           "shotFreq": 0.3,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 47.0,
           "ammoCount": 1200,
@@ -56622,7 +56975,7 @@
           "wtype": "aaa",
           "damage": 25.0,
           "shotFreq": 3.0,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 6,
           "caliber": 37.0,
           "ammoCount": 12000,
@@ -56892,7 +57245,7 @@
           "wtype": "aaa",
           "damage": 23.0,
           "shotFreq": 3.334,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 30.0,
           "ammoCount": 900,
@@ -57037,7 +57390,7 @@
           "wtype": "aaa",
           "damage": 183.0,
           "shotFreq": 0.25,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 8,
           "caliber": 88.0,
           "ammoCount": 1200,
@@ -57099,7 +57452,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.6,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 1,
           "caliber": 40.0,
           "ammoCount": 2000,
@@ -57109,7 +57462,7 @@
           "wtype": "aaa",
           "damage": 28.0,
           "shotFreq": 2.66,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 2,
           "caliber": 40.0,
           "ammoCount": 4000,
@@ -57237,7 +57590,7 @@
           "wtype": "rockets",
           "damage": 3500.0,
           "shotFreq": 4.2,
-          "reloadTime": 18.0,
+          "reloadTime": 16.0,
           "rocketsSalvo": 2,
           "distToLive": 10000.0,
           "gunsCount": 2,
@@ -57285,8 +57638,8 @@
     },
     "Shop": {
       "shipCrewMax": 870,
-      "shipCrewMin": 170,
-      "shipCrewRating": 2.4697,
+      "shipCrewMin": 150,
+      "shipCrewRating": 2.79879,
       "maxSpeed": 12.0,
       "turningTime": 27,
       "addTorpedoesCountPack": 1,
@@ -57303,7 +57656,7 @@
         },
         "203mm_45_type_41_naval_user_cannon": {
           "wtype": "auxCannon",
-          "damage": 775.0,
+          "damage": 392.0,
           "shotFreq": 0.17,
           "gunsCount": 8,
           "caliber": 203.0,
@@ -57313,17 +57666,17 @@
         "120mm_45_3rd_year_type_ww1_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 244.2,
-          "shotFreq": 0.33,
+          "shotFreq": 0.385,
           "gunsCount": 14,
           "caliber": 120.0,
-          "ammoCount": 2100,
+          "ammoCount": 3500,
           "isBeltAmmo": false
         },
         "47mm_qf3pdr_hotchkiss_naval_user_cannon_aaa": {
           "wtype": "aaa",
           "damage": 52.0,
           "shotFreq": 0.5,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 47.0,
           "ammoCount": 1200,
@@ -57333,7 +57686,7 @@
           "wtype": "aaa",
           "damage": 97.0,
           "shotFreq": 0.333,
-          "aimMaxDist": 3500.0,
+          "aimMaxDist": 1750.0,
           "gunsCount": 4,
           "caliber": 80.0,
           "ammoCount": 2000,
@@ -57347,6 +57700,191 @@
           "gunsCount": 3,
           "caliber": 450.0,
           "ammoCount": 15,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "ussr_frigate_rckt_pr11540": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 812,
+    "tierGroup": 5,
+    "tags": {
+      "country_ussr": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 210,
+      "shipCrewMin": 30,
+      "shipCrewRating": 3.3803,
+      "maxSpeed": 19.0,
+      "turningTime": 17,
+      "addTorpedoesCountPack": 3,
+      "asmCaptureDuration": 4.0,
+      "ecmType": "captureBlocker",
+      "ecmDuration": 15.0,
+      "mainWeaponCaliber": 100.0,
+      "weapons": {
+        "100mm_70_ak100_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 350.0,
+          "shotFreq": 1.0,
+          "gunsCount": 1,
+          "caliber": 100.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        },
+        "420mm_3m24_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 9500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 13.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 420.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "235mm_9m330_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 3500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 12.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 235.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "ussr_533mm_53_65_torpedo": {
+          "wtype": "torpedo",
+          "damage": 6045.0,
+          "shotFreq": 0.1,
+          "distToLive": 3500.0,
+          "gunsCount": 2,
+          "caliber": 533.0,
+          "ammoCount": 36,
+          "isBeltAmmo": false
+        },
+        "countermeasure_launcher_ship": {
+          "wtype": "ircm",
+          "damage": 15.0,
+          "shotFreq": 0.066,
+          "cmLiveTime": 4.0,
+          "gunsCount": 6,
+          "caliber": 130.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "us_cruiser_rckt_long_beach": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 812,
+    "tierGroup": 5,
+    "tags": {
+      "country_usa": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1100,
+      "shipCrewMin": 160,
+      "shipCrewRating": 3.30303,
+      "maxSpeed": 19.5,
+      "turningTime": 24,
+      "addTorpedoesCountPack": 3,
+      "asmCaptureDuration": 6.0,
+      "ecmType": "rocketBlocker",
+      "ecmDuration": 5.0,
+      "mainWeaponCaliber": 127.0,
+      "weapons": {
+        "340mm_sm_er_2_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 5500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 14.0,
+          "rocketsSalvo": 2,
+          "distToLive": 10000.0,
+          "gunsCount": 2,
+          "caliber": 340.0,
+          "ammoCount": 800,
+          "isBeltAmmo": false
+        },
+        "us_324mm_mark_46_torpedo": {
+          "wtype": "torpedo",
+          "damage": 3000.0,
+          "shotFreq": 0.05,
+          "distToLive": 2750.0,
+          "gunsCount": 2,
+          "caliber": 324.0,
+          "ammoCount": 15,
+          "isBeltAmmo": false
+        },
+        "420mm_rur_5_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 3000.0,
+          "shotFreq": 4.2,
+          "reloadTime": 20.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "antiSubRocket": true,
+          "gunsCount": 1,
+          "caliber": 420.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "127mm_54_mk18_turret_mk42_single_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 600.0,
+          "shotFreq": 0.263,
+          "gunsCount": 2,
+          "caliber": 127.0,
+          "ammoCount": 700,
+          "isBeltAmmo": false
+        },
+        "340mm_rgm_84_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 9500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 16.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 340.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "530mm_tomahawk_bgm_109b_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 10785.0,
+          "shotFreq": 22.0,
+          "reloadTime": 22.0,
+          "rocketsSalvo": 2,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 530.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "countermeasure_launcher_ship": {
+          "wtype": "ircm",
+          "damage": 15.0,
+          "shotFreq": 0.066,
+          "cmLiveTime": 4.0,
+          "gunsCount": 6,
+          "caliber": 130.0,
+          "ammoCount": 600,
           "isBeltAmmo": false
         }
       }
@@ -106743,6 +107281,408 @@
       }
     }
   },
+  "ussr_bmpt": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "operatorCountry": "country_russia",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_tank_destroyer": true,
+      "type_missile_tank": true,
+      "has_proximityFuse_rocket": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 130.0,
+      "mainWeaponType": "auxCannon",
+      "armorThicknessFront": [
+        0.5,
+        0.05,
+        0.45
+      ],
+      "armorThicknessSide": [
+        0.25,
+        0.0,
+        0.75
+      ],
+      "crew": 5,
+      "mass": 48000.0,
+      "maxSpeedForward": 16.6691,
+      "maxSpeedBackward": 1.16161,
+      "powerToWeightRatio": 20.8333,
+      "weapons": {
+        "30mm_2A42_BMPT_user_cannon": [
+          {
+            "wtype": "mainCannon",
+            "caliber": 30.0,
+            "armorPower": 35.1221,
+            "reloadTime": 0.10917,
+            "gunnerTurretRotationSpeed": 45.0,
+            "isBeltAmmo": true
+          },
+          {
+            "wtype": "auxCannon",
+            "caliber": 30.0,
+            "armorPower": 35.1221,
+            "reloadTime": 0.10917,
+            "gunnerTurretRotationSpeed": 45.0,
+            "isBeltAmmo": true
+          }
+        ],
+        "130mm_9M120_BMPT_launcher_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 130.0,
+          "armorPower": 800.0,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_PKT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        },
+        "30mm_AG_30_user_cannon": {
+          "wtype": "machinegun",
+          "caliber": 30.0,
+          "armorPower": 5.07482,
+          "reloadTime": 0.149993,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_2A42_BMPT_user_cannon": [
+        {
+          "default": {
+            "icon": "hud_ammo_bullet_ap_he"
+          },
+          "30mm_2a42_AP": {
+            "icon": "hud_ammo_bullet_ap"
+          },
+          "30mm_2a42_HE": {
+            "icon": "hud_ammo_bullet_he",
+            "reqLevel": 4
+          },
+          "30mm_2a42_APDS": {
+            "icon": "hud_ammo_bullet_ap",
+            "reqLevel": 8
+          },
+          "30mm_2a42_HE_VT": {
+            "icon": "hud_ammo_bullet_he",
+            "reqLevel": 12
+          }
+        },
+        {
+          "default": {
+            "icon": "hud_ammo_bullet_ap_he"
+          },
+          "30mm_2a42_AP": {
+            "icon": "hud_ammo_bullet_ap"
+          },
+          "30mm_2a42_HE": {
+            "icon": "hud_ammo_bullet_he",
+            "reqLevel": 4
+          },
+          "30mm_2a42_APDS": {
+            "icon": "hud_ammo_bullet_ap",
+            "reqLevel": 8
+          },
+          "30mm_2a42_HE_VT": {
+            "icon": "hud_ammo_bullet_he",
+            "reqLevel": 12
+          }
+        }
+      ],
+      "130mm_9M120_BMPT_launcher_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_atgm_tandem_ap2_he1"
+        },
+        "130mm_9m120f_1_ATGM": {
+          "icon": "hud_ammo_atgm_he_ap1_he2",
+          "reqLevel": 4
+        }
+      }
+    }
+  },
+  "ussr_bmpt_prem": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "operatorCountry": "country_russia",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_tank_destroyer": true,
+      "type_missile_tank": true,
+      "has_proximityFuse_rocket": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 130.0,
+      "mainWeaponType": "auxCannon",
+      "armorThicknessFront": [
+        0.5,
+        0.05,
+        0.45
+      ],
+      "armorThicknessSide": [
+        0.25,
+        0.0,
+        0.75
+      ],
+      "crew": 5,
+      "mass": 48000.0,
+      "maxSpeedForward": 16.6691,
+      "maxSpeedBackward": 1.16161,
+      "powerToWeightRatio": 20.8333,
+      "weapons": {
+        "30mm_2A42_BMPT_user_cannon": [
+          {
+            "wtype": "mainCannon",
+            "caliber": 30.0,
+            "armorPower": 35.1221,
+            "reloadTime": 0.10917,
+            "gunnerTurretRotationSpeed": 45.0,
+            "isBeltAmmo": true
+          },
+          {
+            "wtype": "auxCannon",
+            "caliber": 30.0,
+            "armorPower": 35.1221,
+            "reloadTime": 0.10917,
+            "gunnerTurretRotationSpeed": 45.0,
+            "isBeltAmmo": true
+          }
+        ],
+        "130mm_9M120_BMPT_launcher_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 130.0,
+          "armorPower": 800.0,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_PKT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        },
+        "30mm_AG_30_user_cannon": {
+          "wtype": "machinegun",
+          "caliber": 30.0,
+          "armorPower": 5.07482,
+          "reloadTime": 0.149993,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_2A42_BMPT_user_cannon": [
+        {
+          "30mm_2a42_APDS": {
+            "icon": "hud_ammo_bullet_ap"
+          },
+          "30mm_2a42_HE_VT": {
+            "icon": "hud_ammo_bullet_he"
+          },
+          "default": {
+            "icon": "hud_ammo_bullet_ap_he"
+          },
+          "30mm_2a42_AP": {
+            "icon": "hud_ammo_bullet_ap"
+          },
+          "30mm_2a42_HE": {
+            "icon": "hud_ammo_bullet_he"
+          }
+        },
+        {
+          "30mm_2a42_APDS": {
+            "icon": "hud_ammo_bullet_ap"
+          },
+          "30mm_2a42_HE_VT": {
+            "icon": "hud_ammo_bullet_he"
+          },
+          "default": {
+            "icon": "hud_ammo_bullet_ap_he"
+          },
+          "30mm_2a42_AP": {
+            "icon": "hud_ammo_bullet_ap"
+          },
+          "30mm_2a42_HE": {
+            "icon": "hud_ammo_bullet_he"
+          }
+        }
+      ],
+      "130mm_9M120_BMPT_launcher_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_atgm_tandem_ap2_he1"
+        },
+        "130mm_9m120f_1_ATGM": {
+          "icon": "hud_ammo_atgm_he_ap1_he2"
+        }
+      }
+    }
+  },
+  "il_namer_tsrikhon": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_israel": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 30.0,
+      "armorThicknessFront": [
+        0.25,
+        0.05,
+        0.7
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 3,
+      "mass": 64400.0,
+      "maxSpeedForward": 14.8872,
+      "maxSpeedBackward": 6.42856,
+      "powerToWeightRatio": 18.6335,
+      "weapons": {
+        "30mm_Bushmaster_2_Mk_44_NAMER_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 87.6079,
+          "reloadTime": 0.29994,
+          "gunnerTurretRotationSpeed": 34.9,
+          "isBeltAmmo": true
+        },
+        "110mm_Spike_kf_41_rocket_launchr_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 110.0,
+          "armorPower": 900.0,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 25.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_FN_MAG60_40_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_Bushmaster_2_Mk_44_NAMER_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_173_HEI": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "30mm_173_APDS_FS": {
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 4
+        }
+      },
+      "110mm_Spike_kf_41_rocket_launchr_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        }
+      }
+    }
+  },
+  "il_namer_tsrikhon_prem": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_israel": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 30.0,
+      "armorThicknessFront": [
+        0.25,
+        0.05,
+        0.7
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 3,
+      "mass": 64400.0,
+      "maxSpeedForward": 14.8872,
+      "maxSpeedBackward": 6.42856,
+      "powerToWeightRatio": 18.6335,
+      "weapons": {
+        "30mm_Bushmaster_2_Mk_44_NAMER_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 87.6079,
+          "reloadTime": 0.29994,
+          "gunnerTurretRotationSpeed": 34.9,
+          "isBeltAmmo": true
+        },
+        "110mm_Spike_kf_41_rocket_launchr_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 110.0,
+          "armorPower": 900.0,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 25.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_FN_MAG60_40_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_Bushmaster_2_Mk_44_NAMER_user_cannon": {
+        "30mm_173_APDS_FS": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_173_HEI": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "default": {
+          "icon": "hud_ammo_bullet_ap"
+        }
+      },
+      "110mm_Spike_kf_41_rocket_launchr_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        }
+      }
+    }
+  },
   "us_bulldog": {
     "type": "walker",
     "hangar_place": "walker",
@@ -106908,9 +107848,12 @@
       "canRepairAnyAlly": true
     },
     "bullets": {
-      "75mm_M6_user_cannon": {
+      "75mm_M6_event_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
+        },
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_ap2_he0"
         }
       }
     },
@@ -106932,7 +107875,7 @@
       "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.087,
       "weapons": {
-        "75mm_M6_user_cannon": {
+        "75mm_M6_event_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
           "armorPower": 90.9827,

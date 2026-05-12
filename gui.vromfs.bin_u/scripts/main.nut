@@ -1,11 +1,9 @@
 from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+from "frp" import warn_on_deprecated_methods,
+  this_subscriber_call_may_take_up_to_usec, get_slow_subscriber_threshold_usec
 from "dagor.system" import DBGLEVEL
-let { set_nested_observable_debug, warn_on_deprecated_methods,
-  this_subscriber_call_may_take_up_to_usec = @(_) null,
-  get_slow_subscriber_threshold_usec = @() 10000
-} = require("frp")
 
 let { get_time_msec, ref_time_ticks } = require("dagor.time")
 let startLoadTime = get_time_msec()
@@ -15,7 +13,6 @@ let { eventbus_subscribe } = require("eventbus")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 
-set_nested_observable_debug(DBGLEVEL > 0)
 
 warn_on_deprecated_methods(DBGLEVEL > 0)
 clear_vm_entity_systems()
@@ -63,6 +60,7 @@ require("%scripts/clientState/keyboardState.nut")
 require("%scripts/loading.nut")
 require("%scripts/webRPC.nut")
 require("%scripts/debugTools/dbgUtils.nut")
+require("%scripts/debugTools/dbgWindowResolution.nut")
 
   
 require("%scripts/login/updateRights.nut")

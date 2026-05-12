@@ -2,6 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { arrayByRows } = require("%sqstd/underscore.nut")
+let { getMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
+let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { benchmarkGameModes } = require("%rGui/gameModes/gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
@@ -42,7 +44,11 @@ function missionsListUi() {
       utf8ToUpper(b.name),
       function() {
         close()
-        eventbus_send("startBenchmark", { id = b.id })
+        log("[BENCHMARK] openDownloadAddonsWnd offline benchmark")
+        let { misUnits, misAddons } = getMissionUnitsAndAddons(b.id)
+        openDownloadAddonsWnd(misAddons.keys(), misUnits.keys(),
+          "startBenchmark", { paramStr1 = b.id },
+          "startBenchmark", { id = b.id })
       },
       btnStyle)))
   ]

@@ -4,7 +4,79 @@
       "scene": "gamedata/scenes/hangar_field_lunar_ny_units.blk"
     },
     {
-      "scene": "gamedata/scenes/hangar_field_major_banners.blk"
+      "scene": "gamedata/scenes/hangar_field_major_banners_tank.blk",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "scene": "gamedata/scenes/hangar_field_major_banners_ship.blk",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "scene": "gamedata/scenes/hangar_field_major_banners_plane.blk",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
     },
     {
       "scene": "gamedata/scenes/hangar_field_lunar_ny_lights.blk"

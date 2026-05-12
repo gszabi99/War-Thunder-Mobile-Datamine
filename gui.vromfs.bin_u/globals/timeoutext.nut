@@ -1,7 +1,7 @@
 from "%globalScripts/logs.nut" import *
+from "dagor.workcycle" import resetTimeout, clearTimer, hasTimer, deferOnce
 from "dagor.time" import get_time_msec
 from "%appGlobals/windowState.nut" import windowActive
-let { resetTimeout, clearTimer, hasTimer = @(_) true, deferOnce } = require("dagor.workcycle")
 
 let CLEAR_AFTER_COUNT = 20
 

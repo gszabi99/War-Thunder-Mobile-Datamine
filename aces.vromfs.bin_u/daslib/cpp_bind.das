@@ -12,9 +12,9 @@ module cpp_bind public
 
 
 
-require fio
-require rtti
-require ast
+require daslib/fio
+require daslib/rtti
+require daslib/ast
 require daslib/ast_boost
 require daslib/strings_boost
 

@@ -5,7 +5,6 @@ let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature } = require("%rGui/components/unseenMark.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { unseenResearchedUnits, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
@@ -49,7 +48,6 @@ return @(){
       "",
       function() {
         openUnitsTreeWnd()
-        openLvlUpWndIfCan()
       },
       discountTagUnitTree(discount.get())
     )

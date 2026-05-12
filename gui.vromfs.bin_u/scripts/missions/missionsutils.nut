@@ -1,9 +1,9 @@
-from "%scripts/dagui_natives.nut" import get_mission_progress, get_player_army_for_hud
+from "%scripts/dagui_natives.nut" import get_mission_progress
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
-let { get_current_mission_desc } = require("guiMission")
+let { get_current_mission_desc, get_player_army_for_hud } = require("guiMission")
 
 let missionAvailabilityFlag = {
   [AIR] = "isAirplanesAllowed",

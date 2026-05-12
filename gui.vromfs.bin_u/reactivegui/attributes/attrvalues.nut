@@ -176,7 +176,8 @@ let shipAttrs = {
     valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, 0.1), "%")
   }
   attrib_ai_aa_distance = {
-    getBaseVal = @(shopCfg) getTopWeaponByTypes(shopCfg?.weapons, [ "aaa" ])?.aimMaxDist ?? 0
+    getBaseVal = @(shopCfg) (getTopWeaponByTypes(shopCfg?.weapons, [ "aaa" ])?.aimMaxDist ?? 0)
+      * getHudConfigParameter("distanceViewMultiplier").tofloat()
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].mulAimMaxDist ?? 1.0
     valueToText = @(v) "".concat(round_by_value(v / 1000.0, 0.1), loc("measureUnits/km_dist"))
   }
@@ -229,6 +230,8 @@ let shipAttrs = {
     getBaseVal = @(shopCfg) (getTopWeaponByTypes(shopCfg?.weapons, ["rockets"])?.damage ?? 0)
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].explosiveMassMul ?? 1.0
     valueToText = @(v) "".concat(round(v), iconDamage)
+    relatedWeapStat = "damage"
+    relatedWeapTypes = ["rockets"]
   }
   attrib_rckt_capture_time = {
     getBaseVal = @(shopCfg) shopCfg?.asmCaptureDuration ?? 0
@@ -281,8 +284,10 @@ function mkAttrFromMinus0prcUp(attrId, roundBy = 0.1) {
 let tankAttrs = {
   loading_time_mult = mkAttrFromMinus0prcUp("loading_time_mult")
     .__update({
-      updateStats = @(stats, mul) stats.weapons.each(@(el) el?.autoLoader ? null
-        : mulStat(el, "reloadTime", attrRangesTank["loading_time_mult"].begin - mul))
+      updateStats = @(stats, mul) stats.weapons.each(function(el) {
+        if (!el?.autoLoader)
+          mulStat(el, "reloadTime", attrRangesTank["loading_time_mult"].begin - mul)
+      })
     })
   tracking = mkAttrUpTo100prc("tracking")
     .__update({

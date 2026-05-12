@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
+from "math" import ceil
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { getWeaponShortNamesList, getBulletBeltShortName, getAmmoNameShortText
 } = require("%rGui/weaponry/weaponsVisual.nut")
@@ -145,7 +146,7 @@ let icoAmmo = mkIcon("ui/gameuiskin#hud_main_weapon_fire.svg")
 
 function mkDebrLineAmmo(weaponInfo, isUnlocked, unlockDelay) {
   let { bSetId, weapon, isModsWeapons, campaign } = weaponInfo
-  let text = campaign == "air"
+  let text = getCampaignPresentation(campaign).campaign == "air"
     ? getBulletBeltShortName(bSetId)
     : getAmmoNameShortText(weapon?.bulletSets[bSetId])
   return mkLevelUnlockLine(isUnlocked, unlockDelay, isModsWeapons ? icoMod : icoAmmo, text)

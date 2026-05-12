@@ -43,9 +43,9 @@ function setCampaign(campaign) {
 savedCampaign.subscribe(@(_)
   resetTimeout(0.1, @() savedCampaign.get() == selectedCampaign.get() ? selectedCampaign.set(null) : null))
 
-function chooseByCampaign(res, key, campaign) {
+function chooseByCampaign(res, key, campaign, defValue = {}) {
   if (key in res)
-    res[key] = res[key]?[campaign]
+    res[key] = res[key]?[campaign] ?? defValue
 }
 
 function filterByCampaign(res, key, campaign) {
@@ -132,7 +132,6 @@ let campProfile = Computed(function(prev) {
   let { allUnits = {}, allItems = {} } = campConfigs.get()
   filterByListTbl(res, prev, isCampaignChanged ? null : prevUnits, "units", allUnits)
   filterByListTbl(res, prev, isCampaignChanged ? null : prevItems, "items", allItems)
-  chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", getCampaignStatsId(campaign))
   chooseListByCampaignTbl(res, prev, "unitTreeNodes", campaign)
@@ -156,7 +155,6 @@ let exportProfile = {
   subscriptions = {}
   purchasesCount = {}
   todayPurchasesCount = {}
-  receivedLvlRewards = {}
   receivedMissionRewards = {}
   receivedSchRewards = {}
   sharedStats = {}
@@ -181,6 +179,5 @@ return exportProfile.__update({
   isAnyCampaignSelected
   campConfigs
   campProfile
-  isCampaignWithUnitsResearch = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
   getCampaignStatsId
 })

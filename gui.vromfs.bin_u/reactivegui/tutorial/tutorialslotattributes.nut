@@ -19,7 +19,7 @@ let { isSlotAttrAttached, openSlotAttrWnd, slotAttributes, leftSlotSp,
 let { selectedSlotIdx, slotBarSlotKey } = require("%rGui/slotBar/slotBarState.nut")
 let { applyAttrRowChange } = require("%rGui/attributes/attrBlockComp.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
-let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 
 let FINISH_STEP = "s6_finish_slot_attributes_tutorial"
 
@@ -169,7 +169,7 @@ function startTutorial() {
             needArrow = true
             function onClick() {
               if(!hasUpgradedAttrUnitNotUpdatable())
-                sendAppsFlyerEvent("add_unit_attributes")
+                sendTelemetryEvent("add_unit_attributes")
               applyAttributes()
               backButtonBlink("UnitAttr")
               playSound("characteristics_apply")

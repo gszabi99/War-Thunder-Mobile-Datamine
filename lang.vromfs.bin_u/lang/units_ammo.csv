@@ -826,7 +826,7 @@
 "120mm_dm12a1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";"DM12A1";;
 "37mm_mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"Model 1892";"Mle1892";"Mle1892";"Mle1892";"Mle1892";"1892 型";"Mle1892";"1892 型";;
 "37mm_mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"Model 1937";"Mle1937";"Mle1937";"Mle1937";"Mle1937";"1937 型";"Mle1937";"1937 型";;
-"130mm_type75";"130 mm Type 75";"Type 75";"Tipo 75";"Typ 75";"Tipo 75";"130-мм Type 75";"Тип 75";"Typ 75";"Type 75";"Type 75";"Typ 75";"130 mm Type 75";"Type 75";"Type 75 130 มม.";"75식";"75 式";"75式";"75 式";;
+"130mm_type75";"Type 75";"Type 75";"Tipo 75";"Typ 75";"Tipo 75";"Type 75";"Тип 75";"Typ 75";"Type 75";"Type 75";"Typ 75";"130 mm Type 75";"Type 75";"Type 75 130 มม.";"75식";"75 式";"75式";"75 式";;
 "105mm_type75";"Type 75";"Type 75";"Tipo 75";"Typ 75";"Tipo 75";"Type 75";"Type 75";"Typ 75";"Type 75";"Type 75";"Typ 75";"Type 75";"Type 75";"Type 75";"75식";"75 式";"Type 75";"75 式";;
 "105mm_type91";"Type 91";"Type 91";"Tipo 91";"Typ 91";"Tipo 91";"Type 91";"Тип 91";"Typ 91";"Type 91";"Type 91";"Typ 91";"Type 91";"Type 91";"Type 91";"91식";"91 式";"Type 91";"91 式";;
 "37mm_mle1938";"Mle1938";"Mle1938";"Mle.1938";"Mle1938";"Mle1938";"Mle1938";"Mle1938";"Mle1938";"Mle1938";"Mle1938";"Model 1938";"Mle1938";"Mle1938";"Mle1938";"Mle1938";"1938 型";"Mle1938";"1938 型";;
@@ -1578,4 +1578,10 @@
 "73mm_type_85_he";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";"DYS-73";;
 "70mm_QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";"QN201DD";;
 "151mm_QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";"QN502CDD";;
+"155mm_t152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";"T152";;
+"155_mm_t267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";"T267";;
+"75mm_xm884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";"XM884";;
+"30mm_2a42_HE_VT/name";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"ОФ-ДВ";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";"HE-TF";;
+"130mm_9m120_1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";"9M120-1";;
+"130mm_9m120_1f";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1Ф";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";"9M120-1F";;
 "UNITS_AMMO_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";

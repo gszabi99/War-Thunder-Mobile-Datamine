@@ -8,9 +8,9 @@ let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut
 let { addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo } = require("%rGui/shop/byPlatform/gaijinGoodsInfo.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
-
-let successPaymentUrl = "https://store.gaijin.net/success_payment.php" 
+let successPaymentUrl = getCurCircuitOverride("successPaymentURL","https://store.gaijin.net/success_payment.php") 
 
 let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid ?? ""
 let getGaijinDiscount = @(goods) goods?.purchaseGuids.gaijin.discountInPercent ?? 0

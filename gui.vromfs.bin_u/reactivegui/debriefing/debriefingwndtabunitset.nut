@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 let { unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
@@ -72,7 +73,7 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
   let endLevel = max(unlockedLevel,
     getNextUnitLevelWithRewards(startLevel, levelsExp.len(), modPresetCfg, unitWeaponry?[unit?.name]))
 
-  let isModsWeapons = campaign == "air"
+  let isModsWeapons = getCampaignPresentation(campaign).campaign == "air"
   let modsMap = modPresetCfg
     .filter(@(mod) !mod?.isHidden)
     .map(@(mod, name) mod.__merge({ name }))

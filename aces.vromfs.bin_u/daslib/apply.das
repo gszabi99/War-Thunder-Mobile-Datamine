@@ -13,7 +13,7 @@ module apply shared private
 
 
 
-require ast
+require daslib/ast
 require daslib/ast_boost
 require daslib/defer
 require daslib/templates_boost
@@ -49,17 +49,21 @@ def for_each_subrange(total : int; blk : block<(r : range) : void>) {
 def generateApplyVisitStruct(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>; hasExtraArg : bool) {
     assert(stype.baseType == Type.tStructure)
     assert(stype.dim |> length == 0)
+    let nfields = frange.y - frange.x
     var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags.isExplicit | TypeDeclFlags.explicitConst
     var inscope blkList : array<ExpressionPtr>
     var inscope func_args : array<VariablePtr>
+    names |> reserve(nfields)
+    blkList |> reserve(nfields)
     
     for (fldi in frange) {
-        if (true) {
+        {
             let fld & = unsafe(stype.structType.fields[fldi])
             names |> push(string(fld.name))
             if (hasExtraArg) {
                 var rttiAnnValues : array<tuple<name : string; data : RttiValue>>
+                rttiAnnValues |> reserve(length(fld.annotation))
                 for (ann in fld.annotation) {
                     var value : tuple<name : string; data : RttiValue>
                     value.name = string(ann.name)
@@ -121,12 +125,15 @@ def generateApplyVisitStruct(stype : TypeDeclPtr; fnname : string; at : LineInfo
 def generateApplyVisitTuple(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tTuple)
     assert(stype.dim |> length == 0)
+    let nfields = frange.y - frange.x
     var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags.isExplicit | TypeDeclFlags.explicitConst
     var inscope blkList : array<ExpressionPtr>
     var inscope func_args : array<VariablePtr>
+    names |> reserve(nfields)
+    blkList |> reserve(nfields)
     for (fldi in frange) {
-        if (true) {
+        {
             assume flda = stype.argTypes[fldi]
             let fldname = length(stype.argNames) == length(stype.argTypes) ? string(stype.argNames[fldi]) : "_{fldi}"
             names |> push(fldname)
@@ -175,12 +182,15 @@ def generateApplyVisitTuple(stype : TypeDeclPtr; fnname : string; at : LineInfo)
 def generateApplyVisitVariant(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tVariant)
     assert(stype.dim |> length == 0)
+    let nfields = frange.y - frange.x
     var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags.isExplicit | TypeDeclFlags.explicitConst
     var inscope blkList : array<ExpressionPtr>
     var inscope func_args : array<VariablePtr>
+    names |> reserve(nfields)
+    blkList |> reserve(nfields)
     for (fldi in frange) {
-        if (true) {
+        {
             assume flda = stype.argTypes[fldi]
             let fldname = length(stype.argNames) == length(stype.argTypes) ? string(stype.argNames[fldi]) : "_{fldi}"
             names |> push(fldname)

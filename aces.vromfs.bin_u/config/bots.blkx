@@ -51,6 +51,11 @@
             "name": "ki_10_2",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "fury_mk2",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -79,6 +84,11 @@
             "name": "a5m4",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "gladiator_mk2",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -107,6 +117,11 @@
             "name": "a6m2_mod11",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "spitfire_mk1",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -135,6 +150,11 @@
             "name": "a6m2_zero",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "spitfiremkii",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -163,6 +183,11 @@
             "name": "a6m3_mod22_zero",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "spitfire_ix_early",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -191,6 +216,11 @@
             "name": "ki_61_2_early",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "spitfire_xvi",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -219,6 +249,11 @@
             "name": "a7m2",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "spitfire_f22",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -247,6 +282,11 @@
             "name": "ki_84_ko",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "tempest_mkv",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       },
@@ -275,6 +315,11 @@
             "name": "kitsuka",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "meteor_fmk3",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       }

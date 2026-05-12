@@ -17,8 +17,8 @@ require daslib/match
 require daslib/math_bits
 require daslib/ast_boost
 
-require rtti public
-require debugapi
+require daslib/rtti public
+require daslib/debugger
 
 variant Token {
     number : int64
@@ -399,7 +399,7 @@ def opDimString(var st : TokenStream; index : int64; var result : Result) {
     if (index >= int64(len)) {
         return st |> error("index out of range {index} of {len} (string too short)")
     }
-    return Result(int64(character_at(str, int(index))))
+    return Result(int64(character_at(str, int(index)))) 
 }
 
 def opArray(var st : TokenStream; index : int64; var result : Result) {

@@ -12,6 +12,7 @@ let pannableBase = {
   touchMarginPriority = TOUCH_BACKGROUND
   skipDirPadNav = true
   xmbNode = XmbContainer({ scrollToEdge = true })
+  joystickScroll = true
 }
 
 function mkBitmapPictureLazyCached(w, h, errId, fillCb) {

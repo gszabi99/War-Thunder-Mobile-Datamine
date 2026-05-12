@@ -19,7 +19,7 @@ require daslib/macro_boost
 require daslib/class_boost
 
 
-[skip_field_lock_check, template_structure(KeyType, ValueType, hashFunctionName=@@hash)]
+[template_structure(KeyType, ValueType, hashFunctionName=@@hash)]
 struct template TFlatHashTable {
     
     key_data   : array<KeyType>

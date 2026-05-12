@@ -21,7 +21,7 @@ let personalGoodsCfg = Computed(@() serverConfigs.get()?.personalGoodsCfg ?? {})
 let personalGoods = Computed(@() servProfile.get()?.personalGoods ?? {})
 let pGoodsRelevance = Watched({})
 let pGoodsSoon = Watched({})
-let pGoodsOffsetIdx = Watched(0)
+let pGoodsOffsets = Watched({})
 let pGoodsSoonSeen = Watched({})
 
 let getPersonalGoodsFullId = @(goodsId, idx) idx == 0 ? goodsId : $"{goodsId}&{idx}"
@@ -130,17 +130,9 @@ let soonPersonalGoods = Computed(function(prev) {
       continue
     if (!(pGoodsSoon.get()?[baseId] ?? false))
       continue
-    foreach (groupId, groupCfg in cfg.groups) {
-      let { price, discountInPercent, variants, lifeTime } = groupCfg
-      foreach (varId, variant in variants) {
-        let { goods, discountInPercentOvr } = variant
-        res[$"{groupId}&{varId}"] <- {
-          groupId, varId, baseId, id = $"{groupId}&{varId}", goods, price, slots = cfg.slots,
-          discountInPercent = discountInPercentOvr ? discountInPercentOvr : discountInPercent,
-          lifeTime, meta = cfg.meta, endTime = cfg.timeRange.start, timeRange = cfg.timeRange,
-          showTimeBeforeActivate = cfg.showTimeBeforeActivate
-        }
-      }
+    for (local i = 0; i < cfg.slots; i++) {
+      let fullId = getPersonalGoodsFullId(baseId, i)
+      res[fullId] <- { id = fullId, baseId, slotId = i, meta = cfg.meta, timeRange = cfg.timeRange }
     }
   }
 
@@ -152,8 +144,8 @@ let mkPGoodsByShopCategory = @(activeGoods) Computed(function() {
   foreach (g in activeGoods.get())
     getSubArray(res, "eventId" in g.meta ? SC_SPECIAL : SC_FEATURED).append(g)
   res.each(@(l) l.sort(@(a, b)
-    a.lifeTime <=> b.lifeTime
-      || a.endTime <=> b.endTime
+    (a?.lifeTime ?? 0) <=> (b?.lifeTime ?? 0)
+      || (a?.endTime ?? 0) <=> (b?.endTime ?? 0)
       || a.id <=> b.id))
   return res
 })
@@ -217,7 +209,7 @@ if (shouldRefreshRequest.get() && personalGoodsInProgress.get() == null)
 
 return {
   pGoodsSoonSeen
-  pGoodsOffsetIdx
+  pGoodsOffsets
   personalGoodsCfg
   activePersonalGoods
   personalGoodsByShopCategory

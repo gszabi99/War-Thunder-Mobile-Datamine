@@ -3,7 +3,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
@@ -13,7 +12,6 @@ let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animStat
 let { openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 
@@ -30,19 +28,16 @@ registerHandler("onUnitPurchaseResult",
         return
       }
     }
-    else {
-      if (!isCampaignWithUnitsResearch.get())
-        boughtUnit.set(unitId)
+    else
       setHangarUnit(unitId)
-    }
+
     if (isCampaignWithSlots.get()) {
       animUnitWithLink.set(unitId)
       openSelectUnitToSlotWnd(unitId, $"treeNodeUnitPlate:{unitId}")
       playSound("meta_build_unit")
-      if (isCampaignWithUnitsResearch.get())
-        addNewPurchasedUnit(unitId)
+      addNewPurchasedUnit(unitId)
     }
-    else if (isCampaignWithUnitsResearch.get())
+    else
       addLastPurchasedUnit(unitId)
   })
 
@@ -69,11 +64,11 @@ function purchaseUnit(unitId, bqInfo, price, executeAfter = null, content = null
   if (needSaveUnitDataForTutorial.get())
     delayedPurchaseUnitData.set({ unitId, currencyId = price.currencyId, price = price.price })
 
-  let text = content ?? loc(!isCampaignWithUnitsResearch.get() ? "shop/needMoneyQuestion" : "shop/needMoneyQuestion_build",
-    { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) })
+  let text = content
+    ?? loc("shop/needMoneyQuestion_build", { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) })
   openMsgBoxPurchase({
     text, price, purchase, bqInfo, title, onCancel,
-    purchaseLocId = isCampaignWithUnitsResearch.get() ? "msgbox/btn_build" : "msgbox/btn_purchase"
+    purchaseLocId = "msgbox/btn_build"
     spendingCountry = campUnitsCfg.get()?[unitId].country ?? ""
   })
   playSound("meta_new_technics_for_gold")

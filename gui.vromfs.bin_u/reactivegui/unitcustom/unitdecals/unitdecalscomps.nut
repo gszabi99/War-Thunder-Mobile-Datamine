@@ -21,13 +21,10 @@ let decalsFooterHeight = decalCardWidth + decalsGap * 2
 let lockIconSize = [evenPx(25), evenPx(32)]
 let lockIconBlockHeight = evenPx(42)
 
-let isPictureSecondParamSupported = Picture.constructor.getfuncinfos().typecheck.len() > 2
-
 let mkDecalIcon = @(id, size = decalIconSize) {
   size
   rendObj = ROBJ_IMAGE
   image = (id ?? "") == "" ? Picture($"ui/gameuiskin#icon_primary_attention.svg:{size}:P")
-    : !isPictureSecondParamSupported ? Picture($"!{getDecalImg(id)}*")
     : Picture($"!{getDecalImg(id)}*", {texFormat=TEXFMT_SRGB})
   keepAspect = true
 }

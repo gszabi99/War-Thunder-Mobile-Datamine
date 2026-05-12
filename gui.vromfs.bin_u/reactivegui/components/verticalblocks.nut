@@ -56,7 +56,7 @@ let mkBlocksContainer = @(contentList, activeIdx, mkBlockContent, onClick, block
     flow = FLOW_VERTICAL
     gap = contentGap
     onAttach = @() contentBlockScrollHandler.scrollToY((blockHeight + contentGap) * activeIdx.get())
-    children = contentList.get().map(@(v, idx) mkBlock(v, idx, activeIdx, mkBlockContent, onClick))
+    children = contentList.get().map(@(v, idx) mkBlock(v, v.idx ?? idx, activeIdx, mkBlockContent, onClick))
   }, { scrollHandler = contentBlockScrollHandler }.__merge(scrollOvr))
 }
 

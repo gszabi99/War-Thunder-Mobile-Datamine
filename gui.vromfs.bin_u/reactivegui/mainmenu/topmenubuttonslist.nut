@@ -28,6 +28,8 @@ let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { openOfflineBattleMenu } = require("%rGui/gameModes/offlineBattlesState.nut")
+let { isInHangarChallenge } = require("%rGui/hudState.nut")
+let { start_hangar_challenge } = require("guiHangarChallenge")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -35,7 +37,9 @@ let TF_SHIP_VS_PLANES_MISSION = "testFlight_ship_aaa_vs_planes"
 let TEST_AIR_BATTLE_MISSION = "abandoned_factory_single_AD"
 let TEST_AIR_BATTLE_UNIT = "fw_190a_1"
 
-let MAX_ROWS_COUNT = 10
+let MAX_ROWS_COUNT = 11
+
+let hangarChallengeMissionName = "gamedata/missions/development/dev_testflight/tank/testFlight_ussr_tft.blk"
 
 let openConfirmationTutorialMsg = @() openMsgBox({
   text = loc("tutorial/startConfirmation")
@@ -74,6 +78,10 @@ let TF_SHIP_TUNE = {
     ]
   })
 }
+let TEST_CHALLENGES = {
+  name = "Start Hangar Challenge"
+  cb = @() start_hangar_challenge(hangarChallengeMissionName)
+}
 let TEST_AIR_BATTLE = {
   name = "Test Air Battle"
   cb = @() startTestFlightByName(TEST_AIR_BATTLE_UNIT, TEST_AIR_BATTLE_MISSION)
@@ -84,12 +92,12 @@ let BENCHMARK = {
 }
 let REPLAYS = {
   name = loc("mainmenu/btnReplays")
-  icon = "ui/gameuiskin#watch_ads.svg"
+  icon = "ui/gameuiskin#icon_menu_replay.svg"
   cb = openReplaysPage
 }
 let SAVE_LAST_REPLAY = {
-  name = loc("mainmenu/btnSaveReplay")
-  icon = "ui/gameuiskin#icon_save.svg"
+  name = loc("mainmenu/btnSaveLastReplay")
+  icon = "ui/gameuiskin#icon_menu_replay_save.svg"
   cb = saveReplayWindow
 }
 let GAMEPAD_HELP = {
@@ -174,7 +182,7 @@ function getDevButtons() {
     return res
 
   if (can_debug_missions.get())
-    res.append(TEST_FLIGHT, TF_SHIP_TUNE, TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
+    res.append(TEST_FLIGHT, TF_SHIP_TUNE, TEST_CHALLENGES, TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
   else if (isOfflineMenu)
     res.append(TEST_FLIGHT, BENCHMARK)
   if (can_debug_configs.get())
@@ -192,7 +200,8 @@ let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
     isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData,
-    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access
+    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access,
+    isInHangarChallenge
   ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })

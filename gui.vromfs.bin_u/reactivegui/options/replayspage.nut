@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_subscribe } = require("eventbus")
 let { hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state, hud_request_hud_crew_state } = require("hudState")
 let { on_view_replay, get_replays_list, get_replay_info } = require("replays")
 let { dynamicLoadPreview, dynamicUnloadPreview } = require("dynamicMission")
@@ -13,6 +14,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { genBotDecorators } = require("%appGlobals/botUtils.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { can_view_replays } = require("%appGlobals/permissions.nut")
+let { getMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
 let { textButtonPrimary, textButtonInactive, iconButtonCommon } = require("%rGui/components/textButton.nut")
 let { mkFoldableList, headerGap, arrowFullSizeW } = require("%rGui/components/foldableSelector.nut")
 let { mkOptionValue, OPT_AUTO_DELETE_REPLAYS } = require("%rGui/options/guiOptions.nut")
@@ -31,8 +33,10 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let { mkTooltipText } = require("%rGui/tooltip.nut")
 let logR = log_with_prefix("[REPLAYS] ")
 let { startedReplayPath } = require("%rGui/replay/hudReplayControls.nut")
+let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
 
+let START_REPLAY_EVENT = "startReplayAfterDownloadAddons"
 let isDevVersion = is_dev_version()
 let devReplayNameRegexp = regexp2(@"^\d{4}$")
 
@@ -91,7 +95,7 @@ function askActivateAutoDeleteOpt(list, cb) {
   })
 }
 
-function startReplay(path) {
+function launchReplay(path) {
   if (isReplayLoading.get())
     return
   isReplayLoading.set(true)
@@ -101,6 +105,24 @@ function startReplay(path) {
   hud_request_hud_ship_debuffs_state()
   hud_request_hud_crew_state()
   on_view_replay(path)
+}
+
+eventbus_subscribe(START_REPLAY_EVENT, @(ctx) launchReplay(ctx.path))
+
+function checkAndStartReplay(path, missionName) {
+  let unitNamesBlk = get_replay_info(path)?.comments.unit_names
+  let replayUnits = unitNamesBlk == null ? [] : unitNamesBlk % "unit"
+  let { misAddons } = getMissionUnitsAndAddons(missionName)
+  openDownloadAddonsWnd(misAddons.keys(), replayUnits, "startReplay", {}, START_REPLAY_EVENT, { path })
+}
+
+function startReplay(path, missionName = "") {
+  if (isReplayLoading.get())
+    return
+  if (missionName != "")
+    checkAndStartReplay(path, missionName)
+  else
+    launchReplay(path)
 }
 
 function updateMapPreview(misName = "") {
@@ -479,7 +501,7 @@ let mkFoldableContent = @(replay, isActive) @() {
                         @() showReplayError(replay.corrupted), { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
                   : !isReplayLoading.get()
                     ? textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")),
-                        @() notAvailableForSquadMsg(@() startReplay(replay.path)),
+                        @() notAvailableForSquadMsg(@() startReplay(replay.path, replay.missionName)),
                         { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
                   : progressSpinner
                 !isReplayLoading.get() ? mkTrashButton(@() onDeleteReplay(replay)) : null

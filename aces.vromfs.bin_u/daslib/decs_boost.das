@@ -48,6 +48,11 @@ class DecsReqN : AstBlockAnnotation {
 class DecsTemplate : AstStructureAnnotation {
     
     
+    
+    
+    
+    
+    
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (length(st.fields) == 0) {
             errors := "expecting at least one field in the desc_template {st.name}"
@@ -72,6 +77,53 @@ class DecsTemplate : AstStructureAnnotation {
         }
         if (!(compiling_module() |> add_function(fnErase))) {
             panic("failed to add remove_decs_template, can't add function {fnErase.name}")
+        }
+        
+        
+        var inscope blkArchSetup : array<ExpressionPtr>
+        var inscope blkArchWrite : array<ExpressionPtr>
+        
+        blkArchSetup |> emplace_new <| qmacro(cache |> push(decs::find_component_index(arch, "eid")))
+        blkArchWrite |> emplace_new <| qmacro(decs::set_direct_at(arch, cache[0], eidx, eid))
+        for (fld_idx, fld in iter_range(st.fields), st.fields) {
+            let ci = fld_idx + 1
+            blkArchSetup |> emplace_new <| qmacro(cache |> push(decs::find_component_index(arch, $v("{prefix}{fld.name}"))))
+            blkArchWrite |> emplace_new <| qmacro(decs::set_direct_at(arch, cache[$v(ci)], eidx, src.$f(fld.name)))
+        }
+        var inscope fnArch <- qmacro_function("apply_decs_template_arch") $(var arch : Archetype; eidx : int; eid : EntityId; src : $t(st); var cache : array<int>) : void {
+            pass
+        }
+        var blkA = unsafe(reinterpret<ExprBlock?> fnArch.body)
+        blkA.list |> clear()
+        blkA.list |> emplace_new <| qmacro_block() {
+            if (length(cache) == 0) {
+                $b(blkArchSetup)
+            }
+            $b(blkArchWrite)
+        }
+        if (!(compiling_module() |> add_function(fnArch))) {
+            panic("failed to add apply_decs_template_arch, can't add function {fnArch.name}")
+        }
+        
+        var inscope fnBulk <- qmacro_function("create_entities`{st.name}") $(count : int; user_blk : block<(eid : decs::EntityId; i : int; var entity : $t(st)) : void>) : void {
+            pass
+        }
+        var blk = unsafe(reinterpret<ExprBlock?> fnBulk.body)
+        blk.list |> clear()
+        blk.list |> emplace_new <| qmacro_block() {
+            var defval := default<$t(st)>
+            var cmp : decs::ComponentMap
+            apply_decs_template(cmp, defval)
+            var cache : array<int>
+            decs::create_entities_from_cmp(count, cmp) <| $(var arch : decs::Archetype; eidx : int; eid : decs::EntityId; i : int) {
+                var entity := default<$t(st)>
+                invoke(user_blk, eid, i, entity)
+                apply_decs_template_arch(arch, eidx, eid, entity, cache)
+            }
+            delete cmp
+        }
+        if (!(compiling_module() |> add_function(fnBulk))) {
+            panic("failed to add create_entities`{st.name}, can't add function {fnBulk.name}")
         }
         return true
     }
@@ -147,7 +199,7 @@ def build_req_from_args(qblk : ExprBlock?) : EcsRequest {
 [macro_function]
 def getter_name(a; const_parent : bool; can_be_optional : bool) {
     var getter = "get_ro"
-    static_if (typeinfo stripped_typename(a) == "ast::FieldDeclaration") {
+    static_if (typeinfo stripped_typename(a) == "ast_core::FieldDeclaration") {
         if (a.init != null && can_be_optional) {
             getter = "get_default_ro"
         } elif (!const_parent) {
@@ -252,7 +304,7 @@ def private append_index_lookup(arch_name : string; var qblock : smart_ptr<ExprB
         name := "{prefix}{a.name}{suffix}",
         _type <- vtype,
         init <- iget,
-        flags = VariableFlags.can_shadow
+        flags = VariableFlags.can_shadow | VariableFlags.generated
         )
     qblock.list |> emplace(vlet)
     return true

@@ -897,7 +897,7 @@
       },
       "lod_1": {
         "radius": 3000.0,
-        "maxSounds": 6
+        "maxSounds": 4
       }
     }
   },
@@ -905,12 +905,12 @@
     "lods": {
       "lod_0": {
         "radius": 20.0,
-        "maxSounds": 6,
+        "maxSounds": 3,
         "updInterval": 0.05
       },
       "lod_1": {
-        "radius": 300.0,
-        "maxSounds": 8,
+        "radius": 215.0,
+        "maxSounds": 4,
         "updInterval": 0.2
       }
     }
@@ -943,11 +943,11 @@
     "lods": {
       "lod_0": {
         "radius": 10.0,
-        "maxSounds": 8
+        "maxSounds": 3
       },
       "lod_1": {
-        "radius": 200.0,
-        "maxSounds": 12
+        "radius": 215.0,
+        "maxSounds": 4
       }
     }
   },
@@ -955,10 +955,10 @@
     "lods": {
       "lod_0": {
         "radius": 50.0,
-        "maxSounds": 4
+        "maxSounds": 3
       },
       "lod_1": {
-        "radius": 230.0,
+        "radius": 200.0,
         "maxSounds": 4
       }
     }
@@ -8485,6 +8485,16 @@
       "ship": {
         "path": "naval/effects"
       }
+    },
+    "mk1_gun_reload": {
+      "path": "event/effects",
+      "event": "reload_mk1_gun",
+      "time": 3.225
+    },
+    "mk2_gun_reload": {
+      "path": "event/effects",
+      "event": "reload_mk2_gun",
+      "time": 2.125
     },
     "grd_sturm_s_reload": {
       "path": "ground/effects",

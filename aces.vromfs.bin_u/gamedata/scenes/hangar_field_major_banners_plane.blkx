@@ -1,0 +1,134 @@
+{
+  "entity": [
+    {
+      "_template": "hangar_major_banner_tank",
+      "ri_extra__name": "major_banner_even",
+      "transform": [
+        [
+          1.49237,
+          0.0,
+          1.77854
+        ],
+        [
+          0.0,
+          2.32172,
+          0.0
+        ],
+        [
+          -1.77854,
+          0.0,
+          1.49237
+        ],
+        [
+          3698.71,
+          23.5315,
+          3440.11
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_tank",
+      "ri_extra__name": "major_banner_even",
+      "transform": [
+        [
+          -2.32172,
+          0.0,
+          -2.98023e-8
+        ],
+        [
+          0.0,
+          2.32172,
+          0.0
+        ],
+        [
+          2.98023e-8,
+          0.0,
+          -2.32172
+        ],
+        [
+          3817.85,
+          23.5315,
+          3549.25
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          6.87038e-8,
+          0.0,
+          -0.910009
+        ],
+        [
+          0.0,
+          0.910009,
+          0.0
+        ],
+        [
+          0.910009,
+          0.0,
+          6.87038e-8
+        ],
+        [
+          3718.47,
+          44.6882,
+          3641.69
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          6.87038e-8,
+          0.0,
+          -0.910009
+        ],
+        [
+          0.0,
+          0.910009,
+          0.0
+        ],
+        [
+          0.910009,
+          0.0,
+          6.87038e-8
+        ],
+        [
+          3651.57,
+          44.6882,
+          3641.79
+        ]
+      ]
+    },
+    {
+      "_template": "hangar_major_banner_air",
+      "ri_extra__name": "major_banner_wall_even",
+      "transform": [
+        [
+          6.87038e-8,
+          0.0,
+          -0.910009
+        ],
+        [
+          0.0,
+          0.910009,
+          0.0
+        ],
+        [
+          0.910009,
+          0.0,
+          6.87038e-8
+        ],
+        [
+          3583.51,
+          44.6882,
+          3641.79
+        ]
+      ]
+    }
+  ]
+}

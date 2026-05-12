@@ -6,6 +6,9 @@ let unseenPurchasesDebug = mkWatched(persist, "unseenPurchasesDebug", null)
 let fakeUnseenPurchases = {
   [-1] = {
     source = "lootbox"
+    firstPurchaseGoods = [
+      { id = "gold", gType = "currency", count = 500 }
+    ]
     lostGoods = [
       { id = "playerExp", gType = "booster", count = 2 },
     ]
@@ -37,12 +40,10 @@ let fakeUnseenPurchases = {
       { id = "uk_destroyer_tribal", subId = "upgraded", gType = "skin", count = 0 },
       { id = "air_cbt_access", gType = "battleMod", count = 36000 },
       { id = "japan_branch_access", gType = "battleMod", count = 36000 },
-      { id = "new_year_unit_1", gType = "battleMod", count = 36000 },
-      { id = "new_year_unit_2", gType = "battleMod", count = 36000 },
-      { id = "new_year_unit_3", gType = "battleMod", count = 36000 },
-      { id = "new_year_unit_4", gType = "battleMod", count = 36000 },
-      { id = "new_year_unit_5", gType = "battleMod", count = 36000 },
-      { id = "new_year_unit_6", gType = "battleMod", count = 36000 },
+      { id = "april_fools_unit_1", gType = "battleMod", count = 36000 },
+      { id = "april_fools_unit_2", gType = "battleMod", count = 36000 },
+      { id = "april_fools_unit_3", gType = "battleMod", count = 36000 },
+      { id = "april_fools_unit_4", gType = "battleMod", count = 36000 },
     ]
   }
 }

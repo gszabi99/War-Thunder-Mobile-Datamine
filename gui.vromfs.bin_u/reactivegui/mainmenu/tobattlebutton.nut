@@ -22,7 +22,6 @@ let { textButtonBattle, textButtonCommon, textButtonPrimary, mkCustomButton, mer
 } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { randomBattleMode, shouldStartNewbieSingleOnline, isGameModesReceived, allGameModes
 } = require("%rGui/gameModes/gameModeState.nut")
@@ -155,7 +154,7 @@ function mkToBattleButtonNoAddons(toBattleFunc, battleMode, ovr = {}) {
 function toRandomBattle() {
   if (curUnit.get() != null)
     showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnits.get(), queueCurRandomBattleMode))
-  else if (!openLvlUpWndIfCan())
+  else
     logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.get()?.name})")
 }
 

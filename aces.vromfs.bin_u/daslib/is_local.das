@@ -12,8 +12,8 @@ module is_local shared public
 
 
 
-require ast public
-require rtti
+require daslib/ast public
+require daslib/rtti
 require daslib/ast_boost
 require strings
 

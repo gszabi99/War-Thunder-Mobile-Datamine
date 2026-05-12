@@ -1,0 +1,6 @@
+{
+  "import": [
+    "%danetlibs/assets_import/templates/assets_import.blk",
+    "%gameLibs/fast_grass/templates/fast_grass.template.blk"
+  ]
+}

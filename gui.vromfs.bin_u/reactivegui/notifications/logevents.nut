@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
+let { logAdjustEvent = @(_,__) null } = require_optional("adjust")
 let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { INVALID_USER_ID } = require("matching.errors")
@@ -14,7 +15,7 @@ let regexp2 = require("regexp2")
 let {
   logFirebaseEvent = @(_) null ,
   logFirebaseEventWithJson = @(_,__) null ,
-  setFirebaseUID = @(_) null
+  setFirebaseUID = @(_) null ,
   getFirebaseAppInstanceId = @() null
 }  = is_android ? require_optional ("android.firebase.analytics") : is_ios ? require_optional ("ios.firebase.analytics") : {}
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -70,6 +71,7 @@ function sendEvent(id) {
   log($"[telemetry] send event {id}")
   logEvent($"af_{id}", "")
   logEventFB($"fb_{id}")
+  logAdjustEvent(id,"")
   
   
   logFirebaseEvent(id)
@@ -86,16 +88,18 @@ myUserId.subscribe(function(v) {
     let blk = get_common_local_settings_blk()
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
     if (!wasLoginedBefore) {
-      logEvent("af_first_login",object_to_json_string({cuid = uid}, false))
+      let id_json = object_to_json_string({cuid = uid}, false)
+      logEvent("af_first_login", id_json)
       logEventFB("fb_first_login")
-      logFirebaseEventWithJson("first_login",object_to_json_string({cuid = uid}, false))
+      logAdjustEvent("first_login", id_json)
+      logFirebaseEventWithJson("first_login", id_json)
       blk[FIRST_LOGIN_EVENT] = true
       eventbus_send("saveProfile", {})
     }
   }
 })
 
-function sendAppsFlyerSavedEvent(eventId, saveId) {
+function sendTelemetrySavedEvent(eventId, saveId) {
   let blk = get_local_custom_settings_blk().addBlock(STATS_SENT)
   if (!blk?[saveId]) {
     blk[saveId] = true
@@ -113,7 +117,7 @@ subscribeResetProfile(resetStatsSentEvents)
 register_command(resetStatsSentEvents, "debug.reset_stats_sent_events")
 
 return {
-  sendAppsFlyerEvent = sendEvent
-  sendAppsFlyerSavedEvent
+  sendTelemetryEvent = sendEvent
+  sendTelemetrySavedEvent
   logFirebaseEventWithJson
 }

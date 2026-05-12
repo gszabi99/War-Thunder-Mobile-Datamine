@@ -3,14 +3,14 @@ options no_aot = true
 options rtti
 module ecs_inspectors_macro shared private
 require ecs.macro_common
-require ast
+require daslib/ast
 
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/strings_boost
 
 require danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_common public
-require debugapi public
+require daslib/debugger public
 
 [macro_function]
 def keep_args(var func)

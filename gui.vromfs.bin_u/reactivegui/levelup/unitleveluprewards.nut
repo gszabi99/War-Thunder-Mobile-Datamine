@@ -18,7 +18,7 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { levelUpUnitFlag } = require("%rGui/levelUp/levelUpFlag.nut")
+let { levelUpUnitFlag, flagHeight } = require("%rGui/levelUp/levelUpFlag.nut")
 
 
 let WND_UID = "unit_levelup_rewards_wnd"
@@ -116,7 +116,7 @@ let content = modalWndBg.__merge({
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         watch = rewardUnitLevelInfo
-        children = levelUpUnitFlag(hdpx(150), rewardUnitLevelInfo.get().maxLevel, 0, flagStartDelay)
+        children = levelUpUnitFlag(flagHeight, rewardUnitLevelInfo.get().maxLevel, 0, flagStartDelay)
       })
       levelUpText
       rewardsList

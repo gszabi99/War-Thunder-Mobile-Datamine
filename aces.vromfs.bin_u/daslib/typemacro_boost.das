@@ -46,7 +46,7 @@ def is_typedecl_ptr(t : TypeDeclPtr) {
     if (pt == null) {
         return false
     }
-    if (pt.baseType != Type.tHandle || pt.annotation.name != "TypeDecl" || pt.annotation._module.name != "ast") {
+    if (pt.baseType != Type.tHandle || pt.annotation.name != "TypeDecl" || pt.annotation._module.name != "ast_core") {
         return false
     }
     return true
@@ -130,7 +130,7 @@ class TypeMacroMacro : AstFunctionAnnotation {
         let className = "{func.name}`TypeMacro"
         var inscope parentType <- typeinfo ast_typedecl(type<ast::AstTypeMacro>)
         if (parentType == null) {
-            errors := "ast::AstTypeMacro not found"
+            errors := "ast_core::AstTypeMacro not found"
             return false
         }
         var inscope cls <- make_class(className, parentType.structType, compiling_module())
@@ -245,6 +245,7 @@ class TypeMacroTemplate : AstStructureAnnotation {
 def public make_typemacro_template_instance(instance_type, template_type : Structure?; ex : array<tuple<string, string>> = array<tuple<string, string>>()) {
     
     var extra : array<tuple<string, RttiValue>>
+    extra |> reserve(1 + length(ex))
     extra.emplace(("parent", RttiValue(tString = "{template_type._module.name}::{template_type.name}")), 0)
     for (e in ex) {
         extra.emplace((e._0, RttiValue(tString = e._1)), 0)
@@ -510,7 +511,7 @@ class TemplateStructure : AstStructureAnnotation {
         let makeFuncName = "make`template`{st.name}"
         var inscope ctxFnArguments : array<VariablePtr>
         for (arg in args) {
-            if (true) {
+            {
                 var inscope argVar <- new Variable(
                     name := string(arg.name),
                     at = st.at

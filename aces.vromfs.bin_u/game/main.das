@@ -3,9 +3,10 @@ require ecs
 require app
 require DagorSystem
 require ECSGlobalTags
-require %dasGameLibs.ecs.fs
+require %gameLibs.das.ecs.fs
 require %game.wt_scripts_init
 require %danetlibs.imgui_daeditor.imgui_daeditor_init
+require %appGame.libs_init
 
 [init]
 def load

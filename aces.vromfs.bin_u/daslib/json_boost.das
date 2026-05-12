@@ -13,8 +13,8 @@ module json_boost shared public
 
 
 
-require rtti public
-require ast
+require daslib/rtti public
+require daslib/ast
 require strings
 require daslib/json public
 require daslib/ast_boost
@@ -436,15 +436,19 @@ def public parse_json_annotation(name : string; annotation : array<tuple<name : 
     var fieldState : JsonFieldState
     fieldState.argName = name
     for (ann in annotation) {
-        if (ann.name == "rename" && ann.data is tString) {
-            fieldState.argName = ann.data as tString
-        } elif (ann.name == "enum_as_int" && ann.data is bool) {
+        if (ann.name == "rename") {
+            if (ann.data is tString) {
+                fieldState.argName = ann.data as tString
+            } elif (ann.data is tBool && length(name) > 0 && first_character(name) == '_') {
+                fieldState.argName = slice(name, 1)
+            }
+        } elif (ann.name == "enum_as_int" && ann.data is tBool) {
             fieldState.enumAsInt = ann.data as tBool
-        } elif (ann.name == "unescape" && ann.data is bool) {
+        } elif (ann.name == "unescape" && ann.data is tBool) {
             fieldState.unescape = ann.data as tBool
-        } elif (ann.name == "embed" && ann.data is bool) {
+        } elif (ann.name == "embed" && ann.data is tBool) {
             fieldState.embed = ann.data as tBool
-        } elif (ann.name == "optional" && ann.data is bool) {
+        } elif (ann.name == "optional" && ann.data is tBool) {
             fieldState.optional = ann.data as tBool
         }
     }
@@ -507,6 +511,7 @@ def from_JV(v : JsonValue const explicit?; anything : auto(TT)) {
         }
         unsafe {
             let arr & = v.value as _array
+            ret |> reserve(arr |> length)
             for (i in range(arr |> length)) {
                 if (typeinfo can_copy(anything[0])) {
                     ret |> push_clone <| _::from_JV(arr[i], decltype_noref(anything[0]))
@@ -586,6 +591,22 @@ def JV(value : auto(TT)) : JsonValue? {
                     fieldState <- parse_json_annotation(name, annotations)
                     fieldStateParsed = true
                 }
+                if (fieldState.optional) {
+                    
+                    static_if (typeinfo is_string(field)) {
+                        if (empty(field)) { return ; }
+                    } static_elif (typeinfo is_array(field)) {
+                        if (length(field) == 0) { return ; }
+                    } static_elif (typeinfo is_table(field)) {
+                        if (length(field) == 0) { return ; }
+                    } static_elif (typeinfo is_pointer(field)) {
+                        if (field == null) { return ; }
+                    } else {
+                        static_if (typeinfo is_workhorse(field)) {
+                            if (field == default<typedecl(field)>) { return ; }
+                        }
+                    }
+                }
                 if (fieldState.enumAsInt) {     
                     static_if (typeinfo is_enum(field)) {
                         let fieldStateEnumValue : int = int(field)
@@ -637,6 +658,9 @@ def JV(value : auto(TT)) : JsonValue? {
         return _::JV(map)
     } static_elif (typeinfo is_iterable(value)) {
         var arr : array<JsonValue?>
+        static_if (typeinfo is_array(value) || typeinfo is_dim(value)) {
+            arr |> reserve(length(value))
+        }
         for (x in value) {
             arr |> push <| _::JV(x)
         }

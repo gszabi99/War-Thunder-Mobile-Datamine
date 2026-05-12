@@ -26,16 +26,14 @@ let battleModsForOffer = {
 }
 
 let eventUnitMods = {
-  new_year_unit_1 = "uk_challenger_1_mk_3_gulf_event"
-  new_year_unit_2 = "il_merkava_mk_2d_event"
-  new_year_unit_3 = "us_m1_abrams_event"
-  new_year_unit_4 = "ussr_t_90a_event"
-  new_year_unit_5 = "jp_type_90_event"
-  new_year_unit_6 = "cn_ztz_99_w_event"
+  april_fools_unit_1 = "us_bulldog"
+  april_fools_unit_2 = "germ_trixter"
+  april_fools_unit_3 = "ussr_sht_1"
+  april_fools_unit_4 = "cn_victor"
 }.reduce(@(res, id, modeId) res.$rawset(modeId, {
     id = modeId,
     viewType = "eventUnit"
-    eventId = "new_year_2026"
+    eventId = "event_april_2026"
     unitCtor = @() mkUnitData(id)
   }),
 {})

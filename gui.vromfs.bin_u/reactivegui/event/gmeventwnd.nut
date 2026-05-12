@@ -29,7 +29,7 @@ let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
-let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
 let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
@@ -144,7 +144,7 @@ function validateAccessStat() {
   if (hasAccessCurGmEvent.get() && curEventAccessStatValue.get() != STAT_HAS_ACCESS) {
     logE($"Has access on window attach. set stat {curEventAccessStat.get()} to {STAT_HAS_ACCESS}")
     setAccessStat(STAT_HAS_ACCESS)
-    sendAppsFlyerEvent("purchase_cbt_access")
+    sendTelemetryEvent("purchase_cbt_access")
   }
   else if (!hasAccessCurGmEvent.get() && curEventAccessStatValue.get() == STAT_HAS_ACCESS) {
     logE($"Dont has access on window attach. But has stat. So set stat {curEventAccessStat.get()} to {STAT_NOT_REQUESTED}")

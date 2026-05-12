@@ -19,7 +19,11 @@ let shortcutsByUnitTypes = {
       "ID_SHIP_WEAPON_TORPEDOES", "ID_SHIP_SMOKE_SCREEN_GENERATOR", "ID_WTM_LAUNCH_AIRCRAFT",
       "ID_SHIP_WEAPON_MINE", "ID_SHIP_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
       "ID_SHIP_STRATEGY_MODE_TOGGLE", "ID_SHIP_WEAPON_ROCKETS", "ID_SHIP_WEAPON_ROCKETS_SECONDARY",
-      "ID_SHIP_MANUAL_ANTIAIR_TOGGLE", "ID_SHIP_ROCKET_ASW"
+      "ID_SHIP_MANUAL_ANTIAIR_TOGGLE", "ID_SHIP_ROCKET_ASW",
+
+
+
+
     ]
       .extend(sameLoc("hotkeys/steering", ["ship_steering_rangeMin", "ship_steering_rangeMax"]))
     axes = sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["ship_mouse_aim_x", "ship_mouse_aim_y"])

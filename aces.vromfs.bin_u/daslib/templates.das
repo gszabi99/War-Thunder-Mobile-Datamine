@@ -14,8 +14,9 @@ module templates shared private
 
 
 
-require ast
-require rtti
+require daslib/ast
+require daslib/rtti
+require strings
 require daslib/ast_boost
 
 [call_macro(name="decltype")]
@@ -84,7 +85,8 @@ class TemplateMacro : AstFunctionAnnotation {
         fclone.fromGeneric |> move <| ffunc
         fclone.flags |= FunctionFlags.privateFunction
         newcall.func = null
-        var extra = ""
+        var inscope hashes : array<uint64>
+        hashes |> reserve(length(fclone.annotations[taidx].arguments))
         for (t in fclone.annotations[taidx].arguments) {
             let argidx = find_index_if(each(fclone.arguments)) $(farg) {
                 return farg.name == t.name
@@ -93,7 +95,7 @@ class TemplateMacro : AstFunctionAnnotation {
                 errors := "can't find template argument {t.name} (or duplicate)"
                 return <- default<ExpressionPtr>
             }
-            if (true) {
+            {
                 var inscope argExpr := newcall.arguments[argidx]
                 if (argExpr is ExprRef2Value) {
                     let r2v = newcall.arguments[argidx] as ExprRef2Value
@@ -105,13 +107,18 @@ class TemplateMacro : AstFunctionAnnotation {
                     return <- default<ExpressionPtr>
                 }
                 let tname = describe_typedecl(argExpr._type, true, true, true)
-                extra += "`{hash(tname)}"
+                hashes |> push(hash(tname))
             }
             fclone.arguments |> erase(argidx)
             newcall.arguments |> erase(argidx)
         }
         fclone.annotations |> erase(taidx)
         
+        let extra = build_string() <| $(var w) {
+            for (h in hashes) {
+                w |> write("`{h}")
+            }
+        }
         fclone.name := "`template{extra}`{fclone.name}"
         newcall.name := "_::{fclone.name}"
         

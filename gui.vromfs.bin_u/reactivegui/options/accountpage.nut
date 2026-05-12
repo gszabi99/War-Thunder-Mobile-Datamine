@@ -3,7 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { eventbus_send } = require("eventbus")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
-let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%appGlobals/loginState.nut")
+let { curLoginType, LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account, allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -11,7 +11,7 @@ let { getSubsPresentation, getPremIcon } = require("%appGlobals/config/subsPrese
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
 let { buttonsVGap, mkCustomButton, mkButtonTextMultiline, textButtonPurchase, mergeStyles } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, PRIMARY, COMMON } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, PRIMARY, COMMON, INACTIVE } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
@@ -26,7 +26,7 @@ let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
-let { isCampaignWithUnitsResearch, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 let { isGuestLogin, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
@@ -36,14 +36,16 @@ let { subsByCategory } = require("%rGui/shop/shopState.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
-let urlColor = 0xFF17C0FC
-let urlHoverColor = 0xFF84E0FA
-let urlLineWidth = hdpx(1)
-
-let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
-  && [ LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
-let canLinkToGaijinAccountForGuest = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
+let canUpgradeGuestAccountToGaijinID = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
   && isGuestLogin.get())
+
+
+
+
+let canLinkAccountForWtCrossPromo = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
+  && [ LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
+let needShowCrossPromoWithWT = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
+  && (canLinkAccountForWtCrossPromo.get() || canUpgradeGuestAccountToGaijinID.get()))
 
 let canChangeAccount = Computed(@() isInMenu.get() && !is_nswitch)
 
@@ -84,7 +86,7 @@ let levelMark = @() {
       pos = [0, -hdpx(2)]
     }.__update(fontSmall)
     starLevelTiny(playerLevelInfo.get().starLevel, starLevelOvr)
-    isCampaignWithUnitsResearch.get() ? unitsResearchInfo : null
+    unitsResearchInfo
   ]
 }
 
@@ -267,12 +269,14 @@ let userInfoBlock = {
 }
 
 let buttonsWidthStyle = {
-  ovr = {
-    minWidth = hdpx(550)
-  }
+  ovr = { minWidth = hdpx(550) }
 }
-
 let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontTinyAccentedShadedBold)
+
+let mkButton = @(locId, cb, style = PRIMARY) mkCustomButton(
+  mkButtonTextMultiline(utf8ToUpper(loc(locId)), multilineButtonOvrStyle),
+  cb,
+  mergeStyles(style, buttonsWidthStyle))
 
 let logoutMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangePlayer")
@@ -282,28 +286,17 @@ let logoutMsgBox = @() openMsgBox({
   ]
 })
 
-function mkLinkBtn(text, onClick) {
-  let stateFlags = Watched(0)
-  return function() {
-    let color = stateFlags.get() & S_HOVER ? urlHoverColor : urlColor
-    return {
-      watch = stateFlags
-      rendObj = ROBJ_TEXT
-      text
-      color
-
-      behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags.set(sf)
-      onClick
-
-      children = {
-        size = [flex(), urlLineWidth]
-        vplace = ALIGN_BOTTOM
-        rendObj = ROBJ_SOLID
-        color
-      }
-    }.__update(fontSmall)
-  }
+function onCrossPromoWithWT() {
+  if (canLinkAccountForWtCrossPromo.get())
+    eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL })
+  else if (canUpgradeGuestAccountToGaijinID.get())
+    openMsgBox({
+      text = "".concat(loc("msg/needRegistrationForThis"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
+      buttons = [
+        { id = "cancel", isCancel = true }
+        { id = "linkEmail", styleId = "PRIMARY", isDefault = true, cb = openGuestEmailRegistration }
+      ]
+    })
 }
 
 let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
@@ -313,46 +306,27 @@ let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
       children
     }
 
-let mkLinksBlock = @(children) !children.findvalue(@(v) v != null) ? null
-  : {
-      flow = FLOW_VERTICAL
-      children
-    }
-
 function buttons() {
+  let watch = [ canChangeAccount, canLinkEmailForGaijinLogin, canUpgradeGuestAccountToGaijinID,
+    needShowCrossPromoWithWT, canLinkAccountForWtCrossPromo ]
   let rows = arrayByRows(
     [
       !canChangeAccount.get() ? null
-        : mkCustomButton(
-            mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/btnChangePlayer")), multilineButtonOvrStyle),
-            logoutMsgBox,
-            mergeStyles(COMMON, buttonsWidthStyle))
-      mkCustomButton(
-        mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/support")), multilineButtonOvrStyle),
-        openSupportTicketWndOrUrl,
-        mergeStyles(PRIMARY, buttonsWidthStyle))
-      canLinkToGaijinAccount.get()
-        ? mkCustomButton(
-            mkButtonTextMultiline(utf8ToUpper(loc("msgbox/btn_linkEmail")), multilineButtonOvrStyle),
-            @() eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
-            mergeStyles(PRIMARY, buttonsWidthStyle))
-        : canLinkToGaijinAccountForGuest.get()
-          ? mkCustomButton(
-              mkButtonTextMultiline(utf8ToUpper(loc("msgbox/btn_linkEmail")), multilineButtonOvrStyle),
-              openGuestEmailRegistration,
-              mergeStyles(PRIMARY, buttonsWidthStyle))
+        : mkButton(loc("mainmenu/btnChangePlayer"), logoutMsgBox, COMMON)
+      mkButton(loc("mainmenu/support"), openSupportTicketWndOrUrl)
+      canLinkEmailForGaijinLogin.get()
+          ? mkButton(loc("upgrade_account_to_gaijin_id"), openLinkEmailForGaijinLogin)
+        : canUpgradeGuestAccountToGaijinID.get()
+          ? mkButton(loc("upgrade_account_to_gaijin_id"), openGuestEmailRegistration)
         : null
+      !needShowCrossPromoWithWT.get() ? null
+        : mkButton(loc("participate_in_crosspromo_wt"), onCrossPromoWithWT,
+            canLinkAccountForWtCrossPromo.get() ? PRIMARY : INACTIVE)
       !canUsePromoCodes ? null
-        : mkCustomButton(
-            mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/btnActivateCode")), multilineButtonOvrStyle),
-            @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
-            mergeStyles(PRIMARY, buttonsWidthStyle))
+        : mkButton(loc("mainmenu/btnActivateCode"), @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }))
       !hasRestorePurchases ? null
         : mkSpinnerHideBlock(Computed(@() platformPurchaseInProgress.get() != null),
-            mkCustomButton(
-              mkButtonTextMultiline(utf8ToUpper(loc("restorePurchases")), multilineButtonOvrStyle),
-              restorePurchases,
-              mergeStyles(PRIMARY, buttonsWidthStyle)),
+            mkButton(loc("restorePurchases"), restorePurchases),
             {
               size = [ buttonsWidthStyle.ovr.minWidth, defButtonHeight ]
               halign = ALIGN_CENTER
@@ -362,14 +336,10 @@ function buttons() {
     2)
 
   return {
-    watch = [canLinkToGaijinAccount, canLinkEmailForGaijinLogin, canChangeAccount, canLinkToGaijinAccountForGuest]
+    watch
     flow = FLOW_VERTICAL
     gap = buttonsVGap
     children = rows.map(mkButtonRow)
-      .append(mkLinksBlock([
-        !canLinkEmailForGaijinLogin.get() ? null
-          : mkLinkBtn(loc("link_email_for_alt_auth"), openLinkEmailForGaijinLogin)
-      ]))
   }
 }
 

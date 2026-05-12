@@ -26,7 +26,7 @@ let { tooltipBg } = require("%rGui/tooltip.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
 let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
@@ -178,7 +178,7 @@ let pageBlock = {
 
 let applyAction = function() {
   if(!hasUpgradedAttrUnitNotUpdatable()) {
-    sendAppsFlyerEvent("add_unit_attributes")
+    sendTelemetryEvent("add_unit_attributes")
   }
   applyAttributes()
   backButtonBlink("UnitAttr")

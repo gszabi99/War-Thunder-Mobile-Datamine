@@ -3,7 +3,7 @@ let { round } = require("math")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 
 let levelUpSizePx = [400, 220]
-let flagHeight = hdpx(180)
+let flagHeight = hdpx(150)
 
 let wingTime1 = 0.3
 let wingTime2 = 0.05
@@ -18,8 +18,6 @@ let flagTimeDiff = 0.1
 
 let textStartTime = 0.1
 let textTime = starStartTime - textStartTime
-
-let flagAnimFullTime = flagStartTime + flagTime1 + flagTime2 + flagTimeDiff
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / levelUpSizePx[0]), ph(100.0 * size[1] / levelUpSizePx[1])]
 let mkSizeElemByParent = @(size, parentSize)
@@ -185,16 +183,11 @@ let createLevelUpFlag = @(flagType, size, level, starLevel, delay = 0, override 
 
 let mkFlagSize = @(height) [levelUpSizePx[0].tofloat() / levelUpSizePx[1] * height, height]
 
-let levelUpFlag = @(height, level, starLevel, delay = 0, override = {})
-  createLevelUpFlag("levelUp", mkFlagSize(height), level, starLevel, delay, override)
-
 let levelUpUnitFlag = @(height, level, starLevel, delay = 0, override = {})
   createLevelUpFlag("unitLevelUp", mkFlagSize(height), level, starLevel, delay, override)
 
 return {
-  flagAnimFullTime
   flagHeight
   levelUpSizePx
-  levelUpFlag
   levelUpUnitFlag
 }

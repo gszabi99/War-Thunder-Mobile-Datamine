@@ -6,7 +6,8 @@ let { doesLocTextExist } = require("dagor.localize")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
+let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM, G_LOOTBOX, G_CURRENCY
+} = require("%appGlobals/rewardType.nut")
 let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -65,7 +66,7 @@ let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { curUnitInProgress, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { allShopGoods } = require("%rGui/shop/shopState.nut")
-let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
+let { sendTelemetrySavedEvent } = require("%rGui/notifications/logEvents.nut")
 let { mkGradText } =  require("%rGui/unitCustom/unitCustomComps.nut")
 let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
@@ -115,7 +116,7 @@ let aTitleScaleDownTime = aTitleScaleUpTime
 let aTitleScaleMin = 0.75
 let aTitleScaleMax = 1.1
 
-let appsFlyerSaveId = "DefaultSkinWasReplaced"
+let telemetrySaveId = "DefaultSkinWasReplaced"
 
 let infoTextBySource = {
   premium_convert_by_subscription = @(count) loc("reward/premium_convert_by_subscription/desc",
@@ -181,6 +182,14 @@ let stackData = Computed(function() {
       allUnits, conversionList, lboxes, "count")
     fillStackRawGoods(stackRaw, purch.lostGoods, purch.source, campaignsList.get(),
       allUnits, conversionList, lboxes, "lostCount")
+    foreach (data in purch?.firstPurchaseGoods ?? []) {
+      let { id, gType, count } = data
+      if (gType != G_CURRENCY) {
+        logerr($"Unsupported reward goods type for first purchase: {gType}")
+        continue
+      }
+      stackRaw[gType][id].firstPurchaseCount <- (stackRaw[gType][id]?.firstPurchaseCount ?? 0) + count
+    }
   }
   if (stackRaw?.unit != null && stackRaw?.unitUpgrade != null)
     stackRaw.unit = stackRaw.unit.filter(@(_, unitName) stackRaw.unitUpgrade?[unitName] == null)
@@ -526,7 +535,7 @@ function mkSkinEquipButton(unitName, skinName) {
           function() {
             enable_unit_skin(unitName, unitName, skinName)
             if (skinName != "")
-              sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
+              sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
           },
           { ovr = { size = [flex(), hdpx(70)], minWidth = 0 } })
   }
@@ -674,6 +683,23 @@ let rewardCtors = {
   currency = {
     mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+    mkFirstPuchaseRow = @(rewardInfo) {
+      size = [rewTextMaxWidth, SIZE_TO_CONTENT]
+      vplace = ALIGN_BOTTOM
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      rendObj = ROBJ_SOLID
+      color = 0xC8C80000
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(10)
+      children = {
+        text = utf8ToUpper(loc("shop/item/first_purchase/short"))
+        rendObj = ROBJ_TEXT
+        color = 0xFFFFFFFF
+        font = Fonts.wtfont
+        fontSize = hdpxi(28)
+      }.__update(shadeTiny)
+    }.__update(mkRewardAnimProps(rewardInfo.startDelay, aRewardIconSelfScale))
   }
   premium = {
     mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, "ui/gameuiskin#premium_active_big.avif", 1.43, 1.4)
@@ -753,7 +779,13 @@ let rewardCtors = {
 }
 
 function mkRewardIconComp(rewardInfo) {
-  let { mkIcon, mkText } = rewardCtors[rewardInfo.gType]
+  let { mkIcon, mkText, mkFirstPuchaseRow = @(_) null } = rewardCtors[rewardInfo.gType]
+  let iconComp = {
+    size = [rewBlockWidth, rewIconSize]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = mkIcon(rewardInfo)
+  }
 
   return {
     size = [rewBlockWidth, SIZE_TO_CONTENT]
@@ -761,12 +793,15 @@ function mkRewardIconComp(rewardInfo) {
     halign = ALIGN_CENTER
     gap = rewIconToTextGap
     children = [
-      {
-        size = [rewBlockWidth, rewIconSize]
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = mkIcon(rewardInfo)
-      }
+      !rewardInfo?.isFirstPurchase ? iconComp
+        : {
+            size = [rewBlockWidth, SIZE_TO_CONTENT]
+            halign = ALIGN_CENTER
+            children = [
+              iconComp
+              mkFirstPuchaseRow(rewardInfo)
+            ]
+          }
       mkText(rewardInfo)
     ]
   }
@@ -1191,12 +1226,18 @@ function onCloseRequest() {
 function mkMsgContent(stackDataV, purchGroup, onClick) {
   let { rewardIcons, unitPlates, outroDelay, battleMod } = stackDataV
   let modifiedRewardIcons = rewardIcons.reduce(function(res, v) {
-    if (!gTypesLost?[v.gType])
-      return res.append(v)
-    if ((v?.count ?? 0) > 0)
+    let { count = 0, lostCount = 0, firstPurchaseCount = 0, gType } = v
+    if (!gTypesLost?[gType]) {
+      let isFirstPurchase = gType == G_CURRENCY && firstPurchaseCount > 0
+      res.append(!isFirstPurchase ? v : v.__merge({ count = count - firstPurchaseCount }))
+      if (isFirstPurchase)
+        res.append(v.__merge({ count = firstPurchaseCount, isFirstPurchase = true }))
+      return res
+    }
+    if (count > 0)
       res.append(v.__merge({ lostCount = 0 }))
-    if ((v?.lostCount ?? 0) > 0)
-      res.append(v.__merge({ count = v.lostCount, isLost = true, lostCount = 0 }))
+    if (lostCount > 0)
+      res.append(v.__merge({ count = lostCount, isLost = true, lostCount = 0 }))
     return res
   }, [])
   let lootboxAmount = modifiedRewardIcons.filter(@(r) r.gType == G_LOOTBOX).reduce(@(res, rew) res + rew.count, 0)

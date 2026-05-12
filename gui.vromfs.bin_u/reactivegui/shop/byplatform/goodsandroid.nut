@@ -18,6 +18,7 @@ let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { logAdjustEvent = @(_,__) null } = require_optional("adjust")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 let { DBGLEVEL } = require("dagor.system")
@@ -330,7 +331,6 @@ function sendPurchaseLogEvent(purchaseToken, isAdded) {
     return
   let price = availableSkusPrices.get()?[productId].price ?? -1
   let currency = (availableSkusPrices.get()?[productId].currencyId ?? "USD").toupper()
-  
   logFirebaseEventWithJson("in_app_purchase_clone", object_to_json_string({
     value = price
     quantity = 1
@@ -339,6 +339,13 @@ function sendPurchaseLogEvent(purchaseToken, isAdded) {
     subscription = subsIdBySku.get()?[productId] != null
     currency = currency
     price_is_discounted = false
+  }, false))
+  logAdjustEvent("purchase", object_to_json_string({
+    order_id = orderId
+    product_id = productId
+    revenue = price
+    currency = currency
+    purchase_token = purchaseToken
   }, false))
 }
 

@@ -4,7 +4,7 @@ from "%appGlobals/pServer/pServerApi.nut" import toggle_ab_test, reset_ab_tests,
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 
 
-let abTestsCfg = Computed(@() serverConfigs.get()?.abTestsCfg ?? {})
+let abTestsCfg = keepref(Computed(@() serverConfigs.get()?.abTestsCfg ?? {}))
 
 let registeredAbTests = {}
 function registerAbTestCommandOnce(abTestId) {

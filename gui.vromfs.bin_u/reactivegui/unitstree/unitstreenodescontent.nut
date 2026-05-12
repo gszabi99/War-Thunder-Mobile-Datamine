@@ -16,7 +16,6 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll, interruptAnimScroll
 } = require("%rGui/unitsTree/unitsTreeScroll.nut")
-let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -25,7 +24,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits, markUnitSeen, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
 let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { selectedCountry, visibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
+let { selectedCountry, mkCountryNodesCfg, mkCountries,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
   setUnitToScroll, unitToScroll, unitInfoToScroll
 } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
@@ -43,6 +42,7 @@ let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
 let { attractColor } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let { draggedData, removeUnitFromSlot } = require("%rGui/slotBar/dragDropSlotState.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
+
 
 let aTimeAppearLink = 1
 let aTimeChangeLink = 0.5
@@ -639,10 +639,8 @@ function mkUnitsTreeFull(countryNodesCfg, hasDarkScreenV, areaSizeV) {
     minHeight = areaSizeV[1]
     behavior = Behaviors.Button
     function onClick() {
-      if (!isLvlUpAnimated.get()) {
-        curSelectedUnit.set(null)
-        selectedTreeSlotIdx.set(null)
-      }
+      curSelectedUnit.set(null)
+      selectedTreeSlotIdx.set(null)
     }
     children = [
       @() {
@@ -749,8 +747,7 @@ let pannableAreaWithSlobar = mkAreaPannable(calcAreaSize(true))
 
 let contentKey = {}
 let pannableKey = {}
-let function mkUnitsTreeNodesContent(nodesReceiveInfo) {
-  let filteredNodes = mkFilteredNodes(Computed(@() visibleNodes.get().__merge(nodesReceiveInfo.get())))
+let function mkUnitsTreeNodesContent(filteredNodes) {
   let allCountries = mkCountries(filteredNodes)
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()
@@ -822,6 +819,7 @@ let function mkUnitsTreeNodesContent(nodesReceiveInfo) {
           },
           {
             behavior = [Behaviors.Pannable, Behaviors.ScrollEvent, Behaviors.DragAndDrop]
+            joystickScroll = true
             onDrop = @(data) removeUnitFromSlot(data)
             touchMarginPriority = TOUCH_BACKGROUND
             scrollHandler

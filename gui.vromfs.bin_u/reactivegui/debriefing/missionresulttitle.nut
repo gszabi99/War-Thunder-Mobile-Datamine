@@ -13,12 +13,6 @@ let glowAppearAnimTime = 0.2
 
 let missionResultTitleAnimTime = max(resultTextAnimTime, glowAnimTime)
 
-let locByCampaign = {
-  tanks = "debriefing/yourPlatoonDestroyed"
-  ships = "debriefing/yourShipDestroyed"
-  default = "debriefing/yourVehicleDestroyed"
-}
-
 let missionResultParamsByType = {
   victory = {
     text = @(_) loc("debriefing/victory")
@@ -36,7 +30,9 @@ let missionResultParamsByType = {
     animTextColor = 0xFFFFDA83
   }
   inProgress = {
-    text = @(campaign) loc(locByCampaign?[campaign] ?? locByCampaign.default)
+    text = @(debrData) loc(debrData?.isSeparateSlots
+      ? "debriefing/yourVehiclesDestroyed"
+      : "debriefing/yourVehicleDestroyed")
     color = 0xFFFFFFFF
     animTextColor =  0xFFFFFFFF
   }
@@ -62,10 +58,10 @@ let missionResultParamsByType = {
   }
 }
 
-let mkMissionResultText = @(needAnim, missionResult, campaign) {
+let mkMissionResultText = @(needAnim, missionResult, debrData) {
   rendObj = ROBJ_TEXT
   color = missionResult.color
-  text = missionResult.text(campaign)
+  text = missionResult.text(debrData)
   transform = !needAnim ? null : {}
   animations = !needAnim ? null : [
     {
@@ -116,7 +112,7 @@ let mkMissionResultLine = @(needAnim, missionResult) {
 
 function mkMissionResultTitle(debrData, needAnim) {
   let { isWon = false, isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false,
-    gameType = 0, campaign = "" } = debrData
+    gameType = 0 } = debrData
   let missionResult = debrData == null ? missionResultParamsByType.unknown
     : kickInactivity ? missionResultParamsByType.inactivity
     : isDisconnected ? missionResultParamsByType.disconnect
@@ -135,7 +131,7 @@ function mkMissionResultTitle(debrData, needAnim) {
         hplace = ALIGN_CENTER
         gap = rowGap
         children = [
-          mkMissionResultText(needAnim, missionResult, campaign)
+          mkMissionResultText(needAnim, missionResult, debrData)
           mkMissionResultLine(needAnim, missionResult)
         ]
       }

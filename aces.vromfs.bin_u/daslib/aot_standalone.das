@@ -1,8 +1,8 @@
 options gen2
 
 module aot_standalone private
-require fio
-require rtti
+require daslib/fio
+require daslib/rtti
 require strings
 
 require daslib/match
@@ -61,6 +61,7 @@ def writeStandaloneContextMethods(var prog : ProgramPtr; var logs : StringBuilde
         write(logs, "auto {prefix}{aotFunctionName(string(fn.origin != null ? fn.origin.name : fn.name))} ( ");
     
         var vars : array<string>
+        vars |> reserve(length(fn.arguments))
         for (variable in fn.arguments) {
             if (variable._type.baseType == Type.tStructure && declare_only) {
                 
@@ -95,13 +96,11 @@ def writeStandaloneContextMethods(var prog : ProgramPtr; var logs : StringBuilde
 }
 
 def writeStandaloneCtor(cfg : StandaloneContextCfg; initFunctions : string; var tw : StringBuilderWriter, program : ProgramPtr) {
-    let disableInit = program._options |> find_arg("no_init") ?as tBool ?? program.policies.no_init;
     var lookupVariableTable : array<Variable?>;
     if (program.totalVariables > 0) {
         program.get_ptr() |> for_each_module_no_order($(pm) {
             pm |> for_each_global($(pvar) {
-                if (!pvar.flags.used)
-                    return
+                if (!pvar.flags.used) return
                 if (pvar.index < 0) {
                     panic("Internal compiler errors. Simulating variable which is not used{pvar.name}");
                     return
@@ -314,7 +313,8 @@ def GetFunctionInfo(pfun : Function?, info : string) {
 
 def addFunctionInfo(disableInit : bool; rtti : bool, fnn : array<Function?>, var helper : AotDebugInfoHelper?) {
     helper.helper.rtti = rtti;
-    var lookupFunctionTable : array<tuple<Function?, FuncInfo?>>;
+    var lookupFunctionTable : array<tuple<Function?, FuncInfo?>>
+    lookupFunctionTable |> reserve(length(fnn))
     for (pfun in fnn) {
         let info = helper.helper |> make_function_debug_info(pfun);
         lookupFunctionTable.push((pfun, info));
@@ -442,7 +442,7 @@ def public runStandaloneVisitor(var program : ProgramPtr, modules : array<string
 }
 
 [export]
-def public standalone_aot(input : string; output_dir : string; cross_platform : bool, paranoid_validation : bool; cop : CodeOfPolicies) : string {
+def public standalone_aot(input : string; output_dir : string; cross_platform : bool, paranoid_validation : bool; cop : CodeOfPolicies) {
     
     let file_name = input |> split_by_chars("/\\") |> back()
     let ctx_name = (file_name |> split("."))[0]
@@ -450,23 +450,19 @@ def public standalone_aot(input : string; output_dir : string; cross_platform : 
                                    class_name = "Standalone",
                                    cpp_output_dir = output_dir,
                                    cross_platform = cross_platform)
-    var result = "";
     using() $(var mg : ModuleGroup) {
         var inscope access <- make_file_access("")
         compile_and_simulate(input, access, unsafe(addr(mg)), cop) $(var program : ProgramPtr; var pctx : smart_ptr<Context>) {
-            result = build_string() $(writer) {
-                
-                var modules_str : array<string>
-                let (modules_str, noAotModule) = getRequiredModulesFor(program)
-                if (program._options |> find_arg("no_aot") ?as tBool ?? false) {
-                    panic("Standalone context called on non aot module {input}")
-                } elif (noAotModule) {
-                    panic("Standalone context called on non aot module {input}")
-                } else {
-                    runStandaloneVisitor(program, modules_str, pctx, cfg)
-                }
+            
+            let (modules_str, noAotModule) = getRequiredModulesFor(program)
+            if (program._options |> find_arg("no_aot") ?as tBool ?? false) {
+                panic("Standalone context called on non aot module {input}")
+            } elif (noAotModule) {
+                panic("Standalone context called on non aot module {input}")
+            } else {
+                runStandaloneVisitor(program, modules_str, pctx, cfg)
             }
         }
     }
-    return result
+    return true
 }

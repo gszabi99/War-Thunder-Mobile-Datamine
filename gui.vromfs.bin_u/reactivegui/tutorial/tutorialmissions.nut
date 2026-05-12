@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests,
-  isCampaignWithUnitsResearch, sharedStatsByCampaign, getCampaignStatsId
+  sharedStatsByCampaign, getCampaignStatsId
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -56,8 +56,7 @@ let needFirstBattleTutor = Computed(@()
   (firstBattleTutor.get() in missionsWithRewards.get()
     && isProfileReceived.get()
     && (campMyUnits.get().len() == 0 || needFirstBattleTutorByStats(sharedStatsByCampaign.get()))
-    && (!isCampaignWithUnitsResearch.get() || currentResearch.get() != null)
-  )
+    && currentResearch.get() != null)
   != isDebugMode.get())
 
 let setSkippedTutor = @(campaign) isSkippedTutor.mutate(@(v) v[getFirstBattleTutor(campaign, serverConfigs.get())] <- true)
@@ -101,10 +100,8 @@ function startTutor(id, currentUnitName = null) {
     })
   }
   if (!isSkippedTutor.get()?[id]) {
-    let unitName = (!isCampaignWithUnitsResearch.get() || currentUnitName == "")
-        ? null
-      : currentUnitName
-        ? currentUnitName
+    let unitName = currentUnitName == "" ? null
+      : currentUnitName ? currentUnitName
       : isDebugMode.get() && hangarUnit.get()?.name
         ? hangarUnit.get().name
       : campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))

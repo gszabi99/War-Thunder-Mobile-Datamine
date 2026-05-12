@@ -150,7 +150,7 @@ let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
       }))
 let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks",
   @() { headers = addPublisherToHeaders({}) },
-  ["GrantRewards", "BuyUnlock", "BuyUnlockReroll", "OpenNextUnlockStage"])
+  ["GrantRewards", "BuyUnlock", "BuyUnlockReroll", "OpenNextUnlockStage", "BatchGrantRewards"])
 let statsUpdatable = makeUpdatable("stats", "GetStats",
   @() { data = hasStatsFilter.get() ? GET_STATS_FILTER : {} })
 let statsTablesUpdatable = makeUpdatable("statsTables", "GetStats:tables", @() { data = { skip = "allStats" } })

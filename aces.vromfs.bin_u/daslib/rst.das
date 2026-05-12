@@ -13,10 +13,10 @@ module rst shared private
 
 
 
-require fio
+require daslib/fio
 require math
-require rtti
-require ast
+require daslib/rtti
+require daslib/ast
 require strings
 require daslib/ast_boost
 require daslib/strings_boost
@@ -31,10 +31,12 @@ let {
 
 var public {
     das_root = get_das_root()
-    topic_root = "{das_root}/doc/source/stdlib"
+    topic_root = "{das_root}/doc/source/stdlib/generated"
+    handmade_root = "{das_root}/doc/source/stdlib"
     add_stub_header = true
     add_empty_topic = true
     strict_struct_fields = true
+    group_function_overloads = true
 }
 
 
@@ -44,9 +46,22 @@ def PANIC(message : string) {
     unsafe(exit(-1))
 }
 
+let module_name_replacements = [
+    ("$", "builtin"),
+    ("ast_core", "ast"),
+    ("fio_core", "fio"),
+    ("network_core", "network"),
+    ("rtti_core", "rtti"),
+]
+
 def module_name(mod) {
     let mn = string(mod.name)
-    return mn == "$" ? "builtin" : mn
+    for ((src, dst) in module_name_replacements) {
+        if (mn == src) {
+            return dst
+        }
+    }
+    return mn
 }
 
 def alias_label_name(td : TypeDeclPtr) {
@@ -111,47 +126,49 @@ def public safe_function_name(name : string) : string {
 
 def public function_label_file(value : FunctionPtr | Function?; drop_args : int = 0) {
     
-    var mn = "{value.name}"
-    var drop = drop_args
-    for (arg in value.arguments) {
-        if (drop-- > 0) {
-            continue
-        }
-        let prefix = arg._type.flags.removeConstant ? "var " : ""
-        if (arg._type.baseType == Type.autoinfer && arg.init != null) {
-            
-            
-            
-            let rtti = "{arg.init.__rtti}"
-            if (rtti == "ExprConstDouble") {
-                mn += "{prefix}double"
-            } elif (rtti == "ExprConstFloat") {
-                mn += "{prefix}float"
-            } elif (rtti == "ExprConstString") {
-                mn += "{prefix}string"
-            } elif (rtti == "ExprConstBool") {
-                mn += "{prefix}bool"
-            } elif (rtti == "ExprConstInt") {
-                mn += "{prefix}int"
-            } elif (rtti == "ExprConstUInt") {
-                mn += "{prefix}uint"
-            } elif (rtti == "ExprConstInt64") {
-                mn += "{prefix}int64"
-            } elif (rtti == "ExprConstUInt64") {
-                mn += "{prefix}uint64"
-            } elif (rtti == "ExprConstInt8") {
-                mn += "{prefix}int8"
-            } elif (rtti == "ExprConstUInt8") {
-                mn += "{prefix}uint8"
-            } elif (rtti == "ExprConstInt16") {
-                mn += "{prefix}int16"
-            } elif (rtti == "ExprConstUInt16") {
-                mn += "{prefix}uint16"
-            } else {
-                mn += "{prefix}auto"
+    var mn = build_string() <| $(var w) {
+        w |> write(value.name)
+        var drop = drop_args
+        for (arg in value.arguments) {
+            if (drop-- > 0) {
+                continue
             }
-        } else {
-            mn += "{prefix}{describe_type_short(arg._type)}"
+            let prefix = arg._type.flags.removeConstant ? "var " : ""
+            if (arg._type.baseType == Type.autoinfer && arg.init != null) {
+                
+                
+                
+                let rtti = "{arg.init.__rtti}"
+                if (rtti == "ExprConstDouble") {
+                    w |> write("{prefix}double")
+                } elif (rtti == "ExprConstFloat") {
+                    w |> write("{prefix}float")
+                } elif (rtti == "ExprConstString") {
+                    w |> write("{prefix}string")
+                } elif (rtti == "ExprConstBool") {
+                    w |> write("{prefix}bool")
+                } elif (rtti == "ExprConstInt") {
+                    w |> write("{prefix}int")
+                } elif (rtti == "ExprConstUInt") {
+                    w |> write("{prefix}uint")
+                } elif (rtti == "ExprConstInt64") {
+                    w |> write("{prefix}int64")
+                } elif (rtti == "ExprConstUInt64") {
+                    w |> write("{prefix}uint64")
+                } elif (rtti == "ExprConstInt8") {
+                    w |> write("{prefix}int8")
+                } elif (rtti == "ExprConstUInt8") {
+                    w |> write("{prefix}uint8")
+                } elif (rtti == "ExprConstInt16") {
+                    w |> write("{prefix}int16")
+                } elif (rtti == "ExprConstUInt16") {
+                    w |> write("{prefix}uint16")
+                } else {
+                    w |> write("{prefix}auto")
+                }
+            } else {
+                w |> write("{prefix}{describe_type_short(arg._type)}")
+            }
         }
     }
     return "{safe_function_name(string(value.name))}-{hash(mn)}"
@@ -159,40 +176,38 @@ def public function_label_file(value : FunctionPtr | Function?; drop_args : int 
 
 def public function_label_file(name; value : smart_ptr<TypeDecl>&; drop_args : int = 0) {
     
-    var mn = "{name}"
-    var drop = drop_args
-    for (arg in value.argTypes) {
-        if (drop-- > 0) {
-            continue
+    var mn = build_string() <| $(var w) {
+        w |> write(name)
+        var drop = drop_args
+        for (arg in value.argTypes) {
+            if (drop-- > 0) {
+                continue
+            }
+            let prefix = arg.flags.removeConstant ? "var " : ""
+            w |> write("{prefix}{describe_type_short(arg)}")
         }
-        
-        
-            
-        let prefix = arg.flags.removeConstant ? "var " : ""
-        mn += "{prefix}{describe_type_short(arg)}"
     }
-    
-    
-    
     return "{safe_function_name(string(name))}-{hash(mn)}"
 }
 
 def function_short_mangled_name(value : FunctionPtr | Function?) {
-    var res = "{value.name}"
-    if (value._module != null) {
-        res = "{module_name(value._module)}_" + res
-    }
-    for (arg in value.arguments) {
-        if (arg._type.baseType == Type.fakeContext || arg._type.baseType == Type.fakeLineInfo) {
-            continue
+    return build_string() <| $(var w) {
+        if (value._module != null) {
+            w |> write(module_name(value._module))
+            w |> write("_")
         }
-        res += "_"
-        if (arg._type.flags.removeConstant && arg._type.flags.explicitConst) {
-            res += "_"
+        w |> write(value.name)
+        for (arg in value.arguments) {
+            if (arg._type.baseType == Type.fakeContext || arg._type.baseType == Type.fakeLineInfo) {
+                continue
+            }
+            w |> write("_")
+            if (arg._type.flags.removeConstant && arg._type.flags.explicitConst) {
+                w |> write("_")
+            }
+            w |> write(describe_type_short(arg._type))
         }
-        res += describe_type_short(arg._type)
     }
-    return res
 }
 
 def function_label_name(value : FunctionPtr | Function?) {
@@ -200,20 +215,22 @@ def function_label_name(value : FunctionPtr | Function?) {
     let res = "function-{safe_function_name(mn)}"
     
     
-    var is_generic = false
-    for (arg in value.arguments) {
-        if (arg._type.baseType == Type.autoinfer) {
-            is_generic = true
-            break
+    if (group_function_overloads) {
+        var is_generic = false
+        for (arg in value.arguments) {
+            if (arg._type.baseType == Type.autoinfer) {
+                is_generic = true
+                break
+            }
         }
-    }
-    if (is_generic) {
-        return "{res}_{value.at.line}"
-    }
-    
-    
-    if (value.flags.isClassMethod) {
-        return "{res}_{value.at.line}"
+        if (is_generic) {
+            return "{res}_{value.at.line}"
+        }
+        
+        
+        if (value.flags.isClassMethod) {
+            return "{res}_{value.at.line}"
+        }
     }
     return res
 }
@@ -284,46 +301,48 @@ def describe_type_short(td : TypeDeclPtr) {
             res = "table<{describe_type_short(td.firstType)}, {describe_type_short(td.secondType)}>"
         }
     } elif (td.baseType == Type.tFunction || td.baseType == Type.tBlock || td.baseType == Type.tLambda) {
-        res = td.baseType == Type.tBlock ? "block<" : td.baseType == Type.tFunction ? "function<" : "lambda<"
-        if (td.argTypes |> length != 0) {
-            res += "("
-            if (td.argNames |> length != 0) {
-                var first = true
-                for (at, an in td.argTypes, td.argNames) {
-                    if (first) {
-                        first = false
-                    } else {
-                        res += ";"
+        res = build_string() <| $(var w) {
+            w |> write(td.baseType == Type.tBlock ? "block<" : td.baseType == Type.tFunction ? "function<" : "lambda<")
+            if (td.argTypes |> length != 0) {
+                w |> write("(")
+                if (td.argNames |> length != 0) {
+                    var first = true
+                    for (at, an in td.argTypes, td.argNames) {
+                        if (first) {
+                            first = false
+                        } else {
+                            w |> write(";")
+                        }
+                        if (at.flags.removeConstant) {
+                            w |> write("var ")
+                        }
+                        w |> write(string(an))
+                        w |> write(":")
+                        w |> write(describe_type_short(at))
                     }
-                    if (at.flags.removeConstant) {
-                        res += "var "
+                } else {
+                    var first = true
+                    for (at in td.argTypes) {
+                        if (first) {
+                            first = false
+                        } else {
+                            w |> write(";")
+                        }
+                        w |> write(describe_type_short(at))
                     }
-                    res += string(an)
-                    res += ":"
-                    res += describe_type_short(at)
+                }
+                w |> write(")")
+                if (td.firstType != null) {
+                    w |> write(":")
+                    w |> write(describe_type_short(td.firstType))
+                } else {
+                    w |> write(":void")
                 }
             } else {
-                var first = true
-                for (at in td.argTypes) {
-                    if (first) {
-                        first = false
-                    } else {
-                        res += ";"
-                    }
-                    res += describe_type_short(at)
-                }
+                w |> write("():void")
             }
-            res += ")"
-            if (td.firstType != null) {
-                res += ":"
-                res += describe_type_short(td.firstType)
-            } else {
-                res += ":void"
-            }
-        } else {
-            res += "():void"
+            w |> write(">")
         }
-        res += ">"
     }
     if (!empty(res)) {
         if (td.flags.temporary) {
@@ -713,8 +732,18 @@ def make_table_(tab : array<array<string>>; withHeader : bool = false) {
 
 def is_handmade(mod : Module?) {
     
-    if (mod.name == "ast_boost" || mod.name == "strings_boost" || mod.name == "regex" || mod.name == "regex_boost" || mod.name == "rst") {
-        return true
+    let builtins = [
+        "ast_boost",
+        "builtin",
+        "strings_boost",
+        "regex",
+        "regex_boost",
+        "rst"
+    ]
+    for (name in builtins) {
+        if (mod.name == name) {
+            return true
+        }
     }
     return mod.moduleFlags.builtIn && !mod.moduleFlags.promoted
 }
@@ -829,7 +858,7 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
             let expected = length(tab) - 1
             if (got < expected) {
                 if (strict_struct_fields) {
-                    error("{topic} has less documentation than values. Expected {expected} ({[for (it in tab); it[0]]}), got {got}\n")
+                    error("{topic} has less documentation than values. Expected at least {expected} lines ({[for (i in range(1, length(tab))); tab[i][0]]}), got {got}\n")
                     PANIC("invalid documentation")
                 }
 
@@ -880,11 +909,13 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
 }
 
 def document_topic(doc_file : file; topic, content : string implicit; cb : block<(text : string) : string>) {
-    let topic_file_name = "{topic_root}/{slice(topic,1,-1)}.rst"
+    let is_handmade_topic = topic |> starts_with("|handmade/")
+    let base_root = is_handmade_topic ? handmade_root : topic_root
+    let topic_file_name = "{base_root}/{slice(topic,1,-1)}.rst"
     
     mkdir_rec(dir_name(topic_file_name))
     var st : FStat
-    if (topic |> starts_with("|handmade/") && !stat(topic_file_name, st)) {
+    if (is_handmade_topic && !stat(topic_file_name, st)) {
         fopen(topic_file_name, "wb") $(topic_file) {
             if (topic_file != null) {
                 if (add_stub_header) {
@@ -1063,6 +1094,14 @@ def document_global_constants(doc_file : file; mods : array<Module?>) {
     }
 }
 
+
+def short_enum_value(value : string) : string {
+    if (value.ends_with("u8")) {
+        return value.slice(0, -2)
+    }
+    return value
+}
+
 def public document_enumeration(doc_file : file; mod : Module?; value) {
     
     fwrite(doc_file, make_label(enum_label_name(value)))
@@ -1073,7 +1112,7 @@ def public document_enumeration(doc_file : file; mod : Module?; value) {
     for (en in value.list) {
         var line : array<string>
         push(line, string(en.name))
-        push(line, describe(en.value))
+        push(line, short_enum_value(describe(en.value)))
         emplace(tab, line)
     }
     document_topic("Values", doc_file, topic("enumeration", mod, string(value.name)), "enum {value.name}", tab)
@@ -1196,14 +1235,10 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     
     
     
-    let fname = string(func.name)
+    var fname = string(func.name)
     let is_static = func.moreFlags.isStaticClassMethod
-    var method_name : string
     if (is_static) {
-        let structPrefix = "{value.name}`"
-        method_name = fname |> slice(length(structPrefix))
-    } else {
-        method_name = fname
+        fname = fname.slice(length(value.name) + 1)
     }
 
     fwrite(doc_file, make_label(function_label_name(func)))
@@ -1211,7 +1246,7 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     let argNames <- [for (arg in func.arguments); string(arg.name)]
     let argTypes <- [for (arg in func.arguments); get_ptr(arg._type)]
     let argInits <- [for (arg in func.arguments); get_ptr(arg.init)]
-    (document_function_declaration(doc_file, "das:function", "{value.name}.{method_name}",
+    (document_function_declaration(doc_file, "das:function", "{value.name}.{fname}",
         argNames, argTypes, argInits, func.result, 1))
 
     if (func.flags.unsafeOperation) {
@@ -1228,17 +1263,19 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     
     
     let hash_drop = is_static ? 0 : 1
-    var mn = method_name
-    var drop = hash_drop
-    for (arg in func.arguments) {
-        if (drop-- > 0) {
-            continue
+    var mn = build_string() <| $(var w) {
+        w |> write(fname)
+        var drop = hash_drop
+        for (arg in func.arguments) {
+            if (drop-- > 0) {
+                continue
+            }
+            let prefix = arg._type.flags.removeConstant ? "var " : ""
+            w |> write("{prefix}{describe_type_short(arg._type)}")
         }
-        let prefix = arg._type.flags.removeConstant ? "var " : ""
-        mn += "{prefix}{describe_type_short(arg._type)}"
     }
-    let file_label = "{safe_function_name(method_name)}-{hash(mn)}"
-    document_function_topic(doc_file, func.result, topic("function", mod, "{value.name}-{file_label}"), "def {value.name}.{method_name}", args)
+    let file_label = "{safe_function_name(fname)}-{hash(mn)}"
+    document_function_topic(doc_file, func.result, topic("function", mod, "{value.name}-{file_label}"), "def {value.name}.{fname}", args)
 }
 
 def make_requirements_list(value : smart_ptr<ast::Structure>) {
@@ -1356,6 +1393,7 @@ def document_classes(doc_file : file; mods : array<Module?>) {
             var inscope annT <- new TypeDecl(baseType = Type.tStructure, structType = get_ptr(value))
             for_each_function(mod, "") $(func) {
                 if (func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
+                    
                     document_function(doc_file, mod, func, 0, "{value.name}-", "das:function")
                     return
                 }
@@ -1425,7 +1463,7 @@ def document_typemacros(doc_file : file; mods : array<Module?>) {
             break
         }
         for_each_structure(mod) $(value) {
-            if (any || value.parent == null ||  value.parent.name != "AstTypeMacro" || value.parent._module.name != "ast") {
+            if (any || value.parent == null ||  value.parent.name != "AstTypeMacro" || value.parent._module.name != "ast_core") {
                 return
             }
             any = true
@@ -1437,7 +1475,7 @@ def document_typemacros(doc_file : file; mods : array<Module?>) {
     fwrite(doc_file, make_group("Type macros"))
     for (mod in mods) {
         for_each_structure(mod) $(value) {
-            if (value.parent == null ||  value.parent.name != "AstTypeMacro" || value.parent._module.name != "ast") {
+            if (value.parent == null ||  value.parent.name != "AstTypeMacro" || value.parent._module.name != "ast_core") {
                 return
             }
             document_typemacro(doc_file, mod, value)
@@ -1481,7 +1519,7 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
     document_topic("Fields", doc_file, topic("structure", mod, string(value.name)), "struct {value.name}", tab)
 
     for (fld in value.fields) {
-        if (is_class_method(value, fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.flags.implemented)) {
+        if (is_class_method(value, fld) && !fld.flags.generated && !fld.flags.privateField && !fld.flags.parentType && fld.flags.implemented) {
             document_class_method(doc_file, mod, value, fld)
         }
     }
@@ -1502,6 +1540,18 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
         
         if (string(func.name) |> starts_with(".`")) {
             return
+        }
+        if (!func.moreFlags.isStaticClassMethod) {
+            if (func.name == "{value.name}`{value.name}") {
+                
+                return
+            }
+            for (fld in value.fields) {
+                
+                if (fld.flags.classMethod && fld.flags.implemented && func.name == "{value.name}`{fld.name}") {
+                    return
+                }
+            }
         }
         document_struct_method(doc_file, mod, value, func)
     }
@@ -1602,7 +1652,7 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
     }
 
     fields |> sort($(a, b) => a.offset < b.offset)
-
+    tab |> reserve(length(fields))
     for (f in fields) {
         var line : array<string>
         push(line, f.name)
@@ -1910,7 +1960,7 @@ def function_needs_documenting(func : FunctionPtr | Function?) {
     }
     var isBuiltin = false
     peek(func._module.name) $(name) {
-        if (name == "$") {
+        if (name == "$" || name == "builtin") {
             isBuiltin = true
         }
     }
@@ -1918,7 +1968,7 @@ def function_needs_documenting(func : FunctionPtr | Function?) {
     var isOperator = false
     if (isBuiltin) {
         peek(func.name) $(name) {
-            let ch = character_at(name, 0)
+            let ch = first_character(name)
             if (!is_alpha(ch) && !is_number(ch) && ch != '_') {
                 isOperator = true
             }
@@ -1963,17 +2013,37 @@ def document_warning(doc_file : file; issue : string) {
 def function_name(func : FunctionPtr | Function?) {
     let name = "{func.name}"
     if (!empty(func.name)) {
-        let ch = character_at(name, 0)
+        let ch = first_character(name)
         if (ch != '_' && !is_alpha(ch)) {
             var safeName = name
-            if (safeName |> starts_with(".`")) {
-                safeName = ".{safeName |> slice(2)}"
-            }
+            
+            if (safeName |> starts_with("`is`")) { return "operator is {safeName |> slice(4)}"; }
+            if (safeName |> starts_with("`as`")) { return "operator as {safeName |> slice(4)}"; }
+            
+            if (safeName == "`is") { return "operator is"; }
+            if (safeName == "`as") { return "operator as"; }
+            
+            if (safeName |> starts_with("?as`")) { return "operator ?as {safeName |> slice(4)}"; }
+            if (safeName == "?as") { return "operator ?as"; }
+            
+            if (safeName |> starts_with("?.`")) { safeName = "?.{safeName |> slice(3)}"; }
+            
+            elif (safeName |> starts_with(".`")) { safeName = ".{safeName |> slice(2)}"; }
+            
             if (safeName |> ends_with("`clone")) {
-                safeName = "{safeName |> slice(0,-6)} ="
+                safeName = "{safeName |> slice(0,-6)} :="
             }
-            if (safeName |> ends_with("=") && length(safeName) > 3 && safeName.character_at(length(safeName) - 3) == '`') {
-                let op = character_at(safeName, length(safeName) - 2)
+            
+            if (length(safeName) > 4 && safeName |> ends_with("=")) {
+                let p4 = safeName.character_at(length(safeName) - 4) 
+                if (p4 == '`') {
+                    let op2 = safeName |> slice(length(safeName) - 3, length(safeName))
+                    safeName = "{safeName |> slice(0, length(safeName) - 4)} {op2}"
+                }
+            }
+            
+            if (length(safeName) > 3 && safeName |> ends_with("=") && safeName.character_at(length(safeName) - 3) == '`') { 
+                let op = character_at(safeName, length(safeName) - 2) 
                 safeName = "{safeName |> slice(0,-3)} {op.to_char()}="
             }
             return (length(func.arguments) == 0
@@ -2032,46 +2102,57 @@ def document_functions(doc_file : file; mods : array<Module?>; var groups : arra
                     }
                 }
                 fwrite(doc_file, "\n")
-                
-                var multi_overload : table<string>
-                var prev_count_name = ""
-                var count_run = 0
-                for (func in grp.func) {
-                    if (!tab.key_exists(func.fn)) {
-                        let cur_name = function_name(func.fn)
-                        if (cur_name == prev_count_name) {
-                            count_run += 1
-                            if (count_run == 2) {
-                                multi_overload |> insert(cur_name)
+                if (group_function_overloads) {
+                    
+                    var multi_overload : table<string>
+                    var prev_count_name = ""
+                    var count_run = 0
+                    for (func in grp.func) {
+                        if (!tab.key_exists(func.fn)) {
+                            let cur_name = function_name(func.fn)
+                            if (cur_name == prev_count_name) {
+                                count_run += 1
+                                if (count_run == 2) {
+                                    multi_overload |> insert(cur_name)
+                                }
+                            } else {
+                                prev_count_name = cur_name
+                                count_run = 1
                             }
-                        } else {
-                            prev_count_name = cur_name
-                            count_run = 1
                         }
                     }
-                }
-                var prev_func_name = ""
-                var prev_was_overload_group = false
-                for (func in grp.func) {
-                    if (tab.key_exists(func.fn)) {
-                        continue
-                    }
-                    tab.insert(func.fn)
-                    let cur_name = function_name(func.fn)
-                    let is_overload = cur_name == prev_func_name
-                    if (!is_overload) {
-                        if (prev_was_overload_group) {
-                            fwrite(doc_file, "----\n\n")
+                    var prev_func_name = ""
+                    var prev_was_overload_group = false
+                    for (func in grp.func) {
+                        if (tab.key_exists(func.fn)) {
+                            continue
                         }
-                        if (multi_overload |> key_exists(cur_name)) {
-                            fwrite(doc_file, "\n{cur_name}\n{strings::repeat("^", length(cur_name))}\n\n")
-                            prev_was_overload_group = true
-                        } else {
-                            prev_was_overload_group = false
+                        tab.insert(func.fn)
+                        let cur_name = function_name(func.fn)
+                        let is_overload = cur_name == prev_func_name
+                        if (!is_overload) {
+                            if (prev_was_overload_group) {
+                                fwrite(doc_file, "----\n\n")
+                            }
+                            if (multi_overload |> key_exists(cur_name)) {
+                                fwrite(doc_file, "\n{cur_name}\n{strings::repeat("^", length(cur_name))}\n\n")
+                                prev_was_overload_group = true
+                            } else {
+                                prev_was_overload_group = false
+                            }
                         }
+                        document_function(doc_file, func.mod, func.fn, 0, "", "das:function", is_overload)
+                        prev_func_name = cur_name
                     }
-                    document_function(doc_file, func.mod, func.fn, 0, "", "das:function", is_overload)
-                    prev_func_name = cur_name
+                } else {
+                    
+                    for (func in grp.func) {
+                        if (tab.key_exists(func.fn)) {
+                            continue
+                        }
+                        tab.insert(func.fn)
+                        document_function(doc_file, func.mod, func.fn)
+                    }
                 }
             }
         }
@@ -2272,8 +2353,11 @@ def public documents(name : string; mods : array<Module?>; fname : string; var g
     }
     fwrite(doc_file, "\n")
     var mod_name = string(mods[0].name)
-    if (mod_name == "$") {
-        mod_name = "_builtin"
+    for ((src, dst) in module_name_replacements) {
+        if (mod_name == src) {
+            mod_name = dst
+            break
+        }
     }
     fwrite(doc_file, make_header(name, mod_name))
     fwrite(doc_file, ".. das:module:: {mod_name}\n\n")

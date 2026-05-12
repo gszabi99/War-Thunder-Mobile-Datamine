@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isCampaignWithUnitsResearch, curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { receiveUnlockRewards, batchReceiveRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -27,8 +27,7 @@ let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let tabId = COMMON_TAB
 
-let canShowTutorialByCampaign = Computed(@() !isCampaignWithUnitsResearch.get()
-  || (isFinishedSlotAttributes.get() && isFinishedArsenal.get()))
+let canShowTutorialByCampaign = Computed(@() isFinishedSlotAttributes.get() && isFinishedArsenal.get())
 
 let sectionId = Computed(@() questsCfg.get()?[tabId][0])
 

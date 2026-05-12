@@ -13,7 +13,7 @@ let { colors, gridHeight } = require("components/style.nut")
 
 let selectedCompComp = Watched(null)
 let selectedCompPath = Watched(null)
-let deselectComp = function() {
+function deselectComp() {
   selectedCompName.set("")
   selectedCompComp.set(null)
   selectedCompPath.set(null)
@@ -465,7 +465,7 @@ function panelButtons(eid) {
   }
 }
 
-let autoOpenClosePropPanel = function(_) {
+function autoOpenClosePropPanel(_) {
   local show = selectedEntity.get() != ecs.INVALID_ENTITY_ID || selectedEntities.get().len() > 0
   if (show && propPanelClosed.get())
     return
@@ -1014,7 +1014,7 @@ mkCompObject = function(eid, rawComponentName, rawObject, isLocked, caption=null
   return mkCollapsible(isConst, caption, childrenCtor, objLen, tags, eid, rawComponentName, path)
 }
 
-let compTypeName = function(object){
+function compTypeName(object) {
   local typeName = ""
   if (type(object)=="array")
     typeName = "Array"
@@ -1022,7 +1022,7 @@ let compTypeName = function(object){
     typeName = "Obj"
   else {
     typeName = object.tostring()
-    let isComp = typeName.indexof("Comp") !=null
+    let isComp = typeName.contains("Comp")
     typeName = typeName.slice(isComp ? "Comp".len() : 0, typeName.indexof(" (") ?? typeName.len())
   }
   return typeName

@@ -153,6 +153,12 @@ register_command(debugFlagsToggle, "hangar.toggle_flags")
 register_command(
   @(bannerType, newRiExName) ecs.g_entity_mgr.broadcastEvent(EventChangeHangarBanners({ newRiExName, bannerType })),
   "hangar.change_banners")
+register_command(
+  function() {
+    foreach (id, _ in seasonFlagsRotation)
+      ecs.g_entity_mgr.broadcastEvent(EventChangeHangarBanners({ newRiExName = "", bannerType = id }))
+  },
+  "hangar.destroy_all_banners")
 
 return {
   curHangarAddon

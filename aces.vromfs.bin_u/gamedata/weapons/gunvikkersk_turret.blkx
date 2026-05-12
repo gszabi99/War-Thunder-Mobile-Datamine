@@ -1005,7 +1005,7 @@
       }
     }
   ],
-  "303_turret_armor_targets": {
+  "vikkers_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.00907,
@@ -1794,7 +1794,7 @@
       }
     ]
   },
-  "303_turret_universal": {
+  "vikkers_turret_universal": {
     "bullet": [
       {
         "mass": 0.00907,

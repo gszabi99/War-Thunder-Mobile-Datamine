@@ -171,6 +171,8 @@ let statsShip = {
         list.append(loc("stats/asm/short"))
       if (ecmType != "")
         list.append(loc($"stats/{ecmType}/short"))
+      if (weapons.findvalue(@(w) w?.isCiws))
+        list.append(loc("stats/ciws/short"))
       if (supportPlane != "")
         list.append(" ".concat(aircraftMark, loc(getUnitLocId(supportPlane))))
       return ", ".join(list)
@@ -187,6 +189,12 @@ let statsShip = {
   ecmDuration = {
     isAfterWeapons = true
     getHeader = @(s, _) loc($"stats/{s?.ecmType ?? ""}")
+    valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
+  }
+
+  ciwsDuration = {
+    isAfterWeapons = true
+    getHeader = @(s, _) loc("stats/ciws", { caliber = roundCaliber(s?.ciwsCaliber ?? 0) })
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
   }
 }.map(@(cfg, id) mkStat(id, cfg, SHIP))
@@ -240,6 +248,9 @@ let statsAir = {
   maxSpeed = {
     valueToText = @(v, _) getSpeedText(v)
   }
+  rocketfuel = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/minutes"))
+  }
   maxSpeedAlt = {
     valueToText = @(v, _) "".concat(round(v), loc("measureUnits/meters_alt"))
   }
@@ -268,6 +279,7 @@ let statsCfgShip = {
     statsShip.asmCaptureDuration
     statsShip.supportPlane
     statsShip.ecmDuration
+    statsShip.ciwsDuration
   ]
   short = [
     statsShip.shipCrewAll
@@ -297,6 +309,7 @@ let statsCfgAir = {
     statsAir.pylonCount
     statsAir.crew
     statsAir.maxSpeed
+    statsAir.rocketfuel
     statsAir.maxSpeedAlt
     statsAir.maxAltitude
     statsAir.turnTime
@@ -308,6 +321,7 @@ let statsCfgAir = {
     statsAir.pylonCount
     statsAir.crew
     statsAir.maxSpeed
+    statsAir.rocketfuel
     statsAir.turnTime
     statsAir.climbSpeed
   ]

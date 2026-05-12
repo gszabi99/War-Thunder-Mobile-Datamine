@@ -7,7 +7,7 @@ let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPre
 let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
+let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { mkColoredGradientY, mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, unlockAnimation, ANIMATION_STEP
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -257,23 +257,6 @@ let mkUnitLevel = @(level) {
   children = [
     levelBg
     mkPlateText(level)
-  ]
-}
-
-let starLevelOvr = {
-  pos = [0, ph(60)]
-}
-let mkPlayerLevel = @(level, starLevel) {
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  margin = plateTextsPad
-  children = [
-    mkLevelBg({
-      ovr = { size = [ unitLevelBgSize, unitLevelBgSize ] }
-      childOvr = { borderColor = playerExpColor }
-    })
-    mkPlateText(level - starLevel)
-    starLevelTiny(starLevel, starLevelOvr)
   ]
 }
 
@@ -689,7 +672,6 @@ return {
   mkPlateTextTimer
   mkPlateText
   mkIcon
-  mkPlayerLevel
   mkUnitBlueprintMark
   mkUnitResearchPrice
   mkUnitBgPremium

@@ -17,7 +17,7 @@ module regex_boost shared private
 
 
 
-require ast
+require daslib/ast
 require strings
 require daslib/ast_boost
 require daslib/regex public

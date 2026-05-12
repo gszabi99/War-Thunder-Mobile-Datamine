@@ -1,7 +1,4 @@
-let {
-  this_subscriber_call_may_take_up_to_usec = @(_) null,
-  get_slow_subscriber_threshold_usec = @() 10000,
-} = require("frp")
+from "frp" import this_subscriber_call_may_take_up_to_usec, get_slow_subscriber_threshold_usec
 let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { WatchedImmediate } = require("%sqstd/frp.nut")

@@ -3,9 +3,12 @@ let logUpdate = log_with_prefix("[UPDATE]: ")
 let { get_all_library_versions } = require("contentUpdater")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { appStoreProdVersion } = require("%rGui/appStoreVersion.nut")
+let { DBGLEVEL } = require("dagor.system")
 
 
 let needSuggestToUpdate = Computed(function() {
+  if (DBGLEVEL > 0)
+    return false
   let actualVersion = appStoreProdVersion.get() ?? ""
   if (actualVersion == "")
     return false

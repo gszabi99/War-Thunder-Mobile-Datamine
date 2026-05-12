@@ -1,8 +1,7 @@
 from "%globalScripts/logs.nut" import *
-let { get_cur_circuit_name, get_base_game_version_str } = require("app")
+let { get_cur_circuit_name } = require("app")
 let { Computed } = require("frp")
 let { DBGLEVEL } = require("dagor.system")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { trim } = require("%sqstd/string.nut")
 let { rights } = require("permissions/userRights.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -20,6 +19,7 @@ let defaults = {
   can_receive_dedic_logerr = isDevBuild
   allow_players_online_info = false
   allow_review_cue = false
+  enabled_gp_rate_via_web = false
   can_view_replays = isDevBuild || isOfflineMenu
   can_write_replays = isDevBuild
   can_link_to_gaijin_account = isDevBuild
@@ -45,10 +45,11 @@ let defaults = {
   has_option_tank_alternative_control = isDevBuild
   has_decals = isDevBuild
   has_extended_sound = isDevBuild
-  tcf_consent_enabled = false
+  tcf_consent_enabled = isDevBuild
   has_game_center = isDevBuild
   allow_hdr_on_ios = isDevBuild
   allow_event_gift_on_ios = isDevBuild
+  can_use_freecam_in_replay = isDevBuild
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})
@@ -60,8 +61,6 @@ let allPermissions = Computed(function() {
       logerr($"Permission ID with whitespace detected: \"{id}\"")
     res[id] <- true
   }
-  if (res.tcf_consent_enabled && check_version($"<1.23.0.53", get_base_game_version_str()))
-    res.tcf_consent_enabled = false
   foreach(id, v in dbgPermissions.get())
     if (v && (id in res))
       res[id] = !res[id]

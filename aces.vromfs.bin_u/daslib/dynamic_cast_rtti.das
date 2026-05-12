@@ -11,7 +11,7 @@ module dynamic_cast_rtti shared private
 
 
 
-require rtti
+require daslib/rtti
 require daslib/contracts
 require daslib/templates
 require daslib/templates_boost

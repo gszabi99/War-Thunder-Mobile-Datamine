@@ -25,7 +25,7 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -37,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_tank_destroyer",
   "mass": 31600.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "minRelativeTankCameraThreshold": 1.03,
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -679,6 +678,7 @@
       "hp": 40.0,
       "genericDamageMult": 3.0,
       "pressureDamageMult": 1.0,
+      "napalmDamageMult": 0.0,
       "ignoreSolidDimension": true,
       "driver_dm": {},
       "loader_dm": {},
@@ -694,7 +694,15 @@
       "machine_gunner_01_dm": {},
       "machine_gunner_02_dm": {},
       "machine_gunner_03_dm": {},
-      "machine_gunner_04_dm": {}
+      "machine_gunner_04_dm": {},
+      "machine_gunner_05_dm": {},
+      "machine_gunner_06_dm": {},
+      "machine_gunner_07_dm": {},
+      "machine_gunner_08_dm": {},
+      "machine_gunner_09_dm": {},
+      "machine_gunner_10_dm": {},
+      "machine_gunner_11_dm": {},
+      "machine_gunner_12_dm": {}
     }
   },
   "sound": {
@@ -1657,9 +1665,7 @@
       "salvoAmount": 100.0,
       "ChainfireTime": 0.0,
       "DelayAfterShoot": 5.0,
-      "AttackMaxDistance": 1000.0,
       "AttackMaxRadius": 1000.0,
-      "AttackMaxHeight": 1000.0,
       "accuracyAir": 0.0,
       "accuracyGnd": 1.5,
       "errMeasureVel": 0.0,
@@ -1668,7 +1674,6 @@
       "errMeasureVelDir": 0.0,
       "errTargettingOn100kmph": 0.0,
       "errTargetting": 3.0,
-      "errExplTime": 0.0,
       "turret": {
         "head": "bone_turret",
         "gun": "bone_gun",

@@ -854,9 +854,15 @@
     "minAutoZoomByOmega": 0.6,
     "shipAutoZoomRate": 0.8,
     "viscosityAtZoom": 0.05,
-    "changeAutoZoomSpeed": 3.0,
     "tankTouchAimSpeedMult": 0.5,
     "tankTouchTargetSpeedMult": 0.25,
+    "manualZoomChangeSpeed": 3.0,
+    "autoZoomChangeSpeed": [
+      4.0,
+      4.0
+    ],
+    "zoomOutSpeedOnTargetLoss": 2.0,
+    "autoZoomOutDelay": 1.5,
     "cameraOffsetElevatorUp": [
       -14.0,
       3.0,
@@ -1098,7 +1104,6 @@
     "minAutoZoomByOmega": 0.6,
     "shipAutoZoomRate": 0.8,
     "viscosityAtZoom": 0.05,
-    "changeAutoZoomSpeed": 3.0,
     "tankTouchAimSpeedMult": 0.5,
     "tankTouchTargetSpeedMult": 0.25,
     "cameraOffset": [
@@ -3888,7 +3893,7 @@
     "type": "TpsTargetFlightCameraReplay",
     "freeCamOrientInert": 0.5,
     "freeCamPosInert": 1.2,
-    "freeCamOrientMaxSpeed": 0.5
+    "freeCamOrientMaxSpeed": 2.0
   },
   "artillery_crosshair": {
     "type": "ArtilleryViewCamera",

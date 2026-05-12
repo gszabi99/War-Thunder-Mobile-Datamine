@@ -27,10 +27,11 @@ module interfaces shared private
 
 require daslib/ast_boost
 require daslib/templates_boost
+require daslib/strings_boost
 require daslib/defer
 require daslib/generic_return
 require strings
-require ast
+require daslib/ast
 
 [structure_macro(name="interface")]
 class InterfaceMacro : AstStructureAnnotation {
@@ -107,13 +108,25 @@ class ImplementsMacro : AstStructureAnnotation {
         var inscope iface_ptr <- qmacro_type(type<$t(parent)?>)
         st |> add_structure_field(iface_var_name, clone_type(iface_ptr), default<ExpressionPtr>)
         
-        var inscope fn_get_i <- qmacro_method(iface_get_name_func, st) $(var self : $t(st)) : $t(iface_ptr) {
+        var inscope fn_get_i <- qmacro_method(iface_get_name_func, st) $(var self : $t(st) ==const) : $t(iface_ptr) {
             if (self.$f(iface_var_name) == null) {
                 self.$f(iface_var_name) = new <$t(cls)>(unsafe(addr(self)))
             }
             return self.$f(iface_var_name)
         }
         add_function(st._module, fn_get_i)
+        
+        
+        if (is_const_interface(parent)) {
+            var inscope fn_get_i_const <- qmacro_method(iface_get_name_func, st) $(self : $t(st) ==const) : $t(iface_ptr) {
+                var pS = unsafe(reinterpret<$t(st)? -const>(addr(self)))
+                if (pS.$f(iface_var_name) == null) {
+                    pS.$f(iface_var_name) = new <$t(cls)>(pS)
+                }
+                return pS.$f(iface_var_name)
+            }
+            add_function(st._module, fn_get_i_const)
+        }
         
         var inscope st_ptr <- qmacro_type(type<$t(st)?>)
         let fi = cls |> add_structure_field("_self", clone_type(st_ptr), default<ExpressionPtr>)
@@ -131,7 +144,7 @@ class ImplementsMacro : AstStructureAnnotation {
         st |> add_structure_field(
             iface_get_name,
             qmacro_type(type<function<(var self : $t(st)) : $t(iface_ptr)>>),
-            qmacro(@@$i(iface_get_name_func))
+            qmacro(@@ < (var self : $t(st)) : $t(iface_ptr) > $i(iface_get_name_func))
         )
         
         
@@ -148,7 +161,7 @@ class ImplementsMacro : AstStructureAnnotation {
                 
                 var already_exists = false
                 for (efld in st.fields) {
-                    if (string(efld.name) == anc_get_name) {
+                    if (efld.name == anc_get_name) {
                         already_exists = true
                         break
                     }
@@ -166,6 +179,13 @@ class ImplementsMacro : AstStructureAnnotation {
                             return $c(iface_get_name_func)(self)
                         }
                         add_function(st._module, fn_anc)
+                        
+                        if (is_const_interface(anc_struct)) {
+                            var inscope fn_anc_const <- qmacro_method(anc_get_func, st) $(self : $t(st)) : $t(anc_ptr) {
+                                return $c(iface_get_name_func)(self)
+                            }
+                            add_function(st._module, fn_anc_const)
+                        }
                         st |> add_structure_field(
                             anc_get_name,
                             qmacro_type(type<function<(var self : $t(st)) : $t(anc_ptr)>>),
@@ -256,31 +276,32 @@ class ImplementsMacro : AstStructureAnnotation {
             return true  
         }
         
-        var missing : string
-        for (ifld in iface.fields) {
-            let ifld_name = string(ifld.name)
-            
-            if (ifld_name == "__rtti" || ifld_name == "__finalize") {
-                continue
-            }
-            if (!ifld._type.isFunction) {
-                continue
-            }
-            
-            if (ifld.init != null) {
-                continue
-            }
-            
-            let expected = "{iface_name}`{ifld_name}"
-            var found = false
-            for (sfld in st.fields) {
-                if (string(sfld.name) == expected) {
-                    found = true
-                    break
+        var missing = build_string() <| $(var w) {
+            for (ifld in iface.fields) {
+                let ifld_name = string(ifld.name)
+                
+                if (ifld_name == "__rtti" || ifld_name == "__finalize") {
+                    continue
                 }
-            }
-            if (!found) {
-                missing = "{missing}{st.name} does not implement {iface_name}.{ifld_name}\n"
+                if (!ifld._type.isFunction) {
+                    continue
+                }
+                
+                if (ifld.init != null) {
+                    continue
+                }
+                
+                let expected = "{iface_name}`{ifld_name}"
+                var found = false
+                for (sfld in st.fields) {
+                    if (string(sfld.name) == expected) {
+                        found = true
+                        break
+                    }
+                }
+                if (!found) {
+                    w |> write("{st.name} does not implement {iface_name}.{ifld_name}\n")
+                }
             }
         }
         if (length(missing) > 0) {
@@ -289,6 +310,34 @@ class ImplementsMacro : AstStructureAnnotation {
         }
         return true
     }
+}
+
+
+
+def private is_const_interface(st : Structure?) : bool {
+    
+    
+    if (st == null) {
+        return false
+    }
+    for (fld in st.fields) {
+        let fn = string(fld.name)
+        if (fn == "__rtti" || fn == "__finalize") {
+            continue
+        }
+        if (!fld._type.isFunction) {
+            continue
+        }
+        
+        
+        if (length(fld._type.argTypes) == 0) {
+            continue
+        }
+        if (!fld._type.argTypes[0].isConst) {
+            return false
+        }
+    }
+    return true
 }
 
 
@@ -373,7 +422,7 @@ class InterfaceAsIs : AstVariantMacro {
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            if (string(fld.name) == getter_field) {
+            if (fld.name == getter_field) {
                 
                 
                 return <- quote(true)
@@ -407,7 +456,7 @@ class InterfaceAsIs : AstVariantMacro {
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            if (string(fld.name) == getter_field) {
+            if (fld.name == getter_field) {
                 
                 
                 let func_name = "{st.name}`get`{iname}"
@@ -446,7 +495,7 @@ class InterfaceAsIs : AstVariantMacro {
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            if (string(fld.name) == getter_field) {
+            if (fld.name == getter_field) {
                 
                 let func_name = "{st.name}`get`{iname}"
                 

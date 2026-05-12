@@ -828,7 +828,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -885,7 +884,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -942,7 +940,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -999,7 +996,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -1156,6 +1152,64 @@
         "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           25,
+          28
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "useEmitter": true,
+        "allowableDelta": [
+          180.0,
+          1.0
+        ],
+        "bullets": 400,
+        "startFx": "smoke_rocketlaunch_ground",
+        "startFxOffset": [
+          1.5,
+          0.0,
+          0.0
+        ],
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "bulletsCartridge": 2,
+        "reloadTime": 20.0,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 10.0,
+        "aimMaxDist": 14000.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.0,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 1.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_01"
+        },
+        "limits": {
+          "yaw": [
+            -115.0,
+            115.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner21",
+        "triggerGroup": "rockets",
+        "blk": "gameData/weapons/rocketGuns/760mm_p35_alike_rocket_naval_bullet.blk",
+        "weaponType": "rockets",
+        "emitter": "bone_rocket_29",
+        "flash": "bone_rocket_29",
+        "ammoDpGenFmt": "bone_rocket_%02d_dm",
+        "emitterGenRange": [
+          29,
           32
         ],
         "emitterGenFmt": "bone_rocket_%02d",
@@ -1173,6 +1227,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "bulletsCartridge": 2,
         "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -1188,15 +1243,14 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
-          "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01"
+          "head": "auxiliary_caliber_turret_02",
+          "gun": "auxiliary_caliber_gun_02"
         },
         "limits": {
           "yaw": [
-            0.0,
-            0.0
+            -115.0,
+            115.0
           ],
           "pitch": [
             0.0,
@@ -1247,7 +1301,6 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
           "gun": "auxiliary_caliber_gun_05"
@@ -1463,6 +1516,9 @@
       "blk": "gameData/units/ships/weaponPresets/ussr_cruiser_rckt_pr58_default.blk"
     }
   },
+  "rocketSeries": {
+    "count": 1
+  },
   "rocketBlocker": {
     "duration": 5.0,
     "cooldown": 80.0,
@@ -1530,7 +1586,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -1587,7 +1642,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -1644,7 +1698,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -1701,7 +1754,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -1858,6 +1910,64 @@
               "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 25,
+                28
+              ],
+              "emitterGenFmt": "bone_rocket_%02d",
+              "useEmitter": true,
+              "allowableDelta": [
+                180.0,
+                1.0
+              ],
+              "bullets": 400,
+              "startFx": "smoke_rocketlaunch_ground",
+              "startFxOffset": [
+                1.5,
+                0.0,
+                0.0
+              ],
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "bulletsCartridge": 2,
+              "reloadTime": 20.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -115.0,
+                  115.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner21",
+              "triggerGroup": "rockets",
+              "blk": "gameData/weapons/rocketGuns/760mm_p35_alike_rocket_naval_bullet.blk",
+              "weaponType": "rockets",
+              "emitter": "bone_rocket_29",
+              "flash": "bone_rocket_29",
+              "ammoDpGenFmt": "bone_rocket_%02d_dm",
+              "emitterGenRange": [
+                29,
                 32
               ],
               "emitterGenFmt": "bone_rocket_%02d",
@@ -1875,6 +1985,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "bulletsCartridge": 2,
               "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1890,15 +2001,14 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
-                "head": "auxiliary_caliber_turret_01",
-                "gun": "auxiliary_caliber_gun_01"
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_gun_02"
               },
               "limits": {
                 "yaw": [
-                  0.0,
-                  0.0
+                  -115.0,
+                  115.0
                 ],
                 "pitch": [
                   0.0,
@@ -1949,7 +2059,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05"
@@ -2216,7 +2325,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2273,7 +2381,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2330,7 +2437,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -2387,7 +2493,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -2544,6 +2649,64 @@
               "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 25,
+                28
+              ],
+              "emitterGenFmt": "bone_rocket_%02d",
+              "useEmitter": true,
+              "allowableDelta": [
+                180.0,
+                1.0
+              ],
+              "bullets": 400,
+              "startFx": "smoke_rocketlaunch_ground",
+              "startFxOffset": [
+                1.5,
+                0.0,
+                0.0
+              ],
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "bulletsCartridge": 2,
+              "reloadTime": 20.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -115.0,
+                  115.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner21",
+              "triggerGroup": "rockets",
+              "blk": "gameData/weapons/rocketGuns/760mm_p35_alike_rocket_naval_bullet.blk",
+              "weaponType": "rockets",
+              "emitter": "bone_rocket_29",
+              "flash": "bone_rocket_29",
+              "ammoDpGenFmt": "bone_rocket_%02d_dm",
+              "emitterGenRange": [
+                29,
                 32
               ],
               "emitterGenFmt": "bone_rocket_%02d",
@@ -2561,6 +2724,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "bulletsCartridge": 2,
               "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -2576,15 +2740,14 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
-                "head": "auxiliary_caliber_turret_01",
-                "gun": "auxiliary_caliber_gun_01"
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_gun_02"
               },
               "limits": {
                 "yaw": [
-                  0.0,
-                  0.0
+                  -115.0,
+                  115.0
                 ],
                 "pitch": [
                   0.0,
@@ -2635,7 +2798,6 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05"

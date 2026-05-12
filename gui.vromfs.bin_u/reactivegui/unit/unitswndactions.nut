@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { abs } = require("%sqstd/math.nut")
 let { G_PREMIUM, G_BLUEPRINT, G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
@@ -16,14 +15,13 @@ let { unitInProgress, curUnitInProgress, firstRewardInProgress, set_research_uni
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openGoodsPreview, openedUnitFromTree } = require("%rGui/shop/goodsPreviewState.nut")
-let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlotUnits, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { campUnitsCfg, curUnit, playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, curUnit, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { setCurrentUnit, canBuyUnits, buyUnitsData, canBuyUnitsStatus, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE, US_CAN_BUY
+let { setCurrentUnit, canBuyUnits, canBuyUnitsStatus, US_CAN_BUY
 } = require("%appGlobals/unitsState.nut")
 let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
@@ -44,7 +42,7 @@ let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { mkTreeNodesUnitPlate, treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
-let { upgradeCommonUnitName, buyExpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
+let { upgradeCommonUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 
@@ -104,16 +102,6 @@ function findGoodsPrem(shopGoodsList) {
     res = g
   }
   return res
-}
-
-let bgTextMessage = {
-  size = const [SIZE_TO_CONTENT, hdpx(50)]
-  color = 0x8F000000
-  valign = ALIGN_CENTER
-  rendObj = ROBJ_9RECT
-  image = gradCircularSmallHorCorners
-  screenOffs = hdpx(50)
-  texOffs = gradCircCornerOffset
 }
 
 let infoBtn = infoCommonButton(
@@ -244,7 +232,6 @@ let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
   let { isResearched = false, canBuy = false, isCurrent = false, canResearch = false,
     hasAccessLock = true
   } = unitsResearchStatus.get()?[unitName]
-  let levelInfo = playerLevelInfo.get()
   let canBuyStatus = canBuyUnitsStatus.get()?[unitName]
   let isOwned = unitName in campMyUnits.get()
   let withBlueprint = unitName in serverConfigs.get()?.allBlueprints && !isOwned
@@ -288,12 +275,10 @@ let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
     }
   }
   else if (canBuyUnit || (isResearched && !canBuy)) {
-    let isForLevelUp = levelInfo.isReadyForLevelUp && (unitName in buyUnitsData.get().canBuyOnLvlUp)
-
-    let price = Computed(@() getUnitAnyPrice(unitFromCanBuyUnits ?? unit, isForLevelUp, unitDiscounts.get()))
+    let price = Computed(@() getUnitAnyPrice(unitFromCanBuyUnits ?? unit, unitDiscounts.get()))
     if (price.get() != null) {
       let priceComp = @() { watch = price, children = mkDiscountPriceComp(price.get().fullPrice, price.get().price, price.get().currencyId, CS_INCREASED_ICON) }
-      bigBtnsList.append(textButtonPricePurchase(utf8ToUpper(loc(!isCampaignWithUnitsResearch.get() ? "msgbox/btn_order" : "msgbox/btn_build")), priceComp,
+      bigBtnsList.append(textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_build")), priceComp,
       @() price.get() && tryBuyUnit(isBlocked, canBuyUnit, unitName, price.get()),
         { hotkeys = ["^J:X"] }.__update(canBuyUnit ? {} : COMMON)))
     }
@@ -308,26 +293,6 @@ let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
         : animResearchRequirementsUnitId.set(unitName),
       mergeStyles(canResearch ? PURCHASE : INACTIVE,
         { hotkeys = ["^J:X"], hasGlare = true, ovr = { key = "startResearchButton" } })))
-  else if (canBuyStatus == US_TOO_LOW_LEVEL) {
-    let { rank = 0, starRank = 0 } = campUnitsCfg.get().findvalue(@(u) u.name == unitName)
-    let deltaLevels = rank - levelInfo.level
-    let hasPrice = (unit?.costGold ?? 0) + (unit?.costWp ?? 0) > 0
-    if (deltaLevels >= 2)
-      bigBtnsList.append(bgTextMessage.__merge({
-        children = @() {
-          size = SIZE_TO_CONTENT
-          rendObj = ROBJ_TEXT
-          text = hasPrice ? loc("unitWnd/explore_request") : loc("unitWnd/coming_soon")
-        }.__update(fontTiny)
-      }))
-    else if (deltaLevels == 1 && canBuyStatus != US_NOT_FOR_SALE) {
-      let premId = findGoodsPrem(shopGoods.get())?.id
-      bigBtnsList.append(textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
-        @() havePremium.get() || premId == null ? buyExpUnitName.set(unitName) : openGoodsPreview(premId)
-        { hotkeys = ["^J:Y"] , childOvr = { padding = const [0, hdpx(6)] gap = 0 }})
-      )
-    }
-  }
   else if (withBlueprint && !canBuyUnit) {
     let blueprintsGoodsId = getBlueprintGoodsId(serverConfigs.get(), shopGoods.get(), unitName)
 
@@ -350,8 +315,8 @@ let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
   return {
     watch = [
       unitNameW, curUnit, campMyUnits, campUnitsCfg, curCampaign, unitReceiveInfoW,
-      canBuyUnits, havePremium, canBuyUnitsStatus, playerLevelInfo,
-      curCampaignSlotUnits, shopGoods, buyUnitsData, unitDiscounts,
+      canBuyUnits, havePremium, canBuyUnitsStatus,
+      curCampaignSlotUnits, shopGoods, unitDiscounts,
       unitsResearchStatus, serverConfigs, unitsBlockedByBattleMode
     ]
     size = FLEX_H

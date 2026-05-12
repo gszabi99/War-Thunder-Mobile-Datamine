@@ -5,7 +5,7 @@ let { register_command } = require("console")
 
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { isCampaignWithUnitsResearch, curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots, isCampaignWithSlots, curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -54,7 +54,6 @@ let canBuyCurResearchUnit = Computed(function() {
 
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinishedUnitsResearch.get()
-  && isCampaignWithUnitsResearch.get()
   && hasGotFirstPredifinedReward.get()
   && curResearchUnitStatus.get()
   && canBuyCurResearchUnit.get()
@@ -284,7 +283,7 @@ startTutorialDelayed()
 showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
 
 register_command(function() {
-  if (isCampaignWithUnitsResearch.get() && activeTutorialId.get() != TUTORIAL_UNITS_RESEARCH_ID) {
+  if (activeTutorialId.get() != TUTORIAL_UNITS_RESEARCH_ID) {
     let { unitsResearch = {} } = servProfile.get()
     let researchingUnitId = unitsResearch?.findindex(@(v) v?.isCurrent) ?? ""
 

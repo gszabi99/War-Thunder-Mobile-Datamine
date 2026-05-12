@@ -7,6 +7,8 @@
     0.0,
     0.0
   ],
+  "ForceFiniteFuel0": true,
+  "ForceFiniteFuelAmountRel0": 2.0,
   "gearSinkRangeLR": 0.138,
   "gearSinkRangeC": 0.046,
   "gyroSight": false,
@@ -1594,7 +1596,7 @@
     "Range": 50.0
   },
   "Sound": {
-    "Engine": "engine_jet",
+    "Engine": "engine_rocket",
     "gun": "gun_default"
   },
   "cockpit": {

@@ -2,13 +2,14 @@ from "%scripts/dagui_library.nut" import *
 let logQ = log_with_prefix("[QUEUE] ")
 let { get_time_msec } = require("dagor.time")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
+let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matching.errors")
 let { isEqual } = require("%sqstd/underscore.nut")
 let queueState = require("%appGlobals/queueState.nut")
-let { curQueue, isInQueue, curQueueState, queueStates,
-  QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING, QS_CHECK_PENALTY
+let { curQueue, isInQueue, curQueueState, queueStates, jwtUserstat,
+  QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING, QS_CHECK_PENALTY,
+  QS_REQUEST_STATS
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -19,6 +20,8 @@ let { selClusters } = require("clustersList.nut")
 let { getOptimalClustersForSquad } = require("optimalClusters.nut")
 let { queueData, isQueueDataActual, actualizeQueueData, curUnitInfo
 } = require("%scripts/battleData/queueData.nut")
+let { isStatsActual, actualizeStats, allowSendOldStats, oldStatSendTime
+} = require("%scripts/battleData/userstatStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
@@ -43,7 +46,7 @@ let destroyQueue = @() curQueue.set(null)
 
 let writeJwtData = @() curQueue.mutate(function(q) {
   let { payload = {}, jwt = "" } = queueData.get()
-  let myParams = { profileJwt = jwt }
+  let myParams = { profileJwt = jwt, statsJwt = jwtUserstat.get() ?? "" }
 
   q.state = QS_ACTUALIZE_SQUAD
   q.params = q.params.__merge({
@@ -87,7 +90,7 @@ function tryWriteMembersData() {
   foreach(uid, m in squadMembers.get()) {
     if (uid == myUserId.get())
       continue
-    let { queueToken = "", units = {} } = m
+    let { queueToken = "", statsToken = "", units = {} } = m
     if (queueToken == "") {
       logQ($"Squad member {uid} has invalid queue token. wait for validation.")
       actualizeSquadQueueOnce()
@@ -116,7 +119,7 @@ function tryWriteMembersData() {
       curQueue.set(null)
       return
     }
-    playersUpd[uid.tostring()] <- { profileJwt = queueToken }
+    playersUpd[uid.tostring()] <- { profileJwt = queueToken, statsJwt = statsToken }
   }
 
   curQueue.mutate(function(q) {
@@ -133,6 +136,15 @@ registerHandler("onActiveQueueActualizeData",
   })
 
 let queueSteps = {
+  [QS_REQUEST_STATS] = function() {
+    if (isStatsActual.get() || allowSendOldStats.get())
+      setQueueState(QS_ACTUALIZE)
+    else {
+      actualizeStats()
+      resetTimeout(oldStatSendTime, @() curQueueState.get() != QS_REQUEST_STATS ? null : setQueueState(QS_ACTUALIZE))
+    }
+  },
+
   [QS_ACTUALIZE] = function() {
     if (isQueueDataActual.get())
       setQueueState(QS_CHECK_PENALTY)
@@ -215,6 +227,18 @@ isQueueDataActual.subscribe(function(v) {
   else if (curQueueState.get() == QS_CHECK_PENALTY)
     writeJwtData()
 })
+isStatsActual.subscribe(function(v) {
+  if (!v)
+    return
+  if (curQueueState.get() == QS_REQUEST_STATS)
+    setQueueState(QS_ACTUALIZE)
+})
+allowSendOldStats.subscribe(function(v) {
+  if (!v)
+    return
+  if (curQueueState.get() == QS_REQUEST_STATS)
+    setQueueState(QS_ACTUALIZE)
+})
 
 curUnitInfo.subscribe(function(_) {  
   if (!isInQueue.get())
@@ -253,7 +277,7 @@ function joinQueue(params) {
     jip = get_gui_option(USEROPT_ALLOW_JIP) ?? true
   }.__update(params)
   logQ("Request join queue: ", paramsExt)
-  curQueue.set({ state = QS_ACTUALIZE, params = paramsExt })
+  curQueue.set({ state = QS_REQUEST_STATS, params = paramsExt })
 }
 
 matching.subscribe("match.notify_queue_join", function(params) {

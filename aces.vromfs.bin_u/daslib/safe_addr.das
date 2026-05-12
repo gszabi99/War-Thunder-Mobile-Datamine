@@ -13,8 +13,8 @@ module safe_addr shared private
 
 
 
-require ast
-require rtti
+require daslib/ast
+require daslib/rtti
 require daslib/ast_boost
 require daslib/is_local
 

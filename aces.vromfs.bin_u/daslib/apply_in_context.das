@@ -13,14 +13,14 @@ module apply_in_context shared private
 
 
 
-require ast
+require daslib/ast
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/defer
 require daslib/strings_boost
 
-require rtti public
-require debugapi public
+require daslib/rtti public
+require daslib/debugger public
 
 [function_macro(name="apply_in_context")]
 class AppendCondAnnotation : AstFunctionAnnotation {

@@ -63,11 +63,23 @@
     "composite_armor_turret_NN": {
       "template": "composite_armor_turret_#15#"
     },
+    "ex_composite_armor_NN": {
+      "template": "ex_composite_armor_#20#"
+    },
+    "ex_aps_launcher_NN": {
+      "template": "ex_aps_launcher_#10#"
+    },
+    "ex_aps_launcher_r_NN": {
+      "template": "ex_aps_launcher_r_#10#"
+    },
+    "ex_aps_launcher_l_NN": {
+      "template": "ex_aps_launcher_l_#10#"
+    },
     "ex_era_hull_NN": {
       "template": "ex_era_hull_#90#"
     },
     "ex_era_turret_NN": {
-      "template": "ex_era_turret_#50#"
+      "template": "ex_era_turret_#70#"
     },
     "bow": {},
     "bow_l": {},

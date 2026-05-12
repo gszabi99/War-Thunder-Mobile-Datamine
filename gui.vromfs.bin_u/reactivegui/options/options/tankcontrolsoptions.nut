@@ -4,14 +4,16 @@ let {
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_TANK_ALTERNATIVE_CONTROL_TYPE,
   OPT_TANK_AUTO_TURNER, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
-  OPT_SHOW_RETICLE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING, mkOptionValue
+  OPT_SHOW_RETICLE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING,
+  OPT_TANK_LEAVE_ZOOM_ON_KILL, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, set_enable_auto_healing, get_enable_auto_healing,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
 } = require("controlsOptions")
 let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { firstLoginTime, abTests } = require("%appGlobals/pServer/campaign.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { hudScoreTankList, hudScoreTankRaw, hudScoreTank } = require("%rGui/hud/myScores.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
@@ -132,6 +134,28 @@ let currentArmorPiercingType = {
   description = loc("options/desc/armor_piercing_fixed")
 }
 
+let leaveZoomOnKillList = [false, true]
+let leaveZoomOnKillDefault = Computed(@() (abTests.get()?.leaveZoomOnKillDefault ?? "false") == "true")
+let currentLeaveZoomOnKillRaw = mkOptionValue(OPT_TANK_LEAVE_ZOOM_ON_KILL)
+let setDefaultLeaveZoomOnKill = @() currentLeaveZoomOnKillRaw.get() == null
+  ? currentLeaveZoomOnKillRaw.set(leaveZoomOnKillDefault.get())
+  : null
+if (isLoggedIn.get())
+  setDefaultLeaveZoomOnKill()
+isLoggedIn.subscribe(@(v) v ? setDefaultLeaveZoomOnKill() : null)
+let currentLeaveZoomOnKill = Computed(@()
+  validate(currentLeaveZoomOnKillRaw.get() ?? leaveZoomOnKillDefault.get(), leaveZoomOnKillList))
+let leaveZoomOnKillType = {
+  locId = "options/leave_zoom_on_kill"
+  ctrlType = OCT_LIST
+  value = currentLeaveZoomOnKill
+  setValue = @(v) currentLeaveZoomOnKillRaw.set(v)
+  onChangeValue = @(v) sendChange("leave_zoom_on_kill", v)
+  list = leaveZoomOnKillList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/leave_zoom_on_kill")
+}
+
 let autoZoomList = [false, true]
 let autoZoomDefault = Computed(@() firstLoginTime.get() > autoZoomDefaultTrueStart)
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
@@ -230,6 +254,7 @@ return {
     showGrassInTankVision
     currentArmorPiercingType
     showReticleButtonTouch
+    leaveZoomOnKillType
     currentAutoZoomType
     optHudScoreTank
     enableCrewAutoHealingType

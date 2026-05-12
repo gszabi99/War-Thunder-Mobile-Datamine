@@ -8,9 +8,10 @@ let detailsCache = persist("detailsCache", @() {})
 
 function loadUnitBlkDetails(unitName) {
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
-  let { modifications = null } = unitBlk
+  let { modifications = null, ForceFiniteFuel0 = false, ForceFiniteFuel1 = false, ForceFiniteFuel2 = false } = unitBlk
   return {
     hasShipSmokeScreen = "ship_smoke_screen_system_mod" in modifications
+    hasFuel = ForceFiniteFuel0 || ForceFiniteFuel1 || ForceFiniteFuel2
   }
 }
 

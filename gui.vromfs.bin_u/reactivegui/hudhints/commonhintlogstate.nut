@@ -441,6 +441,7 @@ eventbus_subscribe("hint:have_repair_assistant:hide", function(_) {
   removeEvent({ id = HAVE_REPAIR_ASSISTANT })
 })
 
+unitType.subscribe(@(_v) removeEvent({ id = HAVE_REPAIR_ASSISTANT }))
 
 eventbus_subscribe("hint:need_lock_target", function(_) {
   if (incHintCounter("need_lock_target", 5)) {

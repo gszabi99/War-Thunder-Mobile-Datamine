@@ -24,11 +24,55 @@ require danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_common
 require danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_macro
 require danetlibs.imgui_daeditor.daEditor.daEditor_common
 require %danetlibs.imgui_daeditor.imgui.imgui_common
+require %danetlibs.imgui_daeditor.imgui.ecs_plot_common
 
 var private @ignore_heap_usage basicStructAnnotations : table<string; rtti::BasicStructureAnnotation?>
 var private basicStructAnnotationsInited = false
 
-[unused_argument(eid)]
+def private axes_for_type(type_name : string) : int
+  if type_name == "Point2" || type_name == "IPoint2"
+    return 2
+  elif type_name == "Point3" || type_name == "IPoint3"
+    return 3
+  elif type_name == "Point4" || type_name == "IPoint4"
+    return 4
+  return 1
+
+def private is_plottable_type(type_name : string) : bool
+  return (type_name == "int" || type_name == "float"
+       || type_name == "Point2" || type_name == "Point3" || type_name == "Point4"
+       || type_name == "IPoint2" || type_name == "IPoint3" || type_name == "IPoint4")
+
+def private draw_add_to_plot_buttons(eid_val : uint; name, type_name : string)
+  if !is_plottable_type(type_name)
+    return
+  static_let <|
+    var all_axes = true
+  let is_multi_axis = axes_for_type(type_name) > 1
+  imgui::Separator()
+  let group_start_y = imgui::GetCursorPosY()
+  imgui::BeginGroup()
+  for plot_idx in range(PLOT_WINDOW_COUNT)
+    let plot_label = plot_idx == 0 ? "Add to Plot" : "Add to Plot {plot_idx + 1}"
+    if imgui::Button("{plot_label}##addtoplot{plot_idx}")
+      imgui::CloseCurrentPopup()
+      let n_axes = (is_multi_axis && all_axes) ? axes_for_type(type_name) : 1
+      for axis in range(n_axes)
+        let count = imgui_get_blk_val("ecs_plot_req", "count", 0)
+        imgui_set_blk_val("ecs_plot_req", "win_{count}", plot_idx)
+        imgui_set_blk_val("ecs_plot_req", "eid_{count}", int(eid_val))
+        imgui_set_blk_val("ecs_plot_req", "name_{count}", name)
+        imgui_set_blk_val("ecs_plot_req", "comp_idx_{count}", axis)
+        imgui_set_blk_val("ecs_plot_req", "count", count + 1)
+      let win_name = plot_idx == 0 ? "Plot" : "Plot {plot_idx + 1}"
+      imgui_window_set_visible("ECS", win_name, true)
+  imgui::EndGroup()
+  if is_multi_axis
+    let group_h = imgui::GetItemRectSize().y
+    imgui::SameLine()
+    imgui::SetCursorPosY(group_start_y + (group_h - imgui::GetFrameHeight()) * 0.5f)
+    imgui::Checkbox("all axes##allaxes", unsafe(addr(all_axes)))
+
 def default_menu(eid : array<EntityId> implicit; name, typeName : string; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>)
   imgui::TableSetColumnIndex(2)
   if imgui::Button("*##{name}")
@@ -51,10 +95,12 @@ def default_menu(eid : array<EntityId> implicit; name, typeName : string; var ch
 
     res = sub_menu |> invoke(changed)
 
+    if !empty(eid)
+      draw_add_to_plot_buttons(uint(eid[0]), name, typeName)
+
     imgui::EndPopup()
   return res
 
-[unused_argument(eid)]
 def default_menu(eid : array<EntityId> implicit;
                  name, typeName : string;
                  val_to_str : block<() : string>;
@@ -92,6 +138,9 @@ def default_menu(eid : array<EntityId> implicit;
       imgui::SetClipboardText(blk_val_to_str |> invoke())
 
     res = sub_menu |> invoke(changed)
+
+    if !empty(eid)
+      draw_add_to_plot_buttons(uint(eid[0]), name, typeName)
 
     imgui::EndPopup()
   return res
@@ -736,3 +785,53 @@ def invalidate_item(eid : EntityId; refs : array<ComponentRenderInfo#>#)
 def nada(var ref : EntityComponentRef)
   pass
 
+
+def draw_edit_position_rotation_scale_tm(var val : float3x4&; name : string; var changed : bool?) : void
+  let rotMin = -180.0
+  let rotMax = 180.0
+  let rotStep = 1.0
+
+  let posMin = -1.5
+  let posMax = 1.5
+  let posStep = 0.01
+
+  var scale = float3(length(val[0]), length(val[1]), length(val[2]))
+  var euler = float3(0.0)
+  matrix_to_euler(val, euler.x, euler.y, euler.z)
+
+  euler = rad_to_deg(euler)
+  var newChanged = false
+
+  imgui::Text("Scale: ")
+  imgui::SameLine()
+  SetNextItemWidth(-FLT_MIN)
+  newChanged = InputFloat3("##{name}_0", unsafe(addr(scale.x)), "%.4f", ImGuiInputTextFlags.None) || newChanged
+
+  imgui::Text("Rot: ")
+  imgui::SameLine()
+  SetNextItemWidth(-FLT_MIN)
+  newChanged = imgui::DragScalarN("##{name}_1", ImGuiDataType.Float, unsafe(addr(euler.x)), 3,
+    rotStep, safe_addr(rotMin), safe_addr(rotMax), "%.4f", ImGuiSliderFlags.None) || newChanged
+
+  imgui::Text("Pos: ")
+  imgui::SameLine()
+  SetNextItemWidth(-FLT_MIN)
+  newChanged = imgui::DragScalarN("##{name}_2", ImGuiDataType.Float, unsafe(addr(val[3].x)), 3,
+    posStep, safe_addr(posMin), safe_addr(posMax), "%.4f", ImGuiSliderFlags.None) || newChanged
+
+  if newChanged
+    *changed = newChanged
+    euler = deg_to_rad(euler)
+
+    var q : quat
+    euler_to_quat(euler.x, euler.y, euler.z, q)
+    var rotTm : float3x4
+    make_tm(q, float3(0.0f, 0.0f, 0.0f), rotTm)
+
+    rotTm[0] *= scale.x
+    rotTm[1] *= scale.y
+    rotTm[2] *= scale.z
+
+    rotTm[3] = val[3]
+
+    val = rotTm

@@ -74,12 +74,8 @@ function mkShopContent() {
     let res = {}
     foreach (cfg in curCategoriesCfg.get()) {
       let { id = "" } = cfg
-      let slotsByBaseId = {}
-      foreach (soonPGoodsV in (soonPGoods?[id] ?? []))
-        slotsByBaseId[soonPGoodsV.baseId] <- soonPGoodsV.slots
-      let soonPGoodsLen = slotsByBaseId.reduce(@(resV, v) resV + v, 0)
       let goodsRewardLen = (allGoodsLists?[id] ?? []).len() + (allRewards?[id] == null ? 0 : 1) + (allPersonal?[id].len() ?? 0)
-         + (allSubs?[id].len() ?? 0) + (soonGoods?[id].len() ?? 0) + soonPGoodsLen
+         + (allSubs?[id].len() ?? 0) + (soonGoods?[id].len() ?? 0) + (soonPGoods?[id].len() ?? 0)
       let rows = ceil(1.0 * goodsRewardLen / goodsPerRow)
       let bottom = top + titleH + titleGap + rows * goodsH + (rows - 1) * goodsGap + categoryGap
       let additionalTriggerSpace = categoryGap + goodsH / 3

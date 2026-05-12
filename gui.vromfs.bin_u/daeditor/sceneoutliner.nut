@@ -127,7 +127,7 @@ function filterItem(item) {
   if (filterStr != null && filterStr.len() != 0) {
     let itemStr = item?.scene != null ? sceneToText(item.scene) : entityToTxt(item.entity.id)
 
-    return itemStr.tolower().indexof(filterStr.tolower()) != null
+    return itemStr.tolower().contains(filterStr.tolower())
   }
   return true
 }
@@ -303,7 +303,7 @@ let filteredScenesEntityCount = Computed(function() {
   return eCount
 })
 
-let persistMarkedScenes = function(v) {
+function persistMarkedScenes(v) {
   if (v) {
     local scenes = markedScenes.get()
     foreach (sceneId, marked in v)
@@ -414,7 +414,7 @@ function markObject(object, flag = true) {
 }
 
 function getIcon(name) {
-  return $"!%daeditor/images/{name}.tga"
+  return $"!%daeditor/images/{name}"
 }
 
 function mkIconButton(icon, onClick = null, visible = true, parentHovered = false, opacity = 0.9, tooltip = null) {
@@ -527,8 +527,8 @@ function initScenesList() {
   }
 
   local wasFakeSceneExpanded = expandedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
-  markedStateScenes.set(markedStateScenes.get().filter(@(_val, key) key in sceneIdMap.get()))
-  expandedStateScenes.set(expandedStateScenes.get().filter(@(_val, key) key in sceneIdMap.get()))
+  markedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
+  expandedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
 
   expandedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneExpanded
 
@@ -576,10 +576,7 @@ const setSceneNameUID = "set_scene_name_modal_window"
 
 function setScenePrettyName(sceneId) {
   let sceneName = Watched(entity_editor?.get_instance().getScenePrettyName(sceneId))
-
-  let close = function() {
-    removeModalWindow(setSceneNameUID)
-  }
+  let close = @() removeModalWindow(setSceneNameUID)
 
   function doSetSceneName() {
     local confirmationUID = "clear_scene_name_modal_window"
@@ -1072,7 +1069,7 @@ markedStateScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
     if (item?.scene != null) {
       let state = stateWatcher.get()
       if (state.isMarked != v?[item.scene.id]) {
-        state.isMarked = v[item.scene.id]
+        state.isMarked = v?[item.scene.id] ?? false
         stateWatcher.set(state)
         stateWatcher.trigger()
       }

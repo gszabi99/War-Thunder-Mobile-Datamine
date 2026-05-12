@@ -170,6 +170,7 @@ let skinsByTag = {
     "cn_camo_vt_4"
     "ussr_camo_object_279_bulldog"
     "ussr_camo_object_279_victor"
+    "ussr_camo_bmpt"
   ],
 
   [WINTER] = [
@@ -254,6 +255,7 @@ let skinsByTag = {
     "camo_threegray_spots"
     "camo_blackgreenwhite_spots"
     "camo_blackgreen_spots"
+    "camo_browngray_modern"
 
     "camo_blackgray_geometry"
     "camo_blue_geometry"
@@ -296,6 +298,9 @@ let skinsByTag = {
     "camo_modern_nordgeometry"
     "camo_multicolor_cubes"
     "camo_nato_blue_geometry"
+    "camo_pacificfleet"
+    "camo_blackwhite_cubes"
+    "camo_sea_multicolor_spots"
 
     "camo_arctic_minesweeper_block"
     "camo_bluegray_longspot"
@@ -307,6 +312,7 @@ let skinsByTag = {
     "camo_violetgray_geometry"
     "camo_bluegray_blotch"
     "camo_arcticfleet"
+    "camo_multicolor_fleet"
 
     "camo_lightblue_splotch"
     "camo_dark_spots"
@@ -442,6 +448,7 @@ let skinsByTag = {
     "uk_lancaster_raf"
     "uk_typhoon_mk1a"
     "uk_typhoon_mk1a_camo"
+    "uk_vampire_fb5_raf"
     "usa_a_20g_25_usaaf"
     "usa_am_1_mauler_prem"
     "usa_am_1_mauler"

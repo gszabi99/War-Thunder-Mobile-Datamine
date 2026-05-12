@@ -3,7 +3,6 @@ let { fabs } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer, setInterval, clearTimer } = require("dagor.workcycle")
 let { flagTreeOffset } = require("%rGui/unitsTree/unitsTreeComps.nut")
-let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkScrollArrow, scrollArrowImageVerySmall } = require("%rGui/components/scrollArrows.nut")
 
@@ -63,7 +62,6 @@ function scrollForward() {
   if (nodeToScroll.get() != null)
     resetTimeout(SCROLL_DELAY, @() defer(@() gui_scene.setXmbFocus(nodeToScroll.get())))
 }
-isLvlUpAnimated.subscribe(@(v) v ? scrollForward() : null)
 
 let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
   size = FLEX_H

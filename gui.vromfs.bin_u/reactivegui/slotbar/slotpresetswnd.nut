@@ -12,7 +12,7 @@ let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
 let { mkUnitBg, bgUnit, mkUnitImage, mkUnitTexts, mkUnitPlateBorder, mkUnitLock, mkUnitSelectedGlow
@@ -33,7 +33,6 @@ let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 let { hasPrem, hasVip, hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 
 
 let WND_UID = "SLOT_PRESET_WND"
@@ -44,15 +43,14 @@ let maxPreset = Computed(@() gameProfile.get()?.maxSavedPreset ?? 5)
 let maxPresetsPrem = Computed(@() gameProfile.get()?.premiumBonuses.maxSavedPreset ?? maxPreset.get())
 let maxPresetsVip = Computed(@() gameProfile.get()?.vipBonuses.maxSavedPreset ?? maxPreset.get())
 let subIconSize = [hdpxi(50), hdpxi(30)]
-let btnWidth = hdpx(250)
+let btnMinWidth = hdpx(200)
 let btnIconSize = hdpx(70)
 let iconSize = hdpx(40)
 let btnGap = hdpx(20)
 let infoPanelWidth = hdpx(640)
-let infoPanelHeight = saSize[1] - backButtonHeight - btnIconSize - saBordersRv[0] * 2
 let infoPanelPadding = hdpx(50)
 let presetBlockWidth = saSize[0] - infoPanelWidth + saBordersRv[1] - hdpx(10)
-let presetBlockHeight = Computed(@() isGamepad.get() ? infoPanelHeight : saSize[1] - backButtonHeight - saBordersRv[0])
+let presetBlockHeight = saSize[1] - backButtonHeight - saBordersRv[0]
 let maxPresetsCount = Computed(@() hasPrem.get() ? maxPresetsPrem.get()
   : hasVip.get() ? maxPresetsVip.get()
   : maxPreset.get())
@@ -94,7 +92,7 @@ function onSetPresetName(presets, presetIdx) {
   if (savedPresets.findindex(@(p) p.name == name) != null)
     return openMsgBox({text = loc("msgbox/presets/cannot_apply/duplicated")})
   let allPresets = presets
-  let presetIdxToEdit = allPresets.len() == savedPresets.len() ? presetIdx : presetIdx - 1
+  let presetIdxToEdit = allPresets.len() == savedPresets.len() ? presetIdx : -1
   if (presetIdxToEdit == -1)
     onSave(name)
   else
@@ -128,16 +126,17 @@ function openEditNameWnd(presets, presetIdx, isNotSaved, isMaxAmountReached, isN
   }
 
   openEditTextWnd(currentPresetName, @() onSetPresetName(presets, presetIdx), MAX_TEXT_LENGTH_DEFAULT)
-  currentPresetName.set(presets?[presetIdx].name ?? "")
+  currentPresetName.set(presets?.findvalue(@(p) p.idx == presetIdx).name ?? "")
 }
 
 function onDelete(presets, presetIdx, isNotSaved, campaign) {
-  if (presetIdx not in presets)
+  let preset = presets.findvalue(@(p) p.idx == presetIdx)
+  if (!preset)
     return
   if (isNotSaved)
     return openMsgBox({text = loc("msgbox/presets/cannot_delete")})
 
-  let name = presets[presetIdx].name
+  let name = preset.name
   openMsgBox({
     text = loc("presets/confirmUserPresetDeletion", { name })
     buttons = [
@@ -153,13 +152,13 @@ function onDelete(presets, presetIdx, isNotSaved, campaign) {
 }
 
 function onApply(presets, presetIdx, campaign, isCurrent) {
-  if (presetIdx not in presets)
+  let preset = presets.findvalue(@(p) p.idx == presetIdx)
+  if (!preset)
     return
   if (isCurrent)
     return openMsgBox({text = loc("msgbox/presets/cannot_apply")})
-  let curPreset = presets[presetIdx]
-  setSlots(campaign, curPreset.presetUnits)
-  foreach(idx, name in curPreset.presetUnits)
+  setSlots(campaign, preset.presetUnits)
+  foreach(idx, name in preset.presetUnits)
     anim_start(getSlotAnimTrigger(idx, name, presetIdx))
 }
 
@@ -183,19 +182,16 @@ function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
 }
 
 function mkPresetButtons(presets, presetIdx) {
-  let isCurrentPreset = Computed(@() isEqual(presets.get()?[presetIdx.get()].presetUnits, currentPresetUnits.get()))
-  let selectedPreset = Computed(@() presets.get()?[presetIdx.get()])
-  let isNotSavedPreset = Computed(@() presets.get().len() != savedSlotPresets.get().len() && presetIdx.get() == 0)
+  let selectedPreset = Computed(@() presets.get().findvalue(@(p) p.idx == presetIdx.get()))
+  let isCurrentPreset = Computed(@() isEqual(selectedPreset.get().presetUnits, currentPresetUnits.get()))
+  let isNotSavedPreset = Computed(@() presets.get().len() != savedSlotPresets.get().len() && presetIdx.get() == -1)
   let isMaxSavedPresetAmountReached = Computed(@() presets.get().len() > maxPresetsCount.get())
-  let canEdit = Computed(@() maxPresetsCount.get() <= (selectedPreset.get()?.idx ?? 0))
-
-  return @() {
-    watch = [presets, isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached, curCampaign, canEdit]
-    size = FLEX_H
-    halign = ALIGN_RIGHT
-    vplace = ALIGN_BOTTOM
+  let canEdit = Computed(@() maxPresetsCount.get() <= (selectedPreset.get()?.idx ?? -1))
+  let iconBtnsRow = @() {
+    watch = [canEdit, isNotSavedPreset, isMaxSavedPresetAmountReached, isGamepad]
+    size = isGamepad.get() ? FLEX_H : SIZE_TO_CONTENT
     flow = FLOW_HORIZONTAL
-    gap = btnGap
+    gap = isGamepad.get() ? {size = flex()} : btnGap
     children = [
       mkCustomIconButton(
         "ui/gameuiskin#btn_trash.svg",
@@ -203,33 +199,59 @@ function mkPresetButtons(presets, presetIdx) {
         isNotSavedPreset.get(),
         ["^J:LT"]
       ),
-      !canEdit.get() ? null : textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
-        @() openSubsPreview("vip", "slot_presets"),
-        { ovr = {
-          size = [defButtonMinWidth, btnIconSize]
-        }}
-      ),
-      canEdit.get() ? null : mkCustomIconButton(
-        "ui/gameuiskin#menu_edit.svg",
-        @() openEditNameWnd(presets.get(), presetIdx.get(), isNotSavedPreset.get(), isMaxSavedPresetAmountReached.get(), false),
-        isNotSavedPreset.get(),
-        ["^J:LB"]
-      ),
-      canEdit.get() ? null : mkCustomIconButton(
-        "ui/gameuiskin#icon_save.svg",
-        @() openEditNameWnd(presets.get(), presetIdx.get(), isNotSavedPreset.get(), isMaxSavedPresetAmountReached.get(), true),
-        !isNotSavedPreset.get() || isMaxSavedPresetAmountReached.get(),
-        ["^J:Y"]
-      ),
-      canEdit.get() ? null : (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(
-        utf8ToUpper(loc("mainmenu/btnApply")),
-        @() onApply(presets.get(), presetIdx.get(), curCampaign.get(), isCurrentPreset.get()),
-        {
-            ovr = {size = [SIZE_TO_CONTENT, btnIconSize], minWidth = btnWidth},
-            childOvr = fontTinyAccentedShaded,
+      canEdit.get() ? null
+        : mkCustomIconButton(
+          "ui/gameuiskin#menu_edit.svg",
+          @() openEditNameWnd(presets.get(), presetIdx.get(), isNotSavedPreset.get(), isMaxSavedPresetAmountReached.get(), false),
+          isNotSavedPreset.get(),
+          ["^J:LB"]
+        ),
+      canEdit.get() ? null
+        : mkCustomIconButton(
+          "ui/gameuiskin#icon_save.svg",
+          @() openEditNameWnd(presets.get(), presetIdx.get(), isNotSavedPreset.get(), isMaxSavedPresetAmountReached.get(), true),
+          !isNotSavedPreset.get() || isMaxSavedPresetAmountReached.get(),
+          ["^J:Y"]
+        )
+    ]
+  }
+
+  let txtBtnsRow = @() {
+    watch = [canEdit, isCurrentPreset]
+    size = FLEX_H
+    children = canEdit.get()
+      ? textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
+          @() openSubsPreview("vip", "slot_presets"),
+          {
+            ovr = {
+              size = [flex(), btnIconSize]
+            },
             hotkeys = ["^J:X"]
-        },
-      )
+          }
+        )
+      : (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(
+          utf8ToUpper(loc("mainmenu/btnApply")),
+          @() onApply(presets.get(), presetIdx.get(), curCampaign.get(), isCurrentPreset.get()),
+          {
+            ovr = {size = [flex(), btnIconSize], minWidth = btnMinWidth},
+            childOvr = fontTinyAccentedShaded,
+            hotkeyBlockOvr = {padding = 0}
+            hotkeys = ["^J:X"]
+          },
+        )
+  }
+
+  return @() {
+    watch = isGamepad
+    size = [statsWidth, SIZE_TO_CONTENT]
+    halign = ALIGN_LEFT
+    clipChildren = true
+    vplace = ALIGN_TOP
+    flow = isGamepad.get() ? FLOW_VERTICAL : FLOW_HORIZONTAL
+    gap = btnGap
+    children = [
+      iconBtnsRow,
+      txtBtnsRow
     ]
   }
 }
@@ -399,7 +421,7 @@ function mkMainContent(presets, presetIdx, slotIdx) {
     children = [
       contentHeader
       @() {
-        watch = [presetIdx, presetBlockHeight]
+        watch = presetIdx
         size = flex()
         children = [
           mkBlocksContainer(
@@ -412,7 +434,7 @@ function mkMainContent(presets, presetIdx, slotIdx) {
             },
             presetBlockWidth,
             hdpx(190),
-            presetBlockHeight.get()
+            presetBlockHeight
           )
         ]
       }
@@ -434,12 +456,15 @@ function slotPresetWnd() {
 
     return savedSPresets
   })
-  let activePresetIdx = Computed(@() playerSelectedPresetIdx.get() ?? slotPresets.get().findindex(@(p) isEqual(p?.presetUnits, currentPresetUnits.get())))
-  let activeSlotIdx = Computed(@() playerSelectedSlotIdx.get() ?? slotPresets.get()?[activePresetIdx.get()].presetUnits.findindex(@(n) n !=""))
-  let presetSlotUnit = Computed(@() campMyUnits.get()?[slotPresets.get()?[activePresetIdx.get()].presetUnits[activeSlotIdx.get()]])
+  let activePresetIdx = Computed(@() playerSelectedPresetIdx.get()
+    ?? slotPresets.get().findvalue(@(p) isEqual(p?.presetUnits, currentPresetUnits.get()))?.idx
+    ?? -1)
+  let activePresetUnits = Computed(@() slotPresets.get().findvalue(@(p) p.idx == activePresetIdx.get())?.presetUnits ?? [])
+  let activeSlotIdx = Computed(@() playerSelectedSlotIdx.get() ?? activePresetUnits.get().findindex(@(n) n !=""))
+  let presetSlotUnit = Computed(@() campMyUnits.get()?[activePresetUnits.get()?[activeSlotIdx.get()]])
 
   return {
-    watch = [isOpenedPresetWnd, presetSlotUnit, presetBlockHeight]
+    watch = [isOpenedPresetWnd, presetSlotUnit]
     key = {}
     size = flex()
     onDetach = closeSlotPresetWnd
@@ -448,22 +473,23 @@ function slotPresetWnd() {
       mkCutBg([])
       mkMainContent(slotPresets, activePresetIdx, activeSlotIdx)
       !presetSlotUnit.get() ? null : panelBg.__merge({
-        size = [infoPanelWidth, presetBlockHeight.get()]
+        size = [infoPanelWidth, presetBlockHeight]
         pos = [0, backButtonHeight + saBordersRv[0] * 2]
         hplace = ALIGN_RIGHT
         flow = FLOW_VERTICAL
-        padding = [infoPanelPadding, infoPanelPadding+saBordersRv[0],0,0]
+        padding = [infoPanelPadding, infoPanelPadding, 0, infoPanelPadding]
         children = [
           mkUnitPlate(presetSlotUnit.get()).__merge({hplace = ALIGN_CENTER})
           unitInfoPanel(
             {
               rendObj = ROBJ_BOX
-              size = FLEX_H
-              maxHeight = hdpxi(620)
+              size = [statsWidth, SIZE_TO_CONTENT]
+              maxHeight = hdpxi(470)
               hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-              padding = [infoPanelPadding, 0, infoPanelPadding, infoPanelPadding]
+              padding = [infoPanelPadding, 0, infoPanelPadding, 0]
               animations = wndSwitchAnim
             }, mkUnitTitle, presetSlotUnit)
+          {size = flex()}
           mkPresetButtons(slotPresets, activePresetIdx)
         ]
       })

@@ -317,7 +317,7 @@ function unitPriceBlock(unit) {
       || isUpgraded
       || isPremium)
     return null
-  let price = Computed(@() getUnitAnyPrice(unit, false, unitDiscounts.get()))
+  let price = Computed(@() getUnitAnyPrice(unit, unitDiscounts.get()))
   return @() price.get()?.price
     ? {
       watch = [serverConfigs, campMyUnits, price]

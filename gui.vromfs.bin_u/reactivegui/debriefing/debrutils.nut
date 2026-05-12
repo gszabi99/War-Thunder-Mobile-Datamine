@@ -32,21 +32,7 @@ function getLevelProgress(curLevelConfig, reward) {
   return res
 }
 
-let isDebrWithUnitsResearch = @(debrData) debrData?.isResearchCampaign ?? false
-
-function isPlayerReceiveLevel(debrData) {
-  if (isDebrWithUnitsResearch(debrData))
-    return false 
-  let { exp = 0, nextLevelExp = 0 } = debrData?.player
-  let { totalExp = 0 } = debrData?.reward.playerExp
-  return nextLevelExp != 0
-    && nextLevelExp != exp 
-    && exp + totalExp >= nextLevelExp
-}
-
 function getResearchedUnit(debrData) {
-  if (!isDebrWithUnitsResearch(debrData))
-    return null
   let { exp = 0, reqExp = 0, unit = null } = debrData?.researchingUnit
   let { totalExp = 0 } = debrData?.reward.playerExp
   return reqExp > 0 && totalExp > 0 && (exp + totalExp) >= reqExp ? unit : null
@@ -201,10 +187,8 @@ let sortUnitMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
 return {
   getLevelProgress
 
-  isPlayerReceiveLevel
   getResearchedUnit
 
-  isDebrWithUnitsResearch
   getBestUnitName
   getBgUnits
   getUnitsSet
