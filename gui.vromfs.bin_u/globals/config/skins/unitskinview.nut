@@ -5552,6 +5552,10 @@ return {
     "v_156_b1_prem": {
       "": "uk_spitfire_mk1a_summer"
     },
+    "vampire_fb5": {
+      "": "germ_bf_109a",
+      "camo": "uk_spitfire_mk1a_summer"
+    },
     "vampire_fb5_prem": {
       "": "uk_vampire_fb5_raf"
     },

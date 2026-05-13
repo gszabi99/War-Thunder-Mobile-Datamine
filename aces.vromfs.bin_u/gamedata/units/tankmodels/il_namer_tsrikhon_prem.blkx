@@ -46,6 +46,7 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "minRelativeTankCameraThreshold": 1.22,
+  "rearmTimeOnField": 45.0,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,

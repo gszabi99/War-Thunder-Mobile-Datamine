@@ -22,7 +22,8 @@ let withActionButtonScaleCtor = @(aType, actionCtor, cfg) {
     let action = Computed(function() {
       if (typeof(aType) == "array")
         return actionBarItems.get()?[aType.findvalue(@(v) actionBarItems.get()?[v].selected)]
-                ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
+          ?? actionBarItems.get()?[aType.findvalue(@(v) v in actionBarItems.get())]
+          ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
       return actionBarItems.get()?[aType] ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
     })
     return @() {
