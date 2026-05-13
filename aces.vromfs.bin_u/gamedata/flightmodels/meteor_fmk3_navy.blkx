@@ -1912,7 +1912,9 @@
         "pylon_5_in_ar_mk1_008",
         "100_gal_tank_l",
         "100_gal_tank_r",
-        "180_gal_tank"
+        "180_gal_tank",
+        "bomb_pylon_l",
+        "bomb_pylon_r"
       ]
     },
     "HideDmParts": {
@@ -1979,6 +1981,9 @@
         "WeaponPreset": {
           "iconType": "bomb_1000kg",
           "name": "uk_1000lbs",
+          "ShowNodes": {
+            "node": "bomb_pylon_l"
+          },
           "Weapon": {
             "trigger": "bombs",
             "external": true,
@@ -1995,6 +2000,9 @@
         "WeaponPreset": {
           "iconType": "bomb_1000kg",
           "name": "uk_1000lbs",
+          "ShowNodes": {
+            "node": "bomb_pylon_r"
+          },
           "Weapon": {
             "trigger": "bombs",
             "external": true,

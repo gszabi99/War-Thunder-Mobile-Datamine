@@ -305,6 +305,11 @@ let screensList = {
     weight = 2.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_8.avif")
   }
+  simple_airplane_9 = {
+    camp = [ "air" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_9.avif")
+  }
 }.map(@(v) "timeRange" not in v ? v :
   v.__merge({timeRange = parseTime(v.timeRange)}))
 

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
-let { isDownloadedFromGooglePlay } = require("android.platform")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let { get_game_version_str } = require("app")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { is_ios, is_android, platformId } = require("%sqstd/platform.nut")
@@ -18,6 +18,7 @@ let { set_mute_sound } = require("soundOptions")
 
 let RETRY_LOAD_TIMEOUT = 120
 let RETRY_INC_TIMEOUT = 60 
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 let isShowStarted = hardPersistWatched("ads.isShowStarted", false)
 let hasAdsPreloadError = Watched(false)
@@ -48,6 +49,7 @@ function onFinishShowAds() {
 let cancelReward = @() rewardInfo.set(null)
 
 let providersId = is_ios ? "iOS"
+  : isHuaweiBuild ? "huawei"
   : isDownloadedFromGooglePlay() ? "android_gp"
   : "android_apk"
 let fbProvidersId = is_android ? "android" : providersId

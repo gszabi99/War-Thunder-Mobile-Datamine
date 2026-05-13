@@ -188,6 +188,9 @@ let nickFrames = {
   fire_tornado_s32 = @(n) $"✮{n}✯"
   rocket_up_s32 = @(n) $"✰{n}✱"
   fire_bomb_s32 = @(n) $"✲{n}✳"
+  rose_s33 = @(n) $"⌍{n}⌎"
+  griffin_s33 = @(n) $"⌏{n}⌐"
+  crown_s33 = @(n) $"⌌{n}⌌"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

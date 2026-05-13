@@ -628,11 +628,11 @@
       ]
     },
     "engines": {
-      "maxSpeed": 19.0,
+      "maxSpeed": 16.0,
       "maxReverseSpeed": 9.0,
       "speedToTime": {
         "row": [
-          19.0,
+          16.0,
           20.0
         ]
       },

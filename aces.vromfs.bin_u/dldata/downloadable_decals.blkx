@@ -2478,5 +2478,13 @@
     "lod0": "kbfoiiruwdvsklhmsjiwnffpwifuqyh6-gvci",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "rp4sorif5xqovbqfupmkkddmtfp35drn-byvq"
+  },
+  "royal_wings_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "wyw7rqzgk26bwmczpg2fi776m2astjwo-esra",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "wxnl6slvcthm43gc24kyx2h6vm26ryom-bkrq"
   }
 }

@@ -654,17 +654,17 @@
         340.0
       ],
       "CenterOfGravity": [
-        -10.0,
+        -11.0,
         -1.0,
         0.0
       ]
     },
     "engines": {
-      "maxSpeed": 19.5,
+      "maxSpeed": 16.3,
       "maxReverseSpeed": 7.5,
       "speedToTime": {
         "row": [
-          19.5,
+          16.3,
           20.0
         ]
       },
@@ -737,7 +737,7 @@
   "cockpit": {
     "headPos": [
       0.0,
-      35.0,
+      45.0,
       -95.0
     ],
     "headPosOnShooting": [
@@ -747,8 +747,8 @@
     ],
     "headPosOnSides": [
       0.0,
-      35.0,
-      -180.0
+      45.0,
+      -190.0
     ],
     "detectionHeight": 43.0,
     "cameraAhead": true
