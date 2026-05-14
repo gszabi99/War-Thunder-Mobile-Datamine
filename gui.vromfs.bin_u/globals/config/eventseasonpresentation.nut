@@ -50,6 +50,7 @@ let presentations = {
   season_30 = { color = 0xFFBC0022 }
   season_31 = { color = 0xFF8FDE16 }
   season_32 = { color = 0xFFFE5D18 }
+  season_33 = { color = 0xFFCF142B }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }

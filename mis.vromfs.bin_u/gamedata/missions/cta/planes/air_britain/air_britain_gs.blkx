@@ -346,6 +346,22 @@
         "showWayPoints": true,
         "showDialogs": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/plane_templates/bridges/britain_bridges.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
       }
     ]
   },
@@ -8879,9 +8895,9 @@
             -0.175713
           ],
           [
-            2653.12,
+            2614.05,
             0.00146484,
-            25819.7
+            25879.6
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -8936,9 +8952,9 @@
             -0.205536
           ],
           [
-            2568.29,
+            2509.6,
             0.00146484,
-            25808.4
+            25859.3
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -8993,9 +9009,9 @@
             -0.216321
           ],
           [
-            2735.33,
-            0.00146484,
-            25829.1
+            2713.4,
+            0.00149536,
+            25901.8
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -9050,9 +9066,9 @@
             0.151888
           ],
           [
-            10095.5,
-            0.0,
-            26781.0
+            10097.2,
+            0.0000305176,
+            26814.3
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -9107,9 +9123,9 @@
             0.111202
           ],
           [
-            9957.51,
+            9959.25,
             0.0,
-            26783.8
+            26817.0
           ]
         ],
         "unit_class": "cargo_ship_small",
@@ -9164,9 +9180,9 @@
             0.101111
           ],
           [
-            9823.83,
+            9827.7,
             0.0,
-            26779.1
+            26820.7
           ]
         ],
         "unit_class": "cargo_ship_small",

@@ -5,14 +5,9 @@ let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
-
-let REWARDS_PREVIEW_MODAL_UID = "rewardsPreviewModal"
-
-let closeRewardsPreviewModal = @() removeModalWindow(REWARDS_PREVIEW_MODAL_UID)
-
-let openRewardsPreviewModal = @(content, title, onClick = null)
+let openRewardsPreviewModal = @(wndUid, content, title, onClick = null)
   addModalWindow(bgShaded.__merge({
-    key = REWARDS_PREVIEW_MODAL_UID
+    key = wndUid
     animations = wndSwitchAnim
     onDetach = onClick
     size = const [sw(100), sh(100)]
@@ -27,7 +22,7 @@ let openRewardsPreviewModal = @(content, title, onClick = null)
       children = [
         modalWndHeaderWithClose(title,
           function() {
-            closeRewardsPreviewModal()
+            removeModalWindow(wndUid)
             onClick?()
           },
           { minWidth = SIZE_TO_CONTENT })
@@ -38,5 +33,4 @@ let openRewardsPreviewModal = @(content, title, onClick = null)
 
 return {
   openRewardsPreviewModal
-  closeRewardsPreviewModal
 }

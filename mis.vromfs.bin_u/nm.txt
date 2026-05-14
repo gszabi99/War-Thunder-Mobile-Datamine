@@ -8621,3 +8621,4 @@ t1_boats_way_04_wp_07
 t1_boats_way_04_wp_08
 t1_boats_way_04_wp_09
 t1_boats_way_04_wp_10
+gameData/missions/templates/plane_templates/bridges/britain_bridges.blk

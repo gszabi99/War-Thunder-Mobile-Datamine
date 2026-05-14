@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-
-let { openRewardsPreviewModal, closeRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
+let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { openRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
 let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+
+
+let WND_UID = "rewardPrizeView"
 
 
 let mkUnitPlateClick = @(r) unitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
@@ -61,14 +64,14 @@ function openRewardPrizeView(rewards, rewardCtors) {
   let content = rewards.map(@(reward) {
     function onClick() {
       mkPlateClickByType?[reward.rType](reward)
-      closeRewardsPreviewModal()
+      removeModalWindow(WND_UID)
     }
     sound = { click = "click" }
     behavior = Behaviors.Button
     children = mkRewardPlate(reward, REWARD_STYLE_MEDIUM)
   })
 
-  openRewardsPreviewModal(mkPrizeTicketsContent(content, REWARD_STYLE_MEDIUM), loc("events/prizesToChoose"))
+  openRewardsPreviewModal(WND_UID, mkPrizeTicketsContent(content, REWARD_STYLE_MEDIUM), loc("events/prizesToChoose"))
 }
 
 return { openRewardPrizeView }

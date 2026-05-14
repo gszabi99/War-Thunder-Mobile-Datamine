@@ -14,6 +14,11 @@ let swipeDistance = hdpx(200)
 
 let showReleaseToContinueClue = @() showReleaseToContinueBtn.set(true)
 
+isDebriefingAnimFinished.subscribe(function(_) {
+  clearTimer(showReleaseToContinueClue)
+  showReleaseToContinueBtn.set(false)
+})
+
 function changeTab(curTabIdx, nextTabIdx, debrTabsInfo) {
   if (nextTabIdx < curTabIdx)
     stopDebriefingAnimation()

@@ -10,6 +10,7 @@ let rTypesPriority = {
   [G_STAT_SET]        = 1000000,
   [G_STAT_ADD]        = 1000000,
   [G_LOOTBOX]         = 100000,
+  [G_PRIZE_TICKET]    = 30000,
   [G_UNIT_UPGRADE]    = 20000,
   [G_UNIT]            = 10000,
   [G_BLUEPRINT]       = 9000,

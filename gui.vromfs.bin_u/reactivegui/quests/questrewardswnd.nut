@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { openRewardsPreviewModal, closeRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
+let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { openRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
 let { isRewardsListOpen, closeRewardsList, rewardsList, isRewardsQuestFinished } = require("%rGui/quests/questsState.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateWithAnim } = require("%rGui/quests/rewardsComps.nut")
 
+
+let REWARDS_PREVIEW_MODAL_UID = "rewardsPreviewModal"
 let REWARD_INTERVAL = 0.1
 let MAX_APPEAR_TIME = 0.25
 
@@ -21,16 +23,17 @@ function mkContent(rewards, isQuestFinished, style) {
       (idx + 1) * interval,
       isQuestFinished,
       function() {
-        closeRewardsPreviewModal()
+        removeModalWindow(REWARDS_PREVIEW_MODAL_UID)
         return false
       },
       style))
   }
 }
 
-let showRewardsList = @() openRewardsPreviewModal(mkContent(rewardsList.get() ?? [], isRewardsQuestFinished, REWARD_STYLE_MEDIUM),
+let showRewardsList = @() openRewardsPreviewModal(REWARDS_PREVIEW_MODAL_UID,
+  mkContent(rewardsList.get() ?? [], isRewardsQuestFinished, REWARD_STYLE_MEDIUM),
   loc("quests/rewardsList"), @() closeRewardsList())
 
 if (isRewardsListOpen.get())
   showRewardsList()
-isRewardsListOpen.subscribe(@(v) v ? showRewardsList() : closeRewardsPreviewModal())
+isRewardsListOpen.subscribe(@(v) v ? showRewardsList() : removeModalWindow(REWARDS_PREVIEW_MODAL_UID))
