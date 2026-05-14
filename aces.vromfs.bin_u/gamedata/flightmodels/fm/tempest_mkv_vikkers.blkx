@@ -59,6 +59,7 @@
     1.0,
     0.0
   ],
+  "SpawnSpeed": 720.0,
   "Wingspan": 12.49,
   "SweptWingAngle": 0.0,
   "WingTaperRatio": 2.0,
