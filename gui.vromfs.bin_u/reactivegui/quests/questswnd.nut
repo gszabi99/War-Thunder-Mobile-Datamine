@@ -39,8 +39,8 @@ let maxTabTextWidth = tabW - iconSize - tabGap - selLineSize - tabPadding[1] * 2
 
 let personalTabImageByCamp = {
   air = "ui/gameuiskin#icon_personal_air.svg"
-  ships_new = "ui/gameuiskin#icon_personal_ship.svg"
-  tanks_new = "ui/gameuiskin#icon_personal_tank.svg"
+  ships = "ui/gameuiskin#icon_personal_ship.svg"
+  tanks = "ui/gameuiskin#icon_personal_tank.svg"
 }
 
 let iconPersonal = Computed(@() personalTabImageByCamp?[curCampaign.get()])

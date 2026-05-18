@@ -36,6 +36,7 @@ let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0
 let btnGap = hdpx(10)
 let vipIconW = CS_INCREASED_ICON.iconSize
 let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
+let imageInProgress = "ui/unitskin#image_in_progress.avif"
 
 let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 20, 30, -35))
@@ -136,7 +137,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
               watch = iconWatch
               size = [headerIconW, headerIconH]
               rendObj = ROBJ_IMAGE
-              image = Picture($"{iconWatch.get()}:{headerIconW}:{headerIconH}:P")
+              image = Picture($"{iconWatch.get() ?? imageInProgress}:{headerIconW}:{headerIconH}:P")
               keepAspect = KEEP_ASPECT_FIT
             }
           }
