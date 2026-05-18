@@ -183,6 +183,7 @@ return {
   mkTitle
   mkLink
   separatorLine
+  mkBackBtn
 
   gapAbove
   gapBelow

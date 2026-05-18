@@ -39289,11 +39289,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ball/ball/i_ball/"
         },
-        "303_turret_armor_targets": {
+        "vikkers_turret_armor_targets": {
           "icon": "i_t_ball/ap_ball/ap_ball/ap_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "303_turret_universal": {
+        "vikkers_turret_universal": {
           "icon": "i_t_ball/ap_i_ball/ap_i_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_9"
         }
@@ -39766,11 +39766,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ball/ball/i_ball/"
         },
-        "303_turret_armor_targets": {
+        "vikkers_turret_armor_targets": {
           "icon": "i_t_ball/ap_ball/ap_ball/ap_ball/",
           "reqModification": "aircraft_mod_7"
         },
-        "303_turret_universal": {
+        "vikkers_turret_universal": {
           "icon": "i_t_ball/ap_i_ball/ap_i_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_13"
         }
@@ -40333,7 +40333,9 @@
         "500lb_mc_slot2": {
           "reqModification": "aircraft_mod_2"
         },
-        "1000lb_mc_slot2": {},
+        "1000lb_mc_slot2": {
+          "reqModification": "aircraft_mod_5"
+        },
         "500lb_ap_slot2": {
           "reqModification": "aircraft_mod_2"
         },
@@ -40389,11 +40391,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ball/ball/i_ball/"
         },
-        "303_turret_armor_targets": {
+        "vikkers_turret_armor_targets": {
           "icon": "i_t_ball/ap_ball/ap_ball/ap_ball/",
           "reqModification": "aircraft_mod_1"
         },
-        "303_turret_universal": {
+        "vikkers_turret_universal": {
           "icon": "i_t_ball/ap_i_ball/ap_i_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         }
@@ -42513,11 +42515,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ball/ball/i_ball/"
         },
-        "303_turret_armor_targets": {
+        "vikkers_turret_armor_targets": {
           "icon": "i_t_ball/ap_ball/ap_ball/ap_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "303_turret_universal": {
+        "vikkers_turret_universal": {
           "icon": "i_t_ball/ap_i_ball/ap_i_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_6"
         }
@@ -42793,10 +42795,10 @@
         "default": {
           "icon": "t_ball/ap_ball/ball/ball/i_ball/"
         },
-        "303_turret_armor_targets": {
+        "vikkers_turret_armor_targets": {
           "icon": "i_t_ball/ap_ball/ap_ball/ap_ball/"
         },
-        "303_turret_universal": {
+        "vikkers_turret_universal": {
           "icon": "i_t_ball/ap_i_ball/ap_i_ball/ap_i_ball/"
         }
       }
@@ -42887,10 +42889,10 @@
         "default": {
           "icon": "t_ball/ap_ball/ball/ball/i_ball/"
         },
-        "303_turret_armor_targets": {
+        "vikkers_turret_armor_targets": {
           "icon": "i_t_ball/ap_ball/ap_ball/ap_ball/"
         },
-        "303_turret_universal": {
+        "vikkers_turret_universal": {
           "icon": "i_t_ball/ap_i_ball/ap_i_ball/ap_i_ball/"
         }
       },

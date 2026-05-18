@@ -166,4 +166,5 @@ return {
   mkExpandableSwitch
   mkExpandable = @(text, isExpandedW, mkExpandedContent) mkExpandableSwitch(text, null, null, null, isExpandedW, mkExpandedContent)
   mkSwitch = @(text, isAvailableW, valueW, onManualSwitch = null) mkExpandableSwitch(text, isAvailableW, valueW, onManualSwitch, null, null)
+  mkSwitchComp
 }

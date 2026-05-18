@@ -18679,6 +18679,7 @@
     "segmentLengthSec": 0,
     "snapshotPeriod": 60,
     "replayRewind": true,
+    "writeUnitNamesList": true,
     "showGuidanceLockTracker": true,
     "allowSelectFarAwayUnit": false
   },

@@ -9,7 +9,7 @@ let { textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,
 let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isTcfConsentRequiredForCountry, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
-let { isOpenedManage, consentRequiredForCurrentRegion } = require("%rGui/notifications/consent/consentState.nut")
+let { isOpenedManage, consentRequiredForCurrentRegion } = require("%rGui/notifications/consentFirebase/consentState.nut")
 let { openLicenseWnd, licenseFileName } = require("%rGui/options/licenseWnd.nut")
 let { file_exists } = require("dagor.fs")
 

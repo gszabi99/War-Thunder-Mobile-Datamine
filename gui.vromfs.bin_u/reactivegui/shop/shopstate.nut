@@ -8,7 +8,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { serverTimeDay } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -84,7 +84,7 @@ let goodsWithTimers = Computed(@() (campConfigs.get()?.allGoods ?? {})
 let inactiveGoodsByTime = Watched({})
 let finishedGoodsByTime = Watched({})
 let soonGoodsByTime = Watched({})
-let nextUpdateTime = Watched({ time = 0 })
+
 let goodsLinks = Computed(@() (campConfigs.get()?.allGoods ?? [])
   .reduce(function(res, goods) {
     if (goods.relatedGaijinId == "")
@@ -95,7 +95,7 @@ let goodsLinks = Computed(@() (campConfigs.get()?.allGoods ?? [])
     return res
   }, {}))
 
-let startNextDayTime = @() TIME_DAY_IN_SECONDS - (serverTime.get() % TIME_DAY_IN_SECONDS)
+let startNextDayTime = @(time) TIME_DAY_IN_SECONDS - (time % TIME_DAY_IN_SECONDS)
 
 let shopsCfgOrdered = [
   {
@@ -120,7 +120,7 @@ function updateGoodsTimers() {
   let finished = {}
   let soon = {}
   local nextTime = null
-  let curTime = serverTime.get()
+  let curTime = getServerTime()
   let isValid = isServerTimeValid.get()
   foreach(id, goods in goodsWithTimers.get()) {
     if (!isValid) {
@@ -151,13 +151,13 @@ function updateGoodsTimers() {
         break
       }
       else if (end > curTime) {
-        isActive = end > startNextDayTime() || dailyLimit == 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit
+        isActive = end > startNextDayTime(curTime) || dailyLimit == 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit
         if (isActive) {
           nextTime = min(nextTime ?? end, end)
           break
         }
         else
-          hasNext = end < startNextDayTime()
+          hasNext = end < startNextDayTime(curTime)
       }
     }
     if (!isActive) {
@@ -173,16 +173,13 @@ function updateGoodsTimers() {
     finishedGoodsByTime.set(finished)
   if (!isEqual(soon, soonGoodsByTime.get()))
     soonGoodsByTime.set(soon)
-  nextUpdateTime.set({ time = nextTime ?? 0 })
-}
 
-nextUpdateTime.subscribe(function(v) {
-  let { time } = v
-  if (time == 0)
-    clearExtTimer(updateGoodsTimers)
+  let timeLeft = (nextTime ?? 0) - curTime
+  if (timeLeft > 0)
+    resetExtTimeout(timeLeft, updateGoodsTimers)
   else
-    resetExtTimeout(max(0.5, time - serverTime.get()), updateGoodsTimers)
-})
+    clearExtTimer(updateGoodsTimers)
+}
 
 updateGoodsTimers()
 goodsWithTimers.subscribe(@(_) updateGoodsTimers())

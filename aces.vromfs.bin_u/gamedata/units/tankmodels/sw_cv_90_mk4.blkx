@@ -23,7 +23,6 @@
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "useSimpleDeathConditionsAndEffects": false,
-  "cruiseVelocity": 5.0,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",

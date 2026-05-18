@@ -15,7 +15,7 @@ let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __,
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUEUE_SKIP,
   setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
-  isAdsLoaded, loadAds, showAds
+  isAdsLoaded, loadAds, showAds, setTimeout
 } = ads
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
@@ -91,6 +91,7 @@ eventbus_subscribe("ios.ads.onInit", function(msg) {
     return
   }
   logA($"Provider {provider} inited")
+  setTimeout(60)
   isInited.set(true)
 })
 

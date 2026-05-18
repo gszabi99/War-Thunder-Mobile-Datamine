@@ -104,8 +104,10 @@ function startLoading() {
 if (needAdsLoad.get())
   startLoading()
 needAdsLoad.subscribe(function(v) {
-  if (v)
-    startLoading()
+  if (!v)
+    return
+  this_subscriber_call_may_take_up_to_usec(4 * get_slow_subscriber_threshold_usec())
+  startLoading()
 })
 
 local isRetryQueued = false

@@ -5,7 +5,8 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { questsBySection, saveSeenQuests } = require("%rGui/quests/questsState.nut")
+let { questsBySection, progressUnlockByTab, saveSeenQuests } = require("%rGui/quests/questsState.nut")
+let { specialEventsOrdered } = require("%rGui/event/eventState.nut")
 let { getSpecialEventRewardUnitName } = require("%rGui/event/specialEventLocName.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
 let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
@@ -49,20 +50,16 @@ function trySendQuestProgressDiff(diff) {
       }))
 }
 
-function mkSpecialEventRewardUnitName(quest, questsSection) {
+function mkSpecialEventRewardUnitName(quest) {
   let { event_id = "" } = quest?.meta
   if (event_id == "" || event_id == MAIN_EVENT_ID)
     return ""
   let { locId } = getEventPresentation(event_id)
   if (!loc(locId).contains("{name}")) 
     return ""
-  foreach (q in questsSection) {
-    let { stages = [] } = q
-    let unitName = getSpecialEventRewardUnitName(stages, serverConfigs.get(), allShopGoods.get())
-    if (unitName != "")
-      return unitName
-  }
-  return ""
+  let { eventId = "" } = specialEventsOrdered.get().findvalue(@(v) v.eventName == event_id)
+  let { stages = [] } = progressUnlockByTab.get()?[eventId]
+  return getSpecialEventRewardUnitName(stages, serverConfigs.get(), allShopGoods.get())
 }
 
 let questProgressDiff = keepref(Computed(function(prev) {
@@ -76,7 +73,7 @@ let questProgressDiff = keepref(Computed(function(prev) {
       let previous = prevValues?[id]
       if (previous != null && quest.current > previous) {
         let extraParams = { _previous = previous }
-        let specialEventRewardUnitName = mkSpecialEventRewardUnitName(quest, section)
+        let specialEventRewardUnitName = mkSpecialEventRewardUnitName(quest)
         if (specialEventRewardUnitName != "")
           extraParams._specialEventRewardUnitName <- specialEventRewardUnitName
         res[id] <- quest.__merge(extraParams)

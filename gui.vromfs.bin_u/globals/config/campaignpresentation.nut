@@ -32,19 +32,6 @@ let tanks = mkPresentation(
     icon = "ui/gameuiskin#unit_tank.svg"
     treeBg = $"tanks_blur_bg.avif"
     unitsLocId = "options/chooseUnitsType/tank"
-    unitLevelMaxLocId = $"gamercard/levelCamp/maxLevel/tanks"
-    debrUnitLevelDescLocId = $"gamercard/debriefing/desc/tanks"
-    levelUnitDetailsLocId = $"gamercard/levelUnitDetails/desc/tanks"
-    levelUnitModLocId = $"gamercard/levelUnitMod/desc/tanks"
-    levelUnitAttrLocId = $"gamercard/levelUnitAttr/desc/tanks"
-  },
-  "tanks")
-
-let tanks_new = mkPresentation(
-  {
-    icon = "ui/gameuiskin#unit_tank.svg"
-    treeBg = $"tanks_blur_bg.avif"
-    unitsLocId = "options/chooseUnitsType/tank"
     slotsPresetBtnIcon = "ui/gameuiskin#icon_slot_preset_tanks.svg"
   },
   "tanks")
@@ -67,7 +54,7 @@ let presentations = {
     ships
     ships_new = ships
     tanks
-    tanks_new
+    tanks_new = tanks
   })
 
 let getCampaignPresentation = @(campaign) presentations?[campaign] ?? ships

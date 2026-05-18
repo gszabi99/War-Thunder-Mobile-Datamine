@@ -12,7 +12,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isTcfConsentAutoSkipped, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
-let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
+let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consentFirebase/consentState.nut")
 let { set_mute_sound } = require("soundOptions")
 
 
