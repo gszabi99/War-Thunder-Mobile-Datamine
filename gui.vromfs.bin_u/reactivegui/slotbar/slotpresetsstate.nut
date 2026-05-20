@@ -10,15 +10,11 @@ let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
 let SAVE_ID = "slotSavedPresets"
 let SLOT_PRESETS_VERSION_KEY = "slotPresetsVersion"
-let ACTUAL_VERSION = 2
+let ACTUAL_VERSION = 3
+let NC_REMOVE_VERSION = 2
 let loadedSlotPresets = mkWatched(persist, "loadedSlotPresets", {})
 
-function removeNC() {
-  let sBlk = get_local_custom_settings_blk()
-  if ((sBlk?[SLOT_PRESETS_VERSION_KEY] ?? 0) == ACTUAL_VERSION)
-    return
-
-  sBlk[SLOT_PRESETS_VERSION_KEY] = ACTUAL_VERSION
+function removeNC(sBlk) {
   let slotBlk = sBlk?[SAVE_ID]
   if (type(slotBlk) != "string" || slotBlk == "")
     return
@@ -36,11 +32,31 @@ function removeNC() {
       if ("presetUnits" in p)
         p.presetUnits = p.presetUnits.map(getTagsUnitName)
   sBlk[SAVE_ID] = object_to_json_string(slotPresets)
+}
+
+function removeTanksNew(sBlk) {
+  let presetsStr = sBlk?[SAVE_ID]
+  if (type(presetsStr) != "string" || presetsStr.indexof("\"tanks_new\"") == null)
+    return
+  sBlk[SAVE_ID] = presetsStr.replace("\"tanks_new\"", "\"tanks\"")
+}
+
+function applyCompatibility() {
+  let sBlk = get_local_custom_settings_blk()
+  let version = sBlk?[SLOT_PRESETS_VERSION_KEY] ?? 0
+  if (version == ACTUAL_VERSION)
+    return
+
+  if (version < NC_REMOVE_VERSION)
+    removeNC(sBlk)
+  removeTanksNew(sBlk)
+
+  sBlk[SLOT_PRESETS_VERSION_KEY] = ACTUAL_VERSION
   eventbus_send("saveProfile", {})
 }
 
 function loadSlotPresets() {
-  removeNC()
+  applyCompatibility()
   let blk = get_local_custom_settings_blk()
   let settingsString = blk?[SAVE_ID]
   local res = {}

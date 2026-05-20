@@ -18,7 +18,7 @@ let { selAttributes, curCategoryId, attrPresets,
 
 
 let slotExpByCamp = {
-  tanks_new = SLOT_EXP_TANKS
+  tanks = SLOT_EXP_TANKS
   air = SLOT_EXP_AIR
 }
 

@@ -56,6 +56,6 @@ return {
 
   hasAlwaysModsBtnByCamp = {
     air = true
-    tanks_new = true
+    tanks = true
   }
 }

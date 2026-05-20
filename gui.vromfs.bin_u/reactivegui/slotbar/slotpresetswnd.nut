@@ -183,7 +183,7 @@ function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
 
 function mkPresetButtons(presets, presetIdx) {
   let selectedPreset = Computed(@() presets.get().findvalue(@(p) p.idx == presetIdx.get()))
-  let isCurrentPreset = Computed(@() isEqual(selectedPreset.get().presetUnits, currentPresetUnits.get()))
+  let isCurrentPreset = Computed(@() isEqual(selectedPreset.get()?.presetUnits, currentPresetUnits.get()))
   let isNotSavedPreset = Computed(@() presets.get().len() != savedSlotPresets.get().len() && presetIdx.get() == -1)
   let isMaxSavedPresetAmountReached = Computed(@() presets.get().len() > maxPresetsCount.get())
   let canEdit = Computed(@() maxPresetsCount.get() <= (selectedPreset.get()?.idx ?? -1))

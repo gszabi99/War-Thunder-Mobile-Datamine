@@ -185,10 +185,9 @@ let needValidateMissingData = keepref(Computed(@()
   isUserstatMissingData.get() && isReadyToConnect.get() && !isInBattle.get()))
 
 function updateValidationTimer(needValidate) {
-  if (!needValidate) {
-    clearTimer(validateUserstatData)
+  clearTimer(validateUserstatData)
+  if (!needValidate)
     return
-  }
   validateUserstatData()
   setInterval(FREQUENCY_MISSING_STATS_UPDATE_SEC, validateUserstatData)
 }
