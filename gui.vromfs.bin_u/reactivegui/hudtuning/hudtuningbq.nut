@@ -35,9 +35,11 @@ function fillChangedElems(elemIds, s1, s2, uType) {
     else
       logerr($"Not found hud tuning option {id} in default config")
 
-  foreach (id, v in s1?.transforms ?? {})
-    if (!isEqual(v, s2?.transforms[id] ?? cfgByUnitType[uType][id].defTransform))
+  foreach (id, v in s1?.transforms ?? {}) {
+    let transformToCompare = s2?.transforms[id] ?? cfgByUnitType?[uType][id].defTransform
+    if (transformToCompare != null && !isEqual(v, transformToCompare))
       elemIds[id] <- true
+  }
 }
 
 let getParam = @(value, idx) type(value) == "integer" ? $"paramInt{idx}"

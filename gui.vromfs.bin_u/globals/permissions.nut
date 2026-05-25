@@ -50,6 +50,7 @@ let defaults = {
   allow_hdr_on_ios = isDevBuild
   allow_event_gift_on_ios = isDevBuild
   can_use_freecam_in_replay = isDevBuild
+  allow_clusters_selection = isDevBuild
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

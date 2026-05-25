@@ -15,6 +15,7 @@ let { gameStartServerTimeMsec } = require("%appGlobals/userstats/serverTime.nut"
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
 let { myClustersRTT, isInSquad, squadMembers } = require("%appGlobals/squadState.nut")
+let { OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LIMIT_MS_SQUAD, clusterStats, optimalClusters } = require("%appGlobals/clustersState.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
 let { clusterHosts } = require("%scripts/matching/clusterHosts.nut")
 
@@ -30,13 +31,9 @@ const NEW_HOST_PROBE_MAX_DELAY_SEC = 600
 const SAMPLES_COUNT_MAX = 5 
 const RETRY_PROBE_DELAY_SEC = 30 
 const MAX_ERRORS = 3 
-const OPTIMAL_RTT_LIMIT_MS = 100 
-const OPTIMAL_RTT_LIMIT_MS_SQUAD = 100 
 const INSIGNIFICANT_RTT_DIFF_MS = 25 
 const MINOR_MS = 1000 
 
-let clusterStats = hardPersistWatched("clusterStats", [])
-let optimalClusters = hardPersistWatched("optimalClusters", [])
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
 let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get())
@@ -219,15 +216,19 @@ function getClusterStats() {
   let res = clustersToHostsMap
     .map(function(hosts, clusterId) {
         let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
+        let hostsAvailable = hosts.reduce(@(res, v) res + v.rttSamples.len() > 0 ? 1 : 0, 0)
+        let availablePercent = round(100.0 * hostsAvailable / hosts.len()).tointeger()
         return {
           clusterId
-          hostsRTT = calcAvgRttBySortedList(measuredHostsRTT.sort())
+          hostsRTT = calcAvgRttBySortedList(measuredHostsRTT.sort()) 
+          availablePercent
         }
       })
     .values()
   res.sort(@(a, b)
     (a.hostsRTT != null ? -1 : 1) <=> (b.hostsRTT != null ? -1 : 1)
-    || a.hostsRTT <=> b.hostsRTT)
+    || a.hostsRTT <=> b.hostsRTT
+    || a.clusterId <=> b.clusterId)
   return res
 }
 
@@ -389,7 +390,5 @@ if (isProbingActive.get())
   startProbe()
 
 return {
-  optimalClusters
-  clusterStats
   getOptimalClustersForSquad
 }

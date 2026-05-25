@@ -120,13 +120,22 @@ let optionCtors = {
   },
 
   [OCT_BUTTON] = function(opt) {
-    let { locId = null, onClick = null } = opt
+    let { locId = null, onClick = null, visible = null } = opt
     if (locId == null || onClick == null) {
       logerr($"Options: Missing locId or onClick for button option {locId}")
       return null
     }
-    return textButtonCommon(utf8ToUpper(loc(locId)), onClick,
-      { ovr = { hplace = ALIGN_LEFT, margin = const [hdpx(30), 0] } childOvr = {size = [hdpx(430), SIZE_TO_CONTENT]} })
+    let isVisibleW = visible instanceof Watched ? visible : Watched(true)
+    let watch = isVisibleW
+    return @() !isVisibleW.get()
+      ? { watch }
+      : {
+          watch
+          hplace = ALIGN_LEFT
+          margin = const [hdpx(30), 0]
+          children = textButtonCommon(utf8ToUpper(loc(locId)), onClick,
+            { childOvr = { size = [hdpx(430), SIZE_TO_CONTENT] } })
+        }
   }
 }
 

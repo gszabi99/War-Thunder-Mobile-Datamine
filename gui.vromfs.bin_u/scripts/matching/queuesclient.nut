@@ -16,7 +16,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { selClusters } = require("clustersList.nut")
+let { selClusters } = require("%appGlobals/clustersState.nut")
 let { getOptimalClustersForSquad } = require("optimalClusters.nut")
 let { queueData, isQueueDataActual, actualizeQueueData, curUnitInfo
 } = require("%scripts/battleData/queueData.nut")

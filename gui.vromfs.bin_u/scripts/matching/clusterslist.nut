@@ -2,17 +2,13 @@ from "%scripts/dagui_library.nut" import *
 let logC = log_with_prefix("[CLUSTERS] ")
 let { getCountryCode } = require("auth_wt")
 let { deferOnce } = require("dagor.workcycle")
-let { getClustersByCountry, getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
+let { getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { startLogout } = require("%scripts/login/loginStart.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { optimalClusters } = require("%scripts/matching/optimalClusters.nut")
+let { clustersRaw, selClusters } = require("%appGlobals/clustersState.nut")
 let { matching_subscribe } = require("%appGlobals/matching_api.nut")
 let matchingRequestWithRetries = require("%scripts/matching/matchingRequestWithRetries.nut")
-
-let clustersRaw = hardPersistWatched("matching.clusters", [])
-let clusters = Computed(@() clustersRaw.get().filter(@(c) c != "debug")) 
 
 function getValidClusters(clustersList) {
   let forbiddenClusters = getForbiddenClustersByCountry(getCountryCode())
@@ -58,9 +54,6 @@ function onClustersChanged(params) {
   clustersRaw.set(list)
 }
 
-let getClusterLocName = @(name) name.indexof("wthost") != null ? name
-  : loc($"cluster/{name}")
-
 matching_subscribe("match.notify_clusters_changed", onClustersChanged)
 
 if (isMatchingConnected.get() && clustersRaw.get().len() == 0)
@@ -69,19 +62,4 @@ if (isMatchingConnected.get() && clustersRaw.get().len() == 0)
 isMatchingConnected.subscribe(@(v) !v ? null : restartFetchClusters())
 isLoggedIn.subscribe(@(v) v ? null : clustersRaw.set([]))
 
-let selClusters = Computed(function() {
-  let fastest = optimalClusters.get().filter(@(c) clusters.get().contains(c))
-  if (fastest.len())
-    return fastest
-  let defaults = getClustersByCountry(getCountryCode())
-  let res = defaults.filter(@(c) clusters.get().contains(c))
-  return res.len() ? res : clusters.get()
-})
-
 selClusters.subscribe(@(v) logC($"Country \"{getCountryCode()}\", selected clusters:", v))
-
-return {
-  clusters
-  selClusters
-  getClusterLocName
-}
