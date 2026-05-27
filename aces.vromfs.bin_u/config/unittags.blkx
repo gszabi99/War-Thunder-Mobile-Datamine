@@ -45077,6 +45077,108 @@
       }
     }
   },
+  "strikemaster_mk88": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "operatorCountry": "country_new_zealand",
+    "releaseDate": "2023-10-25 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "viper-535",
+        "mass": 350.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": true
+        },
+        "tank4_dm": {
+          "protected": true
+        },
+        "tank5_dm": {
+          "protected": true
+        },
+        "tank6_dm": {
+          "protected": true
+        },
+        "tank7_dm": {
+          "protected": true
+        },
+        "tank8_dm": {
+          "protected": false
+        },
+        "tank9_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_assault": true,
+      "type_strike_aircraft": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12191.0,
+      "maxSpeed": 215.534,
+      "turnTime": 25.0,
+      "airfieldLen": 1200.0,
+      "maxSpeedAlt": 6096.0,
+      "climbSpeed": 26.0,
+      "climbTime": 78.0,
+      "climbAlt": 1524.0,
+      "wingLoading": 265.0,
+      "thrustToWeightRatio": 0.38,
+      "rollRate": 122.0,
+      "pilotsCount": 2,
+      "gunnersCount": 0,
+      "pylonCount": 8,
+      "massPerSec": 0.328209,
+      "weapons": {
+        "gunfn_60_30": {
+          "type": "machine gun",
+          "gunsCount": 2,
+          "ammoCount": 1100,
+          "shotFreq": 15.83
+        },
+        "sura_heat": {},
+        "sura_he": {},
+        "lau_68": {},
+        "matra_155": {},
+        "matra_7": {},
+        "mk82": {},
+        "mk82sn": {},
+        "uk_540lbs": {},
+        "mgp": {},
+        "gunfn_60_30_mgp": {
+          "type": "additional gun",
+          "gunsCount": 8,
+          "ammoCount": 3800,
+          "shotFreq": 15.83
+        }
+      }
+    },
+    "bullets": {
+      "gunfn_60_30": {
+        "default": {
+          "icon": "t_ball/ap_ball/ap_ball/"
+        }
+      },
+      "gunfn_60_30_mgp": {
+        "default": {
+          "icon": "t_ball/ap_ball/ap_ball/"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",
@@ -57887,6 +57989,78 @@
           "gunsCount": 6,
           "caliber": 130.0,
           "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "gr_battleship_kilkis": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "operatorCountry": "country_greece_kingdom",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 194,
+    "tierGroup": 2,
+    "tags": {
+      "country_usa": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 740,
+      "shipCrewMin": 90,
+      "shipCrewRating": 2.75182,
+      "maxSpeed": 9.3,
+      "turningTime": 32,
+      "addTorpedoesCountPack": 1,
+      "mainWeaponCaliber": 305.0,
+      "weapons": {
+        "305mm_45_12inch_mk5_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 1800.0,
+          "shotFreq": 0.125,
+          "gunsCount": 4,
+          "caliber": 305.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "203mm_45_8inch_mk6_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 1000.0,
+          "shotFreq": 0.167,
+          "gunsCount": 8,
+          "caliber": 203.0,
+          "ammoCount": 1200,
+          "isBeltAmmo": false
+        },
+        "178mm_7inch_45_mk_2_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 475.758,
+          "shotFreq": 0.2,
+          "gunsCount": 8,
+          "caliber": 178.0,
+          "ammoCount": 1600,
+          "isBeltAmmo": false
+        },
+        "76mm_3_50_mk10_ww1_mk11_mount_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 80.0,
+          "shotFreq": 0.316,
+          "aimMaxDist": 1750.0,
+          "gunsCount": 12,
+          "caliber": 76.2,
+          "ammoCount": 2400,
+          "isBeltAmmo": false
+        },
+        "us_533mm_21in_mark8_torpedo": {
+          "wtype": "torpedo",
+          "damage": 4730.0,
+          "shotFreq": 0.067,
+          "distToLive": 2500.0,
+          "gunsCount": 2,
+          "caliber": 533.0,
+          "ammoCount": 15,
           "isBeltAmmo": false
         }
       }
@@ -107620,6 +107794,84 @@
       "110mm_Spike_kf_41_rocket_launchr_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        }
+      }
+    }
+  },
+  "ussr_t_72b3_arena": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "operatorCountry": "country_russia",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 125.0,
+      "armorThicknessFront": [
+        0.6,
+        0.05,
+        0.35
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.05,
+        0.8
+      ],
+      "crew": 3,
+      "mass": 46500.0,
+      "maxSpeedForward": 16.6691,
+      "maxSpeedBackward": 1.16161,
+      "powerToWeightRatio": 18.0645,
+      "weapons": {
+        "125mm_2A46_M5_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 125.0,
+          "armorPower": 550.0,
+          "reloadTime": 7.00001,
+          "autoLoader": true,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_PKT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 7.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_6P50_Kord_t_72_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 17.75,
+          "reloadTime": 0.0857192,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "125mm_2A46_M5_user_cannon": {
+        "125mm_ussr_3BM42_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "125mm_ussr_ATGM": {
+          "maxCount": 28,
+          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        },
+        "125mm_ussr_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "125mm_ussr_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }

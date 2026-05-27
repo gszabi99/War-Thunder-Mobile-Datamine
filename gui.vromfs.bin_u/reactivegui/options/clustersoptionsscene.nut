@@ -8,6 +8,7 @@ from "%rGui/options/optCtrlType.nut" import OCT_LIST
 import "%rGui/options/mkOption.nut" as mkOption
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdColors.nut" import goodTextColor2, badTextColor
@@ -30,6 +31,8 @@ let updateClustersOrder = @(isOpen) clustersOrder.set(isOpen
 let clusterStatsFixedOrder = Computed(@() clustersOrder.get()
   .map(@(id) clusterStats.get()?.findvalue(@(v) v.clusterId == id))
   .filter(@(v) v != null))
+let canDisableClusters = Computed(@() clustersOrder.get()
+  .reduce(@(res, id) res + (userPreferredClusters.get()?[id] != false ? 1 : 0), 0) > 1)
 
 isOpened.subscribe(function(v) {
   updateClustersOrder(v)
@@ -120,6 +123,11 @@ let columnsCfg = [
           value = valueW
           list = clusterOptList
           valToString = clusterOptValToString
+          function setValue(v) {
+            if (v == false && !canDisableClusters.get())
+              return openMsgBox({ text = loc("clusters/cantDisableLastCluster") })
+            valueW.set(v)
+          }
         })
       }
     hintTextCtor = @() "\n".join(clusterOptList.map(@(v) " ".concat(

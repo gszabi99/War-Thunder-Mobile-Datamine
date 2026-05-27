@@ -72,6 +72,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
   let relValue = Computed(@() maxV == 0 ? 0 : lerpClamped(minV, maxV, 0.0, 1.0, valueWatch.get()))
   let size = override?.size ?? [sliderW, sliderH]
   let knob = knobCtor(relValue, stateFlags, size[0])
+  let color = override?.color ?? selectColor
 
   return {
     size
@@ -98,7 +99,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         watch = relValue
         size = [flex(), sliderVisibleH]
         rendObj = ROBJ_SOLID
-        color = selectColor
+        color
 
         transform = {
           pivot = [0, 0]

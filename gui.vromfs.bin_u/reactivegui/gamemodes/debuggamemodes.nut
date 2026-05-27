@@ -18,6 +18,14 @@ let close = @() removeModalWindow(wndUid)
 let gap = hdpx(10)
 let selectedCampaign = mkWatched(persist, "selectedCampaign", curCampaign.get())
 
+let specialTabs = [
+  { id = "dev",       contain = ["qa_", "testflight", "test_flight", "vidteam_"] }
+  { id = "newbie",    contain = ["new_players"] }
+  { id = "dev_event", contain = ["limited_"] }
+]
+
+let isModeFitToTab = @(t, m) t.contain.findvalue(@(p) m.name.indexof(p) != null) != null
+
 let noGameModes = {
   size = const [ hdpx(500), SIZE_TO_CONTENT ]
   rendObj = ROBJ_TEXTAREA
@@ -35,8 +43,12 @@ function gameModesList() {
     children = noGameModes
   }
 
+  let sel = selectedCampaign.get()
+  let specialTab = specialTabs.findvalue(@(t) t.id == sel)
   let modes = debugModes.get().values()
-    .filter(@(m) m?.campaign == selectedCampaign.get())
+    .filter(@(m) specialTab != null
+      ? isModeFitToTab(specialTab, m)
+      : specialTabs.findvalue(@(t) isModeFitToTab(t, m)) == null && m?.campaign == sel)
     .sort(@(a, b) (a?.name ?? "") <=> (b?.name ?? ""))
     .map(@(m) textButtonCommon(m?.name ?? m?.gameModeId ?? "!!!ERROR!!!",
       function() {
@@ -78,17 +90,23 @@ function getDefaultCampaign(campaigns) {
 }
 
 function gameModesTabs() {
-  let campaigns = debugModes.get()
+  let allModes = debugModes.get().values()
+  let campaigns = allModes
+    .filter(@(m) specialTabs.findvalue(@(t) isModeFitToTab(t, m)) == null)
     .reduce(@(res, m) res.$rawset(m?.campaign ?? "", true), {})
     .keys()
     .sort()
+  local tabs = campaigns
+  foreach (t in specialTabs)
+    if (allModes.findvalue(@(m) isModeFitToTab(t, m)) != null)
+      tabs.append(t.id)
   let res = { watch = [ selectedCampaign, debugModes ]}
-  return campaigns.len() == 0 ? res
+  return tabs.len() == 0 ? res
     : res.__update({
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       onAttach = @() selectedCampaign.set(getDefaultCampaign(campaigns))
-      children = campaigns.map(@(c) listButton(c, Computed(@() selectedCampaign.get() == c), @() selectedCampaign.set(c), { size = const [hdpx(200), SIZE_TO_CONTENT] }))
+      children = tabs.map(@(c) listButton(c, Computed(@() selectedCampaign.get() == c), @() selectedCampaign.set(c), { size = const [hdpx(200), SIZE_TO_CONTENT] }))
     })
 }
 

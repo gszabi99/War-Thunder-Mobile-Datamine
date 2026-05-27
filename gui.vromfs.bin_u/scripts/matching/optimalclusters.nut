@@ -216,7 +216,7 @@ function getClusterStats() {
   let res = clustersToHostsMap
     .map(function(hosts, clusterId) {
         let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
-        let hostsAvailable = hosts.reduce(@(res, v) res + v.rttSamples.len() > 0 ? 1 : 0, 0)
+        let hostsAvailable = hosts.reduce(@(res, v) res + (v.rttSamples.len() > 0 ? 1 : 0), 0)
         let availablePercent = round(100.0 * hostsAvailable / hosts.len()).tointeger()
         return {
           clusterId

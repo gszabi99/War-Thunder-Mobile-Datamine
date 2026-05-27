@@ -26,12 +26,12 @@ let infoImgSize = hdpxi(30)
 let pageWidth = hdpx(855)
 let sliderWidth = pageWidth * 0.6
 
-let cellColorFilled = 0xFF10AFE2
-let cellColorNew    = selectColor
-let cellColorCanBuy = 0xFF476269
+let cellColorFilled = selectColor
+let cellColorNew    = 0xFFBCD5FF
+let cellColorCanBuy = 0xFF53688C
 let cellColorEmpty  = 0x00000000
 
-let newValueColor = selectColor
+let newValueColor = cellColorNew
 
 let glareWidth = hdpx(32)
 let incBtnAnimDuration = 0.3
@@ -235,12 +235,13 @@ let knobCtor = @(relValue, stateFlags, fullW)
       }
     })
 
-function mkProgressBarSlider(selLevel, totalLevels, onChangeValue) {
+function mkProgressBarSlider(selLevel, totalLevels, onChangeValue, hasChanges) {
   let sliderOverride = {
     min = 0
     max = totalLevels
     size = [sliderWidth, sliderTouchableHeight]
     onChange = mkSliderOnChangeSound(onChangeValue)
+    color = hasChanges ? cellColorNew : selectColor
   }
   return slider(selLevel, sliderOverride, knobCtor)
 }

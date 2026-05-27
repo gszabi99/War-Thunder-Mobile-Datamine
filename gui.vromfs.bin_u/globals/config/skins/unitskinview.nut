@@ -1947,6 +1947,9 @@ return {
     "go229_v3": {
       "": "germ_bf_109g_14_winter"
     },
+    "gr_battleship_kilkis": {
+      "": "camo_pacificfleet"
+    },
     "halifax_mk3": {
       "": "uk_spitfire_mk1a_raf_camo",
       "upgraded": "ussr_il_10_winter44"
@@ -5357,6 +5360,10 @@ return {
     },
     "ussr_t_72av_turms": {
       "": "ussr_modern_desert",
+      "forest": "ussr_camo_green"
+    },
+    "ussr_t_72b3_arena": {
+      "": "ussr_camo_desert_sand_green_brown",
       "forest": "ussr_camo_green"
     },
     "ussr_t_72b_1989": {

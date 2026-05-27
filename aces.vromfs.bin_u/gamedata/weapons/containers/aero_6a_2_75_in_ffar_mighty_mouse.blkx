@@ -1,0 +1,20 @@
+{
+  "container": true,
+  "mesh": "aero_6a",
+  "useEmitter": true,
+  "emitterGenRange": [
+    1,
+    7
+  ],
+  "emitterGenFmt": "2_75_ffar_%d",
+  "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+  "bullets": 7,
+  "amountPerTier": 7,
+  "mass": 30.4,
+  "dragCx": 0.005,
+  "offsetForDemonstration": [
+    0.2,
+    -0.01,
+    0.0
+  ]
+}

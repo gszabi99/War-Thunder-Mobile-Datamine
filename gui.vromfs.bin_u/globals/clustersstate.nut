@@ -22,25 +22,30 @@ let userPreferredClusters = sharedWatched("userPreferredClusters", @() {})
 let selClusters = Computed(function() {
   local res = []
   let validClusters = clustersRaw.get()
-  let fastest = optimalClusters.get().filter(@(id) validClusters.contains(id))
+  let isValid = @(id) validClusters.contains(id)
+  let fastest = optimalClusters.get().filter(isValid)
   if (fastest.len())
     res = fastest
   else {
-    let defaults = getClustersByCountry(getCountryCode())
-      .filter(@(id) validClusters.contains(id))
-    res = defaults.len() ? defaults : validClusters
+    let defaults = getClustersByCountry(getCountryCode()).filter(isValid)
+    res = defaults.len() ? defaults : (clone validClusters)
   }
-  if (allow_clusters_selection.get()) {
-    let resBeforeUserPref = clone res
-    foreach (id, v in userPreferredClusters.get()) {
-      if (v == true && !res.contains(id) && validClusters.contains(id))
-        res.append(id)
-      if (v == false && res.contains(id))
-        res.remove(res.indexof(id))
-    }
-    if (!res.len())
-      res = resBeforeUserPref
-  }
+  if (!allow_clusters_selection.get())
+    return res
+
+  let all = clusterStats.get().map(@(v) v.clusterId).filter(isValid)
+  let userClustersAll = clone all
+  foreach (id in all)
+    if (userPreferredClusters.get()?[id] == false)
+      userClustersAll.remove(userClustersAll.indexof(id))
+  let userClustersFast = clone userClustersAll
+  foreach (id in all)
+    if (userPreferredClusters.get()?[id] == null && !res.contains(id))
+      userClustersFast.remove(userClustersFast.indexof(id))
+  if (userClustersFast.len())
+    res = userClustersFast
+  else if (userClustersAll.len())
+    res = userClustersAll
   return res
 })
 

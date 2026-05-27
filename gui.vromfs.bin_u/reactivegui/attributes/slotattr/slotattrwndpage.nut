@@ -53,6 +53,7 @@ function mkAttrRow(unitName, catId, attr, idx) {
     ? getAttrValData(attrUnitType.get(), attr, selLevel.get(), shopCfg, serverConfigs.get(), unitMods.get())
     : [])
   let hasSp = Computed(@() totalSlotSp.get() > 0 )
+  let hasChanges = Computed(@() selValueData.get().len() > 0)
 
   return @() {
     watch = hasSp
@@ -62,7 +63,8 @@ function mkAttrRow(unitName, catId, attr, idx) {
     valign = ALIGN_CENTER
     children = [
       mkProgressBtn(mkProgressBtnContentDec(canDec), mkBtnOnClick(-1))
-      {
+      @() {
+        watch = hasChanges
         size = flex()
         valign = ALIGN_CENTER
         children = [
@@ -75,7 +77,7 @@ function mkAttrRow(unitName, catId, attr, idx) {
               mkRowValue(curValueData, selValueData)
             ]
           }
-          mkProgressBarSlider(selLevel, totalLevels, onChangeValue)
+          mkProgressBarSlider(selLevel, totalLevels, onChangeValue, hasChanges.get())
         ]
       }
       {
