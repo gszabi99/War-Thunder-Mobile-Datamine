@@ -3249,6 +3249,9 @@ return {
       "": "uk_spitfire_mk1a_raf_camo",
       "upgraded": "ussr_la_11_standard"
     },
+    "strikemaster_mk88": {
+      "": "usa_douglas_a_1h_firebird"
+    },
     "su-11": {
       "": "ussr_i_15_1935_moscow",
       "camo": "ussr_lagg_3_series_11"

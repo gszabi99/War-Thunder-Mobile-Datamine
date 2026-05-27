@@ -262,14 +262,21 @@ let infoPanel = @(nodesReceiveInfo) function() {
   }
 }
 
-let unitsTreeWndKey = {}
 function unitsTreeWnd() {
   let nodesReceiveInfo = mkNodesReceiveInfo()
-  let { filters, activeFilters, filteredNodes, allUnits
+  let { filters, activeFilters, filteredNodes, allUnits, onFiltersDestroy
   } = mkFilters(TREE_FILTERS, Computed(@() visibleNodes.get().__merge(nodesReceiveInfo.get())))
   return {
-    key = unitsTreeWndKey
+    key = onFiltersDestroy
     size = const [sw(100), sh(100)]
+    function onAttach() {
+      isUnitsTreeAttached.set(true)
+    }
+    function onDetach() {
+      isUnitsTreeAttached.set(false)
+      unitsTreeOpenRank.set(null)
+      onFiltersDestroy()
+    }
     children = [
       mkTreeBg(isUnitsTreeOpen)
 
@@ -285,13 +292,6 @@ function unitsTreeWnd() {
 
       infoPanel(nodesReceiveInfo)
     ]
-    function onAttach() {
-      isUnitsTreeAttached.set(true)
-    }
-    function onDetach() {
-      isUnitsTreeAttached.set(false)
-      unitsTreeOpenRank.set(null)
-    }
     animations = wndSwitchAnim
   }
 }

@@ -2446,7 +2446,7 @@
                   "object": "target_tank08"
                 },
                 {
-                  "unit_class": "germ_vilkas",
+                  "unit_class": "uk_challenger_1_mk_3_gulf",
                   "weaponPreset": "",
                   "isIndividual": false,
                   "hangarMission": false,
@@ -2502,7 +2502,7 @@
                   "object": "target_tank16"
                 },
                 {
-                  "unit_class": "germ_vilkas",
+                  "unit_class": "uk_challenger_1_mk_3_gulf",
                   "weaponPreset": "",
                   "isIndividual": false,
                   "hangarMission": false,
@@ -2635,7 +2635,7 @@
                   "object": "target_tank08"
                 },
                 {
-                  "unit_class": "ussr_t_72b3_2011",
+                  "unit_class": "ussr_bmpt",
                   "weaponPreset": "",
                   "isIndividual": false,
                   "hangarMission": false,
@@ -2691,7 +2691,7 @@
                   "object": "target_tank16"
                 },
                 {
-                  "unit_class": "jp_oplot_t",
+                  "unit_class": "jp_type_90",
                   "weaponPreset": "",
                   "isIndividual": false,
                   "hangarMission": false,

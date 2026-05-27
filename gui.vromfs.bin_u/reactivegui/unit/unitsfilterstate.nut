@@ -297,8 +297,17 @@ function mkFilters(setId, allNodes) {
     f?.valueWatch.subscribe(countActiveFiltersSubs)
   }
 
+  function onFiltersDestroy() {
+    foreach (f in filters) {
+      f.value.unsubscribe(countActiveFiltersSubs)
+      f?.allValues.unsubscribe(countActiveFiltersSubs)
+      f?.valueWatch.unsubscribe(countActiveFiltersSubs)
+    }
+  }
+
   return { filters, activeFilters, allUnits,
     filteredNodes = mkFilteredNodes(filters, allNodes, filterGenId)
+    onFiltersDestroy
   }
 }
 
