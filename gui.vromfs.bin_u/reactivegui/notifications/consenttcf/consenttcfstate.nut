@@ -35,6 +35,8 @@ let TCF_CONSENT_COUNTRIES = ["AT","BE","BG","CH","CY","CZ","DE","DK","EE","EL","
   "HR","HU","IE","IS","IT","LI","LT","LU","LV","MT","NL","NO","PL","PT","RO","SE","SI","SK","UK"]
 let isTcfConsentRequiredForCountry = Computed(@() !request_firebase_consent_eu_only.get() || TCF_CONSENT_COUNTRIES.contains(getCountryCode()))
 
+let COUNTRIES_LOAD_VENDORS_VIA_OUR_SERVER = [ "RU", "IR" ]
+
 let PURPOSES_WITH_LEGITIMATE_INTEREST = [
   2,  
   7,  
@@ -299,7 +301,7 @@ function onVendorDataLoaded(isSuccess) {
   }
   if (dataAvailability.findindex(@(v) type(v) == "string") != null) {
     let dataMap = "|".join(dataAvailability.map(@(v) type(v) == "string" ? $"\"{v}\"" : v))
-    let errorStr = $"TCF Consent loaded data is incomplete: /*{dataMap}*/"
+    let errorStr = $"TCF Consent loaded data is incomplete: /*{getCountryCode()} {dataMap}*/"
     logC(errorStr)
     logerr(errorStr)
     isLoadError.set(true)
@@ -335,7 +337,7 @@ function onInited(isSuccess) {
 
   isVendorDataLoading.set(true)
   if (!isVendorDataLoaded())
-    loadVendorData(userLangId, getCountryCode() == "RU")
+    loadVendorData(userLangId, COUNTRIES_LOAD_VENDORS_VIA_OUR_SERVER.contains(getCountryCode()))
   else
     onVendorDataLoaded(true)
 }
