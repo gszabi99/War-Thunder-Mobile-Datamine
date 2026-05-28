@@ -700,8 +700,8 @@ let previewWnd = @() {
                     }
                     @() {
                       watch = previewGoods
-                      children = !previewGoods.get()?.id ? null :
-                        mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart)
+                      children = !previewGoods.get()?.id ? null
+                        : mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart)
                     }
                   ]
                 }

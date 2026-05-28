@@ -243,7 +243,9 @@ function openQuestsWnd() {
 
 function openQuestsWndOnTab(tabId) {
   isQuestsOpen.set(false)
-  curTabId.set(tabId)
+  let tabToOpen = tabId in questsCfg.get() ? tabId
+    : (specialEvents.get().findindex(@(s) s.eventName == tabId) ?? tabId)
+  curTabId.set(tabToOpen)
   openQuestsWnd()
 }
 

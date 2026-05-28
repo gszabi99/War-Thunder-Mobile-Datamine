@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { specialEventsLootboxesState } = require("%rGui/event/eventState.nut")
-let { openQuestsWndOnTab, questsBySection } = require("%rGui/quests/questsState.nut")
+let { openQuestsWndOnTab } = require("%rGui/quests/questsState.nut")
+let { campaignActiveUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { discountsToApply } = require("%rGui/shop/discounts.nut")
 
 let verticalGap = hdpx(20)
@@ -29,22 +29,17 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
   })
 
   let eventIdByPersonalDiscount = Computed(function() {
-    let { withoutLootboxes = {} } = specialEventsLootboxesState.get()
     let discountRewards = availableDiscountRewards.get()
-    local res = null
+    if (!discountRewards)
+      return null
 
-    if (!discountRewards || withoutLootboxes.len() == 0)
-      return res
+    foreach (u in campaignActiveUnlocks.get()) {
+      let { event_id = null } = u?.meta
+      if (event_id != null && u?.stages.findindex(@(s) s?.rewards.findindex(@(_, id) id in discountRewards) != null) != null)
+        return event_id
+    }
 
-    foreach (eventName, eventState in withoutLootboxes)
-      foreach (quest in questsBySection.get()?[eventName] ?? {}) {
-        if (quest?.stages.findindex(@(v) v?.rewards.findindex(@(_, id) id in discountRewards) != null) != null) {
-          res = eventState.eventId
-          break
-        }
-      }
-
-    return res
+    return null
   })
 
   return @() {
