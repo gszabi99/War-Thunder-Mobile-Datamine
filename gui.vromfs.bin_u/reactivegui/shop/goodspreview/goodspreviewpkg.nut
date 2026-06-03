@@ -18,7 +18,7 @@ let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty, filterHiddenViewInfo
+let { getRewardsViewInfo, isRewardEmpty, filterHiddenViewInfo
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardReceivedMark
 } = require("%rGui/rewards/rewardPlateComp.nut")
@@ -555,13 +555,32 @@ function mkItem(r, rStyle, idx, animStartTime) {
   }
 }
 
-function mkPreviewItems(rewards, animStartTime) {
+function mkPreviewItems(rewards, animStartTime, slotsInRow = 0) {
   let info = filterHiddenViewInfo(getRewardsViewInfo(rewards))
-    .sort(sortRewardsViewInfo)
-  return info.len() == 0 ? null : {
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(10)
-    children = info.map(@(r, idx) mkItem(r, REWARD_STYLE_TINY, idx, animStartTime))
+  if (info.len() == 0)
+    return null
+
+  let rows = slotsInRow == 0 ? info : []
+  if (slotsInRow != 0) {
+    local slotsLeft = 0
+    foreach(idx, r in info) {
+      if (r.slots > slotsLeft) {
+        rows.append([])
+        slotsLeft = slotsInRow
+      }
+      slotsLeft -= r.slots
+      rows.top().append(mkItem(r, REWARD_STYLE_TINY, idx - 2 * (rows.len() - 1), animStartTime))
+    }
+  }
+
+  return {
+    flow = FLOW_VERTICAL
+    gap = REWARD_STYLE_TINY.boxGap
+    children = rows.map(@(children) {
+      flow = FLOW_HORIZONTAL
+      gap = REWARD_STYLE_TINY.boxGap
+      children
+    })
   }
 }
 

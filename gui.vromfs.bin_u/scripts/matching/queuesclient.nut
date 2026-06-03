@@ -289,14 +289,7 @@ matching.subscribe("match.notify_queue_join", function(params) {
   let { mode = "" } = params
   if (!isModeInParams(mode, allGameModes.get(), curQueue.get().params))
     return
-  curQueue.mutate(function(v) {
-    let { cluster = "" } = params
-    let joinedClusters = clone (v?.joinedClusters ?? {})
-    let joinedCur = clone (joinedClusters?[cluster] ?? {})
-    joinedCur[mode] <- true
-    joinedClusters[cluster] <- joinedCur
-    v.__update({ state = QS_IN_QUEUE, joinedClusters })
-  })
+  curQueue.mutate(@(v) v.__update({ state = QS_IN_QUEUE }))
 })
 
 matching.subscribe("match.notify_queue_leave", function(params) {
@@ -308,32 +301,10 @@ matching.subscribe("match.notify_queue_leave", function(params) {
     destroyQueue()
     return
   }
-
   let { mode = "" } = params
   if (!isModeInParams(mode, allGameModes.get(), curQueue.get().params))
     return
-
-  let { joinedClusters = {} } = curQueue.get()
-  if (joinedClusters.len() == 0 && curQueue.get().params?.cluster == cluster) {
-    destroyQueue()
-    return
-  }
-  let clusterModes = joinedClusters?[cluster] ?? {}
-  if (mode not in clusterModes)
-    return
-  if (clusterModes.len() == 1 && joinedClusters.len() == 1)
-    destroyQueue() 
-  else
-    curQueue.mutate(function(v) {
-      let newClusters = clone joinedClusters
-      if (clusterModes.len() == 1)
-        newClusters.$rawdelete(cluster)
-      else {
-        newClusters[cluster] = clone clusterModes
-        newClusters[cluster].$rawdelete(mode)
-      }
-      v.joinedClusters = newClusters
-    })
+  destroyQueue()
 })
 
 eventbus_subscribe("leaveQueue", @(_) leaveQueue())

@@ -13,6 +13,7 @@ let { missionProgressType, ctfFlagPreset } = require("%appGlobals/clientState/mi
 let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { isInMpBattle, isInBattle, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType,
   isGtRace, isGtBattleRoyale
 } = require("%rGui/missionState.nut")
@@ -35,6 +36,8 @@ let scoreVerticalGap = hdpx(8)
 let secondsPerHour = 3600
 let barRatio = 56.0 / 19
 const SCORE_PLATES_TEAM_COUNT = 5
+
+let canShowMpStats = Computed(@() isInMpBattle.get() || isPlayingReplay.get())
 
 let battleRoyaleScoreBoardCfg = {
   aliveImage = "ui/gameuiskin#selected_icon_tank.svg"
@@ -394,11 +397,11 @@ let mkScoreBoard = @(scale) function() {
   let tSize = scaleArr([timerBgWidth, timerBgHeight], scale)
   let font = prettyScaleForSmallNumberCharVariants(fontTiny, scale)
   return scoreBoardBase.__merge({
-    watch = [missionProgressType, isInMpBattle]
-    behavior = isInMpBattle.get() ? Behaviors.Button : null
-    onClick = isInMpBattle.get() ? @() eventbus_send("toggleMpstatscreen", {}) : null
+    watch = [missionProgressType, canShowMpStats]
+    behavior = canShowMpStats.get() ? Behaviors.Button : null
+    onClick = canShowMpStats.get() ? @() eventbus_send("toggleMpstatscreen", {}) : null
     children = [
-      isInMpBattle.get() ? shortcutImg(scale) : null
+      canShowMpStats.get() ? shortcutImg(scale) : null
       {
         flow = FLOW_HORIZONTAL
         gap = missionProgressType.get() == "airGS" ? -hdpx(round(5 * scale).tointeger())

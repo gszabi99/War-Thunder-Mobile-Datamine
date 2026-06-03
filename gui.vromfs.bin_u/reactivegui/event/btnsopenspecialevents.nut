@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
+let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxesShowOnce, orderEvents
+} = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { gmEventsList, openGmEventWnd, hasFinishedFirstBattle, canOpenGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
@@ -29,7 +30,7 @@ function statusMark(eventId) {
 
 function btnsOpenSpecialEvents() {
   let children = []
-  specialEventsLootboxesState.get().withLootboxes.each(@(evt)
+  orderEvents(specialEventsLootboxesState.get().withLootboxes).each(@(evt)
     children.append(translucentButton(getEventPresentation(evt.eventName).icon,
       "",
       @() openEventWnd(evt.eventId),
@@ -44,7 +45,7 @@ function btnsOpenSpecialEvents() {
       },
       { iconMul = getEventPresentation(evt.eventName).imageSizeMul }
     )))
-  specialEventsLootboxesState.get().withoutLootboxes.each(@(evt)
+  orderEvents(specialEventsLootboxesState.get().withoutLootboxes).each(@(evt)
     children.append(translucentButton(getEventPresentation(evt.eventName).icon,
       "",
       @() openQuestsWndOnTab(evt.eventId)

@@ -40,6 +40,10 @@ let presentations = {
   uk_air_early_access = {
     image = "ui/images/event_bg_uk_air_early_access.avif"
   }
+  senrai_maidens = {
+    image = "ui/images/WTM_anime_2700x1080.avif"
+    imageSize = [1200, 480]
+  }
 }
 
 return memoize(@(id) mkDefPresentation(id).__update(presentations?[id] ?? {}))

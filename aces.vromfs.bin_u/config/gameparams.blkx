@@ -399,6 +399,7 @@
   "shiftUpSteerThreshold": 0.35,
   "rtsModeForAircraftCarrier": true,
   "allowSpectatingEnemiesInLastManStanding": false,
+  "drawHudProgressInReplay": true,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -18675,9 +18676,10 @@
     ]
   },
   "replay": {
+    "usePlayerProfileSnapshotPeriod": false,
     "useReplayDir": true,
     "segmentLengthSec": 0,
-    "snapshotPeriod": 60,
+    "snapshotPeriod": 30,
     "replayRewind": true,
     "writeUnitNamesList": true,
     "showGuidanceLockTracker": true,

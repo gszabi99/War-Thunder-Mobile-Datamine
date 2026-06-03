@@ -8,11 +8,13 @@ let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 let contentUpdater = (is_android || is_ios) ? require("contentUpdater") : require("dbgContentUpdater.nut")
 let { set_accept_user_react, get_total_download_mb, get_progress_percent, get_eta, get_download_speed,
   UPDATER_DOWNLOADING, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
-  UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION
+  UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION, UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE
 } = contentUpdater
 
 let updaterStage = Watched(null)
 let totalSizeBytes = Watched((get_total_download_mb() * MB).tointeger())
+let freeDiskSpaceMB = Watched(0)
+let requiredDiskSpaceMB = Watched(0)
 let progress = Watched({
   percent = get_progress_percent()
   etaSec = get_eta()
@@ -23,6 +25,7 @@ let updaterError = Watched(null)
 let needUpdateMsg = mkWatched(persist, "needUpdateMsg", false)
 let needRestartMsg = mkWatched(persist, "needRestartMsg", false)
 let needDownloadAcceptMsg = mkWatched(persist, "needDownloadAcceptMsg", false)
+let needNotEnoughDiskSpaceMsg = mkWatched(persist, "needNotEnoughDiskSpaceMsg", false)
 
 let statusText = Computed(@() updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
   : updaterStage.get() != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
@@ -57,6 +60,11 @@ let updaterEvents = {
   }),
   [UPDATER_EVENT_ERROR]         = @(evt) updaterError.set(getErrorName(evt.error)),
   [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg.set(true) : needRestartMsg.set(true),
+  [UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE] = function(evt) {
+    requiredDiskSpaceMB.set(evt.requiredSpace)
+    freeDiskSpaceMB.set(evt.freeSpace)
+    needNotEnoughDiskSpaceMsg.set(true)
+  }
 }
 
 let stageNames = {}
@@ -85,6 +93,9 @@ return {
   needUpdateMsg
   needRestartMsg
   needDownloadAcceptMsg
+  needNotEnoughDiskSpaceMsg
   totalSizeBytes
+  freeDiskSpaceMB
+  requiredDiskSpaceMB
   closeDownloadWarning = set_accept_user_react
 }

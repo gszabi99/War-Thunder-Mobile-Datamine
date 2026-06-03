@@ -195,6 +195,7 @@ return cfgHudCommon.__merge({
     ctor = xrayModel
     defTransform = mkLBPos([hdpx(480), hdpx(30)])
     editView = xrayModelEditView
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     hideForDelayed = false
   }
 

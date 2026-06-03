@@ -11,6 +11,7 @@ let { mkMyPlace, mkMyPlaceUi, mkMyDamage, mkMyScoresUi } = require("%rGui/hud/my
 let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 let { simpleThreatTorpedosIndicator, simpleThreatTorpedosIndicatorEditView } = require("%rGui/hud/hudThreatTorpedosBlock.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
@@ -59,6 +60,7 @@ return {
     ctor = mkDollCtor(defHealthSize)
     defTransform = mkLBPos([dollPosX, hdpx(-38)])
     editView = mkDollEditView(defHealthSize)
+    isVisibleInBattle = Computed(@() !isPlayingReplay.get())
     hideForDelayed = false
   }
 

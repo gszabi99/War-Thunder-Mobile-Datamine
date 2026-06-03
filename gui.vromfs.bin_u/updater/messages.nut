@@ -10,7 +10,8 @@ let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes, closeDownloadWarning } = require("updaterState.nut")
+let { needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg,
+  totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB, closeDownloadWarning } = require("updaterState.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require("gradients.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
@@ -165,19 +166,23 @@ let downloadMsg = @(bytes) mkMsgBox(loc("updater/downloadWarning/header"),
       needDownloadAcceptMsg.set(false)
       closeDownloadWarning()
     }))
-
+let notEnoughDiskSpaceMsg = @(freeDiskSpace, requiredDiskSpace) mkMsgBox(loc("updater/notEnoughDiskSpace/header"),
+  loc("updater/notEnoughDiskSpace/desc", { freeDiskSpace, requiredDiskSpace }),
+  mkButton(utf8ToUpper(loc("msgbox/btn_ok")), @() exit(0)))
 
 register_command(@() needUpdateMsg.set(!needUpdateMsg.get()), "debug.updateMessage")
 register_command(@() needRestartMsg.set(!needRestartMsg.get()), "debug.restartMessage")
 register_command(@() needDownloadAcceptMsg.set(!needDownloadAcceptMsg.get()), "debug.downloadMessage")
+register_command(@() needNotEnoughDiskSpaceMsg.set(!needNotEnoughDiskSpaceMsg.get()), "debug.notEnoughDiskSpaceMessage")
 
 return @() {
-  watch = [needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes]
+  watch = [needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg, totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB]
   pos = [0, -hdpx(100)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = needUpdateMsg.get() ? updateMsg
     : needRestartMsg.get() ? restartMsg
     : needDownloadAcceptMsg.get() ? downloadMsg(totalSizeBytes.get())
+    : needNotEnoughDiskSpaceMsg.get() ? notEnoughDiskSpaceMsg(freeDiskSpaceMB.get(), requiredDiskSpaceMB.get())
     : null
 }

@@ -64,6 +64,7 @@ let shopCategoriesCfg = [
 
 let gtypeToShopCategory = {
   [SGT_UNIT] = SC_FEATURED,
+  [SGT_UNIT_BUNDLE] = SC_FEATURED,
   [SGT_SLOTS] = SC_FEATURED,
   [SGT_LOOTBOX] = SC_FEATURED,
   [SGT_BLUEPRINTS] = SC_FEATURED,
@@ -103,7 +104,7 @@ let rTypeToGTypeComplex = {
         units++
       else if (r.gType == G_UNIT_UPGRADE)
         upgrades++
-    return upgrades == 0 && units > 1 ? SGT_BRANCH : SGT_UNIT 
+    return upgrades == 0 && units > 1 ? SGT_UNIT_BUNDLE : SGT_UNIT
   },
   [G_CURRENCY] = @(rewards) currencyToGoodsType?[rewards[0].id] ?? SGT_EVT_CURRENCY,
 }

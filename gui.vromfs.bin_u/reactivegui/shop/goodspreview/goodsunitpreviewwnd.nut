@@ -3,6 +3,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout, deferOnce } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
 let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
 let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
@@ -44,6 +45,7 @@ let { unitPlatesGap, unitPlateTiny, mkUnitInfo,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
+let { mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
 let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
@@ -68,6 +70,7 @@ let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 
 let TIME_TO_SHOW_UI = 5.0 
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
+let MAX_ITEMS_IN_ROW = 6
 
 let unitPlateSize = unitPlateTiny
 let verticalGap = hdpx(20)
@@ -282,10 +285,9 @@ function mkBlueprintUnitPlate(unit){
   }
 }
 
-function mkAirBranchUnitPlate(unit, platoonUnit, onSelectUnit){
-  let p = getUnitPresentation(platoonUnit)
-  let platoonUnitFull = unit.__merge(platoonUnit)
-  let isSelected = Computed(@() curSelectedUnitId.get() == platoonUnit.name)
+function mkAirBranchUnitPlate(unit, onSelectUnit) {
+  let p = getUnitPresentation(unit)
+  let isSelected = Computed(@() curSelectedUnitId.get() == unit.name)
   return {
     behavior = Behaviors.Button
     onClick = onSelectUnit
@@ -296,9 +298,10 @@ function mkAirBranchUnitPlate(unit, platoonUnit, onSelectUnit){
         children = [
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, isSelected)
-          mkUnitImage(platoonUnitFull)
-          mkUnitTexts(platoonUnitFull, loc(p.locId))
+          mkUnitImage(unit)
+          mkUnitTexts(unit, loc(p.locId))
           mkUnitInfo(unit)
+          unit?.isReceived ? mkRewardReceivedMark(REWARD_STYLE_TINY) : null
         ]
       }
       {
@@ -360,14 +363,16 @@ let singleUnitBlock = @() {
 }
 
 let branchUnitsBlock = @(unit)
-  mkAirBranchUnitPlate(unit, { name = unit.name, reqLevel = 0 }, @() curSelectedUnitId.set(unit.name))
+  mkAirBranchUnitPlate(unit, @() curSelectedUnitId.set(unit.name))
 
 let mkHeader = @() mkPreviewHeader(
-  Computed(@() goodsBattleMode.get() != null ? loc("offer/earlyAccess")
-    : previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
-    : (previewGoods.get()?.id ?? "") == "branch_offer" ? " ".concat(getPlatoonOrUnitName(previewGoodsUnit.get(), loc), loc("offer/airBranch"))
-    : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
-    : ""),
+  Computed(@() getCustomGoodsNameById(previewGoods.get()?.id ?? "")
+    ?? (goodsBattleMode.get() != null ? loc("offer/earlyAccess")
+          : previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
+          : (previewGoods.get()?.id ?? "") == "branch_offer"
+            ? " ".concat(getPlatoonOrUnitName(previewGoodsUnit.get(), loc), loc("offer/airBranch"))
+          : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
+          : "")),
   closeGoodsPreview,
   aTimeHeaderStart)
 
@@ -381,11 +386,11 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
     }
     @() {
       watch = [previewGoods, goodsBattleMode]
-      flow = FLOW_HORIZONTAL
       children = mkPreviewItems(
         (previewGoods.get()?.rewards ?? [])
           .filter(@(r) (r.gType not in unitRewardTypes) && (r.gType != G_BATTLE_MOD || r.id != goodsBattleMode.get())),
-        aTimePackInfoStart + aTimeFirstItemOfset)
+        aTimePackInfoStart + aTimeFirstItemOfset,
+        MAX_ITEMS_IN_ROW)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]
@@ -542,16 +547,21 @@ let sortedUnits = Computed(function() {
     return []
   let { rewards } = previewGoods.get()
   let res = []
+  let received = []
   let configs = serverConfigs.get()
   let profile = servProfile.get()
   foreach (r in rewards) {
-    if (r.gType not in unitRewardTypes || isEmptyByRType?[r.gType](r.id, r.subId, profile, configs))
+    if (r.gType not in unitRewardTypes)
       continue
     let unit = campUnitsCfg.get()?[r.id]
-    if (unit != null)
+    if (unit == null)
+      continue
+    if (isEmptyByRType?[r.gType](r.id, r.subId, profile, configs))
+      received.append(unit.__merge({ isUpgraded = r.gType == G_UNIT_UPGRADE, isReceived = true }))
+    else
       res.append(r.gType != G_UNIT_UPGRADE ? unit : unit.__merge({ isUpgraded = true }))
   }
-  return res
+  return res.extend(received)
 })
 let totalUnits = Computed(@() sortedUnits.get().len())
 
@@ -585,6 +595,10 @@ let leftBlockUnits = @() {
               gap = gapForBranch
               children = u
             })
+          .append(
+            itemsDesc
+            packInfo(-1, { pos = [0, 0] })
+          )
       }
     : getBattleModPresentationForOffer(goodsBattleMode.get()) != null ? leftBlockEarlyAccess
     : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit
@@ -600,12 +614,6 @@ let leftBlock = {
   flow = FLOW_VERTICAL
   gap = verticalGap
   children = [
-    @() (previewGoods.get()?.units.len() ?? 0) <= 1 ? { watch = previewGoods }
-      : {
-          watch = previewGoods
-          rendObj = ROBJ_TEXT
-          text = loc("offer/airBranch/descBuy", {count =(previewGoods.get()?.units.len() ?? 0)})
-        }.__update(fontSmall)
     @() {
       watch = needScroll
       size = !needScroll.get()

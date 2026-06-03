@@ -16,7 +16,7 @@ let { tacticalMap } = require("%rGui/hud/components/tacticalMap.nut")
 let { scoreBoardType, scoreBoardCfgByType, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { capZonesList } = require("%rGui/hud/capZones/capZones.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let { isInSpectatorMode } = require("%rGui/hudState.nut")
+let { isInSpectatorMode, isPlayingReplay } = require("%rGui/hudState.nut")
 let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
 let { playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
 let { hudWhiteColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor, hudAshGrayColor
@@ -41,7 +41,7 @@ let needShowTapHint = mkWatched(persist, "needShowTapHint", true)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
 eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId.set(getSpectatorTargetId()))
-eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() ? needShowTapHint.set(false) : null)
+eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() && !isPlayingReplay.get() ? needShowTapHint.set(false) : null)
 
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
 let watchedHeroName = Computed(@() watchedHero.get() == null ? "" : watchedHero.get().name)

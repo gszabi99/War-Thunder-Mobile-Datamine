@@ -7,7 +7,8 @@ let { getLocNameGold, mkGoodsGold } = require("%rGui/shop/goodsView/goodsGold.nu
 let { getLocNameWp, mkGoodsWp } = require("%rGui/shop/goodsView/goodsWp.nut")
 let { getLocNamePlatinum, mkGoodsPlatinum } = require("%rGui/shop/goodsView/goodsPlatinum.nut")
 let { getLocNamePremium, mkGoodsPremium } = require("%rGui/shop/goodsView/goodsPremium.nut")
-let { getLocNameUnit, mkGoodsUnit, getLocBlueprintUnit, getLocBranchUnits } = require("%rGui/shop/goodsView/goodsUnit.nut")
+let { getLocNameUnit, mkGoodsUnit, mkGoodsUnitBundle, getLocBlueprintUnit, getLocBranchUnits
+} = require("%rGui/shop/goodsView/goodsUnit.nut")
 let { mkGoodsSkin, getLocNameSkin } = require("%rGui/shop/goodsView/goodsSkin.nut")
 let { getLocNameConsumables, mkGoodsConsumables } = require("%rGui/shop/goodsView/goodsConsumables.nut")
 let { getLocNameLootbox, mkGoodsLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
@@ -33,6 +34,7 @@ let locNameGetters = {
   [SGT_WP] = getLocNameWp,
   [SGT_PREMIUM] = getLocNamePremium,
   [SGT_UNIT] = getLocNameUnit,
+  [SGT_UNIT_BUNDLE] = getLocBranchUnits,
   [SGT_SKIN] = getLocNameSkin,
   [SGT_DECALS] = getLocNameDecal,
   [SGT_CONSUMABLES] = getLocNameConsumables,
@@ -40,7 +42,6 @@ let locNameGetters = {
   [SGT_BOOSTERS] = getLocNameBooster,
   [SGT_BLUEPRINTS] = getLocBlueprintUnit,
   [SGT_DECORATOR] = getLocNameDecorator,
-  [SGT_BRANCH] = getLocBranchUnits
 }
 
 let constructors = {
@@ -50,6 +51,7 @@ let constructors = {
   [SGT_WP] = mkGoodsWp,
   [SGT_PREMIUM] = mkGoodsPremium,
   [SGT_UNIT] = mkGoodsUnit,
+  [SGT_UNIT_BUNDLE] = mkGoodsUnitBundle,
   [SGT_SKIN] = mkGoodsSkin,
   [SGT_DECALS] = mkGoodsDecal,
   [SGT_CONSUMABLES] = mkGoodsConsumables,

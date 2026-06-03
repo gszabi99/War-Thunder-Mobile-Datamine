@@ -2486,5 +2486,45 @@
     "lod0": "wyw7rqzgk26bwmczpg2fi776m2astjwo-esra",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "wxnl6slvcthm43gc24kyx2h6vm26ryom-bkrq"
+  },
+  "it_1st_company_commander": {
+    "category": "italy",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "3vnhcgeibrzw6kbaqdwowlfv4za3dqjd-d6rq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ti3h2vv2m2kbp2x7nyie55zylm3xomog-bf2y"
+  },
+  "jp_4th_bat_4th_div": {
+    "category": "japan",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "bizoatj5miktfvzqnmbaog5wh3xehaqu-cbii",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ujgciiuairbtcijjkmfio5xvwvelj4bw-wly"
+  },
+  "elsa_face_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "7kikqcb5gt5plhoensso6tzwjinsgh74-fxmq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "hwxst63dsxl634lme4bl2urkjduncoyb-bu6y"
+  },
+  "kate_face_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "lo553ygie3gtyjhfsymure2dm2qi67uv-foai",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "4nswc6yemv2fglkdzeepbekldg3l44r4-btai"
+  },
+  "ling_face_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "m6tsbqc5jfppxa2orexorhd3avvwkm6r-fk4q",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "snvgh7czvc5fxr2hlsfbbnpi6qdszbii-bsbi"
   }
 }

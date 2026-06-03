@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY, SGT_DECORATOR, SGT_DECALS
-  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS, SGT_BRANCH, SGT_SKIN
+  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS, SGT_UNIT_BUNDLE, SGT_SKIN
 } = require("%rGui/shop/shopConst.nut")
 
 
@@ -56,7 +56,7 @@ let PURCH_TYPE_GOODS_LIMIT = "goods_limit"
 let PURCH_TYPE_GOODS_REROLL_SLOTS = "goods_reroll_slots"
 let PURCH_TYPE_SLOT_LEVEL = "slot_level"
 let PURCH_TYPE_BLUEPRINTS = "blueprints"
-let PURCH_TYPE_BRANCH = "branch"
+let PURCH_TYPE_UNIT_BUNDLE = "unit_bundle"
 let PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
 let PURCH_TYPE_DECAL = "decal"
 let PURCH_TYPE_QUEST_REROLL = "quest_reroll"
@@ -78,7 +78,7 @@ let goodsTypeToPurchTypeMap = {
   [SGT_SLOTS] = PURCH_TYPE_GOODS_SLOT,
   [SGT_BLUEPRINTS] = PURCH_TYPE_BLUEPRINTS,
   [SGT_DECORATOR] = PURCH_TYPE_DECORATOR,
-  [SGT_BRANCH] = PURCH_TYPE_BRANCH
+  [SGT_UNIT_BUNDLE] = PURCH_TYPE_UNIT_BUNDLE
 }
 
 function getPurchaseTypeByGoodsType(gtype) {

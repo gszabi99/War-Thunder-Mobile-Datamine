@@ -9,7 +9,7 @@ let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campaignsLevelInfo, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsLevelInfo, campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
@@ -62,10 +62,15 @@ let bestCampLevel = Computed(@() campaignsLevelInfo.get()?.reduce(@(res, li) max
 let eventsLists = Computed(function() {
   let events = {}
   let eventsWithTree = {}
+  let curCamp = curCampaign.get()
   foreach (unlock in activeUnlocks.get()) {
     if (!unlock?.meta.event_table)
       continue
-    let { event_id = null, tree_travel = false, tree_gift = false, tree_quest = false, quest_cluster = false } = unlock?.meta
+    let { event_id = null, tree_travel = false, tree_gift = false, tree_quest = false,
+      quest_cluster = false, campaign = ""
+    } = unlock?.meta
+    if (campaign != "" && campaign != curCamp)
+      continue
     let isTreeEvent = tree_travel || tree_gift || tree_quest || quest_cluster
     if (event_id == null || event_id == MAIN_EVENT_ID || event_id in events || event_id in eventsWithTree) {
       if (unlock.table != "") {
@@ -99,11 +104,9 @@ let eventsLists = Computed(function() {
 
 let events = Computed(@() eventsLists.get().events)
 
-function orderEvents(data) {
-  let res = data.values().sort(@(a, b) a.endsAt <=> b.endsAt)
-  res.each(@(v, idx) v.__update({ idx, eventId = getSpecialEventName(idx + 1) }))
-  return res
-}
+let orderEvents = @(data) data.values()
+  .sort(@(a, b) a.endsAt <=> b.endsAt || a.eventName <=> b.eventName)
+  .map(@(v, idx) v.__merge({ idx, eventId = getSpecialEventName(idx + 1) }))
 
 let specialEventsOrdered = Computed(@() orderEvents(events.get()))
 let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res.$rawset(v.eventId, v), {}))
@@ -380,4 +383,6 @@ return {
 
   curEventBg
   getEventPresentationId
+
+  orderEvents
 }

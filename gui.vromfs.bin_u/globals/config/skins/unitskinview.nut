@@ -348,6 +348,10 @@ return {
       "": "cn_camo_sand_green_black",
       "forest": "ussr_camo_green"
     },
+    "cn_mbt2000_sm": {
+      "": "mbt2000_sm_ling",
+      "forest": "ussr_camo_green"
+    },
     "cn_object_122tm": {
       "": "ussr_camo_green",
       "forest": "cn_camo_desert_green"
@@ -1521,6 +1525,10 @@ return {
     "germ_leopard_2a4m_can": {
       "": "ger_camo_bronzegruen",
       "upgraded": "camo_leo_can"
+    },
+    "germ_leopard_2a4m_can_sm": {
+      "": "leopard_2a4m_can_sm_elsa",
+      "forest": "ger_camo_bronzegruen"
     },
     "germ_leopard_2av": {
       "": "ger_camo_bronzegruen",
@@ -4206,6 +4214,10 @@ return {
     "us_m1a1_hc_abrams": {
       "": "us_camo_modern_green",
       "upgraded": "usa_modern_tropical"
+    },
+    "us_m1a1_hc_usmc_sm": {
+      "": "m1a1_hc_usmc_sm_kate",
+      "forest": "us_camo_modern_desert_tan"
     },
     "us_m247": {
       "": "us_camo_olive",

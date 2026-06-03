@@ -31,7 +31,8 @@ let { squadLabels } = require("%appGlobals/squadLabelState.nut")
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"
-let exportRoomParams = [ "game_mode_id", "game_mode_name", "mission" ].reduce(@(res, v) res.$rawset(v, true), {})
+let exportRoomParams = [ "game_mode_id", "game_mode_name", "mission", "cluster" ]
+  .reduce(@(res, v) res.$rawset(v, true), {})
 
 let debugBattleResult = mkWatched(persist, "debugBattleResult", null)
 let baseBattleResult = mkWatched(persist, "battleResult", null)
@@ -41,7 +42,7 @@ let connectFailedData = mkWatched(persist, "connectFailedData", null)
 let questProgressDiff = mkWatched(persist, "questProgressDiff", null)
 let unitWeaponry = mkWatched(persist, "unitWeaponry", null)
 let completedTutorials = mkWatched(persist, "completedTutorials", {})
-let roomInfo = Computed(@() lastRoom.get()?.public.filter(@(_, key) key in exportRoomParams))
+let roomInfoShort = Computed(@() lastRoom.get()?.public.filter(@(_, key) key in exportRoomParams))
 let hasVip = Computed(@() subscriptions.get()?.vip.isActive ?? false )
 let hasPrem = Computed(@() subscriptions.get()?.premium.isActive ?? false )
 let hasPremiumSubs = Computed(@() hasPrem.get() || hasVip.get())
@@ -94,14 +95,14 @@ let battleResult = Computed(function() {
   if (battleSessionId.get() == -1)
     return singleMissionResult.get()
   else {
-    res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
+    res = baseBattleResult.get()?.__merge({ roomInfo = roomInfoShort.get() })
     if ("realName" in res?.unit) 
       res.unit = realNameToName(res.unit)
     if (type(res?.unit.platoonUnits) == "array")
       res.unit = res.unit.__merge({ platoonUnits = res.unit.platoonUnits.map(@(u) (u?.realName ?? u.name) == u.name ? u : realNameToName(u))})
     if (res?.sessionId != battleSessionId.get())
       return connectFailedData.get()?.sessionId != battleSessionId.get() ? null
-        : connectFailedData.get().__merge({ isDisconnected = true }, { roomInfo = roomInfo.get() })
+        : connectFailedData.get().__merge({ isDisconnected = true }, { roomInfo = roomInfoShort.get() })
     if (res?.sessionId == resultPlayers.get()?.sessionId)
       res = resultPlayers.get().__merge(res)
     if (playersCommonStats.get().len() != 0)

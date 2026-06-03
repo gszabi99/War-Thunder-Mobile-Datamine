@@ -33,11 +33,14 @@ let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
 
 function getCantPurchaseReason(goods) {
   let units = []
+  local hasNotPurchasedUnits = false
   foreach (r in goods.rewards)
-    if (r.gType in unitRewardTypes
-        && (isEmptyByRType?[r.gType](r.id, r.subId, servProfile.get(), serverConfigs.get()) ?? false))
-      units.append(r.id)
-  if (units.len() > 0)
+    if (r.gType in unitRewardTypes)
+      if (isEmptyByRType?[r.gType](r.id, r.subId, servProfile.get(), serverConfigs.get()) ?? false)
+        units.append(r.id)
+      else
+        hasNotPurchasedUnits = true
+  if (units.len() > 0 && !hasNotPurchasedUnits)
     return {
       canPurchase = false
       logText = $"ERROR: Units already received: {", ".join(units)}"

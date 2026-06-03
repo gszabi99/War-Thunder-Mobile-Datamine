@@ -780,11 +780,11 @@ function mkDiscountOfferUnit(goods, discount, rStyle) {
     : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
-  let unitImg = getGoodsAsOfferIcon(goods.id)
-    ?? (unit?.isUpgraded ? p.upgradedImage : p.image)
-  let image = mkFitCenterImg(unitImg,
-    unitOfferImageOvrByType?[unit?.unitType] ?? {}).__update({ fallbackImage = Picture(p.image) })
-  let imageOffset = currencyId == null || unit?.unitType == TANK ? 0
+  let customImage = getGoodsAsOfferIcon(goods.id)
+  let image = customImage != null ? mkFitCenterImg(customImage, { keepAspect = KEEP_ASPECT_FILL })
+    : mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
+        (unitOfferImageOvrByType?[unit?.unitType] ?? {}).__merge({ fallbackImage = Picture(p.image) }))
+  let imageOffset = customImage != null || currencyId == null || unit?.unitType == TANK ? 0
     : hdpx(20)
   let size = getRewardPlateSize(2, rStyle)
   return mkDiscountOfferWrap(unit == null ? null

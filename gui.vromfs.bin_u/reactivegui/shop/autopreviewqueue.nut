@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
+let { rnd_int } = require("dagor.random")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad, isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -46,11 +47,13 @@ let isAllUnitsLoaded = @(goods, sConfigs, uSizes)
 
 let isReadyToShowScene = @(v, seen, sCfg, uSizes) !seen?[v?.id] && isAllUnitsLoaded(v, sCfg, uSizes)
 
+let findUnseenGoods = @(allSelectedGoods, seen, schRew) allSelectedGoods.findvalue(@(v) isUnseenGoods(v.id, seen, schRew))
+
 let previewCfg = [
   {
     priority = Computed(@() !isReadyToFullLoad.get() ? -1
       : offersByGoodsToShow.get().len() == 0 ? -1
-      : null == offersByGoodsToShow.get().findvalue(@(v) isUnseenGoods(v.id, shopSeenGoods.get(), actualSchRewards.get())) ? 1
+      : null == findUnseenGoods(offersByGoodsToShow.get(), shopSeenGoods.get(), actualSchRewards.get()) ? 1
       : 4)
     allGoods = offersByGoodsToShow
     findByShopSeen = true
@@ -66,13 +69,16 @@ let previewCfg = [
     isOffer = true
   },
   {
-    priority = Computed(@() !isReadyToFullLoad.get() || featureGoodsToShow.get().len() == 0 ? -1 : 3)
+    priority = Computed(@() !isReadyToFullLoad.get() || featureGoodsToShow.get().len() == 0 ? -1
+      : null == findUnseenGoods(featureGoodsToShow.get(), shopSeenGoods.get(), actualSchRewards.get()) ? 1
+      : null == featureGoodsToShow.get().findvalue(
+                  @(v) isUnseenGoods(v.id, shopSeenGoods.get(), actualSchRewards.get()) && v?.meta.autoPreviewAsOffer == "true")
+        ? 3
+      : 4)
     allGoods = featureGoodsToShow
+    findByShopSeen = true
   }
 ]
-
-let findUnseenGoods = @(allSelectedGoods, seen, schRew) allSelectedGoods.findvalue(@(v) isUnseenGoods(v.id, seen, schRew))
-  ?? allSelectedGoods.findvalue(@(_) true)
 
 function assignGoods() {
   local previewGoods = null
@@ -90,6 +96,7 @@ function assignGoods() {
         isReadyToShowScene(v, seenInLoop.get(), serverConfigs.get(), unitSizes.get()))
       let cfgGoods = !cfg?.findByShopSeen ? readyToShowGoods.findvalue(@(_) true)
         : findUnseenGoods(readyToShowGoods, shopSeenGoods.get(), actualSchRewards.get())
+            ?? readyToShowGoods?[rnd_int(0, readyToShowGoods.len() - 1)]
       if (cfgGoods != null) {
         previewPriority = cfgPriority
         previewGoods = cfgGoods
@@ -102,6 +109,7 @@ function assignGoods() {
         .filter(@(v) !isAllUnitsLoaded(v, serverConfigs.get(), unitSizes.get()))
       let cfgGoods = !cfg?.findByShopSeen ? readyToLoadGoods.findvalue(@(_) true)
         : findUnseenGoods(readyToLoadGoods, shopSeenGoods.get(), actualSchRewards.get())
+            ?? readyToLoadGoods.findvalue(@(_) true)
       if (cfgGoods != null) {
         loadPriority = cfgPriority
         loadGoods = cfgGoods
@@ -176,3 +184,4 @@ register_command(
   "debug.toggleAutoPreview")
 register_command(@() seenInLoop.set({}), "debug.reset_auto_preview_seen")
 register_command(@() console_print(seenInLoop.get()), "debug.log_auto_preview_seen") 
+register_command(@() hasSeenBetweenBattlesByCamp.set({}), "debug.showNextAutopreview")

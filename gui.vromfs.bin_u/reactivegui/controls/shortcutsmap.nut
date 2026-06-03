@@ -2,7 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
 let { isReplayShortcuts } = require("%rGui/controls/shortcutFlags.nut")
 
-let allShortcuts = isReplayShortcuts ? {}
+let allShortcuts = isReplayShortcuts ? {
+  ID_MPSTATSCREEN = "J:Back | Tab"
+  ID_SHOW_HERO_MODULES = "J:X | 6"
+}
 : {
   
   ID_FLIGHTMENU = "J:Start | Esc" 

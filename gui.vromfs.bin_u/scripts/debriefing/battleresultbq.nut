@@ -12,18 +12,17 @@ let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { median } = require("%sqstd/math.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { get_gui_option, addUserOption, addLocalUserOption } = require("guiOptions")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { battleResult } = require("battleResult.nut")
-let { curQueue } = require("%appGlobals/queueState.nut")
 let { clusterStats } = require("%appGlobals/clustersState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { get_game_version_str, get_base_game_version_str } = require("app")
 let { isInSquad } = require("%appGlobals/squadState.nut")
+let { lastRoom } = require("%scripts/matchingRooms/sessionLobby.nut")
 let { wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
@@ -32,11 +31,6 @@ let OPT_FPS = addLocalUserOption("OPT_FPS")
 let OPT_RAYTRACING = addLocalUserOption("OPT_RAYTRACING")
 let OPT_AA = addLocalUserOption("OPT_AA")
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
-
-let lastCluster = hardPersistWatched("lastCluster", "")
-curQueue.subscribe(@(v) (v?.joinedClusters ?? {}).len() == 0
-  ? null
-  : lastCluster.set(",".join(v.joinedClusters.keys())))
 
 const MEASURE_PING_INTERVAL_SEC = 15
 const PING_SAMPLES_MAX = 50
@@ -121,7 +115,7 @@ function onFrameTimes(evt, _eid, _comp) {
   data.__update({
     platform = get_platform_string_id()
     country = getCountryCode()
-    cluster = lastCluster.get()
+    cluster = lastRoom.get()?.public.cluster ?? ""
     clusters_rtt = ",".join(clusterStats.get().map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
     campaign = !wasBattleDataApplied.get() ? ""

@@ -10,7 +10,7 @@ let constructors = {
   [SGT_GOLD] = mkOfferGold,
   [SGT_UNIT] = mkOfferUnit,
   [SGT_BLUEPRINTS] = mkOfferBlueprint,
-  [SGT_BRANCH] = mkOfferBranchUnit,
+  [SGT_UNIT_BUNDLE] = mkOfferBranchUnit,
   [SGT_LOOTBOX] = mkOfferLootbox,
 }
 

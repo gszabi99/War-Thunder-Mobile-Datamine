@@ -40,8 +40,8 @@ let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
 
-let offerW = hdpx(308)
-let offerH = hdpx(119)
+let offerW = hdpx(293)
+let offerH = hdpx(120)
 let offerPad = [hdpx(5), hdpx(15), hdpx(10), hdpx(15)]
 let bottomPad = [hdpx(15), hdpx(20)]
 let titlePadding = hdpx(33)

@@ -439,7 +439,10 @@
       "Vietnamese": "vi",
       "TChinese": "zhtw",
       "HChinese": "zhhx",
-      "USA": "en_us"
+      "USA": "en_us",
+      "SmElsa": "sm_de",
+      "SmKate": "sm_us",
+      "SmLing": "sm_zh"
     }
   },
   "budget": {

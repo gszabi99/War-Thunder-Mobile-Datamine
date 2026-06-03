@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { shopSeenGoods, goodsByCategory, isUnseenGoods } = require("%rGui/shop/shopState.nut")
-let { SC_FEATURED, SGT_SLOTS, SGT_UNIT, SGT_LOOTBOX } = require("%rGui/shop/shopConst.nut")
+let { SC_FEATURED, SGT_SLOTS, SGT_UNIT, SGT_LOOTBOX, SGT_UNIT_BUNDLE } = require("%rGui/shop/shopConst.nut")
 let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { actualSchRewards } = require("%rGui/shop/schRewardsState.nut")
 let { getPreviewType } = require("%rGui/shop/goodsPreviewState.nut")
@@ -10,25 +10,40 @@ let { isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
 
 
 let goodsCategories = [SC_FEATURED]
-let orderByGoodType = [SGT_UNIT, SGT_LOOTBOX, SGT_SLOTS]
+let orderByGoodType = [SGT_UNIT_BUNDLE, SGT_UNIT, SGT_LOOTBOX, SGT_SLOTS]
   .reduce(@(res, v, i) res.$rawset(v, i + 1), {})
+
+function getPriority(g, seen, schRew) {
+  let isUnseen = isUnseenGoods(g.id, seen, schRew)
+  let autoPreviewAsOffer = g?.meta.autoPreviewAsOffer == "true"
+  let priority = isUnseen && autoPreviewAsOffer ? 0
+    : isUnseen ? 1
+    : 2
+  return priority
+}
 
 let featureGoodsToShow = Computed(@() !isFitSeasonRewardsRequirements.get() ? []
   : goodsCategories
       .reduce(function(res, cat) {
           foreach (g in (goodsByCategory.get()?[cat] ?? [])) {
             if (getGoodsType(g) not in orderByGoodType
-                || !isUnseenGoods(g.id, shopSeenGoods.get(), actualSchRewards.get())
+                || (!isUnseenGoods(g.id, shopSeenGoods.get(), actualSchRewards.get()) && g?.meta.autoPreviewAsOffer != "true")
                 || getPreviewType(g) == null)
               continue
-            if (null != g.rewards.findvalue(@(r) r.id in campMyUnits.get() && r.gType in unitRewardTypes))
-              continue
-
-            res.append(g)
+            local withUnits = false
+            local hasNotReceived = false
+            foreach (r in g.rewards)
+              if (r.gType in unitRewardTypes) {
+                withUnits = true
+                hasNotReceived = hasNotReceived || r.id not in campMyUnits.get()
+              }
+            if (!withUnits || hasNotReceived)
+              res.append(g)
           }
           return res
         }, [])
-      .sort(@(a, b) (orderByGoodType?[getGoodsType(a)] ?? -1) <=> (orderByGoodType?[getGoodsType(b)] ?? -1)))
+      .sort(@(a, b) getPriority(a, shopSeenGoods.get(), actualSchRewards.get()) <=> getPriority(b, shopSeenGoods.get(), actualSchRewards.get())
+        || (orderByGoodType?[getGoodsType(a)] ?? -1) <=> (orderByGoodType?[getGoodsType(b)] ?? -1)))
 
 return {
   featureGoodsToShow

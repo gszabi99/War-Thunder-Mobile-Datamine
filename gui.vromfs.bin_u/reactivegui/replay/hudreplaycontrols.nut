@@ -34,9 +34,9 @@ let { mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { simpleHorGradInv } = require("%rGui/style/gradients.nut")
 let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
-let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 let { isPlayingReplay } = require("%rGui/hudState.nut")
+let cfgHudReplay = require("%rGui/hudTuning/cfg/cfgHudReplay.nut")
 
 
 let optImgSize = hdpx(50)
@@ -820,6 +820,21 @@ let cameraSticks = @() {
       ]
 }
 
+function mkReplayHudElem(id, cfg) {
+  let isVisible = cfg?.isVisibleInBattle ?? Watched(true)
+
+  return @() {
+    watch = curUnitHudTuning
+    size = 0
+    pos = curUnitHudTuning.get()?.transforms[id].pos ?? cfg.defTransform.pos
+    children = @() {
+      watch = [isVisible, isHudVisibilityOptActive]
+      children = !isHudVisibilityOptActive.get() || !isVisible.get() ? null
+        : cfg.ctor(curUnitHudTuning.get()?.options.scale[id] ?? 1)
+    }
+  }.__update(alignToDargPlace(curUnitHudTuning.get()?.transforms[id].align ?? cfg.defTransform.align))
+}
+
 let hudReplayControls = @() {
   key = "replay-controls"
   watch = [isReplaysManageButtonOn, curUnitHudTuning]
@@ -837,45 +852,54 @@ let hudReplayControls = @() {
         cameraSticks
         @() {
           watch = [isPlayerOptionsOpen, isHudVisibilityOptActive]
-          flow = FLOW_HORIZONTAL
+          size = flex()
           children = !isPlayerOptionsOpen.get() && !isHudVisibilityOptActive.get()
             ? null
             : [
-                mkMenuButton(curUnitHudTuning.get()?.options.scale.menuBtn ?? 1, {
-                  margin = [saBorders[1], saBorders[0]]
-                  pos = curUnitHudTuning.get()?.transforms.menuBtn.pos ?? [0, 0]
-                })
-                @() {
-                  watch = [isFreeCameraOptActive, isPlayerOptionsOpen, can_use_freecam_in_replay]
-                  margin = [saBorders[1], 0]
-                  flow = FLOW_HORIZONTAL
-                  gap = vertCamBtnGap
-                  halign = ALIGN_RIGHT
-                  children = !can_use_freecam_in_replay.get() || !isFreeCameraOptActive.get() || !isPlayerOptionsOpen.get() ? null
-                    : [
-                        inertiaSlider
-                        {
-                          flow = FLOW_VERTICAL
-                          children = [
-                            {
-                              rendObj = ROBJ_TEXT
-                              color = cellTextColor
-                              text = loc("options/free_camera_inertia")
-                            }.__update(fontSmallAccented)
-                            @() {
-                              watch = camInertia
-                              children = {
+                {
+                  size = saSize
+                  hplace = ALIGN_CENTER
+                  vplace = ALIGN_CENTER
+                  children = cfgHudReplay.keys().map(@(id) mkReplayHudElem(id, cfgHudReplay[id]))
+                }
+                {
+                  size = saSize
+                  hplace = ALIGN_CENTER
+                  vplace = ALIGN_CENTER
+                  children = @() {
+                    watch = [isFreeCameraOptActive, isPlayerOptionsOpen, can_use_freecam_in_replay]
+                    size = 0
+                    pos = [shHud(6), 0]
+                    hplace = ALIGN_LEFT
+                    vplace = ALIGN_TOP
+                    flow = FLOW_HORIZONTAL
+                    gap = vertCamBtnGap
+                    children = !can_use_freecam_in_replay.get() || !isFreeCameraOptActive.get() || !isPlayerOptionsOpen.get() ? null
+                      : [
+                          inertiaSlider
+                          {
+                            flow = FLOW_VERTICAL
+                            children = [
+                              {
                                 rendObj = ROBJ_TEXT
                                 color = cellTextColor
-                                text = $"{(camInertia.get() / camInertiaMax * 100).tointeger()} %"
+                                text = loc("options/free_camera_inertia")
                               }.__update(fontSmallAccented)
-                            }
-                          ]
-                        }
-                      ]
+                              @() {
+                                watch = camInertia
+                                children = {
+                                  rendObj = ROBJ_TEXT
+                                  color = cellTextColor
+                                  text = $"{(camInertia.get() / camInertiaMax * 100).tointeger()} %"
+                                }.__update(fontSmallAccented)
+                              }
+                            ]
+                          }
+                        ]
+                  }
                 }
               ]
-        }.__update(alignToDargPlace(curUnitHudTuning.get()?.transforms.menuBtn.align ?? ALIGN_LT))
+        }
         {
           size = flex()
           flow = FLOW_VERTICAL

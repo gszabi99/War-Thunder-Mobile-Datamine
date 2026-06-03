@@ -285,7 +285,7 @@ return {
     ctor = mkDoll
     defTransform = mkLBPos([hdpx(540), 0])
     editView = dollEditView
-    isVisibleInBattle = notInHangarChallenge
+    isVisibleInBattle = Computed(@() notInHangarChallenge.get() && !isPlayingReplay.get())
     hideForDelayed = false
   }
 

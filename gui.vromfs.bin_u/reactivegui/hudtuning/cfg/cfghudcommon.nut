@@ -12,6 +12,7 @@ let { isGtRace } = require("%rGui/missionState.nut")
 let { isCTFProgressType, isNotCTFProgressType } = require("%rGui/hud/missionScoreState.nut")
 let { spawnScoreEditView, hudSpawnScoreCtor } = require("%rGui/respawn/spawnScore.nut")
 let { isUseSpawnScore } = require("%rGui/respawn/respawnState.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 
 return {
@@ -30,7 +31,7 @@ return {
     defTransform = mkCTPos([0, -hdpx(16)])
     editView = scoreBoardEditView
     hideForDelayed = false
-    isVisibleInBattle = needScoreBoard
+    isVisibleInBattle = Computed(@() needScoreBoard.get() && !isPlayingReplay.get())
   }
 
   zoneIndicators = {

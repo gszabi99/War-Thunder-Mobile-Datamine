@@ -109,6 +109,9 @@ let skinsByTag = {
     "us_camo_m1a1_aim_abrams"
     "ussr_camo_object_279_1002"
     "ussr_camo_object_279_trixter"
+    "m1a1_hc_usmc_sm_kate"
+    "leopard_2a4m_can_sm_elsa"
+    "mbt2000_sm_ling"
   ],
 
   [DESERT] = [
