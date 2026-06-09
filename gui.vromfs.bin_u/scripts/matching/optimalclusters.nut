@@ -6,7 +6,7 @@ let { format } =  require("string")
 let { blob } = require("iostream")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { send, last_error, close_socket } = require("dagor.udp")
+let { send, last_error } = require("dagor.udp")
 let { rnd_float } = require("dagor.random")
 let { median, number_of_set_bits } = require("%sqstd/math.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -373,13 +373,11 @@ isMatchingOnline.subscribe(function(_) {
 })
 
 function startProbe() {
-  close_socket(CLIENT_SOCKET_ID)
   eventbus_subscribe("udp.on_packet", onUdpPacket)
   scheduleNextProbeTime(tryProbeHosts)
 }
 
 function stopProbe() {
-  close_socket(CLIENT_SOCKET_ID)
   clearTimer(tryProbeHosts)
   clearTimer(onClustersRecalc)
   eventbus_unsubscribe("udp.on_packet", onUdpPacket)

@@ -2526,5 +2526,29 @@
     "lod0": "m6tsbqc5jfppxa2orexorhd3avvwkm6r-fk4q",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "snvgh7czvc5fxr2hlsfbbnpi6qdszbii-bsbi"
+  },
+  "s34_octopus_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "nhtot7ov4lsicmyrj6cgwxhu2wckzpwf-duii",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "wno674ktsfa5vpxe6qjtmptemx75y5dc-bbki"
+  },
+  "s34_torpedo_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "cob42gqqur6qpin22gxfxt5ayvcdrs5q-ephi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "63jmgfwwfv3m6wyx5ewxvu7i7qh4qvlv-biaa"
+  },
+  "dark_waters_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "utiq3uewi5r35ioizast4mpneae4tybh-fvsy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "rv35zynbfvcgmmc36pv6idg3ybdka66v-btza"
   }
 }

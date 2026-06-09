@@ -2564,7 +2564,8 @@
   "metal": {
     "enable_manual_hazard_tracking": true,
     "enable_postmortem": true,
-    "brokenUAVOnlyPasses": true
+    "brokenUAVOnlyPasses": true,
+    "allowResourceHeaps": false
   },
   "win64": {
     "debug": {

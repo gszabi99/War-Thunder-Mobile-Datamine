@@ -3394,6 +3394,10 @@
     }
   },
   "default_skin": {
+    "replace_tex": {
+      "from": "m1a1_hc_usmc_c*",
+      "to": "m1a1_skin_kate_hc_usmc_c*"
+    },
     "set_tex": [
       {
         "from": "m1a1_abrams_body_c*",
@@ -3419,11 +3423,6 @@
         "from": "m1a1_abrams_turret_c*",
         "to": "m1a1_abrams_skin_kate_turret_c*",
         "param": "camo_skin_tex"
-      },
-      {
-        "from": "m1a1_hc_usmc_c*",
-        "to": "m1a1_skin_kate_hc_usmc_c*",
-        "param": "camo_skin_tex"
       }
     ]
   },
@@ -3436,10 +3435,16 @@
   },
   "vehicleSkins": {
     "forest": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_modern_desert_tan*"
-      },
+      "replace_tex": [
+        {
+          "from": "us_camo_olive*",
+          "to": "us_camo_modern_desert_tan*"
+        },
+        {
+          "from": "m1a1_skin_kate_hc_usmc_c*",
+          "to": "m1a1_hc_usmc_c*"
+        }
+      ],
       "set_tex": [
         {
           "from": "m1a1_abrams_body_c*",
@@ -3467,7 +3472,7 @@
           "param": "camo_skin_tex"
         },
         {
-          "from": "m1a1_hc_usmc_c*",
+          "from": "m1a1_skin_kate_hc_usmc_c*",
           "to": "camo_noskin_common*",
           "param": "camo_skin_tex"
         }
