@@ -327,7 +327,6 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
           mkTabsCampaignName
           mkMedals(info, campaign)
           {
-            flow = FLOW_HORIZONTAL
             gap = { minWidth = hdpx(50) size = flex() }
             minWidth = SIZE_TO_CONTENT
             size = FLEX_H
@@ -346,6 +345,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   }
                 return {
                   watch = [isWaitInfo, globalStats, info]
+                  size = [pw(45), SIZE_TO_CONTENT]
                   valign = ALIGN_CENTER
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
@@ -364,7 +364,6 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   ]
                 }
               }
-              { size = flex() }
               function() {
                 let stats = publicStats.get()?.stats["global"][campaign]
                 if (isWaitStats.get())
@@ -376,7 +375,9 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   return { watch = [isWaitStats, publicStats] }
                 return {
                   watch = [isWaitStats, publicStats]
+                  size = [pw(45), SIZE_TO_CONTENT]
                   valign = ALIGN_CENTER
+                  hplace = ALIGN_RIGHT
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
                   children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]

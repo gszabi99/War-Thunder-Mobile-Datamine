@@ -4,6 +4,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
+let { getCountryCode } = require("auth_wt")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -79,13 +80,22 @@ let sortGoods = @(a, b)
   || a.price.price <=> b.price.price
   || a.id <=> b.id
 
-let goodsWithTimers = Computed(@() (campConfigs.get()?.allGoods ?? {})
+
+let cfgAllGoods = Computed(function() {
+  let { prohibitedShopGoods = {}, allGoods = {} } = campConfigs.get()
+  let { locations = [], goods = {} } = prohibitedShopGoods
+  if (!locations.contains(getCountryCode()))
+    return allGoods
+  return allGoods.filter(@(_, id) id not in goods)
+})
+
+let goodsWithTimers = Computed(@() cfgAllGoods.get()
   .filter(@(g) g.timeRanges.len() > 0))
 let inactiveGoodsByTime = Watched({})
 let finishedGoodsByTime = Watched({})
 let soonGoodsByTime = Watched({})
 
-let goodsLinks = Computed(@() (campConfigs.get()?.allGoods ?? [])
+let goodsLinks = Computed(@() cfgAllGoods.get()
   .reduce(function(res, goods) {
     if (goods.relatedGaijinId == "")
       return res
@@ -188,7 +198,7 @@ todayPurchasesCount.subscribe(@(_ ) updateGoodsTimers())
 
 let allowWithSubs = @(goods) null == goods.rewards.findvalue(@(r) r.gType == G_PREMIUM)
 
-let shopGoodsInternal = Computed(@()(campConfigs.get()?.allGoods ?? {})
+let shopGoodsInternal = Computed(@() cfgAllGoods.get()
   .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
     && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0))))
 

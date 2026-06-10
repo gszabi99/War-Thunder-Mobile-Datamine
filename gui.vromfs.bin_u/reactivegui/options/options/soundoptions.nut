@@ -5,7 +5,7 @@ from "soundOptions" import SND_TYPE_MASTER, SND_TYPE_MUSIC, SND_TYPE_MENU_MUSIC,
   is_sound_inited, get_sound_volume, set_sound_volume, get_option_voice_message_voice, set_option_voice_message_voice
 let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { optionsVersion } = require("%rGui/options/guiOptions.nut")
+let { registerOptionStorageChangeCb } = require("%rGui/options/guiOptions.nut")
 
 
 const SOUND_MAX = 100 
@@ -32,13 +32,8 @@ function mkSoundSlider(sndTypes, locId) {
       eventbus_send("saveProfile", {})
   }
   updateSaved()
-  isSettingsAvailable.subscribe(function(_) {
-    value.set(getSaved())
-    updateSaved()
-  })
   value.subscribe(@(_) updateSaved())
-
-  optionsVersion.subscribe(function(_) {
+  registerOptionStorageChangeCb($"snd_{sndTypes[0]}", function(_) {
     value.set(getSaved())
     updateSaved()
   })

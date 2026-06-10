@@ -36,11 +36,13 @@ let resetButton = @() openMsgBox({
   text = loc("msgbox/resetDefaults")
   buttons = [
     { id = "cancel", isCancel = true }
-    { id = "ok", styleId = "PRIMARY",cb = function() {
-      reset_gui_options()
-      reset_volumes()
-      optionsVersion.set(optionsVersion.get() + 1)
-    } }
+    { id = "ok", styleId = "PRIMARY",
+      function cb() {
+        reset_gui_options()
+        reset_volumes()
+        optionsVersion.set(optionsVersion.get() + 1)
+      }
+    }
   ]
 })
 

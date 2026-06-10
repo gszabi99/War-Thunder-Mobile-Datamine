@@ -18,7 +18,6 @@ let mkRow = @(t1, t2, icon = null) {
     mkText(t1)
     icon
     {
-      minWidth = hdpx(40)
       size = flex()
     }
     mkText(t2)
@@ -86,12 +85,25 @@ let viewStats = [
     value = @(stats) secureDiv(stats?.profile_stat_kill ?? 0, stats?.profile_stat_death ?? 0)
     format = @(v) format("%.2f", v)
   }
-].extend(["tanks", "ships", "air"].map(@(campaign) {
-  name = loc("stats/avg_score")
-  campaign
-  value = @(stats) stats?.m_avg_score ?? 0
-  format = @(v) format("%.0f", v)
-}))
+  {
+    name = loc("stats/avg_score_dmg")
+    campaign = "tanks"
+    value = @(stats) stats?.m_avg_score ?? 0
+    format = @(v) format("%.0f", v)
+  }
+  {
+    name = loc("stats/avg_score_enemy_hp")
+    campaign = "ships"
+    value = @(stats) stats?.m_avg_score ?? 0
+    format = @(v) format("%.1f%%", v)
+  }
+  {
+    name = loc("stats/avg_score_dmg")
+    campaign = "air"
+    value = @(stats) stats?.m_avg_score ?? 0
+    format = @(v) format("%.0f", v)
+  }
+]
 
 return {
   viewStats

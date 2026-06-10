@@ -6,6 +6,7 @@ let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE
   AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE, AB_ROCKET_ASW, AB_ACOUSTIC_DECOY,
   AB_CIWS, AB_ROCKET_TERTIARY
 } = require("%rGui/hud/actionBar/actionType.nut")
+let { hasCountermeasures } = require("%rGui/hudState.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
 
 function getActionBarShortcut(unitType, itemConfig) {
@@ -194,7 +195,7 @@ let actionBarItemsConfig = {
   }
   EII_CIWS = {
     getShortcut =  @(_, __) "ID_SHIP_TOGGLE_CIWS"
-    getImage = @(_) "ui/gameuiskin#button_ciws_high_rank.svg"
+    getImage = @(_) hasCountermeasures.get() ? "ui/gameuiskin#button_ciws_high_rank.svg" : "ui/gameuiskin#button_ciws_low_rank.svg"
     actionType = AB_CIWS
     mkButtonFunction = "mkCountermeasureItem"
   }

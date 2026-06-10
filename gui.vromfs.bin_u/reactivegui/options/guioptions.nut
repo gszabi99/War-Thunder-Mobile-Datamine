@@ -105,6 +105,24 @@ foreach (id in optListScriptOnly)
 foreach (id in optListLocalScriptOnly)
   export[id] <- addLocalUserOption(id)
 
+let onStorageChangeCbs = {}
+function registerOptionStorageChangeCb(id, cb) {
+  if (id in onStorageChangeCbs) {
+    logerr($"Register duplicate optionStorageCb: {id}")
+    return
+  }
+  onStorageChangeCbs[id] <- cb
+}
+
+function onStorageChange(shouldReset) {
+  if (shouldReset)
+    log("[OPTIONS] Reset all options")
+  foreach (cb in onStorageChangeCbs)
+    cb(shouldReset)
+}
+isSettingsAvailable.subscribe(@(_) onStorageChange(false))
+optionsVersion.subscribe(@(_) onStorageChange(true))
+
 function mkOptionValueNative(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
   let value = Watched(isSettingsAvailable.get() ? getSaved() : validate(defValue))
@@ -115,13 +133,8 @@ function mkOptionValueNative(id, defValue, validate) {
     eventbus_send("saveProfile", {})
   }
   updateSaved()
-  isSettingsAvailable.subscribe(function(_) {
+  registerOptionStorageChangeCb(id, function(_) {
     value.set(getSaved())
-    updateSaved()
-  })
-
-  optionsVersion.subscribe(function(_) {
-    value.set(validate(defValue))
     updateSaved()
   })
 
@@ -133,16 +146,8 @@ function mkOptionValueScriptOnly(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
   let value = Watched(isSettingsAvailable.get() ? getSaved() : validate(defValue))
   local isInit = false
-  isSettingsAvailable.subscribe(function(_) {
-    let v = getSaved()
-    if (value.get() == v)
-      return
-    isInit = true
-    value.set(v)
-  })
-
-  optionsVersion.subscribe(function(_) {
-    let v = validate(defValue)
+  registerOptionStorageChangeCb(id, function(shouldReset) {
+    let v = shouldReset ? validate(defValue) : getSaved()
     if (value.get() == v)
       return
     isInit = true
@@ -178,4 +183,5 @@ return export.__update({
   getOptValue
   optionValues
   optionsVersion
+  registerOptionStorageChangeCb
 })
