@@ -103941,7 +103941,7 @@
       }
     }
   },
-  "cn_mbt2000_sm_ling": {
+  "cn_mbt2000_sm": {
     "type": "tank",
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_china_tft",

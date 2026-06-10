@@ -348,7 +348,7 @@ return {
       "": "cn_camo_sand_green_black",
       "forest": "ussr_camo_green"
     },
-    "cn_mbt2000_sm_ling": {
+    "cn_mbt2000_sm": {
       "": "mbt2000_sm_ling",
       "forest": "ussr_camo_green"
     },

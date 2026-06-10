@@ -63167,3 +63167,6 @@ sailing_ship_debris_wreck_medium_b
 sailing_ship_debris_wreck_small_a
 ji-ha_underwater
 scotland_seafloor_a_tex_d
+cn_mbt2000_sm
+cn_mbt2000_sm_default
+gameData/units/tankModels/weaponPresets/cn_mbt2000_sm_default.blk

@@ -2335,8 +2335,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_mbt2000_sm_ling_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_mbt2000_sm_ling_default.blk"
+      "name": "cn_mbt2000_sm_default",
+      "blk": "gameData/units/tankModels/weaponPresets/cn_mbt2000_sm_default.blk"
     }
   },
   "sensors": {
