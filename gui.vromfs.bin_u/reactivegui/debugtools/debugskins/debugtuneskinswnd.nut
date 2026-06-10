@@ -19,7 +19,7 @@ let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButt
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let chooseSkinsUnitTypeWnd = require("%rGui/debugTools/debugSkins/chooseSkinsUnitTypeWnd.nut")
 let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { imageBtn, framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { unitSkinView, unknownSkinPreset } = require("%appGlobals/config/skinPresentation.nut")
 let skinViewPresets = require("%appGlobals/config/skins/skinViewPresets.nut")
@@ -180,10 +180,10 @@ let unitSkinSelector = @(curUnitSkin, allAvailableSkins) withToggles(
 let unitSelector = @(curUnitName, allAvailableUnits) withToggles(
   @() {
     watch = curUnitName
-    children = textButtonPrimary(loc(getUnitLocId(curUnitName.get())),
+    children = textButtonPrimary(getUnitName(curUnitName.get()),
       @(event) chooseByNameWnd(event.targetRect,
         isUnitNameFirst.get() ? "Choose unit for unit type" : "Choose unit for skin"
-        allAvailableUnits.get().keys().sort().map(@(value) { text = loc(getUnitLocId(value)), value }),
+        allAvailableUnits.get().keys().sort().map(@(value) { text = getUnitName(value), value }),
         curUnitName.get(),
         @(value) savedUnitName.set(value)))
   },

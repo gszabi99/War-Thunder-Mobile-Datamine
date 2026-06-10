@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
-let { getUnitPresentation, getUnitClassFontIcon, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitClassFontIcon, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -30,7 +30,7 @@ let bgHiglight = {
 
 let getLocNameSkin = @(goods) comma.join(
   goods.rewards.filter(@(r) r.gType == G_SKIN)
-    .map(@(r) loc("reward/skin_for", { unitName = loc(getUnitLocId(r.id)) })))
+    .map(@(r) loc("reward/skin_for", { unitName = getUnitName(r.id) })))
 
 
 function mkImgs(skinName, unitName, hasUnit, unitImg) {
@@ -102,7 +102,7 @@ let mkHeader = @(unit) @() {
   halign = ALIGN_RIGHT
   children = unit.get() == null ? null
     : [
-        loc("reward/skin_for", { unitName = loc(getUnitLocId(unit.get().name)).replace(" ", nbsp) })
+        loc("reward/skin_for", { unitName = getUnitName(unit.get().name).replace(" ", nbsp) })
         getUnitClassFontIcon(unit.get())
       ]
         .map(@(t) mkGradGlowMultiLine(t, fontWtMedium, limitFontGrad, headerWidth, { halign = ALIGN_RIGHT }))

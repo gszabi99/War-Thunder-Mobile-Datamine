@@ -75,7 +75,7 @@
       "armDistance": 500.0,
       "distanceFuse": false,
       "explosiveType": "comp_b",
-      "explosiveMass": 530.0,
+      "explosiveMass": 538.4222,
       "maxDeltaAngle": 0.02,
       "dragCx": 0.02,
       "spawnExplosionWreckage": false,
@@ -216,6 +216,38 @@
           "armorThickness": 5.0,
           "explosionArmorQuality": 45.0,
           "shatterArmorQuality": 45.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "onHit": [
+            {
+              "damageType": "cumulative",
+              "damage": 20.0
+            },
+            {
+              "damageType": "explosion",
+              "damage": 20.0
+            },
+            {
+              "damageType": "generic",
+              "damage": 20.0
+            }
+          ],
+          "onKill": [
+            {
+              "damageType": "cumulative",
+              "damage": 20.0
+            },
+            {
+              "damageType": "explosion",
+              "damage": 20.0
+            },
+            {
+              "damageType": "generic",
+              "damage": 20.0
+            }
+          ]
         }
       },
       "collisions": {

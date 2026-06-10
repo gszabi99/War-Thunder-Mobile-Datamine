@@ -6,7 +6,7 @@ let { isUnitDelayed } = require("%rGui/hudState.nut")
 let { hudUnitType } = require("%rGui/hudStateExt.nut")
 let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { curUnitHudTuning } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { optScale } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
+let { optScale, getElemVisible } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
 
 let anims = {
@@ -16,6 +16,8 @@ let anims = {
 
 function mkHudTuningElem(cfg, transform, options) {
   if (!(cfg?.isVisible(options) ?? true))
+    return null
+  if ((cfg?.canHide ?? false) && !getElemVisible(options, cfg.id))
     return null
 
   let { id, ctor, defTransform = {}, hideForDelayed = true, isVisibleInBattle = null, hasScale, needId } = cfg

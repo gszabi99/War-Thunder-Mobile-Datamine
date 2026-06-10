@@ -234,10 +234,10 @@ let rewardsList = @(selBpInfo) function() {
       flow = FLOW_VERTICAL
       gap = rewardsListGap
       children = [
-        @() countOPTasks.get() == 0
-          ? { watch = countOPTasks }
+        @() countOPTasks.get() == 0 || purchasedOP.get() != OP_NONE
+          ? { watch = [countOPTasks, purchasedOP] }
           : {
-              watch = countOPTasks
+              watch = [countOPTasks, purchasedOP]
               rendObj = ROBJ_TEXT
               text = loc("battlePass/opAdditionalTasks", { count = countOPTasks.get() })
           }.__update(fontMedium)

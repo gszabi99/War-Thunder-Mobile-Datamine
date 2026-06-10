@@ -15,6 +15,10 @@
     0.0,
     1.0
   ],
+  "deadZoneForTurnAround": [
+    100.0,
+    90.0
+  ],
   "exhaustFx": "tank_exhaust",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -40,7 +44,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "deadZoneForTurnAround": 90.0,
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
@@ -1537,10 +1540,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 50800.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 7.15,
       "sideGearRatio": 1.05,
+      "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

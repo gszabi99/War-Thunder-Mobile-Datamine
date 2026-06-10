@@ -10,6 +10,8 @@ let { btnAUp, btnBEscUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.n
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
+
 
 let wndWidthDefault = hdpx(1106) 
 let wndWidthWide = hdpx(1500) 
@@ -18,7 +20,7 @@ let { defButtonHeight } = buttonStyles
 
 function mkBtn(b, wndUid) {
   let { id = "", text = null, cb = null, hotkeys = null, isCancel = false, isDefault = false,
-    styleId = "COMMON", key = null, multiLine = false, priceComp = null, addChild = null } = b
+    styleId = "COMMON", key = null, multiLine = false, priceComp = null, addChild = null, isInProgress = null } = b
   let style = buttonStyles?[styleId]
   if (!style)
     logerr($"StyleId {styleId} doesn't exist in buttonStyles")
@@ -37,13 +39,38 @@ function mkBtn(b, wndUid) {
         valign = ALIGN_CENTER
       }
   })
-  function onClick() {
-    removeModalWindow(wndUid)
-    cb?()
+
+  if (isInProgress == null) {
+    function onClick() {
+      removeModalWindow(wndUid)
+      cb?()
+    }
+    return priceComp != null ? textButtonPricePurchase(locText, priceComp, onClick, styleOvr)
+      : (multiLine ? textButtonMultiline : textButton)(locText, onClick, styleOvr)
   }
 
-  return priceComp != null ? textButtonPricePurchase(locText, priceComp, onClick, styleOvr)
-    : (multiLine ? textButtonMultiline : textButton)(locText, onClick, styleOvr)
+  let hasClicked = Watched(isInProgress.get())
+  let needRemoveWnd = Computed(@() hasClicked.get() && !isInProgress.get())
+  let onRemoveWnd = @(v) v ? removeModalWindow(wndUid) : null
+  function onClickWithProgress() {
+    if (hasClicked.get() || isInProgress.get())
+      return
+    cb?()
+    hasClicked.set(true)
+  }
+
+  return function() {
+    let inProgressStyleOvr = hasClicked.get() || isInProgress.get() ? mergeStyles(styleOvr, buttonStyles.INACTIVE) : styleOvr
+    return {
+      watch = [isInProgress, hasClicked]
+      key = onRemoveWnd
+      onAttach = @() needRemoveWnd.subscribe(onRemoveWnd)
+      onDetach = @() needRemoveWnd.unsubscribe(onRemoveWnd)
+      children = priceComp != null || isInProgress.get()
+          ? textButtonPricePurchase(locText, hasClicked.get() || isInProgress.get() ? spinner : priceComp, onClickWithProgress, inProgressStyleOvr)
+        : (multiLine ? textButtonMultiline : textButton)(locText, onClickWithProgress, inProgressStyleOvr)
+    }
+  }
 }
 
 let mkMsgBoxBtnsSet = @(wndUid, btnsCfg) btnsCfg.map(@(b) mkBtn(b, wndUid))

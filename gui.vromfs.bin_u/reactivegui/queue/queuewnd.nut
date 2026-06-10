@@ -278,9 +278,7 @@ let tanksBg = @() tanksScreensOrder[(sharedStatsByCampaign.get()?.battles ?? 0) 
 let mkBgImagesByCampaign = {
   air   = @() helpAirAiming
   ships = @() helpShipParts
-  ships_new = @() helpShipParts
   tanks = tanksBg
-  tanks_new = tanksBg
 }
 
 let mkBgImageByGameMode = {

@@ -5,7 +5,7 @@ let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
-let { getCampaignStatsId, purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -87,7 +87,7 @@ let headerPanel = {
         @() {
           watch = [previewGoods, schRewards]
           children = mkGiftSchRewardBtn(
-            schRewards.get()?[$"gift_{getCampaignStatsId(previewGoods.get()?.meta.campaign)}_goods_preview"],
+            schRewards.get()?[$"gift_{previewGoods.get()?.meta.campaign}_goods_preview"],
             aTimeHeaderStart)
         }
       ]

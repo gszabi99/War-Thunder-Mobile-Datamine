@@ -26,7 +26,7 @@ let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { selectedCountry, mkCountryNodesCfg, mkCountries,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
-  setUnitToScroll, unitToScroll, unitInfoToScroll
+  setUnitToScroll, unitToScroll, unitInfoToScroll, visibleNodes
 } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -43,6 +43,8 @@ let { attractColor } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let { draggedData, removeUnitFromSlot } = require("%rGui/slotBar/dragDropSlotState.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 
+
+let maxPremRows = 3
 
 let aTimeAppearLink = 1
 let aTimeChangeLink = 0.5
@@ -176,6 +178,10 @@ function getUnitCoordsRange(names, nodeList) {
 }
 
 function calcBoundaries(names, nodeList, areaSizeV) {
+  let cNodesCfg = mkCountryNodesCfg(visibleNodes, selectedCountry)
+  let visiblePremRows = cNodesCfg.get().nodes.reduce(
+    @(res, u) !campUnitsCfg.get()[u.name].isPremium && u.y - 1 < res ? (u.y - 1) : res,
+    cNodesCfg.get().yMax)
   let coords = getUnitCoordsRange(names, nodeList)
   if (coords == null)
     return null
@@ -183,7 +189,7 @@ function calcBoundaries(names, nodeList, areaSizeV) {
   let minX = x2 * nodeBlockSize[0] + 0.5 * flagTreeOffset - areaSizeV[0] + statsWidth
   let minY = y2 * nodeBlockSize[1] - areaSizeV[1]
   let maxX = (x1 - 1) * nodeBlockSize[0] + 0.8 * flagTreeOffset
-  let maxY = (y1 - 1) * nodeBlockSize[1]
+  let maxY = (y1 - maxPremRows + visiblePremRows) * nodeBlockSize[1]
   return { minX, minY, maxX, maxY }
 }
 
@@ -534,7 +540,9 @@ let function mkUnitsNode(node, pos, hasDarkScreenV) {
   let { name } = node
   let xmbNode = XmbNode()
   let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
-  let needDuplicateDraggableUnit = Computed(@() draggedData.get() != null && draggedData.get()?.unitName == unit.get()?.name)
+  let needDuplicateDraggableUnit = Computed(@() draggedData.get() != null
+    && draggedData.get()?.unitName == unit.get()?.name
+    && !draggedData.get()?.canRemove)
   let isUnitSelectedToSlot = Computed(@() selectedUnitToSlot.get() != null && selectedUnitToSlot.get() == name)
   let watch = [unit, curCampaign, needDuplicateDraggableUnit, isUnitSelectedToSlot]
   return function() {

@@ -23,6 +23,7 @@
   "useTouchTargeting": true,
   "opticAnimVar": "icv_prototype_action",
   "useSimpleDeathConditionsAndEffects": false,
+  "deadZoneForTurnAround": 100.0,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -2161,6 +2162,12 @@
       "animationMultiplier": 0.5,
       "height": 0.0,
       "width": 0.4,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        1.2,
+        0.1
+      ],
       "trackPhysMat": "wheel"
     },
     "collisionProps": {
@@ -2174,10 +2181,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 108000.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 4.77,
       "sideGearRatio": 1.0,
+      "doubleDiffGearRatio": 25.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

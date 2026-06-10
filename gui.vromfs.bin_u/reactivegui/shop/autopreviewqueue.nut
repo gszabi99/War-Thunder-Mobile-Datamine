@@ -69,14 +69,8 @@ let previewCfg = [
     isOffer = true
   },
   {
-    priority = Computed(@() !isReadyToFullLoad.get() || featureGoodsToShow.get().len() == 0 ? -1
-      : null == findUnseenGoods(featureGoodsToShow.get(), shopSeenGoods.get(), actualSchRewards.get()) ? 1
-      : null == featureGoodsToShow.get().findvalue(
-                  @(v) isUnseenGoods(v.id, shopSeenGoods.get(), actualSchRewards.get()) && v?.meta.autoPreviewAsOffer == "true")
-        ? 3
-      : 4)
+    priority = Computed(@() !isReadyToFullLoad.get() || featureGoodsToShow.get().len() == 0 ? -1 : 3)
     allGoods = featureGoodsToShow
-    findByShopSeen = true
   }
 ]
 

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round, round_by_value, lerpClamped, abs } = require("%sqstd/math.nut")
 let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
 let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
 let { loadUnitWeaponSlots, loadUnitTorpedoSeriesDuration } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -39,8 +39,8 @@ let valueRangeShip = {
   mainCannonDps = [0, 5000]
   auxCannonDps = [0, 5000]
   aaaDps = [0, 5000]
-  rocketsDps = [0, 6750]
-  torpedoDps = [0, 5000]
+  rocketsDps = [0, 23000]
+  torpedoDps = [0, 10000]
   mineDps = [0, 5000]
   bombDps = [0, 5000]
   allCannonsDps = [0, 10000]
@@ -174,7 +174,7 @@ let statsShip = {
       if (weapons.findvalue(@(w) w?.isCiws))
         list.append(loc("stats/ciws/short"))
       if (supportPlane != "")
-        list.append(" ".concat(aircraftMark, loc(getUnitLocId(supportPlane))))
+        list.append(" ".concat(aircraftMark, getUnitName(supportPlane)))
       return ", ".join(list)
     }
     getValue = @(_) null
@@ -182,7 +182,7 @@ let statsShip = {
   }
   supportPlane = {
     isAfterWeapons = true
-    getHeader = @(s, _) " ".concat(aircraftMark, loc(getUnitLocId(s.supportPlane)))
+    getHeader = @(s, _) " ".concat(aircraftMark, getUnitName(s.supportPlane))
     valueToText = @(_, s) $"x{s?.supportPlaneCount ?? 1}"
   }
 

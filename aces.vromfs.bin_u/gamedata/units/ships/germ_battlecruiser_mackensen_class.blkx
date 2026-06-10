@@ -9102,7 +9102,7 @@
   "smokeWall": {
     "distance": 450.0,
     "speed": 350.0,
-    "height": 0.0,
+    "height": 30.0,
     "length": 450.0,
     "fxOffset": 65.0
   },

@@ -9,7 +9,8 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, unitPlateRatio, plateTexts
   unitBgImageBase, bgUnit, mkPlateText, unitPlateNameOvr
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { getLevelProgress, getNextUnitLevelWithRewards } = require("%rGui/debriefing/debrUtils.nut")
+let { getLevelProgress, getNextUnitLevelWithRewards
+} = require("%rGui/debriefing/debrUtils.nut")
 let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
@@ -318,7 +319,8 @@ let mkPlateWithProgress = @(animId, curLevelIdxWatch, levelUpsArray, lineColor, 
 function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lineColor) {
   let { campaign = "", unitWeaponry = {} } = debrData
   let { name = "", exp = 0, level = 0, starLevel = 0, isStarProgress = false,
-    nextLevelExp = 0, levelsExp = [], modPresetCfg = {}, isSlot = false, slotIdx = 0
+    nextLevelExp = 0, levelsExp = [], modPresetCfg = {}, isSlot = false, slotIdx = 0,
+    levelsExpCfg = []
   } = levelCfg
 
   let animId = isSlot ? $"exp_slot{slotIdx}" : $"exp_{name}"
@@ -328,12 +330,13 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   let addExp = clamp(totalExp, 0, max(0, nextLevelExp - exp))
   let isLevelUp = addExp > 0 && nextLevelExp <= (exp + totalExp)
 
-  let unlockedLevel = isLevelUp
-    ? getLevelProgress(levelCfg, reward).unlockedLevel
-    : level
+  let unlockedLevel = !isLevelUp ? level
+    : getLevelProgress(levelCfg, reward?.totalExp ?? 0).unlockedLevel
+  let maxLevel = levelsExp.len() > 0 ? levelsExp.len() 
+    : levelsExpCfg?[levelsExpCfg.len() - 1].upToLevel
   let nextLevelWithRewards = isMaxLevel ? -1
     : isSlot ? (level + 1)
-    : getNextUnitLevelWithRewards(level + 1, levelsExp.len(), modPresetCfg, unitWeaponry?[name])
+    : getNextUnitLevelWithRewards(level + 1, maxLevel, modPresetCfg, unitWeaponry?[name])
   let hasLevelUnlockRewards = isLevelUp && nextLevelWithRewards <= unlockedLevel
 
   let levelUpsArray = [{
@@ -349,7 +352,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
       ? levelProgressBarFillWidth
       : lerpClamped(0, nextLevelExp, 0, levelProgressBarFillWidth, exp + totalExp)
   }]
-  if (isLevelUp && levelsExp.len() > 0) {
+  if (isLevelUp && levelsExp.len() > 0) { 
     local leftReceivedExp = totalExp - addExp
     for (local idx = 0; idx < levelsExp.len() + 1; idx++) {
       if (level >= idx)
@@ -376,6 +379,32 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
         break
     }
   }
+  else if (isLevelUp && levelsExpCfg.len() > 0) {
+    local fromLevel = level
+    local leftReceivedExp = totalExp - addExp
+    foreach (idx, c in levelsExpCfg) {
+      if (c.upToLevel <= fromLevel)
+        continue
+      for (local l = fromLevel; l < c.upToLevel; l++) {
+        levelUpsArray.append({
+          curLevel = l
+          curStarLevel = isStarProgress ? starLevel + l - level : 0
+          isLevelUpPrevSteps = isLevelUp
+          isLevelUpCurStep = c.exp <= leftReceivedExp
+          isMaxLevel = (l + 1 == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
+          curExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, exp)
+          receivedExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, leftReceivedExp)
+        })
+        leftReceivedExp = leftReceivedExp - c.exp
+        if (leftReceivedExp <= 0)
+          break
+      }
+      if (leftReceivedExp <= 0)
+        break
+      fromLevel = c.upToLevel
+    }
+  }
+
   let stepsCount = levelUpsArray.len()
   levelUpsArray.each(@(v, idx) v.__update({
     stepAnimTime = (stepsCount - 1) == idx ? singleStepAnimTime

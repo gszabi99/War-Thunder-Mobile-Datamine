@@ -119,21 +119,51 @@ let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
 function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick, gradColor = selectColor) {
   if (!value)
     return null
-  let { levels, levelsSp, maxLevels } = levelParams
+  let { levels, levelsSp, levelsCfg } = levelParams
   let { level, exp } = value
-  let expTotal = maxLevels?[level].exp ?? 1
-  let expLeft = expTotal - exp
   local sp = 0
-  local fullCostGold = 0
-  for (local l = level; l < level + levels; l++) {
+  for (local l = level; l < level + levels; l++)
     sp += levelsSp?[l] ?? 0
-    fullCostGold += maxLevels?[l].costGold ?? 0
-    if (l == level && exp > 0)
-      fullCostGold = max(1, (min(1.0, expLeft.tofloat() / expTotal) * fullCostGold + 0.5).tointeger())
+
+  local fullCostGold = 0
+  local nextLevelExp = 0
+  if ("upToLevel" not in levelsCfg?[0]) { 
+    for (local l = level; l < level + levels; l++) {
+      let costGold = levelsCfg?[l].costGold ?? 0
+      if (l == level) {
+        let expTotal = levelsCfg?[level].exp ?? 1
+        nextLevelExp = expTotal - exp
+        fullCostGold += max(1, (min(1.0, nextLevelExp.tofloat() / expTotal) * costGold + 0.5).tointeger())
+      }
+      else
+        fullCostGold += costGold
+    }
   }
+  else {
+    let tgtLevel = level + levels
+    local fromLevel = level
+    foreach (c in levelsCfg) {
+      if (c.upToLevel <= fromLevel)
+        continue
+      if (fromLevel == level) {
+        nextLevelExp = c.exp - exp
+        if (c.exp > 0)
+          fullCostGold += max(1, (min(1.0, nextLevelExp.tofloat() / c.exp) * c.costGold + 0.5).tointeger())
+        fromLevel++
+        if (c.upToLevel <= fromLevel)
+          continue
+      }
+
+      fullCostGold += c.costGold * (min(c.upToLevel, tgtLevel) - fromLevel)
+      if (c.upToLevel > tgtLevel)
+        break
+      fromLevel = c.upToLevel
+    }
+  }
+
   let costGold = (costMul * fullCostGold + 0.5).tointeger()
   let stateFlags = Watched(0)
-  let onClick = @() handleClick(value.level, value.level + levels, expTotal - exp, costGold, sp)
+  let onClick = @() handleClick(level, level + levels, nextLevelExp, costGold, sp)
   let bgParticles = mkBgParticles(blockSize)
   return @() {
     watch = stateFlags

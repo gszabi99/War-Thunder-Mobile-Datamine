@@ -44,9 +44,7 @@ let campImageSize = [campBtnSize[0] - (campImageFrameWidth * 2), campBtnSize[1] 
 
 let campagnImages = {
   ships = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
-  ships_new = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
   tanks = { img = $"ui/bkg/login_bkg_t_2.avif", srcSize = [2700, 1080] }
-  tanks_new = { img = $"ui/bkg/login_bkg_t_2.avif", srcSize = [2700, 1080] }
   air   = { img = $"ui/bkg/login_bkg_a_2.avif", srcSize = [800, 600] }
 }
 

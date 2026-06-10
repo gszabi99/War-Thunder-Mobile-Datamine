@@ -8,23 +8,23 @@ let { isElemHold, tuningState, setTuningState, tuningOptions, tuningTransform, t
 let { tuningBtnGap, tuningBtnSize } = require("%rGui/hudTuning/tuningBtn.nut")
 let { mkElemOption, mkAllElemsOption } = require("%rGui/hudTuning/mkElemOption.nut")
 let { optScale, allElemOptionsList } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
+let { hudVeilGrayColor } = require("%rGui/style/hudColors.nut")
 
 
 let offset = hdpx(20)
 let topPanelSize = saBorders[1] + tuningBtnSize + tuningBtnGap
 let minTop = topPanelSize + offset
 let wndPadding = [hdpx(20), hdpx(30)]
+let shortColWidth = hdpx(180)
+let colGap = hdpx(52)
 
 let optionsBlockBg = {
-  size = [optionWidth + wndPadding[1] * 2, SIZE_TO_CONTENT]
   stopMouse = true
   padding = wndPadding
   rendObj = ROBJ_BOX
   fillColor = 0xDD000000
-  borderColor = 0xFF808080
+  borderColor = hudVeilGrayColor
   borderWidth = hdpxi(4)
-  flow = FLOW_VERTICAL
-  gap = hdpx(20)
 }
 
 function modifyOptions(modify, changeUid = "", changeStackTime = 0) {
@@ -39,30 +39,73 @@ function modifyOptions(modify, changeUid = "", changeStackTime = 0) {
       optionsToElemIds.set(optionsToElemIds.get().__merge({ [k] = selectedId.get() }))
 }
 
-let optionsBlock = @(id, options) optionsBlockBg.__merge({
-  children = options.map(@(o) mkElemOption(o, id, tuningOptions, modifyOptions))
-})
+let mkOptionsCol = @(width, children) {
+  size = [width, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = hdpx(30)
+  children
+}
 
-let optionsBlockAllElems = @(options) @() optionsBlockBg.__merge({
-  watch = tuningUnitType
-  children = [
-    {
-      size = FLEX_H
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      text = loc("hudTuning/allElemsOptions/desc")
-      color = 0xC0C0C0C0
-    }.__update(fontTiny)
-  ]
-    .extend(options.map(function(o) {
-      let allIds = cfgByUnitType?[tuningUnitType.get()]
-        .filter(@(cfg) cfg?.options.contains(o) ?? false)
-        .keys()
-        ?? []
-      return allIds.len() == 0 ? null
-        : mkAllElemsOption(o, allIds, tuningOptions, modifyOptions)
-    }))
-})
+function mkTwoColBlock(wideChildren, shortChildren, header = null) {
+  let totalWidth = optionWidth + (shortChildren.len() > 0 ? colGap + shortColWidth : 0) + wndPadding[1] * 2
+  let cols = {
+    flow = FLOW_HORIZONTAL
+    gap = {
+      size = [colGap, flex()]
+      halign = ALIGN_CENTER
+      children = {
+        size = [hdpxi(2), flex()]
+        rendObj = ROBJ_SOLID
+        color = hudVeilGrayColor
+      }
+    }
+    children = [
+      wideChildren.len() == 0 ? null : mkOptionsCol(optionWidth, wideChildren)
+      shortChildren.len() == 0 ? null : mkOptionsCol(shortColWidth, shortChildren)
+    ].filter(@(v) v != null)
+  }
+
+  return optionsBlockBg.__merge({
+    size = [totalWidth, SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    gap = hdpx(30)
+    children = [header, cols].filter(@(v) v != null)
+  })
+}
+
+function splitOptions(options, mkOpt) {
+  return options.reduce(function(res, o) {
+    res[o?.isShort ? "short" : "wide"].append(mkOpt(o))
+    return res
+  }, { wide = [], short = [] })
+}
+
+function optionsBlock(id, options) {
+  let { wide, short } = splitOptions(options, @(opt) mkElemOption(opt, id, tuningOptions, modifyOptions))
+  return mkTwoColBlock(wide, short)
+}
+
+function mkAllElemsOptComp(opt) {
+  let unitType = tuningUnitType.get()
+  let allIds = cfgByUnitType?[unitType]
+    .filter(@(cfg) cfg?.options.contains(opt) ?? false)
+    .keys() ?? []
+  return allIds.len() == 0 ? null
+    : mkAllElemsOption(opt, allIds, tuningOptions, modifyOptions)
+}
+
+let descText = {
+  size = FLEX_H
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text = loc("hudTuning/allElemsOptions/desc")
+  color = 0xC0C0C0C0
+}.__update(fontTiny)
+
+let optionsBlockAllElems = @(options) function() {
+  let { wide, short } = splitOptions(options, mkAllElemsOptComp)
+  return mkTwoColBlock(wide, short, descText).__merge({ watch = tuningUnitType })
+}
 
 function calcPos(size, transform) {
   let { align = 0, pos = [0, 0] } = transform

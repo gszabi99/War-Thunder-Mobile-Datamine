@@ -16,7 +16,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark, mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { unseenPurchasesExt, isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
-let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
@@ -100,7 +100,7 @@ let lastReward = Computed(@() hasLastReward.get() ? ticketToShow.get()?.lastRewa
 
 let closeModalWnd = @() removeModalWindow(PRIZE_TICKETS_SELECT_WND_UID)
 
-let mkUnitPlateTooltip = @(unit) unitInfoPanel({}, mkPlatoonOrUnitTitle, unit)
+let mkUnitPlateTooltip = @(unit) unitInfoPanel({}, mkUnitTitle, unit)
 let mkPlateTooltipByType = {
   [G_BLUEPRINT] = mkUnitPlateTooltip,
   [G_UNIT] = mkUnitPlateTooltip,

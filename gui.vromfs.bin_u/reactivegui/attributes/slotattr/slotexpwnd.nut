@@ -19,7 +19,7 @@ let { mkProgressBtnContentDec, mkProgressBtnContentInc, mkProgressBtn, knobCtor,
 } = require("%rGui/attributes/attrBlockComp.nut")
 let { isOpenedSlotExpWnd, curCampSlotExpId, curCampSlotExp } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { bgUnit, unitPlateRatio } = require("%rGui/unit/components/unitPlateComp.nut")
-let { maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { slotLevelsCfg, slotMaxLevel } = require("%rGui/slotBar/slotBarState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
 
@@ -185,14 +185,30 @@ function mkSlider(idx) {
   let curExp = Computed(@() curSlots.get()?[idx].exp ?? 0)
   let expSum = Computed(function() {
     let res = array(curLevel.get(), 0)
-    if (curLevel.get() >= maxSlotLevels.get().len())
+    if (curLevel.get() >= slotMaxLevel.get())
       return res
-    local sum = (maxSlotLevels.get()?[curLevel.get()].exp ?? 0) - curExp.get()
-    res.append(sum)
-    let total = maxSlotLevels.get().len()
-    for (local lvl = curLevel.get() + 1; lvl < total; lvl++) {
-      sum += maxSlotLevels.get()[lvl].exp
+
+    if ("upToLevel" not in slotLevelsCfg.get()?[0]) { 
+      local sum = (slotLevelsCfg.get()?[curLevel.get()].exp ?? 0) - curExp.get()
       res.append(sum)
+      let total = slotLevelsCfg.get().len()
+      for (local lvl = curLevel.get() + 1; lvl < total; lvl++) {
+        sum += slotLevelsCfg.get()[lvl].exp
+        res.append(sum)
+      }
+    }
+    else {
+      local sum = -curExp.get()
+      local fromLevel = curLevel.get()
+      foreach (c in slotLevelsCfg.get()) {
+        if (c.upToLevel <= fromLevel)
+          continue
+        for (local l = fromLevel; l < c.upToLevel; l++) {
+          sum += c.exp
+          res.append(sum)
+        }
+        fromLevel = c.upToLevel
+      }
     }
     return res
   })
@@ -204,13 +220,19 @@ function mkSlider(idx) {
         return lvl
     return total
   })
-  let curExpPart = Computed(@() curLevel.get() not in maxSlotLevels.get() ? 0.0
-    : curExp.get().tofloat() / maxSlotLevels.get()[curLevel.get()].exp)
-  let expPart = Computed(@() level.get() not in maxSlotLevels.get() ? 0.0
+  let curLevelUpExp = Computed(@() ("upToLevel" not in slotLevelsCfg.get()?[0]) 
+    ? (slotLevelsCfg.get()?[curLevel.get()].exp ?? 0)
+    : (slotLevelsCfg.get().findvalue(@(c) c.upToLevel > curLevel.get())?.exp ?? 0)
+  )
+  let curExpPart = Computed(@() curLevelUpExp.get() <= 0 ? 0.0
+    : curExp.get().tofloat() / curLevelUpExp.get())
+  let levelFullCost = Computed(@() level.get() not in expSum.get() ? 0
+    : (expSum.get()[level.get()] - (expSum.get()?[level.get() - 1] ?? 0)))
+  let expPart = Computed(@() levelFullCost.get() <= 0 ? 0.0
     : (slotChosenExp.get() - (expSum.get()?[level.get() - 1] ?? 0) + (curLevel.get() == level.get() ? curExp.get() : 0)).tofloat()
-        / maxSlotLevels.get()[level.get()].exp)
+        / (expSum.get()[level.get()] - (expSum.get()?[level.get() - 1] ?? 0)))
 
-  let incCost = Computed(@() (maxSlotLevels.get()?[level.get()].exp ?? 0) - (level.get() == curLevel.get() ? curExp.get() : 0))
+  let incCost = Computed(@() levelFullCost.get() - (level.get() == curLevel.get() ? curExp.get() : 0))
   let canDec = Computed(@() level.get() > curLevel.get())
   let canInc = Computed(@() incCost.get() > 0 && curBalance.get() > 0)
 
@@ -240,11 +262,11 @@ function mkSlider(idx) {
         children = [
           sliderHeader(curLevel, curExpPart, level, expPart)
           @() {
-            watch = maxSlotLevels
+            watch = slotMaxLevel
             children = slider(level,
               {
                 size = [sliderWidth, sliderH]
-                max = maxSlotLevels.get()?.len() ?? 0,
+                max = slotMaxLevel.get(),
                 onChange
               },
               knobCtor)

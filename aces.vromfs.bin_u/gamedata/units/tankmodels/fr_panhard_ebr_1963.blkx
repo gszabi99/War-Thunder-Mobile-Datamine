@@ -22,6 +22,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
+  "deadZoneForTurnAround": 100.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -2030,10 +2031,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 48100.0,
       "driveGearRadius": 0.48,
       "mainGearRatio": 5.7,
       "sideGearRatio": 1.0,
+      "doubleDiffGearRatio": 150.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -2089,7 +2092,7 @@
         "wheel_l_04": -40.0,
         "wheel_r_04": -40.0,
         "steeringTau": 1000000.0,
-        "steeringSpd": 1.0,
+        "steeringSpd": 0.25,
         "steeringNeutralSpd": 3.0
       },
       "wheelsWidth": {

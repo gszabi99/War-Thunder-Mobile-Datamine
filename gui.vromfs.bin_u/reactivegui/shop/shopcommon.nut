@@ -7,9 +7,7 @@ let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let defaultFeaturedIcon = "ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
   tanks = "ui/gameuiskin#shop_tanks.svg"
-  tanks_new = "ui/gameuiskin#shop_tanks.svg"
   ships = "ui/gameuiskin#shop_ships.svg"
-  ships_new = "ui/gameuiskin#shop_ships.svg"
   air = defaultFeaturedIcon
 }
 let defaultShopCategory = SC_FEATURED

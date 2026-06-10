@@ -12,7 +12,7 @@ let { bgUnit, unitPlateRatio } = require("%rGui/unit/components/unitPlateComp.nu
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { mkSlotLevel } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { slotLevelsCfg } = require("%rGui/slotBar/slotBarState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -153,8 +153,19 @@ function mkSlotBtn(slot, idx) {
 function mkSlotExp(slot) {
   let fullSlotExp = Computed(function() {
     local res = slot.exp
-    for (local lvl = 0; lvl < slot.level; lvl++)
-      res += maxSlotLevels.get()?[lvl].exp ?? 0
+    if ("upToLevel" not in slotLevelsCfg.get()?[0]) 
+      for (local lvl = 0; lvl < slot.level; lvl++)
+        res += slotLevelsCfg.get()?[lvl].exp ?? 0
+    else {
+      let tgtLevel = slot.level
+      local fromLevel = 0
+      foreach (c in slotLevelsCfg.get()) {
+        res += c.exp * (min(c.upToLevel, tgtLevel) - fromLevel)
+        if (c.upToLevel >= tgtLevel)
+          break
+        fromLevel = c.upToLevel
+      }
+    }
     return res
   })
   return @() {

@@ -32,7 +32,6 @@ const MAX_DECAL_SLOTS_COUNT = 4
 
 let hasBgUnitsByCamp = {
   tanks = true
-  tanks_new = true
   air = true
 }
 

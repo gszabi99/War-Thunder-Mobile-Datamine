@@ -6,6 +6,7 @@
   "external": true,
   "reloadTime": 30.0,
   "allowHumanReload": true,
+  "hideTorpedoInLauncher": true,
   "mesh": "ufo_rocket",
   "tags": {
     "antiShipBomb": true

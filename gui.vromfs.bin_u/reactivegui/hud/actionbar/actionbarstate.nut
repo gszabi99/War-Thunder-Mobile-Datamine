@@ -26,7 +26,7 @@ function actionIsEqual(a, b) {
 let actionBarByType = @(ab) ab.reduce(function(res, a) {
   let aType = getActionType(a)
   if (aType != null)
-    res[aType] <- a.__merge({ aType })
+    res[aType] <- a
   return res
 }, {})
 

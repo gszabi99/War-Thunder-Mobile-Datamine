@@ -50,7 +50,6 @@ let leftBtnSizeWithRewardBtn = [defButtonMinWidth + frameButtonIconSize * 2 + fr
 let defaultInfoPanelTopPad = hdpx(100)
 let infoPanelTopPadByCampaign = {
   tanks = 0
-  tanks_new = 0
 }
 let getInfoPanelTopPadByCampaign = @(campaign) (infoPanelTopPadByCampaign?[campaign] ?? defaultInfoPanelTopPad)
   - infoPanelOffsetY

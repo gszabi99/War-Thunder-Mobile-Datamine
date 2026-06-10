@@ -58,7 +58,7 @@ function mkBonusesText(debrData, adBonuses) {
         }.__update(fontTinyAccented)
         {
           size = [(bonuses.len() * bonusIconSize) - (bonuses.len() - 1) * (bonusIconSize - bonusIconShift), SIZE_TO_CONTENT]
-          children = bonuses.filter(@(b) debrData?.campaign != "ships_new" || b != "slotExpMul").map(@(b, i) bonusIconCfg[b].mkIcon(i))
+          children = bonuses.filter(@(b) debrData?.campaign != "ships" || b != "slotExpMul").map(@(b, i) bonusIconCfg[b].mkIcon(i))
         }
       ]
     })

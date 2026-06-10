@@ -679,16 +679,6 @@
     "binoculars": "navy_binoculars"
   },
   "commonWeapons": {
-    "hideNodes": {
-      "n": [
-        "aa_gun_01",
-        "aa_gun_02",
-        "aa_turret_01",
-        "aa_turret_02",
-        "turret_02",
-        "turret_03"
-      ]
-    },
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -860,6 +850,180 @@
             10.0,
             10.0
           ]
+        }
+      },
+      {
+        "trigger": "gunner6",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/20mm_phalanx_ciws_vulcan_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_02",
+        "flash": "emtr_gun_flame_02",
+        "useEmitter": true,
+        "accuracyShell": 1.5,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 465.0,
+        "speedPitch": 444.0,
+        "bullets": 9000,
+        "useGunnerTargetingQuality": false,
+        "allowableDelta": 1.0,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "AimMaxDist": 1750.0,
+        "AimMinDist": 150.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.4,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 0.0,
+        "shootingErrorAir": 4.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "turret": {
+          "head": "aa_turret_01",
+          "gun": "aa_gun_01",
+          "aiTargetingOnShell": true
+        },
+        "limits": {
+          "yaw": [
+            -165.0,
+            135.0
+          ],
+          "pitch": [
+            -5.0,
+            85.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -165.0,
+            10.0,
+            -5.0,
+            85.0
+          ],
+          "lim2": [
+            10.0,
+            30.0,
+            25.0,
+            85.0
+          ],
+          "lim3": [
+            30.0,
+            55.0,
+            -5.0,
+            85.0
+          ],
+          "lim4": [
+            55.0,
+            105.0,
+            25.0,
+            85.0
+          ],
+          "lim5": [
+            105.0,
+            135.0,
+            -5.0,
+            85.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 100.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 100.0
+        }
+      },
+      {
+        "trigger": "gunner7",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/20mm_phalanx_ciws_vulcan_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_03",
+        "flash": "emtr_gun_flame_03",
+        "useEmitter": true,
+        "accuracyShell": 1.5,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 465.0,
+        "speedPitch": 444.0,
+        "bullets": 9000,
+        "useGunnerTargetingQuality": false,
+        "allowableDelta": 1.0,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "AimMaxDist": 1750.0,
+        "AimMinDist": 150.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.4,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 0.0,
+        "shootingErrorAir": 4.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "turret": {
+          "head": "aa_turret_02",
+          "gun": "aa_gun_02",
+          "aiTargetingOnShell": true
+        },
+        "limits": {
+          "yaw": [
+            -135.0,
+            165.0
+          ],
+          "pitch": [
+            -5.0,
+            85.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -135.0,
+            -105.0,
+            -5.0,
+            85.0
+          ],
+          "lim2": [
+            -105.0,
+            -55.0,
+            25.0,
+            85.0
+          ],
+          "lim3": [
+            -55.0,
+            -30.0,
+            -5.0,
+            85.0
+          ],
+          "lim4": [
+            -30.0,
+            -10.0,
+            25.0,
+            85.0
+          ],
+          "lim5": [
+            -10.0,
+            165.0,
+            -5.0,
+            85.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 100.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 100.0
         }
       },
       {
@@ -1066,6 +1230,10 @@
     "duration": 15.0,
     "cooldown": 70.0
   },
+  "ciwSystem": {
+    "activeTime": 4.0,
+    "reloadTime": 20.0
+  },
   "ircm": {
     "reloadDuration": 10.0,
     "totalCount": 10
@@ -1082,16 +1250,6 @@
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "n": [
-              "aa_gun_01",
-              "aa_gun_02",
-              "aa_turret_01",
-              "aa_turret_02",
-              "turret_02",
-              "turret_03"
-            ]
-          },
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -1263,6 +1421,180 @@
                   10.0,
                   10.0
                 ]
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/20mm_phalanx_ciws_vulcan_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_02",
+              "flash": "emtr_gun_flame_02",
+              "useEmitter": true,
+              "accuracyShell": 1.5,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
+              "bullets": 9000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "AimMaxDist": 1750.0,
+              "AimMinDist": 150.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "turret": {
+                "head": "aa_turret_01",
+                "gun": "aa_gun_01",
+                "aiTargetingOnShell": true
+              },
+              "limits": {
+                "yaw": [
+                  -165.0,
+                  135.0
+                ],
+                "pitch": [
+                  -5.0,
+                  85.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -165.0,
+                  10.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim2": [
+                  10.0,
+                  30.0,
+                  25.0,
+                  85.0
+                ],
+                "lim3": [
+                  30.0,
+                  55.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim4": [
+                  55.0,
+                  105.0,
+                  25.0,
+                  85.0
+                ],
+                "lim5": [
+                  105.0,
+                  135.0,
+                  -5.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/20mm_phalanx_ciws_vulcan_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_03",
+              "flash": "emtr_gun_flame_03",
+              "useEmitter": true,
+              "accuracyShell": 1.5,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
+              "bullets": 9000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "AimMaxDist": 1750.0,
+              "AimMinDist": 150.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "turret": {
+                "head": "aa_turret_02",
+                "gun": "aa_gun_02",
+                "aiTargetingOnShell": true
+              },
+              "limits": {
+                "yaw": [
+                  -135.0,
+                  165.0
+                ],
+                "pitch": [
+                  -5.0,
+                  85.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -135.0,
+                  -105.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim2": [
+                  -105.0,
+                  -55.0,
+                  25.0,
+                  85.0
+                ],
+                "lim3": [
+                  -55.0,
+                  -30.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim4": [
+                  -30.0,
+                  -10.0,
+                  25.0,
+                  85.0
+                ],
+                "lim5": [
+                  -10.0,
+                  165.0,
+                  -5.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -1473,16 +1805,6 @@
     "weapons_depth_charges": {
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "n": [
-              "aa_gun_01",
-              "aa_gun_02",
-              "aa_turret_01",
-              "aa_turret_02",
-              "turret_02",
-              "turret_03"
-            ]
-          },
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -1654,6 +1976,180 @@
                   10.0,
                   10.0
                 ]
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/20mm_phalanx_ciws_vulcan_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_02",
+              "flash": "emtr_gun_flame_02",
+              "useEmitter": true,
+              "accuracyShell": 1.5,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
+              "bullets": 9000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "AimMaxDist": 1750.0,
+              "AimMinDist": 150.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "turret": {
+                "head": "aa_turret_01",
+                "gun": "aa_gun_01",
+                "aiTargetingOnShell": true
+              },
+              "limits": {
+                "yaw": [
+                  -165.0,
+                  135.0
+                ],
+                "pitch": [
+                  -5.0,
+                  85.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -165.0,
+                  10.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim2": [
+                  10.0,
+                  30.0,
+                  25.0,
+                  85.0
+                ],
+                "lim3": [
+                  30.0,
+                  55.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim4": [
+                  55.0,
+                  105.0,
+                  25.0,
+                  85.0
+                ],
+                "lim5": [
+                  105.0,
+                  135.0,
+                  -5.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/20mm_phalanx_ciws_vulcan_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_03",
+              "flash": "emtr_gun_flame_03",
+              "useEmitter": true,
+              "accuracyShell": 1.5,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
+              "bullets": 9000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "AimMaxDist": 1750.0,
+              "AimMinDist": 150.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "turret": {
+                "head": "aa_turret_02",
+                "gun": "aa_gun_02",
+                "aiTargetingOnShell": true
+              },
+              "limits": {
+                "yaw": [
+                  -135.0,
+                  165.0
+                ],
+                "pitch": [
+                  -5.0,
+                  85.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -135.0,
+                  -105.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim2": [
+                  -105.0,
+                  -55.0,
+                  25.0,
+                  85.0
+                ],
+                "lim3": [
+                  -55.0,
+                  -30.0,
+                  -5.0,
+                  85.0
+                ],
+                "lim4": [
+                  -30.0,
+                  -10.0,
+                  25.0,
+                  85.0
+                ],
+                "lim5": [
+                  -10.0,
+                  165.0,
+                  -5.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0
               }
             },
             {
@@ -2326,7 +2822,7 @@
   "smokeWall": {
     "distance": 450.0,
     "speed": 350.0,
-    "height": 0.0,
+    "height": 10.0,
     "length": 450.0,
     "fxOffset": 65.0
   },
@@ -2339,13 +2835,7 @@
   "battleHideNodes": {
     "n": [
       "portholes",
-      "details",
-      "turret_02",
-      "turret_03",
-      "aa_gun_01",
-      "aa_gun_02",
-      "aa_turret_01",
-      "aa_turret_02"
+      "details"
     ]
   },
   "upgraded_skin": {

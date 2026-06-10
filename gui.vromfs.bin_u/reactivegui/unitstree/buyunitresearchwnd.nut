@@ -4,7 +4,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { buy_unit_research, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
@@ -106,7 +106,7 @@ function mkContent() {
         maxWidth = hdpx(700)
         color = 0xFFD8D8D8
         halign = ALIGN_CENTER
-        text = loc("header/unitResearchComplete", { unitName = loc(getUnitLocId(unitName.get() ?? "")) })
+        text = loc("header/unitResearchComplete", { unitName = getUnitName(unitName.get() ?? "") })
       }.__update(fontTinyAccented)
       @() {
         watch = unit

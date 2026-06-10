@@ -388,6 +388,7 @@
   "useMedicalKitWithToolkit": true,
   "missionTeamTicketsPenaltyStatEnabled": true,
   "missionTeamTicketsPenaltyStatDebug": true,
+  "maxDistDrawUnderwaterAtSubmarine": 1000.0,
   "disableDamageForBombOwner": true,
   "maxTimeWaitFirstSpawn": 60.0,
   "debugRiTexture": "detail_concrete_tex_d",
@@ -16146,6 +16147,38 @@
           "modelNames": "lav_ad"
         },
         {
+          "name": "wheel_r_01_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "vilkas"
+        },
+        {
           "name": "suspension_r_01",
           "modelNames": "object_1002"
         },
@@ -17141,6 +17174,35 @@
       "canyon_cliff_platform_c_part",
       "canyon_rock_a",
       "canyon_rock_b"
+    ]
+  },
+  "rendinstExtraUnderwaterOnly": {
+    "ri": [
+      "seabed_rock_cracked_a",
+      "seabed_rock_cracked_b",
+      "seabed_rock_cracked_c",
+      "seabed_rock_layered_mossy_a",
+      "seabed_rock_layered_mossy_b",
+      "seabed_rock_layered_mossy_c",
+      "seabed_rock_rounded_mossy_a",
+      "seabed_rock_rounded_mossy_b",
+      "seabed_rock_rounded_mossy_c",
+      "seabed_rock_rounded_mossy_d",
+      "laminaria_hyperborea_a",
+      "seaweed_kelp_a",
+      "macrocystis_pyrifera_a",
+      "macrocystis_pyrifera_b",
+      "macrocystis_pyrifera_bunch_a",
+      "macrocystis_pyrifera_bunch_b",
+      "sailing_ship_crate",
+      "sailing_ship_debris_anchor",
+      "sailing_ship_debris_dinghy",
+      "sailing_ship_debris_wreck_large_a",
+      "sailing_ship_debris_wreck_large_b",
+      "sailing_ship_debris_wreck_medium_a",
+      "sailing_ship_debris_wreck_medium_b",
+      "sailing_ship_debris_wreck_small_a",
+      "ji-ha_underwater"
     ]
   },
   "rendinstOpt": {
@@ -19389,5 +19451,10 @@
     "minFlapsForSpeedReduction": 0.11,
     "flapsSpeedReduction": 15.0,
     "minDirVelAngleDegrees": 6.0
+  },
+  "shellArcadeSphere": {
+    "maxShellRadiusMult": 1.0,
+    "fadeOutMin": 3500.0,
+    "fadeOutMax": 5500.0
   }
 }

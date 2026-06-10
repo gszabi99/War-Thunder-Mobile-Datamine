@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { levelMark, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
@@ -123,15 +123,14 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
           }
         }
         function() {
-          let camp = getCampaignStatsId(campaign)
-          let stats = playerStats.get()?[camp] ?? {}
+          let stats = playerStats.get()?[campaign] ?? {}
           return {
             watch = playerStats
             size = FLEX_H
             valign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, camp, mkMarqueeRow)))
+              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
           }
         }
       ]
@@ -147,7 +146,9 @@ return function() {
     let { units = {} } = servProfile.get()
     let res = {}
     foreach (name, u in allUnits) {
-      let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false, isPremium = false } = u
+      let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false,
+        isPremium = false, maxLevel = null
+      } = u
       if (name in unreleasedUnits.get())
         continue
       let counts = getSubTable(res, campaign)
@@ -165,8 +166,7 @@ return function() {
       inc(counts, "my")
       inc(counts, $"my{listId}")
       let { level } = units[name]
-      let maxLevel = unitLevels?[levelPreset].len() ?? 0
-      if (level >= maxLevel)
+      if (level >= (maxLevel ?? unitLevels?[levelPreset].len() ?? 0)) 
         inc(counts, "myMaxLevel")
     }
     return res

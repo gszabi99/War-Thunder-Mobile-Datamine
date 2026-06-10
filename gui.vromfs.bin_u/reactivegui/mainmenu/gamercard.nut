@@ -6,7 +6,7 @@ let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
@@ -191,7 +191,7 @@ let gamercardProfile = @() {
 function platoonOrUnitTitle(unit) {
   let { isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
-  let text = getPlatoonOrUnitName(unit, loc)
+  let text = getUnitName(unit)
   return {
     minWidth = hdpx(500)
     children = [
@@ -221,7 +221,7 @@ function platoonOrUnitTitle(unit) {
 }
 
 function gamercardUnitLevelLine(unit, keyHintText) {
-  let maxLevel = Computed(@() campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0)
+  let maxLevel = Computed(@() unit?.maxLevel ?? campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0) 
   return {
     children = [
       platoonOrUnitTitle(unit)

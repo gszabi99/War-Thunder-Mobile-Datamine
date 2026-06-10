@@ -17,26 +17,22 @@ let mkPresentation = @(cfg, campaign) {
   slotsPresetBtnIcon = $"ui/gameuiskin#icon_slot_preset_air.svg"
 }.__update(cfg)
 
-let ships = mkPresentation(
-  {
+let presentations = {
+  ships = {
     icon = "ui/gameuiskin#unit_ship.svg"
     unitsLocId = "options/chooseUnitsType/ship"
     debrUnitLevelDescLocId = $"gamercard/debriefing/desc/ships"
     levelUnitDetailsLocId = $"gamercard/levelUnitDetails/desc/ships"
     levelUnitModLocId = $"gamercard/levelUnitMod/desc/ships"
-  },
-  "ships")
+  }
 
-let tanks = mkPresentation(
-  {
+  tanks = {
     icon = "ui/gameuiskin#unit_tank.svg"
     treeBg = $"tanks_blur_bg.avif"
     unitsLocId = "options/chooseUnitsType/tank"
     slotsPresetBtnIcon = "ui/gameuiskin#icon_slot_preset_tanks.svg"
-  },
-  "tanks")
+  }
 
-let presentations = {
   air = {
     icon = "ui/gameuiskin#unit_air.svg"
     treeBg = $"air_blur_bg.avif"
@@ -50,14 +46,10 @@ let presentations = {
   }
 }
   .map(mkPresentation)
-  .__update({
-    ships
-    ships_new = ships
-    tanks
-    tanks_new = tanks
-  })
 
-let getCampaignPresentation = @(campaign) presentations?[campaign] ?? ships
+let defPresetntation = presentations.ships
+
+let getCampaignPresentation = @(campaign) presentations?[campaign] ?? defPresetntation
 
 return {
   getCampaignPresentation

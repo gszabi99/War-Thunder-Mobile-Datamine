@@ -7,7 +7,7 @@ let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { battleCampaign, battleUnitClasses } = require("%appGlobals/clientState/missionState.nut")
 let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { OPT_HUD_TANK_SHOW_SCORE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+let { OPT_HUD_TANK_SHOW_SCORE, OPT_HUD_AIR_SHOW_SCORE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { localMPlayer, addMPlayerUpdater, removeMPlayerUpdater } = require("%rGui/hud/localMPlayer.nut")
 
@@ -38,22 +38,23 @@ let getValueByKey = {
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
-let hudScoreTankList = ["score", "kills"]
+let hudScoreList = ["score", "kills"]
+let hudScoreAirList = (clone hudScoreList).append("byUnitClass")
 let hudScoreTankRaw = mkOptionValue(OPT_HUD_TANK_SHOW_SCORE)
-let hudScoreTank = Computed(@() validate(hudScoreTankRaw.get() ?? "kills", hudScoreTankList))
+let hudScoreAirRaw = mkOptionValue(OPT_HUD_AIR_SHOW_SCORE)
+let hudScoreTank = Computed(@() validate(hudScoreTankRaw.get() ?? "kills", hudScoreList))
+let hudScoreAir = Computed(@() validate(hudScoreAirRaw.get() ?? "byUnitClass", hudScoreAirList))
 
-function getViewScoreKey(campaign, unitClass, scoreTank) {
-  if (campaign == "tanks" && scoreTank == "kills")
-    return "groundKills"
-  if (campaign == "air" && unitClass == "fighter")
-    return "kills"
-  if (campaign == "ships")
-    return "damage"
-  return "score"
-}
 let curUnitClass = Computed(@() battleUnitClasses.get()?[playerUnitName.get()] ?? "")
-let viewScoreKey = Computed(@() getViewScoreKey(getCampaignPresentation(battleCampaign.get()).campaign,
-  curUnitClass.get(), hudScoreTank.get()))
+let viewScoreKey = Computed(function(){
+  let campaign = getCampaignPresentation(battleCampaign.get()).campaign
+
+  return campaign == "tanks" && hudScoreTank.get() == "kills" ? "groundKills"
+    : campaign == "air" && hudScoreAir.get() != "byUnitClass" ? hudScoreAir.get()
+    : campaign == "air" && curUnitClass.get() == "fighter" ? "kills"
+    : campaign == "ships" ? "damage"
+    : "score"
+})
 let needLocalMPlayerForScore = Computed(@() viewScoreKey.get() != "score" && viewScoreKey.get() != "damage")
 
 let myPlace = Computed(function() {
@@ -122,7 +123,9 @@ let mkMyDamage = @(score) mkImageWithCount(score, icons.damage)
 let mkTankMyScores = @(score) @()
   mkImageWithCount(score, hudScoreTank.get() == "kills" ? icons.groundKills : icons.score)
     .__update({ watch = hudScoreTank })
-let mkAirMyScores = @(score) mkImageWithCount(score, icons.kills)
+let mkAirMyScores = @(score) @()
+  mkImageWithCount(score, hudScoreAir.get() == "score" ? icons.score : icons.kills)
+    .__update( {watch = hudScoreAir} )
 
 
 function mkMyPlaceUi(scale) {
@@ -177,9 +180,12 @@ return {
   isScoreVisible
   icons
 
-  hudScoreTankList
+  hudScoreList
+  hudScoreAirList
   hudScoreTankRaw
+  hudScoreAirRaw
   hudScoreTank
+  hudScoreAir
 
   mkMyScores
   mkMyDamage

@@ -37,6 +37,7 @@ let { get_gui_option, addUserOption } = require("guiOptions")
 
 let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
 let USEROPT_ALLOW_JIP = addUserOption("USEROPT_ALLOW_JIP")
+let lastQueueStatsJwt = mkWatched(persist, "lastQueueStatsJwt", null)
 
 isInQueue.subscribe(@(_) isSquadActualizeSend.set(false))
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -195,7 +196,10 @@ let queueSteps = {
         setQueueState(QS_IN_QUEUE)
     }),
 
-  [QS_IN_QUEUE] = @() curQueue.mutate(@(q) q.activateTime <- get_time_msec()),
+  [QS_IN_QUEUE] = function() {
+    lastQueueStatsJwt.set(jwtUserstat.get()) 
+    curQueue.mutate(@(q) q.activateTime <- get_time_msec())
+  },
 
   [QS_LEAVING] = @() matching.rpc_call("match.leave_queue",
     {},
@@ -315,4 +319,5 @@ return queueState.__merge({
   joinQueue
   leaveQueue
   destroyQueue
+  lastQueueStatsJwt
 })

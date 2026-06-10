@@ -11,7 +11,6 @@ let { isLoggedIn, isLoginRequired } = require("%appGlobals/loginState.nut")
 let g_mislist_type = require("%scripts/missions/misListType.nut")
 let { actualizeBattleDataIfOwn, actualizeBattleDataOvrMission } = require("%scripts/battleData/menuBattleData.nut")
 let { changeTrainingUnit, requestHudState } = require("%scripts/missions/guiOptions.nut")
-let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { mkGameModeByCampaign } = require("%appGlobals/gameModes/gameModes.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
@@ -32,7 +31,7 @@ registerHandler("onOfflineMissionUnitActualized", function(res, context) {
   }
 
   let unit = serverConfigs.get()?.allUnits[unitName] ?? {}
-  let gmCfg = mkGameModeByCampaign(getCampaignStatsId(unit?.campaign))
+  let gmCfg = mkGameModeByCampaign(unit?.campaign ?? "")
   requestHudState()
 
   let misBlk = DataBlock()

@@ -11,7 +11,7 @@ let { add_slot_attributes, slotInProgress } = require("%appGlobals/pServer/pServ
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { balance, SLOT_EXP_TANKS, SLOT_EXP_AIR } = require("%appGlobals/currenciesState.nut")
-let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { selectedSlotIdx, slotMaxLevel } = require("%rGui/slotBar/slotBarState.nut")
 let { selAttributes, curCategoryId, attrPresets,
   calcStatus, sumCost, MAX_AVAIL_STATUS
 } = require("%rGui/attributes/attrState.nut")
@@ -42,7 +42,7 @@ let attrSlotData = Computed(function() {
 let slotUnitName = Computed(@() attrSlotData.get().slot?.name ?? "")
 let slotAttributes = Computed(@() attrSlotData.get().slot?.attrLevels ?? {})
 let slotLevel = Computed(@() attrSlotData.get().slot?.level ?? 0)
-let slotLevelsToMax = Computed(@() (maxSlotLevels.get()?.len() ?? 0) - (attrSlotData.get().slot?.level ?? 0))
+let slotLevelsToMax = Computed(@() slotMaxLevel.get() - (attrSlotData.get().slot?.level ?? 0))
 
 let slotLevelResetPrice = Computed(@() campConfigs.get()?.campaignCfg.slotLevelResetPrice)
 let slotSkillsResetPrice = Computed(@() campConfigs.get()?.campaignCfg.slotSkillsResetPrice)
@@ -116,7 +116,7 @@ function mkUnseenSlotAttrByIdx(idx) {
       null != cat.attrList.findvalue(@(attr) attr.levelCost.len() > (slot.attrLevels?[cat.id][attr.id] ?? 0)))
   })
 
-  let isMaxSlotLevel = Computed(@() (maxSlotLevels.get()?.len() ?? 0) <= (attrDataByIdx.get()?.slot.level ?? 0))
+  let isMaxSlotLevel = Computed(@() slotMaxLevel.get() <= (attrDataByIdx.get()?.slot.level ?? 0))
 
   return Computed(function() {
     let { slot = null, preset = null } = attrDataByIdx.get()

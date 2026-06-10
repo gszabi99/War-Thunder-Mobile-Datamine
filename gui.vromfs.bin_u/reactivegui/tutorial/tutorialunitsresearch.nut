@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { deferOnce, resetTimeout, clearTimer } = require("dagor.workcycle")
 let logFB = log_with_prefix("[TUTOR_UNITS_RESEARCH] ")
 let { register_command } = require("console")
-
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots, isCampaignWithSlots, curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 
@@ -198,20 +198,30 @@ function startTutorial() {
         function beforeStart() {
           canOpenSelectUnitWithModal.set(false)
           closePurchaseAndBalanceBoxes()
-          let availableResearchNodes = visibleNodes.get().filter(@(node) unitsResearchStatus.get()?[node.name].canResearch
-            && !unitsResearchStatus.get()?[node.name].isResearched
-            && null != node.reqUnits.findindex(@(v) v == curSelectedUnit.get()))
-          availableResearchNodesObjects.extend(availableResearchNodes.keys().map(@(name) {
+          local nodesToHighlight = visibleNodes.get().filter(@(node) unitsResearchStatus.get()?[node.name].canResearch
+            && !unitsResearchStatus.get()?[node.name].isResearched)
+
+          let availableNodesByPrevReserched = nodesToHighlight
+            .filter(@(node) null != node.reqUnits.findindex(@(v) v == curSelectedUnit.get()))
+          if (availableNodesByPrevReserched.len() != 0)
+            nodesToHighlight = availableNodesByPrevReserched 
+
+          let availableNodesByConfig = nodesToHighlight
+            .filter(@(node) serverConfigs.get()?.tutorialResearchPriorityCfg[node.name])
+          if (availableNodesByConfig.len() != 0)
+            nodesToHighlight = availableNodesByConfig
+
+          availableResearchNodesObjects.extend(nodesToHighlight.keys().map(@(name) {
             keys = $"treeNodeUnitPlate:{name}"
             onClick = @() curSelectedUnit.set(name)
           }))
           curSelectedUnit.set(null)
-          if (availableResearchNodes.len() == 0)
+          if (nodesToHighlight.len() == 0)
             deferOnce(@() goToStep(STEP_PARTING_WORDS))
           else {
             scrollToUnitGroupBottom(
-              availableResearchNodes.keys(),
-              availableResearchNodes,
+              nodesToHighlight.keys(),
+              nodesToHighlight,
               Computed(@() calcAreaSize(isCampaignWithSlots.get())),
               true)
             resetTimeout(0.5, @() hasScrollAnimDone.set(true))

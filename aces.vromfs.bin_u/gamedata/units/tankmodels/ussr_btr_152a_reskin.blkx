@@ -40,7 +40,10 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "deadZoneForTurnAround": 90.0,
+  "deadZoneForTurnAround": [
+    90.0,
+    100.0
+  ],
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
@@ -2453,10 +2456,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 44000.0,
       "driveGearRadius": 0.26,
       "mainGearRatio": 4.38,
       "sideGearRatio": 1.0,
+      "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

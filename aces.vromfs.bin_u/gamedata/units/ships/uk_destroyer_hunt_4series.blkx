@@ -1102,8 +1102,8 @@
         "errMeasureVelFwdShift": 0.01,
         "errMeasureVelDir": 0.1,
         "errTargetting": 0.1,
-        "speedYaw": 75.0,
-        "speedPitch": 75.0,
+        "speedYaw": 85.0,
+        "speedPitch": 85.0,
         "bullets": 2240,
         "useGunnerTargetingQuality": false,
         "turret": {
@@ -1586,8 +1586,8 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "speedYaw": 75.0,
-              "speedPitch": 75.0,
+              "speedYaw": 85.0,
+              "speedPitch": 85.0,
               "bullets": 2240,
               "useGunnerTargetingQuality": false,
               "turret": {
@@ -2071,8 +2071,8 @@
               "errMeasureVelFwdShift": 0.01,
               "errMeasureVelDir": 0.1,
               "errTargetting": 0.1,
-              "speedYaw": 75.0,
-              "speedPitch": 75.0,
+              "speedYaw": 85.0,
+              "speedPitch": 85.0,
               "bullets": 2240,
               "useGunnerTargetingQuality": false,
               "turret": {

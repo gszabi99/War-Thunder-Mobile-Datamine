@@ -9,6 +9,7 @@ let mkDebriefingWndTabResearch = require("%rGui/debriefing/debriefingWndTabResea
 let mkDebriefingWndTabUnit = require("%rGui/debriefing/debriefingWndTabUnit.nut")
 let mkDebriefingWndTabUnitSet = require("%rGui/debriefing/debriefingWndTabUnitSet.nut")
 let mkDebriefingWndTabScores = require("%rGui/debriefing/debriefingWndTabScores.nut")
+let { getUnitsSet } = require("%rGui/debriefing/debrUtils.nut")
 
 let tabsCfgOrdered = [
   {
@@ -33,7 +34,7 @@ let tabsCfgOrdered = [
     id = DEBR_TAB_UNIT
     getIcon = @(debrData) getCampaignPresentation(debrData?.campaign).icon
     iconScale = 0.8
-    dataCtor = @(debrData, params) (debrData?.isSeparateSlots ?? false)
+    dataCtor = @(debrData, params) debrData?.slots || getUnitsSet(debrData).len() > 1
       ? mkDebriefingWndTabUnitSet(debrData, params)
       : mkDebriefingWndTabUnit(debrData, params)
   }

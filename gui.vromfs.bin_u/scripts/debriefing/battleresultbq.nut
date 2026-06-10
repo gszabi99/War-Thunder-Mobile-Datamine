@@ -17,6 +17,7 @@ let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { get_gui_option, addUserOption, addLocalUserOption } = require("guiOptions")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
 let { battleResult } = require("battleResult.nut")
 let { clusterStats } = require("%appGlobals/clustersState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -24,6 +25,7 @@ let { get_game_version_str, get_base_game_version_str } = require("app")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { lastRoom } = require("%scripts/matchingRooms/sessionLobby.nut")
 let { wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
+let { lastQueueStatsJwt } = require("%scripts/matching/queuesClient.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_GRAPHICS_SCENE_RESOLUTION = addLocalUserOption("OPT_GRAPHICS_SCENE_RESOLUTION")
@@ -102,6 +104,13 @@ let connectionTypeMap = {
   [2] =  "Wi-Fi",
 }
 
+function getLastQueueAvgScore(campaign) {
+  if ((lastQueueStatsJwt.get() ?? "") == "")
+    return null
+  let { payload = null } = decodeJwtAndHandleErrors({ jwt = lastQueueStatsJwt.get() })
+  return payload?.stats["global"][campaign].m_avg_score
+}
+
 function onFrameTimes(evt, _eid, _comp) {
   log("[BQ] send battle fps info to BQ")
   let data = blk2SquirrelObjNoArrays(evt[0])
@@ -112,15 +121,18 @@ function onFrameTimes(evt, _eid, _comp) {
 
   let connectionType = connectionTypeMap?[get_network_connection_type()] ?? "Unknown"
 
+  let campaign = !wasBattleDataApplied.get() ? ""
+    : battleCampaign.get() != "" ? battleCampaign.get()
+    : (battleResult.get()?.campaign ?? "")
+
   data.__update({
     platform = get_platform_string_id()
     country = getCountryCode()
     cluster = lastRoom.get()?.public.cluster ?? ""
     clusters_rtt = ",".join(clusterStats.get().map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
-    campaign = !wasBattleDataApplied.get() ? ""
-      : battleCampaign.get() != "" ? battleCampaign.get()
-      : (battleResult.get()?.campaign ?? "")
+    campaign
+    queueAvgScore = getLastQueueAvgScore(campaign)
     wasBattleDataApplied = wasBattleDataApplied.get()
     mission = get_current_mission_name()
     fpsLimit = get_gui_option(OPT_FPS)
@@ -150,7 +162,7 @@ function onFrameTimes(evt, _eid, _comp) {
     isSquad = wasInSquadLastBattle
     isDeferred = true
     aa = get_gui_option(OPT_AA)
-  })
+  }.filter(@(v) v != null))
 
   sendCustomBqEvent("session_fps", data)
 }

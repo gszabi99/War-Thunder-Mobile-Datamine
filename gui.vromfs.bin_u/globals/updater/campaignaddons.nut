@@ -2,16 +2,10 @@ from "%globalScripts/logs.nut" import *
 from "math" import max, min
 from "dagor.localize" import loc
 from "%sqstd/math.nut" import getRomanNumeral
-from "%appGlobals/unitPresentation.nut" import getUnitLocId
+from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/updater/addons.nut" import commonCampaignAddons, campaignAddonsByRank,
   campaignPostfix, soloNewbieByCampaign, coopNewbieByCampaign
 
-
-let originalCampaigns = {
-  ships_new = "ships"
-  tanks_new = "tanks"
-}
-let getCampaignOrig = @(c) originalCampaigns?[c] ?? c
 
 let nbsp = "\u00A0" 
 
@@ -22,27 +16,24 @@ function appendCampaignRankAddons(addons, campaign, mRank) {
   return addons
 }
 
-function getCampaignRankAddons(campaignExt, mRank) {
-  let campaign = getCampaignOrig(campaignExt)
+function getCampaignRankAddons(campaign, mRank) {
   let res = clone (commonCampaignAddons?[campaign] ?? [])
   for (local i = mRank; i >= 1 ; i--)
     appendCampaignRankAddons(res, campaign, i)
   return res
 }
 
-function getCampaignPkgsForOnlineBattle(campaignExt, mRank) {
-  let campaign = getCampaignOrig(campaignExt)
+function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   let res = clone (commonCampaignAddons?[campaign] ?? [])
   for (local i = mRank + 1; i >= 1 ; i--)
     appendCampaignRankAddons(res, campaign, i)
   return res
 }
 
-let getCampaignPkgsForNewbieSingle = @(campaignExt)
-  clone (soloNewbieByCampaign?[getCampaignOrig(campaignExt)] ?? [])
+let getCampaignPkgsForNewbieSingle = @(campaign)
+  clone (soloNewbieByCampaign?[campaign] ?? [])
 
-function getCampaignPkgsForNewbieCoop(campaignExt, mRank) {
-  let campaign = getCampaignOrig(campaignExt)
+function getCampaignPkgsForNewbieCoop(campaign, mRank) {
   let res = clone (coopNewbieByCampaign?[campaign] ?? [])
 
   
@@ -110,10 +101,10 @@ function appendUnitsLang(resArr, units, campaign, unitsRanksV) {
 
 function localizeUnitsResources(units, allUnitsRanksV, prefferedCampaign = "") {
   if (units.len() < 3)
-    return units.map(@(u) loc(getUnitLocId(u)))
+    return units.map(getUnitName)
 
   let resArr = []
-  local remainUnits = appendUnitsLang(resArr, units, getCampaignOrig(prefferedCampaign), allUnitsRanksV)
+  local remainUnits = appendUnitsLang(resArr, units, prefferedCampaign, allUnitsRanksV)
   foreach (c, _ in allUnitsRanksV)
     if (remainUnits.len() == 0)
       break
@@ -131,7 +122,6 @@ return {
   getCampaignPkgsForNewbieCoop
   getCampaignPkgsForNewbieSingle
   getAddonCampaign
-  getCampaignOrig
   getPkgsForCampaign
   localizeUnitsResources
 }

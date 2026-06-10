@@ -7,7 +7,7 @@ let newbieGameModesConfig = {
       isFit = @(s, _, __) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
       isSingle = true
       abTest = true
-      offlineMissions = ["abandoned_factory_single_Conq3"]
+      offlineMissions = ["abandoned_factory_single_Conq3_restricted"]
       abTestOfflineMissions = ["abandoned_factory_single_Conq3_restricted"]
     }
     {

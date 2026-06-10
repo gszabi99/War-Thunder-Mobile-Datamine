@@ -6,7 +6,7 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { buy_unit_level, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -22,7 +22,8 @@ let WND_UID = "buyUnitLevelWnd"
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() campMyUnits.get()?[unitName.get()])
 let unitLevels = Computed(@() campConfigs.get()?.unitLevels[unit.get()?.levelPreset] ?? [])
-let levelsToMax = Computed(@() unitLevels.get().len() - (unit.get()?.level ?? 0))
+let maxLevel = Computed(@() unit.get()?.maxLevel ?? unitLevels.get().len()) 
+let levelsToMax = Computed(@() maxLevel.get() - (unit.get()?.level ?? 0))
 let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
 
 let close = @() unitName.set(null)
@@ -59,7 +60,7 @@ function wndContent() {
         {
           levels = v.levels,
           levelsSp,
-          maxLevels = unitLevels.get()
+          levelsCfg = unitLevels.get()
         },
         unitInProgress,
         onClickPurchase))
@@ -77,7 +78,7 @@ let openImpl = @() addModalWindow(bgShaded.__merge({
     children = [
       modalWndHeaderWithClose(
         loc("header/unitLevelBoost",
-          { unitName = unitName.get() == null ? "" : loc(getUnitLocId(unitName.get())) }),
+          { unitName = unitName.get() == null ? "" : getUnitName(unitName.get()) }),
         close,
         {
           minWidth = SIZE_TO_CONTENT,

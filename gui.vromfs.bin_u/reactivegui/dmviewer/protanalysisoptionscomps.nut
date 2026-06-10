@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/unitPresentation.nut" import getUnitLocId, getUnitName
+from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/config/bulletsPresentation.nut" import getBulletImage, getBulletTypeIcon
 from "%rGui/components/foldableSelector.nut" import mkFoldableSelector, mkListItem
 from "%rGui/components/gradTexts.nut" import mkGradRank, mkGradRankLarge
@@ -43,7 +43,7 @@ let mkUnitPlate = @(unit, isSelectedW) {
     mkUnitBg(unit)
     mkUnitSelectedGlow(unit, isSelectedW)
     mkUnitImage(unit)
-    mkUnitTexts(unit, getUnitName(unit, loc))
+    mkUnitTexts(unit, getUnitName(unit))
     mkUnitInfo(unit)
   ]
 }
@@ -77,7 +77,7 @@ let mkMRankListItem = @(v, isSelectedW, onClick) mkListItem(v, isSelectedW, onCl
 let mkSelectorMRank = @(mRanksList, mRank) mkFoldableSelector(mRanksList, mRank, 4,
   mkMRankListItem, mkMRankHeadItem, curOpenedSelector, "mRank")
 
-let mkUnitHeadItem = @(v) mkText(loc(getUnitLocId(v?.name ?? "")))
+let mkUnitHeadItem = @(v) mkText(getUnitName(v?.name ?? ""))
 let mkUnitListItem = @(v, isSelectedW, onClick) mkListItem(v, isSelectedW, onClick, slotWidth, itemSize, mkUnitPlate(v, isSelectedW))
 let mkSelectorUnit = @(unitsList, unit) mkFoldableSelector(unitsList, unit, 2,
   mkUnitListItem, mkUnitHeadItem, curOpenedSelector, "unit")

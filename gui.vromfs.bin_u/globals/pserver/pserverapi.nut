@@ -1037,15 +1037,12 @@ return {
     params = { units }
   }, cb)
 
-  pp_add_units = @(units, cb = null) request({
-    method = "pp_add_units_client"
-    params = { units }
+  pp_add_rewards = @(rewards, cb = null) request({
+    method = "pp_add_rewards_client"
+    params = { rewards }
   }, cb)
 
-  pp_add_currencies = @(currencies, cb = null) request({
-    method = "pp_add_currencies_client"
-    params = { currencies }
-  }, cb)
+  pp_get_currencies = @(cb = null) request({ method = "pp_get_currencies_client" }, cb)
 
   add_unit_gold_today = @(unitName, diff, cb = null) request({
     method = "add_unit_gold_today"

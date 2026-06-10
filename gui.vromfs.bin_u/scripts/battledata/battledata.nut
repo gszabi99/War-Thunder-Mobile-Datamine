@@ -320,7 +320,6 @@ return {
   curBattleUnit = Computed(@() realBattleData.get()?.unit)
   curBattleItems = Computed(@() realBattleData.get()?.items)
   curBattleSkins = Computed(@() realBattleData.get()?.skins)
-  isSeparateSlots = Computed(@() realBattleData.get()?.isSeparateSlots ?? false)
   unitsAvgCostWp = Computed(@() realBattleData.get()?.unitsAvgCostWp ?? [])
   isBattleDataReceived = Computed(@() curAction.get() != ACTION.REQUEST && (state.get()?.isBattleDataReceived ?? false))
   wasBattleDataApplied

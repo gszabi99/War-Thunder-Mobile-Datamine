@@ -72,6 +72,8 @@
   "customLevelTankMap": "avg_africa_desert_map*",
   "water_level": -100.0,
   "average_ground_level": 70.0,
+  "soundAmbientPathStudio": "aircraft/ambient",
+  "soundAmbientEvent": "global_amb",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "addWhiteTemp": -800.0,

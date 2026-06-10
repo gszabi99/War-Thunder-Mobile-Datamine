@@ -19,8 +19,8 @@
   "shouldCollideWithRendinsts": true,
   "sound_path": "ships/weapon_ships/cannons",
   "sound_pathStudio": "naval/weapon/cannons",
-  "sound": "25mm_2m_3",
-  "soundLoop": false,
+  "sound": "35mm_oerlikon_kda",
+  "soundLoop": true,
   "isBulletBelt": true,
   "bullet": {
     "bulletCount": 10,

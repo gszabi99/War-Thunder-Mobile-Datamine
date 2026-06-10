@@ -3,15 +3,13 @@ let { campaignActiveUnlocks, unlockInProgress, batchReceiveRewards, unseenUnlock
 } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
-let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let isNPWndOpened = mkWatched(persist, "newPlayerBpSceneisNPWndOpened", false)
-
-let curStatsCampaign = Computed(@() getCampaignStatsId(curCampaign.get()))
 
 let npBpFreeRewardsUnlock = Computed(@()
   campaignActiveUnlocks.get().findvalue(@(unlock) "new_player_pass_free" in unlock?.meta))
@@ -77,7 +75,7 @@ let sendNpBqEvent = @(action, params = {}) sendCustomBqEvent("newbie_battlepass_
   action
   stageProgress = winsCount.get()
   isPassPurchased = isNPActive.get()
-  campaign = curStatsCampaign.get()
+  campaign = curCampaign.get()
 }))
 
 function receiveNPRewards(progress) {
@@ -103,7 +101,7 @@ function receiveNPRewards(progress) {
   })
 }
 
-let npPassGoods = Computed(@() shopGoods.get()?[$"new_player_pass_{curStatsCampaign.get()}"])
+let npPassGoods = Computed(@() shopGoods.get()?[$"new_player_pass_{curCampaign.get()}"])
 let hasUnseenNpPass = Computed(@() npBpFreeRewardsUnlock.get()?.name in unseenUnlocks.get()
   || npBpPaidRewardsUnlock.get()?.name in unseenUnlocks.get())
 
@@ -112,7 +110,6 @@ isNPWndOpened.subscribe(@(v) !v
   : null)
 
 return {
-  curStatsCampaign
   isNPWndOpened
   mkNPPaidStageList
   mkNPFreeStageList

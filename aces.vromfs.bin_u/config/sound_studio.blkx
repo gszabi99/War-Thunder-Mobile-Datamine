@@ -29,6 +29,8 @@
   "waitForMenuMusic": true,
   "useOneshotForAirGunSound": true,
   "minArtHitInterval": 0.2,
+  "heroGunMaxTimeForAmbient": 10.0,
+  "maxDistForGunSoundPlaying": 500.0,
   "minShotStep": 0.04,
   "minShotStepConsoles": 0.08,
   "maxAltFallBullets": 20.0,

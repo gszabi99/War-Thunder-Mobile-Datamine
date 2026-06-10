@@ -1,11 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { allSpecialEvents } = require("%rGui/event/eventState.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let {
-  mkPlateText,
-  mkPlateTextTimer,
-  mkUnitBg,
-  mkUnitImage
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
+let { mkPlateText, mkPlateTextTimer, mkUnitBg, mkUnitImage
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getRewardPlateSize, REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 
@@ -55,7 +51,7 @@ function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots =
     clipChildren = true
     halign = ALIGN_RIGHT
     children = [
-      mkNameText(loc(getUnitLocId(unit.name))).__update({ maxWidth = calcMaxTextWidth(slots, styles) })
+      mkNameText(getUnitName(unit.name)).__update({ maxWidth = calcMaxTextWidth(slots, styles) })
       mkPlateTextTimer(eventEndsAt.get(),{ vplace = ALIGN_BOTTOM })
     ]
   }

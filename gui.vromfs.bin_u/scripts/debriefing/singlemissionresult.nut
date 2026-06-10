@@ -23,7 +23,7 @@ function getCampaignByUnitName(unitName, defaultCampaign) {
 }
 
 let mkSlotsCommonInfo = @(campaign) {
-  levelsExp = (serverConfigs.get()?.unitLevels[$"{campaign}_slots"] ?? {}).map(@(v) v.exp)
+  levelsExpCfg = (serverConfigs.get()?.unitLevels[$"{campaign}_slots"] ?? {}).map(@(v, i) { exp = v.exp, upToLevel = v?.upToLevel ?? (i + 1) })
   levelsSp = serverConfigs.get()?.unitLevelsSp?[serverConfigs.get()?.campaignCfg[campaign].slotAttrPreset]
 }
 
@@ -40,7 +40,6 @@ function getSingleMissionResult(rewardData) {
   let unitName = battleUnitName.get()
   let baseBattleData = wasBattleDataApplied.get() ? (lastClientBattleData.get() ?? {}) : {}
   let campaign = rewardData?.battleData.campaign ?? getCampaignByUnitName(unitName, curCampaign.get())
-  let isSeparateSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
   log($"Result info: baseBattleData.unit = {baseBattleData?.unit.name}")
   log($"rewardData?.battleData.unit = {rewardData?.battleData.reward.unitName}")
   log($"battleUnitName = {battleUnitName.get()}")
@@ -54,7 +53,6 @@ function getSingleMissionResult(rewardData) {
     campaign
     userId = myUserId.get()
     isResearchCampaign = campaign in serverConfigs.get()?.unitTreeNodes
-    isSeparateSlots
   })
   if (isTutorial)
     res.__update({
@@ -63,7 +61,7 @@ function getSingleMissionResult(rewardData) {
       isTutorial
       teams = [ { tickets = 0 } ]
     })
-  if (!isTutorial && isSeparateSlots)
+  if (!isTutorial)
     res.__update({ slots = mkSlotsCommonInfo(campaign) })
   if (rewardData?.battleData != null) {
     res.__update(rewardData.battleData)

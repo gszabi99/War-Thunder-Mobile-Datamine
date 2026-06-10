@@ -143,6 +143,7 @@ return cfgHudCommon.__merge({
   }
 
   hitCamera = {
+    canHide = false
     ctor = hitCamera
     defTransform = mkRTPos([0, 0])
     editView = hitCameraCommonEditView
@@ -192,6 +193,7 @@ return cfgHudCommon.__merge({
   }
 
   xpayModel = {
+    canHide = false
     ctor = xrayModel
     defTransform = mkLBPos([hdpx(480), hdpx(30)])
     editView = xrayModelEditView
@@ -208,6 +210,7 @@ return cfgHudCommon.__merge({
   }
 
   movement = {
+    canHide = false
     ctor = aircraftMovement
     defTransform = mkRBPos([hdpx(-120), 0])
     editView = aircraftMovementEditView
@@ -215,6 +218,7 @@ return cfgHudCommon.__merge({
   }
 
   brakeButton = {
+    canHide = false
     ctor = brakeButton
     defTransform = mkRBPos([hdpx(-10), hdpx(-130)])
     editView = brakeButtonEditView
@@ -245,6 +249,7 @@ return cfgHudCommon.__merge({
   }
 
   courseGuns = {
+    canHide = false
     ctor = @(scale) @() {
       key = "air_course_guns_main"
       watch = isActiveTurretCamera
@@ -258,6 +263,7 @@ return cfgHudCommon.__merge({
     options = [ optDoubleCourseGuns ]
   }
   courseGunsSecondBtn = {
+    canHide = false
     ctor = @(scale) @() {
       key = "air_course_guns_second"
       watch = [isGamepad, isActiveTurretCamera]
@@ -301,6 +307,7 @@ return cfgHudCommon.__merge({
   }
 
   controlsStick = {
+    canHide = false
     ctor = ctrlPieStickBlock
     defTransform = mkRBPos([hdpx(-545), hdpx(-0)])
     editView = ctrlPieStickView
@@ -317,6 +324,7 @@ return cfgHudCommon.__merge({
   }
 
   moveStick = {
+    canHide = false
     ctor = aircraftMoveStick
     defTransform = mkRBPos([hdpx(-20), hdpx(-320)])
     editView = aircraftMoveStickView
@@ -324,6 +332,7 @@ return cfgHudCommon.__merge({
   }
 
   moveSecondaryStick = {
+    canHide = false
     ctor = aircraftMoveSecondaryStick
     defTransform = mkLBPos([hdpx(200), hdpx(-320)])
     editView = aircraftMoveStickView
@@ -331,6 +340,7 @@ return cfgHudCommon.__merge({
   }
 
   moveArrows = {
+    canHide = false
     ctor = aircraftMoveArrows
     defTransform = mkRBPos([hdpx(-450), hdpx(-150)])
     editView = moveArrowsAirView

@@ -1095,7 +1095,17 @@
             "country": "usa"
           },
           {
+            "name": "us_battleship_california",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
             "name": "ussr_battlecruiser_stalingrad",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_battlecruiser_pr69",
             "weight": 1.0,
             "country": "ussr"
           },
@@ -1105,12 +1115,27 @@
             "country": "japan"
           },
           {
+            "name": "jp_battleship_ise",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
             "name": "uk_battleship_king_george_1945",
             "weight": 1.0,
             "country": "britain"
           },
           {
+            "name": "uk_battleship_iron_duke",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
             "name": "germ_battleship_tirpitz_1944",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_battleship_scharnhorst",
             "weight": 1.0,
             "country": "germany"
           }
@@ -1119,7 +1144,7 @@
       {
         "range": [
           5,
-          6
+          5
         ],
         "ship": [
           {
@@ -1136,17 +1161,37 @@
             "name": "uk_battleship_vanguard",
             "weight": 1.0,
             "country": "britain"
+          },
+          {
+            "name": "ussr_battleship_pr23_sovetskij_soyuz",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_battlecruiser_kronshtadt_380mm",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "jp_battleship_yamato",
+            "weight": 1.0,
+            "country": "japan"
           }
         ]
       },
       {
         "range": [
           6,
-          60
+          6
         ],
         "ship": [
           {
             "name": "germ_destroyer_rckt_hamburg",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_frigate_rckt_bremen",
             "weight": 1.0,
             "country": "germany"
           },
@@ -1156,9 +1201,72 @@
             "country": "usa"
           },
           {
+            "name": "us_cruiser_rckt_truxtun",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "ussr_destroyer_rckt_pr57bis",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_cruiser_rckt_pr58",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
             "name": "jp_destroyer_rckt_takatsuki",
             "weight": 1.0,
             "country": "japan"
+          },
+          {
+            "name": "jp_destroyer_rckt_hatsuyuki",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "uk_destroyer_rckt_devonshire",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_destroyer_rckt_type23",
+            "weight": 1.0,
+            "country": "britain"
+          }
+        ]
+      },
+      {
+        "range": [
+          7,
+          50
+        ],
+        "ship": [
+          {
+            "name": "us_cruiser_rckt_virginia",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_frigate_rckt_braunschweig",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_cruiser_rckt_pr1134b",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "jp_destroyer_rckt_chokai",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "uk_frigate_rckt_type_31",
+            "weight": 1.0,
+            "country": "britain"
           }
         ]
       }

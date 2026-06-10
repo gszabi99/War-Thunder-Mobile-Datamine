@@ -8,7 +8,7 @@ let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut"
 let { userstatDescList, userstatUnlocks, userstatStatsTables, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
 } = require("%rGui/unlocks/userstat.nut")
-let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let ignoreUnseen = hardPersistWatched("unlocks.ignoreUnseen", {})
 let allowOpenUnlock = hardPersistWatched("allowOpenUnlock", false)
@@ -126,8 +126,8 @@ let activeUnlocks = Computed(@(prev) allUnlocksDesc.get()
   }))
 
 let campaignActiveUnlocks = Computed(function() {
-  let curC = getCampaignStatsId(curCampaign.get())
-  return activeUnlocks.get().filter(@(u) (u?.meta.campaign == null || curC == getCampaignStatsId(u?.meta.campaign)) )
+  let curC = curCampaign.get()
+  return activeUnlocks.get().filter(@(u) u?.meta.campaign == null || curC == u?.meta.campaign)
 })
 
 let spendingUnlocks = Computed(function() {

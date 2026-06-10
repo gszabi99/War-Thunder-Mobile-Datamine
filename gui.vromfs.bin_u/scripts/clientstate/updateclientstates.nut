@@ -4,9 +4,7 @@ let { get_mp_session_id_int } = require("multiplayer")
 let { isInBattle, isInLoadingScreen, localMPlayerId, localMPlayerTeam, battleSessionId,
   isInFlightMenu, isMpStatisticsActive, isInMpSession
 } = require("%appGlobals/clientState/clientState.nut")
-let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
 let { get_local_mplayer } = require("mission")
-let { get_current_mission_info_cached } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 
 function updateStates() {
@@ -29,13 +27,5 @@ wlog(isInFlightMenu, "[UI_STATES] isInFlightMenu")
 wlog(isMpStatisticsActive, "[UI_STATES] isMpStatisticsActive")
 
 updateStates()
-
-let updateMissionState = @()
-  missionProgressType.set(get_current_mission_info_cached()?.missionProgressType ?? "")
-
-let shouldUpdateMisson = keepref(Computed(@() isInBattle.get() && !isInLoadingScreen.get()))
-if (shouldUpdateMisson.get())
-  updateMissionState()
-shouldUpdateMisson.subscribe(@(v) v ? updateMissionState() : null)
 
 return updateStates

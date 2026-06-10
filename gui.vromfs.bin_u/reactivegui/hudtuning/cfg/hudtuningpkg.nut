@@ -19,16 +19,25 @@ enum Z_ORDER {
 
 let withActionButtonScaleCtor = @(aType, actionCtor, cfg) {
   function ctor(scale) {
-    let action = Computed(function() {
-      if (typeof(aType) == "array")
-        return actionBarItems.get()?[aType.findvalue(@(v) actionBarItems.get()?[v].selected)]
-          ?? actionBarItems.get()?[aType.findvalue(@(v) v in actionBarItems.get())]
-          ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
-      return actionBarItems.get()?[aType] ?? (cfg?.shouldShowDisabled ? emptyActionItem : null)
-    })
+    let action = Computed(@() actionBarItems.get()?[aType]
+      ?? (cfg?.shouldShowDisabled ? emptyActionItem : null))
     return @() {
       watch = action
       children = action.get() == null ? null : actionCtor(action.get(), scale)
+    }
+  }
+  priority = Z_ORDER.BUTTON
+}.__update(cfg)
+
+let withActionsButtonScaleCtor = @(aTypes, actionCtor, cfg) {
+  function ctor(scale) {
+    let actionType = Computed(@() aTypes.findvalue(@(v) actionBarItems.get()?[v].selected)
+      ?? aTypes.findvalue(@(v) v in actionBarItems.get()))
+    let action = Computed(@() actionBarItems.get()?[actionType.get()]
+      ?? (cfg?.shouldShowDisabled ? emptyActionItem : null))
+    return @() {
+      watch = [actionType, action]
+      children = action.get() == null ? null : actionCtor(action.get(), actionType.get(), scale)
     }
   }
   priority = Z_ORDER.BUTTON
@@ -114,6 +123,7 @@ return {
   Z_ORDER
 
   withActionButtonScaleCtor
+  withActionsButtonScaleCtor
   withActionBarButtonCtor
   withAnyActionBarButtonCtor
   weaponryButtonDynamicCtor

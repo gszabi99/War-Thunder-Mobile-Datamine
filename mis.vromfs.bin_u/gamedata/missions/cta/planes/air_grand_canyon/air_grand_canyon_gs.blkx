@@ -68,6 +68,12 @@
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
+      },
+      "customScoreParams": {
+        "overallMul": 1.0,
+        "unitClassMul": {
+          "bomber": 2.0
+        }
       }
     },
     "atmosphere": {

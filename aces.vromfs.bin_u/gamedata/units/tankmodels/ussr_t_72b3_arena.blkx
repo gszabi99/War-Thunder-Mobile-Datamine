@@ -2760,7 +2760,7 @@
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.7
+        0.3
       ],
       "AdvancedMass": true,
       "trackMass": 2500.0
@@ -2778,7 +2778,7 @@
       "fricSideRotAlternative": [
         5.0,
         0.0,
-        1.1,
+        0.9,
         0.3
       ]
     },
@@ -2794,7 +2794,7 @@
       "model": "v_84_1"
     },
     "mechanics": {
-      "alternativeGearControl": 3.0,
+      "alternativeGearControl": 2.0,
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.31,
       "mainGearRatio": 0.95,

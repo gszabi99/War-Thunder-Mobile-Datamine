@@ -92,9 +92,9 @@ function tryOpenQueuePenaltyWnd(rawCampaign, mGMode, resetPenaltyCb, cancelCb = 
     }
     buttons = [
       { id = "cancel", isCancel = true, cb = cancelCb }
-      { text = loc("msgbox/btn_pay"), styleId = "PURCHASE", isDefault = true, priceComp,
+      { text = loc("msgbox/btn_pay"), styleId = "PURCHASE", isDefault = true, priceComp, isInProgress = isQueuePenaltyInProgress
         function cb() {
-          if (!isQueuePenaltyInProgress.get() && !showNoBalanceMsgIfNeed(resPrice, currencyId, bqInfo))
+          if (!showNoBalanceMsgIfNeed(resPrice, currencyId, bqInfo))
             reset_queue_penalty(actPenaltyId, resPrice, currencyId, penaltyCb)
         }
       }

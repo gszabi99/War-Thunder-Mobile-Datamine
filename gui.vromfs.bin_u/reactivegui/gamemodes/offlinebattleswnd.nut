@@ -4,7 +4,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { mkGameModeByCampaign } = require("%appGlobals/gameModes/gameModes.nut")
-let { getUnitLocId, getUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
@@ -124,7 +124,7 @@ let mkUnitPlate = @(unit, isSelected = Watched(false)) {
     mkUnitBg(unit)
     mkUnitSelectedGlow(unit, isSelected)
     mkUnitImage(unit)
-    mkUnitTexts(unit, getUnitName(unit, loc))
+    mkUnitTexts(unit, getUnitName(unit))
     mkUnitInfo(unit)
   ]
 }
@@ -222,7 +222,7 @@ let mkUnitHeadItem = @(v) {
         text = "i"
       }.__update(fontSmallShaded)
     }
-    mkText(loc(getUnitLocId(v ?? "")), { size = [maxTextWidth - (textItemH + itemGap), SIZE_TO_CONTENT] })
+    mkText(getUnitName(v ?? ""), { size = [maxTextWidth - (textItemH + itemGap), SIZE_TO_CONTENT] })
   ]
 }
 

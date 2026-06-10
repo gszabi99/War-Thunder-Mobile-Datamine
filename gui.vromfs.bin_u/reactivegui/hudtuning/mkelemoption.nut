@@ -10,6 +10,8 @@ let { infoGreyButton, infoTooltipButton } = require("%rGui/components/infoButton
 let columnsMin = 1
 let columnsMax = 5
 
+let checkBoxIconSize = hdpxi(60)
+
 function mkHeader(header, child) {
   if (header == "")
     return null
@@ -83,11 +85,55 @@ let optionCtors = {
       openInfo, description, locId)
   },
 
+  [OCT_CHECKBOX] = function(optCfg, value, setValue) {
+    let { locId = "", icon = "check.svg" } = optCfg
+    let stateFlags = Watched(0)
+
+    return {
+      behavior = Behaviors.Button
+      onElemState = @(v) stateFlags.set(v)
+      onClick = @() setValue(!value.get())
+      sound = { click = "click" }
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      gap = hdpx(10)
+      children = [
+        {
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          text = loc(locId)
+          color = 0xFFFFFFFF
+        }.__update(fontSmall)
+        {
+          size = hdpx(80)
+          rendObj = ROBJ_BOX
+          borderColor = 0xFF9FA7AF
+          borderWidth = hdpx(3)
+          fillColor = 0x88000000
+          valign = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          children = @() {
+            watch = [value, stateFlags]
+            size = checkBoxIconSize
+            rendObj = ROBJ_IMAGE
+            image = value.get()
+              ? Picture($"ui/gameuiskin#{icon}:{checkBoxIconSize}:{checkBoxIconSize}:P")
+              : null
+            keepAspect = KEEP_ASPECT_FIT
+            color = stateFlags.get() & S_HOVER ? 0xFF7FAEFF : 0xFFFFFFFF
+          }
+        }
+      ]
+    }
+  },
+
   [OCT_SLIDER] = function(optCfg, value, setValue) {
     let { ctrlOverride = {}, locId = "", valToString = @(v) v } = optCfg
+    let trackWidth = (optCfg?.rowWidth ?? optionWidth) - 2 * sliderBtnSize - 2 * sliderGap
     return sliderWithButtons(value, loc(locId),
       ctrlOverride.__merge({
-        size = [optionWidth - 2 * sliderBtnSize - 2 * sliderGap, sliderH]
+        size = [trackWidth, sliderH]
         function onChange(v) {
           sliderValueSound()
           setValue(v, 1.0)

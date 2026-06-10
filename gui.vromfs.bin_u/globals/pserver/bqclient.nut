@@ -15,7 +15,6 @@ let { get_game_version_str = @() "-" } = require_optional("app")
 let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut")
 let { downloadInProgress, allowLimitedDownload } = require("%appGlobals/clientState/downloadState.nut")
 let { allUnitsRanks } = require("%appGlobals/updater/gameModeAddons.nut")
-let { getCampaignOrig } = require("%appGlobals/updater/campaignAddons.nut")
 
 
 function addEventTime(data, key = "eventTime") {
@@ -125,8 +124,7 @@ function mkBqUnitsString(units, campaign) {
     return ";".join((clone units).sort())
 
   local notFound = []
-  let campOrig = getCampaignOrig(campaign)
-  let resArr = [buildRanksString(units, allUnitsRanks.get()?[campOrig] ?? {}, campOrig, notFound)]
+  let resArr = [buildRanksString(units, allUnitsRanks.get()?[campaign] ?? {}, campaign, notFound)]
   foreach(camp, ranks in allUnitsRanks.get()) {
     if (notFound.len() == 0)
       break

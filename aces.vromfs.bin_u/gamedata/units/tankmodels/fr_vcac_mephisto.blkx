@@ -25,6 +25,7 @@
   ],
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
+  "deadZoneForTurnAround": 100.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -2051,10 +2052,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.58,
       "mainGearRatio": 5.22,
       "sideGearRatio": 1.73,
+      "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

@@ -30,7 +30,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkButtonHoldTooltip  } = require("%rGui/tooltip.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getStepsToNextFixed, openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
@@ -212,7 +212,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
 
   if (!isAvailable.get() || (isAllReceived && stepsCount <= 0))
     return isAvailable.get() ? loc("battlepass/receivedRew")
-      : loc("battlepass/unavailableRew", { unitName = loc(getUnitLocId(id)) })
+      : loc("battlepass/unavailableRew", { unitName = getUnitName(id) })
 
   if (isLastReward && !isFixed)
     return loc("item/chance/lastReward")

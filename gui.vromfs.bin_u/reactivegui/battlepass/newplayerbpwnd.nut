@@ -6,11 +6,12 @@ let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { getNewbieBPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd, isNPWndOpened, curStatsCampaign,
+let { mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd, isNPWndOpened,
 selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, seasonEndTime, sendNpBqEvent
 } = require("%rGui/battlePass/newPlayerBpState.nut")
 let { getRewardPlateSize, mkRewardPlate, REWARD_STYLE_MEDIUM  } = require("%rGui/rewards/rewardPlateComp.nut")
@@ -92,12 +93,12 @@ function buyButton(goods) {
 }
 
 let passCard = @() {
-  watch = [isNPActive, npPassGoods, curStatsCampaign]
+  watch = [isNPActive, npPassGoods, curCampaign]
   size = passCardSize
   rendObj = ROBJ_IMAGE
   image = !isNPActive.get()
-    ? Picture($"ui/images/newbie_pass_{curStatsCampaign.get()}_bg.avif:{passCardSize[0]}:{passCardSize[1]}:P")
-    : Picture($"ui/images/newbie_pass_{curStatsCampaign.get()}_bg_vip.avif:{passCardSize[0]}:{passCardSize[1]}:P")
+    ? Picture($"ui/images/newbie_pass_{curCampaign.get()}_bg.avif:{passCardSize[0]}:{passCardSize[1]}:P")
+    : Picture($"ui/images/newbie_pass_{curCampaign.get()}_bg_vip.avif:{passCardSize[0]}:{passCardSize[1]}:P")
   padding = hdpx(10)
   children = [
     {
@@ -169,7 +170,7 @@ function rewardInfoMsg(reward) {
       children = [
         {
           rendObj = ROBJ_TEXT
-          text = getUnitName(getTagsUnitName(viewInfo.id), loc)
+          text = getUnitName(getTagsUnitName(viewInfo.id))
         }.__update(fontTinyAccented)
 
         mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)
@@ -291,6 +292,6 @@ let wnd = bgShaded.__merge({
 
 let sceneId = "newPlayerBpScene"
 registerScene(sceneId, wnd, closeNPWnd, isNPWndOpened)
-setSceneBg(sceneId, getNewbieBPPresentation(curStatsCampaign.get()).bg)
-curStatsCampaign.subscribe(@(v) setSceneBg(sceneId, getNewbieBPPresentation(v).bg))
+setSceneBg(sceneId, getNewbieBPPresentation(curCampaign.get()).bg)
+curCampaign.subscribe(@(v) setSceneBg(sceneId, getNewbieBPPresentation(v).bg))
 registerUnlocksSceneToUpdate(sceneId)

@@ -19,6 +19,10 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
+  "deadZoneForTurnAround": [
+    100.0,
+    90.0
+  ],
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -42,7 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "deadZoneForTurnAround": 90.0,
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
@@ -2052,10 +2055,12 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 40000.0,
       "driveGearRadius": 0.275,
       "mainGearRatio": 1.1,
       "sideGearRatio": 5.5,
+      "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

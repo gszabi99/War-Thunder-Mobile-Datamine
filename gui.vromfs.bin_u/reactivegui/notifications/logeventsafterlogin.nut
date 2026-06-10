@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { lastBattles, sharedStats, curCampaign, campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { lastBattles, sharedStats, curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -56,14 +56,8 @@ function findClosestOrEqualLowerValue(list, target) {
 let playerStats = ComputedImmediate(@() userstatStats.get()?.stats["global"])
 let totalProfileBattles = keepref(Computed(function() {
   let res = {}
-
-  foreach (campaign in campaignsList.get()) {
-    let camp = getCampaignStatsId(campaign)
-    let stats = playerStats.get()?[camp] ?? {}
-    if (camp not in res)
-      res[camp] <- (stats?.battles ?? 0)
-  }
-
+  foreach (campaign in campaignsList.get())
+    res[campaign] <- playerStats.get()?[campaign].battles ?? 0
   return res.reduce(@(acc, count) count + acc, 0)
 }))
 

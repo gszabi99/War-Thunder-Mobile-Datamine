@@ -5,7 +5,7 @@ from "%darg/helpers/bitmap.nut" import mkBitmapPicture
 from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%sqstd/underscore.nut" import arrayByRows
 import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
-from "%appGlobals/unitPresentation.nut" import getUnitLocId
+from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/updater/addonsState.nut" import unitSizes
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
@@ -158,7 +158,7 @@ let threatSearchResultsContent = @() {
   flow = FLOW_VERTICAL
   children = arrayByRows(threatUnitSearchResults.get()
     .map(function(unit) {
-      let locName = loc(getUnitLocId(unit))
+      let locName = getUnitName(unit)
       return { unit, mRank = unit.mRank, locName, locNameLower = utf8ToLower(locName) }
     })
     .sort(@(a, b) a.mRank <=> b.mRank || a.locNameLower <=> b.locNameLower)
@@ -273,7 +273,7 @@ function openSimulation() {
 
     text = loc("msg/needAddonToProceed",
       { count = unitsToDownload.len(),
-        addon = comma.join(unitsToDownload.map(@(unitName) colorize("@mark", loc(getUnitLocId(unitName)))))
+        addon = comma.join(unitsToDownload.map(@(unitName) colorize("@mark", getUnitName(unitName))))
       })
     buttons = [
       { id = "cancel", isCancel = true }

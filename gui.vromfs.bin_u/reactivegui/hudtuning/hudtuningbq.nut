@@ -90,20 +90,30 @@ function trySendToBq() {
         continue
 
       if (o.id in tuningStateDefault.options) {
+        idx++
         let rawVal = newState?.options[o.id][elemId] ?? tuningStateDefault.options[o.id]
         let val = type(rawVal) == "bool" ? rawVal.tointeger() : rawVal
-        idx++
+        let paramValue = getParam(val, idx)
+        if (paramValue == "") {
+          logerr($"Incorrect option value type of /*{o.id}*/ for hud tuning")
+          return
+        }
         baseData.__update({
-          [getParam(val, idx)] = val,
+          [paramValue] = val,
           [$"paramId{idx}"] = o.id
         })
       }
       else if (o.id in tuningStateDefault.customOptions) {
+        idx++
         let rawVal = newState?.options[o.id] ?? tuningStateDefault.customOptions[o.id]
         let val = type(rawVal) == "bool" ? rawVal.tointeger() : rawVal
-        idx++
+        let paramValue = getParam(val, idx)
+        if (paramValue == "") {
+          logerr($"Incorrect option value type of /*{o.id}*/ for hud tuning")
+          return
+        }
         baseData.__update({
-          [getParam(val, idx)] = val,
+          [paramValue] = val,
           [$"paramId{idx}"] = o.id
         })
       }

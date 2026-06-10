@@ -52,7 +52,7 @@ let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
@@ -182,7 +182,7 @@ function headerText() {
   let allLeftSlotNames = (goodsRewardSlots.get()?.variants ?? []).reduce(
     @(res, v) isRewardEmpty(v, servProfile.get()) || v[0].id in unreleasedUnits.get() || v[0].id in unitsBlockedByBattleMode.get()
       ? res
-      : res.append(loc(getUnitLocId(v[0].id)).replace(" ", nbsp)),
+      : res.append(getUnitName(v[0].id).replace(" ", nbsp)),
     [])
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
@@ -348,7 +348,7 @@ function tryOpenPurchSlotMsgBox(goodsId, price, currencyId) {
     openMsgBox({ text = loc("msg/selectSlotForPurchase") })
     return
   }
-  let text = $"{loc("blueprints/title", { count })} {loc(getUnitLocId(id))}"
+  let text = $"{loc("blueprints/title", { count })} {getUnitName(id)}"
   openSelGoodsMsgBoxPurch(loc("shop/needMoneyQuestion_buy", { item = colorize(userlogTextColor, text) }),
     price, currencyId, purchaseSelectedSlot,
     mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, $"{goodsId}:{gType}/{id}x{count}"))
@@ -472,7 +472,7 @@ function content() {
           valign = ALIGN_CENTER
           halign = ALIGN_CENTER
           children = !hasRerollHint ? null
-            : txt(loc("shop/hint/rerollForUnit", { unitName = loc(getUnitLocId(curUnit)) }), {
+            : txt(loc("shop/hint/rerollForUnit", { unitName = getUnitName(curUnit) }), {
                 animations = rerollUnitAnim
                 transform = {}
               })

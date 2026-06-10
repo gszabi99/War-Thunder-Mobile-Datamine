@@ -5,7 +5,7 @@ let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleMod
 let { getGoodsAsOfferIcon, getGoodsIcon, getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitClassFontIcon, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { G_CURRENCY, G_ITEM, G_BATTLE_MOD, unitRewardTypes } = require("%appGlobals/rewardType.nut")
@@ -79,17 +79,17 @@ let hasAllUnits = @(goods, myUnitsV)
 
 function getLocBranchUnits(goods) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  return unit != null ? " ".concat(getPlatoonOrUnitName(unit, loc), loc("offer/airBranch")) : goods.id
+  return unit != null ? " ".concat(getUnitName(unit), loc("offer/airBranch")) : goods.id
 }
 
 function getLocBlueprintUnit(goods) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  return unit != null ? " ".concat(loc("blueprints"), getPlatoonOrUnitName(unit, loc)) : goods.id
+  return unit != null ? " ".concat(loc("blueprints"), getUnitName(unit)) : goods.id
 }
 
 let getLocNameUnit = function(goods) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  return unit != null ? getPlatoonOrUnitName(unit, loc) : goods.id
+  return unit != null ? getUnitName(unit) : goods.id
 }
 
 let mkUnitImg = @(img, size) {
@@ -298,7 +298,7 @@ function mkOfferUnit(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)), goods)
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getUnitName(unit), goods)
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
@@ -322,7 +322,7 @@ function mkOfferBlueprint(goods, onClick, state){
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       image
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc), goods)
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getUnitName(unit), goods)
       @() discountTagBig(discountInPercent.get(), { watch = discountInPercent })
     ].extend(mkOfferCommonParts(goods, state)))
 
@@ -348,7 +348,7 @@ function mkOfferBranchUnit(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
-      mkAirBranchOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
+      mkAirBranchOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getUnitName(unit),
         utf8ToUpper(loc("offer/airBranch")), goods)
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))

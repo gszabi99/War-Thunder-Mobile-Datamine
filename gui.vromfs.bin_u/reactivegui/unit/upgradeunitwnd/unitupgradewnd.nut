@@ -5,7 +5,7 @@ let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { premiumTextColor, userlogTextColor, selectColor } = require("%rGui/style/stdColors.nut")
 let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts,
   mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitInProgress, levelInProgress} = require("%appGlobals/pServer/pServerApi.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -61,9 +61,9 @@ let commonTitle = {
 let mkCardTitle = @(unit) unit?.isUpgraded ? upgradeTitle : commonTitle
 
 function mkLevelMark(unit) {
-  let level = Computed(@() unit?.isUpgraded
-    ? campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0
-    : campMyUnits.get()?[unit.name].level ?? 0)
+  let level = Computed(@() !unit?.isUpgraded ? campMyUnits.get()?[unit.name].level ?? 0
+    : "maxLevel" in unit ? unit.maxLevel
+    : campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0) 
   return {
     vplace = ALIGN_BOTTOM
     margin = hdpx(10)
@@ -90,7 +90,7 @@ let mkUnitPlate = @(unit) {
   children = [
     mkUnitBg(unit)
     mkUnitImage(unit)
-    mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+    mkUnitTexts(unit, getUnitName(unit.name))
     mkUnitInfo(unit)
     mkLevelMark(unit)
   ]
@@ -168,7 +168,7 @@ function offerCards() {
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = loc(upgradeCommonUnitName.get() ? "shop/upgradeUnitBody" : $"shop/levelupUnit/{curCampaign.get()}",
-          { unit = colorize(userlogTextColor, $"{loc(getUnitLocId(unit.name))}") })
+          { unit = colorize(userlogTextColor, $"{getUnitName(unit.name)}") })
       }.__update(fontTinyAccented)
       @() {
         watch

@@ -1,4 +1,5 @@
 from "%appGlobals/unitConst.nut" import *
+let { loc } = require("dagor.localize")
 let getTagsUnitName = require("getTagsUnitName.nut")
 
 let unitClassFontIcons = {
@@ -97,12 +98,6 @@ let overrides = {
 
 }
 
-
-let platoonNames = {
-  
-  uk_sherman_ic_firefly = "uk_sherman_ic_firefly_platoon"
-}
-
 let genParams = {
   image = @(name) $"!ui/unitskin#{name}.avif"
   upgradedImage = @(name) $"!ui/unitskin#{name}_upgraded.avif"
@@ -127,21 +122,12 @@ function getUnitPresentationByName(unitName) {
 }
 
 let getUnitPresentation = @(unitOrName) getUnitPresentationByName(unitOrName?.name ?? unitOrName ?? "")
-let getUnitLocId = @(u) getUnitPresentation(u).locId
-let getUnitName = @(u, loc) loc(getUnitLocId(u))
-let getPlatoonName = @(unitName, loc) unitName in platoonNames ? loc(platoonNames[unitName])
-  : loc("platoon/name", { name = loc(getUnitLocId(unitName)) })
 
 return {
   unitClassFontIcons
   unitTypeFontIcons
   unitTypeColors
   getUnitPresentation
-  getUnitLocId
   getUnitClassFontIcon = @(u) unitClassFontIcons?[u?.unitClass] ?? ""
-  getUnitName
-  getPlatoonName
-  getPlatoonOrUnitName = @(unit, loc) (unit?.platoonUnits.len() ?? 0) > 0
-    ? getPlatoonName(unit?.name ?? "", loc)
-    : getUnitName(unit?.name ?? "", loc)
+  getUnitName = @(u) loc(getUnitPresentation(u).locId)
 }

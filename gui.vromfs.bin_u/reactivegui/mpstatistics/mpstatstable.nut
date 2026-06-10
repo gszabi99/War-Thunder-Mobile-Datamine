@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let regexp2 = require("regexp2")
 let { roundToDigits } = require("%sqstd/math.nut")
 let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
-let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
@@ -71,7 +71,7 @@ let premiumMark = @(player) !player.hasPremium ? null
   )
 
 function getUnitNameText(unitId, unitClass, halign = null) {
-  let name = loc(getUnitLocId(unitId), unitId)
+  let name = getUnitName(unitId)
   let icon = unitClassFontIcons?[unitClass] ?? ""
   let ordered = halign != ALIGN_RIGHT ? [ icon, name ] : [ name, icon ]
   return " ".join(ordered, true)
@@ -240,7 +240,12 @@ let columnsByCampaign = {
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { width = hdpx(100), fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 2),
       isVisible = @(missionName, _) damageZoneMission.match(missionName) }
-    { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
+    { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills)
+      isVisible = @(_, cr) (cr?.missionProgressType ?? "") != "airGS" }
+    { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills - (p?.bomberKills ?? 0)),
+      isVisible = @(_, cr) (cr?.missionProgressType ?? "") == "airGS" }
+    { headerIcon = "ui/gameuiskin#stats_bomber_destroyed.svg", getText = @(p) p?.bomberKills ?? 0,
+      isVisible = @(_, cr) (cr?.missionProgressType ?? "") == "airGS" }
     { headerIcon = "ui/gameuiskin#air_defence_destroyed_icon.svg", getText = @(p) decimalFormat(p.aiGroundKills + p.aiNavalKills) }
   ]
 }

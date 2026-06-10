@@ -8,7 +8,7 @@ let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nu
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitLocId, getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName, getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
@@ -546,7 +546,7 @@ function mkRewardPlateSkinImage(r, rStyle) {
 }
 
 let mkRewardPlateSkinTexts = @(r, rStyle)
-  mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(r.id)), rStyle), rStyle)
+  mkRewardLabel(mkCommonLabelTextMarquee(getUnitName(r.id), rStyle), rStyle)
 
 
 
@@ -580,7 +580,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
     let res = { watch = unit }
     if (unit.get() == null)
       return res
-    let unitNameLoc = loc(getUnitLocId(unit.get()))
+    let unitNameLoc = getUnitName(unit.get())
     return res.__update({
       size
       padding = textPadding
@@ -616,7 +616,7 @@ function mkRewardPlateBlueprintImage(r, rStyle) {
   let size = getRewardPlateSize(r.slots, rStyle)
   let imageW = size[0]
   let imageH = size[1] - progressBarHeight
-  let unitNameLoc = loc(getUnitLocId(id))
+  let unitNameLoc = getUnitName(id)
   let image = getUnitPresentation(id).blueprintImage
 
   return {

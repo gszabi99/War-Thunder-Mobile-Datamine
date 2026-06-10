@@ -56,6 +56,7 @@ function updateByMissionDesc() {
   let { useSpawnScore = false } = misBlk
   let rules = {
     ctfFlagPreset = misBlk?.customRules.ctfFlagPreset ?? ""
+    missionProgressType = misBlk?.missionProgressType ?? ""
     useKillStreaks = misBlk?.useKillStreaks ?? false
     allowSpare = misBlk?.allowSpare ?? true
     isUnlimRespawn = misBlk?.multiRespawn && misBlk?.maxRespawns == -1

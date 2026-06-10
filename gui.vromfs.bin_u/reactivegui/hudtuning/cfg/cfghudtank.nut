@@ -12,7 +12,7 @@ let { mkCircleTankPrimaryGun, mkCircleGroundSecondaryGun, mkCircleGroundMachineG
   mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn,
   mkCircleFireworkBtn
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { withActionBarButtonCtor, withAnyActionBarButtonCtor,
+let { withActionBarButtonCtor, withAnyActionBarButtonCtor, withActionsButtonScaleCtor,
   withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
 } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
 let { tankMoveStick, moveStickView, tankGamepadMoveBlock } = require("%rGui/hud/groundMovementBlock.nut")
@@ -68,17 +68,20 @@ let actionBarTransform = @(idx, isBullet = false)
 let tacticalMapPos = hdpx(155)
 
 return {
-  primaryGun = withActionButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA],
-    @(a, scale) mkCircleTankPrimaryGun([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA])(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
+  primaryGun = withActionsButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA],
+    @(a, aType, scale) mkCircleTankPrimaryGun(a, aType, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
+      canHide = false
       defTransform = mkLBPos([0, hdpx(-420)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
       priority = Z_ORDER.BUTTON_PRIMARY
       options = [ optDoublePrimaryGuns ]
     })
 
-  primaryExtraGun = withActionButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA], mkCircleTankPrimaryGun([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA]),
+  primaryExtraGun = withActionsButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA],
+    mkCircleTankPrimaryGun,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-250), hdpx(-303)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
       priority = Z_ORDER.BUTTON_PRIMARY
@@ -137,7 +140,7 @@ return {
     defTransform = mkLBPos([hdpx(190), hdpx(-420)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_target_tracking.svg")
     isVisibleInEditor = isTargetTracking
-    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get() && !isPlayingReplay.get() && notInHangarChallenge.get())
+    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get() && notInHangarChallenge.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -222,6 +225,7 @@ return {
   }
 
   moveStick = {
+    canHide = false
     ctor = @(scale) @() {
       watch = isGamepad
       key = "tank_move_stick_zone"
@@ -236,6 +240,7 @@ return {
   }
 
   moveArrows = {
+    canHide = false
     ctor = @(scale) {
       key = "tank_move_stick_zone"
       children = tankArrowsMovementBlock(scale)
@@ -251,6 +256,7 @@ return {
   chatLogAndKillLog = cfgHudCommon.chatLogAndKillLog.__merge({ defTransform = mkLTPos([hdpx(155), hdpx(360)]) })
 
   hitCamera = {
+    canHide = false
     ctor = hitCamera
     defTransform = mkRTPos([0, 0])
     editView = hitCameraTankEditView
@@ -282,6 +288,7 @@ return {
   }
 
   doll = {
+    canHide = false
     ctor = mkDoll
     defTransform = mkLBPos([hdpx(540), 0])
     editView = dollEditView

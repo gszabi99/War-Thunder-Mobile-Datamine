@@ -16,6 +16,7 @@ let fontsList = [
 let tuningStateDefault = {
   options = {
     scale = 1.0
+    visible = true
     textWidth = 1.0
     fontSize = (fontsList.findvalue(@(f) f?.isDefault ?? false) ?? fontsList[0]).id
   }

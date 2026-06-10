@@ -53,10 +53,8 @@ let needShowBtns_Campaign = Watched(true)
 let needShowBtns_Unit = Watched(true)
 let needShowBtns_Final = Watched(true)
 let activatingTimeBtns_Campaign = Watched(0)
-let activatingTimeBtns_Unit = Watched(0)
 let activatingTimeBtns_Final = Watched(0)
 needShowBtns_Campaign.subscribe(@(v) activatingTimeBtns_Campaign.set(v ? get_time_msec() + btnActivationDelay : 0))
-needShowBtns_Unit.subscribe(@(v) activatingTimeBtns_Unit.set(v ? get_time_msec() + btnActivationDelay : 0))
 needShowBtns_Final.subscribe(@(v) activatingTimeBtns_Final.set(v ? get_time_msec() + btnActivationDelay : 0))
 isDebriefingAnimFinished.subscribe(function(v) {
   needShowBtns_Campaign.set(v)
@@ -94,7 +92,6 @@ return {
   needShowBtns_Unit
   needShowBtns_Final
   activatingTimeBtns_Campaign
-  activatingTimeBtns_Unit
   activatingTimeBtns_Final
   needReinitScene
 }

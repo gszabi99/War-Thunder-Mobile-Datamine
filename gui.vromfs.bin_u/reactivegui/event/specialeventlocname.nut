@@ -20,7 +20,7 @@ function getSpecialEventRewardUnitName(stages, servConfigs, allGoods) {
 function getSpecialEventLocName(eventName, rewardUnitName) {
   let defaultLoc = loc(getEventPresentation(eventName).locId)
   return defaultLoc.contains("{name}") 
-    ? defaultLoc.subst({ name = getUnitName(rewardUnitName, loc).replace(" ", nbsp) })
+    ? defaultLoc.subst({ name = getUnitName(rewardUnitName).replace(" ", nbsp) })
     : defaultLoc
 }
 

@@ -53,7 +53,7 @@
     "ocean0": [
       0.57,
       0.908,
-      0.998,
+      0.94,
       0.0
     ],
     "ocean1": [
@@ -71,6 +71,9 @@
       true,
       true
     ]
+  },
+  "clipmap": {
+    "texelSize": 0.1
   },
   "micro_details": {
     "micro_detail": [

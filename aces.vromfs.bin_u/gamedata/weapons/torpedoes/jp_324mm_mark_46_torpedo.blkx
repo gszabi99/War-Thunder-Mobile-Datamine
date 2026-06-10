@@ -6,6 +6,7 @@
   "external": true,
   "reloadTime": 60.0,
   "allowHumanReload": true,
+  "hideTorpedoInLauncher": true,
   "mesh": "torpedo_g7a",
   "tags": {
     "antiShipBomb": true

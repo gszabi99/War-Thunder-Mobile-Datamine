@@ -16,7 +16,7 @@ let { mkBotStats, mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
 let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
-let { campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { getMedalPresentationWithCtor } = require("%rGui/mpStatistics/medalsCtors.nut")
 let { validateNickNames, Contact } = require("%rGui/contacts/contact.nut")
 let { mkExtContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
@@ -312,6 +312,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
     children = [
       modalWndHeader(loc("mainmenu/titlePlayerProfile"))
       {
+        size = const [sw(45), SIZE_TO_CONTENT]
         hplace = ALIGN_CENTER
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
@@ -365,7 +366,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
               }
               { size = flex() }
               function() {
-                let stats = publicStats.get()?.stats["global"][getCampaignStatsId(campaign)]
+                let stats = publicStats.get()?.stats["global"][campaign]
                 if (isWaitStats.get())
                   return {
                     watch = [isWaitStats, publicStats]
@@ -379,7 +380,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
                   children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, getCampaignStatsId(campaign))))
+                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
                 }
               }
             ]
@@ -439,7 +440,7 @@ selectedPlayerForInfo.subscribe(function(v) {
     children = position.__merge({
       size = 0
       children = {
-        size = const [hdpx(900), SIZE_TO_CONTENT]
+        size = const [sw(50), SIZE_TO_CONTENT]
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea

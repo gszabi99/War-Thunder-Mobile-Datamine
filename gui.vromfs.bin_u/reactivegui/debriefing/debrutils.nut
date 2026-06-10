@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
-function getLevelProgress(curLevelConfig, reward) {
-  let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [] } = curLevelConfig
+function getLevelProgress(curLevelConfig, totalExp) {
+  let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [], levelsExpCfg = null
+  } = curLevelConfig
   let res = {
     prevLevel = level
     unlockedLevel = level
@@ -10,25 +11,44 @@ function getLevelProgress(curLevelConfig, reward) {
   }
   if (nextLevelExp == 0)
     return res
-  let { totalExp = 0 } = reward
+
   
   let addExp = clamp(totalExp, 0, max(0, nextLevelExp - exp))
   let isLevelUp = addExp > 0 && nextLevelExp <= (exp + totalExp)
-  if (isLevelUp)
-    res.unlockedLevel++
-  
-  if (isLevelUp && levelsExp.len() > 0) {
-    local leftReceivedExp = totalExp - addExp
+  if (!isLevelUp)
+    return res
+
+  res.unlockedLevel++
+  local leftExp = totalExp - addExp
+  if (levelsExpCfg == null) { 
+    if (levelsExp.len() == 0)
+      return res
     foreach (idx, levelExp in levelsExp) {
       if (idx <= level)
         continue
       res.unlockedLevel = idx
       res.isLastLevel = isLastLevel || (idx + 1) not in levelsExp
-      leftReceivedExp = leftReceivedExp - levelExp
-      if (leftReceivedExp <= 0)
+      leftExp -= levelExp
+      if (leftExp <= 0)
         break
     }
+    return res
   }
+
+  local fromLevel = level
+  foreach (idx, c in levelsExpCfg) {
+    if (c.upToLevel <= fromLevel)
+      continue
+    let leftLevels = c.upToLevel - fromLevel
+    let applyLevels = min(leftExp / c.exp, leftLevels)
+    res.unlockedLevel += applyLevels
+    leftExp -= applyLevels * c.exp
+    if (applyLevels < leftLevels)
+      break
+    res.isLastLevel = isLastLevel || (idx + 1) not in levelsExpCfg
+    fromLevel = c.upToLevel
+  }
+
   return res
 }
 
@@ -38,16 +58,12 @@ function getResearchedUnit(debrData) {
   return reqExp > 0 && totalExp > 0 && (exp + totalExp) >= reqExp ? unit : null
 }
 
-let getBestUnitName = @(debrData) (debrData?.isSeparateSlots ?? false)
-  ? (debrData?.reward.unitName ?? "")
-  : (debrData?.unit.name ?? "")
+let getBestUnitName = @(debrData) debrData?.reward.unitName ?? ""
 
 function getUnitsSet(debrData) {
   let { unit = null } = debrData
   if (unit == null)
     return []
-  if (!debrData?.isSeparateSlots)
-    return [ unit ]
   
   return [ unit.__merge({ platoonUnits = [] }) ].extend(unit?.platoonUnits ?? [])
 }
@@ -66,8 +82,6 @@ function getUnit(unitName, debrData) {
   let { unit = null } = debrData
   if (unitName == null || unit == null)
     return null
-  if (!debrData?.isSeparateSlots)
-    return unit?.name == unitName ? unit : null
   
   let unitsList = [ unit ].extend(unit?.platoonUnits ?? [])
   return unitsList.findvalue(@(u) u?.name == unitName)?.__merge({ platoonUnits = [] })
@@ -99,8 +113,6 @@ function isUnitReceiveLevel(unitName, debrData) {
 }
 
 function isSlotReceiveLevel(unitName, debrData) {
-  if (!debrData?.isSeparateSlots)
-    return false
   let { exp = 0, nextLevelExp = 0 } = getUnit(unitName, debrData)?.slot
   let { totalExp = 0 } = getSlotExpByUnit(unitName, debrData)
   return nextLevelExp != 0
@@ -109,8 +121,8 @@ function isSlotReceiveLevel(unitName, debrData) {
 
 function getSlotLevelCfg(unit, debrData) {
   let { slot = {}, slotIdx = 0, name = "" } = unit
-  let { levelsExp = [] } = debrData?.slots
-  return slot.__merge({ levelsExp, slotIdx, name, isSlot = true })
+  let { levelsExp = [], levelsExpCfg = null } = debrData?.slots 
+  return slot.__merge({ levelsExp, levelsExpCfg, slotIdx, name, isSlot = true })
 }
 
 function getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeaponryCfg) {
@@ -143,39 +155,11 @@ function getSlotOrUnitLevelUnlockRewards(debrData) {
     let isUnitMaxLevel = nextLevelExp == 0
     if (isUnitMaxLevel || !isUnitReceiveLevel(name, debrData))
       continue
-    let { unlockedLevel } = getLevelProgress(unit, getUnitRewards(name, debrData)?.exp)
+    let { unlockedLevel } = getLevelProgress(unit, getUnitRewards(name, debrData)?.exp.totalExp ?? 0)
     if (getNextUnitLevelWithRewards(level + 1, unlockedLevel, modPresetCfg, unitWeaponry?[name]) > level)
       return { has = true, type = "arsenal", idx = slotIdx, name }
   }
   return { has = false }
-}
-
-function getNewPlatoonUnit(unitName, debrData) {
-  if (debrData?.isSeparateSlots ?? false)
-    return null 
-  let unit = getUnit(unitName, debrData)
-  if (unit == null)
-    return null
-  let { level = 0, exp = 0, levelsExp = [], lockedUnits = [] } = unit
-  let { totalExp = 0 } = getUnitRewards(unitName, debrData)?.exp
-  if (totalExp == 0 || lockedUnits.len() == 0)
-    return null
-  local pReqLevel = -1
-  local pUnitName = null
-  foreach (pUnit in lockedUnits) {
-    let { reqLevel = 0, name } = pUnit
-    if (reqLevel > level && (pUnitName == null || reqLevel < pReqLevel)) {
-      pReqLevel = reqLevel
-      pUnitName = name
-    }
-  }
-  if (pUnitName == null || levelsExp.len() < pReqLevel)
-    return null
-
-  local leftExp = totalExp + exp
-  for (local l = level; l < pReqLevel; l++)
-    leftExp -= levelsExp[l]
-  return leftExp >= 0 ? unit.__merge({ name = pUnitName }) : null
 }
 
 let sortUnitMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
@@ -200,7 +184,6 @@ return {
   getSlotLevelCfg
   getNextUnitLevelWithRewards
   getSlotOrUnitLevelUnlockRewards
-  getNewPlatoonUnit
 
   sortUnitMods
 }

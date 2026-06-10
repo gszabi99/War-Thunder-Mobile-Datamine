@@ -55,6 +55,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   moveArrows = {
+    canHide = false
     ctor = @(scale) shipMovementBlock(SHIP, scale)
     defTransform = mkLBPos([0, -hdpx(54)])
     editView = moveArrowsViewWithMode
@@ -62,6 +63,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   doll = {
+    canHide = false
     ctor = mkDollCtor(healthSize)
     defTransform = mkLBPos([debuffPosX + hdpx(30), hdpx(-38)])
     editView = mkDollEditView(healthSize)

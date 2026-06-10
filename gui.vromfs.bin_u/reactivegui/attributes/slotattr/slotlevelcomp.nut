@@ -42,14 +42,15 @@ let mkSlotLevel = @(level, imageSize, ovr = {}, bgOvr = {}) {
   }, bgOvr)
 }.__update(ovr)
 
-function mkSlotLevelBlock(slot, levels, override = {}) {
+function mkSlotLevelBlock(slot, levelsCfg, override = {}) {
   let { level = 0, exp = 0 } = slot
-  let isMaxLevel = level == levels.len()
-  let nextLevelExp = levels?[level].exp ?? 0
-  let percent = isMaxLevel
-      ? 1.0
-    : nextLevelExp > 0
-      ? 1.0 * clamp(exp, 0, nextLevelExp) / nextLevelExp
+  local nextLevelExp = "upToLevel" not in levelsCfg?[0] 
+    ? (levelsCfg?[level].exp ?? 0)
+    : (levelsCfg.findvalue(@(c) c.upToLevel > level)?.exp ?? 0)
+  local isMaxLevel = nextLevelExp == 0
+
+  let percent = isMaxLevel ? 1.0
+    : nextLevelExp > 0 ? 1.0 * clamp(exp, 0, nextLevelExp) / nextLevelExp
     : 0.0
   let imageSize = evenPx(30)
   return {

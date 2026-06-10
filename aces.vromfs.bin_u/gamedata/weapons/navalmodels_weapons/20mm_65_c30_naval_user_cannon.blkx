@@ -589,22 +589,21 @@
       "explosiveType": "tnt",
       "explosiveMass": 0.0062,
       "maxDistance": 8000.0,
-      "normalizationPreset": "heat",
-      "ricochetPreset": "he",
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "he_frag",
+      "bulletType": "ap",
       "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
+      "shellAnimation": "video/shells_animations/ap_shell.ivf",
       "dynamicKv": true,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
@@ -633,36 +632,27 @@
           ]
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.0,
+          "countPortion": 0.2,
           "segment": [
-            {
-              "radiusScale": 0.5,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                90.0
-              ],
-              "countPortion": 0.4
-            },
             {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [
-                91.0,
+                0.0,
                 180.0
               ],
-              "countPortion": 0.1
+              "countPortion": 0.5
             },
             {
               "radiusScale": 1.0,
@@ -670,19 +660,9 @@
               "damageScale": 1.0,
               "angles": [
                 181.0,
-                269.0
-              ],
-              "countPortion": 0.1
-            },
-            {
-              "radiusScale": 0.5,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                270.0,
                 359.0
               ],
-              "countPortion": 0.4
+              "countPortion": 0.5
             }
           ]
         }
@@ -1353,22 +1333,21 @@
         "explosiveType": "tnt",
         "explosiveMass": 0.0062,
         "maxDistance": 8000.0,
-        "normalizationPreset": "heat",
-        "ricochetPreset": "he",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "he_frag",
+        "bulletType": "ap",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "dynamicKv": true,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -1397,36 +1376,27 @@
             ]
           ]
         },
-        "pressureDamage": {
-          "damageType": "pressure"
-        },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.0,
+            "countPortion": 0.2,
             "segment": [
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  90.0
-                ],
-                "countPortion": 0.4
-              },
               {
                 "radiusScale": 1.0,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  91.0,
+                  0.0,
                   180.0
                 ],
-                "countPortion": 0.1
+                "countPortion": 0.5
               },
               {
                 "radiusScale": 1.0,
@@ -1434,19 +1404,9 @@
                 "damageScale": 1.0,
                 "angles": [
                   181.0,
-                  269.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  270.0,
                   359.0
                 ],
-                "countPortion": 0.4
+                "countPortion": 0.5
               }
             ]
           }
@@ -2130,22 +2090,21 @@
         "explosiveType": "tnt",
         "explosiveMass": 0.0062,
         "maxDistance": 8000.0,
-        "normalizationPreset": "heat",
-        "ricochetPreset": "he",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "he_frag",
+        "bulletType": "ap",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "dynamicKv": true,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -2174,36 +2133,27 @@
             ]
           ]
         },
-        "pressureDamage": {
-          "damageType": "pressure"
-        },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.0,
+            "countPortion": 0.2,
             "segment": [
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  90.0
-                ],
-                "countPortion": 0.4
-              },
               {
                 "radiusScale": 1.0,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  91.0,
+                  0.0,
                   180.0
                 ],
-                "countPortion": 0.1
+                "countPortion": 0.5
               },
               {
                 "radiusScale": 1.0,
@@ -2211,19 +2161,9 @@
                 "damageScale": 1.0,
                 "angles": [
                   181.0,
-                  269.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  270.0,
                   359.0
                 ],
-                "countPortion": 0.4
+                "countPortion": 0.5
               }
             ]
           }
@@ -2342,22 +2282,21 @@
         "explosiveType": "tnt",
         "explosiveMass": 0.0062,
         "maxDistance": 8000.0,
-        "normalizationPreset": "heat",
-        "ricochetPreset": "he",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "he_frag",
+        "bulletType": "ap",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "dynamicKv": true,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -2386,36 +2325,27 @@
             ]
           ]
         },
-        "pressureDamage": {
-          "damageType": "pressure"
-        },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.0,
+            "countPortion": 0.2,
             "segment": [
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  90.0
-                ],
-                "countPortion": 0.4
-              },
               {
                 "radiusScale": 1.0,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  91.0,
+                  0.0,
                   180.0
                 ],
-                "countPortion": 0.1
+                "countPortion": 0.5
               },
               {
                 "radiusScale": 1.0,
@@ -2423,19 +2353,9 @@
                 "damageScale": 1.0,
                 "angles": [
                   181.0,
-                  269.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  270.0,
                   359.0
                 ],
-                "countPortion": 0.4
+                "countPortion": 0.5
               }
             ]
           }
@@ -2726,22 +2646,21 @@
         "explosiveType": "tnt",
         "explosiveMass": 0.0062,
         "maxDistance": 8000.0,
-        "normalizationPreset": "heat",
-        "ricochetPreset": "he",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "he_frag",
+        "bulletType": "ap",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "dynamicKv": true,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.0,
@@ -2770,36 +2689,27 @@
             ]
           ]
         },
-        "pressureDamage": {
-          "damageType": "pressure"
-        },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.0,
+            "countPortion": 0.2,
             "segment": [
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  90.0
-                ],
-                "countPortion": 0.4
-              },
               {
                 "radiusScale": 1.0,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  91.0,
+                  0.0,
                   180.0
                 ],
-                "countPortion": 0.1
+                "countPortion": 0.5
               },
               {
                 "radiusScale": 1.0,
@@ -2807,19 +2717,9 @@
                 "damageScale": 1.0,
                 "angles": [
                   181.0,
-                  269.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  270.0,
                   359.0
                 ],
-                "countPortion": 0.4
+                "countPortion": 0.5
               }
             ]
           }

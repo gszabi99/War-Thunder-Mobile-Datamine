@@ -32,10 +32,12 @@ let mkUnitLevel = @(level, borderColor = unitExpColor) {
 }
 
 let mkUnitLevelBlock = @(unit, override = {}) function() {
-  let { level = 0, exp = 0, levelPreset = "" } = unit
+  let { level = 0, exp = 0, levelPreset = "", maxLevel = null } = unit
   let levels = campConfigs.get()?.unitLevels[levelPreset] ?? []
-  let isMaxLevel = (level == levels.len() && levels.len() != 0) || unit?.isUpgraded || unit?.isPremium
-  let nextLevelExp = levels?[level].exp ?? 0
+  let maxLevelExt = maxLevel ?? levels.len() 
+  let isMaxLevel = (level >= maxLevelExt && levels.len() != 0) || unit?.isUpgraded || unit?.isPremium
+  let nextLevelExp = maxLevel == null ? levels?[level].exp ?? 0 
+    : levels.findvalue(@(c) c.upToLevel > level)?.exp ?? 0
   let percent = isMaxLevel
       ? 1.0
     : nextLevelExp > 0

@@ -3,7 +3,7 @@ let { round, ceil } = require("math")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
-  platoonPlatesGap, unitPlateRatio, mkUnitInfo
+  platoonPlatesGap, unitPlateRatio, mkUnitInfo, unitPlateSmall
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
 let { getSpCostText } = require("%rGui/attributes/attrState.nut")
@@ -12,7 +12,7 @@ let levelUnlockPlateTime = 0.5
 let levelUnlockPlatesTotalTimeMax = 1.0
 let plateBlinkTime = 0.5
 
-let plateW = hdpx(350)
+let plateW = unitPlateSmall[0]
 let plateH = plateW * unitPlateRatio
 let platesGap = hdpx(20)
 let plateBlinkScale = 1.25
@@ -60,7 +60,7 @@ let mkLockedShade = @(isUnlocked, delay) !isUnlocked ? bgShade : bgShade.__merge
   ]
 })
 
-let contentMargin = [hdpx(10), hdpx(15)]
+let contentMargin = [hdpx(5), hdpx(10)]
 
 let mkTitleText = @(text) {
   maxWidth = plateW - contentMargin[1] * 2
@@ -121,7 +121,7 @@ let mkDebrPlateMod = @(mod, isUnlocked, unlockDelay) {
 
 
 let upgradePointsIcon = {
-  size = const [hdpx(110), hdpx(85)]
+  size = const [hdpx(90), hdpx(70)]
   vplace = ALIGN_CENTER
   pos = [pw(8), ph(14)]
   rendObj = ROBJ_IMAGE
@@ -132,7 +132,7 @@ let upgradePointsIcon = {
 let mkUpgradePointsText = @(sp) {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [pw(3), ph(14)]
+  pos = [pw(3), ph(10)]
   rendObj = ROBJ_TEXT
   text = "".concat("+", getSpCostText(sp))
 }.__update(fontMediumShaded)
@@ -155,4 +155,8 @@ return {
   mkDebrPlateUnit
   mkDebrPlateMod
   mkDebrPlatePoints
+
+  plateH
+  platesGap
+  scrollBoxMarginV
 }

@@ -3,7 +3,7 @@ let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg } = require("%rGui/components/modalWnd.nut")
@@ -26,7 +26,7 @@ let canOpen = Computed(@() !hasModalWindows.get() || canOpenSelectUnitWithModal.
 let shouldOpen = Computed(@() needOpen.get() && canOpen.get())
 
 function mkBgText(rect) {
-  let text = loc("slotbar/chooseSlot", { unit = loc(getUnitLocId(selectedUnitToSlot.get())) })
+  let text = loc("slotbar/chooseSlot", { unit = getUnitName(selectedUnitToSlot.get()) })
   let textSize = calc_str_box(text, fontSmall)
   
   let posX = rect.l - ((textSize[0] - (rect.r - rect.l)) / 2)

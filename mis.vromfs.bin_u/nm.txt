@@ -8625,3 +8625,6 @@ gameData/missions/templates/plane_templates/bridges/britain_bridges.blk
 uk_challenger_1_mk_3_gulf
 ussr_bmpt
 jp_type_90
+overallMul
+unitClassMul
+bomber

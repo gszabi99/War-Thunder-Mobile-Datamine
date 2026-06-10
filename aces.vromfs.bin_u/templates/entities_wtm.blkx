@@ -249,7 +249,8 @@
       "_replicate": true,
       "stats__damage": 0.0,
       "stats__score": 0.0,
-      "stats__flagsDelivered": 0
+      "stats__flagsDelivered": 0,
+      "stats__bomberKills": 0
     }
   },
   "wtm_server_player": {
@@ -321,6 +322,7 @@
     "game_mode_name": "",
     "mrank_min": 0,
     "mrank_max": 0,
+    "reward_mult_preset": "",
     "lap_time_fast": 0.0,
     "lap_time_faster": 0.0,
     "lap_time_fastest": 0.0,

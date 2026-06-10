@@ -889,7 +889,7 @@
         }
       },
       {
-        "trigger": "gunner1",
+        "trigger": "gunner0",
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
@@ -973,7 +973,7 @@
         }
       },
       {
-        "trigger": "gunner2",
+        "trigger": "gunner1",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_35",
@@ -1057,7 +1057,7 @@
         }
       },
       {
-        "trigger": "gunner3",
+        "trigger": "gunner1",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_36",
@@ -1141,7 +1141,7 @@
         }
       },
       {
-        "trigger": "gunner6",
+        "trigger": "gunner2",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_11",
@@ -1199,7 +1199,7 @@
         }
       },
       {
-        "trigger": "gunner7",
+        "trigger": "gunner2",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_12",
@@ -1257,7 +1257,7 @@
         }
       },
       {
-        "trigger": "gunner8",
+        "trigger": "gunner3",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_15",
@@ -1315,7 +1315,7 @@
         }
       },
       {
-        "trigger": "gunner9",
+        "trigger": "gunner3",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_16",
@@ -1373,7 +1373,7 @@
         }
       },
       {
-        "trigger": "gunner10",
+        "trigger": "gunner4",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_23",
@@ -1431,7 +1431,7 @@
         }
       },
       {
-        "trigger": "gunner11",
+        "trigger": "gunner4",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_24",
@@ -1489,7 +1489,7 @@
         }
       },
       {
-        "trigger": "gunner12",
+        "trigger": "gunner5",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_26",
@@ -1547,7 +1547,7 @@
         }
       },
       {
-        "trigger": "gunner13",
+        "trigger": "gunner5",
         "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_25",
@@ -1605,7 +1605,7 @@
         }
       },
       {
-        "trigger": "gunner14",
+        "trigger": "gunner6",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
@@ -1662,7 +1662,7 @@
         }
       },
       {
-        "trigger": "gunner15",
+        "trigger": "gunner7",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
@@ -1719,7 +1719,7 @@
         }
       },
       {
-        "trigger": "gunner16",
+        "trigger": "gunner8",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_07",
@@ -1776,7 +1776,7 @@
         }
       },
       {
-        "trigger": "gunner17",
+        "trigger": "gunner9",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_08",
@@ -1833,7 +1833,7 @@
         }
       },
       {
-        "trigger": "gunner18",
+        "trigger": "gunner10",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_17",
@@ -1890,7 +1890,7 @@
         }
       },
       {
-        "trigger": "gunner19",
+        "trigger": "gunner11",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_18",
@@ -1947,7 +1947,7 @@
         }
       },
       {
-        "trigger": "gunner20",
+        "trigger": "gunner12",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_19",
@@ -2004,7 +2004,7 @@
         }
       },
       {
-        "trigger": "gunner21",
+        "trigger": "gunner13",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_20",
@@ -2061,7 +2061,7 @@
         }
       },
       {
-        "trigger": "gunner22",
+        "trigger": "gunner14",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_21",
@@ -2118,7 +2118,7 @@
         }
       },
       {
-        "trigger": "gunner23",
+        "trigger": "gunner15",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_22",
@@ -2175,7 +2175,7 @@
         }
       },
       {
-        "trigger": "gunner24",
+        "trigger": "gunner16",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_29",
@@ -2232,7 +2232,7 @@
         }
       },
       {
-        "trigger": "gunner25",
+        "trigger": "gunner17",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_30",
@@ -2289,7 +2289,7 @@
         }
       },
       {
-        "trigger": "gunner26",
+        "trigger": "gunner18",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_37",
@@ -2346,7 +2346,7 @@
         }
       },
       {
-        "trigger": "gunner27",
+        "trigger": "gunner19",
         "triggerGroup": "extra_gun_2",
         "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_38",
@@ -2403,7 +2403,7 @@
         }
       },
       {
-        "trigger": "gunner28",
+        "trigger": "gunner20",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_09",
@@ -2459,7 +2459,7 @@
         }
       },
       {
-        "trigger": "gunner29",
+        "trigger": "gunner21",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_10",
@@ -2515,7 +2515,7 @@
         }
       },
       {
-        "trigger": "gunner30",
+        "trigger": "gunner22",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_27",
@@ -2591,7 +2591,7 @@
         }
       },
       {
-        "trigger": "gunner31",
+        "trigger": "gunner23",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_28",
@@ -2667,7 +2667,7 @@
         }
       },
       {
-        "trigger": "gunner32",
+        "trigger": "gunner24",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_13",
@@ -2725,7 +2725,7 @@
         }
       },
       {
-        "trigger": "gunner33",
+        "trigger": "gunner25",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",
@@ -2783,7 +2783,7 @@
         }
       },
       {
-        "trigger": "gunner34",
+        "trigger": "gunner26",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_31",
@@ -2841,7 +2841,7 @@
         }
       },
       {
-        "trigger": "gunner35",
+        "trigger": "gunner27",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_32",
@@ -2899,7 +2899,7 @@
         }
       },
       {
-        "trigger": "gunner36",
+        "trigger": "gunner28",
         "triggerGroup": "torpedoes",
         "external": true,
         "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -2935,7 +2935,7 @@
         }
       },
       {
-        "trigger": "gunner37",
+        "trigger": "gunner29",
         "triggerGroup": "torpedoes",
         "external": true,
         "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -2972,7 +2972,7 @@
         }
       },
       {
-        "trigger": "gunner38",
+        "trigger": "gunner30",
         "triggerGroup": "torpedoes",
         "external": true,
         "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -3109,7 +3109,7 @@
               }
             },
             {
-              "trigger": "gunner1",
+              "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_04",
@@ -3193,7 +3193,7 @@
               }
             },
             {
-              "trigger": "gunner2",
+              "trigger": "gunner1",
               "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_35",
@@ -3277,7 +3277,7 @@
               }
             },
             {
-              "trigger": "gunner3",
+              "trigger": "gunner1",
               "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_36",
@@ -3361,7 +3361,7 @@
               }
             },
             {
-              "trigger": "gunner6",
+              "trigger": "gunner2",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_11",
@@ -3419,7 +3419,7 @@
               }
             },
             {
-              "trigger": "gunner7",
+              "trigger": "gunner2",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_12",
@@ -3477,7 +3477,7 @@
               }
             },
             {
-              "trigger": "gunner8",
+              "trigger": "gunner3",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_15",
@@ -3535,7 +3535,7 @@
               }
             },
             {
-              "trigger": "gunner9",
+              "trigger": "gunner3",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_16",
@@ -3593,7 +3593,7 @@
               }
             },
             {
-              "trigger": "gunner10",
+              "trigger": "gunner4",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_23",
@@ -3651,7 +3651,7 @@
               }
             },
             {
-              "trigger": "gunner11",
+              "trigger": "gunner4",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_24",
@@ -3709,7 +3709,7 @@
               }
             },
             {
-              "trigger": "gunner12",
+              "trigger": "gunner5",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_26",
@@ -3767,7 +3767,7 @@
               }
             },
             {
-              "trigger": "gunner13",
+              "trigger": "gunner5",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_25",
@@ -3825,7 +3825,7 @@
               }
             },
             {
-              "trigger": "gunner14",
+              "trigger": "gunner6",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_01",
@@ -3882,7 +3882,7 @@
               }
             },
             {
-              "trigger": "gunner15",
+              "trigger": "gunner7",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_02",
@@ -3939,7 +3939,7 @@
               }
             },
             {
-              "trigger": "gunner16",
+              "trigger": "gunner8",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_07",
@@ -3996,7 +3996,7 @@
               }
             },
             {
-              "trigger": "gunner17",
+              "trigger": "gunner9",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_08",
@@ -4053,7 +4053,7 @@
               }
             },
             {
-              "trigger": "gunner18",
+              "trigger": "gunner10",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_17",
@@ -4110,7 +4110,7 @@
               }
             },
             {
-              "trigger": "gunner19",
+              "trigger": "gunner11",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_18",
@@ -4167,7 +4167,7 @@
               }
             },
             {
-              "trigger": "gunner20",
+              "trigger": "gunner12",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_19",
@@ -4224,7 +4224,7 @@
               }
             },
             {
-              "trigger": "gunner21",
+              "trigger": "gunner13",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_20",
@@ -4281,7 +4281,7 @@
               }
             },
             {
-              "trigger": "gunner22",
+              "trigger": "gunner14",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_21",
@@ -4338,7 +4338,7 @@
               }
             },
             {
-              "trigger": "gunner23",
+              "trigger": "gunner15",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_22",
@@ -4395,7 +4395,7 @@
               }
             },
             {
-              "trigger": "gunner24",
+              "trigger": "gunner16",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_29",
@@ -4452,7 +4452,7 @@
               }
             },
             {
-              "trigger": "gunner25",
+              "trigger": "gunner17",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_30",
@@ -4509,7 +4509,7 @@
               }
             },
             {
-              "trigger": "gunner26",
+              "trigger": "gunner18",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_37",
@@ -4566,7 +4566,7 @@
               }
             },
             {
-              "trigger": "gunner27",
+              "trigger": "gunner19",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_38",
@@ -4623,7 +4623,7 @@
               }
             },
             {
-              "trigger": "gunner28",
+              "trigger": "gunner20",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_09",
@@ -4679,7 +4679,7 @@
               }
             },
             {
-              "trigger": "gunner29",
+              "trigger": "gunner21",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_10",
@@ -4735,7 +4735,7 @@
               }
             },
             {
-              "trigger": "gunner30",
+              "trigger": "gunner22",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_27",
@@ -4811,7 +4811,7 @@
               }
             },
             {
-              "trigger": "gunner31",
+              "trigger": "gunner23",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_28",
@@ -4887,7 +4887,7 @@
               }
             },
             {
-              "trigger": "gunner32",
+              "trigger": "gunner24",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_13",
@@ -4945,7 +4945,7 @@
               }
             },
             {
-              "trigger": "gunner33",
+              "trigger": "gunner25",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_14",
@@ -5003,7 +5003,7 @@
               }
             },
             {
-              "trigger": "gunner34",
+              "trigger": "gunner26",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_31",
@@ -5061,7 +5061,7 @@
               }
             },
             {
-              "trigger": "gunner35",
+              "trigger": "gunner27",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_32",
@@ -5119,7 +5119,7 @@
               }
             },
             {
-              "trigger": "gunner36",
+              "trigger": "gunner28",
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -5155,7 +5155,7 @@
               }
             },
             {
-              "trigger": "gunner37",
+              "trigger": "gunner29",
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -5192,7 +5192,7 @@
               }
             },
             {
-              "trigger": "gunner38",
+              "trigger": "gunner30",
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -5330,7 +5330,7 @@
               }
             },
             {
-              "trigger": "gunner1",
+              "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_04",
@@ -5414,7 +5414,7 @@
               }
             },
             {
-              "trigger": "gunner2",
+              "trigger": "gunner1",
               "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_35",
@@ -5498,7 +5498,7 @@
               }
             },
             {
-              "trigger": "gunner3",
+              "trigger": "gunner1",
               "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_45_41st_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_36",
@@ -5582,7 +5582,7 @@
               }
             },
             {
-              "trigger": "gunner6",
+              "trigger": "gunner2",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_11",
@@ -5640,7 +5640,7 @@
               }
             },
             {
-              "trigger": "gunner7",
+              "trigger": "gunner2",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_12",
@@ -5698,7 +5698,7 @@
               }
             },
             {
-              "trigger": "gunner8",
+              "trigger": "gunner3",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_15",
@@ -5756,7 +5756,7 @@
               }
             },
             {
-              "trigger": "gunner9",
+              "trigger": "gunner3",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_16",
@@ -5814,7 +5814,7 @@
               }
             },
             {
-              "trigger": "gunner10",
+              "trigger": "gunner4",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_23",
@@ -5872,7 +5872,7 @@
               }
             },
             {
-              "trigger": "gunner11",
+              "trigger": "gunner4",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_24",
@@ -5930,7 +5930,7 @@
               }
             },
             {
-              "trigger": "gunner12",
+              "trigger": "gunner5",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_26",
@@ -5988,7 +5988,7 @@
               }
             },
             {
-              "trigger": "gunner13",
+              "trigger": "gunner5",
               "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/203mm_45_type_41_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_25",
@@ -6046,7 +6046,7 @@
               }
             },
             {
-              "trigger": "gunner14",
+              "trigger": "gunner6",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_01",
@@ -6103,7 +6103,7 @@
               }
             },
             {
-              "trigger": "gunner15",
+              "trigger": "gunner7",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_02",
@@ -6160,7 +6160,7 @@
               }
             },
             {
-              "trigger": "gunner16",
+              "trigger": "gunner8",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_07",
@@ -6217,7 +6217,7 @@
               }
             },
             {
-              "trigger": "gunner17",
+              "trigger": "gunner9",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_08",
@@ -6274,7 +6274,7 @@
               }
             },
             {
-              "trigger": "gunner18",
+              "trigger": "gunner10",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_17",
@@ -6331,7 +6331,7 @@
               }
             },
             {
-              "trigger": "gunner19",
+              "trigger": "gunner11",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_18",
@@ -6388,7 +6388,7 @@
               }
             },
             {
-              "trigger": "gunner20",
+              "trigger": "gunner12",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_19",
@@ -6445,7 +6445,7 @@
               }
             },
             {
-              "trigger": "gunner21",
+              "trigger": "gunner13",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_20",
@@ -6502,7 +6502,7 @@
               }
             },
             {
-              "trigger": "gunner22",
+              "trigger": "gunner14",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_21",
@@ -6559,7 +6559,7 @@
               }
             },
             {
-              "trigger": "gunner23",
+              "trigger": "gunner15",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_22",
@@ -6616,7 +6616,7 @@
               }
             },
             {
-              "trigger": "gunner24",
+              "trigger": "gunner16",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_29",
@@ -6673,7 +6673,7 @@
               }
             },
             {
-              "trigger": "gunner25",
+              "trigger": "gunner17",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_30",
@@ -6730,7 +6730,7 @@
               }
             },
             {
-              "trigger": "gunner26",
+              "trigger": "gunner18",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_37",
@@ -6787,7 +6787,7 @@
               }
             },
             {
-              "trigger": "gunner27",
+              "trigger": "gunner19",
               "triggerGroup": "extra_gun_2",
               "blk": "gameData/Weapons/navalModels_weapons/120mm_45_3rd_year_type_ww1_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_38",
@@ -6844,7 +6844,7 @@
               }
             },
             {
-              "trigger": "gunner28",
+              "trigger": "gunner20",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_09",
@@ -6900,7 +6900,7 @@
               }
             },
             {
-              "trigger": "gunner29",
+              "trigger": "gunner21",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_10",
@@ -6956,7 +6956,7 @@
               }
             },
             {
-              "trigger": "gunner30",
+              "trigger": "gunner22",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_27",
@@ -7032,7 +7032,7 @@
               }
             },
             {
-              "trigger": "gunner31",
+              "trigger": "gunner23",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_28",
@@ -7108,7 +7108,7 @@
               }
             },
             {
-              "trigger": "gunner32",
+              "trigger": "gunner24",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_13",
@@ -7166,7 +7166,7 @@
               }
             },
             {
-              "trigger": "gunner33",
+              "trigger": "gunner25",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_14",
@@ -7224,7 +7224,7 @@
               }
             },
             {
-              "trigger": "gunner34",
+              "trigger": "gunner26",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_31",
@@ -7282,7 +7282,7 @@
               }
             },
             {
-              "trigger": "gunner35",
+              "trigger": "gunner27",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/navalModels_weapons/80mm_40_3rd_year_type_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_32",
@@ -7340,7 +7340,7 @@
               }
             },
             {
-              "trigger": "gunner36",
+              "trigger": "gunner28",
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -7376,7 +7376,7 @@
               }
             },
             {
-              "trigger": "gunner37",
+              "trigger": "gunner29",
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -7413,7 +7413,7 @@
               }
             },
             {
-              "trigger": "gunner38",
+              "trigger": "gunner30",
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/jp_450mm_type38_no2b_torpedo.blk",
@@ -7593,7 +7593,7 @@
   "smokeWall": {
     "distance": 450.0,
     "speed": 350.0,
-    "height": 0.0,
+    "height": 20.0,
     "length": 450.0,
     "fxOffset": 65.0
   },

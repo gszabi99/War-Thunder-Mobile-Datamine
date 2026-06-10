@@ -6,8 +6,7 @@ let { tostring_r } = require("%sqstd/string.nut")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { kwarg } = require("%sqstd/functools.nut")
 let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle,
-  getCampaignOrig
+let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
@@ -38,9 +37,9 @@ let allUnitsRanks = Computed(function() {
   let res = {}
   foreach (u in allUnits) {
     let { campaign, mRank, name, platoonUnits } = u
-    addToCampRank(res, getCampaignOrig(campaign), getTagsUnitName(name), mRank)
+    addToCampRank(res, campaign, getTagsUnitName(name), mRank)
     foreach (p in platoonUnits)
-      addToCampRank(res, getCampaignOrig(campaign), getTagsUnitName(p.name), mRank)
+      addToCampRank(res, campaign, getTagsUnitName(p.name), mRank)
   }
   let tagsBlk = get_unittags_blk()
   return res.map(@(list) addSupportUnits(list.filter(@(_, u) u in tagsBlk)))
@@ -80,7 +79,7 @@ let missingUnitResourcesByRank = Computed(function(prev) {
 
 function getMissingUnitsForRank(campaign, mRank, missingList) {
   let res = {}
-  foreach (rank, list in missingList?[getCampaignOrig(campaign)] ?? {})
+  foreach (rank, list in missingList?[campaign] ?? {})
     if (rank <= mRank)
       res.__update(list)
   return res

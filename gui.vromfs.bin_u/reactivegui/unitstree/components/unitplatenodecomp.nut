@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitResearchPrice,
   mkUnitSelectedGlow, unitPlateTiny, mkIcon
@@ -62,7 +62,7 @@ let mkTreeNodesUnitPlateBuy = @(unit){
   children = [
     mkUnitBg(unit)
     mkUnitImage(unit)
-    mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+    mkUnitTexts(unit, getUnitName(unit.name))
     {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
@@ -82,7 +82,7 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, Watched(true))
           mkUnitImage(unit)
-          mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+          mkUnitTexts(unit, getUnitName(unit.name))
           {
             size = flex()
             valign = ALIGN_BOTTOM

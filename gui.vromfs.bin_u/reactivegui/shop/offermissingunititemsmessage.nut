@@ -19,7 +19,7 @@ let { mkViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { balanceWp, balanceGold, balance } = require("%appGlobals/currenciesState.nut")
@@ -57,9 +57,7 @@ let defaultPurchaseDesc = "msg/purchaseDesc/toolKit"
 let TIMERS_SHOWING_MISS_ITEMS = "timersShowingMissItemsWnd"
 
 let spawnsByCampaign = {
-  tanks_new = { maxSpawns = 3, maxSpawnsBySlot = 2 },
   tanks = { maxSpawns = 3, maxSpawnsBySlot = 2 },
-  ships_new = { maxSpawns = 1, maxSpawnsBySlot = 1 },
   air = { maxSpawns = 8, maxSpawnsBySlot = 2 },
 }
 
@@ -100,7 +98,7 @@ let titleWnd = @(unit, itemId){
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  text = unit ? loc($"header/notEnough/{itemId}", {unitName = getPlatoonOrUnitName(unit, loc)?? ""})
+  text = unit ? loc($"header/notEnough/{itemId}", { unitName = getUnitName(unit) })
     : loc($"header/notEnough/common/{itemId}")
 }.__update(fontMedium)
 

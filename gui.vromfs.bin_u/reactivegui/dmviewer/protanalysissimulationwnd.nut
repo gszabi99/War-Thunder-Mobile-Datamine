@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
-from "%appGlobals/unitPresentation.nut" import getUnitLocId
+from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%rGui/cursor.nut" import needShowCursor, cursor
 from "%rGui/navState.nut" import registerScene
 from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
@@ -42,7 +42,7 @@ let threatInfoComp = {
   children = [
     mkInfoStr(null, @(_) loc("protection_analysis/attacker"),
       { margin = [0, 0, hdpx(24), 0] }.__update(fontTinyAccentedShaded))
-    mkInfoStr(threatUnit, @(v) loc(getUnitLocId(v?.name ?? "")))
+    mkInfoStr(threatUnit, @(v) getUnitName(v?.name ?? ""))
     mkInfoStr(threatBulletData, @(v) getAmmoNameShortText(v?.bSet))
     mkInfoStr(fireDistance, @(v) " ".concat(v, loc("measureUnits/meters_alt")))
   ]

@@ -7,7 +7,7 @@ let { campConfigs, abTests, curCampaign } = require("%appGlobals/pServer/campaig
 let battleRentInfo = sharedWatched("battleRentInfo", @() null)
 
 let rentals = Computed(@() servProfile.get()?.rentals ?? {})
-let rentalCd = Computed(@() abTests.get()?.rentShips == "true" && curCampaign.get() == "ships_new" ? 23 * 60 * 60
+let rentalCd = Computed(@() abTests.get()?.rentShips == "true" && curCampaign.get() == "ships" ? 23 * 60 * 60
   : (campConfigs.get()?.campaignCfg.rentCooldown ?? 0))
 
 

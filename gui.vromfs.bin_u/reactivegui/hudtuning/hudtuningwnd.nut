@@ -6,12 +6,15 @@ let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
 let { isTuningOpened, tuningUnitType, tuningTransform, transformInProgress, selectedId,
   allTuningUnitTypes, closeTuning, tuningOptions
 } = require("%rGui/hudTuning/hudTuningState.nut")
-let { optScale } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
+let { optScale, getElemVisible } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
+let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
 
 let manipulator = require("%rGui/hudTuning/hudTuningManipulator.nut")
 let hudTuningOptions = require("%rGui/hudTuning/hudTuningOptions.nut")
 let hudTuningElemOptions = require("%rGui/hudTuning/hudTuningElemOptions.nut")
 
+
+let hiddenIconSize = evenPx(30)
 let lineWidth = evenPx(4)
 let lineColor = 0xC01860C0
 let pointColor = 0xFF2080FF
@@ -31,6 +34,24 @@ let point = {
     color = pointColor
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
+  }
+}
+
+let hiddenBadge = {
+  pos = [0, (hiddenIconSize / 2).tointeger()]
+  rendObj = ROBJ_BOX
+  fillColor = pointColor
+  borderColor = hudWhiteColor
+  borderWidth = hdpx(2)
+  padding = hdpx(5)
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_BOTTOM
+  children = {
+    size = hiddenIconSize
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#hud_replay_toggle.svg:{hiddenIconSize}:{hiddenIconSize}:P")
+    color = hudWhiteColor
+    keepAspect = true
   }
 }
 
@@ -55,29 +76,40 @@ let selectBorder = {
 
 
 function mkHudTuningElem(cfg) {
-  let { id, editView, editViewKey, defTransform = {}, isVisibleInEditor = null, isVisible = null, hasScale } = cfg
+  let { id, editView, editViewKey, defTransform = {}, isVisibleInEditor = null, isVisible = null, hasScale,
+    canHide = false } = cfg
   let transform = Computed(@() (selectedId.get() == id ? transformInProgress.get() : null)
     ?? tuningTransform.get()?[id]
     ?? defTransform)
   let isSelected = Computed(@() selectedId.get() == id)
+  let isElemVisible = !canHide ? Watched(true)
+    : Computed(@() getElemVisible(tuningOptions.get(), id))
 
   let viewWithBorder = type(editView) == "function"
     ? @() {
-        watch = [isSelected, tuningOptions]
+        watch = [isSelected, tuningOptions, isElemVisible]
         key = editViewKey
         children = [
-          editView.getfuncinfos().parameters.len() == 2
-            ? editView(tuningOptions.get())
-            : editView(tuningOptions.get(), id)
+          {
+            opacity = isElemVisible.get() ? 1 : 0.5
+            children = editView.getfuncinfos().parameters.len() == 2
+              ? editView(tuningOptions.get())
+              : editView(tuningOptions.get(), id)
+          }
           isSelected.get() ? selectBorder : null
+          isElemVisible.get() ? null : hiddenBadge
         ]
       }
     : @() {
-        watch = isSelected
+        watch = [isSelected, isElemVisible]
         key = editViewKey
         children = [
-          editView
+          {
+            opacity = isElemVisible.get() ? 1 : 0.5
+            children = editView
+          }
           isSelected.get() ? selectBorder : null
+          isElemVisible.get() ? null : hiddenBadge
         ]
       }
 

@@ -13,7 +13,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
 let { mkUnitBg, bgUnit, mkUnitImage, mkUnitTexts, mkUnitPlateBorder, mkUnitLock, mkUnitSelectedGlow
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -65,7 +65,7 @@ let mkUnitPlate = @(unit) {
     mkUnitBg(unit)
     mkUnitSelectedGlow(unit, Watched(false))
     mkUnitImage(unit)
-    mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+    mkUnitTexts(unit, getUnitName(unit.name))
     mkUnitLock(unit, false)
     mkUnitPlateBorder(Watched(false))
   ]
@@ -302,7 +302,7 @@ let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
       mkUnitBg(unit)
       mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
       mkUnitImage(unit)
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+      mkUnitTexts(unit, getUnitName(unit.name))
       mkUnitLock(unit, false)
       mkUnitPlateBorder(isSelected)
     ]

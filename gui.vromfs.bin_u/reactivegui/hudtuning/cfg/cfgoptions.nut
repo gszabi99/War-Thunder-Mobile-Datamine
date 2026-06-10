@@ -73,6 +73,16 @@ let optScale = {
   }
 }
 
+let optVisible = {
+  id = "visible"
+  locId = "options/visible"
+  ctrlType = OCT_CHECKBOX
+  isShort = true
+  getValue = @(options, id) options?.visible[id] ?? tuningStateDefault.options.visible
+  setValue = mkSetValue("visible")
+  icon = "hud_replay_toggle.svg"
+}
+
 let getTextWidth = @(options, id) options?.textWidth[id] ?? tuningStateDefault.options.textWidth
 
 let optTextWidth = {
@@ -154,7 +164,8 @@ let optBulletsRight = {
   valToString = @(v) loc(v ? "side/right" : "side/left")
 }
 
-let allElemOptionsList = [ optScale ]
+let allElemOptionsList = [ optScale, optVisible ]
+let getElemVisible = @(options, id) optVisible.getValue(options, id)
 let hasAnyOfAllElemOptions = Watched(false)
 
 let updateHasAllElemsOptions = @() hasAnyOfAllElemOptions.set(
@@ -185,4 +196,7 @@ return {
 
   optBulletsRight
   isBulletsRight
+
+  optVisible
+  getElemVisible
 }

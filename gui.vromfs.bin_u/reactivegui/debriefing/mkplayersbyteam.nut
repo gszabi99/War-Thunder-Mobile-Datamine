@@ -5,13 +5,12 @@ let { genBotDecorators } = require("%appGlobals/botUtils.nut")
 let { getSortAndFillPlayerPlacesFunc } = require("%rGui/mpStatistics/playersSortFunc.nut")
 
 function mkPlayersByTeam(debrData) {
-  let { gameType = 0, campaign = "", localTeam = 0, isSeparateSlots = false,
-    players = {}, playersCommonStats = {} } = debrData
+  let { gameType = 0, campaign = "", localTeam = 0, players = {}, playersCommonStats = {} } = debrData
   let localUserName = debrData?.userName ?? ""
   let mplayersList = players.values().map(function(p) {
     let { userId, name, isLocal = 0, isBot, aircraftName = "", damage = 0.0, dmgScoreBonus = 0.0 } = p
     let userIdStr = userId.tostring()
-    let { level = 1, starLevel = 0, hasPremium = false, decorators = {}, mainUnitName = "",
+    let { level = 1, starLevel = 0, hasPremium = false, decorators = {},
       units = {}, hasVip = false, hasPrem = false
     } = playersCommonStats?[userIdStr]
 
@@ -25,9 +24,7 @@ function mkPlayersByTeam(debrData) {
     if (isBot)
       botDecorators = genBotDecorators(namePrepared)
 
-    let unitName = isSeparateSlots ? aircraftName : mainUnitName
-
-    let unit = units?[unitName]
+    let unit = units?[aircraftName]
     let { unitClass = "", mRank = null } = unit
     let isUnitCollectible = unit?.isCollectible ?? false
     let isUnitPremium = unit?.isPremium ?? false
@@ -46,7 +43,7 @@ function mkPlayersByTeam(debrData) {
       hasPremium
       hasVip
       hasPrem
-      unitName
+      unitName = aircraftName
       isUnitCollectible
       isUnitPremium
       isUnitUpgraded

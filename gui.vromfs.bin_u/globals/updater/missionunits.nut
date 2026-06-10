@@ -11,9 +11,7 @@ import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 
 let campaignToBotsPreset = {
   ships      = "allowedShips"
-  ships_new  = "allowedShips"
   tanks      = "allowedTanks"
-  tanks_new  = "allowedTanks"
   air        = "allowedAircrafts"
 }
 

@@ -23,7 +23,7 @@ let playersByTeam = Computed(function() {
         
         let { id, userId, name, isBot, aircraftName = "", ownedUnitName = "" } = p
         let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
-        let { damage = 0.0, score = 0.0, flagsDelivered = 0 } = playersDamageStats.get()?[id]
+        let { damage = 0.0, score = 0.0, flagsDelivered = 0, bomberKills = 0 } = playersDamageStats.get()?[id]
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
           hasVip = false, hasPrem = false } = !isBot
             ? playersCommonStats.get()?[userId.tointeger()]
@@ -40,6 +40,7 @@ let playersByTeam = Computed(function() {
           damage
           score
           flagsDelivered
+          bomberKills
           level
           starLevel
           hasPremium

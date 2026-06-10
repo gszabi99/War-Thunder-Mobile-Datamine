@@ -19,6 +19,7 @@ let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyS
 
 return {
   hitCamera = {
+    canHide = false
     ctor = hitCamera
     defTransform = mkRTPos([0, 0])
     editView = hitCameraCommonEditView
@@ -57,6 +58,7 @@ return {
     : null
 
   doll = {
+    canHide = false
     ctor = mkDollCtor(defHealthSize)
     defTransform = mkLBPos([dollPosX, hdpx(-38)])
     editView = mkDollEditView(defHealthSize)

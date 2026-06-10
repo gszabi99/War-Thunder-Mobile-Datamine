@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_mission_time } = require("mission")
 let { eventbus_send } = require("eventbus")
-let { round, sqrt } = require("math")
 let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -18,14 +17,13 @@ let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCu
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("%rGui/respawn/respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems,
-  hasRespawnSeparateSlots, hasPredefinedReward, dailyBonus
+  hasPredefinedReward, dailyBonus, respawnsLeft, respawnsTotalInitial
 } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
-} = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { collectibleTextColor, premiumTextColor, markTextColor, badTextColor2
-} = require("%rGui/style/stdColors.nut")
+let { markTextColor, badTextColor2, textColor, commonTextColor } = require("%rGui/style/stdColors.nut")
 let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
+let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { textButtonCommon, mkCustomButton, iconButtonPrimary, mkButtonTextMultiline } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, BATTLE, INACTIVE } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoardType, scoreBoardCfgByType, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
@@ -35,13 +33,11 @@ let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow, mkPlateText,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
-let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { respawnMap, visibleRespawnBases } = require("%rGui/respawn/respawnMap.ui.nut")
 let respawnBullets = require("%rGui/respawn/respawnBullets.nut")
 let respawnAirWeaponry = require("%rGui/respawn/respawnAirWeaponry.nut")
-let { bg, headerText, headerHeight, header, gap, headerMarquee,
-  contentOffset, unitListHeight, skinPadding
+let { bg, headerText, headerHeight, header, gap, contentOffset, unitListHeight, skinPadding
 } = require("%rGui/respawn/respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
@@ -59,13 +55,17 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { mkTooltipText } = require("%rGui/tooltip.nut")
 
+
+let MAX_DEF_SLOTS = 4
 
 let mapMaxSize = hdpx(610)
-let levelHolderSize = evenPx(84)
 let unitListGradientSize = [gap, saBorders[1]]
-let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 let scoreIconSize = hdpxi(30)
+let tooltipIconSize = hdpxi(32)
+
+let lockColor = 0xFF9C9EA0
 
 let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.get().len() > 1)
 let showLowBulletsWarning = Watched(true)
@@ -120,7 +120,7 @@ function onSlotClick(slot) {
     playerSelectedSlotIdx.set(slot.id)
     return
   }
-  let name = colorize(markTextColor, loc(getUnitLocId(slot.name)))
+  let name = colorize(markTextColor, getUnitName(slot.name))
   openMsgBox((slot?.reqLevel ?? 0) > 0 ? { text  = loc("msg/requirePlatoonLevel", { level = slot.reqLevel, name }) }
     : slot?.isLocked ? { text  = loc("msg/requireUnlockByQuests", { name }) }
     : { text  = loc("msg/unitAlreadyUsedInBattle", { name }) })
@@ -166,8 +166,7 @@ function mkSlotPlate(slot, baseUnit) {
   let isSelected = Computed(@() selSlot.get()?.id == slot.id)
   let unit = baseUnit.__merge(slot)
   let { canSpawn, isSpawnBySpare, mRank } = slot
-  return @() {
-    watch = hasRespawnSeparateSlots
+  return {
     key = slot
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
@@ -190,7 +189,7 @@ function mkSlotPlate(slot, baseUnit) {
               ? unitSlotLockedByQuests
             : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
-          unit?.hasDailyBonus || (!hasRespawnSeparateSlots.get() && baseUnit?.hasDailyBonus)
+          unit?.hasDailyBonus
             ? mkUnitDailyBonus(Computed(@() !hasPredefinedReward.get()),
               Computed(@() dailyBonus.get()?.wpMul ?? 1),
               Computed(@() dailyBonus.get()?.expMul ?? 1),
@@ -202,69 +201,156 @@ function mkSlotPlate(slot, baseUnit) {
   }
 }
 
-let levelBg = mkLevelBg({
-  ovr = { size = [ rhombusSize, rhombusSize ] }
-  childOvr = { borderColor = unitExpColor }
-})
+let mkRespToolipText = @(text) mkTooltipText(text).__update(fontTinyAccented, { color = commonTextColor })
 
-function slotsBlockTitle(unit, isSeparateSlots) {
-  if (isSeparateSlots) {
-    let { unitType = "" } = unit
-    let text = unitType == "" ? "" : loc($"respawn/squad/{unitType}")
-    return header({
-      valign = ALIGN_CENTER
-      children = headerText(text)
-    })
-  }
-  let { name, level = 0, isCollectible = false, isPremium = false, isUpgraded = false } = unit
-  let isElite = isPremium || isUpgraded
-  let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
-  let textLength = calc_str_box(text, fontTinyAccented)[0]
-  let textWidth = unitPlateSmall[0] - levelHolderSize
-  let textColorOvr = isCollectible ? { color = collectibleTextColor }
-    : isElite ? { color = premiumTextColor }
-    : {}
-  let textComp = headerText(text).__update(
-    textLength > textWidth ? headerMarquee(textWidth - hdpx(20)) : {},
-    { margin = const [0, hdpx(20), 0, 0] },
-    textColorOvr
-  )
-  return header({
-    valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap
+let mkIcon = @(image) {
+  size = tooltipIconSize
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{image}:{tooltipIconSize}:p")
+  keepAspect = KEEP_ASPECT_FIT
+}
+let tankIcon = mkIcon("ui/gameuiskin#unit_tank.svg")
+let spareIcon = mkIcon("ui/gameuiskin#shop_consumables_spare.svg")
+let crossIcon = mkIcon("ui/gameuiskin#mark_cross.svg")
+let lockIcon = mkIcon("ui/gameuiskin#lock_icon.svg").__update({ color = lockColor })
+
+let tankStackIcon = mkIcon("ui/gameuiskin#unit_tank_stack.svg").__update({ size = hdpxi(26) })
+let spareStackIcon = mkIcon("ui/gameuiskin#shop_consumables_spare_stack.svg")
+let crossStackIcon = mkIcon("ui/gameuiskin#mark_cross_stack.svg")
+let lockStackIcon = mkIcon("ui/gameuiskin#lock_icon_stack.svg").__update({ color = lockColor })
+
+let mkTooltipRow = @(iconComp, text) {
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(5)
+  children = [
+    iconComp
+    mkRespToolipText(text)
+  ]
+}
+
+function tooltipContentCtor() {
+  sendPlayerActivityToServer()
+  let res = {
+    flow = FLOW_VERTICAL
     children = [
-      level < 0 ? null : {
-        size = [ levelHolderSize, levelHolderSize ]
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = [
-          levelBg
-          {
-            rendObj = ROBJ_TEXT
-            text = level
-            color = 0xFFFFFFFF
-          }.__update(fontSmall)
-        ]
-      }
-      textComp
+      mkTooltipRow(tankIcon, loc("respawn/spawnsCounter/type/available"))
+      mkTooltipRow(spareIcon, loc("respawn/spawnsCounter/type/spare"))
+      mkTooltipRow(crossIcon, loc("respawn/spawnsCounter/type/destroyed"))
+      mkTooltipRow(lockIcon, loc("respawn/spawnsCounter/type/notAvailable"))
     ]
-  })
+  }
+
+  let unitsLeft = min(respawnsLeft.get(), respawnSlots.get().filter(@(slot) slot.canSpawn && !slot.isSpawnBySpare).len())
+  let hasMaxSlots = respawnSlots.get().len() >= min(respawnsTotalInitial.get(), MAX_DEF_SLOTS)
+  let hasEnoughSpares = sparesNum.get() >= (respawnsLeft.get() - unitsLeft)
+  if (hasMaxSlots && hasEnoughSpares)
+    return res
+
+  let hint = !hasMaxSlots && !hasEnoughSpares ? loc("respawn/spawnsCounter/tooltip/all")
+    : !hasMaxSlots ? loc("respawn/spawnsCounter/tooltip/unitNoSpare")
+    : hasEnoughSpares ? loc("respawn/spawnsCounter/tooltip/unit")
+    : loc("respawn/spawnsCounter/tooltip/spare")
+  res.children.append(mkRespToolipText("".concat("\n\n", colorize(textColor, hint))))
+  return res
+}
+
+let mkStack = @(amount, baseIconComp, stackIconComp, contentGap) {
+  flow = FLOW_HORIZONTAL
+  gap = contentGap
+  valign = ALIGN_CENTER
+  children = amount == 1 ? baseIconComp
+    : [
+        baseIconComp
+        {
+          valign = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          flow = FLOW_HORIZONTAL
+          gap = contentGap - hdpx(4)
+          children = array(amount - 1).map(@(_) stackIconComp)
+        }
+      ]
+}
+
+let slotsBlockTitle = @(unit, respSlots) function() {
+  let { unitType = "" } = unit
+  let hasSpawnCounter = !isUseSpawnScore.get() && respawnsTotalInitial.get() > 0
+  let text = hasSpawnCounter ? loc("respawn/spawnsCounter")
+    : unitType == "" ? ""
+    : loc($"respawn/squad/{unitType}")
+  if (!hasSpawnCounter)
+    return header(headerText(text), { watch = [respawnsTotalInitial, isUseSpawnScore] })
+
+  let unitsLeft = min(respawnsLeft.get(),
+    respSlots.filter(@(slot) slot.canSpawn && !slot.isSpawnBySpare).len())
+  let sparesLeft = min(respawnsLeft.get() - unitsLeft,
+    sparesNum.get(),
+    unitsLeft + respSlots.filter(@(slot) slot.canSpawn && slot.isSpawnBySpare).len())
+  let unitsDestroyed = respawnsTotalInitial.get() - respawnsLeft.get()
+  let unitsNotAvailable = respawnsLeft.get() - unitsLeft - sparesLeft
+
+  return header(
+    {
+      size = flex()
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      padding = hdpx(10)
+      gap
+      children = [
+        {
+          size = FLEX_H
+          valign = ALIGN_CENTER
+          halign = ALIGN_RIGHT
+          flow = FLOW_HORIZONTAL
+          children = [
+            headerText(text).__update({ size = FLEX_H, hplace = ALIGN_LEFT, halign = ALIGN_LEFT })
+            infoTooltipButton(tooltipContentCtor, {}, { onClick = @() sendPlayerActivityToServer() })
+          ]
+        }
+        {
+          size = flex()
+          valign = ALIGN_CENTER
+          flow = FLOW_HORIZONTAL
+          gap = { size = flex() }
+          children = [
+            {
+              flow = FLOW_HORIZONTAL
+              children = [
+                unitsLeft <= 0 ? null
+                  : mkStack(unitsLeft, tankIcon, tankStackIcon, -hdpx(5))
+                sparesLeft <= 0 ? null
+                  : mkStack(sparesLeft, spareIcon, spareStackIcon, -hdpx(13))
+              ].filter(@(v) v != null)
+            }
+            {
+              flow = FLOW_HORIZONTAL
+              children = [
+                unitsDestroyed <= 0 ? null
+                  : mkStack(unitsDestroyed, crossIcon, crossStackIcon, -hdpx(10))
+                unitsNotAvailable <= 0 ? null
+                  : mkStack(unitsNotAvailable, lockIcon, lockStackIcon, -hdpx(15))
+              ].filter(@(v) v != null)
+            }
+          ]
+        }
+      ]
+    }
+    { watch = [respawnsTotalInitial, sparesNum, isUseSpawnScore, respawnsLeft], size = [flex(), hdpx(100)] })
 }
 
 let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSize[0] + unitListGradientSize[1],
   unitListGradientSize)
 
 function slotsBlock() {
-  let title = slotsBlockTitle(respawnUnitInfo.get(), hasRespawnSeparateSlots.get())
+  let title = slotsBlockTitle(respawnUnitInfo.get(), respawnSlots.get())
   let list = respawnSlots.get().map(@(slot) mkSlotPlate(slot, respawnUnitInfo.get()))
   return {
-    watch = [respawnSlots, respawnUnitInfo, hasRespawnSeparateSlots]
+    watch = [respawnSlots, respawnUnitInfo]
     size = [unitPlateSmall[0], SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap
     children = respawnUnitInfo.get() == null ? null
-      : list.len() <= 4 ? [ title ].extend(list)
+      : list.len() <= MAX_DEF_SLOTS ? [ title ].extend(list)
       : [
           title
           {

@@ -17,7 +17,7 @@ let SEEN_MODS_VERSION_KEY = "seenModsVersion"
 let ACTUAL_VERSION = 3
 let SEEN_MODS_VERSIONS = "seenModsVersions"
 let seenVersions = {
-  tanks_new = 2
+  tanks = 2
 }
 let seenMods = mkWatched(persist, "SEEN_MODS", {})
 let savedSeenVersions = mkWatched(persist, "savedSeenVersions", {})

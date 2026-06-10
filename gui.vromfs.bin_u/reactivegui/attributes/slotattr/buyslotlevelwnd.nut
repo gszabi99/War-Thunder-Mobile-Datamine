@@ -11,7 +11,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { slotLevelsCfg, slotMaxLevel } = require("%rGui/slotBar/slotBarState.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -22,7 +22,7 @@ let WND_UID = "buySlotLevelWnd"
 
 let slotIndex = mkWatched(persist, "slotIndex", null)
 let slot = Computed(@() curSlots.get()?[slotIndex.get()])
-let levelsToMax = Computed(@() (maxSlotLevels.get()?.len() ?? 0) - (slot.get()?.level ?? 0))
+let levelsToMax = Computed(@() slotMaxLevel.get() - (slot.get()?.level ?? 0))
 let needShowWnd = keepref(Computed(@() levelsToMax.get() > 0 && slotIndex.get() != null))
 
 let close = @() slotIndex.set(null)
@@ -59,9 +59,9 @@ function wndContent() {
       .map(@(v) mkLevelBlock(slot.get(),
         v.costMul,
         {
-          levels = v.levels,
-          levelsSp,
-          maxLevels = maxSlotLevels.get()
+          levels = v.levels
+          levelsSp
+          levelsCfg = slotLevelsCfg.get()
         },
         slotInProgress,
         onClickPurchase,

@@ -5,7 +5,7 @@ let { getSlotAttrBg, getAttrTabPresentation } = require("%appGlobals/config/slot
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { orderByCurrency, GOLD } = require("%appGlobals/currenciesState.nut")
@@ -14,7 +14,7 @@ let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attribut
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { selectedSlotIdx, slotLevelsCfg } = require("%rGui/slotBar/slotBarState.nut")
 let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { slotAttrPage } = require("%rGui/attributes/slotAttr/slotAttrWndPage.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
@@ -271,7 +271,7 @@ let mkSlotUnitName = @() @(){
   text = slotUnitName.get() == ""
     ? loc("gamercard/slot/blank")
     : loc("gamercard/slot/unitName",
-        { unitName = colorize(0xFFC59E49, loc(getUnitLocId(slotUnitName.get()))) })
+        { unitName = colorize(0xFFC59E49, getUnitName(slotUnitName.get())) })
 }.__update(fontVeryTinyAccented)
 
 let slotTitle = @(slot, text) {
@@ -283,7 +283,7 @@ let slotTitle = @(slot, text) {
       color = textColor
       text
     }.__update(fontSmallShaded)
-    mkSlotLevelBlock(slot, maxSlotLevels.get())
+    mkSlotLevelBlock(slot, slotLevelsCfg.get())
   ]
 }
 

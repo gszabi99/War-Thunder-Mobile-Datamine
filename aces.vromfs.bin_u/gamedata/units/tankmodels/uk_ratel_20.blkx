@@ -27,6 +27,10 @@
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
+  "deadZoneForTurnAround": [
+    100.0,
+    90.0
+  ],
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -45,7 +49,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "deadZoneForTurnAround": 90.0,
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
@@ -2007,10 +2010,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 96400.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 7.7,
       "sideGearRatio": 1.0,
+      "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -2046,7 +2051,8 @@
       "steeringDeflection": {
         "wheel_l_01": 25.0,
         "wheel_r_01": 25.0,
-        "steeringTau": 1.0
+        "steeringTau": 1.0,
+        "steeringSpd": 1.5
       },
       "driven": {
         "wheel_r_01": true,

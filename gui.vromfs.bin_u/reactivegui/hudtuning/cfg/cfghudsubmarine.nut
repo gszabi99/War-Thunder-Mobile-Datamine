@@ -32,29 +32,34 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   weapon1 = weaponryButtonDynamicCtor(0,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-290), hdpx(-220)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon2 = weaponryButtonDynamicCtor(1,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-398), hdpx(-112)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon3 = weaponryButtonDynamicCtor(2,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-290), hdpx(-4)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon4 = weaponryButtonDynamicCtor(3,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-182), hdpx(-112)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   depthSLider = {
+    canHide = false
     ctor = depthSliderBlock
     defTransform = mkRBPos([hdpx(20), hdpx(-129)])
     editView = depthSliderEditView
@@ -76,6 +81,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   moveArrows = {
+    canHide = false
     ctor = @(scale) shipMovementBlock(SUBMARINE, scale)
     defTransform = mkLBPos([0, -hdpx(54)])
     editView = moveArrowsViewWithMode
@@ -90,6 +96,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   depthControl = {
+    canHide = false
     ctor = depthControl
     defTransform = mkRBPos([0, hdpx(-500)])
     editView = depthControlEditView

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { optScale } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
+let { optScale, optVisible } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 
 let config = {
   [TANK] = require("%rGui/hudTuning/cfg/cfgHudTank.nut"),
@@ -25,15 +25,21 @@ foreach (unitType, tbl in config) {
     cfg.id <- cfgId
     cfg.editViewKey <- $"elem_{cfgId}"
 
-    let paramCount= cfg.ctor.getfuncinfos().parameters.len()
+    let paramCount = cfg.ctor.getfuncinfos().parameters.len()
     let hasScale = paramCount >= 2
     cfg.hasScale <- hasScale
     cfg.needId <- paramCount == 3
-    if (hasScale) {
-      let { options = [] } = cfg
-      if (!options.contains(optScale))
-        cfg.options <- options.insert(0, optScale)
-    }
+
+    let { options = [] } = cfg
+    let canHide = cfg?.canHide ?? true
+
+    if (canHide && !options.contains(optVisible))
+      options.insert(0, optVisible)
+    if (hasScale && !options.contains(optScale))
+      options.insert(0, optScale)
+
+    cfg.options <- options
+    cfg.canHide <- canHide
   }
   cfgByUnitType[unitType] <- tbl
   cfgByUnitTypeOrdered[unitType] <- tbl.values().sort(@(a, b) (a?.priority ?? 0) <=> (b?.priority ?? 0))

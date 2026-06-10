@@ -1,10 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { has_strategy_mode } = require("%appGlobals/permissions.nut")
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM,
-
-
-
+let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM, EII_CIWS
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { AB_FIREWORK, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3,
 
@@ -66,42 +63,49 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   weapon1 = weaponryButtonDynamicCtor(0,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-190), hdpx(-220)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon2 = weaponryButtonDynamicCtor(1,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-285), hdpx(-125)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon3 = weaponryButtonDynamicCtor(2,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-190), hdpx(-30)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon4 = weaponryButtonDynamicCtor(3,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-95), hdpx(-125)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon5 = weaponryButtonDynamicCtor(4,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-285), hdpx(-315)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon6 = weaponryButtonDynamicCtor(5,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-95), hdpx(-315)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon7 = weaponryButtonDynamicCtor(6,
     {
+      canHide = false
       defTransform = mkRBPos([hdpx(-190), hdpx(-410)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
@@ -127,10 +131,8 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   abCaptureBlocker = withActionBarButtonCtor(EII_ELECTRONIC_WARFARE, SHIP,
      { defTransform = mkRBPos([consumableStart + consumableGap * 3, hdpx(43)]) })
 
-
-
-
-
+  abCiws = withActionBarButtonCtor(EII_CIWS, SHIP,
+     { defTransform = mkRBPos([consumableStart + consumableGap * 4, hdpx(43)]) })
 
   firework = withActionButtonScaleCtor(AB_FIREWORK, mkRhombFireworkBtn,
     {
@@ -149,6 +151,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   moveArrows = {
+    canHide = false
     ctor = @(scale) shipMovementBlock(SHIP, scale)
     defTransform = mkLBPos([0, -hdpx(54)])
     editView = moveArrowsViewWithMode

@@ -225,6 +225,7 @@ let skinsByTag = {
     "cn_hj_9_valentines_day"
     "cn_camo_winter_lines"
     "uk_camo_winter_modern_bicolor"
+    "us_camo_ags_teledyne"
   ],
 
   [NAVAL] = [
@@ -259,6 +260,7 @@ let skinsByTag = {
     "camo_blackgreenwhite_spots"
     "camo_blackgreen_spots"
     "camo_browngray_modern"
+    "camo_black_gray_hexagon"
 
     "camo_blackgray_geometry"
     "camo_blue_geometry"
@@ -278,6 +280,8 @@ let skinsByTag = {
     "camo_fourgreencolors"
     "camo_redgreen_spots"
     "camo_blackgray_lines"
+    "camo_jungle_multicolor"
+    "camo_purplewhite_spots"
 
     "camo_blackgreen_geometry"
     "camo_bluegray_geometry"
@@ -291,6 +295,8 @@ let skinsByTag = {
     "camo_bluewhite_geometry"
     "camo_tropic_multicolor_spots"
     "camo_blackbrown_spots"
+    "camo_bluewhite_waves"
+    "camo_desert_geometry"
 
     "camo_blackgray_spots"
     "camo_blue_spots"
@@ -304,6 +310,8 @@ let skinsByTag = {
     "camo_pacificfleet"
     "camo_blackwhite_cubes"
     "camo_sea_multicolor_spots"
+    "camo_blackwhite_net"
+    "camo_desert_threecolors"
 
     "camo_arctic_minesweeper_block"
     "camo_bluegray_longspot"
@@ -316,6 +324,9 @@ let skinsByTag = {
     "camo_bluegray_blotch"
     "camo_arcticfleet"
     "camo_multicolor_fleet"
+    "camo_green_stripes"
+    "camo_small_bicolor_spots"
+    "camo_multicolor_arctic"
 
     "camo_lightblue_splotch"
     "camo_dark_spots"
@@ -342,6 +353,7 @@ let skinsByTag = {
     "camo_blackblue_geometry"
     "camo_redblack_spots"
     "camo_redwhite_stripes"
+    "camo_olive_slash_lines"
     "it_camo_blackgreen_deforming"
     "camo_atlanticocean"
     "camo_destroyer_gearing_lny"

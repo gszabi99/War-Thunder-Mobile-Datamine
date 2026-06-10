@@ -23,7 +23,7 @@ let { initialAddons, initialAddonsByCamp, latestDownloadAddonsByCamp, latestDown
 let { hasAddons, addonsSizes, isAddonsSizesActual, isAddonsAndUnitsInfoActual,
   isUnitSizesActual, unitSizes
 } = require("%appGlobals/updater/addonsState.nut")
-let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getPkgsForCampaign,
+let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getPkgsForCampaign,
   getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle, localizeUnitsResources
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks, maxReleasedUnitRanks
@@ -105,11 +105,11 @@ function mkAddonsToDownload(list, hasAddonsV, prev) {
 }
 
 let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
-  (clone initialAddons).extend(initialAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? []),
+  (clone initialAddons).extend(initialAddonsByCamp?[curCampaign.get()] ?? []),
   hasAddons.get(), prev))
 let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   (clone latestDownloadAddons)
-    .extend(latestDownloadAddonsByCamp?[getCampaignOrig(curCampaign.get())] ?? [])
+    .extend(latestDownloadAddonsByCamp?[curCampaign.get()] ?? [])
     .append(curHangarAddon.get())
     .extend(soonHangarAddons.get().keys()),
   hasAddons.get(), prev))
@@ -182,7 +182,6 @@ let wantStartDownloadAddons = Computed(function(prev) {
     return prevIfEqual(prev, {})
 
   let campaign = curCampaign.get()
-  let campaignOrig = getCampaignOrig(campaign)
   let battleMRank = battleUnitsMaxMRank.get()
   let maxMRank = maxMyMRank.get()
   let allUnits = isAllowedDownloadUnits.get() ? unitsToDownload.get() : {}
@@ -208,7 +207,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
     listGetters.append(@() {
       addons = getCampaignPkgsForNewbieCoop(campaign, battleMRank).totable()
         .__merge(randomBattleMisInfo.get().misAddons)
-      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, battleMRank)
+      units = getMissingUnits(missingUnitResourcesByRank.get()?[campaign] ?? {}, battleMRank)
         .__merge(randomBattleMisInfo.get().misUnits)
     })
 
@@ -216,14 +215,14 @@ let wantStartDownloadAddons = Computed(function(prev) {
     @() {
       addons = getCampaignPkgsForOnlineBattle(campaign, battleMRank).totable()
         .__merge(randomBattleCoreMisInfo.get().misAddons)
-      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, battleMRank + 1)
+      units = getMissingUnits(missingUnitResourcesByRank.get()?[campaign] ?? {}, battleMRank + 1)
         .__merge(randomBattleCoreMisInfo.get().misUnits)
     }
     @() { addons = { [curHangarAddon.get()] = true } }
     @() { addons = latestAddonsToDownload.get() }
     @() {
-      addons = allAddons.filter(@(_, a) (getAddonCampaign(a) ?? campaignOrig) == campaignOrig)
-      units = getMissingUnits(missingUnitResourcesByRank.get()?[getCampaignOrig(campaign)] ?? {}, maxMRank + 1)
+      addons = allAddons.filter(@(_, a) (getAddonCampaign(a) ?? campaign) == campaign)
+      units = getMissingUnits(missingUnitResourcesByRank.get()?[campaign] ?? {}, maxMRank + 1)
        .__merge(randomBattleMaxMisInfo.get().misUnits)
     }
   )
@@ -418,7 +417,7 @@ isAddonsAndUnitsInfoActual.subscribe(function(v) {
 
 function getAddonPriority(addon) {
   let campaign = getAddonCampaign(addon)
-  return campaign == getCampaignOrig(curCampaign.get()) ? 2
+  return campaign == curCampaign.get() ? 2
     : campaign == null ? 1
     : 0
 }
@@ -456,7 +455,7 @@ let addonsToAutoDownload = keepref(Computed(function() {
     list[a] <- true
   foreach (a in getCampaignPkgsForNewbieSingle(curCampaign.get()))
     list[a] <- true
-  foreach (a in coopNewbieByCampaign?[getCampaignOrig(curCampaign.get())] ?? [])
+  foreach (a in coopNewbieByCampaign?[curCampaign.get()] ?? [])
     list[a] <- true
   list.__update(getMGMListMissionUnitsAndAddons(randomBattleMode.get(), maxMRank, gameModeQueueGroups.get()).misAddons)
   list.__update(getMGMListMissionUnitsAndAddons(randomBattleModeCore.get(), maxMRank, gameModeQueueGroups.get()).misAddons)
@@ -483,7 +482,7 @@ let unitsToAutoDownload = keepref(Computed(function(prev) {
   let res = extAutoDownloadUnits.get().__merge(extAutoDownloadUnitsFirst.get())
   let mRank = max(battleUnitsMaxMRank.get(), maxMyMRank.get())
   let tgtRank = clamp(maxReleasedUnitRanks.get()?[curCampaign.get()] ?? (mRank + 1), mRank, mRank + 1)
-  foreach (rank, list in missingUnitResourcesByRank.get()?[getCampaignOrig(curCampaign.get())] ?? {})
+  foreach (rank, list in missingUnitResourcesByRank.get()?[curCampaign.get()] ?? {})
     if (rank <= tgtRank)
       res.__update(list)
   res.__update(requiredSquadAddons.get().units.reduce(@(r, a) r.$rawset(a, true), {}),

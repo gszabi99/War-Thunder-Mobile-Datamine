@@ -16,7 +16,7 @@ let { Point2 } = require("dagor.math")
 let { setVirtualAxisValue } = require("controls")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { can_use_freecam_in_replay } = require("%appGlobals/permissions.nut")
 let { isHudVisible } = require("%appGlobals/clientState/clientState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -138,6 +138,11 @@ function moveToNextAnchor(directionIdx) {
   moveToAnchor(nextIdx)
 }
 
+function resetFreeCamera() {
+  toggleShortcut("ID_CAMERA_DEFAULT")
+  isFreeCameraOptActive.set(false)
+}
+
 let replayVideoControlsList = [
   {
     shortcutId = ""
@@ -214,6 +219,7 @@ let replayHudControlsList = [
     shortcutId = ["ID_CAMERA_DEFAULT", "ID_TOGGLE_FOLLOWING_CAMERA"]
     img = "ui/gameuiskin#hud_free_camera.svg"
     locId = "mainmenu/replay/cameraMode/rotation"
+    action = resetFreeCamera
     isActive = isFreeCameraRotationOptActive
     isDisabled = Computed(@() !isFreeCameraRotationOptActive.get())
   },
@@ -296,7 +302,7 @@ function getColorUnitName(player, unit) {
 }
 
 function getUnitNameText(unitId, unitClass, halign = null) {
-  let name = loc(getUnitLocId(unitId), unitId)
+  let name = getUnitName(unitId)
   let icon = unitClassFontIcons?[unitClass] ?? ""
   let ordered = halign != ALIGN_RIGHT ? [icon, name] : [name, icon]
   return " ".join(ordered, true)
@@ -360,7 +366,7 @@ function mkOptBtn(opt, onClick, ovr = {}) {
 }
 
 function handleOptClick(opt) {
-  let { shortcutId, isActive = null, cb = null, dependentShortcut = null } = opt
+  let { shortcutId, isActive = null, cb = null, action = null, dependentShortcut = null } = opt
   let hasDifferentShortcuts = type(shortcutId) == "array"
 
   if (isActive != null)
@@ -368,6 +374,9 @@ function handleOptClick(opt) {
 
   if (cb != null)
     return cb()
+
+  if (action != null)
+    action()
 
   if (hasDifferentShortcuts) {
     if (isActive != null)
@@ -683,7 +692,11 @@ function mkPlayer(player, teamColor, halign) {
         behavior = Behaviors.Button
         sound = { click = "click" }
         padding = halign == ALIGN_RIGHT ? [hdpx(2), 0, hdpx(2), hdpx(4)] : [hdpx(2), hdpx(4), hdpx(2), 0]
-        onClick = @() switchSpectatorTargetById(player.id)
+        function onClick() {
+          if (isFreeCameraOptActive.get())
+            resetFreeCamera()
+          switchSpectatorTargetById(player.id)
+        }
         gap = hdpx(4)
         halign
         children = isOnTheRigthSide ? children.reverse() : children
@@ -914,7 +927,7 @@ let hudReplayControls = @() {
     : null
 }
 
-can_use_freecam_in_replay.subscribe(@(v) !v ? toggleShortcut("ID_CAMERA_DEFAULT") : null)
+can_use_freecam_in_replay.subscribe(@(v) !v ? resetFreeCamera() : null)
 
 isPlayerOptionsOpen.subscribe(@(v) !v
   ? resetTimeout(TIME_TO_UPDATE_CONTROLLS, @() needShowPlayerOptions.set(v))

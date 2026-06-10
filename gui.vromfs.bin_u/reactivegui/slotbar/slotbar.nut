@@ -12,7 +12,7 @@ let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow,
   mkUnitPlateBorder, mkProfileUnitDailyBonus, mkUnitSpinner
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setUnitToSlot, buyUnitSlot, newSlotPriceGold, slotsNeedAddAnim, visibleNewModsSlots, selectedTreeSlotIdx,
@@ -310,7 +310,7 @@ let function mkUnitSlot(unit, idx, onClick, isSelected) {
       mkUnitBg(unit)
       mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
       mkUnitImage(unit)
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+      mkUnitTexts(unit, getUnitName(unit.name))
       mkUnitLock(unit, false)
       mkUnitPlateBorder(isSelected)
       {

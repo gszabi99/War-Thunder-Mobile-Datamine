@@ -7,11 +7,6 @@ let { resetTimeout } = require("dagor.workcycle")
 
 let defaultCampaign = "tanks"
 
-let campaignStatsRemap = {
-  ships_new = "ships"
-  tanks_new = "tanks"
-}
-
 let selectedCampaign = sharedWatched("selectedCampaign", @() null) 
 let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
 let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) 
@@ -119,8 +114,6 @@ function chooseOneByCampaignTbl(res, prev, key, campaign) {
   res[key] = newV == prevV ? prevV : newV
 }
 
-let getCampaignStatsId = @(campaign) campaignStatsRemap?[campaign] ?? campaign
-
 let campProfile = Computed(function(prev) {
   let sProfile = servProfile.get() ?? {}
   let { units = null, items = null } = sProfile
@@ -133,7 +126,7 @@ let campProfile = Computed(function(prev) {
   filterByListTbl(res, prev, isCampaignChanged ? null : prevUnits, "units", allUnits)
   filterByListTbl(res, prev, isCampaignChanged ? null : prevItems, "items", allItems)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
-  chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", getCampaignStatsId(campaign))
+  chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", campaign)
   chooseListByCampaignTbl(res, prev, "unitTreeNodes", campaign)
   chooseListByCampaignTbl(res, prev, "penalties", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
@@ -179,5 +172,4 @@ return exportProfile.__update({
   isAnyCampaignSelected
   campConfigs
   campProfile
-  getCampaignStatsId
 })

@@ -20,7 +20,8 @@ let visibleNewModsSlots = Watched({})
 let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
 let selectedTreeSlotIdx = mkWatched(persist, "selectedTreeSlotIdx", null)
 let attachedSlotBarArsenalIdx = mkWatched(persist, "selectedSlotBarArsenalIdx", null)
-let maxSlotLevels = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"])
+let slotLevelsCfg = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"] ?? [])
+let slotMaxLevel = Computed(@() slotLevelsCfg.get()?[slotLevelsCfg.get().len() - 1].upToLevel ?? slotLevelsCfg.get().len()) 
 let hangarUnitName = Computed(@() hangarUnit.get()?.name)
 let actualSlotIdx = Computed(@() curSlots.get().findindex(@(s) s?.name == curUnitName.get())
   ?? curSlots.get().findindex(@(s) s?.name == hangarUnitName.get()))
@@ -131,7 +132,8 @@ return {
   selectedTreeSlotIdx
   actualSlotIdx
   selectTreeSlotByUnitName
-  maxSlotLevels
+  slotLevelsCfg
+  slotMaxLevel
 
   attachedSlotBarArsenalIdx
   slotBarArsenalKey

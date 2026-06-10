@@ -4,7 +4,7 @@ let { unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
 let { getUnitsSet, getUnitRewards, getSlotExpByUnit, getSlotLevelCfg, getLevelProgress,
-  getNextUnitLevelWithRewards, getSlotOrUnitLevelUnlockRewards, sortUnitMods
+  getNextUnitLevelWithRewards, getSlotOrUnitLevelUnlockRewards, sortUnitMods,
 } = require("%rGui/debriefing/debrUtils.nut")
 let mkPlateWithLevelProgress = require("%rGui/debriefing/mkPlateWithLevelProgress.nut")
 let { getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer, mkDebrLineMod, mkDebrLineWeapon,
@@ -42,7 +42,7 @@ function mkSlotLevelUnlockLines(unit, debrData, delay) {
   let slotExp = getSlotExpByUnit(unit?.name, debrData)
   let { levelsSp = {} } = debrData?.slots
   let slotLevelCfg = getSlotLevelCfg(unit, debrData)
-  let { prevLevel, unlockedLevel } = getLevelProgress(slotLevelCfg, slotExp)
+  let { prevLevel, unlockedLevel } = getLevelProgress(slotLevelCfg, slotExp?.totalExp ?? 0)
   let startLevel = prevLevel + 1
   let endLevel = max(startLevel, unlockedLevel)
   let spLevels = levelsSp?.levels ?? []
@@ -67,11 +67,13 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
 
   let { unitWeaponry = {}, campaign = "" } = debrData
   let unitExp = getUnitRewards(unit?.name, debrData)?.exp
-  let { modPresetCfg = {}, levelsExp = [] } = unit
-  let { prevLevel, unlockedLevel } = getLevelProgress(unit, unitExp)
+  let { modPresetCfg = {}, levelsExp = [], levelsExpCfg = null } = unit
+  let { prevLevel, unlockedLevel } = getLevelProgress(unit, unitExp?.totalExp ?? 0)
   let startLevel = prevLevel + 1
+  let maxLevel = levelsExpCfg == null ? levelsExp.len() 
+    : levelsExpCfg?[levelsExpCfg.len() - 1].upToLevel ?? 0
   let endLevel = max(unlockedLevel,
-    getNextUnitLevelWithRewards(startLevel, levelsExp.len(), modPresetCfg, unitWeaponry?[unit?.name]))
+    getNextUnitLevelWithRewards(startLevel, maxLevel, modPresetCfg, unitWeaponry?[unit?.name]))
 
   let isModsWeapons = getCampaignPresentation(campaign).campaign == "air"
   let modsMap = modPresetCfg

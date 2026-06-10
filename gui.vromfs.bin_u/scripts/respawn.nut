@@ -14,13 +14,13 @@ let { get_game_mode, get_game_type } = require("mission")
 let { MISSION_STATUS_RUNNING, quit_to_debriefing, get_respawns_left,
   get_mp_respawn_countdown, get_mission_status } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived, isSeparateSlots, unitsAvgCostWp, battleData
+let { curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived, unitsAvgCostWp, battleData
 } = require("%scripts/battleData/battleData.nut")
 let { decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInBattle, isLocalMultiplayer } = require("%appGlobals/clientState/clientState.nut")
 let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRespawn, isRespawnInProgress,
-  isRespawnDataInProgress, isBatleDataRequired, respawnsLeft, respawnUnitSkins, hasRespawnSeparateSlots, curUnitsAvgCostWp,
+  isRespawnDataInProgress, isBatleDataRequired, respawnsLeft, respawnsTotalInitial, respawnUnitSkins, curUnitsAvgCostWp,
   isBattleDataFake, hasPredefinedReward, dailyBonus, respawnUnitMods
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 
@@ -34,7 +34,14 @@ let respawnData = mkWatched(persist, "respawnData", null)
 let wantedRespawnData = mkWatched(persist, "wantedRespawnData", null)
 let isRespawnDataActual = Computed(@() isEqual(respawnData.get(), wantedRespawnData.get()))
 
-isInBattle.subscribe(@(v) v ? respawnUnitInfo.set(null) : isInRespawn.set(false))
+isInBattle.subscribe(function(v) {
+  if (v)
+    respawnUnitInfo.set(null)
+  else {
+    isInRespawn.set(false)
+    respawnsTotalInitial.set(-1)
+  }
+})
 
 function updateRespawnUnitInfo() {
   respawnUnitInfo.set(unitToSpawn.get())
@@ -58,7 +65,6 @@ unitToSpawn.subscribe(@(v) isInRespawn.get() ? respawnUnitInfo.set(v) : null)
 curBattleItems.subscribe(@(v) isInRespawn.get() ? respawnUnitItems.set(v) : null)
 curBattleMods.subscribe(@(v) isInRespawn.get() ? respawnUnitMods.set(v) : null)
 curBattleSkins.subscribe(@(v) isInRespawn.get() ? respawnUnitSkins.set(v) : null)
-isSeparateSlots.subscribe(@(v) hasRespawnSeparateSlots.set(v))
 unitsAvgCostWp.subscribe(@(v) isInRespawn.get() ? curUnitsAvgCostWp.set(v) : null)
 isFake.subscribe(@(v) isBattleDataFake.set(v))
 predefinedReward.subscribe(@(v) hasPredefinedReward.set(v != null))
@@ -190,7 +196,10 @@ eventbus_subscribe("cancelRespawn", function(_) {
 
 eventbus_subscribe("gui_start_respawn", function gui_start_respawn(...) {
   logR($"gui_start_respawn {isRespawnScreen()}")
-  respawnsLeft.set(get_respawns_left())
+  let left = get_respawns_left()
+  respawnsLeft.set(left)
+  if (respawnsTotalInitial.get() < 0)
+    respawnsTotalInitial.set(left)
   isBatleDataRequired.set((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
     && get_game_mode() != GM_SINGLE_MISSION)
   isInRespawn.set(isRespawnScreen()) 

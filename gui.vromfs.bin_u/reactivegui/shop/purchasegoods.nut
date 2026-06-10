@@ -5,7 +5,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler, get_profile, get_all_configs
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, G_BOOSTER, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -46,7 +46,7 @@ function getCantPurchaseReason(goods) {
       logText = $"ERROR: Units already received: {", ".join(units)}"
       msgboxText = loc("trophy/prizeAlreadyReceived",
         { prizeText = ", ".join(units.map(
-            @(unitName) colorize(userlogTextColor, loc(getUnitLocId(unitName))))) })
+            @(unitName) colorize(userlogTextColor, getUnitName(unitName)))) })
     }
   return null
 }

@@ -15,53 +15,51 @@ let missionResultTitleAnimTime = max(resultTextAnimTime, glowAnimTime)
 
 let missionResultParamsByType = {
   victory = {
-    text = @(_) loc("debriefing/victory")
+    locId = "debriefing/victory"
     color = 0xFFFFB70B
     animTextColor = 0xFFFFDA83
   }
   defeat = {
-    text = @(_) loc("debriefing/defeat")
+    locId = "debriefing/defeat"
     color = 0xFFFB5F28
     animTextColor = 0xFFFFA07F
   }
   finished = {
-    text = @(_) loc("MISSION_FINISHED")
+    locId = "MISSION_FINISHED"
     color = 0xFFFFB70B
     animTextColor = 0xFFFFDA83
   }
   inProgress = {
-    text = @(debrData) loc(debrData?.isSeparateSlots
-      ? "debriefing/yourVehiclesDestroyed"
-      : "debriefing/yourVehicleDestroyed")
+    locId = "debriefing/yourVehiclesDestroyed"
     color = 0xFFFFFFFF
     animTextColor =  0xFFFFFFFF
   }
   deserter = {
-    text = @(_) loc("debriefing/deserter")
+    locId = "debriefing/deserter"
     color = 0xFFFB5F28
     animTextColor = 0xFFFFA07F
   }
   inactivity = {
-    text = @(_) loc("debriefing/inactivity")
+    locId = "debriefing/inactivity"
     color =  0xFFFB5F28
     animTextColor =  0xFFFFA07F
   }
   disconnect = {
-    text = @(_) loc("matching/CLIENT_ERROR_CONNECTION_CLOSED")
+    locId = "matching/CLIENT_ERROR_CONNECTION_CLOSED"
     color = 0XFFFFA406
     animTextColor = 0XFFFFA406
   }
   unknown = {
-    text = @(_) loc("debriefing/dataNotReceived")
+    locId = "debriefing/dataNotReceived"
     color =  0xFFFFFFFF
     animTextColor =  0xFFFFFFFF
   }
 }
 
-let mkMissionResultText = @(needAnim, missionResult, debrData) {
+let mkMissionResultText = @(needAnim, missionResult) {
   rendObj = ROBJ_TEXT
   color = missionResult.color
-  text = missionResult.text(debrData)
+  text = loc(missionResult.locId)
   transform = !needAnim ? null : {}
   animations = !needAnim ? null : [
     {
@@ -131,7 +129,7 @@ function mkMissionResultTitle(debrData, needAnim) {
         hplace = ALIGN_CENTER
         gap = rowGap
         children = [
-          mkMissionResultText(needAnim, missionResult, debrData)
+          mkMissionResultText(needAnim, missionResult)
           mkMissionResultLine(needAnim, missionResult)
         ]
       }

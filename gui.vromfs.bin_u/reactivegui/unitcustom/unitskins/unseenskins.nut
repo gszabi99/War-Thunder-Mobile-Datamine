@@ -15,7 +15,7 @@ let SEEN_SKINS_VERSIONS = "seenSkinsVersions"
 let SEEN_SKINS_VERSION_KEY = "seenSkinsVersion"
 let ACTUAL_VERSION = 3
 let seenVersions = {
-  tanks_new = 1
+  tanks = 1
 }
 
 let seenSkins = mkWatched(persist, "seenSkins", {})

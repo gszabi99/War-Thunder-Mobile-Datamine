@@ -12,12 +12,10 @@
   "gameId": "wtm",
   "enableEmbeddedBrowser": false,
   "pc_app_id": 1180,
-  "pc_project_id": "war_thunder_mobile",
   "iOS_app_id": 1180,
-  "iOS_project_id": "war_thunder_mobile",
   "android_app_id": 1180,
-  "android_project_id": "war_thunder_mobile",
   "nswitch_app_id": 1280,
+  "project_id": "war_thunder_mobile",
   "nswitch_project_id": "war_thunder_mobile_switch",
   "entitiesBlk": "%gameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
@@ -489,11 +487,14 @@
     "allowRendinstMipLimit": false,
     "forceGlobalShadowUpdateOnSunDirChange": true,
     "shadowSunDirDeltaThreshold": 0.999,
+    "forceCullUnderwaterRiAboveWater": true,
     "raytraced_shadows": {
       "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,
       "geometryLimit": 1024,
-      "shoulRebuildSkinnedElems": false
+      "shoulRebuildSkinnedElems": false,
+      "softnessUnderwaterMedium": 0.15,
+      "softnessUnderwaterHigh": 0.1
     },
     "cellsVBcfg": {
       "min_allocation_size": 8388608
@@ -704,21 +705,6 @@
   "general": {
     "environment": "day",
     "weather": "clear"
-  },
-  "shader_vars": {
-    "water_visibility_max_exp_fade": 6.0,
-    "underwater_depth_absorption": [
-      1.15,
-      1.19,
-      1.26,
-      0.0
-    ],
-    "underwater_dist_absorption": [
-      1.36,
-      0.41,
-      0.34,
-      0.1
-    ]
   },
   "texStreaming": {
     "enableStreaming": true,

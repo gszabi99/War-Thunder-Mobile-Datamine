@@ -45,14 +45,11 @@ let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots, specialBull
   let slots = primaryBulletSlots.get() + secondaryBulletSlots.get() + specialBulletSlots.get()
   if (slots == 0)
     return { slotSliderHeight = 0, gapHeight = 0 }
-  if (!hasSkins.get())
-    return {
-      slotSliderHeight = maxBSlotHeight - headerSlotHeight
-      gapHeight = maxGapHeight
-    }
   let gaps = max(1, slots - 1)
-  let currentBContentHeight = sh(100)- saBordersRv[0] * 2
-    - contentOffset - scoreBoardHeight - skinsListHeight - headerHeight - gap - skinGap
+  let baseBContentHeight = sh(100) - saBordersRv[0] * 2 - contentOffset - scoreBoardHeight - headerHeight - gap
+  let currentBContentHeight = hasSkins.get()
+    ? baseBContentHeight - skinsListHeight - skinGap
+    : baseBContentHeight
   let slotBHeight = clamp(((currentBContentHeight - minGapHeight * gaps) / slots).tointeger(), minBSlotHeight, maxBSlotHeight)
   return {
     slotSliderHeight = slotBHeight - headerSlotHeight

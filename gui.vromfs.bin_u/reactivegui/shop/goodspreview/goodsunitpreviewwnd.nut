@@ -5,7 +5,6 @@ let { defer, resetTimeout, deferOnce } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
 let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
-let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { mark_offer_seen, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -38,7 +37,7 @@ let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
-let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitPlatesGap, unitPlateTiny, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
   unitPlateWidth, unitPlateHeight, mkUnitSlotLockedLine
@@ -243,7 +242,7 @@ function mkBlueprintUnitPlate(unit){
             fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{unitPlateWidth}:{unitPlateHeight}:P")
             image = Picture($"{getUnitPresentation(unit).blueprintImage}:{unitPlateWidth}:{unitPlateHeight}:P")
           }
-          mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+          mkUnitTexts(unit, getUnitName(unit.name))
           {
             size = flex()
             valign = ALIGN_BOTTOM
@@ -370,8 +369,8 @@ let mkHeader = @() mkPreviewHeader(
     ?? (goodsBattleMode.get() != null ? loc("offer/earlyAccess")
           : previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
           : (previewGoods.get()?.id ?? "") == "branch_offer"
-            ? " ".concat(getPlatoonOrUnitName(previewGoodsUnit.get(), loc), loc("offer/airBranch"))
-          : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
+            ? " ".concat(getUnitName(previewGoodsUnit.get()), loc("offer/airBranch"))
+          : previewGoodsUnit.get() ? getUnitName(previewGoodsUnit.get())
           : "")),
   closeGoodsPreview,
   aTimeHeaderStart)
@@ -490,7 +489,7 @@ function leftBlockEarlyAccess() {
     flow = FLOW_VERTICAL
     gap = verticalGap
     children = [
-      earlyAccessDescriptionBlock(locId, getPlatoonOrUnitName(previewGoodsUnit.get(), loc))
+      earlyAccessDescriptionBlock(locId, getUnitName(previewGoodsUnit.get()))
       singleUnitBlock
       earlyAccessImageBlock(backgroundImg)
       packInfo
@@ -702,7 +701,7 @@ let previewWnd = @() {
                       watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
                       children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
                         mkGiftSchRewardBtn(
-                          schRewards.get()?[$"gift_{getCampaignStatsId(previewGoodsUnit.get()?.campaign)}_offer"]
+                          schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign ?? ""}_offer"]
                           aTimeHeaderStart,
                           skipAnimsOnce)
                     }

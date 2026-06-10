@@ -56,7 +56,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarMainMenuSize } = require("%rGui/slotBar/slotBar.nut")
 let { unseenCampaigns } = require("%rGui/mainMenu/unseenCampaigns.nut")
 let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let battleItemsBtn = require("battleItemsBtn.nut")
 let { blockedCountries } = require("%rGui/unit/unitAccess.nut")
 let { openNPWnd, isNPSeasonActive, hasUnseenNpPass, hasNpBpRewardsToReceive } = require("%rGui/battlePass/newPlayerBpState.nut")
@@ -112,7 +112,7 @@ registerAutoDownloadUnits(
 let mkUnitName = @(unit, sf) {
   size = FLEX_H
   rendObj = ROBJ_TEXT
-  text = getPlatoonOrUnitName(unit, loc)
+  text = getUnitName(unit)
   color = sf & S_HOVER ? hoverColor : 0xFFFFFFFF
   behavior = Behaviors.Marquee
   delay = defMarqueeDelay

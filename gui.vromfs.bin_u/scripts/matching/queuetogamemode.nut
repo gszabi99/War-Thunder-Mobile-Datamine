@@ -11,7 +11,7 @@ let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { sendUiBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons } = require("%appGlobals/updater/addons.nut")
-let { localizeUnitsResources, getCampaignOrig } = require("%appGlobals/updater/campaignAddons.nut")
+let { localizeUnitsResources } = require("%appGlobals/updater/campaignAddons.nut")
 let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { curCampaign, setCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString, allBattleUnits, missingUnitResourcesByRank,
@@ -142,7 +142,7 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
       })
 
     foreach(m in squadMembers.get())
-      if ((m?.readyBattleRanks[getCampaignOrig(campaign)] ?? 0) < rankMax + 1)
+      if ((m?.readyBattleRanks[campaign] ?? 0) < rankMax + 1)
         return msgBoxWithFalse({
           text = loc("squad/not_all_has_packs")
           buttons = [

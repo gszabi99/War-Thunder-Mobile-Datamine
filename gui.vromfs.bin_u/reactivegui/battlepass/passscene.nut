@@ -117,7 +117,11 @@ function wnd() {
         scrollLastRewardX += fullStep
 
       if (!isFound) {
-        if (s.canReceive || (!s.isReceived && (!s.isPaid || (!s?.isVip && isCommonActive.get()) || (s?.isVip && isVipActive.get())))) {
+        if (s.canReceive
+            || (!s.isReceived && (!s.isPaid
+              || (!s?.isVip && isCommonActive.get())
+              || (s?.isVip && isVipActive.get())
+              || s?.canBuyLevel))) {
           scrollX += bpCardMargin + bpCardPadding[1] + rewardPlateW / 2
           selProgress = s.progress
           isFound = true

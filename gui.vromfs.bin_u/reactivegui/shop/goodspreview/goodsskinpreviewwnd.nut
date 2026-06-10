@@ -24,7 +24,7 @@ let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
-let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
@@ -222,7 +222,7 @@ let balanceBlock = @() {
 
 let unitHeaderBlock = @() {
   watch = unitForShow
-  children = mkPlatoonOrUnitTitle(unitForShow.get())
+  children = mkUnitTitle(unitForShow.get())
   animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
 }
 

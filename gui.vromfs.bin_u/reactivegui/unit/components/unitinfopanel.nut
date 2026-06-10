@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round, abs } = require("math")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { getUnitLocId, getUnitClassFontIcon, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
 let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
@@ -61,7 +61,7 @@ let mkInlineCurrencyIcon = @(currencyId) {
   children = mkCurrencyImage(currencyId, inlineIconSize, {pos = [ -hdpx(15), ph(8) ]})
 }
 
-let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride = {}, imgOverride = {}) {
+function mkUnitTitle(unit, override = {}, textOverride = {}, imgOverride = {}) {
   let { isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
   let title = {
@@ -69,8 +69,8 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
     size = SIZE_TO_CONTENT
     maxWidth = isElite ? hdpx(290) : hdpx(400)
     text = getUnitClassFontIcon(unit) == ""
-      ? unitNameCtor(unit)
-      : "  ".concat(unitNameCtor(unit), getUnitClassFontIcon(unit))
+      ? getUnitName(unit)
+      : "  ".concat(getUnitName(unit), getUnitClassFontIcon(unit))
     color = isElite ? premiumTextColor : textColor
     behavior = Behaviors.Marquee
     speed = hdpx(30)
@@ -93,10 +93,6 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
         ]
       }.__update(override)
 }
-
-let mkUnitTitle = mkUnitTitleCtor(@(unit) loc(getUnitLocId(unit)))
-let mkPlatoonOrUnitTitle = mkUnitTitleCtor(@(unit)
-  (unit?.platoonUnits.len() ?? 0) > 0 ? getPlatoonName(unit.name, loc) : loc(getUnitLocId(unit)))
 
 let diffProgress = @(width, posX, pivotX, color) {
   size = [width, flex()]
@@ -507,7 +503,7 @@ function calcPadding(c) {
     : 0
 }
 
-function unitInfoPanel(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, bg = panelBg) {
+function unitInfoPanel(ovr = {}, headerCtor = mkUnitTitle, unit = hangarUnit, bg = panelBg) {
   let attrPreset = mkAttrPreset(unit)
   let attrLevels = mkAttrLevels(unit)
   return function() {
@@ -611,7 +607,6 @@ return {
   unitInfoPanel
   unitInfoPanelFull
   mkUnitTitle
-  mkPlatoonOrUnitTitle
   statsWidth
   scrollHandlerInfoPanel
 }

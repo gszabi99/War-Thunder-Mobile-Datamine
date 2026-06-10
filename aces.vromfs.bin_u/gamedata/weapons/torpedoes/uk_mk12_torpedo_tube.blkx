@@ -1,5 +1,6 @@
 {
   "torpedoGun": true,
+  "hideTorpedoInLauncher": true,
   "preset_cost": 500,
   "bullets": 1,
   "shotFreq": 1.5,

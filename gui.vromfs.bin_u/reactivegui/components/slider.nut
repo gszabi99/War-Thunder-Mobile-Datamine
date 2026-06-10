@@ -13,7 +13,7 @@ let sliderValueSound = @() playSound("choose")
 
 let knobSize = evenPx(68)
 let sliderH = evenPx(80)
-let sliderVisibleH = evenPx(10)
+let sliderVisibleH = evenPx(12)
 let sliderW = hdpx(750)
 let sliderBlockH = hdpx(160)
 let sliderBtnSize = evenPx(100)
@@ -92,8 +92,10 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
       }.__update(override)
       {
         size = [flex(), sliderVisibleH]
-        rendObj = ROBJ_SOLID
-        color = sliderBgColor
+        rendObj = ROBJ_BOX
+        borderColor
+        borderWidth = hdpxi(2)
+        fillColor = sliderBgColor
       }
       @() {
         watch = relValue

@@ -15,6 +15,7 @@
     0.0,
     1.0
   ],
+  "deadZoneForTurnAround": 100.0,
   "exhaustFx": "tank_exhaust",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -2347,10 +2348,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.7,
       "mainGearRatio": 6.0,
       "sideGearRatio": 1.085,
+      "doubleDiffGearRatio": 100.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

@@ -30,7 +30,7 @@ let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
@@ -61,7 +61,7 @@ let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
 let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { curUnitInProgress, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -746,7 +746,7 @@ let rewardCtors = {
       halign = ALIGN_CENTER
       gap = hdpx(10)
       children = [
-        mkRewardLabelMultiline(rewardInfo.startDelay, loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
+        mkRewardLabelMultiline(rewardInfo.startDelay, loc("skins/title", { unitName = getUnitName(rewardInfo.id) }))
         mkSkinEquipButton(rewardInfo.id, rewardInfo.subId)
       ]
     }
@@ -754,7 +754,7 @@ let rewardCtors = {
   blueprint = {
     mkIcon = @(rewardInfo) mkBlueprintRewardIcon(rewardInfo, REWARD_STYLE_MEDIUM)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
-      "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), loc(getUnitLocId(rewardInfo.id))))
+      "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), getUnitName(rewardInfo.id)))
   }
   prizeTicket = {
     mkIcon = @(rewardInfo) mkPrizeTicketIcon(rewardInfo, REWARD_STYLE_MEDIUM)
@@ -833,7 +833,7 @@ function mkUnitPlate(unitInfo) {
     size = [ unitPlateWidth, unitPlateHeight ]
     behavior = Behaviors.Button
     onElemState = withTooltip(stateFlags, key, @() {
-      content = unitInfoPanel({}, mkPlatoonOrUnitTitle, Watched(unit)),
+      content = unitInfoPanel({}, mkUnitTitle, Watched(unit)),
       flow = FLOW_HORIZONTAL
     })
     onDetach = tooltipDetach(stateFlags)

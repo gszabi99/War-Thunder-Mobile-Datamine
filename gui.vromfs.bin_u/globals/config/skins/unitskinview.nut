@@ -348,7 +348,7 @@ return {
       "": "cn_camo_sand_green_black",
       "forest": "ussr_camo_green"
     },
-    "cn_mbt2000_sm": {
+    "cn_mbt2000_sm_ling": {
       "": "mbt2000_sm_ling",
       "forest": "ussr_camo_green"
     },
@@ -836,6 +836,13 @@ return {
     "f8f1b": {
       "": "usa_f8f1b_bearcat",
       "upgraded": "usa_am_1_mauler"
+    },
+    "f9f-2": {
+      "": "usa_f8f1b_bearcat",
+      "camo": "usa_f_82e"
+    },
+    "f9f-2_prem": {
+      "": "usa_p_40c_metal"
     },
     "firebrand_tf4": {
       "": "uk_spitfire_mk1a_summer",
@@ -1458,6 +1465,9 @@ return {
     "germ_frigate_rckt_brandenburg": {
       "upgraded": "camo_threegray_spots"
     },
+    "germ_frigate_rckt_braunschweig": {
+      "upgraded": "camo_black_gray_hexagon"
+    },
     "germ_frigate_rckt_bremen": {
       "upgraded": "camo_blackgray_net"
     },
@@ -1909,6 +1919,14 @@ return {
     },
     "germ_thyssen_henschel_tam_2ip_prem": {
       "": "arg_camo_bicolor",
+      "forest": "ger_camo_bronzegruen"
+    },
+    "germ_vilkas": {
+      "": "ger_camo_bronzegruen",
+      "forest": "ger_camo_carc"
+    },
+    "germ_vilkas_prem": {
+      "": "ger_camo_modern_desert_threecolor",
       "forest": "ger_camo_bronzegruen"
     },
     "germ_vk_3002m": {
@@ -2540,6 +2558,9 @@ return {
     },
     "jp_destroyer_rckt_asagiri": {
       "upgraded": "camo_blue_waves"
+    },
+    "jp_destroyer_rckt_chokai": {
+      "upgraded": "camo_darkbrown_spots"
     },
     "jp_destroyer_rckt_hatakaze": {
       "upgraded": "camo_bluegray_spots"
@@ -3201,6 +3222,13 @@ return {
       "": "usa_pby_5a_early_a",
       "upgraded": "uk_seafury_fb11_raaf_blue"
     },
+    "sea_hawk_fga6": {
+      "": "usa_pby_5a_early_a",
+      "camo": "ussr_tandem_mai"
+    },
+    "sea_hawk_fga6_prem": {
+      "": "uk_shackleton_mr_mk_2_grey_37b"
+    },
     "seafire_mk17": {
       "": "uk_seafury_fb11",
       "upgraded": "usa_pby_5a_early_a"
@@ -3777,6 +3805,9 @@ return {
     "uk_frigate_rckt_type_22": {
       "upgraded": "camo_tropic_multicolor_spots"
     },
+    "uk_frigate_rckt_type_31": {
+      "upgraded": "camo_bluewhite_geometry"
+    },
     "uk_fv102_striker": {
       "": "uk_camo_light_mud_slate_grey",
       "forest": "uk_camo_very_dark_drab"
@@ -3975,6 +4006,14 @@ return {
       "desert2": "rsa_camo_gray_earth_stone",
       "forest": "us_camo_modern_green"
     },
+    "us_ags_teledyne": {
+      "": "us_camo_modern_green",
+      "forest": "usa_modern_summer_verdant"
+    },
+    "us_ags_teledyne_prem": {
+      "": "us_camo_ags_teledyne",
+      "forest": "us_camo_modern_green"
+    },
     "us_aircraftcarrier_essex": {
       "upgraded": "camo_blackgray_spots"
     },
@@ -4054,6 +4093,9 @@ return {
     },
     "us_cruiser_rckt_long_beach": {
       "upgraded": "camo_blackwhite_cubes"
+    },
+    "us_cruiser_rckt_ticonderoga": {
+      "upgraded": "camo_nato_blue_geometry"
     },
     "us_cruiser_rckt_truxtun": {
       "upgraded": "camo_blackgray_spots"
@@ -4876,6 +4918,9 @@ return {
     "ussr_cruiser_maxim_gorky": {
       "upgraded": "camo_northern_fleet"
     },
+    "ussr_cruiser_rckt_pr1134b": {
+      "upgraded": "camo_green_stripes"
+    },
     "ussr_cruiser_rckt_pr1144": {
       "upgraded": "camo_arcticfleet"
     },
@@ -5206,6 +5251,9 @@ return {
     },
     "ussr_sub_pr885": {
       "upgraded": "camo_northern_fleet"
+    },
+    "ussr_sub_pr971": {
+      "upgraded": "camo_geometry_longdiag"
     },
     "ussr_sub_type_k": {
       "upgraded": "camo_violetgray_geometry"

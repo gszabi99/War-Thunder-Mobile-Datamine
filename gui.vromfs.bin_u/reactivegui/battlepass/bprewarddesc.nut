@@ -5,7 +5,7 @@ let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE, REWARD_STYLE_MEDIUM } = require("%rG
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
@@ -36,7 +36,7 @@ let mkUnitPlate = @(unitId) function() {
       children = [
         mkUnitBg(unit)
         mkUnitImage(unit)
-        mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
+        mkUnitTexts(unit, getUnitName(unit))
         mkUnitInfo(unit)
         {
           hplace = ALIGN_LEFT
@@ -57,10 +57,10 @@ let locByTypesReward = {
   item = @(id) loc($"item/{id}")
   currency = @(id) loc($"battlepass/currency/{id}")
   premium =  @(_) loc($"battlepass/premium/header")
-  unit = @(id) getPlatoonOrUnitName({ name = id }, loc)
-  unitUpgrade = @(id) getPlatoonOrUnitName({ name = id }, loc)
+  unit = @(id) getUnitName(id)
+  unitUpgrade = @(id) getUnitName(id)
   skin = @(id) loc("reward/skin_for",
-    { unitName = colorize(markTextColor, loc(getUnitLocId(id))) })
+    { unitName = colorize(markTextColor, getUnitName(id)) })
   decal = @(id) loc($"decals/{id}")
   blueprint = @(_) loc("blueprints")
   lootbox = @(id) loc($"lootbox/{id}")

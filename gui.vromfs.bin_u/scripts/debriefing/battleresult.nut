@@ -47,13 +47,6 @@ let hasVip = Computed(@() subscriptions.get()?.vip.isActive ?? false )
 let hasPrem = Computed(@() subscriptions.get()?.premium.isActive ?? false )
 let hasPremiumSubs = Computed(@() hasPrem.get() || hasVip.get())
 
-function realNameToName(unit) {
-  let res = clone unit
-  res.name = unit.realName
-  res.$rawdelete("realName")
-  return res
-}
-
 eventbus_subscribe("adsBonusToApply",function(adsBonuses) {
   if(!adsBonuses)
     return
@@ -96,10 +89,6 @@ let battleResult = Computed(function() {
     return singleMissionResult.get()
   else {
     res = baseBattleResult.get()?.__merge({ roomInfo = roomInfoShort.get() })
-    if ("realName" in res?.unit) 
-      res.unit = realNameToName(res.unit)
-    if (type(res?.unit.platoonUnits) == "array")
-      res.unit = res.unit.__merge({ platoonUnits = res.unit.platoonUnits.map(@(u) (u?.realName ?? u.name) == u.name ? u : realNameToName(u))})
     if (res?.sessionId != battleSessionId.get())
       return connectFailedData.get()?.sessionId != battleSessionId.get() ? null
         : connectFailedData.get().__merge({ isDisconnected = true }, { roomInfo = roomInfoShort.get() })
@@ -148,13 +137,11 @@ isInBattle.subscribe(function(v) {
 battleResult.subscribe(function(v) {
   if (debugBattleResult.get() != null)
     return
-  let { unit = null, isSeparateSlots = false } = v
+  let { unit = null } = v
   if (unit == null)
     return
-  let { realName = null, name = "", platoonUnits = [] } = unit
-  let units = isSeparateSlots
-    ? [ realName ?? name ].extend(platoonUnits.map(@(pu) pu.name))
-    : [ realName ?? name ]
+  let { name = "", platoonUnits = [] } = unit
+  let units = [ name ].extend(platoonUnits.map(@(pu) pu.name))
   let params = { units }
   if (isEqual(isUnitWeaponryRequested.get(), params))
     return

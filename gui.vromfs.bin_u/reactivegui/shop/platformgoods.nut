@@ -39,11 +39,46 @@ platformGoods.subscribe(function(list) {
   wasGoodsLogged.set(true)
 })
 
-subscribeFMsgBtns({
-  buyPlatformGoods = function(context) {
-    let { goodsOrId } = context
+function buyFromRussia(goods){
+  if(has_payments_blocked_web_page.get())
+    openMsgBoxInAppPurchasesFromRussia(goods)
+  else{
+    local goodsRuss = platformGoodsFromRussia.get()?[goods.id] ??
+      platformGoodsFromRussia.get()?[goods.relatedGaijinId]
+    local baseUrl = goodsRuss?.purchaseUrl
+    if (baseUrl == null)
+      return
+
+    if (canLinkEmailForGaijinLogin.get()) {
+      openFMsgBox({
+        text = "".concat(loc("mainmenu/ru_google_play_link_email"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
+        buttons = [
+          { id = "cancel", isCancel = true }
+          { id = "linkEmail", eventId = "openLinkEmailForGaijinLogin", styleId = "PRIMARY", isDefault = true }
+        ]
+      })
+      return
+    }
+    baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
+    eventbus_send("openUrl", { baseUrl, onCloseUrl = "https://store.gaijin.net/success_payment.php" })
+  }
+}
+
+function buyGoods(goodsOrId) {
+  let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.get()?[goodsOrId]
+  if (is_android && !isHuaweiBuild && isForbiddenPlatformPurchaseFromRussia(goods))
+    buyFromRussia(goods)
+  else if (can_use_alternative_payment_ios_usa.get()
+      && is_ios
+      && listSpecialWndCountry.contains(getCountryCode())
+      && campConfigs.get()?.allGoods[goodsOrId].needShowAlternativePurchase)
+    goodsToPaySpecialWnd.set(goodsOrId)
+  else
     buyPlatformGoods(goodsOrId)
-  },
+}
+
+subscribeFMsgBtns({
+  buyPlatformGoods = @(context) buyGoods(context.goodsOrId),
   openLinkEmailForGaijinLogin = @(_) openLinkEmailForGaijinLogin()
 })
 
@@ -65,41 +100,8 @@ function buyPlatformGoodsExt(goodsOrId) {
     })
     return
   }
-  let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.get()?[goodsOrId]
-  if (is_android && !isHuaweiBuild && isForbiddenPlatformPurchaseFromRussia(goods)) {
-    if(has_payments_blocked_web_page.get())
-      openMsgBoxInAppPurchasesFromRussia(goods)
-    else{
-      local goodsRuss = platformGoodsFromRussia.get()?[goodsOrId] ??
-        platformGoodsFromRussia.get()?[goods.relatedGaijinId]
-      local baseUrl = goodsRuss?.purchaseUrl
-      if (baseUrl == null)
-        return
 
-      if (canLinkEmailForGaijinLogin.get()) {
-        openFMsgBox({
-          text = "".concat(loc("mainmenu/ru_google_play_link_email"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
-          buttons = [
-            { id = "cancel", isCancel = true }
-            { id = "linkEmail", eventId = "openLinkEmailForGaijinLogin", styleId = "PRIMARY", isDefault = true }
-          ]
-        })
-        return
-      }
-      baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
-      eventbus_send("openUrl", { baseUrl, onCloseUrl = "https://store.gaijin.net/success_payment.php" })
-    }
-    return
-  }
-  if (can_use_alternative_payment_ios_usa.get() && is_ios && listSpecialWndCountry.contains(getCountryCode())) {
-    let needShowAlternativePurchase = campConfigs.get()?.allGoods[goodsOrId].needShowAlternativePurchase
-    if(needShowAlternativePurchase){
-      goodsToPaySpecialWnd.set(goodsOrId)
-      return
-    }
-  }
-
-  buyPlatformGoods(goodsOrId)
+  buyGoods(goodsOrId)
 }
 
 let isGoodsOnlyInternalPurchase = @(goods) (goods?.purchaseGuids.len() ?? 0) == 0

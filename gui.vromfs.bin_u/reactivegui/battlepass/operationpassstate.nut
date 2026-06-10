@@ -15,9 +15,8 @@ let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
-let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
-let curStatsCampaign = Computed(@() getCampaignStatsId(curCampaign.get()))
 
 let OP_NONE = "none"
 let OP_COMMON = "common"
@@ -30,7 +29,7 @@ let debugOP = mkWatched(persist, "debugOP", null)
 
 let OPFreeRewardsUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "operation_pass_free" in unlock?.meta
-    && (unlock?.meta.campaign == null || unlock?.meta.campaign == curStatsCampaign.get())))
+    && (unlock?.meta.campaign == null || unlock?.meta.campaign == curCampaign.get())))
 let OPCampaign = Computed(@() OPFreeRewardsUnlock.get()?.meta.campaign)
 let OPPaidRewardsUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "operation_pass_paid" in unlock?.meta
@@ -48,7 +47,7 @@ let seasonUnitName = Computed(function() {
     foreach (k, _ in stages[i].rewards) {
       let unitReward = (userstatRewards?[k] ?? []).findvalue(@(r) r.gType == G_UNIT)
       if (unitReward != null)
-        return getUnitName(unitReward.id, loc)
+        return getUnitName(unitReward.id)
     }
   return null
 })
@@ -74,9 +73,9 @@ let operationPassGoods = Computed(function() {
   let campaign = OPCampaign.get()
   return {
     [OP_COMMON] = shopGoods.get().findvalue(@(s) "operation_pass" in s?.meta
-      && getCampaignStatsId(s?.meta.campaign) == campaign),
+      && s?.meta.campaign == campaign),
     [OP_VIP] = shopGoods.get().findvalue(@(s) "operation_pass_vip" in s?.meta
-      && getCampaignStatsId(s?.meta.campaign) == campaign),
+      && s?.meta.campaign == campaign),
   }
 })
 

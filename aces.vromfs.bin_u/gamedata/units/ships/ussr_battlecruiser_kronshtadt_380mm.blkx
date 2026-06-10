@@ -889,6 +889,8 @@
         "bullets": 126,
         "useGunnerTargetingQuality": true,
         "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.2,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -956,6 +958,8 @@
         "bullets": 126,
         "useGunnerTargetingQuality": true,
         "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.2,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -1012,6 +1016,8 @@
         "bullets": 126,
         "useGunnerTargetingQuality": true,
         "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.2,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -1079,6 +1085,8 @@
         "bullets": 126,
         "useGunnerTargetingQuality": true,
         "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.2,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -1135,6 +1143,8 @@
         "bullets": 126,
         "useGunnerTargetingQuality": true,
         "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.2,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_03",
@@ -1213,6 +1223,8 @@
         "bullets": 126,
         "useGunnerTargetingQuality": true,
         "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.2,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_03",
@@ -2195,6 +2207,7 @@
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2219,7 +2232,8 @@
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_01",
-          "gun": "aa_gun_01"
+          "gun": "aa_gun_01",
+          "aiTargetingOnShell": true
         },
         "limits": {
           "yaw": [
@@ -2249,6 +2263,7 @@
         "flash": "emtr_gun_flame_15",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2273,7 +2288,8 @@
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_02",
-          "gun": "aa_gun_02"
+          "gun": "aa_gun_02",
+          "aiTargetingOnShell": true
         },
         "limits": {
           "yaw": [
@@ -2303,6 +2319,7 @@
         "flash": "emtr_gun_flame_19",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2327,7 +2344,8 @@
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_03",
-          "gun": "aa_gun_03"
+          "gun": "aa_gun_03",
+          "aiTargetingOnShell": true
         },
         "limits": {
           "yaw": [
@@ -2357,6 +2375,7 @@
         "flash": "emtr_gun_flame_31",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2382,6 +2401,7 @@
         "turret": {
           "head": "aa_turret_04",
           "gun": "aa_gun_04",
+          "aiTargetingOnShell": true,
           "linkedAnimPart": {
             "horNode": "fire_director_05",
             "horLimits": [
@@ -2422,6 +2442,7 @@
         "flash": "emtr_gun_flame_35",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2447,6 +2468,7 @@
         "turret": {
           "head": "aa_turret_05",
           "gun": "aa_gun_05",
+          "aiTargetingOnShell": true,
           "linkedAnimPart": {
             "horNode": "fire_director_06",
             "horLimits": [
@@ -2487,6 +2509,7 @@
         "flash": "emtr_gun_flame_43",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2511,7 +2534,8 @@
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_06",
-          "gun": "aa_gun_06"
+          "gun": "aa_gun_06",
+          "aiTargetingOnShell": true
         },
         "limits": {
           "yaw": [
@@ -2541,6 +2565,7 @@
         "flash": "emtr_gun_flame_47",
         "useEmitter": true,
         "isBulletBelt": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 1.0,
@@ -2565,7 +2590,8 @@
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "aa_turret_07",
-          "gun": "aa_gun_07"
+          "gun": "aa_gun_07",
+          "aiTargetingOnShell": true
         },
         "limits": {
           "yaw": [
@@ -2621,6 +2647,10 @@
       "blk": "gameData/units/ships/weaponPresets/ussr_battlecruiser_kronshtadt_380mm_default.blk"
     }
   },
+  "ciwSystem": {
+    "activeTime": 10.0,
+    "reloadTime": 50.0
+  },
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},
@@ -2659,6 +2689,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2726,6 +2758,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -2782,6 +2816,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -2849,6 +2885,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -2905,6 +2943,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_03",
@@ -2983,6 +3023,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_03",
@@ -3965,6 +4007,7 @@
               "flash": "emtr_gun_flame_07",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -3989,7 +4032,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_01",
-                "gun": "aa_gun_01"
+                "gun": "aa_gun_01",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -4019,6 +4063,7 @@
               "flash": "emtr_gun_flame_15",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -4043,7 +4088,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_02",
-                "gun": "aa_gun_02"
+                "gun": "aa_gun_02",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -4073,6 +4119,7 @@
               "flash": "emtr_gun_flame_19",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -4097,7 +4144,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_03",
-                "gun": "aa_gun_03"
+                "gun": "aa_gun_03",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -4127,6 +4175,7 @@
               "flash": "emtr_gun_flame_31",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -4152,6 +4201,7 @@
               "turret": {
                 "head": "aa_turret_04",
                 "gun": "aa_gun_04",
+                "aiTargetingOnShell": true,
                 "linkedAnimPart": {
                   "horNode": "fire_director_05",
                   "horLimits": [
@@ -4192,6 +4242,7 @@
               "flash": "emtr_gun_flame_35",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -4217,6 +4268,7 @@
               "turret": {
                 "head": "aa_turret_05",
                 "gun": "aa_gun_05",
+                "aiTargetingOnShell": true,
                 "linkedAnimPart": {
                   "horNode": "fire_director_06",
                   "horLimits": [
@@ -4257,6 +4309,7 @@
               "flash": "emtr_gun_flame_43",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -4281,7 +4334,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_06",
-                "gun": "aa_gun_06"
+                "gun": "aa_gun_06",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -4311,6 +4365,7 @@
               "flash": "emtr_gun_flame_47",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -4335,7 +4390,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_07",
-                "gun": "aa_gun_07"
+                "gun": "aa_gun_07",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -4430,6 +4486,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -4497,6 +4555,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
@@ -4553,6 +4613,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -4620,6 +4682,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
@@ -4676,6 +4740,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_03",
@@ -4754,6 +4820,8 @@
               "bullets": 126,
               "useGunnerTargetingQuality": true,
               "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.2,
               "turret": {
                 "head": "main_caliber_turret_03",
                 "gun": "main_caliber_gun_03",
@@ -5736,6 +5804,7 @@
               "flash": "emtr_gun_flame_07",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -5760,7 +5829,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_01",
-                "gun": "aa_gun_01"
+                "gun": "aa_gun_01",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -5790,6 +5860,7 @@
               "flash": "emtr_gun_flame_15",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -5814,7 +5885,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_02",
-                "gun": "aa_gun_02"
+                "gun": "aa_gun_02",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -5844,6 +5916,7 @@
               "flash": "emtr_gun_flame_19",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -5868,7 +5941,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_03",
-                "gun": "aa_gun_03"
+                "gun": "aa_gun_03",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -5898,6 +5972,7 @@
               "flash": "emtr_gun_flame_31",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -5923,6 +5998,7 @@
               "turret": {
                 "head": "aa_turret_04",
                 "gun": "aa_gun_04",
+                "aiTargetingOnShell": true,
                 "linkedAnimPart": {
                   "horNode": "fire_director_05",
                   "horLimits": [
@@ -5963,6 +6039,7 @@
               "flash": "emtr_gun_flame_35",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -5988,6 +6065,7 @@
               "turret": {
                 "head": "aa_turret_05",
                 "gun": "aa_gun_05",
+                "aiTargetingOnShell": true,
                 "linkedAnimPart": {
                   "horNode": "fire_director_06",
                   "horLimits": [
@@ -6028,6 +6106,7 @@
               "flash": "emtr_gun_flame_43",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -6052,7 +6131,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_06",
-                "gun": "aa_gun_06"
+                "gun": "aa_gun_06",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [
@@ -6082,6 +6162,7 @@
               "flash": "emtr_gun_flame_47",
               "useEmitter": true,
               "isBulletBelt": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 1.0,
@@ -6106,7 +6187,8 @@
               "useGunnerTargetingQuality": false,
               "turret": {
                 "head": "aa_turret_07",
-                "gun": "aa_gun_07"
+                "gun": "aa_gun_07",
+                "aiTargetingOnShell": true
               },
               "limits": {
                 "yaw": [

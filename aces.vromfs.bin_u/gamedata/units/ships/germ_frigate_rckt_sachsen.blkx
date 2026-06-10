@@ -24,14 +24,14 @@
   "useSimpleDeathConditionsAndEffects": false,
   "hitCamOnSimpleUnitSubsystems": true,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 98880.0,
+  "multHpFromMetaparts": 120180.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
-  "asmCaptureDuration": 5.0,
+  "asmCaptureDuration": 4.0,
   "addTorpedoesCountPack": 3,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
@@ -272,7 +272,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 98880.0,
+      "hp": 120180.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -298,7 +298,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 98880.0,
+      "hp": 120180.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -308,7 +308,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 98880.0,
+      "hp": 120180.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {}
@@ -317,7 +317,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 98880.0,
+      "hp": 120180.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_03_dm": {},
@@ -363,7 +363,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 98880.0,
+      "hp": 120180.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -573,7 +573,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 98880.0,
+      "hp": 120180.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -993,10 +993,11 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 65.0,
-        "speedPitch": 44.0,
+        "speedYaw": 465.0,
+        "speedPitch": 444.0,
         "bullets": 900,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
@@ -1025,7 +1026,7 @@
             90.0
           ],
           "pitch": [
-            -5.0,
+            -10.0,
             85.0
           ]
         },
@@ -1046,10 +1047,11 @@
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
+        "accuracyShell": 1.5,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 65.0,
-        "speedPitch": 44.0,
+        "speedYaw": 465.0,
+        "speedPitch": 444.0,
         "bullets": 900,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
@@ -1078,7 +1080,7 @@
             90.0
           ],
           "pitch": [
-            -5.0,
+            -10.0,
             85.0
           ]
         },
@@ -1299,6 +1301,10 @@
     "timeToSupress": 0.1,
     "maxAngle": 1.0,
     "blockedShowDuration": 5.0
+  },
+  "ciwSystem": {
+    "activeTime": 5.0,
+    "reloadTime": 30.0
   },
   "ircm": {
     "reloadDuration": 10.0,
@@ -1594,10 +1600,11 @@
               "emitter": "emtr_gun_flame_03",
               "flash": "emtr_gun_flame_03",
               "useEmitter": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "speedYaw": 65.0,
-              "speedPitch": 44.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
               "bullets": 900,
               "useGunnerTargetingQuality": false,
               "allowableDelta": 1.0,
@@ -1626,7 +1633,7 @@
                   90.0
                 ],
                 "pitch": [
-                  -5.0,
+                  -10.0,
                   85.0
                 ]
               },
@@ -1647,10 +1654,11 @@
               "emitter": "emtr_gun_flame_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "speedYaw": 65.0,
-              "speedPitch": 44.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
               "bullets": 900,
               "useGunnerTargetingQuality": false,
               "allowableDelta": 1.0,
@@ -1679,7 +1687,7 @@
                   90.0
                 ],
                 "pitch": [
-                  -5.0,
+                  -10.0,
                   85.0
                 ]
               },
@@ -2175,10 +2183,11 @@
               "emitter": "emtr_gun_flame_03",
               "flash": "emtr_gun_flame_03",
               "useEmitter": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "speedYaw": 65.0,
-              "speedPitch": 44.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
               "bullets": 900,
               "useGunnerTargetingQuality": false,
               "allowableDelta": 1.0,
@@ -2207,7 +2216,7 @@
                   90.0
                 ],
                 "pitch": [
-                  -5.0,
+                  -10.0,
                   85.0
                 ]
               },
@@ -2228,10 +2237,11 @@
               "emitter": "emtr_gun_flame_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
+              "accuracyShell": 1.5,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "speedYaw": 65.0,
-              "speedPitch": 44.0,
+              "speedYaw": 465.0,
+              "speedPitch": 444.0,
               "bullets": 900,
               "useGunnerTargetingQuality": false,
               "allowableDelta": 1.0,
@@ -2260,7 +2270,7 @@
                   90.0
                 ],
                 "pitch": [
-                  -5.0,
+                  -10.0,
                   85.0
                 ]
               },

@@ -5,7 +5,6 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -28,7 +27,7 @@ let battlesTotal = Computed(@()
   servProfile.get()?.sharedStatsByCampaign
     .reduce(
       function(res, campaign) {
-        let statsId = getCampaignStatsId(campaign)
+        let statsId = campaign
         res[statsId] <- max(res?[statsId] ?? 0, (campaign?.battles ?? 0) + (campaign?.offlineBattles ?? 0))
         return res
       },

@@ -21,8 +21,8 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_profile, debug_apply_unit_rent, get_gdpr_report,
-  get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_units,
-  pp_add_currencies, add_unit_gold_today, get_configs_set
+  get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_rewards,
+  add_unit_gold_today, get_configs_set, pp_get_currencies
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -30,6 +30,7 @@ let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { campMyUnits, campUnitsCfg, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
+let { G_CURRENCY, G_UNIT, G_UNIT_UPGRADE } = require("%appGlobals/rewardType.nut")
 let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
 let { curCampaign, campProfile, setCampaign, campaignsList, campConfigs
@@ -264,7 +265,7 @@ register_command(@(minutes) shift_all_offers_time(minutes * 60, "consolePrintRes
 register_command(@() debug_offer_generation_stats(curCampaign.get(), "consolePrint"),
   "meta.debug_offer_generation_stats")
 
-let offerTypes = ["start", "gold", "premUnit", "branch", "whale", "blueprint", "blueprintUpgraded"]
+let offerTypes = ["start", "startFollowUp", "gold", "blueprint", "branch", "premUnit", "blueprintUpgraded"]
 foreach (ot in offerTypes) {
   let offerType = ot
   register_command(@() generate_fixed_type_offer(curCampaign.get(), offerType, "consolePrintResult"),
@@ -371,18 +372,19 @@ registerHandler("saveJson",
 
 register_command(@() get_gdpr_report({ id = "saveJson", file = "wtmGDPR.json" }), "meta.get_gdpr_report")
 register_command(@() pp_get_config({ id = "saveJson", file = "wtmPPCfg.json" }), "meta.pp_get_config")
+register_command(@() pp_get_currencies({ id = "saveJson", file = "wtmPPCurrencies.json" }), "meta.pp_get_currencies")
 register_command(@(unitsStr)
     pp_get_units(unitsStr.replace(" ", ";").split(";"), { id = "saveJson", file = "wtmPPUnits.json" }),
   "meta.pp_get_units")
 
 register_command(@(unitsStr, isUpgraded)
-    pp_add_units(
-      unitsStr.replace(" ", ";").split(";").reduce(@(res, id) res.$rawset(id, isUpgraded), {}),
+    pp_add_rewards(
+      unitsStr.replace(" ", ";").split(";").map(@(id) { gType = isUpgraded ? G_UNIT_UPGRADE : G_UNIT, id }),
       { id = "saveJson", file = "wtmPPAddUnits.json" }),
   "meta.pp_add_units")
 register_command(@(currenciesStr, count)
-    pp_add_currencies(
-      currenciesStr.replace(" ", ";").split(";").reduce(@(res, id) res.$rawset(id, count), {}),
+    pp_add_rewards(
+      currenciesStr.replace(" ", ";").split(";").map(@(id) { gType = G_CURRENCY, id, count }),
       { id = "saveJson", file = "wtmPPAddCurrencies.json" }),
   "meta.pp_add_currencies")
 

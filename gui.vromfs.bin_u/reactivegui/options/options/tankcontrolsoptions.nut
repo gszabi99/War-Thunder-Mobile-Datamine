@@ -14,7 +14,7 @@ let { has_option_tank_alternative_control } = require("%appGlobals/permissions.n
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { firstLoginTime, abTests } = require("%appGlobals/pServer/campaign.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { hudScoreTankList, hudScoreTankRaw, hudScoreTank } = require("%rGui/hud/myScores.nut")
+let { hudScoreList, hudScoreTankRaw, hudScoreTank } = require("%rGui/hud/myScores.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
@@ -219,7 +219,7 @@ let optHudScoreTank = {
   value = hudScoreTank
   setValue = @(v) hudScoreTankRaw.set(v)
   onChangeValue = @(v) sendChange("tankHudScores", v)
-  list = hudScoreTankList
+  list = hudScoreList
   valToString = @(v) loc($"multiplayer/{v}")
 }
 

@@ -7,7 +7,7 @@ let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, nex
 } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("%rGui/tutorial/completedTutorials.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
-let { isInRespawn, isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
+let { isInRespawn, isRespawnStarted, respawnsLeft, respawnsTotalInitial } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { showRespChooseWnd, curSlotName, applyBullet } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
 let { bulletsInfo, chosenBullets } = require("%rGui/respawn/bulletsChoiceState.nut")
@@ -41,7 +41,8 @@ let canStartTutorial = shouldDisableMenu ? Watched(false)
       && !isRespawnStarted.get()
       && respawnSlots.get().len() > 1
       && isInRespawn.get()
-      && selSlot.get()?.name != null)
+      && selSlot.get()?.name != null
+      && respawnsLeft.get() == respawnsTotalInitial.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 

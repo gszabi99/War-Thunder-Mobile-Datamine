@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests,
-  sharedStatsByCampaign, getCampaignStatsId
+  sharedStatsByCampaign
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -66,7 +66,7 @@ function needFirstBattleTutorForCampaign(campaign) {
     return false
   let sUnits = serverConfigs.get()?.allUnits ?? {}
   let ownCampUnit = (servProfile.get()?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
-  return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.get()?.sharedStatsByCampaign[getCampaignStatsId(campaign)])
+  return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.get()?.sharedStatsByCampaign[campaign])
 }
 
 function mkRewardBattleData(rewards) {

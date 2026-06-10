@@ -68,6 +68,7 @@ return {
   }
 
   menuBtn = {
+    canHide = false
     ctor = @(scale) mkMenuButton(scale)
     defTransform = mkLTPos([0, 0])
     priority = Z_ORDER.SUPERIOR

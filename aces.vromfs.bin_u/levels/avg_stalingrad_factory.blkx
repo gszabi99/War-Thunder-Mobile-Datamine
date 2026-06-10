@@ -53,6 +53,8 @@
   "lightprobe_offset": 5.0,
   "water_level": -12.0,
   "levelMapAltOffset": 11.0,
+  "soundAmbientPathStudio": "aircraft/ambient",
+  "soundAmbientEvent": "global_amb",
   "dirt_type": "snow",
   "heli_ground_effect": "snow",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",

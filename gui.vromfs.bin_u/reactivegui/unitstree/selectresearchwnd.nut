@@ -6,7 +6,7 @@ let { curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campai
 let { set_research_unit, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
@@ -21,7 +21,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
 let { rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
@@ -70,14 +70,14 @@ function mkUnitPlate(unit) {
     size = unitPlateTiny
     behavior = Behaviors.Button
     onElemState = withTooltip(stateFlags, key, @() {
-      content = unitInfoPanel({}, mkPlatoonOrUnitTitle, Watched(unit)),
+      content = unitInfoPanel({}, mkUnitTitle, Watched(unit)),
       flow = FLOW_HORIZONTAL
     })
     onDetach = tooltipDetach(stateFlags)
     children = [
       mkUnitBg(unit)
       mkUnitImage(unit)
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+      mkUnitTexts(unit, getUnitName(unit.name))
       mkUnitInfo(unit)
     ]
   }

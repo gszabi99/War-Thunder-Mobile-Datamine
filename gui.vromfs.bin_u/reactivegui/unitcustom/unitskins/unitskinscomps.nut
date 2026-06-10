@@ -6,7 +6,7 @@ let { round } = require("math")
 let { buy_unit_skin, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
@@ -298,7 +298,7 @@ function onPurchase() {
   let unitName = baseUnit.get().name
   let skinName = selectedSkin.get()
   let { currencyId, price } = selectedSkinCfg.get()
-  let locSkinName = loc("skins/title", { unitName = getPlatoonOrUnitName(baseUnit.get(), loc) })
+  let locSkinName = loc("skins/title", { unitName = getUnitName(baseUnit.get()) })
 
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, locSkinName) }),

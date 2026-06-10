@@ -8,7 +8,7 @@ let { mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates, calcOverload
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { selSlot, hasRespawnSeparateSlots, curUnitsAvgCostWp } = require("%rGui/respawn/respawnState.nut")
+let { selSlot, curUnitsAvgCostWp } = require("%rGui/respawn/respawnState.nut")
 
 
 let selectedBeltWeaponId = Watched(null)
@@ -20,7 +20,7 @@ let selectedWCardIdx = Watched(null)
 let isSecondaryWeapChoiceOpened = Computed(@() selectedWSlotIdx.get() != null)
 let canShowChooseBulletWnd = Computed(@() selectedWSlotIdx.get() != null || selectedBeltWeaponId.get() != null)
 
-let selSlotUnit = keepref(Computed(@() hasRespawnSeparateSlots.get() && canShowChooseBulletWnd.get() ? selSlot.get() : null))
+let selSlotUnit = keepref(Computed(@() canShowChooseBulletWnd.get() ? selSlot.get() : null))
 let curUnit = Watched(selSlotUnit.get())
 let unitName = Computed(@() curUnit.get()?.name)
 selSlotUnit.subscribe(@(v) v ? curUnit.set(v) : null)

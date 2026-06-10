@@ -9,11 +9,14 @@ let { dropDownMenu } = require("%rGui/components/dropDownMenu.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg, fieldCategory, fieldMessage,
   getFormValidationError, selectedPlayerForReport, requestSelfRow, close,
-  isReportStatusSuccessed, isReportStatusRejected, MAX_MESSAGE_CHARS, isRequestInProgress } = require("%rGui/report/reportPlayerState.nut")
+  isReportStatusSuccessed, isReportStatusRejected, isRequestInProgress
+} = require("%rGui/report/reportPlayerState.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { btnBUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { multilineTextInput } = require("%rGui/components/textInput.nut")
+
 
 let defColor = 0xFFFFFFFF
 let componentWidth = hdpx(780)
@@ -35,47 +38,6 @@ function onSubmit() {
       { id = "submit", styleId = "PRIMARY", cb = submitImpl }
     ]
   })
-}
-
-let mkTextInputField = @(editableText, lenWatched, state) {
-  rendObj = ROBJ_SOLID
-  color = 0x00000000
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  size = [componentWidth, hdpx(200)]
-  flow = FLOW_VERTICAL
-  gap = hdpx(10)
-  children = [
-    {
-      size = flex()
-      rendObj = ROBJ_BOX
-      borderWidth = hdpxi(1)
-      padding = hdpx(10)
-      borderColor = 0xFFFFFFFF
-      fillColor = 0x50000000
-      children = {
-        size = flex()
-        rendObj = ROBJ_TEXTAREA
-        behavior = [Behaviors.TextAreaEdit, Behaviors.WheelScroll]
-        color = 0xFFFFFFFF
-        editableText
-        function onChange(etext) {
-          let s = utf8(etext.text)
-          if (s.charCount() > MAX_MESSAGE_CHARS) {
-            editableText.text = "".concat(utf8(editableText.text).slice(0, MAX_MESSAGE_CHARS))
-            return
-          }
-          state.set(editableText.text)
-        }
-      }.__update(fontTinyAccented)
-    }
-    @() {
-      watch = lenWatched
-      hplace = ALIGN_LEFT
-      rendObj = ROBJ_TEXT
-      text = loc("contacts/report/message/max_chars", { maxChars = MAX_MESSAGE_CHARS, currentChars = lenWatched.get() })
-    }
-  ]
 }
 
 let mkTextInputLabel = @(text) {
@@ -102,7 +64,7 @@ function formBlock() {
           : null
       })
       mkTextInputLabel(loc("msgbox/report/addComment"))
-      mkTextInputField(message, lenWatched, fieldMessage)
+      multilineTextInput(message, lenWatched, fieldMessage)
     ]
   }
 }

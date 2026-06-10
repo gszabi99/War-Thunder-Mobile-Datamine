@@ -82,6 +82,9 @@
     "riExtraMinSizeForReflection": 100.0,
     "riExToHeightmap": true
   },
+  "clipmap": {
+    "texelSize": 0.1
+  },
   "micro_details": {
     "micro_detail": [
       "microdetail_stone_a_tex_n*",

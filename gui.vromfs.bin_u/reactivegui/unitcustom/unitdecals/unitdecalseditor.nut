@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { TouchScreenStick } = require("wt.behaviors")
 let { Point2 } = require("dagor.math")
-let { sqrt } = require("math")
+let { sqrt, fabs } = require("math")
 let { get_decal_pos } = require("unitCustomization")
 let { exitDecalMode, rotateDecalMode, moveDecalMode, scaleDecalMode,
   rotateDecal, moveDecal, scaleDecal, curDecalPosition, isManipulatorInProgress
@@ -115,10 +115,18 @@ let decalActions = @() {
   update = function() {
     let projPos = get_decal_pos()
     let decalPos = projPos.x > 0 ? projPos : Point2(sw(50), sh(50))
-    curDecalPosition.set(decalPos)
+    if (fabs(curDecalPosition.get().x - decalPos.x) > 1 || fabs(curDecalPosition.get().y - decalPos.y) > 1) {
+      curDecalPosition.set(decalPos)
+      return {
+        transform = {
+          translate = [decalPos.x, decalPos.y]
+        }
+      }
+    }
+
     return {
       transform = {
-        translate = [decalPos.x, decalPos.y]
+        translate = [curDecalPosition.get().x, curDecalPosition.get().y]
       }
     }
   }

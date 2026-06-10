@@ -7,6 +7,7 @@ let { BAN_USER_INFINITE_PENALTY } = require("penalty")
 let { format } =  require("string")
 let { get_cur_circuit_name } = require("app")
 let { APP_ID, CONTACTS_GAME_ID } = require("%appGlobals/gameIdentifiers.nut")
+let { projectId } = require("%appGlobals/clientState/initialState.nut")
 let { addPublisherToHeaders } = require("%appGlobals/curCircuitOverride.nut")
 let { getSysInfo } = require("%scripts/login/sysInfo.nut")
 let { applyRights } = require("%scripts/login/applyRights.nut")
@@ -26,7 +27,7 @@ let { request, registerHandler } = charClientEvent("contacts", contacts)
 
 
 let reqAccessUrl = "https://central-admin.gaijin.net/projects/{project}/groups/{group}?modal=addUser&uid={userId}"
-  .subst({ project = "war_thunder_mobile", group = "692d4437b16be2784ae27da6" })
+  .subst({ project = projectId, group = "692d4437b16be2784ae27da6" })
 
 let customErrorMsg = {
   ["Game is under maintenance"] = @(_) openFMsgBox({ text = loc("matching/SERVER_ERROR_MAINTENANCE") }),

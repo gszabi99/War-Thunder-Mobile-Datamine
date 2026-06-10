@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
 let { round } = require("math")
 let { HangarCameraControl } = require("wt.behaviors")
-let { getUnitPresentation, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
@@ -226,7 +226,7 @@ let unitCustomizationGamercard = {
         @() {
           watch = baseUnit
           rendObj = ROBJ_TEXT
-          text = getPlatoonOrUnitName(baseUnit.get(), loc)
+          text = getUnitName(baseUnit.get())
         }.__update(fontSmall)
       ]
     })

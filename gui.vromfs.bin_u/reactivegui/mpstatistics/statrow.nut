@@ -86,7 +86,12 @@ let viewStats = [
     value = @(stats) secureDiv(stats?.profile_stat_kill ?? 0, stats?.profile_stat_death ?? 0)
     format = @(v) format("%.2f", v)
   }
-]
+].extend(["tanks", "ships", "air"].map(@(campaign) {
+  name = loc("stats/avg_score")
+  campaign
+  value = @(stats) stats?.m_avg_score ?? 0
+  format = @(v) format("%.0f", v)
+}))
 
 return {
   viewStats

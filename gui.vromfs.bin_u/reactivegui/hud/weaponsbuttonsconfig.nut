@@ -4,10 +4,7 @@ from "blkGetters" import get_current_mission_info_cached
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL, AB_SPECIAL_FIGHTER,
   AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE, AB_ROCKET_ASW, AB_ACOUSTIC_DECOY,
-
-
-
-  AB_ROCKET_TERTIARY
+  AB_CIWS, AB_ROCKET_TERTIARY
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
 
@@ -195,14 +192,12 @@ let actionBarItemsConfig = {
     actionType = AB_ARTILLERY_TARGET
     mkButtonFunction = "mkActionItem"
   }
-
-
-
-
-
-
-
-
+  EII_CIWS = {
+    getShortcut =  @(_, __) "ID_SHIP_TOGGLE_CIWS"
+    getImage = @(_) "ui/gameuiskin#button_ciws_high_rank.svg"
+    actionType = AB_CIWS
+    mkButtonFunction = "mkCountermeasureItem"
+  }
 }.map(@(cfg, key) cfg.__update({ key }))
 
 return actionBarItemsConfig

@@ -14,6 +14,7 @@ let iText = {
 let defSize = [evenPx(70), evenPx(70)]
 let defSizeSmall = [evenPx(50), evenPx(50)]
 let defSizeMedium = [evenPx(60), evenPx(60)]
+let defTooltipSize = hdpx(40)
 
 let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
@@ -146,7 +147,7 @@ function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
-    size = hdpx(40)
+    size = defTooltipSize
     lineWidth = hdpx(2)
     commands = [
       [VECTOR_ELLIPSE, 50, 50, 50, 50],
@@ -169,4 +170,5 @@ return {
 
   infoRhombButton
   infoTooltipButton
+  defTooltipSize
 }

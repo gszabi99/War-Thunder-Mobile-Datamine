@@ -22,6 +22,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
+  "deadZoneForTurnAround": 100.0,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -1982,10 +1983,12 @@
       "rpmTau": 1.9
     },
     "mechanics": {
+      "steerType": "double_differential",
       "maxBrakeForce": 45000.0,
       "driveGearRadius": 0.45,
       "mainGearRatio": 4.75,
       "sideGearRatio": 1.067,
+      "doubleDiffGearRatio": 50.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [

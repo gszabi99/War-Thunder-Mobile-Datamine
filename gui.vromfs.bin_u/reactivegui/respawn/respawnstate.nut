@@ -17,7 +17,7 @@ let { decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
-  hasRespawnSeparateSlots, curUnitsAvgCostWp, respawnUnitSkins, respawnUnitMods
+  curUnitsAvgCostWp, respawnUnitMods
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { AIR, TANK } = require("%appGlobals/unitConst.nut")
@@ -96,17 +96,6 @@ let respawnSlots = Computed(function() {
       res.append(mkSlot(idx + 1, sUnit, defMods, rMask, sMask))
     foreach (sUnit in respawnUnitInfo.get()?.lockedUnits ?? [])
       res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
-  }
-  if (!hasRespawnSeparateSlots.get()) {
-    let { level = -1, isCollectible = false, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
-    let skins = respawnUnitSkins.get() ?? {}
-    res.each(function(s) {
-      s.level = level
-      s.isCollectible = isCollectible
-      s.isPremium = isPremium
-      s.isUpgraded = isUpgraded
-      s.skins = skins
-    })
   }
   return res
 })
@@ -393,6 +382,5 @@ return {
   selectedSkins
 
   unitListScrollHandler
-  hasRespawnSeparateSlots
   curUnitsAvgCostWp
 }

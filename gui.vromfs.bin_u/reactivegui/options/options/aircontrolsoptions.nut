@@ -22,6 +22,7 @@ let { set_aircraft_continuous_turn_mode, set_aircraft_control_by_gyro, set_aircr
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { crosshairOptions } = require("%rGui/options/options/crosshairOptions.nut")
 let { isGtRace, isTutorial } = require("%rGui/missionState.nut")
+let { hudScoreAirList, hudScoreAirRaw, hudScoreAir } = require("%rGui/hud/myScores.nut")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -338,6 +339,16 @@ let currentQuitZoomSelectionType = {
   description = loc("options/desc/quit_zoom_after_kill")
 }
 
+let optHudScoreAir = {
+  locId = "options/tankHudScores"
+  ctrlType = OCT_LIST
+  value = hudScoreAir
+  setValue = @(v) hudScoreAirRaw.set(v)
+  onChangeValue = @(v) sendChange("airHudScores", v)
+  list = hudScoreAirList
+  valToString = @(v) loc($"multiplayer/{v}")
+}
+
 return {
   airControlsOptions = [
     aircraftControlType
@@ -377,6 +388,7 @@ return {
     controlByGyroModeElevatorSensitivitySlider
     currentTargetSelectionType
     currentTargetFollowerType
+    optHudScoreAir
     currentQuitZoomSelectionType
     curFreeCamByTouchOptionType
   ].extend(crosshairOptions)

@@ -11,7 +11,6 @@ let borderSize = hdpxi(200)
 
 let mapBgByCamp = {
   ships = "ui/images/loading/briefing_water_map.avif"
-  ships_new = "ui/images/loading/briefing_water_map.avif"
 }
 
 let textParams = {

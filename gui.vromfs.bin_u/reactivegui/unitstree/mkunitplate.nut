@@ -8,7 +8,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame, mkUni
   mkUnitSelectedGlow, mkUnitEquippedIcon, plateTextsSmallPad, unitPlateTiny,
   bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
@@ -159,7 +159,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
         pos = [0, -plateBarHeight]
         padding = hdpx(7)
       })
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
+      mkUnitTexts(unit, getUnitName(unit.name), isLocked.get())
       mkUnitLock(unit, isLocked.get())
       mkPlateBlueprintBar(unit, {
         pos = [0, 0]
@@ -205,7 +205,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
         padding = hdpx(7)
         children = mkUnitImage(unit, true)
       }
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+      mkUnitTexts(unit, getUnitName(unit.name))
       @() {
         watch = needShowPriceUnit
         vplace = ALIGN_BOTTOM
@@ -313,7 +313,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
           ]
         }
         mkUnitImage(unit, true)
-        mkUnitTexts(unit, loc(getUnitLocId(unit.name)), true)
+        mkUnitTexts(unit, getUnitName(unit.name), true)
         mkUnitInfo(unit, {padding = hdpx(10)})
         {
           size = flex()
@@ -392,7 +392,7 @@ function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
       mkUnitBg(unit, isLocked.get(),
         !isLocked.get() || (researchStatus.get()?.canResearch ?? false) || (researchStatus.get()?.isResearched ?? false))
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
+      mkUnitTexts(unit, getUnitName(unit.name), isLocked.get())
       mkUnitInfo(unit)
       {
         size = flex()
@@ -428,7 +428,9 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
   let canDrag = Computed(@() isOwned.get() && isCampaignWithSlots.get())
-  let isDraggedUnit = Computed(@() draggedData.get() != null && draggedData.get()?.unitName == unit.name)
+  let isDraggedUnit = Computed(@() draggedData.get() != null
+    && draggedData.get()?.unitName == unit.name
+    && !draggedData.get()?.canRemove)
   let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in campMyUnits.get())
       ? getUnitAnyPrice(unit, unitDiscounts.get())
     : null)
@@ -502,7 +504,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
           }
           : null
         mkUnitImage(unit, canPurchase.get() || isLocked.get())
-        mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
+        mkUnitTexts(unit, getUnitName(unit.name), isLocked.get())
         @() {
           watch = [price, discount, canPurchase]
           key = price

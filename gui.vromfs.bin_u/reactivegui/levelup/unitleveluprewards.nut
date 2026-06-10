@@ -3,7 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 
 let { rewardsToReceive, rewardUnitLevelInfo, isUnitRewardsModalOpen, closeUnitRewardsModal,
   currentUnit, receiveUnitRewards } = require("%rGui/levelUp/unitLevelUpState.nut")
@@ -96,7 +96,7 @@ let levelUpText = @() {
     }
     {
       rendObj = ROBJ_TEXT
-      text = loc("unitlevelUp/rewardsForUnit", { unitName = getPlatoonOrUnitName(currentUnit.get(), loc) })
+      text = loc("unitlevelUp/rewardsForUnit", { unitName = getUnitName(currentUnit.get()) })
     }.__update(fontSmall)
   ]
 }

@@ -13,21 +13,13 @@ let goodsCategories = [SC_FEATURED]
 let orderByGoodType = [SGT_UNIT_BUNDLE, SGT_UNIT, SGT_LOOTBOX, SGT_SLOTS]
   .reduce(@(res, v, i) res.$rawset(v, i + 1), {})
 
-function getPriority(g, seen, schRew) {
-  let isUnseen = isUnseenGoods(g.id, seen, schRew)
-  let autoPreviewAsOffer = g?.meta.autoPreviewAsOffer == "true"
-  let priority = isUnseen && autoPreviewAsOffer ? 0
-    : isUnseen ? 1
-    : 2
-  return priority
-}
-
 let featureGoodsToShow = Computed(@() !isFitSeasonRewardsRequirements.get() ? []
   : goodsCategories
       .reduce(function(res, cat) {
           foreach (g in (goodsByCategory.get()?[cat] ?? [])) {
             if (getGoodsType(g) not in orderByGoodType
-                || (!isUnseenGoods(g.id, shopSeenGoods.get(), actualSchRewards.get()) && g?.meta.autoPreviewAsOffer != "true")
+                || !isUnseenGoods(g.id, shopSeenGoods.get(), actualSchRewards.get())
+                || g?.meta.autoPreviewAsOffer == "true"
                 || getPreviewType(g) == null)
               continue
             local withUnits = false
@@ -42,8 +34,7 @@ let featureGoodsToShow = Computed(@() !isFitSeasonRewardsRequirements.get() ? []
           }
           return res
         }, [])
-      .sort(@(a, b) getPriority(a, shopSeenGoods.get(), actualSchRewards.get()) <=> getPriority(b, shopSeenGoods.get(), actualSchRewards.get())
-        || (orderByGoodType?[getGoodsType(a)] ?? -1) <=> (orderByGoodType?[getGoodsType(b)] ?? -1)))
+      .sort(@(a, b) (orderByGoodType?[getGoodsType(a)] ?? -1) <=> (orderByGoodType?[getGoodsType(b)] ?? -1)))
 
 return {
   featureGoodsToShow

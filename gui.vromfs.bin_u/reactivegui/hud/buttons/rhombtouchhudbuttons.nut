@@ -4,7 +4,7 @@ let { get_mission_time } = require("mission")
 let { playSound } = require("sound_wt")
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { updateActionBarDelayed, actionBarItems, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { touchButtonSize, touchSizeForRhombButton, imageColor, imageDisabledColor, borderWidth, btnBgStyle,
@@ -286,7 +286,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
           onClick = @() !isOnCd.get() ? toggleShortcut(shortcutId) : null
           function onElemState(v) {
             if ((v & S_ACTIVE) && actionItem.get() != null)
-              markWeapKeyHold(actionType, loc(getUnitLocId(actionItem.get().weaponName)), true)
+              markWeapKeyHold(actionType, getUnitName(actionItem.get().weaponName), true)
             else
               unmarkWeapKeyHold(actionType)
             stateFlags.set(v)

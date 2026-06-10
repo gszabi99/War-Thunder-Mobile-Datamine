@@ -4,6 +4,31 @@
     0.6,
     0.8
   ],
+  "water_visibility_max_exp_fade": 6.0,
+  "underwater_depth_absorption": [
+    1.15,
+    1.19,
+    1.26,
+    0.0
+  ],
+  "underwater_dist_absorption": [
+    1.36,
+    0.41,
+    0.34,
+    0.1
+  ],
+  "underwater_caustics_tint_add_factor": [
+    1.0,
+    1.0,
+    1.0,
+    0.0
+  ],
+  "caustics_world_scale": 0.05,
+  "caustics_intensity_deep": 0.05,
+  "caustics_intensity_shallow": 0.01,
+  "caustics_intensity_blend_factor": 0.002,
+  "caustics_pattern_blend_factor": 0.015,
+  "water_light_density": 0.007,
   "shader_vars": {
     "tonemapContrast": 1.24,
     "tonemapShoulder": 0.87,
