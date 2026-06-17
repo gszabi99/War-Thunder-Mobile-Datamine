@@ -63170,3 +63170,11 @@ scotland_seafloor_a_tex_d
 cn_mbt2000_sm
 cn_mbt2000_sm_default
 gameData/units/tankModels/weaponPresets/cn_mbt2000_sm_default.blk
+uk_guitar_decal
+broken_grass
+fc5m3fzbn25jeu7eyd7enlmdielqzjxz-g5gy
+yzsc6ybzrvpgasiyyonegkav2azhtuxf-b4sy
+Adreno (TM) 840
+rising_threat_decal
+jdjqei6yhvrqea4lrtmqgyr3vykkooid-gqpy
+bl5ug3cfsk3z37mi4nyp6vqfbvluq6xm-by5i

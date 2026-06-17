@@ -1,7 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { format } =  require("string")
+let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let defColor = 0xFFFFFFFF
+let tooltipOffset = hdpx(50)
 
 let mkText = @(text, color = defColor) {
   rendObj = ROBJ_TEXT
@@ -9,37 +12,74 @@ let mkText = @(text, color = defColor) {
   color
 }.__update(fontTiny)
 
-let mkRow = @(t1, t2, icon = null) {
-  minWidth = SIZE_TO_CONTENT
-  size = FLEX_H
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(10)
-  children = [
-    mkText(t1)
-    icon
-    {
-      size = flex()
-    }
-    mkText(t2)
-  ]
+let mkTooltipBtn = @(tooltip) infoTooltipButton(
+  @() tooltip,
+  { flowOffset = tooltipOffset },
+  { size = hdpx(30), pos = [-hdpx(40), hdpx(5)]}
+)
+
+function mkTooltippedRow(row, tooltip) {
+  let stateFlags = Watched(0)
+  let key = {}
+
+  return {
+    minWidth = SIZE_TO_CONTENT
+    size = FLEX_H
+    children = [
+      mkTooltipBtn(tooltip)
+      row.__merge({
+        key
+        behavior = Behaviors.Button
+        onElemState = withTooltip(stateFlags, key, @() {
+          content = tooltip,
+          flow = FLOW_HORIZONTAL
+          flowOffset = tooltipOffset
+        })
+        onDetach = tooltipDetach(stateFlags)
+      })
+    ]
+  }
+}
+
+function mkRow(t1, t2, icon = null, tooltip = null) {
+  let baseComp = {
+    minWidth = SIZE_TO_CONTENT
+    size = FLEX_H
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    children = [
+      mkText(t1)
+      icon
+      {
+        size = flex()
+      }
+      mkText(t2)
+    ]
+  }
+
+  return tooltip == null ? baseComp : mkTooltippedRow(baseComp, tooltip)
 }
 
 let mkMarqueeText = @(text)
   mkText(text).__update({ behavior = Behaviors.Marquee })
 
-let mkMarqueeRow = @(t1, t2, icon = null) {
-  size = FLEX_H
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(10)
-  children = [
-    mkMarqueeText(t1).__update({ maxWidth = pw(70) })
-    icon
-    {
-      size = flex()
-      halign = ALIGN_RIGHT
-      children = mkText(t2)
-    }
-  ]
+function mkMarqueeRow(t1, t2, icon = null, tooltip = null) {
+  let baseComp = {
+    size = FLEX_H
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    children = [
+      mkMarqueeText(t1).__update({ maxWidth = pw(70) })
+      icon
+      {
+        size = flex()
+        halign = ALIGN_RIGHT
+        children = mkText(t2)
+      }
+    ]
+  }
+
+  return tooltip == null ? baseComp : mkTooltippedRow(baseComp, tooltip)
 }
 
 function mkStatRow(stats, config, campaign, ctor = null) {
@@ -48,8 +88,8 @@ function mkStatRow(stats, config, campaign, ctor = null) {
     let value = config.value(stats)
     return value > 0
       ? ctor != null
-        ? ctor(config.name, config?.format(value) ?? value, config?.icon)
-        : mkRow(config.name, config?.format(value) ?? value, config?.icon)
+        ? ctor(config.name, config?.format(value) ?? value, config?.icon, config?.tooltip)
+        : mkRow(config.name, config?.format(value) ?? value, config?.icon, config?.tooltip)
       : null
   }
   return null
@@ -90,18 +130,21 @@ let viewStats = [
     campaign = "tanks"
     value = @(stats) stats?.m_avg_score ?? 0
     format = @(v) format("%.0f", v)
+    tooltip = loc("stats/avg_score_dmg/tooltip")
   }
   {
     name = loc("stats/avg_score_enemy_hp")
     campaign = "ships"
     value = @(stats) stats?.m_avg_score ?? 0
     format = @(v) format("%.1f%%", v)
+    tooltip = loc("stats/avg_score_dmg/tooltip")
   }
   {
     name = loc("stats/avg_score_dmg")
     campaign = "air"
     value = @(stats) stats?.m_avg_score ?? 0
     format = @(v) format("%.0f", v)
+    tooltip = loc("stats/avg_score_dmg/tooltip")
   }
 ]
 

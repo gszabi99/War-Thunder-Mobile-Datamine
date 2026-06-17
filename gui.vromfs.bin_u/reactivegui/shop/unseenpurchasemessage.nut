@@ -280,10 +280,13 @@ let mkRewardAnimProps = @(startDelay, scaleTo) {
   animations = [
     { prop = AnimProp.opacity, from = 0, to = 0,
       duration = startDelay,
-      play = true, trigger = ANIM_SKIP }
+      play = true, trigger = ANIM_SKIP,
+      sound = { stop = "element_card_appear" }
+    }
     { prop = AnimProp.opacity, from = 0, to = 1,
       delay = startDelay, duration = aRewardOpacityTime,
-      play = true, trigger = ANIM_SKIP_DELAY }
+      play = true, trigger = ANIM_SKIP_DELAY
+    }
     { prop = AnimProp.scale, from = [1, 1], to = [1, 1],
       duration = startDelay + aRewardScaleDelay,
       play = true, trigger = ANIM_SKIP }
@@ -1241,7 +1244,7 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
     return res
   }, [])
   let lootboxAmount = modifiedRewardIcons.filter(@(r) r.gType == G_LOOTBOX).reduce(@(res, rew) res + rew.count, 0)
-  let { style = null } = purchGroup
+  let { style = null, list } = purchGroup
   let title = titleCtors?[style](outroDelay, purchGroup) ?? modalWndHeader(loc("mainmenu/you_received"))
   let size = [
     max(
@@ -1263,14 +1266,10 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
     onClick
     flow = FLOW_VERTICAL
     gap = hdpx(44)
-    sound = {
-      attach = (unitPlates.len() > 0 || battleMod.len() > 0
-        ? "meta_daily_reward"
-        : "meta_unlock_unit")
-    }
     children = [
       title
       {
+        key = purchGroup
         size
         flow = FLOW_VERTICAL
         valign = ALIGN_CENTER
@@ -1281,6 +1280,12 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
           mkBattleModeRewards(battleMod)
           mkRewardIconsBlock(modifiedRewardIcons)
         ]
+        sound = list.len() == 0 ? null
+          : {
+              attach = unitPlates.len() > 0 || battleMod.len() > 0
+                ? "meta_unlock_unit"
+                : "meta_daily_reward"
+            }
       }
       mkTapToContinueText(outroDelay, lootboxAmount)
     ]

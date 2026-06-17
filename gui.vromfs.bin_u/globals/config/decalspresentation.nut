@@ -13,14 +13,16 @@ let categoryDecalsLoc = {
   ussr = "country_ussr"
 }
 
-let defPresentation = { scale = 0.55 }
+let defPresentation = { scale = 0.55, preview = null }
 let presentations = {
   polar_owl_decal = { scale = 0.8 }
   rook_decal = { scale = 0.7 }
   new_year_26_pinup_decal = { scale = 0.7 }
   new_year_26_lights_decal = { scale = 0.7 }
   april_event_2026_victory_marks = { scale = 0.8 }
+  uk_guitar_decal = { preview = "ui/gameuiskin#uk_guitar_decal.avif" }
 }
+  .map(@(v) defPresentation.__merge(v))
 
 let defDescPresentation = { scale = 0.8 }
 let descPresentation = {

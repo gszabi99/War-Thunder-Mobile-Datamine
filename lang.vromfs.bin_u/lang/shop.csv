@@ -736,6 +736,25 @@ Isi ulang saldo?";"หากต้องการซื้อ {price},
 還\t需\t要 {priceDiff} 。
 
 需\t要\t補\t充\t餘\t額\t嗎？";;
+"shop/noBalanceMsg";"To buy for {price},
+you need {priceDiff} more.";"Pour acheter pour {price},
+vous avez besoin de {priceDiff} de plus.";"Per acquistarlo a {price},
+ti serve ancora {priceDiff}.";"Um für {price} zu kaufen,
+benötigst Du {priceDiff} mehr.";"Para comprar por {price},
+necesitas {priceDiff} más.";"Для покупки за {price}
+вам не хватает {priceDiff}.";"Для покупки за {price}
+вам не вистачає {priceDiff}.";"Aby kupić za {price},
+potrzebujesz jeszcze {priceDiff}.";"Para comprar por {price}, 
+é necessário mais {priceDiff}.";"{price} karşılığında satın almak için
+{priceDiff} tane daha lazım.";"Ke koupi za {price},
+potřebuješ o {priceDiff} více.";"Για να πληρώσετε {price} για την αγορά,
+χρειάζεστε ακόμα {priceDiff}.";"Untuk membeli seharga {price},
+kamu membutuhkan {priceDiff} lebih banyak.";"หากต้องการซื้อ {price},
+คุณต้องการ {priceDiff} เพิ่ม";"이 상품의 가격은 {price} 입니다. 
+{priceDiff} 만큼이 더 필요합니다.";"若\t欲\t购\t买\t价\t格 {price} 的\t物\t品，
+还\t需\t要 {priceDiff} 。";"{price}で\t購入するには
+あと{priceDiff}必要です。";"若\t欲\t購\t買\t價\t格 {price} 的\t物\t品，
+還\t需\t要 {priceDiff} 。";;
 "shop/willCostYou";"It will cost you {price}";"Cela vous coûtera {price}";"Ti costerà {price}";"Die Kosten hierfür betragen {price}";"Te costará {price}";"Это будет стоить вам {price}";"Це буде коштувати вам {price}";"Cena wyniesie {price}";"Irá custar-lhe {price}";"Fiyatı {price}";"Bude tě to stát {price}";"Θα σας κοστίσει {price}";"Kamu akan dikenai biaya seharga {price}";"ต้นทุนที่ต้องใช้คือ {price}";"가격은 {price} 입니다.";"购\t买\t物\t品\t将\t花\t费 {price}";"価格は{price}です";"購\t買\t物\t品\t將\t花\t費 {price}";;
 "shop/youReceive";"You received:";"Vous avez reçu:";"Hai ricevuto:";"Du hast erhalten:";"Has recibido:";"Вы получили:";"Ви отримали:";"Otrzymano:";"Recebeu:";"Aldın:";"Získal jsi:";"Λάβατε:";"Kamu mendapatkan:";"คุณได้รับ:";"다음 아이템을 받았습니다:";"已\t获\t得：";"獲得しました：";"已\t獲\t得：";;
 "shop/wantByMore";"Want to buy more?";"Voulez-vous en acheter plus?";"Vuoi acquistarne altri?";"Möchtest Du mehr kaufen?";"¿Quieres comprar más?";"Хотите докупить еще?";"Бажаєте докупити ще?";"Chcesz kupić coś jeszcze?";"Pretende comprar mais?";"Daha fazla satın almak istiyor musun?";"Chceš koupit další?";"Θέλετε να συνεχίσετε τις αγορές;";"Ingin membeli lebih banyak?";"ต้องการซื้อเพิ่มหรือไม่?";"더 구매하시겠습니까?";"需\t要\t购\t买\t更\t多\t物\t品\t吗？";"さらに\t購入しますか？";"需\t要\t購\t買\t更\t多\t物\t品\t嗎？";;

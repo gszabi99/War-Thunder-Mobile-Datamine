@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command  = null } = require_optional("console") 
-let { statusText, progressPercent } = require("updaterState.nut")
+let { statusText, progressPercent, hasAnyMsg } = require("updaterState.nut")
 let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
 let { screenWeights, loadingAnimBg, chooseRandomScreen, curScreenId } = require("%globalsDarg/loading/loadingAnimBg.nut")
 let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
@@ -69,7 +69,13 @@ return {
       children = [
         mkTitleLogo()
         waitSpinner
-        gradientLoadingTip
+        @() {
+          watch = hasAnyMsg
+          size = [flex(), 0]
+          pos = [0, sh(-20)]
+          vplace = ALIGN_BOTTOM
+          children = hasAnyMsg.get() ? null : gradientLoadingTip
+        }
         bottomBlock
       ]
     }

@@ -666,10 +666,11 @@ let aircraftMovement = @(scale) {
     @() {
       watch = [ currentAircraftCtrlType, currentControlByGyroAimMode, currentControlByGyroDirectControl, isPlayingReplay,
         currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive]
-      children = [
-        getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroDirectControl.get()),
-        isGamepad.get() && !isPieMenuActive.get() && !isPlayingReplay.get() ? mkGamepadAxisListener() : null
-      ]
+      children = isPlayingReplay.get() ? null
+        : [
+            getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroDirectControl.get()),
+            isGamepad.get() && !isPieMenuActive.get() ? mkGamepadAxisListener() : null
+          ]
     }
   ]
 }

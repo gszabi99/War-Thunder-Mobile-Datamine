@@ -5,7 +5,7 @@ let { EventOnSupportUnitSpawn } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { unitType, HM_MANUAL_ANTIAIR } = require("%rGui/hudState.nut")
+let { unitType, HM_MANUAL_ANTIAIR, hudMode, HM_COMMON } = require("%rGui/hudState.nut")
 let { MainMask } = require("%rGui/hud/airState.nut")
 let { selectActionBarAction } = require("hudActionBar")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
@@ -168,20 +168,22 @@ local visibleWeaponsList = Computed(function(prev) {
 
 let visibleWeaponsMap = Computed(function() {
   let res = {}
-  foreach (item in visibleWeaponsList.get())
+  foreach (item in visibleWeaponsList.get()) {
+    if (((item?.hudMode ?? HM_COMMON) & hudMode.get()) == 0)
+      continue
+
     if ("viewCfg" in item)
       res[item.viewCfg.selShortcut] <- {
         actionItem = item.actionItem,
         buttonConfig = item.viewCfg,
         id = item.viewCfg.selShortcut
-        hudMode = item?.hudMode
       }
     else
       res[item.id] <- {
         actionItem = item.actionItem,
         id = item.id
-        hudMode = item?.hudMode
       }
+  }
   return res
 })
 

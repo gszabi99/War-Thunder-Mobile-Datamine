@@ -11,7 +11,8 @@ let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg,
-  totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB, closeDownloadWarning } = require("updaterState.nut")
+  totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB, closeDownloadWarning, isFailedToGetVersion
+} = require("updaterState.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require("gradients.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
@@ -151,6 +152,11 @@ function openUpdateUrl() {
   exit(0)
 }
 
+function openSupportUrl() {
+  shell_execute({ cmd = "action", file = loc("url/feedback/support") }) 
+  exit(0)
+}
+
 local updateLocId = isDownloadedFromGooglePlay() || isHuaweiBuild ? "updater/newVersion/desc/android"
   : "updater/newVersion/desc"
 let updateMsg = mkMsgBox(loc("updater/newVersion/header"),
@@ -159,6 +165,12 @@ let updateMsg = mkMsgBox(loc("updater/newVersion/header"),
 let restartMsg = mkMsgBox(loc("updater/newVersion/header"),
   loc("updater/restartForUpdate/desc"),
   mkButton(utf8ToUpper(loc("msgbox/btn_restart")), @() exit(0)))
+let failedToGetVersonMsg = mkMsgBox(loc("updater/failedToGetVersion/header"),
+  loc("updater/failedToGetVersion/desc"),
+  [
+    mkButton(utf8ToUpper(loc("mainmenu/support")), openSupportUrl)
+    mkButton(utf8ToUpper(loc("msgbox/btn_exit")), @() exit(0))
+  ])
 let downloadMsg = @(bytes) mkMsgBox(loc("updater/downloadWarning/header"),
   loc("updater/downloadWarning/desc", { totalSizeBytes = totalSizeText(bytes) }),
   mkButton(utf8ToUpper(loc("msgbox/btn_confirm")),
@@ -180,7 +192,8 @@ return @() {
   pos = [0, -hdpx(100)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  children = needUpdateMsg.get() ? updateMsg
+  children = isFailedToGetVersion.get() ? failedToGetVersonMsg
+    : needUpdateMsg.get() ? updateMsg
     : needRestartMsg.get() ? restartMsg
     : needDownloadAcceptMsg.get() ? downloadMsg(totalSizeBytes.get())
     : needNotEnoughDiskSpaceMsg.get() ? notEnoughDiskSpaceMsg(freeDiskSpaceMB.get(), requiredDiskSpaceMB.get())

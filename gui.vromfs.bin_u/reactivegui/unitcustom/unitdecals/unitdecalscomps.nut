@@ -24,7 +24,7 @@ let lockIconBlockHeight = evenPx(42)
 let mkDecalIcon = @(id, size = decalIconSize) {
   size
   rendObj = ROBJ_IMAGE
-  image = (id ?? "") == "" ? Picture($"ui/gameuiskin#icon_primary_attention.svg:{size}:P")
+  image = (id ?? "") == "" ? Picture($"ui/gameuiskin#icon_primary_attention.svg:{size?[0] ?? size}:P")
     : Picture($"!{getDecalImg(id)}*", {texFormat=TEXFMT_SRGB})
   keepAspect = true
 }

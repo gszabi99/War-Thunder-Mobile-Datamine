@@ -23,8 +23,9 @@ let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { mkRentBattlesButton, queueCurRandomBattleMode } = require("%rGui/mainMenu/toBattleButton.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
-  aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
+  aTimeInfoItemOffset, aTimeInfoLight, horGap
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
+let { activeRewardHint } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, SUBMARINE_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, loadedHangarUnitSkin, setCustomHangarUnit, resetCustomHangarUnit,
@@ -375,14 +376,9 @@ let mkHeader = @() mkPreviewHeader(
   closeGoodsPreview,
   aTimeHeaderStart)
 
-let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
+let packInfo = @(isHintBottom) {
+  flow = isHintBottom ? FLOW_VERTICAL : null
   children = [
-    {
-      size = flex()
-      pos = [0, REWARD_STYLE_TINY.boxSize * 1.1 * hintOffsetMulY]
-      valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
-      children = activeItemHint
-    }
     @() {
       watch = [previewGoods, goodsBattleMode]
       children = mkPreviewItems(
@@ -392,8 +388,15 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
         MAX_ITEMS_IN_ROW)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
+    {
+      padding = [REWARD_STYLE_TINY.boxGap, 0]
+      pos = [0, isHintBottom ? 0 : ph(-100)]
+      valign = ALIGN_BOTTOM
+      vplace = ALIGN_BOTTOM
+      children = activeRewardHint
+    }
   ]
-}.__update(ovr)
+}
 
 let unitInfoButton = {
   size = [evenPx(70), evenPx(70)]
@@ -422,7 +425,6 @@ let balanceBlock = @() {
 }
 
 let itemsDescText = {
-  padding = [hdpx(20), 0]
   rendObj = ROBJ_TEXT
   valign = ALIGN_CENTER
   text = loc("offer/itemsDesc")
@@ -433,6 +435,15 @@ function itemsDesc() {
   let { rewards = [] } = previewGoods.get()
   let hasOtherRewards = null != rewards.findvalue(@(r) r.gType not in unitRewardTypes)
   return hasOtherRewards ? itemsDescText.__update({ watch = previewGoods }) : { watch = previewGoods }
+}
+
+let packInfoWithHeader = @(isHintBottom = true) {
+  flow = FLOW_VERTICAL
+  gap = REWARD_STYLE_TINY.boxGap
+  children = [
+    itemsDesc
+    packInfo(isHintBottom)
+  ]
 }
 
 let earlyAccessImageBlock = @(img) img == null ? null
@@ -463,8 +474,7 @@ let leftBlockPlatoon = {
   children = [
     platoonUnitsBlock
     {size = flex()}
-    itemsDesc
-    packInfo(-1, { pos = [0, 0] })
+    packInfoWithHeader(false)
   ]
 }
 
@@ -474,8 +484,7 @@ let leftBlockSingleUnit = {
   gap = verticalGap
   children = [
     singleUnitBlock
-    itemsDesc
-    packInfo
+    packInfoWithHeader(true)
   ]
 }
 
@@ -492,7 +501,7 @@ function leftBlockEarlyAccess() {
       earlyAccessDescriptionBlock(locId, getUnitName(previewGoodsUnit.get()))
       singleUnitBlock
       earlyAccessImageBlock(backgroundImg)
-      packInfo
+      packInfo(false)
     ]
   }
 }
@@ -594,10 +603,7 @@ let leftBlockUnits = @() {
               gap = gapForBranch
               children = u
             })
-          .append(
-            itemsDesc
-            packInfo(-1, { pos = [0, 0] })
-          )
+          .append(packInfoWithHeader(false))
       }
     : getBattleModPresentationForOffer(goodsBattleMode.get()) != null ? leftBlockEarlyAccess
     : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit

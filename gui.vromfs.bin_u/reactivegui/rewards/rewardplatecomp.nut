@@ -554,14 +554,20 @@ function mkRewardPlateDecalImage(r, rStyle) {
   let { id } = r
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
-  let iconSize = size.map(@(v) (v * getDecalPresentation(id).scale).tointeger())
+  let { scale, preview } = getDecalPresentation(id)
+  let iconSize = size.map(@(v) (v * scale).tointeger())
+  let iconComp = preview == null ? mkDecalIcon(id, iconSize)
+    : {
+        size = iconSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{preview}:{iconSize[0]}:{iconSize[1]}:P")
+        keepAspect = true
+      }
   return {
     size
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = mkDecalIcon(id, iconSize).__update({
-      pos = [0, iconShiftY * 1.2]
-    })
+    children = iconComp.__update({ pos = [0, iconShiftY * 1.2] })
   }
 }
 

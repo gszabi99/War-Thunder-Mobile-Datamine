@@ -2550,5 +2550,21 @@
     "lod0": "utiq3uewi5r35ioizast4mpneae4tybh-fvsy",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "rv35zynbfvcgmmc36pv6idg3ybdka66v-btza"
+  },
+  "uk_guitar_decal": {
+    "category": "uk",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "fc5m3fzbn25jeu7eyd7enlmdielqzjxz-g5gy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "yzsc6ybzrvpgasiyyonegkav2azhtuxf-b4sy"
+  },
+  "rising_threat_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "jdjqei6yhvrqea4lrtmqgyr3vykkooid-gqpy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "bl5ug3cfsk3z37mi4nyp6vqfbvluq6xm-by5i"
   }
 }

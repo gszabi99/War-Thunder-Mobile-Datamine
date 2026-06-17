@@ -14,8 +14,9 @@ let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
-  aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
+  aTimeInfoItemOffset, aTimeInfoLight, horGap
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
+let { activeRewardHint } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
@@ -25,11 +26,10 @@ let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
 let { get_settings_blk } = require("blkGetters")
-let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 
@@ -176,14 +176,9 @@ let mkHeader = @() mkPreviewHeader(
   closeGoodsPreview,
   aTimeHeaderStart)
 
-let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
+let packInfo = {
+  flow = FLOW_VERTICAL
   children = [
-    {
-      size = flex()
-      pos = [-saBorders[0], REWARD_STYLE_MEDIUM.boxSize * 1.1 * hintOffsetMulY]
-      valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
-      children = activeItemHint
-    }
     @() {
       watch = previewGoods
       flow = FLOW_HORIZONTAL
@@ -192,8 +187,12 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
         aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
+    {
+      padding = [REWARD_STYLE_TINY.boxGap, 0]
+      children = activeRewardHint
+    }
   ]
-}.__update(ovr)
+}
 
 let unitInfoButton = {
   size = [evenPx(70), evenPx(70)]
@@ -262,7 +261,6 @@ let rightBlock = {
   children = [
     goodsBlock
     {
-      pos = [doubleSideGradientPaddingX, 0]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_BOTTOM
       children = mkPriceWithTimeBlock(aTimePriceStart)

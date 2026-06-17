@@ -82,7 +82,17 @@ let updateByStage = {
 
 setInterval(tick, @() updateByStage[state.stage](get_time_msec() - state.stageStartMsec))
 
+let sendIncompatibleVersion = @(needExeUpdate, hasVersion) sendEvent({
+  eventType = UPDATER_EVENT_INCOMPATIBLE_VERSION,
+  needExeUpdate,
+  remoteVersion = hasVersion ? "1.24.1.0" : "0.0.0.0",
+  currentVersion = "1.23.1.0"
+})
+
 register_command(@(errId) sendEvent({ eventType = UPDATER_EVENT_ERROR, error = errId }), "debug.error")
+register_command(@() sendIncompatibleVersion(false, true), "debug.incompatible_version.needRestart")
+register_command(@() sendIncompatibleVersion(true, true), "debug.incompatible_version.needExeUpdate")
+register_command(@() sendIncompatibleVersion(true, false), "debug.incompatible_version.noVersion")
 
 return {
   UPDATER_EVENT_STAGE

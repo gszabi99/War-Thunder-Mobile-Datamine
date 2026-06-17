@@ -1857,16 +1857,6 @@
               "spread": 1.0,
               "traceOffset": 1,
               "counterIndex": 4
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMG15120.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "dm": "cannon1_dm",
-              "bullets": 200,
-              "spread": 1.0,
-              "counterIndex": 3
             }
           ]
         }

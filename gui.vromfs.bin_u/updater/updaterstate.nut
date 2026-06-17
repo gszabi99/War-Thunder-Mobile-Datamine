@@ -22,10 +22,13 @@ let progress = Watched({
 })
 let progressPercent = Computed(@() progress.get().percent)
 let updaterError = Watched(null)
+let isFailedToGetVersion = mkWatched(persist, "isFailedToGetVersion", false)
 let needUpdateMsg = mkWatched(persist, "needUpdateMsg", false)
 let needRestartMsg = mkWatched(persist, "needRestartMsg", false)
 let needDownloadAcceptMsg = mkWatched(persist, "needDownloadAcceptMsg", false)
 let needNotEnoughDiskSpaceMsg = mkWatched(persist, "needNotEnoughDiskSpaceMsg", false)
+let hasAnyMsg = Computed(@() needUpdateMsg.get() || needRestartMsg.get() || needDownloadAcceptMsg.get()
+  || needNotEnoughDiskSpaceMsg.get())
 
 let statusText = Computed(@() updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
   : updaterStage.get() != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
@@ -59,7 +62,12 @@ let updaterEvents = {
     dspeed = evt.dspeed
   }),
   [UPDATER_EVENT_ERROR]         = @(evt) updaterError.set(getErrorName(evt.error)),
-  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg.set(true) : needRestartMsg.set(true),
+  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = function(p) {
+    let { needExeUpdate = true, remoteVersion = null } = p
+    isFailedToGetVersion.set(remoteVersion == "0.0.0.0")
+    needUpdateMsg.set(needExeUpdate)
+    needRestartMsg.set(!needExeUpdate)
+  },
   [UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE] = function(evt) {
     requiredDiskSpaceMB.set(evt.requiredSpace)
     freeDiskSpaceMB.set(evt.freeSpace)
@@ -92,8 +100,10 @@ return {
   progressPercent
   needUpdateMsg
   needRestartMsg
+  isFailedToGetVersion
   needDownloadAcceptMsg
   needNotEnoughDiskSpaceMsg
+  hasAnyMsg
   totalSizeBytes
   freeDiskSpaceMB
   requiredDiskSpaceMB

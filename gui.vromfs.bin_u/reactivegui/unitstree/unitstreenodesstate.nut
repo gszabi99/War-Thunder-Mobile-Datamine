@@ -159,6 +159,8 @@ function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
       if (hasPrev && !hasPrevSameY)
         row.append({ name = "", x = x - 1, y }) 
     }
+    else if (row.len() > 0 && row.top().x > x && row[0].name == "")
+      row.remove(0) 
     row.append(node)
 
     let range = getSubArray(rankXRanges, mRank)

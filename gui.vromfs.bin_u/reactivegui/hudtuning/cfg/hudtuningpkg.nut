@@ -6,7 +6,6 @@ let { visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { hudMode, HM_COMMON } = require("%rGui/hudState.nut")
 
 enum Z_ORDER {
   DEFAULT
@@ -75,10 +74,9 @@ let weaponryButtonDynamicCtor = @(idx, cfg) {
     let currentWeapon = Computed(@() visibleWeaponsDynamic.get()?[idx])
     let actionItem = Computed(@() currentWeapon.get()?.actionItem)
     let buttonConfig = Computed(@() currentWeapon.get()?.buttonConfig)
-    let isVisibleInHudMode = Computed(@()(currentWeapon.get()?.hudMode ?? HM_COMMON) & hudMode.get())
     return @() {
-      watch = [currentWeapon, actionItem, buttonConfig, isVisibleInHudMode]
-      children = !currentWeapon.get() || !isVisibleInHudMode.get() ? null
+      watch = [currentWeapon, actionItem, buttonConfig]
+      children = !currentWeapon.get() ? null
         : weaponsButtonsView?[
             buttonConfig.get()?.mkButtonFunction ?? weaponsButtonsConfig?[currentWeapon.get()?.id]?.mkButtonFunction
           ] (buttonConfig.get() ?? weaponsButtonsConfig?[currentWeapon.get()?.id], actionItem.get(), scale)

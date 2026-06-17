@@ -57,7 +57,6 @@ let gradientLoadingTip = @() {
   size = [hdpx(1200), SIZE_TO_CONTENT]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
-  pos = [0, sh(-20)]
   padding = [hdpx(20), hdpx(100)]
   rendObj = ROBJ_9RECT
   image = gradTranspDobuleSideX()

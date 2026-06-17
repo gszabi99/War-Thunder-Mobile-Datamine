@@ -19,7 +19,7 @@ let { backButtonHeight } = require("%rGui/components/backButton.nut")
 let infoBlockPadding = [hdpx(5), hdpx(50), hdpx(10), hdpx(50)]
 let scrollMedalsPadding = [hdpx(20), hdpx(20), 0, hdpx(10)]
 let medalsGap = hdpx(25)
-let infoBlockPartsGap = hdpx(50)
+let infoBlockPartsGap = hdpx(70)
 let infoBlockParts = 3
 let gapBackButton = hdpx(50)
 

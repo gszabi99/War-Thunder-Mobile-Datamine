@@ -66,6 +66,7 @@ let scoreIconSize = hdpxi(30)
 let tooltipIconSize = hdpxi(32)
 
 let lockColor = 0xFF9C9EA0
+let destroyedColor = 0xFFEE5353
 
 let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.get().len() > 1)
 let showLowBulletsWarning = Watched(true)
@@ -211,13 +212,13 @@ let mkIcon = @(image) {
 }
 let tankIcon = mkIcon("ui/gameuiskin#unit_tank.svg")
 let spareIcon = mkIcon("ui/gameuiskin#shop_consumables_spare.svg")
-let crossIcon = mkIcon("ui/gameuiskin#mark_cross.svg")
-let lockIcon = mkIcon("ui/gameuiskin#lock_icon.svg").__update({ color = lockColor })
+let destroyedIcon = mkIcon("ui/gameuiskin#unit_tank.svg").__update({ color = destroyedColor })
+let lockIcon = mkIcon("ui/gameuiskin#lock_icon.svg").__update({ size = hdpxi(30), color = lockColor })
 
 let tankStackIcon = mkIcon("ui/gameuiskin#unit_tank_stack.svg").__update({ size = hdpxi(26) })
 let spareStackIcon = mkIcon("ui/gameuiskin#shop_consumables_spare_stack.svg")
-let crossStackIcon = mkIcon("ui/gameuiskin#mark_cross_stack.svg")
-let lockStackIcon = mkIcon("ui/gameuiskin#lock_icon_stack.svg").__update({ color = lockColor })
+let destroyedStackIcon = mkIcon("ui/gameuiskin#unit_tank_stack.svg").__update({ size = hdpxi(26), color = destroyedColor })
+let lockStackIcon = mkIcon("ui/gameuiskin#lock_icon_stack.svg").__update({ size = hdpxi(30), color = lockColor })
 
 let mkTooltipRow = @(iconComp, text) {
   flow = FLOW_HORIZONTAL
@@ -235,7 +236,7 @@ function tooltipContentCtor() {
     children = [
       mkTooltipRow(tankIcon, loc("respawn/spawnsCounter/type/available"))
       mkTooltipRow(spareIcon, loc("respawn/spawnsCounter/type/spare"))
-      mkTooltipRow(crossIcon, loc("respawn/spawnsCounter/type/destroyed"))
+      mkTooltipRow(destroyedIcon, loc("respawn/spawnsCounter/type/destroyed"))
       mkTooltipRow(lockIcon, loc("respawn/spawnsCounter/type/notAvailable"))
     ]
   }
@@ -269,6 +270,31 @@ let mkStack = @(amount, baseIconComp, stackIconComp, contentGap) {
           children = array(amount - 1).map(@(_) stackIconComp)
         }
       ]
+}
+
+function mkDoubleStack(amount, baseIconComp, stackIconComp, secAmount, secBaseIconComp, secStackIconComp, contentGap) {
+  let iconComp = amount == 0 ? secBaseIconComp : baseIconComp
+  return {
+    flow = FLOW_HORIZONTAL
+    gap = contentGap
+    valign = ALIGN_CENTER
+    children = amount + secAmount <= 1 ? iconComp
+      : [
+          iconComp
+          {
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            flow = FLOW_HORIZONTAL
+            gap = contentGap - hdpx(4)
+            children = [].extend(
+              amount > 1 ? array(amount - 1).map(@(_) stackIconComp) : [],
+              secAmount > 1 && amount == 0 ? array(secAmount - 1).map(@(_) secStackIconComp)
+                : secAmount > 0 ? array(secAmount).map(@(_) secStackIconComp)
+                : []
+            )
+          }
+        ]
+  }
 }
 
 let slotsBlockTitle = @(unit, respSlots) function() {
@@ -316,20 +342,17 @@ let slotsBlockTitle = @(unit, respSlots) function() {
             {
               flow = FLOW_HORIZONTAL
               children = [
-                unitsLeft <= 0 ? null
-                  : mkStack(unitsLeft, tankIcon, tankStackIcon, -hdpx(5))
+                unitsLeft <= 0 && unitsDestroyed <= 0 ? null
+                  : mkDoubleStack(unitsLeft, tankIcon, tankStackIcon,
+                      unitsDestroyed, destroyedIcon, destroyedStackIcon, -hdpx(5))
                 sparesLeft <= 0 ? null
                   : mkStack(sparesLeft, spareIcon, spareStackIcon, -hdpx(13))
               ].filter(@(v) v != null)
             }
             {
               flow = FLOW_HORIZONTAL
-              children = [
-                unitsDestroyed <= 0 ? null
-                  : mkStack(unitsDestroyed, crossIcon, crossStackIcon, -hdpx(10))
-                unitsNotAvailable <= 0 ? null
-                  : mkStack(unitsNotAvailable, lockIcon, lockStackIcon, -hdpx(15))
-              ].filter(@(v) v != null)
+              children = unitsNotAvailable <= 0 ? null
+                : mkStack(unitsNotAvailable, lockIcon, lockStackIcon, -hdpx(15))
             }
           ]
         }

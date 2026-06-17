@@ -27,15 +27,11 @@ let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonSty
 let { doubleSideGradient, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
-let { G_ITEM } = require("%appGlobals/rewardType.nut")
+let { activeRewardInfo } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
 
-
-let activeItemId = Watched(null)
 
 let currencyStyle = CS_BIG
-let addHintPadding = hdpx(10)
 let purchGap = hdpx(20)
 let horGap = hdpx(30)
 let oldPriceTranslate = [0,
@@ -514,7 +510,6 @@ let mkItemBlink = @(start) {
 }
 
 function mkItemImpl(r, rStyle, start) {
-  let itemId = r.id
   let stateFlags = Watched(0)
   let isRewardReceived = Computed(@() isRewardEmpty([{ gType = r.rType }.__merge(r)], servProfile.get()))
   return @() {
@@ -524,13 +519,11 @@ function mkItemImpl(r, rStyle, start) {
     onClick = @() null
     function onElemState(sf) {
       stateFlags.set(sf)
-      if (r.rType != G_ITEM)
-        return
       let isActive = (sf & S_ACTIVE) != 0
-      if (isActive != (activeItemId.get() == itemId))
-        activeItemId.set(isActive ? itemId : null)
+      if (isActive != (activeRewardInfo.get() == r))
+        activeRewardInfo.set(isActive ? r : null)
     }
-    onDetach = @() activeItemId.get() == itemId ? activeItemId.set(null) : null
+    onDetach = @() activeRewardInfo.get() == r ? activeRewardInfo.set(null) : null
     children = [
       mkRewardPlateBg(r, rStyle).__update({
         picSaturate = stateFlags.get() & S_ACTIVE ? 2
@@ -560,7 +553,9 @@ function mkPreviewItems(rewards, animStartTime, slotsInRow = 0) {
   if (info.len() == 0)
     return null
 
-  let rows = slotsInRow == 0 ? info : []
+  let rows = slotsInRow == 0
+    ? info.map(@(r, idx) mkItem(r, REWARD_STYLE_TINY, idx, animStartTime))
+    : []
   if (slotsInRow != 0) {
     local slotsLeft = 0
     foreach(idx, r in info) {
@@ -607,37 +602,13 @@ let mkInfoText = @(text, appearDelay) {
   animations = opacityAnims(1.0, appearDelay)
 }.__update(fontTiny)
 
-let activeItemHint = @() activeItemId.get() == null ? { watch = activeItemId }
-  : {
-      watch = [activeItemId, eventSeason, allSpecialEvents]
-      rendObj = ROBJ_IMAGE
-      image = simpleHorGrad
-      flipX = true
-      color = 0xAA000000
-      padding = addHintPadding
-      children = {
-        size = const [hdpx(500), SIZE_TO_CONTENT]
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        text = "\n".concat(
-          colorize(0xFFFFFFFF, loc($"item/{activeItemId.get()}",
-            { name = getEventLoc(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()) })),
-          loc($"item/{activeItemId.get()}/desc")
-        )
-        color = 0xFFD0D0D0
-      }.__update(fontTiny)
-    }
-
 return {
-  activeItemId
-
   mkPreviewHeader
   mkPriceWithTimeBlock
   mkPriceWithTimeBlockNoOldPrice
   mkTimeBlockCentered
   mkPriceBlockCentered
   mkPreviewItems
-  activeItemHint
   mkInfoText
   opacityAnims
   colorAnims

@@ -63,7 +63,7 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      children = loc("shop/askRefillOnNotEnoughMoney")
+      children = loc(replenishCb != null ? "shop/askRefillOnNotEnoughMoney" : "shop/noBalanceMsg")
         .split("\n")
         .map(@(text) {
           flow = FLOW_HORIZONTAL
