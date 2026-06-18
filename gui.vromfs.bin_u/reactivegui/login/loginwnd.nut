@@ -151,10 +151,10 @@ let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#me
     }
   })
 
-let mkOperatorLogo = @(picName) {
+let mkOperatorLogo = @(picPath) {
   size = [ gaijinLogoWidth, defButtonHeight ]
   rendObj = ROBJ_IMAGE
-  image = Picture($"!ui/{picName}.svg:{gaijinLogoWidth}:{defButtonHeight}")
+  image = Picture($"{picPath}:{gaijinLogoWidth}:{defButtonHeight}:P")
   keepAspect = KEEP_ASPECT_FIT
 }
 
@@ -239,7 +239,7 @@ let gaijinAuthorization = @() {
       size = FLEX_H
       valign = ALIGN_CENTER
       children = [
-        mkOperatorLogo(getCurCircuitOverride("operatorLogo", "gaijin_logo"))
+        mkOperatorLogo(getCurCircuitOverride("operatorLogo", "!ui/gaijin_logo.svg"))
         sighUp
       ]
     }
@@ -376,7 +376,7 @@ let firebaseLoginButtonContent = freeze({
 let guestLoginButtonContent = firebaseLoginButtonContent
 
 let loginButtonCtors = {
-  [LT_GAIJIN] = @() mkCustomButton(mkOperatorLogo(getCurCircuitOverride("operatorLogo", "gaijin_logo")),
+  [LT_GAIJIN] = @() mkCustomButton(mkOperatorLogo(getCurCircuitOverride("operatorLogo", "!ui/gaijin_logo.svg")),
     @() isLoginByGajin.set(true),
     loginButtonStyle),
   [LT_GOOGLE] = !gpButtonVisible ? null : @() mkCustomButton(googleLoginButtonContent,

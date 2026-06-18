@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
-let { defer, resetTimeout, deferOnce } = require("dagor.workcycle")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { defer, resetTimeout } = require("dagor.workcycle")
 let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
 let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
@@ -26,18 +25,14 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   aTimeInfoItemOffset, aTimeInfoLight, horGap
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { activeRewardHint } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
-let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, SUBMARINE_PRESET_TYPE, TANK_PRESET_TYPE,
-  AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
-let { loadedHangarUnitName, loadedHangarUnitSkin, setCustomHangarUnit, resetCustomHangarUnit,
-  hangarUnitDataBackup, needReloadHangarBattleData
-} = require("%rGui/unit/hangarUnit.nut")
+let { unitForCutscene } = require("%rGui/shop/goodsPreview/unitCutscene.nut")
+let { set_load_sounds_for_model } = require("hangar")
+let { setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { rnd_int } = require("dagor.random")
-let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitPlatesGap, unitPlateTiny, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
@@ -47,9 +42,6 @@ let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPane
 let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
 let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
-let { getUnitTags } = require("%appGlobals/unitTags.nut")
-let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
-let { get_settings_blk } = require("blkGetters")
 let { animatedProgressBar } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -143,7 +135,7 @@ eventbus_subscribe("onCutsceneUnitShoot", @(_) resetTimeout(TIME_TO_SHOW_UI_AFTE
 let curSelectedUnitId = Watched("")
 previewGoodsUnit.subscribe(@(v) curSelectedUnitId.set(v?.name ?? ""))
 
-let unitForShow = keepref(Computed(function() {
+let unitForShow = Computed(function() {
   if (!isWindowAttached.get() || previewGoodsUnit.get() == null)
     return null
   let unitName = curSelectedUnitId.get()
@@ -157,7 +149,7 @@ let unitForShow = keepref(Computed(function() {
   res.currentSkins[unitName] <- skin
   res.currentSkins[previewGoodsUnit.get().name] <- skin
   return res
-}))
+})
 
 unitForShow.subscribe(function(unit) {
   if (unit != null)
@@ -166,50 +158,15 @@ unitForShow.subscribe(function(unit) {
     resetCustomHangarUnit()
 })
 
+let unitForCutsceneExt = keepref(Computed(@(prev) prev == unitForShow.get() ? prev
+  : !needShowUi.get() && !skipAnimsOnce.get() ? unitForShow.get()
+  : null))
+unitForCutsceneExt.subscribe(@(v) unitForCutscene.set(v))
+
 previewGoodsUnit.subscribe(function(unit) {
   if (unit != null)
     set_load_sounds_for_model(true)
 })
-
-let cutSceneWaitForVisualsLoaded = get_settings_blk()?.unitOffer.cutSceneWaitForVisualsLoaded ?? false
-let transitionThroughBlackScreen = get_settings_blk()?.unitOffer.transitionThroughBlackScreen ?? false
-
-let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
-eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene.set(false))
-eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene.set(true))
-
-let needShowCutscene = keepref(Computed(@() unitForShow.get() != null
-  && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.get()?.name ?? "")
-  && loadedHangarUnitSkin.get() == (unitForShow.get()?.currentSkins[unitForShow.get()?.name ?? ""] ?? "")
-  && readyToShowCutScene.get()
-  && !needReloadHangarBattleData.get()))
-
-function showCutscene() {
-  if (!needShowCutscene.get())
-    stop_prem_cutscene()
-  else if (!needShowUi.get() && !skipAnimsOnce.get()) {
-    let unitType = unitForShow.get()?.unitType ?? ""
-    local presetType = TANK_PRESET_TYPE
-    let tags = getUnitTags(unitForShow.get().name)
-    if (unitType == SHIP) {
-      if  (tags?.submarine == true)
-        presetType = SUBMARINE_PRESET_TYPE
-      else
-        presetType = SHIP_PRESET_TYPE
-    }
-    else if (unitType == AIR) {
-      if (tags?.type_fighter == true || tags?.type_strike_aircraft == true)
-        presetType = AIR_FIGHTER_PRESET_TYPE
-      else
-        presetType = AIR_BOMBER_PRESET_TYPE
-    }
-    let presetIds = get_prem_cutscene_preset_ids(presetType)
-    if(presetIds.len() > 0)
-      start_prem_cutscene(presetIds[rnd_int(0, presetIds.len()-1)])
-  }
-}
-showCutscene()
-needShowCutscene.subscribe(@(_) deferOnce(showCutscene))
 
 function openDetailsWnd() {
   hangarUnitDataBackup.set({
@@ -543,13 +500,6 @@ let markPurchasesSeenDelayed = function(purchList) {
   })
 }
 
-function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
-  if (loaded) {
-    closeBlackOverlay()
-    readyToShowCutScene.unsubscribe(closeBlackOverlayOnceOnVisualsLoaded)
-  }
-}
-
 let sortedUnits = Computed(function() {
   if (previewGoods.get() == null)
     return []
@@ -671,13 +621,6 @@ let previewWnd = @() {
   function onAttach() {
     addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     isWindowAttached.set(true)
-    if (transitionThroughBlackScreen) {
-      showBlackOverlay()
-      if (!readyToShowCutScene.get())
-        readyToShowCutScene.subscribe(closeBlackOverlayOnceOnVisualsLoaded)
-      else
-        closeBlackOverlay()
-    }
     if (activeOffer.get()?.id != null && activeOffer.get()?.id == previewGoods.get()?.id)
       mark_offer_seen(activeOffer.get().campaign, activeOffer.get().id)
   }

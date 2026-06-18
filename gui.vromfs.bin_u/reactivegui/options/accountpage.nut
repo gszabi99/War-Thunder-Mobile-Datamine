@@ -34,6 +34,7 @@ let { hasRestorePurchases, restorePurchases, platformPurchaseInProgress } = requ
 let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { subsByCategory } = require("%rGui/shop/shopState.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 
 let canUpgradeGuestAccountToGaijinID = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
@@ -315,9 +316,9 @@ function buttons() {
         : mkButton(loc("mainmenu/btnChangePlayer"), logoutMsgBox, COMMON)
       mkButton(loc("mainmenu/support"), openSupportTicketWndOrUrl)
       canLinkEmailForGaijinLogin.get()
-          ? mkButton(loc("upgrade_account_to_gaijin_id"), openLinkEmailForGaijinLogin)
+          ? mkButton(loc("upgrade_account_to_gaijin_id", {operatorName = getCurCircuitOverride("operatorName", loc("operator_account_name"))}), openLinkEmailForGaijinLogin)
         : canUpgradeGuestAccountToGaijinID.get()
-          ? mkButton(loc("upgrade_account_to_gaijin_id"), openGuestEmailRegistration)
+          ? mkButton(loc("upgrade_account_to_gaijin_id", {operatorName = getCurCircuitOverride("operatorName", loc("operator_account_name"))}), openGuestEmailRegistration)
         : null
       !needShowCrossPromoWithWT.get() ? null
         : mkButton(loc("participate_in_crosspromo_wt"), onCrossPromoWithWT,

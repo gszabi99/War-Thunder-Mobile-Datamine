@@ -44,8 +44,11 @@ let needShowModalToRelogin = keepref(Computed(@() isInMenuNoModals.get()
   && canShowModalToRelogin.get()
   && isLoggedIn.get()))
 
-let openGuestEmailRegistrationImpl = @(stoken) eventbus_send("openUrl",
-  { baseUrl = getCurCircuitOverride("guestLinkURL",$"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}") })
+let openGuestEmailRegistrationImpl = @(stoken) eventbus_send("openUrl", {
+  baseUrl = getCurCircuitOverride("guestLinkURL",
+    "https://login.gaijin.net/{lang}/guest?stoken={stoken}") 
+      .subst({ lang = loc("current_lang"), stoken })
+})
 
 eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
   let { status, stoken = null } = msg

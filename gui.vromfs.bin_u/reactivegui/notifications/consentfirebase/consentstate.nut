@@ -12,8 +12,8 @@ let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
-let { setAppsFlyerConsent, startAppsFlyer, enableTCFCollection } = require("appsFlyer")
-let { setOnlineAdjust = @(_) null } = require_optional("adjust")
+let { setAppsFlyerConsent, startAppsFlyer, enableTCFCollection, startAppsFlyerConnector = @() null } = require("appsFlyer")
+let { setOnlineAdjust = @(_) null, getAdjustAdId = @() null } = require("adjust")
 let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
@@ -59,7 +59,9 @@ function setupAnalytics() {
   setCollectionEnabled(true)
   setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
+  startAppsFlyerConnector()
   setOnlineAdjust(true)
+  getAdjustAdId()
 }
 
 function autoSkipConsent() {

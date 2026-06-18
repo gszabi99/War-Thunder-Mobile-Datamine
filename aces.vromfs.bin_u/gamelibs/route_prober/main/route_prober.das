@@ -6,7 +6,7 @@ require DagorMath
 require DagorRandom
 require DagorSystem
 require DagorTime
-require %danetlibs.route_prober.main.net_events
+require gameLibs.route_prober.main.net_events
 require daslib/algorithm
 require ecs
 require jsonwriter

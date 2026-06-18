@@ -67,11 +67,37 @@ readySendFirebaseBq.subscribe(function(v) {
 eventbus_subscribe(is_ios ? "ios.firebase.analytics.onReceiveAppId" : "android.firebase.analytics.onReceiveAppId",
   @(params) firebaseAppInstanceId.set(params.firebaseAppInstanceId))
 
+
+
+
+
+
+
+let adjustEventsMap = {
+  login = "gqaopf"
+  purchase = "8ozmgw"
+  played_battles_5 = "tynngg"
+  level_10 = "yvanyk"
+  bplevel_4 = "bk5fpu"
+  bplevel_11 = "exszrp"
+}
+
+
+function logAdjust(eventType, eventValue) {
+  let eventId = adjustEventsMap?[eventType]
+  if (eventId)
+    logAdjustEvent(eventId, eventValue)
+}
+
+eventbus_subscribe("adjust.onGetAdjustAdId", function(p) {
+  sendCustomBqEvent("adjust_ids", { adid = p.adid })
+})
+
 function sendEvent(id) {
   log($"[telemetry] send event {id}")
   logEvent($"af_{id}", "")
   logEventFB($"fb_{id}")
-  logAdjustEvent(id,"")
+  logAdjust(id, "")
   
   
   logFirebaseEvent(id)
@@ -91,7 +117,7 @@ myUserId.subscribe(function(v) {
       let id_json = object_to_json_string({cuid = uid}, false)
       logEvent("af_first_login", id_json)
       logEventFB("fb_first_login")
-      logAdjustEvent("first_login", id_json)
+      logAdjust("first_login", id_json)
       logFirebaseEventWithJson("first_login", id_json)
       blk[FIRST_LOGIN_EVENT] = true
       eventbus_send("saveProfile", {})
@@ -120,4 +146,5 @@ return {
   sendTelemetryEvent = sendEvent
   sendTelemetrySavedEvent
   logFirebaseEventWithJson
+  logAdjust
 }

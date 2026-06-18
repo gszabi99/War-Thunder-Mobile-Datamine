@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
@@ -17,19 +16,13 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   aTimeInfoItemOffset, aTimeInfoLight, horGap
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { activeRewardHint } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
-let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
-  AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
-let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
-  hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
+let { unitForCutscene } = require("%rGui/shop/goodsPreview/unitCutscene.nut")
+let { set_load_sounds_for_model } = require("hangar")
+let { setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { rnd_int } = require("dagor.random")
-let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
-let { getUnitTags } = require("%appGlobals/unitTags.nut")
-let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
-let { get_settings_blk } = require("blkGetters")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 
@@ -113,44 +106,15 @@ unitForShow.subscribe(function(unit) {
     resetCustomHangarUnit()
 })
 
+let unitForCutsceneExt = keepref(Computed(@(prev) prev == unitForShow.get() ? prev
+  : !needShowUi.get() && !skipAnimsOnce.get() ? unitForShow.get()
+  : null))
+unitForCutsceneExt.subscribe(@(v) unitForCutscene.set(v))
+
 previewGoodsUnit.subscribe(function(unit) {
   if (unit != null)
     set_load_sounds_for_model(true)
 })
-
-let cutSceneWaitForVisualsLoaded = get_settings_blk()?.unitOffer.cutSceneWaitForVisualsLoaded ?? false
-let transitionThroughBlackScreen = get_settings_blk()?.unitOffer.transitionThroughBlackScreen ?? false
-
-let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
-eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene.set(false))
-eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene.set(true))
-
-let needShowCutscene = keepref(Computed(@() unitForShow.get() != null
-  && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.get()?.name ?? "")
-  && readyToShowCutScene.get() ))
-
-function showCutscene(v) {
-  if (!v)
-    stop_prem_cutscene()
-  else if (!needShowUi.get() && !skipAnimsOnce.get()) {
-    let unitType = unitForShow.get()?.unitType ?? ""
-    local presetType = TANK_PRESET_TYPE
-    if (unitType == SHIP)
-      presetType = SHIP_PRESET_TYPE
-    else if (unitType == AIR) {
-      let tags = getUnitTags(unitForShow.get().name)
-      if (tags?.type_fighter == true || tags?.type_strike_aircraft == true)
-        presetType = AIR_FIGHTER_PRESET_TYPE
-      else
-        presetType = AIR_BOMBER_PRESET_TYPE
-    }
-    let presetIds = get_prem_cutscene_preset_ids(presetType)
-    if(presetIds.len() > 0)
-      start_prem_cutscene(presetIds[rnd_int(0, presetIds.len()-1)])
-  }
-}
-showCutscene(needShowCutscene.get())
-needShowCutscene.subscribe(showCutscene)
 
 function openDetailsWnd() {
   hangarUnitDataBackup.set({
@@ -268,13 +232,6 @@ let rightBlock = {
   ]
 }
 
-function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
-  if (loaded) {
-    closeBlackOverlay()
-    readyToShowCutScene.unsubscribe(closeBlackOverlayOnceOnVisualsLoaded)
-  }
-}
-
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
@@ -287,16 +244,7 @@ let previewWnd = @() {
   stopMouse = true
   stopHotkeys = true
 
-  function onAttach() {
-    isWindowAttached.set(true)
-    if (transitionThroughBlackScreen) {
-      showBlackOverlay()
-      if (!readyToShowCutScene.get())
-        readyToShowCutScene.subscribe(closeBlackOverlayOnceOnVisualsLoaded)
-      else
-        closeBlackOverlay()
-    }
-  }
+  onAttach = @() isWindowAttached.set(true)
   onDetach = @() isWindowAttached.set(false)
 
   children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true)):

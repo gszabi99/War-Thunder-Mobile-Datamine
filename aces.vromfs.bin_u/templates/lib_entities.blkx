@@ -1,6 +1,7 @@
 {
   "import": [
     "%danetlibs/assets_import/templates/assets_import.blk",
-    "%gameLibs/fast_grass/templates/fast_grass.template.blk"
+    "%gameLibs/fast_grass/templates/fast_grass.template.blk",
+    "%gameLibs/route_prober/templates/route_prober.blk"
   ]
 }

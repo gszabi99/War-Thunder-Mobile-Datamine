@@ -14,7 +14,7 @@ let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isTcfConsentAutoSkipped, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
 let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consentFirebase/consentState.nut")
 let { set_mute_sound } = require("soundOptions")
-
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let RETRY_LOAD_TIMEOUT = 120
 let RETRY_INC_TIMEOUT = 60 
@@ -54,10 +54,13 @@ let providersId = is_ios ? "iOS"
   : "android_apk"
 let fbProvidersId = is_android ? "android" : providersId
 
+let operator = getCurCircuitOverride("publisher")
+let operatorProvidersId = operator ? $"{operator}_{fbProvidersId}" : providersId
+
 let adsAccessesProvider = Computed(function() {
   let { adsAccessesCfg = {} } = serverConfigs.get()
 
-  let provider = providersId in adsAccessesCfg ? providersId : fbProvidersId
+  let provider = operatorProvidersId in adsAccessesCfg ? operatorProvidersId : fbProvidersId
   if (provider in adsAccessesCfg && ((myUserId.get() % 100) < adsAccessesCfg[provider].percent))
     return adsAccessesCfg[provider].id
 
@@ -70,6 +73,7 @@ let allProviders = keepref(Computed(function() {
   let { adsCfg = null } = serverConfigs.get()
 
   return adsCfg?[$"{adsAccessesProvider.get()}"]
+    ?? adsCfg?[operatorProvidersId]
     ?? adsCfg?[providersId]
     ?? adsCfg?[fbProvidersId]
     ?? {}

@@ -2,8 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import load_local_settings
 
 from "app" import exitGame
-let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async, convertExternalJwtToAuthJwt
-} = require("auth_wt")
+let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync,
+  check_login_pass_async, convertExternalJwtToAuthJwtWithNewAppId = @(_,__) null } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
@@ -26,6 +26,7 @@ let {parse_json} = require("json")
 let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
 let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
+let { get_cur_circuit_block } = require("blkGetters")
 
 subscribeFMsgBtns({
   loginExitGame = @(_) exitGame()
@@ -65,7 +66,7 @@ let proceedAuthByResult = {
     curLoginType.set(loginType)
     authTags.set(get_player_tags())
     if (isExternalOperator())
-      convertExternalJwtToAuthJwt("ConvertExternalJwt")
+      convertExternalJwtToAuthJwtWithNewAppId("ConvertExternalJwt", get_cur_circuit_block()?.appPerm ?? 0)
     else
       finalizeStage()
   },

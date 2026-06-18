@@ -19,6 +19,7 @@ let { canUseZendeskApi, langCfg, getCategoryLocName, fieldCategory } = require("
 let { hasLogFile } = require("%rGui/feedback/logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("%rGui/feedback/supportRequest.nut")
 let supportChooseCategory = require("%rGui/feedback/supportChooseCategory.nut")
+let { getCurCircuitOverride, isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)
@@ -231,8 +232,8 @@ requestState.subscribe(function(v) {
 registerScene("supportWnd", supportWnd, onClose, isOpened)
 
 let openSupportTicketWnd = @() isOpened.set(true)
-let openSupportTicketUrl = @() eventbus_send("openUrl", { baseUrl = loc("url/feedback/support") })
-let openSupportTicketWndOrUrl = @() canUseZendeskApi.get() ? openSupportTicketWnd() : openSupportTicketUrl()
+let openSupportTicketUrl = @() eventbus_send("openUrl", { baseUrl = getCurCircuitOverride("feedbackURL", loc("url/feedback/support")) })
+let openSupportTicketWndOrUrl = @() canUseZendeskApi.get() && !isExternalOperator() ? openSupportTicketWnd() : openSupportTicketUrl()
 
 return {
   openSupportTicketWndOrUrl

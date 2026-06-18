@@ -11,10 +11,11 @@ let { legalToApprove } = require("%appGlobals/legal.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const VERSIONS_ID = "legalVersions"
-const VERSIONS_URL = "https://legal.gaijin.net/api/v1/getversions?filter=default,gamerules,gamerules-wtm,wtm-compliance-policy"
 const VERSIONS_RESP_ID = "legalVersion.result"
+let VERSIONS_URL = getCurCircuitOverride("legalApiURL", "https://legal.gaijin.net/api/v1/getversions?filter=default,gamerules,gamerules-wtm,wtm-compliance-policy")
 
 let versionsFallback = {
   privacypolicy = 1681821489

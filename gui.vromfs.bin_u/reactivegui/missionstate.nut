@@ -3,10 +3,13 @@ let DataBlock  = require("DataBlock")
 let { get_game_type, get_game_mode, GM_TRAINING } = require("mission")
 let { get_current_mission_desc } = require("guiMission")
 let { register_command } = require("console")
+let { EventLevelLoaded = null } = require_optional("sceneEvents")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+let { register_es } = require("%globalScripts/ecs.nut")
 let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
+let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
 let interopGet = require("%rGui/interopGen.nut")
 
 let gameType = Watched(get_game_type())
@@ -48,6 +51,8 @@ function addSpawnScoreParams(rules, misBlk) {
 function updateByMissionDesc() {
   if (!isAppLoaded.get())
     return
+  gameMode.set(get_game_mode())
+
   log("Update hudCustomRules")
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
@@ -69,13 +74,22 @@ function updateByMissionDesc() {
 }
 
 updateByMissionDesc()
-isInLoadingScreen.subscribe(function(value) {
-  if (!value) {
-    updateByMissionDesc()
-    gameMode.set(get_game_mode())
-  }
-})
 isAppLoaded.subscribe(@(_) updateByMissionDesc())
+
+if (EventLevelLoaded != null)
+  register_es("update_mission_desc_es",
+    { [EventLevelLoaded] = @(_, __, ___) updateByMissionDesc() },
+    {})
+else {
+  isInLoadingScreen.subscribe(function(v) {
+    if (!v)
+      updateByMissionDesc()
+  })
+  isInRespawn.subscribe(function(v) {
+    if (v)
+      updateByMissionDesc()
+  })
+}
 
 let isGtRace = Computed(@() !!(gameType.get() & GT_RACE))
 

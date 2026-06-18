@@ -1,10 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+
 let { eventbus_send } = require("eventbus")
 let { getCurrentLanguage } = require("dagor.localize")
 let { getCountryCode } = require("auth_wt")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch } = require("%sqstd/platform.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
+let { copyParamsToTable } = require("%sqstd/datablock.nut")
 
 let iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
@@ -14,41 +18,43 @@ let canShowSocialNetworks = !is_nswitch
 let maxItemsInRow = 3
 let socialsGap = hdpx(35)
 
-let socNetList = [
+let operatorNetowrks = getCurCircuitOverride("social_networks")
+
+let socNetList = operatorNetowrks ? (operatorNetowrks % "p").map(@(blk) copyParamsToTable(blk)) : [
   userCountryRU ? null
     : {
-      text = loc("community/facebook")
+      text = "community/facebook"
       image = "ui/gameuiskin#icon_social_facebook.svg"
-      url = loc("url/community/facebook")
+      url = "https://www.facebook.com/WTMobileOfficial"
     }
   {
-    text = loc("community/telegram")
+    text = "community/telegram"
     image = "ui/gameuiskin#icon_social_telegram.svg"
-    url = loc("url/community/telegram")
+    url = "https://t.me/warthundermobile"
   }
   userCountryRU ? null
     : {
-      text = loc("community/discord")
+      text = "community/discord"
       image = "ui/gameuiskin#icon_social_discord.svg"
-      url = loc("url/community/discord")
+      url = "https://discord.gg/VP2DuSbUZH"
     }
   getCurrentLanguage() != "Russian" ? null
     : {
-      text = loc("community/vk")
+      text = "community/vk"
       image = "ui/gameuiskin#icon_social_vk.svg"
-      url = loc("url/community/vk")
+      url = "https://vk.com/wtmobile"
     }
   userCountryRU ? null
     : {
-      text = loc("community/instagram")
+      text = "community/instagram"
       image = "ui/gameuiskin#icon_social_instagram.svg"
-      url =  loc("url/community/instagram")
+      url =  "https://instagram.com/wtmobile_official"
     }
   userCountryRU ? null
     : {
-      text = loc("community/x")
+      text = "community/x"
       image = "ui/gameuiskin#x_logo.svg"
-      url =  loc("url/community/x")
+      url =  "https://x.com/WT_Mobile_"
     }
 ].filter(@(s) s != null)
 
@@ -90,7 +96,7 @@ function mkNetworkItem(item){
         halign = ALIGN_CENTER
         minWidth = hdpx(200)
         rendObj = ROBJ_TEXT
-        text
+        text = loc(text)
       }.__update(fontTinyAccented)
     ]
   }
