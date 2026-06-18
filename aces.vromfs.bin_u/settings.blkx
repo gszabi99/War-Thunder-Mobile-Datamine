@@ -702,6 +702,11 @@
       "url": "http://public-configs.warthunder.com/"
     }
   },
+  "net": {
+    "useServerRouteEvaluation": true,
+    "echoTimeoutMs": 5000,
+    "addRtt": -20
+  },
   "general": {
     "environment": "day",
     "weather": "clear"

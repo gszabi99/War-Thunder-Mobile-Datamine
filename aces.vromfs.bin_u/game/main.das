@@ -12,6 +12,7 @@ require %appGame.libs_init
 def load
   var ok = true
 
+  ok = load_libs() && ok
   ok = load_wt_scripts("%game") && ok
   ok = load_folder("%appGame/es") && ok
   ok = load_imgui_daeditor("%danetlibs/imgui_daeditor") && ok

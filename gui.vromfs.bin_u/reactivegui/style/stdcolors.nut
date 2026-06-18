@@ -37,6 +37,15 @@ return {
   locColorTable = {
     mark = markTextColor
     darken = darkenTextColor
+    accent = 0xFFFF4567
+    info = 0xFF3F8CFF
+    warning = 0xFFFFCE21
+    interesting = 0xFF8B55FF
+    bronze = 0xFFE0B095
+    silver = 0xFFB4CEE7
+    gold = 0xFFE4CB88
+
+    
     red = 0xFFFF3333
     terracot = 0xFFFF5934
     orange = 0xFFFF7E07
@@ -51,13 +60,9 @@ return {
     indigo = 0xFF7B5AFF
     violet = 0xFF9F53FF
     margenta = 0xFFDE3AE1
-
-    accent = 0xFFFF4567
-    info = 0xFF3F8CFF
-    warning = 0xFFFFCE21
-    interesting = 0xFF8B55FF
-    bronze = 0xFFE0B095
-    silver = 0xFFB4CEE7
-    gold = 0xFFE4CB88
+    white = 0xFFFFFFFF,
+    ["white-60"] = 0x99999999,
+    ["white-80"] = 0xCCCCCCCC,
+    
   }
 }
