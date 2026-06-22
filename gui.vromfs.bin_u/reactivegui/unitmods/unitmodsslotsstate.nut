@@ -13,7 +13,7 @@ let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
 } = require("%rGui/unit/unitSettings.nut")
-let { mkUnitAllModsCost, getModCurrency, getModCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
+let { mkUnitModCostCfg, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
 let { getEquippedWeapon, getEqippedWithoutOverload, hasConflictWeapons } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 
 
@@ -140,7 +140,7 @@ let curWeaponBeltsOrdered = Computed(function() {
 let curBelt = Computed(@() curWeaponBeltsOrdered.get()?[curBeltIdx.get()])
 
 let curMods = Computed(@() campConfigs.get()?.unitModPresets[curUnit.get()?.modPreset])
-let curUnitAllModsSlotsCost = mkUnitAllModsCost(curUnit)
+let curSlotUnitModCostCfg = mkUnitModCostCfg(curUnit)
 
 let { weaponPreset, setWeaponPreset } = mkWeaponPreset(openedUnitId)
 
@@ -462,7 +462,7 @@ let curUnseenMods = Computed(function() {
 
 function mkListUnseenMods(slotUnit) {
   let reqMods = slotUnit.get()?.name ? loadUnitReqModifications(slotUnit.get().name) : {}
-  let slotUnitAllModsCost = mkUnitAllModsCost(slotUnit)
+  let slotUnitModCostCfg = mkUnitModCostCfg(slotUnit)
   let seenSlotModsByUnit = mkSeenMods(Computed(@() slotUnit.get()?.name)).seenUnitMods
 
   return Computed(function() {
@@ -479,7 +479,7 @@ function mkListUnseenMods(slotUnit) {
         || data.reqLevel > level
         || modName in mods
         || (modName in seenSlotModsByUnit.get() && seenSlotModsByUnit.get()[modName] == WS_SEEN_AVAILABLE)
-        || !hasEnoughCurrencies(data, slotUnitAllModsCost.get(), balance.get()))
+        || !hasEnoughCurrencies(data, slotUnitModCostCfg.get(), balance.get()))
         continue
       else
         res[modName] <- true
@@ -511,7 +511,7 @@ function setAllSeenMods() {
   let seenMods = {}
   foreach (modName, data in unitModPreset)
     if (data?.reqLevel && level && data.reqLevel <= level && modName not in mods)
-      seenMods[modName] <- hasEnoughCurrencies(data, curUnitAllModsSlotsCost.get(), balance.get())
+      seenMods[modName] <- hasEnoughCurrencies(data, curSlotUnitModCostCfg.get(), balance.get())
 
   setSeenUnitMods(seenMods)
 }
@@ -622,9 +622,7 @@ return {
   mkWeaponBelts
   isBeltWeapon
 
-  curUnitAllModsSlotsCost
-  getModCurrency
-  getModCost
+  curSlotUnitModCostCfg
   mkWeaponStates
   mkHasConflicts
   getConflictsList

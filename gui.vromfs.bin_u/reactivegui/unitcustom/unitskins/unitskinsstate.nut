@@ -2,12 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { baseUnit, curSelectedUnitId, curSelectedUnitSkin } = require("%rGui/unitDetails/unitDetailsState.nut")
+let { baseUnit, curSelectedUnitSkin } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { openForUnit, unitCustomOpenCount } = require("%rGui/unitCustom/unitCustomState.nut")
 
 
 let unitSkins = Computed(@() { [""] = true }.__merge(serverConfigs.get()?.allUnits[openForUnit.get()].skins ?? {}))
-let currentSkin = Computed(@() baseUnit.get()?.currentSkins[curSelectedUnitId.get() ?? openForUnit.get()] ?? "")
+let currentSkin = Computed(@() baseUnit.get()?.skin
+ ?? baseUnit.get()?.currentSkins[openForUnit.get()] 
+ ?? "")
 let availableSkins = Computed(@() (servProfile.get()?.skins[openForUnit.get()] ?? {}).__merge(
     unitSkins.get().filter(@(s) s),
     { [currentSkin.get()] = true },
@@ -17,7 +19,6 @@ let selectedSkinCfg = Computed(@() serverConfigs.get()?.skins[curSelectedUnitSki
 
 let hasTagsChoice = Computed(@() getCampaignPresentation(baseUnit.get()?.campaign ?? "").campaign == "tanks")
 
-curSelectedUnitId.subscribe(@(_) curSelectedUnitSkin.set(null))
 unitCustomOpenCount.subscribe(@(_) curSelectedUnitSkin.set(null))
 
 return {

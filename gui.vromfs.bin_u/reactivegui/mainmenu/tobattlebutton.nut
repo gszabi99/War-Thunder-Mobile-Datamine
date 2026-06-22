@@ -16,7 +16,6 @@ let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesCo
 let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
 let { getMissionUnitsAndAddons, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary, mkCustomButton, mergeStyles
 } = require("%rGui/components/textButton.nut")
@@ -94,7 +93,7 @@ let isNeedDownloadForOfflineNewbieBattle = Computed(function() {
   let units = {}
   let addons = {}
   if (curUnit.get() != null)
-    units[getTagsUnitName(curUnit.get().name)] <- true
+    units[curUnit.get().name] <- true
   foreach (missionName in newbieOfflineMissions.get()) {
     let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
     units.__update(misUnits)

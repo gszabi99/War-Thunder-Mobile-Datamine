@@ -3,7 +3,6 @@ from "app" import exitGame
 let { HangarCameraControl } = require("wt.behaviors")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
@@ -93,16 +92,13 @@ registerAutoDownloadUnits(
     if (!isReadyToFullLoad.get() || mainMenuUnit.get() == null)
       return prevIfEqual(prev, {})
 
-    let { name, platoonUnits = [] } = mainMenuUnit.get()
-    let res = {}
-    res[getTagsUnitName(name)] <- true
-    foreach (p in platoonUnits)
-      res[getTagsUnitName(p.name)] <- true
+    let { name } = mainMenuUnit.get()
+    let res = { [name] = true }
 
-    if (hasBgUnitsByCamp?[curCampaign.get()] && platoonUnits.len() == 0)
+    if (hasBgUnitsByCamp?[curCampaign.get()])
       foreach (s in curSlots.get())
         if (s.name != "" && s.name != name)
-          res[getTagsUnitName(s.name)] <- true
+          res[s.name] <- true
 
     let sizes = unitSizes.get()
     return prevIfEqual(prev, res.filter(@(_, u) (sizes?[u] ?? -1) != 0))

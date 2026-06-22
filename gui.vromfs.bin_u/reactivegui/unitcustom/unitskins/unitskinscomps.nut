@@ -60,16 +60,6 @@ let aTimeSelected = 0.2
 let rowBgEvenColor = 0xB3000000
 let rowBgOddColor = 0x70000000
 
-function applyToPlatoon(unit, skinName) {
-  if ((unit?.currentSkins[unit.name] ?? "") != skinName)
-    enable_unit_skin(unit.name, unit.name, skinName)
-  foreach (pu in unit.platoonUnits)
-    if ((unit?.currentSkins[pu.name] ?? "") != skinName)
-      enable_unit_skin(unit.name, pu.name, skinName)
-  if (skinName != "")
-    sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
-}
-
 let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + skinsRowPadding * 2, [skinsRowPadding, skinsRowPadding])
 let skinsPannableWithTags = horizontalPannableAreaCtor(
   (skinSize + skinGap) * SKINS_IN_ROW_TAGS + skinsRowPadding, [skinsRowPadding, skinsRowPadding])
@@ -316,31 +306,23 @@ function openLootboxForEvent(lootbox) {
 let canChangeSkin = @(unit, myUnits) unit.isUpgraded == myUnits?[unit.name].isUpgraded
 
 function selectBtns(unit, vehicleName, skinName, cSkin) {
-  if ("currentSkins" not in unit) 
+  if ("skin" not in unit && "currentSkins" not in unit) 
     return null
-
-  let showApplyToPlatoon = unit.platoonUnits.len() > 0
-    && ((unit.currentSkins?[unit.name] ?? "") != skinName
-      || unit.platoonUnits.findvalue(@(v) (unit.currentSkins?[v.name] ?? "") != skinName) != null)
   return @() {
     watch = campMyUnits
     size = flex()
     halign = cSkin == skinName ? ALIGN_CENTER : ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
-    children = [
-      !showApplyToPlatoon ? null
-        : textButtonPrimary(utf8ToUpper(loc("skins/applyToPlatoon")), @() applyToPlatoon(unit, skinName))
-      cSkin == skinName
-        ? mkGradText(loc("skins/applied"))
-        : !canChangeSkin(unit, campMyUnits.get()) ? null
-        : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
-            function() {
-              enable_unit_skin(unit.name, vehicleName, skinName)
-              if (skinName != "")
-                sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
-            })
-    ]
+    children = cSkin == skinName
+      ? mkGradText(loc("skins/applied"))
+      : !canChangeSkin(unit, campMyUnits.get()) ? null
+      : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
+          function() {
+            enable_unit_skin(unit.name, vehicleName, skinName)
+            if (skinName != "")
+              sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
+          })
   }
 }
 

@@ -15,13 +15,6 @@ let mkCommonExtras = require("mkCommonExtras.nut")
 let singleMissionResult = mkWatched(persist, "singleMissionResult", null)
 let lastRewardData = persist("lastRewardData", @() { val = null })
 
-function getCampaignByUnitName(unitName, defaultCampaign) {
-  let allCampaignsUnits = serverConfigs.get()?.allUnits ?? {}
-  let unit = allCampaignsUnits?[unitName]
-    ?? allCampaignsUnits.findvalue(@(u) u.platoonUnits.findindex(@(pu) pu.name == unitName) != null)
-  return unit?.campaign ?? defaultCampaign
-}
-
 let mkSlotsCommonInfo = @(campaign) {
   levelsExpCfg = (serverConfigs.get()?.unitLevels[$"{campaign}_slots"] ?? {}).map(@(v, i) { exp = v.exp, upToLevel = v?.upToLevel ?? (i + 1) })
   levelsSp = serverConfigs.get()?.unitLevelsSp?[serverConfigs.get()?.campaignCfg[campaign].slotAttrPreset]
@@ -39,7 +32,8 @@ function getSingleMissionResult(rewardData) {
 
   let unitName = battleUnitName.get()
   let baseBattleData = wasBattleDataApplied.get() ? (lastClientBattleData.get() ?? {}) : {}
-  let campaign = rewardData?.battleData.campaign ?? getCampaignByUnitName(unitName, curCampaign.get())
+  let campaign = rewardData?.battleData.campaign
+    ?? serverConfigs.get()?.allUnits[unitName]?.campaign ?? curCampaign.get()
   log($"Result info: baseBattleData.unit = {baseBattleData?.unit.name}")
   log($"rewardData?.battleData.unit = {rewardData?.battleData.reward.unitName}")
   log($"battleUnitName = {battleUnitName.get()}")

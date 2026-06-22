@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 function getLevelProgress(curLevelConfig, totalExp) {
   let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [], levelsExpCfg = null
@@ -70,11 +69,11 @@ function getUnitsSet(debrData) {
 
 function getBgUnits(debrData) {
   let unitSpawnsListWithExp = (debrData?.damageLogPlayers[debrData?.userId.tostring()].unitSpawnsList ?? {})
-    .map(@(_, uName) debrData?.reward.units.findvalue(@(u) getTagsUnitName(u.name) == uName).exp.totalExp ?? 0)
+    .map(@(_, uName) debrData?.reward.units.findvalue(@(u) u.name == uName).exp.totalExp ?? 0)
   return getUnitsSet(debrData)
     .sort(@(a, b) (unitSpawnsListWithExp?[b.name] ?? -1) <=> (unitSpawnsListWithExp?[a.name] ?? -1)
       || b.mRank <=> a.mRank)
-    .map(@(u) getTagsUnitName(u.name))
+    .map(@(u) u.name)
     .slice(0, 4)
 }
 
@@ -165,7 +164,6 @@ function getSlotOrUnitLevelUnlockRewards(debrData) {
 let sortUnitMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
   || (a?.group ?? "") <=> (b?.group ?? "")
   || (a?.costGold ?? 0) <=> (b?.costGold ?? 0)
-  || (a?.costWpWeight ?? 0) <=> (b?.costWpWeight ?? 0)
   || (a?.name ?? "") <=> (b?.name ?? "")
 
 return {

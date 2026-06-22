@@ -3,8 +3,8 @@ let { unitsMaxRank, unitsTreeOpenRank } = require("%rGui/unitsTree/unitsTreeStat
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame, mkUnitTimeLeft,
-  mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
+let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitTimeLeft,
+  mkUnitsTreePrice, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, plateTextsSmallPad, unitPlateTiny,
   bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -44,7 +44,6 @@ let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOp
 
 
 let frameBorderWidth = hdpxi(2)
-let framesGapMul = 0.7
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
 
 let highlighCurrentResearch = mkColoredGradientY(0x20A0A0A0, 0)
@@ -92,30 +91,6 @@ function openBuyUnitWnd(name, price) {
   })
 }
 
-function mkPlatoonPlates(unit) {
-  let { platoonUnits = [] } = unit
-  let platoonSize = platoonUnits.len()
-  let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.get()))
-  let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
-  let isEquipped = Computed(@() unit.name == curUnitName.get())
-
-  return @() {
-    watch = [isSelected, isLocked]
-    size = flex()
-    children = platoonUnits?.map(@(_, idx) {
-      size = flex()
-      transform = {
-        translate = bgPlatesTranslate(platoonSize, idx, isSelected.get(), framesGapMul)
-      }
-      transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
-      children = [
-        mkUnitBg(unit, isLocked.get())
-        mkPlatoonPlateFrame(unit, isEquipped, isSelected)
-      ]
-    })
-  }
-}
-
 function mkUnitPlate(unit, xmbNode, ovr = {}) {
   if (unit == null)
     return null
@@ -151,7 +126,6 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     xmbNode
     sound = { click = "choose" }
     children = [
-      mkPlatoonPlates(unit)
       mkUnitBg(unit, isLocked.get())
       mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
@@ -178,14 +152,13 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
         ]
       }
       mkProfileUnitDailyBonus(unit)
-      mkPlatoonPlateFrame(unit, isEquipped, isSelected)
       mkUnitEquippedIcon(unit, isEquipped)
-      unit.platoonUnits.len() == 0 ?{
+      {
         size = flex()
         valign = ALIGN_TOP
         pos = [0, -selLineSize]
         children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
-      } : null
+      }
       mkPriorityUnseenMarkWatch(needShowUnseenMark)
     ]
   }.__update(ovr)

@@ -8,7 +8,6 @@ from "dagor.workcycle" import resetTimeout, clearTimer
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/permissions.nut" import allow_protection_analysis
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
-import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 from "%rGui/unit/unitsWndState.nut" import visibleUnitsList
 from "%rGui/unit/unitUtils.nut" import sortUnits
 from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
@@ -72,7 +71,7 @@ function openProtectionAnalysis(unit, baseUnit) {
 }
 
 function applyProtAnalysisOptions() {
-  let unitName = getTagsUnitName(threatUnit.get()?.name ?? "")
+  let unitName = threatUnit.get()?.name ?? ""
   let { weaponBlkName = "", bulletNames = [] } = threatBulletData.get()?.bSet
   let bulletName = bulletNames?[0] ?? ""
   if (unitName != "" && weaponBlkName != "" && bulletName != "")
@@ -124,15 +123,13 @@ function selectThreatUnit(u) {
 
 inspectedUnit.subscribe(selectThreatUnit)
 
-let collectUnits = @(u) [ u ].extend(u.platoonUnits.map(@(pu) u.__merge(pu)))
-
 let searchableUnitsList = Computed(function() {
   if (!isProtectionAnalysisActive.get())
     return []
-  let list = visibleUnitsList.get().reduce(@(res, v) res.extend(collectUnits(v)), [])
+  let list = visibleUnitsList.get().reduce(@(res, v) res.append(v), [])
   let inspectedUnitName = inspectedUnit.get()?.name ?? ""
   if (inspectedUnitName != "" && list.findvalue(@(u) u.name == inspectedUnitName) == null)
-    list.extend(collectUnits(inspectedBaseUnit.get()))
+    list.append(inspectedBaseUnit.get())
   return list.sort(sortUnits)
 })
 
@@ -171,7 +168,7 @@ let threatBulletDataList = Computed(function() {
   let res = []
   if (!isProtectionAnalysisActive.get())
     return res
-  let unitName = getTagsUnitName(threatUnit.get()?.name ?? "")
+  let unitName = threatUnit.get()?.name ?? ""
   let bInfo = loadUnitBulletsChoice(unitName)
   foreach (set in bInfo)
     foreach (triggerType, weapon in set)
@@ -193,7 +190,7 @@ threatBulletDataList.subscribe(updateSelBullet)
 updateSelBullet(threatBulletDataList.get())
 
 let armorPiercingMm = Computed(function() {
-  let unitName = getTagsUnitName(threatUnit.get()?.name ?? "")
+  let unitName = threatUnit.get()?.name ?? ""
   let { weaponBlkName = "", id = "" } = threatBulletData.get()?.bSet
   if (unitName == "" || weaponBlkName == "")
     return 0.0
@@ -204,7 +201,7 @@ let armorPiercingMm = Computed(function() {
 let threatUnitSearchResults = Computed(function() {
   let searchStr = threatUnitSearchString.get()
   return searchStr == "" ? []
-    : searchableUnitsList.get().filter(@(u) isUnitNameMatchSearchStr(u, searchStr, false))
+    : searchableUnitsList.get().filter(@(u) isUnitNameMatchSearchStr(u, searchStr))
 })
 
 return {

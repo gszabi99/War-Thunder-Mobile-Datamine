@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkTabs, tabExtraWidth } = require("%rGui/components/tabs.nut")
 let getCatIcon = require("%appGlobals/config/modsPresentation.nut")
-let {
-  mods, unitMods, modsByCategory, unit, curModCategoryId,
-  unseenModsByCategory, onModTabChange, modsSort, getModCost, curUnitAllModsCost, getModCurrency, isOwn
+let { mods, unitMods, modsByCategory, unit, curModCategoryId,
+  unseenModsByCategory, onModTabChange, modsSort, getModCost, curUnitModCostCfg, isOwn
 } = require("%rGui/unitMods/unitModsState.nut")
 let { tabW, tabH, tabContentMargin, tabsOvr } = require("%rGui/unitMods/unitModsConst.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
@@ -39,10 +38,9 @@ function tabData(tab, ovr = {}) {
   let isLocked = Computed(@() reqLevel.get() > (unit.get()?.level ?? 0) && !isDisplayedAsPurchased.get())
   let hasInactiveMod = Computed(@() !activeModName.get() && purchasedModName.get() != null)
 
-  let cost = Computed(@() getModCost(tabMod.get(), curUnitAllModsCost.get()))
-  let currency = Computed(@() getModCurrency(tabMod.get()))
+  let cost = Computed(@() getModCost(tabMod.get(), curUnitModCostCfg.get()))
 
-  let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get() == 0)
+  let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get().price == 0)
   let isPurchased = Computed(@() isDisplayedAsPurchased.get() || unitMods.get()?[tabModName.get()] != null)
 
   return {
@@ -78,14 +76,14 @@ function tabData(tab, ovr = {}) {
         mkCatIcon(id)
 
         @() {
-          watch = [isLocked, hasModNotOwn, isPurchased, cost, currency]
+          watch = [isLocked, hasModNotOwn, isPurchased, cost]
           size = flex()
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [
             !isPurchased.get() && !hasModNotOwn.get() ? bgShade : null
             isLocked.get() || hasModNotOwn.get() || isPurchased.get() ? null
-              : mkCurrencyComp(cost.get(), currency.get(), CS_SMALL)
+              : mkCurrencyComp(cost.get().price, cost.get().currencyId, CS_SMALL)
           ]
         }
 

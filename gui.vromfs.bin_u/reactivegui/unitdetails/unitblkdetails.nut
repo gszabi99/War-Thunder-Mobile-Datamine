@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { getUnitFileName } = require("vehicleModel")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 let detailsCache = persist("detailsCache", @() {})
 
@@ -15,8 +14,7 @@ function loadUnitBlkDetails(unitName) {
   }
 }
 
-function getUnitBlkDetails(realUnitName) {
-  let unitName = getTagsUnitName(realUnitName)
+function getUnitBlkDetails(unitName) {
   if (unitName not in detailsCache)
     detailsCache[unitName] <- loadUnitBlkDetails(unitName)
   return detailsCache[unitName]

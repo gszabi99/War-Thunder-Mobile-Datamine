@@ -19,7 +19,7 @@ let { tabW, blocksGap, blocksPadding, blocksLineSize, modW, modH,
 let { modsCategories, curModCategoryId, curMod, isUnitModsOpen, closeUnitModsWnd,
   modsSorted, unit, enableCurUnitMod, disableCurUnitMod,
   isCurModPurchased, isCurModEnabled, isCurModLocked,
-  getModCurrency, getModCost, curUnitAllModsCost, iconCfg, isOwn, isUnitModAttached
+  getModCost, curUnitModCostCfg, iconCfg, isOwn, isUnitModAttached
 } = require("%rGui/unitMods/unitModsState.nut")
 let { mkModsCategories } = require("%rGui/unitMods/unitModsWndTabs.nut")
 let { mkMods } = require("%rGui/unitMods/unitModsCarousel.nut")
@@ -339,8 +339,7 @@ let spinner = {
 function onPurchase() {
   let unitName = unit.get().name
   let modName = curMod.get().name
-  let price = getModCost(curMod.get(), curUnitAllModsCost.get())
-  let currencyId = getModCurrency(curMod.get())
+  let { price, currencyId } = getModCost(curMod.get(), curUnitModCostCfg.get())
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, loc($"modification/{modName}")) }),

@@ -19,13 +19,13 @@ let { selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots, a
 let { curWeaponIdx, curBeltIdx, setCurSlotIdx, setCurBeltsWeaponIdx, isUnitModSlotsAttached, openUnitModsSlotsWnd,
   slotWeaponKey, slotBeltKey, groupedCurUnseenMods, curWeaponBeltsOrdered, curWeaponsOrdered,
   curWeapon, curWeaponModName, curBelt, equippedWeaponId, equippedBeltId, curWeaponMod, curSlotIdx,
-  curBeltWeapon, findSlotWeaponsToBuyNonUpdatable, isHangarUnitHasWeaponSlots, curUnitAllModsSlotsCost
+  curBeltWeapon, findSlotWeaponsToBuyNonUpdatable, isHangarUnitHasWeaponSlots, curSlotUnitModCostCfg
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
 let { modW, modsGap } = require("%rGui/unitMods/unitModsConst.nut")
 let { getBulletBeltShortName, getWeaponShortNamesList } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getModCurrency, getModCost, slotModKey, curModId, modsSorted, unseenModsByCategory, mods, hasEnoughCurrencies
-  curModCategoryId, curBulletCategoryId, isUnitModAttached, curUnitAllModsCost, curMod, openUnitModsWnd
+let { getModCost, slotModKey, curModId, modsSorted, unseenModsByCategory, mods, hasEnoughCurrencies
+  curModCategoryId, curBulletCategoryId, isUnitModAttached, curUnitModCostCfg, curMod, openUnitModsWnd
 } = require("%rGui/unitMods/unitModsState.nut")
 let { openMsgBoxPurchase, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
 let { closeMsgBox } = require("%rGui/components/msgBox.nut")
@@ -174,7 +174,7 @@ function startTutorial() {
           else {
             let categoryId = unseenModsByCategory.get().findindex(function(unseenMods) {
               foreach (k, _ in unseenMods)
-                if (hasEnoughCurrencies(mods.get()?[k], curUnitAllModsCost.get(), balance.get()))
+                if (hasEnoughCurrencies(mods.get()?[k], curUnitModCostCfg.get(), balance.get()))
                   return true
               return false
             })
@@ -186,7 +186,7 @@ function startTutorial() {
             curModCategoryId.set(categoryId)
             foreach (idx, v in modsSorted.get()) {
               let { name } = v
-              if (unseenModsByCategory.get()?[categoryId][name] && hasEnoughCurrencies(v, curUnitAllModsCost.get(), balance.get())) {
+              if (unseenModsByCategory.get()?[categoryId][name] && hasEnoughCurrencies(v, curUnitModCostCfg.get(), balance.get())) {
                 firstSlot = min(firstSlot, idx)
                 slotsForLastStep.append({
                   keys = slotModKey(idx)
@@ -218,7 +218,7 @@ function startTutorial() {
           keys = "arsenal_purchase_btn"
           needArrow = true
           function onClick() {
-            let allModsCost = isHangarUnitHasWeaponSlots.get() ? curUnitAllModsSlotsCost.get() : curUnitAllModsCost.get()
+            let modCostCfg = isHangarUnitHasWeaponSlots.get() ? curSlotUnitModCostCfg.get() : curUnitModCostCfg.get()
             let mod = isHangarUnitHasWeaponSlots.get() ? curWeaponMod.get() : curMod.get()
             if (mod == null) {
               goToStep(STEP_FINISH)
@@ -229,7 +229,7 @@ function startTutorial() {
               : comma.join(getWeaponShortNamesList(curWeapon.get()?.weapons ?? []))
             openMsgBoxPurchase({
               text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
-              price = { price = getModCost(mod, allModsCost), currencyId = getModCurrency(mod) },
+              price = getModCost(mod, modCostCfg),
               purchase = @() null,
               bqInfo = null
             })
@@ -251,9 +251,8 @@ function startTutorial() {
               return closeMsgBox(PURCHASE_BOX_UID)
             let unitName = curUnit.get().name
             let modName = isHangarUnitHasWeaponSlots.get() ? curWeaponModName.get() : curMod.get().name
-            let allModsCost = isHangarUnitHasWeaponSlots.get() ? curUnitAllModsSlotsCost.get() : curUnitAllModsCost.get()
-            let price = getModCost(mod, allModsCost)
-            let currencyId = getModCurrency(mod)
+            let modCostCfg = isHangarUnitHasWeaponSlots.get() ? curSlotUnitModCostCfg.get() : curUnitModCostCfg.get()
+            let { price, currencyId } = getModCost(mod, modCostCfg)
             let cb = !isHangarUnitHasWeaponSlots.get() ? null
               : {
                   id = "onPurchasedMod"

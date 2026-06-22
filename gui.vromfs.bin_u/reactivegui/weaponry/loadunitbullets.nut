@@ -4,7 +4,6 @@ let { getUnitFileName } = require("vehicleModel")
 let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { eachBlock, isDataBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
 
 let WT_GUNS = "guns"
@@ -489,8 +488,7 @@ function loadUnitBulletsFullImpl(unitName) {
   return res
 }
 
-function loadUnitBulletsAndSlots(realUnitName) {
-  let unitName = getTagsUnitName(realUnitName)
+function loadUnitBulletsAndSlots(unitName) {
   if (unitName not in fullCache) {
     if (isLoginRequired.get() && !isReadyToFullLoad.get())
       return { presets = {}, slots = [], slotsParams = {}, reqModifications = {}, torpedoSeriesDuration = 0 }
@@ -531,8 +529,7 @@ function loadUnitBulletsChoiceImpl(unitName) {
       .filter(@(d) d != null))
 }
 
-function loadUnitBulletsChoice(realUnitName) {
-  let unitName = getTagsUnitName(realUnitName)
+function loadUnitBulletsChoice(unitName) {
   if (unitName not in choiceCache)
     choiceCache[unitName] <- freeze(loadUnitBulletsChoiceImpl(unitName))
   return choiceCache[unitName]

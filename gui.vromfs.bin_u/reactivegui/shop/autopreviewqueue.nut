@@ -42,10 +42,10 @@ let canShowScene = Computed(@() isDebugMode.get()
   && !isUserstatMissingData.get())
 let needShow = Computed(@() canShowScene.get() && goodsToShow.get() != null)
 
-let isAllUnitsLoaded = @(goods, sConfigs, uSizes)
-  null == getAllTagsUnitsToShowGoods(goods, sConfigs).findvalue(@(_, u) (uSizes?[u] ?? -1) != 0)
+let isAllUnitsLoaded = @(goods, uSizes)
+  null == getAllTagsUnitsToShowGoods(goods).findvalue(@(_, u) (uSizes?[u] ?? -1) != 0)
 
-let isReadyToShowScene = @(v, seen, sCfg, uSizes) !seen?[v?.id] && isAllUnitsLoaded(v, sCfg, uSizes)
+let isReadyToShowScene = @(v, seen, uSizes) !seen?[v?.id] && isAllUnitsLoaded(v, uSizes)
 
 let findUnseenGoods = @(allSelectedGoods, seen, schRew) allSelectedGoods.findvalue(@(v) isUnseenGoods(v.id, seen, schRew))
 
@@ -87,7 +87,7 @@ function assignGoods() {
 
     if (cfgPriority >= previewPriority) {
       let readyToShowGoods = cfg.allGoods.get().filter(@(v)
-        isReadyToShowScene(v, seenInLoop.get(), serverConfigs.get(), unitSizes.get()))
+        isReadyToShowScene(v, seenInLoop.get(), unitSizes.get()))
       let cfgGoods = !cfg?.findByShopSeen ? readyToShowGoods.findvalue(@(_) true)
         : findUnseenGoods(readyToShowGoods, shopSeenGoods.get(), actualSchRewards.get())
             ?? readyToShowGoods?[rnd_int(0, readyToShowGoods.len() - 1)]
@@ -100,7 +100,7 @@ function assignGoods() {
 
     if (cfgPriority >= loadPriority) {
       let readyToLoadGoods = cfg.allGoods.get()
-        .filter(@(v) !isAllUnitsLoaded(v, serverConfigs.get(), unitSizes.get()))
+        .filter(@(v) !isAllUnitsLoaded(v, unitSizes.get()))
       let cfgGoods = !cfg?.findByShopSeen ? readyToLoadGoods.findvalue(@(_) true)
         : findUnseenGoods(readyToLoadGoods, shopSeenGoods.get(), actualSchRewards.get())
             ?? readyToLoadGoods.findvalue(@(_) true)
@@ -126,7 +126,7 @@ foreach (w in [serverConfigs, unitSizes, seenInLoop, shopSeenGoods, actualSchRew
 let mkReqUnitsToShowGoods = @(goods) Computed(function(prev) {
   if (!isReadyToFullLoad.get() || goods.get() == null)
     return prevIfEqual(prev, {})
-  let res = getNotLoadedTagsUnitsToShowGoods(goods.get(), serverConfigs.get(), unitSizes.get())
+  let res = getNotLoadedTagsUnitsToShowGoods(goods.get(), unitSizes.get())
   return prevIfEqual(prev, res)
 })
 

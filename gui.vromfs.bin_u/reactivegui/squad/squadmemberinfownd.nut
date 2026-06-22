@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
+let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { squadMembers, isInvitedToSquad, squadId, squadLeaderCampaign, isSquadLeader,
   squadLeaderReadyCheckTime
@@ -10,26 +11,27 @@ let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
-let { gap, contactNameBlock, contactAvatar, contactLevelBlock, contactLevelSize
-} = require("%rGui/contacts/contactInfoPkg.nut")
+let { gap, contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/contacts/contactInfoPkg.nut")
 let { offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
-} = require("%rGui/unit/components/unitPlateComp.nut")
+let { unitPlateSmall, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { REVOKE_INVITE, REMOVE_FROM_SQUAD, PROMOTE_TO_LEADER, LEAVE_SQUAD } = require("%rGui/contacts/contactActions.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
+let { mkGradientCtorDoubleSideX, gradTexSize } = require("%rGui/style/gradients.nut")
 
 
 let WND_UID = "squad_member_info_wnd"
 
-let headerWidth = hdpx(1250)
 let avatarSize = hdpxi(200)
 let wndGap = hdpx(24)
 let statusSize = hdpxi(25)
-let wndHSize = avatarSize + wndGap + defButtonHeight
+let headerWidth = unitPlateSmall[0] * 4 + wndGap * 3
+let wndHSize = unitPlateSmall[1] + wndGap * 2 + defButtonHeight * 2
+
+let lineGradientHor = mkBitmapPicture(4, gradTexSize, mkGradientCtorDoubleSideX(0, 0x80777777, 0.25))
 
 let openParams = mkWatched(persist, "openParams", null)
 let wndAABB = Watched(null)
@@ -113,54 +115,38 @@ function inBattleBlock(uid) {
     : mkStatusRow("in_battle.svg", 0xFFFFFFFF, loc("status/in_battle"), { watch = isInBattle })
 }
 
-let unitInfo = @(unitW) function() {
-  let res = { watch = unitW }
-  let unit = unitW.get()
-  if (unit == null)
-    return res
-
-  let p = getUnitPresentation(unit)
-
-  return res.__update({
-    size = [ unitPlateWidth, unitPlateHeight ]
-    children = [
-      mkUnitBg(unit)
-      mkUnitImage(unit)
-      mkUnitTexts(unit, loc(p.locId))
-      mkUnitInfo(unit)
-    ]
+function unitsInfo(uid) {
+  let unitList = Computed(function() {
+    let { allUnits = {} } = serverConfigs.get()
+    let member = squadMembers.get()?[uid]
+    let leaderCampaign = squadLeaderCampaign.get()
+    let infos = member?.unitInfos[leaderCampaign]
+      ?? member?.units[leaderCampaign].map(@(name) { name, isUpgraded = false }) 
+      ?? []
+    return infos.reduce(function(res, info) {
+      let unit = allUnits?[info.name]
+      if (unit != null)
+        res.append(unit.__merge({ isUpgraded = info.isUpgraded }))
+      return res
+    }, [])
   })
-}
 
-function memberInfo(uid) {
-  let userId = uid.tostring()
-  let contact = Contact(userId)
-  let info = mkPublicInfo(userId)
-  let status = statusBlock(uid)
-  let battleStatus = inBattleBlock(uid)
-  let bestUnit = Computed(function() {
-    local list = squadMembers.get()?[uid].units[squadLeaderCampaign.get()] ?? []
-    local res = null
-    foreach(unitName in list) {
-      let unit = serverConfigs.get()?.allUnits[unitName]
-      if (unit != null && (res == null || unit.mRank > res.mRank))
-        res = unit
-    }
-    return res
-  })
   return @() {
-    watch = [contact, info]
-    size = [headerWidth, avatarSize]
-    valign = ALIGN_CENTER
+    watch = unitList
     flow = FLOW_HORIZONTAL
-    gap
-    children = [
-      contactLevelBlock(info.get())
-      contactAvatar(info.get(), avatarSize)
-      contactNameBlock(contact.get(), info.get(), [status, battleStatus])
-        .__update({ padding = const [hdpx(40), 0], size = flex()})
-      unitInfo(bestUnit)
-    ]
+    gap = wndGap
+    children = unitList.get().map(function(unit) {
+      let p = getUnitPresentation(unit)
+      return {
+        size = unitPlateSmall
+        children = [
+          mkUnitBg(unit)
+          mkUnitImage(unit)
+          mkUnitTexts(unit, loc(p.locId))
+          mkUnitInfo(unit)
+        ]
+      }
+    })
   }
 }
 
@@ -170,10 +156,9 @@ function buttons(uid) {
   return @() !needButtonsPlace.get() ? { watch = needButtonsPlace }
     : {
         watch = needButtonsPlace
-        size = [flex(), defButtonHeight]
-        flow = FLOW_HORIZONTAL
-        padding = [0, 0, 0, contactLevelSize + gap]
-        gap = wndGap
+        flow = FLOW_VERTICAL
+        padding = [0, 0, 0, gap]
+        gap
         children = [
           mkContactActionBtn(LEAVE_SQUAD, userId, { hotkeys = ["^J:LB"] })
           mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
@@ -181,6 +166,33 @@ function buttons(uid) {
           mkContactActionBtn(PROMOTE_TO_LEADER, userId, { hotkeys = ["^J:Y"] })
         ]
       }
+}
+
+let separator = {
+  size = [flex(), hdpxi(2)]
+  rendObj = ROBJ_IMAGE
+  image = lineGradientHor
+}
+
+function memberInfo(uid) {
+  let userId = uid.tostring()
+  let contact = Contact(userId)
+  let info = mkPublicInfo(userId)
+  let status = statusBlock(uid)
+  let battleStatus = inBattleBlock(uid)
+  return @() {
+    watch = [contact, info]
+    size = [headerWidth, SIZE_TO_CONTENT]
+    valign = ALIGN_TOP
+    flow = FLOW_HORIZONTAL
+    gap
+    children = [
+      contactAvatar(info.get(), avatarSize)
+      contactNameBlock(contact.get(), info.get(), [status, battleStatus, contactLevelBlock(info.get(), { valign = ALIGN_BOTTOM })])
+        .__update({ size = [flex(), avatarSize] })
+      buttons(uid)
+    ]
+  }
 }
 
 let wndKey = {}
@@ -191,17 +203,16 @@ let mkWindow = @(uid) {
     refreshPublicInfo(uid.tostring())
     defer(@() wndAABB.set(gui_scene.getCompAABBbyKey(wndKey)))
   }
-
   rendObj = ROBJ_SOLID
   color = 0xA0000000
   flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
+  halign = ALIGN_LEFT
   padding = wndGap
   gap = wndGap
-
   children = [
     memberInfo(uid)
-    buttons(uid)
+    separator
+    unitsInfo(uid)
   ]
 }
 

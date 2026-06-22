@@ -17,7 +17,6 @@ let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 let { squadMembers, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getMGameModeMissionUnitsAndAddons, getBotUnits, addSupportUnits, getHighestRankRange
 } = require("%appGlobals/updater/missionUnits.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
@@ -36,10 +35,8 @@ let allUnitsRanks = Computed(function() {
   let { allUnits = {} } = serverConfigs.get()
   let res = {}
   foreach (u in allUnits) {
-    let { campaign, mRank, name, platoonUnits } = u
-    addToCampRank(res, campaign, getTagsUnitName(name), mRank)
-    foreach (p in platoonUnits)
-      addToCampRank(res, campaign, getTagsUnitName(p.name), mRank)
+    let { campaign, mRank, name } = u
+    addToCampRank(res, campaign, name, mRank)
   }
   let tagsBlk = get_unittags_blk()
   return res.map(@(list) addSupportUnits(list.filter(@(_, u) u in tagsBlk)))
@@ -58,7 +55,7 @@ let maxReleasedUnitRanks = Computed(function(prev) {
 })
 
 let unreleasedUnitTags = Computed(@()
-  unreleasedUnits.get().reduce(@(res, v, name) res.$rawset(getTagsUnitName(name), v), {}))
+  unreleasedUnits.get().reduce(@(res, v, name) res.$rawset(name, v), {}))
 
 let missingUnitResourcesByRank = Computed(function(prev) {
   let sizes = unitSizes.get()
@@ -117,9 +114,7 @@ let getModeAddonsInfo = kwarg(function getModeAddonsInfoImpl(modeList, unitNames
         allReqAddons[addon] <- true
 
       if (isNewbieModeSingle(name))
-        allReqUnits.__update(unitNames
-          .map(getTagsUnitName)
-          .reduce(@(res, u) res.$rawset(u, true), {}))
+        allReqUnits.__update(unitNames.reduce(@(res, u) res.$rawset(u, true), {}))
       else
         allReqUnits.__update(
           getMissingUnitsForRank(campaign, isNewbieMode(name) ? mRank : maxRank, missingUnitResourcesByRankV))

@@ -2,8 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
 let { round } = require("math")
 let { HangarCameraControl } = require("wt.behaviors")
-let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -14,18 +13,14 @@ let { decalsCollection, selectedDecalId, availableDecals, decalsSlots, selectedS
   isEditingDecal, shouldSaveDecal, isAvailableSlot, exitDecalMode, customizationDecalId, editSelectedSlot,
   isManipulatorInProgress, decalsCfg, decalsPenalty, selectedSlot
 } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { mkUnitInfo, mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitPlateSmall
-} = require("%rGui/unit/components/unitPlateComp.nut")
 let { closeUnitCustom, unitCustomOpenCount, sectionsList, selSectionId, curSelectedSectionId, SECTION_IDS
 } = require("%rGui/unitCustom/unitCustomState.nut")
-let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isCustomizationWndAttached
-} = require("%rGui/unitDetails/unitDetailsState.nut")
+let { baseUnit, unitToShow, isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
 let { mkSectionTabs, sectionBtnGap, gamercardHeight } = require("%rGui/unitCustom/unitCustomComps.nut")
 let { mkDecalsCollectionChoice } = require("%rGui/unitCustom/unitDecals/decalsCollectionChoice.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { selectedLineVertUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let unitDecalsSlotsActions = require("%rGui/unitCustom/unitDecals/unitDecalsSlotsActions.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { decalsFooterHeight, getDecalTitle, getDecalDesc, mkDecalIcon, decalIconSizeBig
@@ -40,13 +35,11 @@ let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
 let { registerScene } = require("%rGui/navState.nut")
 
 
-let unitColorLine = selectColor
 let sectionBlockWidth = hdpx(600)
 
 let isExpandedCustomSection = mkWatched(persist, "isExpandedCustomSection", true)
@@ -84,41 +77,6 @@ let askSaveAndChangeToSlot = @(slotIdxToChange = null) openMsgBox({
     }
   ]
 })
-
-function mkUnitPlate(unit, platoonUnit, onClick) {
-  let p = getUnitPresentation(platoonUnit)
-  let platoonUnitFull = unit.__merge(platoonUnit)
-  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
-  let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
-  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
-
-  return {
-    behavior = Behaviors.Button
-    onClick
-    sound = { click  = "choose" }
-    margin = [0, 0, 0, selLineSize]
-    children = [
-      {
-        watched = isLocked
-        size = unitPlateSmall
-        children = [
-          mkUnitBg(unit, isLocked.get())
-          mkUnitSelectedGlow(unit, isSelected)
-          mkUnitImage(platoonUnitFull, isLocked.get())
-          mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked.get())
-          !isLocked.get() ? mkUnitInfo(unit, { pos = [-hdpx(30), 0] }) : null
-          mkUnitSlotLockedLine(platoonUnit, isLocked.get())
-        ]
-      }
-      {
-        size = [selLineSize, flex()]
-        pos = [-selLineSize, 0]
-        children = selectedLineVertUnits(isSelected, !!(unit?.isUpgraded || unit?.isPremium),
-          unit?.isCollectible, { color = unitColorLine })
-      }
-    ]
-  }
-}
 
 let mkPenaltyText = @(text) {
   rendObj = ROBJ_TEXTAREA
@@ -193,19 +151,6 @@ function decalDescriptionBlock() {
           mkDecalIcon(decalId.get(), round(decalIconSizeBig * getDecalDescPresentation(decalId.get()).scale).tointeger())
         ]
   }
-}
-
-let platoonUnitsBlock = @() {
-  watch = [baseUnit, platoonUnitsList, isEditingDecal, isDecalSelected]
-  vplace = ALIGN_TOP
-  hplace = ALIGN_LEFT
-  flow = FLOW_VERTICAL
-  clipChildren = true
-  gap = sectionBtnGap
-  minWidth = unitPlateSmall[0] + selLineSize
-  children = platoonUnitsList.get().len() == 0 || isEditingDecal.get() || isDecalSelected.get() ? null
-    : platoonUnitsList.get()
-        .map(@(pu) mkUnitPlate(baseUnit.get(), pu, @() curSelectedUnitId.set(pu.name)))
 }
 
 let unitCustomizationGamercard = {
@@ -369,7 +314,6 @@ let unitCustomWnd = {
       padding = saBordersRv
       children = [
         decalDescriptionBlock
-        platoonUnitsBlock
         penaltyDescription()
         sectionsBlock
         sectionFooter(curSelectedSectionId)

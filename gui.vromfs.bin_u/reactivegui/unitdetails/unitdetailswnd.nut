@@ -13,17 +13,14 @@ let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
-let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
-let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
-  platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
+let { closeUnitDetailsWnd, baseUnit, unitToShow, isWindowAttached, openUnitDetailsWnd,
+  unitDetailsOpenCount
 } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mkPlatoonUnitsBlock } = require("%rGui/unitDetails/unitDetailsComps.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { hasAlwaysModsBtnByCamp } = require("%rGui/unitMods/unitModsConst.nut")
@@ -57,32 +54,10 @@ let getInfoPanelTopPadByCampaign = @(campaign) (infoPanelTopPadByCampaign?[campa
 let sceneHeader = @() {
   watch = baseUnit
   children = mkLeftBlockUnitCampaign(
-    function() {
-      curSelectedUnitId.set(null)
-      closeUnitDetailsWnd()
-    },
+    closeUnitDetailsWnd,
     getCampaignPresentation(baseUnit.get()?.campaign).levelUnitDetailsLocId,
     baseUnit)
 }
-
-let nextLevelToUnlockUnit = Computed(function() {
-  if ("level" not in baseUnit.get())
-    return null
-  local nextLevel
-  foreach (unlockLevel in platoonUnitsList.get().map(@(v) v.reqLevel))
-    if ((unlockLevel < nextLevel || !nextLevel) && unlockLevel > baseUnit.get().level)
-      nextLevel = unlockLevel
-  return nextLevel
-})
-
-platoonUnitsList.subscribe(function(pu) {
-  if (null != pu.findvalue(@(p) p.name == curSelectedUnitId.get()))
-    return
-  local name = openUnitOvr.get()?.selUnitName
-  if (name == null || null == pu.findvalue(@(p) p.name == name))
-    name = pu?[0].name
-  curSelectedUnitId.set(name)
-})
 
 let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
 let btnOpenUnitCustomization = mkBtnOpenCustomization(baseUnit,
@@ -136,14 +111,6 @@ let testDriveButton = @() {
         { hotkeys = ["^J:X | Enter"], ovr = { size = leftBtnSizeWithRewardBtn } })
 }
 
-let lvlUpButton = @() {
-  watch = [nextLevelToUnlockUnit, baseUnit]
-  children = nextLevelToUnlockUnit.get() == null ? null
-    : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-        nextLevelToUnlockUnit.get(),
-        @() buyUnitLevelWnd(baseUnit.get()?.name), { hotkeys = ["^J:Y"] })
-}
-
 function buttonsBlock() {
   let { name = "", isUpgraded = false } = baseUnit.get()
   let myUnit = campMyUnits.get()?[name]
@@ -165,16 +132,13 @@ function buttonsBlock() {
             gap = buttonsGap
             vplace = ALIGN_BOTTOM
             valign = ALIGN_BOTTOM
-            children = [
-              hasSlotAttrPreset.get()
-                ? btnOpenUnitMods(baseUnit, {
-                    hotkeys = ["^J:Y"]
-                    ovr = { size = leftBtnSizeWithRewardBtn }
-                  })
-                : isOwnUnitPreview ? btnOpenUnitAttrBig
-                : null
-              isOwnUnitPreview ? lvlUpButton : null
-            ]
+            children = hasSlotAttrPreset.get()
+              ? btnOpenUnitMods(baseUnit, {
+                  hotkeys = ["^J:Y"]
+                  ovr = { size = leftBtnSizeWithRewardBtn }
+                })
+              : isOwnUnitPreview ? btnOpenUnitAttrBig
+              : null
           }
       btnOpenUnitCustomization
     ]
@@ -190,17 +154,7 @@ let sceneContent = {
       size = flex()
       children = [
         sceneHeader
-        {
-          size = flex()
-          flow = FLOW_HORIZONTAL
-          gap = buttonsGap
-          vplace = ALIGN_BOTTOM
-          valign = ALIGN_BOTTOM
-          children = [
-            mkPlatoonUnitsBlock(baseUnit, platoonUnitsList, unitToShow, @(n) curSelectedUnitId.set(n))
-            buttonsBlock
-          ]
-        }
+        buttonsBlock
       ]
     }
     unitInfoPanelPlace

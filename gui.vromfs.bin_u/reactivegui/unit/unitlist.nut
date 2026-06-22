@@ -16,22 +16,6 @@ let mkBaseUnit = @(unit) Computed(function() {
   return res
 })
 
-let mkPlatoonUnitsList = @(baseUnit) Computed(function() {
-  let { name = "", platoonUnits = [] } = baseUnit.get()
-  return platoonUnits.len() != 0
-    ? [ { name, reqLevel = 0 } ].extend(platoonUnits)
-    : []
-})
-
-let mkUnitToShowCommon = @(baseUnit, selectedUnitId) Computed(function() {
-  let unitName = selectedUnitId.get()
-  return baseUnit.get() == null ? null
-    : unitName == baseUnit.get().name || unitName == null || unitName == "" ? baseUnit.get()
-    : baseUnit.get().__merge({ name = unitName })
-})
-
 return {
   mkBaseUnit
-  mkPlatoonUnitsList
-  mkUnitToShowCommon
 }

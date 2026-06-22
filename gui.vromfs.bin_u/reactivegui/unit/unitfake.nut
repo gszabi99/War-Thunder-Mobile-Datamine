@@ -17,7 +17,6 @@ return freeze({
   levelPreset = ""
   levelUpDiscount = 1.0
   modPreset = ""
-  platoonUnits = []
   rewardExpMul = 1.0
   rewardWpMul = 1.0
   upgradeCostGold = 0

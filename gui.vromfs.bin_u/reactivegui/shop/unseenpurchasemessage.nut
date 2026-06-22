@@ -524,7 +524,9 @@ let mkDecoratorRewardLabel = @(startDelay, decoratorId)
 
 function mkSkinEquipButton(unitName, skinName) {
   let unit = Computed(@() campMyUnits.get()?[unitName])
-  let currentSkin = Computed(@() unit.get()?.currentSkins[unitName] ?? "")
+  let currentSkin = Computed(@() unit.get()?.skin
+    ?? unit.get()?.currentSkins[unitName] 
+    ?? "")
 
   return @() {
     watch = [currentSkin, unit, skinsInProgress]

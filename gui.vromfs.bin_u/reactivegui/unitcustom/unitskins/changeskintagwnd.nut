@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { tankTagsOrder, getTagName } = require("%appGlobals/config/skins/skinTags.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 
@@ -36,8 +35,7 @@ let content = @(curTag, setTag) @() {
       { ovr = { size = const [flex(), hdpx(100)] } }))
 }
 
-function changeSkinTagWnd(realUnitName, skinName) {
-  let unitName = getTagsUnitName(realUnitName)
+function changeSkinTagWnd(unitName, skinName) {
   let { skinCustomTags, setSkinCustomTags } = mkSkinCustomTags(Watched(unitName))
   let { tag, image } = getSkinPresentation(unitName, skinName)
   let curTag = Computed(@() skinCustomTags.get()?[skinName] ?? tag)

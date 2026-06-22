@@ -40,7 +40,7 @@ let mySkinsToMark = Computed(function() {
 let unseenSkins = Computed(function() {
   let seen = seenSkins.get()
   return mySkinsToMark.get()
-    .map(@(list, unitName) list.filter(@(_, skinName) skinName not in seen?[getTagsUnitName(unitName)]))
+    .map(@(list, unitName) list.filter(@(_, skinName) skinName not in seen?[unitName]))
     .filter(@(v) v.len() != 0)
 })
 
@@ -92,15 +92,14 @@ function markSkinsSeen(unitName, skinsList) {
   if (skins.len() == 0)
     return
 
-  let tagName = getTagsUnitName(unitName)
   let sBlk = get_local_custom_settings_blk()
-  let blk = sBlk.addBlock(SEEN_SKINS).addBlock(tagName)
+  let blk = sBlk.addBlock(SEEN_SKINS).addBlock(unitName)
   foreach(s in skins)
     blk[s] = true
   eventbus_send("saveProfile", {})
 
   seenSkins.mutate(function(v) {
-    v[tagName] <- (v?[tagName] ?? {}).__merge(skins.reduce(@(res, s) res.$rawset(s, true), {}))
+    v[unitName] <- (v?[unitName] ?? {}).__merge(skins.reduce(@(res, s) res.$rawset(s, true), {}))
   })
 }
 
@@ -113,12 +112,11 @@ function markCurCampaignSkinsSeen() {
   let seenUpdate = {}
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_SKINS)
   foreach (unitName, list in unseenSkins.get()) {
-    let tagName = getTagsUnitName(unitName)
-    let blk = sBlk.addBlock(tagName)
-    seenUpdate[tagName] <- clone seenSkins.get()?[tagName] ?? {}
+    let blk = sBlk.addBlock(unitName)
+    seenUpdate[unitName] <- clone seenSkins.get()?[unitName] ?? {}
     foreach(s, _ in list) {
       blk[s] = true
-      seenUpdate[tagName][s] <- true
+      seenUpdate[unitName][s] <- true
     }
   }
 

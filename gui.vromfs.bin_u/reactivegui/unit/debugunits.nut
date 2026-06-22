@@ -19,14 +19,7 @@ function debugUnitStats() {
     unitsByCamp[campaign][name] <- unit
   }
 
-  let stats = unitsByCamp.map(function(units) {
-    let uArr = units.keys()
-    units.each(function(u) {
-      if (u.platoonUnits.len() != 0)
-        uArr.extend(u.platoonUnits.map(@(pu) pu.name))
-    })
-    return gatherUnitStatsLimits(uArr)
-  })
+  let stats = unitsByCamp.map(@(units) gatherUnitStatsLimits(units.keys()))
   log("Unit stats ranges:", stats)
 }
 

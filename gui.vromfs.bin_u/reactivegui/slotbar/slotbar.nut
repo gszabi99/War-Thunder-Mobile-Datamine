@@ -26,7 +26,7 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { slotBarTreeHeight, unitPlateSize, unitPlateHeader, slotsGap } = require("%rGui/slotBar/slotBarConsts.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openUnitModsSlotsWnd, mkListUnseenMods, mkHasUnitWeaponSlots } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { openUnitModsWnd, mkUnitAllModsCost, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
+let { openUnitModsWnd, mkUnitModCostCfg, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
 let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
 let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
 let { mkSlotLevel, levelHolderSize } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
@@ -401,7 +401,7 @@ let function mkSlotWithButtons(slot, idx) {
   let hasUnseenMods = Computed(@() hasUnitWeaponSlots.get() ? unseenMods.get().len() > 0
     : slot?.name in unseenCampUnitMods.get())
 
-  let unitAllModsCost = mkUnitAllModsCost(unit)
+  let unitModsCostCfg = mkUnitModCostCfg(unit)
   let hasUnseenModsForTutorial = Computed(function() {
     if (hasUnitWeaponSlots.get())
       return unseenMods.get().len() > 0
@@ -409,7 +409,7 @@ let function mkSlotWithButtons(slot, idx) {
     if (unseenUnitMods.len() == 0)
       return false
     let mods = campConfigs.get()?.unitModPresets[unit.get()?.modPreset]
-    return null != unseenUnitMods.findvalue(@(_, k) hasEnoughCurrencies(mods?[k], unitAllModsCost.get(), balance.get()))
+    return null != unseenUnitMods.findvalue(@(_, k) hasEnoughCurrencies(mods?[k], unitModsCostCfg.get(), balance.get()))
   })
 
   let slotUnseenBullets = mkUnseenUnitBullets(Watched(slot?.name))

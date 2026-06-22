@@ -61,7 +61,7 @@ let unseenUnits = Computed(function() {
   let time = getServerTime() 
   foreach(unit in availableUnitsList.get()) {
     if (time - unit.releaseDate <= maxTimeShowingUnseenMark
-        && getTagsUnitName(unit.name) not in seenUnits.get())
+        && unit.name not in seenUnits.get())
       res[unit.name] <- true
   }
   return res
@@ -84,9 +84,8 @@ function markUnitSeen(unitName) {
 
   if (unitName not in unseenUnits.get())
     return
-  let tagName = getTagsUnitName(unitName)
-  seenUnits.mutate(@(v) v.$rawset(tagName, true))
-  get_local_custom_settings_blk().addBlock(SEEN_UNIT)[tagName] = true
+  seenUnits.mutate(@(v) v.$rawset(unitName, true))
+  get_local_custom_settings_blk().addBlock(SEEN_UNIT)[unitName] = true
   eventbus_send("saveProfile", {})
 }
 
@@ -101,10 +100,10 @@ function markUnitsSeen(unitsList) {
   if (list.len() == 0)
     return
 
-  seenUnits.mutate(@(v) list.each(@(_, u) v.$rawset(getTagsUnitName(u), true)))
+  seenUnits.mutate(@(v) list.each(@(_, u) v.$rawset(u, true)))
   let blk = get_local_custom_settings_blk().addBlock(SEEN_UNIT)
   foreach (u, _ in list)
-    blk[getTagsUnitName(u)] = true
+    blk[u] = true
   eventbus_send("saveProfile", {})
 }
 

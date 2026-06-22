@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId, mkHasConflicts,
-  curMods, curUnitAllModsSlotsCost, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
+  curMods, curSlotUnitModCostCfg, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
   curWeaponBeltsOrdered, curBeltIdx, equippedBeltId, curSlotIdx, curUnseenMods,
   slotBeltKey, slotWeaponKey
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
@@ -150,7 +150,7 @@ function mkSlotWeaponContent(idx, isActive) {
       mkEquippedFrame(isEquipped, isActive)
       mkEquippedIcon(isEquipped)
       unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
-      mkModCost(isPurchased, isLocked, mod, curUnitAllModsSlotsCost)
+      mkModCost(isPurchased, isLocked, mod, curSlotUnitModCostCfg)
       mkUnseenModIndicator(Computed(@() id.get() in curUnseenMods.get()?[curSlotIdx.get()]))
       mkConflictsBorder(mkHasConflicts(weapon, equippedWeaponsBySlots))
     ]
@@ -226,7 +226,7 @@ function mkSlotBeltContent(idx, isActive) {
           mkEquippedFrame(isEquipped, isActive)
           mkEquippedIcon(isEquipped)
           unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
-          mkModCost(isPurchased, isLocked, mod, curUnitAllModsSlotsCost)
+          mkModCost(isPurchased, isLocked, mod, curSlotUnitModCostCfg)
           mkUnseenModIndicator(isUnseen)
         ]
   }

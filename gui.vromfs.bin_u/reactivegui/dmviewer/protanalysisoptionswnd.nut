@@ -4,7 +4,6 @@ from "wt.behaviors" import HangarCameraControl
 from "%darg/helpers/bitmap.nut" import mkBitmapPicture
 from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%sqstd/underscore.nut" import arrayByRows
-import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/updater/addonsState.nut" import unitSizes
@@ -256,14 +255,14 @@ let paramsRight = {
 }
 
 function openSimulation() {
-  let tagsUnitName = getTagsUnitName(threatUnit.get().name)
-  if ((unitSizes.get()?[tagsUnitName] ?? 0) == 0) {
+  let unitName = threatUnit.get().name
+  if ((unitSizes.get()?[unitName] ?? 0) == 0) {
     isSimulationMode.set(true)
     return
   }
 
   let addonsToDownload = []
-  let unitsToDownload = [ tagsUnitName ]
+  let unitsToDownload = [ unitName ]
   openFMsgBox({
     viewType = "downloadMsg"
     addons = addonsToDownload
@@ -273,7 +272,7 @@ function openSimulation() {
 
     text = loc("msg/needAddonToProceed",
       { count = unitsToDownload.len(),
-        addon = comma.join(unitsToDownload.map(@(unitName) colorize("@mark", getUnitName(unitName))))
+        addon = comma.join(unitsToDownload.map(@(u) colorize("@mark", getUnitName(u))))
       })
     buttons = [
       { id = "cancel", isCancel = true }
@@ -292,7 +291,7 @@ subscribeFMsgBtns({
     "onThreatUnitDownloaded", { unitName = evt.units[0] })
 })
 eventbus_subscribe("onThreatUnitDownloaded", function(p) {
-  if (isProtectionAnalysisActive.get() && p.unitName == getTagsUnitName(threatUnit.get()?.name ?? ""))
+  if (isProtectionAnalysisActive.get() && p.unitName == (threatUnit.get()?.name ?? ""))
     openSimulation()
 })
 

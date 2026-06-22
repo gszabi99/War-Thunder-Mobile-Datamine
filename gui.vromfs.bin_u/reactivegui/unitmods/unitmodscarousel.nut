@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp, iconCfg, isOwn, slotModKey
+let { unit, unitMods, curModId, mkCurUnitModCostComp, iconCfg, isOwn, slotModKey
 } = require("%rGui/unitMods/unitModsState.nut")
 let { unseenCampUnitMods, markUnitModsSeen } = require("%rGui/unitMods/unseenMods.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -68,11 +68,10 @@ function mkModContentData(mod, idx) {
   let id = mod?.name
   let locId = $"modification/{id}"
   let reqLevel = mod?.reqLevel ?? 0
-  let currency = getModCurrency(mod)
   let cost = mkCurUnitModCostComp(mod)
   let isDisplayedAsPurchased = Computed(@() unit.get()?.isPremium || unit.get()?.isUpgraded)
   let isLocked = Computed(@() reqLevel > (unit.get()?.level ?? 0) && !isDisplayedAsPurchased.get())
-  let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get() == 0)
+  let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get().price == 0)
   let isPurchased = Computed(@() isDisplayedAsPurchased.get() || unitMods.get()?[id] != null)
   let isEquipped = Computed(@() unitMods.get()?[id])
   let isActive = Computed(@() curModId.get() == id || (stateFlags.get() & S_ACTIVE) != 0)
@@ -112,7 +111,8 @@ function mkModContentData(mod, idx) {
         }
         @() {
           watch = [isPurchased, isLocked, hasModNotOwn, cost]
-          children = isPurchased.get() || isLocked.get() || hasModNotOwn.get() ? null : mkCurrencyComp(cost.get(), currency, CS_SMALL)
+          children = isPurchased.get() || isLocked.get() || hasModNotOwn.get() ? null
+            : mkCurrencyComp(cost.get().price, cost.get().currencyId, CS_SMALL)
         }
         mkUnseenModIndicator(Computed(@() id in unseenCampUnitMods.get()?[unit.get()?.name]))
       ]

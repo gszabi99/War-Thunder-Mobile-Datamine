@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logO = log_with_prefix("[OFFLINE_MISSION] ")
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getMissionUnitsAndAddons, getCommonBots, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
@@ -44,14 +43,16 @@ function startTestFlightImpl(unitName, missionNameExt, skin) {
   logO("openDownloadAddonsWnd startTestFlight")
   let { mRank = 1 } = serverConfigs.get()?.allUnits[unitName]
   let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
-  let units = { [getTagsUnitName(unitName)] = true }.__update(misUnits)
+  let units = { [unitName] = true }.__update(misUnits)
   openDownloadAddonsWnd(getCampaignRankAddons(curCampaign.get(), 1).extend(misAddons.keys()),
     addSupportUnits(units).keys(),
     "startTestFlight", { paramStr1 = unitName, paramInt1 = mRank, unit = unitName },
     "startTestFlight", evtParams)
 }
 
-let getUnitSkin = @(unit) unit?.currentSkins[unit.name] ?? ""
+let getUnitSkin = @(unit) unit?.skin
+  ?? unit?.currentSkins[unit.name] 
+  ?? ""
 
 let startTestFlightByName = @(unitName, missionName = null, skin = "")
   notAvailableForSquadMsg(@() startTestFlightImpl(unitName, missionName, skin))
@@ -67,7 +68,7 @@ function startNewbieOfflineBattle(unit, missionName) {
   logO("openDownloadAddonsWnd startTraining")
   let { mRank = 1 } = serverConfigs.get()?.allUnits[unit.name]
   let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
-  let units = { [getTagsUnitName(unit.name)] = true }.__update(misUnits)
+  let units = { [unit.name] = true }.__update(misUnits)
   openDownloadAddonsWnd(getCampaignPkgsForNewbieSingle(curCampaign.get()).extend(misAddons.keys()),
     addSupportUnits(units).keys(),
     "startTraining", { paramStr1 = unit.name, paramInt1 = mRank, unit = unit.name },

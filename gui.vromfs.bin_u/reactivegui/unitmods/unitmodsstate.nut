@@ -7,7 +7,7 @@ let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { WP } = require("%appGlobals/currenciesState.nut")
 let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
 let { iconsCfg } = require("%rGui/unitMods/unitModsConst.nut")
 let { unseenCampUnitMods, markUnitModsSeen } = require("%rGui/unitMods/unseenMods.nut")
@@ -15,6 +15,7 @@ let { getUnseenUnitBulletsNonUpdatable, markShellsSeen } = require("%rGui/unitMo
 let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 
 
+const MOD_NOT_AVAILABLE = -1
 let slotModKey = @(idx) $"unit_mods_slot_mod_{idx}"
 
 let isUnitModsOpen = mkWatched(persist, "isUnitModsOpen", false)
@@ -32,7 +33,12 @@ let unitMods = Computed(@() unit.get()?.mods)
 
 let mkMods = @(u) Computed(function() {
   let preset = campConfigs.get()?.unitModPresets[u.get()?.modPreset] ?? {}
-  return preset.map(@(mod, name) mod.__merge({ name }))
+  let ovrReqLevels = campConfigs.get()?.modOvrReqLevels[u.get()?.name]
+  return ovrReqLevels == null
+    ? preset.map(@(mod, name) mod.__merge({ name }))
+    : preset
+        .map(@(mod, name) mod.__merge({ name, reqLevel = ovrReqLevels?[name] ?? mod.reqLevel }))
+        .filter(@(mod) mod.reqLevel != MOD_NOT_AVAILABLE)
 })
 
 let mods = mkMods(unit)
@@ -71,31 +77,36 @@ let unseenModsByCategory = Computed(function() {
   return res
 })
 
-let mkUnitAllModsCost = @(unitW) Computed(function() {
-  let { costWp = 0, modCostPart = 0.0, campaign = "", rank = 0 } = unitW.get()
-  if (modCostPart <= 0)
-    return 0
-  let cost = costWp > 0 ? costWp : (serverConfigs.get()?.unitsAvgCostWp[campaign][rank] ?? 0)
-  return modCostPart.tofloat() * cost
+let mkUnitModCostCfg = @(unitW) Computed(function() {
+  let { costWp = 0, modCostPart = 0.0, campaign = "", rank = 0, modCostPreset = "" } = unitW.get()
+  local fullModsCost = 0
+  local costWeights = serverConfigs.get()?.unitModWpCostWeights[modCostPreset] ?? []
+  if (modCostPart > 0) {
+    let cost = costWp > 0 ? costWp : (serverConfigs.get()?.unitsAvgCostWp[campaign][rank] ?? 0)
+    fullModsCost = modCostPart.tofloat() * cost
+  }
+  return { fullModsCost, costWeights }
 })
 
-let curUnitAllModsCost = mkUnitAllModsCost(unit)
+let curUnitModCostCfg = mkUnitModCostCfg(unit)
 
-let getModCurrency = @(mod) (mod?.costWpWeight ?? 0) > 0 ? "wp" : "gold"
-function getModCost(mod, allModsCost) {
-  let { costWpWeight = 0, costGold = 0 } = mod
-  if (costWpWeight <= 0)
-    return costGold
-  return roundPrice(costWpWeight.tofloat() * allModsCost)
+function getModCost(mod, unitModsCostCfg) {
+  let { fullModsCost, costWeights } = unitModsCostCfg
+  let costWpWeight = mod?.costWpWeight  
+    ?? costWeights?[(mod?.reqLevel ?? 0) - 1]
+    ?? 0.0
+  return {
+    price = roundPrice(costWpWeight * fullModsCost)
+    currencyId = WP
+  }
 }
 
-function hasEnoughCurrencies(mod, allModsCost, allBalance) {
-  let { costWpWeight = 0, costGold = 0 } = mod
-  return costWpWeight <= 0 ? costGold <= (allBalance?[GOLD] ?? 0)
-    : roundPrice(costWpWeight.tofloat() * allModsCost) <= (allBalance?[WP] ?? 0)
+function hasEnoughCurrencies(mod, unitModsCostCfg, allBalance) {
+  let { price, currencyId } = getModCost(mod, unitModsCostCfg)
+  return price <= (allBalance?[currencyId] ?? 0)
 }
 
-let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitAllModsCost.get()))
+let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitModCostCfg.get()))
 
 let enableCurUnitMod = @() enable_unit_mod(unitName.get(), curModId.get(), true)
 let disableCurUnitMod = @() enable_unit_mod(unitName.get(), curModId.get(), false)
@@ -166,13 +177,12 @@ return {
   unitName
   unitMods
   isOwn
-  curUnitAllModsCost
+  curUnitModCostCfg
 
   enableCurUnitMod
   disableCurUnitMod
 
-  mkUnitAllModsCost
-  getModCurrency
+  mkUnitModCostCfg
   getModCost
   mkCurUnitModCostComp
 

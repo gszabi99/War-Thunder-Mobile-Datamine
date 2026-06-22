@@ -6,7 +6,6 @@ from "blkGetters" import get_unittags_blk, get_bots_blk
 import "DataBlock" as DataBlock
 from "%sqstd/datablock.nut" import blkOptFromPath, eachBlock, isDataBlock
 from "%sqstd/functools.nut" import memoize
-import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 
 
 let campaignToBotsPreset = {
@@ -85,7 +84,7 @@ function appendOverrideUnits(resTbl, overrideUnit) {
     .filter(@(v) v != "")
     .map(@(str) str.split(":")[0])
   foreach (u in ovrUnits)
-    resTbl[getTagsUnitName(u)] <- true 
+    resTbl[u] <- true 
 }
 
 let getMissionUnitsAndAddons = memoize(function getMissionUnitsImpl(missionId) {

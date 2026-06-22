@@ -10,7 +10,6 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { arrayByRows, deep_clone } = require("%sqstd/underscore.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnitName, hangarUnitSkin, setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -399,22 +398,16 @@ let mkCfg = @() Computed(function() {
   let skinsByUnitByType = {}
   let unitsBySkinByType = {}
   let unitTypes = {}
-  function addSkins(name, skins) {
-    let unitType = getUnitType(name)
+  foreach(unitName, unit in serverConfigs.get()?.allUnits ?? {}) {
+    let skins = { [""] = true }.__merge(unit?.skins ?? {})
+    let unitType = getUnitType(unitName)
     if (unitType not in unitTypes) {
       unitTypes[unitType] <- true
       skinsByUnitByType[unitType] <- {}
       unitsBySkinByType[unitType] <- {}
     }
-    skinsByUnitByType[unitType][name] <- skins
-    addToLists(unitsBySkinByType[unitType], skins, name)
-  }
-  foreach(unitName, unit in serverConfigs.get()?.allUnits ?? {}) {
-    let skins = { [""] = true }.__merge(unit?.skins ?? {})
-    let { platoonUnits = [] } = unit
-    addSkins(unitName, skins)
-    foreach(p in platoonUnits)
-      addSkins(p.name, skins)
+    skinsByUnitByType[unitType][unitName] <- skins
+    addToLists(unitsBySkinByType[unitType], skins, unitName)
   }
   return { skinsByUnitByType, unitsBySkinByType, unitTypes }
 })
@@ -449,7 +442,7 @@ function mkDebugTuneSkinsWnd() {
     }
     return { name, skin, skinChoice, unitChoice }
   })
-  let curUnitName = Computed(@() getTagsUnitName(curData.get().name))
+  let curUnitName = Computed(@() curData.get().name)
   let curUnitSkin = Computed(@() curData.get().skin)
 
   let curSkinDefaultPreset = Computed(@() skinsView.get().byUnitType?[curUnitType.get()][curUnitSkin.get()]

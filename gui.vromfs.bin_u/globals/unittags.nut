@@ -5,7 +5,6 @@ from "%sqstd/functools.nut" import memoize
 let { blk2SquirrelObjNoArrays, isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let { isReadyToFullLoad, isLoginRequired, isLoginStarted } = require("%appGlobals/loginState.nut")
 let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let getTagsUnitName = require("getTagsUnitName.nut")
 
 let unitTagsCfg = {}
 
@@ -47,8 +46,7 @@ function gatherUnitTagsCfg(unitName) {
   return res
 }
 
-function getUnitTagsCfg(realUnitName) {
-  let unitName = getTagsUnitName(realUnitName)
+function getUnitTagsCfg(unitName) {
   if (unitName not in unitTagsCfg)
     unitTagsCfg[unitName] <- gatherUnitTagsCfg(unitName)
   return unitTagsCfg[unitName]

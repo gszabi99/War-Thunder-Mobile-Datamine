@@ -95,7 +95,7 @@ let levelMark = @(level, starLevel) {
   ]
 }
 
-function contactLevelBlock(info) {
+function contactLevelBlock(info, ovr = {}) {
   let { playerLevel = null, playerStarLevel = 0, playerStarHistoryLevel = 0 } = info
   let starAdd = max(0, playerStarHistoryLevel - playerStarLevel)
   return {
@@ -103,7 +103,7 @@ function contactLevelBlock(info) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = playerLevel == null ? null : levelMark(playerLevel + starAdd, playerStarLevel + starAdd)
-  }
+  }.__update(ovr)
 }
 
 function contactOnlineStatusBlock(onlineStatus, battleUnit) {

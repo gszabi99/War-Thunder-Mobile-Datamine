@@ -22,6 +22,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
+let { get_cur_circuit_name } = require("app")
 
 const FIRST_LOGIN_EVENT = "first_login_event"
 const STATS_SENT = "statsSent"
@@ -90,7 +91,7 @@ function logAdjust(eventType, eventValue) {
 }
 
 eventbus_subscribe("adjust.onGetAdjustAdId", function(p) {
-  sendCustomBqEvent("adjust_ids", { adid = p.adid })
+  sendCustomBqEvent("adjust_ids", { adid = p.adid, circuit = get_cur_circuit_name() })
 })
 
 function sendEvent(id) {

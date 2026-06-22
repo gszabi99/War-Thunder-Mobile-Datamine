@@ -21,8 +21,6 @@ let getLineColor = @(isHidden, isPremium) isHidden || isPremium ? lineColorPremi
 return {
   selectedLineHorUnits = @(isActive, isPremium = false, isHidden = false, ovr = {})
     selectedLine(isActive, [flex(), selLineSize], getLineColor(isHidden, isPremium), ovr)
-  selectedLineVertUnits = @(isActive, isPremium = false, isHidden = false, ovr = {})
-    selectedLine(isActive, [selLineSize, flex()], getLineColor(isHidden, isPremium), ovr)
   selectedLineUnitsCustomSize = @(size, isActive, isPremium = false, isHidden = false, ovr = {})
     selectedLine(isActive, size, getLineColor(isHidden, isPremium), ovr)
   opacityTransition

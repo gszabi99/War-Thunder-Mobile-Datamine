@@ -11,7 +11,7 @@ let { textButtonPrimary, textButtonInactive, textButtonMultiline } = require("%r
 let { mkLevelLockSmall, mkNotPurchasedShade, mkModCost } = require("%rGui/unitMods/modsComps.nut")
 let { CS_TINY } = require("%rGui/components/currencyStyles.nut")
 let { selectedSlotWeaponName, equippedWeaponsBySlots, wCards, beltCards,
-  canShowChooseBulletWnd, curUnit, curModPresetCfg, curUnitAllModsCost,
+  canShowChooseBulletWnd, curUnit, curModPresetCfg, curUnitModCostCfg,
   selectedBeltWeaponId, selectedBeltCardIdx, selectedWSlotIdx, selectedBeltCard, selectedBeltSlot,
   selectedWCardIdx, selectedWCard, selectedWCardStates, selectedBeltCardStates,
   applyBelt, closeWnd, equipSelWeapon, unequipSelWeapon, equipWeaponListWithMirrors,
@@ -195,7 +195,7 @@ function mkWeaponCard(w) {
       }
       mkNotPurchasedShade(isPurchased)
       mkLevelLockInfo(isLocked, reqLevel)
-      mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost, CS_TINY)
+      mkModCost(isPurchased, isLocked, mod, curUnitModCostCfg, CS_TINY)
     ]
   })
 }
@@ -236,7 +236,7 @@ function mkBeltCard(w) {
       }
       mkNotPurchasedShade(isPurchased)
       mkLevelLockInfo(isLocked, reqLevel)
-      mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost, CS_TINY)
+      mkModCost(isPurchased, isLocked, mod, curUnitModCostCfg, CS_TINY)
     ]
   })
 }

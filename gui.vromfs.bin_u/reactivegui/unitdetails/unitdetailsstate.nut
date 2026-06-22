@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { mkBaseUnit, mkPlatoonUnitsList, mkUnitToShowCommon } = require("%rGui/unit/unitList.nut")
+let { mkBaseUnit } = require("%rGui/unit/unitList.nut")
 
 
-let curSelectedUnitId = Watched(null)
 let curSelectedUnitSkin = Watched(null)
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let unitDetailsOpenCount = Watched(openUnitOvr.get() == null ? 0 : 1)
@@ -20,13 +19,9 @@ let function setUnit(unit) {
 }
 
 let baseUnit = mkBaseUnit(openUnitOvr)
-let unitToShowCommon = mkUnitToShowCommon(baseUnit, curSelectedUnitId)
-let unitToShow = Computed(@() unitToShowCommon.get() == null || curSelectedUnitSkin.get() == null
-  ? unitToShowCommon.get()
-  : unitToShowCommon.get().__merge({
-      currentSkins = (unitToShowCommon.get()?.currentSkins ?? {})
-        .__merge({ [unitToShowCommon.get().name] = curSelectedUnitSkin.get() })
-    }))
+let unitToShow = Computed(@() baseUnit.get() == null || curSelectedUnitSkin.get() == null
+  ? baseUnit.get()
+  : baseUnit.get().__merge({ skin = curSelectedUnitSkin.get() }))
 unitToShow.subscribe(function(u) {
   if (isWindowAttached.get() || isCustomizationWndAttached.get())
     setUnit(u)
@@ -45,14 +40,12 @@ function closeUnitDetailsWnd() {
 }
 
 return {
-  curSelectedUnitId
   curSelectedUnitSkin
   openUnitOvr
   unitDetailsOpenCount
   openUnitDetailsWnd
   closeUnitDetailsWnd
   baseUnit
-  platoonUnitsList = mkPlatoonUnitsList(baseUnit)
   unitToShow
   isWindowAttached
   isCustomizationWndAttached

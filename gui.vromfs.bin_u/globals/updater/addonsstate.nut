@@ -3,7 +3,6 @@ let { Computed, Watched } = require("frp")
 let { ndbTryRead } = require("nestdb")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { knownAddons } = require("%appGlobals/updater/addons.nut")
 let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
 
@@ -30,7 +29,7 @@ let hasAddons = Computed(function(prev) {
 
 let mkHasUnitsResources = @(unitNamesW) Computed(function() {
   let sizes = unitSizes.get()
-  return unitNamesW.get().len() == 0 || null == unitNamesW.get().findvalue(@(u) (sizes?[getTagsUnitName(u)] ?? -1) != 0)
+  return unitNamesW.get().len() == 0 || null == unitNamesW.get().findvalue(@(u) (sizes?[u] ?? -1) != 0)
 })
 
 return {

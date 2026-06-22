@@ -5,7 +5,6 @@ let { object_to_json_string, parse_json } = require("json")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { decalTblToBlk, decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
 let { getDebugUserSettings } = require("%rGui/debugTools/debugSavedData.nut")
 
@@ -43,13 +42,12 @@ function loadUnitSettings(unitName) {
 function saveUnitSettings(unitName, settings) {
   let blk = get_local_custom_settings_blk()
   let allBlk = blk.addBlock(SAVE_ID)
-  allBlk[getTagsUnitName(unitName)] = settings.len() == 0 ? "" : object_to_json_string(settings)
+  allBlk[unitName] = settings.len() == 0 ? "" : object_to_json_string(settings)
   eventbus_send("saveProfile", {})
 }
 
-function loadSettingsOnce(unitNameExt) {
-  let unitName = getTagsUnitName(unitNameExt ?? "")
-  if (loadedSettings.get()?[unitName] == null && unitName != "")
+function loadSettingsOnce(unitName) {
+  if (loadedSettings.get()?[unitName] == null && (unitName ?? "") != "")
     loadedSettings.mutate(@(v) v.$rawset(unitName, loadUnitSettings(unitName)))
 }
 
@@ -67,9 +65,8 @@ function loadUnitDecals(unitName) {
   return res
 }
 
-function saveUnitDecals(unitNameExt, decalPresets) {
+function saveUnitDecals(unitName, decalPresets) {
   let allBlk = get_local_custom_settings_blk().addBlock(DECALS_SAVE_ID)
-  let unitName = getTagsUnitName(unitNameExt)
   if (decalPresets.len() == 0) {
     if (unitName in allBlk) {
       allBlk.removeBlock(unitName)
@@ -85,14 +82,12 @@ function saveUnitDecals(unitNameExt, decalPresets) {
   eventbus_send("saveProfile", {})
 }
 
-function loadDecalsOnce(unitNameExt) {
-  let unitName = getTagsUnitName(unitNameExt ?? "")
-  if (loadedDecals.get()?[unitName] == null && unitName != "")
+function loadDecalsOnce(unitName) {
+  if (loadedDecals.get()?[unitName] == null && (unitName ?? "") != "")
     loadedDecals.mutate(@(v) v.$rawset(unitName, loadUnitDecals(unitName)))
 }
 
-function resetUnitSettings(unitNameExt) {
-  let unitName = getTagsUnitName(unitNameExt)
+function resetUnitSettings(unitName) {
   if (isOnlineSettingsAvailable.get()) {
     saveUnitSettings(unitName, {})
     saveUnitDecals(unitName, {})
@@ -148,11 +143,11 @@ isOnlineSettingsAvailable.subscribe(function(s) {
 })
 
 function mkUnitSettingsWatch(unitNameW) {
-  let unitSettings = Computed(@() loadedSettings.get()?[getTagsUnitName(unitNameW.get() ?? "")])
+  let unitSettings = Computed(@() loadedSettings.get()?[unitNameW.get() ?? ""])
   loadSettingsOnce(unitNameW.get())
   unitSettings.subscribe(@(v) v != null ? null : loadSettingsOnce(unitNameW.get())) 
   function updateUnitSettings(ovr) {
-    let unitName = getTagsUnitName(unitNameW.get() ?? "")
+    let unitName = unitNameW.get() ?? ""
     let newValue = (unitSettings.get() ?? {}).__merge(ovr)
     if (isOnlineSettingsAvailable.get())
       saveUnitSettings(unitName, newValue)
@@ -171,7 +166,7 @@ function mkIsAutoSkin(unitNameW) {
 
 function isAutoSkin(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].isAuto ?? false
+  return loadedSettings.get()?[unitName ?? ""].isAuto ?? false
 }
 
 function mkSkinCustomTags(unitNameW) {
@@ -184,7 +179,7 @@ function mkSkinCustomTags(unitNameW) {
 
 function getSkinCustomTags(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].tags ?? {}
+  return loadedSettings.get()?[unitName ?? ""].tags ?? {}
 }
 
 function mkWeaponPreset(unitNameW) {
@@ -197,7 +192,7 @@ function mkWeaponPreset(unitNameW) {
 
 function getWeaponPreset(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].weaponPreset ?? []
+  return loadedSettings.get()?[unitName ?? ""].weaponPreset ?? []
 }
 
 function mkChosenBelts(unitNameW) {
@@ -210,7 +205,7 @@ function mkChosenBelts(unitNameW) {
 
 function getChosenBelts(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].belts ?? {}
+  return loadedSettings.get()?[unitName ?? ""].belts ?? {}
 }
 
 function mkSavedWeaponPresets(unitNameW) {
@@ -230,11 +225,11 @@ function mkSeenMods(unitNameW) {
 }
 
 function mkDecalsPresets(unitNameW) {
-  let unitDecals = Computed(@() loadedDecals.get()?[getTagsUnitName(unitNameW.get() ?? "")])
+  let unitDecals = Computed(@() loadedDecals.get()?[unitNameW.get() ?? ""])
   loadDecalsOnce(unitNameW.get())
   unitDecals.subscribe(@(v) v != null ? null : loadSettingsOnce(unitNameW.get())) 
   function setDecalsPresets(presets) {
-    let unitName = getTagsUnitName(unitNameW.get() ?? "")
+    let unitName = unitNameW.get() ?? ""
     if (unitName == "")
       return
     if (isOnlineSettingsAvailable.get())
@@ -249,7 +244,7 @@ function mkDecalsPresets(unitNameW) {
 
 function getDecalsPresets(unitName) {
   loadDecalsOnce(unitName)
-  return loadedDecals.get()?[getTagsUnitName(unitName ?? "")] ?? {}
+  return loadedDecals.get()?[unitName ?? ""] ?? {}
 }
 
 return {

@@ -21,7 +21,12 @@ let myClustersRTT = sharedWatched("myClustersRTT", @() {})
 let queueDataCheckTime = sharedWatched("queueDataCheckTime", @() 0)
 
 function getMemberMaxMRank(memberInfo, campaign, srvConfigs) {
-  local list = memberInfo?.units[campaign]
+  let unitInfos = memberInfo?.unitInfos
+  if (unitInfos != null)
+    return (unitInfos?[campaign] ?? []).reduce(@(res, u) max(res, srvConfigs?.allUnits[u.name].mRank ?? 0), -1)
+
+  
+  let list = memberInfo?.units[campaign]
   if (list == null)
     return -1
   return list.reduce(@(res, unitName) max(res, srvConfigs?.allUnits[unitName].mRank ?? 0), -1)

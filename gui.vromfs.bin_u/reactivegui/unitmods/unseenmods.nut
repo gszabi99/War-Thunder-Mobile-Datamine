@@ -79,7 +79,7 @@ let unseenCampUnitMods = Computed(function() {
       if (reqLevel > 0
           && reqLevel <= unit.level
           && modName not in unit.mods
-          && modName not in seenMods.get()?[getTagsUnitName(unitName)])
+          && modName not in seenMods.get()?[unitName])
         getSubTable(res, unitName)[modName] <- true
     }
   }
@@ -92,15 +92,14 @@ function markUnitModsSeen(unitName, idsExt) {
   if (ids.len() == 0)
     return
 
-  let tagName = getTagsUnitName(unitName)
   seenMods.mutate(function(v) {
-    let unitSeen = getSubTable(v, tagName)
+    let unitSeen = getSubTable(v, unitName)
     foreach (id in ids)
       unitSeen[id] <- true
   })
   let blk = get_local_custom_settings_blk()
     .addBlock(SEEN_MODS)
-    .addBlock(tagName)
+    .addBlock(unitName)
   foreach (id in ids)
     blk[id] = true
   eventbus_send("saveProfile", {})
@@ -111,8 +110,7 @@ function markCurCampaignModsSeenAndClear() {
   let { allUnits = {}, unitModPresets = {} } = campConfigs.get()
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_MODS)
   foreach (unitName, unitCfg in allUnits) {
-    let tagName = getTagsUnitName(unitName)
-    let changes = getSubTable(seenUpdate, tagName)
+    let changes = getSubTable(seenUpdate, unitName)
     let unit = campMyUnits.get()?[unitName]
     let preset = unitModPresets?[unitCfg.modPreset]
     if (unit != null && preset != null)
@@ -124,13 +122,13 @@ function markCurCampaignModsSeenAndClear() {
           changes[modName] <- true
       }
 
-    if (isDataBlock(sBlk?[tagName]))
-      sBlk.removeBlock(tagName)
+    if (isDataBlock(sBlk?[unitName]))
+      sBlk.removeBlock(unitName)
 
     if (changes.len() == 0)
       continue
 
-    let blk = sBlk.addBlock(tagName)
+    let blk = sBlk.addBlock(unitName)
     foreach(m, _ in changes)
       blk[m] = true
   }

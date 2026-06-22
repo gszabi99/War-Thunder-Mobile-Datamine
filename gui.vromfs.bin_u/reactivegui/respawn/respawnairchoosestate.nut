@@ -26,12 +26,14 @@ let unitName = Computed(@() curUnit.get()?.name)
 selSlotUnit.subscribe(@(v) v ? curUnit.set(v) : null)
 let curMods = Computed(@() curUnit.get()?.mods)
 let curModPresetCfg = Computed(@() curUnit.get()?.modPresetCfg)
-let curUnitAllModsCost = Computed(function() {
-  let { costWp = 0, modCostPart = 0.0, rank = 0 } = curUnit.get()
-  if (modCostPart <= 0)
-    return 0
-  let cost = costWp > 0 ? costWp : (curUnitsAvgCostWp.get()?[rank] ?? 0)
-  return modCostPart.tofloat() * cost
+let curUnitModCostCfg = Computed(function() {
+  let { costWp = 0, modCostPart = 0.0, rank = 0, modCostWeights = [] } = curUnit.get()
+  local fullModsCost = 0
+  if (modCostPart > 0) {
+    let cost = costWp > 0 ? costWp : (curUnitsAvgCostWp.get()?[rank] ?? 0)
+    fullModsCost = modCostPart.tofloat() * cost
+  }
+  return { fullModsCost, costWeights = modCostWeights }
 })
 
 let { weaponPreset, setWeaponPreset } = mkWeaponPreset(unitName)
@@ -256,7 +258,7 @@ return {
   curUnit
   unitName
   curMods
-  curUnitAllModsCost
+  curUnitModCostCfg
   curModPresetCfg
 
   allWSlots

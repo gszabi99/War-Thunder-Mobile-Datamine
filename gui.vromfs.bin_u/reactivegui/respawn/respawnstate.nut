@@ -15,7 +15,6 @@ let { blkOptFromPath, isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
   curUnitsAvgCostWp, respawnUnitMods
 } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -70,6 +69,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     modPresetCfg = info?.modPresetCfg ?? {}
     costWp = info?.costWp ?? 0
     modCostPart = info?.modCostPart ?? 0.0
+    modCostWeights = info?.modCostWeights ?? []
     level = info?.level ?? -1
     rank = info?.rank ?? 0
     mRank = info?.mRank ?? 0
@@ -128,12 +128,11 @@ let spawnScoreCosts = Computed(function() {
   })
 })
 
-function markShellsSeenInBattle(unitNameRaw, idsExt) {
+function markShellsSeenInBattle(unitName, idsExt) {
   let unseen = hasUnseenShellsBySlot.get()?[selSlot.get().id]
   let ids = idsExt.filter(@(bName) unseen?[bName])
   if (ids.len() == 0)
     return
-  let unitName = getTagsUnitName(unitNameRaw)
   seenShells.mutate(function(v) {
     let unitSeen = getSubTable(v, unitName)
     foreach (id in ids)
@@ -274,10 +273,10 @@ function respawn(slot, bullets) {
   let weaponPreset = getUnitSlotsPresetNonUpdatable(name, mods)
     .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
 
-  local skinDecalsTable = getDecalsPresets(getTagsUnitName(name))?[spawnSkin] ?? {}
+  local skinDecalsTable = getDecalsPresets(name)?[spawnSkin] ?? {}
 
   if ((decalsPenalty.get() - serverTime.get()) > 0) {
-    let unitBlk = blkOptFromPath(getUnitFileName(getTagsUnitName(name)))
+    let unitBlk = blkOptFromPath(getUnitFileName(name))
     let { defaultDecals = {}, upgradedDecals = {} } = unitBlk
 
     let res = {}

@@ -93,8 +93,7 @@ let unitForShow = Computed(function() {
   local res = campUnitsCfg.get()?[unitName]
   if (res != null && skin != null) {
     res = clone res
-    res.currentSkins <- clone (res?.currentSkins ?? {})
-    res.currentSkins[unitName] <- skin
+    res.skin <- skin
   }
   return res
 })
@@ -117,18 +116,17 @@ previewGoodsUnit.subscribe(function(unit) {
 })
 
 function openDetailsWnd() {
-  hangarUnitDataBackup.set({
-    name = unitForShow.get().name,
-    custom = unitForShow.get(),
-  })
+  let { name } = unitForShow.get()
+  hangarUnitDataBackup.set({ name, custom = unitForShow.get() })
   let cfg = {
-    name = unitForShow.get()?.name
+    name
     isUpgraded = previewGoodsUnit.get()?.isUpgraded ?? false
     canShowOwnUnit = false
   }
-  let { currentSkins = null } = unitForShow.get()
-  if (currentSkins != null && currentSkins != previewGoodsUnit.get()?.currentSkins)
-    cfg.currentSkins <- currentSkins
+  let skin = unitForShow.get()?.skin
+    ?? unitForShow.get()?.currentSkins[unitForShow.get()?.name] 
+  if (skin != null && skin != (previewGoodsUnit.get()?.skin ?? previewGoodsUnit.get()?.currentSkins[name] ?? ""))
+    cfg.skin <- skin
   unitDetailsWnd(cfg)
 }
 

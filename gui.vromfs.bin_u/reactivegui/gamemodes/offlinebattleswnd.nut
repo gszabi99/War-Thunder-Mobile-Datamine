@@ -6,7 +6,6 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { mkGameModeByCampaign } = require("%appGlobals/gameModes/gameModes.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
@@ -60,11 +59,8 @@ function close() {
 
 function setHangarUnit() {
   let curUnitName = curUnit.get()?.name
-  let realUnitName = $"{getTagsUnitName(curUnitName)}_nc"
-
-  let unit = offlineBattlesCfg.get()?[getTagsUnitName(curUnitName)]
+  let unit = offlineBattlesCfg.get()?[curUnitName]
     ?? campUnitsCfg.get()?[curUnitName]
-    ?? campUnitsCfg.get()?[realUnitName]
 
   let { operatorCountry = null } = getUnitTagsCfg(curUnitName)
   let { country = "" } = unit
@@ -209,7 +205,7 @@ let mkUnitHeadItem = @(v) {
       size = textItemH
       behavior = Behaviors.Button
       function onClick() {
-        savedUnitForReturn.set(getTagsUnitName(selectedUnit.get()?.name ?? ""))
+        savedUnitForReturn.set(selectedUnit.get()?.name ?? "")
         unitDetailsWnd({ name = selectedUnit.get().name })
       }
       rendObj = ROBJ_BOX

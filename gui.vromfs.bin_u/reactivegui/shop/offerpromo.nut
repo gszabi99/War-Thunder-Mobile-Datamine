@@ -3,7 +3,6 @@ let { fabs, round } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { clearTimer, resetTimeout, setInterval } = require("dagor.workcycle")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { visibleOffer, onOfferPromoAttach, onOfferPromoDetach, offerPurchasingState
 } = require("%rGui/shop/offerState.nut")
@@ -39,7 +38,7 @@ function previewOffer() {
   if (visibleOffer.get() == null || !isReadyToFullLoad.get())
     return
 
-  let reqUnits = getNotLoadedTagsUnitsToShowGoods(visibleOffer.get(), serverConfigs.get(), unitSizes.get())
+  let reqUnits = getNotLoadedTagsUnitsToShowGoods(visibleOffer.get(), unitSizes.get())
   if (reqUnits.len() == 0) {
     openGoodsPreview(visibleOffer.get().id)
     if (previewType.get() == null) { 
@@ -62,7 +61,7 @@ function previewOfferByGoods(id) {
   if (offer == null || !isReadyToFullLoad.get())
     return
 
-  let reqUnits = getNotLoadedTagsUnitsToShowGoods(offer, serverConfigs.get(), unitSizes.get())
+  let reqUnits = getNotLoadedTagsUnitsToShowGoods(offer, unitSizes.get())
   if (reqUnits.len() == 0) {
     openGoodsPreview(id)
     if (previewType.get() == null) 

@@ -21,7 +21,6 @@ let { can_use_freecam_in_replay } = require("%appGlobals/permissions.nut")
 let { isHudVisible } = require("%appGlobals/clientState/clientState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { genBotDecorators } = require("%appGlobals/botUtils.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { textColor, selectColor, premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
@@ -603,10 +602,8 @@ function mkUnitName(player, halign) {
   let unit = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()
     let unitName = player?.aircraftName ?? ""
-    let realUnitName = $"{getTagsUnitName(unitName)}_nc"
     let unitTags = getUnitTagsCfg(unitName)
-
-    return allUnits?[unitName] ?? allUnits?[realUnitName] ?? unitTags.__merge({ name = unitName })
+    return allUnits?[unitName] ?? unitTags.__merge({ name = unitName })
   })
 
   return @() {

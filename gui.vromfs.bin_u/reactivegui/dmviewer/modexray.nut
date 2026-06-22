@@ -5,7 +5,6 @@ let { get_unittags_blk } = require("blkGetters")
 let { getUnitFileName } = require("vehicleModel")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getPartType, getPartNameLocText } = require("%globalScripts/modeXrayLib.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { loadedHangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, dmViewerUnitDataVer,
   isDebugMode, isDebugBatchExportProcess
@@ -88,7 +87,7 @@ let curUnitW = Computed(function() {
     return null 
   let unitName = loadedHangarUnitName.get()
   let unit = hangarUnit.get()
-  if (unit == null || unitName != getTagsUnitName(unit.name))
+  if (unit == null || unitName != unit.name)
     return null
   return clone unit
 })
@@ -132,7 +131,7 @@ function getPartTooltipInfoCached(partParams, unit) {
   if (unit == null)
     return null
   let partName = partParams?.name ?? ""
-  let unitName = getTagsUnitName(unit.name)
+  let unitName = unit.name
   let unitData = getDmViewerUnitData(unitName)
   if (!unitData?.xrayIsInited)
     unitData.__update(mkUnitDataForXray(unitName, unit, unitData?.unitBlk))

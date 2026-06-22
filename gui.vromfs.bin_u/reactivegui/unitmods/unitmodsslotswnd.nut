@@ -9,7 +9,7 @@ let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlotIdx, curWeapons,
   curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId, setCurSlotIdx, setCurBeltsWeaponIdx,
   curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
-  unequipCurWeapon, unequipCurWeaponFromWings, curUnitAllModsSlotsCost, beltWeapons, curBeltsWeaponIdx, isOwn, getConflictsList,
+  unequipCurWeapon, unequipCurWeaponFromWings, curSlotUnitModCostCfg, beltWeapons, curBeltsWeaponIdx, isOwn, getConflictsList,
   curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt, curUnseenMods,
   chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
   isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx,
@@ -17,7 +17,7 @@ let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlo
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { loadUnitWeaponSlots, mustSlotHaveDefault } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
-let { getModCurrency, getModCost } = require("%rGui/unitMods/unitModsState.nut")
+let { getModCost } = require("%rGui/unitMods/unitModsState.nut")
 let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponTotalH, weaponGap,
@@ -388,8 +388,7 @@ function onPurchaseMod() {
   let modName = curWeaponModName.get()
   if (unitName == null || mod == null || modName == null)
     return
-  let price = getModCost(mod, curUnitAllModsSlotsCost.get())
-  let currencyId = getModCurrency(mod)
+  let { price, currencyId } = getModCost(mod, curSlotUnitModCostCfg.get())
   let weaponName = curBelt.get() != null
     ? getBulletBeltShortName(curBelt.get().id)
     : comma.join(getWeaponShortNamesList(curWeapon.get()?.weapons ?? []))

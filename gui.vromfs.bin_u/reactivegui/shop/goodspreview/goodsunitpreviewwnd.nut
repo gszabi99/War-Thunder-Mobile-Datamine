@@ -34,9 +34,8 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitPlatesGap, unitPlateTiny, mkUnitInfo,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
-  unitPlateWidth, unitPlateHeight, mkUnitSlotLockedLine
+let { unitPlateTiny, mkUnitInfo, mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts,
+  unitPlateWidth, unitPlateHeight
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
@@ -139,15 +138,11 @@ let unitForShow = Computed(function() {
   if (!isWindowAttached.get() || previewGoodsUnit.get() == null)
     return null
   let unitName = curSelectedUnitId.get()
-  local res = unitName == previewGoodsUnit.get().name || unitName == "" ? previewGoodsUnit.get()
-    : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.get().__merge({ name = unitName }))
+  local res = clone (unitName == previewGoodsUnit.get().name || unitName == "" ? previewGoodsUnit.get()
+    : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.get().__merge({ name = unitName })))
 
-  let skin = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName).subId
+  res.skin <- previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName).subId
     ?? (previewGoodsUnit.get()?.isUpgraded ? "upgraded" : "")
-  res = clone res
-  res.currentSkins <- clone (res?.currentSkins ?? {})
-  res.currentSkins[unitName] <- skin
-  res.currentSkins[previewGoodsUnit.get().name] <- skin
   return res
 })
 
@@ -169,18 +164,16 @@ previewGoodsUnit.subscribe(function(unit) {
 })
 
 function openDetailsWnd() {
-  hangarUnitDataBackup.set({
-    name = unitForShow.get().name,
-    custom = unitForShow.get(),
-  })
+  let { name } = unitForShow.get()
+  hangarUnitDataBackup.set({ name, custom = unitForShow.get() })
   let cfg = {
-    name = unitForShow.get()?.name
+    name
     isUpgraded = previewGoodsUnit.get()?.isUpgraded ?? false
     canShowOwnUnit = false
   }
-  let { currentSkins = null } = unitForShow.get()
-  if (currentSkins != null && currentSkins != previewGoodsUnit.get()?.currentSkins)
-    cfg.currentSkins <- currentSkins
+  let { skin = null } = unitForShow.get()
+  if (skin != null && skin != (previewGoodsUnit.get()?.skin ?? previewGoodsUnit.get()?.currentSkins?[name] ?? "")) 
+    cfg.skin <- skin
   unitDetailsWnd(cfg)
 }
 
@@ -272,51 +265,30 @@ function mkAirBranchUnitPlate(unit, onSelectUnit) {
   }
 }
 
-function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
-  let p = getUnitPresentation(platoonUnit)
-  let platoonUnitFull = unit.__merge(platoonUnit)
-  let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.get() == platoonUnit.name)
-  let size = unitPlateSize
-  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
-  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
+function mkUnitPlate(idx, unit) {
+  let p = getUnitPresentation(unit)
   return {
-    behavior = Behaviors.Button
-    onClick = onSelectUnit
     sound = { click  = "choose" }
     children = [
       {
-        watched = isLocked
-        size
+        size = unitPlateSize
         children = [
           mkUnitBg(unit)
-          mkUnitSelectedGlow(unit, isSelected)
-          mkUnitImage(platoonUnitFull)
-          mkUnitTexts(platoonUnitFull, loc(p.locId))
-          !isLocked.get() ? mkUnitInfo(unit) : null
-          mkUnitSlotLockedLine(platoonUnit, isLocked.get())
+          mkUnitImage(unit)
+          mkUnitTexts(unit, loc(p.locId))
+          mkUnitInfo(unit)
         ]
       }
-      onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(unit, isSelected)
     ]
     animations = opacityAnims(aTimePackUnitPlates, aTimePackUnitInfoStart + aTimePackUnitPlatesOffset * idx)
   }
-}
-
-let platoonUnitsBlock = @() {
-  watch = previewGoodsUnit
-  flow = FLOW_VERTICAL
-  gap = unitPlatesGap
-  children = previewGoodsUnit.get() == null ? null
-    : [ { name = previewGoodsUnit.get().name, reqLevel = 0 } ]
-        .extend(previewGoodsUnit.get()?.platoonUnits)
-        .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.get(), pu, @() curSelectedUnitId.set(pu.name)))
 }
 
 let singleUnitBlock = @() {
   watch = [previewGoodsUnit, previewType]
   children = previewGoodsUnit.get() == null ? null
     : previewType.get() == GPT_BLUEPRINT ? mkBlueprintUnitPlate(previewGoodsUnit.get())
-    : mkUnitPlate(0, previewGoodsUnit.get(), { name = previewGoodsUnit.get().name, reqLevel = 0 })
+    : mkUnitPlate(0, previewGoodsUnit.get())
 }
 
 let branchUnitsBlock = @(unit)
@@ -422,16 +394,6 @@ let earlyAccessDescriptionBlock = @(locId, unitName = null) {
       behavior = Behaviors.TextArea
       text = unitName != null ? loc(locId, { unitName }) : loc(locId)
     }.__update(fontSmall)
-  ]
-}
-
-let leftBlockPlatoon = {
-  size = flex()
-  flow = FLOW_VERTICAL
-  children = [
-    platoonUnitsBlock
-    {size = flex()}
-    packInfoWithHeader(false)
   ]
 }
 
@@ -556,8 +518,7 @@ let leftBlockUnits = @() {
           .append(packInfoWithHeader(false))
       }
     : getBattleModPresentationForOffer(goodsBattleMode.get()) != null ? leftBlockEarlyAccess
-    : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit
-    : leftBlockPlatoon
+    : leftBlockSingleUnit
 }
 
 let cbId = "onResetPenaltyToRandomBattleInUnitPreview"

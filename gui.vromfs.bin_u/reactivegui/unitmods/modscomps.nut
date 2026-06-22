@@ -4,7 +4,7 @@ let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { tabsGap } = require("%rGui/components/tabs.nut")
-let { getModCurrency, getModCost } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { getModCost } = require("%rGui/unitMods/unitModsState.nut")
 let { modContentMargin, modH, modW, equippedFrameWidth, activeColor, equippedColor,
   blocksLineSize, blocksGap, slotsBlockMargin, contentGamercardGap
 } = require("%rGui/unitMods/unitModsConst.nut")
@@ -66,13 +66,17 @@ let mkModImage = @(mod) mod?.name == null ? null : {
   imageValign = ALIGN_BOTTOM
 }
 
-let mkModCost = @(isPurchased, isLocked, mod, unitAllModsCost, currencyStyle = CS_SMALL) @() {
-  watch = [isPurchased, isLocked, mod, unitAllModsCost]
-  margin = modContentMargin
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_RIGHT
-  children = isPurchased.get() || isLocked.get() || mod.get() == null ? null
-    : mkCurrencyComp(getModCost(mod.get(), unitAllModsCost.get()), getModCurrency(mod.get()), currencyStyle)
+let mkModCost = @(isPurchased, isLocked, mod, unitModCostCfg, currencyStyle = CS_SMALL) function() {
+  let cost = isPurchased.get() || isLocked.get() || mod.get() == null ? null
+    : getModCost(mod.get(), unitModCostCfg.get())
+  return {
+    watch = [isPurchased, isLocked, mod, unitModCostCfg]
+    margin = modContentMargin
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_RIGHT
+    children = cost == null ? null
+      : mkCurrencyComp(cost.price, cost.currencyId, currencyStyle)
+  }
 }
 
 let mkUnseenModIndicator = @(isUnseen) @() {

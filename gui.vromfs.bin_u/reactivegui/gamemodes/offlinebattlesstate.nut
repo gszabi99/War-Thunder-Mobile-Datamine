@@ -3,7 +3,6 @@ let { eventbus_send } = require("eventbus")
 let { get_meta_missions_info_by_chapters } = require("guiMission")
 let DataBlock = require("DataBlock")
 let { isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { can_debug_configs, can_debug_missions } = require("%appGlobals/permissions.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
@@ -108,13 +107,11 @@ function runOfflineBattle(unitName = null, missionName = null) {
   unitName = unitName ?? selectedUnit.get()?.name
   missionName = missionName ?? selectedMission.get() ?? ""
   let allUnits = campUnitsCfg.get()
-  let realUnitName = $"{getTagsUnitName(unitName)}_nc"
-
-  if(unitName not in allUnits && realUnitName not in allUnits)
+  if(unitName not in allUnits)
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
-  let unit = allUnits?[unitName] ?? allUnits?[realUnitName] ?? {}
+  let unit = allUnits?[unitName] ?? {}
   let battleData = {
     isCustomOfflineBattle = true
     reward = { unitName }
@@ -136,7 +133,7 @@ function openOfflineBattleMenu(debrData = {}) {
     let { unit, mission } = debrData
     initOfflineBattlesData.set({
       unitType = unit.unitType
-      unitName = getTagsUnitName(unit.name)
+      unitName = unit.name
       missionName = mission
     })
   }
@@ -149,8 +146,7 @@ let offlineBattlesCfg = Computed(function() {
 
   let allUnits = {}
 
-  foreach(realUnitName, unit in campUnitsCfg.get()) {
-    let unitName = getTagsUnitName(realUnitName)
+  foreach(unitName, unit in campUnitsCfg.get()) {
     let { tags = {}, operatorCountry = null } = getUnitTagsCfg(unitName)
     let { country = "" } = unit
     let countryId = operatorCountry ?? country
@@ -202,7 +198,7 @@ let getMissionName = @(id) ((isDebugListMapsActive.get() && canAccessForDebug.ge
 let unitSearchResults = Computed(function() {
   let searchStr = unitSearchName.get()
   return searchStr == "" ? []
-    : searchableUnitsList.get().filter(@(u) isUnitNameMatchSearchStr(u, searchStr, false))
+    : searchableUnitsList.get().filter(@(u) isUnitNameMatchSearchStr(u, searchStr))
 })
 
 return {

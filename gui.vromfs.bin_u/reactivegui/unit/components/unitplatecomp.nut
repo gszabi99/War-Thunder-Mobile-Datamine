@@ -54,7 +54,6 @@ let premiumIconSize = [hdpxi(102), hdpxi(42)]
 let platoonPlatesGap = 0
 let platoonSelPlatesGap = hdpx(9)
 
-let plateBorderThickness = hdpx(2)
 let plateTextsPad = hdpx(15)
 let plateTextsSmallPad = hdpx(5)
 
@@ -87,11 +86,6 @@ let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
 let bgUnitCollectible = mkColoredGradientY(0xFF63319B, 0xFF290740, 2)
 let bgUnitCollectibleLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
 let bgUnitNotAvailable = mkColoredGradientY(0xFF552020, 0xFF201010, 2)
-
-function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
-  let gap = isSelected ? platoonSelPlatesGap : platoonPlatesGap
-  return [(idx - platoonSize) * gap, (idx - platoonSize) * gap].map(@(v) (v * sizeMul).tointeger())
-}
 
 let levelBg = mkLevelBg({
   ovr = { size = [ unitLevelBgSize, unitLevelBgSize ] }
@@ -526,13 +520,6 @@ let mkUnitSelectedUnderline = @(unit, isSelected, ovr = {}) {
     !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
 }.__update(ovr)
 
-let mkUnitSelectedUnderlineVert = @(unit, isSelected) {
-  size = FLEX_V
-  pos = [- unitSelUnderlineFullSize, 0]
-  children = selectedLineUnitsCustomSize([unitSelUnderlineFullSize, flex()], isSelected,
-    !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
-}
-
 let mkUnitSelectedGlow = @(unit, isSelected) @() isSelected.get()
   ? {
       watch = isSelected
@@ -544,34 +531,6 @@ let mkUnitSelectedGlow = @(unit, isSelected) @() isSelected.get()
         : highlightCommon()
     }
   : { watch = isSelected }
-
-let mkPlatoonPlateFrame = @(unit, isEquipped = Watched(false), isSelected = Watched(false)) @() {
-  watch = [isSelected, isEquipped]
-  size = flex()
-  rendObj = ROBJ_FRAME
-  borderWidth = plateBorderThickness
-  color = isEquipped.get() ? getFrameColor(unit)
-    : isSelected.get() ? 0xBBBBBB
-    : 0
-}
-
-function mkPlatoonBgPlates(unit, platoonUnits) {
-  let platoonSize = platoonUnits.len()
-  let bgPlatesComp = {
-    size = flex()
-    transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
-    children = [
-      mkUnitBg(unit)
-      mkPlatoonPlateFrame(unit)
-    ]
-  }
-  return {
-    size = flex()
-    children = platoonUnits.map(@(_, idx) bgPlatesComp.__merge({
-      transform = { translate = bgPlatesTranslate(platoonSize, idx) }
-    }))
-  }
-}
 
 function mkSingleUnitPlate(unit) {
   if (unit == null)
@@ -650,7 +609,6 @@ return {
   unitPlatesGap
   platoonPlatesGap
   platoonSelPlatesGap
-  bgPlatesTranslate
   plateTextsPad
   plateTextsSmallPad
 
@@ -666,7 +624,6 @@ return {
   mkUnitSlotLockedLine
   unitSlotLockedByQuests
   mkUnitSelectedUnderline
-  mkUnitSelectedUnderlineVert
   mkUnitEquippedIcon
   mkSingleUnitPlate
   mkPlateTextTimer
@@ -680,9 +637,6 @@ return {
   mkUnitSpinner
   mkProfileUnitDailyBonus
   mkUnitTimeLeft
-
-  mkPlatoonPlateFrame
-  mkPlatoonBgPlates
 
   mkFlagImage
   mkFlagImageWithoutGrad

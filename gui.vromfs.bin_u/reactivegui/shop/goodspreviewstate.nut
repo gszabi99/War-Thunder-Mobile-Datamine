@@ -13,7 +13,6 @@ let { activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, personalGoodsInProgress, validate_active_offer
 } = require("%appGlobals/pServer/pServerApi.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -38,25 +37,18 @@ let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 let openedSubsId = mkWatched(persist, "openedSubsId", null)
 
 
-function addTagsUnitsWithPlatoon(res, unitName, sConfigs) {
-  res[getTagsUnitName(unitName)] <- true
-  let { platoonUnits = [] } = sConfigs?.allUnits[unitName]
-  foreach (p in platoonUnits)
-    res[getTagsUnitName(p.name)] <- true
-}
-
-function getAllTagsUnitsToShowGoods(goods, sConfigs) {
+function getAllTagsUnitsToShowGoods(goods) {
   let res = {}
   if (goods?.meta.previewUnit != null)
-    addTagsUnitsWithPlatoon(res, goods.meta.previewUnit, sConfigs)
+    res[goods.meta.previewUnit] <- true
   foreach (r in goods.rewards)
     if (r.gType in unitRewardTypes)
-      addTagsUnitsWithPlatoon(res, r.id, sConfigs)
+      res[r.id] <- true
   return res
 }
 
-let getNotLoadedTagsUnitsToShowGoods = @(goods, sConfigs, uSizes)
-  getAllTagsUnitsToShowGoods(goods, sConfigs).filter(@(_, u) (uSizes?[u] ?? -1) != 0)
+let getNotLoadedTagsUnitsToShowGoods = @(goods, uSizes)
+  getAllTagsUnitsToShowGoods(goods).filter(@(_, u) (uSizes?[u] ?? -1) != 0)
 
 let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods, persGoods)
   activeOff?.id == id ? activeOff
@@ -70,7 +62,7 @@ function openGoodsPreview(id) {
   if (goods == null)
     return
 
-  let reqUnits = getNotLoadedTagsUnitsToShowGoods(goods, serverConfigs.get(), unitSizes.get())
+  let reqUnits = getNotLoadedTagsUnitsToShowGoods(goods, unitSizes.get())
   if (reqUnits.len() != 0) {
     openDownloadAddonsWnd([], reqUnits.keys(), "openGoodsPreview", { paramStr1 = id }, "openGoodsPreview", { id })
     return
@@ -87,7 +79,7 @@ function openGoodsPreviewInMenuOnly(id) {
   if (goods == null)
     return
 
-  let reqUnits = getNotLoadedTagsUnitsToShowGoods(goods, serverConfigs.get(), unitSizes.get())
+  let reqUnits = getNotLoadedTagsUnitsToShowGoods(goods, unitSizes.get())
   if (reqUnits.len() != 0) {
     openDownloadAddonsWnd([], reqUnits.keys(), "openGoodsPreview", { paramStr1 = id }, "openGoodsPreviewInMenuNoModals", { id })
     return false

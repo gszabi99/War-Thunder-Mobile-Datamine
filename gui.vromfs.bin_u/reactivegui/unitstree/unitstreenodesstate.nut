@@ -255,7 +255,7 @@ let unseenResearchedUnits = Computed(function() {
 
   foreach(unitName, node in unitTreeNodes) {
     let unit = campUnitsCfg.get()?[unitName]
-    if (!unit || unit.isHidden || getTagsUnitName(unitName) in seenUnits)
+    if (!unit || unit.isHidden || unitName in seenUnits)
       continue
 
     let { country = "" } = node
@@ -316,9 +316,8 @@ function setResearchedUnitsSeen(units) {
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_RESEARCHED_UNITS)
   seenResearchedUnits.mutate(function(v) {
     foreach (u, _ in units) {
-      let tagName = getTagsUnitName(u)
-      v[tagName] <- true
-      sBlk[tagName] = true
+      v[u] <- true
+      sBlk[u] = true
     }
   })
   eventbus_send("saveProfile", {})

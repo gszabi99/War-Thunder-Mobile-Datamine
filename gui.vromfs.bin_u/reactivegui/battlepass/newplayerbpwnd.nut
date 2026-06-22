@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -170,7 +169,7 @@ function rewardInfoMsg(reward) {
       children = [
         {
           rendObj = ROBJ_TEXT
-          text = getUnitName(getTagsUnitName(viewInfo.id))
+          text = getUnitName(viewInfo.id)
         }.__update(fontTinyAccented)
 
         mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)

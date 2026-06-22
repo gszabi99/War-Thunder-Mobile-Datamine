@@ -54,16 +54,8 @@ let newbieOfflineMissions = Computed(function() {
     return null
 
   
-  if (curCampaignSlotUnits.get() != null) {
-    if (curCampaignSlotUnits.get().len() > 1)
-      return null
-  }
-  else {
-    let { level = 0 } = curUnit.get()
-    let platoonUnit = curUnit.get()?.platoonUnits.findvalue(@(u) (u?.reqLevel ?? 0) <= level)
-    if (platoonUnit != null)
-      return null
-  }
+  if (curCampaignSlotUnits.get() != null && curCampaignSlotUnits.get().len() > 1)
+    return null
 
   return missionsList.get()
 })

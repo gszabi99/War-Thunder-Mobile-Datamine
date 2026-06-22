@@ -21,27 +21,33 @@ let { ovrUnitsGameModes } = require("%rGui/gameModes/gameModeState.nut")
 let { wantedModeId, downloadCheckTime } = require("%rGui/squad/downloadCheck.nut")
 
 
-let curUnits = keepref(Computed(function(prev) {
+let curUnitInfos = keepref(Computed(function(prev) {
   let { allUnits = null, campaignCfg = {} } = serverConfigs.get()
   let { units = null } = servProfile.get()
   if (units == null || allUnits == null)
     return null
+
+  let mkInfo = @(name) { name, isUpgraded = units?[name].isUpgraded ?? false }
+
   let res = {}
-  foreach(u in units) {
+  foreach (u in units) {
     if (!u?.isCurrent)
       continue
     let campaign = allUnits?[u.name].campaign
     if (campaign != null && campaign not in res)
-      res[campaign] <- [u.name]
+      res[campaign] <- [{ name = u.name, isUpgraded = u?.isUpgraded ?? false }]
   }
-  foreach(campaign, cfg in campaignCfg)
+  foreach (campaign, cfg in campaignCfg)
     if (cfg.totalSlots > 0)
       res[campaign] <- curSlots.get()
         .filter(@(s) s.name != "")
-        .map(@(s) s.name)
+        .map(@(s) mkInfo(s.name))
         ?? []
   return prevIfEqual(prev, res)
 }))
+
+let curUnits = keepref(Computed(@(prev) prevIfEqual(prev,
+  curUnitInfos.get()?.map(@(infos) infos.map(@(u) u.name))))) 
 
 let missingAddons = keepref(Computed(function(prev) {
   let res = hasAddons.get().filter(@(v) !v)
@@ -89,6 +95,7 @@ let readyOvrGameModes = Computed(function(prev) {
 
 bindSquadROVar("campaign", curCampaign)
 bindSquadROVar("units", curUnits)
+bindSquadROVar("unitInfos", curUnitInfos)
 bindSquadROVar("missingAddons", missingAddons)
 bindSquadROVar("queueToken", myQueueToken)
 bindSquadROVar("statsToken", jwtUserstat)

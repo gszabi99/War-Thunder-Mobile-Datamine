@@ -3039,6 +3039,9 @@ return {
     "meteor_fmk3_navy_prem": {
       "": "usa_b_17g_8af_yellow"
     },
+    "meteor_fmk8_reaper": {
+      "": "ussr_i_180s_red"
+    },
     "mig-9": {
       "": "ussr_la_11_standard",
       "upgraded": "ussr_tandem_mai"
@@ -5451,6 +5454,10 @@ return {
     },
     "ussr_t_80ud": {
       "": "ussr_camo_winter_white_olive",
+      "forest": "ussr_modern_green"
+    },
+    "ussr_t_80ue1": {
+      "": "ussr_camo_arctic",
       "forest": "ussr_modern_green"
     },
     "ussr_t_80uk": {

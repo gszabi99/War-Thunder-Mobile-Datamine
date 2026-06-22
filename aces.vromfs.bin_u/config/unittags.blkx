@@ -45900,6 +45900,87 @@
       }
     }
   },
+  "meteor_fmk8_reaper": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "releaseDate": "2018-12-18 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "derwent-8",
+        "mass": 443.0
+      },
+      "engine2_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "derwent-8",
+        "mass": 443.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12500.0,
+      "maxSpeed": 267.22,
+      "turnTime": 23.0,
+      "airfieldLen": 325.0,
+      "climbTime": 180.0,
+      "maxSpeedAlt": 100.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 40.2,
+      "wingLoading": 216.0,
+      "thrustToWeightRatio": 0.22,
+      "rollRate": 137.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 4,
+      "massPerSec": 6.4625,
+      "weapons": {
+        "cannonHispanoMkV": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 780,
+          "shotFreq": 12.5
+        },
+        "uk_500lbs_43": {},
+        "uk_1000lbs_gp": {},
+        "uk_1000lbs_mc_mk1": {},
+        "uk_rp3_4b": {},
+        "uk_1000lbs": {},
+        "uk_rp3_4b_mid": {}
+      }
+    },
+    "bullets": {
+      "cannonHispanoMkV": {
+        "default": {
+          "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+        },
+        "hispano_universal": {
+          "icon": "he_frag_i/sapi/ap/t_shell/"
+        },
+        "hispano_air_targets": {
+          "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/"
+        },
+        "hispano_tracers": {
+          "icon": "ap/t_shell/he_frag_i/"
+        },
+        "hispano_ground_targets": {
+          "icon": "ap/ap/ap/he_frag_i/t_shell/"
+        },
+        "hispano_stealth": {
+          "icon": "he_frag_i/he_frag_i/sapi/ap/"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",
@@ -59655,6 +59736,68 @@
           "gunsCount": 6,
           "caliber": 130.0,
           "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "germ_battleship_konig": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 2608,
+    "tierGroup": 8,
+    "tags": {
+      "country_germany": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1190,
+      "shipCrewMin": 290,
+      "shipCrewRating": 2.63424,
+      "maxSpeed": 12.1,
+      "turningTime": 34,
+      "addTorpedoesCountPack": 3,
+      "mainWeaponCaliber": 305.0,
+      "weapons": {
+        "305mm_50_skl_50_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 1800.0,
+          "shotFreq": 0.083,
+          "gunsCount": 10,
+          "caliber": 305.0,
+          "ammoCount": 850,
+          "isBeltAmmo": false
+        },
+        "150mm_45_skl_45_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 600.0,
+          "shotFreq": 0.286,
+          "gunsCount": 14,
+          "caliber": 150.0,
+          "ammoCount": 2100,
+          "isBeltAmmo": false
+        },
+        "88mm_45_skl_45_mpl_c13_ha_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 183.0,
+          "shotFreq": 0.25,
+          "aimMaxDist": 1750.0,
+          "gunsCount": 4,
+          "caliber": 88.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        },
+        "de_500mm_g7_torpedo": {
+          "wtype": "torpedo",
+          "damage": 4975.0,
+          "shotFreq": 0.067,
+          "distToLive": 4000.0,
+          "gunsCount": 5,
+          "caliber": 500.0,
+          "ammoCount": 14,
           "isBeltAmmo": false
         }
       }
@@ -109988,6 +110131,82 @@
       "110mm_Spike_kf_41_rocket_launchr_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        }
+      }
+    }
+  },
+  "ussr_t_80ue1": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "operatorCountry": "country_russia",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 125.0,
+      "armorThicknessFront": [
+        0.65,
+        0.05,
+        0.3
+      ],
+      "armorThicknessSide": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "crew": 3,
+      "mass": 47000.0,
+      "maxSpeedForward": 19.41,
+      "maxSpeedBackward": 3.05189,
+      "powerToWeightRatio": 26.5957,
+      "weapons": {
+        "125mm_2A46_M1_T_80U_e1_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 125.0,
+          "armorPower": 550.0,
+          "reloadTime": 6.00024,
+          "autoLoader": true,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_PKT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 7.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_NSV_user_cannon": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 17.75,
+          "reloadTime": 0.0857192,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "125mm_2A46_M1_T_80U_e1_user_cannon": {
+        "125mm_ussr_3BM42_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "125mm_ussr_ATGM": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1",
+          "maxCount": 28
+        },
+        "125mm_ussr_HE": {
+          "icon": "hud_ammo_he3_tf"
+        },
+        "125mm_ussr_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
         }
       }
     }

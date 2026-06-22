@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { roundToDigits } = require("%sqstd/math.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getArmorPiercingByDistance, getRicochetGuaranteedAngle, getTntStrengthEquivalent
 } = require("%rGui/weaponry/dmgModel.nut")
 let { getMassText } = require("%rGui/measureUnits.nut")
@@ -65,11 +64,11 @@ let stats = [
   }
 ]
 
-let getBulletStats = @(bSet, tags, realUnitName) bSet == null ? []
+let getBulletStats = @(bSet, tags, unitName) bSet == null ? []
   : stats
       .map(@(s) {
         nameText = s?.getName(tags) ?? loc(s.locId),
-        valueText = s.getValue(bSet, tags, realUnitName == null ? null : getTagsUnitName(realUnitName))
+        valueText = s.getValue(bSet, tags, unitName)
       })
       .filter(@(s) s.valueText != null)
 

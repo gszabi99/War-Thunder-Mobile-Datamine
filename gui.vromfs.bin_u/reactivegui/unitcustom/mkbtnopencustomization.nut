@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
@@ -43,8 +42,8 @@ function mkBtnOpenCustomization(unitW, ovr) {
     watch = unitW
     children = !unitW.get() ? null : [
       mkCustomButton(customizationBtnContent,
-        @() (unitSizes.get()?[getTagsUnitName(unitW.get().name)] ?? 0) == 0 ? openUnitCustom()
-          : openDownloadAddonsWnd([], [getTagsUnitName(unitW.get().name)], "unitDownloadInfoBlock", {}, "openUnitCustom"),
+        @() (unitSizes.get()?[unitW.get().name] ?? 0) == 0 ? openUnitCustom()
+          : openDownloadAddonsWnd([], [unitW.get().name], "unitDownloadInfoBlock", {}, "openUnitCustom"),
         mergeStyles(buttonStyles.COMMON, ovr))
       @() {
         watch = hasUnseenMark

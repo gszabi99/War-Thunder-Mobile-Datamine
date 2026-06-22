@@ -1,6 +1,5 @@
 from "%appGlobals/unitConst.nut" import *
 let { loc } = require("dagor.localize")
-let getTagsUnitName = require("getTagsUnitName.nut")
 
 let unitClassFontIcons = {
   boat          = "\u2409"
@@ -105,9 +104,8 @@ let genParams = {
   blueprintImage = @(name) $"ui/unitskin#blueprint_{name}.avif"
 }
 
-function mkUnitPresentation(realUnitName) {
-  let unitName = getTagsUnitName(realUnitName)
-  let res = defaults.__merge(overrides?[unitName] ?? {}, { name = unitName, realUnitName })
+function mkUnitPresentation(unitName) {
+  let res = defaults.__merge(overrides?[unitName] ?? {}, { name = unitName })
   foreach (id, gen in genParams)
     if (res[id] == defaults[id])
       res[id] = gen(unitName)

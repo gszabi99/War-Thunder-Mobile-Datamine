@@ -4,7 +4,6 @@ let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -46,14 +45,13 @@ function fillUnseenBullets(res, bInfo, unitName, unit, mods, seen, slotFrom, slo
   }
 }
 
-function getUnseenUnitBullets(unitNameRaw, myUnits, seen) {
+function getUnseenUnitBullets(uName, myUnits, seen) {
   let primaryRes = {}
   let secondaryRes = {}
   let res = { primary = primaryRes, secondary = secondaryRes}
-  let unit = myUnits?[unitNameRaw]
+  let unit = myUnits?[uName]
   if (unit == null)
     return res
-  let uName = getTagsUnitName(unitNameRaw)
   let { primary = null, secondary = null, special = null } = loadUnitBulletsChoice(uName)?.commonWeapons
   let mods = (unit?.mods ?? {}).reduce(@(modsRes, val, mod) val ? modsRes.$rawset(mod, 1) : modsRes, {})
   fillUnseenBullets(primaryRes, primary, uName, unit, mods, seen, 0, BULLETS_PRIM_SLOTS)
@@ -66,12 +64,11 @@ let getUnseenUnitBulletsNonUpdatable = @(unitNameRaw)
 let mkUnseenUnitBullets = @(unitNameRaw)
   Computed(@() getUnseenUnitBullets(unitNameRaw.get(), campMyUnits.get(), seenShells.get()))
 
-function markShellsSeen(unitNameRaw, idsExt) {
-  let { primary, secondary } = getUnseenUnitBulletsNonUpdatable(unitNameRaw)
+function markShellsSeen(unitName, idsExt) {
+  let { primary, secondary } = getUnseenUnitBulletsNonUpdatable(unitName)
   let ids = idsExt.filter(@(v) v in primary || v in secondary)
   if (ids.len() == 0)
     return
-  let unitName = getTagsUnitName(unitNameRaw)
   seenShells.mutate(function(v) {
     let unitSeen = getSubTable(v, unitName)
     foreach (id in ids)

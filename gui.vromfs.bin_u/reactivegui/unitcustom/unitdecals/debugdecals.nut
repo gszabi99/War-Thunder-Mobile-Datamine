@@ -8,7 +8,6 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { Point2 } = require("dagor.math")
 let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { MAX_DECAL_SLOTS_COUNT } = require("%rGui/unit/hangarUnit.nut")
 
 let prepareInstance = {
@@ -55,8 +54,8 @@ function getUnitDecals(decalBlk) {
   return res
 }
 
-function loadUnitSkinsDecals(realUnitName) {
-  let unitBlk = blkOptFromPath(getUnitFileName(getTagsUnitName(realUnitName)))
+function loadUnitSkinsDecals(unitName) {
+  let unitBlk = blkOptFromPath(getUnitFileName(unitName))
   let { defaultDecals = {}, upgradedDecals = {} } = unitBlk
 
   let res = {}
