@@ -105,7 +105,7 @@ eventbus_subscribe("changeName", function(_) {
 })
 
 eventbus_subscribe("deleteAccount", function(_) {
-  openUrl(DELETE_ACCOUNT_URL)
+  openUrl(getCurCircuitOverride("deleteAccountURL", DELETE_ACCOUNT_URL))
   callbackWhenAppWillActive(@() eventbus_send("logOut", {}))
 })
 

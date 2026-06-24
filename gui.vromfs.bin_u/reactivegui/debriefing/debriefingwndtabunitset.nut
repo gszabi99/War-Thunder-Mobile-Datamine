@@ -155,7 +155,7 @@ function mkSlotColumn(unit, debrData) {
   let slotLevelCfg = getSlotLevelCfg(unit, debrData)
   local slotExp = getSlotExpByUnit(unit.name, debrData)
   slotExp = slotExp.__merge({
-    totalExp = slotExp.totalExp
+    totalExp = (slotExp?.totalExp ?? 0)
       + (debrData?.adsBonuses.unitsDif[unit.name].slotExpDif  ?? 0)
       + (debrData?.subsBonuses.unitsDif[unit.name].slotExpDif  ?? 0)
   })
@@ -170,7 +170,7 @@ function mkUnitColumn(unit, debrData) {
     return null
   local unitExp = getUnitRewards(unit.name, debrData)?.exp ?? {}
   unitExp = unitExp.__merge({
-    totalExp = unitExp.totalExp
+    totalExp = (unitExp?.totalExp ?? 0)
       + (debrData?.adsBonuses.unitsDif[unit.name].expDif ?? 0)
       + (debrData?.subsBonuses.unitsDif[unit.name].expDif ?? 0)
   })

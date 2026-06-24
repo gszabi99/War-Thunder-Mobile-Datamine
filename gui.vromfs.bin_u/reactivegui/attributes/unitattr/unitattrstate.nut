@@ -20,7 +20,10 @@ let attrUnitName = Computed(@() attrUnitData.get().unit?.name)
 let attrUnitType = Computed(@() attrUnitData.get().unit?.unitType)
 let unitAttributes = Computed(@() attrUnitData.get().unit?.attrLevels)
 let attrUnitPreset = Computed(@() attrUnitData.get().unit?.preset)
-let attrUnitMaxLevel = Computed(@() campConfigs.get()?.unitLevels[attrUnitData.get().unit?.levelPreset].len() ?? 0)
+let attrUnitMaxLevel = Computed(function() {
+  let unit = attrUnitData.get().unit
+  return unit?.maxLevel ?? campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0 
+})
 let attrUnitLevelsToMax = Computed(@() attrUnitMaxLevel.get() - (attrUnitData.get().unit?.level ?? 0))
 
 function resetAttrState() {

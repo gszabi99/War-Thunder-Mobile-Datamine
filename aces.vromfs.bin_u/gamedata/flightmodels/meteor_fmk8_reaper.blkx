@@ -1,6 +1,7 @@
 {
   "model": "gloster_meteor_fmk8_reaper",
   "fmFile": "fm/meteor_fmk8_reaper.blk",
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.159,
   "gearSinkRangeC": 0.118,

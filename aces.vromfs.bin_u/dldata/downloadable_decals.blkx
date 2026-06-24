@@ -2566,5 +2566,45 @@
     "lod0": "jdjqei6yhvrqea4lrtmqgyr3vykkooid-gqpy",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "bl5ug3cfsk3z37mi4nyp6vqfbvluq6xm-by5i"
+  },
+  "ascending_koi_decal": {
+    "category": "japan",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "akxundzef2254s3225syu4bjvrw25ur2-epki",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "z7fbb6en2gtufbmdug7rjnw27437me4f-bj6a"
+  },
+  "cabuto_decal": {
+    "category": "japan",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "xxgbxejzjw6g6tmnhcansfvolrrtayov-fh6a",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "grlrz7okmxmm5zgwqfr7vtl5digwcon6-brdq"
+  },
+  "cherry_blossom_decal": {
+    "category": "japan",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "7d75zkfxmyxeaedny3seimkdw77p3pje-cvxq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "qzdherhnjaptcoyirmw54urwummlrfwr-z5q"
+  },
+  "fuji_decal": {
+    "category": "japan",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "q45uchxigfu7bn2duyz5jjpogxyejsze-hdiy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "bk5g7dvtu4qv3do3xe3q3wuym6jzj2js-b2yi"
+  },
+  "origami_crane_decal": {
+    "category": "japan",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "3le3cuaunkrlufryajalvooivzk3fgb5-ckta",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "yomu33mad4fk5ck43s6mqnn2vpgrf6f4-wsy"
   }
 }
