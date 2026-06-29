@@ -2223,7 +2223,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "bomb_1000kg",
+            "iconType": "bomb_250kg",
             "name": "uk_1000lbs",
             "ShowNodes": {
               "node": "bomb_pylon_1"

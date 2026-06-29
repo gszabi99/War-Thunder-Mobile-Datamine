@@ -380,7 +380,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
     }
   }
   else if (isLevelUp && levelsExpCfg.len() > 0) {
-    local fromLevel = level
+    local fromLevel = level + 1
     local leftReceivedExp = totalExp - addExp
     foreach (idx, c in levelsExpCfg) {
       if (c.upToLevel <= fromLevel)

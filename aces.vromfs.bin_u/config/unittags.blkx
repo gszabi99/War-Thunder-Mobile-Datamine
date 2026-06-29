@@ -110211,6 +110211,81 @@
       }
     }
   },
+  "uk_challenger_2_tes_prem": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_uk": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "armorThicknessFront": [
+        0.7,
+        0.05,
+        0.25
+      ],
+      "armorThicknessSide": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "crew": 4,
+      "mass": 74800.0,
+      "maxSpeedForward": 16.4034,
+      "maxSpeedBackward": 10.4024,
+      "powerToWeightRatio": 17.5668,
+      "weapons": {
+        "120mm_L30A1_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 120.0,
+          "armorPower": 394.0,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 31.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_L94A1_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 7.33333,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        },
+        "7_62mm_l37a2_enforcer_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.092308,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "120mm_L30A1_user_cannon": {
+        "120mm_britain_L27_APDSFS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_britain_L37A7_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "120mm_britain_L26_APDSFS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    }
+  },
   "us_bulldog": {
     "type": "walker",
     "hangar_place": "walker",

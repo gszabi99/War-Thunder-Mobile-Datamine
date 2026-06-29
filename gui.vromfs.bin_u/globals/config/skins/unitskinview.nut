@@ -3684,6 +3684,10 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
     },
+    "uk_challenger_2_tes_prem": {
+      "": "uk_camo_challenger_2_tes_prem",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_challenger_II": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"

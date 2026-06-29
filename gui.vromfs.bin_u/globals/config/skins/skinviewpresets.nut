@@ -112,6 +112,7 @@ let skinsByTag = {
     "m1a1_hc_usmc_sm_kate"
     "leopard_2a4m_can_sm_elsa"
     "mbt2000_sm_ling"
+    "uk_camo_challenger_2_tes_prem"
   ],
 
   [DESERT] = [
