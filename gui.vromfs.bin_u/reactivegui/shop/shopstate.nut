@@ -629,4 +629,5 @@ return {
   curShopSubsByCategory
 
   findGoodsByShop
+  getGoodsShopId
 }

@@ -23,7 +23,7 @@ let { mkQuestsHeaderBtn, linkToEventWidth } = require("%rGui/quests/questsPkg.nu
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { shopGoods, openShopWnd, allShopGoods } = require("%rGui/shop/shopState.nut")
+let { shopGoods, openShopWnd, allShopGoods, getGoodsShopId } = require("%rGui/shop/shopState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
@@ -122,8 +122,10 @@ function mkLinkToStoreBtnInfo(idx) {
   let eventIcon = Computed(@() lootboxInfo.get()
     ? getEventPresentation(lootboxInfo.get().eventName).icon
     : getEventPresentation(eventName.get()).icon)
-  let hasGoods = Computed(@() eventName.get() != ""
-    && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
+  let eventGoods = Computed(@() eventName.get() != ""
+    && shopGoods.get().findvalue(@(item) item?.meta.eventId == eventName.get()))
+  let hasGoods = Computed(@() eventGoods.get() != null)
+  let shopId = Computed(@() getGoodsShopId(eventGoods.get()))
   let isEventPassQuests = Computed(@() eventsPassList.get().findindex(@(v) v.eventName == eventName.get()) != null)
   let hasEpRewardsToReceive = mkHasEpRewardsToReceive(
     Computed(@() isEventPassQuests.get() ? getEventPassName(eventName.get()) : null))
@@ -144,7 +146,7 @@ function mkLinkToStoreBtnInfo(idx) {
                 children = hasEpRewardsToReceive.get() ? priorityUnseenMark : null
               })
         : hasGoods.get()
-          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(null, null, "events"))
+          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(null, null, shopId.get()))
         : lootboxInfo.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
         : null

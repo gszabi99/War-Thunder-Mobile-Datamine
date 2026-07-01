@@ -221,8 +221,8 @@ let wndContent = @(startUnit, allCountries, curCountry) {
   ]
 }
 
-function acceptChooseResearch(unitId) {
-  sendUiBqEvent("first_country_choice", { id = selectedCountry.get() })
+function acceptChooseResearch(unitId, country) {
+  sendUiBqEvent("first_country_choice", { id = country })
   set_research_unit(curCampaign.get(), unitId, isInSquad.get() ? "onSetResearchUnitInSquad"  : null)
 }
 
@@ -257,7 +257,7 @@ function openImpl() {
         })
         mkSpinnerHideBlock(unitInProgress,
           textButtonBattle(utf8ToUpper(loc("unitsTree/chooseResearch/accept")),
-            @() acceptChooseResearch(startUnit.get()?.name), { childOvr = fontTinyAccentedShadedBold, hotkeys = ["^J:X"] }))
+            @() acceptChooseResearch(startUnit.get()?.name, curCountry.get()), { childOvr = fontTinyAccentedShadedBold, hotkeys = ["^J:X"] }))
       ]
     })
     animations = wndSwitchAnim

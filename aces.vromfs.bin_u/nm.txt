@@ -63264,3 +63264,4 @@ challenger_2_tes_skin_c*
 challenger_2_turret_skin_c*
 fir_one_pcs
 fir_long_one_pcs
+burnTime
