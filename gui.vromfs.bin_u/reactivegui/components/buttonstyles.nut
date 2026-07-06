@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defButtonHeight = hdpxi(109)
+let defButtonHeight = hdpxi(110)
 let defButtonMinWidth = hdpxi(368)
 let defButtonBorderWidth = hdpx(3)
 let defBorderGradient = {
@@ -82,11 +82,11 @@ return freeze({
     gradientContainerOvr = { fillColor = 0xFF8C1208 }
     borderGradientOvr = defBorderGradient
   }
-  HUAWEI = { 
+  LOGIN_BTN = {
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
-      minWidth = hdpx(566)
-      fillColor = Color(255, 255, 255)
+      minWidth = hdpx(640)
+      fillColor = 0xFFFFFFFF
       borderColor = Color(184, 184, 155)
     }
     childOvr = fontTinyAccentedShadedBold.__merge({

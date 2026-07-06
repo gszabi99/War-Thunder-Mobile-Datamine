@@ -5,7 +5,7 @@ let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEB
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { defButtonHeight, PRIMARY, HUAWEI } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, LOGIN_BTN } = require("%rGui/components/buttonStyles.nut")
 let { mkCustomButton, textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { urlText, urlLikeButton } = require("%rGui/components/urlText.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
@@ -19,7 +19,6 @@ let { getCurrentLanguage } = require("dagor.localize")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
-let { isHMSAvailable = @() false } = require("android.account.huawei")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
@@ -70,9 +69,10 @@ let refrIconSize = hdpxi(37)
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
 let urlColor = Color(0, 204, 255)
-let loginButtonStyle = isHMSAvailable() ? HUAWEI : PRIMARY
-let loginButtonsHGap = isHMSAvailable() ? hdpx(16) : buttonsHGap
-let guestLoginButtonColor = isHMSAvailable() ? HUAWEI.childOvr.color : textColor
+let loginButtonStyle = LOGIN_BTN
+let loginButtonsHGap = hdpx(32)
+let guestLoginButtonColor = 0xFF000000
+let btnTxtColor = 0xFF000000
 
 let resendTimeout = 30
 
@@ -270,12 +270,12 @@ let appleLoginButtonContent = {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#apple_logo.svg:{appleLogoWidth}:{appleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = textColor
+      color = btnTxtColor
     }
     {
       rendObj = ROBJ_TEXT
       text = loc("mainmenu/AppleId")
-      color = textColor
+      color = btnTxtColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -288,7 +288,7 @@ let nswitchLoginButtonContent = {
     {
       rendObj = ROBJ_TEXT
       text = loc("mainmenu/nswitch")
-      color = textColor
+      color = btnTxtColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -303,12 +303,12 @@ let googleLoginButtonContent = {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#google_logo.svg:{googleLogoWidth}:{googleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = textColor
+      color = btnTxtColor
     }
     {
       rendObj = ROBJ_TEXT
       text = "Google"
-      color = textColor
+      color = btnTxtColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -328,7 +328,7 @@ let huaweiLoginButtonContent = {
     {
       rendObj = ROBJ_TEXT
       text = "Sign in with HUAWEI ID"
-      color = 0xFF000000
+      color = btnTxtColor
     }.__update(fontSmallAccented)
   ]
 }
@@ -343,12 +343,12 @@ let fbLoginButtonContent = {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#facebook_logo.svg:{googleLogoWidth}:{googleLogoHeight}")
       keepAspect = KEEP_ASPECT_FIT
-      color = textColor
+      color = btnTxtColor
     }
     {
       rendObj = ROBJ_TEXT
       text = "Facebook"
-      color = textColor
+      color = btnTxtColor
     }.__update(fontSmallAccented)
   ]
 }
