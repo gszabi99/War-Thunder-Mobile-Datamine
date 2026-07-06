@@ -279,12 +279,17 @@
       "folder": "content.hq/pkg_secondary_hq",
       "hq": false,
       "modelsPatch": false,
+      "downloadOnly": true,
       "conditions": {
         "isDownloadLast": true
       }
     },
-    "pkg_dev": {},
-    "pkg_downloadable": {},
+    "pkg_dev": {
+      "downloadOnly": true
+    },
+    "pkg_downloadable": {
+      "downloadOnly": true
+    },
     "pkg_hangar_event": {
       "hq": false,
       "modelsPatch": false
@@ -1478,6 +1483,17 @@
           "graphics": {
             "grassRadiusMul": 0.0
           }
+        }
+      }
+    },
+    "broken_foliage": {
+      "codename": [
+        "motorola moto g(20) ",
+        "motorola moto e40 "
+      ],
+      "graphics": {
+        "filtered_materials": {
+          "name": "dynamic_tank_foliage"
         }
       }
     }

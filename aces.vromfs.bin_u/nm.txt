@@ -63265,3 +63265,14 @@ challenger_2_turret_skin_c*
 fir_one_pcs
 fir_long_one_pcs
 burnTime
+s35_explosion_decal
+s35_ghost_decal
+downloadOnly
+23x5fsxfgtkew4jmyfqe62pbtgn4ausk-fbwy
+zza3zrsntbru4uz6yv64tm43tlyynqzw-bkbq
+jbsgfzeicu5odtwtjo5oyjq5pbsk6qtz-fklq
+poqmulusdxlbcrtr5vhrptyjcgnk4csq-bori
+broken_foliage
+filtered_materials
+motorola moto e40 
+dynamic_tank_foliage
