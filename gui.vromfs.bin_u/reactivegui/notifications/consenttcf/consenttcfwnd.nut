@@ -24,7 +24,7 @@ let mkPageStatusLoadError = @() mkIntroStatus("\n".concat(loc("failed_to_load_da
 
 let consentTcfWnd = bgShaded.__merge({
   key
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   animations = wndSwitchAnim

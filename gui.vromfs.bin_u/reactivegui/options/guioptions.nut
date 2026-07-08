@@ -83,6 +83,7 @@ let optListScriptOnly = [
   "OPT_AUTO_OFFER_TO_BUY_UNIT"
   "OPT_AUTO_DELETE_REPLAYS"
   "OPT_AUTO_ZOOM_WALKER"
+  "OPT_SIGHT_DISTANCE"
 ]
 
 let optListLocalScriptOnly = [

@@ -75,7 +75,7 @@ let statusView = {
 }
 
 let mkStatusRow = @(icon, iconColor, text, ovr = {}) {
-  size = flex()
+  size = FLEX
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(5)
@@ -169,7 +169,7 @@ function buttons(uid) {
 }
 
 let separator = {
-  size = [flex(), hdpxi(2)]
+  size = [FLEX, hdpxi(2)]
   rendObj = ROBJ_IMAGE
   image = lineGradientHor
 }
@@ -189,7 +189,7 @@ function memberInfo(uid) {
     children = [
       contactAvatar(info.get(), avatarSize)
       contactNameBlock(contact.get(), info.get(), [status, battleStatus, contactLevelBlock(info.get(), { valign = ALIGN_BOTTOM })])
-        .__update({ size = [flex(), avatarSize] })
+        .__update({ size = [FLEX, avatarSize] })
       buttons(uid)
     ]
   }
@@ -258,7 +258,7 @@ let animLines = @(rect) function() {
   ]
 
   return res.__update({
-    size = flex()
+    size = FLEX
     children = mkAnimGrowLines(mkAGLinesCfgOrdered(lines, hdpx(3000)))
   })
 }
@@ -279,7 +279,7 @@ function content() {
 
   return {
     watch = openParams
-    size = flex()
+    size = FLEX
     children = [
       mkCutBg([rect])
       {
@@ -295,7 +295,7 @@ function content() {
 
 let openImpl = @() addModalWindow({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = content
   onClick = close
 })

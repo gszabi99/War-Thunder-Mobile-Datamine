@@ -44,7 +44,7 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
-  "minRelativeTankCameraThreshold": 1.47,
+  "minRelativeTankCameraThreshold": 1.35,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "controlDevices": {
@@ -2725,7 +2725,7 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      3.8,
+      3.7,
       -12.6
     ],
     "headPosOnShooting": [

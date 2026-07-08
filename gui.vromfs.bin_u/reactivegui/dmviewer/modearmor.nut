@@ -121,14 +121,14 @@ function hintComp() {
 
   return {
     watch = isModeActive
-    size= flex()
+    size= FLEX
     children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
   }
 }
 
 let unitStatusComp = @() !isModeActive.get() ? { watch = isModeActive } : {
   watch = [isModeActive, dmViewerUnitReady]
-  size = flex()
+  size = FLEX
   children = isModeActive.get() && dmViewerUnitReady.get() && hangar_get_dm_viewer_parts_count() == 0
     ? mkUnitStatusText(loc("armor_class/no_armoring/common"))
     : null

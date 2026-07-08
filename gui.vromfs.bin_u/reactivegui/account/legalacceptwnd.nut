@@ -80,10 +80,10 @@ let acceptButton = mkCustomButton(
   buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
 let wndContent = {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  gap =  { size = flex() }
+  gap =  { size = FLEX }
   padding = buttonsHGap
   children = [
     legalList
@@ -93,7 +93,7 @@ let wndContent = {
 
 let legalWnd = bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   onAttach = @() sendUiBqEvent("legal_accept_wnd", { id = "open" })
   onClick = EMPTY_ACTION
   children = @() modalWndBg.__merge({

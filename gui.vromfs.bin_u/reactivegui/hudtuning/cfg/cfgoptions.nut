@@ -153,7 +153,22 @@ let gearDownOnStopButtonTouch = {
   valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
 }
 
-let isBulletsRight = @(options, elemId) options?.bulletsRight[elemId] ?? tuningStateDefault.customOptions.bulletsRight
+let hasSplitSideGunBullets = @(options, _ = null) options?.splitSideGunBullets
+  ?? tuningStateDefault.customOptions.splitSideGunBullets
+let optSplitSideGunBullets = {
+  id = "splitSideGunBullets"
+  locId = "options/splitSideGunBullets"
+  ctrlType = OCT_LIST
+  has = hasSplitSideGunBullets
+  list = [false, true]
+  getValue = hasSplitSideGunBullets
+  function setValue(options, _, value) {
+    options.splitSideGunBullets <- value
+  }
+  valToString = @(v) v ? loc("options/separateSideGunBullets") : loc("options/combinedSideGunBullets")
+}
+
+let isBulletsRight = @(options, elemId) options?.bulletsRight[elemId] ?? tuningStateDefault.options.bulletsRight
 let optBulletsRight = {
   id = "bulletsRight"
   locId = "options/bulletsAlign"
@@ -196,6 +211,8 @@ return {
 
   optBulletsRight
   isBulletsRight
+
+  optSplitSideGunBullets
 
   optVisible
   getElemVisible

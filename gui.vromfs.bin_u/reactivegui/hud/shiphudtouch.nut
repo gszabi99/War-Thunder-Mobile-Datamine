@@ -14,7 +14,7 @@ let { hitIndicator } = require("%rGui/hud/shipHitIndicator.nut")
 
 return @() {
   watch = isInStrategyMode
-  size = flex()
+  size = FLEX
   children = isInStrategyMode.get()
     ? strategyHud
     : {

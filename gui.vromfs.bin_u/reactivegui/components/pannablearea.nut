@@ -7,7 +7,7 @@ let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
 let isMoveByKeys = Computed(@() isGamepad.get() || isKeyboard.get())
 
 let pannableBase = {
-  size = flex()
+  size = FLEX
   behavior = Behaviors.Pannable
   touchMarginPriority = TOUCH_BACKGROUND
   skipDirPadNav = true
@@ -56,7 +56,7 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
   return function mkVerticalPannableArea(content, rootOvr = {}, pannableOvr = {}) {
     let root = {
       watch = isMoveByKeys
-      size = [flex(), height]
+      size = [FLEX, height]
       pos = [0, -scrollOffset[0]]
       rendObj = ROBJ_MASK
       clipChildren = true
@@ -81,9 +81,9 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
             children = pannableBaseExt.__merge({
               flow = FLOW_VERTICAL
               children = [
-                { size = [flex(), scrollOffset[0]] }
+                { size = [FLEX, scrollOffset[0]] }
                 content
-                { size = [flex(), scrollOffset[1]] }
+                { size = [FLEX, scrollOffset[1]] }
               ]
             }, pannableOvr)
           }
@@ -124,7 +124,7 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
   return function mkHorizontalPannableArea(content, rootOvr = {}, pannableOvr = {}) {
     let root = {
       watch = isMoveByKeys
-      size = [width, flex()]
+      size = [width, FLEX]
       pos = [-scrollOffset[0], 0]
       rendObj = ROBJ_MASK
       clipChildren = true
@@ -149,9 +149,9 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
             children = pannableBaseExt.__merge({
               flow = FLOW_HORIZONTAL
               children = [
-                { size = [scrollOffset[0], flex()] }
+                { size = [scrollOffset[0], FLEX] }
                 content
-                { size = [scrollOffset[1], flex()] }
+                { size = [scrollOffset[1], FLEX] }
               ]
             }, pannableOvr)
           }

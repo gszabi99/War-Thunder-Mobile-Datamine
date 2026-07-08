@@ -105,7 +105,7 @@ let forestallVisible = @(color) {
 }
 
 let forestallComponent = @() {
-  size = flex()
+  size = FLEX
   pos = [-saBorders[0], -saBorders[1]]
   children = forestallVisible(radarIndicationColor)
 }
@@ -114,7 +114,7 @@ let radarIndication = @() !IsRadarHudVisible.get() ? { watch = IsRadarHudVisible
   watch = [IsForestallVisible, IsRadarHudVisible]
   rendObj = ROBJ_DAS_CANVAS
   script = dasRadarIndication
-  size = flex()
+  size = FLEX
   drawFunc = "draw_radar_indication"
   setupFunc = "setup_data"
   color = radarIndicationColor

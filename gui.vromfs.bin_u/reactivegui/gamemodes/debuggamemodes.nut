@@ -59,14 +59,14 @@ function gameModesList() {
           return
         eventbus_send("queueToGameMode", { modeId })
       },
-      { ovr = { size = const [flex(), hdpx(100)] }, useFlexText = true }))
+      { ovr = { size = const [FLEX, hdpx(100)] }, useFlexText = true }))
 
   if (modes.len() == 0)
     return res
 
   let rows = arrayByRows(modes, 2)
   if (rows.top().len() < 2)
-    rows.top().resize(2, { size = flex() })
+    rows.top().resize(2, { size = FLEX })
 
   return res.__update({
     size = FLEX_H
@@ -112,7 +112,7 @@ function gameModesTabs() {
 
 return @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close }]]
   children = {
@@ -134,7 +134,7 @@ return @() addModalWindow({
             rendObj = ROBJ_TEXT
             text = "Debug game modes"
           }.__update(fontSmall)
-          { size = flex() }
+          { size = FLEX }
           closeButton(close)
         ]
       }

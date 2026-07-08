@@ -7,7 +7,7 @@ let { getMedalPresentationWithCtor } = require("%rGui/mpStatistics/medalsCtors.n
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { viewStats, mkStatRow, mkMarqueeRow, mkMarqueeText } = require("%rGui/mpStatistics/statRow.nut")
+let { viewStats, mkStatRow, mkRow, mkMarqueeText } = require("%rGui/mpStatistics/statRow.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
@@ -30,7 +30,7 @@ let minMedalsInRow = 4
 let columns = max(((medalsBlockWidth - scrollPaddingsWidth) / (medalsGap + levelHolderSize)).tointeger(), minMedalsInRow)
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
 
-let pannableArea = verticalPannableAreaCtor(sh(100) - backButtonHeight - gapBackButton,
+let pannableArea = verticalPannableAreaCtor(saSize[1] - backButtonHeight + gapBackButton,
   [hdpx(50), hdpx(50)])
 let scrollHandler = ScrollHandler()
 
@@ -49,7 +49,7 @@ let mkMedals = @(selCampaign) function() {
   }
   return {
     watch = servProfile
-    size = flex()
+    size = FLEX
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(30)
@@ -109,16 +109,16 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
             flow = FLOW_VERTICAL
             children = [
               mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
-              mkMarqueeRow(loc("stats/maxLevel"), $"{myMaxLevel}/{my}")
-              mkMarqueeRow(loc("stats/research"), $"{myResearch}/{allResearch}")
-              mkMarqueeRow(loc("stats/blueprint"), $"{myBlueprint}/{allBlueprint}")
-              mkMarqueeRow(loc("stats/premium"), $"{myPremium}/{allPremium}", premIcon)
+              mkRow(loc("stats/maxLevel"), $"{myMaxLevel}/{my}")
+              mkRow(loc("stats/research"), $"{myResearch}/{allResearch}")
+              mkRow(loc("stats/blueprint"), $"{myBlueprint}/{allBlueprint}")
+              mkRow(loc("stats/premium"), $"{myPremium}/{allPremium}", premIcon)
               mySeasonPrem == 0 ? null
-                : mkMarqueeRow(loc("stats/seasonPremium"), $"{mySeasonPrem}", premIcon)
+                : mkRow(loc("stats/seasonPremium"), $"{mySeasonPrem}", premIcon)
               myCollectible == 0 ? null
-                : mkMarqueeRow(loc("stats/rare"), $"{myCollectible}")
+                : mkRow(loc("stats/rare"), $"{myCollectible}")
               myOther == 0 ? null
-                : mkMarqueeRow(loc("stats/other"), $"{myOther}")
+                : mkRow(loc("stats/other"), $"{myOther}")
             ]
           }
         }
@@ -130,7 +130,7 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
             valign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
+              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
           }
         }
       ]
@@ -175,7 +175,7 @@ return function() {
   return {
     onAttach = actualizeStats
     watch = campaignsList
-    size = flex()
+    size = FLEX
     children = [
       pannableArea(
         {
@@ -188,7 +188,7 @@ return function() {
         { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler }
       )
       {
-        size = flex()
+        size = FLEX
         hplace = ALIGN_CENTER
         children = [
           mkScrollArrow(scrollHandler, MR_T, scrollArrowImageSmall)

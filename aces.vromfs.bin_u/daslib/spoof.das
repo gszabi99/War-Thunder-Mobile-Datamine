@@ -19,23 +19,23 @@ require strings
 let SPOOF_SPEFICAL = '%'
 
 [macro_function]
-def spoof_args(invocation : string; blk : block<(var res : array<tuple<string; string>>; errors : array<ParsingError>) : void>) {
+def spoof_args(invocation : string; blk : block<(var res : array<tuple<argName : string; init : string>>; errors : array<ParsingError>) : void>) {
     parse(invocation) {
-        var element_list : array<tuple<string; string>>
+        var element_list : array<tuple<argName : string; init : string>>
         rule(WS, "(", WS, *comma_separated_elements as els, WS, element as last, WS, ")") {
             els |> push <| last
             return <- els
         }
-        var comma_separated_elements : tuple<string; string>
+        var comma_separated_elements : tuple<argName : string; init : string>
         rule(WS, element as e, WS, ",") {
             return e
         }
-        var element : tuple<string; string>
+        var element : tuple<argName : string; init : string>
         rule(ident_ as e, WS, "=", WS, element_value as v) {
-            return (e, v)
+            return (argName = e, init = v)
         }
         rule(ident_ as e) {
-            return (e, "")
+            return (argName = e, init = "")
         }
         var sub_element : string
         rule("\\", "{set(0..255)}" as Ch) {    
@@ -75,7 +75,7 @@ def next_ident(var it : iterator<int>; var Ch : int&; var ident : string&) : boo
             break
         }
     }
-    return false if (id |> length == 0)
+    return false if (empty(id))
     ident = string(id)
     return true
 }
@@ -85,15 +85,13 @@ def instance_spoof(temp : string; passed_arguments : array<string>) : tuple<resu
     var args : array<tuple<argName : string; init : string>>
     var error = "no arguments found"
     spoof_args(temp) $(res, errors) {
-        if (errors |> length > 0) {
+        if (!empty(errors)) {
             error = errors |> join("\n")
         } else {
             args <- res
         }
     }
-    if (args |> length == 0) {
-        return (error, false)
-    }
+    if (empty(args)) return (result = error, ok = false)
     
     var instance_arguments : array<string>
     for (a, ai in args, count()) {
@@ -102,7 +100,7 @@ def instance_spoof(temp : string; passed_arguments : array<string>) : tuple<resu
         } elif (!empty(a.init)) {
             instance_arguments |> push <| a.init
         } else {
-            return ("invalid number of arguments", false)
+            return (result = "invalid number of arguments", ok = false)
         }
     }
     
@@ -116,9 +114,7 @@ def instance_spoof(temp : string; passed_arguments : array<string>) : tuple<resu
         }
         Ch = -1
     }
-    if (Ch == -1) {
-        return ("unexpected end of file", false)
-    }
+    if (Ch == -1) return (result = "unexpected end of file", ok = false)
     
     var result : array<uint8>
     var pendingCh : int
@@ -130,7 +126,7 @@ def instance_spoof(temp : string; passed_arguments : array<string>) : tuple<resu
         if (Ch == SPOOF_SPEFICAL) {
             var ident : string
             if (next_ident(it, Ch, ident)) {
-                var index = args |> find_index_if() $(k) {
+                let index = args |> find_index_if() $(k) {
                     return k.argName == ident
                 }
                 if (index != -1) {
@@ -149,13 +145,13 @@ def instance_spoof(temp : string; passed_arguments : array<string>) : tuple<resu
             } elif (Ch == -1) {
                 break   
             } else {
-                return ("invalid sequence after %", false)
+                return (result = "invalid sequence after %", ok = false)
             }
         } else {
             result |> push(uint8(Ch))
         }
     }
-    return (string(result), true)
+    return (result = string(result), ok = true)
 }
 
 [reader_macro(name="spoof_template")]
@@ -174,7 +170,7 @@ class SpoofTemplateReader : AstReaderMacro {
         }
     }
 
-    def override visit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprReader>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; expr : ExprReader?) : ExpressionPtr {
         return <- new ExprConstString(at = expr.at, value := expr.sequence)
     }
 }
@@ -258,7 +254,7 @@ class SpoofInstanceReader : AstReaderMacro {
         var iargs : SpoofInvocation
         var failed = false
         instance_args(string(expr.sequence)) $(res, errors) {
-            if (errors |> length > 0) {
+            if (!empty(errors)) {
                 let all_errors = errors |> join("\n")
                 prog |> macro_error(info, all_errors)
                 failed = true
@@ -268,9 +264,9 @@ class SpoofInstanceReader : AstReaderMacro {
         }
         return "" if (failed)
         
-        var inscope vptr : VariablePtr
+        var vptr : VariablePtr
         find_matching_variable(get_ptr(prog), null, iargs.varName, false) $(vars) {
-            if (vars |> length == 0) {
+            if (empty(vars)) {
                 prog |> macro_error(info, "no matching variable found for {iargs.varName}")
                 return
             } elif (vars |> length > 1) {
@@ -280,9 +276,7 @@ class SpoofInstanceReader : AstReaderMacro {
                 vptr := vars[0]
             }
         }
-        if (vptr == null) {
-            return ""
-        }
+        if (vptr == null) return ""
         if (vptr.init == null) {
             prog |> macro_error(info, "variable {iargs.varName} has no initializer")
             return ""
@@ -299,7 +293,7 @@ class SpoofInstanceReader : AstReaderMacro {
         
         outLine = int(vptr.init.at.line) + 1
         outFile = vptr.init.at.fileInfo
-        var result <- instance_spoof(string(vstr), iargs.args)
+        let result <- instance_spoof(string(vstr), iargs.args)
         if (!result.ok) {
             prog |> macro_error(info, "spoof instance error {result.result}")
             return ""

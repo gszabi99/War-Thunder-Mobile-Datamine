@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { REWARD_STYLE_MEDIUM, REWARD_STYLE_BIG, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentation.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitInfo
@@ -43,7 +43,7 @@ let mkUnitPlate = @(unitId) function() {
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
           children = infoCommonButton(
-            @() unitDetailsWnd({ name = unit.name }),
+            @() openUnitDetailsWnd({ name = unit.name }),
             { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
           )
         }
@@ -106,17 +106,17 @@ let rewardDesc = @(reward, curStage, lockText, paidText) @() {
     : loc(paidText)
 }.__update(fontTinyAccented)
 
-let defImageCtor = @(viewInfo, _) mkRewardPlateImage(viewInfo, REWARD_STYLE_LARGE)
+let defImageCtor = @(viewInfo, _) mkRewardPlateImage(viewInfo, REWARD_STYLE_BIG)
 let unitImageCtor = @(viewInfo, _) mkUnitPlate(viewInfo.id)
 
 let infoImageCtors = {
   unit = unitImageCtor
   unitUpgrade = unitImageCtor
-  decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
-  currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
-  booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_BIG : REWARD_STYLE_LARGE)
+  decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM)
+  currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
+  booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
   decal = function(viewInfo, _) {
-    let size = [1.5 * REWARD_STYLE_BIG.boxSize, REWARD_STYLE_BIG.boxSize]
+    let size = [1.5 * REWARD_STYLE_MEDIUM.boxSize, REWARD_STYLE_MEDIUM.boxSize]
     return {
       size
       rendObj = ROBJ_IMAGE
@@ -125,7 +125,7 @@ let infoImageCtors = {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = mkDecalIcon(viewInfo.id,
-        round(REWARD_STYLE_BIG.boxSize * getDecalDescPresentation(viewInfo.id).scale).tointeger())
+        round(REWARD_STYLE_MEDIUM.boxSize * getDecalDescPresentation(viewInfo.id).scale).tointeger())
     }
   }
 }
@@ -143,8 +143,8 @@ let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() 
   }
   return doubleSideGradient.__merge({
     watch = serverConfigs
-    size = [hdpx(300) + 4 * doubleSideGradientPaddingX, flex()]
-    padding = [0, doubleSideGradientPaddingX, hdpx(10), doubleSideGradientPaddingX]
+    size = [hdpx(200) + 4 * doubleSideGradientPaddingX, FLEX]
+    padding = [0, 0, hdpx(10), 0]
     hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(5)
@@ -154,13 +154,12 @@ let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() 
       : [
           (specialHeadCtors?[viewInfo?.rType] ?? mkDefaultRewardHeader)(viewInfo)
           {
-            size = flex()
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             behavior = Behaviors.Button
             onClick = @() viewInfo.rType == "lootbox" ? openLootboxPreview(viewInfo.id) : null
-            children = viewInfo == null ? null
-              : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo, reward.canReceive)
+            children = (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo, reward.canReceive)
           }
           reward.canReceive ? receiveBtn(receive, isInProgress) : rewardDesc(reward, curStage, lockText, paidText)
         ]

@@ -5,6 +5,7 @@ let { isStringInteger } = require("%sqstd/string.nut")
 let { loadUnitWeaponSlots, loadUnitSlotsParams, loadUnitReqModifications
 } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { hangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -35,8 +36,11 @@ let curBeltIdx = mkWatched(persist, "curBeltIdx", 0)
 let slotBeltKey = @(idx) $"unit_mods_slot_belt_{idx}"
 let slotWeaponKey = @(idx) $"unit_mods_slot_weapon_{idx}"
 
-let curUnit = Computed(@() campMyUnits.get()?[openedUnitId.get()] || serverConfigs.get()?.allUnits[openedUnitId.get()])
-let isOwn = Computed(@() openedUnitId.get() in campMyUnits.get())
+let curUnit = Computed(@() baseUnit.get() && baseUnit.get().name == openedUnitId.get() ? baseUnit.get()
+  : campMyUnits.get()?[openedUnitId.get()]
+    ?? serverConfigs.get()?.allUnits[openedUnitId.get()])
+let isOwn = Computed(@() openedUnitId.get() in campMyUnits.get()
+  && campMyUnits.get()[openedUnitId.get()].isUpgraded == curUnit.get().isUpgraded)
 
 let weaponSlots = Computed(@() openedUnitId.get() == null ? [] : loadUnitWeaponSlots(openedUnitId.get()))
 let curSlot = Computed(@() weaponSlots.get()?[curSlotIdx.get()])
@@ -60,7 +64,7 @@ curSlotIdx.subscribe(@(v) v < 0 ? null : curBeltsWeaponIdx.set(-1))
 
 function openUnitModsSlotsWnd() {
   needSetSlotOnOpen.set(true)
-  openUnitId(hangarUnitName.get())
+  openUnitId(baseUnit.get()?.name ?? hangarUnitName.get())
 }
 
 function isBeltWeapon(weapon) {
@@ -355,9 +359,13 @@ function mkWeaponStates(weapon, unitMods, unit) {
   let modName = Computed(@() weapon.get()?.reqModification ?? "")
   let mod = Computed(@() unitMods.get()?[modName.get()])
   let reqLevel = Computed(@() mod.get()?.reqLevel ?? 0)
-  let isLocked = Computed(@() reqLevel.get() > (unit.get()?.level ?? 0)
+  let isDisplayedAsPurchased = Computed(@() unit.get()?.isPremium || unit.get()?.isUpgraded)
+  let isLocked = Computed(@() (reqLevel.get() > (unit.get()?.level ?? 0)
     || (modName.get() != "" && mod.get() == null))
-  let isPurchased = Computed(@() modName.get() == "" || unit.get()?.mods[modName.get()] != null)
+      && !isDisplayedAsPurchased.get())
+  let isPurchased = Computed(@() isDisplayedAsPurchased.get()
+    || modName.get() == ""
+    || unit.get()?.mods[modName.get()] != null)
   return { modName, mod, reqLevel, isLocked, isPurchased }
 }
 

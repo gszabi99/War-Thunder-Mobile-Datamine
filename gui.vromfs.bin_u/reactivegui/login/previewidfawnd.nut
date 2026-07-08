@@ -27,7 +27,7 @@ let textBlock = @(text, color){
 let showPreviewWnd = @()
   addModalWindow({
     key = PREWIEW_IDFA_WND_UID
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     rendObj = ROBJ_SOLID
     color = 0xD211141A

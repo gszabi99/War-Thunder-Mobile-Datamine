@@ -7,31 +7,28 @@ let { registerScene } = require("%rGui/navState.nut")
 let { unitInfoPanelFull, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonCommon, mkButtonTextMultiline, mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
-} = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
-let { closeUnitDetailsWnd, baseUnit, unitToShow, isWindowAttached, openUnitDetailsWnd,
+let { closeUnitDetailsWnd, baseUnit, unitToShow, isWindowAttached,
   unitDetailsOpenCount
 } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { hasAlwaysModsBtnByCamp } = require("%rGui/unitMods/unitModsConst.nut")
-let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
-let { PRIMARY, defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { clearDmViewerUnitDataCollection } = require("%rGui/dmViewer/dmViewerState.nut")
 let dmViewerBgComps = require("%rGui/dmViewer/dmViewerBgComps.nut")
 let dmViewerHintComps = require("%rGui/dmViewer/dmViewerHintComps.nut")
 let mkDmViewerSwitchComp = require("%rGui/dmViewer/mkDmViewerSwitchComp.nut")
 let mkBtnOpenProtectionAnalysis = require("%rGui/dmViewer/mkBtnOpenProtectionAnalysis.nut")
+let { mkBtnOpenUnitMastery } = require("%rGui/unitMastery/btnOpenUnitMastery.nut")
 
 
 let buttonsGap = hdpx(40)
@@ -40,7 +37,6 @@ let frameButtonIconSize = hdpxi(50)
 let frameButtonGap = hdpx(5)
 
 let openCount = Computed(@() baseUnit.get() != null ? unitDetailsOpenCount.get() : 0)
-let hasUnseenRewards = Computed(@() baseUnit.get()?.name in unseenUnitLvlRewardsList.get())
 
 let leftBtnSizeWithRewardBtn = [defButtonMinWidth + frameButtonIconSize * 2 + frameButtonGap * 2, defButtonHeight]
 
@@ -85,24 +81,6 @@ let unitInfoPanelPlace = @() {
   })
 }
 
-let rewardsButton = @() {
-  watch = [hasUnseenRewards, baseUnit]
-  children = !hasUnseenRewards.get() ? null
-    : [
-        mkCustomButton(
-          mkFrameImg(
-            mkButtonTextMultiline(utf8ToUpper(loc("unitLevelUp/rewardBtn")),
-              { size = [hdpx(300), SIZE_TO_CONTENT]}),
-            "laurels", frameButtonIconSize),
-          @() openUnitRewardsModal(baseUnit.get()),
-          mergeStyles(PRIMARY, { hotkeys = ["^J:LT"] }))
-        {
-          margin = textButtonUnseenMargin
-          children = priorityUnseenMark
-        }
-      ]
-}
-
 let testDriveButton = @() {
   watch = [can_debug_units, hasHangarUnitResources]
   children = !can_debug_units.get() || !hasHangarUnitResources.get() ? null
@@ -116,14 +94,14 @@ function buttonsBlock() {
   let myUnit = campMyUnits.get()?[name]
   let isOwnUnitPreview = myUnit != null && myUnit.isUpgraded == isUpgraded
   return {
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
-    watch = [curCampaign, hasSlotAttrPreset, baseUnit, hasUnseenRewards, campMyUnits]
-    gap = hdpx(30)
+    watch = [curCampaign, hasSlotAttrPreset, baseUnit, campMyUnits]
+    gap = hdpx(15)
     children = [
-      { size = flex() }
+      { size = FLEX }
       mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
-      rewardsButton
+      mkBtnOpenUnitMastery(baseUnit, { ovr = { size = leftBtnSizeWithRewardBtn }})
       testDriveButton
       !isOwnUnitPreview && !hasAlwaysModsBtnByCamp?[curCampaign.get()] ? null
         : {
@@ -146,12 +124,12 @@ function buttonsBlock() {
 }
 
 let sceneContent = {
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_HORIZONTAL
   children = [
     {
-      size = flex()
+      size = FLEX
       children = [
         sceneHeader
         buttonsBlock
@@ -177,11 +155,9 @@ let sceneRoot = {
     isWindowAttached.set(false)
   }
   children = {
-    size = flex()
+    size = FLEX
     children = [].extend(dmViewerBgComps, [ sceneContent ], dmViewerHintComps)
   }
 }
 
 registerScene("unitDetailWnd", sceneRoot, closeUnitDetailsWnd, openCount)
-
-return openUnitDetailsWnd

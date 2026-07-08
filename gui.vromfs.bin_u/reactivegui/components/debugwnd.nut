@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
+let { object_to_json_string } = require("json")
 let { tostring_r, utf8ToLower } = require("%sqstd/string.nut")
 let { startswith, endswith } = require("string")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
@@ -76,7 +77,8 @@ let textArea = @(text) {
   text
 }.__update(fontVeryTiny)
 
-let dataToText = @(data) tostring_r(data, { maxdeeplevel = 10, compact = false })
+let dataToTextDef = @(data) tostring_r(data, { maxdeeplevel = 10, compact = false })
+let dataToTextJson = @(data) object_to_json_string(data, true)
 
 function defaultRowFilter(rowData, rowKey, txt) {
   if (txt == "")
@@ -150,7 +152,7 @@ let mkFilter = @(rowFilterBase, filterArr) filterArr.len() == 0 ? @(_, __) true
     }
 
 local mkInfoBlockKey = 0
-function mkInfoBlock(curTabIdx, tabs, filterText, textWatch) {
+function mkInfoBlock(curTabIdx, tabs, filterText, textWatch, dataToText) {
   let curTabV = tabs?[curTabIdx]
   local dataWatch = curTabV?.data
   if (!(dataWatch instanceof Watched))
@@ -189,7 +191,7 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch) {
   }
 }
 
-let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOverTabs = null) {
+let debugWndContent = @(tabs, curTab, filterText, close, textWatch, dataToText, childrenOverTabs = null) {
   size = [wndWidth + 2 * gap, sh(90)]
   stopMouse = true
   padding = gap
@@ -225,27 +227,14 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
       @() {
         watch = curTab
         size = FLEX_H
-        children = mkInfoBlock(curTab.get(), tabs, filterText, textWatch)
+        children = mkInfoBlock(curTab.get(), tabs, filterText, textWatch, dataToText)
       },
       { rootBase = { behavior = Behaviors.Pannable } })
   ]
 }
 
-function mkDebugScreen(tabs, close, rootOverride = {}, filterText = defFilterText) {
-  if (!(tabs instanceof Watched))
-    tabs = Watched(tabs)
-
-  let curTab = Watched(0)
-  let textWatch = Watched("")
-  return @() {
-    watch = tabs
-    size = flex()
-    children = debugWndContent(tabs.get(), curTab, filterText, close, textWatch)
-    hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
-  }.__update(rootOverride)
-}
-
-function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wndUid = "debugWnd", filterText = defFilterText
+function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wndUid = "debugWnd",
+  filterText = defFilterText, isJsonStyle = false
 ) {
   if (!(tabs instanceof Watched))
     tabs = Watched(tabs)
@@ -255,19 +244,20 @@ function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wndUid =
   let textWatch = Watched("")
   return addModalWindow({
     key = wndUid
-    size = flex()
+    size = FLEX
     hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
     children = @() {
       watch = tabs
-      size = flex()
-      children = debugWndContent(tabs.get(), curTab, filterText, close, textWatch, childrenOverTabs)
+      size = FLEX
+      children = debugWndContent(tabs.get(), curTab, filterText, close, textWatch,
+        isJsonStyle ? dataToTextJson : dataToTextDef,
+        childrenOverTabs)
     }
   }.__update(rootOverride))
 }
 
 return {
-  mkDebugScreen
-  openDebugWnd
+  openDebugWnd = kwarg(openDebugWnd)
   defaultRowFilter
   closeButton
 }

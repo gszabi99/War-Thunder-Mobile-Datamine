@@ -2,14 +2,17 @@
   "fmFile": "fm/me_262c_2b.blk",
   "model": "me_262c_2b",
   "useTouchTargeting": true,
+  "ForceFiniteFuel1": true,
+  "ForceFiniteFuelAmountRel1": 2.0,
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "german",
-  "standardExhaustFxType": "jet_exhaust",
-  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
-  "startExhaustFxType": "jet_start_exhaust",
+  "engineFxMap0": 0,
+  "engineFxMap1": 0,
+  "engineFxMap2": 1,
+  "engineFxMap3": 1,
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -2011,6 +2014,26 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
+  "engineFx": [
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "jet_exhaust",
+        "afterburner": "jet_afterburner_exhaust",
+        "start": "jet_start_exhaust"
+      }
+    },
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "jet_start_exhaust"
+      }
+    }
+  ],
   "damagePartsDependencyMap": {
     "dp": [
       {

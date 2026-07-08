@@ -38,7 +38,7 @@ let childFadeOutAnim = { prop = AnimProp.opacity, from = 1, to = 1,
   duration = dangerLineFadeTime, playFadeOut = true }
 
 let mkDangerLine = @(isTop) {
-  size = const [flex(), dangerLineH]
+  size = const [FLEX, dangerLineH]
   vplace = isTop ? ALIGN_TOP : ALIGN_BOTTOM
   rendObj = ROBJ_IMAGE
   image = simpleVerGrad
@@ -65,7 +65,7 @@ let mkDangerLine = @(isTop) {
 }
 
 let vignetteOutOfMap = {
-  size = flex()
+  size = FLEX
   children = [
     mkDangerLine(true)
     mkDangerLine(false)

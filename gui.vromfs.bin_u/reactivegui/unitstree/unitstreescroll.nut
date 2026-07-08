@@ -11,7 +11,7 @@ let SCROLL_DELAY = 1.5
 
 let scrollHandler = ScrollHandler()
 let nodeToScroll = Watched(null)
-let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
+let scrollPos = Computed(@() [ scrollHandler.elem?.getScrollOffsX() ?? 0, scrollHandler.elem?.getScrollOffsY() ?? 0 ])
 
 local animScrollCfg = null
 let aTimeScroll = 0.5

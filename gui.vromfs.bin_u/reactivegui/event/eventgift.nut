@@ -28,7 +28,7 @@ function mkGiftBtn(eventId) {
     onClick = @() eventbus_send("openUrl", { baseUrl = gift?.link ?? "" })
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#{gift?.icon}:{boxSize[0]}:{boxSize[1]}:P")
         keepAspect = KEEP_ASPECT_FIT

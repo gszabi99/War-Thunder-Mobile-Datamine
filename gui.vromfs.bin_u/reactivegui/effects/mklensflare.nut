@@ -124,7 +124,7 @@ let mkLensStarRefl = @(posScale, sizeScale, moveAnim) {
 }
 
 let lensStarOppositeHalf = @() {
-  size = flex()
+  size = FLEX
   opacity = 0
   clipChildren = true
   children = {
@@ -133,7 +133,7 @@ let lensStarOppositeHalf = @() {
     halign = ALIGN_CENTER
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         color = lensStarOppositeColor
         image = gradRing()
@@ -155,7 +155,7 @@ let lensStarOpposite = @(moveAnim) {
   children = [
     lensStarOppositeHalf().__merge({ animations = flareOpacityAnims() })
     {
-      size = flex()
+      size = FLEX
       children = [
         lensStarOppositeHalf().__merge({
           halign = ALIGN_RIGHT
@@ -225,7 +225,7 @@ let lensFlareBox = @(moveAnim) {
 }
 
 let lensFlare = @(moveAnim, hasCircles) {
-  size = flex()
+  size = FLEX
   hplace = ALIGN_CENTER
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER

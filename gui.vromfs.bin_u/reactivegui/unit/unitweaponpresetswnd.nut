@@ -40,7 +40,7 @@ function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
       iconPath,
       onClick
       {
-        iconSize = ICON_SIZE,
+        iconOvr = { size = ICON_SIZE },
         ovr = {
           size = isGamepad.get() ? [BTN_ICON_SIZE*2, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE],
           minWidth = BTN_ICON_SIZE
@@ -106,10 +106,10 @@ let contentHeader = {
 
 let mainContent = bgShadedLight.__merge({
   stopMouse = true
-  size =  flex()
+  size =  FLEX
   padding = saBordersRv
   children = {
-    size =  flex()
+    size =  FLEX
     flow = FLOW_VERTICAL
     children = [
       contentHeader
@@ -125,7 +125,7 @@ function unitWeaponPresetWnd(){
     return res
   return res.__update({
     key = {}
-    size = flex()
+    size = FLEX
     onDetach = closeUnitWeaponPresetWnd
     children = [
       mkCutBg([]),
@@ -136,7 +136,7 @@ function unitWeaponPresetWnd(){
 
 let openImpl = @() addModalWindow({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = unitWeaponPresetWnd
   onClick = closeUnitWeaponPresetWnd
   stopMouse = true

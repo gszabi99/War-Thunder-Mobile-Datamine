@@ -98,58 +98,6 @@
       ]
     ]
   },
-  "steeringTableAlternative": {
-    "point": [
-      [
-        -12.0,
-        0.0
-      ],
-      [
-        -13.0,
-        0.4
-      ],
-      [
-        -45.0,
-        0.75
-      ],
-      [
-        -70.0,
-        0.9
-      ],
-      [
-        -75.0,
-        1.0
-      ],
-      [
-        12.0,
-        0.0
-      ],
-      [
-        13.0,
-        0.1
-      ],
-      [
-        20.0,
-        0.15
-      ],
-      [
-        55.0,
-        0.6
-      ],
-      [
-        60.0,
-        0.7
-      ],
-      [
-        74.0,
-        0.8
-      ],
-      [
-        75.0,
-        1.0
-      ]
-    ]
-  },
   "tank_crew": {
     "changeTimeMult": [
       1.0,
@@ -1024,6 +972,9 @@
       -0.06
     ],
     "detectionHeight": 2.6
+  },
+  "enabled_modifications": {
+    "tank_smoke_screen_system_mod": true
   },
   "upgraded_skin": {
     "replace_tex": {

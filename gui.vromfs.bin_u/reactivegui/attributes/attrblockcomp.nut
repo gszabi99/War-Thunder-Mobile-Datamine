@@ -76,8 +76,8 @@ let mkProgressBtnContentDec = @(isAvailable) @(sf)
     watch = isAvailable
     opacity = isAvailable.get() ? 1 : 0.33
     children = [
-      bgShaded.__merge({ size = flex() })
-      btnBg.__merge({ size  = flex() })
+      bgShaded.__merge({ size = FLEX })
+      btnBg.__merge({ size  = FLEX })
       mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec)
     ]
   })
@@ -88,8 +88,8 @@ let mkProgressBtnContentInc = @(isAvailable) @(sf)
     clipChildren = true
     opacity = isAvailable.get() ? 1 : 0.33
     children = [
-      bgShaded.__merge({ size = flex() })
-      btnBg.__merge({ size  = flex() })
+      bgShaded.__merge({ size = FLEX })
+      btnBg.__merge({ size  = FLEX })
       mkIconBtn(sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc)
       isAvailable.get() ? incBtnGlare : null
     ]
@@ -172,7 +172,7 @@ function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
   return @() {
     watch = [needHover, isInteractive]
     key = level
-    size = [flex(), cellH]
+    size = [FLEX, cellH]
     rendObj = ROBJ_BOX
     fillColor = 0xFF000000
     borderColor = needHover.get() ? 0xFFE0ECF4 : 0xFF383B3D
@@ -197,7 +197,7 @@ function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
     onClick
     children = @() {
       watch = cellColor
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_BOX
       fillColor = cellColor.get()
       borderWidth = 0
@@ -229,7 +229,7 @@ let knobCtor = @(relValue, stateFlags, fullW)
       borderWidth = hdpx(2)
       children = {
         rendObj = ROBJ_IMAGE
-        size = flex()
+        size = FLEX
         image = mkColoredGradientY(0xFFFFFFFF, 0xFF555555)
 
       }

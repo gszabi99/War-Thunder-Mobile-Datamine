@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_global_variables = false
 options indenting = 4
 options strict_smart_pointers = true
@@ -55,10 +53,7 @@ def package_tag(tag : string) {
 }
 
 def package_tags(tags : array<string>) {
-    _pkg_meta.tags |> reserve(length(_pkg_meta.tags) + length(tags))
-    for (t in tags) {
-        _pkg_meta.tags |> push_clone(t)
-    }
+    _pkg_meta.tags |> push_clone_from(tags)
 }
 
 def package_min_sdk(version : string) {
@@ -129,5 +124,54 @@ def no_build() {
 def custom_build(command : string) {
     _build_kind = BuildKind.custom
     _build_command = command
+}
+
+
+
+struct ReleaseSpec {
+    name : string                       
+    main_script : string                
+    include_globs : array<string>       
+    exclude_globs : array<string>       
+    forced_modules : array<string>      
+    native_dlls : array<string>         
+    bundle_id : string                  
+}
+
+var _release_spec : ReleaseSpec
+
+def release_name(name : string) {
+    _release_spec.name = name
+}
+
+def release_main(script : string) {
+    _release_spec.main_script = script
+}
+
+def release_include(pattern : string) {
+    _release_spec.include_globs |> push(pattern)
+}
+
+def release_exclude(pattern : string) {
+    _release_spec.exclude_globs |> push(pattern)
+}
+
+def release_shared_module(name : string) {
+    _release_spec.forced_modules |> push(name)
+}
+
+
+
+
+
+
+
+
+def release_include_dll(name : string) {
+    _release_spec.native_dlls |> push(name)
+}
+
+def release_bundle_id(id : string) {
+    _release_spec.bundle_id = id
 }
 

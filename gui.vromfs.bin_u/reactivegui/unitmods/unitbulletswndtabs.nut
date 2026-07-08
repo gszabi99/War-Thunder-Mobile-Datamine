@@ -11,10 +11,10 @@ let { curBulletCategoryId, unitName } = require("%rGui/unitMods/unitModsState.nu
 let { tabH, tabW, tabContentMargin, knobSize, knobGap, tabsOvr } = require("%rGui/unitMods/unitModsConst.nut")
 let { mkBulletTypeIcon } = require("%rGui/unitMods/modsComps.nut")
 let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
-let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 
-let bgColor = 0x990C1113
 let tabContentW = tabW - tabExtraWidth
 
 let slotNumberText = @(slotNumber) slotNumber == null ? "" : "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
@@ -35,7 +35,7 @@ function tabData(tab, ovr = {}) {
 
   let unitValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : bStepWithBSetAvail.get())
   let maxValue = Computed(@() withExtraBullets.get() ? maxBullets.get() : maxCountByStep.get())
-  let countText = Computed(@() $"{count}/{maxValue.get()}")
+  let countText = Computed(@() $"{min(count, maxValue.get())}/{maxValue.get()}")
 
   let unseenUnitBullets = mkUnseenUnitBullets(unitName)
   let isPrimaryBullet = id < BULLETS_PRIM_SLOTS
@@ -44,7 +44,7 @@ function tabData(tab, ovr = {}) {
     if (bSlot == null)
       return
     let newVal = clamp(value, 0, !withExtraBullets.get()
-      ? (count + bLeftSteps.get() * bStepWithBSetAvail.get())
+      ? min(count + bLeftSteps.get() * bStepWithBSetAvail.get(), maxCountByStep.get())
       : maxBullets.get())
     if (newVal == count)
       return
@@ -55,12 +55,12 @@ function tabData(tab, ovr = {}) {
   return {
     id
     content = {
-      size = [flex(), tabH]
+      size = [FLEX, tabH]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
         {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_IMAGE
           image = Picture($"{imageBulletName}:0:P")
           keepAspect = true
@@ -69,14 +69,21 @@ function tabData(tab, ovr = {}) {
         }
         {
           maxWidth = tabContentW - tabContentMargin[1] * 2
-          vplace = ALIGN_BOTTOM
-          hplace = ALIGN_LEFT
           margin = tabContentMargin
+          vplace = ALIGN_TOP
+          hplace = ALIGN_LEFT
           rendObj = ROBJ_TEXT
-          text = slotNumberText(visIdx ?? id)
+          text = getAmmoNameShortText(bSet)
           behavior = Behaviors.Marquee
           delay = defMarqueeDelay
           speed = hdpx(50)
+        }.__update(fontVeryTinyAccentedShaded)
+        {
+          margin = tabContentMargin
+          vplace = ALIGN_BOTTOM
+          hplace = ALIGN_LEFT
+          rendObj = ROBJ_TEXT
+          text = slotNumberText(visIdx ?? id)
         }.__update(fontVeryTinyAccentedShaded)
         @() {
           watch = countText
@@ -107,7 +114,7 @@ function tabData(tab, ovr = {}) {
           padding = [knobGap, 0]
           margin = [0, 0, 0, tabExtraWidth]
           rendObj = ROBJ_SOLID
-          color = bgColor
+          color = tabBgColor
           transitions = opacityTransition
 
           children = mkBulletSlider(

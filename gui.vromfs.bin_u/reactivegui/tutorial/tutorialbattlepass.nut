@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { receiveUnlockRewards, batchReceiveRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -16,12 +16,15 @@ let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection, getStarsTotalNonUpdatable,
   progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, tutorialQuestBtnKey
 } = require("%rGui/quests/questsState.nut")
+let { shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
 let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
+let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
+let { openSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { hasFirstBattleRewards } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
@@ -40,19 +43,11 @@ let hasRewardsToReceive = Computed(function() {
   return false
 })
 
-let hasFirstBattles = Computed(function() {
-  let idx = (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1) + 1
-  if (idx < 0)
-    return false
-  let battleRewardsLen = serverConfigs.get()?.firstBattlesRewards[curCampaign.get()].len() ?? 0
-  return idx < battleRewardsLen
-})
-
 let almostReadyToShowTutorial = Computed(@() !isInSquad.get()
   && !isFinishedBattlePass.get()
   && canShowTutorialByCampaign.get()
   && hasRewardsToReceive.get()
-  && !hasFirstBattles.get())
+  && !hasFirstBattleRewards.get())
 
 let isFullProgressBar = Computed(function() {
   if (!almostReadyToShowTutorial.get())
@@ -67,7 +62,8 @@ let canStartTutorial = Computed(@() !hasModalWindows.get()
   && tutorialQuestBtnKey.get() != null
   && isMainMenuTopScene.get()
   && isBpSeasonActive.get()
-  && !isTutorialActive.get())
+  && !isTutorialActive.get()
+  && shouldShowEventMechanics.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
@@ -194,7 +190,7 @@ function startTutorial() {
         text = loc("tutorial/battlePass/openBattlePassWnd")
         objects = [{
           keys = "quest_header_btn"
-          onClick = @() openPassScene(BATTLE_PASS)
+          onClick = @() openSeasonScene(PASS_SCENE, BATTLE_PASS)
           needArrow = true
         }]
         charId = "mary_points"

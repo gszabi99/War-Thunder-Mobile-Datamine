@@ -21,7 +21,7 @@ let isOpenedEditWnd = Watched(false)
 function mkInput(pName, maxLength) {
   return textInput(pName, {
     ovr = {
-      size = [flex(), editNameInputHeight]
+      size = [FLEX, editNameInputHeight]
       margin = const [hdpx(60), 0]
       padding = hdpx(10)
       borderRadius = editNameInputHeight / 2
@@ -38,10 +38,10 @@ function mkInput(pName, maxLength) {
 
 let mainContent = @(text, onApply, maxLength) bgShadedLight.__merge({
   stopMouse = false
-  size =  flex()
+  size =  FLEX
   padding = saBordersRv
   children = {
-    size =  flex()
+    size =  FLEX
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
     children = mkCustomMsgBoxWnd(
@@ -71,7 +71,7 @@ function mkEditTextWnd(text, onApply, maxLength){
     return res
   return res.__update({
     key = {}
-    size = flex()
+    size = FLEX
     onDetach = @() isOpenedEditWnd.set(false)
     children = [ mkCutBg([]), mainContent(text, onApply, maxLength)]
   })
@@ -79,7 +79,7 @@ function mkEditTextWnd(text, onApply, maxLength){
 
 let openImpl = @(text, onApply, maxLength) addModalWindow({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = @() mkEditTextWnd(text, onApply, maxLength)
   onClick = @() isOpenedEditWnd.set(false)
   stopMouse = true

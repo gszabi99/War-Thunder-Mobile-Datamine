@@ -135,7 +135,7 @@ let xrayDoll = @(stateFlags, moveChild, size) @() {
     damagePanelBacklight(stateFlags, [size, size])
     {
       rendObj = ROBJ_XRAYDOLL
-      size = flex()
+      size = FLEX
       rotateWithCamera = true
       drawOutlines = false
       drawSilhouette = false
@@ -143,7 +143,7 @@ let xrayDoll = @(stateFlags, moveChild, size) @() {
       modulateSilhouetteColor = true
       dmIndViewYawOffset = unitType.get() == WALKER ? PI : 0
       children = {
-        size = flex()
+        size = FLEX
         behavior = XrayDoll
         transform = {}
         children = [

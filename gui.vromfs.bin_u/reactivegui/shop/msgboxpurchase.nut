@@ -59,7 +59,7 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
   openMsgBox({
     uid = NO_BALANCE_UID
     text = {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -119,7 +119,7 @@ function mkSpendingText(currencyId, goodsId, spendingCountry) {
 }
 
 let msgContent = @(text, priceComp, limitCountText, price, goodsId, spendingCountry) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -166,7 +166,7 @@ function openMsgBoxPurchase(
 
   openMsgBox({
     uid = PURCHASE_BOX_UID
-    text = msgContent(text, priceComp, limitCountText, price, goodsId, spendingCountry),
+    text = msgContent(text, priceComp, limitCountText, priceList[0], goodsId, spendingCountry),
     buttons = [
       { id = "cancel", cb = onCancel, isCancel = true, key = "purchase_cancel_btn" }
       { text = loc(purchaseLocId), cb = purchase, styleId = "PURCHASE", isDefault = true, key = "purchase_tutor_btn" }

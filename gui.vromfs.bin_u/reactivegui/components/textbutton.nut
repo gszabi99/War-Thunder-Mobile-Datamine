@@ -36,14 +36,14 @@ let patternImage = {
 }
 
 let pattern = {
-  size = flex()
+  size = FLEX
   clipChildren = true
   flow = FLOW_HORIZONTAL
   children = array(10, patternImage)
 }
 
 let mkGradient = @(override) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#gradient_button.svg")
 }.__update(override)
@@ -120,6 +120,8 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
       hasGlare = s2?.hasGlare ?? s1?.hasGlare ?? false
       repayTime = s1?.repayTime ?? s2?.repayTime ?? REPAY_TIME
       useFlexText = s2?.useFlexText ?? s1?.useFlexText ?? false
+      iconOvr = s2?.iconOvr ?? s1?.iconOvr ?? {}
+      textOvr = s2?.textOvr ?? s1?.textOvr ?? {}
     }
 
 let btnImgCache = {}
@@ -194,14 +196,14 @@ let mkImageTextContent = @(icon, iconSize, text, ovr = {}) {
   ]
 }.__update(ovr)
 
-function mkIcon(path, size) {
-  let iconSize = size ?? ICON_SIZE
+function mkIcon(path, ovr) {
+  let iconSize = ovr?.size ?? ICON_SIZE
   return {
     size = iconSize
     rendObj = ROBJ_IMAGE
-    image = Picture($"{path}:{iconSize}:{iconSize}")
+    image = Picture($"{path}:{iconSize}:{iconSize}:P")
     keepAspect = KEEP_ASPECT_FIT
-  }
+  }.__update(ovr ?? {})
 }
 
 function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
@@ -247,11 +249,11 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -282,7 +284,7 @@ let iconWithText = @(iconPath, text, style) {
   gap = hdpx(5)
   valign = ALIGN_CENTER
   children = [
-    mkIcon(iconPath, style?.iconSize)
+    mkIcon(iconPath, style?.iconOvr)
     mkButtonText(text, style, style?.textOvr ?? {})
   ]
 }
@@ -322,11 +324,11 @@ return {
     mkCustomButton(mkPriceTextsComp(text, priceComp, styleOvr, FLOW_HORIZONTAL), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) 
 
   iconButtonPrimary = @(iconPath, onClick, styleOvr = null)
-    mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr))
+    mkCustomButton(mkIcon(iconPath, styleOvr?.iconOvr), onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr))
   iconButtonCommon = @(iconPath, onClick, styleOvr = null)
-    mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.COMMON, styleOvr))
+    mkCustomButton(mkIcon(iconPath, styleOvr?.iconOvr), onClick, mergeStyles(buttonStyles.COMMON, styleOvr))
   iconButtonInactive = @(iconPath, onClick, styleOvr = null)
-    mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.INACTIVE, styleOvr))
+    mkCustomButton(mkIcon(iconPath, styleOvr?.iconOvr), onClick, mergeStyles(buttonStyles.INACTIVE, styleOvr))
 
   iconTextButton = @(iconPath, text, onClick, styleOvr = buttonStyles.SECONDARY)
     mkCustomButton(iconWithText(iconPath, text, mergeStyles(buttonStyles.SECONDARY, styleOvr)), onClick, mergeStyles(buttonStyles.SECONDARY, styleOvr))

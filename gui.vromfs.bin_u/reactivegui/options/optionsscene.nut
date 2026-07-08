@@ -13,7 +13,13 @@ let { systemOptions } = require("%rGui/options/options/systemOptions.nut")
 let { gameOptions } = require("%rGui/options/options/gameOptions.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
+
+let SCENE_ID = "optionsScene"
+let isOpened = mkWatched(persist, $"{SCENE_ID}_isOpened", false)
+let curTabId = Watched(null)
 
 let tabs = [ 
   {
@@ -76,16 +82,34 @@ let tabs = [
   }
 ]
 
+let backBtn = backButton(function() {
+  curTabId.set(null)
+  isOpened.set(false)
+})
+
 let header = {
-  size = flex()
-  halign = ALIGN_RIGHT
-  flow = FLOW_VERTICAL
-  children = [get_base_game_version_str(), get_game_version_str()]
-    .map(@(text) {
-      rendObj = ROBJ_TEXT
-      text
-      color = 0xFFC0C0C0
-    }.__update(fontVeryVeryTinyShaded))
+  size = FLEX_H
+  valign = ALIGN_CENTER
+  children = [
+    headerGradientBg([
+      backBtn
+      {
+        rendObj = ROBJ_TEXT
+        text = loc("mainmenu/btnOptions")
+      }.__update(fontBigShaded)
+    ])
+    {
+      size = FLEX_H
+      halign = ALIGN_RIGHT
+      flow = FLOW_VERTICAL
+      children = [get_base_game_version_str(), get_game_version_str()]
+        .map(@(text) {
+          rendObj = ROBJ_TEXT
+          text
+          color = 0xFFC0C0C0
+        }.__update(fontVeryVeryTinyShaded))
+    }
+  ]
 }
 
-return mkOptionsScene("optionsScene", tabs, null, null, header)
+return mkOptionsScene(SCENE_ID, tabs, isOpened, curTabId, header)

@@ -80,16 +80,16 @@ let hudByType = {
 
 let hudBase = {
   key = isHudAttached
-  size = flex()
+  size = FLEX
   onAttach = @() isHudAttached.set(true)
   onDetach = @() isHudAttached.set(false)
   children = [
     @() {
       watch = hudUnitType
-      size = flex()
+      size = FLEX
       children = {
         key = hudUnitType.get()
-        size = flex()
+        size = FLEX
         behavior = TouchCameraControl
         touchMarginPriority = TOUCH_BACKGROUND
         onTouchBegin = onTouchBeginByUnitType?[hudUnitType.get()]
@@ -98,13 +98,13 @@ let hudBase = {
     }
     @() {
       watch = [isInFlight, viewHudType, hudUnitType, isPlayingReplay]
-      size = flex()
+      size = FLEX
       children = !isInFlight.get() ? null
         : hudByType?[viewHudType.get()](hudUnitType.get(), isPlayingReplay.get())
     }
     battleResultsShort
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SCREEN_FADE
     }
   ]

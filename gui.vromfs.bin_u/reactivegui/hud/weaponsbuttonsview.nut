@@ -228,29 +228,33 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
   }
 }
 
-let mkBulletEditView = @(image, bulletNumber) {
-  size = [touchButtonSize, touchButtonSize]
-  rendObj = ROBJ_BOX
-  fillColor = hudTransparentColor
-  borderColor
-  borderWidth
-  children = [
-    {
-      rendObj = ROBJ_IMAGE
-      size = [touchButtonSize, touchButtonSize]
-      image = Picture($"{image}:{touchButtonSize}:{touchButtonSize}:P")
-      keepAspect = KEEP_ASPECT_FIT
-      color = imageColor
-    }
-    {
-      rendObj = ROBJ_TEXT
-      size = [touchButtonSize, touchButtonSize]
-      padding = const [0, hdpx(6), hdpx(2), 0]
-      valign = ALIGN_BOTTOM
-      halign = ALIGN_RIGHT
-      text = getRomanNumeral(bulletNumber)
-    }.__update(fontVeryTiny)
-  ]
+function mkBulletEditView(image, bulletNumber, scale = 1.0) {
+  let btnSize = scaleEven(touchButtonSize, scale)
+
+  return {
+    size = btnSize
+    rendObj = ROBJ_BOX
+    fillColor = hudTransparentColor
+    borderColor
+    borderWidth
+    children = [
+      {
+        rendObj = ROBJ_IMAGE
+        size = btnSize
+        image = Picture($"{image}:{btnSize}:{btnSize}:P")
+        keepAspect = KEEP_ASPECT_FIT
+        color = imageColor
+      }
+      {
+        rendObj = ROBJ_TEXT
+        size = btnSize
+        padding = const [0, hdpx(6), hdpx(2), 0]
+        valign = ALIGN_BOTTOM
+        halign = ALIGN_RIGHT
+        text = getRomanNumeral(bulletNumber)
+      }.__update(fontVeryTiny)
+    ]
+  }
 }
 
 let debuffImages = Computed(function() {
@@ -334,7 +338,7 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
           mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : Watched(true))
           @() {
             watch = [debuffImages, curRepairImageIdx, unitType, isOnCd]
-            size = flex()
+            size = FLEX
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
             clipChildren = true
@@ -342,7 +346,7 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
               isAvailable && debuffImages.get().len() > 0
                 ? {
                     rendObj = ROBJ_IMAGE
-                    size = flex()
+                    size = FLEX
                     image = Picture($"ui/gameuiskin#hud_circle_animation.svg:{btnSize}:{btnSize}:P")
                     keepAspect = KEEP_ASPECT_FIT
                     color = isOnCd.get() ? 0
@@ -711,7 +715,7 @@ function mkSimpleButton(buttonConfig, actionItem, scale) {
     children = [
       @() {
         watch = [stateFlags, btnBgStyle]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed : borderColor
         borderWidth = borderW

@@ -1,3 +1,5 @@
+from "%appGlobals/permissions.nut" import can_send_hosts_reachability_to_matching
+
 let countryToCluster = {
   AM = "RU" 
   AZ = "RU" 
@@ -189,5 +191,7 @@ let forbiddenClusters = {
 
 return {
   getClustersByCountry = @(code) countryToCluster?[code].split_by_chars(";", true) ?? []
-  getForbiddenClustersByCountry = @(code) forbiddenClusters?[code] ?? []
+  getForbiddenClustersByCountry = @(code) can_send_hosts_reachability_to_matching.get()
+    ? []
+    : (forbiddenClusters?[code] ?? [])
 }

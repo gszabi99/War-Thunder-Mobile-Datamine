@@ -17,12 +17,12 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase, add_shop_goods,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
-  add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer, apply_unit_level_rewards,
+  add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_profile, debug_apply_unit_rent, get_gdpr_report,
   get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_rewards,
-  add_unit_gold_today, get_configs_set, pp_get_currencies
+  add_unit_gold_today, get_configs_set, pp_get_currencies, add_unit_stats
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -205,7 +205,6 @@ register_command(@(id) halt_goods_purchase(id, "consolePrintResult"), "meta.halt
 register_command(@(id) add_shop_goods(id, "consolePrintResult"), "meta.add_shop_goods")
 register_command(@(id) halt_offer_purchase(id, "consolePrintResult"), "meta.halt_offer_purchase")
 register_command(@(slotIdx, exp) add_slot_exp(curCampaign.get(), slotIdx, exp, "consolePrintResult"), "meta.add_slot_exp")
-register_command(@(unitName) apply_unit_level_rewards(unitName, curCampaign.get()), "meta.apply_unit_level_rewards")
 
 register_command(@(id) get_my_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_my")
 register_command(@(id) get_base_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_base")
@@ -223,6 +222,10 @@ register_command(
 register_command(
   @() debug_apply_unit_daily_bonus_in_battle(mainHangarUnitName.get() ?? "", "consolePrintResult"),
   "meta.debug_apply_unit_daily_bonus_in_battle")
+
+register_command(@(statName, amount)
+  add_unit_stats(mainHangarUnitName.get(), statName, amount, "consolePrintResult"),
+  "meta.add_hangar_units_stats")
 
 register_command(@() upgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.upgrade_hangar_unit")
 register_command(@() downgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.downgrade_hangar_unit")

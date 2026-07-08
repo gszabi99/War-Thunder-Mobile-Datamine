@@ -42,7 +42,7 @@ let mkImage = @(path, size, ovr = null) {
 
 let textBlock = @() {
   watch = isMissionLoading
-  size = const [hdpx(800), flex()]
+  size = const [hdpx(800), FLEX]
   margin = const [hdpx(160), 0, hdpx(30), 0]
   flow = FLOW_VERTICAL
   gap = hdpx(40)
@@ -69,7 +69,7 @@ let textBlock = @() {
 
 return @() {
   watch = curCampaign
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
@@ -82,11 +82,11 @@ return @() {
       vplace = ALIGN_CENTER
     })
     {
-      size = flex()
+      size = FLEX
       children = [
          {
           vplace = ALIGN_CENTER
-          size = [flex(), mapSize]
+          size = [FLEX, mapSize]
           flow = FLOW_HORIZONTAL
           halign = ALIGN_CENTER
           gap = hdpx(10)
@@ -95,14 +95,14 @@ return @() {
                 children = [
                   curCampaign.get() not in mapBgByCamp ? null
                     : {
-                        size = flex()
+                        size = FLEX
                         margin = const [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
                         rendObj = ROBJ_IMAGE
                         image = Picture(mapBgByCamp[curCampaign.get()])
                       }
                   {
                     margin = const [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
-                    size = flex()
+                    size = FLEX
                     rendObj = ROBJ_TACTICAL_MAP
                   }
                 ]
@@ -111,21 +111,21 @@ return @() {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           transform = { scale = [2.5, 1] }
           rendObj = ROBJ_IMAGE
           image = Picture("ui/images/loading/briefingshade.avif:0:P")
         }
         {
           vplace = ALIGN_TOP
-          size = [flex(), borderSize]
+          size = [FLEX, borderSize]
           rendObj = ROBJ_SOLID
           color = 0xFF000000
           children = loadingHeader
         }
         {
           vplace = ALIGN_BOTTOM
-          size = [flex(), borderSize]
+          size = [FLEX, borderSize]
           rendObj = ROBJ_SOLID
           color = 0xFF000000
           children = mkLoadingTip({

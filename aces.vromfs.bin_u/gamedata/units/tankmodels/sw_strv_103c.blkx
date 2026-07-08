@@ -1999,8 +1999,8 @@
           "horizontal": true,
           "vertical": true,
           "defaultEnabled": true,
-          "maxAllowedRoll": 37.0,
-          "canAimingWithOneTrack": true
+          "canAimingWithOneTrack": true,
+          "isAutoTurner": true
         }
       },
       {
@@ -2206,6 +2206,12 @@
         0.0,
         0.6,
         0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
       ]
     },
     "collisionProps": {
@@ -2217,15 +2223,15 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
-      "driveGearRadius": 0.3,
-      "mainGearRatio": 1.459,
+      "driveGearRadius": 0.27,
+      "mainGearRatio": 1.313,
       "sideGearRatio": 6.25,
-      "neutralGearRatio": 13.0,
+      "neutralGearRatio": 6.0,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
-          -1.12,
+          -1.02,
           -1.74,
           -2.4,
           -3.43,
@@ -2237,15 +2243,17 @@
           3.43,
           2.4,
           1.74,
-          1.47,
-          1.0
+          1.5,
+          1.3,
+          1.15,
+          1.01
         ]
       }
     },
     "suspension": {
       "suspensionOffsets": [
         -0.3,
-        -0.24,
+        -0.38,
         0.3
       ],
       "defaultGearRadius": 0.37,
@@ -2957,9 +2965,6 @@
     "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
-    "machinegun_belt_ap": {},
-    "machinegun_belt_tracer": {},
-    "machinegun_belt_stealth": {},
     "art_support_smoke": {},
     "art_support_mortars": {},
     "art_support_highcaliber": {},
@@ -3035,8 +3040,8 @@
                 "horizontal": true,
                 "vertical": true,
                 "defaultEnabled": true,
-                "maxAllowedRoll": 37.0,
-                "canAimingWithOneTrack": true
+                "canAimingWithOneTrack": true,
+                "isAutoTurner": true
               }
             },
             {

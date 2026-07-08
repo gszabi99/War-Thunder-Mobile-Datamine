@@ -49,7 +49,7 @@ let manageButtons = {
   flow = FLOW_HORIZONTAL
   children = [
     textButtonCommon(utf8ToUpper(loc("consentWnd/manage/acceptAll")), @() applyConsent(defaultPointsTable.map(@(_) true), { wnd="consentManage", action="accept_all" }))
-    {size = flex()}
+    {size = FLEX}
     textButtonPrimary(utf8ToUpper(loc("consentWnd/manage/acceptChoosen")), @() applyConsent(chosenPoints.map(@(v) v.get()), { wnd="consentManage", action="accept_chosen" }))
   ]
 }

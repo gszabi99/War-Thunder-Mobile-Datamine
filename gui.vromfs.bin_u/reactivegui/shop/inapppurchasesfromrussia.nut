@@ -4,6 +4,8 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { register_command } = require("console")
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
 let { toIntegerSafe } = require("%sqstd/string.nut")
+let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
+let { has_payments_blocked_web_page } = require("%appGlobals/permissions.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { addGoodsInfoGuids, goodsInfo } = require("%rGui/shop/byPlatform/gaijinGoodsInfo.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
@@ -84,6 +86,8 @@ goodsInfo.subscribe(function(_) {
     removeWaitbox(WND_UID)
 })
 
+let needShowMsgBoxInAppPurchasesRussia = Computed(@() has_payments_blocked_web_page.get() && !isExternalOperator())
+
 function openMsgBoxInAppPurchasesFromRussia(goods) {
   let { purchaseGuids = {}, relatedGaijinId = "" } = goods
   let relatedGoodsGuid = campConfigs.get()?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
@@ -119,5 +123,6 @@ register_command(function() {
 
 return {
   isForbiddenPlatformPurchaseFromRussia
+  needShowMsgBoxInAppPurchasesRussia
   openMsgBoxInAppPurchasesFromRussia
 }

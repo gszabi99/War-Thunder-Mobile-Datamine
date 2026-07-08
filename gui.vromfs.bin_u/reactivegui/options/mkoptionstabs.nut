@@ -63,17 +63,17 @@ function tabData(tab, idx, curTabIdx) {
     id = idx
     isVisible
     content = {
-      size = [ flex(), tabHeight ]
+      size = [ FLEX, tabHeight ]
       padding = tabPadding
       children = [
         {
-          size = flex()
+          size = FLEX
           flow = FLOW_HORIZONTAL
           gap = hdpx(10)
           children = [
             mkImage(image, imageSizeMul, imageTabOffset)
             tabContent ?? {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_TEXTAREA
               behavior = [Behaviors.TextArea, Behaviors.Marquee]
               halign = ALIGN_RIGHT

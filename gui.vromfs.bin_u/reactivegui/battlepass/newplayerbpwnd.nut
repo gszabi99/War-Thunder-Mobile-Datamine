@@ -11,7 +11,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd, isNPWndOpened,
-selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, seasonEndTime, sendNpBqEvent
+selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, nbpSeasonEndTime, sendNpBqEvent
 } = require("%rGui/battlePass/newPlayerBpState.nut")
 let { getRewardPlateSize, mkRewardPlate, REWARD_STYLE_MEDIUM  } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin} = require("%rGui/battlePass/bpCardsStyle.nut")
@@ -25,7 +25,7 @@ let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { buyPlatformGoods, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 
 
@@ -47,11 +47,11 @@ let header = {
     mkText(utf8ToUpper(loc("newPlayerPass/header")), fontMedium)
     mkText(loc("newPlayerPass/headerDescription"), fontTinyAccented)
     @() {
-      watch = [serverTime, seasonEndTime]
+      watch = [serverTime, nbpSeasonEndTime]
       rendObj = ROBJ_TEXT
-      text = !seasonEndTime.get() || (seasonEndTime.get() - serverTime.get() < 0)
+      text = !nbpSeasonEndTime.get() || (nbpSeasonEndTime.get() - serverTime.get() < 0)
         ? loc("lb/seasonFinished")
-        : loc("battlepass/endsin", { time = secondsToHoursLoc(seasonEndTime.get() - serverTime.get())})
+        : loc("battlepass/endsin", { time = secondsToHoursLoc(nbpSeasonEndTime.get() - serverTime.get())})
     }.__update(fontVeryTiny)
   ]
 }
@@ -88,7 +88,7 @@ function buyButton(goods) {
         }
       }
     ),
-    { size = [flex(), defButtonHeight], vplace = ALIGN_BOTTOM, halign = ALIGN_CENTER, valign = ALIGN_CENTER })
+    { size = [FLEX, defButtonHeight], vplace = ALIGN_BOTTOM, halign = ALIGN_CENTER, valign = ALIGN_CENTER })
 }
 
 let passCard = @() {
@@ -107,7 +107,7 @@ let passCard = @() {
       hplace = ALIGN_CENTER
       vplace = ALIGN_TOP
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         halign = ALIGN_CENTER
@@ -141,7 +141,7 @@ let previewComp = @(viewInfo) viewInfo?.rType != "unit" ? null : {
   behavior = Behaviors.Button
   function onClick() {
     closeMsgBox("npRewardInfo")
-    unitDetailsWnd({ name = viewInfo.id })
+    openUnitDetailsWnd({ name = viewInfo.id })
   }
   color = 0x80000000
   hplace = ALIGN_LEFT
@@ -161,7 +161,7 @@ function rewardInfoMsg(reward) {
   openMsgBox({
     uid = "npRewardInfo"
     text = {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       flow = FLOW_VERTICAL
@@ -257,7 +257,7 @@ let rewardsList = @() {
 }
 
 let wnd = bgShaded.__merge({
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   gap = hdpx(20)
   children = [

@@ -18,7 +18,7 @@ let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
+let { logFirebaseEventWithJson, logAdjust } = require("%rGui/notifications/logEvents.nut")
 let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
 let { DBGLEVEL } = require("dagor.system")
 
@@ -339,6 +339,13 @@ function sendPurchaseLogEvent(purchaseToken, isAdded) {
     currency = currency
     price_is_discounted = false
   }, false))
+  logAdjust("purchase", object_to_json_string({
+    order_id = orderId
+    product_id = productId
+    revenue = price
+    currency = currency
+    purchase_token = purchaseToken
+  }, false))
 }
 
 function addPurchaseDataToQueue(json_value) {
@@ -505,12 +512,23 @@ eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
   registerNextTransaction()
 })
 
+eventbus_subscribe("auth.onCheckGoogleSubscriptionsDebug", function(result) {
+  if (result?.status == YU2_OK)
+    startSeveralCheckPurchases()
+})
+
+
 function getSubsId(subsIdBySkuV, skuExt) {
   let values = skuExt.split(":")
   if (values.len() < 2)
     return null
   let [ sku, planId ] = values
   return subsIdBySkuV?[sku][planId]
+}
+
+function checkSubscriptionsDebug() {
+  local value = { validate_sub = true }
+  register_googleplay_purchase(object_to_json_string(value), false, "auth.onCheckGoogleSubscriptionsDebug")
 }
 
 let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
@@ -528,4 +546,5 @@ return {
   changeSubscription
   platformPurchaseInProgress
   restorePurchases = @() restorePurchasesExt(false)
+  checkSubscriptionsDebug
 }

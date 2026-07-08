@@ -3,7 +3,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { deferOnce } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { mkGameModeByCampaign } = require("%appGlobals/gameModes/gameModes.nut")
+let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
@@ -18,7 +18,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { offlineBattlesCfg, openOfflineBattleMenu, isOfflineBattlesActive, unitSearchName, unitSearchResults,
   isDebugListMapsActive, canAccessForDebug, runOfflineBattle, initOfflineBattlesData, selectedMission,
-  skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList,
+  skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList, getOfflineBattleGameMode,
   savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
   countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit, savedUnitForReturn
 } = require("%rGui/gameModes/offlineBattlesState.nut")
@@ -37,7 +37,8 @@ let { mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 
 let SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
@@ -146,7 +147,7 @@ let unitSearchTextInput = {
   children = [
     textInput(unitSearchName, {
       ovr = {
-        size = [flex(), headerH]
+        size = [FLEX, headerH]
         padding = [hdpx(50), hdpx(85)]
         fillColor = headerBgColor
       }
@@ -195,7 +196,7 @@ let searchUnitResults = @() {
 }
 
 let mkUnitHeadItem = @(v) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = [FLEX, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   padding = [0, itemGap, 0, 0]
@@ -206,7 +207,7 @@ let mkUnitHeadItem = @(v) {
       behavior = Behaviors.Button
       function onClick() {
         savedUnitForReturn.set(selectedUnit.get()?.name ?? "")
-        unitDetailsWnd({ name = selectedUnit.get().name })
+        openUnitDetailsWnd({ name = selectedUnit.get().name })
       }
       rendObj = ROBJ_BOX
       borderWidth = hdpx(2)
@@ -279,7 +280,7 @@ let mkSelectorMission = @(list, mission) mkFoldableSelector(list, mission, 1,
   mkMissionListItem, mkMissionHeadItem, curOpenedSelector, "mission")
 
 function misParamsContent() {
-  let gmCfg = mkGameModeByCampaign(getCampaignPresentation(curCampaign.get()).campaign)
+  let gmCfg = Computed(@() getOfflineBattleGameMode(curCampaign.get(), allGameModes.get()))
   let isCommonUnit = Computed(function() {
     let { isPremium = false, isHidden = false } = selectedUnit.get()
     return !isPremium && !isHidden
@@ -376,20 +377,22 @@ let searchBlock = {
 }
 
 let wndHeader = {
-  size = flex()
+  size = FLEX
   valign = ALIGN_TOP
-  flow = FLOW_HORIZONTAL
   gap = buttonsVGap
   minHeight = hdpx(700)
   children = [
-    backButton(close)
+    headerGradientBg(
+      [
+        backButton(close)
+         {
+           rendObj = ROBJ_TEXT
+           text = loc("mainmenu/offlineBattles")
+         }.__update(fontBig)
+      ],
+      { vplace = ALIGN_TOP })
     {
-      rendObj = ROBJ_TEXT
-      size = FLEX_H
-      text = loc("mainmenu/offlineBattles")
-    }.__update(fontBig)
-    {
-      size = [rightPanelWidth, flex()]
+      size = [rightPanelWidth, FLEX]
       hplace = ALIGN_RIGHT
       vplace = ALIGN_TOP
       children = makeVertScroll({
@@ -461,7 +464,7 @@ function onUnitChange(unit) {
 
 let content = {
   key = {}
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   function onAttach() {
@@ -486,7 +489,7 @@ let content = {
   onDetach = @() selectedUnit.unsubscribe(onUnitChange)
   children = [
     wndHeader
-    { size = flex() }
+    { size = FLEX }
     mkUnitPkgDownloadInfo(selectedUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
     wndFooter
   ]
@@ -494,7 +497,7 @@ let content = {
 
 let offlineBattlesWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND

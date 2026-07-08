@@ -16,7 +16,7 @@ let mkSquareButtonEditView = @(img){
   halign = ALIGN_CENTER
   children = [
     @() {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_BOX
       borderColor = borderColor
       borderWidth
@@ -47,7 +47,7 @@ function mkSimpleSquareButton(shortcutId, img, scale) {
       children = [
         @() {
           watch = [stateFlags, btnBgStyle]
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_BOX
           borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed : borderColor
           borderWidth = borderW

@@ -11,4 +11,4 @@ let tabs = Computed(@() [
   { id = "platformOffer", data = platformOffer.get() }
 ])
 
-return @() openDebugWnd(tabs)
+return @() openDebugWnd({ tabs })

@@ -20,11 +20,11 @@ function tabData(tab) {
   return {
     id
     content = {
-      size = [ flex(),  tabH ]
+      size = [ FLEX,  tabH ]
       children = [
         image == null ? null
           : {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_IMAGE
               image = Picture($"{image}:0:P")
               keepAspect = KEEP_ASPECT_FIT

@@ -202,7 +202,7 @@ return {
   vplace = ALIGN_CENTER
   children = [
     {
-      size = flex()
+      size = FLEX
       behavior = TouchCameraControl
       touchMarginPriority = TOUCH_BACKGROUND
     }

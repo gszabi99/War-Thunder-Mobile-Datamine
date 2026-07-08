@@ -1,20 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
-let { getEventPresentation, eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
-let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
-  unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
-  bestCampLevel, curEventLootboxes, curEventLoc,
-  curEvent, MAIN_EVENT_ID, curEventSeason, isCurEventActive,
-  curEventBg, curEventName, specialEventsWithTree, specialEventGamercardItems
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
+  bestCampLevel, curEventLootboxes,curEvent, MAIN_EVENT_ID, isCurEventActive,
+  curEventName, specialEventsWithTree, specialEventGamercardItems, campToBack, closeEventShellCleanup
 } = require("%rGui/event/eventState.nut")
+let { closeSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, leaderbordBtn, questsBtn
+let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, leaderbordBtn
 } = require("%rGui/event/eventPkg.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -23,9 +18,6 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { has_leaderboard } = require("%appGlobals/permissions.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader, mkJackpotProgress, mkJackpotProgressBar,
@@ -38,7 +30,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -53,12 +45,12 @@ let { onCampaignChange } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { needFirstBattleTutorForCampaign } = require("%rGui/tutorial/tutorialMissions.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+let { contentH } = require("%rGui/battlePass/battlePassPkg.nut")
 
 
-let campToBack = mkWatched(persist, "campToBack", null)
-
+let iconSize = hdpxi(60)
+let bottomPanelH = saBorders[1] + iconSize
 let MAX_LOOTBOXES_AMOUNT = 3
-let headerGap = hdpx(30)
 let contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
@@ -163,12 +155,11 @@ function mkLootboxBlock(lootbox, blockSize) {
 }
 
 function onClose() {
-  campToBack.set(null)
   if (isEventWndLootboxOpen.get())
     closeEventWndLootbox()
   else {
-    unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEventName.get()))
-    closeEventWnd()
+    closeEventShellCleanup()
+    closeSeasonScene()
   }
 }
 
@@ -177,29 +168,11 @@ isCurEventActive.subscribe(function(isActive) {
     return
   if (isEventWndLootboxOpen.get())
     closeEventWndLootbox()
-  closeEventWnd()
-})
-
-function mkCurrencies() {
-  let currensiesByLootbox = eventWndLootbox.get()?.currencyId
-    ? [eventWndLootbox.get().currencyId]
-    : curEventLootboxes.get()
-        .reduce(@(res, l) res.$rawset(l.currencyId, true), {})
-        .keys()
-  return {
-    watch = [curEventLootboxes, eventWndLootbox]
-    hplace = ALIGN_RIGHT
-    children = currensiesByLootbox.len() < 1 ? null
-      : {
-        pos = [saBorders[0], 0]
-        padding = [hdpx(10), saBorders[0]]
-        rendObj = ROBJ_IMAGE
-        image = simpleHorGrad
-        color = 0x70000000
-        children = mkCurrenciesBtns(currensiesByLootbox).__update({ size = SIZE_TO_CONTENT })
-      }
+  else {
+    closeEventShellCleanup()
+    closeSeasonScene()
   }
-}
+})
 
 let consumablesPlate = @(battleCampaign, itemsByGameMode) @(){
   watch = [itemsCfgByCampaignOrdered, specialEventGamercardItems]
@@ -257,57 +230,7 @@ let mkToBattleButton = @(gameMode, modeName, campaign) mkToBattleButtonWithSquad
   },
   gameMode)
 
-let eventGamercard = {
-  size = [flex(), gamercardHeight]
-  valign = ALIGN_CENTER
-  gap = headerGap
-  children = [
-    {
-      pos = [-saBordersRv[1], 0]
-      rendObj = ROBJ_IMAGE
-      image = simpleHorGrad
-      color = 0x80000000
-      padding = const [hdpx(20), hdpx(50), hdpx(17), saBordersRv[1]]
-      flipX = true
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_CENTER
-      gap = hdpx(20)
-      children = [
-        backButton(onClose)
-        {
-          flow = FLOW_VERTICAL
-          children = [
-            {
-              flow = FLOW_HORIZONTAL
-              gap = headerGap
-              valign = ALIGN_BOTTOM
-              children = [
-                @() {
-                  watch = curEventLoc
-                  rendObj = ROBJ_TEXT
-                  text = curEventLoc.get()
-                }.__update(fontBig)
-                infoEllipseButton(@() openNewsWndTagged($"event_{curEventName.get()}_{curEventSeason.get()}"))
-              ]
-            }
-
-            @() {
-              watch = [serverTime, curEventEndsAt]
-              children = !curEventEndsAt.get() || (curEventEndsAt.get() - serverTime.get() < 0) ? null
-                : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.get() - serverTime.get()),
-                    "quests/untilTheEnd",
-                    { key = "event_time" }.__update(fontTinyAccented))
-            }
-          ]
-        }
-      ]
-    }
-    { size = flex() }
-    mkCurrencies
-  ]
-}
-
-let pannableArea = verticalPannableAreaCtor(sh(100) - wndHeaderHeight - saBorders[1],
+let pannableArea = verticalPannableAreaCtor(sh(100) - wndHeaderHeight - saBorders[1] - bottomPanelH,
   [saBorders[1], saBorders[1]])
 let scrollHandler = ScrollHandler()
 
@@ -321,13 +244,12 @@ function mkLootboxPreviewContent() {
   let progressInfo = mkJackpotProgress(
     Computed(@() getStepsToNextFixed(eventWndLootbox.get(), serverConfigs.get(), servProfile.get())))
   return {
-    size = flex()
-    padding = const [hdpx(40), 0, 0, 0]
+    size = FLEX
     flow = FLOW_HORIZONTAL
     gap = contentGap
     children = [
       {
-        size = [rewardsBlockWidth, flex()]
+        size = [rewardsBlockWidth, FLEX]
         children = [
           pannableArea(lootboxContentBlock(eventWndLootbox, rewardsBlockWidth, { size = FLEX_H}),
           {},
@@ -337,13 +259,13 @@ function mkLootboxPreviewContent() {
       }
       @() {
         watch = eventWndLootbox
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = eventWndLootbox.get() == null ? null
           : [
               lootboxHeader(eventWndLootbox.get())
-              { size = flex() }
+              { size = FLEX }
               lootboxImageWithTimer(eventWndLootbox.get())
               { size = flex(3) }
               progressInfo
@@ -369,27 +291,21 @@ function eventWndContent() {
   })
   return @() {
     watch = [isEventWndLootboxOpen, battleInfo, battleCampaign, itemsByGameMode]
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
-    children = [eventGamercard]
+    children = []
       .extend(isEventWndLootboxOpen.get()
         ? [ mkLootboxPreviewContent() ]
         : [
             {
-              size = flex()
+              size = FLEX
               children = [
                 {
-                  hplace = ALIGN_CENTER
-                  rendObj = ROBJ_TEXT
-                  text = loc("events/tapToSelect")
-                  animations = wndSwitchAnim
-                }.__update(fontMediumShaded)
-                {
-                  size = flex()
+                  size = FLEX
                   children = @() {
                     watch = [curEventLootboxes, blockSize]
-                    size = flex()
+                    size = FLEX
                     margin = const [0, 0, hdpx(120), 0]
                     flow = FLOW_HORIZONTAL
                     hplace = ALIGN_CENTER
@@ -411,8 +327,6 @@ function eventWndContent() {
                       flow = FLOW_HORIZONTAL
                       gap = buttonsHGap
                       children = [
-                        curEventName.get() in specialEventsWithTree.get() ? null
-                          : questsBtn
                         @() {
                           watch = [has_leaderboard, curEvent]
                           size = [SIZE_TO_CONTENT, defButtonHeight]
@@ -451,13 +365,15 @@ function eventWndContent() {
   }
 }
 
+
 let wndKey = {}
-let eventWnd = @() {
+
+let mkEventWnd = @() {
   watch = [curCampaign, campToBack]
   key = wndKey
-  size = flex()
-  function onAttach(){
-    if(campToBack.get() != curCampaign.get() && campToBack.get() != null){
+  size = [FLEX, contentH]
+  function onAttach() {
+    if(campToBack.get() != curCampaign.get() && campToBack.get() != null) {
       setCampaign(campToBack.get())
       campToBack.set(null)
     }
@@ -466,8 +382,4 @@ let eventWnd = @() {
   animations = wndSwitchAnim
 }
 
-let sceneId = "eventWnd"
-registerScene(sceneId, eventWnd, closeEventWnd, eventWndOpenCounter)
-setSceneBgFallback(sceneId, eventBgFallback)
-setSceneBg(sceneId, curEventBg.get())
-curEventBg.subscribe(@(v) setSceneBg(sceneId, v))
+return mkEventWnd

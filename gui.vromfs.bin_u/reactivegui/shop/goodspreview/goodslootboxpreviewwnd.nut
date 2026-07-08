@@ -72,14 +72,14 @@ function balanceButtons() {
 }
 
 let headerPanel = {
-  size = [flex(), wndHeaderHeight]
+  size = [FLEX, wndHeaderHeight]
   vplace = ALIGN_TOP
   hplace = ALIGN_LEFT
   valign = ALIGN_CENTER
   children = [
     {
       pos = [-saBordersRv[1], 0]
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       gap = horGap
       children = [
@@ -118,7 +118,7 @@ let pannableArea = verticalPannableAreaCtor(wndContentHeight + contentGradientSi
   contentGradientSize)
 let scrollHandler = ScrollHandler()
 let content = @() {
-  size = flex()
+  size = FLEX
   flow = FLOW_HORIZONTAL
   gap = contentGap
   children = [
@@ -134,12 +134,12 @@ let content = @() {
     }
     @() {
       watch = [lootbox, lootboxAmount, purchasesCount, todayPurchasesCount, dayOffset, serverTimeDay, previewGoods]
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       children = lootbox.get() == null ? null
         : [
-            { size = flex() }
+            { size = FLEX }
             lootboxImageWithTimer(lootbox.get(), lootboxAmount.get())
             { size = flex(3) }
             mkJackpotProgress(Computed(@() getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())))
@@ -166,7 +166,7 @@ let content = @() {
 
 let previewWnd = @() {
   key = openCount
-  size = flex()
+  size = FLEX
 
   function onAttach() {
     if (!skipAnimsOnce.get())

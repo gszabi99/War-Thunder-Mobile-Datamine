@@ -81,7 +81,7 @@ let btnWithActivity = @(isActive, image, onClick, description) @() {
 let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch, {
   placeholder = nameText
   ovr = {
-    size = [flex(), optionBtnSize]
+    size = [FLEX, optionBtnSize]
     padding = [(0.2 * optionBtnSize).tointeger(), hdpx(15)]
   }
 }.__update(options))

@@ -22,7 +22,7 @@ let plus = {
 }.__update(fontBigShaded)
 
 let hoverBg = {
-  size = [pw(150), flex()]
+  size = [pw(150), FLEX]
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   color = hoverColor

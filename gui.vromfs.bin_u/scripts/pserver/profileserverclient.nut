@@ -170,7 +170,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
     deferOnce(startRelogin)
 })
 
-function doRequestOnline(action, params, id, progressId, progressValue) {
+function doRequestOnline(action, params, id, progressId, progressValue, projectId) {
   if (!isAuthorized.get()) {
     logPSC($"Skip action {action}, no token")
     sendResult({ error = "Not authorized" }, id, progressId, progressValue, action)
@@ -188,8 +188,9 @@ function doRequestOnline(action, params, id, progressId, progressValue) {
   if (params != null)
     reqData.params <- params
 
+  let headers = projectId ? { projectId } : { appid = APP_ID }
   let requestData = {
-    headers = { appid = APP_ID }
+    headers
     add_token = true
     action = actionEx
     data = reqData
@@ -199,14 +200,14 @@ function doRequestOnline(action, params, id, progressId, progressValue) {
   profile.requestEventBus(requestData, RESULT_ID, { id, params, progressId, progressValue, action })
 }
 
-function doRequestOffline(action, params, id, progressId, progressValue) {
+function doRequestOffline(action, params, id, progressId, progressValue, projectId) {
   logPSC($"Offline request {id}, method: {action}, params: {getParamsLog(params)}")
   defer(function() {
     let actionHandler = offlineActions?[action]
     eventbus_send(RESULT_ID,
       {
         ["$action"] = $"das.{action}",
-        ["$context"] = { id, params, progressId, progressValue, action },
+        ["$context"] = { id, params, progressId, progressValue, action, projectId },
         error = actionHandler == null ? "Method does not supported offline" : null,
         result = actionHandler?(params),
       })
@@ -219,7 +220,7 @@ function requestImpl(msg) {
   let { id, data } = msg
   let { progressId = null, progressValue = null } = data
   startProgress(progressId, progressValue)
-  doRequest(data.method, data?.params, id, progressId, progressValue)
+  doRequest(data.method, data?.params, id, progressId, progressValue, data?.projectId)
 }
 
 local request = requestImpl

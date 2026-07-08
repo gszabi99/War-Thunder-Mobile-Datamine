@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module ast_used shared private
@@ -28,9 +26,7 @@ class TypeVisitor : AstVisitor {
     }
     def collect(typ : TypeDeclPtr) {
         if (typ.baseType == Type.tStructure) {
-            if (usedTypes.st |> key_exists(typ.structType)) {
-                return
-            }
+            if (usedTypes.st |> key_exists(typ.structType)) return
         }
         if (typ.structType != null) {
             insert(usedTypes.st, typ.structType)
@@ -60,10 +56,9 @@ def public collect_used_types(vfun : array<Function?>; vvar : array<Variable?>; 
     
     
     var astVisitor = new TypeVisitor()
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    for (f in vfun) {
-        unsafe {
-            visit(reinterpret<FunctionPtr> f, astVisitorAdapter)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        for (f in vfun) {
+            visit(f, astVisitorAdapter)
         }
     }
     for (v in vvar) {

@@ -56,7 +56,7 @@ function depthValueUpdate() {
 submarineDepthAxisValue.subscribe(@(_) depthValueUpdate())
 
 let mkMarksOfDepth = @(countOfMarks, firstMark, scale) {
-  size = [hdpx(20 * scale), flex()]
+  size = [hdpx(20 * scale), FLEX]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(2.5 * scale)
   commands = array(max(1, countOfMarks - firstMark)).map(function(_, i) {
@@ -163,7 +163,7 @@ function mkDepthSlider(scale) {
       flow = FLOW_HORIZONTAL
       children = [
         {
-          size = [scaleWidth, flex()]
+          size = [scaleWidth, FLEX]
           children = [
             {
               size = [scaleWidth, height - 2 * sliderPadding + scaleWidth]
@@ -220,7 +220,7 @@ function mkDepthSliderEditView() {
     flow = FLOW_HORIZONTAL
     children = [
       {
-        size = [scaleWidth, flex()]
+        size = [scaleWidth, FLEX]
         children = [
           {
             size = [scaleWidth, height - 2 * sliderPadding + scaleWidth]

@@ -2,9 +2,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import load_local_settings
 
 from "app" import exitGame
-let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync,
-  check_login_pass_async, convertExternalJwtToAuthJwtWithNewAppId = @(_,__) null } = require("auth_wt")
-let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
+let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async, convertExternalJwtToAuthJwtWithNewAppId
+} = require("auth_wt")
+let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_VKID, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
@@ -15,6 +15,7 @@ let appleAccount = require("ios.account.apple")
 let { getUUID } = require("ios.platform")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let fbAccount = is_ios ? require("ios.account.facebook") : require("android.account.fb")
+let { startVKIDSignIn = @() null, signOut = @() null, VKID_RESULT_OK = 1, VKID_RESULT_CANCEL = 2 } = is_android ? require_optional("android.account.vkid") : {}
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { openUrl } = require("%scripts/url.nut")
@@ -24,7 +25,7 @@ let { getLocTextForLang } = require("dagor.localize")
 let { login_nswitch} = require("subStageAuthNSwitch.nut")
 let {parse_json} = require("json")
 let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
-let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
+let { isExternalOperator, getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 let { get_cur_circuit_block } = require("blkGetters")
 
@@ -122,6 +123,7 @@ eventbus_subscribe("CheckLoginPassDone.Apple", @(msg) checkLoginPassDoneCb(LT_AP
 eventbus_subscribe("CheckLoginPassDone.NSwitch", @(msg) checkLoginPassDoneCb(LT_NSWITCH, msg))
 eventbus_subscribe("CheckLoginPassDone.Guest", @(msg) checkLoginPassDoneCb(LT_GUEST, msg))
 eventbus_subscribe("CheckLoginPassDone.Gaijin", @(msg) checkLoginPassDoneCb(LT_GAIJIN, msg))
+eventbus_subscribe("CheckLoginPassDone.VKid", @(msg) checkLoginPassDoneCb(LT_VKID, msg))
 
 eventbus_subscribe("android.account.googleplay.onSignInCallback",
   onlyActiveStageCb(function(msg) {
@@ -145,6 +147,26 @@ eventbus_subscribe("android.account.googleplay.onSignInCallback",
     }
     logStage("Google check_login_pass_async")
     check_login_pass_async("CheckLoginPassDone.Google", player_id, server_auth, "google", "google", false, false)
+  }))
+
+eventbus_subscribe("android.account.vkid.onSignInCallback",
+  onlyActiveStageCb(function(msg) {
+    let { token, status } = msg
+    if (status != VKID_RESULT_OK) {
+      send_counter("auth.vkid_signin_errors", 1, { error = status })
+      interruptStage({ error = $"VKID sign in failed: {status}" })
+      if (status != VKID_RESULT_CANCEL) {
+        signOut()
+        errorMsgBox(YU2_UNKNOWN,
+          [
+            { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
+            { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
+          ])
+      }
+      return
+    }
+    logStage("VKID check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.VKid", token, getCurCircuitOverride("vkidClientId","0"), "vk", "vk", false, false)
   }))
 
 eventbus_subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
@@ -261,6 +283,10 @@ let loginByType = {
     if (is_android)
       googlePlayAccount.signOut(false)
     fbAccount.startFBSignIn() 
+  },
+
+  [LT_VKID] = function(_as) {
+    startVKIDSignIn() 
   },
 
   [LT_FIREBASE] = function(_as) {

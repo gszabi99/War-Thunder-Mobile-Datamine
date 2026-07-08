@@ -370,6 +370,11 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
   }))
 })
 
+eventbus_subscribe("ios.billing.onCheckSubscriptionsDebug", function(result) {
+  if (result?.status == YU2_OK)
+    startSeveralCheckPurchases()
+})
+
 let offerProductId = Computed(@() getProductId(activeOffers.get()))
 
 let productsForRequest = keepref(Computed(function(prev) {
@@ -453,6 +458,11 @@ function changeSubscription(subsOrId, _) {
   buyPlatformGoods(subsOrId)
 }
 
+function checkSubscriptionsDebug() {
+  local value = { validate_sub = true }
+  register_apple_purchase("debug_transaction_id", object_to_json_string(value), "ios.billing.onCheckSubscriptionsDebug")
+}
+
 let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
   : purchaseInProgress.get() == "" ? ""
   : offerProductId.get() == purchaseInProgress.get() ? activeOffers.get()?.id
@@ -468,4 +478,5 @@ return {
   changeSubscription
   platformPurchaseInProgress
   restorePurchases = @() restorePurchasesExt(false)
+  checkSubscriptionsDebug
 }

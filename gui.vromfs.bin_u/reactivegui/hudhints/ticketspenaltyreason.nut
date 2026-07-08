@@ -150,7 +150,7 @@ function mkPenaltyReason(data, fontOvr) {
     }.__update(fontOvr)
   ]
   return {
-    size = [penaltyReasonW, flex()]
+    size = [penaltyReasonW, FLEX]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     valign = ALIGN_BOTTOM

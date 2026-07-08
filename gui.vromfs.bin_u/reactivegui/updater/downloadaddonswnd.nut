@@ -124,11 +124,11 @@ let bottomBlock = {
 let progressWndKey = {}
 let mkProgressWnd = @() {
   key = progressWndKey
-  size = flex()
+  size = FLEX
   children = [
     loadingAnimBg
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       children = [
         mkHeaderLeft()
@@ -145,7 +145,7 @@ let mkProgressWnd = @() {
 
 let openProgressWnd = @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   children = mkProgressWnd()
   onClick = @() null
 })

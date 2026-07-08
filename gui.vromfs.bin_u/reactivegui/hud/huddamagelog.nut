@@ -54,7 +54,7 @@ function damageLogUi() {
 
   return resObj.__update({
     children = {
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       gap = shHud(5)
       key = $"damageLog_{visibleLog.get()}"

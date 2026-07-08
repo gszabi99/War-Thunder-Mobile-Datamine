@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "math" import round
 from "hangar" import DM_VIEWER_NONE, DM_VIEWER_PROTECTION
 from "hangarEventCommand" import set_protection_checker_params, protection_examination_shot,
-  hangar_protection_map_update, get_protection_map_progress, dm_viewer_reset,
+  hangar_protection_map_update, protection_map_reset, get_protection_map_progress, dm_viewer_reset,
   set_dm_viewer_pointer_screenpos
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "%sqstd/underscore.nut" import isEqual
@@ -40,6 +40,7 @@ let probabilityColor = Watched(hitProbMinorColor)
 
 let protectionMapUpdProgress = Watched(0)
 let isProtectionMapUpdating = Computed(@() ![0, 100].contains(protectionMapUpdProgress.get()))
+let isProtectionMapVisible = mkWatched(persist, "isProtectionMapVisible", false)
 
 let initialTargetPosX = sw(50)
 let initialTargetPosY = sh(50)
@@ -100,16 +101,25 @@ function onProtectionMapUpdProgress() {
     clearTimer(func)
 }
 
-dmViewerMode.subscribe(function(_) {
-  if (!isProtectionMapUpdating.get())
+function onProtectionMapReset(_) {
+  if (!isProtectionMapVisible.get())
     return
-  clearTimer(onProtectionMapUpdProgress)
-  protectionMapUpdProgress.set(0)
-})
+  if (isProtectionMapUpdating.get()) {
+    clearTimer(onProtectionMapUpdProgress)
+    protectionMapUpdProgress.set(0)
+  }
+  protection_map_reset()
+  isProtectionMapVisible.set(false)
+}
+dmViewerMode.subscribe(onProtectionMapReset)
+fireDistance.subscribe(onProtectionMapReset)
+threatUnit.subscribe(onProtectionMapReset)
+threatBulletData.subscribe(onProtectionMapReset)
 
 function protectionMapUpdate() {
   applyProtAnalysisOptions()
   resetTimeout(0.1, function() {
+    isProtectionMapVisible.set(true)
     hangar_protection_map_update()
     onProtectionMapUpdProgress()
   })

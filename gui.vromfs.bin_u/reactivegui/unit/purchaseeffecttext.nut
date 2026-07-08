@@ -14,7 +14,7 @@ let noBgColor = 0x00000000
 let blackBgColor = 0xFF000000
 
 let animatedTextBlock = @(text) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_9RECT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

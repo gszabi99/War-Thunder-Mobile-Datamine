@@ -32,6 +32,7 @@
   "bulletsCartridge": 1,
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "allowRearmOnField": true,
   "mesh": "9m114_rocket_deployed",
   "animChar": "9m114_rocket_char",

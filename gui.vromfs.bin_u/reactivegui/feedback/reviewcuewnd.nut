@@ -105,7 +105,7 @@ let mkBtnPlace = @(children) {
 }
 
 let pageRating = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   children = [
     modalWndHeaderWithClose(loc("rateGame/title"), onCloseButton)
@@ -125,7 +125,7 @@ let pageRating = {
 }
 
 let pageThankYou = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   children = [
     modalWndHeaderWithClose(loc("rateGame/thanks_for_rating"), onCloseButton)
@@ -135,7 +135,7 @@ let pageThankYou = {
 }
 
 let pageComment = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   children = [
     modalWndHeaderWithClose(loc("rateGame/thanks_for_rating"), onCloseButton)
@@ -182,7 +182,7 @@ let girlImage = @() {
 
 let reviewCueWnd = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   onAttach = @() sendRateWndEvent("attached")
   onDetach = @() sendRateWndEvent("detached")
   children = [
@@ -192,7 +192,7 @@ let reviewCueWnd = bgShaded.__merge({
       children = [
         @() {
           watch = [hasAppliedRating, isRatedExcellent]
-          size = flex()
+          size = FLEX
           halign = ALIGN_CENTER
           children = !hasAppliedRating.get() ? pageRating
             : isRatedExcellent.get() ? pageThankYou

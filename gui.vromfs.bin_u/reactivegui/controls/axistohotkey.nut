@@ -1,10 +1,10 @@
 from "%rGui/controls/shortcutConsts.nut" import *
 
 let axisHotkey = {
-  [JOY_XBOX_REAL_AXIS_L_THUMB_H] = "J:LS",
-  [JOY_XBOX_REAL_AXIS_L_THUMB_V] = "J:LS",
-  [JOY_XBOX_REAL_AXIS_R_THUMB_H] = "J:RS",
-  [JOY_XBOX_REAL_AXIS_R_THUMB_V] = "J:RS",
+  [JOY_XBOX_REAL_AXIS_L_THUMB_H] = "J:L.Thumb.h",
+  [JOY_XBOX_REAL_AXIS_L_THUMB_V] = "J:L.Thumb.v",
+  [JOY_XBOX_REAL_AXIS_R_THUMB_H] = "J:R.Thumb.h",
+  [JOY_XBOX_REAL_AXIS_R_THUMB_V] = "J:R.Thumb.v",
   [JOY_XBOX_REAL_AXIS_L_TRIGGER] = "J:LT",
   [JOY_XBOX_REAL_AXIS_R_TRIGGER] = "J:RT",
   [JOY_XBOX_REAL_AXIS_LR_TRIGGER] = "J:LT | J:RT",

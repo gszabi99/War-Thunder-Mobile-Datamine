@@ -2,21 +2,21 @@ from "%globalsDarg/darg_library.nut" import *
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
 
-let iconBgWidth = hdpx(115)
-let translucentButtonsHeight = evenPx(95)
-let iconSizeDefault = evenPx(65)
-let lineWidth = hdpx(2)
-let maxTextWidth = hdpx(450)
 
+let translucentButtonsHeight = hdpx(96)
+let translucentSmallButtonsHeight = hdpx(80)
+let lineWidth = hdpx(2)
 let iconSlotSize = evenPx(44)
 let buttonSlotHeight = evenPx(66)
+let translucentButtonsVGap = hdpx(10)
+let translucentButtonsWidth = hdpx(115)
+
 let slotBtnSize = [unitPlateSize[0] / 3 - lineWidth, buttonSlotHeight]
 
-let translucentButtonsVGap = hdpx(20)
-
-let isActive = @(sf) (sf & S_ACTIVE) != 0
-
-let textColor = 0xFFFFFFFF
+let translucentBtnStyles = {
+  PRIMARY = { size = [hdpx(115), translucentSmallButtonsHeight - lineWidth * 2], iconSize = evenPx(55) }
+  SECONDARY = { size = [hdpx(155), translucentButtonsHeight - lineWidth * 2], iconSize = evenPx(65) }
+}
 
 let COMMADN_STATE = { 
   LEFT = 0x0b0001
@@ -32,136 +32,178 @@ let bordersCommands = {
   [LEFT | RIGHT] = [[VECTOR_POLY, 0, 26, 18, 0, 82, 0, 100, 26, 100, 100, 0, 100, 0, 26]]
 }
 
-let getBorderCommand = @(mask) bordersCommands?[mask] ?? bordersCommands[0]
-
-let btnBg = {
-  size  = flex()
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = lineWidth
-  fillColor = 0x60000000
-  commands = getBorderCommand(RIGHT)
+let defaultGradientSvg = "gradient_btn_full.svg"
+let gradientSvgs = {
+  [LEFT] = "gradient_btn_left_cut.svg",
+  [RIGHT] = "gradient_btn_right_cut.svg",
+  [LEFT | RIGHT] = "gradient_btn_both_cut.svg"
 }
 
-function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
+let { PRIMARY, SECONDARY } = translucentBtnStyles
+let getBorderCommand = @(mask) bordersCommands?[mask] ?? bordersCommands[0]
+
+let textColor = 0xFFFFFFFF
+let fgColor = @(sf) sf & S_HOVER ? hoverColor : textColor
+let bgColor = @(sf) sf & S_HOVER ? hoverColor : 0xFFDEDEDE
+
+function mkBtnBg(bitMask, color, size) {
+  let w = (size[0] + 0.5).tointeger()
+  let h = (size[1] + 0.5).tointeger()
+  return {
+    size = [w, h]
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#{gradientSvgs?[bitMask] ?? defaultGradientSvg}:{h}:P")
+    color
+    texOffs = [h / 2, h / 2]
+    screenOffs = [h / 2, h / 2]
+  }
+}
+
+let btnSound = { click = "click" }
+let btnTransitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
+let btnScale = @(sf) { scale = (sf & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+
+function translucentButton(icon, onClick, text = null, mkChild = null, ovr = {}) {
   let stateFlags = Watched(0)
-  let iconSize = ((ovr?.iconSize ?? iconSizeDefault) * (ovr?.iconMul ?? 1) + 0.5).tointeger()
-  let onAttach = ovr?.onAttach
-  let onDetach = ovr?.onDetach
+  let style = text != null ? SECONDARY : PRIMARY
+  let iconSize = ((ovr?.iconSize ?? style.iconSize) * (ovr?.iconMul ?? 1) + 0.5).tointeger()
 
   return @() {
     behavior = Behaviors.Button
     watch = stateFlags
     size = ovr?.size ?? [SIZE_TO_CONTENT, translucentButtonsHeight]
     valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap = translucentButtonsVGap
     onElemState = @(v) stateFlags.set(v)
-    sound = {
-      click  = "click"
-    }
+    sound = btnSound
     onClick
-    transform = {
-      scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1]
+    transform = btnScale(stateFlags.get())
+    transitions = btnTransitions
+    onAttach = ovr?.onAttach
+    onDetach = ovr?.onDetach
+    children = {
+      key = ovr?.key
+      size = ovr?.size ?? style.size
+      valign = ALIGN_CENTER
+      children = [
+        mkBtnBg(RIGHT, bgColor(stateFlags.get()), ovr?.size ?? style.size)
+        {
+          size = FLEX
+          flow = FLOW_VERTICAL
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          children = [
+            {
+              rendObj = ROBJ_IMAGE
+              size = iconSize
+              color = fgColor(stateFlags.get())
+              image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+              keepAspect = true
+            }
+            text && {
+              rendObj = ROBJ_TEXT
+              color = fgColor(stateFlags.get())
+              text
+            }.__update(fontVeryTinyAccented)
+          ]
+        }.__update(ovr?.contentOvr ?? {})
+        mkChild?(stateFlags.get())
+      ]
     }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
-    onAttach
-    onDetach
-    children = [
-      {
-        key = ovr?.key
-        size = ovr?.size ?? [ iconBgWidth, translucentButtonsHeight - lineWidth * 2 ]
-        children = [
-          btnBg.__merge({ color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFA0A0A0 })
-          {
-            rendObj = ROBJ_IMAGE
-            size = [ iconSize, iconSize ]
-            hplace = ALIGN_CENTER
-            vplace = ALIGN_CENTER
-            color = stateFlags.get() & S_HOVER ? hoverColor : textColor
-            image = Picture($"{icon}:{iconSize}:{iconSize}:P")
-            keepAspect = KEEP_ASPECT_FIT
-          }
-          mkChild?(stateFlags.get())
-        ]
-      }
-      text == "" ? null : {
-        size = FLEX_V
-        maxWidth = maxTextWidth
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        valign = ALIGN_CENTER
-        color = stateFlags.get() & S_HOVER ? hoverColor : textColor
-        text
-      }.__update(fontSmallAccentedShaded)
-    ]
   }
 }
 
-function translucentIconButton(image, onClick, imageSize = iconSizeDefault, bgSize = [ iconBgWidth, translucentButtonsHeight ], mkChild = null) {
+function translucentIconButton(image, onClick, imageSize = PRIMARY.iconSize, bgSize = PRIMARY.size, mkChild = null) {
   let stateFlags = Watched(0)
-  return @() btnBg.__merge({
+  return @() {
     watch = stateFlags
     size = bgSize
-    color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFA0A0A0
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
+    sound = btnSound
     onClick
+    transform = btnScale(stateFlags.get())
+    transitions = btnTransitions
     children = [
+      mkBtnBg(RIGHT, bgColor(stateFlags.get()), bgSize)
       {
         rendObj = ROBJ_IMAGE
-        size = [ imageSize, imageSize ]
+        size = [imageSize, imageSize]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        color = stateFlags.get() & S_HOVER ? hoverColor : textColor
+        color = fgColor(stateFlags.get())
         image = Picture($"{image}:{imageSize}:{imageSize}:P")
         keepAspect = true
       }
       mkChild?(stateFlags.get())
     ]
-    transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
-  })
+  }
 }
 
-function translucentSlotButton(image, onClick, child = null, ovr = {}) {
+function mkSlotButton(mkChildren, onClick, ovr = {}) {
   let stateFlags = Watched(0)
-
-  return @() btnBg.__merge({
+  let bitMask = ovr?.bitMask
+  return @() {
     watch = stateFlags
     size = slotBtnSize
-    color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
-    sound = { click = "click" }
+    sound = btnSound
     onClick
     children = [
+      mkBtnBg(bitMask, (stateFlags.get() & S_HOVER) ? hoverColor : 0xFFFFFFFF, slotBtnSize)
+      {
+        size = FLEX
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = mkChildren(stateFlags.get())
+      }
+    ]
+    transform = btnScale(stateFlags.get())
+    transitions = btnTransitions
+  }.__update(ovr)
+}
+
+let translucentTextSlotButton = @(text, onClick, child = null, ovr = {})
+  mkSlotButton(@(sf) [
+    {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_TEXT
+      color = fgColor(sf)
+      text
+    }.__update(fontMediumShaded)
+    child
+  ], onClick, ovr)
+
+let translucentImgSlotButton = @(image, onClick, child = null, ovr = {})
+  mkSlotButton(function(sf) {
+    let imgSize = ovr?.iconSize ?? iconSlotSize
+    return [
       {
         rendObj = ROBJ_IMAGE
-        size = [iconSlotSize, iconSlotSize]
+        size = [imgSize, imgSize]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        color = stateFlags.get() & S_HOVER ? hoverColor : textColor
-        image = Picture($"{image}:{iconSlotSize}:{iconSlotSize}:P")
+        color = fgColor(sf)
+        image = Picture($"{image}:{imgSize}:{imgSize}:P")
         keepAspect = true
       }
       child
     ]
-    transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
-    commands = getBorderCommand(0)
-  }, ovr)
-}
+  }, onClick, ovr)
 
 return {
   translucentButton
   translucentIconButton
   translucentButtonsVGap
+  translucentButtonsWidth
   translucentButtonsHeight
+  translucentBtnStyles
 
   iconSlotSize
   slotBtnSize
-  translucentSlotButton
+  translucentImgSlotButton
+  translucentTextSlotButton
   getBorderCommand
   lineWidth
   COMMADN_STATE

@@ -38,6 +38,7 @@
   "bulletsCartridge": 4,
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "allowRearmOnField": true,
   "mesh": "waffensystem_hot_rocket_deployed",
   "animChar": "waffensystem_hot_rocket_char",

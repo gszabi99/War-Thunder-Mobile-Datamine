@@ -144,7 +144,7 @@ function spareCalc(units, itemCfg, spawnCfg, hasItems, timeWndShowing) {
     return null
   let {name, battleLimit} = itemCfg
   let spawnsBySpare = min(units.len(), (spawnCfg.maxSpawns / spawnCfg.maxSpawnsBySlot).tointeger())
-  if (spawnsBySpare < hasItems)
+  if (spawnsBySpare <= hasItems || battleLimit <= hasItems)
     return null
   let itemGoodsInfo = getItemGoodsInfo(name, spawnsBySpare - hasItems)
 
@@ -157,7 +157,7 @@ function spareCalc(units, itemCfg, spawnCfg, hasItems, timeWndShowing) {
     reqItems = spawnsBySpare,
     hasItems,
     goods = itemGoodsInfo.goods,
-    hasUsing = hasItems / spawnsBySpare,
+    hasUsing = hasItems,
     limitItems = battleLimit,
     price = itemGoodsInfo.price,
     currencyId = itemGoodsInfo.currencyId,
@@ -384,7 +384,7 @@ let mkContWithTransfToSkill = @(item) {
               image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
             }
             @() {
-              size = const [flex(), hdpx(30)]
+              size = const [FLEX, hdpx(30)]
               vplace = ALIGN_BOTTOM
               valign = ALIGN_CENTER
               halign = ALIGN_CENTER
@@ -474,7 +474,7 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
     }
     onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
-    size = flex()
+    size = FLEX
     children = {
       flow = FLOW_VERTICAL
       hplace = ALIGN_CENTER

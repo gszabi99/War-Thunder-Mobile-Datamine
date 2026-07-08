@@ -52,7 +52,7 @@ let infoComp = @() {
 }.__update(fontTiny)
 
 let bottomBlock = {
-  size = flex()
+  size = FLEX
   valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = progressbarGap
@@ -78,12 +78,12 @@ let waitSpinner = {
 let loginUpdaterKey = {}
 let mkLoginUpdater = @() {
   key = loginUpdaterKey
-  size = flex()
+  size = FLEX
   children = [
     waitSpinner
     mkTitleLogo({ margin = saBordersRv })
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       children = [
         tip

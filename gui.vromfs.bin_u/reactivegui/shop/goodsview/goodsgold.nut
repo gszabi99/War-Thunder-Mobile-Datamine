@@ -13,7 +13,7 @@ let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
 let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x01261E10
 }

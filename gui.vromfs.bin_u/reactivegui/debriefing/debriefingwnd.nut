@@ -24,7 +24,7 @@ let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isN
   activatingTimeBtns_Campaign, activatingTimeBtns_Final
 } = require("%rGui/debriefing/debriefingState.nut")
 let { randomBattleMode, allGameModes, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
-let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { isNextBattleNewbieOffline, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -41,7 +41,8 @@ let mkDebrTabsInfo = require("%rGui/debriefing/mkDebrTabsInfo.nut")
 let { debriefingTabBar } = require("%rGui/debriefing/debriefingTabBar.nut")
 let mkDebriefingEmpty = require("%rGui/debriefing/mkDebriefingEmpty.nut")
 let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
-let { openEventWnd, allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
+let { allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
+let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
@@ -74,7 +75,7 @@ let function openSpecialEvent() {
     else if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
       openTreeEventWnd(eventId)
     else
-      openEventWnd(eventId)
+      openSeasonScene(LOOTBOX_TAB, null, eventId)
   }
 }
 
@@ -282,12 +283,12 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
     if (!isFake)
       children.append(boostersListActive("debriefing"))
     return {
-      watch = [newbieOfflineMissions, isInSquad, isSquadLeader, nextGMInfo, shouldStartNewbieSingleOnline]
+      watch = [isNextBattleNewbieOffline, isInSquad, isSquadLeader, nextGMInfo, shouldStartNewbieSingleOnline]
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       children = !isInSquad.get() && isCustomOfflineBattle && name != null && mission != null
           ? children.append(mkStartCustomOfflineBattleButton(name, mission))
-        : !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get()
+        : !isInSquad.get() && isCommonBattle && isNextBattleNewbieOffline.get() && !shouldStartNewbieSingleOnline.get()
           ? children.append(startOfflineMissionButton)
         : gmId != null && campaign != null && (!isInSquad.get() || isSquadLeader.get())
           ? children.append(toBattleButton(gmId, campaign))
@@ -321,8 +322,8 @@ function debriefingWnd() {
     && curSlots.get().filter(@(slot) slot.level != 0).len() == 1
   let canStartArsenalTutorial = hasAnyLevelUnlockRewards
     && unlockedReward.type == "arsenal"
-    && debrData.completedTutorials?[TUTORIAL_UNITS_RESEARCH_ID]
-    && !debrData.completedTutorials?[TUTORIAL_ARSENAL_ID]
+    && debrData?.completedTutorials[TUTORIAL_UNITS_RESEARCH_ID]
+    && !debrData?.completedTutorials[TUTORIAL_ARSENAL_ID]
     && researchedUnit == null
   let needForceQuitToHangar = isUnitResearchedAfterTutorial
     || isFirstLvlUpForSlot
@@ -366,7 +367,7 @@ function debriefingWnd() {
       isAttached = false
       sendNewbieBqEvent("closeDebriefing", { status = isWon ? "win" : "loose" })
     }
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     children = [
       @() {
@@ -374,13 +375,13 @@ function debriefingWnd() {
         children = !isDebriefingAnimFinished.get() ? null : tapListener(debrTabsInfo)
       }
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         gap = footerGap
         padding = [0, 0, footerHeight + footerGap, 0]
         children = @() {
           watch = curDebrTabId
-          size = flex()
+          size = FLEX
           halign = ALIGN_CENTER
           children = debrTabComps?[curDebrTabId.get()] ?? mkDebriefingEmpty(debrData)
         }
@@ -393,7 +394,7 @@ function debriefingWnd() {
       
       @() {
         watch = countUpgradeButtonPushed
-        size = [flex(), footerHeight]
+        size = [FLEX, footerHeight]
         vplace = ALIGN_BOTTOM
         valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL

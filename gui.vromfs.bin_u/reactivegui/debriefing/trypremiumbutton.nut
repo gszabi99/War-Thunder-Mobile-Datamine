@@ -28,7 +28,7 @@ let textColor = 0xFFFFFFFF
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 
 let btnBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = bgColor
 }

@@ -89,9 +89,9 @@
         0.0,
         0.0
       ],
-      "explosionEffect": "hit_291_390mm_metal_he",
+      "explosionEffect": "hit_ash_missile_metal_he",
       "groundCollisionEffect": "hit_291_390mm_dirt_he",
-      "ricochetEffect": "hit_291_390mm_metal_he",
+      "ricochetEffect": "hit_ash_missile_metal_he",
       "waterFxScale": [
         0.8,
         1.0
@@ -145,7 +145,7 @@
           "angleMax": 45.0,
           "rateMax": 60.0,
           "prolongationTimeMax": 1.0,
-          "designationSourceTypeMask": 2,
+          "designationSourceType": "radar",
           "transmitter": {
             "power": 2000.0,
             "antenna": {
@@ -315,16 +315,16 @@
           "fx": "hit_291_390mm_snow_he"
         },
         "glass": {
-          "fx": "hit_291_390mm_metal_he"
+          "fx": "hit_ash_missile_metal_he"
         },
         "wood": {
           "fx": "hit_291_390mm_wood_he"
         },
         "steel": {
-          "fx": "hit_291_390mm_metal_he"
+          "fx": "hit_ash_missile_metal_he"
         },
         "metal": {
-          "fx": "hit_291_390mm_metal_he"
+          "fx": "hit_ash_missile_metal_he"
         },
         "buildings": {
           "fx": "hit_291_390mm_stone_he"

@@ -56,6 +56,7 @@ return function(unit, styleOvr) {
           @() {
             watch = [hasUnseenMarker, unseenMargin]
             margin = unseenMargin.get()
+            hplace = ALIGN_RIGHT
             children = hasUnseenMarker.get() ? priorityUnseenMark : null
           }
         ]

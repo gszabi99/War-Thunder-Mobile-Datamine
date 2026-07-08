@@ -21,12 +21,12 @@ let mkProgressStatusText = @(statusText, addStatusComp = null) @() {
 }
 
 let mkProgressbar = @(progressPercent, progressColor = defaultProgressColor) {
-  size = const [flex(), progressbarHeight]
+  size = const [FLEX, progressbarHeight]
   rendObj = ROBJ_SOLID
   color = progressbarBgColor
   children = @() {
     watch = progressPercent
-    size = [pw(progressPercent.get()), flex()]
+    size = [pw(progressPercent.get()), FLEX]
     rendObj = ROBJ_SOLID
     color = progressColor
   }

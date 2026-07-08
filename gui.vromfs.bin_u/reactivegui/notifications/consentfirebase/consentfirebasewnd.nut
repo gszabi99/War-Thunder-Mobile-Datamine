@@ -13,7 +13,7 @@ const key = "consentFirebase"
 
 let consentFirebaseWnd = bgShaded.__merge({
   key
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   animations = wndSwitchAnim

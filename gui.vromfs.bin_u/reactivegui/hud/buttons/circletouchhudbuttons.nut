@@ -267,23 +267,18 @@ let mkBigCirclePlaneBtnEditView = circleBtnPlaneEditViewCtor(bigButtonSize, bigB
 
 
 let countTextFont = fontVeryTinyShaded
-
-let mkCountTextRight = @(text, color, scale = 1) {
+let mkCountText = @(text, color, scale = 1, ovr = {}) {
   rendObj = ROBJ_TEXT
   vplace = ALIGN_BOTTOM
-  pos = [pw(80), ph(-90)]
-  color
-  text
-}.__update(getScaledFont(countTextFont, scale))
-
-let mkCountTextLeft = @(text, color, scale = 1, ovr = {}) {
-  rendObj = ROBJ_TEXT
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_RIGHT
-  pos = [pw(-80), ph(-90)]
   color
   text
 }.__update(getScaledFont(countTextFont, scale), ovr)
+
+let mkCountTextRight = @(text, color, scale = 1, ovr = {})
+  mkCountText(text, color, scale, { pos = [pw(80), ph(-90)] }.__merge(ovr))
+
+let mkCountTextLeft = @(text, color, scale = 1, ovr = {})
+  mkCountText(text, color, scale, { hplace = ALIGN_RIGHT, pos = [pw(-80), ph(-90)] }.__merge(ovr))
 
 function mkCountTextLeftUpperlist(btnSize, scale, count) {
   let font = getScaledFont(countTextFont, scale)
@@ -431,11 +426,12 @@ function mkCircleGroundMachineGun(shortcutId, actionItemW, aType, scale) {
   }
 }
 
-let mkCircleGroundSecondaryGun = @(shortcutId, aType, img = null) function(actionItem, scale) {
+let mkCircleGroundSecondaryGun = @(shortcutId, aType, img = null, countAlign = ALIGN_LEFT) function(actionItem, scale) {
   let isOnCd = Computed(@() actionItemsInCd.get()?[aType] ?? false)
   let bgSize = scaleEven(buttonSize, scale)
   let imgSize = scaleEven(buttonImgSize, scale)
   let { count, countEx, isBulletBelt = false } = actionItem
+  let countText = isBulletBelt ? $"{count}/{countEx}" : count
   return function() {
     let isAvailable = isOnCd.get() || isAvailableActionItem(actionItem)
     let isWaitForAim = !(actionItem?.aimReady ?? true)
@@ -465,7 +461,8 @@ let mkCircleGroundSecondaryGun = @(shortcutId, aType, img = null) function(actio
         mkCircleProgressBg(bgSize, actionItem)
         mkBtnBorder(bgSize, isAvailable, stateFlags)
         mkBtnImage(imgSize, image, color)
-        count < 0 ? null : mkCountTextLeft(isBulletBelt ? $"{count}/{countEx}" : count, color, scale)
+        count < 0 ? null
+          : (countAlign == ALIGN_LEFT ? mkCountTextLeft : mkCountTextRight)(countText, color, scale)
         isWaitForAim ? mkWaitForAimIcon(scale) : null
         mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
       ]
@@ -560,7 +557,7 @@ let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, isAimReady 
         mkBtnBg(bgSize, hudLightBlackColor)
         @() {
           watch = weapon
-          size = flex()
+          size = FLEX
           children = mkCircleProgressBgWeapon(bgSize, shortcutId, weapon.get(), isAvailable.get())
         }
         mkBorderPlane(bgSize, isAvailable.get(), stateFlags, scale)
@@ -624,14 +621,14 @@ function mkCirclePlaneCourseGuns(btnSizeBase, imgSizeBase, scale) {
           mkBtnBg(btnSize, hudLightBlackColor)
           @() {
             watch = availableWeapon
-            size = flex()
+            size = FLEX
             children = mkCircleProgressBgWeapon(btnSize, "course_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
           }
           mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags, scale)
           mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? imageColor : imageDisabledColor)
           @() {
             watch = [isCannonsAvailable, isMgunsAvailable, isAddGunsAvailable]
-            size = flex()
+            size = FLEX
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
             children = [
@@ -695,14 +692,14 @@ function mkCircleSecondaryGuns(btnSizeBase, imgSizeBase, scale) {
           mkBtnBg(btnSize, hudLightBlackColor)
           @() {
             watch = availableWeapon
-            size = flex()
+            size = FLEX
             children = mkCircleProgressBgWeapon(btnSize, "secondary_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
           }
           mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags, scale)
           mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? imageColor : imageDisabledColor)
           @() {
             watch = [isMgunsAvailable, isAddGunsAvailable]
-            size = flex()
+            size = FLEX
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
             children = [
@@ -751,7 +748,7 @@ function mkCirclePlaneCourseGunsSingle(shortcutId, weapon, hasWeapon, scale,
           mkBtnBg(btnSize, hudLightBlackColor)
           @() {
             watch = weapon
-            size = flex()
+            size = FLEX
             children = mkCircleProgressBgWeapon(btnSize, shortcutId, weapon.get(), isAvailable.get())
           }
           mkBorderPlane(btnSize, isAvailable.get(), stateFlags, scale)

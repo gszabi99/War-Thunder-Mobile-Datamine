@@ -27,7 +27,7 @@ let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { textButtonCommon, mkCustomButton, iconButtonPrimary, mkButtonTextMultiline } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, BATTLE, INACTIVE } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoardType, scoreBoardCfgByType, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow, mkPlateText,
+let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow, mkPlateText, mkUnitLevel,
   mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
   mkUnitSelectedUnderline, mkUnitInfo, plateTextsSmallPad, mkUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -101,12 +101,12 @@ let balanceBlock = @() {
 }
 
 let topPanel = {
-  size = [flex(), scoreBoardHeight]
+  size = [FLEX, scoreBoardHeight]
   children = [
     { size = FLEX_V, children = logerrHintsBlock }
     @() {
       watch = scoreBoardType
-      size = flex()
+      size = FLEX
       children = scoreBoardCfgByType?[scoreBoardType.get()].comp
     }
     mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
@@ -175,7 +175,7 @@ function mkSlotPlate(slot, baseUnit) {
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      mkUnitSelectedUnderline(unit, isSelected, { margin = 0, size = [flex(), selLineSize] })
+      mkUnitSelectedUnderline(unit, isSelected, { margin = 0, size = [FLEX, selLineSize] })
       {
         size = unitPlateSmall
         children = [
@@ -184,6 +184,7 @@ function mkSlotPlate(slot, baseUnit) {
           mkUnitImage(unit, !canSpawn)
           mkUnitTexts(unit, loc(p.locId), !canSpawn)
           mkSlotScorePrice(slot)
+          unit.rewardedMasteryTier > 0 ? mkUnitLevel(unit.level, unit.rewardedMasteryTier) : null
           canSpawn
               ? mkUnitInfo(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
             : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
@@ -316,7 +317,7 @@ let slotsBlockTitle = @(unit, respSlots) function() {
 
   return header(
     {
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL
@@ -334,10 +335,10 @@ let slotsBlockTitle = @(unit, respSlots) function() {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           valign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
-          gap = { size = flex() }
+          gap = { size = FLEX }
           children = [
             {
               flow = FLOW_HORIZONTAL
@@ -358,7 +359,7 @@ let slotsBlockTitle = @(unit, respSlots) function() {
         }
       ]
     }
-    { watch = [respawnsTotalInitial, sparesNum, isUseSpawnScore, respawnsLeft], size = [flex(), hdpx(100)] })
+    { watch = [respawnsTotalInitial, sparesNum, isUseSpawnScore, respawnsLeft], size = [FLEX, hdpx(100)] })
 }
 
 let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSize[0] + unitListGradientSize[1],
@@ -377,7 +378,7 @@ function slotsBlock() {
       : [
           title
           {
-            size = [flex(), unitListHeight]
+            size = [FLEX, unitListHeight]
             children = [
               pannableArea(
                 {
@@ -406,7 +407,7 @@ let map = @() {
   children = [
     visibleRespawnBases.get().len() > 0 ? header(headerText(loc("respawn/choose_respawn_point"))) : null
     bg.__merge({
-      size = const [flex(), pw(100)]
+      size = const [FLEX, pw(100)]
       padding = gap
       children = respawnMap
     })
@@ -444,7 +445,7 @@ let skinsList = @() {
         color = 0x99000000
         clipChildren = true
         children = {
-          size = flex()
+          size = FLEX
           behavior = Behaviors.Pannable
           touchMarginPriority = TOUCH_BACKGROUND
           skipDirPadNav = true
@@ -596,7 +597,7 @@ let buttons = @() {
 }
 
 let rightBlock = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_RIGHT
   margin = const [0, 0, 0, hdpx(20)]
   children = [
@@ -628,7 +629,7 @@ let respawnBulletsPlace = @() {
 let content = @() {
   watch = needRespawnSlotsAndWeaponry
   key = "respawnWndContent"
-  size = flex()
+  size = FLEX
   flow = FLOW_HORIZONTAL
   children = !needRespawnSlotsAndWeaponry.get() ? null
     : [
@@ -640,19 +641,19 @@ let content = @() {
 
 let animLines = @() {
   watch = selSlotLinesSteps
-  size = flex()
+  size = FLEX
   children = selSlotLinesSteps.get() == null ? null
     : mkAnimGrowLines(mkAGLinesCfgOrdered(selSlotLinesSteps.get(), lineSpeed))
 }
 
 return bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   onAttach = @() isRespawnAttached.set(true)
   onDetach = @() isRespawnAttached.set(false)
   children = [
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       flow = FLOW_VERTICAL
       gap = contentOffset

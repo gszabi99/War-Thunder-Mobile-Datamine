@@ -52,13 +52,13 @@ function showDecalInfoPenaltyWnd() {
   openMsgBox({
     uid = PENALTY_KEY
     text = {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       children = [
         msgBoxText(loc("msgbox/decalsPenalty"))
         @() {
           watch = timeToEndDecalsPenalty
-          size = flex()
+          size = FLEX
           children = msgBoxText($"{loc("time_to_end_penalty")} {secondsToHoursLoc(timeToEndDecalsPenalty.get())}")
         }
       ]

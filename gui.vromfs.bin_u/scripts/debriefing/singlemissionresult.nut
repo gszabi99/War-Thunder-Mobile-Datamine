@@ -7,7 +7,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isInBattle, battleSessionId, battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { lastClientBattleData, wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
-let { offlineKills } = require("offlineMissionStats.nut")
+let { offlineKills, offlineKillsByUnit } = require("offlineMissionStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let mkCommonExtras = require("mkCommonExtras.nut")
 
@@ -66,7 +66,7 @@ function getSingleMissionResult(rewardData) {
     res.reward <- { unitName }
 
   if (!isTutorial && offlineKills.get() > 0)
-    res.players <- { [myUserId.get().tostring()] = { kills = offlineKills.get() } }
+    res.players <- { [myUserId.get().tostring()] = { kills = offlineKills.get(), killsByUnit = offlineKillsByUnit.get() } }
 
   return res
 }

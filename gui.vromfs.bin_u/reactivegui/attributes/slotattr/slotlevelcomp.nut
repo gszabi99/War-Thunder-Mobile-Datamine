@@ -7,7 +7,7 @@ let levelHolderSize = [evenPx(120), evenPx(40)]
 let STEP_ICON_COUNT = 5
 
 let levelBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = levelProgressBorderWidth
   fillColor = 0xFF606060
@@ -61,10 +61,10 @@ function mkSlotLevelBlock(slot, levelsCfg, override = {}) {
     children = [
       mkSlotLevel(level, imageSize)
       mkProgressLevelBg({
-        size = [flex(), levelProgressBarHeight]
+        size = [FLEX, levelProgressBarHeight]
         padding = levelProgressBorderWidth
         children = {
-          size = [pw(100 * percent), flex()]
+          size = [pw(100 * percent), FLEX]
           rendObj = ROBJ_SOLID
           color = 0xFF65BC82
         }

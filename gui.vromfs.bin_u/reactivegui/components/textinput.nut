@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let utf8 = require("utf8")
 let textInput = require("%rGui/components/textInputBase.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 
 let multilineTextInputSize = [hdpx(780), hdpx(200)]
@@ -9,7 +10,7 @@ let MAX_MESSAGE_CHARS = 256
 let paddingY = (0.3 * defButtonHeight).tointeger()
 let defOptions = {
   ovr = {
-    size = [flex(), defButtonHeight]
+    size = [FLEX, defButtonHeight]
     padding = [paddingY, hdpx(15)]
     fillColor = Color(61, 66, 72)
   }
@@ -20,9 +21,9 @@ let defOptions = {
 let floatingTextInputHeight = hdpx(100)
 let floatingOptions = {
   ovr = {
-    size = [flex(), floatingTextInputHeight]
+    size = [FLEX, floatingTextInputHeight]
     padding = const [hdpx(10), hdpx(35)]
-    fillColor = 0x990C1113
+    fillColor = tabBgColor
   }
   textStyle = fontSmall
 }
@@ -52,14 +53,14 @@ let multilineTextInput = @(editableText, lenWatched, state, maxChars = MAX_MESSA
   gap = hdpx(10)
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_BOX
       borderWidth = hdpxi(1)
       padding = hdpx(10)
       borderColor = 0xFFFFFFFF
       fillColor = 0x50000000
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_TEXTAREA
         behavior = [Behaviors.TextAreaEdit, Behaviors.WheelScroll]
         color = 0xFFFFFFFF

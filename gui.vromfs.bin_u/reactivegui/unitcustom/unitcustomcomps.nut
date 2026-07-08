@@ -22,7 +22,7 @@ let gamercardPadding = hdpx(10)
 let gamercardHeight = backButtonHeight + gamercardPadding * 2
 
 let unseenMark = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_RIGHT
   valign = ALIGN_TOP
   padding = hdpx(10)
@@ -65,7 +65,7 @@ let toggleSectionBtn = @(isExpanded) {
   padding = [lineWidth, lineWidth, 0, lineWidth]
   children = @() {
     watch = isExpanded
-    size = flex()
+    size = FLEX
     padding = margin
     rendObj = ROBJ_BOX
     valign = ALIGN_CENTER
@@ -78,27 +78,27 @@ let toggleSectionBtn = @(isExpanded) {
 }
 
 let mkSectionBtn = @(id, onClick, isSelected, hasUnseenContent) {
-  size = [flex(), sectionBtnHeight]
+  size = [FLEX, sectionBtnHeight]
   maxWidth = sectionBtnMaxWidth
   behavior = Behaviors.Button
   onClick
   sound = { click = "choose" }
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = commonBgGradColor
     }
     @() {
       watch = isSelected
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = bgGradient
       opacity = isSelected.get() ? 1 : 0
       transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
     }
     {
-      size = flex()
+      size = FLEX
       margin = [0, sectionBtnGap / 2]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER

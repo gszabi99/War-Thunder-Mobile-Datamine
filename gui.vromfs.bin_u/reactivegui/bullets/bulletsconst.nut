@@ -16,4 +16,8 @@ return {
     [0] = 0.35, 
     [1] = 0.05 
   }
+
+  BS_VISIBLE = 0x01
+  BS_ONLY_EXTERNAL_SLOT = 0x02
+  BS_UNLOCKED = 0x04
 }

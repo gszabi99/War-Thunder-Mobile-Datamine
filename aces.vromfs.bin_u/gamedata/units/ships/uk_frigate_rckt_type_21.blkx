@@ -752,7 +752,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.4,
+        "accuracyAir": 0.0,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -810,6 +810,7 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "useEmitter": true,
+        "isSideEmitterSelection": false,
         "allowableDelta": [
           180.0,
           1.0
@@ -1264,7 +1265,7 @@
               "aimMaxDist": 14000.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.0,
-              "accuracyAir": 0.4,
+              "accuracyAir": 0.0,
               "accuracyGnd": 1.0,
               "errMeasureVel": 1.0,
               "errTargettingOn100kmph": 0.0,
@@ -1322,6 +1323,7 @@
               ],
               "emitterGenFmt": "bone_rocket_%02d",
               "useEmitter": true,
+              "isSideEmitterSelection": false,
               "allowableDelta": [
                 180.0,
                 1.0
@@ -1760,7 +1762,7 @@
               "aimMaxDist": 14000.0,
               "randomAngle": 0.0,
               "accuracyBotMultAir": 0.0,
-              "accuracyAir": 0.4,
+              "accuracyAir": 0.0,
               "accuracyGnd": 1.0,
               "errMeasureVel": 1.0,
               "errTargettingOn100kmph": 0.0,
@@ -1818,6 +1820,7 @@
               ],
               "emitterGenFmt": "bone_rocket_%02d",
               "useEmitter": true,
+              "isSideEmitterSelection": false,
               "allowableDelta": [
                 180.0,
                 1.0

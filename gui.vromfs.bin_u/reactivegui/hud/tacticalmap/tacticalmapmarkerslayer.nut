@@ -171,7 +171,7 @@ isNeedPosUpdateTimer.subscribe(function(v) {
 
 let tacticalMapMarkersLayer = @() {
   watch = mapMarkers
-  size = flex()
+  size = FLEX
   clipChildren = true
   children = mapMarkers.get().values().map(@(data) markerTypes[data.markerType].ctor(data))
 }

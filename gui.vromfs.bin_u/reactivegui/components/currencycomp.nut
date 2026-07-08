@@ -68,7 +68,7 @@ function strikeThrough(content, style = CS_COMMON) {
     children = [
       content
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         commands = [
           [VECTOR_COLOR, 0xFFE02A14],

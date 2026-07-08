@@ -158,7 +158,7 @@ function mkRewardRow(rewardInfo, idx) {
   let isReady = mkIsReady(rewardInfo)
 
   return {
-    size = flex()
+    size = FLEX
     maxHeight = boxSize + lbRewardRowPadding * 2
     padding = lbRewardRowPadding
     rendObj = ROBJ_SOLID
@@ -185,7 +185,7 @@ return modalWndBg.__merge({
   flow = FLOW_VERTICAL
   children = [
     modalWndHeaderBg.__merge({
-      size = [flex(), lbHeaderRowHeight]
+      size = [FLEX, lbHeaderRowHeight]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
@@ -201,7 +201,7 @@ return modalWndBg.__merge({
     })
     @() {
       watch = curLbRewards
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       children = curLbRewards.get().map(mkRewardRow)
     }

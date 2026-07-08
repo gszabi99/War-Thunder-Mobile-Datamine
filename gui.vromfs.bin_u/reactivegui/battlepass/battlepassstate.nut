@@ -44,9 +44,9 @@ let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
 let tutorialFreeMarkIdx = Watched(null)
 
-let seasonNumber = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? 0)
-let seasonName = Computed(@() loc($"events/name/season_{seasonNumber.get()}"))
-let seasonEndTime = Computed(@() userstatStatsTables.get()?.stats.season["$endsAt"] ?? 0)
+let bpSeasonNumber = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? 0)
+let bpSeasonName = Computed(@() loc($"events/name/season_{bpSeasonNumber.get()}"))
+let bpSeasonEndTime = Computed(@() userstatStatsTables.get()?.stats.season["$endsAt"] ?? 0)
 
 let bpProgressUnlock = Computed(@() activeUnlocks.get()?[BP_PROGRESS_UNLOCK_ID])
 let pointsPerStage   = Computed(@() bpProgressUnlock.get()?.stages[0].progress ?? 1)
@@ -54,10 +54,10 @@ let bpLevelPrice = Computed(@() getUnlockPrice(bpProgressUnlock.get()))
 
 let bpFreeRewardsUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "battle_pass_free" in unlock?.meta
-    && unlock?.activity.start_index == seasonNumber.get()))
+    && unlock?.activity.start_index == bpSeasonNumber.get()))
 let bpPaidRewardsUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "battle_pass_paid" in unlock?.meta
-    && unlock?.activity.start_index == seasonNumber.get()))
+    && unlock?.activity.start_index == bpSeasonNumber.get()))
 let bpPurchasedUnlock = Computed(@()
   activeUnlocks.get().findvalue(@(unlock) "battlepas_purchased" in unlock?.meta))
 
@@ -187,7 +187,7 @@ function getNotReceivedInfo(unlock, maxProgress) {
 
 let sendBpBqEvent = @(action, params = {}) sendCustomBqEvent("battlepass_1", params.__merge({
   action
-  name = $"season_{seasonNumber.get()}"
+  name = $"season_{bpSeasonNumber.get()}"
   stageProgress = curStage.get()
   battlepassPoints = pointsCurStage.get()
   isPassPurchased = isBpActive.get()
@@ -207,7 +207,7 @@ function receiveBpRewards(progress) {
   if (fullList.len() == 0)
     return
 
-  let total = fullList.reduce(@(res, c) res + c.finalStage - c.stage + 1, 0)
+  let total = fullList.reduce(@(res, c) res + (c?.finalStage ?? c.stage) - c.stage + 1, 0)
   sendBpBqEvent("receive_rewards", {
     paramInt1 = progress,
     paramInt2 = total
@@ -278,9 +278,9 @@ return {
   BP_PROGRESS_UNLOCK_ID
   BP_MAX_LEVELS_TO_ADD
 
-  seasonNumber
-  seasonName
-  seasonEndTime
+  bpSeasonNumber
+  bpSeasonName
+  bpSeasonEndTime
   hasBpRewardsToReceive
 
   tutorialFreeMarkIdx

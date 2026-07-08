@@ -99,7 +99,7 @@ function setPresetForOneUnit(skinsView, preset, curUnitName, curUnitSkin) {
 }
 
 let wndHeader = @(children) {
-  size = [flex(), wndHeaderHeight]
+  size = [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)
@@ -202,7 +202,7 @@ function mkTagButton(tag) {
   let isSelected = Computed(@() selTag.get() == tag)
   let underline = @() {
     watch = [isSelected, stateFlags]
-    size = [flex(), underlineSize]
+    size = [FLEX, underlineSize]
     pos = [0, underlineSize]
     vplace = ALIGN_BOTTOM
     rendObj = ROBJ_SOLID
@@ -284,7 +284,7 @@ let function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
     children = [
       @() {
         watch = [isSelected, stateFlags]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#slot_border.svg:{presetSize}:{presetSize}:P")
         color = isSelected.get() ? selectedColor : 0
@@ -472,7 +472,7 @@ function mkDebugTuneSkinsWnd() {
 
   return {
     key = isOpened
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
     behavior = HangarCameraControl
@@ -495,7 +495,7 @@ function mkDebugTuneSkinsWnd() {
       ])
       tagsList
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_HORIZONTAL
         gap = presetGap
         children = [

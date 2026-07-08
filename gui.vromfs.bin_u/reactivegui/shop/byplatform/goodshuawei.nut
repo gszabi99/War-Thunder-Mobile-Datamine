@@ -446,6 +446,16 @@ eventbus_subscribe("auth.onRegisterHuaweiPurchase", function(result) {
   registerNextTransaction()
 })
 
+eventbus_subscribe("auth.onCheckHuaweiSubscriptionsDebug", function(result) {
+  if (result?.status == YU2_OK)
+    startSeveralCheckPurchases()
+})
+
+function checkSubscriptionsDebug() {
+  local value = { validate_sub = true }
+  register_huawei_purchase(object_to_json_string(value), false, "auth.onCheckHuaweiSubscriptionsDebug")
+}
+
 let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
   : purchaseInProgress.get() == "" ? ""
   : offerSku.get() == purchaseInProgress.get() ? activeOffers.get()?.id
@@ -461,4 +471,5 @@ return {
   changeSubscription
   platformPurchaseInProgress
   restorePurchases = @() restorePurchasesExt(false)
+  checkSubscriptionsDebug
 }

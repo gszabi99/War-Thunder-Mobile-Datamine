@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { onWatchQuestAd, SPEED_UP_AD_COST, getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
@@ -15,11 +16,10 @@ let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { unlockProgress } = require("%rGui/unlocks/unlocks.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
 let { opacityTransition } = require("%rGui/components/selectedLine.nut")
 
 
-let bgGradColor = 0x990C1113
 let newMarkH = hdpxi(50)
 let newMarkTexOffs = [0, newMarkH / 2, 0, newMarkH / 10]
 let sectionBtnHeight = hdpx(70)
@@ -30,7 +30,7 @@ let linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
 let headerLineGap = isWidescreen ? hdpx(20) : hdpx(8)
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
-let childOvr = (isWidescreen ? {} : fontSmallShadedBold)
+let childOvr = isWidescreen ? {} : fontTinyAccentedShadedBold
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
 let btnGap = hdpx(10)
@@ -56,21 +56,21 @@ let newMark = {
 }
 
 let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
-  size = [flex(), sectionBtnHeight]
+  size = [FLEX, sectionBtnHeight]
   behavior = Behaviors.Button
   onClick
   sound = { click = "choose" }
   clickableInfo = loc("mainmenu/btnSelect")
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
-      color = bgGradColor
+      color = tabBgColor
     }
 
     @() {
       watch = isSelected
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = btnGradient()
       flipY = true
@@ -80,7 +80,7 @@ let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
     }
 
     {
-      size = flex()
+      size = FLEX
       margin = [0, sectionBtnGap / 2]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
@@ -116,7 +116,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
     size = [linkToEventWidth, progressBarRewardSize]
     padding = hdpx(2)
     rendObj = ROBJ_BOX
-    fillColor = bgGradColor
+    fillColor = tabBgColor
     borderWidth = hdpx(2)
     behavior = Behaviors.Button
     onClick
@@ -126,7 +126,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
     children = [
       {
         key = "quest_header_btn" 
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = [
@@ -166,7 +166,7 @@ function mkAdsBtn(unlock) {
     watch = [hasAdBudget, isProviderInited, adBudget, hasVip]
     children = mkCustomButton(
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
@@ -207,10 +207,11 @@ let lockIcon = {
 }
 
 function mkQuestText(item, ovr = {}) {
-  let locId = item.meta?.lang_id ?? item.name
-  let header = loc(locId)
-  let text = loc($"{locId}/desc")
-  let isLocked = item.meta?.chain_quest
+  let { lang_id = item.name, isMastery = false, chain_quest = null } = item?.meta
+  let header = loc(lang_id)
+  let text = isMastery ? loc($"{lang_id}/desc", { amountTxt = decimalFormat(item.required), amount = item.required })
+    : loc($"{lang_id}/desc")
+  let isLocked = chain_quest
     && item?.type == "INDEPENDENT"
     && item.requirement != ""
     && !(unlockProgress.get()?[item.requirement].isCompleted ?? false)

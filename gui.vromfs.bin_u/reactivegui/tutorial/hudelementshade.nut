@@ -79,7 +79,7 @@ function mkArrows(boxes, obstaclesVar) {
     children.append(mkPointerArrow(ovr).__merge({ pos, transform = { rotate } }))
   }
   return {
-    size = flex()
+    size = FLEX
     children
   }
 }
@@ -93,7 +93,7 @@ let shadeKey = {}
 let hudElementShade = @() {
   watch = [curBoxes, isHudShadeActive]
   key = shadeKey
-  size = flex()
+  size = FLEX
   onAttach = @() isHudShadeAtached.set(true)
   onDetach = @() isHudShadeAtached.set(false)
   children = !isHudShadeActive.get() ? null

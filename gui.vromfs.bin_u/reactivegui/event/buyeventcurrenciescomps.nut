@@ -53,13 +53,13 @@ function getImgByAmount(curId, amount) {
 }
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x0114181E
 }
 
 let questsLinkPlate = {
-  size = flex()
+  size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -138,7 +138,7 @@ function mkGoods(goods, onClick, state, animParams) {
         { size = goodsBgSize }
       )
       isAvailable.get() ? null : {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         fillColor = 0xBF000000
         children = @() {
@@ -206,7 +206,7 @@ function mkEventCurrenciesGoods() {
     flow = FLOW_VERTICAL
     children = !needUseScroll.get() ? mkCurrenciesList(cId, eventCurrenciesGoods.get(), showQuestsLink, needUseScroll.get())
       : {
-        size = flex()
+        size = FLEX
         children = [
           pannableArea(mkCurrenciesList(cId, eventCurrenciesGoods.get(), showQuestsLink, needUseScroll.get()),
             {},
@@ -255,7 +255,7 @@ let buyEventCurrenciesGamercard = @() {
   valign = ALIGN_CENTER
   children = [
     backButton(closeBuyEventCurrenciesWnd, { vplace = ALIGN_CENTER })
-    { size = flex() }
+    { size = FLEX }
     {
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL

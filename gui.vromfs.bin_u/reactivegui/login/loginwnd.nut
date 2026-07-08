@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "math" import round
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
-let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
+let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_VKID, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -60,11 +61,14 @@ eventbus_subscribe("updateAuthStates", function(params) {
   hasEmail2step.set(secStepType.get() == SST_MAIL)
 })
 
-let gaijinLogoWidth = (256.0 / 128.0 * defButtonHeight).tointeger()
-let appleLogoHeight = (0.5 * defButtonHeight).tointeger()
-let appleLogoWidth = (48.0 / 58.0 * appleLogoHeight).tointeger()
-let googleLogoHeight = (0.5 * defButtonHeight).tointeger()
-let googleLogoWidth = (59.0 / 62.0 * googleLogoHeight).tointeger()
+let gaijinLogoWidth = round(256.0 / 128.0 * defButtonHeight).tointeger()
+let appleLogoHeight = round(0.5 * defButtonHeight).tointeger()
+let appleLogoWidth = round(48.0 / 58.0 * appleLogoHeight).tointeger()
+let googleLogoHeight = round(0.5 * defButtonHeight).tointeger()
+let googleLogoWidth = round(59.0 / 62.0 * googleLogoHeight).tointeger()
+let vkLogoHeight = round(0.58 * defButtonHeight).tointeger()
+let vkLogoWidth = round(0.96 * vkLogoHeight).tointeger()
+let vkLogoGap = round(0.2 * defButtonHeight).tointeger()
 let refrIconSize = hdpxi(37)
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
@@ -145,7 +149,7 @@ let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#me
       children = {
         rendObj = ROBJ_FRAME
         borderWidth = const [0, 0, 2, 0]
-        size = flex()
+        size = FLEX
         pos = [0, 2]
       }
     }
@@ -209,7 +213,7 @@ function doResendCode() {
   })
 }
 let resendCodeBlock = @() {
-  size = const [flex(), hdpx(55)]
+  size = const [FLEX, hdpx(55)]
   flow = FLOW_HORIZONTAL
   watch = [resendTimer]
   valign = ALIGN_CENTER
@@ -333,6 +337,26 @@ let huaweiLoginButtonContent = {
   ]
 }
 
+let vkLoginButtonContent = {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = vkLogoGap
+  children = [
+    {
+      size = [vkLogoWidth, vkLogoHeight]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#icon_social_vk.svg:{vkLogoWidth}:{vkLogoHeight}")
+      keepAspect = KEEP_ASPECT_FIT
+      color = btnTxtColor
+    }
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("mainmenu/vkid")
+      color = btnTxtColor
+    }.__update(fontSmallAccented)
+  ]
+}
+
 let fbLoginButtonContent = {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -394,6 +418,9 @@ let loginButtonCtors = {
   [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_FIREBASE }),
     loginButtonStyle),
+  [LT_VKID] = @() mkCustomButton(vkLoginButtonContent,
+    @() eventbus_send("doLogin", { loginType = LT_VKID }),
+    loginButtonStyle),
   [LT_GUEST] = @() mkCustomButton(guestLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_GUEST }),
     loginButtonStyle),
@@ -421,7 +448,7 @@ let mainAuthorizationButtons = {
       vplace = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL
-      children = [LT_APPLE, LT_GOOGLE, LT_HUAWEI, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
+      children = [LT_APPLE, LT_GOOGLE, LT_HUAWEI, LT_FIREBASE, LT_VKID, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
         .filter(@(lt) availableLoginTypes?[lt] ?? false)
         .map(@(lt) loginButtonCtors?[lt]())
     }
@@ -429,7 +456,7 @@ let mainAuthorizationButtons = {
 }
 
 let langOptionsContent = {
-  size = [contentWidth, flex()]
+  size = [contentWidth, FLEX]
   flow = FLOW_VERTICAL
   halign = ALIGN_LEFT
   valign = ALIGN_CENTER
@@ -466,7 +493,7 @@ let checkAutoLogin = @() eventbus_send("login.checkAutoStart", {})
 
 let mkLoginWnd = @() {
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   rendObj = ROBJ_SOLID
   color = Color(17, 20, 26, 210)

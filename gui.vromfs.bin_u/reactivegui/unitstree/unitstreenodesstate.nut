@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { ceil } = require("math")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
@@ -27,6 +28,7 @@ let countryPriority = {
 
 let nodes = Computed(@() campConfigs.get()?.unitTreeNodes ?? {})
 let needDebugNodes = mkWatched(persist, "needDebugNodes", false)
+let needDebugLines = mkWatched(persist, "needDebugLines", false)
 
 let visibleNodes = Computed(@()
   needToShowHiddenUnitsDebug.get() ? nodes.get()
@@ -136,16 +138,104 @@ function remapNodesPositions(nodeList) {
   }
 }
 
-function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
+function calcNodesOffsetsX(nodesMap) {
+  let offsetsX = []
+  foreach (r, rankRows in nodesMap) {
+    if (offsetsX.len() <= r)
+      offsetsX.resize(r + 1, 0)
+    foreach (list in rankRows)
+      offsetsX[r] = max(offsetsX[r], list.len())
+  }
+  for (local i = 0; i < offsetsX.len(); i++)
+    offsetsX[i] += (offsetsX?[i - 1] ?? 0)
+  return offsetsX
+}
+
+function compressHeaderUnits(nodesMap, yHas, lastHeaderY) {
+  let width1 = [] 
+  let width2 = [] 
+  let headerNodes = []
+  let isFilledHeaderRow = array(lastHeaderY + 1, 0)
+  foreach (r, rankRows in nodesMap) {
+    if (width1.len() <= r) {
+      width1.resize(r + 1, 0)
+      width2.resize(r + 1, 0)
+      for (local i = headerNodes.len(); i <= r; i++)
+        headerNodes.append([])
+    }
+    foreach (y, list in rankRows)
+      if (y > lastHeaderY)
+        width2[r] = max(width2[r], list.len())
+      else if (list.len() > 0) {
+        width1[r] = max(width1[r], list.len())
+        headerNodes[r].extend(list)
+        isFilledHeaderRow[y] = 1
+      }
+  }
+
+  
+  local headerRows = 1
+  let maxHeaderRows = isFilledHeaderRow.reduce(@(res, v) res + v, 0)
+  foreach (r, list in headerNodes) {
+    if (list.len() == 0)
+      continue
+    let w = max(width1[r], width2[r])
+    headerRows = clamp(ceil(list.len().tofloat() / w).tointeger(), headerRows, maxHeaderRows)
+  }
+
+  
+  for (local y = 0; y <= lastHeaderY; y++)
+    yHas[y] = 0
+  foreach (rList in nodesMap)
+    foreach (y, yList in rList)
+      if (y <= lastHeaderY)
+        yList.clear()
+      else
+        break
+
+  
+  foreach (r, list in headerNodes) {
+    if (list.len() == 0)
+      continue
+    let w = max(width2[r], ceil(list.len().tofloat() / headerRows).tointeger())
+    width1[r] = w
+    list.sort(@(a, b) b.y <=> a.y || b.x <=> a.x) 
+    foreach (i, n in list) {
+      let row = i / w
+      let idx = i % w
+      let y = lastHeaderY - row
+      n.y = y
+      n.x = w - idx 
+      yHas[y] = 1
+      getArraySubArray(getArraySubArray(nodesMap, r), y).append(n)
+    }
+  }
+
+  let totalRanks = width1.len()
+  let offsetsX = []
+  for (local i = 0; i < totalRanks; i++)
+    offsetsX.append((offsetsX?[i - 1] ?? 0) + max(width1?[i] ?? 0, width2?[i] ?? 0))
+  return offsetsX
+}
+
+function remapNodesPositionsShiftX(nodeList, serverConfigsV, shouldMoveHeaderY) {
   let { allUnits = {} } = serverConfigsV
   let nodesMap = [] 
   let rankXRanges = {}
   let yHas = []
+  local premiumYMax = 0
+  local headerYMax = shouldMoveHeaderY ? null : -1
   foreach (node in nodeList) {
     let { y, x, name, reqUnits } = node
     if (yHas.len() <= y)
       yHas.resize(y + 1, 0)
     yHas[y] = 1
+
+    if (reqUnits.len() > 0)
+      headerYMax = min(headerYMax ?? y, y - 1)
+    if (allUnits?[name].isPremium)
+      premiumYMax = max(premiumYMax, y)
+
     let { mRank = 1 } = allUnits?[name]
     let row = getArraySubArray(getArraySubArray(nodesMap, mRank - 1), y)
     if (row.len() == 0 && reqUnits.len() > 0) {
@@ -161,7 +251,7 @@ function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
     }
     else if (row.len() > 0 && row.top().x > x && row[0].name == "")
       row.remove(0) 
-    row.append(node)
+    row.append(clone node)
 
     let range = getSubArray(rankXRanges, mRank)
     if (range.len() == 0)
@@ -172,15 +262,9 @@ function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
     }
   }
 
-  let offsetsX = []
-  foreach (r, rankRows in nodesMap) {
-    if (offsetsX.len() <= r)
-      offsetsX.resize(r + 1, 0)
-    foreach (list in rankRows)
-      offsetsX[r] = max(offsetsX[r], list.len())
-  }
-  for (local i = 0; i < offsetsX.len(); i++)
-    offsetsX[i] += (offsetsX?[i - 1] ?? 0)
+  let lastHeaderY = min(premiumYMax, headerYMax ?? -1)
+  let offsetsX = lastHeaderY < 0 ? calcNodesOffsetsX(nodesMap)
+    : compressHeaderUnits(nodesMap, yHas, lastHeaderY) 
 
   let yRemap = sumRemap(yHas)
   let resNodes = {}
@@ -197,7 +281,9 @@ function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
         local nextX = rankX + i
         if (range.len() != 0)
           nextX = clamp(rankX + x - range[0], nextX, rankXNext - list.len() + i)
-        resNodes[name] <- node.__merge({ x = nextX, y = yRemap[y] })
+        node.x = nextX
+        node.y = yRemap[y]
+        resNodes[name] <- node
       }
     }
 
@@ -210,8 +296,9 @@ function remapNodesPositionsShiftX(nodeList, serverConfigsV) {
 
 let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
   let nodeList = allNodes.get().filter(@(n) n.country == curCountry.get())
-  let res = !needDebugNodes.get() || curCountry.get() == "legacy"
-    ? remapNodesPositionsShiftX(nodeList, campConfigs.get())
+  let isLegacy = curCountry.get() == "legacy"
+  let res = !needDebugNodes.get() || isLegacy
+    ? remapNodesPositionsShiftX(nodeList, campConfigs.get(), !isLegacy)
     : remapNodesPositions(nodeList)
   return prevIfEqual(prev, res)
 })
@@ -370,6 +457,10 @@ register_command(function() {
   needDebugNodes.set(!needDebugNodes.get())
   console_print(needDebugNodes.get() ? "Show original positions" : "Show positions with offset") 
 }, "debug.tree_original_positions")
+register_command(function() {
+  needDebugLines.set(!needDebugLines.get())
+  console_print(needDebugLines.get() ? "Show lines over units" : "Show lines under units (as for all players)") 
+}, "debug.tree_lines_over_units")
 
 subscribeResetProfile(function() {
   shownUnitsOffersForPurchase.set({})
@@ -397,4 +488,7 @@ return {
   markUnitOfferShown
 
   countryPriority
+  remapNodesPositionsShiftX
+
+  needDebugLines
 }

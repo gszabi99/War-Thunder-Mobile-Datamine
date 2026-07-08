@@ -34,14 +34,14 @@ function mkBg(boxes, style, nextStepDelay) {
   let { lightCtor, darkCtor } = style
   let lightCtorExt = mkLightCtorExt(lightCtor, nextStepDelay)
   return {
-    size = flex()
+    size = FLEX
     children = createHighlight(boxes, lightCtorExt, darkCtor)
   }
 }
 
 let bgContinueButton = @(hasNextKey) !hasNextKey ? null
   : {
-      size = flex()
+      size = FLEX
       behavior = Behaviors.Button
       onClick = nextStepByDefaultHotkey
       sound = { click  = "click" }
@@ -74,7 +74,7 @@ function mkArrowLinks(stepData, boxes, style) {
   return {
     linkBoxes,
     arrowLinks = {
-      size = flex()
+      size = FLEX
       children = linkComps
     }
   }
@@ -171,7 +171,7 @@ function mkArrows(boxes, obstaclesVar, style) {
     children.append(pointerArrow.__merge({ pos, transform = { rotate } }))
   }
   return {
-    size = flex()
+    size = FLEX
     children
   }
 }
@@ -241,7 +241,7 @@ function tutorialWnd() {
 
   return {
     watch
-    size = flex()
+    size = FLEX
     stopMouse = true
     children = [
       bgContinueButton(hasNextKey)

@@ -111,7 +111,7 @@ let mkCircleProgressOneBomb = @(isAvailable, isOnOneBomb, isSeriesBtnHolding, ha
     let isReady = isAvailable.get() && (isOnOneBomb.get() || isSeriesBtnHolding.get() || !isBombStickHolding)
     return {
       watch = [BombsState, isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, btnBgStyle]
-      size = flex()
+      size = FLEX
       children = mkCircleProgressBgWeapon(scaledButtonSize, oneBombShortcutId, BombsState.get(),
         isReady,
         @() playSound("weapon_primary_ready"),
@@ -259,7 +259,7 @@ function stickControl(scale) {
         children = [
           !(bombStickState.get() & BOMB_STICK_ACTIVE) || !hasAmmo.get() ? null : {
             key = {}
-            size = flex()
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = [

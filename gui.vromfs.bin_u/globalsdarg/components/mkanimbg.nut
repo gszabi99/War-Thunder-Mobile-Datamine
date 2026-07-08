@@ -19,7 +19,7 @@ function mkBgImageWithFallback(image) {
   return @() {
     watch = hasFallbackImg
     key = image
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_IMAGE
     fallbackImage = hasFallbackImg.get() ? Picture(fallbackLoadingImage) : null
     image = Picture(image)
@@ -30,7 +30,7 @@ function mkBgImageWithFallback(image) {
   }
 }
 
-let mkBgImageByPx = @(image, sizePx = flex(), posPx = null, ovr = {}) {
+let mkBgImageByPx = @(image, sizePx = FLEX, posPx = null, ovr = {}) {
   size = toSize(sizePx)
   pos = toSize(posPx)
   rendObj = ROBJ_IMAGE
@@ -44,7 +44,7 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
     return children
   return {
     key = layerCfg
-    size = flex()
+    size = FLEX
     children
     transform = {}
     animations = [
@@ -55,7 +55,7 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
 }
 
 let leftShade = {
-  size = [pw(shadePw), flex()]
+  size = [pw(shadePw), FLEX]
   pos = [pw(-0.5 * shadePw), 0]
   rendObj = ROBJ_IMAGE
   image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")

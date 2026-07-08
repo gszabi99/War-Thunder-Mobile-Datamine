@@ -71,6 +71,7 @@ let loginTypes = {
   LT_GOOGLE = "google"
   LT_APPLE = "apple"
   LT_FIREBASE = "firebase"
+  LT_VKID = "vkid"
   LT_GUEST = "guest"
   LT_FACEBOOK = "facebook"
   LT_NSWITCH = "nswitch"
@@ -90,14 +91,18 @@ if (is_ios) {
   availableLoginTypes[loginTypes.LT_APPLE] <- true
   availableLoginTypes[loginTypes.LT_FACEBOOK] <- true
   availableLoginTypes[loginTypes.LT_GUEST] <- true
-} else if (is_nswitch) {
+}
+else if (is_nswitch) {
   availableLoginTypes = { [loginTypes.LT_NSWITCH] = true }
-} else if (is_android) {
+}
+else if (is_android) {
   if (isOnlyGuestLogin)
     availableLoginTypes = { [loginTypes.LT_FIREBASE] = true }
   else if (isExternalOperator()) {
      availableLoginTypes[loginTypes.LT_FIREBASE] <- true
-  } else
+     availableLoginTypes[loginTypes.LT_VKID] <- true
+  }
+  else
     availableLoginTypes.__update({
       [loginTypes.LT_GOOGLE] = isGoogleBuild,
       [loginTypes.LT_FIREBASE] = true,

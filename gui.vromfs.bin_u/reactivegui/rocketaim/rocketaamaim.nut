@@ -27,7 +27,7 @@ let trackerPositionUpdate = @() {
 }
 
 let gimbalLines = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = 0
   lineWidth = crosshairLineWidth
@@ -61,7 +61,7 @@ let aamAimGimbal = @() function() {
 }
 
 let trackerLines = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
@@ -96,7 +96,7 @@ let aamAimTracker = @() function() {
 }
 
 let rocketAamAim = @() {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [

@@ -39,7 +39,7 @@ let mkLicenseContent = @() scrollbar.makeSideScroll({
 
 let licenseWnd = @() bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = hdpx(20)

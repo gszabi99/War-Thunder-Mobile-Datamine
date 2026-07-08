@@ -132,7 +132,7 @@ function mapShading() {
   let spaceL = rangeCirclePosX.get()
   return {
     watch = [ isSuperArtillery, rangeCirclePosX, rangeCirclePosY, rangeCircleSize ]
-    size = flex()
+    size = FLEX
     clipChildren = true
     children = [
       bgShaded.__merge({
@@ -218,7 +218,7 @@ let tacticalMap = {
 
 return bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_HORIZONTAL
   gap = hdpx(100)
@@ -228,12 +228,12 @@ return bgShaded.__merge({
     cornerBackBtn
     tacticalMap
     {
-      size = [ flex(), mapSizePx ]
+      size = [ FLEX, mapSizePx ]
       vplace = ALIGN_CENTER
       flow = FLOW_VERTICAL
       children = [
         {
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           gap = hdpx(50)
           children = [

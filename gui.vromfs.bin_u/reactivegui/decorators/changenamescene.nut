@@ -6,7 +6,7 @@ let { eventbus_send } = require("eventbus")
 let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
 
 let changeNameScene = {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   valign = ALIGN_TOP

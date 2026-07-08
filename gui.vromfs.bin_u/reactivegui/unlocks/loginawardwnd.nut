@@ -18,8 +18,8 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { mkRewardImage, getRewardName } = require("%rGui/unlocks/rewardsView/rewardsPresentation.nut")
-let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { textButtonBattle, textButtonPrimary, textButtonInactive, buttonsHGap
+let { gradRadialSq } = require("%rGui/style/gradients.nut")
+let { textButtonBattle, textButtonPrimary, textButtonInactive
 } = require("%rGui/components/textButton.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -31,6 +31,7 @@ let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
 let imageSize = hdpxi(210)
@@ -73,27 +74,14 @@ let mkText = @(text, style) {
   color = activeTextColor
 }.__update(style)
 
-let header = {
-  size = const [SIZE_TO_CONTENT, hdpx(100)]
-  padding = const [0, hdpx(100), 0, 0]
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, hdpx(300)]
-  color = 0xA0000000
-
-  valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = buttonsHGap
-  children = [
-    @() {
+let header = headerGradientBg([
+  @() {
       watch = canClose
       size = const [hdpx(80), SIZE_TO_CONTENT]
       children = canClose.get() ? backButton(close, { animations = wndSwitchAnim }) : null
     }
-    mkText(loc("dailyRewards/header"), fontBigShaded)
-  ]
-}
+  mkText(loc("dailyRewards/header"), fontBigShaded)
+])
 
 function mkFirstRewardComp(stageData) {
   let { rewards = {} } = stageData
@@ -104,7 +92,7 @@ function mkFirstRewardComp(stageData) {
 }
 
 let rewardBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = 0xFFB75114
   borderColor = 0xFFC07B44
@@ -141,7 +129,7 @@ let highlightNextReceive = highlightCanReceive.__merge({
 })
 
 let mkBigSlotImage = @(ovr) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture("ui/images/daily_slot_bg_art.avif")
   keepAspect = KEEP_ASPECT_FILL
@@ -173,7 +161,7 @@ let checkImgWithAnim = checkImg.__merge({
 })
 
 let mkDayText = @(text, isReceived) {
-  size = [flex(), dayTextHeight]
+  size = [FLEX, dayTextHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_SOLID
@@ -187,12 +175,12 @@ let mkDayText = @(text, isReceived) {
 }
 
 let btnStyle = {
-  ovr = { size = flex(), minWidth = null, behavior = null, onElemState = null }
+  ovr = { size = FLEX, minWidth = null, behavior = null, onElemState = null }
   childOvr = fontTiny
 }
 
 let mkBtnBackground = @(children) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = 0xFF514F4E
   children
@@ -213,14 +201,14 @@ let mkWatchAdsBtn = @(isProviderInitedV, hasVipV) (isProviderInitedV ? textButto
 function activePlateButtonBlock() {
   let targetButtonComponent = @() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed, isProviderInited, hasVip]
-    size = flex()
+    size = FLEX
     children = isShowUnseenDelayed.get() ? null 
       : loginAwardUnlock.get()?.hasReward ? mkBtnBackground(receiveBtn)
       : !hasLoginAwardByAds.get() ? null
       : mkBtnBackground(mkWatchAdsBtn(isProviderInited.get(), hasVip.get()))
   }
   let blockOvr = {
-    size = [flex(), buttonHeight]
+    size = [FLEX, buttonHeight]
     vplace = ALIGN_BOTTOM
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -326,7 +314,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
       : mkBigSlotImage({ color = !isReceived && slotType == SLOT_HUGE ? hugeRewardBgColor : bg.fillColor })
     slotType == SLOT_HUGE ? null
       : {
-          size = flex()
+          size = FLEX
           clipChildren = true
           children = isReceived ? highlightReceived
             : isNextReceive ? highlightNextReceive
@@ -347,7 +335,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
     !isReceived ? null
       : {
           key = needReceiveAnim
-          size = flex(),
+          size = FLEX,
           rendObj = ROBJ_SOLID,
           color = 0x80000000
           opacity = 1.0
@@ -364,7 +352,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
     mkDayText(dayText, isReceived)
     @() mkText(utf8ToUpper(getRewardName(reward.get())),
       {
-        size = [flex(), buttonHeight]
+        size = [FLEX, buttonHeight]
         vplace = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -490,7 +478,7 @@ function dayInRowInfo() {
 }
 
 let content = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -504,7 +492,7 @@ let content = {
 
 let awardScene = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   children = [

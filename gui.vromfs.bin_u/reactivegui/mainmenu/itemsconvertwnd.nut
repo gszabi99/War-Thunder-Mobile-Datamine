@@ -44,7 +44,7 @@ let knobCtor = @(relValue, stateFlags, fullW) mkSliderKnob(relValue, stateFlags,
     borderWidth = hdpx(2)
     children = {
       rendObj = ROBJ_IMAGE
-      size = flex()
+      size = FLEX
       image = knobGrad
     }
   })
@@ -188,7 +188,7 @@ function tryConvertItems(itemId, prices, fromTotal) {
   openMsgBox({
     uid = "confirmBarter"
     text = {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -226,7 +226,7 @@ return function openBarterImpl(itemId) {
   let canApply = Computed(@() null != fromAllTotal.get().findvalue(@(v) v > 0))
   addModalWindow(bgShaded.__merge({
     key = WND_UID
-    size = flex()
+    size = FLEX
     children = modalWndBg.__merge({
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER

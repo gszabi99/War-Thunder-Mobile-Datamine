@@ -54,7 +54,7 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
           @() mkBulletSlot(chosenBullets, bSet.get(), fromUnitTags.get(), {}, {}, { watch = [fromUnitTags, bSet] }, idx)
           @() {
             watch = openedSlot
-            size = [flex(), headerSlotHeight]
+            size = [FLEX, headerSlotHeight]
             rendObj = ROBJ_BOX
             borderWidth = openedSlot.get() < 0 || idx != openedSlot.get() ? 0 : hdpxi(4)
           }
@@ -62,14 +62,14 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
       }
       @() {
         key = $"respBulletsBtn{idx}" 
-        size = flex()
+        size = FLEX
         watch = openedSlot
         rendObj = ROBJ_SOLID
         color = 0x99000000
         children = [
           mkCustomButton(arrowBtnImage(openedSlot.get() < 0 || idx != openedSlot.get()),
             @() onHeaderClick(key, idx),
-            mergeStyles(buttonStyles.PRIMARY, { ovr = { size = [flex(), headerSlotHeight], minWidth = 0 } }))
+            mergeStyles(buttonStyles.PRIMARY, { ovr = { size = [FLEX, headerSlotHeight], minWidth = 0 } }))
           mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = hdpx(7) })
         ]
       }
@@ -125,7 +125,7 @@ function mkBulletSliderWithBtns(bSlot, maxCount, maxBullets, withExtraBullets, b
   }
   return @() bg.__merge({
     watch = cardStyle
-    size = [ flex(), cardStyle.get().slotSliderHeight ]
+    size = [ FLEX, cardStyle.get().slotSliderHeight ]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -169,7 +169,7 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
             : mkBulletSliderWithBtns(bSlot, maxCount, maxBulletsWithExtraCount, withExtraBullets,
                 bStep, bLeftSteps, cardStyle, onChangeSlider)
           bg.__merge({
-            size = [flex(), bTotalSteps.get() <= 1 ? SIZE_TO_CONTENT : 0]
+            size = [FLEX, bTotalSteps.get() <= 1 ? SIZE_TO_CONTENT : 0]
             children = @() {
               watch = countText
               rendObj = ROBJ_TEXT

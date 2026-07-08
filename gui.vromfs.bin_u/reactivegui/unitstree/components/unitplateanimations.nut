@@ -72,7 +72,7 @@ function mkAnimatedCountText(needStart, startV, endV, key, ovr = {}) {
 
   return animCountBaseComp.__merge({
     key
-    size = [calc_comp_size({rendObj = ROBJ_TEXT, text = endV}.__update(fontVeryTiny))[0], flex()]
+    size = [calc_comp_size({rendObj = ROBJ_TEXT, text = endV}.__update(fontVeryTiny))[0], FLEX]
     rendObj = ROBJ_TEXT
     text = startV
     behavior = Behaviors.RtPropUpdate

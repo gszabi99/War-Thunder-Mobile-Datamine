@@ -16,7 +16,6 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll, interruptAnimScroll
 } = require("%rGui/unitsTree/unitsTreeScroll.nut")
-let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -24,7 +23,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits, markUnitSeen, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
 let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { selectedCountry, mkCountryNodesCfg, mkCountries,
+let { selectedCountry, mkCountryNodesCfg, mkCountries, needDebugLines,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
   setUnitToScroll, unitToScroll, unitInfoToScroll, visibleNodes
 } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
@@ -81,6 +80,8 @@ let flagBtnGapMin = evenPx(4)
 
 let isTreeNodesAttached = Watched(false)
 
+let savedScrollPos = Watched([0, 0])
+
 let startResearchedAnimData = keepref(Computed(@()
   hasModalWindows.get() || !isTreeNodesAttached.get() || animNewUnitsAfterResearch.get().len() == 0 ? null
     : animNewUnitsAfterResearch.get()))
@@ -125,8 +126,7 @@ let mkUnseenNodesIndex = @(ranksCfg) Computed(function(prev) {
     return res
   if (unseenUnits.get().len() == 0
       && unseenSkins.get().len() == 0
-      && unseenResearchedUnits.get().len() == 0
-      && unseenUnitLvlRewardsList.get().len() == 0)
+      && unseenResearchedUnits.get().len() == 0)
     return res
   let unitTreeNodes = serverConfigs.get()?.unitTreeNodes[curCampaign.get()]
   if (unitTreeNodes == null)
@@ -137,7 +137,6 @@ let mkUnseenNodesIndex = @(ranksCfg) Computed(function(prev) {
     let nodeCountry = unitTreeNodes?[name].country ?? country
     if (name not in unseenUnits.get()
         && name not in unseenSkins.get()
-        && name not in unseenUnitLvlRewardsList.get()
         && name not in (unseenResearchedUnits.get()?[nodeCountry] ?? {}))
       continue
     if (nodeCountry not in res)
@@ -148,12 +147,12 @@ let mkUnseenNodesIndex = @(ranksCfg) Computed(function(prev) {
 })
 
 let needShowArrowL = @(curCountry, unseenNodesIndex) Computed(function() {
-  let offsetIdx = (scrollPos.get() - flagTreeOffset + nodeBlockSize[0]).tofloat() / nodeBlockSize[0] - 1
+  let offsetIdx = (scrollPos.get()[0] - flagTreeOffset + nodeBlockSize[0]).tofloat() / nodeBlockSize[0] - 1
   return null != unseenNodesIndex.get()?[curCountry.get()].findvalue(@(index) offsetIdx > index)
 })
 
 let needShowArrowR = @(curCountry, unseenNodesIndex, areaSize) Computed(function() {
-  let offsetIdx = (scrollPos.get() + areaSize.get()[0] + saBorders[0]).tofloat() / nodeBlockSize[0] - 1
+  let offsetIdx = (scrollPos.get()[0] + areaSize.get()[0] + saBorders[0]).tofloat() / nodeBlockSize[0] - 1
   return null != unseenNodesIndex.get()?[curCountry.get()].findvalue(@(index) offsetIdx < index)
 })
 
@@ -194,15 +193,14 @@ function calcBoundaries(names, nodeList, areaSizeV) {
 }
 
 function scrollAnimToUnitGroup(names, nodeList, areaSize) {
-  let curX = scrollHandler.elem?.getScrollOffsX() ?? 0
-  let curY = scrollHandler.elem?.getScrollOffsY() ?? 0
+  let curPos = scrollPos.get()
   let boundaries = calcBoundaries(names, nodeList, areaSize.get())
   if (boundaries == null)
     return
   let { minX, minY, maxX, maxY } = boundaries
   startAnimScroll([
-    maxX <= minX ? maxX : clamp(curX, minX, maxX),
-    maxY <= minY ? maxY : clamp(curY, minY, maxY)
+    maxX <= minX ? maxX : clamp(curPos[0], minX, maxX),
+    maxY <= minY ? maxY : clamp(curPos[1], minY, maxY)
   ])
 }
 
@@ -229,6 +227,12 @@ function scrollToUnitGroupBottom(names, nodeList, areaSize, isAnimated = false) 
     scrollHandler.scrollToX(pos2[0])
     scrollHandler.scrollToY(pos2[1])
   }
+}
+
+function scrollToPos(pos) {
+  interruptAnimScroll()
+  scrollHandler.scrollToX(pos[0])
+  scrollHandler.scrollToY(pos[1])
 }
 
 curSelectedUnit.subscribe(function(unitName) {
@@ -312,14 +316,14 @@ let mkLinks = @(linksCfg) function() {
       animBuyRequirementsUnitId, animBuyRequirementsInfo, animResearchRequirements, animResearchRequirementsUnitId,
       animResearchRequirementsAncestors
     ]
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth
     commands
     children = animUnlockCommands.len() != 0
         ? {
           key = animUnitWithLink
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth
           commands = animUnlockCommands
@@ -343,7 +347,7 @@ let mkLinks = @(linksCfg) function() {
       : animLockCommands.len() != 0
         ? {
           key = animBuyRequirementsUnitId
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth
           commands = animLockCommands
@@ -399,7 +403,112 @@ function fillComplexLineTo(x, posListTo, reqUnits, addLineTo) {
   }
 }
 
+function isIntersectCellByX(name, c, occupiedYX) {
+  
+  if (c[1] != c[3])
+    return false
+  let y = c[1]
+  if (y not in occupiedYX) {
+    return false
+  }
+  let x1 = c[0]
+  let x2 = c[2]
+  foreach (o in occupiedYX[y])
+    if (o.name != name && o.x >= x1 && o.x <= x2)
+      return true
+  return false
+}
+
+let hasLineXIntersectByCoords = @(y, x1, x2, coords)
+  coords[1] <= y && coords[3] >= y && coords[0] <= x2 && coords[2] >= x1
+
+function hasLineXIntersect(y, x1, x2, linesFrom, linesTo) {
+  foreach (to in linesTo)
+    if (hasLineXIntersectByCoords(y, x1, x2, to.coords))
+      return true
+  foreach (list in linesFrom)
+    foreach (coords in list)
+      if (hasLineXIntersectByCoords(y, x1, x2, coords))
+        return true
+  return false
+}
+
+function chooseBestLineY(x1, y1, x2, y2, linesFrom, linesTo) {
+  local firstFoundY = null
+  if (y1 < y2)
+    for (local y = y2 - nodeBlockSize[1] / 2; y > y1; y -= nodeBlockSize[1]) {
+      firstFoundY = firstFoundY ?? y
+      if (!hasLineXIntersect(y, x1, x2, linesFrom, linesTo))
+        return y
+    }
+  else
+    for (local y = y2 + nodeBlockSize[1] / 2; y < y1; y += nodeBlockSize[1]) {
+      firstFoundY = firstFoundY ?? y
+      if (!hasLineXIntersect(y, x1, x2, linesFrom, linesTo))
+        return y
+    }
+
+  let yBottom = max(y1, y2) + nodeBlockSize[1] / 2
+  if (!hasLineXIntersect(yBottom, x1, x2, linesFrom, linesTo))
+    return yBottom
+
+  let yTop = min(y1, y2) - nodeBlockSize[1] / 2
+  if (!hasLineXIntersect(yTop, x1, x2, linesFrom, linesTo))
+    return yTop
+
+  return firstFoundY ?? yBottom
+}
+
+function chooseBestLineYGroup(x1, y, x2, yMin, yMax, linesFrom, linesTo) {
+  let y1 = min(y, yMin)
+  let y2 = max(y, yMax)
+  let maxDiff = max(y - y1, y2 - y)
+  local firstFoundY = null
+  for (local diff = 0; diff <= maxDiff; diff += nodeBlockSize[1]) {
+    let yBottom = y + diff + nodeBlockSize[1] / 2
+    if (y <= y2) {
+      if (!hasLineXIntersect(yBottom, x1, x2, linesFrom, linesTo))
+        return yBottom
+      firstFoundY = firstFoundY ?? yBottom
+    }
+
+    let yTop = y - diff - nodeBlockSize[1] / 2
+    if (y >= y1) {
+      if (!hasLineXIntersect(yTop, x1, x2, linesFrom, linesTo))
+        return yTop
+      firstFoundY = firstFoundY ?? yTop
+    }
+  }
+  return firstFoundY ?? -1
+}
+
+let getOccupiedName = @(occupiedYX, x, y) occupiedYX?[y].findvalue(@(p) p.x == x).name
+
+function gatherOccupiedInfo(nodes, positions) {
+  let occupiedYX = {}
+  foreach (name, pos in positions)
+    getSubArray(occupiedYX, pos[1] + halfSizeY).append({ x = pos[0] + halfSizeX, name })
+
+  let occupiedOut = {}
+  foreach (node in nodes)
+    foreach (u in node.reqUnits)
+      if (u in positions) {
+        let posU = positions[u]
+        let nameOut = getOccupiedName(occupiedYX, posU[0] + halfSizeX + nodeBlockSize[0], posU[1] + halfSizeY)
+        if (nameOut in nodes && nodes[nameOut].reqUnits.len() != 0 && !nodes[nameOut].reqUnits.contains(u))
+          occupiedOut[u] <- nameOut
+      }
+
+  let occupiedIn = {}
+  foreach (nameIn, nameOut in occupiedOut)
+    occupiedIn[nameOut] <- nameIn
+
+  return { occupiedYX, occupiedOut, occupiedIn }
+}
+
 function genLinks(nodes, positions, size) {
+  let { occupiedYX, occupiedOut, occupiedIn } = gatherOccupiedInfo(nodes, positions)
+
   let groups = {}
   foreach (node in nodes) {
     let { reqUnits } = node
@@ -412,128 +521,240 @@ function genLinks(nodes, positions, size) {
     groups[uid].tgtNodes.append(node)
   }
 
-  let mulX = 100.0 / size[0]
-  let mulY = 100.0 / size[1]
   let linesFrom = {}
   function addLineFrom(name, x1, y1, x2, y2) {
     if (name not in linesFrom)
       linesFrom[name] <- []
-    linesFrom[name].append([VECTOR_LINE, x1 * mulX, y1 * mulY, x2 * mulX, y2 * mulY])
+    linesFrom[name].append([x1, y1, x2, y2])
   }
   let linesTo = []
   let addLineTo = @(name, reqUnits, x1, y1, x2, y2) linesTo.append({
     name, reqUnits
-    cmd = [VECTOR_LINE, x1 * mulX, y1 * mulY, x2 * mulX, y2 * mulY]
+    coords = [x1, y1, x2, y2]
   })
 
-  foreach (group in groups) {
-    let { reqUnits, tgtNodes } = group
-    let reqWithPos = reqUnits.filter(@(u) u in positions)
+  local intersectGroups = {} 
+  foreach (gList in [groups, intersectGroups]) {
+    let shouldCurveIntersects = gList == intersectGroups 
+    foreach (uid, group in gList) {
+      let { reqUnits, tgtNodes } = group
+      let reqWithPos = reqUnits.filter(@(u) u in positions)
 
-    
-    if (reqWithPos.len() == 0) {
-      foreach(node in tgtNodes) {
-        let pos = positions[node.name]
-        let y = pos[1] + halfSizeY
-        addLineTo(node.name, reqUnits, pos[0] - gapLineX2, y, pos[0], y)
-      }
-      continue
-    }
-
-    if (reqWithPos.len() == 1) { 
-      let reqName = reqWithPos[0]
-      let reqPos = positions[reqName]
-
-      if (tgtNodes.len() == 1) {
-        let { name } = tgtNodes[0]
-        let pos = positions[name]
-        if (pos[0] == reqPos[0]) {
-          let x = pos[0] + halfSizeX
-          let y1 = reqPos[1] + nodePlatesSize[1]
-          let yMid = (y1 + pos[1]) / 2
-          addLineFrom(reqName, x, y1, x, yMid)
-          addLineTo(name, reqUnits, x, yMid, x, pos[1])
-        }
-        else {
-          let isSameY = pos[1] == reqPos[1]
-          let y1 = reqPos[1] + halfSizeY
-          let y2 = pos[1] + halfSizeY
-          let x1 = reqPos[0] + nodePlatesSize[0]
-          let xMid = isSameY ? (x1 + pos[0]) / 2 : pos[0] - gapLineX2
-          addLineFrom(reqName, x1, y1, xMid, y1) 
-          if (!isSameY)
-            addLineFrom(reqName, xMid, y1, xMid, y2)
-          addLineTo(name, reqUnits, xMid, y2, pos[0], y2) 
+      
+      if (reqWithPos.len() == 0) {
+        foreach(node in tgtNodes) {
+          let pos = positions[node.name]
+          let y = pos[1] + halfSizeY
+          let length = (node.name in occupiedIn ? gapLineX3 : gapLineX2)
+          addLineTo(node.name, reqUnits, pos[0] - length, y, pos[0], y)
         }
         continue
       }
 
-      let xMid = getNodesMinX(tgtNodes, positions) - gapLineX2
-      let reqY = reqPos[1] + halfSizeY
-      let posListTo = [{ y = reqY }]
-      foreach(node in tgtNodes) {
-        let pos = positions[node.name]
+      if (reqWithPos.len() == 1) { 
+        let reqName = reqWithPos[0]
+        let reqPos = positions[reqName]
+
+        if (tgtNodes.len() == 1) {
+          let { name } = tgtNodes[0]
+          let pos = positions[name]
+          if (pos[0] == reqPos[0]) {
+            let x = pos[0] + halfSizeX
+            let y1 = reqPos[1] + nodePlatesSize[1]
+            let yMid = (y1 + pos[1]) / 2
+            addLineFrom(reqName, x, y1, x, yMid)
+            addLineTo(name, reqUnits, x, yMid, x, pos[1])
+          }
+          else {
+            let isSameY = pos[1] == reqPos[1]
+            let y1 = reqPos[1] + halfSizeY
+            let y2 = pos[1] + halfSizeY
+            let x1 = reqPos[0] + nodePlatesSize[0]
+            let xMid = pos[0] - (name in occupiedIn ? gapLineX3 : gapLineX2)
+
+            if (!isIntersectCellByX(name, [x1, y1, xMid, y1], occupiedYX)) {
+              addLineFrom(reqName, x1, y1, xMid, y1) 
+              if (!isSameY)
+                addLineFrom(reqName, xMid, y1, xMid, y2)
+              addLineTo(name, reqUnits, xMid, y2, pos[0], y2) 
+              continue
+            }
+            if (!shouldCurveIntersects) {
+              intersectGroups[uid] <- group
+              continue
+            }
+            let yMid = chooseBestLineY(x1, y1, xMid, y2, linesFrom, linesTo)
+            let xMid1 = x1 + (reqName in occupiedOut ? gapLineX3 : gapLineX2)
+            addLineFrom(reqName, x1, y1, xMid1, y1) 
+            addLineFrom(reqName, xMid1, y1, xMid1, yMid)
+            addLineFrom(reqName, xMid1, yMid, xMid, yMid)
+            addLineFrom(reqName, xMid, yMid, xMid, y2)
+            addLineTo(name, reqUnits, xMid, y2, pos[0], y2) 
+          }
+          continue
+        }
+
+        let nodesMinX = getNodesMinX(tgtNodes, positions)
+        let hasOccupiedAtMinX = null != tgtNodes.findvalue(@(n) positions[n.name][0] == nodesMinX && n.name in occupiedIn)
+        let xMid = nodesMinX - (hasOccupiedAtMinX ? gapLineX3 : gapLineX2)
+        let reqY = reqPos[1] + halfSizeY
+        let posListTo = [{ y = reqY }]
+        local isSkip = false
+        foreach(node in tgtNodes) {
+          let pos = positions[node.name]
+          let y = pos[1] + halfSizeY
+          let isIntersect = isIntersectCellByX(node.name, [xMid, y, pos[0], y], occupiedYX)
+          if (isIntersect && !shouldCurveIntersects) {
+            intersectGroups[uid] <- group
+            isSkip = true
+            break
+          }
+          posListTo.append({ name = node.name, x = pos[0], y, isIntersect })
+        }
+        if (isSkip)
+          continue
+        foreach (p in posListTo) {
+          let { x = null, y, name = "", isIntersect = false } = p
+          if (x == null)
+            continue
+          if (!isIntersect)
+            addLineTo(name, reqUnits, xMid, y, x, y)
+          else {
+            let yBest = chooseBestLineY(xMid, reqY, x, y, linesFrom, linesTo)
+            p.y = yBest
+            let xMid2 = x - (name in occupiedIn ? gapLineX3 : gapLineX2)
+            addLineTo(name, reqUnits, xMid, yBest, xMid2, yBest)
+            addLineTo(name, reqUnits, xMid2, yBest, xMid2, y)
+            addLineTo(name, reqUnits, xMid2, y, x, y)
+          }
+        }
+        addLineFrom(reqName, reqPos[0] + nodePlatesSize[0], reqY, xMid, reqY)
+        fillComplexLineTo(xMid, posListTo, reqUnits, addLineTo)
+        continue
+      }
+
+      
+      let isSingleTgt = tgtNodes.len() == 1
+      local xMid1 = 0
+      if (!isSingleTgt)
+        xMid1 = getNodesMinX(tgtNodes, positions) - 2 * gapLineX3
+      else {
+        let reqMaxX = getReqMaxX(reqWithPos, positions)
+        let hasOccupiedAtMaxX = null != reqWithPos.findvalue(@(name) positions[name][0] == reqMaxX && name in occupiedOut)
+        xMid1 = reqMaxX + nodePlatesSize[0] + (hasOccupiedAtMaxX ? gapLineX3 : gapLineX2)
+      }
+
+      let xMid2 = isSingleTgt ? xMid1 : xMid1 + gapLineX3
+      let yMid = halfSizeY + tgtNodes.reduce(@(res, n) res + positions[n.name][1], 0) / tgtNodes.len()
+
+      let toName = isSingleTgt ? tgtNodes[0].name : tgtNodes.map(@(n) n.name)
+
+      local isSkip = false
+      let posListFrom = [{ y = yMid }]
+      foreach(reqName in reqWithPos) {
+        let pos = positions[reqName]
         let y = pos[1] + halfSizeY
-        posListTo.append({ y, name = node.name })
-        addLineTo(node.name, reqUnits, xMid, y, pos[0], y)
+        let x = pos[0] + nodePlatesSize[0]
+        let isIntersect = isIntersectCellByX(reqName, [x, y, xMid1, y], occupiedYX)
+        if (isIntersect && !shouldCurveIntersects) {
+          intersectGroups[uid] <- group
+          isSkip = true
+          break
+        }
+        posListFrom.append({ reqName, x, y, isIntersect })
       }
-      addLineFrom(reqName, reqPos[0] + nodePlatesSize[0], reqY, xMid, reqY)
-      fillComplexLineTo(xMid, posListTo, reqUnits, addLineTo)
-      continue
-    }
+      if (isSkip)
+        continue
 
-    
-    let isSingleTgt = tgtNodes.len() == 1
-    let xMid1 = isSingleTgt ? getReqMaxX(reqWithPos, positions) + nodePlatesSize[0] + gapLineX2
-      : getNodesMinX(tgtNodes, positions) - 2 * gapLineX3
-    let xMid2 = isSingleTgt ? xMid1 : xMid1 + gapLineX3
-    let yMid = halfSizeY + tgtNodes.reduce(@(res, n) res + positions[n.name][1], 0) / tgtNodes.len()
+      let posListTo = [{ y = yMid }]
+      foreach(node in tgtNodes) {
+        let { name } = node
+        let pos = positions[name]
+        let y = pos[1] + halfSizeY
+        let isIntersect = isIntersectCellByX(name, [xMid2, y, pos[0], y], occupiedYX)
+        if (isIntersect && !shouldCurveIntersects) {
+          intersectGroups[uid] <- group
+          isSkip = true
+          break
+        }
+        posListTo.append({ name, x = pos[0], y, isIntersect })
+      }
+      if (isSkip)
+        continue
 
-    let toName = isSingleTgt ? tgtNodes[0].name : tgtNodes.map(@(n) n.name)
-    addLineTo(toName, reqUnits, xMid1, yMid, xMid2, yMid)
+      let yMin = !shouldCurveIntersects ? 0
+        : tgtNodes.reduce(@(res, n) res < 0 ? positions[n.name][1] : min(res, positions[n.name][1]), -1)
+      let yMax = !shouldCurveIntersects ? 0
+        : tgtNodes.reduce(@(res, n) res < 0 ? positions[n.name][1] : max(res, positions[n.name][1]), -1)
 
-    let posListTo = [{ y = yMid }]
-    foreach(node in tgtNodes) {
-      let { name } = node
-      let pos = positions[name]
-      let y = pos[1] + halfSizeY
-      posListTo.append({ y, name = node.name })
-      addLineTo(name, reqUnits, xMid2, y, pos[0], y)
-    }
-    fillComplexLineTo(xMid2, posListTo, reqUnits, addLineTo)
-
-    let posListFrom = [{ y = yMid }]
-    foreach(reqName in reqWithPos) {
-      let pos = positions[reqName]
-      let y = pos[1] + halfSizeY
-      posListFrom.append({ y, name = reqName })
-      addLineFrom(reqName, pos[0] + nodePlatesSize[0], y, xMid1, y)
-    }
-
-    posListFrom.sort(@(a, b) a.y <=> b.y)
-    local prevY = posListFrom[0].y
-    local isMiddleFound = false
-    local prevReq = {}
-    foreach(pInfo in posListFrom) {
-      let { y, name = null } = pInfo
-      if (y != prevY) {
-        let req = prevReq.keys()
-        addLineFrom(req.len() == 1 ? req[0] : req, xMid1, prevY, xMid1, y)
+      foreach (p in posListFrom) {
+        let { x = null, y, reqName = "", isIntersect = false } = p
+        if (x == null)
+          continue
+        if (!isIntersect)
+          addLineFrom(reqName, x, y, xMid1, y)
+        else {
+          let yBest = chooseBestLineYGroup(x, y, xMid1, yMin, yMax, linesFrom, linesTo)
+          p.y = yBest
+          let xMid0 = x + (reqName in occupiedOut ? gapLineX3 : gapLineX2)
+          addLineFrom(reqName, x, y, xMid0, y)
+          addLineFrom(reqName, xMid0, y, xMid0, yBest)
+          addLineFrom(reqName, xMid0, yBest, xMid1, yBest)
+        }
       }
 
-      prevY = y
-      if (name == null) {
-        prevReq = reqWithPos.reduce(@(res, n) n in prevReq ? res : res.$rawset(n, true), {})
-        isMiddleFound = true
+      foreach (p in posListTo) {
+        let { x = null, y, name = "", isIntersect = false } = p
+        if (x == null)
+          continue
+        if (!isIntersect)
+          addLineTo(name, reqUnits, xMid2, y, x, y)
+        else {
+          let yBest = chooseBestLineYGroup(xMid2, y, x, yMin, yMax, linesFrom, linesTo)
+          p.y = yBest
+          let xMid3 = x - (name in occupiedIn ? gapLineX3 : gapLineX2)
+          addLineTo(name, reqUnits, xMid2, yBest, xMid3, yBest)
+          addLineTo(name, reqUnits, xMid3, yBest, xMid3, y)
+          addLineTo(name, reqUnits, xMid3, y, x, y)
+        }
       }
-      else if (!isMiddleFound)
-        prevReq[name] <- true
-      else if (name in prevReq)
-        prevReq.$rawdelete(name)
+
+      addLineTo(toName, reqUnits, xMid1, yMid, xMid2, yMid) 
+      fillComplexLineTo(xMid2, posListTo, reqUnits, addLineTo)
+
+      posListFrom.sort(@(a, b) a.y <=> b.y)
+      local prevY = posListFrom[0].y
+      local isMiddleFound = false
+      local prevReq = {}
+      foreach(pInfo in posListFrom) {
+        let { y, reqName = null } = pInfo
+        if (y != prevY) {
+          let req = prevReq.keys()
+          addLineFrom(req.len() == 1 ? req[0] : req, xMid1, prevY, xMid1, y)
+        }
+
+        prevY = y
+        if (reqName == null) {
+          prevReq = reqWithPos.reduce(@(res, n) n in prevReq ? res : res.$rawset(n, true), {})
+          isMiddleFound = true
+        }
+        else if (!isMiddleFound)
+          prevReq[reqName] <- true
+        else if (reqName in prevReq)
+          prevReq.$rawdelete(reqName)
+      }
     }
   }
 
-  return { linesFrom, linesTo }
+  let mulX = 100.0 / size[0]
+  let mulY = 100.0 / size[1]
+  let toCmd = @(c) [VECTOR_LINE, c[0] * mulX, c[1] * mulY, c[2] * mulX, c[3] * mulY]
+  foreach (l in linesTo)
+    l.cmd <- toCmd(l.$rawdelete("coords"))
+  return {
+    linesFrom = linesFrom.map(@(list) list.map(toCmd)),
+    linesTo
+  }
 }
 
 let function mkUnitsNode(node, pos, hasDarkScreenV) {
@@ -608,10 +829,10 @@ let mkDarkScreen = @(size, positions) function() {
       })
   }
   return {
-    size = flex()
+    size = FLEX
     watch = [unitsResearchStatus, unitsBlockedByBattleMode]
     children = {
-      size = flex()
+      size = FLEX
       children = mkCutBg(boxes, { l = -sw(50), r = size[0] + sw(50), t = -sh(50), b = size[1] + sh(50) })
       animations = hasAnimDarkScreen.get() ? darkScreenAnim : null
     }
@@ -626,14 +847,18 @@ let mkUnitsTree = @(countryNodesCfg, hasDarkScreenV) function() {
       + saBorders[1]  + gamercardHeight - gamercardOverlap
   ]
   let positions = nodes.map(getCardPos)
+  let links = mkLinks(genLinks(nodes, positions, size))
   return {
-    watch = countryNodesCfg
+    watch = [countryNodesCfg, needDebugLines]
     size
     children = [
-      mkLinks(genLinks(nodes, positions, size))
+      needDebugLines.get() ? null : links
     ]
       .extend(nodes.values().map(@(n) mkUnitsNode(n, positions[n.name], hasDarkScreenV)))
-      .append(hasDarkScreenV ? mkDarkScreen(size, positions) : null)
+      .append(
+        needDebugLines.get() ? links : null,
+        hasDarkScreenV ? mkDarkScreen(size, positions) : null
+      )
   }
 }
 
@@ -653,7 +878,7 @@ function mkUnitsTreeFull(countryNodesCfg, hasDarkScreenV, areaSizeV) {
     children = [
       @() {
         watch = highlightedRows
-        size = [flex(), nodeBlockSize[1] * highlightedRows.get()]
+        size = [FLEX, nodeBlockSize[1] * highlightedRows.get()]
         minWidth = areaSizeV[0]
       }.__merge(bgLight)
       {
@@ -670,12 +895,24 @@ function mkUnitsTreeFull(countryNodesCfg, hasDarkScreenV, areaSizeV) {
   }
 }
 
-function onUnitNodesAppear(prevCountry, nodes, areaSize) {
+function onUnitNodesAppear(prevCountry, nodes, areaSize, prevScrollPos = null) {
   let unitExists = @(name) name != null && nodes?[name] != null
-  let hasSelectedUnit = curSelectedUnit.get() != null
-  let uToScroll = hasSelectedUnit ? curSelectedUnit.get() : unitToScroll.get()
+  let uToScroll = curSelectedUnit.get() ?? unitToScroll.get()
 
   if (unitExists(uToScroll)) {
+    if (prevScrollPos != null && curSelectedUnit.get() != null && unitToScroll.get() == null) {
+      
+      let boundaries = calcBoundaries([uToScroll], nodes, areaSize.get())
+      if (boundaries != null) {
+        let { minX, maxX, minY, maxY } = boundaries
+        let x = clamp(prevScrollPos[0], minX - nodePlatesSize[0], maxX + nodePlatesSize[0])
+        let y = clamp(prevScrollPos[1], minY - nodePlatesSize[1], maxY + nodePlatesSize[1])
+        if (prevScrollPos[0] == x && prevScrollPos[1] == y) {
+          scrollToPos(prevScrollPos)
+          return
+        }
+      }
+    }
     scrollToUnitGroupBottom([uToScroll], nodes, areaSize)
     return
   }
@@ -797,7 +1034,7 @@ let function mkUnitsTreeNodesContent(filteredNodes) {
           selectCountryByCurResearch()
         deferOnce(@() unitToScroll.get() != null ? onUnitToScrollChange(unitToScroll.get())
           : unitsTreeOpenRank.get() != null ? scrollToRank(unitsTreeOpenRank.get(), ranksCfg.get())
-          : onUnitNodesAppear(selectedCountry.get(), countryNodesCfg.get().nodes, areaSize))
+          : onUnitNodesAppear(selectedCountry.get(), countryNodesCfg.get().nodes, areaSize, savedScrollPos.get()))
         isTreeNodesAttached.set(true)
         if (hasSelectedUnit.get())
           selectedTreeSlotIdx.set(actualSlotIdx.get())
@@ -805,6 +1042,7 @@ let function mkUnitsTreeNodesContent(filteredNodes) {
       function onDetach() {
         isTreeNodesAttached.set(false)
         selectedTreeSlotIdx.set(null)
+        savedScrollPos.set(scrollPos.get())
         unitToScroll.unsubscribe(onUnitToScrollChange)
         animBuyRequirements.unsubscribe(onAnimBuyChange)
         animResearchRequirements.unsubscribe(onAnimResearchChange)
@@ -857,7 +1095,7 @@ let function mkUnitsTreeNodesContent(filteredNodes) {
                   rendObj = ROBJ_SOLID
                   valign = ALIGN_CENTER
                   children = {
-                    size = flex()
+                    size = FLEX
                     rendObj = ROBJ_TEXTAREA
                     behavior = Behaviors.TextArea
                     halign = ALIGN_CENTER

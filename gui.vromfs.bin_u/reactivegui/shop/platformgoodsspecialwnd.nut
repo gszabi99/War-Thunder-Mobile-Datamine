@@ -63,7 +63,7 @@ function mkBtn(params){
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [flex(), btnH]
+    size = [FLEX, btnH]
     rendObj = ROBJ_BOX
     borderRadius
     borderWidth
@@ -135,7 +135,7 @@ let content = modalWndBg.__merge({
 
 let paymentsWaysWnd = bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = content
   onClick = close
   animations = wndSwitchAnim

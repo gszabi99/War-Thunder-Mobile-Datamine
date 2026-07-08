@@ -201,13 +201,13 @@ let tacticalMap = {
 }
 
 let content = {
-  size = flex()
+  size = FLEX
   flow = FLOW_HORIZONTAL
   gap = hdpx(100)
   children = [
     tacticalMap
     {
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       flow = FLOW_VERTICAL
       gap = hdpx(56)
@@ -227,7 +227,7 @@ let content = {
 
 let voiceMsgMapScene = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = headerGap

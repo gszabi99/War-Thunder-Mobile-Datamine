@@ -35,7 +35,7 @@ function calcSizes(scale) {
 }
 
 let mkZoomScale = @(scaleWidth, lineWidth) {
-  size = [scaleWidth * 2, flex()]
+  size = [scaleWidth * 2, FLEX]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth
   commands = [

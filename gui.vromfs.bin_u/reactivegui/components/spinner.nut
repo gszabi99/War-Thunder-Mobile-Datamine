@@ -36,12 +36,12 @@ let appearAnims = [
 let mkWaitDimmingSpinner = @(watch, size = hdpxi(100)) @() watch.get()
   ? {
       watch
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
         {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_SOLID
           color = 0x80000000
           animations = appearAnims

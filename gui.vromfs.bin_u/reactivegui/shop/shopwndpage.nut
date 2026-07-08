@@ -35,7 +35,6 @@ let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
@@ -43,7 +42,7 @@ let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { categoryGap, titleGap, goodsPerRow, titleH } = require("%rGui/shop/shopWndConst.nut")
 let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
 let { activeInternalSubs } = require("%rGui/state/profilePremium.nut")
-
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 let soonPersonalGoodsDelay = 7.0
 let goodsGlareRepeatDelay = 3
@@ -216,17 +215,29 @@ let mkShopGamercard = @(onClose) function() {
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
   return {
     watch = [ curCategoryId, curShopId, activePersonalGoods, shopGoods, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsCfg ]
-    size = [ saSize[0], gamercardHeight ]
-    flow = FLOW_HORIZONTAL
+    size = [ saSize[0], SIZE_TO_CONTENT ]
     valign = ALIGN_CENTER
     gap = gamercardGap
     children = [
-      backButton(onClose)
-      {size = flex()}
-      needShowPremium ? premIconWithTimeOnChange : null
-      gamercardShopItemsBalanceBtns(orderItems)
-      mkCurrenciesBtns(currencies.keys().sort(sortByCurrencyId))
-        .__update({ size = SIZE_TO_CONTENT })
+      headerGradientBg([
+        backButton(onClose)
+        {
+          rendObj = ROBJ_TEXT
+          text = loc("topmenu/store")
+        }.__update(fontBigShaded)
+      ])
+      {
+        hplace = ALIGN_RIGHT
+        flow = FLOW_HORIZONTAL
+        gap = gamercardGap
+        children = [
+          needShowPremium ? premIconWithTimeOnChange : null
+          gamercardShopItemsBalanceBtns(orderItems)
+          mkCurrenciesBtns(currencies.keys().sort(sortByCurrencyId))
+            .__update({ size = SIZE_TO_CONTENT })
+        ]
+      }
+
     ]
   }
 }

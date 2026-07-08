@@ -48,7 +48,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     flow = FLOW_VERTICAL
     children = [
       {
-        size = [ flex(), goodsBgH ]
+        size = [ FLEX, goodsBgH ]
         children = mkContent?(stateFlags.get(), canPurchase.get())
       }.__update(childOvr)
       canPurchase.get()
@@ -67,7 +67,7 @@ function mkPricePlateWrap(goods, state, animParams) {
   })
   return @() {
     watch = purchasesCount
-    size = flex()
+    size = FLEX
     children = mkPricePlate(goods, state, animParams, true, purchasesCount.get())
   }
 }

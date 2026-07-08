@@ -294,24 +294,24 @@
               1200.0
             ],
             "enemy_dist": [
-              1600.0,
-              1800.0
+              1200.0,
+              1250.0
             ],
             "enemy_angles": [
-              110.0,
-              150.0
+              90.0,
+              100.0
             ],
             "enemy_height": [
-              -150.0,
+              -50.0,
               50.0
             ],
             "ally_dist": [
-              1600.0,
-              1800.0
+              1200.0,
+              1250.0
             ],
             "ally_angles": [
-              110.0,
-              150.0
+              90.0,
+              100.0
             ],
             "ally_height": [
               -50.0,
@@ -644,24 +644,24 @@
               1200.0
             ],
             "enemy_dist": [
-              1600.0,
-              1800.0
+              1200.0,
+              1250.0
             ],
             "enemy_angles": [
-              110.0,
-              150.0
+              90.0,
+              100.0
             ],
             "enemy_height": [
-              -150.0,
+              -50.0,
               50.0
             ],
             "ally_dist": [
-              1600.0,
-              1800.0
+              1200.0,
+              1250.0
             ],
             "ally_angles": [
-              110.0,
-              150.0
+              90.0,
+              100.0
             ],
             "ally_height": [
               -50.0,
@@ -2131,6 +2131,14 @@
           10,
           50
         ]
+      },
+      {
+        "name": "alpha_jet_a_killstreak",
+        "weap": "alpha_jet_a_killstreak_default",
+        "rankRange": [
+          10,
+          50
+        ]
       }
     ],
     "fighter": [
@@ -2305,6 +2313,22 @@
       {
         "name": "mig-19pt_killstreak",
         "weap": "mig-19pt_killstreak_default",
+        "rankRange": [
+          10,
+          50
+        ]
+      },
+      {
+        "name": "t2_killstreak",
+        "weap": "t2_killstreak_default",
+        "rankRange": [
+          10,
+          50
+        ]
+      },
+      {
+        "name": "f-5c_killstreak",
+        "weap": "f-5c_killstreak_default",
         "rankRange": [
           10,
           50

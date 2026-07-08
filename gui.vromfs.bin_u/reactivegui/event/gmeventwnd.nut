@@ -156,7 +156,7 @@ isWndAttached.subscribe(@(_) validateAccessStat())
 hasAccessCurGmEvent.subscribe(@(_) validateAccessStat())
 let content = @() {
   watch = [hasAccessCurGmEvent, curEventAccessStatValue, curEventAccessStat]
-  size = flex()
+  size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   onAttach = @() isWndAttached.set(true)
@@ -223,7 +223,7 @@ let gmEventTitle = @(text) @() {
 
 let header = @() {
   watch = openedGmEventId
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   valign = ALIGN_CENTER
   children = [
     backButton(closeGmEventWnd)
@@ -240,7 +240,7 @@ let header = @() {
 
 let footer = @() {
   watch = curGmList
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   valign = ALIGN_BOTTOM
   children = curGmList.get().len() == 0 ? null
     : [
@@ -284,7 +284,7 @@ let wndKey = {}
 let gmEventWnd = @() {
   watch = [openedGmEventId, bgUnits]
   key = wndKey
-  size = flex()
+  size = FLEX
   padding = saBordersRv
 
   behavior = bgUnits.get() == null ? null : HangarCameraControl

@@ -7,9 +7,11 @@ let defColor = 0xFFFFFFFF
 let tooltipOffset = hdpx(50)
 
 let mkText = @(text, color = defColor) {
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
   text
   color
+  maxWidth = pw(85)
 }.__update(fontTiny)
 
 let mkTooltipBtn = @(tooltip) infoTooltipButton(
@@ -23,7 +25,6 @@ function mkTooltippedRow(row, tooltip) {
   let key = {}
 
   return {
-    minWidth = SIZE_TO_CONTENT
     size = FLEX_H
     children = [
       mkTooltipBtn(tooltip)
@@ -43,15 +44,15 @@ function mkTooltippedRow(row, tooltip) {
 
 function mkRow(t1, t2, icon = null, tooltip = null) {
   let baseComp = {
-    minWidth = SIZE_TO_CONTENT
     size = FLEX_H
     flow = FLOW_HORIZONTAL
+    valign = ALIGN_BOTTOM
     gap = hdpx(10)
     children = [
       mkText(t1)
       icon
       {
-        size = flex()
+        size = FLEX
       }
       mkText(t2)
     ]
@@ -62,25 +63,6 @@ function mkRow(t1, t2, icon = null, tooltip = null) {
 
 let mkMarqueeText = @(text)
   mkText(text).__update({ behavior = Behaviors.Marquee })
-
-function mkMarqueeRow(t1, t2, icon = null, tooltip = null) {
-  let baseComp = {
-    size = FLEX_H
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(10)
-    children = [
-      mkMarqueeText(t1).__update({ maxWidth = pw(70) })
-      icon
-      {
-        size = flex()
-        halign = ALIGN_RIGHT
-        children = mkText(t2)
-      }
-    ]
-  }
-
-  return tooltip == null ? baseComp : mkTooltippedRow(baseComp, tooltip)
-}
 
 function mkStatRow(stats, config, campaign, ctor = null) {
   let configCamp = config?.campaign ?? campaign
@@ -151,7 +133,6 @@ let viewStats = [
 return {
   viewStats
   mkRow
-  mkMarqueeRow
   mkMarqueeText
   mkStatRow
 }

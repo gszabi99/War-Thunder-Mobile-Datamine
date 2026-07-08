@@ -26,7 +26,7 @@ function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorI
 
   let header = @() {
     watch = stateFlags
-    size = [flex(), headerH]
+    size = [FLEX, headerH]
     rendObj = ROBJ_SOLID
     color = (stateFlags.get() & S_HOVER) != 0 ? headerBgHoverColor : headerBgColor
     behavior = Behaviors.Button
@@ -67,7 +67,7 @@ function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorI
     children = [
       header
       {
-        size = isExpanded.get() ? FLEX_H : [flex(), 0]
+        size = isExpanded.get() ? FLEX_H : [FLEX, 0]
         children = content
       }
     ]
@@ -103,7 +103,7 @@ let itemBase = {
 }
 
 let selItemBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = mkColoredGradientY(0xFF7FAEFF, 0xFF333333)
 }

@@ -9,8 +9,8 @@ let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, hasUnseenGoodsByShop, shopGoods, soonGoods } = require("%rGui/shop/shopState.nut")
+let { SC_GOLD, SC_WP, SC_PLATINUM } = require("%rGui/shop/shopCommon.nut")
+let { openShopWnd, shopGoods, soonGoods } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
@@ -28,8 +28,6 @@ let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
-let { CS_GAMERCARD, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 
 
 let nextLevelBorderColor = 0xFFDADADA
@@ -47,7 +45,6 @@ let openCfg = {
 
 let openBuyCurrencyWnd = @(curId) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId)
 
-let needShopUnseenMark = Computed(@() hasUnseenGoodsByShop.get()?.common.findvalue(@(c) c) ?? false)
 let ownHangarUnit = Computed(@() hangarUnit.get()?.__merge(campMyUnits.get()?[hangarUnit.get()?.name] ?? {}))
 
 let textParams = {
@@ -94,7 +91,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
       mkProgressLevelBg({
         key = playerLevelInfo.get()
         children = {
-          size = isMaxLevel ? flex() : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
+          size = isMaxLevel ? FLEX : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), FLEX]
           rendObj = ROBJ_SOLID
           color = playerExpColor
         }
@@ -148,7 +145,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
 
 
 let hoverBg = {
-  size = const [pw(120), flex()]
+  size = const [pw(120), FLEX]
   color = hoverColor
   opacity = 1
   rendObj = ROBJ_9RECT
@@ -165,7 +162,7 @@ let gamercardProfile = @() {
   sound = { click  = "meta_profile_button" }
   children = [
     {
-      size = [levelProgressBarWidth + avatarSize, flex()]
+      size = [levelProgressBarWidth + avatarSize, FLEX]
       children = profileStateFlags.get() & S_HOVER ? hoverBg : null
     }
     {
@@ -237,7 +234,7 @@ function gamercardUnitLevelLine(unit, keyHintText) {
               rendObj = ROBJ_TEXTAREA
               behavior = Behaviors.TextArea
               maxWidth = hdpx(700)
-              text = (unit?.level ?? -1) == maxLevel.get() || unit?.isUpgraded || unit?.isPremium
+              text = (unit?.level ?? -1) >= maxLevel.get() || unit?.isUpgraded || unit?.isPremium
                 ? loc(getCampaignPresentation(curCampaign.get()).unitLevelMaxLocId)
                 : loc(keyHintText)
             }.__update(fontVeryTiny)
@@ -272,57 +269,6 @@ let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = ownHangarUnit, backB
   ]
 }
 
-function mkShopImage(style) {
-  let iconSize = style.iconSize
-  return @() {
-    watch = needShopUnseenMark
-    rendObj = ROBJ_IMAGE
-    size = [iconSize, iconSize]
-    vplace = ALIGN_CENTER
-    color = 0xFFFFFFFF
-    keepAspect = KEEP_ASPECT_FIT
-    image = Picture($"ui/gameuiskin#icon_shop.svg:{iconSize}:{iconSize}:P")
-    children = needShopUnseenMark.get() ? priorityUnseenMark : null
-  }
-}
-
-let mkShopText = @(style) {
-  rendObj = ROBJ_TEXT
-  text = utf8ToUpper(loc("topmenu/store"))
-  color = style.textColor
-  fontFxColor = style.fontFxColor
-  fontFxFactor = style.fontFxFactor
-  fontFx = style.fontFx
-}.__update(style.fontStyle)
-
-function shopBtn() {
-  let stateFlags = Watched(0)
-  return @() {
-    watch = stateFlags
-    behavior = Behaviors.Button
-    onClick = @() openShopWnd(defaultShopCategory)
-    onElemState = @(sf) stateFlags.set(sf)
-    sound = { click  = "meta_shop_buttons" }
-    children = [
-      {
-        size = flex()
-        vplace = ALIGN_CENTER
-        padding = const [hdpx(3), 0]
-        children = stateFlags.get() & S_HOVER ? hoverBg : null
-      }
-      {
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_CENTER
-        gap = hdpx(12)
-        children = [
-          mkShopImage(CS_COMMON)
-          mkShopText(CS_GAMERCARD)
-        ]
-      }
-    ]
-  }
-}
-
 let mkGamercard = @(menuBtn, backCb = null) {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
@@ -335,7 +281,6 @@ let mkGamercard = @(menuBtn, backCb = null) {
       valign = ALIGN_CENTER
       gap = gamercardGap
       children = [
-        shopBtn()
         premIconWithTimeOnChange
         mkCurrencyBalance(WP, openBuyCurrencyWnd(WP))
         mkCurrencyBalance(GOLD, openBuyCurrencyWnd(GOLD))
@@ -356,7 +301,6 @@ let gamercardWithoutLevelBlock = {
       valign = ALIGN_CENTER
       gap = gamercardGap
       children = [
-        shopBtn()
         premIconWithTimeOnChange
         mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
         mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))

@@ -48,7 +48,7 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
     pos = [verticalGap, 0]
     children = !eventIdByPersonalDiscount.get() ? null
       : {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_IMAGE
           image = Picture("ui/gameuiskin#offer_upgrade_discount_icon.avif:0:P")
           behavior = Behaviors.Button

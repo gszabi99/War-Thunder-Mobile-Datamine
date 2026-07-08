@@ -6,7 +6,7 @@ let { get_game_version_str } = require("app")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { is_ios, is_android, platformId } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
+let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -24,7 +24,7 @@ let isShowStarted = hardPersistWatched("ads.isShowStarted", false)
 let hasAdsPreloadError = Watched(false)
 let adsPreloadParams = Watched(null)
 let isOpenedAdsPreloaderWnd = Computed(@() adsPreloadParams.get() != null
-  && ((tcf_consent_enabled.get() && !isTcfConsentAutoSkipped.get()) || (!tcf_consent_enabled.get() && !isConsentWasAutoSkipped.get()))
+  && ((isTcfConsentEnabled.get() && !isTcfConsentAutoSkipped.get()) || (!isTcfConsentEnabled.get() && !isConsentWasAutoSkipped.get()))
   && isLoggedIn.get())
 
 let rewardInfo = mkWatched(persist, "rewardInfo", null)
@@ -123,9 +123,9 @@ function onShowAds(providerBase = "") {
 }
 
 function openAdsPreloader(rInfo) {
-  if (tcf_consent_enabled.get() && isTcfConsentAutoSkipped.get())
+  if (isTcfConsentEnabled.get() && isTcfConsentAutoSkipped.get())
     openTcfConsentWnd()
-  else if (!tcf_consent_enabled.get() && isConsentWasAutoSkipped.get())
+  else if (!isTcfConsentEnabled.get() && isConsentWasAutoSkipped.get())
     needOpenConsentWnd.set(true)
   adsPreloadParams.set(rInfo)
 }

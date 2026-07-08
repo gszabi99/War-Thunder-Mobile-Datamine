@@ -48,7 +48,7 @@ let tipsWnd = @(tips) {
 
 let open = @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   hotkeys = [[btnBEscUp, @() removeModalWindow(wndUid)]]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER

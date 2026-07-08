@@ -93,14 +93,14 @@ function rewardsTimer() {
 
 let header = @() {
   watch = hasBestBattles
-  size = [flex(), lbHeaderHeight]
+  size = [FLEX, lbHeaderHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(40)
   children = [
     backButton(close)
     lbTabs
-    { size = flex() }
+    { size = FLEX }
     rewardsTimer
     !hasBestBattles.get() ? null
       : mkCustomButton(
@@ -140,7 +140,7 @@ function mkRankCell(category, rowData) {
   if (value == null || value < 0 || value > 2)
     return mkLbCell(category, rowData)
   return {
-    size = [rankCellWidth, flex()]
+    size = [rankCellWidth, FLEX]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = mkPlaceIconSmall(value + 1)
@@ -224,11 +224,11 @@ let mkDotsRow = @(categories) categories.map(@(c) {
     c == RANK ? dots : {}
   ))
 
-let flexGap = { size = flex() }
+let flexGap = { size = FLEX }
 let myRequirementsRow = @(emptyColor) function() {
   let res = {
     watch = [minRatingBattles, bestBattlesCount]
-    size = [flex(), lbRowHeight]
+    size = [FLEX, lbRowHeight]
     rendObj = ROBJ_SOLID
     color = emptyColor
   }
@@ -291,7 +291,7 @@ function lbTableFull(categories, lbData, selfRow, hasRewards) {
   }
 
   let rowsChildren = rows.map(@(children, idx) {
-    size = [flex(), children == dotsRow ? lbDotsRowHeight : lbRowHeight]
+    size = [FLEX, children == dotsRow ? lbDotsRowHeight : lbRowHeight]
     rendObj = ROBJ_BOX
     fillColor = (idx % 2) ? rowBgOddColor : rowBgEvenColor
     flow = FLOW_HORIZONTAL
@@ -305,26 +305,26 @@ function lbTableFull(categories, lbData, selfRow, hasRewards) {
 
   if (rowsChildren.len() < lbPageRows + 2)
     rowsChildren.append({
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = (rowsChildren.len() % 2) ? rowBgOddColor : rowBgEvenColor
     })
 
   return modalWndBg.__merge({
     key = categories
-    size = [flex(), lbTableHeight]
+    size = [FLEX, lbTableHeight]
     vplace = ALIGN_TOP
     flow = FLOW_VERTICAL
     children = [
        modalWndHeaderBg.__merge({
-         size = [flex(), lbHeaderRowHeight]
+         size = [FLEX, lbHeaderRowHeight]
          padding = lbTableBorderWidth
          flow = FLOW_HORIZONTAL
          valign = ALIGN_CENTER
          children = mkLbHeaderRow(categories, styleByCategory)
        })
        {
-         size = flex()
+         size = FLEX
          flow = FLOW_VERTICAL
          children = rowsChildren
        }
@@ -388,7 +388,7 @@ function lbNoDataMsg() {
 
 let content = @(hasRewards) @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
-  size = flex()
+  size = FLEX
   children = curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
       ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get(), hasRewards)
     : isLbRequestInProgress.get() ? waitLeaderBoard
@@ -406,7 +406,7 @@ let paginator = @() {
 
 let scene = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
 
   function onAttach() {
@@ -425,7 +425,7 @@ let scene = bgShaded.__merge({
     header
     @() {
       watch = hasCurLbRewards
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       gap = lbVGap
       children = [

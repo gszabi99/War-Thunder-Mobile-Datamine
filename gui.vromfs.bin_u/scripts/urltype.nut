@@ -82,6 +82,14 @@ enums.addTypes(g_url_type, {
     ]
   }
 
+  GAIJIN_COMMUNITY = {
+    supportedLangs = ["ru", "en"]
+    urlRegexpList = [
+      regexp("".concat(@"^https?:\/\/community\.gaijin\.net", URL_ANY_ENDING)),
+    ]
+    applyLangKey = @(url, _) $"{url}{url.indexof("?") == null ? "?" : "&"}lng={loc("current_lang")}"
+  }
+
   WARTHUNDER_COM = {
     supportedLangs = ["ru", "en", "pl", "de", "cz", "fr", "es", "tr", "pt"] 
     urlRegexpList = [
@@ -93,7 +101,7 @@ enums.addTypes(g_url_type, {
       if (idx == null)
         return "".concat(url, "/", langKey)
 
-      let insertIdx = "".concat(idx, keyBeforeLang.len())
+      let insertIdx = idx + keyBeforeLang.len()
       local afterLangIdx = url.indexof("/", insertIdx)
       if (afterLangIdx == null || !isInArray(url.slice(insertIdx, afterLangIdx), this.supportedLangs))
         afterLangIdx = insertIdx

@@ -11,7 +11,7 @@ let { WP } = require("%appGlobals/currenciesState.nut")
 let titleFontGrad = mkFontGradient(0xFFDADADA, 0xFF848484, 11, 6, 2)
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x0114181E
 }

@@ -18,7 +18,7 @@ let levelProgressBarFillWidth = levelProgressBarWidth - levelProgressBorderWidth
 let rotateCompensate = 1.1
 
 let mkLevelBg = @(override = {}) {
-  size = flex()
+  size = FLEX
   padding = darkBorderWidth
   rendObj = ROBJ_SOLID
   halign = ALIGN_CENTER
@@ -26,7 +26,7 @@ let mkLevelBg = @(override = {}) {
   color = 0xFF000000
   transform = { rotate = 45 }
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     fillColor = levelBgColor
     borderColor = playerExpColor

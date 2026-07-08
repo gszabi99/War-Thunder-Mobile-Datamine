@@ -24,7 +24,7 @@ let iconSize = hdpx(140)
 let columns = max(1, (saSize[0].tofloat() / (iconSize + hgap)).tointeger())
 
 let wndHeader = {
-  size = [flex(), wndHeaderHeight]
+  size = [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   children = [
     backButton(close)
@@ -85,7 +85,7 @@ function mkList() {
 let pannableArea = verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])
 let mkDebugStreakWnd = @() bgShaded.__merge({
   key = isOpened
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   children = [

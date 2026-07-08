@@ -45,7 +45,6 @@ require("login/initLoginWTM.nut")
 require("%scripts/pServer/profileServerClient.nut")
 require("%appGlobals/pServer/pServerApi.nut") 
 require("%scripts/currencies.nut")
-require("%scripts/matching/onlineInfo.nut")
 require("%scripts/matching/rpcCall.nut")
 
 

@@ -59,11 +59,11 @@ let txt = @(ovr) {
 }.__merge(fontTinyShaded, ovr)
 
 let mkVerticalPannableArea = @(content, override = {}) {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   clipChildren = true
   children = {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Pannable
     touchMarginPriority = TOUCH_BACKGROUND
     skipDirPadNav = true
@@ -94,7 +94,7 @@ let connectLine = tooltipBg.__merge({
 })
 
 let mkAttrDetailsText = @(attrId) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   margin = const [0, hdpx(24)]
@@ -107,7 +107,7 @@ function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
   let isLastModified = attrId == lastModifiedAttrId
   return {
     rendObj = ROBJ_9RECT
-    size = [flex(), rowHeight]
+    size = [FLEX, rowHeight]
     image = gradTranspDoubleSideX
     texOffs = [0 , gradDoubleTexOffset]
     screenOffs = [0, hdpx(80)]
@@ -166,7 +166,7 @@ let pageBlock = {
       }
       : { watch = isUnitMaxSkills }
     {
-      size = [ pageWidth, flex() ]
+      size = [ pageWidth, FLEX ]
       margin = const [hdpx(10),0,0]
       children = [
         panelBg.__merge(mkVerticalPannableArea(unitAttrPage))
@@ -221,7 +221,7 @@ let actionButtons = @() {
 let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.get() != null),
   actionButtons,
   {
-    size = [ flex(), defButtonHeight ]
+    size = [ FLEX, defButtonHeight ]
     halign = ALIGN_RIGHT
   })
 
@@ -250,7 +250,7 @@ function onClose() {
 
 let unitAttrWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
@@ -261,16 +261,16 @@ let unitAttrWnd = {
       children = mkGamercardUnitCampaign(onClose, getCampaignPresentation(curCampaign.get()).levelUnitAttrLocId)
     }
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       children = [
         {
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           children = [
             mkVerticalPannableArea(categoriesBlock, {
-              size = [ tabW, flex() ]
+              size = [ tabW, FLEX ]
               margin = const [ hdpx(24), 0, 0, 0 ]
             })
             @() {
@@ -286,12 +286,12 @@ let unitAttrWnd = {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           gap = hdpx(20)
           children = [
             {
-              size = flex()
+              size = FLEX
               children = pageBlock
             }
             navBar

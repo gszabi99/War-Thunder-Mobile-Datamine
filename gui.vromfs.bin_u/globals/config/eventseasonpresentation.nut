@@ -52,6 +52,7 @@ let presentations = {
   season_32 = { color = 0xFFFE5D18 }
   season_33 = { color = 0xFFCF142B }
   season_34 = { color = 0xFF2A4C94 }
+  season_35 = { color = 0xFFE97611 }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
@@ -119,6 +120,14 @@ let presentations = {
     bg = "ui/images/event_bg_uk_air_early_access.avif",
     icon = "ui/gameuiskin#icon_event_uk_spending.svg",
   }
+  japan_spending                = {
+    image = $"ui/gameuiskin/icon_japan_tanks_spending_shop.avif",
+    bg = "ui/images/event_bg_japan_tanks_early_access.avif",
+  }
+  japan_tanks_release           = {
+    bg = "ui/images/event_bg_japan_tanks_early_access.avif",
+    icon = "ui/gameuiskin#icon_event_japan_tanks_spending.svg",
+  }
   aprilintel                   = { bg = "ui/images/event_bg_event_april_2026.avif" }
   halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
   valentinebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
@@ -126,6 +135,7 @@ let presentations = {
   lollipopbond                 = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
   chocolatebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
   lunarbond                    = { bg = "ui/images/event_bg_lunar.avif" }
+  japanbond                    = { bg = "ui/images/event_bg_japan_tanks_early_access.avif" }
   event_leyte_battle           = { imageSizeMul = 1.4 }
   tank_constructor_birthday    = { image = $"ui/gameuiskin/icon_event_event_black_friday_shop.avif" }
   offers_event                 = { locId = "events/name/challenge" }

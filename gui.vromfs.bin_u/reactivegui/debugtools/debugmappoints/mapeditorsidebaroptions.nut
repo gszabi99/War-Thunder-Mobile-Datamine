@@ -72,7 +72,7 @@ let selectPresetContent = modalBg.__merge({
     flow = FLOW_VERTICAL
     gap = hdpx(20)
     children = savedPresets.get().keys().sort()
-      .map(@(id) mkTextOptionBtn(id, @() loadPreset(id), { size = [flex(), optionBtnSize] }))
+      .map(@(id) mkTextOptionBtn(id, @() loadPreset(id), { size = [FLEX, optionBtnSize] }))
   })
 })
 
@@ -141,18 +141,18 @@ let deletePresetBtn = @() {
     : mkTextOptionBtn("Delete preset", @() deletePreset(currentPresetId.get()), { color = btnBgColorNegative })
 }
 let editPresetBtn = @(id) mkTextOptionBtn("Edit preset", @()
-  addModalWindowWithHeader(EDIT_PRESET_WND, $"Edit preset {id}", editPresetContent), { size = [flex(), optionBtnSize] })
+  addModalWindowWithHeader(EDIT_PRESET_WND, $"Edit preset {id}", editPresetContent), { size = [FLEX, optionBtnSize] })
 let addPresetBtn = mkTextOptionBtn("Add preset", @() askSaveAndContinue(@()
-  addModalWindowWithHeader(ADD_PRESET_WND, "Create new blank preset", addPresetContent)), { size = [flex(), optionBtnSize] })
+  addModalWindowWithHeader(ADD_PRESET_WND, "Create new blank preset", addPresetContent)), { size = [FLEX, optionBtnSize] })
 let selectPresetBtn = mkTextOptionBtn("Select preset", @() askSaveAndContinue(@()
-  addModalWindowWithHeader(SELECT_PRESET_WND, "Select preset", selectPresetContent)), { size = [flex(), optionBtnSize] })
+  addModalWindowWithHeader(SELECT_PRESET_WND, "Select preset", selectPresetContent)), { size = [FLEX, optionBtnSize] })
 let generatePresetsBtn = mkTextOptionBtn("Generate presets",
   @() askSaveAndContinue(createPresetsByUnlocks),
-  { size = [flex(), optionBtnSize], color = btnBgColorPositive })
+  { size = [FLEX, optionBtnSize], color = btnBgColorPositive })
 
 let content = @() {
   watch = [currentPresetId, savedPresets, hasEventUnlocks]
-  size = const [hdpx(300), flex()]
+  size = const [hdpx(300), FLEX]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = optionsBtnGap

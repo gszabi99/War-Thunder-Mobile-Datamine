@@ -198,7 +198,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         fillColor = 0
         animations = [{ prop = AnimProp.fillColor, from = hudBrownRedFade, duration = 1.5, easing = OutCubic, trigger }]
@@ -220,7 +220,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
               actionItem == null || actionItem.get()?.count == 0 ? null
                 : mkSquareButtonBg(actionItem.get(), isHudPrimaryStyle.get(), btnBgStyle.get(), buttonSize, @() playSound("weapon_secondary_ready"))
               {
-                size = flex()
+                size = FLEX
                 padding = hdpx(5)
                 gap = hdpx(5)
                 rendObj = ROBJ_BOX

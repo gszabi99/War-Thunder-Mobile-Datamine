@@ -28,7 +28,7 @@ let gradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
 let flagBg = @(isSelected) @() {
   watch = isSelected
   key = {}
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = gradient()
   color = isSelected.get() ? selectColor : flagBgColor
@@ -51,7 +51,7 @@ let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMar
       !needBlink.get() || isSelected.get() ? null
         : {
             key = {}
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_IMAGE
             vplace = ALIGN_TOP
             image = gradient()

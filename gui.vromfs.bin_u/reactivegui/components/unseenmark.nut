@@ -46,7 +46,7 @@ let frameAnim = [
 ]
 
 let coreUnseenBox = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor
   borderColor
@@ -54,14 +54,14 @@ let coreUnseenBox = {
   opacity = minOpacity
   animations = opacityAnim
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_IMAGE
     image = gradRadial
   }
 }
 
 let animatedFrame = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_FRAME
   borderWidth = hdpx(2)
   color = frameColor

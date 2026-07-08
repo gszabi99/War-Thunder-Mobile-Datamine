@@ -15,9 +15,9 @@ let selectedLineSolid = @(isActive, size) @() {
 
 return {
   selectedLineHorSolid = @(isActive)
-    selectedLineSolid(isActive, [flex(), selLineSize])
+    selectedLineSolid(isActive, [FLEX, selLineSize])
   selectedLineVertSolid = @(isActive)
-    selectedLineSolid(isActive, [selLineSize, flex()])
+    selectedLineSolid(isActive, [selLineSize, FLEX])
   opacityTransition
   selLineSize
 }

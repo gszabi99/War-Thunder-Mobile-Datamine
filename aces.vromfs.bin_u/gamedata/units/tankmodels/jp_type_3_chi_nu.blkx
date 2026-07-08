@@ -46,6 +46,7 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "minRelativeTankCameraThreshold": 1.22,
   "DamageEffects": {
     "part": [
       {
@@ -2006,125 +2007,18 @@
       }
     }
   },
-  "skin": [
-    {
-      "name": "brown",
-      "nameLocId": "skin/jp_camo_brown",
-      "descLocId": "skin/jp_camo_brown/desc",
-      "replace_tex": {
-        "from": "jp_camo_willow_green*",
-        "to": "jp_camo_brown*"
-      }
-    },
-    {
-      "name": "grey",
-      "nameLocId": "skin/jp_camo_warship_grey",
-      "descLocId": "skin/jp_camo_warship_grey/desc",
-      "replace_tex": {
-        "from": "jp_camo_willow_green*",
-        "to": "jp_camo_warship_grey*"
-      }
-    },
-    {
-      "name": "late_era_brown_olive_yellow_lines",
-      "nameLocId": "skin/jp_camo_late_brown_olive_yellow_lines",
-      "descLocId": "skin/jp_camo_late_brown_olive_yellow_lines/desc",
-      "replace_tex": {
-        "from": "jp_camo_willow_green*",
-        "to": "jp_camo_late_brown_olive_yellow_lines*"
-      }
-    },
-    {
-      "name": "late_era_green_brown_yellow_blots",
-      "nameLocId": "skin/jp_camo_late_green_brown_yellow_blots",
-      "descLocId": "skin/jp_camo_late_green_brown_yellow_blots/desc",
-      "replace_tex": {
-        "from": "jp_camo_willow_green*",
-        "to": "jp_camo_late_green_brown_yellow_blots*"
-      }
-    },
-    {
-      "name": "post_era_winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "jp_camo_willow_green*",
-        "to": "jp_camo_post_winter*"
-      }
-    },
-    {
-      "name": "jp_camo_winter_early",
-      "nameLocId": "skin/jp_camo_winter_early",
-      "descLocId": "skin/jp_camo_winter_early/desc",
-      "replace_tex": {
-        "from": "jp_camo_willow_green*",
-        "to": "jp_camo_winter_early*"
-      }
-    },
-    {
-      "name": "brown",
-      "nameLocId": "skin/jp_camo_brown",
-      "descLocId": "skin/jp_camo_brown/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_brown*"
-      }
-    },
-    {
-      "name": "grey",
-      "nameLocId": "skin/jp_camo_warship_grey",
-      "descLocId": "skin/jp_camo_warship_grey/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_warship_grey*"
-      }
-    },
-    {
-      "name": "green",
-      "nameLocId": "skin/jp_camo_willow_green",
-      "descLocId": "skin/jp_camo_willow_green/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_willow_green*"
-      }
-    },
-    {
-      "name": "late_era_brown_olive_yellow_lines",
-      "nameLocId": "skin/jp_camo_late_brown_olive_yellow_lines",
-      "descLocId": "skin/jp_camo_late_brown_olive_yellow_lines/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_late_brown_olive_yellow_lines*"
-      }
-    },
-    {
-      "name": "late_era_green_brown_yellow_blots",
-      "nameLocId": "skin/jp_camo_late_green_brown_yellow_blots",
-      "descLocId": "skin/jp_camo_late_green_brown_yellow_blots/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_late_green_brown_yellow_blots*"
-      }
-    },
-    {
-      "name": "post_era_winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_post_winter*"
-      }
-    },
-    {
-      "name": "jp_camo_winter_early",
-      "nameLocId": "skin/jp_camo_winter_early",
-      "descLocId": "skin/jp_camo_winter_early/desc",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_winter_early*"
-      }
-    }
-  ],
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.3,
+      0.15,
+      0.55
+    ],
+    "armorThicknessSide": [
+      0.1,
+      0.0,
+      0.9
+    ]
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2297,8 +2191,17 @@
     }
   },
   "modifications": {
+    "upgraded": {},
+    "art_support": {},
+    "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
-    "art_support": {}
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "tank_smoke_screen_smoke_shell": {}
   },
   "cockpit": {
     "zoomOutFov": 40.0,
@@ -2307,8 +2210,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      4.0,
-      -8.0
+      3.4,
+      -12.5
     ],
     "headPosOnShooting": [
       0.1,
@@ -2316,5 +2219,78 @@
       0.37
     ],
     "detectionHeight": 2.5
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "jp_camo_olive_kusairo*",
+      "to": "jp_camo_olive_kusairo*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "jp_camo_olive_kusairo*",
+      "to": "jp_camo_late_green_brown_yellow_blots*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -2.82126,
+        -1.15046e-7,
+        1.25611,
+        1.94044
+      ],
+      "decal0Line1": [
+        0.199622,
+        -3.04901,
+        0.448356,
+        6.14652
+      ],
+      "decal0Line2": [
+        2.82126,
+        -1.15046e-7,
+        1.25611,
+        -0.940438
+      ],
+      "decal0Line3": [
+        0.199622,
+        -3.04901,
+        -0.448356,
+        6.14652
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.401569,
+        0.158921,
+        0.901935,
+        -1.27823
+      ],
+      "decal0CPNormDepth1": [
+        0.401569,
+        0.158921,
+        -0.901935,
+        -1.27823
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.323808
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "flag_japan"
+    }
   }
 }

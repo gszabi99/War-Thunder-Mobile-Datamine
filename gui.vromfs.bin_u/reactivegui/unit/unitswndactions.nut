@@ -5,7 +5,7 @@ let { G_PREMIUM, G_BLUEPRINT, G_BATTLE_MOD } = require("%appGlobals/rewardType.n
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { defButtonHeight, PURCHASE, PRIMARY, COMMON, INACTIVE } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { textButtonPrimary, textButtonCommon, textButtonPricePurchase, textButtonMultiline, mergeStyles,
@@ -41,7 +41,6 @@ let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nu
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { mkTreeNodesUnitPlate, treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
-let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { upgradeCommonUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
@@ -105,7 +104,7 @@ function findGoodsPrem(shopGoodsList) {
 }
 
 let infoBtn = infoCommonButton(
-  @() unitDetailsWnd({ name = hangarUnitName.get() })
+  @() openUnitDetailsWnd({ name = hangarUnitName.get() })
   {
     size = [defButtonHeight, defButtonHeight]
     hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
@@ -114,15 +113,14 @@ let infoBtn = infoCommonButton(
 )
 
 function withUnseenMark(unitName, button) {
-  let hasUnseenRewards = Computed(@() unitName in unseenUnitLvlRewardsList.get())
   return {
     children = !unitName ? null : [
       button
       @() {
-        watch = [unseenSkins, hasUnseenRewards]
+        watch = unseenSkins
         margin = hdpx(10)
         hplace = ALIGN_RIGHT
-        children = (unitName in unseenSkins.get() || hasUnseenRewards.get()) ? priorityUnseenMark : null
+        children = unitName in unseenSkins.get() ? priorityUnseenMark : null
       }
     ]
   }
@@ -175,7 +173,7 @@ function setResearchUnit(unitName) {
     uid = "confirmChangeResearch"
     title = loc(isOtherCountry ? "researchOtherCountry/title" : "researchWeaker/title")
     text = {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       gap = msgGap
@@ -204,7 +202,7 @@ function unitUpgradeBtn(unit) {
     : textButtonPricePurchase(utf8ToUpper(loc("msgbox/unit_upgrade")),
       mkCurrencyComp(unit.upgradeCostGold, GOLD),
       @() upgradeCommonUnitName.set(unit.name),
-      { ovr = { size = [flex(), defButtonHeight] }, useFlexText = true })
+      { ovr = { size = [FLEX, defButtonHeight] }, useFlexText = true })
 }
 
 function separateByRows(bigBtnsList, smallBtnsList) {
@@ -341,7 +339,7 @@ let discountBlock = @(unitNameW) function() {
             color = 0xFFFFFFFF
             gap = hdpx(11)
           }.__update(fontTiny)
-          discount != null ? mkTimeLeftText(discount.timeRange.end) : null
+          mkTimeLeftText(discount.timeRange.end)
         ]
       : null
   }

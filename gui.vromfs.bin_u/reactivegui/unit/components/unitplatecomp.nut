@@ -16,6 +16,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { selectedLineUnitsCustomSize, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
+let { mkMasteryTierIcon } = require("%rGui/components/masteryTierComp.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -88,7 +89,7 @@ let bgUnitCollectibleLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
 let bgUnitNotAvailable = mkColoredGradientY(0xFF552020, 0xFF201010, 2)
 
 let levelBg = mkLevelBg({
-  ovr = { size = [ unitLevelBgSize, unitLevelBgSize ] }
+  ovr = { size = unitLevelBgSize }
   childOvr = { borderColor = unitExpColor }
 })
 
@@ -110,7 +111,7 @@ let function getUnitBG(isCollectible, isPremium, isLocked, isAvailable){
 }
 
 let unitBgImageBase = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FILL
   imageValign = ALIGN_TOP
@@ -132,7 +133,7 @@ function mkUnitBg(unit, isLocked = false, isAvailable = true) {
   let isPremium = unit.isPremium || unit?.isUpgraded
   let isCollectible = unit?.isCollectible
   return {
-    size = flex()
+    size = FLEX
     children = [
       unitBgImageBase.__merge({ image = getUnitBG(isCollectible, isPremium, isLocked, isAvailable) })
       !isPremium ? null : mkUnitBgPremium
@@ -142,7 +143,7 @@ function mkUnitBg(unit, isLocked = false, isAvailable = true) {
 
 let defaultComponents = {
   unitImage = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FILL
     imageValign = ALIGN_CENTER
@@ -157,7 +158,7 @@ let componentsByUnitType = {
   [SHIP] = defaultComponents,
   [TANK] = {
     unitImage = {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
       imageHalign = ALIGN_CENTER
@@ -169,7 +170,7 @@ let componentsByUnitType = {
   },
   [AIR] = {
     unitImage = {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
       imageHalign = ALIGN_LEFT
@@ -243,14 +244,19 @@ let mkPlateTextTimer = @(endTime, override = {}) @() {
     : null
 }.__update(override)
 
-let mkUnitLevel = @(level) {
+let mkUnitLevel = @(level, masteryTier = 0, bgOvr = {}) {
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   margin = plateTextsPad
   children = [
-    levelBg
-    mkPlateText(level)
+    levelBg.__merge(bgOvr)
+    masteryTier > 0 ? mkMasteryTierIcon((0.8 * (bgOvr?.size ?? unitLevelBgSize)).tointeger(), masteryTier)
+      : mkPlateText(level, {
+          halign = ALIGN_CENTER,
+          valign = ALIGN_CENTER,
+          size = bgOvr?.size ?? unitLevelBgSize
+        })
   ]
 }
 
@@ -404,7 +410,7 @@ let unitPlateNameOvr = {
 }
 
 let mkUnitTexts = @(unit, unitLocName, isLocked = false) {
-  size = flex()
+  size = FLEX
   flow = FLOW_HORIZONTAL
   children = [
     mkUnitFlag(unit, isLocked)
@@ -501,7 +507,7 @@ let mkEquippedIcon = @(unit) {
 
 let mkUnitPlateBorder = @(isSelected) @(){
   watch = isSelected
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor = isSelected.get() ? 0xFFFFFFFF : 0xFFA0A0A0
@@ -510,20 +516,20 @@ let mkUnitPlateBorder = @(isSelected) @(){
 let mkUnitEquippedIcon = @(unit, isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
   : {
       watch = isEquipped
-      size = flex()
+      size = FLEX
       children = mkEquippedIcon(unit)
     }
 
 let mkUnitSelectedUnderline = @(unit, isSelected, ovr = {}) {
   size = FLEX_H
-  children = selectedLineUnitsCustomSize([flex(), unitSelUnderlineFullSize], isSelected,
+  children = selectedLineUnitsCustomSize([FLEX, unitSelUnderlineFullSize], isSelected,
     !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
 }.__update(ovr)
 
 let mkUnitSelectedGlow = @(unit, isSelected) @() isSelected.get()
   ? {
       watch = isSelected
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_TOP
       image = unit?.isCollectible ? highlightCollect()
@@ -536,7 +542,7 @@ function mkSingleUnitPlate(unit) {
   if (unit == null)
     return null
   let p = getUnitPresentation(unit)
-  let { mRank = 0 } = unit
+  let { mRank = 0, rewardedMasteryTier = 0, level = 0 } = unit
   return {
     size = [ unitPlateWidth, unitPlateHeight ]
     vplace = ALIGN_BOTTOM
@@ -544,8 +550,9 @@ function mkSingleUnitPlate(unit) {
       mkUnitBg(unit)
       mkUnitImage(unit)
       mkUnitTexts(unit, loc(p.locId))
+      rewardedMasteryTier > 0 ? mkUnitLevel(level, rewardedMasteryTier) : null
       mRank > 0 ? mkUnitInfo(unit) : null
-    ]
+    ].filter(@(v) v != null)
   }
 }
 
@@ -571,9 +578,10 @@ let function mkUnitResearchPrice(researchStatus, ovr = {}) {
   }.__update(ovr)
 }
 
-let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul, hasSlots) @() {
+let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul, hasSlots, ovr = {}) @() {
   watch = [canActivateDailyBonus, wpMul, expMul, hasSlots]
-  children = canActivateDailyBonus.get() ? dailyBonusTag(wpMul.get(), expMul.get(), hasSlots.get()) : null
+  children = !canActivateDailyBonus.get() ? null
+    : dailyBonusTag(wpMul.get(), expMul.get(), hasSlots.get())?.__update(ovr)
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT
 }
@@ -586,7 +594,7 @@ let mkUnitSpinner = @(needShowSpinner) @() {
   children = needShowSpinner.get() ? mkSpinner(hdpx(30)) : null
 }
 
-function mkProfileUnitDailyBonus(unit) {
+function mkProfileUnitDailyBonus(unit, ovr = {}) {
   let canActivateDailyBonus = Computed(@() firstBattlesReward.get() == null
     && unit.name in campMyUnits.get()
     && isDailyBonusActive.get()
@@ -595,7 +603,7 @@ function mkProfileUnitDailyBonus(unit) {
   let wpMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.wpMul ?? 1)
   let expMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.expMul ?? 1)
   let hasSlots = Computed(@() (serverConfigs.get()?.campaignCfg[unit?.campaign].totalSlots ?? 0) > 0)
-  return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul, hasSlots)
+  return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul, hasSlots, ovr)
 }
 
 return {

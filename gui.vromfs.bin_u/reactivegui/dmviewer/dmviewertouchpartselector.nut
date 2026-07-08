@@ -22,7 +22,7 @@ function dmViewerTouchPartSelector() {
 
   let processorState = Watched(clone defProcessorState)
 
-  function onPointerPress(evt) {
+  function onPointerPress(evt) {  
     if (needCursorForActiveInputDevice.get())
       return 0
     if (evt.accumRes & R_PROCESSED)
@@ -42,7 +42,7 @@ function dmViewerTouchPartSelector() {
     return 0 
   }
 
-  function onPointerRelease(evt) {
+  function onPointerRelease(evt) { 
     if (needCursorForActiveInputDevice.get())
       return 0
     let { x, y, devId, btnId, pointerId } = processorState.get()
@@ -85,7 +85,7 @@ function dmViewerTouchPartSelector() {
 
   return res.__update({
     key = {}
-    size = flex()
+    size = FLEX
     behavior = Behaviors.ProcessPointingInput
     onPointerPress
     onPointerRelease

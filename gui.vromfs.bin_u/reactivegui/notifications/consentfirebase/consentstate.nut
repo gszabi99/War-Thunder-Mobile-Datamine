@@ -12,12 +12,13 @@ let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
-let { setAppsFlyerConsent, startAppsFlyer, enableTCFCollection, startAppsFlyerConnector = @() null } = require("appsFlyer")
-let { setOnlineAdjust = @(_) null, getAdjustAdId = @() null } = require("adjust")
+let { setAppsFlyerConsent, startAppsFlyer, enableTCFCollection, startAppsFlyerConnector } = require("appsFlyer")
+let { setOnlineAdjust, setAdjustThirdPartySharing = @(_)null, getAdjustAdId } = require("adjust")
 let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
-let { request_firebase_consent_eu_only, tcf_consent_enabled } = require("%appGlobals/permissions.nut")
+let { request_firebase_consent_eu_only } = require("%appGlobals/permissions.nut")
+let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
 let logC = log_with_prefix("[consent] ")
 
 let EU_REGION = ["BE","BG","CZ","DK","DE","EE","IE","GR","EL","ES","FR","HR","HU","IT","CY","LV","LT","LU","MT","NL","AT","PL","PT","RO","SI","SK","FI","SE","GB","UK","LI","NO","IS","CH"]
@@ -35,7 +36,7 @@ let defaultPointsTable = configManagePoints.reduce(@(res, val) res.$rawset(val, 
 
 let savedPoints = mkWatched(persist, "savedPoints", null)
 
-let isEnabled = keepref(Computed(@() !tcf_consent_enabled.get()))
+let isEnabled = keepref(Computed(@() !isTcfConsentEnabled.get()))
 let isConsentAcceptedOnce = Computed(@() (savedPoints.get()?.len() ?? 0) != 0)
 let consentRequiredForCurrentRegion = Computed(@() !request_firebase_consent_eu_only.get() || EU_REGION.indexof(getCountryCode()) != null)
 let needOpenConsentWnd = mkWatched(persist, "consentMainWnd", false)
@@ -53,6 +54,7 @@ function setupAnalytics() {
   if (!isEnabled.get())
     return
   let v = savedPoints.get()
+  let consentCommon = (v?.analytics_storage ?? false) && (v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false)
   enableTCFCollection(false)
   logC("Firebase consent, analytics starting:", v)
   setFirebaseConsent(object_to_json_string(v))
@@ -60,6 +62,7 @@ function setupAnalytics() {
   setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
   startAppsFlyerConnector()
+  setAdjustThirdPartySharing(consentCommon)
   setOnlineAdjust(true)
   getAdjustAdId()
 }

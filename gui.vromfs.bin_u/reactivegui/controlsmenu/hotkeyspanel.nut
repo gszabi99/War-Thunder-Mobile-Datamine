@@ -144,7 +144,8 @@ let hotkeysButtonsBar = @() !isPanelVisible.get() ? { watch = isPanelVisible }
   : {
       watch = isPanelVisible
       zOrder = Layers.Upper
-      size = [flex(), saBorders[1]]
+      size = [FLEX, saBorders[1]]
+      margin = const [0, 0, hdpx(5), 0]
       padding = [0, saBorders[0]]
       vplace = ALIGN_BOTTOM
       flow = FLOW_HORIZONTAL

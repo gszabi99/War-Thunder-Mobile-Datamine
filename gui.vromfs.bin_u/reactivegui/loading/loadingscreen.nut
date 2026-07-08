@@ -78,7 +78,7 @@ let loadingScreen = @() {
   key = lsKey
   onAttach = @() addFpsLimit(lsKey)
   onDetach = @() removeFpsLimit(lsKey)
-  size = flex()
+  size = FLEX
   children = (isMissionLoading.get() ? missionScreen : null)
     ?? [
          loadingAnimBg

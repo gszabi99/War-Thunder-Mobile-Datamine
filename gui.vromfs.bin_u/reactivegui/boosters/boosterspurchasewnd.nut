@@ -21,6 +21,7 @@ let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pSer
 let { hoverColor, warningTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { mkBgParticles, tinyLimitReachedPlate } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 let close = @() isOpenedBoosterWnd.set(false)
 
@@ -33,7 +34,7 @@ let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
 let animTrigger = @(bstId) $"changeBoosterNumber_${bstId}"
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0xFFEDE4C7
 }
@@ -58,7 +59,7 @@ function mkPricePlate(bst, count) {
   let { limit = 0 } = bst
   return @() {
     watch = isDelayed
-    size = const [flex(), hdpx(90)]
+    size = const [FLEX, hdpx(90)]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -69,17 +70,20 @@ function mkPricePlate(bst, count) {
         ? textButtonPricePurchase(null,
             mkCurrencyComp(bst.price, bst.currencyId),
             @() null,
-            { ovr = { size = flex(), minWidth = 0, behavior = null } })
+            { ovr = { size = FLEX, minWidth = 0, behavior = null } })
       : null
     transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
   }
 }
 
 let gamercardPannel = {
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   vplace = ALIGN_TOP
   children = [
-    backButton(close)
+    headerGradientBg([
+      backButton(close)
+      header
+    ])
     gamercardBalanceBtns
   ]
 }
@@ -132,12 +136,12 @@ let boosterSlot = @(bst, count, sf) {
       image = Picture($"ui/gameuiskin/shop_bg_slot.avif:{bgSize[0]}:{bgSize[1]}:P")
     }
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       children = [
         cardHeader(bst.id)
         {
-          size = flex()
+          size = FLEX
           valign = ALIGN_CENTER
           gap = hdpx(20)
           children = [
@@ -166,7 +170,7 @@ let boosterSlot = @(bst, count, sf) {
           color = 0x80000000
           padding = hdpx(10)
           children = {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = [FLEX, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             color = (bst?.limit ?? 0) <= 0 || bst.limit > count ? 0xFFFFFFFF
@@ -299,14 +303,13 @@ let content = {
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   children = [
-    header
     goods
     footer
   ]
 }
 
 let window = bgShaded.__merge({
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   children = [
     gamercardPannel

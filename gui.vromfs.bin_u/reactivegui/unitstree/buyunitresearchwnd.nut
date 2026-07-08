@@ -92,7 +92,7 @@ function mkContent() {
   let country = Computed(@() unit.get()?.country ?? "")
   return @() {
     watch = stateFlags
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL

@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module ast_debug shared private
@@ -23,37 +21,23 @@ def report_to_debugger(var ctx : Context; category, name : string; value : auto(
 }
 
 def isExpressionType(_vinfo) {
-    if (_vinfo.basicType != Type.tPointer || _vinfo.firstType == null) {
-        return false
-    }
+    if (_vinfo.basicType != Type.tPointer || _vinfo.firstType == null) return false
     let vinfo = _vinfo.firstType
-    if (vinfo.basicType != Type.tHandle) {
-        return false
+    if (vinfo.basicType != Type.tHandle
+            || vinfo.annotation._module.name != "ast_core") return false
+    var result = false
+    peek(vinfo.annotation.name) $(n) {
+        result = n |> starts_with("Expr")
     }
-    if (vinfo.annotation._module.name != "ast_core") {
-        return false
-    }
-    if (!string(vinfo.annotation.name) |> starts_with("Expr")) {
-        return false
-    }
-    return true
+    return result
 }
 
 def isModulePtrType(_vinfo; mod, what : string) {
-    if (_vinfo.basicType != Type.tPointer || _vinfo.firstType == null) {
-        return false
-    }
+    if (_vinfo.basicType != Type.tPointer || _vinfo.firstType == null) return false
     let vinfo = _vinfo.firstType
-    if (vinfo.basicType != Type.tHandle) {
-        return false
-    }
-    if (vinfo.annotation._module.name != mod) {
-        return false
-    }
-    if (vinfo.annotation.name != what) {
-        return false
-    }
-    return true
+    if (vinfo.basicType != Type.tHandle
+            || vinfo.annotation._module.name != mod) return false
+    return vinfo.annotation.name == what
 }
 
 def isAstPtrType(_vinfo; what : string) {
@@ -65,16 +49,9 @@ def isRttiPtrType(_vinfo; what : string) {
 }
 
 def isRttiType(vinfo; what : string) {
-    if (vinfo.basicType != Type.tHandle) {
-        return false
-    }
-    if (vinfo.annotation._module.name != "rtti_core") {
-        return false
-    }
-    if (vinfo.annotation.name != what) {
-        return false
-    }
-    return true
+    if (vinfo.basicType != Type.tHandle
+            || vinfo.annotation._module.name != "rtti_core") return false
+    return vinfo.annotation.name == what
 }
 
 def describe_arg(var ctxid : Context; vinfo; arg : void?) : void {
@@ -117,9 +94,7 @@ class SampleStackWalker : DapiStackWalker {
         }
     }
     def override onVariable(inf : FuncInfo; vinfo : LocalVariableInfo; arg : void?; inScope : bool) : void {
-        if (!inScope) {
-            return
-        }
+        if (!inScope) return
         if (vinfo.flags.ref || vinfo.flags.refType) {
             describe_arg(*ctxid, vinfo, *unsafe(reinterpret<void ??>(arg)))
         } else {
@@ -133,25 +108,25 @@ class SampleStackWalker : DapiStackWalker {
 
 class ContextStateAgent : DapiDebugAgent {
     
-    walker_adapter : smart_ptr<StackWalker>
     walker : SampleStackWalker?
     def ContextStateAgent {
         walker = new SampleStackWalker()
-        move_new(walker_adapter, make_stack_walker(walker))
     }
     def operator delete {
         unsafe {
-            delete walker_adapter
             delete walker
         }
     }
     def override onCollect(var ctx : Context; at : LineInfo) {
         walker.ctxid = unsafe(addr(ctx))
-        walk_stack(walker_adapter, ctx, at)
+        make_stack_walker(walker) $(adapter) {
+            walk_stack(adapter, ctx, at)
+        }
     }
 }
 
 
+[unused_argument(ctx)]
 def state_agent(ctx : Context) {
     install_new_debug_agent(new ContextStateAgent(), "ast_debug")
 }

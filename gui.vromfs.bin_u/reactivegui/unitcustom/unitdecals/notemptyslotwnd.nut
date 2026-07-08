@@ -70,7 +70,7 @@ let window = @() modalWndBg.__merge({
 
 let openImpl = @() addModalWindow(bgShadedDark.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   hotkeys = [[btnBEscUp, { action = close, description = loc("mainmenu/btnClose") }]]
   onClick = close
   children = window

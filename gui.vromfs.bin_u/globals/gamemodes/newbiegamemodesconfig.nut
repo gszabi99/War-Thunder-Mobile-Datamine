@@ -4,6 +4,7 @@ let newbieGameModesConfig = {
   tanks = [
     {
       gmName = "tank_new_players_battle_single"
+      startAsLocalMP = true
       isFit = @(s, _, __) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
       isSingle = true
       abTest = true

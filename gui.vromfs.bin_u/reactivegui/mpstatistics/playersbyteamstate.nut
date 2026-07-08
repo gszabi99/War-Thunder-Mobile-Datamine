@@ -31,7 +31,7 @@ let playersByTeam = Computed(function() {
                 getUnitCfgByTagName(unitName, serverConfigs.get(), battleCampaign.get()) ?? {},
                 playerLevelInfo.get().level)
         let unit = units?[unitName]
-        let { unitClass = "", mRank = null } = unit
+        let { unitClass = "", mRank = null, rewardedMasteryTier = 0 } = unit
         let isUnitCollectible = unit?.isCollectible ?? false
         let isUnitPremium = unit?.isPremium ?? false
         let isUnitUpgraded = unit?.isUpgraded ?? false
@@ -55,6 +55,7 @@ let playersByTeam = Computed(function() {
           isUnitUpgraded
           userId
           squadLabel
+          rewardedMasteryTier
         })
       })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)

@@ -6,7 +6,7 @@ let { bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull, progressIconSize 
 let halfWidthProgressIcon = progressIconSize[0] / 2
 
 let bpBorderProgressIcon = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpxi(2)
   commands = [
@@ -56,7 +56,7 @@ function bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage
     size = [widthLine, hdpx(15)]
     pos = [0, hdpx(16)]
     children = stage?.isVip ? null
-      : stage.progress == curStage.get() ? bpCurProgressbar(pointsCurStage, pointsPerStage, {size = const [flex(), hdpx(15)]})
+      : stage.progress == curStage.get() ? bpCurProgressbar(pointsCurStage, pointsPerStage, {size = const [FLEX, hdpx(15)]})
       : stage.progress < curStage.get() ? bpProgressbarFull
       : bpProgressbarEmpty
   }

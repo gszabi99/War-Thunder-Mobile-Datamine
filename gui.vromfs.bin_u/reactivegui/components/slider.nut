@@ -80,7 +80,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
     children = [
       @() {
         watch = valueWatch
-        size = flex()
+        size = FLEX
         behavior = Behaviors.Slider
         xmbNode = {}
         onElemState = @(sf) stateFlags.set(sf)
@@ -91,7 +91,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         fValue = valueWatch.get()
       }.__update(override)
       {
-        size = [flex(), sliderVisibleH]
+        size = [FLEX, sliderVisibleH]
         rendObj = ROBJ_BOX
         borderColor
         borderWidth = hdpxi(2)
@@ -99,7 +99,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
       }
       @() {
         watch = relValue
-        size = [flex(), sliderVisibleH]
+        size = [FLEX, sliderVisibleH]
         rendObj = ROBJ_SOLID
         color
 
@@ -155,7 +155,7 @@ let btnTextDec = getIcon("minus")
 let btnTextInc = getIcon("plus")
 
 let mkIconBtn = @(children) {
-  size = flex()
+  size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children

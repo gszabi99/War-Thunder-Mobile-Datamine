@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } = require("%appGlobals/legal.nut")
-let { tcf_consent_enabled } = require("%appGlobals/permissions.nut")
+let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
 let { textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,
   mkButtonTextMultiline, mergeStyles
 } = require("%rGui/components/textButton.nut")
@@ -36,8 +36,8 @@ let logoutToDeleteAccountMsgBox = @() openMsgBox({
 })
 
 return @() {
-  size = flex()
-  watch = [tcf_consent_enabled, isTcfConsentRequiredForCountry, consentRequiredForCurrentRegion]
+  size = FLEX
+  watch = [isTcfConsentEnabled, isTcfConsentRequiredForCountry, consentRequiredForCurrentRegion]
   flow = FLOW_VERTICAL
   gap = buttonsVGap
   halign = ALIGN_CENTER
@@ -51,10 +51,10 @@ return @() {
       mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/termsOfService")), multilineButtonOvrStyle),
       @() eventbus_send("openUrl", { baseUrl = TERMS_OF_SERVICE_URL }),
       mergeStyles(PRIMARY, buttonsWidthStyle))
-    tcf_consent_enabled.get() && isTcfConsentRequiredForCountry.get()
+    isTcfConsentEnabled.get() && isTcfConsentRequiredForCountry.get()
       ? textButtonPrimary(utf8ToUpper(loc("mainmenu/consentPrivacy")), openTcfConsentWnd, buttonsWidthStyle)
       : null
-    !tcf_consent_enabled.get() && consentRequiredForCurrentRegion.get()
+    !isTcfConsentEnabled.get() && consentRequiredForCurrentRegion.get()
       ? textButtonPrimary(utf8ToUpper(loc("mainmenu/consentPrivacy")), @() isOpenedManage.set(true), buttonsWidthStyle)
       : null
     !file_exists(licenseFileName) ? null

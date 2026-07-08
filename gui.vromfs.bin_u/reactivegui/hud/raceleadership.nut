@@ -63,7 +63,7 @@ function mkRow(rowIdx, data, sizes) {
   let { rowHeight, gap, colWidths } = sizes
   return @() {
     watch = data
-    size = [flex(), rowHeight]
+    size = [FLEX, rowHeight]
     padding = [0, gap]
     rendObj = ROBJ_SOLID
     color = (rowIdx % 2) ? evenRowColor : unevenRowColor
@@ -71,7 +71,7 @@ function mkRow(rowIdx, data, sizes) {
     gap
     children = data.get() == null ? null
       : columns.map(@(c, i) {
-          size = [colWidths[i], flex()]
+          size = [colWidths[i], FLEX]
           valign = ALIGN_CENTER
           halign = c?.halign ?? ALIGN_CENTER
           children = c.ctor(data.get(), sizes)

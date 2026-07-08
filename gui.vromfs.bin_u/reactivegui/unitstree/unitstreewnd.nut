@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { canBuyUnitsStatus, US_CAN_BUY } = require("%appGlobals/unitsState.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached
+let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached,
+  isUnitPlateLevelVisible
 } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { mkNodesReceiveInfo } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -30,6 +31,7 @@ let { selectedTreeSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { researchBlock, mkBarText } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 
 let TREE_FILTERS = "tree"
@@ -37,6 +39,7 @@ let infoPannelPadding = hdpx(30)
 let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
+let checkIconSize = hdpxi(60)
 let maxInfoPanelHeight = saSize[1] - hdpx(427)
 
 let hasSelectedUnit = Computed(@() curSelectedUnit.get() != null)
@@ -132,34 +135,76 @@ let clearFiltersButton = {
 
 let mkTreeBg = @(isVisible) @() !isVisible.get() ? { watch = isVisible } : {
   watch = [unitsTreeBg, isVisible]
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/images/{unitsTreeBg.get()}:0:P")
 }.__merge(unselectBtn)
 
+function mkLevelCheckbox(text, isActive, onClick) {
+  let stateFlags = Watched(0)
+  return @() {
+    watch = [stateFlags, isActive]
+    behavior = Behaviors.Button
+    onClick
+    onElemState = @(s) stateFlags.set(s)
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(18)
+    children = [
+      {
+        size = hdpx(70)
+        rendObj = ROBJ_BOX
+        opacity = isActive.get() ? 1.0 : 0.5
+        borderColor = 0xFFFFFFFF
+        borderWidth = hdpxi(1)
+        fillColor = isActive.get() ? 0x50000000 : 0x20000000
+        children = {
+          size = checkIconSize
+          vplace = ALIGN_CENTER
+          hplace = ALIGN_CENTER
+          rendObj = ROBJ_IMAGE
+          image = isActive.get() ? Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}") : null
+          keepAspect = KEEP_ASPECT_FIT
+          opacity = stateFlags.get() & S_ACTIVE ? 0.5 : 1.0
+        }
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        maxWidth = hdpx(140)
+        halign = ALIGN_LEFT
+        text
+      }.__update(fontTinyAccented)
+    ]
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+  }
+}
+
 let unitsTreeGamercard = @(filters, activeFilters, allUnits) {
-  size = [flex(), backButtonHeight]
+  size = [FLEX, backButtonHeight]
   valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
-    backButton(onBackButtonClick)
-
+    headerGradientBg([
+      backButton(onBackButtonClick)
+      {
+        rendObj = ROBJ_TEXT
+        text = loc("unitsTree/researches")
+      }.__update(isWidescreen ? fontMedium : fontSmall)
+      unitFilterButton(filters, allUnits)
+      mkLevelCheckbox(loc("unitsTree/showLevel"), isUnitPlateLevelVisible,
+        @() isUnitPlateLevelVisible.set(!isUnitPlateLevelVisible.get()))
+      @() {
+        watch = [activeFilters, isFiltersVisible]
+        children = activeFilters.get() > 0 && !isFiltersVisible.get() ? clearFiltersButton : null
+      }
+    ])
     {
-      rendObj = ROBJ_TEXT
-      text = loc("unitsTree/researches")
-    }.__update(isWidescreen ? fontMedium : fontSmall)
-
-    unitFilterButton(filters, allUnits)
-
-    @() {
-      watch = [activeFilters, isFiltersVisible]
-      children = activeFilters.get() > 0 && !isFiltersVisible.get() ? clearFiltersButton : null
+      hplace = ALIGN_RIGHT
+      children = mkCurrenciesBtns([WP, GOLD]).__update({ pos = [0, hdpx(5)] })
     }
-
-    { size = flex() }
-
-    mkCurrenciesBtns([WP, GOLD]).__update({ pos = [0, hdpx(5)] })
   ]
 }
 
@@ -199,7 +244,7 @@ let infoPanel = @(nodesReceiveInfo) function() {
   return {
     watch = [hasSelectedUnit, isCampaignWithSlots, hasDarkScreen, isBlockedUnit]
     key = {}
-    size = flex()
+    size = FLEX
     children = hasSelectedUnit.get()
         ? panelBg.__merge({
             size = [infoPanelWidth, infoPanelHeight]
@@ -218,7 +263,7 @@ let infoPanel = @(nodesReceiveInfo) function() {
                 },
                 mkUnitTitle, hangarUnit, {})
               {
-                size = flex()
+                size = FLEX
               }
               @() {
                 watch = [hangarUnit, unitReceiveInfo]

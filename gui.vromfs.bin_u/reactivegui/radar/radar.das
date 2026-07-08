@@ -1254,10 +1254,10 @@ def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasP
 def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
-  var topOffset = 0.
-  var leftOffset = 0.
-  var rightOffset = 0.
-  var bottomOffset = 0.
+  var topOffset : float
+  var leftOffset : float
+  var rightOffset : float
+  var bottomOffset : float
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)

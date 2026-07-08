@@ -22,7 +22,7 @@ let mkVehicleLevelUpTextComp = @(text, level, textOvr, color) {
   gap = hdpx(10)
   children = [
     textBtnComp(utf8ToUpper(text), textOvr)
-    mkUnitLevel(level, color)
+    mkUnitLevel(level, 0, color)
   ]
 }
 

@@ -119,22 +119,22 @@ let animHighlight = @(name) [
 ]
 
 let bgGradient = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture("ui/gameuiskin#gradient_button.svg:0:P")
   color = 0x00505050
 }
 
-function mkQuestBar(quest) {
+function mkQuestBar(quest, triggerPostfix = null) {
   let current = quest?.current ?? 0
   let required = quest?.required ?? 1
   let questCompletion = current.tofloat() / required
-  let trigger = $"unfilledBarEffect_{quest.name}"
+  let trigger = $"unfilledBarEffect_{triggerPostfix ?? quest.name}"
 
   return {
     key = quest.name
     rendObj = ROBJ_BOX
-    size = [flex(), questBarHeight]
+    size = [FLEX, questBarHeight]
     fillColor = bgColor
     borderWidth
     borderColor = barBorderColor
@@ -282,16 +282,16 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
         flow = FLOW_HORIZONTAL
         children = [
           {
-            size = [progressWidth + (idx == 0 ? firstProgressWider : 0), flex()]
+            size = [progressWidth + (idx == 0 ? firstProgressWider : 0), FLEX]
             valign = ALIGN_CENTER
             children = [
               @() {
                 watch = stageCompletion
-                size = [flex(), progressBarHeight]
+                size = [FLEX, progressBarHeight]
                 children = [
                   {
                     rendObj = ROBJ_BOX
-                    size = flex()
+                    size = FLEX
                     fillColor = bgColor
                     borderWidth = [borderWidth, 0]
                     borderColor = barBorderColor
@@ -299,7 +299,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
                   {
                     key = name
                     rendObj = ROBJ_SOLID
-                    size = flex()
+                    size = FLEX
                     color = progressBarColorLight
                     transform = {
                       scale = [stageCompletion.get(), 1.0]
@@ -310,7 +310,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
                   {
                     key = name
                     rendObj = ROBJ_SOLID
-                    size = flex()
+                    size = FLEX
                     color = progressBarColor
                     transform = {
                       scale = [stageCompletion.get(), 1.0]

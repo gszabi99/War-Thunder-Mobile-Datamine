@@ -23,7 +23,7 @@ let headerWidth = goodsSmallSize[0] - headerPadding[1] - headerPadding[3]
 let lockIconSize = const [hdpxi(37),hdpxi(48)]
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x3F3F3F
 }
@@ -86,7 +86,7 @@ let mkMRank = @(mRank) @() {
 
 let mkBg = @(unit) @() {
   watch = unit
-  size = flex()
+  size = FLEX
   children = unit.get() == null ? null
     : [
         mkBgImg($"!ui/unitskin#flag_{unit.get().country}.avif")
@@ -96,7 +96,7 @@ let mkBg = @(unit) @() {
 
 let mkHeader = @(unit) @() {
   watch = unit
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   padding = headerPadding
   halign = ALIGN_RIGHT

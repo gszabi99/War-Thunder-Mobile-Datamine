@@ -32,6 +32,7 @@
   "bulletsCartridge": 7,
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "allowRearmOnField": true,
   "mesh": "hedgehog_projectile",
   "bullet": {

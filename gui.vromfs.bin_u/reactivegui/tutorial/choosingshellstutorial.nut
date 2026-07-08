@@ -10,8 +10,9 @@ let { isInSquad } = require("%appGlobals/squadState.nut")
 let { isInRespawn, isRespawnStarted, respawnsLeft, respawnsTotalInitial } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { showRespChooseWnd, curSlotName, applyBullet } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
-let { bulletsInfo, chosenBullets } = require("%rGui/respawn/bulletsChoiceState.nut")
+let { chosenBullets, bulletsStatus } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { selSlot, respawnSlots } = require("%rGui/respawn/respawnState.nut")
+let { BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
 let { lightCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { bulletsLegend, headerMargin, gap } = require("%rGui/respawn/respawnComps.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
@@ -20,16 +21,13 @@ let { MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 const TUTORIAL_ID = "choosingShells"
 
 let isFakeUnit = Computed(@() selSlot.get()?.isFake ?? false)
-let unitLevel = Computed(@() selSlot.get()?.level ?? 0)
-let unitModsPresets = Computed(@() selSlot.get()?.mods ?? {})
 let choiceCount = Computed(@() chosenBullets.get().len())
 let setCurSlot = @(name) curSlotName.set(name)
 
 let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let allowedBullets = Computed(@() choiceCount.get() > 1
-  ? bulletsInfo.get()?.fromUnitTags.filter(@(bullet) (bullet?.reqLevel ?? 0) <= unitLevel.get()
-    && (!bullet?.reqModification || bullet.reqModification in unitModsPresets.get())) ?? {}
+  ? bulletsStatus.get().filter(@(s) (s & BS_UNLOCKED) != 0)
   : {})
 let hasEnoughBullets = Computed(@() allowedBullets.get().len() >= 3)
 let needShowTutorial = Computed(@() hasEnoughBullets.get()

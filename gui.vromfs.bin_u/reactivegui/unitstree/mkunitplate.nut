@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { unitsMaxRank, unitsTreeOpenRank } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { unitsMaxRank, unitsTreeOpenRank, isUnitPlateLevelVisible } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitTimeLeft,
+let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitTimeLeft, mkUnitLevel,
   mkUnitsTreePrice, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, plateTextsSmallPad, unitPlateTiny,
   bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
+let { maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("%rGui/unitsTree/unitsTreeComps.nut")
@@ -37,7 +38,6 @@ let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let unitBuyWnd = require("%rGui/unitsTree/components/unitBuyWnd.nut")
 let { aDelayPrice, aTimePriceScale, aTimePriceShake } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
 let { draggedData } = require("%rGui/slotBar/dragDropSlotState.nut")
 let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOptions.nut")
@@ -104,10 +104,8 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
-  let hasUnseenRewards = Computed(@() unit.name in unseenUnitLvlRewardsList.get())
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
-    || unit.name in unseenSkins.get()
-    || hasUnseenRewards.get())
+    || unit.name in unseenSkins.get())
 
   return @() {
     watch = [isSelected, isLocked, canPurchase]
@@ -154,7 +152,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       mkProfileUnitDailyBonus(unit)
       mkUnitEquippedIcon(unit, isEquipped)
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_TOP
         pos = [0, -selLineSize]
         children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
@@ -174,7 +172,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
     children = [
       mkUnitBg(unit)
       {
-        size = flex()
+        size = FLEX
         padding = hdpx(7)
         children = mkUnitImage(unit, true)
       }
@@ -189,7 +187,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
               gap = hdpx(7)
               children = [
                 {
-                  size = const [flex(), hdpx(40)]
+                  size = const [FLEX, hdpx(40)]
                   padding = plateTextsSmallPad
                   valign = ALIGN_BOTTOM
                   children = isBlueprint.get() ? mkBlueprintUnitResearchPriceAnim(unit, researchStatus.get())
@@ -197,7 +195,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
                 }
                 @() {
                   watch = animExpPart
-                  size = flex()
+                  size = FLEX
                   rendObj = ROBJ_SOLID
                   valign = ALIGN_BOTTOM
                   color = 0xFF000000
@@ -279,7 +277,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
       xmbNode
       children = [
         {
-          size = flex()
+          size = FLEX
           children = [
             mkUnitAnimGradColor(unit, animNewUnitsAfterResearch.get(), xmbNode, trigger)
             !isPremium ? null : mkUnitBgPremium
@@ -289,7 +287,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
         mkUnitTexts(unit, getUnitName(unit.name), true)
         mkUnitInfo(unit, {padding = hdpx(10)})
         {
-          size = flex()
+          size = FLEX
           valign = ALIGN_BOTTOM
           flow = FLOW_VERTICAL
           children = [
@@ -368,7 +366,7 @@ function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
       mkUnitTexts(unit, getUnitName(unit.name), isLocked.get())
       mkUnitInfo(unit)
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_TOP
         pos = [0, -selLineSize]
         children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
@@ -410,14 +408,17 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
-  let hasUnseenRewards = Computed(@() unit.name in unseenUnitLvlRewardsList.get())
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
     || unit.name in unseenSkins.get()
-    || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()]
-    || hasUnseenRewards.get())
+    || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()])
   let needShowUnseenBranchMark = Computed(@() curCampaignUnseenBranches.get()?[unit.country]
     && unitsResearchStatus.get()?[unit.name].canResearch)
   let isBlueprint = Computed(@() unit.name in serverConfigs.get()?.allBlueprints)
+  let isMaxLevel = isPremium ? Watched(true)
+    : Computed(function() {
+        let levels = serverConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0
+        return ((unit?.level ?? 0) >= (unit?.maxLevel ?? levels)) && levels != 0 
+      })
   let needShowBlueprintBar = Computed(@() isBlueprint.get()
     && unit.name not in campMyUnits.get()
     && (servProfile.get()?.blueprints[unit.name] ?? 0) < (serverConfigs.get()?.allBlueprints[unit.name].targetCount ?? 0))
@@ -461,7 +462,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
         needToShowHighlight.get()
           ? {
               key = unit.name
-              size = const [flex(), ph(70)]
+              size = const [FLEX, ph(70)]
               rendObj = ROBJ_IMAGE
               vplace = ALIGN_TOP
               image = highlighCurrentResearch
@@ -503,12 +504,12 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           valign = ALIGN_BOTTOM
           flow = FLOW_VERTICAL
           children = [
             {
-              size = const [flex(), hdpx(40)]
+              size = const [FLEX, hdpx(40)]
               padding = plateTextsSmallPad
               valign = ALIGN_BOTTOM
               flow = FLOW_HORIZONTAL
@@ -524,7 +525,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
         }
         mkUnitInfo(unit)
         {
-          size = flex()
+          size = FLEX
           valign = ALIGN_TOP
           pos = [0, -selLineSize]
           children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
@@ -546,7 +547,25 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
               borderWidth = frameBorderWidth
           }
           : { watch = researchStatus }
-        mkProfileUnitDailyBonus(unit)
+        unit?.level == null ? mkProfileUnitDailyBonus(unit)
+          : @() !isUnitPlateLevelVisible.get()
+                  ? {
+                      watch = isUnitPlateLevelVisible
+                      size = flex()
+                      children = mkProfileUnitDailyBonus(unit)
+                    }
+                  : {
+                      watch = [isUnitPlateLevelVisible, isMaxLevel]
+                      size = flex()
+                      children = [
+                        mkProfileUnitDailyBonus(unit, { padding = const [0, hdpx(15), 0, hdpx(50)]})
+                        mkUnitLevel(
+                          isMaxLevel.get() ? maxLevelStarChar : unit.level,
+                          unit.rewardedMasteryTier,
+                          { size = evenPx(36) }
+                        ).__update({ margin = hdpx(8) })
+                      ]
+                    }
       ]
       transform = { scale = isDraggedUnit.get() ? [1.1, 1.1] : [1, 1] }
       animations = [

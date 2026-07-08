@@ -127,13 +127,13 @@ let oxygenLevel = @(scale) {
         {
           rendObj = ROBJ_SOLID
           color = hudDarkGrayColor
-          size = flex()
+          size = FLEX
         },
         @() {
           watch = oxygen
           rendObj = ROBJ_SOLID
           color = hudBlueColor
-          size = flex()
+          size = FLEX
           transform = { pivot = [0, 1], scale = [oxygen.get() / 100.0, 1] }
           transitions = [{ prop = AnimProp.scale, duration = 0.5 }]
         }
@@ -155,7 +155,7 @@ let oxygenLevelEditView = {
         {
           rendObj = ROBJ_SOLID
           color = hudBlueColor
-          size = flex()
+          size = FLEX
         }
       ]
     }

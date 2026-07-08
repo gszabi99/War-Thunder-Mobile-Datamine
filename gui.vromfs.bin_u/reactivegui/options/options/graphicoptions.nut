@@ -3,7 +3,7 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, should_notify_about_restart,
-  get_default_graphics_preset, is_metalfx_upscale_supported,
+  get_default_graphics_preset, is_metalfx_upscale_supported, is_arm_asr_supported,
   is_fxaa_high_broken, supports_deferred_msaa, hdr_available
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
@@ -44,7 +44,10 @@ let aaList = ["low_fxaa"]
   .extend(supports_deferred_msaa() ? ["mobile_msaa"] : [])
   .extend(((get_settings_blk()?.graphics.forceLowPreset ?? false) || (get_settings_blk()?.graphics.disallowTaa ?? false)) ? [] : ["mobile_taa_low", "mobile_taa"])
   .extend(is_ios && is_metalfx_upscale_supported() ? ["metalfx_fxaa"] : [])
-  .extend((is_android || is_pc) && (get_settings_blk()?.graphics.listAllAaOptions ?? false) ? ["sgsr", "sgsr2"] : [])
+  .extend((is_android || is_pc) && (get_settings_blk()?.graphics.listAllAaOptions ?? false)
+    ? ["sgsr"].extend(get_default_graphics_preset() != "low"
+        ? ["sgsr2"].extend(is_arm_asr_supported() ? ["arm_asr"] : [])
+        : []) : [])
   .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["smaa"])
 
 let validateAA = @(a) aaList.contains(a) ? a : aaList[0]
@@ -103,6 +106,7 @@ let aaValToDescriptionMap = {
   low_fxaa = "fxaa", high_fxaa = "fxaa",
   mobile_taa = "taa", mobile_taa_low = "taa",
   sgsr2 = "sgsr",
+  arm_asr = "arm_asr",
   metalfx_fxaa = "metalfx",
 }
 

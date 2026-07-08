@@ -46,7 +46,7 @@ let mkTitleImg = @(decoratorId) {
 }.__update(fontMediumShaded)
 
 let mkNickFrameImg = @(decoratorId) {
-  size = flex()
+  size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
@@ -84,7 +84,7 @@ let mkDecoratorContent = @(decoratorId) function() {
   let title = mkImage != null ? loc($"decorator/{dType}") : decoratorId
   return {
     watch = allDecorators
-    size = flex()
+    size = FLEX
     children = [
       image
       mkGradeTitle(title, limitFontGrad)

@@ -12,7 +12,7 @@ gui_scene.setConfigProps({
 })
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     updaterScene
     messages

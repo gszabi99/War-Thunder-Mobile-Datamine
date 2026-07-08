@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { hangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -22,12 +22,13 @@ let isUnitModsOpen = mkWatched(persist, "isUnitModsOpen", false)
 let isUnitModAttached = mkWatched(persist, "isUnitModAttached", false)
 let curModCategoryId = mkWatched(persist, "curModCategoryId", null)
 let curModId = mkWatched(persist, "curModId", null)
-let curBullet = mkWatched(persist, "curBullet", null)
+let curBulletId = mkWatched(persist, "curBulletId", null)
 let curBulletCategoryId = mkWatched(persist, "curBulletCategoryId", null)
 
-let isOwn = Computed(@() hangarUnitName.get() in campMyUnits.get())
 let unit = Computed(@() !isUnitModsOpen.get() ? null
   : (baseUnit.get() ?? campMyUnits.get()?[hangarUnit.get()?.name] ?? campUnitsCfg.get()?[hangarUnit.get()?.name]))
+let isOwn = Computed(@() unit.get()?.name in campMyUnits.get()
+  && campMyUnits.get()[unit.get().name].isUpgraded == unit.get().isUpgraded)
 let unitName = Computed(@() unit.get()?.name)
 let unitMods = Computed(@() unit.get()?.mods)
 
@@ -144,7 +145,7 @@ function closeUnitModsWnd() {
 curModCategoryId.subscribe(function(v) {
   if (v == null)
     return
-  curBullet.set(null)
+  curBulletId.set(null)
   changeBulletTabWithUnseenTrigger(null)
   curModId.set(modsSorted.get().findvalue(@(m) unitMods.get()?[m.name] == true)?.name)
 })
@@ -162,7 +163,7 @@ return {
   curMod
   curModId
   curBulletCategoryId
-  curBullet
+  curBulletId
   isCurModPurchased
   isCurModEnabled
   isCurModLocked

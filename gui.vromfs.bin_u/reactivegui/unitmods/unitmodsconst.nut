@@ -4,7 +4,7 @@ let { tabExtraWidth } = require("%rGui/components/tabs.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
 
 
-let tabContentMargin = [hdpx(10), hdpx(30)]
+let tabContentMargin = [hdpx(10), hdpx(20)]
 
 let modH = hdpx(130)
 let modW = hdpx(302)

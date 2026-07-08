@@ -98,7 +98,7 @@ let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem, offset) stre
   size = FLEX_H
   children = [
     {
-      size = [gradientWidth, flex()]
+      size = [gradientWidth, FLEX]
       hplace = ALIGN_CENTER
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
@@ -111,7 +111,7 @@ let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem, offset) stre
       margin = hdpx(20)
       hplace = ALIGN_CENTER
       children = {
-        size = [flex(), itemSize]
+        size = [FLEX, itemSize]
         children = streaksArr.map(@(val, idx) mkAppearAnim(mkInfoButton(val), idx, startAnimTime, delayPerItem, offset))
       }
     }

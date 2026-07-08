@@ -3,7 +3,7 @@ let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mergeStyles, mkCustomButton } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -45,7 +45,7 @@ let mkBuyUpgardeUnit = @(unit) {
   halign = ALIGN_LEFT
   children = [
     infoCommonButton(
-      @() unitDetailsWnd(unit),
+      @() openUnitDetailsWnd(unit),
       {
         size = [buttonStyles.defButtonHeight, buttonStyles.defButtonHeight]
         hotkeys = [["^J:Y", loc("msgbox/btn_more")]]

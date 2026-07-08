@@ -4,6 +4,7 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays,
   has_offline_battle_access
 } = require("%appGlobals/permissions.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { openDebugProfileWnd } = require("%rGui/debugTools/debugProfileWnd.nut")
 let { openDebugConfigWnd } = require("%rGui/debugTools/debugConfigsWnd.nut")
 let debugShopWnd = require("%rGui/debugTools/debugShopWnd.nut")
@@ -28,7 +29,6 @@ let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { openOfflineBattleMenu } = require("%rGui/gameModes/offlineBattlesState.nut")
-let { isInHangarChallenge } = require("%rGui/hudState.nut")
 let { start_hangar_challenge } = require("guiHangarChallenge")
 
 
@@ -39,7 +39,7 @@ let TEST_AIR_BATTLE_UNIT = "fw_190a_1"
 
 let MAX_ROWS_COUNT = 11
 
-let hangarChallengeMissionName = "gamedata/missions/development/dev_testflight/tank/testFlight_ussr_tft.blk"
+let hangarChallengeMissionName = "gamedata/missions/singlemissions/challenges/tank/hangar_challenge_tank_diff1.blk"
 
 let openConfirmationTutorialMsg = @() openMsgBox({
   text = loc("tutorial/startConfirmation")
@@ -182,14 +182,16 @@ function getDevButtons() {
     return res
 
   if (can_debug_missions.get())
-    res.append(TEST_FLIGHT, TF_SHIP_TUNE, TEST_CHALLENGES, TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
+    res.append(TEST_FLIGHT, TF_SHIP_TUNE,
+      curCampaign.get() == "tanks" ? TEST_CHALLENGES : null,
+      TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
   else if (isOfflineMenu)
     res.append(TEST_FLIGHT, BENCHMARK)
   if (can_debug_configs.get())
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
   if (can_use_debug_console.get())
     res.append(DEBUG_QCONSOLE, DEBUG_COMMANDS)
-  return res
+  return res.filter(@(v) v != null)
 }
 
 let getTopMenuButtons = @() []
@@ -200,8 +202,7 @@ let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
     isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData,
-    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access,
-    isInHangarChallenge
+    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access
   ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })

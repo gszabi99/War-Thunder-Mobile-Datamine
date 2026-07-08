@@ -20,7 +20,7 @@ let mkWeaponNameText = @(text) {
       rendObj = ROBJ_SOLID
       transform = { pivot = [0, 1] }
       color = hudOceanMistColor
-      size = flex()
+      size = FLEX
       animations = [
         { prop = AnimProp.scale, from = [0.0, 0.0], to = [0.0, 0.0], duration = 0.3, play = true }
         { prop = AnimProp.scale, from = [0.0, 1.0], to = [1.0, 1.0], duration = 0.3, play = true,

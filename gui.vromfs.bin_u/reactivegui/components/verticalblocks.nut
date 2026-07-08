@@ -32,13 +32,13 @@ function mkBlock(content, idx, activeBlockIdx, mkBlockContent, onClick) {
     onClick = @() onClick(idx)
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = mkBlockRadialGradient(isSelected.get())
       }
       mkBlockContent(content, idx)
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_TOP
         pos = [0, 0]
         children = selectedLineHorUnits(isSelected)

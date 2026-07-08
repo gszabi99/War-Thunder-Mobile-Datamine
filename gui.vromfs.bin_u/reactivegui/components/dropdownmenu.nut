@@ -77,7 +77,7 @@ function dropDownMenu(state, styles = {}) {
         text = valToString(currentOption.get())
       }.__update(fontTinyAccented)
       {
-        size = flex()
+        size = FLEX
       }
       {
         size = [iconSize, iconSize]

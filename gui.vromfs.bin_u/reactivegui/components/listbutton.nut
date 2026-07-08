@@ -2,11 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let btnH = hdpx(103)
 
-let bgColor = 0x990C1113
 let textColor = 0xFFFFFFFF
 
 let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
@@ -18,12 +17,12 @@ function btnBase(textOrCtor, sf, isSelected) {
     size = FLEX_H
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
-        color = bgColor
+        color = tabBgColor
       }
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         vplace = ALIGN_TOP
         image = btnGradient()
@@ -33,16 +32,19 @@ function btnBase(textOrCtor, sf, isSelected) {
           : 0
         transitions = opacityTransition
       }
-      type(textOrCtor) == "function" ? textOrCtor(sf, isSelected)
-        : {
-            size = [flex(), btnH]
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            color = textColor
-            text = textOrCtor
-          }.__update(fontSmall)
+      type(textOrCtor) == "table" ? textOrCtor
+        : type(textOrCtor) != "function"
+          ? {
+              size = [FLEX, btnH]
+              halign = ALIGN_CENTER
+              valign = ALIGN_CENTER
+              rendObj = ROBJ_TEXTAREA
+              behavior = Behaviors.TextArea
+              color = textColor
+              text = textOrCtor
+            }.__update(fontSmall)
+        : textOrCtor.getfuncinfos().parameters.len() == 1 ? textOrCtor
+        : textOrCtor(sf, isSelected)
     ]
   }
 }

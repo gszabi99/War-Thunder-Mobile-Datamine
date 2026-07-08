@@ -92,7 +92,7 @@ function avatarBtn(item) {
       }.__update(fontBig)
       @() {
         watch = [isChoosen, isSelected, isAvailable, stateFlags, isUnseen]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         borderWidth = hdpx(2)
         borderColor = stateFlags.get() & S_HOVER ? hoverColor
@@ -135,7 +135,7 @@ function footer() {
   let isCurrent = selectedAvatarName.get() == chosenAvatarName.get()
   return {
     watch = [selectedAvatarName, chosenAvatarName, availAvatars, allAvatars, currencyToFullId]
-    size = [flex(), defButtonHeight]
+    size = [FLEX, defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)
     children = isCurrent ? null
@@ -189,7 +189,7 @@ function avatarsList() {
 
 let decorationNameWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap
   onAttach = @() selectedAvatarName.set(chosenAvatarName.get())

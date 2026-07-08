@@ -118,14 +118,14 @@ let footerBtns = {
   flow = FLOW_HORIZONTAL
   children = [
     textButtonCommon("CLEAR", consoleLogClear)
-    { size = const [flex(), 0] }
+    { size = const [FLEX, 0] }
     textButtonPrimary("COPY", consoleLogCopy)
   ]
 }
 
 return @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
@@ -148,7 +148,7 @@ return @() addModalWindow({
             rendObj = ROBJ_TEXT
             text = "Quirrel Console"
           }.__update(fontSmall)
-          { size = flex() }
+          { size = FLEX }
           closeButton(close)
         ]
       }

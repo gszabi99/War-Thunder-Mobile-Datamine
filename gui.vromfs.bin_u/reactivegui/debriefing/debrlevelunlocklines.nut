@@ -137,6 +137,13 @@ let mkDebrLineMod = @(mod, isUnlocked, unlockDelay)
 
 
 
+let icoBul = mkIcon("ui/gameuiskin#hud_main_weapon_fire.svg")
+
+let mkDebrLineBullet = @(mod, isUnlocked, unlockDelay)
+  mkLevelUnlockLine(isUnlocked, unlockDelay, icoBul, loc(mod.locName))
+
+
+
 let mkDebrLineWeapon = @(wPreset, isUnlocked, unlockDelay)
   mkLevelUnlockLine(isUnlocked, unlockDelay, icoMod, comma.join(getWeaponShortNamesList(wPreset?.weapons ?? [])))
 
@@ -166,4 +173,5 @@ return {
   mkDebrLineWeapon
   mkDebrLineAmmo
   mkDebrLinePoints
+  mkDebrLineBullet
 }

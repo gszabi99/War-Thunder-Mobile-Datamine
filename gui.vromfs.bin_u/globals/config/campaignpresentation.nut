@@ -14,6 +14,7 @@ let mkPresentation = @(cfg, campaign) {
   unitLevelMaxLocId = $"gamercard/levelCamp/maxLevel"
   debrUnitLevelDescLocId = $"gamercard/debriefing/desc"
   playerLevelDescLocId = "hints/campaignLvlByResearchesInfo"
+  img = "ui/bkg/campaign_ship.avif"
   slotsPresetBtnIcon = $"ui/gameuiskin#icon_slot_preset_air.svg"
 }.__update(cfg)
 
@@ -27,6 +28,7 @@ let presentations = {
   }
 
   tanks = {
+    img = "ui/bkg/campaign_tank.avif"
     icon = "ui/gameuiskin#unit_tank.svg"
     treeBg = $"tanks_blur_bg.avif"
     unitsLocId = "options/chooseUnitsType/tank"
@@ -34,6 +36,7 @@ let presentations = {
   }
 
   air = {
+    img = "ui/bkg/campaign_plane.avif"
     icon = "ui/gameuiskin#unit_air.svg"
     treeBg = $"air_blur_bg.avif"
     unitsLocId = "options/chooseUnitsType/aircraft"

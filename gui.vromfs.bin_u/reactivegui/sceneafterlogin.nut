@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 
-require("%rGui/levelUp/debugLevelUp.nut")
 require("%rGui/debriefing/debriefingWnd.nut")
 require("%rGui/attributes/unitAttr/unitAttrWnd.nut")
 require("%rGui/attributes/slotAttr/slotAttrWnd.nut")
 require("%rGui/attributes/slotAttr/slotExpWnd.nut")
 require("%rGui/attributes/slotAttr/resetSlotLevelWnd.nut")
 require("%rGui/attributes/slotAttr/resetSlotSelectionMsg.nut")
+require("%rGui/unitDetails/unitDetailsWnd.nut")
 require("%rGui/unitMods/unitModsWnd.nut")
 require("%rGui/unitMods/unitModsSlotsWnd.nut")
 require("%rGui/unitsTree/unitsTreeWnd.nut")
@@ -21,13 +21,14 @@ require("%rGui/queue/queuePenaltyWnd.nut")
 require("%rGui/unit/debugUnits.nut")
 require("%rGui/hudHints/hintsDebug.nut")
 require("%rGui/loading/debugLoadingTips.nut")
+require("%rGui/notifications/suggestMigrateAccGoogle.nut")
 require("%rGui/notifications/bqEvents.nut")
 require("%rGui/notifications/benchmarkResult.nut")
 require("%rGui/notifications/allowLimitedConnectionDownload.nut")
 require("%rGui/notifications/allowGameAutoUpdate.nut")
 require("%rGui/notifications/negativeBalanceWarning.nut")
 require("%rGui/notifications/suggestUpdateMsg.nut")
-require("%rGui/notifications/suggestLinkEmailMsg.nut")
+require("%rGui/notifications/suggestLinkEmailMsgFacebook.nut")
 require("%rGui/notifications/logEventsAfterLogin.nut")
 require("%rGui/notifications/levelUpTelemetryEvent.nut")
 require("%rGui/notifications/infoPopupWnd.nut")
@@ -103,7 +104,6 @@ require("%rGui/options/chooseMovementControls/chooseMovementControlsWnd.nut")
 require("%rGui/contacts/contactsWnd.nut")
 require("%rGui/contacts/myContactPresence.nut")
 require("%rGui/squad/myExtData.nut")
-require("%rGui/event/eventWnd.nut")
 require("%rGui/event/buyEventCurrenciesWnd.nut")
 require("%rGui/event/profileUpdateOnSeasonEnd.nut")
 require("%rGui/event/gmEventWnd.nut")
@@ -116,7 +116,6 @@ require("%rGui/debriefing/debrUnitWeapons.nut")
 require("%rGui/loading/loadingScreen.nut")
   .setMissionLoadingScreen(require("%rGui/loading/missionLoadingScreen.nut"))
 require("%rGui/chat/mpChatHandler.nut")
-require("%rGui/levelUp/unitLevelUpRewards.nut")
 require("%rGui/consoleCmdAfterLogin.nut")
 require("%rGui/hud/indicators/missionIndicatorsMgr.nut")
 require("%rGui/unit/upgradeUnitWnd/unitUpgradeWnd.nut")
@@ -129,6 +128,7 @@ require("%rGui/battlePass/eventPassPurchaseWnd.nut")
 require("%rGui/battlePass/passScene.nut")
 require("%rGui/battlePass/operationPassPurchaseWnd.nut")
 require("%rGui/battlePass/newPlayerBpWnd.nut")
+require("%rGui/seasonScene/seasonScene.nut")
 require("%rGui/mainMenu/itemsBuyWnd.nut")
 
 
@@ -159,7 +159,7 @@ let battleScene = @() {
   watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive,
     isVoiceMsgMapSceneOpened, isTacticalMapSceneOpened]
   key = {}
-  size = flex()
+  size = FLEX
   children = isInFlightMenu.get() ? flightMenu
     : isMpStatisticsActive.get() ? mpStatisticsWnd
     : isInSpectatorMode.get() ? hudSpectator
@@ -171,12 +171,12 @@ let battleScene = @() {
 }
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     behindScene
     @() {
       watch = [scenesOrder, isInBattle]
-      size = flex()
+      size = FLEX
       waitForChildrenFadeOut = true
       children = getTopScene(scenesOrder.get())
         ?? (isInBattle.get() ? battleScene : mainMenuWnd)

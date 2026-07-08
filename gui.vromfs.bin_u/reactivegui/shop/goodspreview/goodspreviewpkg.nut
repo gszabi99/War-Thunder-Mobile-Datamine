@@ -5,6 +5,7 @@ let { stop_prem_cutscene } = require("hangar")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { unhideModals } = require("%rGui/components/modalWindows.nut")
 let { previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID } = require("%rGui/shop/goodsPreviewState.nut")
@@ -101,7 +102,7 @@ function oldPriceBlock(child, animStartTime) {
     children = [
       child
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpx(5)
         color = 0xFFE02A14
@@ -149,7 +150,7 @@ function oldPriceBlock(child, animStartTime) {
 }
 
 let mkHighlight = @(duration, start, appear) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_9RECT
   image = gradCircularSqCorners
   texOffs = [gradCircCornerOffset, gradCircCornerOffset]
@@ -283,7 +284,7 @@ let abTestDiscountViewCfg = {
 
 let purchaseButtonBlock = @(animStartTime, count = 1, ovr = {}) function() {
   let res = {
-    watch = [previewGoods, abTests, discountsToApply]
+    watch = [previewGoods, abTests, discountsToApply, currencyToFullId]
     size = [ovr?.size[0] ?? defButtonMinWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
@@ -298,7 +299,8 @@ let purchaseButtonBlock = @(animStartTime, count = 1, ovr = {}) function() {
   } = abTestDiscountViewCfg?[abTests.get()?.offerDiscountView] ?? abTestDiscountViewCfg.old_price
   res.gap <- gap
 
-  let { priceCtor, basePrice, finalPrice, currencyId, buy, discountInPercent } = info
+  let { priceCtor, basePrice, finalPrice, buy, discountInPercent } = info
+  let currencyId = currencyToFullId.get()?[info.currencyId] ?? info.currencyId
   let priceBlock = finalPrice == basePrice ? null
     : oldPriceBlock(priceCtor(basePrice, currencyId, priceStyle), animStartTime)
   return res.__update({
@@ -493,7 +495,7 @@ let mkPriceBlockCentered = @(animStartTime, count = 1, ovr = {}) {
 }
 
 let mkItemBlink = @(start) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_9RECT
   image = gradCircularSqCorners
   texOffs = [gradCircCornerOffset, gradCircCornerOffset]
@@ -582,7 +584,7 @@ function mkPreviewItems(rewards, animStartTime, slotsInRow = 0) {
 function doubleClickListener(onDoubleClick) {
   local lastClickMsec = 0
   return {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Button
     function onClick() {
       let time = get_time_msec()

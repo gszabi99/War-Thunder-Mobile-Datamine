@@ -65,7 +65,7 @@ function getCombineLocNameMission(missionInfo) {
 
   if (locName == "") {
     let misInfoPostfix = missionInfo?.postfix ?? ""
-    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
+    if (misInfoPostfix != "" && (misInfoName.indexof(misInfoPostfix) ?? 0) > 0) {
       let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
       locName = "".concat("[", loc($"missions/{misInfoPostfix}"), "] ", loc($"missions/{name}"))
     }

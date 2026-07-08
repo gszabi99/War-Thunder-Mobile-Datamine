@@ -8,7 +8,7 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkLevelLock, mkNotPurchasedShade, mkModImage, mkEquippedFrame, mkUnseenModIndicator
 } = require("%rGui/unitMods/modsComps.nut")
 let { startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
-let { modH, modW, modsGap, activeColor } = require("%rGui/unitMods/unitModsConst.nut")
+let { modH, modW, modsGap, activeColor, modContentMargin } = require("%rGui/unitMods/unitModsConst.nut")
 let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
 let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 
@@ -25,14 +25,14 @@ let mkModContent = @(content, isActive, isHover) {
   children = [
     @() {
       watch = isActive
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = bgColor
       transitions = opacityTransition
     }
     @() {
       watch = [isActive, isHover]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = bgGradient()
       opacity = isActive.get() ? 1
@@ -44,7 +44,7 @@ let mkModContent = @(content, isActive, isHover) {
 }
 
 let mkIcon = @(icon, size) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FIT
   image = Picture($"ui/gameuiskin#{icon}:{size[0]}:{size[1]}:P")
@@ -111,6 +111,9 @@ function mkModContentData(mod, idx) {
         }
         @() {
           watch = [isPurchased, isLocked, hasModNotOwn, cost]
+          margin = modContentMargin
+          vplace = ALIGN_BOTTOM
+          hplace = ALIGN_RIGHT
           children = isPurchased.get() || isLocked.get() || hasModNotOwn.get() ? null
             : mkCurrencyComp(cost.get().price, cost.get().currencyId, CS_SMALL)
         }

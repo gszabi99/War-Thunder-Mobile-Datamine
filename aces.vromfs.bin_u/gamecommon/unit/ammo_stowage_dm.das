@@ -162,8 +162,8 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
     apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.DESTROYED) <| v
     return
   if effect == AmmoSlotEffectType.DRIED_AND_RESTORED
-    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.RESTORED) <| v
     apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.DRIED) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.RESTORED) <| v
     return
 
   
@@ -182,7 +182,8 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
     let slot_ammo_type = get_ammo_slot_type(slot_id, v)
     let slot_num_ammo = v.ammo_slots__numAmmo[slot_id].x
     if slot_num_ammo > 0
-      ammo_stowage_subtract_weapon_ammo(unit.weap, slot_ammo_type, false, slot_num_ammo, v)
+      var bulletModId = -1
+      ammo_stowage_change_weapon_ammo(unit.weap, slot_ammo_type, false, -slot_num_ammo, bulletModId, v)
       v.ammo_stowage__ammoLost += slot_num_ammo
     
     var need_start_reload = slot_num_ammo > 0 && get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
@@ -202,7 +203,7 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
       let adjacent_slot_id = adjacent_cluster_and_slot.y
       if adjacent_slot_id != -1
         v.ammo_slots__numAmmo[adjacent_slot_id].x = 0
-        ammo_slot_set_dm_enabled(unit, adjacent_slot_id, false, v) \
+        ammo_slot_set_dm_enabled(unit, adjacent_slot_id, false, v)
 
   
   if effect == AmmoSlotEffectType.FLOODED || effect == AmmoSlotEffectType.DRIED
@@ -215,6 +216,13 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
   if effect == AmmoSlotEffectType.RESTORED
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED, true)
     ammo_slot_set_dm_enabled(unit, slot_id, true, v)
+
+    
+    for adjacent_cluster_and_slot in gather_adjacent_slots(stowage_id, cluster_id, slot_id, v)
+      let adjacent_slot_id = adjacent_cluster_and_slot.y
+      if adjacent_slot_id != -1
+        ammo_slot_set_dm_enabled(unit, adjacent_slot_id, true, v)
+
   if effect == AmmoSlotEffectType.FLOODED
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.FLOODED, true)
   if effect == AmmoSlotEffectType.DRIED
@@ -542,11 +550,11 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
                                       ammo_stowage__splashProperties : SplashProps -const
                                       >)
+  var unit = unit__ref.unit
   if get_flag(v.ammo_stowage__ammoState, AmmoState.ON_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState.ON_EXPLODE)
     set_flag(v.ammo_stowage__ammoState, AmmoState.ON_FIRE, false)
     set_flag(v.ammo_stowage__ammoState, AmmoState.ON_EXPLODE, false)
 
-    var unit = unit__ref.unit
     if unit.isDelayed
       return
 
@@ -565,7 +573,6 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
     v.ammo_stowage__delayedOffender.clear()
 
   if v.ammo_stowage__timeAmmoFire > 0.0f
-    let unit = unit__ref.unit
     if !unit.isAlive && !unit.isDelayed
       v.ammo_stowage__timeAmmoFire -= evt.dt
       if v.ammo_stowage__timeAmmoFire > 0.0f
@@ -581,7 +588,6 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
   
   
   if get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION)
-    var unit = unit__ref.unit
     if unit.isAlive && !unit.isDelayed
       set_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE, false)
       set_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION, false)

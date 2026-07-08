@@ -1914,8 +1914,8 @@
     }
   },
   "breaches": {
-    "additionalWaterDeathThreshold": 6000000.0,
-    "additionalWaterCoverPartsThreshold": 180000.0,
+    "additionalWaterDeathThreshold": 7000000.0,
+    "additionalWaterCoverPartsThreshold": 80000.0,
     "repairSpeed": 80.0,
     "waterMassVel": -37000.0,
     "waterMassMult": 50.0,

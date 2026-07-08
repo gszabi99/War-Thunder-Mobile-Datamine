@@ -24,10 +24,12 @@ let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkGradText, mkGradGlowText, mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
 let { withGlareEffect } = require("%rGui/components/glare.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { goodsSmallSizeW, goodsH, goodsGap } = require("%rGui/shop/shopWndConst.nut")
 let { hasVip, vipBonuses } = require("%rGui/state/profilePremium.nut")
 let { personalGoodsUnseenIds } = require("%rGui/shop/personalGoodsState.nut")
+let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let goodsW = hdpxi(555)
 let goodsSmallSize = [goodsSmallSizeW, goodsH]
@@ -71,7 +73,7 @@ let textArea = @(ovr) txtBase.__merge({
 }, ovr)
 
 let mkBgImg = @(img, defImg = "ui/gameuiskin/shop_bg_slot.avif") {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture(img)
   fallbackImage = Picture(defImg)
@@ -88,7 +90,7 @@ let mkBgParticles = @(effectSize) {
 }
 
 let borderBg = {
-  size  = [flex(), goodsH]
+  size  = [FLEX, goodsH]
   rendObj = ROBJ_BOX
   borderColor = 0xFF74A1D2
   borderWidth = hdpx(2)
@@ -109,7 +111,7 @@ let mkBorderByCurrency = @(defBorder, isFreeReward, currencyId) isFreeReward ? b
   : currencyToPlateBorder?[currencyId] ?? defBorder
 
 let mkFitCenterImg = @(img, ovr = {}) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture(img)
   keepAspect = KEEP_ASPECT_FIT
@@ -118,7 +120,7 @@ let mkFitCenterImg = @(img, ovr = {}) {
 }.__update(ovr)
 
 let mkGoodsImg = @(img, fallbackImg = null, ovr = {}) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin/{img}:0:P")
   fallbackImage = fallbackImg ? Picture($"ui/gameuiskin/{fallbackImg}:0:P") : null
@@ -130,7 +132,7 @@ let mkGoodsImg = @(img, fallbackImg = null, ovr = {}) {
 let numberToTextForWtFont = @(str) str.tostring().replace("0", "O")
 
 let oldAmountStrikeThrough = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(5)
   color = 0xFFE02A14
@@ -402,17 +404,18 @@ function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
   let undiscountedPrice = goods.price.price
   let basePrice = discountInPercent <= 0 ? undiscountedPrice : round(undiscountedPrice / (1.0 - (discountInPercent / 100.0)))
   let final = Computed(@() getAdjustedPriceInfo(goods, todayPurchCount, discountsToApply.get()))
+  let currencyId = Computed(@() currencyToFullId.get()?[final.get().currencyId] ?? final.get().currencyId)
   return @() {
-    watch = [state, final]
-    size = flex()
+    watch = [state, final, currencyId]
+    size = FLEX
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
-    image = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[final.get().currencyId] ?? priceBgGradDefault
+    image = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[currencyId.get()] ?? priceBgGradDefault
     picSaturate = (state.get() & (DELAYED | NOT_READY)) ? 0 : 1.0
     children = [
-      final.get().price > 0 && final.get().currencyId != ""
-          ? mkDiscountPriceComp(basePrice, final.get().price, final.get().currencyId, CS_COMMON.__merge({ fontStyle = fontMedium }))
+      final.get().price > 0 && currencyId.get() != ""
+          ? mkDiscountPriceComp(basePrice, final.get().price, currencyId.get(), CS_COMMON.__merge({ fontStyle = fontMedium }))
         : isRealCurrency ? txt({ text = priceExt.priceText }.__update(fontMedium))
         : null
       needDiscountTag ? mkDiscountCorner(discountInPercent) : null
@@ -435,9 +438,9 @@ let advertMark = @() {
 }.__update(adsButtonCounter)
 
 let mkPlate = @(text, fontStyle = fontMedium) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
-  color = 0x990C1113
+  color = tabBgColor
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = {
@@ -456,7 +459,7 @@ let tinyLimitReachedPlate = mkPlate(utf8ToUpper(loc("shop/limit_reached")), {
   }.__update(fontTinyAccentedShaded))
 
 let skipPurchasedPlate = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = priceBgGradPremium
   valign = ALIGN_CENTER
@@ -468,7 +471,7 @@ let skipPurchasedPlate = {
 }
 
 let subsActivePlate = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = priceBgGradPremium
   valign = ALIGN_CENTER
@@ -480,7 +483,7 @@ let subsActivePlate = {
 }
 
 let subsUpgradePlate = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = priceBgGradPremium
   valign = ALIGN_CENTER
@@ -495,7 +498,7 @@ function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
   return @() {
     watch = [state, isProviderInited, hasVip]
-    size = flex()
+    size = FLEX
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -517,7 +520,7 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true, t
   let pricePlateComp = isFreeReward ? mkFreePricePlate(goods, state) : mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount)
   return @() {
     watch = state
-    size = flex()
+    size = FLEX
     children = [
       (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
         : (state.get() & LIMIT_REACHED) != 0 ? limitReachedPlate
@@ -528,7 +531,7 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true, t
             { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
             { glareWidth },
             { translateXMult = 1.5 }
-          ).__update({ size = flex() })
+          ).__update({ size = FLEX })
     ]
   }
 }
@@ -536,7 +539,7 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true, t
 function mkCommonSubsPricePlate(subs) {
   let { priceText = "" } = subs.priceExt
   return {
-    size = flex()
+    size = FLEX
     padding = const [0, 0, hdpx(6), 0]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -558,7 +561,7 @@ function mkSubsPricePlate(subs, state, animParams = null) {
   let pricePlateComp = mkCommonSubsPricePlate(subs)
   return @() {
     watch = state
-    size = flex()
+    size = FLEX
     children = (state.get() & HAS_UPGRADE) ? subsUpgradePlate
       : (state.get() & IS_ACTIVE) ? subsActivePlate
       : animParams == null ? pricePlateComp
@@ -568,7 +571,7 @@ function mkSubsPricePlate(subs, state, animParams = null) {
           { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
           { glareWidth },
           { translateXMult = 1.5 }
-        ).__update({ size = flex() })
+        ).__update({ size = FLEX })
   }
 }
 
@@ -617,7 +620,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     flow = FLOW_VERTICAL
     children = [
       {
-        size = [ flex(), goodsBgH ]
+        size = [ FLEX, goodsBgH ]
         children = mkContent?(stateFlags.get(), canPurchase.get())
       }.__update(childOvr)
       canPurchase.get()
@@ -649,16 +652,16 @@ function mkOfferWrap(onClick, mkContent) {
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
     children = withGlareEffect(
-      { size = flex(), children = mkContent?(stateFlags.get()) },
+      { size = FLEX, children = mkContent?(stateFlags.get()) },
       offerW,
       null,
       { glareWidth }
-    ).__update({ size = flex() })
+    ).__update({ size = FLEX })
   })
 }
 
 let disabledBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x80000000
   valign = ALIGN_CENTER
@@ -669,7 +672,7 @@ let disabledBg = {
 }
 
 let mkAvailableIn = @(timeText, ovr = {}) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
@@ -718,7 +721,7 @@ function mkDailyLimitGoodsTimeProgress(goods) {
   let canShowTimeProgress = mkCanShowTimeProgress(goods)
   return @() {
     watch = canShowTimeProgress
-    size = flex()
+    size = FLEX
     children = canShowTimeProgress.get() ? mkCalcDailyLimitGoodsTimeProgress() : null
   }
 }
@@ -728,7 +731,7 @@ function mkFreeAdsGoodsTimeProgress(goods) {
   if (readyTime <= serverTime.get() || interval <= 0)
     return @() {
       watch = isProviderInited
-      size = flex()
+      size = FLEX
       children = !isProviderInited.get() && needAdvert ? disabledAdsGoodsPlate : null
     }
   let diff = Computed(@() readyTime - serverTime.get())
@@ -743,7 +746,7 @@ function mkSoonGoodsAvailableTime(goods, state) {
     return null
   let needTimer = Computed(@() (state.get() & NOT_READY) != 0)
   let timeLeftText = Computed(function() {
-    if (!needTimer)
+    if (!needTimer.get())
       return ""
     let time = serverTime.get()
     local nextTime = timeRanges.findvalue(@(tr) tr.start > time)?.start ?? timeRange?.start ?? 0
@@ -807,7 +810,7 @@ function mkOfferTexts(title, goods) {
     text = utf8ToUpper(title)
   }.__update(fontVeryTinyAccented, { fontSize = hdpxi(21) }))
   return {
-    size = flex()
+    size = FLEX
     margin = [offerPad[0], offerPad[1], offerPad[2] + hdpx(5), offerPad[3]]
     children = [
       mkGoodsTimeLeftText(goods)
@@ -823,7 +826,7 @@ function mkAirBranchOfferTexts(title, unitName, goods) {
     text = "\n".concat(utf8ToUpper(title), utf8ToUpper(unitName))
   }.__update(fontVeryTinyAccented))
   return {
-    size = flex()
+    size = FLEX
     margin = offerPad
     children = [
       mkGoodsTimeLeftText(goods)
@@ -833,7 +836,7 @@ function mkAirBranchOfferTexts(title, unitName, goods) {
 }
 
 let underConstructionBg = {
-  size = const [flex(), hdpx(92)]
+  size = const [FLEX, hdpx(92)]
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin/under_construction_line.avif:0:P")
@@ -859,7 +862,7 @@ function mkSquareIconBtn(text, onClick, ovr, font = fontBig) {
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
         color = 0x80000000
       }

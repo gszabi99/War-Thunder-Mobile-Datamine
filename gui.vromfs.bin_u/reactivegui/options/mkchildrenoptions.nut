@@ -7,9 +7,11 @@ let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
+let { contentH } = require("%rGui/battlePass/battlePassPkg.nut")
 
 let contentWidth = saSize[0] - tabW - saBorders[0]
 let pannableAreaWidth = saSize[0] - tabW + saBorders[0]
+
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
 let tabHeight = hdpx(120)
@@ -20,7 +22,7 @@ let gradientHeightTop = saBorders[1]
 
 let scrollHandler = ScrollHandler()
 
-let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - tabHeight,
+let mkVerticalPannableArea = verticalPannableAreaCtor(contentH,
   [gradientHeightTop, gradientHeightBottom],
   [topAreaSize, gradientHeightBottom])
 
@@ -68,7 +70,7 @@ function mkChildrenOptions(tabs) {
             children = tab?.options.filter(@(v) v != null).map(mkOption)
             animations = wndSwitchAnim
           },
-          { size = [pannableAreaWidth, saSize[1] - tabHeight - gap] },
+          { size = [pannableAreaWidth, contentH] },
           { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
         scrollArrowsBlock
       ]
@@ -76,27 +78,25 @@ function mkChildrenOptions(tabs) {
   }
 
   return {
-    size = flex()
+    size = FLEX
     function onAttach() {
       if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.get() ?? true))
         resetCurTabIdx()
     }
     children = {
-      size = [contentWidth, flex()]
+      size = [FLEX, contentH]
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
-      rendObj = ROBJ_SOLID
-      color = 0x990C1113
       margin = [0, 0, 0, saBorders[0]]
       gap
       children = [
         {
-          size = [contentWidth, SIZE_TO_CONTENT]
+          size = [FLEX, SIZE_TO_CONTENT]
           flow = FLOW_VERTICAL
           children = [
             mkHorizontalTabs(tabs, curTabIdx)
             {
-              size = [flex(), hdpx(4)]
+              size = [FLEX, hdpx(4)]
               rendObj = ROBJ_SOLID
               color = selectColor
             }

@@ -54,18 +54,18 @@ function mkAttrRow(attr) {
 
   return @() {
     watch = hasSp
-    size = [ flex(), rowHeight ]
+    size = [ FLEX, rowHeight ]
     flow = FLOW_HORIZONTAL
     gap = progressBtnGap
     valign = ALIGN_CENTER
     children = [
       mkProgressBtn(mkProgressBtnContentDec(canDec), mkBtnOnClick(-1))
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         children = [
           {
-            size = flex()
+            size = FLEX
             flow = FLOW_HORIZONTAL
             gap = hdpx(10)
             children = [

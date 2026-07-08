@@ -34,6 +34,7 @@
   "bulletsCartridge": 1,
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "allowRearmOnField": true,
   "mesh": "bgm_71_tow_rocket_deployed",
   "animChar": "bgm_71_tow_rocket_char",

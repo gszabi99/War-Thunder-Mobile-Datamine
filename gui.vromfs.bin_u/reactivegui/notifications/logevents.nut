@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
-let { logAdjustEvent = @(_,__) null } = require_optional("adjust")
+let { logAdjustEvent } = require("adjust")
 let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { INVALID_USER_ID } = require("matching.errors")
@@ -15,7 +15,7 @@ let regexp2 = require("regexp2")
 let {
   logFirebaseEvent = @(_) null ,
   logFirebaseEventWithJson = @(_,__) null ,
-  setFirebaseUID = @(_) null ,
+  setFirebaseUID = @(_) null
   getFirebaseAppInstanceId = @() null
 }  = is_android ? require_optional ("android.firebase.analytics") : is_ios ? require_optional ("ios.firebase.analytics") : {}
 let { hardPersistWatched } = require("%sqstd/globalState.nut")

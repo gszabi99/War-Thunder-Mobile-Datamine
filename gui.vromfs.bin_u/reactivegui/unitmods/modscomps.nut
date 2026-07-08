@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -9,12 +8,8 @@ let { modContentMargin, modH, modW, equippedFrameWidth, activeColor, equippedCol
   blocksLineSize, blocksGap, slotsBlockMargin, contentGamercardGap
 } = require("%rGui/unitMods/unitModsConst.nut")
 let { catsScrollHandler, carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
-let { openUnitRewardsModal } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkButtonTextMultiline, mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
-} = require("%rGui/components/textButton.nut")
-let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
 
 
 let bulletTypeIconSize = hdpxi(80)
@@ -25,7 +20,7 @@ let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0xFFFFFFFF, 0.25))
 
 let bgShade = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = bgShadeColor
 }
@@ -57,7 +52,7 @@ let mkNotPurchasedShade = @(isPurchased) @() isPurchased.get() ? { watch = isPur
   : bgShade.__merge({ watch = isPurchased })
 
 let mkModImage = @(mod) mod?.name == null ? null : {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin/{mod.name}.avif:0:P")
   fallbackImage = Picture(defImage)
@@ -66,7 +61,7 @@ let mkModImage = @(mod) mod?.name == null ? null : {
   imageValign = ALIGN_BOTTOM
 }
 
-let mkModCost = @(isPurchased, isLocked, mod, unitModCostCfg, currencyStyle = CS_SMALL) function() {
+let mkModCost = @(isPurchased, isLocked, mod, unitModCostCfg, currencyStyle = CS_SMALL, ovr = {}) function() {
   let cost = isPurchased.get() || isLocked.get() || mod.get() == null ? null
     : getModCost(mod.get(), unitModCostCfg.get())
   return {
@@ -76,7 +71,7 @@ let mkModCost = @(isPurchased, isLocked, mod, unitModCostCfg, currencyStyle = CS
     hplace = ALIGN_RIGHT
     children = cost == null ? null
       : mkCurrencyComp(cost.price, cost.currencyId, currencyStyle)
-  }
+  }.__update(ovr)
 }
 
 let mkUnseenModIndicator = @(isUnseen) @() {
@@ -100,13 +95,13 @@ let mkVerticalPannableArea = @(content, width, pageMaskPict) {
   rendObj = ROBJ_MASK
   image = pageMaskPict
   clipChildren = true
-  size = [width, flex()]
+  size = [width, FLEX]
   flow = FLOW_VERTICAL
   hplace = ALIGN_RIGHT
   children = [
-    { size = [flex(), slotsBlockMargin] }
+    { size = [FLEX, slotsBlockMargin] }
     {
-      size = flex()
+      size = FLEX
       behavior = Behaviors.Pannable
       padding = [0, 0, saBorders[1], 0]
       touchMarginPriority = TOUCH_BACKGROUND
@@ -123,12 +118,12 @@ let mkCarouselPannableArea = @(content, height, pageMaskPict) {
   rendObj = ROBJ_MASK
   image = pageMaskPict
   clipChildren = true
-  size = [flex(), height]
+  size = [FLEX, height]
   flow = FLOW_HORIZONTAL
   children = [
-    { size = [blocksGap, flex()] }
+    { size = [blocksGap, FLEX] }
     {
-      size = flex()
+      size = FLEX
       padding = [0, saBorders[0], 0, 0]
       behavior = Behaviors.Pannable
       touchMarginPriority = TOUCH_BACKGROUND
@@ -141,7 +136,7 @@ let mkCarouselPannableArea = @(content, height, pageMaskPict) {
 }
 
 let verticalGradientLine = @() {
-  size = [blocksLineSize, flex()]
+  size = [blocksLineSize, FLEX]
   margin = [contentGamercardGap, 0, 0, 0]
   rendObj = ROBJ_IMAGE
   image = lineGradientVert()
@@ -168,20 +163,6 @@ let mkBulletTypeIcon = @(iconBulletType, ammoTypeName) {
   ]
 }
 
-let mkLevelUpRewardBtnChildren = @(unit) [
-  mkCustomButton(
-    mkFrameImg(
-      mkButtonTextMultiline(utf8ToUpper(loc("unitLevelUp/rewardBtn")), { size = [hdpx(300), SIZE_TO_CONTENT]}),
-      "laurels",
-      hdpxi(50)),
-    @() openUnitRewardsModal(unit),
-    mergeStyles(PRIMARY, { hotkeys = ["^J:LB"] }))
-  {
-    margin = textButtonUnseenMargin
-    children = priorityUnseenMark
-  }
-]
-
 let catsPanelBg = {
   rendObj = ROBJ_IMAGE
   image = mkColoredGradientY(0x20000000, 0x60000000)
@@ -198,8 +179,6 @@ return {
   mkUnseenModIndicator
   mkEquippedFrame
   mkBulletTypeIcon
-
-  mkLevelUpRewardBtnChildren
 
   mkVerticalPannableArea
   mkCarouselPannableArea

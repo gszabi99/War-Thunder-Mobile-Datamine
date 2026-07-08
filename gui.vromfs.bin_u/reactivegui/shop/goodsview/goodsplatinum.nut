@@ -11,7 +11,7 @@ let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFFFFFFF, 11, 6, 2)
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x01261E10
 }

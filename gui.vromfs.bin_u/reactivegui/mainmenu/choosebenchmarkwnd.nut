@@ -23,7 +23,7 @@ function byRows(list) {
     return null
   let rows = arrayByRows(list, 2)
   if (rows.top().len() < 2)
-    rows.top().resize(2, { size = flex() })
+    rows.top().resize(2, { size = FLEX })
   return {
     size = FLEX_H
     flow = FLOW_VERTICAL
@@ -37,7 +37,7 @@ function byRows(list) {
   }
 }
 
-let btnStyle = { ovr = { size = const [flex(), hdpx(100)] } }
+let btnStyle = { ovr = { size = const [FLEX, hdpx(100)] } }
 function missionsListUi() {
   let children = [byRows(benchmarksList.get().map(@(b)
     textButtonCommon(
@@ -82,7 +82,7 @@ function missionsListUi() {
 return @() addModalWindow({
   key = wndUid
   hotkeys = [[btnBEscUp, { action = close }]]
-  size = flex()
+  size = FLEX
   onAttach = @() eventbus_send("getBenchmarksList", {})
   children = {
     size = const [hdpx(1300), SIZE_TO_CONTENT]
@@ -104,7 +104,7 @@ return @() addModalWindow({
             rendObj = ROBJ_TEXT
             text = loc("mainmenu/btnBenchmark")
           }.__update(fontSmall)
-          { size = flex() }
+          { size = FLEX }
           closeButton(close)
         ]
       }

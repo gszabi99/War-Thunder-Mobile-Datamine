@@ -209,7 +209,7 @@ let mkToggleBulletsButtonsCtor = @(trigger, bInfo, bNames, currentIdx, cd, cdEnd
   })
   return @() {
     watch = [bOrder, isRightAlign]
-    size = flex()
+    size = FLEX
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [ mkBulletsBg(scale, isRightAlign.get()) ]
@@ -289,7 +289,7 @@ function mkBulletEditView(i, icon, isRight) {
     children = [
       @() {
         watch = btnBgStyle
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpxi(i == 0 ? selBulletBorderWidthBase : bulletBorderWidthBase)
         color = borderColor

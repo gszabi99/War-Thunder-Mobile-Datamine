@@ -24,7 +24,7 @@ return @() [
   }
   {
     moveX = sh(-5)
-    children = mkBgImageByPx("ui/bkg/login_layer_testloading_5?x1ac", [flex(), 496], [0, 586])
+    children = mkBgImageByPx("ui/bkg/login_layer_testloading_5?x1ac", [FLEX, 496], [0, 586])
   }
   {
     moveX = sh(-5)

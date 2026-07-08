@@ -280,12 +280,7 @@ function mkTankCrewMemberDesc(partType, params, commonData) {
 
 let AFTERBURNER_CHAMBER = 3
 
-function getEngineModelName(infoBlk) {
-  return " ".join([
-    infoBlk?.manufacturer ? loc($"engine_manufacturer/{infoBlk.manufacturer}") : ""
-    infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
-  ], true)
-}
+let getEngineModelName = @(infoBlk) infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
 
 function mkEngineDesc(_partType, params, commonData) {
   let { unitBlk, getUnitFmBlk, simUnitType, findAnyModEffectValueBlk,
@@ -487,13 +482,9 @@ function mkTransmissionDesc(_partType, _params, commonData) {
   let desc = []
   let info = unitBlk?.VehiclePhys.mechanics
   if (info != null) {
-    let manufacturer = info?.manufacturer
-      ? loc($"transmission_manufacturer/{info.manufacturer}",
-        loc($"engine_manufacturer/{info.manufacturer}", ""))
-      : ""
     let model = info?.model ? loc($"transmission_model/{info.model}", "") : ""
     let props = info?.type ? utf8ToLower(loc($"transmission_type/{info.type}", "")) : ""
-    desc.append("".concat(" ".join([ manufacturer, model ], true),
+    desc.append("".concat(model,
       props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
     let maxSpeed = getProp_maxSpeed(commonData)
@@ -756,11 +747,9 @@ function mkAircraftFuelTankDesc(partType, params, commonData) {
   let { getAircraftFuelTankPartInfo } = commonData
   let partName = params.name
   let desc = []
-  local partLocId = partType
+  let partLocId = partType
   let tankInfoTable = getAircraftFuelTankPartInfo(commonData, partName)
   if (tankInfoTable != null) {
-    if (tankInfoTable?.manufacturer)
-      partLocId = tankInfoTable.manufacturer
     let tankInfo = []
     if ("protected" in tankInfoTable)
       tankInfo.append(loc(tankInfoTable.protected ? "fuelTank/selfsealing" : "fuelTank/not_selfsealing"))
@@ -1149,7 +1138,19 @@ function mkWeaponDesc(partType, params, commonData) {
 
 
 
-function getAmmoStowageSlotInfo(unitBlk, partName) {
+function getAmmoStowageCountByWeapons(commonData, ammoStowageBlk) {
+  let weaponTriggers = ammoStowageBlk % "weaponTrigger"
+  if (weaponTriggers.len() == 0)
+    return 0
+
+  local res = 0
+  foreach (weapon in commonData?.getUnitWeaponsList(commonData) ?? [])
+    if (weaponTriggers.contains(weapon?.trigger ?? ""))
+      res += weapon?.bullets ?? 0
+  return res
+}
+
+function getAmmoStowageSlotInfo(unitBlk, partName, commonData) {
   let res = {
     count = 0,
     isConstrainedInert = false
@@ -1162,7 +1163,7 @@ function getAmmoStowageSlotInfo(unitBlk, partName) {
         foreach (shells in blk % blockName) {
           let slotBlk = shells?[partName]
           if (slotBlk) {
-            res.count = slotBlk.count
+            res.count = slotBlk?.count ?? getAmmoStowageCountByWeapons(commonData, blk)
             res.isConstrainedInert = slotBlk?.type == "inert"
             return res
           }
@@ -1177,7 +1178,7 @@ function mkAmmoDesc(partType, params, commonData) {
   let desc = []
   local partLocId = partType
   let isShipOrBoat = [S_SHIP, S_BOAT].contains(simUnitType)
-  let ammoSlotInfo = getAmmoStowageSlotInfo(unitBlk, partName)
+  let ammoSlotInfo = getAmmoStowageSlotInfo(unitBlk, partName, commonData)
   if (isShipOrBoat && ammoSlotInfo.count > 1)
     desc.append("".concat(loc("shop/ammo"), colon, ammoSlotInfo.count))
   let stowageInfo = getAmmoStowageInfo(unitBlk, null, partName, isShipOrBoat)
@@ -1941,7 +1942,7 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
         haveAuto ? loc("sight_AUTO") : "", haveCcrp ? loc("CCRP") : "" ], true)))
   }
 
-  let nightVisionBlk = findAnyModEffectValueBlk(commonData, "nightVision")
+  let nightVisionBlk = findAnyModEffectValueBlk(commonData, "nightVision") ?? unitBlk?.nightVision
   if ((partType == "pilot" && nightVisionBlk?.pilotIr != null)
       || (partType == "gunner" && nightVisionBlk?.gunnerIr != null))
     desc.append(loc("modification/night_vision_system"))

@@ -35,7 +35,7 @@ let curOpenEventPass = Computed(@() eventsPassList.get().findvalue(@(v) v.eventN
 let epProgressUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
   EVENTPASS_POINTS in unlock?.meta && curOpenEventPass.get()?.tableId == unlock.table)?.name)
 
-let seasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
+let epSeasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
 let eventBgImage = Computed(@() getEventPresentation(curEventId.get()).bg)
 let eventTitle = Computed(@() getEventPresentation(curEventId.get()).locId)
 
@@ -270,7 +270,7 @@ function receiveEpRewards(progress) {
   if (fullList.len() == 0)
     return
 
-  let total = fullList.reduce(@(res, c) res + c.finalStage - c.stage + 1, 0)
+  let total = fullList.reduce(@(res, c) res + (c?.finalStage ?? c.stage) - c.stage + 1, 0)
   sendEpBqEvent("receive_rewards", {
     paramInt1 = progress,
     paramInt2 = total
@@ -348,7 +348,7 @@ return {
 
   eventsPassList
   curEventId
-  seasonEndTime
+  epSeasonEndTime
   hasAnyEpRewardsToReceive
   mkHasEpRewardsToReceive
 

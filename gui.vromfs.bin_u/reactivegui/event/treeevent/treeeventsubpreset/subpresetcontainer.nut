@@ -101,7 +101,7 @@ function subPresetContent() {
         image = Picture("ui/images/pirates/map_scroll.avif:0:P")
         children = {
           key = isOpeningFinished.get()
-          size = flex()
+          size = FLEX
           clipChildren = !isOpeningFinished.get()
           halign = ALIGN_CENTER
           children = [
@@ -115,7 +115,7 @@ function subPresetContent() {
 }
 
 let subPresetContainer = {
-  size = flex()
+  size = FLEX
   stopMouse = true
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

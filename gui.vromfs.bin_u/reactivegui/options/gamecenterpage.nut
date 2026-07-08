@@ -32,7 +32,7 @@ register_command(function() {
 
 return @() {
   watch = isSignedIn
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap = buttonsHGap
   halign = ALIGN_CENTER

@@ -6,18 +6,20 @@ let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matching.errors")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { can_send_hosts_reachability_to_matching } = require("%appGlobals/permissions.nut")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates, jwtUserstat,
-  QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING, QS_CHECK_PENALTY,
-  QS_REQUEST_STATS
+  QS_REQUEST_STATS, QS_ACTUALIZE, QS_CHECK_PENALTY, QS_ACTUALIZE_SQUAD, QS_CHECK_HOSTS,
+    QS_JOINING, QS_IN_QUEUE, QS_LEAVING
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { selClusters } = require("%appGlobals/clustersState.nut")
-let { getOptimalClustersForSquad } = require("optimalClusters.nut")
+let { REACHABILITY_CHECK_TIMEOUT_SEC } = require("%appGlobals/clustersState.nut")
+let { isHostsReachabilityValid, requestHostsReachability, getClustersAndHostsForQueue
+} = require("optimalClusters.nut")
 let { queueData, isQueueDataActual, actualizeQueueData, curUnitInfo
 } = require("%scripts/battleData/queueData.nut")
 let { isStatsActual, actualizeStats, allowSendOldStats, oldStatSendTime
@@ -125,10 +127,25 @@ function tryWriteMembersData() {
 
   curQueue.mutate(function(q) {
     q.params.players = q.params.players.__merge(playersUpd)
-    q.state = QS_JOINING
+    q.state = QS_CHECK_HOSTS
     logQ($"Add {playersUpd.len()} squad members to queue state")
   })
 }
+
+function addClustersInfoAndContinue() {
+  if (curQueueState.get() != QS_CHECK_HOSTS)
+    return
+  let { clusters, unreachableHosts } = getClustersAndHostsForQueue(squadMembers.get())
+  curQueue.mutate(function(q) {
+    q.params = q.params.__merge(can_send_hosts_reachability_to_matching.get()
+      ? { clusters, unreachableHosts }
+      : { clusters })
+    q.state = QS_JOINING
+    logQ($"Set clusters {",".join(clusters)}")
+  })
+}
+
+eventbus_subscribe("hosts_reachability_validated", @(_) addClustersInfoAndContinue())
 
 registerHandler("onActiveQueueActualizeData",
   function(res) {
@@ -180,9 +197,19 @@ let queueSteps = {
 
   [QS_ACTUALIZE_SQUAD] = function() {
     if (!isInSquad.get())
-      setQueueState(QS_JOINING)
+      setQueueState(QS_CHECK_HOSTS)
     else
       tryWriteMembersData()
+  },
+
+  [QS_CHECK_HOSTS] = function() {
+    if (isHostsReachabilityValid())
+      addClustersInfoAndContinue()
+    else {
+      requestHostsReachability() 
+      resetTimeout(REACHABILITY_CHECK_TIMEOUT_SEC + 1, addClustersInfoAndContinue) 
+      logQ("Requested hosts reachability")
+    }
   },
 
   [QS_JOINING] = @() matching.rpc_call("match.enqueue",
@@ -276,7 +303,6 @@ function joinQueue(params) {
     return
   }
   let paramsExt = {
-    clusters = getOptimalClustersForSquad(squadMembers.get()) ?? selClusters.get()
     team = TEAM_ANY
     jip = get_gui_option(USEROPT_ALLOW_JIP) ?? true
   }.__update(params)

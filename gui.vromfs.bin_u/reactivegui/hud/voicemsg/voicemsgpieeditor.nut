@@ -87,7 +87,7 @@ function mkItemRow(idx) {
   let isHovered = Computed(@() stateFlags.get() & S_HOVER)
   return @() {
     watch = stateFlags
-    size = [flex(), rowHeight]
+    size = [FLEX, rowHeight]
 
     behavior = Behaviors.Button
     onClick = @() selectItem(idx)
@@ -100,14 +100,14 @@ function mkItemRow(idx) {
     children = [
       @() {
         watch = [isSelected, isHovered]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
         color = isSelected.get() || isHovered.get() ? selectColor : 0
         opacity = isSelected.get() ? 0.9 : 0.5
       }
       @() {
         watch = [isVisible, item]
-        size = flex()
+        size = FLEX
         margin = hdpx(20)
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
@@ -152,7 +152,7 @@ let footer = @() {
   gap = buttonsHGap
   children = [
     textButtonCommon(utf8ToUpper(loc("msgbox/btn_reset")), resetVoiceMsgPieUserConfig, { hotkeys = ["^J:X"] })
-    { size = flex() }
+    { size = FLEX }
     mkCustomButton(
       mkIcoBtnContent(voiceMsgPieHidden.get().contains(selItemId.get()) ? "btn_trash_return.svg" : "btn_trash.svg"),
       onBtnVisibility,
@@ -165,13 +165,13 @@ let footer = @() {
 
 let voiceMsgPieEditorWnd = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   children = [
     header
     {
-      size = flex()
+      size = FLEX
       vplace = ALIGN_CENTER
       padding = const [0, 0, hdpx(20), 0]
       valign = ALIGN_CENTER

@@ -66,7 +66,7 @@ let rocketAgmTracker = @() function() {
 }
 
 let rocketAgmAim = @() {
-  size = flex()
+  size = FLEX
   children = [
     rocketAgmTracker()
   ]

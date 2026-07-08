@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
@@ -8,15 +9,14 @@ let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature } = require("%rGui/components/unseenMark.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { unseenResearchedUnits, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+
 
 let hasUnseen = Computed(@() unseenUnits.get().len() > 0
   || unseenSkins.get().len() > 0
-  || unseenResearchedUnits.get().len() > 0
-  || unseenUnitLvlRewardsList.get().len() > 0)
+  || unseenResearchedUnits.get().len() > 0)
 let discount = Computed(@() unitDiscounts.get().reduce(@(res, val) max(val.discount, res), 0.0))
 
-let unseenMarkOvr = { pos = [hdpx(4), -hdpx(4)], hplace = ALIGN_RIGHT }
+let unseenMarkOvr = { pos = [-hdpx(4), hdpx(4)], hplace = ALIGN_RIGHT }
 
 function discountTagUnitTree(dis) {
   let height = hdpxi(38)
@@ -41,17 +41,18 @@ function discountTagUnitTree(dis) {
   }
 }
 
-return @(){
+return @() {
   watch = [hasUnseen, discount, curCampaignUnseenBranches, currentResearch]
   children = [
     translucentButton("ui/gameuiskin#icon_tree.svg",
-      "",
       function() {
         openUnitsTreeWnd()
       },
-      discountTagUnitTree(discount.get())
+      utf8ToUpper(loc("mainmenu/btnUnits")),
+      discountTagUnitTree(discount.get()),
+      { contentOvr = { gap = hdpx(-10)} }
     )
-    curCampaignUnseenBranches.get().len() > 0 && currentResearch.get() != null
+    curCampaignUnseenBranches.get().findvalue(@(v) v) && currentResearch.get() != null
       ? priorityUnseenMarkFeature.__update(unseenMarkOvr)
       : mkPriorityUnseenMarkWatch(hasUnseen, unseenMarkOvr)
   ]

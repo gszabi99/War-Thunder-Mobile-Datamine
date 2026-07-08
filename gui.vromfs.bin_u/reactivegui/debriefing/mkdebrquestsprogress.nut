@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
 let { getSpecialEventLocName } = require("%rGui/event/specialEventLocName.nut")
@@ -42,13 +44,15 @@ let mkTextArea = @(text, ovr) {
 
 function getQuestSectionLocName(quest) {
   let { event_id = "", daily_quest = false, weekly_quest = false, promo_quest = false, achievement = false,
-    personal = "" } = quest?.meta
+    personal = "", masteryUnitName = null } = quest?.meta
   if (event_id != "") {
     if (event_id == MAIN_EVENT_ID)
       return loc(getEventPresentation($"season_{quest?.activity.start_index ?? 0}").locId)
     let { _specialEventRewardUnitName = "" } = quest
     return getSpecialEventLocName(event_id, _specialEventRewardUnitName)
   }
+  if (masteryUnitName != null)
+    return loc("mainmenu/btnMastery")
   if (daily_quest || weekly_quest)
     return loc("quests/common")
   if (promo_quest)
@@ -69,13 +73,20 @@ function getQuestSubSectionLocName(quest) {
 }
 
 function getQuestLocName(quest) {
-  let { achievement = false, tree_quest = false, lang_id = quest.name } = quest?.meta
+  let { achievement = false, tree_quest = false, lang_id = quest.name, masteryUnitName = null } = quest?.meta
+  if (masteryUnitName != null)
+    return ": ".join([
+      getUnitName(masteryUnitName),
+      loc($"mastery/task/{lang_id}")
+    ])
   let isHeaderDesc = achievement || tree_quest
   return loc(isHeaderDesc ? $"{lang_id}/desc" : lang_id)
 }
 
 function getQuestLocDesc(quest) {
-  let { achievement = false, tree_quest = false, lang_id = quest.name } = quest?.meta
+  let { achievement = false, tree_quest = false, lang_id = quest.name, masteryUnitName = null } = quest?.meta
+  if (masteryUnitName != null)
+    return loc($"mastery/task/{lang_id}/desc", { amountTxt = decimalFormat(quest.required), amount = quest.required })
   let isHeaderDesc = achievement || tree_quest
   return isHeaderDesc ? "" : loc($"{lang_id}/desc")
 }
@@ -298,13 +309,41 @@ let sortQuests = @(a, b)
   || b.required <=> a.required
   || a.name <=> b.name
 
+function mkVehicleMasteryTask(debrUnit, current) {
+  let { previous, stat, required } = debrUnit.masteryProgress
+  return {
+    meta = { masteryUnitName = debrUnit.name }
+    name = stat,
+    current,
+    required,
+    _previous = previous,
+  }
+}
+
 function mkDebrQuestsProgress(debrData, delay) {
-  let { quests = {} } = debrData
-  let hasContent = quests.len() != 0
+  let { quests = {}, unit = null, reward = {} } = debrData
+  let allUnits = []
+  if (unit != null) {
+    allUnits.append(unit)
+    if ((unit?.platoonUnits.len() ?? 0) > 0)
+      allUnits.extend(unit.platoonUnits)
+  }
+  let unitsMasteryProgress = allUnits.reduce(function(res, u) {
+    let { stat = "", previous = 0, required = 0 } = u?.masteryProgress
+    let addProgress = reward?.units.findvalue(@(ur) u.name == ur.name).stats[stat] ?? 0
+    let nextProgress = min(previous + addProgress, required)
+    return previous != nextProgress ? res.append(mkVehicleMasteryTask(u, nextProgress)) : res
+  }, [])
+  let hasContent = quests.len() != 0 || unitsMasteryProgress.len() != 0
   return {
     questsProgressComps = hasContent
-      ? mkColumns(quests.values().map(mkQuestSortingInfo).sort(sortQuests)
-          .reduce(splitBySections {}).map(mkQuestSectionSortingInfo).values().sort(sortQuestSections)
+      ? mkColumns(quests.values().extend(unitsMasteryProgress)
+          .map(mkQuestSortingInfo)
+          .sort(sortQuests)
+          .reduce(splitBySections, {})
+          .map(mkQuestSectionSortingInfo)
+          .values()
+          .sort(sortQuestSections)
           .map(@(v) mkQuestSectionComp(v.locName, v.questSection, delay)))
       : null
     questsProgressShowTime = hasContent

@@ -95,6 +95,7 @@ let overrides = {
 
 
 
+
 }
 
 let genParams = {
@@ -103,6 +104,22 @@ let genParams = {
   locId = @(name) $"{name}"
   blueprintImage = @(name) $"ui/unitskin#blueprint_{name}.avif"
 }
+
+let unitMasteryPresentations = [
+  {
+    icon = "ui/gameuiskin#slot_mastery_1.svg"
+    colorIcon = "ui/gameuiskin#slot_mastery_1_color.svg"
+    scale = 0.8
+  }
+  {
+    icon = "ui/gameuiskin#slot_mastery_2.svg"
+    colorIcon = "ui/gameuiskin#slot_mastery_2_color.svg"
+  }
+  {
+    icon = "ui/gameuiskin#slot_mastery_3.svg"
+    colorIcon = "ui/gameuiskin#slot_mastery_3_color.svg"
+  }
+]
 
 function mkUnitPresentation(unitName) {
   let res = defaults.__merge(overrides?[unitName] ?? {}, { name = unitName })
@@ -119,6 +136,9 @@ function getUnitPresentationByName(unitName) {
   return cache[unitName ?? ""]
 }
 
+let getMasteryPresentation = @(masteryTier) unitMasteryPresentations?[masteryTier - 1]
+  ?? unitMasteryPresentations[unitMasteryPresentations.top()]
+
 let getUnitPresentation = @(unitOrName) getUnitPresentationByName(unitOrName?.name ?? unitOrName ?? "")
 
 return {
@@ -126,6 +146,7 @@ return {
   unitTypeFontIcons
   unitTypeColors
   getUnitPresentation
+  getMasteryPresentation
   getUnitClassFontIcon = @(u) unitClassFontIcons?[u?.unitClass] ?? ""
   getUnitName = @(u) loc(getUnitPresentation(u).locId)
 }

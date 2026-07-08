@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { OPT_AUTO_ZOOM_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP, OPT_CAMERA_SENSE_SHIP, OPT_STRATEGY_CAMERA_BY_DRAG,
-  mkOptionValue
+  OPT_SIGHT_DISTANCE, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_auto_zoom , CAM_TYPE_NORMAL_SHIP, CAM_TYPE_BINOCULAR_SHIP} = require("controlsOptions")
 let { optMoveCameraByDrag } = require("%rGui/hud/strategyMode/strategyState.nut")
@@ -44,7 +44,20 @@ let currentAutoZoomType = {
 
 
 
+let sightDistanceList = [false, true]
+let hasSightDistance = mkOptionValue(OPT_SIGHT_DISTANCE, true, @(v) validate(v, sightDistanceList))
+
+let sightDistanceType = {
+  locId = "options/sight_distance"
+  ctrlType = OCT_LIST
+  value = hasSightDistance
+  onChangeValue = @(v) sendChange("sight_distance", v)
+  list = sightDistanceList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
+
 return {
+  hasSightDistance
   shipControlsOptions = [
     cameraSenseSlider(CAM_TYPE_NORMAL_SHIP, "options/camera_sensitivity", OPT_CAMERA_SENSE_SHIP)
     cameraSenseSlider(CAM_TYPE_BINOCULAR_SHIP, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_SHIP)
@@ -52,5 +65,6 @@ return {
     
 
 
+    sightDistanceType
   ]
 }

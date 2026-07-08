@@ -12,13 +12,12 @@ let { selectedLineHorSolid, opacityTransition, selLineSize } = require("%rGui/co
 let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 let { modContentMargin, modW, modH, modsGap, activeColor } = require("%rGui/unitMods/unitModsConst.nut")
-let { warningTextColor } = require("%rGui/style/stdColors.nut")
+let { warningTextColor, tabBgColor } = require("%rGui/style/stdColors.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
 let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in campMyUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
 
 let weaponGap = modsGap
-let bgColor = 0x990C1113
 let eqIconSize = [hdpxi(63), hdpxi(50)]
 let weaponTotalH = modH + selLineSize + eqIconSize[1] / 2
 
@@ -31,14 +30,14 @@ let mkContentBlock = @(content, isActive, isHover) {
   children = [
     @() {
       watch = isActive
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
-      color = bgColor
+      color = tabBgColor
       transitions = opacityTransition
     }
     @() {
       watch = [isActive, isHover]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = bgGradient()
       opacity = isActive.get() ? 1
@@ -50,7 +49,7 @@ let mkContentBlock = @(content, isActive, isHover) {
 }
 
 let mkIcon = @(icon, size) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture($"{icon}:{size[0]}:{size[1]}:P")
   keepAspect = KEEP_ASPECT_FIT
@@ -128,7 +127,7 @@ let mkLevelLockInfo = @(isLocked, reqLevel) @() {
 let mkConflictsBorder = @(hasConflicts) @() !hasConflicts.get() ? { watch = hasConflicts }
   : {
       watch = hasConflicts
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_BOX
       borderColor = warningTextColor
       borderWidth = hdpx(3)
@@ -198,7 +197,7 @@ function mkBeltImage(bullets) {
     keepAspect = true
   }))
   return {
-    size = flex()
+    size = FLEX
     valign = ALIGN_BOTTOM
     children = {
       size = [modH, modH]

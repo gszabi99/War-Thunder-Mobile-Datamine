@@ -71,7 +71,7 @@ function url(data, _, style) {
       onClick
 
       children = {
-        size = [flex(), urlLineWidth]
+        size = [FLEX, urlLineWidth]
         vplace = ALIGN_BOTTOM
         rendObj = ROBJ_SOLID
         color
@@ -169,7 +169,7 @@ let indent = mkUList(ulNoBullet)
 let list = @(obj, formatTextFunc, style) obj?.type == "olist" ? numeric(obj, formatTextFunc, style) : bullets(obj, formatTextFunc, style)
 
 let separator = {
-  size = [flex(), urlLineWidth]
+  size = [FLEX, urlLineWidth]
   margin = [blockInterval, blockInterval, hdpx(20), 0]
   rendObj = ROBJ_SOLID
   color = separatorColor
@@ -196,7 +196,7 @@ let accent = @(obj, formatTextFunc, _) obj.__merge({
   margin = blockInterval
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = locColorTable?[obj?.color] ?? accentDefaultColor
       opacity = 0.2
@@ -345,7 +345,7 @@ function spoiler(obj, formatTextFunc, style) {
     children = [
       button
       {
-        size = isExpanded.get() ? FLEX_H : [flex(), 0]
+        size = isExpanded.get() ? FLEX_H : [FLEX, 0]
         children = mkContent(isExpanded.get())
       }
     ]
@@ -361,7 +361,7 @@ function tabs(obj, formatTextFunc, style) {
       let isHovered = sf & S_HOVER
       return {
         watch = [stateFlags, currentTab]
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         rendObj = ROBJ_BOX
@@ -388,7 +388,7 @@ function tabs(obj, formatTextFunc, style) {
     rendObj = ROBJ_BOX
     children = [
       @() {
-        size = const [flex(),hdpx(100)]
+        size = const [FLEX,hdpx(100)]
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         clipChildren = true

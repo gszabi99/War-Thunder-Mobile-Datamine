@@ -54,13 +54,13 @@ let content = @() {
     (ut == tuningUnitType.get() ? textButtonCommon : textButtonPrimary)(
       utf8ToUpper(loc($"mainmenu/type_{ut}")),
       @() changeUnitType(ut),
-      { ovr = { size = const [flex(), hdpx(100)] } })
+      { ovr = { size = const [FLEX, hdpx(100)] } })
   )
 }
 
 return @() addModalWindow(bgShaded.__merge({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close }]]
   children = {
@@ -82,7 +82,7 @@ return @() addModalWindow(bgShaded.__merge({
             rendObj = ROBJ_TEXT
             text = loc("hudTuning/chooseUnitType")
           }.__update(fontSmall)
-          { size = flex() }
+          { size = FLEX }
           closeButton(close)
         ]
       }

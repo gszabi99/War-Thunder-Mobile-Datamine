@@ -20,7 +20,7 @@ function close() {
 
 let mainButtons = [
   textButtonCommon(utf8ToUpper(loc("consentWnd/btns/notConsent")), @() applyConsent(defaultPointsTable.map(@(_) false), {wnd="consentMain", action="dont_consent"}))
-  {size = flex()}
+  {size = FLEX}
   textButtonPrimary(utf8ToUpper(loc("consentWnd/btns/consent")), @() applyConsent(defaultPointsTable, {wnd="consentMain", action="accept_all"}))
 ]
 

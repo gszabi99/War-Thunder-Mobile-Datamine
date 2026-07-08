@@ -79,20 +79,20 @@ let fireBtn = @() !isHintVisible.get() ? { watch = isHintVisible } : {
 
 let mkScene = @() {
   key = {}
-  size = flex()
+  size = FLEX
   animations = wndSwitchAnim
   children = [
     protectionAnalysisControl
     protectionAnalysisCrosshair
     {
-      size = flex()
+      size = FLEX
       margin = saBordersRv
       flow = FLOW_VERTICAL
       gap = hdpx(24)
       children = [
         sceneHeader
         {
-          size = flex()
+          size = FLEX
           children = [
             threatInfoComp
             hintComp

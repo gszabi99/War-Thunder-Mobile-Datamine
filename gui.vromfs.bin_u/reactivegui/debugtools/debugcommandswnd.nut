@@ -44,7 +44,7 @@ let wndUid = "debugCommandsWnd"
 let close = @() removeModalWindow(wndUid)
 
 registerHandler("sceenlogResult", @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR"))
-let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] }, useFlexText = true })
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [FLEX, hdpx(100)] }, useFlexText = true })
 let withClose = @(action) function() {
   close()
   action()
@@ -164,7 +164,7 @@ function mkCommandsList() {
   let list = commandsList.map(@(c) c?.customBtn ?? mkBtn(c.label, c.func))
   let rows = arrayByRows(list, 2)
   if (rows.top().len() < 2)
-    rows.top().resize(2, { size = flex() })
+    rows.top().resize(2, { size = FLEX })
 
   return {
     size = FLEX_H
@@ -209,7 +209,7 @@ let consoleTextInput = {
 
 return @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
@@ -232,7 +232,7 @@ return @() addModalWindow({
             rendObj = ROBJ_TEXT
             text = "Debug commands"
           }.__update(fontSmall)
-          { size = flex() }
+          { size = FLEX }
           closeButton(close)
         ]
       }

@@ -32,7 +32,7 @@ let tacticalMap = {
 
 let tacticalMapScene = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   children = [
     backButton(close)

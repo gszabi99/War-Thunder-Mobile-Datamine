@@ -11,11 +11,11 @@ let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)
 
 let mkVerticalPannableArea = @(content, override) {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   clipChildren = true
   children = {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Pannable
     touchMarginPriority = TOUCH_BACKGROUND
     skipDirPadNav = true
@@ -55,13 +55,13 @@ let categoriesBlock = mkOption(optCategory)
 
 let supportChooseCategoryWnd = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   children = [
     header
-    mkVerticalPannableArea(categoriesBlock, { size = flex() })
+    mkVerticalPannableArea(categoriesBlock, { size = FLEX })
   ]
   animations = wndSwitchAnim
 })

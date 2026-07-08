@@ -8,7 +8,7 @@ let blockPadding = hdpx(10)
 let blockBgColor = 0x50000000
 
 let mkLines = @(hints) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth
   commands = hints.reduce(function(res, h) {

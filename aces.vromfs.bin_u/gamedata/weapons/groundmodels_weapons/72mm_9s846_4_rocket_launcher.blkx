@@ -43,6 +43,7 @@
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "mesh": "9m39_rocket_deployed",
   "animChar": "9m39_rocket_char",
   "reloadAnimParam": "cap_hide",

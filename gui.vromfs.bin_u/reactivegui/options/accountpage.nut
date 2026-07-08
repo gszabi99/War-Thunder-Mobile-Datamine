@@ -242,7 +242,7 @@ function mkPremiumDescription() {
           margin = [hdpx(70), 0, 0, 0]
           flow = FLOW_HORIZONTAL
           valign = ALIGN_CENTER
-          gap = {size = flex()}
+          gap = {size = FLEX}
           children = [
             mkSubsIcon(premStatus.get())
             mkPremDescText(premStatus.get())
@@ -351,7 +351,7 @@ return {
   children = [
     userInfoBlock
     mkPremiumDescription()
-    { size = flex() }
+    { size = FLEX }
     buttons
   ]
 }

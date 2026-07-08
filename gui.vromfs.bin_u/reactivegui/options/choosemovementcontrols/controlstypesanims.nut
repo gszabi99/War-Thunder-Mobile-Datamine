@@ -224,7 +224,7 @@ let mkStickAnimComp = @(stickBg, stickHead, finger) animCompBase.__merge({
   children = [
     stickBg
     {
-      size = flex()
+      size = FLEX
       children = [
         stickHead
         finger

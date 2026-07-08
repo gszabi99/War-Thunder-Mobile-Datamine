@@ -14,7 +14,7 @@ function mkGyroBgLayer(layerCfg) {
   if (moveX == 0 || children == null)
     return children
   return {
-    size = flex()
+    size = FLEX
     children
     behavior = Behaviors.RtPropUpdate
     onlyWhenParentInScreen = true
@@ -39,7 +39,7 @@ let mkGyroBg = @(layersCfg) {
 
 let mkAnimBgWithGyro = @(layersCfg) @() {
   watch = isGamepad
-  size = flex()
+  size = FLEX
   children = is_pc && !isGamepad.get() ? mkAnimBg(layersCfg)
     : [
         mkGyroBg(layersCfg)

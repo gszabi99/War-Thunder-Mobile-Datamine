@@ -328,41 +328,6 @@
   "torpedo_gun": {
     "_use": "weapon"
   },
-  "background_model": {
-    "background_model__model": "",
-    "background_model__skin": "",
-    "background_model__unitName": "",
-    "background_model__weapon": "",
-    "background_model__isPlane": false,
-    "background_model__tm": [
-      [
-        1.0,
-        0.0,
-        0.0
-      ],
-      [
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        1.0
-      ],
-      [
-        0.0,
-        0.0,
-        0.0
-      ]
-    ],
-    "background_model__canOutline": false,
-    "background_model_res": {
-      "_tags": "gameClient"
-    },
-    "background_model__bullets:list<t>": {},
-    "background_model__spawnEid:eid": {}
-  },
   "destructed_model": {
     "_use": "replicating",
     "destructed_model__fx": "fire_tank_destructed",
@@ -528,7 +493,6 @@
       "effect__name": "camera_snow_light_cmps_fx"
     }
   },
-  "unit_init_params_ext": {},
   "base_unit_ext": {
     "base_unit__kill_score_mult": 1.0
   },

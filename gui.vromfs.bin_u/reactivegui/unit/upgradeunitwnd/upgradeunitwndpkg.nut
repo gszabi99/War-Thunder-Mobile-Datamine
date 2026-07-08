@@ -24,7 +24,7 @@ let offerCardBaseStyle = {
 }
 
 let mkBgGradient = @(height, ovr = {}) {
-  size = [flex(), height]
+  size = [FLEX, height]
   rendObj = ROBJ_IMAGE
   image = simpleVerGrad
   color = 0xDC000000
@@ -34,7 +34,7 @@ let topGradient = mkBgGradient((offerCardHeight / 4).tointeger())
 let bottomGradient = mkBgGradient((offerCardHeight / 2).tointeger(),
   { transform = { rotate = 180 }, vplace = ALIGN_BOTTOM, color = 0xFF000000 })
 let cardBgGradient = {
-  size = flex()
+  size = FLEX
   padding = const [hdpx(1), 0, 0, 0]
   children = [
     topGradient
@@ -52,7 +52,7 @@ let mkOfferCardBgPatternChunk = {
 function mkOfferCardBgPattern() {
   let patternChunk = mkOfferCardBgPatternChunk
   return {
-    size = flex()
+    size = FLEX
     clipChildren = true
     flow = FLOW_HORIZONTAL
     children = array(ceil(offerCardWidth.tofloat() / patternSize[0]).tointeger(),
@@ -87,7 +87,7 @@ let premDesc = {
       flipX = true
       children = {
         margin = const [hdpx(20), hdpx(30)]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = utf8ToUpper(loc("buyUnitAndExp/premDesc"))
@@ -106,7 +106,7 @@ let premDesc = {
 
 let wpOfferCard = @(content) {
   children = [
-    { rendObj = ROBJ_SOLID, size = flex(), color = 0xC8212C3C }
+    { rendObj = ROBJ_SOLID, size = FLEX, color = 0xC8212C3C }
     mkOfferCardBgPattern()
     cardBgGradient
     content
@@ -115,7 +115,7 @@ let wpOfferCard = @(content) {
 
 let premOfferCard = @(content) {
   children = [
-    { rendObj = ROBJ_SOLID, size = flex(), color = 0xC8760302 }
+    { rendObj = ROBJ_SOLID, size = FLEX, color = 0xC8760302 }
     mkOfferCardBgPattern()
     cardBgGradient
     content

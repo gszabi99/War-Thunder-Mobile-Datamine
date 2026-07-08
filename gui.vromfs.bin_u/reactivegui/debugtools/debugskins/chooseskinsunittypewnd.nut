@@ -22,7 +22,7 @@ let content = @(unitTypes, curUnitType, onChange) {
         close()
         onChange(ut)
       },
-      { ovr = { size = const [flex(), hdpx(100)] } })
+      { ovr = { size = const [FLEX, hdpx(100)] } })
   )
 }
 

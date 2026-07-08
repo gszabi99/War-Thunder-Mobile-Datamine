@@ -6,7 +6,7 @@ let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sendBpBqEvent,
   purchasedBp, bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, battlePassGoods, getBpIcon,
-  BP_NONE, BP_COMMON, BP_VIP, getBpName, seasonEndTime, seasonName, BP_MAX_LEVELS_TO_ADD
+  BP_NONE, BP_COMMON, BP_VIP, getBpName, bpSeasonEndTime, bpSeasonName, BP_MAX_LEVELS_TO_ADD
 } = require("%rGui/battlePass/battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
@@ -50,14 +50,14 @@ let contentGradientSize = [contentGap, saBorders[1]]
 let playerSelectedBp = mkWatched(persist, "playerSelectedBp", null)
 
 let header = @() {
-  watch = [seasonName, seasonEndTime]
-  size = [flex(), gamercardHeight]
+  watch = [bpSeasonName, bpSeasonEndTime]
+  size = [FLEX, gamercardHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
     backButton(closeBPPurchaseWnd)
-    battlePassSeason(seasonName.get(), seasonEndTime.get())
-    { size = flex() }
+    battlePassSeason(bpSeasonName.get(), bpSeasonEndTime.get())
+    { size = FLEX }
     mkCurrenciesBtns([PLATINUM])
   ]
 }
@@ -289,7 +289,7 @@ let battlePassIcon = @(bpList, selBpInfo) function() {
         hplace = ALIGN_CENTER
       }.__update(fontBig)
       {
-        size = [flex(), bpIconSize]
+        size = [FLEX, bpIconSize]
         children
       }
     ]
@@ -300,7 +300,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
   let { goods = null, price = null, purchList = null } = selBpInfo.get()
   return {
     watch = [purchasedBp, bpList, selBpInfo]
-    size = [flex(), defButtonHeight]
+    size = [FLEX, defButtonHeight]
     valign = ALIGN_CENTER
     halign = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
@@ -327,7 +327,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
               function() {
                 sendBpBqEvent("purchase_pass_press")
                 let battlePassRemainder = loc("battlepass/remainder", {
-                  time = colorize(userlogTextColor, secondsToHoursLoc(seasonEndTime.get() - serverTime.get()))
+                  time = colorize(userlogTextColor, secondsToHoursLoc(bpSeasonEndTime.get() - serverTime.get()))
                 })
                 if (purchList == null)
                   purchaseGoods(goods?.id, battlePassRemainder)
@@ -347,15 +347,15 @@ let buyBlock = @(bpList, selBpInfo) function() {
 }
 
 let rightBlock = @(bpList, selBpInfo) {
-  size = [rightBlockWidth, flex()]
+  size = [rightBlockWidth, FLEX]
   flow = FLOW_VERTICAL
-  gap = { size = flex() }
+  gap = { size = FLEX }
   children = [
     battlePassIcon(bpList, selBpInfo)
     mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.get() != null),
       buyBlock(bpList, selBpInfo),
       {
-        size = [ flex(), defButtonHeight ]
+        size = [ FLEX, defButtonHeight ]
         halign = ALIGN_CENTER
       })
   ]
@@ -366,12 +366,12 @@ let pannableArea = verticalPannableAreaCtor(wndContentHeight + contentGradientSi
 let scrollHandler = ScrollHandler()
 
 let content = @(bpList, selBpInfo) {
-  size = [flex(), wndContentHeight]
+  size = [FLEX, wndContentHeight]
   flow = FLOW_HORIZONTAL
   gap = blocksGap
   children = [
     {
-      size = flex()
+      size = FLEX
       children = [
         pannableArea(
           rewardsList(selBpInfo),
@@ -413,7 +413,7 @@ let function bpPurchaseWnd() {
 
   return {
     key = {}
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
     gap = contentGap

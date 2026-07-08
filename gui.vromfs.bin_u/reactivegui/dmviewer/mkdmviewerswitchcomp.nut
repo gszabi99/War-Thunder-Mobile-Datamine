@@ -24,13 +24,13 @@ let darkColor = 0xFF292929
 let hoverColor = 0xFF606060
 
 let btnBgSelected = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = mkColoredGradientY(0xFFFFFFFF, 0xFF7A7A7A)
 }
 
 let btnBgHovered = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = hoverColor
 }
@@ -42,7 +42,7 @@ function mkModeBtn(btnCfg, unitW) {
   let isVisible = mkIsVisible(unitW)
   return @() !isVisible.get() ? { watch = isVisible } : {
     watch = [stateFlags, isSelected, isVisible]
-    size = [flex(), btnH]
+    size = [FLEX, btnH]
 
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
@@ -69,7 +69,7 @@ function mkModeBtn(btnCfg, unitW) {
 }
 
 let mkModeBtnsSet = @(unitW) {
-  size = [flex(), plateH]
+  size = [FLEX, plateH]
   padding = platePad
   onDetach = @() dmViewerMode.set(DM_VIEWER_NONE)
   rendObj = ROBJ_SOLID

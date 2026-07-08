@@ -10,7 +10,7 @@ function mkAnimGrowLines(cfg, ovr = {}) {
   local commands = []
   return {
     key = cfg
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(4)
     color = selectColor

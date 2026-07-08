@@ -40,12 +40,12 @@ let areaBottomRight = {
 }
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     pathInputUi
     pathNodesUi
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       children = [
         areaTopLeft

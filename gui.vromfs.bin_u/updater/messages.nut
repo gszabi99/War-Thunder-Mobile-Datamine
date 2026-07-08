@@ -41,7 +41,7 @@ let bgHeader = {
 }
 
 let msgBoxHeader = @(text) bgHeader.__merge({
-  size = [ flex(), wndHeaderHeight ]
+  size = [ FLEX, wndHeaderHeight ]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = {
@@ -51,7 +51,7 @@ let msgBoxHeader = @(text) bgHeader.__merge({
 })
 
 let msgBoxText = @(text) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
@@ -66,7 +66,7 @@ let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
   children = [
     msgBoxHeader(title)
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       padding = [ 0, buttonsHGap, buttonsHGap, buttonsHGap ]
       children = [
@@ -75,7 +75,7 @@ let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
           size = FLEX_H
           halign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
-          gap = { size = flex() }
+          gap = { size = FLEX }
           children = buttons
         }
       ]
@@ -103,7 +103,7 @@ function mkButton(text, onClick) {
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       rendObj = ROBJ_9RECT
@@ -111,7 +111,7 @@ function mkButton(text, onClick) {
       padding = buttonBorderWidth
       color = 0xFFEEEEEE
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -119,7 +119,7 @@ function mkButton(text, onClick) {
         fillColor = 0xFF3A5D91
         children = [
           {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_9RECT
             color = 0xFF7395CF
             image = Picture($"ui/gameuiskin#gradient_button.svg")

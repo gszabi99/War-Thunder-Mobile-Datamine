@@ -15,7 +15,7 @@ let WND_PARAMS = {
   onClick = null 
   priority = MWP_COMMON
 
-  size = flex()
+  size = FLEX
   behavior = Behaviors.Button
   stopMouse = true
   stopHotkeys = true
@@ -84,7 +84,7 @@ function addModalWindow(wnd = {}) {
 
 let addModalWindowWithHeader = @(key, title, content) addModalWindow(bgShaded.__merge({
   key = key
-  size = flex()
+  size = FLEX
   children = modalWndBg.__merge({
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
@@ -126,7 +126,7 @@ function unhideModals(id) {
 
 let modalWindowsComponent = @() {
   watch = [modalWindowsGeneration, isModalsHidden]
-  size = flex()
+  size = FLEX
   children = isModalsHidden.get() ? null : modalWindows
 }
 

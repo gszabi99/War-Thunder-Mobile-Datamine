@@ -6,6 +6,8 @@ from "eventbus" import eventbus_send, eventbus_subscribe
 from "console" import register_command
 from "dagor.shell" import shell_execute
 from "dagor.workcycle" import resetTimeout
+from "appsFlyer" import startAppsFlyer, enableTCFCollection, startAppsFlyerConnector
+from "adjust" import setOnlineAdjust, getAdjustAdId
 from "auth_wt" import getCountryCode
 from "blkGetters" import get_local_custom_settings_blk
 from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData, unloadVendorData,
@@ -18,16 +20,16 @@ from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorData
 from "%sqstd/platform.nut" import is_android, is_ios, is_pc
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, TCF_CONSENT_ACCEPTED_SAVE_ID
-from "%appGlobals/permissions.nut" import tcf_consent_enabled, request_firebase_consent_eu_only
+from "%appGlobals/permissions.nut" import request_firebase_consent_eu_only
+from "%appGlobals/consent.nut" import isTcfConsentEnabled
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/login/stateIDFA.nut" import isIdfaDenied
 from "%rGui/style/stdAnimations.nut" import WND_REVEAL
 let { setCollectionEnabled = @(_) null,
-      setFirebaseConsent = @(_) null, getAdjustAdId = @() null } = is_android ? require("android.firebase.analytics")
+      setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
-let { setOnlineAdjust = @(_) null } = require_optional("adjust")
-let { startAppsFlyer, enableTCFCollection, startAppsFlyerConnector = @() null } = require("appsFlyer")
+
 let logC = log_with_prefix("[consent] ")
 
 
@@ -111,7 +113,7 @@ let vendorsListsCfg = [
   }
 ]
 
-tcf_consent_enabled.subscribe(@(v) v ? null : isOpenedConsentTcfWnd.set(false))
+isTcfConsentEnabled.subscribe(@(v) v ? null : isOpenedConsentTcfWnd.set(false))
 
 const CONTINUE_LOGIN = "doContinueLogin"
 let doOnceOnFinishCbId = mkWatched(persist, "doOnceOnFinishCbId", "")
@@ -365,7 +367,7 @@ eventbus_subscribe("consent.onInit", function(p) {
 
 function onReadyTcf(isReady) {
   if (isReady) {
-    if (!tcf_consent_enabled.get()) {
+    if (!isTcfConsentEnabled.get()) {
       logC("TCF Consent disabled")
       onFinishCbById[CONTINUE_LOGIN]()
       return
@@ -388,7 +390,7 @@ function openTcfConsentWnd() {
 }
 
 function doSaveAndClose(src) {
-  if (!tcf_consent_enabled.get())
+  if (!isTcfConsentEnabled.get())
     return isOpenedConsentTcfWnd.set(false)
   let from = "/".concat(isOpenForProfileWnd.get() ? "profile" : "login", src)
   logC($"TCF Consent saved from {from} action accept_chosen")
@@ -398,7 +400,7 @@ function doSaveAndClose(src) {
 }
 
 function doAnswerAllAndClose(src, isAccept) {
-  if (!tcf_consent_enabled.get())
+  if (!isTcfConsentEnabled.get())
     return isOpenedConsentTcfWnd.set(false)
   let status = isAccept ? "accept_all" : "accept_none"
   let from = "/".concat(isOpenForProfileWnd.get() ? "profile" : "login", src)
@@ -410,7 +412,7 @@ function doAnswerAllAndClose(src, isAccept) {
 }
 
 function doSkipClose() {
-  if (!tcf_consent_enabled.get())
+  if (!isTcfConsentEnabled.get())
     return isOpenedConsentTcfWnd.set(false)
   logC("TCF Consent skipped")
   if (!isOpenForProfileWnd.get())

@@ -9,7 +9,7 @@ let { GPT_SKIN, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, 
   HIDE_PREVIEW_MODALS_ID
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
@@ -56,6 +56,7 @@ isWindowAttached.subscribe(function(v) {
     unhideModals(HIDE_PREVIEW_MODALS_ID)
     if (openCount.get() != 0 && needShowUi.get())
       skipAnimsOnce.set(true)
+    needShowUi.set(false)
     return
   }
 
@@ -84,6 +85,8 @@ let curSelectedUnitId = Watched("")
 previewGoodsUnit.subscribe(@(v) curSelectedUnitId.set(v?.name ?? ""))
 
 let unitForShow = Computed(function() {
+  if (!isWindowAttached.get())
+    return null
   let skinReward = previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_SKIN)
   let unitName = skinReward?.id
   if (unitName == null)
@@ -127,7 +130,7 @@ function openDetailsWnd() {
     ?? unitForShow.get()?.currentSkins[unitForShow.get()?.name] 
   if (skin != null && skin != (previewGoodsUnit.get()?.skin ?? previewGoodsUnit.get()?.currentSkins[name] ?? ""))
     cfg.skin <- skin
-  unitDetailsWnd(cfg)
+  openUnitDetailsWnd(cfg)
 }
 
 
@@ -215,7 +218,7 @@ let goodsBlock = {
   ]
 }
 let rightBlock = {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
@@ -233,7 +236,7 @@ let rightBlock = {
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = verticalGap
@@ -256,7 +259,7 @@ let previewWnd = @() {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           children = rightBlock
         }
       ]

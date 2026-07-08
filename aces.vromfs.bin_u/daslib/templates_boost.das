@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers
 options unsafe_table_lookup = false
 
@@ -26,29 +24,29 @@ struct Template {
     call2name : table<string; string>                                           
     field2name : table<string; string>                                          
     var2name : table<string; string>                                            
-    var2expr : table<string; smart_ptr<Expression>>                             
-    var2exprList : table<string; array<smart_ptr<Expression>>>                  
+    var2expr : table<string; Expression?>                                        
+    var2exprList : table<string; array<Expression?>>                             
     type2type : table<string; string>                                           
     type2etype : table<string; TypeDeclPtr>                                     
     struct2etype : table<Structure?; TypeDeclPtr>                               
     blockArgName : table<string; string>                                        
     annArg : table<string; lambda<(var ann : AnnotationDeclaration) : void> >   
     blkArg : table<string; array<VariablePtr>>                                  
-    tag2expr : table<string; smart_ptr<Expression>>                             
+    tag2expr : table<string; Expression?>                                        
 }
 
 def kaboomVarField(var self : Template; name, prefix, suffix : string) {
     
     
-    self.kaboomVar |> emplace(name,  (prefix, suffix))
+    self.kaboomVar |> emplace(name,  (prefix = prefix, suffix = suffix))
 }
 
-def replaceVariable(var self : Template; name : string; var expr : smart_ptr<ast::Expression>) {
+def replaceVariable(var self : Template; name : string; var expr : ast::Expression?) {
     
     self.var2expr |> emplace(name, expr)
 }
 
-def replaceVarTag(var self : Template; name : string; var expr : smart_ptr<ast::Expression>) {
+def replaceVarTag(var self : Template; name : string; var expr : ast::Expression?) {
     
     self.tag2expr |> emplace(name, expr)
 }
@@ -58,16 +56,18 @@ def replaceArgumentWithList(var self : Template; name : string; blka : array<Var
     self.blkArg[name] := blka
 }
 
-def replaceVariableWithList(var self : Template; name : string; expr : array<ExpressionPtr>) {
+def replaceVariableWithList(var self : Template; name : string; expr : array<Expression?>) {
     
     self.var2exprList[name] := expr
 }
 
-def replaceVariableWithList(var self : Template; name : string; expr : dasvector`smart_ptr`Expression) {
+def replaceVariableWithList(var self : Template; name : string; expr : dasvector`ptr`Expression) {
     
-    var inscope vec : array<ExpressionPtr>
-    for (e in expr) {
-        vec |> push_clone(e)
+    var vec : array<Expression?>
+    unsafe {
+        for (e in expr) {
+            vec |> push(reinterpret<Expression?> e)
+        }
     }
     swap(self.var2exprList[name], vec)
 }
@@ -134,60 +134,60 @@ class private TemplateVisitor : AstVisitor {
         
         rules = r
     }
-    def override visitExprTag(var expr : smart_ptr<ExprTag>) : ExpressionPtr {
+    def override visitExprTag(var expr : ExprTag?) : Expression? {
         
         if (expr.name == "v") {
             if (expr.subexpr is ExprVar) {
                 let tn = string((expr.subexpr as ExprVar).name)
                 if (key_exists(rules.tag2expr, tn)) {
-                    var inscope rexpr <- clone_expression(unsafe(rules.tag2expr[tn]))
+                    var rexpr = clone_expression(unsafe(rules.tag2expr[tn]))
                     rexpr.at = expr.at
-                    return <- rexpr
+                    return rexpr
                 }
             }
         }
-        return <- expr
+        return expr
     }
-    def override preVisitExprMakeStructField(expr : smart_ptr<ExprMakeStruct>; index : int; var decl : MakeFieldDeclPtr; last : bool) : void {
+    def override preVisitExprMakeStructField(expr : ExprMakeStruct?; index : int; var decl : MakeFieldDeclPtr; last : bool) : void {
         
         let fname = string(decl.name)
         if (rules.field2name |> key_exists(fname)) {
             decl.name := rules.field2name |> get_value(fname)
         }
     }
-    def override visitExprIsVariant(var expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
+    def override visitExprIsVariant(var expr : ExprIsVariant?) : Expression? {
         
         let fname = string(expr.name)
         if (rules.field2name |> key_exists(fname)) {
             expr.name := rules.field2name |> get_value(fname)
         }
-        return <- expr
+        return expr
     }
-    def override visitExprAsVariant(var expr : smart_ptr<ExprAsVariant>) : ExpressionPtr {
+    def override visitExprAsVariant(var expr : ExprAsVariant?) : Expression? {
         
         let fname = string(expr.name)
         if (rules.field2name |> key_exists(fname)) {
             expr.name := rules.field2name |> get_value(fname)
         }
-        return <- expr
+        return expr
     }
-    def override visitExprSafeAsVariant(var expr : smart_ptr<ExprSafeAsVariant>) : ExpressionPtr {
+    def override visitExprSafeAsVariant(var expr : ExprSafeAsVariant?) : Expression? {
         
         let fname = string(expr.name)
         if (rules.field2name |> key_exists(fname)) {
             expr.name := rules.field2name |> get_value(fname)
         }
-        return <- expr
+        return expr
     }
-    def override visitExprSafeField(var expr : smart_ptr<ExprSafeField>) : ExpressionPtr {
+    def override visitExprSafeField(var expr : ExprSafeField?) : Expression? {
         
         let fname = string(expr.name)
         if (rules.field2name |> key_exists(fname)) {
             expr.name := rules.field2name |> get_value(fname)
         }
-        return <- expr
+        return expr
     }
-    def override visitExprField(var expr : smart_ptr<ExprField>) : ExpressionPtr {
+    def override visitExprField(var expr : ExprField?) : Expression? {
         
         let fname = string(expr.name)
         if (rules.field2name |> key_exists(fname)) {
@@ -201,20 +201,20 @@ class private TemplateVisitor : AstVisitor {
             let kv = string(ev.name)
             if (rules.kaboomVar |> key_exists(kv)) {
                 let ps = rules.kaboomVar[kv]
-                return <- new ExprVar(at = expr.at, name := "{ps.prefix}{expr.name}{ps.suffix}")
+                return new ExprVar(at = expr.at, name := "{ps.prefix}{expr.name}{ps.suffix}")
             }
         }
-        return <- expr
+        return expr
     }
-    def override visitExprAddr(var expr : smart_ptr<ExprAddr>) : ExpressionPtr {
+    def override visitExprAddr(var expr : ExprAddr?) : Expression? {
         
         let vn = string(expr.target)
         if (key_exists(rules.var2name, vn)) {
             expr.target := rules.var2name |> get_value(vn)
         }
-        return <- expr
+        return expr
     }
-    def override visitExprLet(var expr : smart_ptr<ExprLet>) : ExpressionPtr {
+    def override visitExprLet(var expr : ExprLet?) : Expression? {
         
         for (v in expr.variables) {
             let vn = string(v.name)
@@ -222,27 +222,59 @@ class private TemplateVisitor : AstVisitor {
                 v.name := rules.var2name |> get_value(vn)
             }
         }
-        return <- expr
+        return expr
     }
-    def override visitExprVar(var expr : smart_ptr<ExprVar>) : ExpressionPtr {
+    in_r2v_direct_var : int = 0  
+    def override preVisitExprRef2Value(expr : ExprRef2Value?) : void {
+        
+        
+        
+        
+        
+        if (expr.subexpr is ExprVar) {
+            in_r2v_direct_var++
+        }
+    }
+    def override visitExprVar(var expr : ExprVar?) : Expression? {
+        
+        
+        
+        
         
         let vn = string(expr.name)
         if (key_exists(rules.var2name, vn)) {
             expr.name := rules.var2name |> get_value(vn)
         }
-        if (key_exists(rules.var2expr, vn)) {
-            var inscope rexpr <- clone_expression(unsafe(rules.var2expr[vn]))
+        if (in_r2v_direct_var == 0 && key_exists(rules.var2expr, vn)) {
+            var rexpr = clone_expression(unsafe(rules.var2expr[vn]))
             rexpr.at = expr.at
-            return <- rexpr
+            return rexpr
         }
-        return <- expr
+        return expr
+    }
+    def override visitExprRef2Value(var expr : ExprRef2Value?) : Expression? {
+        
+        
+        
+        
+        if (expr.subexpr is ExprVar) {
+            in_r2v_direct_var--
+            let vvar = expr.subexpr as ExprVar
+            let vn = string(vvar.name)
+            if (key_exists(rules.var2expr, vn)) {
+                var rexpr = clone_expression(unsafe(rules.var2expr[vn]))
+                rexpr.at = expr.at
+                return rexpr
+            }
+        }
+        return expr
     }
     def replaceAlias(var typ : TypeDeclPtr&) {
         
         if (typ.baseType == Type.alias) {
             let ta = string(typ.alias)
             if (key_exists(rules.type2etype, ta)) {
-                move_new(typ) <| clone_type(unsafe(rules.type2etype[ta]))
+                typ = clone_type(unsafe(rules.type2etype[ta]))
             } elif (key_exists(rules.type2type, ta)) {
                 typ.alias := rules.type2type |> get_value(ta)
             }
@@ -250,27 +282,27 @@ class private TemplateVisitor : AstVisitor {
             let st = typ.structType
             if (key_exists(rules.struct2etype, st)) {
                 let oldFlags = typ.flags
-                move_new(typ) <| clone_type(unsafe(rules.struct2etype[st]))
+                typ = clone_type(unsafe(rules.struct2etype[st]))
                 typ.flags = oldFlags
             }
         }
         if (typ.firstType != null) {
-            self->replaceAlias(typ.firstType)
+            replaceAlias(typ.firstType)
         }
         if (typ.secondType != null) {
-            self->replaceAlias(typ.secondType)
+            replaceAlias(typ.secondType)
         }
         for (arg in typ.argTypes) {
-            self->replaceAlias(arg)
+            replaceAlias(arg)
         }
     }
     def override visitTypeDecl(var typ : TypeDeclPtr) : TypeDeclPtr {
         
-        var inscope tyyp <- clone_type(typ)
+        var tyyp = clone_type(typ)
         replaceAlias(tyyp)
         return <- tyyp
     }
-    def override preVisitExprFor(var expr : smart_ptr<ExprFor>) : void {
+    def override preVisitExprFor(var expr : ExprFor?) : void {
         
         for (it in expr.iterators) {
             let itn = string(it)
@@ -279,11 +311,9 @@ class private TemplateVisitor : AstVisitor {
             }
         }
     }
-    def override preVisitExprBlock(var blk : smart_ptr<ExprBlock>) {
+    def override preVisitExprBlock(var blk : ExprBlock?) {
         
-        if (!blk.blockFlags.isClosure) {
-            return
-        }
+        if (!blk.blockFlags.isClosure) return
         for (arg in blk.arguments) {
             let vn = "{arg.name}"
             if (key_exists(rules.blockArgName, vn)) {
@@ -301,13 +331,13 @@ class private TemplateVisitor : AstVisitor {
             assume arg = blk.arguments[rai]
             let vname = string(arg.name)
             if (key_exists(rules.blkArg, vname)) {
-                var inscope new_args : array<VariablePtr>
+                var new_args : array<VariablePtr>
                 for (a in rules.blkArg[vname]) {
                     new_args |> emplace_new <| new Variable(
                             at = arg.at,
                             name := a.name,
-                            _type <- clone_type(a._type),
-                            init <- clone_expression(a.init)
+                            _type = clone_type(a._type),
+                            init = clone_expression(a.init)
                         )
                 }
                 new_args |> reverse
@@ -320,24 +350,21 @@ class private TemplateVisitor : AstVisitor {
             }
         }
     }
-    def preVisitAnythingCall(var arguments : dasvector`smart_ptr`Expression) : void {
+    def preVisitAnythingCall(var arguments : dasvector`ptr`Expression) : void {
         
-        if (length(rules.var2exprList) == 0) {
-            return
-        }
+        if (empty(rules.var2exprList)) return
         let nargs = arguments |> length
-        if (nargs == 0) {
-            return
-        }
+        if (nargs == 0) return
         for (ai in range(nargs)) {
             let rai = nargs - ai - 1
             assume arg = arguments[rai]
             if (arg is ExprVar) {
                 let vname = string((arg as ExprVar).name)
                 if (key_exists(rules.var2exprList, vname)) {
-                    var inscope new_args : array<ExpressionPtr>
+                    var new_args : array<Expression?>
+                    new_args |> reserve(length(rules.var2exprList[vname]))
                     for (a in rules.var2exprList[vname]) {
-                        new_args |> emplace_new <| clone_expression(a)
+                        new_args |> push(clone_expression(a))
                     }
                     new_args |> reverse
                     arguments |> erase(rai)
@@ -348,7 +375,7 @@ class private TemplateVisitor : AstVisitor {
             }
         }
     }
-    def override preVisitExprLooksLikeCall(var expr : smart_ptr<ExprLooksLikeCall>) : void {
+    def override preVisitExprLooksLikeCall(var expr : ExprLooksLikeCall?) : void {
         
         let cname = string(expr.name)
         if (rules.call2name |> key_exists(cname)) {
@@ -356,7 +383,7 @@ class private TemplateVisitor : AstVisitor {
         }
         preVisitAnythingCall(expr.arguments)
     }
-    def override preVisitExprCall(var expr : smart_ptr<ExprCall>) : void {
+    def override preVisitExprCall(var expr : ExprCall?) : void {
         
         let cname = string(expr.name)
         if (rules.call2name |> key_exists(cname)) {
@@ -364,46 +391,43 @@ class private TemplateVisitor : AstVisitor {
         }
         preVisitAnythingCall(expr.arguments)
     }
-    def override preVisitExprAddr(var expr : smart_ptr<ExprAddr>) : void {
+    def override preVisitExprAddr(var expr : ExprAddr?) : void {
         
         let cname = string(expr.target)
         if (rules.call2name |> key_exists(cname)) {
             expr.target := rules.call2name |> get_value(cname)
         }
     }
-    def override preVisitExprMakeArray(var expr : smart_ptr<ExprMakeArray>) : void {
+    def override preVisitExprMakeArray(var expr : ExprMakeArray?) : void {
         
         preVisitAnythingCall(expr.values)
     }
 }
 
-def visit_expression(var expr : ExpressionPtr&; var adapter : smart_ptr<VisitorAdapter>) {
+def visit_expression(var expr : Expression?&; var adapter : VisitorAdapter?) {
     
     unsafe {
-        
-        var newExpr <- expr |> visit(adapter)
-        if (expr != newExpr) {
-            expr := null
-        }
-        expr <- newExpr
+        var newExpr = expr |> visit(adapter)
+        expr = newExpr
     }
 }
 
-def apply_template(var rules : Template; at : LineInfo; var expr : smart_ptr<Expression>; forceAt : bool = true) : ExpressionPtr {
+def apply_template(var rules : Template; at : LineInfo; var expr : Expression?; forceAt : bool = true) : Expression? {
     
     var astVisitor = new TemplateVisitor(unsafe(addr(rules)))
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    visit_expression(expr, astVisitorAdapter)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit_expression(expr, astVisitorAdapter)
+    }
     if (forceAt) {
         expr |> force_at(at)
     }
     unsafe {
         delete astVisitor
     }
-    return <- expr
+    return expr
 }
 
-def private visit_type(var typ : TypeDeclPtr&; var adapter : smart_ptr<VisitorAdapter>) {
+def private visit_type(var typ : TypeDeclPtr&; var adapter : VisitorAdapter?) {
     
     unsafe {
         
@@ -415,11 +439,13 @@ def private visit_type(var typ : TypeDeclPtr&; var adapter : smart_ptr<VisitorAd
     }
 }
 
-def apply_template(var rules : Template; at : LineInfo; var typ : smart_ptr<TypeDecl>; forceAt : bool = true) : TypeDeclPtr {
+[unused_argument(at)]
+def apply_template(var rules : Template; at : LineInfo; var typ : TypeDecl?; forceAt : bool = true) : TypeDeclPtr {
     
     var astVisitor = new TemplateVisitor(unsafe(addr(rules)))
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    visit_type(typ, astVisitorAdapter)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit_type(typ, astVisitorAdapter)
+    }
     
 
 
@@ -430,64 +456,63 @@ def apply_template(var rules : Template; at : LineInfo; var typ : smart_ptr<Type
     return <- typ
 }
 
-def unquote_block(expr : ExpressionPtr) : smart_ptr<ExprBlock> {
+def unquote_block(expr : Expression?) : ExprBlock? {
     
     assert(expr is ExprMakeBlock)
     unsafe {
-        let mkb <- reinterpret<smart_ptr<ExprMakeBlock>>(expr)
-        let blk := mkb._block
-        return reinterpret<smart_ptr<ExprBlock>>(blk)
+        let mkb = reinterpret<ExprMakeBlock?>(expr)
+        let blk = mkb._block
+        return reinterpret<ExprBlock?>(blk)
     }
 }
 
-def move_unquote_block(var expr : ExpressionPtr&) : smart_ptr<ExprBlock> {
+def move_unquote_block(var expr : Expression?&) : ExprBlock? {
     
     assert(expr is ExprMakeBlock)
     unsafe {
-        var mkb <- reinterpret<smart_ptr<ExprMakeBlock>>(expr)
-        let blk := mkb._block
-        var res <- reinterpret<smart_ptr<ExprBlock>>(blk)
-        mkb := null
-        return <- res
+        var mkb = reinterpret<ExprMakeBlock?>(expr)
+        let blk = mkb._block
+        var res = reinterpret<ExprBlock?>(blk)
+        return res
     }
 }
 
-def make_expression_block(var exprs : array<ExpressionPtr>) : smart_ptr<ExprBlock> {
+def make_expression_block(var exprs : array<Expression?>) : ExprBlock? {
     
-    var inscope blk <- new ExprBlock(uninitialized)
+    var blk = new ExprBlock(uninitialized)
     for (e in exprs) {
         blk.list |> emplace_new <| clone_to_move(e)
     }
-    return <- blk
+    return blk
 }
 
-def make_expression_block(var exprs : dasvector`smart_ptr`Expression) : smart_ptr<ExprBlock> {
+def make_expression_block(var exprs : dasvector`ptr`Expression) : ExprBlock? {
     
-    var inscope blk <- new ExprBlock(uninitialized)
+    var blk = new ExprBlock(uninitialized)
     for (e in exprs) {
         blk.list |> emplace_new <| clone_expression(e)
     }
-    return <- blk
+    return blk
 }
 
-def private add_global_var_any(mod : Module?; vname : string; vat : LineInfo; vflag : TypeDeclFlags; var value : ExpressionPtr; priv : bool) : bool {
+def private add_global_var_any(mod : Module?; vname : string; vat : LineInfo; vflag : TypeDeclFlags; var value : Expression?; priv : bool) : bool {
     
-    var inscope vvar <- new Variable(at = vat,
+    var vvar <- new Variable(at = vat,
         name := vname,
-        _type <- new TypeDecl(at = vat,
+        _type = new TypeDecl(at = vat,
             baseType = Type.autoinfer,
             flags = vflag
         ),
-        init <- value
+        init = value
     )
-    vvar.flags |= VariableFlags.generated
+    vvar.flags.generated = true
     if (priv) {
-        vvar.flags |= VariableFlags.private_variable
+        vvar.flags.private_variable = true
     }
     return add_variable(mod, vvar)
 }
 
-def add_global_var(mod : Module?; vname : string; vat : LineInfo; var value : ExpressionPtr) {
+def add_global_var(mod : Module?; vname : string; vat : LineInfo; var value : Expression?) {
     
     
     
@@ -497,13 +522,13 @@ def add_global_var(mod : Module?; vname : string; vat : LineInfo; var value : Ex
 def add_global_var(mod : Module?; vname : string; var typ : TypeDeclPtr; vat : LineInfo; priv : bool; blk : block<(var v : VariablePtr) : void>) {
     
     
-    var inscope vvar <- new Variable(at = vat,
+    var vvar <- new Variable(at = vat,
         name := vname,
         _type <- typ
     )
-    vvar.flags |= VariableFlags.generated
+    vvar.flags.generated = true
     if (priv) {
-        vvar.flags |= VariableFlags.private_variable
+        vvar.flags.private_variable = true
     }
     invoke(blk, vvar)
     return add_variable(mod, vvar)
@@ -511,24 +536,24 @@ def add_global_var(mod : Module?; vname : string; var typ : TypeDeclPtr; vat : L
 
 def add_global_var(mod : Module?; vname : string; var typ : TypeDeclPtr; vat : LineInfo; priv : bool) {
     
-    return add_global_var(mod, vname, typ, vat, priv) <| $ [unused_argument(v)] (var v) {
+    return add_global_var(mod, vname, typ, vat, priv) $ [unused_argument(v)] (var v) {
         pass
     }
 }
 
-def add_global_let(mod : Module?; vname : string; vat : LineInfo; var value : ExpressionPtr) {
+def add_global_let(mod : Module?; vname : string; vat : LineInfo; var value : Expression?) {
     
     
     return add_global_var_any(mod, vname, vat, TypeDeclFlags.constant, value, false)
 }
 
-def add_global_private_var(mod : Module?; vname : string; vat : LineInfo; var value : ExpressionPtr) {
+def add_global_private_var(mod : Module?; vname : string; vat : LineInfo; var value : Expression?) {
     
     
     return add_global_var_any(mod, vname, vat, TypeDeclFlags.removeConstant, value, true)
 }
 
-def add_global_private_let(mod : Module?; vname : string; vat : LineInfo; var value : ExpressionPtr) {
+def add_global_private_let(mod : Module?; vname : string; vat : LineInfo; var value : Expression?) {
     
     
     return add_global_var_any(mod, vname, vat, TypeDeclFlags.constant, value, true)
@@ -544,7 +569,7 @@ def make_unique_private_name(prefix : string; vat : LineInfo) {
     return "{prefix}_{vat.line}_{vat.column}"
 }
 
-def apply_template(at : LineInfo; var typ : smart_ptr<TypeDecl>&; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
+def apply_template(at : LineInfo; var typ : TypeDecl?&; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
     
     unsafe {
         
@@ -556,28 +581,40 @@ def apply_template(at : LineInfo; var typ : smart_ptr<TypeDecl>&; blk : block<(v
     }
 }
 
-def apply_template(at : LineInfo; var expr : smart_ptr<Expression>&; blk : block<(var rules : Template) : void>) : ExpressionPtr {
+def apply_template(at : LineInfo; var expr : Expression?&; blk : block<(var rules : Template) : void>) : Expression? {
     
     unsafe {
         
         var rules : Template
         invoke(blk, rules)
-        var res <- apply_template(rules, at, expr, true)
+        var res = apply_template(rules, at, expr, true)
         delete rules
-        return <- res
+        return res
     }
 }
 
-def apply_template(var expr : smart_ptr<Expression>&; blk : block<(var rules : Template) : void>) : ExpressionPtr {
+def apply_template(var expr : Expression?&; blk : block<(var rules : Template) : void>) : Expression? {
     
     unsafe {
         
         var rules : Template
         invoke(blk, rules)
-        var res <- apply_template(rules, expr.at, expr, false)
+        var res = apply_template(rules, expr.at, expr, false)
         delete rules
-        return <- res
+        return res
     }
+}
+
+def clone_and_rename_var(src : Expression?; from_name, to_name : string) : Expression? {
+    
+    
+    
+    if (src == null) return null
+    var res = clone_expression(src)
+    var rules : Template
+    rules |> renameVariable(from_name, to_name)
+    apply_template(rules, res.at, res)
+    return res
 }
 
 class private RemoveDerefVisitor : AstVisitor {
@@ -587,24 +624,23 @@ class private RemoveDerefVisitor : AstVisitor {
         
         vname = n
     }
-    def override visitExprRef2Value(var expr : smart_ptr<ExprRef2Value>) : ExpressionPtr {
+    def override visitExprRef2Value(var expr : ExprRef2Value?) : Expression? {
         
         if (expr.subexpr is ExprVar) {
             let vvar = expr.subexpr as ExprVar
-            if ("{vvar.name}" == vname) {
-                return <- clone_expression(expr.subexpr)
-            }
+            if ("{vvar.name}" == vname) return clone_expression(expr.subexpr)
         }
-        return <- expr
+        return expr
     }
 }
 
-def public remove_deref(varname : string; var expr : smart_ptr<Expression>) {
+def public remove_deref(varname : string; var expr : Expression?) {
     
     
     var astVisitor = new RemoveDerefVisitor(varname)
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    expr |> visit(astVisitorAdapter)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit_expression(expr, astVisitorAdapter)
+    }
     unsafe {
         delete astVisitor
     }
@@ -619,7 +655,7 @@ def public add_array_ptr_ref(var a : array<smart_ptr<auto(TT)>>) : array<smart_p
 def public add_type_ptr_ref(a : TypeDeclPtr; flags : TypeDeclFlags) : TypeDeclPtr {
     
     
-    var inscope q <- clone_type(a)
+    var q = clone_type(a)
     q.flags |= flags & (
             TypeDeclFlags.ref | TypeDeclFlags.removeRef
         |   TypeDeclFlags.temporary | TypeDeclFlags.removeTemporary
@@ -642,44 +678,43 @@ def public enum_class_type(st) {
     }
 }
 
-def public add_type_ptr_ref(var st : StructurePtr; flags : TypeDeclFlags) : TypeDeclPtr {
-    
-    return <- new TypeDecl(at = st.at, baseType = Type.tStructure, structType = get_ptr(st), flags = flags)
-}
-
 def public add_type_ptr_ref(var st : Structure?; flags : TypeDeclFlags) : TypeDeclPtr {
     
-    return <- new TypeDecl(at = st.at, baseType = Type.tStructure, structType = st, flags = flags)
-}
-
-def public add_type_ptr_ref(var st : EnumerationPtr; flags : TypeDeclFlags) : TypeDeclPtr {
-    
-    return <- new TypeDecl(at = st.at, baseType = enum_class_type(st), enumType = get_ptr(st), flags = flags)
+    return new TypeDecl(at = st.at, baseType = Type.tStructure, structType = st, flags = flags)
 }
 
 def public add_type_ptr_ref(var st : Enumeration?; flags : TypeDeclFlags) : TypeDeclPtr {
     
-    return <- new TypeDecl(at = st.at, baseType = enum_class_type(st), enumType = st, flags = flags)
+    return new TypeDecl(at = st.at, baseType = enum_class_type(st), enumType = st, flags = flags)
 }
 
 [unused_argument(anything), unused_argument(flags)]
 def public add_type_ptr_ref(anything : auto(TT); flags : TypeDeclFlags) : TypeDeclPtr {
     
     concept_assert(false, "$t reification expected type `TypeDeclPtr`, `StructurePtr`, or `Structure?`, but received {typeinfo typename(type<TT>)}")
-    var inscope decl : TypeDeclPtr
+    var decl : TypeDeclPtr
     return <- decl
 }
 
-def private generatedExpr(var expr : ExpressionPtr) : ExpressionPtr {
+def private generatedExpr(var expr : Expression?) : Expression? {
     
-    expr.genFlags |= ExprGenFlags.generated
-    return <- expr
+    expr.genFlags.generated = true
+    return expr
 }
 
 def private generatedVariable(var svar : VariablePtr) : VariablePtr {
     
-    svar.flags |= VariableFlags.generated
+    svar.flags.generated = true
     return <- svar
+}
+
+
+
+
+
+def private carry_tag_safe_flags(var node : ExpressionPtr; tag : ExprTag?) {
+    if (tag.genFlags.alwaysSafe) { node.genFlags.alwaysSafe = true }
+    if (tag.genFlags.userSaidItsSafe) { node.genFlags.userSaidItsSafe = true }
 }
 
 class private QRulesVisitor : AstVisitor {
@@ -704,25 +739,25 @@ class private QRulesVisitor : AstVisitor {
     def override visitTypeDecl(var typ : TypeDeclPtr) : TypeDeclPtr {
         
         if ((typ.baseType == Type.alias) && (typ.flags.isTag)) {
-            if (typ.firstType == null || typ.firstType.dimExpr |> length != 1) {
+            if (typ.firstType == null || typ.firstType.typeMacroExpr |> length != 1) {
                 compiling_program() |> macro_error(typ.at, "unsupported type tag")
                 failed = true
                 return <- typ
             }
             let new_tag_name = "temp`type`{tag_index++}`{typ.at.line}`{typ.at.column}"
-            var inscope ntyp <- new TypeDecl(at = typ.at,
+            var ntyp = new TypeDecl(at = typ.at,
                 baseType = Type.alias,
                 alias := new_tag_name
             )
             ntyp.flags |= typ.flags & ~TypeDeclFlags.isTag
             rblock.list |> emplace_new <| new ExprCall(at = typ.at,
                 name := "replaceTypeWithTypeDecl",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = typ.at, name := "rules"),
                     new ExprConstString(at = typ.at, value := new_tag_name) |> generatedExpr(),
                     new ExprCall(at = typ.at, name := "add_type_ptr_ref",
-                        arguments := array<ExpressionPtr>(
-                            clone_expression(typ.firstType.dimExpr[0]),
+                        arguments := array<Expression?>(
+                            clone_expression(typ.firstType.typeMacroExpr[0]),
                             new ExprConstBitfield(at = typ.at, value := ntyp.flags)
                         )
                     )
@@ -741,7 +776,7 @@ class private QRulesVisitor : AstVisitor {
         }
         return <- typ
     }
-    def override preVisitExprBlockArgument(blk : smart_ptr<ExprBlock>; var arg : VariablePtr; lastArg : bool) : void {
+    def override preVisitExprBlockArgument(blk : ExprBlock?; var arg : VariablePtr; lastArg : bool) : void {
         
         if (arg.flags.tag) {
             if (arg.source == null) {
@@ -752,7 +787,7 @@ class private QRulesVisitor : AstVisitor {
             let new_tag_name = "temp`var`{tag_index++}`{arg.at.line}`{arg.at.column}"
             rblock.list |> emplace_new <| new ExprCall(at = arg.at,
                 name := "renameVariable",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = arg.at, name := "rules"),
                     new ExprConstString(at = arg.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(arg.source) |> generatedExpr()
@@ -769,7 +804,7 @@ class private QRulesVisitor : AstVisitor {
             let new_tag_name = "temp`var`{tag_index++}`{arg.at.line}`{arg.at.column}"
             rblock.list |> emplace_new <| new ExprCall(at = arg.at,
                 name := "replaceArgumentWithList",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = arg.at, name := "rules"),
                     new ExprConstString(at = arg.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(arg.init) |> generatedExpr()
@@ -788,7 +823,7 @@ class private QRulesVisitor : AstVisitor {
             let new_tag_name = "temp`var`{tag_index++}`{arg.at.line}`{arg.at.column}"
             rblock.list |> emplace_new <| new ExprCall(at = arg.at,
                 name := "renameVariable",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = arg.at, name := "rules"),
                     new ExprConstString(at = arg.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(arg.source) |> generatedExpr()
@@ -805,7 +840,7 @@ class private QRulesVisitor : AstVisitor {
             let new_tag_name = "temp`var`{tag_index++}`{arg.at.line}`{arg.at.column}"
             rblock.list |> emplace_new <| new ExprCall(at = arg.at,
                 name := "replaceArgumentWithList",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = arg.at, name := "rules"),
                     new ExprConstString(at = arg.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(arg.init) |> generatedExpr()
@@ -813,14 +848,14 @@ class private QRulesVisitor : AstVisitor {
             arg.name := new_tag_name
         }
     }
-    def override preVisitExprFor(var expr : smart_ptr<ExprFor>) : void {
+    def override preVisitExprFor(var expr : ExprFor?) : void {
         
         for (itn, tag in expr.iterators, expr.iteratorsTags) {
             if (tag != null) {
                 let new_tag_name = "temp`var`{tag_index++}`{expr.at.line}`{expr.at.column}"
                 rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                     name := "renameVariable",
-                    arguments := array<ExpressionPtr>(
+                    arguments := array<Expression?>(
                         new ExprVar(at = expr.at, name := "rules"),
                         new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                         clone_expression(tag) |> generatedExpr()
@@ -831,21 +866,21 @@ class private QRulesVisitor : AstVisitor {
             }
         }
     }
-    def override preVisitExprMakeStructField(expr : smart_ptr<ExprMakeStruct>; index : int; var decl : MakeFieldDeclPtr; last : bool) : void {
+    def override preVisitExprMakeStructField(expr : ExprMakeStruct?; index : int; var decl : MakeFieldDeclPtr; last : bool) : void {
         
         if (decl.tag != null) {
             let new_tag_name = "temp`make`field`{tag_index++}`{expr.at.line}`{expr.at.column}"
             decl.name := new_tag_name
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "renameField",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(decl.tag) |> generatedExpr()
                 ))
         }
     }
-    def override visitExprTag(var expr : smart_ptr<ExprTag>) : ExpressionPtr {
+    def override visitExprTag(var expr : ExprTag?) : Expression? {
         
         var new_tag_name = ""
         if (expr.name == "c") {
@@ -860,27 +895,27 @@ class private QRulesVisitor : AstVisitor {
         if (expr.name == "v") {
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "replaceVariable",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                     new ExprCall(at = expr.at, name := "convert_to_expression",
-                        arguments := array<ExpressionPtr>(clone_expression(expr.subexpr))
+                        arguments := array<Expression?>(clone_expression(expr.subexpr))
                     )
                 ))
         } elif (expr.name == "" || expr.name == "e") {
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "replaceVariable",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                     new ExprCall(at = expr.at, name := "add_ptr_ref",
-                        arguments := array<ExpressionPtr>(clone_expression(expr.subexpr))
+                        arguments := array<Expression?>(clone_expression(expr.subexpr))
                     )
                 ))
         } elif (expr.name == "a") {
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "replaceVariableWithList",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(expr.subexpr) |> generatedExpr()
@@ -888,15 +923,15 @@ class private QRulesVisitor : AstVisitor {
         } elif (expr.name == "b") {
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "replaceVariable",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
-                    new ExprCall(at = expr.at, name := "make_expression_block", arguments := array<ExpressionPtr>(clone_expression(expr.subexpr)))
+                    new ExprCall(at = expr.at, name := "make_expression_block", arguments := array<Expression?>(clone_expression(expr.subexpr)))
                 ))
         } elif (expr.name == "i") {
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "renameVariable",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(expr.subexpr) |> generatedExpr()
@@ -904,25 +939,25 @@ class private QRulesVisitor : AstVisitor {
             if (expr.value != null) {
                 if (expr.value is ExprLet) {
                     (expr.value as ExprLet).variables[0].name := new_tag_name
-                    return <- clone_expression(expr.value)
+                    return clone_expression(expr.value)
                 } elif (expr.value is ExprAddr) {
                     (expr.value as ExprAddr).target := new_tag_name
-                    return <- clone_expression(expr.value)
+                    return clone_expression(expr.value)
                 } else {
                     compiling_program() |> macro_error(expr.at, "unexpected $i(name)({expr.value.__rtti})")
                     failed = true
-                    return <- expr
+                    return expr
                 }
             }
         } elif (expr.name == "f") {
             rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                 name := "renameField",
-                arguments := array<ExpressionPtr>(
+                arguments := array<Expression?>(
                     new ExprVar(at = expr.at, name := "rules"),
                     new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                     clone_expression(expr.subexpr) |> generatedExpr()
                 ))
-            var inscope fexpr <- clone_expression(expr.value)
+            var fexpr = clone_expression(expr.value)
             if (fexpr is ExprField) {
                 (fexpr as ExprField).name := new_tag_name
             } elif (fexpr is ExprSafeField) {
@@ -936,9 +971,9 @@ class private QRulesVisitor : AstVisitor {
             } else {
                 compiling_program() |> macro_error(expr.at, "unexpected $f(name)({fexpr.__rtti})")
                 failed = true
-                return <- expr
+                return expr
             }
-            return <- fexpr
+            return fexpr
         } elif (expr.name == "c") {
             if (expr.value == null) {
                 compiling_program() |> macro_error(expr.at, "expecting $c(name)(...), got null")
@@ -946,25 +981,27 @@ class private QRulesVisitor : AstVisitor {
             } elif (expr.value is ExprCall) {
                 rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                     name := "renameCall",
-                    arguments := array<ExpressionPtr>(
+                    arguments := array<Expression?>(
                         new ExprVar(at = expr.at, name := "rules"),
                         new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                         clone_expression(expr.subexpr) |> generatedExpr()
                     ))
-                var inscope ccall <- clone_expression(expr.value)
+                var ccall = clone_expression(expr.value)
                 (ccall as ExprCall).name := new_tag_name
-                return <- ccall
+                carry_tag_safe_flags(ccall, expr)
+                return ccall
             } elif (expr.value is ExprAddr) {
                 rblock.list |> emplace_new <| new ExprCall(at = expr.at,
                     name := "renameCall",
-                    arguments := array<ExpressionPtr>(
+                    arguments := array<Expression?>(
                         new ExprVar(at = expr.at, name := "rules"),
                         new ExprConstString(at = expr.at, value := new_tag_name) |> generatedExpr(),
                         clone_expression(expr.subexpr) |> generatedExpr()
                     ))
-                var inscope ccall <- clone_expression(expr.value)
+                var ccall = clone_expression(expr.value)
                 (ccall as ExprAddr).target := new_tag_name
-                return <- ccall
+                carry_tag_safe_flags(ccall, expr)
+                return ccall
             } else {
                 compiling_program() |> macro_error(expr.at, "expecting $c(name)(...), got {expr.value.__rtti}")
                 failed = true
@@ -973,178 +1010,183 @@ class private QRulesVisitor : AstVisitor {
             compiling_program() |> macro_error(expr.at, "unsupported ExprTag {expr.name}")
             failed = true
         }
-        return <- new ExprVar(at = expr.at, name := new_tag_name)
+        return new ExprVar(at = expr.at, name := new_tag_name)
     }
 }
 
 [macro_function]
-def private apply_qrules(var expr : smart_ptr<Expression>&) : smart_ptr<ExprBlock> {
+def private apply_qrules(var expr : Expression?&) : ExprBlock? {
     
-    var inscope eblk <- new ExprBlock(at = expr.at,
+    var eblk = new ExprBlock(at = expr.at,
         returnType <- new TypeDecl(at = expr.at, baseType = Type.tVoid),
         arguments := array<VariablePtr>(
             new Variable(at = expr.at, name := "rules", _type <- typeinfo ast_typedecl(type<Template>)) |> generatedVariable()
         ),
         blockFlags = ExprBlockFlags.isClosure
     )
-    var astVisitor = new QRulesVisitor(get_ptr(eblk))
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    visit_expression(expr, astVisitorAdapter)
+    var astVisitor = new QRulesVisitor(eblk)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit_expression(expr, astVisitorAdapter)
+    }
     if (astVisitor.failed) {
-        eblk := null
+        eblk = null
+    } else {
+        let annot_rules =  (argname = "rules", argvalue = RttiValue(tBool = true))
+        eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
     }
-    unsafe {
-        delete astVisitor
-    }
-    let annot_rules =  ("rules", RttiValue(tBool = true))
-    eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
-    return <- eblk
+    unsafe { delete astVisitor; }
+    return eblk
 }
 
 [macro_function]
-def private apply_function_qrules(var func : smart_ptr<Function>&) : smart_ptr<ExprBlock> {
+def private apply_function_qrules(var func : FunctionPtr) : ExprBlock? {
     
-    var inscope eblk <- new ExprBlock(at = func.at,
+    var eblk = new ExprBlock(at = func.at,
         returnType <- new TypeDecl(at = func.at, baseType = Type.tVoid),
         arguments := array<VariablePtr>(
             new Variable(at = func.at, name := "rules", _type <- typeinfo ast_typedecl(type<Template>)) |> generatedVariable()
         ),
         blockFlags = ExprBlockFlags.isClosure
     )
-    var astVisitor = new QRulesVisitor(get_ptr(eblk))
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    visit(func, astVisitorAdapter)
+    var astVisitor = new QRulesVisitor(eblk)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit(func, astVisitorAdapter)
+    }
     if (astVisitor.failed) {
-        eblk := null
+        eblk = null
+    } else {
+        let annot_rules =  (argname = "rules", argvalue = RttiValue(tBool = true))
+        eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
     }
-    unsafe {
-        delete astVisitor
-    }
-    let annot_rules =  ("rules", RttiValue(tBool = true))
-    eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
-    return <- eblk
+    unsafe { delete astVisitor; }
+    return eblk
 }
 
 [macro_function]
-def private apply_template_qrules(prog : ProgramPtr; var template_structure : Structure?) : smart_ptr<ExprBlock> {
+def private apply_template_qrules(prog : ProgramPtr; var template_structure : Structure?) : ExprBlock? {
     
-    var inscope eblk <- new ExprBlock(at = template_structure.at,
+    var eblk = new ExprBlock(at = template_structure.at,
         returnType <- new TypeDecl(at = template_structure.at, baseType = Type.tVoid),
         arguments := array<VariablePtr>(
             new Variable(at = template_structure.at, name := "rules", _type <- typeinfo ast_typedecl(type<Template>)) |> generatedVariable()
         ),
         blockFlags = ExprBlockFlags.isClosure
     )
-    var astVisitor = new QRulesVisitor(get_ptr(eblk))
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-
-    var mod = template_structure._module
-    unsafe {
-        var ts = template_structure
-        var vis_structure <- reinterpret<smart_ptr<Structure>>(ts)
+    var astVisitor = new QRulesVisitor(eblk)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        var mod = template_structure._module
+        var vis_structure = template_structure
         prog.visit_structure(vis_structure, astVisitorAdapter)
-    }
-
-    if (!astVisitor.failed) {
-        for_each_function(mod, "", $(func){
-            return if (astVisitor.failed)
-            if (func.flags.isClassMethod) {
-                if (func.classParent == template_structure) {
-                    visit(func, astVisitorAdapter)
+        if (!astVisitor.failed) {
+            for_each_function(mod, "", $(func){
+                return if (astVisitor.failed)
+                if (func.flags.isClassMethod) {
+                    if (func.classParent == template_structure) {
+                        visit(func, astVisitorAdapter)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     if (astVisitor.failed) {
-        eblk := null
+        eblk = null
+    } else {
+        let annot_rules =  (argname = "rules", argvalue = RttiValue(tBool = true))
+        eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
     }
-    unsafe {
-        delete astVisitor
-    }
-    let annot_rules =  ("rules", RttiValue(tBool = true))
-    eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
-    return <- eblk
+    unsafe { delete astVisitor; }
+    return eblk
 }
 
-def public apply_qmacro(var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : ExpressionPtr {
+def public apply_qmacro(var expr : Expression?; blk : block<(var rules : Template) : void>) : Expression? {
     
-    return <- apply_template(expr, blk)
+    return apply_template(expr, blk)
 }
 
-def public apply_qblock(var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : ExpressionPtr {
+def public apply_qblock(var expr : Expression?; blk : block<(var rules : Template) : void>) : Expression? {
     
-    var inscope res <- apply_template(expr, blk)
+    var res = apply_template(expr, blk)
     assert(res is ExprMakeBlock)
-    var inscope qblk <- move_unquote_block(res)
+    var qblk = move_unquote_block(res)
     qblk.blockFlags ^= ExprBlockFlags.isClosure
-    return <- qblk
+    return qblk
 }
 
-def public apply_qblock_to_array(var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : array<ExpressionPtr> {
+def public apply_qblock_to_array(var expr : Expression?; blk : block<(var rules : Template) : void>) : array<Expression?> {
     
-    var inscope res <- apply_template(expr, blk)
+    var res = apply_template(expr, blk)
     assert(res is ExprMakeBlock)
-    var inscope qblk <- move_unquote_block(res)
-    var inscope arr : array<ExpressionPtr>
-    for (e in qblk.list) {
-        arr |> emplace_new <| clone_expression(e)
-    }
-    return <- arr
+    var qblk = move_unquote_block(res)
+    return <- [for (e in qblk.list); clone_expression(e)]
 }
 
-def public apply_qblock_expr(var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : ExpressionPtr {
+def public apply_qblock_expr(var expr : Expression?; blk : block<(var rules : Template) : void>) : Expression? {
     
-    var inscope res <- apply_template(expr, blk)
+    var res = apply_template(expr, blk)
     assert(res is ExprMakeBlock)
-    var inscope qblk <- move_unquote_block(res)
+    var qblk = move_unquote_block(res)
     assert(qblk.list |> length == 1)
-    return <- clone_to_move(qblk.list[0])
+    return clone_to_move(qblk.list[0])
 }
 
-def public apply_qtype(var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
+[clone(blockExpr)]
+def public push_block_list(var stmts : array<Expression?>; var blockExpr : Expression?) {
     
-    var inscope res <- apply_template(expr, blk)
-    assert(res is ExprTypeDecl)
-    return <- clone_type((res as ExprTypeDecl).typeexpr)
+    
+    
+    
+    
+    if (blockExpr == null) return
+    assert(blockExpr is ExprBlock, "push_block_list: expected ExprBlock from qmacro_block")
+    var blk = blockExpr as ExprBlock
+    stmts |> reserve(long_length(stmts) + int64(blk.list |> length))
+    for (e in blk.list) {
+        stmts |> push(clone_expression(e))
+    }
 }
 
-def public expression_at(var expr : ExpressionPtr; at : LineInfo) : ExpressionPtr {
+def public apply_qtype(var expr : Expression?; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
+    
+    var res = apply_template(expr, blk)
+    assert(res is ExprTypeDecl)
+    return clone_type((res as ExprTypeDecl).typeexpr)
+}
+
+def public expression_at(var expr : Expression?; at : LineInfo) : Expression? {
     
     expr |> force_at(at)
-    return <- expr
+    return expr
 }
 
 class private AstQCallMacro : AstCallMacro {
     
     apply_call = "apply_qmacro" 
     macro_call = "qmacro"       
-    def override canVisitArgument(call : smart_ptr<ExprCallMacro>; argIndex : int) : bool {
+    def override canVisitArgument(call : ExprCallMacro?; argIndex : int) : bool {
         
         return false    
     }
-    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
         if (call.arguments |> length != 1) {
             macro_error(prog, call.at, "expecting 1 argument, {macro_call}(expression)")
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope qclone <- clone_expression(call.arguments[0])
-        var inscope qblk <- apply_qrules(qclone)
-        if (qblk == null) {
-            return <- default<ExpressionPtr>
-        }
-        var inscope acall <- new ExprCall(at = call.at,
+        var qclone = clone_expression(call.arguments[0])
+        var qblk = apply_qrules(qclone)
+        if (qblk == null) return null
+        var acall = new ExprCall(at = call.at,
             name := apply_call,
-            arguments := array<ExpressionPtr>(
+            arguments := array<Expression?>(
                 new ExprQuote(
                     at = call.at,
-                    arguments := array<ExpressionPtr>(qclone)
+                    arguments := array<Expression?>(qclone)
                 ),
-                new ExprMakeBlock(_block <- qblk, at = call.at)
+                new ExprMakeBlock(_block = qblk, at = call.at)
             )
         )
-        return <- acall
+        return acall
     }
 }
 
@@ -1181,36 +1223,36 @@ class private QTypeMacro : AstQCallMacro {
     override macro_call = "qmacro_type"
 }
 
-def public apply_qmacro_function(fname : string; var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : FunctionPtr {
+def public apply_qmacro_function(fname : string; var expr : Expression?; blk : block<(var rules : Template) : void>) : FunctionPtr {
     
-    var inscope func <- new Function(at = expr.at, atDecl = expr.at, name := fname, flags = FunctionFlags.generated)
-    var inscope res <- apply_template(expr, blk)
+    var func = new Function(at = expr.at, atDecl = expr.at, name := fname, flags = FunctionFlags.generated)
+    var res = apply_template(expr, blk)
     assert(res is ExprMakeBlock)
-    var inscope qblk <- move_unquote_block(res)
+    var qblk = move_unquote_block(res)
     for (arg in qblk.arguments) {
         func.arguments |> emplace_new <| clone_variable(arg)
     }
-    func.result := qblk.returnType
+    func.result = clone_type(qblk.returnType)
     qblk.arguments |> clear
     qblk.blockFlags ^= ExprBlockFlags.isClosure
-    move(func.body) <| qblk
+    func.body = qblk
     return <- func
 }
 
-def public apply_qmacro_method(fname : string; var parent : StructurePtr; var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : FunctionPtr {
+def public apply_qmacro_method(fname : string; var parent : StructurePtr; var expr : Expression?; blk : block<(var rules : Template) : void>) : FunctionPtr {
     
-    var inscope func <- apply_qmacro_function(fname, expr, blk)
-    func.flags |= FunctionFlags.isClassMethod
-    func.classParent = get_ptr(parent)
+    var func = apply_qmacro_function(fname, expr, blk)
+    func.flags.isClassMethod = true
+    func.classParent = parent
     return <- func
 }
 
-def public apply_qmacro_variable(vname : string; var expr : smart_ptr<Expression>; blk : block<(var rules : Template) : void>) : VariablePtr {
+def public apply_qmacro_variable(vname : string; var expr : Expression?; blk : block<(var rules : Template) : void>) : VariablePtr {
     
-    var inscope vvar <- new Variable(at = expr.at, name := vname, flags = VariableFlags.generated)
-    var inscope res <- apply_template(expr, blk)
+    var vvar <- new Variable(at = expr.at, name := vname, flags = VariableFlags.generated)
+    var res = apply_template(expr, blk)
     assert(res is ExprTypeDecl)
-    move_new(vvar._type) <| clone_type((res as ExprTypeDecl).typeexpr)
+    vvar._type = clone_type((res as ExprTypeDecl).typeexpr)
     return <- vvar
 }
 
@@ -1218,34 +1260,32 @@ class private AstQNamedMacro : AstCallMacro {
     
     apply_call = "apply_qmacro_function"
     macro_call = "qmacro_function"
-    def override canVisitArgument(call : smart_ptr<ExprCallMacro>; argIndex : int) : bool {
+    def override canVisitArgument(call : ExprCallMacro?; argIndex : int) : bool {
         
         return argIndex == 0
     }
-    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
         if (call.arguments |> length != 2) {
             macro_error(prog, call.at, "expecting 2 arguments, {macro_call}(name,expression)")
-            return <- default<ExpressionPtr>
+            return null
         }
         if (call.arguments[0]._type == null || !(call.arguments[0]._type.isString)) {
             macro_error(prog, call.at, "expecting function name, {macro_call}(NAME,expression)")
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope qclone <- clone_expression(call.arguments[1])
-        var inscope qblk <- apply_qrules(qclone)
-        if (qblk == null) {
-            return <- default<ExpressionPtr>
-        }
-        return <- new ExprCall(at = call.at,
+        var qclone = clone_expression(call.arguments[1])
+        var qblk = apply_qrules(qclone)
+        if (qblk == null) return null
+        return new ExprCall(at = call.at,
             name := apply_call,
-            arguments := array<ExpressionPtr>(
+            arguments := array<Expression?>(
                 clone_expression(call.arguments[0]),
                 new ExprQuote(
                     at = call.at,
-                    arguments := array<ExpressionPtr>(qclone)
+                    arguments := array<Expression?>(qclone)
                 ),
-                new ExprMakeBlock(_block <- qblk, at = call.at)
+                new ExprMakeBlock(_block = qblk, at = call.at)
             )
         )
     }
@@ -1267,36 +1307,34 @@ class private AstQNamedClassMacro : AstCallMacro {
     
     apply_call = "apply_qmacro_method"
     macro_call = "qmacro_method"
-    def override canVisitArgument(call : smart_ptr<ExprCallMacro>; argIndex : int) : bool {
+    def override canVisitArgument(call : ExprCallMacro?; argIndex : int) : bool {
         
         return argIndex == 0 || argIndex == 1
     }
     
-    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
         if (call.arguments |> length != 3) {
             macro_error(prog, call.at, "expecting 3 arguments, {macro_call}(name,class,expression)")
-            return <- default<ExpressionPtr>
+            return null
         }
         if (!(call.arguments[0]._type.isString)) {
             macro_error(prog, call.at, "expecting function name, {macro_call}(NAME,class,expression)")
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope qclone <- clone_expression(call.arguments[2])
-        var inscope qblk <- apply_qrules(qclone)
-        if (qblk == null) {
-            return <- default<ExpressionPtr>
-        }
-        return <- new ExprCall(at = call.at,
+        var qclone = clone_expression(call.arguments[2])
+        var qblk = apply_qrules(qclone)
+        if (qblk == null) return null
+        return new ExprCall(at = call.at,
             name := apply_call,
-            arguments := array<ExpressionPtr>(
+            arguments := array<Expression?>(
                 clone_expression(call.arguments[0]),
                 clone_expression(call.arguments[1]),
                 new ExprQuote(
                     at = call.at,
-                    arguments := array<ExpressionPtr>(qclone)
+                    arguments := array<Expression?>(qclone)
                 ),
-                new ExprMakeBlock(_block <- qblk, at = call.at)
+                new ExprMakeBlock(_block = qblk, at = call.at)
             )
         )
     }
@@ -1308,18 +1346,18 @@ class private AstQMethodMacro : AstQNamedClassMacro {
     override apply_call = "apply_qmacro_method"
 }
 
-def public apply_qmacro_template_class(instance_name : string; var template_type : smart_ptr<TypeDecl>; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
+def public apply_qmacro_template_class(instance_name : string; var template_type : TypeDecl?; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
     
     var mod = compiling_module()
     var template_structure = template_type.structType
     let template_name = string(template_structure.name)
-    var inscope instance_structure <- clone_structure(template_structure)
+    var instance_structure <- clone_structure(template_structure)
     instance_structure.parent = template_structure.parent
     instance_structure.name := instance_name
-    instance_structure.flags &= ~(StructureFlags.isTemplate)
-    var inscope instance_type <- new TypeDecl(at = template_structure.at,
+    instance_structure.flags.isTemplate = false
+    var instance_type = new TypeDecl(at = template_structure.at,
         baseType = Type.tStructure,
-        structType = get_ptr(instance_structure)
+        structType = instance_structure
     )
     
     var method_renames : table<string, string>
@@ -1360,27 +1398,27 @@ def public apply_qmacro_template_class(instance_name : string; var template_type
     for_each_function(template_module, "", $(func){
         if (func.classParent == template_structure) {
             let func_clone_name = method_renames[string(func.name)]
-            var inscope func_clone <- clone_function(func)
+            var func_clone = clone_function(func)
             func_clone.name := func_clone_name
-            func_clone.moreFlags &= ~(MoreFunctionFlags.isTemplate)
-            func_clone.classParent = get_ptr(instance_structure)
-            func_clone.result |> move_new <| apply_template(rules, func.at, clone_type(func.result))
+            func_clone.moreFlags.isTemplate = false
+            func_clone.classParent = instance_structure
+            func_clone.result  = apply_template(rules, func.at, clone_type(func.result))
             
             
-            if (length(rules.blkArg) > 0) {
+            if (!empty(rules.blkArg)) {
                 let nfargs = func_clone.arguments |> length
                 for (ai in range(nfargs)) {
                     let rai = nfargs - ai - 1
                     assume farg = func_clone.arguments[rai]
                     let vname = string(farg.name)
                     if (key_exists(rules.blkArg, vname)) {
-                        var inscope new_args : array<VariablePtr>
+                        var new_args : array<VariablePtr>
                         for (a in rules.blkArg[vname]) {
                             new_args |> emplace_new <| new Variable(
                                 at = farg.at,
                                 name := a.name,
-                                _type <- clone_type(a._type),
-                                init <- clone_expression(a.init)
+                                _type = clone_type(a._type),
+                                init = clone_expression(a.init)
                             )
                         }
                         new_args |> reverse
@@ -1398,41 +1436,42 @@ def public apply_qmacro_template_class(instance_name : string; var template_type
                         body_block.arguments |> emplace_new <| new Variable(
                             at = farg.at,
                             name := farg.name,
-                            _type <- clone_type(farg._type),
-                            init <- clone_expression(farg.init)
+                            _type = clone_type(farg._type),
+                            init = clone_expression(farg.init)
                         )
                     }
                 }
             }
             for (arg in func_clone.arguments) {
-                arg._type |> move_new <| apply_template(rules, arg.at, clone_type(arg._type))
+                arg._type  = apply_template(rules, arg.at, clone_type(arg._type))
             }
-            func_clone.body |> move_new <| apply_template(rules, func.at, clone_expression(func.body), false)
+            func_clone.body = apply_template(rules, func.at, clone_expression(func.body), false)
             mod |> add_function(func_clone)
         }
     })
     
     for (fld in instance_structure.fields) {
-        fld._type |> move_new <| apply_template(rules, fld.at, clone_type(fld._type))
+        fld._type  = apply_template(rules, fld.at, clone_type(fld._type))
         if (fld.init != null) {
-            fld.init |> move_new <| apply_template(rules, fld.at, clone_expression(fld.init))
+            fld.init = apply_template(rules, fld.at, clone_expression(fld.init))
         }
     }
     mod |> add_structure(instance_structure)
     delete rules
-    delete template_type
-    return <- instance_type
+    
+    return instance_type
 }
 
+[clone(func)]
 def public apply_qmacro_template_function(func : FunctionPtr; blk : block<(var rules : Template) : void>) : FunctionPtr {
     
     var inscope rules : Template
     invoke(blk, rules)
-    var inscope func_clone <- clone_function(func)
-    func_clone.moreFlags &= ~(MoreFunctionFlags.isTemplate)
-    func_clone.result |> move_new <| apply_template(rules, func.at, clone_type(func.result))
+    var func_clone = clone_function(func)
+    func_clone.moreFlags.isTemplate = false
+    func_clone.result  = apply_template(rules, func.at, clone_type(func.result))
     for (arg in func_clone.arguments) {
-        arg._type |> move_new <| apply_template(rules, arg.at, clone_type(arg._type))
+        arg._type  = apply_template(rules, arg.at, clone_type(arg._type))
     }
     return <- func_clone
 }
@@ -1443,38 +1482,38 @@ class private AstQNamedTemplateFunctionMacro : AstCallMacro {
     apply_call = "apply_qmacro_template_function"
     macro_call = "qmacro_template_function"
    
-    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
         if (call.arguments |> length != 1) {
             macro_error(prog, call.at, "expecting {macro_call}(@@TEMPLATE_FUNCTION_NAME)")
-            return <- default<ExpressionPtr>
+            return null
         }
         if (!(call.arguments[0] is ExprAddr)) {
             macro_error(prog, call.at, "expecting @@TEMPLATE_FUNCTION_NAME")
-            return <- default<ExpressionPtr>
+            return null
         }
         var expr_func = call.arguments[0] as ExprAddr
         if (expr_func.func == null) {
             macro_error(prog, call.at, "expecting @@TEMPLATE_FUNCTION_NAME to refer to a function")
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope qfunc := unsafe(reinterpret<smart_ptr<Function>>(expr_func.func))
-        var inscope qblk <- apply_function_qrules(qfunc)
+        var qfunc = expr_func.func
+        var qblk = apply_function_qrules(qfunc)
         var mod_name = string(expr_func.func._module.name)
         if (mod_name.empty()) {
             mod_name = "_"
         }
-        return <- new ExprCall(at = call.at,
+        return new ExprCall(at = call.at,
             name := apply_call,
-            arguments := array<ExpressionPtr>(
+            arguments := array<Expression?>(
                 new ExprCall(at = call.at,
                     name := "find_compiling_function_by_mangled_name_hash",
-                    arguments := array<ExpressionPtr>(
+                    arguments := array<Expression?>(
                         new ExprConstString(at = call.at, value := mod_name)
                     ,   new ExprConstUInt64(at = call.at, value := expr_func.func.getMangledNameHash)
                     )
                 ),
-                new ExprMakeBlock(_block <- qblk, at = call.at)
+                new ExprMakeBlock(_block = qblk, at = call.at)
             )
         )
     }
@@ -1486,68 +1525,61 @@ class private AstQNamedTemplateClassMacro : AstCallMacro {
     apply_call = "apply_qmacro_template_class"
     macro_call = "qmacro_template_class"
     
-    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
         if (call.arguments |> length != 2) {
             macro_error(prog, call.at, "expecting {macro_call}(NAME,type<TemplateClassOrStructType>)")
-            return <- default<ExpressionPtr>
+            return null
         }
         if (!(call.arguments[0]._type.isString)) {
             macro_error(prog, call.at, "expecting function name, {macro_call}(NAME,type<TemplateClassOrStructType>)")
-            return <- default<ExpressionPtr>
+            return null
         }
         if (call.arguments[1]._type == null) {
             macro_error(prog, call.at, "expecting type")
-            return <- default<ExpressionPtr>
+            return null
         }
         if (!(call.arguments[1]._type.baseType == Type.tStructure
             && call.arguments[1]._type.structType != null
             && call.arguments[1]._type.structType.flags.isTemplate)) {
             macro_error(prog, call.at, "expecting template structure or class type, {macro_call}(NAME,type<TemplateClassOrStructType>), got {describe(call.arguments[1]._type)} which is {call.arguments[1]._type.baseType}")
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope qclone <- clone_expression(call.arguments[1])
-        var inscope qblk <- apply_template_qrules(prog, (qclone as ExprTypeDecl).typeexpr.structType)
-        if (qblk == null) {
-            return <- default<ExpressionPtr>
-        }
-        return <- new ExprCall(at = call.at,
+        var qclone = clone_expression(call.arguments[1])
+        var qblk = apply_template_qrules(prog, (qclone as ExprTypeDecl).typeexpr.structType)
+        if (qblk == null) return null
+        return new ExprCall(at = call.at,
             name := apply_call,
-            arguments := array<ExpressionPtr>(
+            arguments := array<Expression?>(
                 clone_expression(call.arguments[0]),
                 new ExprTypeInfo(
                     at = call.at,
                     trait := "ast_typedecl",
                     typeexpr <- clone_type(call.arguments[1]._type)
                 ),
-                new ExprMakeBlock(_block <- qblk, at = call.at)
+                new ExprMakeBlock(_block = qblk, at = call.at)
             )
         )
     }
 }
 
-def public add_structure_field(var cls : StructurePtr; name : string; var t : TypeDeclPtr; var init : ExpressionPtr) {
+def public add_structure_field(var cls : StructurePtr; name : string; var t : TypeDeclPtr; var init : Expression?) {
     
     let fi = length(cls.fields)
     cls.fields |> resize(fi + 1)
     cls.fields[fi].name := name
-    move(cls.fields[fi]._type) <| t
-    move(cls.fields[fi].init) <| init
+    cls.fields[fi]._type = t
+    cls.fields[fi].init = init
     return fi
 }
 
 def public make_class(name : string; mod : Module?) {
     
-    var inscope st <- new Structure(name := name, flags = bitfield(1))
-    unsafe(builtin_ast_make_class_rtti(get_ptr(st)))
-    var inscope virt_fin <- unsafe(builtin_ast_make_class_finalize(get_ptr(st)))
+    var st <- new Structure(name := name, flags = bitfield(1))
+    unsafe(builtin_ast_make_class_rtti(st))
+    var virt_fin = unsafe(builtin_ast_make_class_finalize(st))
     add_function(mod, virt_fin)
     return <- st
-}
-
-def public make_class(name : string; var baseClass : StructurePtr; mod : Module?) {
-    
-    return <- make_class(name, get_ptr(baseClass), mod)
 }
 
 def public make_class(name : string; var baseClass : Structure?; mod : Module?) {
@@ -1555,11 +1587,11 @@ def public make_class(name : string; var baseClass : Structure?; mod : Module?) 
     if (mod == null) {
         panic("expecting module")
     }
-    var inscope st <- clone_structure(baseClass)
+    var st <- clone_structure(baseClass)
     st.name := name
     st.parent = baseClass
-    unsafe(builtin_ast_make_class_rtti(get_ptr(st)))
-    var inscope virt_fin <- unsafe(builtin_ast_make_class_finalize(get_ptr(st)))
+    unsafe(builtin_ast_make_class_rtti(st))
+    var virt_fin = unsafe(builtin_ast_make_class_finalize(st))
     add_function(mod, virt_fin)
     return <- st
 }
@@ -1572,7 +1604,7 @@ def public make_class_constructor(cls : StructurePtr; ctor : FunctionPtr) {
     if (ctor == null) {
         panic("expecting constructor function")
     }
-    return <- unsafe(builtin_ast_make_class_constructor(get_ptr(cls), get_ptr(ctor)))
+    return unsafe(builtin_ast_make_class_constructor(cls, ctor))
 }
 
 def public modify_to_class_member(cls : StructurePtr; fun : FunctionPtr; isExplicit : bool; Constant : bool) {
@@ -1583,5 +1615,5 @@ def public modify_to_class_member(cls : StructurePtr; fun : FunctionPtr; isExpli
     if (fun == null) {
         panic("expecting function")
     }
-    unsafe(builtin_ast_modify_to_class_member(get_ptr(fun), get_ptr(cls), isExplicit, Constant))
+    unsafe(builtin_ast_modify_to_class_member(fun, cls, isExplicit, Constant))
 }

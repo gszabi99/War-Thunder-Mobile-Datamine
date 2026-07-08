@@ -25,7 +25,8 @@ let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tuto
 let { randomBattleMode, shouldStartNewbieSingleOnline, isGameModesReceived, allGameModes
 } = require("%rGui/gameModes/gameModeState.nut")
 let { startTestFlight, startNewbieOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
-let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { newbieOfflineMissions, startCurNewbieMission, newbieLocalMP, isNextBattleNewbieOffline
+} = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let setReady = require("%rGui/squad/setReady.nut")
 let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
@@ -86,7 +87,7 @@ function mkDownloadingOvr(key, isDownloading) {
 }
 
 let isNeedDownloadForOfflineNewbieBattle = Computed(function() {
-  if (newbieOfflineMissions.get() == null)
+  if (isNextBattleNewbieOffline.get() == null)
     return false
   if (null != getCampaignPkgsForNewbieSingle(curCampaign.get()).findvalue(@(a) !(hasAddons.get()?[a] ?? true)))
     return true
@@ -94,11 +95,18 @@ let isNeedDownloadForOfflineNewbieBattle = Computed(function() {
   let addons = {}
   if (curUnit.get() != null)
     units[curUnit.get().name] <- true
-  foreach (missionName in newbieOfflineMissions.get()) {
-    let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
-    units.__update(misUnits)
-    addons.__update(misAddons)
-  }
+  if (newbieOfflineMissions.get())
+    foreach (missionName in newbieOfflineMissions.get()) {
+      let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
+      units.__update(misUnits)
+      addons.__update(misAddons)
+    }
+  else if (newbieLocalMP.get() != null)
+    foreach (missionName, _ in newbieLocalMP.get()?.mission_decl.missions_list ?? {}) {
+      let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
+      units.__update(misUnits)
+      addons.__update(misAddons)
+    }
   return null != addSupportUnits(units).findindex(@(_, u) (unitSizes.get()?[u] ?? -1) != 0)
     && null != addons.findvalue(@(a) !(hasAddons.get()?[a] ?? true))
 })
@@ -209,7 +217,11 @@ let startOfflineMissionButton = @() {
   children = (isNeedDownloadForOfflineNewbieBattle.get() ? textButtonCommon : textButtonBattle)(
     toBattleText,
     function() {
-      sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.get()) })
+      sendNewbieBqEvent("pressToBattleButton",
+        { status = "offline_battle",
+          params = ", ".join(newbieOfflineMissions.get() != null ? newbieOfflineMissions.get()
+            : newbieLocalMP.get()?.mission_decl.missions_list.keys() ?? [])
+        })
       showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnits.get(), startCurNewbieMission))
     },
     battleBtnOvr)
@@ -253,7 +265,7 @@ let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyChe
 
 let toBattleButtonForRandomBattles = @() {
   watch = [ needReadyCheckButton, isReadyCheckSuspended, isSquadLeader, isInSquad, isReady,
-    needFirstBattleTutor, newbieOfflineMissions, shouldStartNewbieSingleOnline, isGameModesReceived
+    needFirstBattleTutor, isNextBattleNewbieOffline, shouldStartNewbieSingleOnline, isGameModesReceived
   ]
   children = needReadyCheckButton.get() && isReadyCheckSuspended.get() ? readyCheckButtonInactive
     : needReadyCheckButton.get() ? readyCheckButton
@@ -262,7 +274,7 @@ let toBattleButtonForRandomBattles = @() {
     : isInSquad.get() && isReady.get() ? notReadyButton
     : isOfflineMenu ? startOfflineBattleButton
     : needFirstBattleTutor.get() ? startTutorButton
-    : newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get() ? startOfflineMissionButton
+    : isNextBattleNewbieOffline.get() && !shouldStartNewbieSingleOnline.get() ? startOfflineMissionButton
     : isGameModesReceived.get() ? toBattleButton_RandomBattles
     : textButtonCommon(toBattleText, @() openMsgBox({ text = loc("msg/noGameModes") }), { hotkeys = hotkeyX })
 }

@@ -68,15 +68,16 @@ if (seenMods.get().len() == 0 && savedSeenVersions.get().len() == 0)
 isSettingsAvailable.subscribe(@(_) loadSeenMods())
 
 let unseenCampUnitMods = Computed(function() {
-  let { allUnits = {}, unitModPresets = {} } = campConfigs.get()
+  let { allUnits = {}, unitModPresets = {}, modOvrReqLevels = {} } = campConfigs.get()
   let res = {}
   foreach (unitName, unit in campMyUnits.get()) {
     let preset = unitModPresets?[allUnits?[unitName].modPreset]
     if (preset == null)
       continue
     foreach (modName, mod in preset) {
-      let { reqLevel = 0 } = mod
-      if (reqLevel > 0
+      let reqLevel = modOvrReqLevels?[unitName][modName] ?? mod?.reqLevel ?? 0
+      if (!mod.isHidden
+          && reqLevel > 0
           && reqLevel <= unit.level
           && modName not in unit.mods
           && modName not in seenMods.get()?[unitName])
@@ -107,7 +108,7 @@ function markUnitModsSeen(unitName, idsExt) {
 
 function markCurCampaignModsSeenAndClear() {
   let seenUpdate = {}
-  let { allUnits = {}, unitModPresets = {} } = campConfigs.get()
+  let { allUnits = {}, unitModPresets = {}, modOvrReqLevels = {} } = campConfigs.get()
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_MODS)
   foreach (unitName, unitCfg in allUnits) {
     let changes = getSubTable(seenUpdate, unitName)
@@ -115,8 +116,9 @@ function markCurCampaignModsSeenAndClear() {
     let preset = unitModPresets?[unitCfg.modPreset]
     if (unit != null && preset != null)
       foreach (modName, mod in preset) {
-        let { reqLevel = 0 } = mod
-        if (reqLevel > 0
+        let reqLevel = modOvrReqLevels?[unitName][modName] ?? mod?.reqLevel ?? 0
+        if (!mod.isHidden
+            && reqLevel > 0
             && reqLevel <= unit.level
             && modName not in unit.mods)
           changes[modName] <- true

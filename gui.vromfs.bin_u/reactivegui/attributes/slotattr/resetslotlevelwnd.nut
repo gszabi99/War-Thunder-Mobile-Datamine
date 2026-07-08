@@ -53,7 +53,7 @@ let mkResetSlotInfo = @(text) {
       keepAspect = true
     }
     {
-      size = flex()
+      size = FLEX
       padding = const [hdpx(10), hdpx(20)]
       flow = FLOW_VERTICAL
       vplace = ALIGN_TOP
@@ -67,13 +67,13 @@ let mkResetSlotInfo = @(text) {
 
 let mkResetSlotPrice = @(content, stateFlags) @() {
   watch = slotInProgress
-  size = const [flex(), pricePlateH]
+  size = const [FLEX, pricePlateH]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = slotInProgress.get() != null ? spinner
     : mkCustomButton(content,
         @() null,
-        mergeStyles(buttonStyles.PURCHASE, { stateFlags, ovr = { size = flex(), minWidth = 0, behavior = null } }))
+        mergeStyles(buttonStyles.PURCHASE, { stateFlags, ovr = { size = FLEX, minWidth = 0, behavior = null } }))
 }
 
 function mkResetBlock(priceCfg, locId, pServerAction) {
@@ -105,7 +105,7 @@ function mkResetBlock(priceCfg, locId, pServerAction) {
     gap = -hdpx(2)
     children = [
       {
-        size = flex()
+        size = FLEX
         children = bgParticles
       }
       content
@@ -131,7 +131,7 @@ let wndContent = @() {
 
 let openImpl = @() addModalWindow(bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   onClick = close
   children = @() modalWndBg.__merge({
     watch = attrSlotIdx

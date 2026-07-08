@@ -22,7 +22,7 @@ let mkSlotNumber = @(id, chosenBullets, sIdx) @() {
 }.__update(fontTiny)
 
 let nameBullet = @(bSet) {
-  size = flex()
+  size = FLEX
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   padding = hdpx(5)

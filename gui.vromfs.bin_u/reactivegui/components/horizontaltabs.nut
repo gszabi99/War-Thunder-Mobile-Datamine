@@ -2,13 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let iconSizeDef = hdpxi(60)
 let tabHeight = hdpx(120)
 
 let textColor = 0xFFFFFFFF
-let bgColor = 0x990C1113
 
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 15, 30, -35))
@@ -17,13 +16,13 @@ let mkTabContent = @(content, isActive, isHover) {
   size = FLEX_H
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
-      color = bgColor
+      color = tabBgColor
     }
     @() {
       watch = [isActive, isHover]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = bgGradient()
       flipY = true
@@ -59,11 +58,11 @@ function tabData(tab, idx) {
     id = idx
     isVisible
     content = {
-      size = [flex(), tabHeight]
+      size = [FLEX, tabHeight]
       padding = const [hdpx(10), hdpx(20)]
       children = [
         {
-          size = flex()
+          size = FLEX
           flow = FLOW_HORIZONTAL
           halign = ALIGN_CENTER
           gap = hdpx(20)

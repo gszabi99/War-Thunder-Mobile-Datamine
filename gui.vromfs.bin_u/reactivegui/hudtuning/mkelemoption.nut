@@ -45,6 +45,7 @@ let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
 let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
   size = FLEX_H
   flow = FLOW_VERTICAL
+  margin = const [0, 0, hdpx(20), 0]
   children = [
     mkHeader(header,
       openInfo != null ? infoGreyButton(openInfo, { size = [evenPx(40), evenPx(40)] })

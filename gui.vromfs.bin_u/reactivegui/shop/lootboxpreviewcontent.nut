@@ -17,7 +17,7 @@ let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
 let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, progressBarHeight
 } = require("%rGui/rewards/rewardStyles.nut")
 let { mkLootboxChancesComp, mkIsLootboxChancesInProgress } = require("%rGui/rewards/lootboxRewardChances.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -68,7 +68,7 @@ let roundChance = @(chance) chance > 1 ? round_by_value(chance, 0.1) : roundToDi
 
 let getSlotsInRow = @(width, style) 2 * max(1, (width + style.boxGap).tointeger() / (style.boxSize + style.boxGap) / 2)
 
-let mkUnitPlateClick = @(r) @() unitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+let mkUnitPlateClick = @(r) @() openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
 let mkPlateClickByType = {
   [G_BLUEPRINT] = mkUnitPlateClick,
   [G_UNIT] = mkUnitPlateClick,
@@ -291,7 +291,7 @@ function mkPreviewIconImpl(reward, rStyle, ovr = {}) {
         skipDirPadNav = true
       }
   return {
-    size = flex()
+    size = FLEX
     children = {
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_LEFT
@@ -564,7 +564,8 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
   let style = mkStyleComp(width, openRewards, guaranteedRewards, commonRewards, rewardLootboxes)
   return @() {
     key = {}
-    watch = [style, guaranteedRewards, commonRewards, lootBoxWithSameJackpot, openRewards, rewardLootboxes, lootboxName]
+    watch = [style, guaranteedRewards, commonRewards, lootBoxWithSameJackpot, openRewards, rewardLootboxes,
+      lootboxName, lockedJackpotCount]
     size = [width, SIZE_TO_CONTENT]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
@@ -591,7 +592,7 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
 
 function lootboxPreviewContent(lootbox, ovr = {}) {
   if (lootbox == null)
-    return { size = flex() }.__update(ovr)
+    return { size = FLEX }.__update(ovr)
   let rewards = Computed(@() getLootboxRewardsAutoLast(lootbox, servProfile.get(), serverConfigs.get()))
   return @() {
     watch = rewards
@@ -602,7 +603,7 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
     gap = hdpx(15)
     children = [
       mkText(loc("events/lootboxContains"),
-        { size = [flex(), hdpx(80)], halign = ALIGN_CENTER, valign = ALIGN_CENTER })
+        { size = [FLEX, hdpx(80)], halign = ALIGN_CENTER, valign = ALIGN_CENTER })
       lootboxImageWithTimer(lootbox)
       itemsBlock(
         rewards.get(),
@@ -629,12 +630,12 @@ let smallChestIcon = {
 
 function mkJackpotProgressBar(stepsFinished, stepsToNext, ovr = {}) {
   if (stepsToNext - stepsFinished <= 0)
-    return { size = [flex(), jpBarHeight] }
+    return { size = [FLEX, jpBarHeight] }
   let questCompletion = stepsFinished.tofloat() / stepsToNext
 
   return {
     rendObj = ROBJ_BOX
-    size = [flex(), jpBarHeight]
+    size = [FLEX, jpBarHeight]
     fillColor = jpBgColor
     borderWidth = jpBorderWidth
     borderColor = jpBarColor

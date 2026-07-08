@@ -1913,8 +1913,8 @@
         "100_gal_tank_l",
         "100_gal_tank_r",
         "180_gal_tank",
-        "bomb_pylon_l",
-        "bomb_pylon_r"
+        "bomb_pylon_r",
+        "bomb_pylon_l"
       ]
     },
     "HideDmParts": {

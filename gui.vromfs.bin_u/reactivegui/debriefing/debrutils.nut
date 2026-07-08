@@ -38,7 +38,9 @@ function getLevelProgress(curLevelConfig, totalExp) {
   foreach (idx, c in levelsExpCfg) {
     if (c.upToLevel <= fromLevel)
       continue
-    let leftLevels = c.upToLevel - fromLevel
+    let leftLevels = c.upToLevel - res.unlockedLevel
+    if (leftLevels <= 0)
+      continue
     let applyLevels = min(leftExp / c.exp, leftLevels)
     res.unlockedLevel += applyLevels
     leftExp -= applyLevels * c.exp
@@ -95,12 +97,11 @@ function getUnitRewards(unitName, debrData) {
 }
 
 function getSlotExpByUnit(unitName, debrData) {
-  let { exp = {}, addSlotExp = 0, slotExp = {} } = getUnitRewards(unitName, debrData)
+  let { exp = {}, slotExp = {} } = getUnitRewards(unitName, debrData)
   return slotExp.len() > 0 ? slotExp
-    : addSlotExp <= 0 ? exp 
     : exp.__merge({
-        baseExp = (exp?.baseExp ?? 0) + addSlotExp
-        totalExp = (exp?.totalExp ?? 0) + addSlotExp
+        baseExp = (exp?.baseExp ?? 0)
+        totalExp = (exp?.totalExp ?? 0)
       })
 }
 
@@ -124,11 +125,11 @@ function getSlotLevelCfg(unit, debrData) {
   return slot.__merge({ levelsExp, levelsExpCfg, slotIdx, name, isSlot = true })
 }
 
-function getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeaponryCfg) {
+function getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeaponryCfg, campaign) {
   let { weaponPresets = {}, ammoForWeapons = {} } = unitWeaponryCfg
   for (local l = levelMin; l <= levelMax; l++) {
     let modId = modPresetCfg.findindex(@(v) v?.reqLevel == l)
-    if (modId != null && weaponPresets.findvalue(@(wp) wp?.reqModification == modId) != null)
+    if (modId != null && (campaign != "air" || weaponPresets.findvalue(@(wp) wp?.reqModification == modId) != null))
       return l
     foreach (weapon in ammoForWeapons) {
       let { fromUnitTags = {} } = weapon
@@ -149,13 +150,13 @@ function getSlotOrUnitLevelUnlockRewards(debrData) {
       return { has = true, type = "crew", idx = slotIdx, name, levelBeforeBattle = level }
   }
   foreach (unit in units) {
-    let { unitWeaponry = {} } = debrData
+    let { unitWeaponry = {}, campaign = "" } = debrData
     let { nextLevelExp = 0, name = "", level = 0, slotIdx = 0, modPresetCfg = {} } = unit
     let isUnitMaxLevel = nextLevelExp == 0
     if (isUnitMaxLevel || !isUnitReceiveLevel(name, debrData))
       continue
     let { unlockedLevel } = getLevelProgress(unit, getUnitRewards(name, debrData)?.exp.totalExp ?? 0)
-    if (getNextUnitLevelWithRewards(level + 1, unlockedLevel, modPresetCfg, unitWeaponry?[name]) > level)
+    if (getNextUnitLevelWithRewards(level + 1, unlockedLevel, modPresetCfg, unitWeaponry?[name], campaign) > level)
       return { has = true, type = "arsenal", idx = slotIdx, name }
   }
   return { has = false }

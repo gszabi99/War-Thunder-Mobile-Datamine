@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module strings_boost shared public
@@ -40,7 +38,7 @@ def join(it; separator : string implicit) {
                 } else {
                     write(writer, separator)
                 }
-                if (typeinfo is_string(it)) {
+                static_if (typeinfo is_string(it)) {
                     write_char(writer, elem)
                 } else {
                     write(writer, elem)
@@ -61,7 +59,7 @@ def join(var it : iterator<auto(TT)>; separator : string implicit) {
             } else {
                 write(writer, separator)
             }
-            if (typeinfo is_string(it)) {
+            static_if (typeinfo is_numeric(type<TT>)) {
                 write_char(writer, elem)
             } else {
                 write(writer, elem)
@@ -205,11 +203,38 @@ def levenshtein_distance_fast(s, t : string implicit) : int {
     return v0[tLen]
 }
 
+def public jaccard(a : table<string>; b : table<string>) : float {
+    
+    
+    
+    if (empty(a) || empty(b)) return 0.0f
+    var intersect = 0_l
+    for (k in keys(a)) {
+        if (key_exists(b, k)) {
+            intersect ++
+        }
+    }
+    let unionSize = long_length(a) + long_length(b) - intersect
+    return float(intersect) / float(unionSize)
+}
+
+def public jaccard(a, b : array<string>) : float {
+    
+    
+    var sa : table<string>
+    for (x in a) {
+        sa |> insert(x)
+    }
+    var sb : table<string>
+    for (x in b) {
+        sb |> insert(x)
+    }
+    return jaccard(sa, sb)
+}
+
 def replace_multiple(source : string; replaces : array<tuple<text : string; replacement : string>>) {
     
-    if (empty(source) || empty(replaces)) {
-        return source
-    }
+    if (empty(source) || empty(replaces)) return source
     
     return build_string() $(writer) {
         var index = 0
@@ -232,7 +257,7 @@ def replace_multiple(source : string; replaces : array<tuple<text : string; repl
     }
 }
 
-def public contains(str, sub : string) : bool {
+def public contains(str, sub : string | string#) : bool {
     
     return find(str, sub) >= 0
 }
@@ -240,9 +265,7 @@ def public contains(str, sub : string) : bool {
 def public count(str, sub : string) : int {
     
     
-    if (sub |> empty()) {
-        return 0
-    }
+    if (sub |> empty()) return 0
     var n = 0
     var pos = find(str, sub)
     let subLen = sub |> length()
@@ -255,9 +278,7 @@ def public count(str, sub : string) : int {
 
 def public last_index_of(str, sub : string) : int {
     
-    if (sub |> empty() || str |> empty()) {
-        return -1
-    }
+    if (sub |> empty() || str |> empty()) return -1
     var lastPos = -1
     var pos = find(str, sub)
     while (pos >= 0) {
@@ -269,9 +290,7 @@ def public last_index_of(str, sub : string) : int {
 
 def public last_index_of(str, sub : string; start : int) : int {
     
-    if (sub |> empty() || str |> empty()) {
-        return -1
-    }
+    if (sub |> empty() || str |> empty()) return -1
     var lastPos = -1
     var pos = find(str, sub)
     while (pos >= 0 && pos < start) {
@@ -285,9 +304,7 @@ def public pad_right(str : string; width : int; ch : int = ' ') : string {
     
     
     let l = str |> length()
-    if (l >= width) {
-        return str
-    }
+    if (l >= width) return str
     return build_string() $(writer) {
         writer |> write(str)
         writer |> write_chars(ch, width - l)
@@ -298,9 +315,7 @@ def public pad_left(str : string; width : int; ch : int = ' ') : string {
     
     
     let l = str |> length()
-    if (l >= width) {
-        return str
-    }
+    if (l >= width) return str
     return build_string() $(writer) {
         writer |> write_chars(ch, width - l)
         writer |> write(str)
@@ -310,44 +325,34 @@ def public pad_left(str : string; width : int; ch : int = ' ') : string {
 def public trim_prefix(str, prefix : string) : string {
     
     
-    if (str |> starts_with(prefix)) {
-        return str |> slice(prefix |> length())
-    }
+    if (str |> starts_with(prefix)) return str |> slice(prefix |> length())
     return str
 }
 
 def public trim_suffix(str, suffix : string) : string {
     
     
-    if (str |> ends_with(suffix)) {
-        return str |> slice(0, (str |> length()) - (suffix |> length()))
-    }
+    if (str |> ends_with(suffix)) return str |> slice(0, (str |> length()) - (suffix |> length()))
     return str
 }
 
 def public capitalize(str : string) : string {
     
     
-    if (str |> empty()) {
-        return str
-    }
+    if (str |> empty()) return str
     let first = first_character(str)
-    if (first >= 'a' && first <= 'z') {
-        return build_string() $(writer) {
+    if (first >= 'a' && first <= 'z') return build_string() $(writer) {  
             writer |> write_char(first - 'a' + 'A')
             if (str |> length() > 1) {
                 writer |> write(str |> slice(1))
             }
         }
-    }
     return str
 }
 
 def public is_null_or_whitespace(str : string) : bool {
     
-    if (str |> empty()) {
-        return true
-    }
+    if (str |> empty()) return true
     var result = true
     peek_data(str) $(data) {
         for (i in range(length(data))) {
@@ -365,9 +370,7 @@ def public glob_match(pattern, text : string) : bool {
     
     
     
-    if (empty(pattern)) {
-        return empty(text)
-    }
+    if (empty(pattern)) return empty(text)
     if (empty(text)) {
         
         unsafe {
@@ -408,3 +411,4 @@ def public glob_match(pattern, text : string) : bool {
         return *pp == 0u8
     }
 }
+

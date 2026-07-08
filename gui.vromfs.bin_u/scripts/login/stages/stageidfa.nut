@@ -8,7 +8,8 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { LOGIN_STATE, isPreviewIDFAShowed, isReadyForShowPreviewIdfa, CONSENT_OPTIONS_SAVE_ID, TCF_CONSENT_ACCEPTED_SAVE_ID
 } = require("%appGlobals/loginState.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { tcf_consent_enabled, has_att_warmingup_scene } = require("%appGlobals/permissions.nut")
+let { has_att_warmingup_scene } = require("%appGlobals/permissions.nut")
+let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
 
 let { export, finalizeStage } = require("mkStageBase.nut")("ios_idfa",
   LOGIN_STATE.READY_FOR_IDFA,
@@ -50,8 +51,8 @@ function isOurConsentAccepted() {
 
 function start() {
   let isTrackingPermissionNotDetermined = getTrackingPermission() == ATT_NOT_DETERMINED
-  if ((isTrackingPermissionNotDetermined && tcf_consent_enabled.get() && isTcfConsentAccepted())
-      || (isTrackingPermissionNotDetermined && !tcf_consent_enabled.get() && isOurConsentAccepted())) {
+  if ((isTrackingPermissionNotDetermined && isTcfConsentEnabled.get() && isTcfConsentAccepted())
+      || (isTrackingPermissionNotDetermined && !isTcfConsentEnabled.get() && isOurConsentAccepted())) {
     if (has_att_warmingup_scene.get())
       isReadyForShowPreviewIdfa.set(true)
     else

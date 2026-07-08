@@ -76,7 +76,7 @@ function mkBtn(b, wndUid) {
 let mkMsgBoxBtnsSet = @(wndUid, btnsCfg) btnsCfg.map(@(b) mkBtn(b, wndUid))
 
 let msgBoxText = @(text, ovr = {}) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
@@ -92,7 +92,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__m
   children = [
     type(title) == "string" ? modalWndHeader(title) : title,
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       padding = [ 0, buttonsHGap, buttonsHGap, buttonsHGap ]
       halign = ALIGN_CENTER
@@ -102,7 +102,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__m
           size = FLEX_H
           halign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
-          gap = { size = flex() }
+          gap = { size = FLEX }
           children = buttonsArray
         }
       ]
@@ -124,7 +124,7 @@ function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wn
   addModalWindow(bgShaded.__merge({
     key = uid
     priority = modalPriority
-    size = flex()
+    size = FLEX
     children = mkCustomMsgBoxWnd(title, text, mkMsgBoxBtnsSet(uid, buttons), wndOvr)
     onClick = EMPTY_ACTION
     animations = wndSwitchAnim

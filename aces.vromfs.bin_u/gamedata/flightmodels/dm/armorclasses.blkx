@@ -1846,6 +1846,16 @@
     "steel": 0.3,
     "armor5": 0.7
   },
+  "titanium_alloy_tank": {
+    "armorThickness": 1.0,
+    "armorThrough": 1.0,
+    "restrainDamage": 0.0001,
+    "secondaryShatterDamageMult": 0.0001,
+    "ricochetAngle": 70.0,
+    "ricochetCosinePower": 3.0,
+    "ricochetDamage": 0.0001,
+    "armorQuality": 0.7
+  },
   "RHA_tank": {
     "armorThickness": 1.0,
     "armorThrough": 1.0,
@@ -1874,6 +1884,20 @@
     "ricochetCosinePower": 3.0,
     "ricochetDamage": 0.0001,
     "armorQuality": 0.98
+  },
+  "ERA_FY_1D1": {
+    "armorThickness": 1.0,
+    "armorThrough": 1.0,
+    "restrainDamage": 0.5,
+    "createSecondaryShatters": false,
+    "ricochetAngle": 70.0,
+    "ricochetCosinePower": 3.0,
+    "ricochetDamage": 0.0001,
+    "cumulativeArmorQuality": 3.0,
+    "genericArmorQuality": 0.7,
+    "cumulativeDamageMult": 3.0,
+    "tandemPrechargeArmorQuality": 0.33,
+    "explosiveFormedProjectileArmorQuality": 1.0
   },
   "ERA_FY_2": {
     "armorThickness": 1.0,
@@ -1965,6 +1989,40 @@
     "cumulativeDamageMult": 3.0,
     "tandemPrechargeArmorQuality": 0.33,
     "explosiveFormedProjectileArmorQuality": 1.0
+  },
+  "ERA_FY_5": {
+    "armorThickness": 1.0,
+    "armorThrough": 1.0,
+    "restrainDamage": 0.5,
+    "createSecondaryShatters": false,
+    "ricochetAngle": 70.0,
+    "ricochetCosinePower": 3.0,
+    "ricochetDamage": 0.0001,
+    "cumulativeArmorQuality": 3.0,
+    "genericArmorQuality": 0.7,
+    "cumulativeDamageMult": 3.0,
+    "tandemPrechargeArmorQuality": 0.7,
+    "explosiveFormedProjectileArmorQuality": 1.0
+  },
+  "ERA_ARAT": {
+    "armorThickness": 1.0,
+    "armorThrough": 1.0,
+    "restrainDamage": 0.5,
+    "createSecondaryShatters": false,
+    "hidableInViewer": true,
+    "hidableInXrayViewer": true,
+    "ricochetAngle": 70.0,
+    "ricochetCosinePower": 3.0,
+    "ricochetDamage": 0.95,
+    "cumulativeArmorQuality": 2.75,
+    "genericArmorQuality": 0.1,
+    "genericDamageMult": 0.8,
+    "cumulativeDamageMult": 2.1,
+    "explosionArmorQuality": 0.1,
+    "explosionDamageMult": 5.0,
+    "tandemPrechargeArmorQuality": 0.33,
+    "explosiveFormedProjectileArmorQuality": 0.5,
+    "physMaterial": "tank_structural_steel"
   },
   "ERA_Blazer": {
     "armorThickness": 1.0,

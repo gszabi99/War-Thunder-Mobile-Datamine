@@ -32,11 +32,11 @@ let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSma
     onClick
     brightness = stateFlags.get() & S_HOVER ? 0.5 : 1
     children = {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -118,7 +118,7 @@ function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         fillColor = 0x70000000
         borderWidth = hdpx(1)

@@ -57,12 +57,12 @@ function emptyBullet() {
 
 function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec, chosenBulletsSpec,
   maxBullets, maxBulletsSec, maxBulletsSpec, hasExtraBullets, hasExtraBulletsSec, hasExtraBulletsSpec,
-  bInfo, bInfoSec, bInfoSpec, slotIdx, bName
+  bInfo, bInfoSec, bInfoSpec, slotIdx, bName, secBulletsSlots = BULLETS_SEC_SLOTS
 ) {
   if (unitName == null)
     return false
 
-  let isBulletsSpec = slotIdx >= BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS
+  let isBulletsSpec = slotIdx >= BULLETS_PRIM_SLOTS + secBulletsSlots
   let isBulletsSec = slotIdx >= BULLETS_PRIM_SLOTS
 
   let bullets = isBulletsSpec ? chosenBulletsSpec
@@ -72,27 +72,27 @@ function setOrSwapUnitBullet(unitName, chosenBullets, chosenBulletsSec, chosenBu
     : isBulletsSec ? (bInfoSec?.bulletSetAvailiable.len() ?? 0) > 0
     : (bInfo?.bulletSetAvailiable.len() ?? 0) > 0
 
-  let actualBulletIdx = slotIdx % (BULLETS_PRIM_SLOTS + (isBulletsSpec ? BULLETS_SEC_SLOTS : 0))
-  if (actualBulletIdx not in bullets)
+  let targetSlot = bullets.findvalue(@(s) s.idx == slotIdx)
+  if (targetSlot == null)
     return false
 
-  let prevIdx = bullets.findindex(@(s) s.name == bName)
-  if (prevIdx == slotIdx)
+  let prevSlot = bullets.findvalue(@(s) s.name == bName)
+  if (prevSlot?.idx == slotIdx)
     return false
 
   let newNames = { [slotIdx] = bName }
-  if (!canHaveSameBullets && prevIdx != null)
-    newNames[prevIdx] <- bullets[actualBulletIdx].name
+  if (!canHaveSameBullets && prevSlot != null)
+    newNames[prevSlot.idx] <- targetSlot.name
 
   let blk = DataBlock()
   foreach (idx, slot in chosenBullets)
-    blk.bullet <- collectBlkBullet(slot, maxBullets?[idx], hasExtraBullets, newNames?[idx])
+    blk.bullet <- collectBlkBullet(slot, maxBullets?[idx], hasExtraBullets, newNames?[slot.idx])
   for (local i = chosenBullets.len(); i < BULLETS_PRIM_SLOTS; i++)
     blk.bullet <- emptyBullet()
   foreach (idx, slot in chosenBulletsSec)
-    blk.bullet <- collectBlkBullet(slot, maxBulletsSec?[idx], hasExtraBulletsSec, newNames?[idx + BULLETS_PRIM_SLOTS])
+    blk.bullet <- collectBlkBullet(slot, maxBulletsSec?[idx], hasExtraBulletsSec, newNames?[slot.idx])
   foreach (idx, slot in chosenBulletsSpec)
-    blk.bullet <- collectBlkBullet(slot, maxBulletsSpec?[idx], hasExtraBulletsSpec, newNames?[idx + BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS])
+    blk.bullet <- collectBlkBullet(slot, maxBulletsSpec?[idx], hasExtraBulletsSpec, newNames?[slot.idx])
   savedBullets.set(blk)
   saveBullets(unitName, blk)
   return true
@@ -110,12 +110,14 @@ function setUnitBullets(unitName, chosenBullets, chosenBulletsSec, chosenBullets
     return
 
   let blk = DataBlock()
-  foreach (idx, slot in chosenBullets)
-    blk.bullet <- collectChangedBlkBullet(slot, idx == slotIdx, bName, bCount)
-  foreach (idx, slot in chosenBulletsSec)
-    blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS == slotIdx, bName, bCount)
-  foreach (idx, slot in chosenBulletsSpec)
-    blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS == slotIdx, bName, bCount)
+  foreach (_, slot in chosenBullets)
+    blk.bullet <- collectChangedBlkBullet(slot, slot.idx == slotIdx, bName, bCount)
+  for (local i = chosenBullets.len(); i < BULLETS_PRIM_SLOTS; i++)
+    blk.bullet <- emptyBullet()
+  foreach (_, slot in chosenBulletsSec)
+    blk.bullet <- collectChangedBlkBullet(slot, slot.idx == slotIdx, bName, bCount)
+  foreach (_, slot in chosenBulletsSpec)
+    blk.bullet <- collectChangedBlkBullet(slot, slot.idx == slotIdx, bName, bCount)
   savedBullets.set(blk)
   saveBullets(unitName, blk)
 }

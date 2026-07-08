@@ -23,8 +23,7 @@ eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" :
 
 let needShowCutscene = keepref(Computed(@() unitForCutscene.get() != null
   && loadedHangarUnitName.get() == (unitForCutscene.get()?.name ?? "")
-  && loadedHangarUnitSkin.get()
-    == (unitForCutscene.get()?.skin ?? unitForCutscene.get()?.currentSkins[unitForCutscene.get()?.name ?? ""] ?? "")
+  && loadedHangarUnitSkin.get() == (unitForCutscene.get()?.skin ?? "")
   && readyToShowCutScene.get()
   && !needReloadHangarBattleData.get()))
 

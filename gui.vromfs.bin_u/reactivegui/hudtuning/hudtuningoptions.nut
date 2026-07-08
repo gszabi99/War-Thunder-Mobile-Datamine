@@ -127,7 +127,7 @@ let content = @() {
     historyBackBtn
     historyFwdBtn
     resetBtn
-    { size = flex() }
+    { size = FLEX }
     curUnitTypeInfo
     hasAnyOfAllElemOptions.get() ? allElemsOptions : null
   ]

@@ -48,7 +48,7 @@ function mkFoldableHeader(unseenDecals, category) {
 
 function mkFoldableContent(decals, availableDecals, selectedDecal, unseenDecals, onSelect) {
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = [FLEX, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = decalsGap
     children = decals == null ? null
@@ -123,7 +123,7 @@ function mkDecalsCollectionChoice(decalsCollection, availableDecals, selectedDec
             category?.category))
         },
         {
-          size = [flex(), pannableHeight]
+          size = [FLEX, pannableHeight]
           isBarOutside = true
           barStyleCtor = @(hasScroll) !hasScroll ? {}
             : {

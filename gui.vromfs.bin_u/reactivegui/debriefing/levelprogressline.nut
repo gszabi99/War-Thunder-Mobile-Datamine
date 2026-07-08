@@ -29,14 +29,14 @@ let levelProgressSingleAnimTime = 0.5
 let maxLevelProgressAnimTime = 1.5
 
 let mkLevelBg = @(override = {}) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   color = 0xFF000000
   transform = { rotate = 45 }
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     fillColor = levelBgColor
     borderWidth = lightBorderWidth
@@ -176,7 +176,7 @@ let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArra
         children = [
           {
             key = $"line_{levelUpsArray[curLevelIdxWatch.get()]}"
-            size = [receivedExpWidth, flex()]
+            size = [receivedExpWidth, FLEX]
             rendObj = ROBJ_SOLID
             color = receivedExpProgressColor
             transform = { pivot = [0, 0] }
@@ -206,7 +206,7 @@ let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArra
             ]
           }
           {
-            size = [curExpWidth, flex()]
+            size = [curExpWidth, FLEX]
             rendObj = ROBJ_SOLID
             color = lineColor
           }
@@ -290,12 +290,12 @@ let mkLevelUnlocksBar = @(locId, lineColor, isLevelUp) {
   image = Picture($"ui/gameuiskin#debr_level_unlocks_bar_mask.svg:{levelUnlocksBarW}:{levelUnlocksBarH}")
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = levelProgressBgColor
     }
     !isLevelUp ? null : {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = receivedExpProgressColor
 
@@ -354,7 +354,7 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
     }
   }
   else if (isLevelUp && levelsExpCfg.len() > 0) {
-    local fromLevel = level
+    local fromLevel = level + 1
     local leftReceivedExp = totalExp - addExp
     foreach (idx, c in levelsExpCfg) {
       if (c.upToLevel <= fromLevel)

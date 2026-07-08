@@ -19,7 +19,7 @@ let contentMargin = hdpx(20)
 let textMargin = [hdpx(15), contentMargin]
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x3F3F3F
 }
@@ -40,7 +40,7 @@ let mkLootboxTitle = @(goods) {
       behavior = Behaviors.Marquee
       maxWidth = goodsSmallSize[0] - contentMargin * 2
     })
-    { size = flex() }
+    { size = FLEX }
     mkGoodsLimitText(goods, titleFontGrad)
   ]
 }
@@ -88,7 +88,7 @@ function mkOfferLootbox(goods, onClick, state) {
       mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      borderBg.__merge({ size = [flex(), offerH], borderColor = 0xFFD2A51E })
+      borderBg.__merge({ size = [FLEX, offerH], borderColor = 0xFFD2A51E })
       sf & S_HOVER ? bgHiglight : null
       lootboxId == null ? null : mkLootboxImage(lootboxId, offerLootboxIconSize, 0.5)
         .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, offerH * 0.05] })

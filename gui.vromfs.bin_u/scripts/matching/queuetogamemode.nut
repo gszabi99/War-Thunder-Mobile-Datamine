@@ -256,7 +256,7 @@ function queueToGameModeImpl(mode) {
 }
 
 function queueModeOnRandomUnit(mode) {
-  let mmRanges = mode.matchmaking?.mmRanges
+  let mmRanges = mode?.matchmaking.mmRanges
   if (!mmRanges) {
     openFMsgBox({ text = "could not get current mode mRank ranges" })
     return

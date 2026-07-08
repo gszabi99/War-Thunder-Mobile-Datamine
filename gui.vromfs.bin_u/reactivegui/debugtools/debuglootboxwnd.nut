@@ -18,7 +18,7 @@ let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
 let wndBackgroundColor = 0xFF5c5e73
 
 let wndHeader = @(children) {
-  size = const [flex(), hdpx(60)]
+  size = const [FLEX, hdpx(60)]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)
@@ -63,7 +63,7 @@ function mkDebugRewardPlateCompWnd() {
   return {
     watch = [lootboxesCfg, allRewards]
     key = isOpened
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
     gap = hdpx(30)

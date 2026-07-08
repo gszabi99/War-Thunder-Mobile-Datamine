@@ -51,10 +51,10 @@ function mkTwoColBlock(wideChildren, shortChildren, header = null) {
   let cols = {
     flow = FLOW_HORIZONTAL
     gap = {
-      size = [colGap, flex()]
+      size = [colGap, FLEX]
       halign = ALIGN_CENTER
       children = {
-        size = [hdpxi(2), flex()]
+        size = [hdpxi(2), FLEX]
         rendObj = ROBJ_SOLID
         color = hudVeilGrayColor
       }
@@ -175,7 +175,7 @@ function hudTuningElemOptions() {
   let availOptions = options.filter(@(o) o?.isAvailable.get() ?? true)
   return {
     watch
-    size = flex()
+    size = FLEX
     children = isElemHold.get() || availOptions.len() == 0 ? null
       : optionsPosBlock(id, options, editView, tuningTransform.get()?[id] ?? defTransform) 
   }

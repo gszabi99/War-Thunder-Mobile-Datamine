@@ -53,7 +53,7 @@ let premiumDescription = {
           rendObj = ROBJ_IMAGE
           image = Picture("ui/gameuiskin/shop_premium_slot.avif:0:P")
           keepAspect = KEEP_ASPECT_FIT
-          size = flex()
+          size = FLEX
           minHeight = sh(30)
           margin = const [0, hdpx(32), 0, 0]
         }
@@ -72,13 +72,13 @@ let premiumDescription = {
 }
 
 let backBtn = {
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   valign = ALIGN_CENTER
   children = backButton(closePremiumDescriptionWnd)
 }
 
 let premiumDescriptionWnd = {
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   behavior = Behaviors.Button
   onClick = @() closePremiumDescriptionWnd()
@@ -89,7 +89,7 @@ let premiumDescriptionWnd = {
 }
 
 let premiumDescriptionWndWithBg = bgShadedDark.__merge({
-  size = flex()
+  size = FLEX
   onClick = closePremiumDescriptionWnd()
   children = premiumDescriptionWnd
 })

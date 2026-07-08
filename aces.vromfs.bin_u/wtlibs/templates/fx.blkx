@@ -43,6 +43,10 @@
     ],
     "ecs_fx__light_radius_mult": 1.0,
     "ecs_fx__with_sound": true,
+    "ecs_fx__sfxName": "",
+    "ecs_fx__sfxPath": "",
+    "ecs_fx__pauseWhenFarAway": false,
+    "ecs_fx__soundEnableDistance": -1.0,
     "ecs_fx__effect_ref": {
       "_tags": "render"
     }
@@ -102,8 +106,7 @@
       "ground_effect__scale_z": [
         1.0,
         0.0
-      ],
-      "ground_effect__biome_ids:array": {}
+      ]
     },
     "ground_effect__manager": {
       "_tags": "render"

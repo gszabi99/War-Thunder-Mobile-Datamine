@@ -44,7 +44,7 @@ let mkProgresImage = memoize(@(mask) {
 
   children = !(mask & P_PERIODIC) ? null
     : {
-        size = flex()
+        size = FLEX
         pos = [0, -hdpx(3)]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -56,7 +56,7 @@ let mkProgresImage = memoize(@(mask) {
 
 let onClick = @(quests) addModalWindow(bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = modalWndBg.__merge({
     maxHeight = saSize[1]
     flow = FLOW_VERTICAL

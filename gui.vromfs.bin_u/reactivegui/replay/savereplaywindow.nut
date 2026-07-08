@@ -21,36 +21,38 @@ let close = @() removeModalWindow(WND_UID)
 let replayName = Watched("")
 let invalidCharsRe = regexp2("[\\\\|/<>:?*\"@$%^&]")
 
-let isNameValid = Computed(@() replayName.get() != "" && replayName.get().slice(0, 1) != "#")
+let validateName = @(name) name != "" && name.slice(0, 1) != "#"
+let isNameValid = Computed(@() validateName(replayName.get().strip()))
 
 let editbox = textInput(replayName, {
   maxChars = MAX_REPLAY_NAME_LEN,
   setValue = @(v) replayName.set(invalidCharsRe.replace("", v))
 })
 
-function saveReplay() {
-  if (!saveLastReplay(replayName.get()))
+function saveReplay(name) {
+  if (!saveLastReplay(name))
     return
   close()
   replayName.set("")
 }
 
 function save() {
-  if (!isNameValid.get()) {
+  let name = replayName.get().strip()
+  if (!validateName(name)) {
     openMsgBox({ text = loc("msgbox/invalidReplayFileName") })
     return
   }
-  if (file_exists("\\".concat(get_replays_dir(), $"{replayName.get()}.{replayFileExt}"))) {
+  if (file_exists("\\".concat(get_replays_dir(), $"{name}.{replayFileExt}"))) {
     openMsgBox({
       text = loc("msgbox/replayFileNameIsExists")
       buttons = [
         { id = "no", isCancel = true }
-        { id = "yes", cb = saveReplay, styleId = "PRIMARY" }
+        { id = "yes", cb = @() saveReplay(name), styleId = "PRIMARY" }
       ]
     })
     return
   }
-  saveReplay()
+  saveReplay(name)
 }
 
 let applyButton = @() {
@@ -73,7 +75,7 @@ let wndContent = {
 
 let saveReplayWnd = bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   onAttach = @() set_kb_focus(replayName)
   children = @() modalWndBg.__merge({
     size = const [hdpx(800), SIZE_TO_CONTENT]

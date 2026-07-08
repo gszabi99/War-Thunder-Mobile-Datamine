@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options indenting = 4
 options strict_smart_pointers = true
 
@@ -19,6 +17,7 @@ module regex_boost shared private
 
 require daslib/ast
 require strings
+require math
 require daslib/ast_boost
 require daslib/regex public
 
@@ -41,12 +40,12 @@ class RegexReader : AstReaderMacro {
             return true
         }
     }
-    def override visit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprReader>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; expr : ExprReader?) : ExpressionPtr {
         
         var pattern = "{expr.sequence}"
         var ci = false
         var da = false
-        let tilde_pos = find(pattern, "~", length(pattern) - 4 > 0 ? length(pattern) - 4 : 0)
+        let tilde_pos = find(pattern, "~", max(0, length(pattern) - 4))
         if (tilde_pos != -1) {
             let flags_str = slice(pattern, tilde_pos + 1)
             var valid_flags = true
@@ -60,7 +59,7 @@ class RegexReader : AstReaderMacro {
                     break
                 }
             }
-            if (valid_flags && length(flags_str) > 0) {
+            if (valid_flags && !empty(flags_str)) {
                 pattern = slice(pattern, 0, tilde_pos)
             }
         }
@@ -71,12 +70,12 @@ class RegexReader : AstReaderMacro {
                 delete regex
             }
             macro_error(prog, expr.at, "regular expression did not compile {pattern}")
-            return <- default<ExpressionPtr>
+            return null
         }
         
-        var inscope re_data <- convert_to_expression(regex, expr.at)
+        var re_data = convert_to_expression(regex, expr.at)
         delete regex
-        var inscope creg <- new ExprCall(at = expr.at, name := "regex::regex_compile")
+        var creg = new ExprCall(at = expr.at, name := "regex::regex_compile")
         emplace(creg.arguments, re_data)
         return <- creg
     }

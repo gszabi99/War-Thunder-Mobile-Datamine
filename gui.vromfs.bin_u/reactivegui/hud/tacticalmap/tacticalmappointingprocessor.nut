@@ -90,7 +90,7 @@ function mkTacticalMapPointingInputProcessor(mapCoords) {
 
   return {
     key = {}
-    size = flex()
+    size = FLEX
     behavior = Behaviors.ProcessPointingInput
     onPointerPress
     onPointerRelease

@@ -29,6 +29,12 @@
   "caustics_intensity_blend_factor": 0.002,
   "caustics_pattern_blend_factor": 0.015,
   "water_light_density": 0.007,
+  "underwater_fog_max": [
+    0.2,
+    0.2,
+    0.2,
+    1.0
+  ],
   "shader_vars": {
     "tonemapContrast": 1.24,
     "tonemapShoulder": 0.87,
@@ -174,7 +180,6 @@
     "rendinst_face_normal_mul": 0.0,
     "rendinst_ao_to_sun": 0.1,
     "rendinst_ao_to_sky": 0.5,
-    "use_bc_legacy_endpoints_bias": 0,
     "water_refraction_scale": 0.01,
     "front_sprite_params": [
       0.25,

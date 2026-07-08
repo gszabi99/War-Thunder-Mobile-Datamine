@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { selectedLineVertSolid, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
 let { simpleHorGradInv } = require("%rGui/style/gradients.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let tabsGap = hdpx(10)
 let tabExtraWidth = selLineSize
 
-let bgColor = 0x990C1113
+let bgColor = tabBgColor
 
 let mkTabContent = @(content, isActive, tabOverride, isHover) {
   size = FLEX_H
@@ -14,14 +15,14 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
   children = [
     @() {
       watch = isActive
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = bgColor
       transitions = opacityTransition
     }
     @() {
       watch = [isActive, isHover]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = simpleHorGradInv
       color = selectColor
@@ -52,6 +53,7 @@ function mkTab(id, content, curTabId, tabOverride, onClick = null, extraContent 
       selectedLineVertSolid(isActive)
       mkTabContent(content, isActive, tabOverride, isHover)
     ]
+    animations = wndSwitchAnim
   }
 
   return extraContent == null ? mainBlock

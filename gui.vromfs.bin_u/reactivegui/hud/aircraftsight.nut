@@ -102,7 +102,7 @@ let fixedAirDestination = mkCrosshairIcon("point_center_air.svg", fixedAirGunDir
 
 let aircraftSight = @() {
   watch = [areSightHidden, currentAircraftCtrlType, currentFixedAimCursor]
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = areSightHidden.get() ? null

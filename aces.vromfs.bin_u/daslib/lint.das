@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module lint shared private
@@ -15,32 +13,83 @@ module lint shared private
 require daslib/strings_boost
 require daslib/ast_boost
 require daslib/strings_boost
+require daslib/lint_config
 
 [lint_macro]
 class LintEverything : AstPassMacro {
     
-    def override apply(prog : ProgramPtr; mod : Module?) : bool {
-        paranoid(prog, true)
+    def override apply(prog : ProgramPtr; _mod : Module?) : bool {
+        let disabled <- build_lint_macro_disabled(prog)
+        paranoid(prog, true, disabled)
         return true
     }
 }
 
+struct private DeadStoreEntry {
+    @do_not_delete v : Variable const?
+    @do_not_delete pending_expr : Expression const?
+    skip : bool
+    has_pending : bool
+    pending_pure : bool
+}
+
+def private is_block_terminator(expr : ExpressionPtr) : bool {
+    
+    if (expr is ExprReturn) return true
+    if (expr is ExprCall) {
+        let call = expr as ExprCall
+        if (call.func == null) return false
+        return call.name |> eq <| "panic" && call.func._module.name |> eq <| "builtin"
+    }
+    return false
+}
+
 class LintVisitor : AstVisitor {
     
-    astVisitorAdapter : smart_ptr<ast::VisitorAdapter>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    astVisitorAdapter : VisitorAdapter?
     exprForTerminator : array<uint64>
     compile_time_errors : bool
     noLint : bool = false
+    genericDepth : int = 0
     
     collect_errors : bool = false
     errors : array<string>
+    
+    
+    disabled_codes : table<string>
+    enabled_codes : table<string>
+    
+    
+    branch_depth : int = 0
+    ds_entries : array<DeadStoreEntry>
     def LintVisitor() {
         pass
     }
-    def lint_error(text : string; at : LineInfo) : void {
-        if (noLint) {
-            return
+    def is_suppressed(text : string; at : LineInfo) : bool {
+        let code = extract_lint_code(text)
+        if (!empty(code)) {
+            return true if (key_exists(disabled_codes, code)
+                            || (!empty(enabled_codes) && !key_exists(enabled_codes, code)))
         }
+        return is_lint_suppressed(at, code)
+    }
+    def lint_error(text : string; at : LineInfo) : void {
+        if (noLint || is_suppressed(text, at)) return
         if (compile_time_errors) {
             compiling_program() |> macro_error(at, text)
         } elif (collect_errors) {
@@ -51,127 +100,396 @@ class LintVisitor : AstVisitor {
     }
     def override preVisitFunction(fun : FunctionPtr) : void {
         noLint = false
+        if (fun.fromGeneric != null || fun.flags.generated) {
+            genericDepth++
+        }
+        if (fun.moreFlags.isTemplate) {
+            noLint = true
+            return
+        }
         for (ann in fun.annotations) {
             if (ann.annotation.name == "no_lint") {
                 noLint = true
                 break
             }
         }
+        
+        branch_depth = 0
+        ds_entries |> clear()
     }
     def override visitFunction(var fun : FunctionPtr) : FunctionPtr {
+        
+        if (!noLint && genericDepth == 0) {
+            for (e in ds_entries) {
+                if (!e.skip && e.has_pending && e.pending_pure && e.pending_expr != null) {
+                    let vname = "{e.v.name}"
+                    lint_error("LINT010: dead store of '{vname}': value written but never read before scope exit", e.pending_expr.at)
+                }
+            }
+        }
         noLint = false
+        if (fun.fromGeneric != null || fun.flags.generated) {
+            genericDepth--
+        }
         return <- fun
     }
-    def override preVisitExprBlock(blk : smart_ptr<ExprBlock>) : void {
+    def override preVisitExprBlock(blk : ExprBlock?) : void {
         exprForTerminator |> push(0ul)
+        
+        
+        
+        
+        let bf = blk.blockFlags
+        if (!noLint && genericDepth == 0 && (bf.isClosure || bf.isLambdaBlock || bf.isGeneratorBlock)) {
+            branch_depth++
+        }
     }
-    def override visitExprBlock(var blk : smart_ptr<ExprBlock>) : ExpressionPtr {
-        if (length(exprForTerminator) > 0) {
+    def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
+        if (!empty(exprForTerminator)) {
             exprForTerminator |> pop()
+        }
+        let bf = blk.blockFlags
+        if (!noLint && genericDepth == 0 && (bf.isClosure || bf.isLambdaBlock || bf.isGeneratorBlock)) {
+            branch_depth--
         }
         return <- blk
     }
-    def override visitExprBlockExpression(blk : smart_ptr<ExprBlock>; var expr : ExpressionPtr) : ExpressionPtr {
+    def override visitExprBlockExpression(_blk : ExprBlock?; var expr : ExpressionPtr) : ExpressionPtr {
+        
         let lb = exprForTerminator |> back()
         if (lb != 0ul) {
-            let eb = intptr(get_ptr(expr))
-            if (lb != eb) {
-                self->lint_error("unreachable code", expr.at)
-            }
+            lint_error("LINT001: unreachable code", expr.at)
+        }
+        
+        
+        
+        
+        
+        if (is_block_terminator(expr)) {
+            exprForTerminator |> pop()
+            exprForTerminator |> push(intptr(expr))
         }
         return <- expr
     }
-    def override preVisitExprLabel(expr : smart_ptr<ExprLabel>) : void {
-        if (length(exprForTerminator) > 0) {
+    def override preVisitExprLabel(_expr : ExprLabel?) : void {
+        if (!empty(exprForTerminator)) {
             exprForTerminator |> pop()
         }
         exprForTerminator |> push(0ul)
     }
-    def override preVisitExprReturn(expr : smart_ptr<ExprReturn>) : void {
-        if (length(exprForTerminator) > 0) {
-            exprForTerminator |> pop()
-        }
-        exprForTerminator |> push(intptr(get_ptr(expr)))
-    }
-    def override preVisitExprCall(expr : smart_ptr<ExprCall>) : void {
-        if (expr.name |> eq <| "panic" && expr.func._module.name |> eq <| "builtin") {
-            if (length(exprForTerminator) > 0) {
-                exprForTerminator |> pop()
-            }
-            exprForTerminator |> push(intptr(get_ptr(expr)))
+    
+
+    def override preVisitExprCast(expr : ExprCast?) : void {
+        if (noLint || genericDepth > 0
+            || !expr.castFlags.reinterpretCast
+            || expr.subexpr == null || expr.subexpr._type == null || expr.castType == null
+            || expr.castType.isVoidPointer != expr.subexpr._type.isVoidPointer) return
+        if (is_same_type(expr.castType, expr.subexpr._type, false, true, true, false)) {
+            lint_error("LINT005: redundant reinterpret cast; target type is the same as source type", expr.at)
         }
     }
-    def override preVisitExprForVariable(expr : smart_ptr<ExprFor>; v : VariablePtr; last : bool) : void {
-        if (expr.canShadow) {
-            return
-        }
+
+    def override preVisitExprForVariable(expr : ExprFor?; v : VariablePtr; _last : bool) : void {
+        if (expr.canShadow) return
         validate_var(v, false)
     }
 
     def validate_var(v : VariablePtr; can_make_const : bool) {
-        if (v.flags.generated) {
-            return
-        }
+        if (v.flags.generated) return
         let name = string(v.name)
-        if (name |> starts_with("__")) {
-            return
-        }
+        
+        if (name |> starts_with("__") || find(name, "`") >= 0) return
         if (name |> starts_with("_")) {
-            if (name |> ends_with("_")) {
-                return
-            }
-            if (v.access_flags.access_ref || v.access_flags.access_pass || v.access_flags.access_get || v.init != null) {
-                self->lint_error("variable '{v.name}' is used and should be named without underscode prefix", v.at)
+            if (name |> ends_with("_")) return  
+            if (v.access_flags.access_ref || v.access_flags.access_pass || v.access_flags.access_get || v.access_flags.access_fold) {
+                lint_error("LINT004: variable '{v.name}' is used and should be named without underscore prefix", v.at)
                 return
             }
             return
         }
         if (v.isAccessUnused) {
-            self->lint_error("unused variable {v.name}: {describe(v._type)} (add an underscore prefix if you really need it)", v.at)
+            lint_error("LINT002: unused variable {v.name}: {describe(v._type)} (add an underscore prefix if you really need it)", v.at)
             return
         }
         if (!v.access_flags.access_ref && !v.access_flags.access_pass && v.init != null && v.init |> is_expr_const() && !v.access_flags.access_fold) {
-            self->lint_error("unused variable {v.name}: {describe(v._type)} (add an underscore prefix if you really need it) {v.access_flags}", v.at)
+            lint_error("LINT002: unused variable {v.name}: {describe(v._type)} (add an underscore prefix if you really need it) {v.access_flags}", v.at)
             return
         }
         if (!v.access_flags.access_ref && !v.access_flags.access_pass && !v.access_flags.access_get && (v.init == null || v.init.flags.noSideEffects) && !v.access_flags.access_fold) {
-            self->lint_error("unused variable {v.name}: {describe(v._type)} (add an underscore prefix if you really need it)", v.at)
+            lint_error("LINT002: unused variable {v.name}: {describe(v._type)} (add an underscore prefix if you really need it)", v.at)
             return
         }
         if (!v.access_flags.access_get && !v.access_flags.access_ref && (v.init == null)) {
             let sideEffects = (v.init != null && !v.init.flags.noSideEffects)
             if (!sideEffects) {
-                self->lint_error("variable {v.name}: {describe(v._type)} is never used", v.at)
+                lint_error("LINT002: variable {v.name}: {describe(v._type)} is never used", v.at)
             } else {
-                self->lint_error("variable {v.name}: {describe(v._type)} is never used (be careful, initializer has side effects)", v.at)
+                lint_error("LINT002: variable {v.name}: {describe(v._type)} is never used (be careful, initializer has side effects)", v.at)
             }
             return
         }
+        if (can_make_const && v.flags.inScope) return 
         if (can_make_const && v._type.baseType != Type.tPointer && !v._type.flags.constant && !v.access_flags.access_ref && v._type.canCloneFromConst) {
-            self->lint_error("variable {v.name}: {describe(v._type)} can be made const (declare with 'let')", v.at)
+            lint_error("LINT003: variable {v.name}: {describe(v._type)} can be made const (declare with 'let')", v.at)
             return
         }
         if (can_make_const && v._type.baseType == Type.tPointer && !v._type.flags.constant && !(v.access_flags.access_ref || v.access_flags.access_pass) && v._type.canCloneFromConst) {
-            self->lint_error("variable {v.name}: {describe(v._type)} can be made const (declare with 'let')", v.at)
+            lint_error("LINT003: variable {v.name}: {describe(v._type)} can be made const (declare with 'let')", v.at)
             return
         }
     }
 
-    def override preVisitExprLet(expr : smart_ptr<ExprLet>) : void {
+    def validate_argument(v : VariablePtr; code, kind : string) {
+        
+        if (noLint || genericDepth > 0 || v.flags.generated || v.flags.marked_used) return
+        let name = string(v.name)
+        
+        
+        
+        
+        if (name |> starts_with("_") || find(name, "`") >= 0) return
+        if (v.isAccessUnused) {
+            lint_error("{code}: unused {kind} {v.name}: {describe(v._type)} (add an underscore prefix or [unused_argument({v.name})] if intentional)", v.at)
+        }
+    }
+
+    def override preVisitFunctionArgument(fun : FunctionPtr; arg : VariablePtr; _lastArg : bool) : void {
+        
+        
+        
+        if (fun.flags.isClassMethod) return
+        for (ann in fun.annotations) {
+            if (ann.annotation.name == "extern") return
+        }
+        validate_argument(arg, "LINT012", "function argument")
+    }
+
+    def override preVisitExprBlockArgument(_blk : ExprBlock?; arg : VariablePtr; _lastArg : bool) : void {
+        validate_argument(arg, "LINT013", "block argument")
+    }
+
+    
+    
+    
+    def override canVisitWithAliasSubexpression(_expr : ExprAssume?) : bool {
+        return false
+    }
+
+    def override preVisitExprLet(expr : ExprLet?) : void {
         for (v in expr.variables) {
             validate_var(v, true)
         }
+    }
+
+    
+
+    def is_const_zero(expr : ExpressionPtr) : bool {
+        if (expr == null) return false
+        if (expr is ExprConstInt) return (expr as ExprConstInt).value == 0
+        if (expr is ExprConstUInt) return (expr as ExprConstUInt).value == 0u
+        if (expr is ExprConstInt64) return (expr as ExprConstInt64).value == 0l
+        if (expr is ExprConstUInt64) return (expr as ExprConstUInt64).value == 0ul
+        if (expr is ExprConstFloat) return (expr as ExprConstFloat).value == 0.0f
+        if (expr is ExprConstDouble) return (expr as ExprConstDouble).value == 0.0lf
+        return false
+    }
+
+    def expr_equal(a : ExpressionPtr; b : ExpressionPtr; require_pure : bool = true) : bool {
+        if (a == null || b == null
+            || (require_pure && (!a.flags.noSideEffects || !b.flags.noSideEffects))) return false
+        
+        
+        
+        return describe(a) == describe(b)
+    }
+
+    def override preVisitExprOp2(expr : ExprOp2?) : void {
+        if (noLint || genericDepth > 0) return
+        let op = string(expr.op)
+        if ((op == "/" || op == "%" || op == "/=" || op == "%=") && is_const_zero(expr.right)) {
+            lint_error("LINT006: division by zero ({op})", expr.at)
+            return
+        }
+        let op_same_suspicious = (
+            op == "==" || op == "!=" ||
+            op == "<"  || op == ">"  ||
+            op == "<=" || op == ">=" ||
+            op == "-"  || op == "/"  || op == "%" ||
+            op == "&&" || op == "||" ||
+            op == "&"  || op == "|"  || op == "^" ||
+            op == "-=" || op == "/=" || op == "%="
+        )
+        if (op_same_suspicious && expr_equal(expr.left, expr.right, false)) {
+            lint_error("LINT007: left and right operands of '{op}' are the same", expr.at)
+        }
+    }
+
+    
+
+    def override preVisitExprOp3(expr : ExprOp3?) : void {
+        if (noLint || genericDepth > 0) return
+        if (expr_equal(expr.left, expr.right, false)) {
+            lint_error("LINT008: both branches of ternary '?:' are equivalent", expr.at)
+        }
+    }
+
+    
+
+    def override preVisitExprIfThenElse(expr : ExprIfThenElse?) : void {
+        if (noLint || genericDepth > 0) return
+        if (expr.if_false != null && expr_equal(expr.if_true, expr.if_false, false)) {
+            lint_error("LINT009: 'then' branch is equivalent to 'else' branch", expr.at)
+        }
+        branch_depth++
+    }
+    def override visitExprIfThenElse(var expr : ExprIfThenElse?) : ExpressionPtr {
+        if (!noLint && genericDepth == 0) {
+            branch_depth--
+        }
+        return <- expr
+    }
+
+    
+
+    def private ds_find(v : VariablePtr) : int {
+        
+        let vc : Variable const? = v
+        for (i in range(length(ds_entries))) {
+            if (ds_entries[i].v == vc) return i
+        }
+        return -1
+    }
+
+    def override preVisitExprLetVariable(_let : ExprLet?; v : VariablePtr; _last : bool) : void {
+        
+        
+        
+        
+        
+        if (noLint || genericDepth > 0
+            || (v._type != null && v._type.flags.ref)
+            || v.flags.inScope
+            || v.access_flags.access_fold
+            || !v.access_flags.access_get) return
+        let has_init = v.init != null
+        let init_pure = has_init && v.init.flags.noSideEffects
+        ds_entries |> emplace(DeadStoreEntry(
+            v = v,
+            pending_expr = v.init,
+            skip = false,
+            has_pending = has_init,
+            pending_pure = init_pure
+        ))
+    }
+
+    def override preVisitExprVar(expr : ExprVar?) : void {
+        if (noLint || genericDepth > 0) return
+        let i = ds_find(expr.variable)
+        if (i < 0 || ds_entries[i].skip) return
+        let vf = expr.varFlags
+        
+        
+        
+        if (branch_depth > 0 || (vf.write && !vf.under_clone)) {
+            ds_entries[i].skip = true
+            return
+        }
+        
+        
+        
+        if (vf.write) return
+        
+        ds_entries[i].has_pending = false
+    }
+
+    def private ds_handle_store(lhs : ExpressionPtr; rhs : ExpressionPtr; var store_expr : ExpressionPtr) : void {
+        if (lhs == null || !(lhs is ExprVar)) return
+        let ev = lhs as ExprVar
+        let i = ds_find(ev.variable)
+        if (i < 0 || ds_entries[i].skip || branch_depth > 0) return
+        if (ds_entries[i].has_pending && ds_entries[i].pending_pure && ds_entries[i].pending_expr != null) {
+            let vname = "{ev.variable.name}"
+            lint_error("LINT010: dead store of '{vname}': overwritten without intervening read", ds_entries[i].pending_expr.at)
+        }
+        ds_entries[i].has_pending = true
+        ds_entries[i].pending_expr = store_expr
+        ds_entries[i].pending_pure = rhs != null && rhs.flags.noSideEffects
+    }
+
+    def override visitExprCopy(var expr : ExprCopy?) : ExpressionPtr {
+        ds_handle_store(expr.left, expr.right, expr)
+        return <- expr
+    }
+    def override visitExprClone(var expr : ExprClone?) : ExpressionPtr {
+        ds_handle_store(expr.left, expr.right, expr)
+        return <- expr
+    }
+    def override visitExprMove(var expr : ExprMove?) : ExpressionPtr {
+        ds_handle_store(expr.left, expr.right, expr)
+        return <- expr
+    }
+
+    
+    
+    def override preVisitExprFor(_expr : ExprFor?) : void {
+        if (!noLint && genericDepth == 0) branch_depth++
+    }
+    def override visitExprFor(var expr : ExprFor?) : ExpressionPtr {
+        if (!noLint && genericDepth == 0) branch_depth--
+        return <- expr
+    }
+    def override preVisitExprWhile(_expr : ExprWhile?) : void {
+        if (!noLint && genericDepth == 0) branch_depth++
+    }
+    def override visitExprWhile(var expr : ExprWhile?) : ExpressionPtr {
+        if (!noLint && genericDepth == 0) branch_depth--
+        return <- expr
+    }
+    def override preVisitExprTryCatch(_expr : ExprTryCatch?) : void {
+        if (!noLint && genericDepth == 0) branch_depth++
+    }
+    def override visitExprTryCatch(var expr : ExprTryCatch?) : ExpressionPtr {
+        if (!noLint && genericDepth == 0) branch_depth--
+        return <- expr
+    }
+    
+    
+    
+    
+    
+    
+
+    
+    def override visitExprConstFloat(var expr : ExprConstFloat?) : ExpressionPtr {
+        if (!noLint && genericDepth == 0 && expr.inexactFloatPromotion) {
+            lint_error("LINT011: int literal does not exactly represent as float", expr.at)
+        }
+        return <- expr
+    }
+    def override visitExprConstDouble(var expr : ExprConstDouble?) : ExpressionPtr {
+        if (!noLint && genericDepth == 0 && expr.inexactFloatPromotion) {
+            lint_error("LINT011: int literal does not exactly represent as double", expr.at)
+        }
+        return <- expr
     }
 }
 
 def public paranoid(prog : ProgramPtr; compile_time_errors : bool) {
     
+    let empty_set : table<string>
+    paranoid(prog, compile_time_errors, empty_set)
+}
+
+def public paranoid(prog : ProgramPtr; compile_time_errors : bool; disabled_codes : table<string>) {
+    
+    
+    
     var astVisitor = new LintVisitor(compile_time_errors = compile_time_errors)
-    unsafe {
-        astVisitor.astVisitorAdapter <- make_visitor(*astVisitor)
+    astVisitor.disabled_codes := disabled_codes
+    make_visitor(*astVisitor) $(adapter) {
+        astVisitor.astVisitorAdapter = adapter
+        visit(prog, astVisitor.astVisitorAdapter)
     }
-    visit(prog, astVisitor.astVisitorAdapter)
-    astVisitor.astVisitorAdapter := null
     unsafe {
         delete astVisitor
     }
@@ -180,17 +498,23 @@ def public paranoid(prog : ProgramPtr; compile_time_errors : bool) {
 def public paranoid_collect(prog : ProgramPtr; var errors : array<string>) : int {
     
     
+    let empty_set : table<string>
+    return paranoid_collect(prog, errors, empty_set, empty_set)
+}
+
+def public paranoid_collect(prog : ProgramPtr; var errors : array<string>;
+                            disabled_codes, enabled_codes : table<string>) : int {
+    
+    
     var astVisitor = new LintVisitor(compile_time_errors = false, collect_errors = true)
-    unsafe {
-        astVisitor.astVisitorAdapter <- make_visitor(*astVisitor)
+    astVisitor.disabled_codes := disabled_codes
+    astVisitor.enabled_codes := enabled_codes
+    make_visitor(*astVisitor) $(adapter) {
+        astVisitor.astVisitorAdapter = adapter
+        visit(prog, astVisitor.astVisitorAdapter)
     }
-    visit(prog, astVisitor.astVisitorAdapter)
     let count = length(astVisitor.errors)
-    errors |> reserve(count)
-    for (e in astVisitor.errors) {
-        errors |> push(e)
-    }
-    astVisitor.astVisitorAdapter := null
+    errors |> push_from(astVisitor.errors)
     unsafe {
         delete astVisitor
     }

@@ -116,6 +116,7 @@ let shipState = {
   isAsmCaptureAllowed = Watched(true)
   isHrosshairVisibile = Watched(false)
   aimModulePos = Watched(Point2(-1., -1.))
+  crosshairDistance = Watched(-1)
 }
 
 

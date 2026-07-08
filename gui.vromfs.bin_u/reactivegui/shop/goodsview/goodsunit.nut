@@ -16,7 +16,7 @@ let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareI
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
 let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
@@ -41,7 +41,7 @@ let consumablesOnGoodsPlate = [ SPARE ]
 let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ].totable()
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x3F3F3F
 }
@@ -115,7 +115,7 @@ function mkUnitTexts(goods, unit) {
   let isElite = isUpgraded || isPremium
   let color = isElite ? premiumTextColor : 0xFFFFFFFF
   return {
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
     padding = const [hdpx(15), hdpx(34), 0, hdpx(34)]
     children = [
@@ -184,7 +184,7 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
 
   function onUnitClick() {
     if (isPurchased)
-      unitDetailsWnd(unit)
+      openUnitDetailsWnd(unit)
     else
       onClick()
     saveSeenGoods([goods.id])
@@ -209,7 +209,7 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
       sf & S_HOVER ? bgHiglight : null
       mkUnitImg(unitImg, [(goodsSmallSize[0] * unitImgScale).tointeger(), (goodsBgH * unitImgScale).tointeger()])
       mkUnitTexts(goods, unit)
-      mkSquareIconBtn(fonticonPreview, @() isPurchased ? unitDetailsWnd(unit) : openGoodsPreview(goods.id),
+      mkSquareIconBtn(fonticonPreview, @() isPurchased ? openUnitDetailsWnd(unit) : openGoodsPreview(goods.id),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
       mkConsumableIcons(consumableItems)
       mkMRank(unit?.mRank)

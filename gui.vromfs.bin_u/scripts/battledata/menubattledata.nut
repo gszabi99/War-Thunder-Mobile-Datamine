@@ -159,7 +159,7 @@ registerHandler("onGetMenuBattleData", function(res, context) {
   lastActTime.set(get_time_msec())
   if (res?.error != null) {
     lastResult.set(res.__merge({ unitsInfo }))
-    callHandler(executeAfterExt, lastResult)
+    callHandler(executeAfterExt, lastResult.get())
     return
   }
 

@@ -110,7 +110,7 @@ let textBgColor = Watched(whiteBgColor)
 let showText = Watched(false)
 let animatedTextBlock = @() {
   watch = [showText, missionResult, textBgColor]
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_9RECT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -162,7 +162,7 @@ let resultTextBlock = @() {
   watch = textBgColor
   rendObj = ROBJ_BOX
   children = animatedTextBlock
-  size = const [flex(), hdpx(180)]
+  size = const [FLEX, hdpx(180)]
   borderColor = textBgColor.get() == whiteBgColor ? noBgColor : blackBgColor
   borderWidth = const [8, 0]
   transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
@@ -240,7 +240,7 @@ function battleResultsShort() {
   res.__update({
     rendObj = ROBJ_SOLID
     color = 0xAA000000
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL

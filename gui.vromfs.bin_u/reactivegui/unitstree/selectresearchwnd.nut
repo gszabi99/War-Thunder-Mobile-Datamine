@@ -84,7 +84,7 @@ function mkUnitPlate(unit) {
 }
 
 let lineCtor = @(commands, ovr = {}) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = defaultLineWidth
   commands
@@ -94,7 +94,7 @@ let verticalLine = lineCtor([[VECTOR_LINE, 0, 100, 0, 0]])
 let horizontalLine = lineCtor([[VECTOR_LINE, 0, 0, 100, 0]])
 let dot = lineCtor([[VECTOR_LINE, 0, 0, 0, 0]], { lineWidth = hdpxi(10) })
 
-let mkFlowLine = @(line, size = flex()) {
+let mkFlowLine = @(line, size = FLEX) {
   size
   children = line
 }
@@ -181,7 +181,7 @@ let function unitsBlock(startUnit) {
 let flagBg = @(isSelected) @() {
   watch = isSelected
   key = {}
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = gradient()
   color = isSelected.get() ? flagBgColorSelected : flagBgColor
@@ -238,7 +238,7 @@ function openImpl() {
   let startUnit = Computed(@() serverConfigs.get()?.allUnits[startUnitName.get()])
   return addModalWindow(bgShaded.__merge({
     key = WND_UID
-    size = flex()
+    size = FLEX
     onClick = EMPTY_ACTION
     children = modalWndBg.__merge({
       flow = FLOW_VERTICAL

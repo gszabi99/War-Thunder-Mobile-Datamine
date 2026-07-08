@@ -3,14 +3,17 @@ let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsP
 let { contentMargin, bgColor, bgGradient, mkEquippedIcon
 } = require("%rGui/unitMods/unitModsCarousel.nut")
 let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { curBullet, curBSetByCategory } = require("%rGui/unitMods/unitBulletsState.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkEquippedFrame, mkBulletTypeIcon, mkUnseenModIndicator } = require("%rGui/unitMods/modsComps.nut")
-let { unit } = require("%rGui/unitMods/unitModsState.nut")
+let { curBSetByCategory } = require("%rGui/unitMods/unitBulletsState.nut")
+let { mkLevelLock, mkNotPurchasedShade, mkEquippedFrame, mkBulletTypeIcon, mkUnseenModIndicator,
+  mkModCost
+} = require("%rGui/unitMods/modsComps.nut")
+let { unit, curBulletId } = require("%rGui/unitMods/unitModsState.nut")
 let { modH, modW, modsGap } = require("%rGui/unitMods/unitModsConst.nut")
 let { startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
 let { getAmmoNameShortText, getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 let { mkUnseenUnitBullets, markShellsSeen } = require("%rGui/unitMods/unseenBullets.nut")
-let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { BULLETS_PRIM_SLOTS, BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
+let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 
 
 let mkBulletContent = @(content, isActive, isHover) {
@@ -18,14 +21,14 @@ let mkBulletContent = @(content, isActive, isHover) {
   children = [
     @() {
       watch = isActive
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = bgColor
       transitions = opacityTransition
     }
     @() {
       watch = [isActive, isHover]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = bgGradient()
       opacity = isActive.get() ? 1
@@ -36,15 +39,16 @@ let mkBulletContent = @(content, isActive, isHover) {
   ].append(content)
 }
 
-function bulletData(bullet) {
+function bulletData(bullet, mods, modCostCfg) {
   let stateFlags = Watched(0)
-  let { bSet, fromUnitTags, slot, name } = bullet
+  let { bSet, fromUnitTags, slot, name, reqLevel, status } = bullet
   let ammoNameText = getAmmoNameShortText(bSet)
-  let { reqLevel = 0 } = fromUnitTags
   let isDisplayedAsPurchased = Computed(@() unit.get()?.isPremium || unit.get()?.isUpgraded)
-  let isLocked = Computed(@() reqLevel > (unit.get()?.level ?? 0) && !isDisplayedAsPurchased.get())
+  let isPurchased = Computed(@() isDisplayedAsPurchased.get() || (status & BS_UNLOCKED) != 0)
+  let isLocked = Computed(@() (status & BS_UNLOCKED) == 0 && !isDisplayedAsPurchased.get())
+  let isLockedByLevel = Computed(@() isLocked.get() && (unit.get()?.level ?? 0) < reqLevel)
   let isEquipped = Computed(@() curBSetByCategory.get()?.id == bSet.id)
-  let isActive = Computed(@() curBullet.get()?.bSet.id == bSet.id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isActive = Computed(@() curBulletId.get() == bSet.id || (stateFlags.get() & S_ACTIVE) != 0)
   let textSize = calc_str_box(ammoNameText, fontVeryTinyAccentedShaded)[0]
   let bulletTypeIcon = getBulletTypeIcon(fromUnitTags?.icon, bSet)
   let bulletTypeName = getAmmoTypeShortText(bSet?.bullets[0] ?? "")
@@ -60,7 +64,7 @@ function bulletData(bullet) {
       valign = ALIGN_CENTER
       children = [
         {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_IMAGE
           image = Picture($"{getBulletImage(fromUnitTags?.image, bSet?.bullets ?? [])}:0:P")
           keepAspect = true
@@ -84,12 +88,18 @@ function bulletData(bullet) {
         mkEquippedFrame(isEquipped, isActive)
         mkEquippedIcon(isEquipped)
         @() {
-          watch = isLocked
+          watch = isLockedByLevel
           hplace = ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
-          children = isLocked.get() ? mkLevelLock(reqLevel) : null
+          children = isLockedByLevel.get() ? mkLevelLock(reqLevel) : null
         }
+        mkModCost(isPurchased,
+          isLockedByLevel,
+          Computed(@() mods.get()?[fromUnitTags?.reqModification]),
+          modCostCfg,
+          CS_SMALL,
+          { hplace = ALIGN_LEFT })
         mkUnseenModIndicator(Computed(function() {
           let { primary, secondary } = unseenUnitBullets.get()
           return isPrimaryBullet ? (name in primary) : (name in secondary)
@@ -102,7 +112,7 @@ function bulletData(bullet) {
 
 
 function mkBullet(bullet, content, stateFlags, idx) {
-  let isActive = Computed(@() curBullet.get()?.bSet.id == bullet.bSet.id || (stateFlags.get() & S_ACTIVE) != 0)
+  let isActive = Computed(@() curBulletId.get() == bullet.bSet.id || (stateFlags.get() & S_ACTIVE) != 0)
   let isHover = Computed(@() stateFlags.get() & S_HOVER)
 
   return {
@@ -113,7 +123,7 @@ function mkBullet(bullet, content, stateFlags, idx) {
     clickableInfo = loc("mainmenu/btnSelect")
     function onClick() {
       markShellsSeen(unit.get()?.name, [bullet.bSet.id])
-      curBullet.set(bullet)
+      curBulletId.set(bullet.bSet.id)
       startCarouselAnimScroll(getCarouselPosX(idx))
     }
     onAttach = @() isActive.get() ? carouselScrollHandler.scrollToX(getCarouselPosX(idx)) : null
@@ -126,12 +136,12 @@ function mkBullet(bullet, content, stateFlags, idx) {
   }
 }
 
-let mkBullets = @(bulletsSorted) {
+let mkBullets = @(bulletsSorted, mods, modCostCfg) {
   size = FLEX_V
   flow = FLOW_HORIZONTAL
   gap = modsGap
   children = bulletsSorted
-    .map(@(v) bulletData(v))
+    .map(@(v) bulletData(v, mods, modCostCfg))
     .map(@(bullet, idx) mkBullet(bullet.bullet, bullet.content, bullet.stateFlags, idx))
 }
 

@@ -5,7 +5,8 @@ let { eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
-let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { newbieOfflineMissions, isNextBattleNewbieOffline, newbieLocalMP, startCurNewbieMission
+} = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { randomBattleMode, isGameModesReceived, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenuNoModals, isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -54,11 +55,12 @@ function startTutorial() {
         objects = [{
           keys = "toBattleButton"
           function onClick() {
-            if (newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get()) {
-              sendNewbieBqEvent("pressToBattleFromUITutor", {
-                status = "offline_battle",
-                params = ", ".join(newbieOfflineMissions.get())
-              })
+            if (isNextBattleNewbieOffline.get() != null && !shouldStartNewbieSingleOnline.get()) {
+              sendNewbieBqEvent("pressToBattleFromUITutor",
+                { status = "offline_battle",
+                  params = ", ".join(newbieOfflineMissions.get() != null ? newbieOfflineMissions.get()
+                    : newbieLocalMP.get()?.mission_decl.missions_list.keys() ?? [])
+                })
               startCurNewbieMission()
             }
             else {

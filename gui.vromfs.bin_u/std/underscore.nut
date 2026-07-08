@@ -35,7 +35,7 @@ function isCallable(v) {
 function mkIteratee(func){
   let infos = func.getfuncinfos()
   let params = infos.parameters.len()-1
-  assert(params>0 && params<3)
+  assert(params>0 && params<4)
   if (params == 3)
     return func
   else if (params==2)
@@ -113,6 +113,7 @@ function pluck(list, propertyName){
 
 
 
+
 }
 
 
@@ -182,19 +183,28 @@ function isEqual(val1, val2, customIsEqual={}){
 
 
 
-function unique(list, hashfunc=null){
+function unique(list, hashfunc=null, replace=false){
   let values = {}
+
   let res = []
   hashfunc = hashfunc ?? @(v) v
   foreach (v in list){
     let hash = hashfunc(v)
-    if (hash in values)
+    if (hash in values){
+      if (replace) {
+        let i = values[hash]
+        res.remove(i)
+        res.insert(i, v)
+      }
       continue
-    values[hash]<-true
+    }
     res.append(v)
+    values[hash]<-replace ? res.len()-1 : true
   }
   return res
 }
+
+let unique_override = @(list, hashfunc=null) unique(list, hashfunc, true)
 
 
 
@@ -204,6 +214,8 @@ function unique(list, hashfunc=null){
 function range(m, n=null, step=1) {
   let start = n==null ? 0 : m
   let end = n==null ? m : n
+  if (step == 0 || (end > start && step < 0) || (end < start && step > 0)) 
+    return
   for (local i=start; (end>start) ? i<end : i>end; i+=step) 
     yield i
 }
@@ -318,7 +330,7 @@ function flatten(list, depth = -1, level=0){
     if (!isArray(i) || level==depth)
       res.append(i)
     else {
-      res.extend(flatten(i, depth, level))
+      res.extend(flatten(i, depth, level+1))
     }
   }
   return res
@@ -420,6 +432,7 @@ return freeze({
   range
   do_in_scope
   unique
+  unique_override
   arrayByRows
   chunk
   isTable

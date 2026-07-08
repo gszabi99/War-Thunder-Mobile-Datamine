@@ -58,7 +58,7 @@ let posLB = { vplace = ALIGN_BOTTOM }
 let posRB = posRT.__merge(posLB)
 
 let frameCorners = {
-  size = flex()
+  size = FLEX
   children = [
     lineH
     lineH.__merge(posRT)

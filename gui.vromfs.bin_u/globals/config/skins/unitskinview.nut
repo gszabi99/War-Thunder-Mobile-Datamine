@@ -541,6 +541,10 @@ return {
       "": "cn_camo_summer_green",
       "forest": "ussr_camo_green"
     },
+    "cn_wz_1001": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_summer_green"
+    },
     "cn_wz_141": {
       "": "cn_camo_green_yellow_black",
       "forest": "ussr_camo_green"
@@ -631,6 +635,14 @@ return {
     },
     "cn_ztz_99_w_reskin_prem": {
       "": "cn_camo_sand_ltgreen_dkgreen_deform",
+      "forest": "ussr_camo_green"
+    },
+    "cn_ztz_99a": {
+      "": "ussr_camo_green",
+      "forest": "cn_camo_summer_green"
+    },
+    "cn_ztz_99a_prem": {
+      "": "cn_camo_digital",
       "forest": "ussr_camo_green"
     },
     "d3a1": {
@@ -1471,6 +1483,9 @@ return {
     "germ_frigate_rckt_bremen": {
       "upgraded": "camo_blackgray_net"
     },
+    "germ_frigate_rckt_jacob_van_heemskerck": {
+      "upgraded": "camo_3gray_colors_geometry"
+    },
     "germ_frigate_rckt_karel_doorman": {
       "upgraded": "camo_blackgray_net"
     },
@@ -1539,6 +1554,10 @@ return {
     "germ_leopard_2a4m_can_sm": {
       "": "leopard_2a4m_can_sm_elsa",
       "forest": "ger_camo_bronzegruen"
+    },
+    "germ_leopard_2a5": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_modern_threecolor"
     },
     "germ_leopard_2av": {
       "": "ger_camo_bronzegruen",
@@ -2314,6 +2333,14 @@ return {
       "": "it_camo_olive_green",
       "forest": "it_camo_modern_three_color"
     },
+    "it_c1_ariete": {
+      "": "it_camo_green",
+      "desert": "it_camo_desert_light_yellow"
+    },
+    "it_c1_ariete_prem": {
+      "": "it_camo_modern_three_color_lines",
+      "forest": "it_camo_green"
+    },
     "it_c1_ariete_pso": {
       "": "it_camo_green",
       "forest": "it_camo_modern_three_color"
@@ -2328,6 +2355,14 @@ return {
     },
     "it_centauro_mgs_120_prem": {
       "": "it_camo_modern_three_color",
+      "forest": "it_camo_green"
+    },
+    "it_centauro_rgo_120": {
+      "": "it_camo_green",
+      "desert": "it_camo_threecolor_modern"
+    },
+    "it_centauro_rgo_120_prem": {
+      "": "tr_camo_desert_bicolor_lines",
       "forest": "it_camo_green"
     },
     "it_cruiser_zara_class": {
@@ -2347,6 +2382,10 @@ return {
     "it_freccia": {
       "": "it_camo_threecolor_modern",
       "forest": "it_camo_olive_green"
+    },
+    "it_kf_41": {
+      "": "hu_camo_four_color",
+      "forest": "us_camo_modern_green"
     },
     "it_leopard_1a5": {
       "": "it_camo_olive_green",
@@ -2519,6 +2558,13 @@ return {
     "jp_battleship_yamato": {
       "upgraded": "camo_darkbrown_spots"
     },
+    "jp_btr_3e1": {
+      "": "th_camo_green"
+    },
+    "jp_btr_3e1_prem": {
+      "": "jp_camo_btr_3e1",
+      "forest": "th_camo_green"
+    },
     "jp_cruiser_agano": {
       "": "camo_bluegray_spots"
     },
@@ -2568,6 +2614,10 @@ return {
     "jp_destroyer_rckt_hatsuyuki": {
       "upgraded": "camo_darkblue_waves"
     },
+    "jp_destroyer_rckt_murasame": {
+      "olive_slash_lines": "camo_olive_slash_lines",
+      "upgraded": "camo_purplewhite_spots"
+    },
     "jp_destroyer_rckt_takatsuki": {
       "upgraded": "camo_asiatic_forest"
     },
@@ -2577,9 +2627,21 @@ return {
       "forest2": "jp_camo_post_biege_gray_green_fuji",
       "winter": "jp_camo_post_winter"
     },
+    "jp_icv_prototype": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_biege_gray_green_fuji"
+    },
+    "jp_m163_vulcan": {
+      "": "th_camo_green",
+      "upgraded": "th_camo_four_color_blots"
+    },
     "jp_m19": {
       "": "jp_camo_olive_kusairo",
       "upgraded": "jp_camo_late_green_brown_yellow_blots"
+    },
+    "jp_m24_chaffee": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_green_olive"
     },
     "jp_m36b2_jgsdf": {
       "": "jp_camo_post_green",
@@ -2597,32 +2659,84 @@ return {
       "": "jp_camo_post_multicolor",
       "forest": "jp_camo_olive"
     },
+    "jp_m44": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_green_olive"
+    },
     "jp_m47_patton_II": {
       "": "jp_camo_sdf_green",
       "forest": "jp_camo_post_sand_gray_green",
       "forest2": "jp_camo_post_biege_gray_green",
       "forest3": "jp_camo_post_biege_gray_green_fuji"
     },
+    "jp_m47_patton_II_liner": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_multicolor"
+    },
+    "jp_m4a3e8_76w_sherman": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_green_olive"
+    },
+    "jp_m60a3_tts": {
+      "": "th_camo_green",
+      "upgraded": "th_camo_green_brown_black"
+    },
+    "jp_navy_120mm_spg": {
+      "": "jp_camo_willow_green",
+      "forest": "jp_camo_chairo_brown"
+    },
+    "jp_oplot_t": {
+      "": "th_camo_green",
+      "forest": "th_camo_green_brown_black"
+    },
+    "jp_oplot_t_prem": {
+      "": "jp_camo_oplot_t",
+      "forest": "th_camo_green"
+    },
+    "jp_pzkpfw_VI_ausf_e_tiger": {
+      "": "jp_camo_early_multicolor",
+      "forest": "jp_camo_olive"
+    },
     "jp_st_a1": {
       "": "jp_camo_post_green",
       "upgraded": "jp_camo_post_multicolor"
+    },
+    "jp_st_a2": {
+      "": "jp_camo_post_black_gray_green",
+      "forest": "jp_camo_prototype_green"
     },
     "jp_st_a3": {
       "": "jp_camo_post_multicolor",
       "forest": "jp_camo_sdf_green"
     },
+    "jp_st_a3_liner": {
+      "": "jp_camo_post_green",
+      "upgraded": "jp_camo_modern_bicolor"
+    },
     "jp_st_b1": {
       "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
     },
+    "jp_stingray": {
+      "": "th_camo_green",
+      "upgraded": "jp_camo_stingray"
+    },
     "jp_sub_harushio": {
       "upgraded": "camo_asiatic_forest"
+    },
+    "jp_sub_i_ii_20mm": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_modern_bicolor"
     },
     "jp_sub_natsushio": {
       "upgraded": "camo_darkblue_waves"
     },
     "jp_sub_yushio": {
       "upgraded": "camo_bluegray_spots"
+    },
+    "jp_type_10": {
+      "": "jp_camo_modern_bicolor",
+      "upgraded": "jp_camo_post_green_olive"
     },
     "jp_type_10_prototype": {
       "": "jp_camo_modern_bicolor",
@@ -2632,11 +2746,19 @@ return {
       "": "jp_camo_modern_bicolor",
       "upgraded": "jp_camo_post_sand_gray_green"
     },
+    "jp_type_16_mcv_prot": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_biege_gray_green"
+    },
     "jp_type_16_mod": {
       "": "jp_camo_modern_green",
       "forest": "jp_camo_post_green_olive",
       "forest2": "jp_camo_post_biege_gray_green_fuji",
       "winter": "jp_camo_post_winter"
+    },
+    "jp_type_3_chi_nu": {
+      "": "jp_camo_olive_kusairo",
+      "upgraded": "jp_camo_late_green_brown_yellow_blots"
     },
     "jp_type_3_chi_nu_75cm_type_5": {
       "": "jp_camo_olive_kusairo",
@@ -2644,6 +2766,17 @@ return {
     },
     "jp_type_4_chi_to": {
       "": "jp_camo_olive_kusairo",
+      "upgraded": "jp_camo_late_green_brown_yellow_blots"
+    },
+    "jp_type_4_chi_to_late": {
+      "": "jp_camo_olive"
+    },
+    "jp_type_4_chi_to_late_prem": {
+      "": "jp_camo_late_brown_olive_yellow_lines",
+      "forest": "jp_camo_olive"
+    },
+    "jp_type_5_chi_ri": {
+      "": "jp_camo_olive",
       "upgraded": "jp_camo_late_green_brown_yellow_blots"
     },
     "jp_type_5_ho_ri_production": {
@@ -2669,6 +2802,17 @@ return {
     "jp_type_60_sprg": {
       "": "jp_camo_post_multicolor",
       "forest": "jp_camo_sdf_green"
+    },
+    "jp_type_61": {
+      "": "jp_camo_modern_green"
+    },
+    "jp_type_61_prem": {
+      "": "jp_camo_post_green_olive",
+      "forest": "jp_camo_modern_green"
+    },
+    "jp_type_74": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_black_gray_green"
     },
     "jp_type_74_c": {
       "": "jp_camo_sdf_green",
@@ -2702,6 +2846,14 @@ return {
       "forest": "jp_camo_post_biege_gray_green_fuji",
       "winter": "ussr_camo_arctic"
     },
+    "jp_type_75": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_green_olive"
+    },
+    "jp_type_75_mlrs": {
+      "": "jp_camo_post_biege_gray_green_fuji",
+      "forest": "jp_camo_modern_bicolor"
+    },
     "jp_type_87": {
       "": "jp_camo_sdf_green",
       "forest": "jp_camo_modern_bicolor",
@@ -2726,6 +2878,10 @@ return {
       "forest": "jp_camo_post_sand_gray_green",
       "forest2": "jp_camo_post_biege_gray_green",
       "forest3": "jp_camo_post_biege_gray_green_fuji"
+    },
+    "jp_type_87_rcv_prot_liner": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_modern_bicolor"
     },
     "jp_type_87_reskin": {
       "": "jp_camo_sdf_green",
@@ -2756,6 +2912,14 @@ return {
     },
     "jp_type_90_event": {
       "": "jp_type_90_event"
+    },
+    "jp_type_90b": {
+      "": "jp_camo_post_black_gray_green",
+      "forest": "jp_camo_post_green_olive"
+    },
+    "jp_type_93": {
+      "": "jp_camo_modern_green",
+      "upgraded": "jp_camo_post_multicolor"
     },
     "ju-188a-2": {
       "": "germ_ju_188a_2_3color",
@@ -3039,6 +3203,13 @@ return {
     "meteor_fmk3_navy_prem": {
       "": "usa_b_17g_8af_yellow"
     },
+    "meteor_fmk4_lw": {
+      "": "ussr_la_11_standard",
+      "camo": "ussr_il_10"
+    },
+    "meteor_fmk4_lw_prem": {
+      "": "usa_tbd_1_1938"
+    },
     "meteor_fmk8_reaper": {
       "": "ussr_i_180s_red"
     },
@@ -3261,6 +3432,7 @@ return {
       "upgraded": "germ_bf_109a"
     },
     "spitfire_mk1": {
+      "": "uk_spitfire_mk1a_raf_camo",
       "upgraded": "uk_spitfire_mk1a_summer"
     },
     "spitfire_mk14c": {
@@ -4126,6 +4298,9 @@ return {
     "us_destroyer_porter": {
       "upgraded": "camo_blue_spots"
     },
+    "us_destroyer_rckt_dewey": {
+      "upgraded": "camo_sea_multicolor_spots"
+    },
     "us_destroyer_selfridge": {
       "": "camo_atlanticocean",
       "pink_vd": "camo_pink"
@@ -4267,6 +4442,10 @@ return {
     "us_m1a1_hc_usmc_sm": {
       "": "m1a1_hc_usmc_sm_kate",
       "forest": "us_camo_modern_desert_tan"
+    },
+    "us_m1a2_sep_abrams": {
+      "": "us_camo_modern_desert_tan",
+      "upgraded": "usa_modern_winter_verdant"
     },
     "us_m247": {
       "": "us_camo_olive",
@@ -5432,9 +5611,21 @@ return {
       "": "ussr_modern_desert",
       "forest": "ussr_camo_green"
     },
+    "ussr_t_72b3_2011": {
+      "": "ussr_modern_green",
+      "forest": "ussr_modern_forest"
+    },
+    "ussr_t_72b3_2011_prem": {
+      "": "ussr_camo_modern_desert_deform",
+      "forest": "ussr_modern_green"
+    },
     "ussr_t_72b3_arena": {
       "": "ussr_camo_desert_sand_green_brown",
       "forest": "ussr_camo_green"
+    },
+    "ussr_t_72b3_arena_m": {
+      "": "ussr_modern_green",
+      "upgraded": "ussr_camo_desert_syrian_green_brown_yellow"
     },
     "ussr_t_72b_1989": {
       "": "ussr_camo_green",
@@ -5655,6 +5846,9 @@ return {
     "wirraway": {
       "": "germ_fw_190a_5_u14_yellow_1"
     },
+    "wyvern_s4": {
+      "": "uk_seafury_fb11"
+    },
     "xf5f": {
       "": "usa_tbd_1_1938"
     },
@@ -5682,6 +5876,13 @@ return {
     "yak-1_early": {
       "": "ussr_yak_1_early_green",
       "upgraded": "ussr_yak_9_green"
+    },
+    "yak-23": {
+      "": "ussr_la_11_standard",
+      "camo": "ussr_tandem_mai"
+    },
+    "yak-23_prem": {
+      "": "ussr_i_301"
     },
     "yak-3": {
       "": "ussr_yak_3",

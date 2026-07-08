@@ -13,7 +13,7 @@ let blueprintBarColor = 0xFF3384C4
 let mkAnimatedBar = @(completion, color, isShaded = false, duration = 0.5, durationShort = 0.2) [
   {
     rendObj = ROBJ_SOLID
-    size = flex()
+    size = FLEX
     color
     brightness = isShaded ? 0.4 : 2.0
     transform = {
@@ -24,7 +24,7 @@ let mkAnimatedBar = @(completion, color, isShaded = false, duration = 0.5, durat
   }
   {
     rendObj = ROBJ_SOLID
-    size = flex()
+    size = FLEX
     color
     brightness = isShaded ? 0.4 : 1.0
     transform = {

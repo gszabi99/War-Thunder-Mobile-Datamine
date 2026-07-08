@@ -35,7 +35,7 @@ let inputBlock = textInput(curText, {
 })
 
 let wndHeader = {
-  size = [flex(), wndHeaderHeight]
+  size = [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)
@@ -47,7 +47,7 @@ let wndHeader = {
       halign = ALIGN_CENTER
       text = "ui.debug.fonts"
     }.__update(fontBig)
-    { size = flex() }
+    { size = FLEX }
     inputBlock
   ]
 }
@@ -101,7 +101,7 @@ function textsList() {
 let pannableArea = verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])
 let mkDebugFontsWnd = @() bgShaded.__merge({
   key = isOpened
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   children = [

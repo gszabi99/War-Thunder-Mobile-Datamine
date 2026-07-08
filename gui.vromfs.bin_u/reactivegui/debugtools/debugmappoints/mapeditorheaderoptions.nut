@@ -84,7 +84,7 @@ let selectPointViewContent = @() modalBg.__merge({
           pointViewField.set(v)
           removeModalWindow(SELECT_POINT_VIEW_WND)
         },
-        { size = [flex(), optionBtnSize] }))
+        { size = [FLEX, optionBtnSize] }))
   })
 })
 
@@ -304,10 +304,10 @@ let settingContent = @() modalBg.__merge({
   children = [
     mkTextOptionBtn("points size",
       @() addModalWindowWithHeader(POINTS_SIZE_SETTING_WND, "Change points size", pointsSizeSettingContent),
-      { size = [flex(), optionBtnSize] })
+      { size = [FLEX, optionBtnSize] })
     mkTextOptionBtn("grid size",
       @() addModalWindowWithHeader(GRID_SIZE_SETTING_WND, "Change grid size", gridSizeSettingContent),
-      { size = [flex(), optionBtnSize] })
+      { size = [FLEX, optionBtnSize] })
   ]
 })
 
@@ -347,7 +347,7 @@ let content = {
     historyBackBtn
     historyFwdBtn
     autoSaveBtn
-    { size = flex() }
+    { size = FLEX }
     deleteElemBtn
     copyElemBtn
     editElemBtn

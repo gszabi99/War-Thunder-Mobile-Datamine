@@ -69,7 +69,7 @@ let wndContentWidth = saSize[0]
 let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
 
 let wndHeader = {
-  size = [flex(), wndHeaderHeight]
+  size = [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   children = [
     backButton(close)
@@ -107,7 +107,7 @@ let mkWndContent = @() pannableArea({
 
 let mkDebugRewardPlateCompWnd = @() bgShaded.__merge({
   key = isOpened
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   children = [

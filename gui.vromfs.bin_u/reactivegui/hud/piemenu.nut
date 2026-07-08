@@ -130,7 +130,7 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
 
   let mkShortcutImg = @() {
     watch = [selIdx, isGamepad]
-    size = flex()
+    size = FLEX
     children = !isGamepad.get() ? null : mkBtnImageComp(
       pieActiveStick == STICK.LEFT ? "J:L.Thumb.hv" : "J:R.Thumb.hv", hdpxi(50)
     ).__update({vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(0), ph(14)]})

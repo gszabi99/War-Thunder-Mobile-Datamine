@@ -110,12 +110,12 @@ function tagBtn(item) {
         color = stateFlags.get() & S_HOVER ? hoverColor
           : isAvailable.get() ? 0xFFFFFFFF
           : 0xFF707070
-        size = flex()
+        size = FLEX
         text = frameNick("", name)
       }.__update(fontBig)
       @() {
         watch = [isChoosen, isSelected, isAvailable, isUnseen]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         borderWidth = hdpx(2)
         borderColor = stateFlags.get() & S_HOVER ? hoverColor
@@ -159,7 +159,7 @@ function footer() {
 
   return {
     watch = [selectedFrameName, chosenFrameName, allFrames, availNickFrames, currencyToFullId]
-    size = [flex(), defButtonHeight]
+    size = [FLEX, defButtonHeight]
     vplace = ALIGN_BOTTOM
     flow = FLOW_HORIZONTAL
     gap
@@ -217,7 +217,7 @@ function framesList() {
 
 let decorationNameWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap
   onAttach = @() selectedFrameName.set(chosenFrameName.get())

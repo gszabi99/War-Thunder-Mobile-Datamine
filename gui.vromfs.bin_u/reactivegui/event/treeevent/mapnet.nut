@@ -69,12 +69,12 @@ function mapNet(mapSize, cellSize, bgElems) {
     return pos.map(@(v, a) v + size[a] / 2)
   })
   return {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_MASK
     image = Picture("ui/images/pirates/mapGridNoise.avif")
     children = @() {
       watch = [mapSize, cellSize, center, rose]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth
       color = 0xFF53250d

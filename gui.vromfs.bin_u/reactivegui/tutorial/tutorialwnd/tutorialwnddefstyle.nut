@@ -63,14 +63,14 @@ let nextKeyHintCtor = @(canSkipByClick, onClick) onClick == null || !canSkipByCl
       valign = ALIGN_CENTER
       children = [
         {
-          size = [flex(), msgBorderWidth]
+          size = [FLEX, msgBorderWidth]
           rendObj = ROBJ_IMAGE
           image = simpleHorGrad
           color = msgBorderColor
         }
         anyTapHint.__merge({ hotkeys = [[$"{btnAUp} | Space", onClick]] })
         {
-          size = [flex(), msgBorderWidth]
+          size = [FLEX, msgBorderWidth]
           rendObj = ROBJ_IMAGE
           image = simpleHorGrad
           color = msgBorderColor
@@ -124,7 +124,7 @@ let mkSkipProgress = @(stepSkipDelay, skipStep) {
 let mkCutBg = @(boxes, fullArea = {}) boxes == null || boxes.len() == 0
   ? darkCtor({ t = 0, b = sh(100), l = 0, r = sw(100) }.__update(fullArea))
   : {
-      size = flex()
+      size = FLEX
       children = createHighlight(boxes, @(_) null, darkCtor, fullArea)
     }
 

@@ -17,7 +17,7 @@ function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
         hplace = ALIGN_CENTER
         children = @() {
           watch = isInside
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_VECTOR_CANVAS
           color = isInside.get() ? 0x20404040 : 0x20602020
           fillColor = 0

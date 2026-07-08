@@ -34,7 +34,7 @@ function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
   let icon = getBulletIcon(id, isBulletBelt)
   return @() {
     watch = stateFlags
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     borderWidth = isCurrent ? borderWidthCurrent : borderWidth
     borderColor = stateFlags.get() & S_ACTIVE ? borderColorPushed : colorActive

@@ -38,7 +38,7 @@ function animatedProgressBar(unit, style = {}, childOvr = {}){
     clipChildren = true
     children = [
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_HORIZONTAL
         halign = ALIGN_CENTER
         gap
@@ -51,7 +51,7 @@ function animatedProgressBar(unit, style = {}, childOvr = {}){
       }
       researchStatus
         ? mkPlateExpBar(researchStatus, { color = 0 })
-        : mkPlateBlueprintBar(unit, { size = flex() pos = [0, 0] color = 0 })
+        : mkPlateBlueprintBar(unit, { size = FLEX pos = [0, 0] color = 0 })
     ].append(childOvr)
   }
 }
@@ -84,7 +84,7 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
           mkUnitImage(unit)
           mkUnitTexts(unit, getUnitName(unit.name))
           {
-            size = flex()
+            size = FLEX
             valign = ALIGN_BOTTOM
             flow = FLOW_VERTICAL
             children = [
@@ -94,7 +94,7 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
                 padding = const [0, hdpx(5), 0 , 0]
                 children = [
                   mkUnitResearchPrice(researchStatus, Watched(false))
-                  {size = flex()}
+                  {size = FLEX}
                   mkGradRankSmall(unit?.mRank)
                 ]
               }
@@ -102,7 +102,7 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
             ]
           }
           {
-            size = flex()
+            size = FLEX
             valign = ALIGN_TOP
             pos = [0, -selLineSize]
             children = selectedLineHorUnits(Watched(true), unit?.isPremium, unit?.isCollectible)

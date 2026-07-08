@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_aot
 options strict_smart_pointers = true
 
@@ -44,7 +42,7 @@ struct EcsComponentView {
 struct EcsArchetypeView {
     
     hash        : uint64
-    size        : int
+    size        : int64                
     components  : array<EcsComponentView>
 }
 
@@ -52,21 +50,14 @@ class ContextStateAgent : DapiDebugAgent {
     
     def override onCollect(var ctx : Context; at : LineInfo) {
         let pState = unsafe(get_context_global_variable(ctx, "decsState"))
-        if (pState == null) {
-            return
-        }
+        if (pState == null) return
         let decsState = unsafe(reinterpret<DecsState? const>(pState))
         for (arch in decsState.allArchetypes) {
-            var arq : EcsArchetypeView
-            arq.hash = arch.hash
-            arq.size = arch.size
+            var arq = EcsArchetypeView(hash = arch.hash, size = arch.size)
             arq.components |> reserve(length(arch.components))
             for (c in arch.components) {
-                var cv : EcsComponentView
-                cv.name = c.name
-                cv.vtype = c.info.fullName
-                cv.stride = c.stride
-                if (length(c.data) > 0) {
+                var cv = EcsComponentView(name = c.name, vtype = c.info.fullName, stride = c.stride)
+                if (!empty(c.data)) {
                     var tinfo : TypeInfo const?
                     let fnTypeInfo = c.info.mkTypeInfo
                     unsafe {
@@ -75,7 +66,7 @@ class ContextStateAgent : DapiDebugAgent {
                         }
                     }
                     var arr : array<uint8>
-                    unsafe(_builtin_make_temp_array(arr, unsafe(addr(c.data[0])), arch.size))
+                    unsafe(_builtin_make_temp_array_i64(arr, unsafe(addr(c.data[0])), arch.size))
                     cv.values = sprint_data(unsafe(addr(arr)), tinfo, print_flags.singleLine)
                 }
                 arq.components |> push(cv)
@@ -85,10 +76,7 @@ class ContextStateAgent : DapiDebugAgent {
         }
         
         for (eq in decsState.ecsQueries) {
-            var prq : EcsRequestView
-            prq.file = eq.at.file
-            prq.line = int(eq.at.line)
-            prq.hash = eq.hash
+            var prq = EcsRequestView(file = eq.at.file, line = int(eq.at.line), hash = eq.hash)
             if (!empty(eq.req)) {
                 prq.REQUIRE = join(eq.req, ",")
             }
@@ -103,7 +91,7 @@ class ContextStateAgent : DapiDebugAgent {
 }
 
 
-[export]
+[export, unused_argument(ctx)]
 def decs_state_agent(ctx : Context) {
     install_new_debug_agent(new ContextStateAgent(), "decs")
 }

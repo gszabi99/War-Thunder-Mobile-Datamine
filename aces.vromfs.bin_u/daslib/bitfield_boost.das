@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module bitfield_boost shared public
@@ -73,7 +71,7 @@ def operator [] ^^=(var b : auto(TT)&, i : int, v : bool) {
 def each_bit(b) : iterator<bool> {
     
     let bits = uint64(b)
-    return <- generator<bool>() <| $() {
+    return <- generator<bool> {
         var mask = 1ul
         for (i in range(typeinfo sizeof(b) << 3)) {
             yield ((bits & mask) != 0ul)

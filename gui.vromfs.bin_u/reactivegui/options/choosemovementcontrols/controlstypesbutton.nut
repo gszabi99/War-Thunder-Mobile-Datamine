@@ -12,13 +12,13 @@ function btnBase(content, sf, isSelected) {
     size = FLEX_H
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
         color = bgColor
       }
       content
       !(isActive || isHovered) ? null : {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_FRAME
         borderWidth = selBorderWidth
         color = isActive ? selBorderColor : hovBorderColor

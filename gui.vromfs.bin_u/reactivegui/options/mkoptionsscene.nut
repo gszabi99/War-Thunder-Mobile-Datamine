@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { contentOffset, minContentOffset, contentWidth, contentWidthFull, tabW } = require("%rGui/options/optionsStyle.nut")
+let { contentOffset, minContentOffset, contentWidth, tabW } = require("%rGui/options/optionsStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -11,6 +11,8 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let mkOption = require("%rGui/options/mkOption.nut")
 let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
 let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+
 
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
@@ -39,7 +41,7 @@ let scrollArrowsBlock = {
   ]
 }
 
-function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null, tabsPannableOvr = {}) {
+function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerComp = null, tabsPannableOvr = {}) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
   curTabId = curTabId ?? Watched(null)
   let findTabIdxById = @(pageId) pageId == null ? null
@@ -78,11 +80,12 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
     return (tab?.content ?? tab?.contentCtor)
       ? {
           watch = curTabIdx
-          size = [isFullWidth ? contentWidthFull : contentWidth, flex()]
+          size = [isFullWidth ? FLEX : contentWidth, FLEX]
           children = {
-            pos = [isFullWidth ? minContentOffset : contentOffset, 0]
+            pos = [isFullWidth ? 0 : contentOffset, 0]
+            padding = [0, 0, 0, isFullWidth ? minContentOffset : 0]
             key = tab
-            size = flex()
+            size = FLEX
             flow = FLOW_VERTICAL
             children = tab?.content ?? tab?.contentCtor()
             animations = wndSwitchAnim
@@ -90,7 +93,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
         }
       : {
           watch = curTabIdx
-          size = flex()
+          size = FLEX
           children = tab?.children
             ? mkChildrenOptions(tab?.children)
             : [
@@ -104,7 +107,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
                     children = tab?.options.filter(@(v) v != null).map(mkOption)
                     animations = wndSwitchAnim
                   },
-                  { size = [sw(100) - tabW - saBorders[1], sh(100)] },
+                  { size = [saSize[0] - tabW, sh(100)] },
                   { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
@@ -117,9 +120,9 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
     { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler }
   )
 
-  let optionsScene = bgShaded.__merge({
+  let optionsScene = bgShadedDark.__merge({
     key = {}
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
     gap = hdpx(50)
@@ -130,17 +133,14 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
     }
 
     children = [
-      {
+      headerComp ?? {
         size = FLEX_H
         valign = ALIGN_CENTER
-        flow = FLOW_HORIZONTAL
-        children = [
-          backBtn
-          addHeaderComp
-        ]
+        children = headerGradientBg([backBtn])
       }
       {
-        size = flex()
+        pos = [-hdpx(8), 0]
+        size = FLEX
         flow = FLOW_HORIZONTAL
         children = [
           tabsList

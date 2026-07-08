@@ -93,11 +93,11 @@ let txtArea = @(ovr) txtBase.__merge({
 }, ovr)
 
 let mkVerticalPannableArea = @(content, override) {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   clipChildren = true
   children = {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Pannable
     touchMarginPriority = TOUCH_BACKGROUND
     skipDirPadNav = true
@@ -153,7 +153,7 @@ let formBlock = {
 }
 
 let waitBlock = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
@@ -196,7 +196,7 @@ let header = {
 
 let supportWnd = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = hdpx(30)
@@ -204,10 +204,10 @@ let supportWnd = bgShaded.__merge({
     header
     @() {
       watch = requestState
-      size = flex()
+      size = FLEX
       children = requestState.get()?.id != null ? mkFinishedMsg(requestState.get())
         : requestState.get().isProcessing ? waitBlock
-        : mkVerticalPannableArea(formBlock, { size = flex() })
+        : mkVerticalPannableArea(formBlock, { size = FLEX })
     }
   ]
   animations = wndSwitchAnim

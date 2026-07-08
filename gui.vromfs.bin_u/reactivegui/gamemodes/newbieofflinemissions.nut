@@ -8,10 +8,11 @@ let logO = log_with_prefix("[OFFLINE_BATTLE] ")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { curCampaign, campProfile, abTests } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { battleUnitsMaxMRank, curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
+let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
+let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { startNewbieOfflineBattle, startLocalMPBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
@@ -30,6 +31,13 @@ let curDelayedRewardId = Computed(function() {
 })
 let curProfileRewardId = Computed(@()
   (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1))
+let hasFirstBattleRewards = Computed(function() {
+  let idx = curProfileRewardId.get() + 1
+  if (idx < 0)
+    return false
+  let battleRewardsLen = serverConfigs.get()?.firstBattlesRewards[curCampaign.get()].len() ?? 0
+  return idx < battleRewardsLen
+})
 let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.get(), curDelayedRewardId.get()))
 let firstBattlesReward = Computed(@()
   serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()])
@@ -39,7 +47,7 @@ let hasTankRestrictedOfflineMission = Computed(@() (abTests.get()?.tankRestricte
 let missionsList = Computed(function() {
   let singleBattleCfg = newbieGameModesConfig?[curCampaign.get()]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0
-      && cfg.isFit(newbieModeStats.get(), curUnit.get()?.mRank ?? 0, abTests.get()))
+      && cfg.isFit(newbieModeStats.get(), battleUnitsMaxMRank.get(), abTests.get()))
   let defaultMissions = hasTankRestrictedOfflineMission.get() && singleBattleCfg?.abTestOfflineMissions
     ? singleBattleCfg?.abTestOfflineMissions
     : singleBattleCfg?.offlineMissions
@@ -49,15 +57,22 @@ let missionsList = Computed(function() {
 let newbieOfflineMissions = Computed(function() {
   if (!firstBattlesReward.get()?.allowOffline)
     return null
-  let list = newbieGameModesConfig?[curCampaign.get()]
-  if (list == null)
-    return null
-
   
   if (curCampaignSlotUnits.get() != null && curCampaignSlotUnits.get().len() > 1)
     return null
-
   return missionsList.get()
+})
+
+let allowNewbieLocalMp = Computed(@() (abTests.get()?.allowNewbieLocalMp ?? "false") == "true")
+let newbieLocalMP = Computed(function() {
+  if (!allowNewbieLocalMp.get()
+      || (!firstBattlesReward.get()?.allowOffline && (curCampaignSlotUnits.get()?.len() ?? 0) <= 1))
+    return null
+  let { gmName = null } = newbieGameModesConfig?[curCampaign.get()]
+    .findvalue(@(cfg) cfg?.startAsLocalMP
+      && cfg.isFit(newbieModeStats.get(), battleUnitsMaxMRank.get(), abTests.get()))
+  return gmName == null ? null
+    : allGameModes.get().findvalue(@(m) m?.name == gmName)
 })
 
 registerHandler("onNewbieOfflineMissionReward",
@@ -92,21 +107,21 @@ function tryApplyFirstBattleReward() {
     return
 
   local campaign = curCampaign.get()
-  local { rewardId = null, unitName = null, kills = 0 } = rewards?[campaign][0]
+  local { rewardId = null, units = [] } = rewards?[campaign][0]
   if (rewardId == null)
     foreach(c, list in rewards)
       if (list.len() != 0) {
         campaign = c
         rewardId = list[0].rewardId
-        unitName = list[0].unitName
+        units = list[0].units
       }
   if (rewardId == null)
     return
 
-  logO($"Request offline reward {campaign}/{rewardId} by battle result {unitName}")
+  logO($"Request offline reward {campaign}/{rewardId} by battle result", units)
   isRewardRequested.set(true)
-  apply_first_battles_reward(campaign, unitName, rewardId, kills,
-    { id = "onNewbieOfflineMissionReward", campaign, unitName, rewardId, userId = myUserId.get() })
+  apply_first_battles_reward(campaign, rewardId, units,
+    { id = "onNewbieOfflineMissionReward", campaign, units, rewardId, userId = myUserId.get() })
 }
 delayedRewards.subscribe(@(_) tryApplyFirstBattleReward())
 
@@ -133,21 +148,23 @@ debriefingData.subscribe(function(data) {
   
   if (userId != myUserId.get() || campaign == null || campaign != curCampaign.get() || predefinedId != firstBattlesRewardId.get())
     return
-  let unitName = data?.reward.unitName
-  let kills = data?.players[myUserId.get().tostring()].kills ?? 0
-  logO($"Queue offline reward {campaign}/{predefinedId} by battle result {unitName} (kills = {kills})")
+
+  let { killsByUnit = null } = data?.players[myUserId.get().tostring()]
+  let units = (data?.reward.units ?? [])
+    .map(@(u) { name = u.name, kills = killsByUnit?[u.name] ?? 0 })
+  logO($"Queue offline reward {campaign}/{predefinedId} by battle result: ", units)
   if (userId != null) {
     delayedRewards.mutate(function(dRewards) {
       if (userId not in dRewards)
         dRewards[userId] <- {}
       if (campaign not in dRewards[userId])
         dRewards[userId][campaign] <- []
-      dRewards[userId][campaign].append({ rewardId = predefinedId, unitName, kills })
+      dRewards[userId][campaign].append({ rewardId = predefinedId, units })
     })
   }
 })
 
-function mkCurRewardBattleData(reward, predefinedId, unit) {
+function mkCurRewardBattleData(reward, predefinedId, units) {
   let { level, exp, nextLevelExp } = playerLevelInfo.get()
   let { wp = 0 } = reward
   let premiumBonusesCfg = serverConfigs.get()?.gameProfile.premiumBonuses
@@ -158,19 +175,16 @@ function mkCurRewardBattleData(reward, predefinedId, unit) {
   let totalWp = !havePremium.get() ? wp : (wp * (premiumBonusesCfg?.wpMul ?? 1.0) + 0.5).tointeger()
 
   let expData = { baseExp, totalExp, premExp = totalExp - baseExp }
-  let unitName = unit?.name ?? ""
   return {
     campaign = curCampaign.get()
     userId = myUserId.get()
     predefinedId
     player = { exp, level, nextLevelExp }
     reward = {
-      unitName
+      unitName = units?[0] ?? ""
       playerExp = expData
       playerWp = { baseWp = wp, totalWp, premWp = totalWp - wp }
-      units = [
-        { name = unitName, exp = expData }
-      ]
+      units = units.map(@(name) { name, exp = expData })
     }
   }
 }
@@ -182,50 +196,77 @@ function startNewbieMission(missions, reward, predefinedId) {
   let unit = curUnit.get()
   let missionName = chooseRandom(missions)
   logO($"Start newbie battle. Unit = {unit?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
-  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, unit) })
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, [unit?.name ?? ""]) })
   startNewbieOfflineBattle(unit, missionName)
 }
 
-function startLocalMPMission(missions, reward, predefinedId) {
-  if (missions == null)
+function startNewbieLocalMP(mGMode, reward, predefinedId) {
+  let missions = mGMode?.mission_decl.missions_list.keys() ?? []
+  if (missions.len() == 0)
     return
-
-  let unit = curUnit.get()
   let missionName = chooseRandom(missions)
-  logO($"Start local multiplayer battle. Unit = {unit?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
-  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, unit) })
-  startLocalMPBattle(unit, missionName)
+  let units = curCampaignSlotUnits.get() ?? [curUnit.get()?.name ?? ""]
+  logO($"Start newbie localMP battle. Units = {units}, missionName = {missionName}, predefinedId = {predefinedId}")
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, units) })
+  
+  startLocalMPBattle(mGMode.gameModeId, missionName, units)
 }
 
 let startCurNewbieMission = @()
-  startNewbieMission(newbieOfflineMissions.get(), firstBattlesReward.get(), firstBattlesRewardId.get())
-let dbgCurrentNewbieMission = Computed(function() {
-  let { offlineMissions = [] } = newbieGameModesConfig?[curCampaign.get()]
-    .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0)
-  return offlineMissions
-})
+  newbieOfflineMissions.get() != null
+      ? startNewbieMission(newbieOfflineMissions.get(), firstBattlesReward.get(), firstBattlesRewardId.get())
+    : newbieLocalMP.get() != null
+      ? startNewbieLocalMP(newbieLocalMP.get(), firstBattlesReward.get(), firstBattlesRewardId.get())
+    : null
+
 let startDebugNewbieMission = @()
   startNewbieMission(
-    dbgCurrentNewbieMission.get()
-    serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
+    newbieGameModesConfig?[curCampaign.get()]
+      .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0)
+      .offlineMissions
+      ?? [],
+    serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0],
     null
   )
-let startLocalMultiplayerMission = function() {
-  local abandoned_factory = ["abandoned_factory_Conq1", "abandoned_factory_Conq2", "abandoned_factory_Conq3" ]
-  startLocalMPMission(
-    abandoned_factory
-    serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
-    null
-  )
+
+function startDebugNewbieLocalMp() {
+  let { gmName = null } = newbieGameModesConfig?[curCampaign.get()]
+    .findvalue(@(cfg) cfg?.startAsLocalMP)
+  if (gmName == null)
+    return
+  let mGMode = allGameModes.get().findvalue(@(m) m?.name == gmName)
+  if (mGMode != null)
+    startNewbieLocalMP(mGMode, serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0], null)
+}
+
+function startLocalMultiplayerMission() {
+  let mGMode = allGameModes.get().findvalue(@(m) m?.displayType == "random_battle" && m?.campaign == curCampaign.get())
+  if (mGMode == null)
+    return
+
+  let missions = mGMode?.mission_decl.missions_list.keys() ?? []
+  if (missions.len() == 0)
+    return
+  let missionName = chooseRandom(missions)
+  let reward = serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
+  let unitName = curUnit.get()?.name
+  logO($"Start local multiplayer battle. Unit = {unitName}, missionName = {missionName}")
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, null, [unitName]) })
+  startLocalMPBattle(mGMode.gameModeId, missionName, [unitName])
 }
 
 register_command(startDebugNewbieMission, "ui.startFirstBattlesOfflineMission")
+register_command(startDebugNewbieLocalMp, "ui.startFirstBattlesLocalMP")
 register_command(startLocalMultiplayerMission, "ui.startLocalMultiplayerMission")
 
 return {
   newbieOfflineMissions
+  newbieLocalMP
+  isNextBattleNewbieOffline = Computed(@() newbieOfflineMissions.get() != null || newbieLocalMP.get() != null)
   startCurNewbieMission
   startDebugNewbieMission
   startLocalMultiplayerMission
   firstBattlesReward
+  hasFirstBattleRewards
+  curProfileRewardId
 }

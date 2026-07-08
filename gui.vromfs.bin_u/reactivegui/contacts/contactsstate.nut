@@ -175,6 +175,8 @@ function clearSearchData() {
   isSearchInProgress.set(false)
 }
 
+isContactsOpened.subscribe(@(_) clearSearchData())
+
 let errorHundlers = {
   REQUEST_NOT_FOUND = @(_) fetchContacts(),
   DEFAULT = @(locId) openFMsgBox({ text = loc(locId) })

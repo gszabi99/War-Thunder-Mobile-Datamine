@@ -73,7 +73,7 @@ let mkRespBase = @(rb) @() {
 
 let respawnBasesLayer = @() {
   watch = visibleRespawnBases
-  size = flex()
+  size = FLEX
   children = visibleRespawnBases.get().map(mkRespBase)
 }
 
@@ -92,7 +92,7 @@ selSlotContentGenId.subscribe(@(_) deferOnce(refreshMapSize))
 let respawnMap = {
   rendObj = ROBJ_TACTICAL_MAP
   key = mapRootKey
-  size = flex()
+  size = FLEX
   clipChildren = true
   children = [
     tacticalMapMarkersLayer

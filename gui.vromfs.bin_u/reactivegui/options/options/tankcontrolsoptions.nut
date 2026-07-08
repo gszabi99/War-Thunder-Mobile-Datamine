@@ -7,13 +7,15 @@ let {
   OPT_SHOW_RETICLE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING,
   OPT_TANK_LEAVE_ZOOM_ON_KILL, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
+let { deferOnce } = require("dagor.workcycle")
+let { get_local_custom_settings_blk } = require("blkGetters")
 let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, set_enable_auto_healing, get_enable_auto_healing,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
 } = require("controlsOptions")
 let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { firstLoginTime, abTests } = require("%appGlobals/pServer/campaign.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { isLoggedIn, isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { hudScoreList, hudScoreTankRaw, hudScoreTank } = require("%rGui/hud/myScores.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
@@ -25,6 +27,9 @@ let { openChooseMovementControls
 let { WALKER } = require("%appGlobals/unitConst.nut")
 let { unitType } = require("%rGui/hudState.nut")
 
+
+let OPTION_VERSION_KEY = "tankControlsOptionsVersion"
+let ACTUAL_VERSION = 1
 
 let autoZoomDefaultTrueStart = 1699894800 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
@@ -80,6 +85,7 @@ let currentShowReticle =
   mkOptionValue(OPT_SHOW_RETICLE, true, @(v) validate(v, showReticleButtonList))
 set_show_reticle(currentShowReticle.get())
 currentShowReticle.subscribe(@(v) set_show_reticle(v))
+isSettingsAvailable.subscribe(@(_) set_show_reticle(currentShowReticle.get()))
 let showReticleButtonTouch = {
     locId = "options/show_reticle"
     ctrlType = OCT_LIST
@@ -104,6 +110,7 @@ let currentTargetTrackingType = mkOptionValue(OPT_TARGET_TRACKING, true, @(v) va
 let nativeTargetTrackingVal = keepref(Computed(@() unitType.get() == WALKER || currentTargetTrackingType.get()))
 set_should_target_tracking(nativeTargetTrackingVal.get())
 nativeTargetTrackingVal.subscribe(@(v) set_should_target_tracking(v))
+isSettingsAvailable.subscribe(@(_) set_should_target_tracking(nativeTargetTrackingVal.get()))
 let targetTrackingType = {
   locId = "options/target_tracking"
   ctrlType = OCT_LIST
@@ -123,6 +130,7 @@ let currentArmorPiercingFixed = Computed(@()
   validate(currentArmorPiercingFixedRaw.get() ?? true, armorPiercingFixedList))
 set_armor_piercing_fixed(currentArmorPiercingFixed.get())
 currentArmorPiercingFixed.subscribe(@(v) set_armor_piercing_fixed(v))
+isSettingsAvailable.subscribe(@(_) set_armor_piercing_fixed(currentArmorPiercingFixed.get()))
 let currentArmorPiercingType = {
   locId = "options/armor_piercing_fixed"
   ctrlType = OCT_LIST
@@ -135,21 +143,11 @@ let currentArmorPiercingType = {
 }
 
 let leaveZoomOnKillList = [false, true]
-let leaveZoomOnKillDefault = Computed(@() (abTests.get()?.leaveZoomOnKillDefault ?? "false") == "true")
-let currentLeaveZoomOnKillRaw = mkOptionValue(OPT_TANK_LEAVE_ZOOM_ON_KILL)
-let setDefaultLeaveZoomOnKill = @() currentLeaveZoomOnKillRaw.get() == null
-  ? currentLeaveZoomOnKillRaw.set(leaveZoomOnKillDefault.get())
-  : null
-if (isLoggedIn.get())
-  setDefaultLeaveZoomOnKill()
-isLoggedIn.subscribe(@(v) v ? setDefaultLeaveZoomOnKill() : null)
-let currentLeaveZoomOnKill = Computed(@()
-  validate(currentLeaveZoomOnKillRaw.get() ?? leaveZoomOnKillDefault.get(), leaveZoomOnKillList))
+let currentLeaveZoomOnKill = mkOptionValue(OPT_TANK_LEAVE_ZOOM_ON_KILL, true, @(v) validate(v, leaveZoomOnKillList))
 let leaveZoomOnKillType = {
   locId = "options/leave_zoom_on_kill"
   ctrlType = OCT_LIST
   value = currentLeaveZoomOnKill
-  setValue = @(v) currentLeaveZoomOnKillRaw.set(v)
   onChangeValue = @(v) sendChange("leave_zoom_on_kill", v)
   list = leaveZoomOnKillList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
@@ -235,6 +233,23 @@ let enableCrewAutoHealingType = {
   list = enableCrewAutoHealingList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
+
+function applyForceChangeValue() {
+  if (!isLoggedIn.get() || !isSettingsAvailable.get())
+    return
+
+  let sBlk = get_local_custom_settings_blk()
+  if ((sBlk?[OPTION_VERSION_KEY] ?? 0) == ACTUAL_VERSION)
+    return
+
+  currentTankAltControlType.set(true)
+  currentAutoTurner.set(true)
+  sBlk[OPTION_VERSION_KEY] = ACTUAL_VERSION
+}
+
+applyForceChangeValue()
+isSettingsAvailable.subscribe(@(_) deferOnce(applyForceChangeValue))
+isLoggedIn.subscribe(@(_) deferOnce(applyForceChangeValue))
 
 return {
   currentTargetTrackingType

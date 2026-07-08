@@ -85,11 +85,11 @@ function mkRhombBtnBg(isAvailable, actionItem, scale, isPrimaryStyle, btnStyle, 
 }
 
 let mkRhombBtnBorder = @(stateFlags, isAvailable, scale) {
-  size = flex()
+  size = FLEX
   clipChildren = true
   children = @() {
     watch = stateFlags
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     borderColor = stateFlags.get() & S_ACTIVE ? borderColorPushed
       : !isAvailable ? borderNoAmmoColor
@@ -182,7 +182,7 @@ function mkRhombZoomButton(scale) {
     children = [
       @() {
         watch = [stateFlags, isDisabled, isInZoom, hasAimingModeForWeapon, btnBgStyle]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed
           : (canZoom.get() && !isDisabled.get() && (isInZoom.get() || hasAimingModeForWeapon.get())) ? borderColor

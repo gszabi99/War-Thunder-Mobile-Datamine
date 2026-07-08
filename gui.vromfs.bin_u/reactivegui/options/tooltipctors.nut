@@ -31,7 +31,7 @@ let mkHudReloadStyleDescItem = @(img, title, isPrimaryStyle) {
           size = [touchButtonSize, touchButtonSize]
           children = [
             {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_PROGRESS_CIRCULAR
               fgColor = isPrimaryStyle ? 0x80808080 : 0x80405780
               bgColor = 0x26000000
@@ -39,7 +39,7 @@ let mkHudReloadStyleDescItem = @(img, title, isPrimaryStyle) {
               animations = [{ prop = AnimProp.fValue, from = 0.0, to = 1.0, duration = 2, play = true, loop = true }]
             }.__update(isPrimaryStyle ? { image = Picture($"ui/gameuiskin#hud_movement_stop2_bg_loading.svg:P") } : {})
             {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_BOX
               borderColor = Color(218, 218, 218)
               borderWidth = hdpx(3)
@@ -54,7 +54,7 @@ let mkHudReloadStyleDescItem = @(img, title, isPrimaryStyle) {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXT
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER

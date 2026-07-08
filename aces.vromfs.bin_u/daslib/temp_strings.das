@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module temp_strings shared private
@@ -42,10 +40,8 @@ def public temp_string(str : string; cb : block<(res : string#) : void>) {
 [tag_function_macro(tag="temp_string_tag")]
 class TempStringMacro : AstFunctionAnnotation {
     
-    def override verifyCall(var call : smart_ptr<ExprCallFunc>; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
-        if (call.arguments[0] is ExprStringBuilder) {
-            return true
-        }
+    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+        if (call.arguments[0] is ExprStringBuilder) return true
 
         errors := "temp_string argument must be a string with substitutions (string builder)"
         return false

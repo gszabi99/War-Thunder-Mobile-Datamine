@@ -40,7 +40,7 @@ let OPPurchasedUnlock = Computed(@()
 
 let isOPSeasonActive = Computed(@() OPFreeRewardsUnlock.get() != null)
 
-let seasonUnitName = Computed(function() {
+let opSeasonUnitName = Computed(function() {
   let { stages = [] } = OPPaidRewardsUnlock.get()
   let { userstatRewards = {} } = serverConfigs.get()
   for (local i = stages.len() - 1; i >= 0; i--)
@@ -51,11 +51,11 @@ let seasonUnitName = Computed(function() {
     }
   return null
 })
-let seasonNumber = Computed(@() userstatStatsTables.get()?.stats[OPFreeRewardsUnlock.get()?.table]["$index"] ?? 0)
-let seasonName = Computed(@() seasonUnitName.get() != null
-  ? loc("events/name/operation_pass_season", { name = seasonUnitName.get() })
-  : loc($"events/name/operation_pass_season_{seasonNumber.get()}"))
-let seasonEndTime = Computed(@() userstatStatsTables.get()?.stats[OPFreeRewardsUnlock.get()?.table]["$endsAt"] ?? 0)
+let opSeasonNumber = Computed(@() userstatStatsTables.get()?.stats[OPFreeRewardsUnlock.get()?.table]["$index"] ?? 0)
+let opSeasonName = Computed(@() opSeasonUnitName.get() != null
+  ? loc("events/name/operation_pass_season", { name = opSeasonUnitName.get() })
+  : loc($"events/name/operation_pass_season_{opSeasonNumber.get()}"))
+let opSeasonEndTime = Computed(@() userstatStatsTables.get()?.stats[OPFreeRewardsUnlock.get()?.table]["$endsAt"] ?? 0)
 
 let progressUnlockId = Computed(@() OPCampaign.get() == null
   ? "operation_pass_points_to_progress"
@@ -205,7 +205,7 @@ function getNotReceivedInfo(unlock, maxProgress) {
 
 let sendOPBqEvent = @(action, params = {}) sendCustomBqEvent("operationpass_1", params.__merge({
   action
-  name = $"operation_pass_season_{seasonNumber.get()}"
+  name = $"operation_pass_season_{opSeasonNumber.get()}"
   stageProgress = curStage.get()
   operationpassPoints = pointsCurStage.get()
   isPassPurchased = isOPActive.get()
@@ -226,7 +226,7 @@ function receiveOPRewards(progress) {
   if (fullList.len() == 0)
     return
 
-  let total = fullList.reduce(@(res, c) res + c.finalStage - c.stage + 1, 0)
+  let total = fullList.reduce(@(res, c) res + (c?.finalStage ?? c.stage) - c.stage + 1, 0)
   sendOPBqEvent("receive_rewards", {
     paramInt1 = progress,
     paramInt2 = total
@@ -296,10 +296,10 @@ return {
   progressUnlockId
   OP_MAX_LEVELS_TO_ADD
 
-  seasonUnitName
-  seasonNumber
-  seasonName
-  seasonEndTime
+  opSeasonUnitName
+  opSeasonNumber
+  opSeasonName
+  opSeasonEndTime
   hasOPRewardsToReceive
 
   getOPIcon

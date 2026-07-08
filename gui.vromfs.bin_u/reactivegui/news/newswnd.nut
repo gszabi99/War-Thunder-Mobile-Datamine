@@ -14,9 +14,10 @@ let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nex
 } = require("%rGui/news/newsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let textColor = 0xFFFFFFFF
-let contentBgColor = 0x990C1113
 let tagRedColor = 0xC8C80000
 
 let btnActive = 0xFFCFCFCF
@@ -108,7 +109,7 @@ let mkThumbnailImg = @(thumb) {
   rendObj = ROBJ_MASK
   image = thumbMaskPic
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_IMAGE
     image = Picture(thumb)
     keepAspect = KEEP_ASPECT_FILL
@@ -127,13 +128,13 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
     size = [selectorBtnW, selectorBtnH]
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
-        color = contentBgColor
+        color = tabBgColor
       }
       pinned > 0 ? pinIcon : null
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         fillColor = isActive && isHovered ? btnHovActive
           : !isHovered && isActive ? btnActive
@@ -146,7 +147,7 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
         transitions = opacityTransition
       }
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         padding = const [hdpx(4), hdpx(12), hdpx(4), hdpx(4)]
@@ -200,7 +201,7 @@ let tabsHotkeys = [
 ]
 let articleSelector = @() {
   watch = [newsfeed, curPageIdx, articlesPerPage, selectorBtnGap, isGamepad]
-  size = [selectorBtnW + pagesStripGap + pagesStripW, flex()]
+  size = [selectorBtnW + pagesStripGap + pagesStripW, FLEX]
   flow = FLOW_HORIZONTAL
   gap = pagesStripGap
   children = newsfeed.get().len() == 0 ? null : [
@@ -251,7 +252,7 @@ let scrollArticleBtn = @(hotkey, watchValue) {
 curArticleContent.subscribe(@(_) scrollHandler.scrollToY(0))
 
 let articleLoading = freeze({
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow  = FLOW_VERTICAL
@@ -280,9 +281,9 @@ let mkContent = @(content, title, formatter) {
 
 let articleContent = @() {
   watch = [curArticleContent, curNewsStyle]
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
-  color = contentBgColor
+  color = tabBgColor
   children = curArticleContent.get() == null ? articleLoading
     : [
         scrollbar.makeSideScroll(mkContent(curArticleContent.get().content, curArticleContent.get().title, mkFormatAst({formatters, filter = filterFormat, style = curNewsStyle.get()})), {
@@ -298,24 +299,28 @@ let wndHeaderGap = hdpx(30)
 let wndHeader = {
   size = FLEX_H
   valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
   padding = [0, pagesStripGap + pagesStripW, 0, 0]
   children = [
-    backButton(function() {
-      closeNewsWnd()
-    })
+    headerGradientBg([
+      backButton(function() {
+        closeNewsWnd()
+      })
+      {
+        rendObj = ROBJ_TEXT
+        halign = ALIGN_LEFT
+        color = textColor
+        text = loc("newsWnd/header")
+        margin = const [0, 0, 0, hdpx(15)]
+      }.__update(fontBig)
+    ])
     {
-      rendObj = ROBJ_TEXT
-      size = FLEX_H
-      halign = ALIGN_LEFT
-      color = textColor
-      text = loc("newsWnd/header")
-      margin = const [0, 0, 0, hdpx(15)]
-    }.__update(fontBig)
-    mkDropMenuBtn(@() [fontsCfg],
-      Watched(0),
-      "ui/gameuiskin#icon_menu_settings.svg",
-      hdpx(65))
+      hplace = ALIGN_RIGHT
+      children = mkDropMenuBtn(@() [fontsCfg],
+        Watched(0),
+        "ui/gameuiskin#icon_menu_settings.svg",
+        hdpx(65))
+    }
+
   ]
 }
 
@@ -331,7 +336,7 @@ calcLayoutParams()
 
 let newsWnd = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   onDetach = markCurArticleSeen
   flow = FLOW_VERTICAL
@@ -339,7 +344,7 @@ let newsWnd = bgShaded.__merge({
   children = [
     wndHeader
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       gap = hdpx(30)
       children = [

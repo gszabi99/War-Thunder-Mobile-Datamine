@@ -204,10 +204,10 @@ let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 25, 22, 31,-22))
 
 let mkHightlightPlate = @(isSelected) {
-  size = flex()
+  size = FLEX
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       flipY = true
       image = highlight()
@@ -216,7 +216,7 @@ let mkHightlightPlate = @(isSelected) {
       opacity = 0.2
     }
     {
-      size = [flex(), borderHeight]
+      size = [FLEX, borderHeight]
       pos = [0, -borderHeight]
       rendObj = ROBJ_BOX
       hplace = ALIGN_TOP
@@ -247,7 +247,7 @@ let mkPrizeTicketsContent = @(content, title)
       }
       @() {
         watch = [selIndexes, currentTicketCounts]
-        size = const [flex(), hdpx(50)]
+        size = const [FLEX, hdpx(50)]
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         rendObj = ROBJ_TEXT

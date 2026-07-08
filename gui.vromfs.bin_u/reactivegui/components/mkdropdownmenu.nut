@@ -65,7 +65,7 @@ function textButton(btn, onClick) {
     let sf = stateFlags.get()
     return {
       watch = stateFlags
-      size = [flex(), buttonH]
+      size = [FLEX, buttonH]
       minWidth = SIZE_TO_CONTENT
       padding = hdpx(15)
       rendObj = sf & S_HOVER ? ROBJ_BOX : ROBJ_IMAGE
@@ -98,7 +98,7 @@ function textButton(btn, onClick) {
 }
 
 let separator = @(ovr = {}) {
-  size = [flex(), separatorWidth]
+  size = [FLEX, separatorWidth]
   rendObj = ROBJ_IMAGE
   image = lineGradientHor()
 }.__update(ovr)
@@ -120,7 +120,7 @@ let mkDropMenu = @(columnsList) {
   borderColor = borderColor
   padding = menuButtonBorderWidth
   gap = separator({
-    size = [separatorWidth, flex()]
+    size = [separatorWidth, FLEX]
     image = lineGradientVert()
   })
   flow = FLOW_HORIZONTAL

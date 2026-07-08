@@ -123,7 +123,7 @@ function mkChangeView(change) {
 }
 
 let hoverBg = {
-  size = const [pw(150), flex()]
+  size = const [pw(150), FLEX]
   hplace = ALIGN_CENTER
   color = hoverColor
   rendObj = ROBJ_9RECT
@@ -137,7 +137,7 @@ let withHoveredBg = @(content, stateFlags) {
     @() {
       watch = stateFlags
       key = stateFlags
-      size = flex()
+      size = FLEX
       padding = const [hdpx(3), 0]
       children =  stateFlags.get() & S_HOVER ? hoverBg : null
     }

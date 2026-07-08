@@ -11,7 +11,6 @@ let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { missingUnitResourcesByRank, getMissingUnitsForRank } = require("%appGlobals/updater/gameModeAddons.nut")
 let { getCampaignRankAddons, getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
 
 
@@ -83,7 +82,8 @@ function startNewbieOfflineBattle(unit, missionName) {
     })
 }
 
-let mkLocalMPParams = @(unit, missionName, presetOvrMis, misBlkParams) {
+let mkLocalMPParams = @(mGameModeId, missionName, unit, presetOvrMis = null, misBlkParams = {}) {
+  mGameModeId
   unitName = unit.name
   skin = getUnitSkin(unit)
   missionName
@@ -92,23 +92,25 @@ let mkLocalMPParams = @(unit, missionName, presetOvrMis, misBlkParams) {
   misBlkParams
 }
 
-function startLocalMPBattle(unit, missionName, presetOvrMis = null, misBlkParams = {}) {
-  if (unit == null) {
+function startLocalMPBattle(mGameModeId, missionName, units) {
+  if (units.len() == 0) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
   logO("openDownloadAddonsWnd startLocalMP")
-  let { mRank = 1, campaign = "" } = serverConfigs.get()?.allUnits[unit.name]
+
+  let unit = serverConfigs.get()?.allUnits[units[0]] 
+  let { mRank = 1, campaign = "" } = unit
   let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
-  let units = getMissingUnitsForRank(campaign, mRank, missingUnitResourcesByRank.get())
-    .__merge(misUnits, getCommonBots(campaign, mRank, mRank))
+  let unitsRes = units.reduce(@(res, u) res.$rawset(u, true), {})
+    .__update(misUnits, getCommonBots(campaign, mRank, mRank))
   openDownloadAddonsWnd(getCampaignRankAddons(campaign, mRank).extend(misAddons.keys()),
-    addSupportUnits(units).keys(),
-    "startLocalMP", { paramStr1 = unit.name, paramInt1 = mRank, unit = unit.name },
-    "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
+    addSupportUnits(unitsRes).keys(),
+    "startLocalMP", { paramStr1 = ",".join(units), paramInt1 = mRank, unit = units[0] },
+    "startLocalMP", mkLocalMPParams(mGameModeId, missionName, unit))
 }
 
-function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = null, misBlkParams = {}) {
+function startLocalMPBattleWithoutGamemode(mGameModeId, missionName, unit, presetOvrMis = null, misBlkParams = {}) {
   if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
@@ -116,12 +118,12 @@ function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = nul
   logO("openDownloadAddonsWnd startLocalMPWithoutGM")
   let { mRank = 1, campaign = "" } = serverConfigs.get()?.allUnits[unit.name]
   let { misUnits, misAddons } = getMissionUnitsAndAddons(missionName)
-  let units = getMissingUnitsForRank(campaign, mRank, missingUnitResourcesByRank.get())
+  let units = { [unit.name] = true }
     .__merge(misUnits, getCommonBots(campaign, mRank, mRank))
   openDownloadAddonsWnd(getCampaignRankAddons(campaign, mRank).extend(misAddons.keys()),
     addSupportUnits(units).keys(),
     "startLocalMPWithoutGM", { paramStr1 = unit.name, paramInt1 = mRank, unit = unit.name },
-    "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
+    "startLocalMPWithoutGM", mkLocalMPParams(mGameModeId, missionName, unit, presetOvrMis, misBlkParams))
 }
 
 return {

@@ -4,6 +4,7 @@ let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { mkLevelBg, mkProgressLevelBg, unitExpColor, levelProgressBorderWidth,
   levelProgressBarHeight, maxLevelStarChar
 } = require("%rGui/components/levelBlockPkg.nut")
+let { mkMasteryTierColorIcon } = require("%rGui/components/masteryTierComp.nut")
 
 
 let levelHolderSize = evenPx(84)
@@ -12,27 +13,32 @@ let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 let progressInnerH = levelProgressBarHeight - (2 * levelProgressBorderWidth)
 let progressMarginL = levelHolderSize - levelProgressBorderWidth - (0.5 * progressInnerH)
 
-let textParams = {
-  rendObj = ROBJ_TEXT
-}.__update(fontSmallShaded)
+let singleMasteryTierSize = (levelHolderSize * 0.6).tointeger()
 
 let levelBg = @(borderColor) mkLevelBg({
-  ovr = { size = [ rhombusSize, rhombusSize ] }
+  ovr = { size = rhombusSize }
   childOvr = { borderColor }
 })
 
-let mkUnitLevel = @(level, borderColor = unitExpColor) {
-  size = [ levelHolderSize, levelHolderSize ]
+let mkUnitLevel = @(level, masteryTier = 0, borderColor = unitExpColor) {
+  size = levelHolderSize
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
     levelBg(borderColor)
-    textParams.__merge({ text = level, pos = [hdpx(1), 0] })
+    masteryTier > 0 ? mkMasteryTierColorIcon(singleMasteryTierSize, masteryTier)
+      : {
+          rendObj = ROBJ_TEXT
+          size = rhombusSize
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          text = level
+        }.__update(fontSmallShaded)
   ]
 }
 
 let mkUnitLevelBlock = @(unit, override = {}) function() {
-  let { level = 0, exp = 0, levelPreset = "", maxLevel = null } = unit
+  let { level = 0, exp = 0, levelPreset = "", maxLevel = null, rewardedMasteryTier = 0 } = unit
   let levels = campConfigs.get()?.unitLevels[levelPreset] ?? []
   let maxLevelExt = maxLevel ?? levels.len() 
   let isMaxLevel = (level >= maxLevelExt && levels.len() != 0) || unit?.isUpgraded || unit?.isPremium
@@ -49,16 +55,16 @@ let mkUnitLevelBlock = @(unit, override = {}) function() {
     valign = ALIGN_CENTER
     children = [
       mkProgressLevelBg({
-        size = [flex(), levelProgressBarHeight]
+        size = [FLEX, levelProgressBarHeight]
         margin = [ 0, 0, 0, progressMarginL ]
         padding = levelProgressBorderWidth
         children = {
-          size = [ pw(100 * percent), flex() ]
+          size = [ pw(100 * percent), FLEX ]
           rendObj = ROBJ_SOLID
           color = unitExpColor
         }
       })
-      mkUnitLevel(isMaxLevel ? maxLevelStarChar : level)
+      mkUnitLevel(isMaxLevel ? maxLevelStarChar : level, rewardedMasteryTier)
     ]
   }.__update(override)
 }

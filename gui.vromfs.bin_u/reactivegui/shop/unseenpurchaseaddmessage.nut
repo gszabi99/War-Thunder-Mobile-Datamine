@@ -31,7 +31,7 @@ let mkTapToContinueText = @() {
 }.__update(fontSmall)
 
 let exceedBlueprintsProgress = @(count, targetCount) {
-  size = flex()
+  size = FLEX
   valign = ALIGN_BOTTOM
   children = [
     mkProgressBar(targetCount + count, targetCount)

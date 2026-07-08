@@ -134,7 +134,7 @@ let mkToggleCheckmark = @(value, sizes, style) {
 }
 
 let mkToggleActiveBgScaled = @(value, sizes, style) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = style.activeBgFillColor
   borderColor = style.activeBgBorderColor

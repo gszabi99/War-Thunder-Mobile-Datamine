@@ -37,7 +37,7 @@ let debugTouchesView = @() {
 
 let debugTouchesHandlerComp = {
   key = {}
-  size = flex()
+  size = FLEX
   behavior = Behaviors.ProcessPointingInput
   touchMarginPriority = TOUCH_BACKGROUND
   function onPointerPress(evt) {
@@ -62,7 +62,7 @@ let debugTouchesHandlerComp = {
 
 let debugTouchesUi = {
   key = {}
-  size = flex()
+  size = FLEX
   waitForChildrenFadeOut = true
   children = debugTouchesView
 }

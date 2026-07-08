@@ -12,13 +12,13 @@ let tacticalMapSize = [hdpx(325), hdpx(325)]
 
 let commonMinimapLayers = [
   {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_SOLID
     color = 0x28000000
   }
   {
     key = "tactical_map"
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_TACTICAL_MAP
   }
   tacticalMapMarkersLayer
@@ -37,7 +37,7 @@ function mkTacticalMapForHud(scale) {
   let shortcutId = "ID_TACTICAL_MAP"
   let openMapBtn = @() {
     watch = stateFlags
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Button
     cameraControl = true
     sound = { click  = "click" }

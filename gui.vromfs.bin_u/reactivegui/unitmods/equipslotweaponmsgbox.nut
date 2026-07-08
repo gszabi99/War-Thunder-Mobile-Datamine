@@ -78,7 +78,7 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
                 margin = [0, 0, 0, cardTextMargin]
               }).__update(fontVeryTinyShaded)
           !wCount ? null : msgBoxText(colorize(txtColor ?? borderColor, wCount),
-            { size = flex(),
+            { size = FLEX,
               halign = ALIGN_RIGHT,
               valign = ALIGN_BOTTOM,
               margin = [0, cardTextMargin, 0, 0]
@@ -116,7 +116,7 @@ function mkConflictsMsgContent(weapon, conflicts) {
         textColor)))
 
   return {
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -128,7 +128,7 @@ function mkConflictsMsgContent(weapon, conflicts) {
           ["{conflictList}"] = conflictsComp,  
         }
       )
-        .insert(0, { size = flex() })
+        .insert(0, { size = FLEX })
         .append({ size = flex(2) })
   }
 }

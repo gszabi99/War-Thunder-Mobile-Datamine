@@ -82,7 +82,7 @@ let headerPanel = {
 
 let previewBgFadeColor = 0xFF707090
 let previewBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture("ui/images/offer_bg_big.avif")
   color = 0xFFFFFFFF
@@ -138,7 +138,7 @@ let currencyEffectBw = @() {
 
 let previewWnd = @() {
   key = openCount
-  size = flex()
+  size = FLEX
   function onAttach() {
     playSound("chest_appear")
     hideModals(HIDE_PREVIEW_MODALS_ID)

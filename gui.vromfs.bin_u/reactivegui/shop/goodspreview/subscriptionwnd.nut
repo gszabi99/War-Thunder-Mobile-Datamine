@@ -167,7 +167,7 @@ let toggleSubsBtn = @(subs, subsList) mkCustomButton(
   mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight } }))
 
 let btnRow = @(children) {
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = wndGap
@@ -190,7 +190,7 @@ function mkPurchButton(subs, subsList, totalConvertAmount, currencyId, leftTimeL
         text = @() {
           key = totalConvertAmount
           watch = [totalConvertAmount, currencyId, leftTimeLoc]
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
@@ -263,7 +263,7 @@ function purchBlock(subs, isActive, subsList, totalConvertAmount, currencyId, le
             color = textColor
             text = loc("subscrition/autoRenewal")
           }.__update(fontTiny)
-          { size = [flex(), smallGap] }
+          { size = [FLEX, smallGap] }
           btnRow([
             toggle
             mkSpinnerHideBlock(platformPurchaseInProgress,
@@ -362,7 +362,7 @@ function mkWindow() {
               flow = FLOW_HORIZONTAL
               gap = hdpx(20)
               children = [
-                {size = flex()}
+                {size = FLEX}
                 {
                   size = headerIconSize
                   rendObj = ROBJ_IMAGE
@@ -373,7 +373,7 @@ function mkWindow() {
                   rendObj = ROBJ_TEXT
                   text = getSubsName(subscription.get().id)
                 }.__update(fontSmall)
-                {size = flex()}
+                {size = FLEX}
                 closeWndBtn(closeSubsPreview)
               ]
             })
@@ -385,13 +385,13 @@ function mkWindow() {
             children = [
               infoBlock(totalConvertAmount.get() > 0)
               {
-                size = [buttonBlockWidth + groupWidthInc * (subsGroup.get().len() - 1), flex()]
+                size = [buttonBlockWidth + groupWidthInc * (subsGroup.get().len() - 1), FLEX]
                 flow = FLOW_VERTICAL
                 halign = ALIGN_CENTER
                 children = [
-                  {size = flex()}
+                  {size = FLEX}
                   subsIcons(subsGroup.get())
-                  {size = flex()}
+                  {size = FLEX}
                   purchBlock(subscription.get(), isSubsActive.get(), subsGroup.get(), totalConvertAmount, currencyId, leftTimeLoc)
                 ]
               }
@@ -402,7 +402,7 @@ function mkWindow() {
 
 let mkSubscriptionWnd = @() bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   behavior = Behaviors.Button
   hotkeys = [[btnBEscUp, { action = closeSubsPreview }]]

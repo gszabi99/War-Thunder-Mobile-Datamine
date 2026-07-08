@@ -11,7 +11,7 @@ let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { upgradeCommonUnitName, isChosenUnitUpgarde } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding, offerCardHeight} = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
 let mkBuyUpgardeUnit = require("%rGui/unit/upgradeUnitWnd/mkBuyUpgardeUnit.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -28,7 +28,7 @@ function close() {
 }
 
 let upgradeTitle = {
-  size = const [flex(), hdpx(70)]
+  size = const [FLEX, hdpx(70)]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -52,7 +52,7 @@ let upgradeTitle = {
 let commonTitle = {
   rendObj = ROBJ_TEXT
   text = loc("upgradeType/common")
-  size = const [flex(), hdpx(70)]
+  size = const [FLEX, hdpx(70)]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   margin = const [0, 0, hdpx(12), 0]
@@ -61,9 +61,14 @@ let commonTitle = {
 let mkCardTitle = @(unit) unit?.isUpgraded ? upgradeTitle : commonTitle
 
 function mkLevelMark(unit) {
-  let level = Computed(@() !unit?.isUpgraded ? campMyUnits.get()?[unit.name].level ?? 0
-    : "maxLevel" in unit ? unit.maxLevel
-    : campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0) 
+  let level = Computed(function() {
+    let maxLvl = "maxLevel" in unit ? unit.maxLevel
+      : campConfigs.get()?.unitLevels[unit?.levelPreset].len() ?? 0  
+    let lvl = campMyUnits.get()?[unit.name].level ?? 0
+
+    return !unit?.isUpgraded && lvl < maxLvl ? lvl
+      : maxLevelStarChar
+  })
   return {
     vplace = ALIGN_BOTTOM
     margin = hdpx(10)
@@ -78,6 +83,9 @@ function mkLevelMark(unit) {
           children = @() {
             watch = level
             rendObj = ROBJ_TEXT
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            pos = [0, -hdpx(2)]
             text = level.get()
           }.__update(fontTiny)}
       }
@@ -139,7 +147,7 @@ let mkCardContent = @(unit) {
       ]
     }
     unit?.isUpgraded ? upgradeDesc : null
-    {size = flex()}
+    {size = FLEX}
     mkSpinnerHideBlock(Computed(@() unitInProgress.get() != null || levelInProgress.get() != null),
       @() buyBtn(unit))
   ]
@@ -198,13 +206,13 @@ function offerCards() {
 
 let chooseUpgradeUnitWnd = bgShadedDark.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   onClick = close
   children = [
     {
-      size = [flex(), gamercardHeight]
+      size = [FLEX, gamercardHeight]
       vplace = ALIGN_TOP
       children = [
         backButton(close)

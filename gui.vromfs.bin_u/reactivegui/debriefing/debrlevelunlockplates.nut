@@ -7,6 +7,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
 let { getSpCostText } = require("%rGui/attributes/attrState.nut")
+let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let levelUnlockPlateTime = 0.5
 let levelUnlockPlatesTotalTimeMax = 1.0
@@ -44,9 +45,9 @@ let mkLevelUnlockPlatesContainer = @(children) {
 
 
 let plateBg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
-  color = 0x990C1113
+  color = tabBgColor
 }
 
 let mkLockedShade = @(isUnlocked, delay) !isUnlocked ? bgShade : bgShade.__merge({

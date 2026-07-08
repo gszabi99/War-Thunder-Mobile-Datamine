@@ -6,12 +6,15 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { calcVisibleBullets, mkVisibleBulletsList } = require("%rGui/bullets/calcBullets.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { calcBulletsStatus } = require("%rGui/bullets/calcBullets.nut")
+let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BS_VISIBLE, BS_UNLOCKED, BS_ONLY_EXTERNAL_SLOT
+} = require("%rGui/bullets/bulletsConst.nut")
 
 
 const SEEN_SHELLS = "SeenShells"
+let MASK_FOR_UNSEEN = BS_VISIBLE | BS_UNLOCKED
 let seenShells = mkWatched(persist, SEEN_SHELLS, {})
 
 function loadSeenShells() {
@@ -27,42 +30,37 @@ if (seenShells.get().len() == 0)
   loadSeenShells()
 isSettingsAvailable.subscribe(@(_) loadSeenShells())
 
-function fillUnseenBullets(res, bInfo, unitName, unit, mods, seen, slotFrom, slotTo) {
+function fillUnseenBullets(res, bInfo, unitName, unit, modsCfg, seen, slotTo) {
   if (bInfo == null)
     return
 
-  let visibleBullets = calcVisibleBullets(bInfo, mods)
-  for (local slot = slotFrom; slot < slotTo; slot++) {
-    let { bulletsOrder, fromUnitTags } = bInfo
-    let visibleBulletsList = mkVisibleBulletsList(bulletsOrder, fromUnitTags, visibleBullets, slot)
-      .map(@(name) { name, fromUnitTags = fromUnitTags?[name] })
-    foreach (b in visibleBulletsList)
-      if (b.name != ""
-          && (b.fromUnitTags?.reqLevel ?? 0) != 0
-          && (unit?.level ?? 0) >= (b.fromUnitTags?.reqLevel ?? 0)
-          && !(seen?[unitName][b.name] ?? false))
-        res[b.name] <- true
-  }
+  let status = calcBulletsStatus(bInfo, unit?.level ?? 0, unit?.mods ?? {}, modsCfg)
+  foreach (bName, s in status)
+    if (bName != ""
+        && (s & MASK_FOR_UNSEEN) == MASK_FOR_UNSEEN
+        && (slotTo > 0 || (s & BS_ONLY_EXTERNAL_SLOT) == 0)
+        && !(seen?[unitName][bName] ?? false))
+      res[bName] <- true
 }
 
-function getUnseenUnitBullets(uName, myUnits, seen) {
+function getUnseenUnitBullets(uName, myUnits, configs, seen) {
   let primaryRes = {}
   let secondaryRes = {}
   let res = { primary = primaryRes, secondary = secondaryRes}
   let unit = myUnits?[uName]
   if (unit == null)
     return res
+  let modsCfg = configs?.unitModPresets[configs?.allUnits[uName].modPreset] ?? {}
   let { primary = null, secondary = null, special = null } = loadUnitBulletsChoice(uName)?.commonWeapons
-  let mods = (unit?.mods ?? {}).reduce(@(modsRes, val, mod) val ? modsRes.$rawset(mod, 1) : modsRes, {})
-  fillUnseenBullets(primaryRes, primary, uName, unit, mods, seen, 0, BULLETS_PRIM_SLOTS)
-  fillUnseenBullets(secondaryRes, secondary ?? special, uName, unit, mods, seen,
-    BULLETS_PRIM_SLOTS, BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)
+  fillUnseenBullets(primaryRes, primary, uName, unit, modsCfg, seen, BULLETS_PRIM_SLOTS)
+  fillUnseenBullets(secondaryRes, secondary ?? special, uName, unit, modsCfg, seen,
+    BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)
   return res
 }
-let getUnseenUnitBulletsNonUpdatable = @(unitNameRaw)
-  getUnseenUnitBullets(unitNameRaw, campMyUnits.get(), seenShells.get())
-let mkUnseenUnitBullets = @(unitNameRaw)
-  Computed(@() getUnseenUnitBullets(unitNameRaw.get(), campMyUnits.get(), seenShells.get()))
+let getUnseenUnitBulletsNonUpdatable = @(unitName)
+  getUnseenUnitBullets(unitName, campMyUnits.get(), campConfigs.get(), seenShells.get())
+let mkUnseenUnitBullets = @(unitName)
+  Computed(@() getUnseenUnitBullets(unitName.get(), campMyUnits.get(), campConfigs.get(), seenShells.get()))
 
 function markShellsSeen(unitName, idsExt) {
   let { primary, secondary } = getUnseenUnitBulletsNonUpdatable(unitName)

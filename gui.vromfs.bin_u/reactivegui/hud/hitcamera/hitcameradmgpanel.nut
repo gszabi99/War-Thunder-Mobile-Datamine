@@ -161,7 +161,7 @@ function mkDmgPart(icon, iconSize, iconBgSize, status) {
   return function() {
     let res = { watch = status }
     return status.get() == HIDDEN ? res : res.__update({
-        size = [flex(), iconBgSize]
+        size = [FLEX, iconBgSize]
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [

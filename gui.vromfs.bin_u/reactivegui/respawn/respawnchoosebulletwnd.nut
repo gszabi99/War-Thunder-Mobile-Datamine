@@ -3,7 +3,7 @@ let { defer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bulletsInfo, bulletsSecInfo, bulletsSpecInfo, chosenBullets, chosenBulletsSec, chosenBulletsSpec, setOrSwapCurUnitBullet,
-  visibleBullets, visibleBulletsSec, visibleBulletsSpec
+  bulletsStatus, bulletsStatusSec, bulletsStatusSpec, secBulletsSlots
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
@@ -11,7 +11,7 @@ let { textButtonCommon, textButtonPrimary, textButtonInactive } = require("%rGui
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { BULLETS_PRIM_SLOTS, BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
 let { mkBulletsList, mkCurListBulletInfo } = require("%rGui/bullets/bulletsSelectorComps.nut")
 
 
@@ -22,7 +22,7 @@ let openedSlot = Watched(-1)
 let openParams = mkWatched(persist, "openParams", null)
 let curSlotName = mkWatched(persist, "curSlotName", "")
 let isBulletSec = Computed(@() openedSlot.get() >= BULLETS_PRIM_SLOTS)
-let isBulletSpec = Computed(@() openedSlot.get() >= BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)
+let isBulletSpec = Computed(@() openedSlot.get() >= BULLETS_PRIM_SLOTS + secBulletsSlots.get())
 let savedSlotName = Computed(function() {
   let bullets = isBulletSpec.get()
       ? chosenBulletsSpec.get()
@@ -30,7 +30,7 @@ let savedSlotName = Computed(function() {
       ? chosenBulletsSec.get()
     : chosenBullets.get()
   return openParams.get()?.slotIdx == null ? curSlotName.get()
-    : (bullets?[openParams.get().slotIdx % (BULLETS_PRIM_SLOTS + (isBulletSpec.get() ? BULLETS_SEC_SLOTS : 0))].name ?? curSlotName.get())
+    : (bullets?[openParams.get().slotIdx % (BULLETS_PRIM_SLOTS + (isBulletSpec.get() ? secBulletsSlots.get() : 0))].name ?? curSlotName.get())
 })
 let wndAABB = Watched(null)
 
@@ -59,29 +59,36 @@ function applyBullet() {
 
 let applyText = utf8ToUpper(loc("msgbox/btn_choose"))
 function applyButton() {
-  let { fromUnitTags = null } = isBulletSpec.get()
-      ? bulletsSpecInfo.get()
-    : isBulletSec.get()
-      ? bulletsSecInfo.get()
+  let { fromUnitTags = null } = isBulletSpec.get() ? bulletsSpecInfo.get()
+    : isBulletSec.get() ? bulletsSecInfo.get()
     : bulletsInfo.get()
-  let { reqLevel = 0 } = fromUnitTags?[curSlotName.get()]
-  let isEnoughLevel = reqLevel <= (selSlot.get()?.level ?? 0)
+  let allStatus = isBulletSpec.get() ? bulletsStatusSpec.get()
+    : isBulletSec.get() ? bulletsStatusSec.get()
+    : bulletsStatus.get()
+  let status = allStatus?[curSlotName.get()] ?? 0
+  let { reqModification = null, reqLevel = 0 } = fromUnitTags?[curSlotName.get()]
+  let reqLevelFinal = selSlot.get()?.modPresetCfg?[reqModification].reqLevel ?? reqLevel
+  let isEnoughLevel = reqLevelFinal <= (selSlot.get()?.level ?? 0)
   let children = savedSlotName.get() == curSlotName.get()
       ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")),
         close,
         { ovr = { key = "closeButton" }}) 
+    : (status & BS_UNLOCKED) != 0
+      ? textButtonPrimary(applyText,
+          applyBullet,
+          { ovr = { key = "applyButton" }}) 
     : !isEnoughLevel
       ? textButtonInactive(applyText,
-        @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }),
+        @() openMsgBox({ text = loc("msg/reqUnitLevelToUse", { reqLevel = reqLevelFinal }) }),
         { ovr = { key = "errorButton" }}) 
-    : textButtonPrimary(applyText,
-      applyBullet,
-      { ovr = { key = "applyButton" }}) 
+    : textButtonInactive(applyText,
+        @() openMsgBox({ text = loc("respawn/need_to_buy_weapon") }),
+        { ovr = { key = "errorButton" }}) 
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, isBulletSec, isBulletSpec, selSlot]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    size = const [flex(), hdpx(110)]
+    size = const [FLEX, hdpx(110)]
     children
   }
 }
@@ -97,25 +104,25 @@ function bulletContent() {
     : isBulletSec.get()
       ? bulletsSecInfo.get()
     : bulletsInfo.get())
-  let visBullets = Computed(@() isBulletSpec.get()
-      ? visibleBulletsSpec.get()
+  let bStatus = Computed(@() isBulletSpec.get()
+      ? bulletsStatusSpec.get()
     : isBulletSec.get()
-      ? visibleBulletsSec.get()
-    : visibleBullets.get())
+      ? bulletsStatusSec.get()
+    : bulletsStatus.get())
   let cBullets = Computed(@() isBulletSpec.get()
       ? chosenBulletsSpec.get()
     : isBulletSec.get()
       ? chosenBulletsSec.get()
     : chosenBullets.get())
   return @() {
-    watch = [bInfo, visBullets, cBullets]
+    watch = [bInfo, bStatus, cBullets]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(5)
     children = [
       mkBulletsList({
         bInfo,
-        visibleBullets = visBullets,
+        bulletsStatus = bStatus,
         chosenBullets = cBullets,
         openedSlot,
         selSlot,
@@ -123,7 +130,7 @@ function bulletContent() {
         curSlotName,
         onClickBtn = onClickBulletBtn
       })
-      mkCurListBulletInfo(bInfo, curSlotName, selSlot)
+      mkCurListBulletInfo(bInfo, curSlotName, selSlot, bStatus)
       applyButton
     ]
   }
@@ -149,11 +156,11 @@ function content() {
   let { wndBox, bulletBox } = openParams.get()
   return {
     watch = openParams
-    size = flex()
+    size = FLEX
     children = [
       mkCutBg([bulletBox])
       {
-        size = flex()
+        size = FLEX
         padding = wndBox == null ? null
           : [wndBox.t, sw(100) - wndBox.r, sh(100) - wndBox.b, wndBox.l]
         children = window
@@ -164,7 +171,7 @@ function content() {
 
 let openImpl = @() addModalWindow({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = content
   onClick = close
 })

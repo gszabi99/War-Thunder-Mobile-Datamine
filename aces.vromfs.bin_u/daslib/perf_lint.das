@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module perf_lint shared private
@@ -23,8 +21,25 @@ module perf_lint shared private
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 require daslib/ast_boost
 require strings
+require daslib/lint_config
 
 
 
@@ -34,6 +49,76 @@ struct VarStackEntry {
     @do_not_delete v : Variable?
     depth : int
     is_iter : bool
+}
+
+struct Perf018State {
+    
+    
+    
+    
+    
+    
+    
+    @do_not_delete iter_var : Variable?
+    @do_not_delete arr_var : Variable?
+    qualified_count : int
+    sources_seen : int
+    vars_seen : int
+    disqualified : bool
+    matched : bool
+}
+
+struct Perf022State {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @do_not_delete iter_var : Variable?
+    callee_id : int
+    sources_seen : int
+    vars_seen : int
+    disqualified : bool
+    matched : bool
+}
+
+struct Perf024Candidate {
+    
+    
+    
+    
+    
+    
+    @do_not_delete v : Variable?
+    safe_uses : int
+    disqualified : bool
+}
+
+struct Perf023Candidate {
+    
+    
+    
+    
+    
+    
+    
+    
+    @do_not_delete v : Variable?
+    safe_uses : int
+    disqualified : bool
+}
+
+enum private Perf025Kind {
+    
+    
+    skip            
+    equivalent      
+    unsigned_hex    
 }
 
 class PerfLintVisitor : AstVisitor {
@@ -60,6 +145,7 @@ class PerfLintVisitor : AstVisitor {
     if_depth_stack : array<int>
     
     @do_not_delete current_function : Function?
+    in_template : bool = false
     
     known_length_loop_depth : int = 0
     current_for_known_length : bool = true
@@ -68,12 +154,47 @@ class PerfLintVisitor : AstVisitor {
     
     @do_not_delete pending_move_var : Variable?
     @safe_when_uninitialized pending_move_at : LineInfo
+    
+    
+    
+    
+    
+    perf018_stack : array<Perf018State>
+    perf018_paths : array<string>
+    @do_not_delete perf018_for_exprs : array<ExprFor?>
+    in_qualifying_idx : int = 0
+    at_qualifying_pushes : array<int>
+    
+    
+    
+    perf022_stack : array<Perf022State>
+    @do_not_delete perf022_for_exprs : array<ExprFor?>
+    
+    
+    
+    
+    
+    
+    
+    perf023_candidates : array<Perf023Candidate>
+    perf023_splice_depth : int = 0
+    
+    
+    
+    
+    
+    perf024_candidates : array<Perf024Candidate>
+    perf024_skip_iptr : uint64 = 0ul
     warning_count : int = 0
     
     collect_warnings : bool = false
     warnings : array<string>
     
-    reported_locations : array<uint64>
+    reported_locations : table<uint64>
+    
+    
+    perf019_enum_or_probed : array<uint64>
+    perf019_enum_or_yes : array<uint64>
     def PerfLintVisitor() {
         pass
     }
@@ -82,42 +203,35 @@ class PerfLintVisitor : AstVisitor {
         return uint64(at.line) | (uint64(at.column) << uint64(20))
     }
 
+    
+    
+    disabled_codes : table<string>
+    enabled_codes : table<string>
+
     def is_suppressed(text : string; at : LineInfo) : bool {
-        if (at.fileInfo == null || at.line == 0u) {
-            return false
+        let code = extract_lint_code(text)
+        if (!empty(code)) {
+            return true if (key_exists(disabled_codes, code)
+                            || (!empty(enabled_codes) && !key_exists(enabled_codes, code)))
         }
-        
-        let colon = find(text, ":")
-        if (colon < 0) {
-            return false
-        }
-        let code = slice(text, 0, colon)
-        var found = false
-        get_file_source_line(at.fileInfo, at.line) <| $(line) {
-            
-            let nolint_pos = find(line, "nolint")
-            if (nolint_pos >= 0) {
-                found = find(line, code, nolint_pos) >= 0
-            }
-        }
-        return found
+        return is_lint_suppressed(at, code)
     }
 
     def perf_warning(text : string; at : LineInfo) : void {
         
-        let key = self->location_key(at)
-        if (reported_locations |> has_value(key)) {
-            return
-        }
-        reported_locations |> push(key)
         
-        if (self->is_suppressed(text, at)) {
-            return
-        }
+        if (in_template
+            || (current_function != null && current_function.flags.generated)) return
+        
+        let key = location_key(at)
+        if (key_exists(reported_locations, key)) return
+        reported_locations |> insert(key)
+        
+        if (is_suppressed(text, at)) return
         warning_count++
         var msg = text
-        if (current_function != null && current_function.fromGeneric != null && length(current_function.inferStack) > 0) {
-            msg = build_string() <| $(var w) {
+        if (current_function != null && current_function.fromGeneric != null && !empty(current_function.inferStack)) {
+            msg = build_string() $(var w) {
                 w |> write(text)
                 w |> write("\n  while compiling {current_function.name}")
                 for (ih in current_function.inferStack) {
@@ -137,28 +251,17 @@ class PerfLintVisitor : AstVisitor {
     
 
     def is_loop_variable(v : Variable?) : bool {
-        if (v == null) {
-            return false
-        }
+        if (v == null) return false
         for (entry in var_stack) {
-            if (entry.v == v && entry.is_iter) {
-                return true
-            }
+            if (entry.v == v && entry.is_iter) return true
         }
         return false
     }
 
     def is_defined_outside_loop(v : Variable?) : bool {
-        if (v == null || loop_depth == 0) {
-            return false
-        }
-        if (self->is_loop_variable(v)) {
-            return false
-        }
+        if (v == null || loop_depth == 0 || is_loop_variable(v)) return false
         for (entry in var_stack) {
-            if (entry.v == v) {
-                return entry.depth < loop_depth
-            }
+            if (entry.v == v) return entry.depth < loop_depth
         }
         
         return true
@@ -166,26 +269,20 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def is_character_at_zero(expr : smart_ptr<ExprCall>) : bool {
+    def is_character_at_zero(expr : ExprCall?) : bool {
         if (length(expr.arguments) >= 2) {
-            var idx = get_ptr(expr.arguments[1])
-            if (idx is ExprConstInt && (idx as ExprConstInt).value == 0) {
-                return true
-            }
+            var idx = expr.arguments[1]
+            if (idx is ExprConstInt && (idx as ExprConstInt).value == 0) return true
         }
         return false
     }
 
-    def is_array_func(expr : smart_ptr<ExprCall>; fname : string) : bool {
+    def is_array_func(expr : ExprCall?; fname : string) : bool {
         
         
-        if (expr.func.fromGeneric == null || expr.func.fromGeneric.name != fname) {
-            return false
-        }
-        if (length(expr.arguments) < 1) {
-            return false
-        }
-        let arg = get_ptr(expr.arguments[0])
+        if (expr.func == null || expr.func.fromGeneric == null
+            || expr.func.fromGeneric.name != fname || empty(expr.arguments)) return false
+        let arg = expr.arguments[0]
         return arg._type != null && arg._type.baseType == Type.tArray
     }
 
@@ -197,46 +294,44 @@ class PerfLintVisitor : AstVisitor {
         if (expr is ExprVar) {
             var evar = expr as ExprVar
             return null if (evar.variable == null)
-            return get_ptr(evar.variable)
+            return evar.variable
         }
-        if (expr is ExprRef2Value) {
-            return self->find_expr_path(get_ptr((expr as ExprRef2Value).subexpr), path)
-        }
+        if (expr is ExprRef2Value) return find_expr_path((expr as ExprRef2Value.subexpr), path)
         if (expr is ExprField) {
             var field = expr as ExprField
             path := ".{field.name}{path}"
-            return self->find_expr_path(get_ptr(field.value), path)
+            return find_expr_path(field.value, path)
         }
         if (expr is ExprSafeField) {
             var field = expr as ExprSafeField
             path := ".{field.name}{path}"
-            return self->find_expr_path(get_ptr(field.value), path)
+            return find_expr_path(field.value, path)
         }
         if (expr is ExprAt) {
             var at = expr as ExprAt
             path := "[*]{path}"
-            return self->find_expr_path(get_ptr(at.subexpr), path)
+            return find_expr_path(at.subexpr, path)
         }
         if (expr is ExprSafeAt) {
             var at = expr as ExprSafeAt
             path := "[*]{path}"
-            return self->find_expr_path(get_ptr(at.subexpr), path)
+            return find_expr_path(at.subexpr, path)
         }
         if (expr is ExprSwizzle) {
             var swiz = expr as ExprSwizzle
-            return self->find_expr_path(get_ptr(swiz.value), path)
+            return find_expr_path(swiz.value, path)
         }
         if (expr is ExprCast) {
             var ca = expr as ExprCast
-            return self->find_expr_path(get_ptr(ca.subexpr), path)
+            return find_expr_path(ca.subexpr, path)
         }
         if (expr is ExprRef2Ptr) {
             var rr = expr as ExprRef2Ptr
-            return self->find_expr_path(get_ptr(rr.subexpr), path)
+            return find_expr_path(rr.subexpr, path)
         }
         if (expr is ExprPtr2Ref) {
             var rr = expr as ExprPtr2Ref
-            return self->find_expr_path(get_ptr(rr.subexpr), path)
+            return find_expr_path(rr.subexpr, path)
         }
         
         return null
@@ -251,14 +346,12 @@ class PerfLintVisitor : AstVisitor {
         
         var inner = expr
         if (inner is ExprRef2Value) {
-            inner = get_ptr((inner as ExprRef2Value).subexpr)
+            inner = (inner as ExprRef2Value.subexpr)
         }
         return null if (inner == null || !(inner is ExprVar))
         var evar = inner as ExprVar
         return null if (evar.variable == null || evar.variable._type == null)
-        if (evar.variable._type.baseType == Type.tString) {
-            return get_ptr(evar.variable)
-        }
+        if (evar.variable._type.baseType == Type.tString) return evar.variable
         return null
     }
 
@@ -269,22 +362,15 @@ class PerfLintVisitor : AstVisitor {
         return false if (expr == null)
         var inner = expr
         if (inner is ExprRef2Value) {
-            inner = get_ptr((inner as ExprRef2Value).subexpr)
+            inner = (inner as ExprRef2Value.subexpr)
         }
         return false if (inner == null || !(inner is ExprCall))
         var call = inner as ExprCall
-        if (length(call.arguments) < 1) {
-            return false
-        }
         
         
-        if (call.name != "string") {
-            return false
-        }
-        var arg = get_ptr(call.arguments[0])
-        if (arg._type == null || arg._type.baseType != Type.tHandle) {
-            return false
-        }
+        if (empty(call.arguments) || call.name != "string") return false
+        var arg = call.arguments[0]
+        if (arg._type == null || arg._type.baseType != Type.tHandle) return false
         return arg._type.annotation != null && arg._type.annotation.name == "das_string"
     }
 
@@ -292,26 +378,296 @@ class PerfLintVisitor : AstVisitor {
         
         return false if (expr == null || !(expr is ExprCall))
         var call = expr as ExprCall
-        if (call.func == null || call.func.fromGeneric == null) {
-            return false
-        }
+        if (call.func == null || call.func.fromGeneric == null) return false
         return call.func.fromGeneric.name == "get_ptr"
+    }
+
+    def is_get_ptr_vs_null(maybe_get_ptr : Expression?; maybe_null : Expression?) : bool {
+        
+        if (!is_get_ptr_of_smart_ptr(maybe_get_ptr) || maybe_null == null) return false
+        if (maybe_null is ExprConstPtr) {
+            var cptr = maybe_null as ExprConstPtr
+            return cptr.value == null
+        }
+        return false
+    }
+
+    
+
+    def is_const_zero(expr : Expression? const) : bool {
+        if (expr == null) return false
+        if (expr is ExprConstInt) return (expr as ExprConstInt).value == 0
+        if (expr is ExprConstUInt) return (expr as ExprConstUInt).value == 0u
+        if (expr is ExprConstInt64) return (expr as ExprConstInt64).value == 0l
+        if (expr is ExprConstUInt64) return (expr as ExprConstUInt64).value == 0ul
+        if (expr is ExprConstFloat) return (expr as ExprConstFloat).value == 0.0f
+        if (expr is ExprConstDouble) return (expr as ExprConstDouble).value == 0.0lf
+        return false
+    }
+
+    def is_const_one(expr : Expression? const) : bool {
+        if (expr == null) return false
+        if (expr is ExprConstInt) return (expr as ExprConstInt).value == 1
+        if (expr is ExprConstUInt) return (expr as ExprConstUInt).value == 1u
+        if (expr is ExprConstInt64) return (expr as ExprConstInt64).value == 1l
+        if (expr is ExprConstUInt64) return (expr as ExprConstUInt64).value == 1ul
+        if (expr is ExprConstFloat) return (expr as ExprConstFloat).value == 1.0f
+        if (expr is ExprConstDouble) return (expr as ExprConstDouble).value == 1.0lf
+        return false
+    }
+
+    def is_const_neg_one(expr : Expression? const) : bool {
+        if (expr == null) return false
+        if (expr is ExprConstInt) return (expr as ExprConstInt).value == -1
+        if (expr is ExprConstInt64) return (expr as ExprConstInt64).value == -1l
+        if (expr is ExprConstFloat) return (expr as ExprConstFloat).value == -1.0f
+        if (expr is ExprConstDouble) return (expr as ExprConstDouble).value == -1.0lf
+        return false
+    }
+
+    def expr_equal_struct(a : Expression? const; b : Expression? const; require_pure : bool = true) : bool {
+        
+        
+        
+        
+        if ((a == null || b == null)
+            || (require_pure && (!a.flags.noSideEffects || !b.flags.noSideEffects))) return false
+        return describe(a) == describe(b)
+    }
+
+    def is_workhorse_numeric(t : TypeDecl?) : bool {
+        
+        
+        if (t == null) return false
+        let bt = t.baseType
+        return (bt == Type.tInt || bt == Type.tUInt
+                || bt == Type.tInt64 || bt == Type.tUInt64
+                || bt == Type.tFloat || bt == Type.tDouble)
+    }
+
+    def is_collection_length_call(expr : Expression? const) : bool {
+        
+        
+        if (expr == null || !(expr is ExprCall)) return false
+        let call = expr as ExprCall
+        if (call.func == null || call.func.name != "length") return false
+        let modname = string(call.func._module.name)
+        return modname == "strings" || modname == "$" || modname == "builtin"
+    }
+
+    
+
+    def unwrap_int_cast(expr : Expression? const) : Expression? const {
+        
+        
+        
+        if (expr == null) return null
+        var inner = expr
+        if (inner is ExprRef2Value) {
+            inner = (inner as ExprRef2Value.subexpr)
+        }
+        if (inner == null || !(inner is ExprCall)) return null
+        let call = inner as ExprCall
+        if (call.func == null || empty(call.arguments)) return null
+        let fname = string(call.func.fromGeneric != null ? call.func.fromGeneric.name : call.func.name)
+        if (fname != "int") return null
+        return call.arguments[0]
+    }
+
+    def enum_has_or_operator(t : TypeDecl?) : bool {
+        
+        
+        
+        if (t == null || t.enumType == null) return false
+        let key = intptr(t.enumType)
+        for (idx in range(length(perf019_enum_or_probed))) {
+            return perf019_enum_or_yes |> has_value(key) if (perf019_enum_or_probed[idx] == key)
+        }
+        var found = false
+        program_for_each_module(compiling_program()) $(mod) {
+            return if (found)
+            for_each_function(mod, "|") $(var fn) {
+                if (length(fn.arguments) == 2
+                    && fn.arguments[0]._type != null && fn.arguments[1]._type != null
+                    && (fn.arguments[0]._type |> is_same_type(t, RefMatters.no, ConstMatters.no, TemporaryMatters.no))
+                    && (fn.arguments[1]._type |> is_same_type(t, RefMatters.no, ConstMatters.no, TemporaryMatters.no))) {
+                    found = true
+                }
+            }
+        }
+        perf019_enum_or_probed |> push(key)
+        if (found) {
+            perf019_enum_or_yes |> push(key)
+        }
+        return found
+    }
+
+    def inner_type_supports_or(t : TypeDecl?) : bool {
+        
+        
+        
+        
+        if (t == null) return false
+        if (t.baseType == Type.tBitfield) return true
+        if (t.baseType == Type.tEnumeration) return enum_has_or_operator(t)
+        return false
+    }
+
+    
+
+    def perf020_target_basetype(fname : string) : Type {
+        
+        
+        
+        
+        
+        if (fname == "int") return Type.tInt
+        if (fname == "int8") return Type.tInt8
+        if (fname == "int16") return Type.tInt16
+        if (fname == "int64") return Type.tInt64
+        if (fname == "uint") return Type.tUInt
+        if (fname == "uint8") return Type.tUInt8
+        if (fname == "uint16") return Type.tUInt16
+        if (fname == "uint64") return Type.tUInt64
+        if (fname == "float") return Type.tFloat
+        if (fname == "double") return Type.tDouble
+        if (fname == "string") return Type.tString
+        if (fname == "bitfield") return Type.tBitfield
+        if (fname == "bitfield8") return Type.tBitfield8
+        if (fname == "bitfield16") return Type.tBitfield16
+        if (fname == "bitfield64") return Type.tBitfield64
+        return Type.none
+    }
+
+    
+
+    def is_clone_init_call(expr : Expression const?) : bool {
+        
+        
+        
+        if (expr == null || !(expr is ExprCall)) return false
+        let c = expr as ExprCall
+        if (length(c.arguments) != 1) return false
+        let n = string(c.name)
+        return (n == "clone_expression" || n == "clone_type"
+            || n == "clone_function" || n == "clone_variable"
+            || n == "clone_structure")
+    }
+
+    def get_clone_param_indices(callee : Function?; var out : array<int>&) : void {
+        
+        
+        out |> clear
+        if (callee == null) return
+        for (ann in callee.annotations) {
+            if (ann == null || ann.annotation == null || ann.annotation.name != "clone") continue
+            for (a in ann.arguments) {
+                for (i in 0 .. length(callee.arguments)) {
+                    if (callee.arguments[i].name == a.name) {
+                        out |> push(i)
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    
+
+    def perf025_value_kind(arg : Expression const?) : Perf025Kind {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if (arg == null || arg._type == null) return Perf025Kind.skip
+        let bt = arg._type.baseType
+        if (bt == Type.tInt || bt == Type.tInt8 || bt == Type.tInt16 || bt == Type.tInt64
+            || bt == Type.tFloat || bt == Type.tDouble || bt == Type.tString
+            || (bt == Type.tHandle && arg._type.annotation != null
+                && arg._type.annotation.name == "das_string")) return Perf025Kind.equivalent
+        if (bt == Type.tUInt || bt == Type.tUInt8 || bt == Type.tUInt16 || bt == Type.tUInt64) return Perf025Kind.unsigned_hex
+        return Perf025Kind.skip
+    }
+
+    def perf025_string_call_value(e : Expression const?) : Expression const? {
+        
+        
+        
+        
+        
+        
+        if (e == null || !(e is ExprCall)) return null
+        let c = e as ExprCall
+        if (c.func == null || empty(c.arguments)) return null
+        let fname = string(c.func.fromGeneric != null ? c.func.fromGeneric.name : c.func.name)
+        if (fname != "string") return null
+        if (length(c.arguments) >= 2) {
+            let a1 = c.arguments[1]
+            if (a1 != null && a1 is ExprConstBool && (a1 as ExprConstBool).value) return null
+        }
+        return c.arguments[0]
+    }
+
+    def perf025_unwrap_element(elem : Expression const?) : Expression const? {
+        
+        
+        
+        
+        
+        var ex = elem
+        if (ex != null && ex is ExprRef2Value) {
+            ex = (ex as ExprRef2Value.subexpr)
+        }
+        return ex
     }
 
     
 
     def override preVisitFunction(var fn : FunctionPtr) : void {
-        current_function = get_ptr(fn)
+        current_function = fn
+        in_template = fn.moreFlags.isTemplate
+        
+        perf023_candidates |> clear
+        perf023_splice_depth = 0
+        
+        perf024_candidates |> clear
+        perf024_skip_iptr = 0ul
     }
 
     def override visitFunction(var fn : FunctionPtr) : FunctionPtr {
+        
+        for (c in perf023_candidates) {
+            if (!c.disqualified && c.safe_uses >= 1 && c.v != null) {
+                perf_warning(
+                    "PERF023: var initialized via clone_expression and only spliced into qmacro/qmacro_block/qmacro_expr/qmacro_block_to_array; the splice already clones (apply_template), so drop the pre-clone and inline the source expression",
+                    c.v.at)
+            }
+        }
+        
+        for (c in perf024_candidates) {
+            if (!c.disqualified && c.safe_uses >= 1 && c.v != null) {
+                perf_warning(
+                    "PERF024: var initialized via clone_* and only passed to a function annotated [clone(...)] at the matching arg position; the callee clones internally, so drop the pre-clone and inline the source",
+                    c.v.at)
+            }
+        }
+        perf023_candidates |> clear
+        perf023_splice_depth = 0
+        perf024_candidates |> clear
+        perf024_skip_iptr = 0ul
         current_function = null
+        in_template = false
         return <- fn
     }
 
     
 
-    def override preVisitExprBlock(blk : smart_ptr<ExprBlock>) : void {
+    def override preVisitExprBlock(blk : ExprBlock?) : void {
         if (blk.blockFlags.isClosure) {
             in_closure++
             string_builder_save_stack |> push(string_builder_target_var)
@@ -320,15 +676,15 @@ class PerfLintVisitor : AstVisitor {
         scope_stack |> push(length(var_stack))
     }
 
-    def override visitExprBlock(var blk : smart_ptr<ExprBlock>) : ExpressionPtr {
+    def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
         if (blk.blockFlags.isClosure) {
             in_closure--
-            if (length(string_builder_save_stack) > 0) {
+            if (!empty(string_builder_save_stack)) {
                 string_builder_target_var = string_builder_save_stack |> back()
                 string_builder_save_stack |> pop()
             }
         }
-        if (length(scope_stack) > 0) {
+        if (!empty(scope_stack)) {
             var_stack |> resize(scope_stack |> back())
             scope_stack |> pop()
         }
@@ -337,15 +693,33 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprLetVariable(expr : smart_ptr<ExprLet>; var v : VariablePtr; last : bool) : void {
+    def override preVisitExprLetVariable(expr : ExprLet?; var v : VariablePtr; last : bool) : void {
         if (in_closure == 0) {
-            var_stack |> push(VarStackEntry(v = get_ptr(v), depth = loop_depth, is_iter = false))
+            var_stack |> push(VarStackEntry(v = v, depth = loop_depth, is_iter = false))
+        }
+        
+        
+        
+        
+        
+        if (in_closure == 0 && v != null && v.init != null && v.init is ExprCall) {
+            let initCall = v.init as ExprCall
+            if (initCall.name == "clone_expression" && length(initCall.arguments) == 1) {
+                perf023_candidates |> push(Perf023Candidate(v = v, safe_uses = 0, disqualified = false))
+            }
+        }
+        
+        
+        
+        
+        if (in_closure == 0 && v != null && is_clone_init_call(v.init)) {
+            perf024_candidates |> push(Perf024Candidate(v = v, safe_uses = 0, disqualified = false))
         }
         
         if (last && v.flags.init_via_move && v.init != null) {
             var dominated_by_clone = false
             
-            var ini = get_ptr(v.init)
+            var ini = v.init
             if (ini is ExprCall) {
                 let ecall = ini as ExprCall
                 if (ecall.func != null && ecall.func.fromGeneric != null) {
@@ -353,7 +727,7 @@ class PerfLintVisitor : AstVisitor {
                 }
             }
             if (!dominated_by_clone) {
-                pending_move_var = get_ptr(v)
+                pending_move_var = v
                 pending_move_at = expr.at
             }
         }
@@ -361,18 +735,18 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprBlockExpression(blk : smart_ptr<ExprBlock>; expr : ExpressionPtr) : void {
+    def override preVisitExprBlockExpression(blk : ExprBlock?; expr : ExpressionPtr) : void {
         if (pending_move_var != null) {
-            var e = get_ptr(expr)
+            var e = expr
             if (e is ExprReturn) {
                 var ret = e as ExprReturn
                 if (ret.returnFlags.moveSemantics && ret.subexpr != null) {
-                    var sub = get_ptr(ret.subexpr)
+                    var sub = ret.subexpr
                     if (sub is ExprRef2Value) {
-                        sub = get_ptr((sub as ExprRef2Value).subexpr)
+                        sub = (sub as ExprRef2Value.subexpr)
                     }
-                    if (sub is ExprVar && get_ptr((sub as ExprVar).variable) == pending_move_var) {
-                        self->perf_warning("PERF009: redundant move into variable immediately returned; use return <- expr directly", pending_move_at)
+                    if (sub is ExprVar && (sub as ExprVar.variable) == pending_move_var) {
+                        perf_warning("PERF009: redundant move into variable immediately returned; use return <- expr directly", pending_move_at)
                     }
                 }
             }
@@ -382,73 +756,385 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprFor(expr : smart_ptr<ExprFor>) : void {
+    def override preVisitExprFor(expr : ExprFor?) : void {
         if (in_closure == 0) {
             scope_stack |> push(length(var_stack))
             loop_depth++
             if_depth_stack |> push(0)
             current_for_known_length = true
             loop_has_early_exit |> push(false)
+            perf018_push_sentinel(expr)
+            perf022_push_sentinel(expr)
         }
     }
 
     def is_known_length_source(src : Expression?) : bool {
-        if (src == null || src._type == null) {
-            return false
-        }
+        if (src == null || src._type == null) return false
         let bt = src._type.baseType
-        if (bt == Type.tArray || bt == Type.tString) {
-            return true
-        }
-        if (bt == Type.tRange || bt == Type.tRange64 || bt == Type.tURange || bt == Type.tURange64) {
-            return true
-        }
         
-        if (src._type.dim |> length > 0) {
-            return true
-        }
-        return false
+        return (bt == Type.tArray || bt == Type.tString
+                || bt == Type.tRange || bt == Type.tRange64
+                || bt == Type.tURange || bt == Type.tURange64
+                || bt == Type.tFixedArray)
     }
 
-    def override preVisitExprForSource(expr : smart_ptr<ExprFor>; src : ExpressionPtr; last : bool) : void {
-        if (in_closure == 0 && !self->is_known_length_source(get_ptr(src))) {
+    def override preVisitExprForSource(expr : ExprFor?; src : ExpressionPtr; last : bool) : void {
+        if (in_closure == 0 && !is_known_length_source(src)) {
             current_for_known_length = false
         }
+        if (in_closure == 0) {
+            perf018_record_source(src)
+            perf022_record_source(src)
+        }
     }
 
-    def override preVisitExprForBody(expr : smart_ptr<ExprFor>) : void {
+    def override preVisitExprForBody(expr : ExprFor?) : void {
         if (in_closure == 0 && current_for_known_length) {
             known_length_loop_depth++
         }
-    }
-
-    def override preVisitExprForVariable(expr : smart_ptr<ExprFor>; var v : VariablePtr; last : bool) : void {
         if (in_closure == 0) {
-            var_stack |> push(VarStackEntry(v = get_ptr(v), depth = loop_depth - 1, is_iter = true))
+            perf018_finalize_on_body()
+            perf022_inspect_body(expr.body)
         }
     }
 
-    def override visitExprFor(var expr : smart_ptr<ExprFor>) : ExpressionPtr {
+    def override preVisitExprForVariable(expr : ExprFor?; var v : VariablePtr; last : bool) : void {
         if (in_closure == 0) {
+            var_stack |> push(VarStackEntry(v = v, depth = loop_depth - 1, is_iter = true))
+            perf018_record_var(v)
+            perf022_record_var(v)
+        }
+    }
+
+    def override visitExprFor(var expr : ExprFor?) : ExpressionPtr {
+        if (in_closure == 0) {
+            perf018_pop_and_check()
+            perf022_pop_and_check()
             loop_depth--
             if (current_for_known_length) {
                 known_length_loop_depth--
             }
-            if (length(scope_stack) > 0) {
+            if (!empty(scope_stack)) {
                 var_stack |> resize(scope_stack |> back())
                 scope_stack |> pop()
             }
-            if (length(if_depth_stack) > 0) {
+            if (!empty(if_depth_stack)) {
                 if_depth_stack |> pop()
             }
-            if (length(loop_has_early_exit) > 0) {
+            if (!empty(loop_has_early_exit)) {
                 loop_has_early_exit |> pop()
             }
         }
         return <- expr
     }
 
-    def override preVisitExprWhile(expr : smart_ptr<ExprWhile>) : void {
+    
+
+    def perf018_push_sentinel(expr : ExprFor?) : void {
+        
+        
+        
+        var state = Perf018State(disqualified = true, matched = false)
+        perf018_stack    |> push(state)
+        unsafe {
+            perf018_for_exprs |> push(reinterpret<ExprFor?>(expr))
+        }
+    }
+
+    def perf018_pop_and_check() : void {
+        if (empty(perf018_stack)) return
+        let top_idx = length(perf018_stack) - 1
+        let state = perf018_stack[top_idx]
+        let owning = perf018_for_exprs[top_idx]
+        perf018_stack    |> pop()
+        perf018_for_exprs |> pop()
+        if (state.matched && !state.disqualified && state.qualified_count > 0 && owning != null) {
+            perf_warning("PERF018: for (i in range(length(X))) where i only indexes X; use 'for (c in X)' for direct iteration", owning.at)
+        }
+    }
+
+    def perf018_bare_var_of(var e : ExpressionPtr) : Variable? {
+        
+        
+        
+        var inner = e
+        if (inner is ExprRef2Value) {
+            inner = (inner as ExprRef2Value.subexpr)
+        }
+        return null if (inner == null || !(inner is ExprVar))
+        var evar = inner as ExprVar
+        return evar.variable
+    }
+
+    def perf018_record_source(src : ExpressionPtr) : void {
+        
+        
+        
+        if (empty(perf018_stack)) return
+        let top_idx = length(perf018_stack) - 1
+        var state = perf018_stack[top_idx]
+        state.sources_seen++
+        if (state.sources_seen > 1) {
+            
+            state.disqualified = true
+            perf018_stack[top_idx] = state
+            return
+        }
+        var s = src
+        if (s is ExprCast) {
+            s = (s as ExprCast.subexpr)
+        }
+        if (s == null || !(s is ExprCall)) {
+            perf018_stack[top_idx] = state
+            return
+        }
+        var rng = s as ExprCall
+        if (rng.func == null || rng.func.name != "range"
+            || length(rng.arguments) != 1) {
+            perf018_stack[top_idx] = state
+            return
+        }
+        var inner = rng.arguments[0]
+        if (inner is ExprCast) {
+            inner = (inner as ExprCast.subexpr)
+        }
+        if (inner == null || !(inner is ExprCall)) {
+            perf018_stack[top_idx] = state
+            return
+        }
+        var len = inner as ExprCall
+        if (len.func == null || len.func.name != "length"
+            || length(len.arguments) != 1) {
+            perf018_stack[top_idx] = state
+            return
+        }
+        var av = perf018_bare_var_of(len.arguments[0])
+        if (av == null) {
+            perf018_stack[top_idx] = state
+            return
+        }
+        state.arr_var = av
+        perf018_stack[top_idx] = state
+    }
+
+    def perf018_record_var(var v : Variable?) : void {
+        
+        
+        
+        if (empty(perf018_stack) || v == null) return
+        let top_idx = length(perf018_stack) - 1
+        var state = perf018_stack[top_idx]
+        state.vars_seen++
+        if (state.vars_seen > 1) {
+            state.disqualified = true
+            perf018_stack[top_idx] = state
+            return
+        }
+        state.iter_var = v
+        perf018_stack[top_idx] = state
+    }
+
+    def perf018_finalize_on_body() : void {
+        
+        
+        
+        
+        if (empty(perf018_stack)) return
+        let top_idx = length(perf018_stack) - 1
+        var state = perf018_stack[top_idx]
+        if (state.sources_seen == 1 && state.vars_seen == 1
+            && state.arr_var != null && state.iter_var != null) {
+            state.matched = true
+            state.disqualified = false
+        }
+        perf018_stack[top_idx] = state
+    }
+
+    def perf018_at_matches(var at : ExprAt?; frame_idx : int) : bool {
+        
+        
+        
+        if (frame_idx < 0 || frame_idx >= length(perf018_stack)) return false
+        let state = perf018_stack[frame_idx]
+        if (state.disqualified || !state.matched
+            || state.arr_var == null || state.iter_var == null) return false
+        let av = perf018_bare_var_of(at.subexpr)
+        if (av != state.arr_var) return false
+        var idx = at.index
+        if (idx is ExprRef2Value) {
+            idx = (idx as ExprRef2Value.subexpr)
+        }
+        return idx != null && idx is ExprVar && (idx as ExprVar).variable == state.iter_var
+    }
+
+    def perf018_on_at(var expr : ExprAt?) : void {
+        var pushes = 0
+        let n = length(perf018_stack)
+        for (i in range(n)) {
+            if (perf018_at_matches(expr, i)) {
+                var st = perf018_stack[i]
+                st.qualified_count++
+                perf018_stack[i] = st
+                pushes++
+            }
+        }
+        if (pushes > 0) {
+            in_qualifying_idx += pushes
+        }
+        at_qualifying_pushes |> push(pushes)
+    }
+
+    def perf018_off_at() : void {
+        if (empty(at_qualifying_pushes)) return
+        let n = at_qualifying_pushes |> back()
+        at_qualifying_pushes |> pop()
+        in_qualifying_idx -= n
+    }
+
+    def perf018_on_var(v : Variable?) : void {
+        
+        
+        if (v == null || empty(perf018_stack) || in_qualifying_idx > 0) return
+        let n = length(perf018_stack)
+        for (i in range(n)) {
+            var st = perf018_stack[i]
+            if (st.matched && !st.disqualified && st.iter_var == v) {
+                st.disqualified = true
+                perf018_stack[i] = st
+            }
+        }
+    }
+
+    
+
+    def perf022_push_sentinel(expr : ExprFor?) : void {
+        
+        
+        
+        
+        
+        var state : Perf022State
+        perf022_stack |> push(state)
+        unsafe {
+            perf022_for_exprs |> push(reinterpret<ExprFor?>(expr))
+        }
+    }
+
+    def perf022_record_source(src : Expression?) : void {
+        if (empty(perf022_stack)) return
+        let top_idx = length(perf022_stack) - 1
+        var state = perf022_stack[top_idx]
+        state.sources_seen++
+        if (state.sources_seen > 1) {
+            state.disqualified = true
+        }
+        
+        
+        
+        if (src == null || src._type == null) {
+            state.disqualified = true
+        } else {
+            let bt = src._type.baseType
+            let is_array_src = bt == Type.tArray || bt == Type.tFixedArray
+            if (!is_array_src) {
+                state.disqualified = true
+            }
+        }
+        perf022_stack[top_idx] = state
+    }
+
+    def perf022_record_var(var v : Variable?) : void {
+        if (empty(perf022_stack) || v == null) return
+        let top_idx = length(perf022_stack) - 1
+        var state = perf022_stack[top_idx]
+        state.vars_seen++
+        if (state.vars_seen > 1) {
+            state.disqualified = true
+            perf022_stack[top_idx] = state
+            return
+        }
+        state.iter_var = v
+        perf022_stack[top_idx] = state
+    }
+
+    def perf022_inspect_body(body : Expression?) : void {
+        
+        
+        
+        
+        
+        if (empty(perf022_stack)) return
+        let top_idx = length(perf022_stack) - 1
+        var state = perf022_stack[top_idx]
+        if (state.disqualified || state.iter_var == null
+            || state.sources_seen != 1 || state.vars_seen != 1
+            || body == null || !(body is ExprBlock)) return
+        var blk = body as ExprBlock
+        if (length(blk.list) != 1) return
+        var stmt = blk.list[0]
+        if (stmt == null || !(stmt is ExprCall) || (stmt as ExprCall).func == null
+            || length((stmt as ExprCall).arguments) != 2) return
+        var call = stmt as ExprCall
+        
+        
+        
+        
+        let dest = call.arguments[0]
+        if (dest == null || dest._type == null || dest._type.baseType != Type.tArray) return
+        var callee_id = 0
+        if (call.func.fromGeneric != null) {
+            if (call.func.fromGeneric.name == "push") {
+                callee_id = 1
+            } elif (call.func.fromGeneric.name == "push_clone") {
+                callee_id = 2
+            }
+        } else {
+            if (call.func.name == "push") {
+                callee_id = 1
+            } elif (call.func.name == "push_clone") {
+                callee_id = 2
+            }
+        }
+        if (callee_id == 0) return
+        var arg1 = call.arguments[1]
+        if (arg1 is ExprRef2Value) {
+            arg1 = (arg1 as ExprRef2Value.subexpr)
+        }
+        if (arg1 == null || !(arg1 is ExprVar)) return
+        var ev = arg1 as ExprVar
+        if (ev.variable != state.iter_var) return
+        state.matched = true
+        state.callee_id = callee_id
+        perf022_stack[top_idx] = state
+    }
+
+    def perf022_pop_and_check() : void {
+        if (empty(perf022_stack)) return
+        let top_idx = length(perf022_stack) - 1
+        let state = perf022_stack[top_idx]
+        let owning = perf022_for_exprs[top_idx]
+        perf022_stack    |> pop()
+        perf022_for_exprs |> pop()
+        if (state.matched && !state.disqualified && owning != null) {
+            let name = state.callee_id == 1 ? "push" : "push_clone"
+            perf_warning("PERF022: for-loop body 'B |> {name}(x)' pushes one element per iteration; use 'B |> {name}_from(A)' for a bulk reserve+copy", owning.at)
+        }
+    }
+
+    def override preVisitExprAt(var expr : ExprAt?) : void {
+        if (in_closure == 0 && expr != null) {
+            perf018_on_at(expr)
+        }
+    }
+
+    def override visitExprAt(var expr : ExprAt?) : ExpressionPtr {
+        if (in_closure == 0) {
+            perf018_off_at()
+        }
+        return <- expr
+    }
+
+    def override preVisitExprWhile(expr : ExprWhile?) : void {
         if (in_closure == 0) {
             scope_stack |> push(length(var_stack))
             loop_depth++
@@ -458,21 +1144,21 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprWhileBody(expr : smart_ptr<ExprWhile>; body : ExpressionPtr) : void {
+    def override preVisitExprWhileBody(expr : ExprWhile?; body : ExpressionPtr) : void {
         in_while_cond = false
     }
 
-    def override visitExprWhile(var expr : smart_ptr<ExprWhile>) : ExpressionPtr {
+    def override visitExprWhile(var expr : ExprWhile?) : ExpressionPtr {
         if (in_closure == 0) {
             loop_depth--
-            if (length(scope_stack) > 0) {
+            if (!empty(scope_stack)) {
                 var_stack |> resize(scope_stack |> back())
                 scope_stack |> pop()
             }
-            if (length(if_depth_stack) > 0) {
+            if (!empty(if_depth_stack)) {
                 if_depth_stack |> pop()
             }
-            if (length(loop_has_early_exit) > 0) {
+            if (!empty(loop_has_early_exit)) {
                 loop_has_early_exit |> pop()
             }
         }
@@ -482,28 +1168,28 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprBreak(expr : smart_ptr<ExprBreak>) : void {
-        if (in_closure == 0 && length(loop_has_early_exit) > 0) {
+    def override preVisitExprBreak(expr : ExprBreak?) : void {
+        if (in_closure == 0 && !empty(loop_has_early_exit)) {
             loop_has_early_exit[length(loop_has_early_exit) - 1] = true
         }
     }
 
-    def override preVisitExprContinue(expr : smart_ptr<ExprContinue>) : void {
-        if (in_closure == 0 && length(loop_has_early_exit) > 0) {
+    def override preVisitExprContinue(expr : ExprContinue?) : void {
+        if (in_closure == 0 && !empty(loop_has_early_exit)) {
             loop_has_early_exit[length(loop_has_early_exit) - 1] = true
         }
     }
 
     
 
-    def override preVisitExprIfThenElse(ifte : smart_ptr<ExprIfThenElse>) : void {
-        if (length(if_depth_stack) > 0) {
+    def override preVisitExprIfThenElse(ifte : ExprIfThenElse?) : void {
+        if (!empty(if_depth_stack)) {
             if_depth_stack[length(if_depth_stack) - 1]++
         }
     }
 
-    def override visitExprIfThenElse(var ifte : smart_ptr<ExprIfThenElse>) : ExpressionPtr {
-        if (length(if_depth_stack) > 0) {
+    def override visitExprIfThenElse(var ifte : ExprIfThenElse?) : ExpressionPtr {
+        if (!empty(if_depth_stack)) {
             if_depth_stack[length(if_depth_stack) - 1]--
         }
         return <- ifte
@@ -513,35 +1199,563 @@ class PerfLintVisitor : AstVisitor {
     
     
 
-    def override preVisitExprOp2(expr : smart_ptr<ExprOp2>) : void {
-        if (in_closure > 0) {
-            return
-        }
+    def override preVisitExprOp2(expr : ExprOp2?) : void {
+        
+        
+        
+        
         if (loop_depth > 0 && expr.op == "+=") {
-            let v = self->find_string_var_from_expr(get_ptr(expr.left))
-            if (v != null && self->is_defined_outside_loop(v)) {
-                self->perf_warning("PERF001: string += in loop creates O(n^2) allocations; use build_string() instead", expr.at)
+            let v = find_string_var_from_expr(expr.left)
+            if (v != null && is_defined_outside_loop(v)) {
+                perf_warning("PERF001: string += in loop creates O(n^2) allocations; use build_string() instead", expr.at)
             }
         }
         
         if (expr.op == "==" || expr.op == "!=") {
-            let left_is = self->is_string_of_das_string(get_ptr(expr.left))
-            let right_is = self->is_string_of_das_string(get_ptr(expr.right))
+            let left_is = is_string_of_das_string(expr.left)
+            let right_is = is_string_of_das_string(expr.right)
             if (left_is || right_is) {
-                self->perf_warning("PERF007: string(das_string) in comparison is unnecessary; das_string supports == and != directly", expr.at)
+                perf_warning("PERF007: string(das_string) in comparison is unnecessary; das_string supports == and != directly", expr.at)
             }
         }
         
         if (expr.op == "==") {
-            var left = get_ptr(expr.left)
+            var left = expr.left
             
             if (left is ExprRef2Value) {
-                left = get_ptr((left as ExprRef2Value).subexpr)
+                left = (left as ExprRef2Value.subexpr)
             }
             if (left is ExprField) {
                 var field = left as ExprField
-                if (field.name == "__rtti" && self->is_get_ptr_of_smart_ptr(get_ptr(field.value))) {
-                    self->perf_warning("PERF008: get_ptr() is unnecessary for is/as; smart_ptr supports type checks directly", expr.at)
+                if (field.name == "__rtti" && is_get_ptr_of_smart_ptr(field.value)) {
+                    perf_warning("PERF008: get_ptr() is unnecessary for is/as; smart_ptr supports type checks directly", expr.at)
+                }
+            }
+        }
+        
+        if (is_get_ptr_vs_null(expr.left, expr.right) || is_get_ptr_vs_null(expr.right, expr.left)) {
+            perf_warning("PERF010: get_ptr() is unnecessary for null comparison; smart_ptr supports == and != null directly", expr.at)
+        }
+        
+        
+        
+        if (expr.op == "+=" || expr.op == "-=") {
+            if (expr.left != null && is_workhorse_numeric(expr.left._type)) {
+                let rhs_one = is_const_one(expr.right)
+                let rhs_neg = is_const_neg_one(expr.right)
+                var delta = 0
+                if (rhs_one) {
+                    delta = expr.op == "+=" ? 1 : -1
+                } elif (rhs_neg) {
+                    delta = expr.op == "+=" ? -1 : 1
+                }
+                if (delta == 1) {
+                    perf_warning("PERF013: '{expr.op} {rhs_one ? 1 : -1}' on a numeric scalar; use postfix '++' for a faster, idiomatic increment", expr.at)
+                } elif (delta == -1) {
+                    perf_warning("PERF013: '{expr.op} {rhs_one ? 1 : -1}' on a numeric scalar; use postfix '--' for a faster, idiomatic decrement", expr.at)
+                }
+            }
+        }
+        
+        
+        
+        if (expr.op == "&&") {
+            check_perf014_digit(expr, false)
+            check_perf014_alpha(expr, true)
+        }
+        if (expr.op == "||") {
+            check_perf014_digit(expr, true)
+            check_perf014_alpha(expr, false)
+        }
+        
+        if (expr.op == "==" || expr.op == "!=" || expr.op == "<" || expr.op == "<=" || expr.op == ">" || expr.op == ">=") {
+            check_perf017_length_zero(expr)
+        }
+        
+        
+        if (expr.op == "|") {
+            check_perf019_int_cast_or(expr)
+        }
+    }
+
+    def check_perf019_int_cast_or(expr : ExprOp2?) : void {
+        let l = unwrap_int_cast(expr.left)
+        let r = unwrap_int_cast(expr.right)
+        if (l == null || r == null
+            || l._type == null || r._type == null
+            || !inner_type_supports_or(l._type)
+            || !(l._type |> is_same_type(r._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no))) return
+        let bt = l._type.baseType
+        let kind = bt == Type.tBitfield ? "bitfield" : "enum"
+        perf_warning("PERF019: int(...) | int(...) on the same {kind} type can collapse to int(L | R) (one cast instead of two)", expr.at)
+    }
+
+    
+
+    def check_perf020_redundant_cast(call : ExprCall?) : void {
+        if (call == null || call.func == null || length(call.arguments) != 1) return
+        let fname = string(call.func.fromGeneric != null ? call.func.fromGeneric.name : call.func.name)
+        let target = perf020_target_basetype(fname)
+        if (target == Type.none) return
+        var arg = call.arguments[0]
+        if (arg is ExprRef2Value) {
+            arg = (arg as ExprRef2Value.subexpr)
+        }
+        if (arg == null || arg._type == null || arg._type.baseType != target) return
+        perf_warning("PERF020: redundant {fname}(...) cast — argument is already {fname}", call.at)
+    }
+
+    
+
+    def cast_call_workhorse_target(e : Expression?; var fname_out : string&) : Type {
+        
+        
+        
+        
+        var ee = e
+        if (ee != null && ee is ExprRef2Value) {
+            ee = (ee as ExprRef2Value.subexpr)
+        }
+        if (ee == null || !(ee is ExprCall)) return Type.none
+        let c = ee as ExprCall
+        if (c.func == null || empty(c.arguments)) return Type.none
+        let n = string(c.func.fromGeneric != null ? c.func.fromGeneric.name : c.func.name)
+        let t = perf020_target_basetype(n)
+        if (t == Type.none) return Type.none
+        fname_out = n
+        return t
+    }
+
+    def cast_call_arg_basetype(e : Expression?) : Type {
+        
+        
+        var ee = e
+        if (ee != null && ee is ExprRef2Value) {
+            ee = (ee as ExprRef2Value.subexpr)
+        }
+        if (ee == null || !(ee is ExprCall)) return Type.none
+        let c = ee as ExprCall
+        if (empty(c.arguments)) return Type.none
+        var arg = c.arguments[0]
+        if (arg is ExprRef2Value) {
+            arg = (arg as ExprRef2Value.subexpr)
+        }
+        if (arg == null || arg._type == null) return Type.none
+        return arg._type.baseType
+    }
+
+    def cast_call_tail_args_equal(le, re : Expression?) : bool {
+        
+        
+        
+        
+        
+        
+        var lee = le
+        var ree = re
+        if (lee != null && lee is ExprRef2Value) {
+            lee = (lee as ExprRef2Value.subexpr)
+        }
+        if (ree != null && ree is ExprRef2Value) {
+            ree = (ree as ExprRef2Value.subexpr)
+        }
+        if (lee == null || ree == null || !(lee is ExprCall) || !(ree is ExprCall)) return false
+        let lc = lee as ExprCall
+        let rc = ree as ExprCall
+        var li = 1
+        var ri = 1
+        let ln = length(lc.arguments)
+        let rn = length(rc.arguments)
+        while (true) {
+            while (li < ln && (lc.arguments[li] is ExprFakeContext || lc.arguments[li] is ExprFakeLineInfo)) {
+                li++
+            }
+            while (ri < rn && (rc.arguments[ri] is ExprFakeContext || rc.arguments[ri] is ExprFakeLineInfo)) {
+                ri++
+            }
+            if (li >= ln || ri >= rn) return (li >= ln && ri >= rn)
+            if (!expr_equal_struct(lc.arguments[li], rc.arguments[ri], false)) return false
+            li++
+            ri++
+        }
+        return true
+    }
+
+    def check_perf021_ternary_cast_hoist(expr : ExprOp3?) : void {
+        if (expr == null || expr.op != "?"
+            || expr.left == null || expr.right == null) return
+        var lname = ""
+        var rname = ""
+        let lt = cast_call_workhorse_target(expr.left, lname)
+        let rt = cast_call_workhorse_target(expr.right, rname)
+        let la = cast_call_arg_basetype(expr.left)
+        let ra = cast_call_arg_basetype(expr.right)
+        
+        
+        
+        if (lt == Type.none || rt == Type.none || lt != rt || lname != rname
+            || la == Type.none || la != ra
+            || !cast_call_tail_args_equal(expr.left, expr.right)) return
+        perf_warning("PERF021: redundant per-branch {lname}(...) cast in ternary — hoist as {lname}(cond ? a : b)", expr.at)
+    }
+
+    
+
+    def parse_range_leg(leg : Expression?; upper_op, lower_op : string; var v_out : Expression?&; var bound_out : int&; var is_hi_out : bool&) : bool {
+        
+        
+        
+        
+        
+        
+        
+        if (leg == null || !(leg is ExprOp2)) return false
+        var op2 = leg as ExprOp2
+        let opname = string(op2.op)
+        if (opname != upper_op && opname != lower_op) return false
+        if (op2.right is ExprConstInt && op2.left != null) {
+            v_out = op2.left
+            bound_out = (op2.right as ExprConstInt).value
+            is_hi_out = opname == upper_op
+            return true
+        }
+        if (op2.left is ExprConstInt && op2.right != null) {
+            v_out = op2.right
+            bound_out = (op2.left as ExprConstInt).value
+            is_hi_out = opname == lower_op
+            return true
+        }
+        return false
+    }
+
+    def parse_bounded_range(expr : ExprOp2?; negated : bool; var v_out : Expression?&; var lo_out : int&; var hi_out : int&) : bool {
+        
+        
+        
+        
+        
+        if (expr == null || expr.op != (negated ? "||" : "&&")) return false
+        let upper_op = negated ? ">" : "<="
+        let lower_op = negated ? "<" : ">="
+        var va : Expression? = null
+        var vb : Expression? = null
+        var bound_a = 0
+        var bound_b = 0
+        var hi_a = false
+        var hi_b = false
+        if (!parse_range_leg(expr.left, upper_op, lower_op, va, bound_a, hi_a)
+            || !parse_range_leg(expr.right, upper_op, lower_op, vb, bound_b, hi_b)
+            || !expr_equal_struct(va, vb)
+            || hi_a == hi_b) return false
+        let lo = hi_a ? bound_b : bound_a
+        let hi = hi_a ? bound_a : bound_b
+        if (lo >= hi) return false
+        v_out = va
+        lo_out = lo
+        hi_out = hi
+        return true
+    }
+
+    def check_perf014_digit(expr : ExprOp2?; negated : bool) : void {
+        
+        
+        var v : Expression? = null
+        var lo = 0
+        var hi = 0
+        if (!parse_bounded_range(expr, negated, v, lo, hi) || lo != 48 || hi != 57) return
+        let neg = negated ? "!" : ""
+        perf_warning("PERF014: char-class range check{negated ? " (negated)" : ""} '0'..'9' — use '{neg}is_number({describe(v)})' from strings module", expr.at)
+    }
+
+    def check_perf014_alpha(expr : ExprOp2?; negated : bool) : void {
+        
+        
+        
+        
+        
+        
+        if (expr == null || expr.op != (negated ? "&&" : "||")
+            || expr.left == null || expr.right == null
+            || !(expr.left is ExprOp2) || !(expr.right is ExprOp2)) return
+        var vL : Expression? = null
+        var vR : Expression? = null
+        var loL = 0
+        var hiL = 0
+        var loR = 0
+        var hiR = 0
+        if (!parse_bounded_range(expr.left as ExprOp2, negated, vL, loL, hiL)
+            || !parse_bounded_range(expr.right as ExprOp2, negated, vR, loR, hiR)
+            || !expr_equal_struct(vL, vR)) return
+        
+        let lowerUpper = loL == 97 && hiL == 122 && loR == 65 && hiR == 90
+        let upperLower = loL == 65 && hiL == 90 && loR == 97 && hiR == 122
+        if (!lowerUpper && !upperLower) return
+        let neg = negated ? "!" : ""
+        perf_warning("PERF014: char-class range check{negated ? " (negated)" : ""} 'a'..'z' + 'A'..'Z' — use '{neg}is_alpha({describe(vL)})' from strings module", expr.at)
+    }
+
+    
+
+    def peel_ref2value(e : Expression? const) : Expression? const {
+        if (e != null && e is ExprRef2Value) return (e as ExprRef2Value.subexpr)
+        return e
+    }
+
+    def const_int_value(e : Expression? const; var v : int&) : bool {
+        let inner = peel_ref2value(e)
+        if (inner == null) return false
+        if (inner is ExprConstInt) {
+            v = (inner as ExprConstInt).value
+            return true
+        }
+        if (inner is ExprConstUInt) {
+            v = int((inner as ExprConstUInt).value)
+            return true
+        }
+        return false
+    }
+
+    def check_perf017_length_zero(expr : ExprOp2?) : void {
+        
+        
+        
+        
+        
+        
+        
+        if (current_function != null) {
+            let direct_match = (current_function.name == "empty"
+                && current_function._module != null
+                && current_function._module.name == "builtin")
+            let generic_match = (current_function.fromGeneric != null
+                && current_function.fromGeneric.name == "empty"
+                && current_function.fromGeneric._module != null
+                && current_function.fromGeneric._module.name == "builtin")
+            if (direct_match || generic_match) return
+        }
+        let lhs = peel_ref2value(expr.left)
+        let rhs = peel_ref2value(expr.right)
+        var len_on_left = true
+        if (is_collection_length_call(lhs)) {
+            len_on_left = true
+        } elif (is_collection_length_call(rhs)) {
+            len_on_left = false
+        } else {
+            return
+        }
+        let const_side = len_on_left ? rhs : lhs
+        var k = 0
+        if (!const_int_value(const_side, k) || (k != 0 && k != 1)) return
+        let opname = string(expr.op)
+        
+        var canon_op = opname
+        if (!len_on_left) {
+            if (opname == "<") {
+                canon_op = ">"
+            } elif (opname == "<=") {
+                canon_op = ">="
+            } elif (opname == ">") {
+                canon_op = "<"
+            } elif (opname == ">=") {
+                canon_op = "<="
+            }
+        }
+        
+        
+        
+        
+        
+        var is_empty_pattern = false
+        var is_nonempty_pattern = false
+        if (k == 0) {
+            if (canon_op == "==" || canon_op == "<=") {
+                is_empty_pattern = true
+            } elif (canon_op == "!=" || canon_op == ">") {
+                is_nonempty_pattern = true
+            }
+        } else {
+            if (canon_op == "<") {
+                is_empty_pattern = true
+            } elif (canon_op == ">=") {
+                is_nonempty_pattern = true
+            }
+        }
+        
+        
+        if (is_empty_pattern) {
+            perf_warning("PERF017: 'length(x) {canon_op} {k}' — use 'empty(x)' (avoids unnecessary strlen on strings)", expr.at)
+        } elif (is_nonempty_pattern) {
+            perf_warning("PERF017: 'length(x) {canon_op} {k}' — use '!empty(x)' (avoids unnecessary strlen on strings)", expr.at)
+        }
+    }
+
+    
+
+    def override preVisitExprOp3(expr : ExprOp3?) : void {
+        
+        
+        check_perf021_ternary_cast_hoist(expr)
+        if (in_closure > 0 || expr.op != "?"
+            || expr.subexpr == null || !(expr.subexpr is ExprOp2)) return
+        var cmp = expr.subexpr as ExprOp2
+        let cop = string(cmp.op)
+        if ((cop != "<" && cop != "<=" && cop != ">" && cop != ">=")
+            || expr.left == null || expr.right == null) return
+        let t_branch = expr.left
+        let f_branch = expr.right
+        
+        
+        if (try_perf016_abs(expr, cmp, t_branch, f_branch, cop)) return
+        try_perf015_minmax(expr, cmp, t_branch, f_branch, cop)
+    }
+
+    def try_perf015_minmax(expr : ExprOp3?; cmp : ExprOp2?; t_branch, f_branch : Expression? const; cop : string) : bool {
+        let cl = cmp.left
+        let cr = cmp.right
+        if (cl == null || cr == null) return false
+        
+        let tcl = expr_equal_struct(t_branch, cl)
+        let tcr = expr_equal_struct(t_branch, cr)
+        let fcl = expr_equal_struct(f_branch, cl)
+        let fcr = expr_equal_struct(f_branch, cr)
+        let same_order = tcl && fcr   
+        let swap_order = tcr && fcl   
+        if (!same_order && !swap_order) return false
+        
+        
+        
+        var is_min = false
+        if (cop == "<" || cop == "<=") {
+            is_min = same_order
+        } else {
+            is_min = swap_order
+        }
+        let which = is_min ? "min" : "max"
+        perf_warning("PERF015: ternary {which} — use '{which}(a, b)' from math module", expr.at)
+        return true
+    }
+
+    def try_perf016_abs(expr : ExprOp3?; cmp : ExprOp2?; t_branch, f_branch : Expression? const; cop : string) : bool {
+        
+        var x_on_left = false
+        if (is_const_zero(cmp.right)) {
+            x_on_left = true
+        } elif (is_const_zero(cmp.left)) {
+            x_on_left = false
+        } else {
+            return false
+        }
+        let x_expr = x_on_left ? cmp.left : cmp.right
+        if (x_expr == null) return false
+        
+        var neg_then = false
+        var ok = false
+        if (is_neg_of(t_branch, x_expr) && expr_equal_struct(f_branch, x_expr)) {
+            neg_then = true
+            ok = true
+        } elif (expr_equal_struct(t_branch, x_expr) && is_neg_of(f_branch, x_expr)) {
+            neg_then = false
+            ok = true
+        }
+        if (!ok) return false
+        
+        
+        
+        
+        
+        
+        
+        var is_abs = false
+        if (x_on_left) {
+            if ((cop == "<" || cop == "<=") && neg_then) {
+                is_abs = true
+            } elif ((cop == ">" || cop == ">=") && !neg_then) {
+                is_abs = true
+            }
+        } else {
+            if ((cop == ">" || cop == ">=") && neg_then) {
+                is_abs = true
+            } elif ((cop == "<" || cop == "<=") && !neg_then) {
+                is_abs = true
+            }
+        }
+        if (!is_abs) return false
+        perf_warning("PERF016: ternary abs — use 'abs(x)' from math module", expr.at)
+        return true
+    }
+
+    def is_neg_of(maybe_neg : Expression? const; ref : Expression? const) : bool {
+        
+        if (maybe_neg == null || !(maybe_neg is ExprOp1)) return false
+        let op1 = maybe_neg as ExprOp1
+        if (op1.op != "-") return false
+        return expr_equal_struct(op1.subexpr, ref)
+    }
+
+    
+
+    def override preVisitExprField(expr : ExprField?) : void {
+        if (in_closure > 0) return
+        if (is_get_ptr_of_smart_ptr(expr.value)) {
+            perf_warning("PERF011: get_ptr() is unnecessary for field access; smart_ptr auto-dereferences", expr.at)
+        }
+    }
+
+    def override preVisitExprSafeField(expr : ExprSafeField?) : void {
+        if (in_closure > 0) return
+        if (is_get_ptr_of_smart_ptr(expr.value)) {
+            perf_warning("PERF011: get_ptr() is unnecessary for field access; smart_ptr auto-dereferences", expr.at)
+        }
+    }
+
+    
+
+    def override preVisitExprCallArgument(expr : ExprCall?; arg : ExpressionPtr; last : bool) : void {
+        
+        
+        
+        
+        
+        
+        
+        if (expr == null || expr.func == null) return
+        var indices : array<int>
+        get_clone_param_indices(expr.func, indices)
+        if (empty(indices)) return
+        
+        var arg_index = -1
+        for (i in 0 .. length(expr.arguments)) {
+            if (intptr(expr.arguments[i]) == intptr(arg)) {
+                arg_index = i
+                break
+            }
+        }
+        if (arg_index < 0 || !has_value(indices, arg_index)) return
+        
+        
+        
+        var inner = arg
+        if (inner is ExprRef2Value) {
+            inner = (inner as ExprRef2Value).subexpr
+        }
+        
+        if (is_clone_init_call(inner)) {
+            perf_warning(
+                "PERF024: argument to function annotated [clone({expr.func.arguments[arg_index].name})] is wrapped in clone_*; the callee clones internally, drop the outer clone wrap",
+                arg.at)
+            return
+        }
+        
+        if (inner is ExprVar) {
+            let vv = (inner as ExprVar).variable
+            if (vv != null) {
+                let vv_iptr = intptr(vv)
+                for (i in 0 .. length(perf024_candidates)) {
+                    if (intptr(perf024_candidates[i].v) == vv_iptr) {
+                        perf024_candidates[i].safe_uses++
+                        perf024_skip_iptr = vv_iptr
+                        break
+                    }
                 }
             }
         }
@@ -549,12 +1763,22 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprCall(var expr : smart_ptr<ExprCall>) : void {
-        if (in_closure > 0) {
-            return
+    def override preVisitExprCall(var expr : ExprCall?) : void {
+        if (expr.func == null) return
+        
+        check_perf020_redundant_cast(expr)
+        
+        
+        
+        
+        
+        if (expr.name == "add_ptr_ref" && !empty(perf023_candidates)) {
+            perf023_splice_depth++
         }
+        
+        if (in_closure > 0) return
         if (expr.func.name == "character_at" && expr.func._module.name == "strings") {
-            var ecall = get_ptr(expr)
+            var ecall = expr
             
             if (loop_depth > 0) {
                 in_character_at_call++
@@ -567,43 +1791,59 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr {
+    def override visitExprCall(var expr : ExprCall?) : ExpressionPtr {
+        if (expr.func == null) return <- expr
+        
+        
+        
+        if (expr.name == "add_ptr_ref" && perf023_splice_depth > 0) {
+            perf023_splice_depth--
+        }
         
         if (expr.func.name == "character_at" && expr.func._module.name == "strings") {
-            var ecall = get_ptr(expr)
+            var ecall = expr
             if (in_closure == 0 && loop_depth > 0 && in_character_at_call > 0) {
                 in_character_at_call--
                 current_character_at = null
             }
             
             if (!reported_character_at |> has_value(ecall)) {
-                if (self->is_character_at_zero(expr)) {
-                    self->perf_warning("PERF003: character_at(s, 0) can be replaced with first_character(s)", expr.at)
+                if (is_character_at_zero(expr)) {
+                    perf_warning("PERF003: character_at(s, 0) can be replaced with first_character(s)", expr.at)
                 } else {
-                    self->perf_warning("PERF003: character_at is O(n) due to strlen; consider peek_data() for hot paths", expr.at)
+                    perf_warning("PERF003: character_at is O(n) due to strlen; consider peek_data() for hot paths", expr.at)
                 }
             }
         }
         
-        if (self->is_array_func(expr, "reserve")) {
+        if (is_array_func(expr, "reserve")) {
             var path = ""
-            let rv = self->find_expr_path(get_ptr(expr.arguments[0]), path)
+            let rv = find_expr_path(expr.arguments[0], path)
             if (rv != null) {
-                let key = self->make_path_key(rv, path)
+                let key = make_path_key(rv, path)
                 if (!reserved_paths |> has_value(key)) {
                     reserved_paths |> push(key)
                 }
             }
         }
-        let in_conditional = length(if_depth_stack) > 0 && if_depth_stack[length(if_depth_stack) - 1] > 0
-        let has_early_exit = length(loop_has_early_exit) > 0 && loop_has_early_exit[length(loop_has_early_exit) - 1]
+        let in_conditional = !empty(if_depth_stack) && if_depth_stack[length(if_depth_stack) - 1] > 0
+        let has_early_exit = !empty(loop_has_early_exit) && loop_has_early_exit[length(loop_has_early_exit) - 1]
         if (in_closure == 0 && known_length_loop_depth > 0 && !in_conditional && !has_early_exit) {
-            if (self->is_array_func(expr, "push") || self->is_array_func(expr, "push_clone") || self->is_array_func(expr, "emplace")) {
+            if (is_array_func(expr, "push") || is_array_func(expr, "push_clone") || is_array_func(expr, "emplace")) {
                 var path = ""
-                let rv = self->find_expr_path(get_ptr(expr.arguments[0]), path)
-                if (rv != null && self->is_defined_outside_loop(rv) && !reserved_paths |> has_value(self->make_path_key(rv, path))) {
+                let rv = find_expr_path(expr.arguments[0], path)
+                if (rv != null && is_defined_outside_loop(rv) && !reserved_paths |> has_value(make_path_key(rv, path))) {
                     let fname = string(expr.func.fromGeneric.name)
-                    self->perf_warning("PERF006: {fname} in loop without prior reserve() may cause repeated reallocations; consider reserve() before the loop", expr.at)
+                    perf_warning("PERF006: {fname} in loop without prior reserve() may cause repeated reallocations; consider reserve() before the loop", expr.at)
+                }
+            }
+        }
+        
+        if (expr.func._module.name == "strings" && expr.func.name != "string") {
+            for (arg in expr.arguments) {
+                if (is_string_of_das_string(arg)) {
+                    perf_warning("PERF012: string(das_string) passed to strings function; use peek(das_string) instead", expr.at)
+                    break
                 }
             }
         }
@@ -618,43 +1858,39 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprCopy(expr : smart_ptr<ExprCopy>) : void {
-        if (in_closure > 0 || loop_depth == 0) {
-            return
-        }
-        var v = self->find_string_var_from_expr(get_ptr(expr.left))
-        if (v != null && self->is_defined_outside_loop(v) && expr.right is ExprStringBuilder) {
+    def override preVisitExprCopy(expr : ExprCopy?) : void {
+        if (in_closure > 0 || loop_depth == 0) return
+        var v = find_string_var_from_expr(expr.left)
+        if (v != null && is_defined_outside_loop(v) && expr.right is ExprStringBuilder) {
             string_builder_target_var = v
         }
     }
 
-    def override visitExprCopy(var expr : smart_ptr<ExprCopy>) : ExpressionPtr {
+    def override visitExprCopy(var expr : ExprCopy?) : ExpressionPtr {
         string_builder_target_var = null
         return <- expr
     }
 
-    def override preVisitExprMove(expr : smart_ptr<ExprMove>) : void {
-        if (in_closure > 0 || loop_depth == 0) {
-            return
-        }
-        var v = self->find_string_var_from_expr(get_ptr(expr.left))
-        if (v != null && self->is_defined_outside_loop(v) && expr.right is ExprStringBuilder) {
+    def override preVisitExprMove(expr : ExprMove?) : void {
+        if (in_closure > 0 || loop_depth == 0) return
+        var v = find_string_var_from_expr(expr.left)
+        if (v != null && is_defined_outside_loop(v) && expr.right is ExprStringBuilder) {
             string_builder_target_var = v
         }
     }
 
-    def override visitExprMove(var expr : smart_ptr<ExprMove>) : ExpressionPtr {
+    def override visitExprMove(var expr : ExprMove?) : ExpressionPtr {
         string_builder_target_var = null
         return <- expr
     }
 
-    def override preVisitExprStringBuilder(expr : smart_ptr<ExprStringBuilder>) : void {
+    def override preVisitExprStringBuilder(expr : ExprStringBuilder?) : void {
         if (string_builder_target_var != null) {
             in_string_builder_check++
         }
     }
 
-    def override visitExprStringBuilder(var expr : smart_ptr<ExprStringBuilder>) : ExpressionPtr {
+    def override visitExprStringBuilder(var expr : ExprStringBuilder?) : ExpressionPtr {
         if (in_string_builder_check > 0) {
             in_string_builder_check--
         }
@@ -663,27 +1899,79 @@ class PerfLintVisitor : AstVisitor {
 
     
 
-    def override preVisitExprVar(expr : smart_ptr<ExprVar>) : void {
-        if (in_closure > 0) {
-            return
+    def override preVisitExprStringBuilderElement(sb : ExprStringBuilder?; elem : ExpressionPtr; last : bool) {
+        let inner = perf025_unwrap_element(elem)
+        let value = perf025_string_call_value(inner)
+        return if (value == null)
+        let kind = perf025_value_kind(value)
+        if (kind == Perf025Kind.equivalent) {
+            perf_warning("PERF025: string(...) inside string interpolation is redundant — the interpolation already converts to string; drop the cast", inner.at)
+        } elif (kind == Perf025Kind.unsigned_hex) {
+            perf_warning("PERF025: string(...) inside string interpolation is redundant; drop the cast — unsigned values interpolate as hex by default, so use the '\{x:d\}' format tag to keep decimal output", inner.at)
         }
-        let v = get_ptr(expr.variable)
+    }
+
+    
+
+    def override preVisitExprVar(expr : ExprVar?) : void {
         
-        if (in_character_at_call > 0 && self->is_loop_variable(v)) {
+        
+        
+        if (!empty(perf023_candidates)) {
+            let vv = expr.variable
+            if (vv != null) {
+                for (i in 0 .. length(perf023_candidates)) {
+                    if (perf023_candidates[i].v == vv) {
+                        if (perf023_splice_depth > 0) {
+                            perf023_candidates[i].safe_uses++
+                        } else {
+                            perf023_candidates[i].disqualified = true
+                        }
+                        break
+                    }
+                }
+            }
+        }
+        
+        
+        
+        
+        if (!empty(perf024_candidates)) {
+            let vv4 = expr.variable
+            if (vv4 != null) {
+                let vv4_iptr = intptr(vv4)
+                if (perf024_skip_iptr == vv4_iptr && vv4_iptr != 0ul) {
+                    perf024_skip_iptr = 0ul   
+                } else {
+                    for (i in 0 .. length(perf024_candidates)) {
+                        if (intptr(perf024_candidates[i].v) == vv4_iptr) {
+                            perf024_candidates[i].disqualified = true
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        if (in_closure > 0) return
+        let v = expr.variable
+        
+        perf018_on_var(v)
+        
+        if (in_character_at_call > 0 && is_loop_variable(v)) {
             if (current_character_at != null && !reported_character_at |> has_value(current_character_at)) {
-                self->perf_warning("PERF002: character_at(s, i) in loop is O(n) per call (strlen + bounds check each time); use peek_data(s) to access characters as array<uint8>", expr.at)
+                perf_warning("PERF002: character_at(s, i) in loop is O(n) per call (strlen + bounds check each time); use peek_data(s) to access characters as array<uint8>", expr.at)
                 reported_character_at |> push(current_character_at)
             }
         }
         
         if (in_string_builder_check > 0 && string_builder_target_var != null && v == string_builder_target_var) {
-            self->perf_warning("PERF004: rebuilding string via interpolation in loop creates O(n^2) allocations; use build_string() instead", expr.at)
+            perf_warning("PERF004: rebuilding string via interpolation in loop creates O(n^2) allocations; use build_string() instead", expr.at)
         }
         
         if (in_length_while_call > 0 && v != null) {
             if (expr.variable._type != null && expr.variable._type.baseType == Type.tString) {
                 if (!expr.variable.access_flags.access_ref) {
-                    self->perf_warning("PERF005: length(string) in while condition recomputes strlen each iteration; cache in a local variable", expr.at)
+                    perf_warning("PERF005: length(string) in while condition recomputes strlen each iteration; cache in a local variable", expr.at)
                 }
             }
         }
@@ -697,9 +1985,19 @@ class PerfLintVisitor : AstVisitor {
 def public perf_lint(prog : ProgramPtr; compile_time_errors : bool) : int {
     
     
+    let empty_set : table<string>
+    return perf_lint(prog, compile_time_errors, empty_set)
+}
+
+def public perf_lint(prog : ProgramPtr; compile_time_errors : bool; disabled_codes : table<string>) : int {
+    
+    
+    
     var astVisitor = new PerfLintVisitor(compile_time_errors = compile_time_errors)
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    visit(prog, astVisitorAdapter)
+    astVisitor.disabled_codes := disabled_codes
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit(prog, astVisitorAdapter)
+    }
     let count = astVisitor.warning_count
     unsafe { delete astVisitor; }
     return count
@@ -708,14 +2006,22 @@ def public perf_lint(prog : ProgramPtr; compile_time_errors : bool) : int {
 def public perf_lint_collect(prog : ProgramPtr; var warnings : array<string>) : int {
     
     
+    let empty_set : table<string>
+    return perf_lint_collect(prog, warnings, empty_set, empty_set)
+}
+
+def public perf_lint_collect(prog : ProgramPtr; var warnings : array<string>;
+                             disabled_codes, enabled_codes : table<string>) : int {
+    
+    
     var astVisitor = new PerfLintVisitor(compile_time_errors = false, collect_warnings = true)
-    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-    visit(prog, astVisitorAdapter)
-    let count = astVisitor.warning_count
-    warnings |> reserve(length(astVisitor.warnings))
-    for (w in astVisitor.warnings) {
-        warnings |> push(w)
+    astVisitor.disabled_codes := disabled_codes
+    astVisitor.enabled_codes := enabled_codes
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit(prog, astVisitorAdapter)
     }
+    let count = astVisitor.warning_count
+    warnings |> push_from(astVisitor.warnings)
     unsafe { delete astVisitor; }
     return count
 }
@@ -727,7 +2033,8 @@ def public perf_lint_collect(prog : ProgramPtr; var warnings : array<string>) : 
 [lint_macro]
 class PerfLintMacro : AstPassMacro {
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
-        perf_lint(prog, true)
+        let disabled <- build_lint_macro_disabled(prog)
+        perf_lint(prog, true, disabled)
         return true
     }
 }

@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
+let { dgs_get_settings } = require("dagor.system")
 let logU = log_with_prefix("[UPDATER] ")
 let { is_android, is_ios } = require("%sqstd/platform.nut")
 let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 
 
-let contentUpdater = (is_android || is_ios) ? require("contentUpdater") : require("dbgContentUpdater.nut")
+let isUpdaterEnabled = dgs_get_settings()?.debug.contentUpdater.enabled ?? false
+let contentUpdater = (is_android || is_ios || isUpdaterEnabled) ? require("contentUpdater") : require("dbgContentUpdater.nut")
 let { set_accept_user_react, get_total_download_mb, get_progress_percent, get_eta, get_download_speed,
   UPDATER_DOWNLOADING, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION, UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE

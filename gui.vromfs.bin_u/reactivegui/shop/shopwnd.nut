@@ -22,7 +22,7 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 
 
-let gapFromGamercard = hdpx(20)
+let gapFromGamercard = hdpx(50)
 let marginTopFromGamercard = hdpx(20)
 let shopContentGradient = marginTopFromGamercard + hdpx(8)
 let shopContentW = saSize[0] + saBorders[0] - fullTabW
@@ -35,7 +35,7 @@ isShopOpened.subscribe(@(v) v ? null : resetScrollPos())
 isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? closeShopWnd() : null)
 
 let pannable = @(ovr) {
-  size = flex()
+  size = FLEX
   behavior = Behaviors.Pannable
   touchMarginPriority = TOUCH_BACKGROUND
   scrollHandler = ScrollHandler()
@@ -119,7 +119,7 @@ function mkShopContent() {
 
   return {
     key = distances
-    size = [shopContentW + fullTabW, flex()]
+    size = [shopContentW + fullTabW, FLEX]
     flow = FLOW_HORIZONTAL
     clipChildren = true
     function onAttach() {
@@ -141,7 +141,7 @@ function mkShopContent() {
     children = [
       {
         margin = [marginTopFromGamercard, 0, 0, 0]
-        size = [fullTabW, flex()]
+        size = [fullTabW, FLEX]
         children = @() pannable({
           watch = [curCategoriesCfg, curCampaign]
           children = mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get(), hasUnseenGoodsByCategory)
@@ -164,7 +164,7 @@ function mkShopContent() {
 
 let shopScene = @() bgShaded.__merge({
   key = isShopOpened
-  size = flex()
+  size = FLEX
   padding = [saBorders[1], saBorders[0], 0, saBorders[0]]
   flow = FLOW_VERTICAL
   gap = gapFromGamercard

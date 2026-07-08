@@ -8,8 +8,9 @@ let { getUnitsSet, getUnitRewards, getSlotExpByUnit, getSlotLevelCfg, getLevelPr
 } = require("%rGui/debriefing/debrUtils.nut")
 let mkPlateWithLevelProgress = require("%rGui/debriefing/mkPlateWithLevelProgress.nut")
 let { getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer, mkDebrLineMod, mkDebrLineWeapon,
-  mkDebrLineAmmo, mkDebrLinePoints
+  mkDebrLineAmmo, mkDebrLinePoints, mkDebrLineBullet
 } = require("%rGui/debriefing/debrLevelUnlockLines.nut")
+let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 
 let levelProgressAnimStartTime = 0.0
 let levelUnlocksAnimStartTime = 1.0
@@ -73,8 +74,8 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
   let maxLevel = levelsExpCfg == null ? levelsExp.len() 
     : levelsExpCfg?[levelsExpCfg.len() - 1].upToLevel ?? 0
   let endLevel = max(unlockedLevel,
-    getNextUnitLevelWithRewards(startLevel, maxLevel, modPresetCfg, unitWeaponry?[unit?.name]))
-
+    getNextUnitLevelWithRewards(startLevel, maxLevel, modPresetCfg, unitWeaponry?[unit?.name], campaign))
+  let bInfo = loadUnitBulletsChoice(unit?.name)?.commonWeapons.primary
   let isModsWeapons = getCampaignPresentation(campaign).campaign == "air"
   let modsMap = modPresetCfg
     .filter(@(mod) !mod?.isHidden)
@@ -111,6 +112,22 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
       list.extend(modsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineMod }))
     }
     
+    if (!isModsWeapons) {
+      let bulletMods = modPresetCfg
+        .filter(@(mod) mod?.group == "")
+        .map(@(mod, name) mod.__merge({ name }))
+      let modsList = bulletMods
+        .filter(@(mod) mod?.reqLevel == l)
+        .values()
+      modsList.sort(sortUnitMods)
+
+      list.extend(modsList.map(function(m) {
+        let bId = bInfo?.fromUnitTags.findindex(@(v) v?.reqModification == m.name)
+        m.locName <- bInfo?.bulletSets[bId].bulletNames[0] ?? ""
+        return { isUnlocked, data = m, ctor = mkDebrLineBullet }
+      }))
+    }
+    
     let weaponsList = weaponsPresetsMap
       .filter(@(w) w?.reqLevel == l)
       .values()
@@ -134,7 +151,7 @@ function mkColumn(plateWithLevelProgressComp, levelProgressAnimTime, levelUnlock
     )
 
   let columnComp = {
-    size = [columnWidth, flex()]
+    size = [columnWidth, FLEX]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
@@ -201,23 +218,23 @@ function mkDebriefingWndTabUnitsSet(debrData, params) {
   let timeShow = unitColumnsData.reduce(@(res, v) max(res, v.columnShowTime), 0) + (needBtnUnit ? buttonsShowTime : 0)
 
   let comp = {
-    size = flex()
+    size = FLEX
     children = [
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [
           mkMissionResultTitle(debrData, false)
           {
-            size = const [hdpx(1600), flex()]
+            size = const [hdpx(1600), FLEX]
             halign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = columnGap
             children = slotColumnsData.map(@(v) v.columnComp)
           }
           {
-            size = const [hdpx(1600), flex()]
+            size = const [hdpx(1600), FLEX]
             halign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = columnGap

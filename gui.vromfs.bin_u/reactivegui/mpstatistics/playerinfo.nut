@@ -13,7 +13,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkBotStats, mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
-let { viewStats, mkRow, mkStatRow, mkMarqueeRow } = require("%rGui/mpStatistics/statRow.nut")
+let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
@@ -211,7 +211,7 @@ function mkReportButton(userId) {
 }
 
 function mkButtons(userId, isInvitesAllowed) {
-  let gap = { minWidth = hdpx(40) size = flex() }
+  let gap = { minWidth = hdpx(40) size = FLEX }
   return {
     minWidth = SIZE_TO_CONTENT
     size = FLEX_H
@@ -327,7 +327,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
           mkTabsCampaignName
           mkMedals(info, campaign)
           {
-            gap = { minWidth = hdpx(50) size = flex() }
+            gap = { minWidth = hdpx(50) size = FLEX }
             minWidth = SIZE_TO_CONTENT
             size = FLEX_H
             children = [
@@ -381,7 +381,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
                   children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
+                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
                 }
               }
             ]

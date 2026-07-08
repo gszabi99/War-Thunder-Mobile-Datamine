@@ -131,11 +131,11 @@ let debugSafeArea = @() !debugSa.get() ? { watch = debugSa }
 
 let waitbox = @() {
   watch = waitboxes
-  size = flex()
+  size = FLEX
   children = waitboxes.get().len() == 0 ? null
     : bgShadedDark.__merge({
         key = waitboxes.get()[0]
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         flow = FLOW_VERTICAL
@@ -170,7 +170,7 @@ return function() {
     watch = [isInLoadingScreen, isLoggedIn, isLoginRequired, isAllScriptsLoaded, isDebugTouchesActive,
       needShowCursor, isPlayingReplay, isHudVisible]
     key = "sceneRoot"
-    size = flex()
+    size = FLEX
     children
     cursor = needShowCursor.get() ? cursor : null
   }

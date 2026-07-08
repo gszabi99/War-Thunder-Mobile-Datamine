@@ -190,7 +190,7 @@ let flightMenu = @() bgShaded.__merge({
     setInterval(1.0, refreshSpawnInfo)
   }
   onDetach = @() clearTimer(refreshSpawnInfo)
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   children = modalWndBg.__merge({
     size = [flightMenuWidth, SIZE_TO_CONTENT]

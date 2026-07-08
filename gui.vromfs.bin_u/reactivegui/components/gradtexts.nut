@@ -36,7 +36,7 @@ let mkGradText = @(text, fontStyle, fontTex, ovr = {}) {
   fontTexSv = 0
   fontFxColor = 0xFF000000
   fontFx = FFT_BLUR
-}.__update(ovr.__update(fontStyle))
+}.__update(ovr, fontStyle)
 
 let mkGradGlowText = @(text, fontStyle, fontTex, ovr = {})
   mkGradText(text, fontStyle, fontTex, {

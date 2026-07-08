@@ -11,6 +11,6 @@ let tabs = Computed(@() (isForCampaign.get() ? campProfile.get() : servProfile.g
   .sort(@(a, b) a.id <=> b.id))
 
 return {
-  openDebugProfileWnd = @() openDebugWnd(tabs, dbgCampaignSelector)
+  openDebugProfileWnd = @() openDebugWnd({ tabs, childrenOverTabs = dbgCampaignSelector, isJsonStyle = true })
 }
 

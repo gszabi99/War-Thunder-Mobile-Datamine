@@ -37,10 +37,10 @@ let radarHudEditView = {
       text = loc("hud/search")
     }.__update(fontTiny)
     {
-      size = flex()
+      size = FLEX
       padding = const [0, hdpx(75), 0, hdpx(30)]
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#radar_editor.svg")
         color = radarColorEdit

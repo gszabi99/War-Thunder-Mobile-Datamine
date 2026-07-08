@@ -10,9 +10,12 @@ let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
 let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
-let { isHrosshairVisibile, aimModulePos } = require("%rGui/hud/shipState.nut")
+let { isHrosshairVisibile, aimModulePos, crosshairDistance } = require("%rGui/hud/shipState.nut")
+let { hasSightDistance } = require("%rGui/options/options/shipControlsOptions.nut")
 let { hudBlueColor, hudBlueDeepColor, hudGrayColor, hudMediumGrayColor, hudTransparentColor
 } = require("%rGui/style/hudColors.nut")
+let { round_by_value } = require("%sqstd/math.nut")
+let { format } = require("string")
 
 let crosshairColorFire = hudGrayColor
 let reloadColorPrimary = hudBlueColor
@@ -61,7 +64,7 @@ function mkReloadPartData(action, color) {
   return {
     cdLeft
     comp = {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_PROGRESS_CIRCULAR
       image = reloadImageInZoom
       fgColor = color
@@ -136,7 +139,7 @@ let circleCrosshair = {
   children = [
     reloadIndicator
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = crosshairLineWidth
       color = crosshairColor
@@ -196,6 +199,23 @@ let aimModuleIndicator = {
   update = aimModulePosUpdate
 }
 
+let mkDistanceText = function(distance) {
+  return distance <= 0 ? null : {
+    size = [0, 0]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    pos = [crosshairSize * 0.5 + hdpx(8), 0]
+    children = {
+      rendObj = ROBJ_TEXT
+      text = $"{format("%.1f", round_by_value(distance / 1000.0, 0.1))} {loc("measureUnits/km_dist")}"
+      color = crosshairColor
+      hplace = ALIGN_LEFT
+      vplace = ALIGN_CENTER
+    }.__update(fontTiny)
+  }
+}
+
+
 let sightCommands = [
   [VECTOR_LINE, 3, 0, 0, 5, 0, 95, 3, 100],
   [VECTOR_LINE, 97, 0, 100, 5, 100, 95, 97, 100],
@@ -221,24 +241,25 @@ let cancelShootMark = {
 }
 
 let shipSight = @() {
-  watch = [isCurHoldWeaponInCancelZone, hasCrosshairForWeapon, aimModulePos]
-  size = flex()
+  watch = [isCurHoldWeaponInCancelZone, hasCrosshairForWeapon, aimModulePos, crosshairDistance, hasSightDistance]
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
     targetSelectionProgress
     asmCaptureProgress
+    hasSightDistance.get() ? mkDistanceText(crosshairDistance.get()) : null
     aimModulePos.get().x > 0 && aimModulePos.get().y > 0 ? aimModuleIndicator : null
     !isHrosshairVisibile.get() ? null
       : isCurHoldWeaponInCancelZone.get() ? cancelShootMark
       : !hasCrosshairForWeapon.get() ? sightFrame
       : circleCrosshair
-    ]
+    ].filter(@(v) v != null)
 }
 
 let tankSight = @() {
   watch = [isCurHoldWeaponInCancelZone, tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera]
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [

@@ -129,14 +129,14 @@ function arrows() {
   }
   return {
     watch = arrowCurBoxes
-    size = flex()
+    size = FLEX
     children
   }
 }
 
 let hudElementBlink = {
   key = highlights
-  size = flex()
+  size = FLEX
   onAttach = @() isHudBlinkAttached.set(true)
   onDetach = @() isHudBlinkAttached.set(false)
   children = arrows

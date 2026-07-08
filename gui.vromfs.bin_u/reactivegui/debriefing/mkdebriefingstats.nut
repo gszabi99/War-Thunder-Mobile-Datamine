@@ -27,10 +27,10 @@ let placeGlowColor = [0x40bbbbbb, 0x40ffdb7b, 0x407be1ff, 0x40ffb67b]
 
 function playerPlaceCtor(_uid, place, _printVal, startTime) {
   return {
-    size = [flex(), playerPlaceIconSize]
+    size = [FLEX, playerPlaceIconSize]
     halign = ALIGN_RIGHT
     children = {
-      size = const [hdpx(20), flex()] 
+      size = const [hdpx(20), FLEX] 
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -150,7 +150,7 @@ function setCounterActive(uid, isActive) {
 }
 
 let animCountBaseComp = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_TEXT
     halign = ALIGN_RIGHT
     color = 0xFFFFFFFF
@@ -174,7 +174,7 @@ let mkInlineIcon = @(children) {
 }
 
 let mkStat = @(uid, text, value, startTime, printVal, valueCtor) {
-  size = [flex(), valueCtor ? specialRowHeight : rowHeight]
+  size = [FLEX, valueCtor ? specialRowHeight : rowHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
@@ -184,7 +184,7 @@ let mkStat = @(uid, text, value, startTime, printVal, valueCtor) {
       color = 0xFFFFFFFF
       hplace = ALIGN_LEFT
     }.__update(fontTinyAccented),
-    {size = flex()},
+    {size = FLEX},
     (valueCtor ?? mkAnimatedCount)(uid, value, printVal, startTime)
   ]
 }
@@ -201,7 +201,7 @@ function mkItemsUsedRows(itemsUsed, delay) {
     if (!doesLocTextExist(locId))
       locId = "debriefing/spent/default"
     return {
-      size = [flex(), rowHeight]
+      size = [FLEX, rowHeight]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children = [

@@ -306,7 +306,7 @@ function mkHighlight(startDelay, sizeMul) {
     size = [highlightSize, highlightSize]
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture("ui/images/effects/searchlight_earth_flare.avif:0:P")
         opacity = 0
@@ -535,14 +535,14 @@ function mkSkinEquipButton(unitName, skinName) {
     children = !unit.get() ? null
       : skinsInProgress.get() ? spinner
       : currentSkin.get() == skinName
-        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = [flex(), hdpx(70)], minWidth = 0, padding = hdpx(10) })
+        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = [FLEX, hdpx(70)], minWidth = 0, padding = hdpx(10) })
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
           function() {
             enable_unit_skin(unitName, unitName, skinName)
             if (skinName != "")
               sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
           },
-          { ovr = { size = [flex(), hdpx(70)], minWidth = 0 } })
+          { ovr = { size = [FLEX, hdpx(70)], minWidth = 0 } })
   }
 }
 
@@ -575,11 +575,11 @@ function mkBlueprintPlateTexts(r, rStyle) {
   let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
 
   return {
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = [available, total, hasBlueprintUnit]
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         flow = FLOW_VERTICAL
         children = hasBlueprintUnit.get()
@@ -594,7 +594,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
       }
       @() {
         watch = unitRank
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
@@ -889,7 +889,7 @@ function mkBattleModEventUnitPlate(bmp, reward) {
     children = [
       mkHighlight(startDelay, aUnitPlateFlareScale)
       {
-        size = flex()
+        size = FLEX
         children = [
           mkUnitBg(unit)
           mkUnitImage(unit)
@@ -1311,7 +1311,7 @@ function showAddRewardMessage() {
   isAnimFinished.set(true)
   addModalWindow(bgShadedDark.__merge({
     key = WND_ADD_UID
-    size = flex()
+    size = FLEX
     function onAttach() {
       if (!skipUnseenMessageAnimOnce.get())
         return
@@ -1349,7 +1349,7 @@ function onClick(){
 
 let showMessage = @() addModalWindow(bgShadedDark.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   function onAttach() {
     if (!skipUnseenMessageAnimOnce.get())
       return

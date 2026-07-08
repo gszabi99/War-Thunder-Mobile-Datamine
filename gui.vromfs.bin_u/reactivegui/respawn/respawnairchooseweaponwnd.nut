@@ -614,7 +614,7 @@ function content() {
 
   return res.__update({
     key = wndKey
-    size = flex()
+    size = FLEX
     children = [
       mkCutBg([])
       mainContent
@@ -625,7 +625,7 @@ function content() {
 
 let openImpl = @() addModalWindow({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = content
   onClick = closeWithChecking
   stopMouse = true

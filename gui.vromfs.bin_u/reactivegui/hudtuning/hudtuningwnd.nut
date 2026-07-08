@@ -56,7 +56,7 @@ let hiddenBadge = {
 }
 
 let selectBorder = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = 0
   borderColor = lineColor
@@ -137,7 +137,7 @@ function mkHudTuningElem(cfg) {
     watch.append(isVisibleInEditor)
   return @() {
     watch
-    size = flex()
+    size = FLEX
     children = (isVisibleInEditor?.get() ?? true) && isVisibleW.get() ? res : null
   }
 }
@@ -152,7 +152,7 @@ let tuningElems = @() {
 
 let tuningScene = {
   key = {}
-  size = flex()
+  size = FLEX
   children = [
     tuningElems
     manipulator

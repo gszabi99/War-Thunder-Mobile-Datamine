@@ -50,7 +50,7 @@ let mkStatRow = @(cfg, stats) {
 }
 
 let benchmark = @(stats) {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
   children = statsCfg.map(@(cfg) mkStatRow(cfg, stats))
@@ -60,7 +60,7 @@ let buttons = mkMsgBoxBtnsSet(wndUid, [ { id = "ok", styleId = "PRIMARY", cb = c
 
 let openBenchmark = @(data) addModalWindow(bgShaded.__merge({
   key = wndUid
-  size = flex()
+  size = FLEX
   children = mkCustomMsgBoxWnd(colon.concat(loc("chapters/benchmark"), data.title),
     benchmark(data.stats), buttons)
   onClick = @() null

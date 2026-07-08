@@ -36,7 +36,7 @@ function mkActionItemProgress(actionItem, isAvailable, isPrimaryStyle, btnSize) 
     color = hudLightBlackColor
     children = @() {
       watch = btnBgStyle
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_PROGRESS_CIRCULAR
       fgColor = !isAvailable ? btnBgStyle.get().noAmmo
         : (actionItem?.broken ?? false) ? btnBgStyle.get().broken
@@ -55,19 +55,19 @@ function mkActionItemProgress(actionItem, isAvailable, isPrimaryStyle, btnSize) 
     animations = [{ prop = AnimProp.scale, duration = 0.2,
       from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger }]
   }
-  return mkItemWithCooldownText(id, item, flex(), hasCooldown, endTime)
+  return mkItemWithCooldownText(id, item, FLEX, hasCooldown, endTime)
 }
 
 let mkActionItemProgressByWatches = @(actionItem, isAvailable, btnSize) @()
   actionItem.get() == null ? { watch = actionItem }
     : {
         watch = [actionItem, isAvailable, isHudPrimaryStyle]
-        size = flex()
+        size = FLEX
         children = mkActionItemProgress(actionItem.get(), isAvailable.get(), isHudPrimaryStyle.get(), btnSize)
       }
 
 let mkActionItemCountImpl = @(text, font, scale, ovr = {}) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_TEXT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -90,7 +90,7 @@ let mkActionItemImage = @(getImage, isAvailable, size) @() {
 
 let mkActionItemBorder = @(borderW, stateFlags, isDisabled) @() {
   watch = [stateFlags, isDisabled]
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   borderColor = stateFlags.get() & S_ACTIVE ? borderColorPushed
     : isDisabled.get() ? borderNoAmmoColor

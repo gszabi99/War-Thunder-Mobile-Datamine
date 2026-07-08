@@ -13,6 +13,7 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
+let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let searchIconSize = hdpxi(40)
 let gap = hdpx(24)
@@ -42,10 +43,10 @@ let searchIcon = {
 }
 
 let nameInput = floatingTextInput(searchName, {
-  ovr = { size = [flex(), textInputHeight] }
+  ovr = { size = [FLEX, textInputHeight] }
   onReturn = startSearch
   mkEditContent = @(_, inputComp) {
-    size = flex()
+    size = FLEX
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(35)
@@ -59,7 +60,7 @@ let nameInput = floatingTextInput(searchName, {
 let resetBtn = {
   size = [textInputHeight, textInputHeight]
   rendObj = ROBJ_SOLID
-  color = 0x990C1113
+  color = tabBgColor
   children = closeWndBtn(
     function() {
       clearSearchData()
@@ -69,7 +70,7 @@ let resetBtn = {
 }
 
 let searchBlock = {
-  size = [flex(), textInputHeight]
+  size = [FLEX, textInputHeight]
   flow = FLOW_HORIZONTAL
   gap
   children = [
@@ -84,7 +85,7 @@ let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - te
 let scrollHandler = ScrollHandler()
 
 let contactsList = {
-  size = flex()
+  size = FLEX
   children = [
     mkVerticalPannableArea(
       @() {
@@ -104,7 +105,7 @@ let contactsList = {
 }
 
 let inProgressInfo = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow  = FLOW_VERTICAL
@@ -126,7 +127,7 @@ let notFoundMsg = {
 
 let contactsBlock = @() {
   watch = [isSearchInProgress, hasResult, isNotFound]
-  size = flex()
+  size = FLEX
   children = isSearchInProgress.get() ? inProgressInfo
     : hasResult.get() ? contactsList
     : isNotFound.get() ? notFoundMsg
@@ -153,7 +154,7 @@ let buttons = @() {
 
 return {
   key = {}
-  size = flex()
+  size = FLEX
   onAttach = @() searchName.set(searchedNick.get() ?? "")
   flow = FLOW_VERTICAL
   gap

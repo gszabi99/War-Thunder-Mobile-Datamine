@@ -19,7 +19,7 @@ function resetHitIndicatorState() {
 
 let hitIndicator = @() {
   watch = [hitIndicatorStateCount, hitIndicatorStateCrit]
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = array(min(hitIndicatorStateCount.get(), maxIndicatorsAmount))

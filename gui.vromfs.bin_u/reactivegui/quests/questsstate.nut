@@ -283,6 +283,7 @@ eventbus_subscribe("adsRewardApply", function(data) {
     speed_up_unlock_progress(data.speedUpUnlockId)
 })
 
+
 return {
   openQuestsWnd
   openQuestsWndOnTab

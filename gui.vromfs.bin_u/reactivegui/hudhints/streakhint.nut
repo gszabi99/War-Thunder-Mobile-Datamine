@@ -12,7 +12,7 @@ registerHintCreator(HINT_TYPE, function(data, _) {
   let id = getMultiStageUnlockId(unlockId, stage)
   let content = {
     key = HINT_TYPE
-    size = const [flex(), hdpx(50)]
+    size = const [FLEX, hdpx(50)]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

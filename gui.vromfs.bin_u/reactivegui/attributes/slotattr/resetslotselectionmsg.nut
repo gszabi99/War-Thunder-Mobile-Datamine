@@ -70,16 +70,16 @@ let mkSlotInfo = @(slot, idx) {
       padding = [hdpx(5), hdpx(10)]
       children = textComp(loc("gamercard/slot/title", { idx = idx + 1 }), fontVeryTinyAccented)
     }
-    { size = flex() }
+    { size = FLEX }
     mkSlotLevel(slot?.level ?? 0, levelImageSize)
   ]
 }
 
 let mkHightlightPlate = @(isSelected) {
-  size = flex()
+  size = FLEX
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       flipY = true
       image = highlight()
@@ -88,7 +88,7 @@ let mkHightlightPlate = @(isSelected) {
       opacity = 0.2
     }
     {
-      size = [flex(), borderHeight]
+      size = [FLEX, borderHeight]
       pos = [0, -borderHeight]
       rendObj = ROBJ_BOX
       hplace = ALIGN_TOP
@@ -131,7 +131,7 @@ function mkSlotBtn(slot, idx) {
     sound = { click  = "click" }
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = bgUnit
         children = [
@@ -224,7 +224,7 @@ function content() {
 
 let openImpl = @() addModalWindow(bgShaded.__merge({
   key = RESET_SLOT_SELECTION_UID
-  size = flex()
+  size = FLEX
   onClick = close
   onAttach = @() selIndexes.set(curSlots.get().map(@(_, i) i))
   children = modalWndBg.__merge({

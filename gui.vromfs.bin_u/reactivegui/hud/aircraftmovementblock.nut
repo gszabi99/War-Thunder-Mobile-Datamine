@@ -100,7 +100,7 @@ let throttleScale = @(scaleWidth, throttleScaleHeight, knobSize, lineWidth) {
   pos = [-knobSize, 0]
   padding = [throttleScaleHeight * (-sliderWepValue) / (maxThrottle - sliderWepValue), 0, 0, 0]
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth
     commands = [
@@ -138,6 +138,7 @@ function showIncreaseThrottleHint() {
   if (throttleHintCount.get() < throttleHintMaxCount)
     resetTimeout(throttleHintDelay, showIncreaseThrottleHint)
 }
+unitType.subscribe(@(_) clearTimer(showIncreaseThrottleHint))
 
 function changeThrottleValue(val) {
   val = clamp(val, sliderWepValue, maxThrottle)
@@ -220,12 +221,12 @@ function brakeButtonImpl(scale) {
     children = [
       @() {
         watch = [wheelBrake, btnBgStyle]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
         color =  wheelBrake.get() ? btnBgStyle.get().ready : btnBgStyle.get().empty
       }
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpxi(2 * scale)
         commands = [
@@ -253,7 +254,7 @@ let brakeButtonEditView = {
   borderColor
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = hudTransparentColor
     }
@@ -333,7 +334,7 @@ let throttleSlider = kwarg(@(height, scaleWidth, knobSize, knobPadding, sliderPa
             image = getSvgImage("hud_plane_gradient_left", knobSize, throttleScaleHeight)
             children = {
               rendObj = ROBJ_SOLID
-              size = flex()
+              size = FLEX
               transform = {
                 pivot = [1, 1],
                 scale = [1,
@@ -498,7 +499,7 @@ let imgBg = @(size) {
 }
 
 let mkImgBgComp = @(scale) {
-  size = flex()
+  size = FLEX
   opacity = 0.5
   children = imgBg(scaleEven(imgBgSize, scale))
   transform = {}
@@ -524,7 +525,7 @@ function aircraftMoveStickBase(scale) {
     watch = currentAircraftCtrlType
     key = currentAircraftCtrlType
     behavior = TouchScreenSteeringStick
-    size = flex()
+    size = FLEX
     touchStickAction = {
       horizontal = "ailerons"
       vertical = "elevator"
@@ -565,7 +566,7 @@ function aircraftMoveSecondaryStickBase(scale) {
   return @() {
     watch = currentAircraftCtrlType
     key = currentAircraftCtrlType
-    size = flex()
+    size = FLEX
     behavior = TouchScreenSteeringStick
     touchStickAction = {
       horizontal = "rudder"
@@ -599,7 +600,7 @@ function aircraftMoveRudderStickBase(scale) {
   return @() {
     watch = currentAircraftCtrlType
     key = currentAircraftCtrlType
-    size = flex()
+    size = FLEX
     behavior = TouchScreenSteeringStick
     touchStickAction = {
       horizontal = "rudder"
@@ -697,7 +698,7 @@ function mkEditView() {
             image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
             children = {
               rendObj = ROBJ_SOLID
-              size = flex()
+              size = FLEX
             }
           }
         ]

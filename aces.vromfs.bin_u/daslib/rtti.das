@@ -5,6 +5,7 @@ options remove_unused_symbols = false
 module rtti shared public
 
 require rtti_core public
+require strings
 
 typedef FileAccessPtr = smart_ptr<FileAccess>
 
@@ -66,7 +67,7 @@ def each_dim(info : VarInfo) {
 def private arg_types_any(info) {
     unsafe {
         let pinfo = addr(info)
-        return <- generator<TypeInfo const&>() <| $() {
+        return <- generator<TypeInfo const&> {
             if (pinfo.argTypes != null) {
                 for (index in range(int(pinfo.argCount))) {
                     unsafe {
@@ -92,7 +93,7 @@ def arg_types(info : VarInfo) {
 def private arg_names_any(info) {
     unsafe {
         let pinfo = addr(info)
-        return <- generator<string>() <| $() {
+        return <- generator<string> {
             if (pinfo.argNames != null) {
                 for (index in range(int(pinfo.argCount))) {
                     unsafe {
@@ -117,9 +118,7 @@ def arg_names(info : VarInfo) {
 
 def public class_info(cl) : StructInfo const? {
     static_if (typeinfo is_pointer(cl)) {
-        if (cl == null) {
-            return null
-        }
+        if (cl == null) return null
         static_if (typeinfo is_class(*cl)) {
             unsafe {
                 return reinterpret<StructInfo const?>((reinterpret<TypeInfo const?>((*cl).__rtti)).structType)
@@ -135,9 +134,7 @@ def public class_info(cl) : StructInfo const? {
     } static_elif (typeinfo is_lambda(cl)) {
         unsafe {
             var l = reinterpret<int8 ??> addr(cl)
-            if (l == null) {
-                return null
-            }
+            if (l == null) return null
             var pti = reinterpret<TypeInfo const ??>(l[0] - 16)
             return (*pti).structType
         }
@@ -149,9 +146,7 @@ def public class_info(cl) : StructInfo const? {
 
 def public type_info(cl) : TypeInfo const? {
     static_if (typeinfo is_pointer(cl)) {
-        if (cl == null) {
-            return null
-        }
+        if (cl == null) return null
         static_if (typeinfo is_class(*cl)) {
             unsafe {
                 return (reinterpret<TypeInfo const?>((*cl).__rtti))
@@ -167,9 +162,7 @@ def public type_info(cl) : TypeInfo const? {
     } static_elif (typeinfo is_lambda(cl)) {
         unsafe {
             var l = reinterpret<int8 ??> addr(cl)
-            if (l == null) {
-                return null
-            }
+            if (l == null) return null
             return reinterpret<TypeInfo const ??>(l[0] - 16)
         }
     } else {
@@ -195,8 +188,23 @@ def type_info(vinfo : VarInfo) : TypeInfo const? {
 [generic]
 def RttiValue_nothing {
     var t : RttiValue
-    unsafe {
-        set_variant_index(t, typeinfo variant_index<nothing>(t))
-    }
+    unsafe(set_variant_index(t, typeinfo variant_index<nothing>(t)))
     return t
+}
+
+
+
+
+
+def public is_lint_suppressed(at : LineInfo; code : string) : bool {
+    return false if (at.fileInfo == null || at.line == 0u)
+    return rtti_is_nolint_suppressed(at.fileInfo, at.line, code)
+}
+
+
+
+def public extract_lint_code(text : string) : string {
+    let colon = find(text, ":")
+    return "" if (colon < 0)
+    return slice(text, 0, colon)
 }

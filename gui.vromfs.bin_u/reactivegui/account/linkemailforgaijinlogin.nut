@@ -23,6 +23,7 @@ let emailLinkUrlsCfg = {
     noEmailTag = "hwlogin",
     url = getCurCircuitOverride("hwEmailLinkURL", "https://login.gaijin.net/{lang}/account/link/huawei?stoken={stoken}") 
   },
+  
 }
 
 let canLinkEmailForGaijinLogin = Computed(@() can_link_email_for_gaijin_login.get() && !is_nswitch

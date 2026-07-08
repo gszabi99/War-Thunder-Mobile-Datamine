@@ -174,7 +174,7 @@ let hints = [
 ]
 
 let allLines = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth
   commands = hints.reduce(function(res, h) {

@@ -194,6 +194,9 @@ let nickFrames = {
   trident_s34 = @(n) $"⌃{n}⌃"
   sea_mine_s34 = @(n) $"⌄{n}⌅"
   diving_helmet_s34 = @(n) $"⌆{n}⌆"
+  front_tank_s35 = @(n) $"⌑{n}⌒"
+  radio_s35 = @(n) $"⌓{n}⌔"
+  soldier_helmet_s35 = @(n) $"⌕{n}⌕"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

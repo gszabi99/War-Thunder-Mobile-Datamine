@@ -1754,7 +1754,7 @@
           "name": "500lb",
           "reqModification": "fmbc_mk1",
           "ShowNodes": {
-            "node": "pylon_bomb1"
+            "node": "p_39_fuse_pylon_us"
           },
           "Weapon": {
             "trigger": "bombs",

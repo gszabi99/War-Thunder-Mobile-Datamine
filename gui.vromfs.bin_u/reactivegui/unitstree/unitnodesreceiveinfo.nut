@@ -14,7 +14,8 @@ let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { getLocNameLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
 let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
-let { openEventWnd, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
+let { MAIN_EVENT_ID, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { markTextColor } = require("%rGui/style/stdColors.nut")
 
 
@@ -80,7 +81,7 @@ let receiveTypeCfg = {
     receiveInfoDesc = @(l) loc("canReceive/inShopLootbox",
       { name = colorize(markTextColor, getLootboxName(l.name).replace(" ", nbsp)) })
     function open(l) {
-      openEventWnd(l?.meta.event_id ?? MAIN_EVENT_ID)
+      openSeasonScene(LOOTBOX_TAB, null, l?.meta.event_id ?? MAIN_EVENT_ID)
       openEventWndLootbox(l.name)
     },
     function mkTimeLeft(l) {
@@ -106,13 +107,20 @@ function chooseBestPurchInfo(list) {
   return res
 }
 
-let mkNodesReceiveInfo = @() Computed(function(prev) {
-  let { allUnits = {}, unitTreeNodes = {}, lootboxesCfg = {}, rewardsCfg = {} } = campConfigs.get()
-  let unitsToSearch = unitTreeNodes.filter(@(v) v.name not in campMyUnits.get()
-    && v.name not in unreleasedUnits.get()
+let getNodesReceiveInfo = kwarg(function getNodesReceiveInfoImpl(
+    campConfigsV,
+    campMyUnitsV,
+    unreleasedUnitsV,
+    goodsByCategoryV,
+    personalGoodsByShopCategoryV,
+    eventLootboxesV,
+    shouldShowEventMechanicsV) {
+  let { allUnits = {}, unitTreeNodes = {}, lootboxesCfg = {}, rewardsCfg = {} } = campConfigsV
+  let unitsToSearch = unitTreeNodes.filter(@(v) v.name not in campMyUnitsV
+    && v.name not in unreleasedUnitsV
     && (allUnits?[v.name].isHidden ?? false))
   if (unitsToSearch.len() == 0)
-    return prevIfEqual(prev, {})
+    return {}
 
   let resVariants = {}
   let searcher = UnitsSearcher(rewardsCfg, lootboxesCfg)
@@ -121,7 +129,7 @@ let mkNodesReceiveInfo = @() Computed(function(prev) {
       getSubArray(resVariants, unitId).append({ receiveType, receiveData })
   }
 
-  foreach (list in goodsByCategory.get())
+  foreach (list in goodsByCategoryV)
     foreach (goods in list) {
       let { rewards } = goods
       
@@ -133,7 +141,7 @@ let mkNodesReceiveInfo = @() Computed(function(prev) {
             onFound(u, NP_SHOP_LOOTBOX, goods)
     }
 
-  foreach (list in personalGoodsByShopCategory.get())
+  foreach (list in personalGoodsByShopCategoryV)
     foreach (p in list) {
       let { goods } = p
       
@@ -141,17 +149,28 @@ let mkNodesReceiveInfo = @() Computed(function(prev) {
         if (r.gType in unitRewardTypes)
           onFound(r.id, NP_SHOP_PERSONAL, p)
     }
+  if (shouldShowEventMechanicsV)
+    foreach (lootbox in eventLootboxesV)
+      foreach (u, _ in searcher.getLootboxUnits(lootbox.name))
+        onFound(u, NP_EVENT_LOOTBOX, lootbox)
 
-  foreach (lootbox in eventLootboxes.get())
-    foreach (u, _ in searcher.getLootboxUnits(lootbox.name))
-      onFound(u, NP_EVENT_LOOTBOX, lootbox)
-
-  let res = resVariants.map(@(v, id) unitsToSearch[id].__merge(chooseBestPurchInfo(v)))
-  return prevIfEqual(prev, res)
+  return resVariants.map(@(v, id) unitsToSearch[id].__merge(chooseBestPurchInfo(v)))
 })
+
+
+let mkNodesReceiveInfo = @() Computed(@(prev) prevIfEqual(prev, getNodesReceiveInfo({
+  campConfigsV = campConfigs.get(),
+  campMyUnitsV = campMyUnits.get(),
+  unreleasedUnitsV = unreleasedUnits.get(),
+  goodsByCategoryV = goodsByCategory.get(),
+  personalGoodsByShopCategoryV = personalGoodsByShopCategory.get(),
+  eventLootboxesV = eventLootboxes.get(),
+  shouldShowEventMechanicsV = shouldShowEventMechanics.get()
+})))
 
 return {
   mkNodesReceiveInfo
+  getNodesReceiveInfo
   getReceiveLocId = @(receiveType) receiveTypeCfg?[receiveType].receiveInfoLocId ?? "msgbox/btn_browse"
   goToReceive = @(receiveType, receiveData) receiveTypeCfg?[receiveType].open(receiveData)
   mkReceiveTimeLeft = @(receiveType, receiveData) receiveTypeCfg?[receiveType].mkTimeLeft(receiveData) ?? Watched(-1)

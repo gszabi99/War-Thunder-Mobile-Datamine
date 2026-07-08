@@ -23,7 +23,7 @@ function urlLikeButton(text, action, style = {}) {
     children = {
       rendObj = ROBJ_FRAME
       borderWidth = const [0, 0, 2, 0]
-      size = flex()
+      size = FLEX
       pos = [0, 2]
       color = Color(192, 192, 192)
     }.__update(childOvr)

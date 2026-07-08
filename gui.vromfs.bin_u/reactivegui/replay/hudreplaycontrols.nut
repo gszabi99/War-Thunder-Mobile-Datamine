@@ -14,6 +14,7 @@ let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { TouchScreenStick } = require("wt.behaviors")
 let { Point2 } = require("dagor.math")
 let { setVirtualAxisValue } = require("controls")
+let { mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getUnitName, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
@@ -88,11 +89,13 @@ let needShowPlayerOptions = Watched(true)
 
 let replayTimeSpeed = Watched(0.0)
 let replayTimeTotal = Watched(0)
-let replayCurrentTime = Watched(0)
+let missionCurrentTime = Watched(0)
 
 let selectedPlayerIdx = Watched(-1)
 let replayMplayersList = Watched([])
 let replayAnchors = Watched([])
+let missionRealTimeDifMs = Watched(0)
+let replayCurrentTime = Computed(@() missionCurrentTime.get() - missionRealTimeDifMs.get() / 1000.0)
 
 let isPauseOptActive = Watched(false)
 let isMarkersOptActive = Watched(true)
@@ -240,7 +243,7 @@ function updateControls() {
     replayTimeSpeed.set(get_time_speed())
 
   replayMplayersList.set(getMplayersList())
-  replayCurrentTime.set(get_mission_time())
+  missionCurrentTime.set(get_mission_time())
   let paused = is_replay_paused()
   if (paused != isPauseOptActive.get())
     isPauseOptActive.set(paused)
@@ -259,7 +262,10 @@ function initReplay() {
   isPlayerOptionsOpen.set(true)
   needShowPlayerOptions.set(true)
 
-  replayAnchors.set(get_replay_anchors())
+  let anchors = get_replay_anchors()
+  let timeDifMs = anchors?[0] ?? 0
+  missionRealTimeDifMs.set(timeDifMs)
+  replayAnchors.set(anchors.map(@(a) a - timeDifMs))
   replayTimeSpeed.set(get_time_speed())
   replayMplayersList.set(getMplayersList())
   selectedPlayerIdx.set(getSpectatorTargetId())
@@ -279,13 +285,13 @@ function initReplay() {
     setFreeCameraInertia(camInertiaDefault)
   }
 
-  local totalTime = 0
+  local totalTime = 0.0
   let path = startedReplayPath.get()
   if (path != null) {
     let info = path.len() && get_replay_info(path)
     let comments = info?.comments
     if (comments)
-      totalTime = round(comments?.timePlayed ?? 0).tointeger()
+      totalTime = round(comments?.timePlayed ?? 0) - timeDifMs / 1000.0
   }
   replayTimeTotal.set(totalTime)
 }
@@ -312,22 +318,23 @@ let cellTextProps = {
   color = cellTextColor
 }.__update(fontVeryTinyAccented)
 
-function mkReplayAnchorMarker(anchorMs, idx) {
-  let totalSec = replayTimeTotal.get()
-  if (totalSec <= 0)
+function mkReplayAnchorMarker(anchorMs, idx, anchors) {
+  let totalMs = replayTimeTotal.get() * 1000.0
+  if (totalMs <= 0)
     return null
 
-  let anchorPercent = clamp((100.0 * anchorMs) / (totalSec * 1000.0), 0, 100)
+  let isLast = anchors?[idx + 1] == null
+  let anchorPercent = isLast ? 0 : clamp((100.0 * (anchors[idx + 1] - anchorMs)) / totalMs, 0, 100)
 
   return {
-    size = [hdpx(10), flex()]
+    size = [isLast ? flex() : pw(anchorPercent), FLEX]
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
-    pos = [pw(anchorPercent - 50), 0]
     behavior = Behaviors.Button
     onClick = @() moveToAnchor(idx)
     sound = { click = "click" }
-    rendObj = ROBJ_SOLID
+    rendObj = ROBJ_FRAME
+    borderWidth = [0, isLast ? 0 : hdpx(10), 0, 0]
     color = bgColor
   }
 }
@@ -421,7 +428,7 @@ function mkVertCamBtn(vertValue, text) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [sw(20), flex()]
+    size = [sw(20), FLEX]
     behavior = Behaviors.Button
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -447,6 +454,28 @@ function resetCamStick() {
   setVirtualAxisValue("cam_strafe", 0)
   isCamStickActive.set(false)
 }
+
+
+function mkCamKeyListener(shortcutFwd, shortcutBack, axisName) {
+  let valFwd = Watched(0.0)
+  let valBack = Watched(0.0)
+  let update = @() setVirtualAxisValue(axisName, valFwd.get() - valBack.get())
+  valFwd.subscribe(@(_) update())
+  valBack.subscribe(@(_) update())
+  return [
+    {
+      size = 0
+    }.__update(mkContinuousButtonParams(@() valFwd.set(1.0), @() valFwd.set(0.0), shortcutFwd))
+    {
+      size = 0
+    }.__update(mkContinuousButtonParams(@() valBack.set(1.0), @() valBack.set(0.0), shortcutBack))
+  ]
+}
+
+let replayCamKeyListeners = []
+  .extend(mkCamKeyListener("cam_fwd_rangeMax", "cam_fwd_rangeMin", "cam_fwd"))
+  .extend(mkCamKeyListener("cam_strafe_rangeMax", "cam_strafe_rangeMin", "cam_strafe"))
+  .extend(mkCamKeyListener("cam_vert_rangeMax", "cam_vert_rangeMin", "cam_vert"))
 
 let replayMoveStick = {
   behavior = TouchScreenStick
@@ -500,7 +529,7 @@ function mkCamSlider(cfg, ovr = {}) {
     }
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
         color = bgColor
         opacity = 0.4
@@ -543,18 +572,19 @@ let inertiaSlider = mkCamSlider({
 
 let replayProgressBar = @() {
   watch = [replayTimeProgress, replayAnchors, replayTimeTotal]
-  size = [flex(), hdpx(10)]
+  size = [FLEX, hdpx(10)]
   rendObj = ROBJ_BOX
   fillColor = textColor
   children = [
     {
-      size = [pw(replayTimeProgress.get()), flex()]
+      size = [pw(replayTimeProgress.get()), FLEX]
       rendObj = ROBJ_SOLID
       color = selectColor
     }
     replayAnchors.get().len() == 0 ? null
       : {
-          size = flex()
+          size = FLEX
+          flow = FLOW_HORIZONTAL
           children = replayAnchors.get()
             .map(mkReplayAnchorMarker)
             .filter(@(v) v != null)
@@ -565,7 +595,7 @@ let replayProgressBar = @() {
 function mkSquadLabel(player, color) {
   let res = {
     rendObj = ROBJ_BOX
-    size = [squadLabelWidth, flex()]
+    size = [squadLabelWidth, FLEX]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
   }
@@ -670,11 +700,11 @@ function mkPlayer(player, teamColor, halign) {
   ]
 
   return {
-    size = [flex(), rowHeight]
+    size = [FLEX, rowHeight]
     children = [
       @() {
         watch = isSelected
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = simpleHorGradInv
         color = selectColor
@@ -683,7 +713,7 @@ function mkPlayer(player, teamColor, halign) {
         transitions = opacityTransition
       }
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         behavior = Behaviors.Button
@@ -718,7 +748,7 @@ let centerPanel = @() {
   children = !isPlayersListOptActive.get() ? null
     : [
         mkTeamColumn(replayMplayersListSorted.get().alliesTeam, teamBlueLightColor, ALIGN_LEFT)
-        { size = flex() }
+        { size = FLEX }
         mkTeamColumn(replayMplayersListSorted.get().enemiesTeam, teamRedLightColor, ALIGN_RIGHT)
       ]
 }
@@ -736,7 +766,7 @@ let bottomPanel = @() {
     padding = [hdpx(30), saBorders[0]]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
-    gap = optBtnGap
+    gap = hdpx(50)
     children = [
       replayProgressBar
       {
@@ -781,7 +811,7 @@ function onHudTouchRelease(act) {
 let cameraSticks = @() {
   watch = [isFreeCameraOptActive, isPlayerOptionsOpen, can_use_freecam_in_replay]
   opacity = isPlayerOptionsOpen.get() ? 1 : 0
-  size = flex()
+  size = FLEX
   children = !can_use_freecam_in_replay.get() || !isFreeCameraOptActive.get() ? null
     : [
         {
@@ -851,7 +881,7 @@ let hudReplayControls = @() {
   stopMouse = true
   behavior = TouchScreenStick
   cameraControl = true
-  size = flex()
+  size = FLEX
   maxValueRadius = stickRadius
   onAttach = @() setInterval(TIME_TO_UPDATE_CONTROLLS, updateControls)
   onDetach = @() clearTimer(updateControls)
@@ -859,10 +889,14 @@ let hudReplayControls = @() {
   onTouchEnd = @() onHudTouchRelease(@() isPlayerOptionsOpen.set(true))
   children = isReplaysManageButtonOn.get()
     ? [
+        {
+          size = 0
+          children = replayCamKeyListeners
+        }
         cameraSticks
         @() {
           watch = [isPlayerOptionsOpen, isHudVisibilityOptActive]
-          size = flex()
+          size = FLEX
           children = !isPlayerOptionsOpen.get() && !isHudVisibilityOptActive.get()
             ? null
             : [
@@ -911,7 +945,7 @@ let hudReplayControls = @() {
               ]
         }
         {
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           valign = ALIGN_BOTTOM
           gap = rowHeight

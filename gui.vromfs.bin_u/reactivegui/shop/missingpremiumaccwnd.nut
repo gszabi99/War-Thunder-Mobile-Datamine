@@ -116,7 +116,7 @@ let buttons = @(toBattle) @() {
   watch = allow_subscriptions
   size = FLEX_H
   flow = FLOW_HORIZONTAL
-  gap = { size = flex() }
+  gap = { size = FLEX }
   children = [
     textButtonPurchase(
       utf8ToUpper(allow_subscriptions.get() ? loc("subscription/viewSubsPlans") : loc("premBuyWnd/activeBtn")),
@@ -150,7 +150,7 @@ let window = @(toBattle) {
 
 let showNoPremWnd = @(toBattle) addModalWindow(bgShadedDark.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   onClick = close
   children = modalWndBg.__merge(window(toBattle))

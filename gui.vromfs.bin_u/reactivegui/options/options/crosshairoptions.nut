@@ -11,7 +11,7 @@ let aircraftCrosshairTypesList = getHudConfigParameter("crosshairAir")
 let defaultIndex = 0
 
 let mkImage = @(img, size) {
-  size = [flex(), btnH]
+  size = [FLEX, btnH]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = {

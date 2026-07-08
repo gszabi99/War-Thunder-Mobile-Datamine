@@ -153,7 +153,7 @@ function textInput(text_state, options = {}) {
     rendObj = ROBJ_TEXT
     behavior = Behaviors.TextInput
 
-    size = [flex(), fontH(100)]
+    size = [FLEX, fontH(100)]
     color = textColor
     group
     valign = ALIGN_CENTER

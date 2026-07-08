@@ -57,9 +57,9 @@ let rewardBlock = @() {
             textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")),
               @() get_premium_daily_bonus("closePremDailyBonusWnd"),
               { hotkeys = [btnAUp] }),
-            { size = [flex(), defButtonHeight], halign = ALIGN_CENTER, valign = ALIGN_CENTER })
+            { size = [FLEX, defButtonHeight], halign = ALIGN_CENTER, valign = ALIGN_CENTER })
       : {
-          size = [flex(), defButtonHeight]
+          size = [FLEX, defButtonHeight]
           rendObj = ROBJ_TEXTAREA
           text = loc("RewardReceived")
           behavior = Behaviors.TextArea
@@ -119,7 +119,7 @@ let window = @() modalWndBg.__merge({
 
 let openImpl = @() addModalWindow(bgShadedDark.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   hotkeys = [[btnBEscUp, { action = close, description = loc("mainmenu/btnClose") }]]
   onClick = close
   children = window

@@ -451,6 +451,8 @@ eventbus_subscribe("hint:need_lock_target", function(_) {
 })
 
 eventbus_subscribe("hint:air_increase_throttle", function(_) {
+  if (unitType.get() != AIR)
+    return
   if (isThrottleHintAvailable.get() || incHintCounter("air_increase_throttle", 3)) {
     addCommonHintWithTtl(loc("hints/air_increase_throttle"), 5)
     isThrottleHintAvailable.set(true)

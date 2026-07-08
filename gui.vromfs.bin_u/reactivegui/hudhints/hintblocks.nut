@@ -44,7 +44,7 @@ let mkTextLogger = @(text) {
 let mkTransition = @(uid, children, offset, zOrder, ovr) {
   key = uid
   zOrder
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   children
   transform = { translate = [0, offset] }
@@ -67,7 +67,7 @@ let mkHintsBlock = @(events, transOvr = {}, blockOvr = {}, fontStyle = {}, hints
 
   return {
     watch = [events, areHintsHidden]
-    size = [flex(), max(offset - hintsGap, 0)]
+    size = [FLEX, max(offset - hintsGap, 0)]
     children
   }.__update(blockOvr)
 }

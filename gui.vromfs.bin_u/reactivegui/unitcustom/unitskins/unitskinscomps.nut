@@ -20,7 +20,7 @@ let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoo
 } = require("%rGui/battlePass/battlePassState.nut")
 let { unitSkins, selectedSkin, currentSkin, availableSkins, selectedSkinCfg, hasTagsChoice
 } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let { openEventWnd, MAIN_EVENT_ID, getEventLoc, eventSeason, allSpecialEvents
+let { MAIN_EVENT_ID, getEventLoc, eventSeason, allSpecialEvents, shouldShowEventMechanics
 } = require("%rGui/event/eventState.nut")
 let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -41,7 +41,8 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let listbox = require("%rGui/components/listbox.nut")
-let { openPassScene, BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
+let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
+let { openSeasonScene, PASS_SCENE, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { chooseBetterGoods, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
 
@@ -73,7 +74,7 @@ let mkTankRow = @(rowIdx, text, content, ovr = {}) {
   gap = skinGap
   children = [
     {
-      size = [tagNameSize, flex()]
+      size = [tagNameSize, FLEX]
       valign = ALIGN_CENTER
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
@@ -141,7 +142,7 @@ function skinBtn(skinPresentation) {
     children = [
       @() {
         watch = isSelected
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
         color = isSelected.get() ? selectColor : 0
@@ -149,7 +150,7 @@ function skinBtn(skinPresentation) {
       }
       @() {
         watch = stateFlags
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
         fillColor = stateFlags.get() & S_HOVER ? hoverColor : 0
@@ -159,7 +160,7 @@ function skinBtn(skinPresentation) {
       }
       @() {
         watch = [isLocked, currencyId]
-        size = flex()
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
@@ -169,7 +170,7 @@ function skinBtn(skinPresentation) {
       }
       @() {
         watch = currentSkin
-        size = flex()
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
         children = currentSkin.get() == name
@@ -207,7 +208,7 @@ function autoSkinRow() {
     list = [false, true]
     setValue = setAutoSkin
     mkContentCtor = @(v, _, _) {
-      size = [flex(), hdpx(70)]
+      size = [FLEX, hdpx(70)]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       rendObj = ROBJ_TEXTAREA
@@ -218,7 +219,7 @@ function autoSkinRow() {
   }).__update({ vplace = ALIGN_CENTER })
 
   return mkTankRow(tankTagsOrder.len(), loc("skins/autoselect"), content,
-    { size = [pw(100), SIZE_TO_CONTENT] })
+    { size = [pw(100), SIZE_TO_CONTENT], padding = skinsRowPadding })
 }
 
 function skinsBlockWithTags() {
@@ -247,7 +248,7 @@ function skinsBlockWithTags() {
       .map(@(tag, idx)
         mkTankRow(idx, getTagName(tag),
           {
-            size = flex()
+            size = FLEX
             children = skinsPannableWithTags(@() {
               watch = skinsPresentationsByTag
               valign = ALIGN_CENTER
@@ -299,7 +300,7 @@ function onPurchase() {
 }
 
 function openLootboxForEvent(lootbox) {
-  openEventWnd(lootbox?.meta.event_id ?? MAIN_EVENT_ID)
+  openSeasonScene(LOOTBOX_TAB, null, lootbox?.meta.event_id ?? MAIN_EVENT_ID)
   openEventWndLootbox(lootbox.name)
 }
 
@@ -310,7 +311,7 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
     return null
   return @() {
     watch = campMyUnits
-    size = flex()
+    size = FLEX
     halign = cSkin == skinName ? ALIGN_CENTER : ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
@@ -331,7 +332,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     watch = [
       eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock,
       bpPurchasedUnlock, battlePassGoods, shopGoods, goodsLimitReset, dayOffset, serverTimeDay,
-      purchasesCount, todayPurchasesCount
+      purchasesCount, todayPurchasesCount, shouldShowEventMechanics
     ]
     padding = [0, saBorders[0], 0, 0]
     hplace = ALIGN_RIGHT
@@ -382,7 +383,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     })
   }
 
-  if (lootbox != null) {
+  if (lootbox != null && shouldShowEventMechanics.get()) {
     let { event_id = MAIN_EVENT_ID } = lootbox?.meta
     return res.__update({
       children = [
@@ -402,11 +403,11 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     .findindex(@(v) v != null
       && null != v.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName && r.subId == skinName))
 
-  if (bpUnlock != null || isBpGoods)
+  if ((bpUnlock != null || isBpGoods) && shouldShowEventMechanics.get())
     return res.__update({
-      children = [
+        children = [
         mkInfoTextarea(loc("canReceive/inBattlePass"))
-        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openPassScene(BATTLE_PASS), { hplace = ALIGN_CENTER })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openSeasonScene(PASS_SCENE, BATTLE_PASS), { hplace = ALIGN_CENTER })
       ]
     })
 
@@ -416,7 +417,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 let skinActionBtn = @() {
   watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, unitToShow,
     skinsInProgress, baseUnit, isOwnUnit, campMyUnits]
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
   children = !isOwnUnit.get() || !selectedSkin.get() || unitToShow.get() == null

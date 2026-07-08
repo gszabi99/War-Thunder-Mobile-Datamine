@@ -145,17 +145,17 @@ function mkSelectionZone(x0, y0, x1, y1) {
 }
 
 let pathInputUi = {
-  size = flex()
+  size = FLEX
   children = [
     {
-      size = flex()
+      size = FLEX
       behavior = Behaviors.ProcessPointingInput
       onPointerPress
       onPointerMove
       onPointerRelease
     }
     {
-      size = flex()
+      size = FLEX
       behavior = Behaviors.ProcessGesture
       onGestureBegin
       onGestureActive
@@ -163,7 +163,7 @@ let pathInputUi = {
       gestureDragDistanceMax = 500
     }
     @() {
-      size = flex()
+      size = FLEX
       watch = zoneSelectionState
       children = !zoneSelectionState.get().active ? null
       : mkSelectionZone(

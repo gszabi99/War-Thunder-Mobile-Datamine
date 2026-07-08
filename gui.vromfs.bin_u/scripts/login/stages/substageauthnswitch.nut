@@ -65,7 +65,9 @@ function login_nswitch() {
   }
 
   if (nsa_error != nswitchAccount.OK) {
-    login_send_callback({ errorStr = login_nintnendo_state })
+    
+    
+    login_send_callback({ errorStr = login_nintnendo_state ?? "nswitch/login/nso_common_error" })
     return
   }
 

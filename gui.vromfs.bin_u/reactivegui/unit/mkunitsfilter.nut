@@ -277,14 +277,14 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilter
             .extend(filters.map(@(f) mkFilter(f)))
         }
         {
-          size = [closeIconSize, flex()]
+          size = [closeIconSize, FLEX]
           flow = FLOW_VERTICAL
           gap = hdpx(10)
           halign = ALIGN_RIGHT
           children = [
             mkFilterIcon(closeFilters, closeIconSize, "btn_close.svg")
 
-            { size = flex() }
+            { size = FLEX }
 
             {
               rendObj = ROBJ_TEXT

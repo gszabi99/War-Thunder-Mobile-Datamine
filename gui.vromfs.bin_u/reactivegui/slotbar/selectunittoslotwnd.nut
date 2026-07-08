@@ -31,7 +31,7 @@ function mkBgText(rect) {
   
   let posX = rect.l - ((textSize[0] - (rect.r - rect.l)) / 2)
   return {
-    size = flex()
+    size = FLEX
     pos = [posX, rect.t - hdpx(75)]
     rendObj = ROBJ_TEXT
     text
@@ -59,7 +59,7 @@ function openImpl() {
       @() {
         watch = [rect, unit, plateSize]
         key = rect
-        size = flex()
+        size = FLEX
         onAttach = @() setInterval(0.05, updateRect)
         onDetach = @() clearTimer(updateRect)
         children = !rect.get() || !unit.get() ? null

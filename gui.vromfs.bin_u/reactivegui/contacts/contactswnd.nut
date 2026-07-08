@@ -13,7 +13,8 @@ let friendRequestToMeResponse = require("%rGui/contacts/mkContactResponse.nut")
 let { tabW } = require("%rGui/options/optionsStyle.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { invitationsUids } = require("%rGui/invitations/invitationsState.nut")
-
+let { backButton } = require("%rGui/components/backButton.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 let tabs = [
   {
@@ -77,5 +78,14 @@ let tabs = [
   }
 ]
 
-mkOptionsScene("contactsScene", tabs, isContactsOpened, contactsOpenTabId, null,
+
+let header = headerGradientBg([
+  backButton(@() isContactsOpened.set(false))
+  {
+    rendObj = ROBJ_TEXT
+    text = loc("mainmenu/contacts")
+  }.__update(fontBigShaded)
+])
+
+mkOptionsScene("contactsScene", tabs, isContactsOpened, contactsOpenTabId, header,
   { size = [tabW + hdpx(25), sh(100) - topAreaSize - defButtonHeight] })

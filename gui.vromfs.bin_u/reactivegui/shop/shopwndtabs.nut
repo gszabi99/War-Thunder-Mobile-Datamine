@@ -13,7 +13,7 @@ function tabData(tab, campaign, hasUnseenGoodsByCategory) {
     size = FLEX_H
     override = { size = [tabW, SIZE_TO_CONTENT] }
     content = {
-      size = [flex(), tabH]
+      size = [FLEX, tabH]
       children = [
         icon == null ? null
           : @() {

@@ -69,7 +69,7 @@ function wndContent() {
 
 let openImpl = @() addModalWindow(bgShaded.__merge({
   key = WND_UID
-  size = flex()
+  size = FLEX
   onClick = close
   children = @() modalWndBg.__merge({
     watch = unitName

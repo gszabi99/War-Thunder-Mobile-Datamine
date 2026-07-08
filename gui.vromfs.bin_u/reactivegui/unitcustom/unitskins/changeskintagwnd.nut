@@ -32,7 +32,7 @@ let content = @(curTag, setTag) @() {
         close()
         setTag(tag)
       },
-      { ovr = { size = const [flex(), hdpx(100)] } }))
+      { ovr = { size = const [FLEX, hdpx(100)] } }))
 }
 
 function changeSkinTagWnd(unitName, skinName) {
@@ -46,7 +46,7 @@ function changeSkinTagWnd(unitName, skinName) {
 
   addModalWindow(bgShaded.__merge({
     key = wndUid
-    size = flex()
+    size = FLEX
     stopHotkeys = true
     hotkeys = [[btnBEscUp, { action = close }]]
     children = {

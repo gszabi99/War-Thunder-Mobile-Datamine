@@ -22,7 +22,7 @@ let { curOpenEventPass, eventBgImage, getEventPassName } = require("%rGui/battle
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-let { openPassScene } = require("%rGui/battlePass/passState.nut")
+let { openSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { setHangarUnitGroup, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
@@ -106,7 +106,7 @@ let buttonsContent = @(image, text) {
 
 let footer = @() {
   watch = curGmList
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   valign = ALIGN_BOTTOM
   children = curGmList.get().len() == 0 ? null
     : [
@@ -127,7 +127,7 @@ let footer = @() {
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_shop.svg", utf8ToUpper(loc("eventShop"))),
                   @() openShopWnd(null, null, "events"), COMMON)
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_event_pass.svg", utf8ToUpper(loc("eventPass"))),
-                  @() openPassScene(getEventPassName(curOpenEventPass.get()?.eventName)))
+                  @() openSeasonScene(PASS_SCENE, getEventPassName(curOpenEventPass.get()?.eventName)))
               ]
             }
           ]
@@ -174,7 +174,7 @@ let wndKey = {}
 let gmEventWnd = @() {
   watch = hasBgUnits
   key = wndKey
-  size = flex()
+  size = FLEX
   padding = saBordersRv
 
   behavior = !hasBgUnits.get() ? null : HangarCameraControl
@@ -190,7 +190,7 @@ let gmEventWnd = @() {
     header
     @() {
       watch = [unitsToSetInHangar, hasHangarUnitResources]
-      size = flex()
+      size = FLEX
       valign = ALIGN_BOTTOM
       halign = ALIGN_CENTER
       children = unitsToSetInHangar.get() == null || hasHangarUnitResources.get() ? null

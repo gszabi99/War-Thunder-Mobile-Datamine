@@ -59,7 +59,7 @@ let statisticsHeight = sh(100) - saBorders[1] * 2 - backButtonHeight
 
 return bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = [saBorders[1], 0]
   onAttach
   onDetach

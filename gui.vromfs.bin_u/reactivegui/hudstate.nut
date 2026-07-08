@@ -45,7 +45,6 @@ let hudStateNative = {
   threatTorpedos = []
   hasCountermeasures = false
   repairAssistAllow = 0
-  isInHangarChallenge = false
 }.map(@(val, key) mkWatched(persist, key, val))
 
 interopGet({

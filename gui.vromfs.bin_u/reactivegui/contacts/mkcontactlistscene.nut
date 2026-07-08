@@ -16,7 +16,7 @@ function contactsList(uidsList, playerSelectedUserId, responseAction) {
   let ordered = mkContactsOrder(uidsList)
   let scrollHandler = ScrollHandler()
   return {
-    size = flex()
+    size = FLEX
     children = [
       mkVerticalPannableArea(
         @() {
@@ -44,7 +44,7 @@ function contactsBlock(uidsList, playerSelectedUserId, responseAction) {
   let hasContacts = Computed(@() uidsList.get().len() != 0)
   return @() {
     watch = hasContacts
-    size = flex()
+    size = FLEX
     children = !hasContacts.get() ? noContactsMsg
       : contactsList(uidsList, playerSelectedUserId, responseAction)
   }
@@ -72,7 +72,7 @@ function mkContactListScene(uidsList, mkContactActions, responseAction = null) {
     : null)
   return {
     key = uidsList
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
     gap
     children = [

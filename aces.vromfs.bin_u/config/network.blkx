@@ -143,7 +143,7 @@
     },
     "inventory": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net/char"
+        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:3443/char"
       }
     },
     "contacts": {

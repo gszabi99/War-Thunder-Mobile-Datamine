@@ -154,7 +154,7 @@ function decalDescriptionBlock() {
 }
 
 let unitCustomizationGamercard = {
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   padding = saBordersRv
   flow = FLOW_HORIZONTAL
   children = [
@@ -175,7 +175,7 @@ let unitCustomizationGamercard = {
         }.__update(fontSmall)
       ]
     })
-    { size = flex() }
+    { size = FLEX }
     mkCurrenciesBtns([GOLD])
   ]
 }
@@ -300,7 +300,7 @@ let sectionsBlock = @() {
 
 let unitCustomWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
@@ -310,7 +310,7 @@ let unitCustomWnd = {
   children = [
     unitCustomizationGamercard
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       children = [
         decalDescriptionBlock

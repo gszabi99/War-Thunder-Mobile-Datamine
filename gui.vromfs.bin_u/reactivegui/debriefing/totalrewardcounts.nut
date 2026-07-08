@@ -475,7 +475,7 @@ let mkRewardLabel = @(text, icon, cfg) {
 
 let strikeThroughLineWidth = hdpx(4)
 let strikeThroughLine = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   commands = [
     [VECTOR_COLOR, Color(0, 0, 0, 56)],

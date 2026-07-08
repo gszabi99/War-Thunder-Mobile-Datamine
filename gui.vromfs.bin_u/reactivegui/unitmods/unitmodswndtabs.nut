@@ -46,13 +46,13 @@ function tabData(tab, ovr = {}) {
   return {
     id
     content = {
-      size = [flex(), tabH]
+      size = [FLEX, tabH]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
         @() {
           watch = tabModName
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_IMAGE
           image = tabModName.get() == null ? null : Picture($"ui/gameuiskin/{tabModName.get()}.avif:0:P")
           fallbackImage = Picture(defImage)
@@ -77,7 +77,7 @@ function tabData(tab, ovr = {}) {
 
         @() {
           watch = [isLocked, hasModNotOwn, isPurchased, cost]
-          size = flex()
+          size = FLEX
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [

@@ -79,7 +79,7 @@ function mkContent() {
     color = 0xFF707070
     clipChildren = true
     children = {
-      size = flex()
+      size = FLEX
       padding = wndPadding
       flow = FLOW_VERTICAL
       gap = hdpx(30)
@@ -93,7 +93,7 @@ function mkContent() {
 
 let openImpl = @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = mkContent()

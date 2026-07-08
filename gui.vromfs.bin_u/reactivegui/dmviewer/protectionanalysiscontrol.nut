@@ -33,7 +33,7 @@ let defProcessorState = {
 function mkTargetingControlLayer() {
   let processorState = Watched(clone defProcessorState)
 
-  function onPointerPress(evt) {
+  function onPointerPress(evt) { 
     if (evt.accumRes & R_PROCESSED)
       return 0
     if (!evt.hit)
@@ -57,7 +57,7 @@ function mkTargetingControlLayer() {
     return 0 
   }
 
-  function onPointerRelease(evt) {
+  function onPointerRelease(evt) { 
     let { devId, pointerId, btnId, pressTime, maxMoveDist } = processorState.get()
     if (evt.devId != devId || evt.pointerId != pointerId || evt.btnId != btnId)
       return 0
@@ -98,7 +98,7 @@ function mkTargetingControlLayer() {
   })
 
   return {
-    size = flex()
+    size = FLEX
     hplace = ALIGN_RIGHT
     behavior = Behaviors.ProcessPointingInput
     onPointerPress
@@ -111,19 +111,19 @@ function mkTargetingControlLayer() {
 let invisibleCursor = Cursor({})
 let cursorHidingLayer = @() {
   watch = needShowCursor
-  size = flex()
+  size = FLEX
   cursor = needShowCursor.get() ? invisibleCursor : null
 }
 
 let cameraControlLayer = @() {
   watch = needCursorForActiveInputDevice
-  size = needCursorForActiveInputDevice.get() ? flex() : [sw(50), flex()]
+  size = needCursorForActiveInputDevice.get() ? FLEX : [sw(50), FLEX]
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
 }
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     cursorHidingLayer
     cameraControlLayer

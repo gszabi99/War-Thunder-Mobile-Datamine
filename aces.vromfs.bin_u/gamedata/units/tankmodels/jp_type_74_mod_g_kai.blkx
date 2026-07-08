@@ -19,8 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "support_unit_class": "structures/ussr_152mm_d1",
-  "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
@@ -1719,7 +1717,7 @@
     "sightName": "telescope_m105c",
     "headPos": [
       0.0,
-      4.0,
+      3.8,
       -13.1
     ],
     "headPosOnShooting": [
@@ -1728,6 +1726,72 @@
       0.37
     ],
     "detectionHeight": 2.63
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "jp_camo_sdf_green*",
+      "to": "jp_camo_modern_green*"
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "jp_camo_sdf_green*",
+      "to": "jp_camo_post_black_gray_green*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -1.35667,
+        4.66613e-8,
+        -0.781571,
+        2.14151
+      ],
+      "decal0Line1": [
+        0.688082,
+        -2.81168,
+        -1.19439,
+        3.5196
+      ],
+      "decal0Line2": [
+        1.35667,
+        6.99919e-8,
+        -0.781571,
+        -1.14151
+      ],
+      "decal0Line3": [
+        0.688082,
+        -2.81168,
+        1.19439,
+        3.5196
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.44822,
+        0.440191,
+        -0.77803,
+        -2.24897
+      ],
+      "decal0CPNormDepth1": [
+        0.44822,
+        0.440191,
+        0.77803,
+        -2.24897
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.319347
+      ],
+      "decal0Mirrored": true,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.226971,
+      "decal0Tex": "jp_3rd_tank_bat"
+    }
   },
   "ammoStowages": {
     "ammo1": {
@@ -1898,7 +1962,19 @@
     }
   },
   "battleHideNodes": {
-    "n": "details"
+    "n": [
+      "details",
+      "details_01",
+      "details_02",
+      "details_03",
+      "details_04",
+      "details_05",
+      "details_06",
+      "details_07",
+      "details_08",
+      "details_09",
+      "details_10"
+    ]
   },
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -1910,58 +1986,6 @@
       0.05,
       0.0,
       0.95
-    ]
-  },
-  "steeringTableAlternative": {
-    "point": [
-      [
-        -12.0,
-        0.0
-      ],
-      [
-        -13.0,
-        0.4
-      ],
-      [
-        -45.0,
-        0.75
-      ],
-      [
-        -70.0,
-        0.9
-      ],
-      [
-        -75.0,
-        1.0
-      ],
-      [
-        12.0,
-        0.0
-      ],
-      [
-        13.0,
-        0.1
-      ],
-      [
-        20.0,
-        0.15
-      ],
-      [
-        55.0,
-        0.6
-      ],
-      [
-        60.0,
-        0.7
-      ],
-      [
-        74.0,
-        0.8
-      ],
-      [
-        75.0,
-        1.0
-      ]
     ]
   },
   "DamageParts": {
@@ -2361,11 +2385,9 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -2384,20 +2406,44 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "radiator_dm": {
+      "drive_turret_v_03_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_03_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "radiator_dm": {
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 20.0,
+        "hp": 50.0,
         "armorThrough": 3.0
       }
     },
@@ -2424,6 +2470,16 @@
       },
       "cannon_breech_05_dm": {
         "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
+      },
+      "autoloader_01_dm": {
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

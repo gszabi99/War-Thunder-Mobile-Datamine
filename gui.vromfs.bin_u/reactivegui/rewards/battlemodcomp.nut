@@ -21,7 +21,7 @@ let mkNameText = @(nameLoc) mkPlateText(nameLoc, fontTiny).__update({
 
 
 let mkBattleModCommonText = @(battleMod, _, __) {
-  size = flex()
+  size = FLEX
   padding
   clipChildren = true
   halign = ALIGN_RIGHT
@@ -46,7 +46,7 @@ function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots =
 
   return @() {
     watch = eventEndsAt
-    size = flex()
+    size = FLEX
     padding
     clipChildren = true
     halign = ALIGN_RIGHT

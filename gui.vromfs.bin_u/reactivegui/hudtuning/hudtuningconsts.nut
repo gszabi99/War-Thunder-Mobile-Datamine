@@ -19,12 +19,13 @@ let tuningStateDefault = {
     visible = true
     textWidth = 1.0
     fontSize = (fontsList.findvalue(@(f) f?.isDefault ?? false) ?? fontsList[0]).id
+    bulletsRight = false
   }
   customOptions = {
     doublePrimaryGuns = true
     doubleCourseGuns = false
     hasDoubleRepair = false
-    bulletsRight = false
+    splitSideGunBullets = false
   }
 }
 

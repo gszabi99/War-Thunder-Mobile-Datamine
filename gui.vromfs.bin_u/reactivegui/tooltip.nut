@@ -117,7 +117,7 @@ function showDelayedTooltip(rectOrPos, params, key, repayTime = REPAY_TIME) {
 }
 
 function showHint(rectOrPos, params, showTime) {
-  let hintOnCloseArea = { size = flex(), behavior = Behaviors.Button, onClick = hideTooltip }
+  let hintOnCloseArea = { size = FLEX, behavior = Behaviors.Button, onClick = hideTooltip }
   let openParams = type(params) == "string"
     ? { content = mkTooltipText(params, { children = hintOnCloseArea }) }
     : params.__merge({ content = hintOnCloseArea.__merge({ children = params?.content }) })

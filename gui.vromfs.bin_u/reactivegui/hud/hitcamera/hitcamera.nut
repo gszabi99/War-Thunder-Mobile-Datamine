@@ -63,7 +63,7 @@ function resultText(scale) {
 
 let mkHealthGrad = @(isLeft, color, part) {
   rendObj = ROBJ_IMAGE
-  size = [pw(50 * part), flex()]
+  size = [pw(50 * part), FLEX]
   flipX = isLeft
   image = simpleHorGrad
   color
@@ -78,7 +78,7 @@ function healthHiglight() {
   let part = (0.8 - hcRelativeHealth.get()) / 0.8
   return {
     watch = hcRelativeHealth
-    size = flex()
+    size = FLEX
     children = color == 0 ? null
       : [
           mkHealthGrad(true, color, part)
@@ -101,11 +101,11 @@ function imageBlock(needResultText, size, scale) {
     children = [
       healthHiglight
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         children = [
           {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_HIT_CAMERA
             children = overCamera
           }

@@ -115,7 +115,7 @@ let threatUnitSearchTextInput = {
   children = [
     textInput(threatUnitSearchString, {
       ovr = {
-        size = [flex(), defButtonHeight]
+        size = [FLEX, defButtonHeight]
         padding = [textInputPadV, hdpx(95), textInputPadV, hdpx(85)]
         fillColor = headerBgColor
       }
@@ -228,7 +228,7 @@ let paramsLeft = panelBg.__merge({
 
 let paramsRight = {
   hplace = ALIGN_RIGHT
-  size = const [rightPanelW, flex()]
+  size = const [rightPanelW, FLEX]
   flow = null
   children = [
     threatBlockTitle
@@ -330,13 +330,13 @@ let penetrationColorScale = {
       ]
     }
     {
-      size = [flex(), hdpx(30)]
+      size = [FLEX, hdpx(30)]
       rendObj = ROBJ_BOX
       borderColor = 0xFF000000
       borderWidth = defButtonBorderWidth
       padding = defButtonBorderWidth
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = penetrationGradientHor
       }
@@ -346,20 +346,20 @@ let penetrationColorScale = {
 
 let mkScene = @() {
   key = {}
-  size = flex()
+  size = FLEX
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   animations = wndSwitchAnim
   children = [
     {
-      size = flex()
+      size = FLEX
       margin = saBordersRv
       flow = FLOW_VERTICAL
       gap = gamercardGap
       children = [
         sceneHeader
         {
-          size = flex()
+          size = FLEX
           children = [
             paramsLeft
             paramsRight

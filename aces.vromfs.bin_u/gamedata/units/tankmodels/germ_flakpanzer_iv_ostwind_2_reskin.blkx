@@ -576,43 +576,31 @@
       "details_02"
     ]
   },
-  "gunConvergence": {
-    "defaultDistance": 800.0,
-    "vertical": true,
-    "horizontal": true
-  },
-  "enabled_modifications": {
-    "tank_smoke_screen_system_mod": true
-  },
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.05,
-      0.05,
-      0.9
-    ],
-    "armorThicknessSide": [
-      0.0,
-      0.05,
-      0.95
-    ]
-  },
   "steeringTableAlternative": {
     "point": [
       [
-        -12.0,
+        -20.0,
         0.0
       ],
       [
-        -13.0,
-        0.4
+        -21.0,
+        0.1
       ],
       [
-        -45.0,
-        0.75
+        -27.0,
+        0.15
       ],
       [
-        -70.0,
-        0.9
+        -55.0,
+        0.6
+      ],
+      [
+        -60.0,
+        0.99
+      ],
+      [
+        -74.0,
+        0.99
       ],
       [
         -75.0,
@@ -646,6 +634,26 @@
         75.0,
         1.0
       ]
+    ]
+  },
+  "gunConvergence": {
+    "defaultDistance": 800.0,
+    "vertical": true,
+    "horizontal": true
+  },
+  "enabled_modifications": {
+    "tank_smoke_screen_system_mod": true
+  },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.05,
+      0.05,
+      0.9
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.05,
+      0.95
     ]
   },
   "ikGunner": [

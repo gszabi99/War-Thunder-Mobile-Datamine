@@ -91,7 +91,7 @@
         "relStep": 0.5
       },
       "submarine_depth": {
-        "innerDeadzone": 0.02,
+        "innerDeadzone": 0.0,
         "rangeMin": 0.0,
         "relative": true
       },

@@ -3,17 +3,16 @@ let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize } = require("%rGui/style/gradients.nut")
-let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
+let { hasUnseenQuestsBySection, questsCfg, questsBySection,
   COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB,
-  progressUnlockByTab, progressUnlockBySection, curTabParams
+  progressUnlockByTab, progressUnlockBySection, isQuestsOpen, curTabId
 } = require("%rGui/quests/questsState.nut")
 let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("%rGui/quests/questsWndPage.nut")
 let { tabW, tabPadding } = require("%rGui/options/optionsStyle.nut")
-let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, openEventWnd, getSpecialEventName,
-   specialEventsLootboxesState } = require("%rGui/event/eventState.nut")
+let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, getSpecialEventName,
+  specialEventsLootboxesState, MAIN_EVENT_ID, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { openSeasonScene, LOOTBOX_TAB, PASS_SCENE, QUESTS_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { getSpecialEventLocName, getSpecialEventRewardUnitName } = require("%rGui/event/specialEventLocName.nut")
 let { hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
@@ -28,8 +27,7 @@ let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentati
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
 let { hasOPRewardsToReceive } = require("%rGui/battlePass/operationPassState.nut")
-let { openPassScene, BATTLE_PASS, OPERATION_PASS } = require("%rGui/battlePass/passState.nut")
-let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+let { BATTLE_PASS, OPERATION_PASS } = require("%rGui/battlePass/passState.nut")
 
 let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
@@ -61,8 +59,8 @@ let linkToEventBtnCtor = @() {
   minHeight = progressBarRewardSize
   watch = imageSizeMul
   children = mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
-    iconSeason,
-    @() openEventWnd(), null, imageSizeMul.get())
+  iconSeason,
+  @() openSeasonScene(LOOTBOX_TAB), null, imageSizeMul.get())
 }
 
 let linkToBattlePassBtnCtor = @() {
@@ -70,7 +68,7 @@ let linkToBattlePassBtnCtor = @() {
   watch = imageSizeMul
   children = mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
     iconSeason,
-    @() openPassScene(BATTLE_PASS),
+    @() openSeasonScene(PASS_SCENE, BATTLE_PASS),
     @() {
       watch = hasBpRewardsToReceive
       margin = unseenMarkMargin
@@ -87,8 +85,8 @@ let linkToOperationPassBtnCtor = @() {
   flow = FLOW_HORIZONTAL
   children = [
     mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
-      iconPersonal,
-      @() openPassScene(OPERATION_PASS),
+    iconPersonal,
+    @() openSeasonScene(PASS_SCENE, OPERATION_PASS),
       @() {
         watch = hasOPRewardsToReceive
         margin = unseenMarkMargin
@@ -139,7 +137,7 @@ function mkLinkToStoreBtnInfo(idx) {
       children = isEventPassQuests.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
               eventIcon,
-              @() openPassScene(getEventPassName(eventName.get())),
+                @() openSeasonScene(PASS_SCENE, getEventPassName(eventName.get())),
               @() {
                 watch = hasEpRewardsToReceive
                 margin = unseenMarkMargin
@@ -148,7 +146,7 @@ function mkLinkToStoreBtnInfo(idx) {
         : hasGoods.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(null, null, shopId.get()))
         : lootboxInfo.get()
-          ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
+          ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openSeasonScene(LOOTBOX_TAB, null, lootboxInfo.get().eventId))
         : null
       }
     hasReward = Computed(@() isEventPassQuests.get() ? hasEpRewardsToReceive.get() : false)
@@ -236,7 +234,7 @@ function mkSpecialEventTabContent(idx) {
     : secondsToHoursLoc(endsAt.get() - serverTime.get()))
 
   return {
-    size = flex()
+    size = FLEX
     flow = FLOW_HORIZONTAL
     gap = tabGap
     children = [
@@ -270,7 +268,8 @@ function mkSpecialQuestsTab(idx) {
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.get()?[id] ?? []), mkQuest, id, comp, width, hasComponent)
-    isVisible = Computed(@() questsCfg.get()?[id].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
+    isVisible = Computed(@() shouldShowEventMechanics.get()
+      && questsCfg.get()?[id].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     hasReward
   }
 }
@@ -284,7 +283,8 @@ let tabs = [
     imageTabOffset = imageTabOffset
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
-    isVisible = Computed(@() questsCfg.get()[COMMON_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null
+    isVisible = Computed(@() shouldShowEventMechanics.get()
+      && questsCfg.get()[COMMON_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null
       && isBpSeasonActive.get())
   }
   {
@@ -295,7 +295,8 @@ let tabs = [
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
     tabContent = eventTabContent()
-    isVisible = Computed(@() isEventActive.get()
+    isVisible = Computed(@() shouldShowEventMechanics.get()
+      && isEventActive.get()
       && questsCfg.get()[EVENT_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     ovr = { key = "main_event_tab" } 
   }
@@ -310,7 +311,8 @@ let tabs = [
     image = iconPersonal
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[PERSONAL_TAB]), mkQuest, PERSONAL_TAB, linkToOperationPassBtnCtor)
-    isVisible = Computed(@() questsCfg.get()[PERSONAL_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
+    isVisible = Computed(@() shouldShowEventMechanics.get()
+      && questsCfg.get()[PERSONAL_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     hasReward = hasOPRewardsToReceive
   }
   {
@@ -337,12 +339,14 @@ foreach(tab in tabs)
   if ("unseen" not in tab)
     tab.unseen <- mkUnseen(tab.id, tab?.hasReward ?? Watched(false))
 
-let gamercardQuestBtns = @() {
-  watch = curTabParams
-  size = flex()
-  children = mkCurrenciesBtns(curTabParams.get()?.currencies ?? [])
-}
+isQuestsOpen.subscribe(function(v) {
+  if (!v)
+    return
+  local tabId = curTabId.get()
+  local eventName = tabId
+  if (tabId == null || specialEventsOrdered.get().findvalue(@(item) item.eventId == tabId) == null)
+    eventName = MAIN_EVENT_ID
+  openSeasonScene(QUESTS_TAB, null, eventName)
+})
 
-let sceneId = "questsWnd"
-mkOptionsScene(sceneId, tabs, isQuestsOpen, curTabId, gamercardQuestBtns)
-registerUnlocksSceneToUpdate(sceneId)
+return tabs

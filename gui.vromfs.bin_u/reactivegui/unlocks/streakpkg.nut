@@ -32,7 +32,7 @@ function getUnlockDescLocText(unlockId, repeatInARow) {
 
 let mkImage = @(path, override = {}) {
   rendObj = ROBJ_IMAGE
-  size = flex()
+  size = FLEX
   image = Picture(path)
 }.__update(override)
 

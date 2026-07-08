@@ -76,7 +76,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
 
   let stickDragAreaControl = @(scale) @() {
     watch = isStickActive
-    size = flex()
+    size = FLEX
     transform = {}
     children = isStickActive.get() ? stickDragAreaBg(scale) : null
   }

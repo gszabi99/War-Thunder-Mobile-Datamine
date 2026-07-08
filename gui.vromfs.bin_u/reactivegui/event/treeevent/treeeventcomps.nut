@@ -103,7 +103,7 @@ function mkPoint(state, pointSize) {
           children = [
             {
               key = id
-              size = flex()
+              size = FLEX
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               children = {
@@ -182,7 +182,7 @@ function mkStatusPlate(isAvailable, isBlocked, price, range, hasUnseenMarker, ov
     : currency
 
   return {
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_TOP
     padding = const [hdpx(5), 0]

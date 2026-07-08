@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
 let { selSlot, cancelRespawn } = require("%rGui/respawn/respawnState.nut")
-let { respawnUnitInfo, respawnUnitMods } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { register_command } = require("console")
 let { setUnitBullets, setOrSwapUnitBullet, resetSavedBullets, applySavedBullets, savedBullets
@@ -9,13 +8,12 @@ let { setUnitBullets, setOrSwapUnitBullet, resetSavedBullets, applySavedBullets,
 let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_LOW_AMOUNT, BULLETS_LOW_PERCENT, BULLETS_SPEC_SLOTS,
   ammoReductionSecFactorDef, ammoReductionSpecFactorDef
 } = require("%rGui/bullets/bulletsConst.nut")
-let { calcBulletStep, calcVisibleBullets, calcChosenBullets, calcMaxBullets, calcLeftSteps,
+let { calcBulletStep, calcBulletsStatus, calcChosenBullets, calcMaxBullets, calcLeftSteps,
   ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
 } = require("%rGui/bullets/calcBullets.nut")
 
 
 let unitName = Computed(@() selSlot.get()?.name)
-let unitLevel = Computed(@() selSlot.get()?.level ?? 0)
 let bulletsInfo = Computed(@() unitName.get() == null ? null
   : loadUnitBulletsChoice(unitName.get())?.commonWeapons.primary) 
 
@@ -46,30 +44,31 @@ let hasExtraBullets = Computed(@() bulletStep.get() * bulletTotalSteps.get() > b
 let hasExtraBulletsSec = Computed(@() bulletSecStep.get() * bulletSecTotalSteps.get() > bulletSecTotalCount.get())
 let hasExtraBulletsSpec = Computed(@() bulletSpecStep.get() * bulletSpecTotalSteps.get() > bulletSpecTotalCount.get())
 
-let mods = Computed(function() {
-  let curUnitName = unitName.get()
-  let unitInfo = respawnUnitInfo.get()
-  let defUnitMods = respawnUnitMods.get()
-  if (unitInfo == null || curUnitName == null)
-    return defUnitMods
-  let unitData = unitInfo?.name == curUnitName ? unitInfo
-    : unitInfo?.platoonUnits.findvalue(@(v) v.name == curUnitName)
-  return unitData?.modifications ?? defUnitMods
-})
 
-let visibleBullets = Computed(@() calcVisibleBullets(bulletsInfo.get(), mods.get()))
-let visibleBulletsSec = Computed(@() calcVisibleBullets(bulletsSecInfo.get(), mods.get()))
-let visibleBulletsSpec = Computed(@() calcVisibleBullets(bulletsSpecInfo.get(), mods.get()))
+let isFakeSecondary = Computed(@() bulletsSecInfo.get() == null
+  || (bulletSecTotalSteps.get() <= 1 && bulletsSecInfo.get().bulletSets.len() <= 1))
+let isFakeSpecial = Computed(@() bulletsSpecInfo.get() == null
+  || (bulletSpecTotalSteps.get() <= 1 && bulletsSpecInfo.get().bulletSets.len() <= 1))
+let hasOnlyOneSideGroup = Computed(@() isFakeSecondary.get() != isFakeSpecial.get())
+
+let secBulletsSlots = Computed(@() !isFakeSecondary.get() && hasOnlyOneSideGroup.get() ? BULLETS_PRIM_SLOTS : BULLETS_SEC_SLOTS)
+let specBulletsSlots = Computed(@() !isFakeSpecial.get() && hasOnlyOneSideGroup.get() ? BULLETS_PRIM_SLOTS : BULLETS_SPEC_SLOTS)
+
+let calcBulletsStatusSlot = @(info, slot) slot == null ? {}
+  : calcBulletsStatus(info, slot.level, slot.mods, slot.modPresetCfg)
+let bulletsStatus = Computed(@() calcBulletsStatusSlot(bulletsInfo.get(), selSlot.get()))
+let bulletsStatusSec = Computed(@() calcBulletsStatusSlot(bulletsSecInfo.get(), selSlot.get()))
+let bulletsStatusSpec = Computed(@() calcBulletsStatusSlot(bulletsSpecInfo.get(), selSlot.get()))
 
 let maxBulletsCountForExtraAmmo = Computed(@() !hasExtraBullets.get() ? {}
   : calcMaxBullets(bulletTotalSteps.get(), bulletsInfo.get(), bulletTotalCount.get(), BULLETS_PRIM_SLOTS))
 let maxBulletsSecCountForExtraAmmo = Computed(@() !hasExtraBulletsSec.get() ? {}
-  : calcMaxBullets(bulletSecTotalSteps.get(), bulletsSecInfo.get(), bulletSecTotalCount.get(), BULLETS_SEC_SLOTS))
+  : calcMaxBullets(bulletSecTotalSteps.get(), bulletsSecInfo.get(), bulletSecTotalCount.get(), secBulletsSlots.get()))
 let maxBulletsSpecCountForExtraAmmo = Computed(@() !hasExtraBulletsSpec.get() ? {}
-  : calcMaxBullets(bulletSpecTotalSteps.get(), bulletsSpecInfo.get(), bulletSpecTotalCount.get(), BULLETS_SPEC_SLOTS))
+  : calcMaxBullets(bulletSpecTotalSteps.get(), bulletsSpecInfo.get(), bulletSpecTotalCount.get(), specBulletsSlots.get()))
 
-let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unitLevel.get(), bulletStep.get(),
-  visibleBullets.get(), maxBulletsCountForExtraAmmo.get(), hasExtraBullets.get(), bulletTotalSteps.get(),
+let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), bulletStep.get(),
+  bulletsStatus.get(), maxBulletsCountForExtraAmmo.get(), hasExtraBullets.get(), bulletTotalSteps.get(),
   savedBullets.get(),
   @(idx) idx > BULLETS_PRIM_SLOTS,
   ammoReductionFactorDefExt.get(),
@@ -78,48 +77,55 @@ let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unitLevel.
 let primaryCount = Computed(@() chosenBullets.get().len())
 
 let chosenBulletsSec = Computed(@()
-  calcChosenBullets(bulletsSecInfo.get(), unitLevel.get(), bulletSecStep.get(),
-    visibleBulletsSec.get(), maxBulletsSecCountForExtraAmmo.get(), hasExtraBulletsSec.get(), bulletSecTotalSteps.get(),
+  calcChosenBullets(bulletsSecInfo.get(), bulletSecStep.get(),
+    bulletsStatusSec.get(), maxBulletsSecCountForExtraAmmo.get(), hasExtraBulletsSec.get(), bulletSecTotalSteps.get(),
     savedBullets.get(),
     @(idx) idx <= BULLETS_PRIM_SLOTS,
     ammoReductionSecFactorDef,
     ammoReductionFactorsByIdxExt.get(),
-    BULLETS_SEC_SLOTS,
+    secBulletsSlots.get(),
     BULLETS_PRIM_SLOTS
   ).map(@(s) s.$rawset("visIdx", s.idx - BULLETS_PRIM_SLOTS + primaryCount.get())))
 let secondaryCount = Computed(@() chosenBulletsSec.get().len())
 
 let chosenBulletsSpec = Computed(@()
-  calcChosenBullets(bulletsSpecInfo.get(), unitLevel.get(), bulletSpecStep.get(),
-    visibleBulletsSpec.get(), maxBulletsSpecCountForExtraAmmo.get(), hasExtraBulletsSpec.get(), bulletSpecTotalSteps.get(),
+  calcChosenBullets(bulletsSpecInfo.get(), bulletSpecStep.get(),
+    bulletsStatusSpec.get(), maxBulletsSpecCountForExtraAmmo.get(), hasExtraBulletsSpec.get(), bulletSpecTotalSteps.get(),
     savedBullets.get(),
     @(idx) idx <= BULLETS_PRIM_SLOTS + secondaryCount.get(),
     ammoReductionSpecFactorDef,
     ammoReductionFactorsByIdxExt.get(),
-    BULLETS_SPEC_SLOTS,
-    BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS
-  ).map(@(s) s.$rawset("visIdx", (s.idx - (BULLETS_PRIM_SLOTS + BULLETS_SEC_SLOTS)) + primaryCount.get() + secondaryCount.get())))
+    specBulletsSlots.get(),
+    BULLETS_PRIM_SLOTS + secBulletsSlots.get()
+  ).map(@(s) s.$rawset("visIdx", (s.idx - (BULLETS_PRIM_SLOTS + secBulletsSlots.get())) + primaryCount.get() + secondaryCount.get())))
 
-let bulletFormat = @(b, c) { name = b.name, count = ceil(b.count / c).tointeger() }
+let bulletFormat = @(b, c, tg) { name = b.name, count = ceil(b.count / c).tointeger(), triggerGroup = tg }
 let bulletsToSpawn = Computed(function() {
-  let res = chosenBullets.get().map(@(b) bulletFormat(b, bulletsInfo.get()?.catridge ?? 1)) 
-  if (bulletsSecInfo.get() == null && bulletsSpecInfo.get() == null)
+  let primTg = bulletsInfo.get()?.triggerGroup ?? "primary"
+  let res = chosenBullets.get().map(@(b) bulletFormat(b, bulletsInfo.get()?.catridge ?? 1, primTg))
+  if (isFakeSecondary.get() && isFakeSpecial.get())
     return res
-  if (res.len() < BULLETS_PRIM_SLOTS)
-    res.resize(BULLETS_PRIM_SLOTS, { name = "", count = 0 }) 
-  let { catridge = 1, bulletsOrder = [""], total = 0 } = bulletsSecInfo.get()
-  let secBulletsToSpawn = chosenBulletsSec.get().len() > 0
-    ? chosenBulletsSec.get().map(@(b) bulletFormat(b, catridge))
-    : [bulletFormat({ name = bulletsOrder[0], count = total }, catridge)]
 
-  let specCatridge = bulletsSpecInfo.get()?.catridge ?? 1
-  let specBulletsOrder = bulletsSpecInfo.get()?.bulletsOrder ?? [""]
-  let specTotal = bulletsSpecInfo.get()?.total ?? 0
-  let specBulletsToSpawn = chosenBulletsSpec.get().len() > 0
-    ? chosenBulletsSpec.get().map(@(b) bulletFormat(b, specCatridge))
-    : [bulletFormat({ name = specBulletsOrder[0], count = specTotal }, specCatridge)]
+  if (!isFakeSecondary.get()) {
+    let secTg = bulletsSecInfo.get()?.triggerGroup ?? "secondary"
+    let { catridge = 1, bulletsOrder = [""], total = 0 } = bulletsSecInfo.get()
+    let secBulletsToSpawn = chosenBulletsSec.get().len() > 0
+      ? chosenBulletsSec.get().map(@(b) bulletFormat(b, catridge, secTg))
+      : [bulletFormat({ name = bulletsOrder[0], count = total }, catridge, secTg)]
+    res.extend(secBulletsToSpawn)
+  }
 
-  res.extend(secBulletsToSpawn, specBulletsToSpawn)
+  if (!isFakeSpecial.get()) {
+    let specTg = bulletsSpecInfo.get()?.triggerGroup ?? "special"
+    let specCatridge = bulletsSpecInfo.get()?.catridge ?? 1
+    let specBulletsOrder = bulletsSpecInfo.get()?.bulletsOrder ?? [""]
+    let specTotal = bulletsSpecInfo.get()?.total ?? 0
+    let specBulletsToSpawn = chosenBulletsSpec.get().len() > 0
+      ? chosenBulletsSpec.get().map(@(b) bulletFormat(b, specCatridge, specTg))
+      : [bulletFormat({ name = specBulletsOrder[0], count = specTotal }, specCatridge, specTg)]
+    res.extend(specBulletsToSpawn)
+  }
+
   return res
 })
 
@@ -148,7 +154,8 @@ function setOrSwapCurUnitBullet(slotIdx, bName) {
   if (!setOrSwapUnitBullet(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), chosenBulletsSpec.get(),
       maxBulletsCountForExtraAmmo.get(), maxBulletsSecCountForExtraAmmo.get(), maxBulletsSpecCountForExtraAmmo.get(),
       hasExtraBullets.get(), hasExtraBulletsSec.get(), hasExtraBulletsSpec.get(),
-      bulletsInfo.get(), bulletsSecInfo.get(), bulletsSpecInfo.get(), slotIdx, bName))
+      bulletsInfo.get(), bulletsSecInfo.get(), bulletsSpecInfo.get(), slotIdx, bName,
+      secBulletsSlots.get()))
     return
   hasChangedCurSlotBullets.set(true)
   cancelRespawn() 
@@ -164,9 +171,9 @@ return {
   bulletsInfo
   bulletsSecInfo
   bulletsSpecInfo
-  visibleBullets
-  visibleBulletsSec
-  visibleBulletsSpec
+  bulletsStatus
+  bulletsStatusSec
+  bulletsStatusSpec
   chosenBullets
   chosenBulletsSec
   chosenBulletsSpec
@@ -190,6 +197,10 @@ return {
   maxBulletsCountForExtraAmmo
   maxBulletsSecCountForExtraAmmo
   maxBulletsSpecCountForExtraAmmo
+  isFakeSecondary
+  isFakeSpecial
+  secBulletsSlots
+  specBulletsSlots
 
   setCurUnitBullets
   setOrSwapCurUnitBullet

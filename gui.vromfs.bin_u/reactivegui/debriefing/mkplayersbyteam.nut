@@ -29,6 +29,7 @@ function mkPlayersByTeam(debrData) {
     let isUnitCollectible = unit?.isCollectible ?? false
     let isUnitPremium = unit?.isPremium ?? false
     let isUnitUpgraded = unit?.isUpgraded ?? false
+    let rewardedMasteryTier = unit?.rewardedMasteryTier ?? 0
 
     return p.__merge({
       userId = userIdStr
@@ -40,6 +41,7 @@ function mkPlayersByTeam(debrData) {
       score = dmgScoreBonus
       level
       starLevel
+      rewardedMasteryTier
       hasPremium
       hasVip
       hasPrem

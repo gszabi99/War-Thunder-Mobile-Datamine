@@ -2154,7 +2154,7 @@
     },
     "tracks": {
       "animationMultiplier": 0.56,
-      "height": 0.08,
+      "height": 0.02,
       "width": 0.28
     },
     "collisionProps": {
@@ -2163,7 +2163,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 115.0,
+      "horsePowers": 130.0,
       "maxRPM": 2600.0,
       "minRPM": 600.0
     },
@@ -2191,7 +2191,7 @@
         -0.04,
         0.01
       ],
-      "defaultGearRadius": 0.35,
+      "defaultGearRadius": 0.42,
       "topGearRadius": 0.1,
       "frontBackGearRadius": 0.33,
       "defaultDampeningForce": [

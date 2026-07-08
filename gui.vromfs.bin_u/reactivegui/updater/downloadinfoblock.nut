@@ -35,7 +35,7 @@ function statusBlock() {
     : loc("updater/status/downloading/short")
   return {
     watch = [isDownloadPaused, updaterError, downloadAddonsStr, isStageDownloading, isDownloadPausedByConnection]
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
     clipChildren = true

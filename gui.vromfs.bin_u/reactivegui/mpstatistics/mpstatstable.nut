@@ -16,8 +16,8 @@ let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
 let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { backButtonWidth } = require("%rGui/components/backButton.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { mkMasteryTierColorIcon } = require("%rGui/components/masteryTierComp.nut")
 let { raceTotalLaps, raceTotalCheckpoints } = require("%rGui/hud/raceState.nut")
 
 
@@ -32,11 +32,14 @@ let rowBgOddColor = Color(20, 20, 20, 20)
 let rowBgEvenColor = Color(0, 0, 0, 0)
 
 let tableWidth = hdpx(1000)
+let oneTeamBattleTableWidth = hdpx(1200)
 let rowHeight = hdpx(76)
 let rowHeadIconSize = hdpx(44)
 let avatarHeight = rowHeight - hdpx(2)
 let squadLabelWidth = hdpx(34)
 let squadLabelHeight = hdpx(41)
+
+let singleMasteryTierSize = hdpxi(29)
 
 let notAvailableTxt = loc("ui/mdash")
 
@@ -90,7 +93,7 @@ let function getColorUnitName(player){
 function mkSquadLabel(player, color){
   let res = {
     rendObj = ROBJ_BOX
-    size = [squadLabelWidth, flex()]
+    size = [squadLabelWidth, FLEX]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
   }
@@ -129,25 +132,26 @@ let mkPlayerName = @(player, teamColor, halign = null) {
 }
 
 let mkUnitName = @(player, halign = null) {
-  size = flex()
+  size = FLEX
   halign
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
   children = [
     mkGradRankSmall(player.mRank)
+    player.rewardedMasteryTier > 0 ? mkMasteryTierColorIcon(singleMasteryTierSize, player.rewardedMasteryTier) : null
     cellTextProps.__merge({
       halign
       valign = ALIGN_CENTER
       maxWidth = pw(100)
-      size = flex()
+      size = FLEX
       behavior = Behaviors.Marquee
       delay = defMarqueeDelay
       speed = hdpx(30)
       color = getColorUnitName(player)
       text = getUnitNameText(player.unitName, player.unitClass)
     })
-  ]
+  ].filter(@(v) v != null)
 }
 
 let mkAvatar = @(player) {
@@ -161,7 +165,7 @@ function mkNameContent(player, teamColor, halign) {
   let nameCell = mkPlayerName(player, teamColor, halign)
   let unitCell = mkUnitName(player, halign)
   let res = {
-    size = flex()
+    size = FLEX
     halign
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -170,7 +174,7 @@ function mkNameContent(player, teamColor, halign) {
       mkAvatar(player)
       mkSquadLabel(player, nameColor)
       {
-        size = flex()
+        size = FLEX
         halign
         valign = ALIGN_CENTER
         gap = hdpx(-5)
@@ -203,11 +207,13 @@ function mirrorColumn(column) {
 let mkColumnsCfg = @(columns) [
   {
     columns = columns.map(@(c) cellDefaults.__merge(c)),
-    rowOvr = { padding = [ 0, 0, 0, saBordersRv[1] ], halign = ALIGN_RIGHT }
+    getRowOvr = @(isTeamBattle) !isTeamBattle ? { padding = 0, halign = ALIGN_CENTER, hplace = ALIGN_CENTER }
+      : { padding = [ 0, 0, 0, saBordersRv[1] ], halign = ALIGN_RIGHT, hplace = ALIGN_RIGHT }
   }
   {
     columns = columns.map(@(c) mirrorColumn(cellDefaults.__merge(c))).reverse(),
-    rowOvr = { padding = [ 0, saBordersRv[1], 0, 0 ], halign = ALIGN_LEFT}
+    getRowOvr = @(isTeamBattle) !isTeamBattle ? null
+      : { padding = [ 0, saBordersRv[1], 0, 0 ], halign = ALIGN_LEFT}
   }
 ]
 
@@ -216,7 +222,7 @@ let damageZoneMission = regexp2(@"_GS(_|$)")
 let columnsByCampaign = {
   ships = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
-    { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
+    { width = FLEX, halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
     { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(getScoreFull(p).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#stats_ships_destroyed.svg", getText = @(p) decimalFormat(p.navalKills) }
@@ -225,7 +231,7 @@ let columnsByCampaign = {
 
   tanks = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
-    { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
+    { width = FLEX, halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
     { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(getScoreFull(p).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
@@ -235,7 +241,7 @@ let columnsByCampaign = {
 
   air = [
     { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
-    { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
+    { width = FLEX, halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
     { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(getScoreFull(p).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { width = hdpx(100), fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 2),
@@ -253,8 +259,8 @@ let columnsByCampaign = {
 let ffaColumns = [
   { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
   { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = @(p, _, _) mkAvatar(p) }
-  { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkPlayerName }
-  { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = @(p, _, h) mkUnitName(p, h) }
+  { width = FLEX, halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkPlayerName }
+  { width = FLEX, halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = @(p, _, h) mkUnitName(p, h) }
 ]
 
 let columnsByGameType = {
@@ -300,14 +306,15 @@ function getColumnsByCampaign(campaign, missionName, gt, hCustomRules) {
 }
 
 
-function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr = {}) {
-  let { columns, rowOvr = {} } = columnCfg
+function mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle, bgColorOvr = null, ovr = {}) {
+  let { columns, getRowOvr = @() {} } = columnCfg
+  let rowOvr = getRowOvr(isTeamBattle)
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
   let isCurrent = Computed(@() player != null && selectedPlayerForInfo.get()?.player.userId == player?.userId)
   return @() {
     watch = isCurrent
-    size = [ flex(), rowHeight ]
+    size = [ FLEX, rowHeight ]
     rendObj = player?.isLocal ? ROBJ_IMAGE : ROBJ_SOLID
     image = simpleHorGrad
     color = isCurrent.get() ? 0xA0000000
@@ -326,8 +333,8 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr =
               selectedPlayerForInfo.set({player, campaign = curCampaign.get()})
           }
       sound = { click = "click" }
-      size = [ flex(), rowHeight ]
-      maxWidth = tableWidth
+      size = [ FLEX, rowHeight ]
+      maxWidth = isTeamBattle ? tableWidth : oneTeamBattleTableWidth
       flow = FLOW_HORIZONTAL
       children = player == null ? null : columns.map(function(c) {
         let { width, halign, valign = null, contentCtor = null, getText = null } = c
@@ -344,10 +351,12 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, bgColorOvr = null, ovr =
   }.__update(rowOvr, ovr)
 }
 
-function mkTeamHeaderRow(columnCfg) {
-  let { columns, rowOvr = {} } = columnCfg
+function mkTeamHeaderRow(columnCfg, isTeamBattle) {
+  let { columns, getRowOvr = @() {} } = columnCfg
+  let rowOvr = getRowOvr(isTeamBattle)
   return {
-    size = [ flex(), rowHeight ]
+    size = [ FLEX, rowHeight ]
+    maxWidth = isTeamBattle ? tableWidth : oneTeamBattleTableWidth
     color = cellTextColor
     flow = FLOW_HORIZONTAL
     children = columns.map(@(c) {
@@ -363,67 +372,69 @@ function mkTeamHeaderRow(columnCfg) {
 
 let scrollHandler = ScrollHandler()
 
-let mkMpStatsTable = @(columnsCfg, teams, statsWithScrollHeight = null) {
-  size = FLEX_H
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(30)
-  onDetach = @() selectedPlayerForInfo.set(null)
-  children = teams.map(function(team, teamIdx) {
-    let teamColor = teams.len() > 1 && teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
-    let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]
-    let headerRow = mkTeamHeaderRow(columnCfg)
-    let playerRows = team.map(@(player, idx) mkPlayerRow(columnCfg, player, teamColor, idx))
-    if (statsWithScrollHeight == null)
-      return {
-        size = FLEX_H
-        flow = FLOW_VERTICAL
-        children = [headerRow].extend(playerRows)
-      }
-
-    let localPlayerIdx = team.findindex(@(p) p.isLocal) ?? 0
-    let localPlayerPosY = localPlayerIdx * rowHeight
-    let localPosState = Computed(function() {
-      let curY = scrollHandler.elem?.getOverScrollOffsY() ?? 0
-      return curY > localPlayerPosY ? STICKY_UPPER
-        : curY + statsWithScrollHeight - rowHeight < localPlayerPosY + rowHeight ? STICKY_BELOW
-        : 0
-    })
-    return {
-      size = [flex(), statsWithScrollHeight]
-      padding = [0, saBorders[0] + backButtonWidth]
-      children = [
-        {
-          size = flex()
+function mkMpStatsTable(columnsCfg, teams, statsWithScrollHeight = null) {
+  let isTeamBattle = teams.len() > 1
+  return {
+    size = FLEX_H
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(30)
+    onDetach = @() selectedPlayerForInfo.set(null)
+    children = teams.map(function(team, teamIdx) {
+      let teamColor = isTeamBattle && teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
+      let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]
+      let headerRow = mkTeamHeaderRow(columnCfg, isTeamBattle)
+      let playerRows = team.map(@(player, idx) mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle))
+      if (statsWithScrollHeight == null)
+        return {
+          size = FLEX_H
           flow = FLOW_VERTICAL
-          children = [
-            headerRow
-            makeVertScroll(
-              {
-                size = FLEX_H
-                flow = FLOW_VERTICAL
-                children = playerRows
-              },
-              { isBarOutside = true, scrollHandler })
-          ]
+          children = [headerRow].extend(playerRows)
         }
-        localPlayerIdx not in team ? null
-          : @() {
-              watch = localPosState
-              size = [flex(), SIZE_TO_CONTENT]
-              pos = [0, rowHeight]
-              children = localPosState.get() & STICKY_UPPER
-                  ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx,
-                      rowStickyBgLocalPlayerColor, { pos = [0, 0] })
-                : localPosState.get() & STICKY_BELOW
-                  ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx,
-                      rowStickyBgLocalPlayerColor, { pos = [0, statsWithScrollHeight - rowHeight * 2] })
-                : null
-            }
-      ]
-    }
-  })
+
+      let localPlayerIdx = team.findindex(@(p) p.isLocal) ?? 0
+      let localPlayerPosY = localPlayerIdx * rowHeight
+      let localPosState = Computed(function() {
+        let curY = scrollHandler.elem?.getOverScrollOffsY() ?? 0
+        return curY > localPlayerPosY ? STICKY_UPPER
+          : curY + statsWithScrollHeight - rowHeight < localPlayerPosY + rowHeight ? STICKY_BELOW
+          : 0
+      })
+      return {
+        size = [FLEX, statsWithScrollHeight]
+        children = [
+          {
+            size = FLEX
+            flow = FLOW_VERTICAL
+            children = [
+              headerRow
+              makeVertScroll(
+                {
+                  size = FLEX_H
+                  flow = FLOW_VERTICAL
+                  children = playerRows
+                },
+                { isBarOutside = true, scrollHandler })
+            ]
+          }
+          localPlayerIdx not in team ? null
+            : @() {
+                watch = localPosState
+                size = [FLEX, SIZE_TO_CONTENT]
+                pos = [0, rowHeight]
+                children = localPosState.get() & STICKY_UPPER
+                    ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx, isTeamBattle,
+                        rowStickyBgLocalPlayerColor, { pos = [0, 0] })
+                  : localPosState.get() & STICKY_BELOW
+                    ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx, isTeamBattle,
+                        rowStickyBgLocalPlayerColor, { pos = [0, statsWithScrollHeight - rowHeight * 2] })
+                  : null
+              }
+        ]
+      }
+    })
+  }
 }
 
 return {

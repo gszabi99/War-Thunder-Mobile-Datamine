@@ -166,7 +166,7 @@ function hintComp() {
 
   return {
     watch = isModeActive
-    size= flex()
+    size= FLEX
     children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
   }
 }

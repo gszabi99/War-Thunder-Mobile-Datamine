@@ -98,7 +98,7 @@ let point = {
 }
 
 let selectBorder = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = 0
   borderColor = editorSelLineColor
@@ -133,7 +133,7 @@ function mkPoint(id, state) {
       children = @() {
         key = id
         watch = isSelected
-        size = flex()
+        size = FLEX
         children = [
           {
             size = [size, size]
@@ -182,28 +182,28 @@ function mkBgElement(state, idx) {
 
 let mapPoints = @() {
   watch = tuningPoints
-  size = flex()
+  size = FLEX
   children = tuningPoints.get().reduce(@(acc, value, id) acc.append(mkPoint(id, value)), [])
 }
 
 
 let bgElements = @() {
   watch = tuningBgElems
-  size = flex()
+  size = FLEX
   children = tuningBgElems.get()
     .map(@(b, i) !b?.isOnTop ? mkBgElement(b, i) : null)
 }
 
 let bgElementsOnTop = @() {
   watch = tuningBgElems
-  size = flex()
+  size = FLEX
   children = tuningBgElems.get()
     .map(@(b, i) !b?.isOnTop ? null : mkBgElement(b, i))
 }
 
 let mapBackground = @() {
   watch = presetBackground
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture($"{presetBackground.get()}:0:P")
   keepAspect = true
@@ -232,7 +232,7 @@ function mkMidpoint(pRel, idx, mapSize) {
 
 let mapMidpoints = @() {
   watch = [selectedLineMidpoints, presetMapSize]
-  size = flex()
+  size = FLEX
   children = selectedLineMidpoints.get().map(@(p, i) mkMidpoint(p, i, presetMapSize.get()))
 }
 
@@ -251,7 +251,7 @@ function selectedLine(lines, points, size) {
 
     return {
       watch = [selectedLineIdx, selectedMidpointIdx, selMidpointPos]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       commands = mkLineCmdsOutline(commands, mapLineWidth + 2 * hdpxi(1), editorSelLineColor)
     }
@@ -266,7 +266,7 @@ function mapLines() {
     commands.extend(mkLineCmds(line, points, size))
   return {
     watch = [presetLines, tuningPoints, presetMapSize]
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     color = lineColor
     commands = mkLineCmdsOutline(commands, mapLineWidth)
@@ -297,7 +297,7 @@ let mapContainer = {
   size = [mapBlockSize[0], mapBlockSize[1]]
   clipChildren = true
   children = {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Pannable,
     touchMarginPriority = TOUCH_BACKGROUND
     halign = ALIGN_CENTER
@@ -333,7 +333,7 @@ let shiftPressedMonitor = scPressedMonitor("^L.Shift | R.Shift", isShiftPressed)
 
 let eventMapEditorWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture("ui/images/event_bg.avif")
   children = [

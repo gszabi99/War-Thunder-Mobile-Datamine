@@ -21,7 +21,7 @@ let mkSubsIcon = @(id) mkBgImg($"{getSubsPresentation(id).image}:0:P")
 let titleFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 6, 2)
 
 let bgHiglight =  {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x0134130A
 }

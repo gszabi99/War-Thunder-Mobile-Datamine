@@ -83,7 +83,7 @@ function tryOpenWnd() {
 
   addModalWindow(bgShaded.__merge({
     key = WND_UID
-    size = flex()
+    size = FLEX
     onClick = EMPTY_ACTION
     children = @() popupToShow.get() == null ? { watch = popupToShow }
       : modalWndBg.__merge({

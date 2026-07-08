@@ -186,7 +186,7 @@ let wasMoved = @(pointerV, x, y) pointerV.time + START_MOVE_TIME_MSEC > get_time
 
 let manipulator = {
   key = {}
-  size = flex()
+  size = FLEX
   behavior = Behaviors.ProcessPointingInput
   touchMarginPriority = TOUCH_BACKGROUND
   function onPointerPress(evt) {

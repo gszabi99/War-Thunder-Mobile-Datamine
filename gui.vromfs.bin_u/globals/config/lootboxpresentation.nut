@@ -46,6 +46,7 @@ let customLootboxImages = {
   operation_pass_infinite_lootbox_air             = "battle_pass_infinite_lootbox.avif"
 
   event_special_china_tanks_spending_event        = "event_special_lunar_ny.avif"
+  japan_tanks_spending_event_box                  = "event_special_japan_tanks_spending_event.avif"
 
   valentine_day_candy_lootbox                     = "valentine_day_candy_lootbox.avif"
   valentine_day_extra_reward_lootbox              = "valentine_day_candy_lootbox.avif"
@@ -153,6 +154,7 @@ let customRouletteImages = {
   new_year_2025_26_air_box_high_rank_fixed   = "ui/images/event_bg_roulette_christmas_2024.avif"
 
   event_special_china_tanks_spending_event   = "ui/images/event_bg_lunar.avif"
+  japan_tanks_spending_event_box             = "ui/images/event_bg_japan_tanks_early_access.avif"
 
   valentine_day_candy_lootbox                = "ui/images/event_bg_valentine_day_2026.avif"
   valentine_day_extra_reward_lootbox         = "ui/images/event_bg_valentine_day_2026.avif"

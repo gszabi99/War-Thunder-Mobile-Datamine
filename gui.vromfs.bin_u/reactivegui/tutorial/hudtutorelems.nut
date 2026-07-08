@@ -29,7 +29,7 @@ let tutorElemsKey = {}
 let hudTutorElems = @() {
   watch = hudTutorElemsState
   key = tutorElemsKey
-  size = flex()
+  size = FLEX
   children = hudTutorElemsState.get().map(@(p, id) hudTutorElemsCtors?[id](p)).values()
 }
 

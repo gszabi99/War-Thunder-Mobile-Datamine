@@ -36,7 +36,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
     return null
 
   let comp = {
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
@@ -44,7 +44,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
       achievementsComp
       scoreBgPanel.__merge(
         {
-          size = flex()
+          size = FLEX
           gap = hdpx(10)
           children = [
             {
@@ -68,7 +68,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
               color = 0xFF808080
             }
             {
-              size = flex()
+              size = FLEX
               children = [
                 usedItems == null ? null
                   : usedItems.__merge(
@@ -77,12 +77,12 @@ function mkDebriefingWndTabScores(debrData, _params) {
                       vplace = ALIGN_TOP,
                     })
                 {
-                  size = flex()
+                  size = FLEX
                   flow = FLOW_HORIZONTAL
                   valign = ALIGN_BOTTOM
                   children = [
                     mkAdsButton(debrData)
-                    {size = flex()}
+                    {size = FLEX}
                     btnTryPremium
                   ]}
               ]

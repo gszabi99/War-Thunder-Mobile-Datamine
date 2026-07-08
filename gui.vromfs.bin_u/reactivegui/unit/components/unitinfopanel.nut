@@ -56,7 +56,7 @@ let mkTextArea = @(override = {}) {
 
 let inlineIconSize = hdpxi(40)
 let mkInlineCurrencyIcon = @(currencyId) {
-  size = [ inlineIconSize, flex() ]
+  size = [ inlineIconSize, FLEX ]
   valign = ALIGN_CENTER
   children = mkCurrencyImage(currencyId, inlineIconSize, {pos = [ -hdpx(15), ph(8) ]})
 }
@@ -95,8 +95,8 @@ function mkUnitTitle(unit, override = {}, textOverride = {}, imgOverride = {}) {
 }
 
 let diffProgress = @(width, posX, pivotX, color) {
-  size = [width, flex()]
-  pos = [posX, flex()]
+  size = [width, FLEX]
+  pos = [posX, FLEX]
   rendObj = ROBJ_SOLID
   color = 0
   transform = { pivot = [pivotX, 0] }
@@ -138,7 +138,7 @@ function mkStatRow(data, prevProgress) {
       progress == null ? null
         : {
             key = $"{uid}{progress}"
-            size = [flex(), progressHt]
+            size = [FLEX, progressHt]
             padding = progressBorderW
             rendObj = ROBJ_BOX
             fillColor = progressBgColor
@@ -146,7 +146,7 @@ function mkStatRow(data, prevProgress) {
             borderWidth = progressBorderW
             children = [
               {
-                size = [pw(progress * 100), flex()]
+                size = [pw(progress * 100), FLEX]
                 rendObj = ROBJ_SOLID
                 color = progressColor ?? progressFgColor
               },
@@ -156,8 +156,8 @@ function mkStatRow(data, prevProgress) {
                 : diffProgress(pw((progress - prevProgress) * 100), pw(prevProgress * 100), 1.0, progressFgPositiveColor),
               progressAttrDiff == 0 ? null
                 : {
-                    size = [pw(progressAttrDiff * 100), flex()]
-                    pos = [pw((progress - progressAttrDiff) * 100), flex()]
+                    size = [pw(progressAttrDiff * 100), FLEX]
+                    pos = [pw((progress - progressAttrDiff) * 100), FLEX]
                     rendObj = ROBJ_SOLID
                     color = addedFromSlot
                   }

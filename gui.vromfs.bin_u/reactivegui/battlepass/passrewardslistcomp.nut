@@ -23,7 +23,7 @@ function markAvailableReward(slot){
   let widthScale = (defaulScale - 1) / slot
   return{
     key = {}
-    size = flex()
+    size = FLEX
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_SOLID
@@ -38,7 +38,7 @@ function markAvailableReward(slot){
 }
 
 let paidMark = {
-  size = const [flex(), hdpx(12)]
+  size = const [FLEX, hdpx(12)]
   rendObj = ROBJ_SOLID
   color = 0xFFFFDE70
 }
@@ -59,13 +59,13 @@ let canReceiveMark = @(isBpRewardsInProgress) mkSpinnerHideBlock(isBpRewardsInPr
     utf8ToUpper(loc("btn/receive")),
     null,
     {
-      ovr = { size = flex(), minWidth = null, behavior = null }
+      ovr = { size = FLEX, minWidth = null, behavior = null }
       childOvr = fontVeryTiny
     }),
-  { size = [flex(), bpCardFooterHeight], valign = ALIGN_CENTER, halign = ALIGN_CENTER })
+  { size = [FLEX, bpCardFooterHeight], valign = ALIGN_CENTER, halign = ALIGN_CENTER })
 
 let freeMark = {
-  size = [flex(), bpCardFooterHeight]
+  size = [FLEX, bpCardFooterHeight]
   padding = [0, 0, 0.3 * bpCardFooterHeight, 0]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#bp_progress_icon.svg:{rewardBoxSize}:{bpCardFooterHeight}:P")
@@ -135,7 +135,7 @@ let cardBorder = @(cardWidth, selStage, progress) @() {
 
 let hoverCard = @(stateFlags) @() {
   watch = stateFlags
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = stateFlags.get() & S_HOVER
     ? Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")

@@ -15,7 +15,7 @@ let invitationsBtn = @() {
         },
         @() {
           watch = [hasUnread, hasImportantUnread]
-          size = flex()
+          size = FLEX
           halign = ALIGN_RIGHT
           valign = ALIGN_TOP
           pos = [unseenSize[0] / 2, -unseenSize[1] / 2]

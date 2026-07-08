@@ -92,22 +92,22 @@ function mkDebriefingWndTabUnit(debrData, params) {
     ) + (needBtnUnit ? buttonsShowTime : 0)
 
   let comp = {
-    size = flex()
+    size = FLEX
     children = [
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [
           mkMissionResultTitle(debrData, false)
           {
-            size = const [SIZE_TO_CONTENT, flex()]
+            size = const [SIZE_TO_CONTENT, FLEX]
             halign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             children = [
               levelProgressLineComp
               {
-                size = flex()
+                size = FLEX
                 gap = hdpx(100)
                 children = [
                   panelBg.__merge(totalRewardCountsComp.__update({

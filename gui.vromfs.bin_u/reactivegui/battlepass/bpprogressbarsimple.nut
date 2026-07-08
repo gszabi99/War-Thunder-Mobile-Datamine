@@ -6,7 +6,7 @@ let { bpProgressbarEmpty, bpProgressbarFull, progressIconSize } = require("%rGui
 let halfWidthProgressIcon = progressIconSize[0] / 2
 
 let bpBorderProgressIcon = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpxi(2)
   commands = [

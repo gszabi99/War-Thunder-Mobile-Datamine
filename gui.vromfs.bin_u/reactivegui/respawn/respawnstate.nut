@@ -79,6 +79,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     skins = info?.skins ?? {}
     hasDailyBonus = info?.hasDailyBonus ?? false
     isFake = info?.isFake ?? false
+    rewardedMasteryTier = info?.rewardedMasteryTier ?? 0
   }
 
 let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
@@ -266,6 +267,7 @@ function respawn(slot, bullets) {
     foreach (idx, bullet in bullets) {
       bulletsData[$"bullets{idx}"] <- bullet.name
       bulletsData[$"bulletCount{idx}"] <- bullet.count
+      bulletsData[$"bulletTriggerGroup{idx}"] <- bullet?.triggerGroup
     }
 
   let spawnSkin = selectedSkins.get()?[name] ?? skin

@@ -12,7 +12,7 @@ let key = {}
 return @() {
   watch = [isInLoadingScreen, isLoginStarted, isUpdateInProgress]
   key
-  size = flex()
+  size = FLEX
   children = [
     loadingAnimBg
     isUpdateInProgress.get() ? mkLoginUpdater()

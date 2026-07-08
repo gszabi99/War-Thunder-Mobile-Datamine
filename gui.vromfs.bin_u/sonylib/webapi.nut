@@ -227,9 +227,8 @@ let inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 let inGameCatalog = {
   
   function get(ids, serviceLabel, params={}) {
-    params["serviceLabel"] <- serviceLabel
-    params["containerIds"] <- ":".join(ids)
-    return createRequest(inGameCatalogApi, webApiMethodGet, null, params)
+    return createRequest(inGameCatalogApi, webApiMethodGet, null,
+                         params.__merge({serviceLabel, containerIds = ":".join(ids)}))
   }
 }
 
@@ -315,6 +314,7 @@ function send(action, onResponse=null) {
 }
 
 function fetch(action, onChunkReceived, chunkSize = 20) {
+  local lastPos = 0
   function onResponse(response, err) {
     
     let entry = ((type(response) == "array") ? response?[0] : response) ?? {}
@@ -323,8 +323,10 @@ function fetch(action, onChunkReceived, chunkSize = 20) {
                    : (entry?.start ?? 0) + (entry?.size ?? 0)
     let total = entry?.total_results ?? entry?.totalResults ?? entry?.totalItemCount ?? received
 
-    if (err == null && received < total)
+    if (err == null && received < total && received > lastPos) {
+      lastPos = received
       send(makeIterable(action, received, chunkSize), callee())
+    }
 
     onChunkReceived(response, err)
   }

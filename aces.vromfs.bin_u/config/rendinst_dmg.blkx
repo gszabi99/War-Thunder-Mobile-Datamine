@@ -5807,7 +5807,7 @@
       "isParent": true,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
-      "fxScale": 0.8,
+      "fxScale": 1.0,
       "material": "metal"
     },
     "chevrolet_150_a": {
@@ -5818,7 +5818,7 @@
       "isParent": true,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
-      "fxScale": 0.8,
+      "fxScale": 1.0,
       "material": "metal"
     },
     "chevrolet_ad": {
@@ -5829,7 +5829,7 @@
       "isParent": true,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
-      "fxScale": 0.8,
+      "fxScale": 1.0,
       "material": "metal"
     },
     "semitrailer_platform_a": {
@@ -5880,7 +5880,71 @@
       "isParent": true,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
-      "fxScale": 0.8,
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "isuzu_bu_a": {
+      "nextRes": "isuzu_bu_a_dmg",
+      "physRes": "isuzu_bu_a_destr_phobj",
+      "hp": 70.0,
+      "impulseThreshold": 20.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 2.0,
+      "material": "metal",
+      "isParent": true
+    },
+    "toden_4000_a": {
+      "nextRes": "toden_4000_a_dmg",
+      "physRes": "toden_4000_a_destr_phobj",
+      "hp": 70.0,
+      "impulseThreshold": 20.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 2.0,
+      "material": "metal",
+      "isParent": true
+    },
+    "daihatsu_compagno": {
+      "nextRes": "daihatsu_compagno_dmg",
+      "physRes": "daihatsu_compagno_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 0.0,
+      "isParent": true,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "mazda_cosmo": {
+      "nextRes": "mazda_cosmo_dmg",
+      "physRes": "mazda_cosmo_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 0.0,
+      "isParent": true,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "toyota_crown": {
+      "nextRes": "toyota_crown_dmg",
+      "physRes": "toyota_crown_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 0.0,
+      "isParent": true,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "mazda_mongo": {
+      "nextRes": "mazda_mongo_dmg",
+      "physRes": "mazda_mongo_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 0.0,
+      "isParent": true,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "fxScale": 1.0,
       "material": "metal"
     },
     "pier_boats_a": {
@@ -6994,6 +7058,406 @@
       "fxScale": 1.0,
       "material": "wood",
       "dmPreset": "wood_small_props"
+    },
+    "tokyo_buildings_set_a_banners_a_a": {
+      "physRes": "tokyo_buildings_set_a_banners_a_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_b": {
+      "physRes": "tokyo_buildings_set_a_banners_a_b_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_c": {
+      "physRes": "tokyo_buildings_set_a_banners_a_c_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_d": {
+      "physRes": "tokyo_buildings_set_a_banners_a_d_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_e": {
+      "physRes": "tokyo_buildings_set_a_banners_a_e_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_f": {
+      "physRes": "tokyo_buildings_set_a_banners_a_f_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_g": {
+      "physRes": "tokyo_buildings_set_a_banners_a_g_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_h": {
+      "physRes": "tokyo_buildings_set_a_banners_a_h_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_i": {
+      "physRes": "tokyo_buildings_set_a_banners_a_i_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_j": {
+      "physRes": "tokyo_buildings_set_a_banners_a_j_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_k": {
+      "physRes": "tokyo_buildings_set_a_banners_a_k_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_buildings_set_a_banners_a_m": {
+      "physRes": "tokyo_buildings_set_a_banners_a_m_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    "tokyo_fence_a": {
+      "physRes": "tokyo_fence_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "tokyo_fence_a_pillar": {
+      "physRes": "tokyo_fence_a_pillar_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "fence_chain_simple_section": {
+      "physRes": "fence_chain_simple_section_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "metal"
+    },
+    "fence_chain_simple_column": {
+      "physRes": "fence_chain_simple_section_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "metal",
+      "isParent": true
+    },
+    "sicily_fence_piers": {
+      "physRes": "sicily_fence_piers_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "metal",
+      "isParent": true
+    },
+    "european_bicycle_a": {
+      "physRes": "european_bicycle_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "metal"
+    },
+    "european_bicycle_b": {
+      "physRes": "european_bicycle_b_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "metal"
+    },
+    "european_bycicle_parking_a": {
+      "physRes": "european_bycicle_parking_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "metal"
+    },
+    "tokyo_bench_a": {
+      "physRes": "tokyo_bench_a_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood",
+      "isParent": true
+    },
+    "tokyo_bench_b": {
+      "physRes": "tokyo_bench_b_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood",
+      "isParent": true
+    },
+    "tokyo_bench_c": {
+      "physRes": "tokyo_bench_c_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood",
+      "isParent": true
+    },
+    "tokyo_bench_d": {
+      "physRes": "tokyo_bench_d_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "wood",
+      "isParent": true
+    },
+    "tokyo_power_pole_a": {
+      "physRes": "tokyo_power_pole_a_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 2.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_power_pole_b": {
+      "physRes": "tokyo_power_pole_b_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 2.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_power_pole_c": {
+      "physRes": "tokyo_power_pole_c_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 2.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_traffic_light_a_long": {
+      "physRes": "tokyo_traffic_light_a_long_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_traffic_light_a_short": {
+      "physRes": "tokyo_traffic_light_a_short_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_traffic_light_b_long": {
+      "physRes": "tokyo_traffic_light_b_long_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_traffic_light_b_short": {
+      "physRes": "tokyo_traffic_light_b_short_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_traffic_light_c_long": {
+      "physRes": "tokyo_traffic_light_c_long_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_traffic_light_c_short": {
+      "physRes": "tokyo_traffic_light_c_short_destr_phobj",
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "transparentCamera",
+      "isParent": true
+    },
+    "tokyo_trash_a": {
+      "physRes": "tokyo_trash_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_trash_b": {
+      "physRes": "tokyo_trash_b_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_trash_c": {
+      "physRes": "tokyo_trash_c_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_trash_d": {
+      "physRes": "tokyo_trash_d_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_trash_e": {
+      "physRes": "tokyo_trash_e_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_trash_f": {
+      "physRes": "tokyo_trash_f_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_road_barrier_a": {
+      "physRes": "tokyo_road_barrier_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_road_barrier_b": {
+      "physRes": "tokyo_road_barrier_b_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_road_barrier_c": {
+      "physRes": "tokyo_road_barrier_c_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_vending_a": {
+      "physRes": "tokyo_vending_a_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 2.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_vending_b": {
+      "physRes": "tokyo_vending_b_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 2.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "tokyo_vending_c": {
+      "physRes": "tokyo_vending_c_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 2.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "metal"
     }
   },
   "DamageParts": {

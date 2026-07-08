@@ -1,11 +1,11 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 
 module linq shared public
 
-require math
+require math 
+require daslib/option public
+require daslib/sort_boost
 
 
 
@@ -116,7 +116,7 @@ def to_sequence(var a : array<auto(TT)> ==const) : iterator<TT -const -&> {
 
 def to_sequence_move(var a : array<auto(TT)>) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- a) () <| $ {
+    return generator<TT -const -&> capture(<- a) {
         for (it in a) {
             yield <- it
         }
@@ -157,10 +157,12 @@ def private concat_impl(var a; var b; tt : auto(TT); reserveSize : int) : array<
     if (reserveSize > 0) {
         c.reserve(reserveSize)
     }
-    for (it in a) {
+    
+    
+    for (it in a) { 
         c.push_clone(it)
     }
-    for (it in b) {
+    for (it in b) { 
         c.push_clone(it)
     }
     return <- c
@@ -181,9 +183,29 @@ def concat_to_array(var a, b : iterator<auto(TT)>) : array<TT -const -&> {
     return <- concat_impl(a, b, type<TT -const -&>, 0)
 }
 
+def concat_to_array(var a : iterator<auto(TT) const>; b : array<TT>) : array<TT -const -&> {
+    
+    return <- concat_impl_const(a, b, type<TT -const -&>, 0)
+}
+
+def concat_to_array(a : array<TT>; var b : iterator<auto(TT) const>) : array<TT -const -&> {
+    
+    return <- concat_impl_const(a, b, type<TT -const -&>, 0)
+}
+
+def concat(var a : iterator<auto(TT) const>; b : array<TT>) : iterator<TT -const -&> {
+    
+    return <- concat_impl_const(a, b, type<TT -const -&>, 0).to_sequence_move()
+}
+
+def concat(a : array<TT>; var b : iterator<auto(TT) const>) : iterator<TT -const -&> {
+    
+    return <- concat_impl_const(a, b, type<TT -const -&>, 0).to_sequence_move()
+}
+
 def concat(var a, b : iterator<auto(TT)>) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- a, <- b) () <| $ {
+    return generator<TT -const -&> capture(<- a, <- b) {
         for (itA in a) {
             static_if (typeinfo can_copy(itA)) {
                 yield itA
@@ -231,7 +253,7 @@ def reverse(a : array<auto(TT)>) : array<TT -const -&> {
 
 def reverse(var a : iterator<auto(TT)>) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- a) () <| $ {
+    return generator<TT -const -&> capture(<- a) {
         var inscope buffer : array<TT -const -&>
         for (it in a) {
             buffer.push_clone(it)
@@ -395,6 +417,46 @@ def less(a, b : tuple<auto(TT), auto(UU), auto(VV), auto(WW)>) : bool {
     return a._3 < b._3
 }
 
+
+
+def private key_less(a, b; desc : bool) : bool {
+    return desc ? b < a : a < b
+}
+
+def private less_masked(a, b : tuple<auto(TT)>; mask : uint) : bool {
+    return key_less(a._0, b._0, (mask & 1u) != 0u)
+}
+
+def private less_masked(a, b : tuple<auto(TT), auto(UU)>; mask : uint) : bool {
+    let d0 = (mask & 1u) != 0u
+    return true if (key_less(a._0, b._0, d0))
+    return false if (key_less(b._0, a._0, d0))
+    return key_less(a._1, b._1, (mask & 2u) != 0u)
+}
+
+def private less_masked(a, b : tuple<auto(TT), auto(UU), auto(VV)>; mask : uint) : bool {
+    let d0 = (mask & 1u) != 0u
+    return true if (key_less(a._0, b._0, d0))
+    return false if (key_less(b._0, a._0, d0))
+    let d1 = (mask & 2u) != 0u
+    return true if (key_less(a._1, b._1, d1))
+    return false if (key_less(b._1, a._1, d1))
+    return key_less(a._2, b._2, (mask & 4u) != 0u)
+}
+
+def private less_masked(a, b : tuple<auto(TT), auto(UU), auto(VV), auto(WW)>; mask : uint) : bool {
+    let d0 = (mask & 1u) != 0u
+    return true if (key_less(a._0, b._0, d0))
+    return false if (key_less(b._0, a._0, d0))
+    let d1 = (mask & 2u) != 0u
+    return true if (key_less(a._1, b._1, d1))
+    return false if (key_less(b._1, a._1, d1))
+    let d2 = (mask & 4u) != 0u
+    return true if (key_less(a._2, b._2, d2))
+    return false if (key_less(b._2, a._2, d2))
+    return key_less(a._3, b._3, (mask & 8u) != 0u)
+}
+
 def order_by_inplace(var buffer : array<auto(TT)>; key) {
     
     sort(buffer, $(v1, v2) => _::less(key(v1), key(v2)))
@@ -445,6 +507,194 @@ def order_by_descending_to_array(var a : iterator<auto(TT)>; key) : array<TT -co
     var arr <- to_array(a)
     sort(arr, $(v1, v2) => _::less(key(v2), key(v1)))
     return <- arr
+}
+
+def order_by_keys_inplace(var buffer : array<auto(TT)>; key; mask : uint) {
+    
+    stable_sort(buffer, $(v1, v2) => less_masked(key(v1), key(v2), mask))
+}
+
+def order_by_keys(var a : iterator<auto(TT)>; key; mask : uint) : iterator<TT -const -&> {
+    
+    var arr <- to_array(a)
+    stable_sort(arr, $(v1, v2) => less_masked(key(v1), key(v2), mask))
+    return to_sequence_move(arr)
+}
+
+def order_by_keys(a : array<auto(TT)>; key; mask : uint) : array<TT -const -&> {
+    
+    var b := a
+    stable_sort(b, $(v1, v2) => less_masked(key(v1), key(v2), mask))
+    return <- b
+}
+
+def order_by_keys_to_array(var a : iterator<auto(TT)>; key; mask : uint) : array<TT -const -&> {
+    
+    var arr <- to_array(a)
+    stable_sort(arr, $(v1, v2) => less_masked(key(v1), key(v2), mask))
+    return <- arr
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+def top_n_by(arr : array<auto(TT)>; n : int; key) : array<TT -const -&> {
+    
+    
+    var buf : array<TT -const -&>
+    if (n <= 0 || empty(arr)) return <- buf
+    let take_count = min(n, length(arr))
+    buf |> push_clone_from(arr)
+    sort_boost::partial_sort(buf, take_count, $(v1, v2) => _::less(key(v1), key(v2)))
+    buf |> resize(take_count)
+    return <- buf
+}
+
+def top_n_by(var a : iterator<auto(TT)>; n : int; key) : array<TT -const -&> {
+    
+    
+    
+    var buf : array<TT -const -&>
+    if (n <= 0) return <- buf
+    
+    
+    
+    for (it in a) {
+        if (length(buf) < n) {
+            buf |> push_clone(it)
+            sort_boost::push_heap(buf, $(v1, v2) => _::less(key(v1), key(v2)))
+        } elif (_::less(key(it), key(buf[0]))) {
+            sort_boost::pop_heap(buf, $(v1, v2) => _::less(key(v1), key(v2)))
+            buf[length(buf) - 1] := it
+            sort_boost::push_heap(buf, $(v1, v2) => _::less(key(v1), key(v2)))
+        }
+    }
+    sort(buf, $(v1, v2) => _::less(key(v1), key(v2)))
+    return <- buf
+}
+
+def top_n(arr : array<auto(TT)>; n : int) : array<TT -const -&> {
+    
+    return <- top_n_by(arr, n, $(v : TT -&) => v)
+}
+
+def top_n(var a : iterator<auto(TT)>; n : int) : array<TT -const -&> {
+    
+    return <- top_n_by(a, n, $(v : TT -&) => v)
+}
+
+
+
+
+
+
+
+
+
+
+def top_n_by_descending(arr : array<auto(TT)>; n : int; key) : array<TT -const -&> {
+    
+    
+    var buf : array<TT -const -&>
+    if (n <= 0 || empty(arr)) return <- buf
+    let take_count = min(n, length(arr))
+    buf |> push_clone_from(arr)
+    sort_boost::partial_sort(buf, take_count, $(v1, v2) => _::less(key(v2), key(v1)))
+    buf |> resize(take_count)
+    return <- buf
+}
+
+def top_n_by_descending(var a : iterator<auto(TT)>; n : int; key) : array<TT -const -&> {
+    
+    
+    
+    var buf : array<TT -const -&>
+    if (n <= 0) return <- buf
+    
+    
+    for (it in a) {
+        if (length(buf) < n) {
+            buf |> push_clone(it)
+            sort_boost::push_heap(buf, $(v1, v2) => _::less(key(v2), key(v1)))
+        } elif (_::less(key(buf[0]), key(it))) {
+            sort_boost::pop_heap(buf, $(v1, v2) => _::less(key(v2), key(v1)))
+            buf[length(buf) - 1] := it
+            sort_boost::push_heap(buf, $(v1, v2) => _::less(key(v2), key(v1)))
+        }
+    }
+    sort(buf, $(v1, v2) => _::less(key(v2), key(v1)))
+    return <- buf
+}
+
+def top_n_descending(arr : array<auto(TT)>; n : int) : array<TT -const -&> {
+    
+    return <- top_n_by_descending(arr, n, $(v : TT -&) => v)
+}
+
+def top_n_descending(var a : iterator<auto(TT)>; n : int) : array<TT -const -&> {
+    
+    return <- top_n_by_descending(a, n, $(v : TT -&) => v)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+def top_n_by_with_cmp(arr : array<auto(TT)>; n : int; cmp : block<(v1 : TT -&, v2 : TT -&) : bool>) : array<TT -const -&> {
+    
+    
+    var buf : array<TT -const -&>
+    if (n <= 0 || empty(arr)) return <- buf
+    let take_count = min(n, length(arr))
+    buf |> push_clone_from(arr)
+    sort_boost::partial_sort(buf, take_count, cmp)
+    buf |> resize(take_count)
+    return <- buf
+}
+
+def top_n_by_with_cmp(var a : iterator<auto(TT)>; n : int; cmp : block<(v1 : TT -&, v2 : TT -&) : bool>) : array<TT -const -&> {
+    
+    var buf : array<TT -const -&>
+    if (n <= 0) return <- buf
+    for (it in a) {
+        if (length(buf) < n) {
+            buf |> push_clone(it)
+            sort_boost::push_heap(buf, cmp)
+        } elif (cmp(it, buf[0])) {
+            sort_boost::pop_heap(buf, cmp)
+            buf[length(buf) - 1] := it
+            sort_boost::push_heap(buf, cmp)
+        }
+    }
+    sort(buf, cmp)
+    return <- buf
+}
+
+def public spliced_push_heap(var buf : array<auto(TT)>; cmp : block<(x, y : TT) : bool>) {
+    
+    sort_boost::push_heap(buf, cmp)
+}
+
+def public spliced_pop_heap(var buf : array<auto(TT)>; cmp : block<(x, y : TT) : bool>) {
+    
+    sort_boost::pop_heap(buf, cmp)
 }
 
 def unique_key(a) {
@@ -504,7 +754,7 @@ def distinct_inplace(var a : array<auto(TT)>) {
 
 def distinct(var a : iterator<auto(TT)>) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- a) () <| $ {
+    return generator<TT -const -&> capture(<- a) {
         var inscope seen : table<typedecl(_::unique_key(type<TT>))>
         for (it in a) {
             let k = _::unique_key(it)
@@ -598,9 +848,7 @@ def unique_to_array(a : iterator<auto(TT)>) : array<TT -const -&> {
 
 def unique_inplace(var a : array<auto(TT)>) {
     
-    if (length(a) <= 1) {
-        return
-    }
+    if (length(a) <= 1) return
     var write_index = 1
     for (from_index in 1 .. length(a)) {
         if (_::unique_key(a[from_index]) != _::unique_key(a[write_index - 1])) {
@@ -633,9 +881,7 @@ def unique_by_to_array(a : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>
 
 def unique_by_inplace(var a : array<auto(TT)>; key : block<(arg : TT -&) : auto>) {
     
-    if (length(a) <= 1) {
-        return
-    }
+    if (length(a) <= 1) return
     var write_index = 1
     for (from_index in 1 .. length(a)) {
         if (key(a[from_index]) != key(a[write_index - 1])) {
@@ -648,7 +894,7 @@ def unique_by_inplace(var a : array<auto(TT)>; key : block<(arg : TT -&) : auto>
 def count(var a : iterator<auto(TT)>) : int {
     
     var count = 0
-    for (it in a) {
+    for (_it in a) {
         count ++
     }
     return count
@@ -684,7 +930,7 @@ def count(a : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : int {
 def long_count(var a : iterator<auto(TT)>) : int64 {
     
     var count = 0l
-    for (it in a) {
+    for (_ in a) {
         count ++
     }
     return count
@@ -692,7 +938,29 @@ def long_count(var a : iterator<auto(TT)>) : int64 {
 
 def long_count(a : array<auto(TT)>) : int64 {
     
-    return int64(length(a))
+    return long_length(a)
+}
+
+def long_count(var a : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : int64 {
+    
+    var count = 0l
+    for (it in a) {
+        if (predicate(it)) {
+            count ++
+        }
+    }
+    return count
+}
+
+def long_count(a : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : int64 {
+    
+    var count = 0l
+    for (it in a) {
+        if (predicate(it)) {
+            count ++
+        }
+    }
+    return count
 }
 
 [unused_argument(tt)]
@@ -728,13 +996,26 @@ def where_to_array(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&)
     return <- where_impl(src, type<TT -& -const>, 0, predicate)
 }
 
+def having_(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : iterator<TT -& -const> {
+    
+    return <- where_(src, predicate)
+}
+
+def having_(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : array<TT -& -const> {
+    
+    return <- where_(src, predicate)
+}
+
+def having_to_array(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : array<TT -& -const> {
+    
+    return <- where_to_array(src, predicate)
+}
+
 def skip(arr : array<auto(TT)>; var total : int) : array<TT -& -const> {
     
     let len = length(arr)
     let remaining = len - total
-    if (remaining <= 0) {
-        return <- default<array<TT -& -const>>
-    }
+    if (remaining <= 0) return <- default<array<TT -& -const>>
     return <- subarray(arr, total..len)
 }
 
@@ -755,7 +1036,7 @@ def skip_inplace(var arr : array<auto(TT)>; var total : int) {
 [unused_argument(tt)]
 def private skip_impl(var src; tt : auto(TT); var total : int) : iterator<TT -& -const> {
     
-    return <- generator<TT -& -const> capture(<- src) () <| $() {
+    return <- generator<TT -& -const> capture(<- src) {
         for (x in src) {
             if (total > 0) {
                 total --
@@ -830,26 +1111,23 @@ def skip_while_to_array(var src : iterator<auto(TT)>; predicate : block<(arg : T
 
 def take(arr : array<auto(TT)>; var total : int) : array<TT -& -const> {
     
-    let len = length(arr)
-    let taking = (total < len)  ? total : len
+    let taking = min(total, length(arr))
     return <- subarray(arr, 0..taking)
 }
 
 def take_inplace(var arr : array<auto(TT)>; var total : int) {
     
     let len = length(arr)
-    let taking = (total < len)  ? total : len
+    let taking = min(total, len)
     arr.resize(taking)
 }
 
 [unused_argument(tt)]
 def private take_impl(var src; tt : auto(TT); var total : int) : iterator<TT -& -const> {
     
-    return <- generator<TT -& -const> capture(<- src) () <| $() {
+    return <- generator<TT -& -const> capture(<- src) {
         for (x in src) {
-            if (total <= 0) {
-                break
-            }
+            if (total <= 0) break
             total --
             static_if (typeinfo can_copy(x)) {
                 yield x
@@ -870,9 +1148,7 @@ def take_to_array(var src : iterator<auto(TT)>; var total : int) : array<TT -& -
     
     var buffer : array<TT -& -const>
     for (x in src) {
-        if (total <= 0) {
-            break
-        }
+        if (total <= 0) break
         total --
         buffer.push_clone(x)
     }
@@ -881,13 +1157,11 @@ def take_to_array(var src : iterator<auto(TT)>; var total : int) : array<TT -& -
 
 def take(var src : iterator<auto(TT)>; from : range) : iterator<TT -& -const> {
     
-    return <- generator<TT -& -const> capture(<- src) () <| $() {
+    return <- generator<TT -& -const> capture(<- src) {
         var index = 0
         for (x in src) {
             if (index >= from.x) {
-                if (index >= from.y) {
-                    break
-                }
+                if (index >= from.y) break
                 static_if (typeinfo can_copy(x)) {
                     yield x
                 } else {
@@ -903,8 +1177,8 @@ def take(var src : iterator<auto(TT)>; from : range) : iterator<TT -& -const> {
 def take(src : array<auto(TT)>; from : range) : array<TT -& -const> {
     
     let len = length(src)
-    let start = (from.x < 0) ? 0 : ((from.x > len) ? len : from.x)
-    var end = (from.y < 0) ? 0 : ((from.y > len) ? len : from.y)
+    let start = clamp(from.x, 0, len)
+    var end = clamp(from.y, 0, len)
     if (end < start) {
         end = start
     }
@@ -917,9 +1191,7 @@ def take_to_array(var src : iterator<auto(TT)>; from : range) : array<TT -& -con
     var index = 0
     for (x in src) {
         if (index >= from.x) {
-            if (index >= from.y) {
-                break
-            }
+            if (index >= from.y) break
             buffer.push_clone(x)
         }
         index ++
@@ -1293,7 +1565,10 @@ def private aggregate_impl(var src; tt : auto(TT); seed : auto(AGG); func : bloc
 
 [unused_argument(tt)]
 def private aggregate_impl_const(src : auto(ARGT); tt : auto(TT); seed : auto(AGG); func : block<(acc : AGG -&, x : TT -&) : AGG -&>) : AGG -& -const {
-    static_if (typeinfo is_workhorse(type<TT>)) {
+    
+    
+    
+    static_if (typeinfo is_workhorse(type<AGG>)) {
         return aggregate_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>, seed, func)
     } else {
         return <- aggregate_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>, seed, func)
@@ -1354,49 +1629,36 @@ def sum(src : array<auto(TT)>) : TT -const -& {
     }
 }
 
-[unused_argument(tt)]
-def private average_impl(var src; tt : auto(TT)) : TT -const -& {
-    var total : TT -const -&
-    var count : uint64
+def average(var src : iterator<auto(TT)>) : double {
+    
+    
+    var total : double = 0lf
+    var count : uint64 = 0ul
     for (x in src) {
-        total += x
+        static_if (typeinfo stripped_typename(x) == typeinfo stripped_typename(default<double>)) {
+            total += x
+        } else {
+            total += double(x)
+        }
         count ++
     }
-    if (count != 0ul) {
-        static_if (typeinfo is_workhorse(type<TT>)) {
-            total /= TT(count)
+    return count != 0ul ? total / double(count) : 0lf
+}
+
+def average(src : array<auto(TT)>) : double {
+    
+    
+    var total : double = 0lf
+    var count : uint64 = 0ul
+    for (x in src) {
+        static_if (typeinfo stripped_typename(x) == typeinfo stripped_typename(default<double>)) {
+            total += x
         } else {
-            total /= count
+            total += double(x)
         }
+        count ++
     }
-    return <- total
-}
-
-[unused_argument(tt)]
-def private average_impl_const(src : auto(ARGT); tt : auto(TT)) : TT -const -& {
-    static_if (typeinfo is_workhorse(type<TT>)) {
-        return average_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>)
-    } else {
-        return <- average_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>)
-    }
-}
-
-def average(var src : iterator<auto(TT)>) : TT -const -& {
-    
-    static_if (typeinfo is_workhorse(type<TT>)) {
-        return average_impl(src, type<TT -const -&>)
-    } else {
-        return <- average_impl(src, type<TT -const -&>)
-    }
-}
-
-def average(src : array<auto(TT)>) : TT -const -& {
-    
-    static_if (typeinfo is_workhorse(type<TT>)) {
-        return average_impl_const(src, type<TT -const -&>)
-    } else {
-        return <- average_impl_const(src, type<TT -const -&>)
-    }
+    return count != 0ul ? total / double(count) : 0lf
 }
 
 [unused_argument(tt)]
@@ -1500,7 +1762,7 @@ def private join_impl(var srca; var srcb; ta : auto(TA); tb : auto(TB); keya, ke
     var inscope tableb : table<typedecl(_::unique_key(keyb(type<TB>))); array<TB -const -&>>
     for (itb in srcb) {
         let k = _::unique_key(keyb(itb))
-        unsafe(tableb[k]).push_clone(itb)
+        tableb[k].push_clone(itb) 
     }
     var buffer : array<typedecl(result(type<TA>, type<TB>)) -const -&>
     for (ita in srca) {
@@ -1523,6 +1785,16 @@ def join(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, key
     return <- join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
 }
 
+def join(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def join(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
 def join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
     
     return <- join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
@@ -1533,20 +1805,35 @@ def join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; 
     return <- join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
 }
 
+def join_to_array(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def join_to_array(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
 [unused_argument(ta, tb)]
 def private group_join_impl(var srca; var srcb; ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
     
     var inscope tableb : table<typedecl(_::unique_key(keyb(type<TB>))); array<TB -const -&>>
     for (itb in srcb) {
         let k = _::unique_key(keyb(itb))
-        unsafe(tableb[k]).push_clone(itb)
+        tableb[k].push_clone(itb) 
     }
     var buffer : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&>
     for (ita in srca) {
         let k = _::unique_key(keya(ita))
-        tableb.get(k, $(var arr){
+        
+        
+        if (!tableb.get(k, $(var arr){
             buffer.push_clone(result(ita, arr))
-        })
+        })) {
+            var empty : array<TB -const -&>
+            buffer.push_clone(result(ita, empty))
+        }
     }
     return <- buffer
 }
@@ -1561,6 +1848,16 @@ def group_join(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; key
     return <- group_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
 }
 
+def group_join(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
+    
+    return <- group_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def group_join(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
+    
+    return <- group_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
 def group_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
     
     return <- group_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
@@ -1569,6 +1866,277 @@ def group_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; resul
 def group_join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
     
     return <- group_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def group_join_to_array(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
+    
+    return <- group_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def group_join_to_array(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : array<typedecl(result(type<TA>, type<array<TB -const -&>>)) -const -&> {
+    
+    return <- group_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+[unused_argument(ta, tb)]
+def private left_join_impl(var srca; var srcb; ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    var inscope tableb : table<typedecl(_::unique_key(keyb(type<TB>))); array<TB -const -&>>
+    for (itb in srcb) {
+        let k = _::unique_key(keyb(itb))
+        tableb[k].push_clone(itb) 
+    }
+    var buffer : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&>
+    for (ita in srca) {
+        let k = _::unique_key(keya(ita))
+        var matched = false
+        tableb.get(k, $(arr){
+            for (itb in arr) {
+                buffer.push_clone(result(ita, _::some(itb)))
+                matched = true
+            }
+        })
+        if (!matched) {
+            buffer.push_clone(result(ita, _::none(type<TB>)))
+        }
+    }
+    return <- buffer
+}
+
+[unused_argument(ta, tb)]
+def private left_join_impl_const(srca : auto(ARGTA); srcb : auto(ARGTB); ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    return <- left_join_impl(unsafe(reinterpret<ARGTA -const>(srca)), unsafe(reinterpret<ARGTB -const>(srcb)), type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def left_join(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def left_join(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def left_join(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : iterator<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def left_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def left_join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def left_join_to_array(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def left_join_to_array(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : array<typedecl(result(type<TA>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- left_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+[unused_argument(ta, tb)]
+def private right_join_impl(var srca; var srcb; ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    var inscope tablea : table<typedecl(_::unique_key(keya(type<TA>))); array<TA -const -&>>
+    for (ita in srca) {
+        let k = _::unique_key(keya(ita))
+        tablea[k].push_clone(ita) 
+    }
+    var buffer : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&>
+    for (itb in srcb) {
+        let k = _::unique_key(keyb(itb))
+        var matched = false
+        tablea.get(k, $(arr) {
+            for (ita in arr) {
+                buffer.push_clone(result(_::some(ita), itb))
+                matched = true
+            }
+        })
+        if (!matched) {
+            buffer.push_clone(result(_::none(type<TA>), itb))
+        }
+    }
+    return <- buffer
+}
+
+[unused_argument(ta, tb)]
+def private right_join_impl_const(srca : auto(ARGTA); srcb : auto(ARGTB); ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    return <- right_join_impl(unsafe(reinterpret<ARGTA -const>(srca)), unsafe(reinterpret<ARGTB -const>(srcb)), type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def right_join(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def right_join(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def right_join(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : iterator<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def right_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def right_join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def right_join_to_array(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def right_join_to_array(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<TB>)) -const -&> {
+    
+    return <- right_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+[unused_argument(ta, tb)]
+def private full_outer_join_impl(var srca; var srcb; ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    
+    var inscope tableb : table<typedecl(_::unique_key(keyb(type<TB>))); array<TB -const -&>>
+    var inscope srcb_arr : array<TB -const -&>
+    for (itb in srcb) {
+        let k = _::unique_key(keyb(itb))
+        tableb[k].push_clone(itb) 
+        srcb_arr |> push_clone(itb) 
+    }
+    var inscope seen_b : table<typedecl(_::unique_key(keyb(type<TB>))); bool>
+    var buffer : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&>
+    for (ita in srca) {
+        let k = _::unique_key(keya(ita))
+        var matched = false
+        tableb.get(k, $(arr) {
+            for (itb in arr) {
+                buffer.push_clone(result(_::some(ita), _::some(itb))) 
+                matched = true
+            }
+            seen_b[k] = true
+        })
+        if (!matched) {
+            buffer.push_clone(result(_::some(ita), _::none(type<TB>))) 
+        }
+    }
+    for (itb in srcb_arr) {
+        let k = _::unique_key(keyb(itb))
+        if (!seen_b |> key_exists(k)) {
+            buffer.push_clone(result(_::none(type<TA>), _::some(itb))) 
+        }
+    }
+    return <- buffer
+}
+
+[unused_argument(ta, tb)]
+def private full_outer_join_impl_const(srca : auto(ARGTA); srcb : auto(ARGTB); ta : auto(TA); tb : auto(TB); keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    return <- full_outer_join_impl(unsafe(reinterpret<ARGTA -const>(srca)), unsafe(reinterpret<ARGTB -const>(srcb)), type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def full_outer_join(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def full_outer_join(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : iterator<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def full_outer_join(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : iterator<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result).to_sequence_move()
+}
+
+def full_outer_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def full_outer_join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def full_outer_join_to_array(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+def full_outer_join_to_array(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; keya, keyb; result) : array<typedecl(result(type<$Option<TA -const -&>>, type<$Option<TB -const -&>>)) -const -&> {
+    
+    return <- full_outer_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, keya, keyb, result)
+}
+
+[unused_argument(ta, tb)]
+def private cross_join_impl(var srca; srcb : array<auto(TB) -const -&>; ta : auto(TA); tb : auto(TB); result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    var buffer : array<typedecl(result(type<TA>, type<TB>)) -const -&>
+    for (ita in srca) {
+        for (itb in srcb) {
+            buffer.push_clone(result(ita, itb)) 
+        }
+    }
+    return <- buffer
+}
+
+[unused_argument(ta, tb)]
+def private cross_join_impl_const(srca : auto(ARGTA); srcb : auto(ARGTB); ta : auto(TA); tb : auto(TB); result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    return <- cross_join_impl(unsafe(reinterpret<ARGTA -const>(srca)), unsafe(reinterpret<array<TB -const -&>>(srcb)), type<TA -const -&>, type<TB -const -&>, result)
+}
+
+def cross_join(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; result) : iterator<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    let srcb_arr <- to_array(srcb)
+    return <- cross_join_impl(srca, srcb_arr, type<TA -const -&>, type<TB -const -&>, result).to_sequence_move()
+}
+
+def cross_join(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; result) : iterator<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- cross_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, result).to_sequence_move()
+}
+
+def cross_join(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; result) : iterator<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    let srcb_arr <- to_array(srcb)
+    return <- cross_join_impl_const(srca, srcb_arr, type<TA -const -&>, type<TB -const -&>, result).to_sequence_move()
+}
+
+def cross_join(srca : array<auto(TA)>; srcb : array<auto(TB)>; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- cross_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, result)
+}
+
+def cross_join_to_array(var srca : iterator<auto(TA)>; var srcb : iterator<auto(TB)>; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    let srcb_arr <- to_array(srcb)
+    return <- cross_join_impl(srca, srcb_arr, type<TA -const -&>, type<TB -const -&>, result)
+}
+
+def cross_join_to_array(var srca : iterator<auto(TA) const>; srcb : array<auto(TB)>; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    return <- cross_join_impl_const(srca, srcb, type<TA -const -&>, type<TB -const -&>, result)
+}
+
+def cross_join_to_array(srca : array<auto(TA)>; var srcb : iterator<auto(TB) const>; result) : array<typedecl(result(type<TA>, type<TB>)) -const -&> {
+    
+    let srcb_arr <- to_array(srcb)
+    return <- cross_join_impl_const(srca, srcb_arr, type<TA -const -&>, type<TB -const -&>, result)
 }
 
 [unused_argument(tt)]
@@ -1611,6 +2179,54 @@ def group_by_to_array(var source : iterator<auto(TT)>; key; element_selector; re
 }
 
 [unused_argument(tt)]
+def private group_by_lazy_impl(var source; tt : auto(TT); key)  {
+    
+    
+    
+    typedef KeyType = typedecl(key(type<TT>)) - const - &
+    typedef UniqKeyType = typedecl(_::unique_key(key(type<TT>)))
+    typedef ResultType = tuple<KeyType, array<TT -const -&>>
+    var tab : table<UniqKeyType, ResultType>
+    for (it in source) {
+        let kIT = key(it)
+        let k = _::unique_key(kIT)
+        if (tab.key_exists(k)) {
+            tab[k]._1.push_clone(it)
+        } else {
+            tab[k] = (kIT, [it])
+        }
+    }
+    var buffer : array<ResultType -const -&>
+    buffer |> reserve(length(tab))   
+    for (it in values(tab)) {
+        buffer.push_clone(it)
+    }
+    return <- buffer
+}
+
+[unused_argument(tt)]
+def private group_by_lazy_impl_const(source : auto(ARGT); tt : auto(TT); key)  {
+    return <- group_by_lazy_impl(unsafe(reinterpret<ARGT -const>(source)), type<TT -const -&>, key)
+}
+
+def group_by_lazy(var source : iterator<auto(TT)>; key)  {
+    
+    
+    
+    return <- group_by_lazy_impl(source, type<TT -const -&>, key).to_sequence_move()
+}
+
+def group_by_lazy(source : array<auto(TT)>; key)  {
+    
+    return <- group_by_lazy_impl_const(source, type<TT -const -&>, key)
+}
+
+def group_by_lazy_to_array(var source : iterator<auto(TT)>; key)  {
+    
+    return <- group_by_lazy_impl(source, type<TT -const -&>, key)
+}
+
+[unused_argument(tt)]
 def private union_impl(var srca; var srcb; tt : auto(TT)) : array<TT -const -&> {
     
     var buffer : array<TT -const -&>
@@ -1637,7 +2253,7 @@ def private union_impl_const(srca : auto(ARGTA); srcb : auto(ARGTB); tt : auto(T
     return <- union_impl(unsafe(reinterpret<ARGTA -const>(srca)), unsafe(reinterpret<ARGTB -const>(srcb)), type<TT -const -&>)
 }
 
-def union(var srca, srcb : array<auto(TT)>) : array<TT -const -&> {
+def union(srca, srcb : array<auto(TT)>) : array<TT -const -&> {
     
     return <- union_impl_const(srca, srcb, type<TT -const -&>)
 }
@@ -1647,9 +2263,29 @@ def union(var srca, srcb : iterator<auto(TT)>) : iterator<TT -const -&> {
     return <- union_impl(srca, srcb, type<TT -const -&>).to_sequence_move()
 }
 
+def union(var srca : iterator<auto(TT) const>; srcb : array<TT>) : iterator<TT -const -&> {
+    
+    return <- union_impl_const(srca, srcb, type<TT -const -&>).to_sequence_move()
+}
+
+def union(srca : array<TT>; var srcb : iterator<auto(TT) const>) : iterator<TT -const -&> {
+    
+    return <- union_impl_const(srca, srcb, type<TT -const -&>).to_sequence_move()
+}
+
 def union_to_array(var srca, srcb : iterator<auto(TT)>) : array<TT -const -&> {
     
     return <- union_impl(srca, srcb, type<TT -const -&>)
+}
+
+def union_to_array(var srca : iterator<auto(TT) const>; srcb : array<TT>) : array<TT -const -&> {
+    
+    return <- union_impl_const(srca, srcb, type<TT -const -&>)
+}
+
+def union_to_array(srca : array<TT>; var srcb : iterator<auto(TT) const>) : array<TT -const -&> {
+    
+    return <- union_impl_const(srca, srcb, type<TT -const -&>)
 }
 
 [unused_argument(tt)]
@@ -1684,6 +2320,16 @@ def union_by(var srca, srcb : iterator<auto(TT)>; key : block<(arg : TT -&) : au
     return <- union_by_impl(srca, srcb, type<TT -const -&>, key).to_sequence_move()
 }
 
+def union_by(var srca : iterator<auto(TT) const>; srcb : array<TT>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    return <- union_by_impl_const(srca, srcb, type<TT -const -&>, key).to_sequence_move()
+}
+
+def union_by(srca : array<TT>; var srcb : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    return <- union_by_impl_const(srca, srcb, type<TT -const -&>, key).to_sequence_move()
+}
+
 def union_by(srca, srcb : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- union_by_impl_const(srca, srcb, type<TT -const -&>, key)
@@ -1694,14 +2340,24 @@ def union_by_to_array(var srca, srcb : iterator<auto(TT)>; key : block<(arg : TT
     return <- union_by_impl(srca, srcb, type<TT -const -&>, key)
 }
 
+def union_by_to_array(var srca : iterator<auto(TT) const>; srcb : array<TT>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    return <- union_by_impl_const(srca, srcb, type<TT -const -&>, key)
+}
+
+def union_by_to_array(srca : array<TT>; var srcb : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    return <- union_by_impl_const(srca, srcb, type<TT -const -&>, key)
+}
+
 def any(src : array<auto(TT)>) : bool {
     
-    return length(src) != 0
+    return !empty(src)
 }
 
 def any(var src : iterator<auto(TT)>) : bool {
     
-    for (it in src) {
+    for (_it in src) {
         return true
     }
     return false
@@ -1710,9 +2366,7 @@ def any(var src : iterator<auto(TT)>) : bool {
 [unused_argument(tt)]
 def private any_impl(var src; tt : auto(TT); predicate : block<(arg : auto(TT) -&) : bool>) : bool {
     for (it in src) {
-        if (predicate(it)) {
-            return true
-        }
+        if (predicate(it)) return true
     }
     return false
 }
@@ -1735,9 +2389,7 @@ def any(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : bool {
 [unused_argument(tt)]
 def private all_impl(var src; tt : auto(TT); predicate : block<(arg : auto(TT) -&) : bool>) : bool {
     for (it in src) {
-        if (!predicate(it)) {
-            return false
-        }
+        if (!predicate(it)) return false
     }
     return true
 }
@@ -1747,7 +2399,11 @@ def private all_impl_const(src : auto(ARGT); tt : auto(TT); predicate : block<(a
     return all_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>, predicate)
 }
 
-def all(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : bool {
+def all(var src : iterator<auto(TT) const>; predicate : block<(arg : TT -&) : bool>) : bool {
+    
+    
+    
+    
     
     return all_impl(src, type<TT -const -&>, predicate)
 }
@@ -1755,6 +2411,42 @@ def all(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) :
 def all(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : bool {
     
     return all_impl_const(src, type<TT -const -&>, predicate)
+}
+
+def none(src : array<auto(TT)>) : bool {
+    
+    return empty(src)
+}
+
+def none(var src : iterator<auto(TT)>) : bool {
+    
+    for (_it in src) {
+        return false
+    }
+    return true
+}
+
+[unused_argument(tt)]
+def private none_impl(var src; tt : auto(TT); predicate : block<(arg : auto(TT) -&) : bool>) : bool {
+    for (it in src) {
+        if (predicate(it)) return false
+    }
+    return true
+}
+
+[unused_argument(tt)]
+def private none_impl_const(src : auto(ARGT); tt : auto(TT); predicate : block<(arg : auto(TT) -&) : bool>) : bool {
+    return none_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>, predicate)
+}
+
+def none(var src : iterator<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : bool {
+    
+    return none_impl(src, type<TT -const -&>, predicate)
+}
+
+def none(src : array<auto(TT)>; predicate : block<(arg : TT -&) : bool>) : bool {
+    
+    return none_impl_const(src, type<TT -const -&>, predicate)
 }
 
 [unused_argument(tt)]
@@ -1785,6 +2477,16 @@ def except(var src, exclude : iterator<auto(TT)>) : iterator<TT -const -&> {
     return <- except_impl(src, exclude, type<TT -const -&>).to_sequence_move()
 }
 
+def except(var src : iterator<auto(TT) const>; exclude : array<TT>) : iterator<TT -const -&> {
+    
+    return <- except_impl_const(src, exclude, type<TT -const -&>).to_sequence_move()
+}
+
+def except(src : array<TT>; var exclude : iterator<auto(TT) const>) : iterator<TT -const -&> {
+    
+    return <- except_impl_const(src, exclude, type<TT -const -&>).to_sequence_move()
+}
+
 def except(src, exclude : array<auto(TT)>) : array<TT -const -&> {
     
     return <- except_impl_const(src, exclude, type<TT -const -&>)
@@ -1793,6 +2495,16 @@ def except(src, exclude : array<auto(TT)>) : array<TT -const -&> {
 def except_to_array(var src, exclude : iterator<auto(TT)>) : array<TT -const -&> {
     
     return <- except_impl(src, exclude, type<TT -const -&>)
+}
+
+def except_to_array(var src : iterator<auto(TT) const>; exclude : array<TT>) : array<TT -const -&> {
+    
+    return <- except_impl_const(src, exclude, type<TT -const -&>)
+}
+
+def except_to_array(src : array<TT>; var exclude : iterator<auto(TT) const>) : array<TT -const -&> {
+    
+    return <- except_impl_const(src, exclude, type<TT -const -&>)
 }
 
 [unused_argument(tt)]
@@ -1823,6 +2535,16 @@ def except_by(var src, exclude : iterator<auto(TT)>; key : block<(arg : TT -&) :
     return <- except_by_impl(src, exclude, type<TT -const -&>, key).to_sequence_move()
 }
 
+def except_by(var src : iterator<auto(TT) const>; exclude : array<TT>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    return <- except_by_impl_const(src, exclude, type<TT -const -&>, key).to_sequence_move()
+}
+
+def except_by(src : array<TT>; var exclude : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    return <- except_by_impl_const(src, exclude, type<TT -const -&>, key).to_sequence_move()
+}
+
 def except_by(src, exclude : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- except_by_impl_const(src, exclude, type<TT -const -&>, key)
@@ -1831,6 +2553,16 @@ def except_by(src, exclude : array<auto(TT)>; key : block<(arg : TT -&) : auto>)
 def except_by_to_array(var src, exclude : iterator<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- except_by_impl(src, exclude, type<TT -const -&>, key)
+}
+
+def except_by_to_array(var src : iterator<auto(TT) const>; exclude : array<TT>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    return <- except_by_impl_const(src, exclude, type<TT -const -&>, key)
+}
+
+def except_by_to_array(src : array<TT>; var exclude : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    return <- except_by_impl_const(src, exclude, type<TT -const -&>, key)
 }
 
 [unused_argument(tt)]
@@ -1861,6 +2593,16 @@ def intersect(var srca, srcb : iterator<auto(TT)>) : iterator<TT -const -&> {
     return <- intersect_impl(srca, srcb, type<TT -const -&>).to_sequence_move()
 }
 
+def intersect(var srca : iterator<auto(TT) const>; srcb : array<TT>) : iterator<TT -const -&> {
+    
+    return <- intersect_impl_const(srca, srcb, type<TT -const -&>).to_sequence_move()
+}
+
+def intersect(srca : array<TT>; var srcb : iterator<auto(TT) const>) : iterator<TT -const -&> {
+    
+    return <- intersect_impl_const(srca, srcb, type<TT -const -&>).to_sequence_move()
+}
+
 def intersect(srca, srcb : array<auto(TT)>) : array<TT -const -&> {
     
     return <- intersect_impl_const(srca, srcb, type<TT -const -&>)
@@ -1869,6 +2611,16 @@ def intersect(srca, srcb : array<auto(TT)>) : array<TT -const -&> {
 def intersect_to_array(var srca, srcb : iterator<auto(TT)>) : array<TT -const -&> {
     
     return <- intersect_impl(srca, srcb, type<TT -const -&>)
+}
+
+def intersect_to_array(var srca : iterator<auto(TT) const>; srcb : array<TT>) : array<TT -const -&> {
+    
+    return <- intersect_impl_const(srca, srcb, type<TT -const -&>)
+}
+
+def intersect_to_array(srca : array<TT>; var srcb : iterator<auto(TT) const>) : array<TT -const -&> {
+    
+    return <- intersect_impl_const(srca, srcb, type<TT -const -&>)
 }
 
 [unused_argument(tt)]
@@ -1899,6 +2651,16 @@ def intersect_by(var srca, srcb : iterator<auto(TT)>; key : block<(arg : TT -&) 
     return <- intersect_by_impl(srca, srcb, type<TT -const -&>, key).to_sequence_move()
 }
 
+def intersect_by(var srca : iterator<auto(TT) const>; srcb : array<TT>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    return <- intersect_by_impl_const(srca, srcb, type<TT -const -&>, key).to_sequence_move()
+}
+
+def intersect_by(srca : array<TT>; var srcb : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : iterator<TT -const -&> {
+    
+    return <- intersect_by_impl_const(srca, srcb, type<TT -const -&>, key).to_sequence_move()
+}
+
 def intersect_by(srca, srcb : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
     
     return <- intersect_by_impl_const(srca, srcb, type<TT -const -&>, key)
@@ -1909,12 +2671,20 @@ def intersect_by_to_array(var srca, srcb : iterator<auto(TT)>; key : block<(arg 
     return <- intersect_by_impl(srca, srcb, type<TT -const -&>, key)
 }
 
+def intersect_by_to_array(var srca : iterator<auto(TT) const>; srcb : array<TT>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    return <- intersect_by_impl_const(srca, srcb, type<TT -const -&>, key)
+}
+
+def intersect_by_to_array(srca : array<TT>; var srcb : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : array<TT -const -&> {
+    
+    return <- intersect_by_impl_const(srca, srcb, type<TT -const -&>, key)
+}
+
 [unused_argument(tt)]
 def private contains_impl(var src; tt : auto(TT); element : TT -&) : bool {
     for (it in src) {
-        if (it == element) {
-            return true
-        }
+        if (it == element) return true
     }
     return false
 }
@@ -1924,7 +2694,8 @@ def private contains_impl_const(src : auto(ARGT); tt : auto(TT); element : TT -&
     return contains_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>, element)
 }
 
-def contains(var src : iterator<auto(TT)>; element : TT -&) : bool {
+def contains(var src : iterator<auto(TT) const>; element : TT -&) : bool {
+    
     
     return contains_impl(src, type<TT -const -&>, element)
 }
@@ -1937,14 +2708,14 @@ def contains(src : array<auto(TT)>; element : TT -&) : bool {
 [unused_argument(typ)]
 def empty(var typ : auto(TT)) : iterator<TT -const -&> {
     
-    return <- generator<TT -const -&>() <| $ {
+    return <- generator<TT -const -&> {
         return false
     }
 }
 
 def default_empty(var src : iterator<auto(TT)>) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- src) () <| $ {
+    return generator<TT -const -&> capture(<- src) {
         var found = false
         for (it in src) {
             found = true
@@ -1973,7 +2744,7 @@ def range_sequence(start : int; count : int) : iterator<int> {
 
 def repeat(element : auto(TT); count : int) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(:= element) () <| $ {
+    return generator<TT -const -&> capture(:= element) {
         for (i in 0..count) {
             static_if (typeinfo can_copy(element)) {
                 yield element
@@ -1993,27 +2764,17 @@ def private sequence_equal_impl(var first, second; tt : auto(TT)) : bool {
         while (true) {
             let has_f = next(first, f)
             let has_s = next(second, s)
-            if (has_f != has_s) {
-                return false
-            }
-            if (!has_f) {
-                return true
-            }
-            if (f != s) {
-                return false
-            }
+            if (has_f != has_s) return false
+            if (!has_f) return true
+            if (f != s) return false
         }
         return true
     } else {
         var inscope arr_first <- to_array(first)
         var inscope arr_second <- to_array(second)
-        if (length(arr_first) != length(arr_second)) {
-            return false
-        }
+        if (length(arr_first) != length(arr_second)) return false
         for (f, s in arr_first, arr_second) {
-            if (f != s) {
-                return false
-            }
+            if (f != s) return false
         }
         return true
     }
@@ -2021,13 +2782,9 @@ def private sequence_equal_impl(var first, second; tt : auto(TT)) : bool {
 
 [unused_argument(tt)]
 def private sequence_equal_impl_const(first : auto(ARGT); second : auto(ARGTS); tt : auto(TT)) : bool {
-    if (length(first) != length(second)) {
-        return false
-    }
+    if (length(first) != length(second)) return false
     for (f, s in first, second) {
-        if (f != s) {
-            return false
-        }
+        if (f != s) return false
     }
     return true
 }
@@ -2042,6 +2799,16 @@ def sequence_equal(first, second : array<auto(TT)>) : bool {
     return sequence_equal_impl_const(first, second, type<TT -const -&>)
 }
 
+def sequence_equal(var first : iterator<auto(TT) const>; second : array<TT>) : bool {
+    
+    return sequence_equal_impl(first, unsafe(each(second)), type<TT -const -&>)
+}
+
+def sequence_equal(first : array<TT>; var second : iterator<auto(TT) const>) : bool {
+    
+    return sequence_equal_impl(unsafe(each(first)), second, type<TT -const -&>)
+}
+
 [unused_argument(tt)]
 def private sequence_equal_by_impl(var first, second; tt : auto(TT); key : block<(arg : TT -&) : auto>) : bool {
     static_if (typeinfo can_copy(type<TT -const -&>)) {
@@ -2050,27 +2817,17 @@ def private sequence_equal_by_impl(var first, second; tt : auto(TT); key : block
         while (true) {
             let has_f = next(first, f)
             let has_s = next(second, s)
-            if (has_f != has_s) {
-                return false
-            }
-            if (!has_f) {
-                return true
-            }
-            if (key(f) != key(s)) {
-                return false
-            }
+            if (has_f != has_s) return false
+            if (!has_f) return true
+            if (key(f) != key(s)) return false
         }
         return true
     } else {
         var inscope arr_first <- to_array(first)
         var inscope arr_second <- to_array(second)
-        if (length(arr_first) != length(arr_second)) {
-            return false
-        }
+        if (length(arr_first) != length(arr_second)) return false
         for (f, s in arr_first, arr_second) {
-            if (key(f) != key(s)) {
-                return false
-            }
+            if (key(f) != key(s)) return false
         }
         return true
     }
@@ -2078,13 +2835,9 @@ def private sequence_equal_by_impl(var first, second; tt : auto(TT); key : block
 
 [unused_argument(tt)]
 def private sequence_equal_by_impl_const(first : auto(ARGT); second : auto(ARGTS); tt : auto(TT); key : block<(arg : TT -&) : auto>) : bool {
-    if (length(first) != length(second)) {
-        return false
-    }
+    if (length(first) != length(second)) return false
     for (f, s in first, second) {
-        if (key(f) != key(s)) {
-            return false
-        }
+        if (key(f) != key(s)) return false
     }
     return true
 }
@@ -2097,6 +2850,16 @@ def sequence_equal_by(var first, second : iterator<auto(TT)>; key : block<(arg :
 def sequence_equal_by(first, second : array<auto(TT)>; key : block<(arg : TT -&) : auto>) : bool {
     
     return sequence_equal_by_impl_const(first, second, type<TT -const -&>, key)
+}
+
+def sequence_equal_by(var first : iterator<auto(TT) const>; second : array<TT>; key : block<(arg : TT -&) : auto>) : bool {
+    
+    return sequence_equal_by_impl(first, unsafe(each(second)), type<TT -const -&>, key)
+}
+
+def sequence_equal_by(first : array<TT>; var second : iterator<auto(TT) const>; key : block<(arg : TT -&) : auto>) : bool {
+    
+    return sequence_equal_by_impl(unsafe(each(first)), second, type<TT -const -&>, key)
 }
 
 def element_at(src : array<auto(TT)>; index : int) : TT -const -& {
@@ -2164,7 +2927,7 @@ def element_at_or_default(var src : iterator<auto(TT)>; index : int) : TT -const
 
 def first(src : array<auto(TT)>) : TT -const -& {
     
-    panic("sequence contains no elements") if (length(src) == 0)
+    panic("sequence contains no elements") if (empty(src))
     static_if (typeinfo can_copy(src[0])) {
         return src[0]
     } else {
@@ -2188,7 +2951,7 @@ def first(var src : iterator<auto(TT)>) : TT -const -& {
 
 def first_or_default(src : array<auto(TT)>; defaultValue : TT -&) : TT -const -& {
     
-    if (length(src) == 0) {
+    if (empty(src)) {
         static_if (typeinfo can_copy(defaultValue)) {
             return defaultValue
         } else {
@@ -2389,7 +3152,7 @@ def prepend_to_array(var it : iterator<auto(TT)>; value : TT -&) : array<TT -con
 
 def prepend(var it : iterator<auto(TT)>; value : TT -&) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- it, := value) () <| $ {
+    return generator<TT -const -&> capture(<- it, := value) {
         static_if (typeinfo can_copy(value)) {
             yield value
         } else {
@@ -2442,7 +3205,7 @@ def append_to_array(var it : iterator<auto(TT)>; value : TT -&) : array<TT -cons
 
 def append(var it : iterator<auto(TT)>; value : TT -&) : iterator<TT -const -&> {
     
-    return generator<TT -const -&> capture(<- it, := value) () <| $ {
+    return generator<TT -const -&> capture(<- it, := value) {
         for (x in it) {
             static_if (typeinfo can_copy(x)) {
                 yield x
@@ -2530,14 +3293,19 @@ def private chunk_impl(var src; tt : auto(TT); size : int) : array<array<TT -con
     
     panic("chunk size must be greater than 0") if (size <= 0)
     var buffer : array<array<TT -const -&>>
+    static_if (typeinfo is_array(src) || typeinfo is_dim(src)) {
+        buffer |> reserve((length(src) + size - 1) / size)
+    }
     var inscope chunk : array<TT -const -&>
+    chunk |> reserve(size)
     for (it in src) {
         chunk.push_clone(it)
         if (chunk.length() == size) {
             buffer.emplace(chunk)
+            chunk |> reserve(size)
         }
     }
-    if (chunk.length() > 0) {
+    if (!empty(chunk)) {
         buffer.emplace(chunk)
     }
     return <- buffer
@@ -2581,6 +3349,12 @@ def private iter_type(src : array<auto(TT)>) : TT -const -& {
 def private select_many_impl(var src; tt : auto(TT); result_selector) : array<typedecl(result_selector(iter_type(type<TT>))) -const -&> {
     
     var buffer : array<typedecl(result_selector(iter_type(type<TT>))) -const -&>
+    
+    
+    
+    static_if (typeinfo is_array(src) || typeinfo is_dim(src)) {
+        buffer |> reserve(length(src))
+    }
     for (it in src) {
         for (innerIt in it) {
             buffer.push_clone(result_selector(innerIt))
@@ -2613,6 +3387,12 @@ def select_many_to_array(var src : iterator<auto(TT)>; result_selector) : array<
 def private select_many_impl(var src; tt : auto(TT); collection_selector; result_selector) : array<typedecl(result_selector(iter_type(collection_selector(type<TT>)))) -const -&> {
     
     var buffer : array<typedecl(result_selector(iter_type(collection_selector(type<TT>)))) -const -&>
+    
+    
+    
+    static_if (typeinfo is_array(src) || typeinfo is_dim(src)) {
+        buffer |> reserve(length(src))
+    }
     for (it in src) {
         for (innerIt in collection_selector(it)) {
             buffer.push_clone(result_selector(innerIt))
@@ -2641,6 +3421,47 @@ def select_many_to_array(var src : iterator<auto(TT)>; collection_selector; resu
     return <- select_many_impl(src, type<TT -const -&>, collection_selector, result_selector)
 }
 
+
+
+
+
+[unused_argument(tt)]
+def private select_many_pair_impl(var src; tt : auto(TT); collection_selector; result_selector) : array<typedecl(result_selector(type<TT>, iter_type(collection_selector(type<TT>)))) -const -&> {
+    var buffer : array<typedecl(result_selector(type<TT>, iter_type(collection_selector(type<TT>)))) -const -&>
+    
+    
+    
+    static_if (typeinfo is_array(src) || typeinfo is_dim(src)) {
+        buffer |> reserve(length(src))
+    }
+    for (it in src) {
+        for (innerIt in collection_selector(it)) {
+            buffer.push_clone(result_selector(it, innerIt))
+        }
+    }
+    return <- buffer
+}
+
+[unused_argument(tt)]
+def private select_many_pair_impl_const(src : auto(ARGT); tt : auto(TT); collection_selector; result_selector) : array<typedecl(result_selector(type<TT>, iter_type(collection_selector(type<TT>)))) -const -&> {
+    return <- select_many_pair_impl(unsafe(reinterpret<ARGT -const>(src)), type<TT -const -&>, collection_selector, result_selector)
+}
+
+def select_many_pair(var src : iterator<auto(TT)>; collection_selector; result_selector) : iterator<typedecl(result_selector(type<TT>, iter_type(collection_selector(type<TT>)))) -const -&> {
+    
+    return <- select_many_pair_impl(src, type<TT -const -&>, collection_selector, result_selector).to_sequence_move()
+}
+
+def select_many_pair(src : array<auto(TT)>; collection_selector; result_selector) : array<typedecl(result_selector(type<TT>, iter_type(collection_selector(type<TT>)))) -const -&> {
+    
+    return <- select_many_pair_impl_const(src, type<TT -const -&>, collection_selector, result_selector)
+}
+
+def select_many_pair_to_array(var src : iterator<auto(TT)>; collection_selector; result_selector) : array<typedecl(result_selector(type<TT>, iter_type(collection_selector(type<TT>)))) -const -&> {
+    
+    return <- select_many_pair_impl(src, type<TT -const -&>, collection_selector, result_selector)
+}
+
 [unused_argument(tt, uu)]
 def private zip_impl(var a; tt : auto(TT); var b; var uu : auto(UU)) : array<tuple<TT -const -&, UU -const -&>> {
     
@@ -2649,7 +3470,7 @@ def private zip_impl(var a; tt : auto(TT); var b; var uu : auto(UU)) : array<tup
         buffer |> reserve(min(length(a), length(b)))
     }
     for (itA, itB in a, b) {
-        buffer.emplace((itA, itB))
+        buffer.emplace((itA, itB)) 
     }
     return <- buffer
 }
@@ -2669,14 +3490,37 @@ def zip(a : array<auto(TT)>; b : array<auto(UU)>) : array<tuple<TT -const -&, UU
     return <- zip_impl_const(a, type<TT -const -&>, b, type<UU -const -&>)
 }
 
+def zip(var a : iterator<auto(TT)>; b : array<auto(UU)>) : iterator<tuple<TT -const -&, UU -const -&>> {
+    
+    return <- zip(a, unsafe(each(b)))
+}
+
+def zip(a : array<auto(TT)>; var b : iterator<auto(UU)>) : iterator<tuple<TT -const -&, UU -const -&>> {
+    
+    return <- zip(unsafe(each(a)), b)
+}
+
 def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>) : array<tuple<TT -const -&, UU -const -&>> {
     
     return <- zip_impl(a, type<TT -const -&>, b, type<UU -const -&>)
 }
 
+def zip_to_array(var a : iterator<auto(TT)>; b : array<auto(UU)>) : array<tuple<TT -const -&, UU -const -&>> {
+    
+    return <- zip_to_array(a, unsafe(each(b)))
+}
+
+def zip_to_array(a : array<auto(TT)>; var b : iterator<auto(UU)>) : array<tuple<TT -const -&, UU -const -&>> {
+    
+    return <- zip_to_array(unsafe(each(a)), b)
+}
+
 [unused_argument(tt, uu)]
 def private zip_impl(var a; tt : auto(TT); var b; uu : auto(UU); result_selector : block<(l : TT -&; r : UU -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
     var buffer : array<typedecl(result_selector(type<TT>, type<UU>)) -const -&>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b))) {
+        buffer |> reserve(min(length(a), length(b)))
+    }
     for (itA, itB in a, b) {
         buffer.push_clone(result_selector(itA, itB))
     }
@@ -2698,9 +3542,29 @@ def zip(a : array<auto(TT)>; b : array<auto(UU)>; result_selector : block<(l : T
     return <- zip_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, result_selector)
 }
 
+def zip(var a : iterator<auto(TT)>; b : array<auto(UU)>; result_selector : block<(l : TT -&; r : UU -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
+    
+    return <- zip(a, unsafe(each(b)), result_selector)
+}
+
+def zip(a : array<auto(TT)>; var b : iterator<auto(UU)>; result_selector : block<(l : TT -&; r : UU -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
+    
+    return <- zip(unsafe(each(a)), b, result_selector)
+}
+
 def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; result_selector : block<(l : TT -&; r : UU -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
     
     return <- zip_impl(a, type<TT -const -&>, b, type<UU -const -&>, result_selector)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; b : array<auto(UU)>; result_selector : block<(l : TT -&; r : UU -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
+    
+    return <- zip_to_array(a, unsafe(each(b)), result_selector)
+}
+
+def zip_to_array(a : array<auto(TT)>; var b : iterator<auto(UU)>; result_selector : block<(l : TT -&; r : UU -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>)) -const -&> {
+    
+    return <- zip_to_array(unsafe(each(a)), b, result_selector)
 }
 
 
@@ -2771,6 +3635,356 @@ def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; result_se
 def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>)) -const -&> {
     
     return <- zip3_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, result_selector)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx)]
+def private zip4_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&>> {
+    
+    var buffer : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&>>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), length(d)))))
+    }
+    for (itA, itB, itC, itD in a, b, c, d) {
+        buffer.emplace((itA, itB, itC, itD))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx)]
+def private zip4_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&>> {
+    return <- zip4_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>) : iterator<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&>> {
+    
+    return <- zip4_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&>> {
+    
+    return <- zip4_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&>> {
+    
+    return <- zip4_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx)]
+def private zip4_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>)) -const -&> {
+    
+    var buffer : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>)) -const -&>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), length(d)))))
+    }
+    for (itA, itB, itC, itD in a, b, c, d) {
+        buffer.push_clone(result_selector(itA, itB, itC, itD))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx)]
+def private zip4_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>)) -const -&> {
+    return <- zip4_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, result_selector)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>)) -const -&> {
+    
+    return <- zip4_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, result_selector).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>)) -const -&> {
+    
+    return <- zip4_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, result_selector)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>)) -const -&> {
+    
+    return <- zip4_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, result_selector)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy)]
+def private zip5_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&>> {
+    
+    var buffer : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&>>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), length(e))))))
+    }
+    for (itA, itB, itC, itD, itE in a, b, c, d, e) {
+        buffer.emplace((itA, itB, itC, itD, itE))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy)]
+def private zip5_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&>> {
+    return <- zip5_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>) : iterator<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&>> {
+    
+    return <- zip5_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&>> {
+    
+    return <- zip5_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&>> {
+    
+    return <- zip5_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy)]
+def private zip5_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>)) -const -&> {
+    
+    var buffer : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>)) -const -&>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), length(e))))))
+    }
+    for (itA, itB, itC, itD, itE in a, b, c, d, e) {
+        buffer.push_clone(result_selector(itA, itB, itC, itD, itE))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy)]
+def private zip5_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>)) -const -&> {
+    return <- zip5_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, result_selector)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>)) -const -&> {
+    
+    return <- zip5_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, result_selector).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>)) -const -&> {
+    
+    return <- zip5_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, result_selector)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>)) -const -&> {
+    
+    return <- zip5_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, result_selector)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy, zz)]
+def private zip6_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); var f; zz : auto(ZZ)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&>> {
+    
+    var buffer : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&>>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e)) && (typeinfo is_array(f) || typeinfo is_dim(f))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), min(length(e), length(f)))))))
+    }
+    for (itA, itB, itC, itD, itE, itF in a, b, c, d, e, f) {
+        buffer.emplace((itA, itB, itC, itD, itE, itF))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy, zz)]
+def private zip6_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); f : auto(ARGF); zz : auto(ZZ)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&>> {
+    return <- zip6_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, unsafe(reinterpret<ARGF -const>(f)), type<ZZ -const -&>)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>) : iterator<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&>> {
+    
+    return <- zip6_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; f : array<auto(ZZ)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&>> {
+    
+    return <- zip6_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&>> {
+    
+    return <- zip6_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy, zz)]
+def private zip6_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); var f; zz : auto(ZZ); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>)) -const -&> {
+    
+    var buffer : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>)) -const -&>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e)) && (typeinfo is_array(f) || typeinfo is_dim(f))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), min(length(e), length(f)))))))
+    }
+    for (itA, itB, itC, itD, itE, itF in a, b, c, d, e, f) {
+        buffer.push_clone(result_selector(itA, itB, itC, itD, itE, itF))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy, zz)]
+def private zip6_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); f : auto(ARGF); zz : auto(ZZ); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>)) -const -&> {
+    return <- zip6_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, unsafe(reinterpret<ARGF -const>(f)), type<ZZ -const -&>, result_selector)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>)) -const -&> {
+    
+    return <- zip6_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, result_selector).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; f : array<auto(ZZ)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>)) -const -&> {
+    
+    return <- zip6_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, result_selector)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>)) -const -&> {
+    
+    return <- zip6_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, result_selector)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr)]
+def private zip7_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); var f; zz : auto(ZZ); var g; rr : auto(RR)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&>> {
+    
+    var buffer : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&>>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e)) && (typeinfo is_array(f) || typeinfo is_dim(f)) && (typeinfo is_array(g) || typeinfo is_dim(g))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), min(length(e), min(length(f), length(g))))))))
+    }
+    for (itA, itB, itC, itD, itE, itF, itG in a, b, c, d, e, f, g) {
+        buffer.emplace((itA, itB, itC, itD, itE, itF, itG))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr)]
+def private zip7_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); f : auto(ARGF); zz : auto(ZZ); g : auto(ARGG); rr : auto(RR)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&>> {
+    return <- zip7_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, unsafe(reinterpret<ARGF -const>(f)), type<ZZ -const -&>, unsafe(reinterpret<ARGG -const>(g)), type<RR -const -&>)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>) : iterator<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&>> {
+    
+    return <- zip7_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; f : array<auto(ZZ)>; g : array<auto(RR)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&>> {
+    
+    return <- zip7_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&>> {
+    
+    return <- zip7_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr)]
+def private zip7_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); var f; zz : auto(ZZ); var g; rr : auto(RR); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>)) -const -&> {
+    
+    var buffer : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>)) -const -&>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e)) && (typeinfo is_array(f) || typeinfo is_dim(f)) && (typeinfo is_array(g) || typeinfo is_dim(g))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), min(length(e), min(length(f), length(g))))))))
+    }
+    for (itA, itB, itC, itD, itE, itF, itG in a, b, c, d, e, f, g) {
+        buffer.push_clone(result_selector(itA, itB, itC, itD, itE, itF, itG))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr)]
+def private zip7_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); f : auto(ARGF); zz : auto(ZZ); g : auto(ARGG); rr : auto(RR); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>)) -const -&> {
+    return <- zip7_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, unsafe(reinterpret<ARGF -const>(f)), type<ZZ -const -&>, unsafe(reinterpret<ARGG -const>(g)), type<RR -const -&>, result_selector)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>)) -const -&> {
+    
+    return <- zip7_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, result_selector).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; f : array<auto(ZZ)>; g : array<auto(RR)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>)) -const -&> {
+    
+    return <- zip7_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, result_selector)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>)) -const -&> {
+    
+    return <- zip7_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, result_selector)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr, ss)]
+def private zip8_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); var f; zz : auto(ZZ); var g; rr : auto(RR); var h; ss : auto(SS)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&, SS -const -&>> {
+    
+    var buffer : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&, SS -const -&>>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e)) && (typeinfo is_array(f) || typeinfo is_dim(f)) && (typeinfo is_array(g) || typeinfo is_dim(g)) && (typeinfo is_array(h) || typeinfo is_dim(h))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), min(length(e), min(length(f), min(length(g), length(h)))))))))
+    }
+    for (itA, itB, itC, itD, itE, itF, itG, itH in a, b, c, d, e, f, g, h) {
+        buffer.emplace((itA, itB, itC, itD, itE, itF, itG, itH))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr, ss)]
+def private zip8_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); f : auto(ARGF); zz : auto(ZZ); g : auto(ARGG); rr : auto(RR); h : auto(ARGH); ss : auto(SS)) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&, SS -const -&>> {
+    return <- zip8_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, unsafe(reinterpret<ARGF -const>(f)), type<ZZ -const -&>, unsafe(reinterpret<ARGG -const>(g)), type<RR -const -&>, unsafe(reinterpret<ARGH -const>(h)), type<SS -const -&>)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>; var h : iterator<auto(SS)>) : iterator<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&, SS -const -&>> {
+    
+    return <- zip8_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, h, type<SS -const -&>).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; f : array<auto(ZZ)>; g : array<auto(RR)>; h : array<auto(SS)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&, SS -const -&>> {
+    
+    return <- zip8_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, h, type<SS -const -&>)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>; var h : iterator<auto(SS)>) : array<tuple<TT -const -&, UU -const -&, WW -const -&, XX -const -&, YY -const -&, ZZ -const -&, RR -const -&, SS -const -&>> {
+    
+    return <- zip8_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, h, type<SS -const -&>)
+}
+
+
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr, ss)]
+def private zip8_impl(var a; tt : auto(TT); var b; uu : auto(UU); var c; ww : auto(WW); var d; xx : auto(XX); var e; yy : auto(YY); var f; zz : auto(ZZ); var g; rr : auto(RR); var h; ss : auto(SS); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&; n : SS -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>, type<SS>)) -const -&> {
+    
+    var buffer : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>, type<SS>)) -const -&>
+    static_if ((typeinfo is_array(a) || typeinfo is_dim(a)) && (typeinfo is_array(b) || typeinfo is_dim(b)) && (typeinfo is_array(c) || typeinfo is_dim(c)) && (typeinfo is_array(d) || typeinfo is_dim(d)) && (typeinfo is_array(e) || typeinfo is_dim(e)) && (typeinfo is_array(f) || typeinfo is_dim(f)) && (typeinfo is_array(g) || typeinfo is_dim(g)) && (typeinfo is_array(h) || typeinfo is_dim(h))) {
+        buffer |> reserve(min(length(a), min(length(b), min(length(c), min(length(d), min(length(e), min(length(f), min(length(g), length(h)))))))))
+    }
+    for (itA, itB, itC, itD, itE, itF, itG, itH in a, b, c, d, e, f, g, h) {
+        buffer.push_clone(result_selector(itA, itB, itC, itD, itE, itF, itG, itH))
+    }
+    return <- buffer
+}
+
+[unused_argument(tt, uu, ww, xx, yy, zz, rr, ss)]
+def private zip8_impl_const(a : auto(ARGT); tt : auto(TT); b : auto(ARGTS); uu : auto(UU); c : auto(ARGC); ww : auto(WW); d : auto(ARGD); xx : auto(XX); e : auto(ARGE); yy : auto(YY); f : auto(ARGF); zz : auto(ZZ); g : auto(ARGG); rr : auto(RR); h : auto(ARGH); ss : auto(SS); result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&; n : SS -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>, type<SS>)) -const -&> {
+    return <- zip8_impl(unsafe(reinterpret<ARGT -const>(a)), type<TT -const -&>, unsafe(reinterpret<ARGTS -const>(b)), type<UU -const -&>, unsafe(reinterpret<ARGC -const>(c)), type<WW -const -&>, unsafe(reinterpret<ARGD -const>(d)), type<XX -const -&>, unsafe(reinterpret<ARGE -const>(e)), type<YY -const -&>, unsafe(reinterpret<ARGF -const>(f)), type<ZZ -const -&>, unsafe(reinterpret<ARGG -const>(g)), type<RR -const -&>, unsafe(reinterpret<ARGH -const>(h)), type<SS -const -&>, result_selector)
+}
+
+def zip(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>; var h : iterator<auto(SS)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&; n : SS -&) : auto>) : iterator<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>, type<SS>)) -const -&> {
+    
+    return <- zip8_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, h, type<SS -const -&>, result_selector).to_sequence_move()
+}
+
+def zip(a : array<auto(TT)>; b : array<auto(UU)>; c : array<auto(WW)>; d : array<auto(XX)>; e : array<auto(YY)>; f : array<auto(ZZ)>; g : array<auto(RR)>; h : array<auto(SS)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&; n : SS -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>, type<SS>)) -const -&> {
+    
+    return <- zip8_impl_const(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, h, type<SS -const -&>, result_selector)
+}
+
+def zip_to_array(var a : iterator<auto(TT)>; var b : iterator<auto(UU)>; var c : iterator<auto(WW)>; var d : iterator<auto(XX)>; var e : iterator<auto(YY)>; var f : iterator<auto(ZZ)>; var g : iterator<auto(RR)>; var h : iterator<auto(SS)>; result_selector : block<(l : TT -&; r : UU -&; w : WW -&; x : XX -&; y : YY -&; z : ZZ -&; m : RR -&; n : SS -&) : auto>) : array<typedecl(result_selector(type<TT>, type<UU>, type<WW>, type<XX>, type<YY>, type<ZZ>, type<RR>, type<SS>)) -const -&> {
+    
+    return <- zip8_impl(a, type<TT -const -&>, b, type<UU -const -&>, c, type<WW -const -&>, d, type<XX -const -&>, e, type<YY -const -&>, f, type<ZZ -const -&>, g, type<RR -const -&>, h, type<SS -const -&>, result_selector)
 }
 
 def public order_unique_folded(var a : array<auto(TT)>) : array<TT -const -&> {

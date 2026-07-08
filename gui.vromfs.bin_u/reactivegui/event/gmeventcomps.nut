@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { onGoodsClick, mkGoodsState } = require("%rGui/shop/shopWndPage.nut")
 let { mkGoodsWrap, mkSlotBgImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles, mkSquareIconBtn,
   mkCanPurchase } = require("%rGui/shop/goodsView/sharedParts.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { SGT_UNIT } = require("%rGui/shop/shopConst.nut")
@@ -20,7 +20,7 @@ let glareDelay = 3.0
 let glareDuration = 0.2
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x0114181E
 }
@@ -33,7 +33,7 @@ let goodsSize = [goodsW, goodsH]
 let goodsBgSize = [goodsW, goodsH - pricePlateH]
 
 let mkGmText = @(text) {
-  size = flex()
+  size = FLEX
   padding = hdpx(15)
   valign = ALIGN_TOP
   halign = ALIGN_CENTER
@@ -51,7 +51,7 @@ let mkGmText = @(text) {
 }
 
 let mkGmImg = @(id) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture(icons?[id] ?? "")
   keepAspect = true
@@ -73,7 +73,7 @@ function mkGmGoods(goods, mkOnClick, state, animParams) {
       sf & S_HOVER ? bgHiglight : null
       mkGmImg(goods.id)
       mkGmText(loc(goods.id))
-      !isUnit ? null : mkSquareIconBtn(fonticonPreview, @() canPurchase ? openGoodsPreview(goods.id) : unitDetailsWnd(unit),
+      !isUnit ? null : mkSquareIconBtn(fonticonPreview, @() canPurchase ? openGoodsPreview(goods.id) : openUnitDetailsWnd(unit),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, state, animParams),
@@ -89,7 +89,7 @@ let gmEventContent = @(goodsList) @() {
   halign = ALIGN_CENTER
   children = goodsList.get().map(@(goods, idx) mkGmGoods(goods,
     @(canPurchase, isUnit, unit) @() canPurchase ? onGoodsClick(goods)
-      : isUnit ? unitDetailsWnd(unit)
+      : isUnit ? openUnitDetailsWnd(unit)
       : null,
     mkGoodsState(goods),
     {

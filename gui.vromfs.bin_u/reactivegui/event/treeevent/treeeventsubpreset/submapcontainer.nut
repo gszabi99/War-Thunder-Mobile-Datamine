@@ -5,18 +5,18 @@ let { mkLineCmds, mkLineCmdsOutline, mkLineColor, mkPoint, mkBgElement
 
 
 let mapPoints = @(points, pointSize) {
-  size = flex()
+  size = FLEX
   children = points.reduce(@(acc, value, id) acc.append(mkPoint(value.__merge({ id }), pointSize)), [])
 }
 
 let bgElements = @(presetBgElems) {
-  size = flex()
+  size = FLEX
   children = presetBgElems.map(mkBgElement)
 }
 
 let mapBackground = @(img, onClick) img == "" ? null
   : {
-      size = flex()
+      size = FLEX
       behavior = Behaviors.Button
       onClick
       touchMarginPriority = TOUCH_BACKGROUND
@@ -34,7 +34,7 @@ let mapLines = @(points, size, lines) function() {
 
   return {
     watch = subPresetUnlocksComplete
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     commands = mkLineCmdsOutline(commands)
   }

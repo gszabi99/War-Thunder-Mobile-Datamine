@@ -25,10 +25,11 @@ def clamp_s_ang(angle : float;
 
 [generic]
 def clamp_angles_by_dir(angles : float2; max_angles : float4; dir : float3) : float2
-  let maxAngleX = min(deg_to_rad(abs(max_angles.x)), SAFE_HALF_PI)
-  let minAngleX = min(deg_to_rad(abs(max_angles.y)), SAFE_HALF_PI)
-  let maxAngleY = min(deg_to_rad(abs(max_angles.z)), SAFE_HALF_PI)
-  let minAngleY = min(deg_to_rad(abs(max_angles.w)), SAFE_HALF_PI)
+  let maxAnglesSafe = min(deg_to_rad(abs(max_angles)), float4(SAFE_HALF_PI))
+  assume maxAngleX = maxAnglesSafe.x
+  assume minAngleX = maxAnglesSafe.y
+  assume maxAngleY = maxAnglesSafe.z
+  assume minAngleY = maxAnglesSafe.w
   let dirAngles : float2 = dir_to_angles(dir)
   return float2(
     clamp_s_ang(angles.x, dirAngles.x - minAngleX, dirAngles.x + maxAngleX),
@@ -37,10 +38,11 @@ def clamp_angles_by_dir(angles : float2; max_angles : float4; dir : float3) : fl
 
 [generic]
 def clamp_angles_by_dir(angles : float2; max_angles : float4; dir, up, forward : float3) : float2
-  let maxAngleX = min(deg_to_rad(abs(max_angles.x)), SAFE_HALF_PI)
-  let minAngleX = min(deg_to_rad(abs(max_angles.y)), SAFE_HALF_PI)
-  let maxAngleY = min(deg_to_rad(abs(max_angles.z)), SAFE_HALF_PI)
-  let minAngleY = min(deg_to_rad(abs(max_angles.w)), SAFE_HALF_PI)
+  let maxAnglesSafe = min(deg_to_rad(abs(max_angles)), float4(SAFE_HALF_PI))
+  assume maxAngleX = maxAnglesSafe.x
+  assume minAngleX = maxAnglesSafe.y
+  assume maxAngleY = maxAnglesSafe.z
+  assume minAngleY = maxAnglesSafe.w
   let dirAngles : float2 = basis_aware_dir_to_angles(dir, up, forward)
   return float2(
     clamp_s_ang(angles.x, dirAngles.x - minAngleX, dirAngles.x + maxAngleX),

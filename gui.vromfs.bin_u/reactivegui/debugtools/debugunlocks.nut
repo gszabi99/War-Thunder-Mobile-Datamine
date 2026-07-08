@@ -14,4 +14,4 @@ let tabs = Computed(@() [
   { id = "infoTables", data = userstatInfoTables.get() ?? {} }
 ])
 
-return @() openDebugWnd(tabs)
+return @() openDebugWnd({ tabs })

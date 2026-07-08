@@ -100,7 +100,7 @@ let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
     flipY = true
     children = @() {
       watch = isEngineDisabled
-      size = flex()
+      size = FLEX
       children = isEngineDisabled.get() ? null
         : [
             mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize, fillColor)
@@ -143,7 +143,7 @@ let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
     size = verSize
     children = @() {
       watch = isEngineDisabled
-      size = flex()
+      size = FLEX
       children = isEngineDisabled.get() ? null
         : [
             mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize, fillColor)
@@ -173,7 +173,7 @@ function mkStopImage(scale, ovr = {}) {
 }
 
 let machineSpeed = @(scale) {
-  size = [flex(), speedHeight]
+  size = [FLEX, speedHeight]
   padding = [0, round(speedImagePadding * scale)]
   valign = ALIGN_CENTER
   children = [

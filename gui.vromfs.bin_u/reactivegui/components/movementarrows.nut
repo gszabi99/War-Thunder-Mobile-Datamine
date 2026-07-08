@@ -189,7 +189,7 @@ let mkMoveVertBtnAnimBg = @(flipY, calcPart = @() 1.0, size = verSize, fillColor
   children = @() {
     watch = fillColor
     rendObj = ROBJ_SOLID
-    size = flex()
+    size = FLEX
     transform = { pivot = [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
     behavior = Behaviors.RtPropUpdate
@@ -303,7 +303,7 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(hudAshGray
         children = @() {
           watch = fillColor
           rendObj = ROBJ_SOLID
-          size = flex()
+          size = FLEX
           transform = { pivot = [1, 1] }
           transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
           behavior = Behaviors.RtPropUpdate
@@ -404,7 +404,7 @@ let mkMoveArrowsView = @(midGap, midComp = null) {
 let moveArrowsView = mkMoveArrowsView(shHud(2), null)
 let moveArrowsViewWithMode = mkMoveArrowsView(0,
   {
-    size = const [flex(), hdpx(30)]
+    size = const [FLEX, hdpx(30)]
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     text = loc("HUD/ENGINE_REV_STOP_SHORT")

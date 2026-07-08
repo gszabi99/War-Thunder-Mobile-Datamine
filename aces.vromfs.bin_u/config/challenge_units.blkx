@@ -1,0 +1,939 @@
+{
+  "unit": [
+    {
+      "unitName": "ussr_bmp_2m",
+      "unitType": "light_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "ussr_2s25m",
+      "unitType": "light_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "ussr_object_906",
+      "unitType": "light_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "ussr_kv_1s",
+      "unitType": "heavy_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "ussr_kv_1_zis_5",
+      "unitType": "heavy_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "ussr_t_34_1941_l_11",
+      "unitType": "medium_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "ussr_t_34_1941",
+      "unitType": "medium_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "ussr_t_34_1942",
+      "unitType": "medium_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "ussr_t_34_85_d_5t",
+      "unitType": "medium_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "ussr_t_34_85_zis_53",
+      "unitType": "medium_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "ussr_t_44",
+      "unitType": "medium_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "ussr_is_1",
+      "unitType": "heavy_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "ussr_is_2_1943",
+      "unitType": "heavy_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "ussr_is_2_1944",
+      "unitType": "heavy_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "ussr_t_10a",
+      "unitType": "heavy_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "ussr_t_55a",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "ussr_t_34_1941_57",
+      "unitType": "medium_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "ussr_t_62",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "ussr_bmp_2",
+      "unitType": "light_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "ussr_t_64_b_1984",
+      "unitType": "medium_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "ussr_t_72a",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "ussr_t_72b_1989",
+      "unitType": "medium_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "ussr_t_44_100",
+      "unitType": "medium_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "ussr_t_54_1949",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "ussr_su_152",
+      "unitType": "tank_destroyer",
+      "mRank": 2
+    },
+    {
+      "unitName": "ussr_zsu_37",
+      "unitType": "SPAA",
+      "mRank": 1
+    },
+    {
+      "unitName": "ussr_pt_76b",
+      "unitType": "light_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "ussr_btr_152d",
+      "unitType": "SPAA",
+      "mRank": 2
+    },
+    {
+      "unitName": "ussr_m53_59",
+      "unitType": "SPAA",
+      "mRank": 5
+    },
+    {
+      "unitName": "ussr_zsu_57_2",
+      "unitType": "SPAA",
+      "mRank": 6
+    },
+    {
+      "unitName": "ussr_isu_152",
+      "unitType": "tank_destroyer",
+      "mRank": 3
+    },
+    {
+      "unitName": "ussr_isu_122",
+      "unitType": "tank_destroyer",
+      "mRank": 4
+    },
+    {
+      "unitName": "ussr_su_100_1945",
+      "unitType": "tank_destroyer",
+      "mRank": 5
+    },
+    {
+      "unitName": "ussr_2s3m",
+      "unitType": "tank_destroyer",
+      "mRank": 6
+    },
+    {
+      "unitName": "ussr_2s19_m1",
+      "unitType": "tank_destroyer",
+      "mRank": 7
+    },
+    {
+      "unitName": "ussr_asu_85",
+      "unitType": "tank_destroyer",
+      "mRank": 5
+    },
+    {
+      "unitName": "ussr_zsu_23_4",
+      "unitType": "SPAA",
+      "mRank": 7
+    },
+    {
+      "unitName": "ussr_zsu_37_2",
+      "unitType": "SPAA",
+      "mRank": 8
+    },
+    {
+      "unitName": "ussr_it_1",
+      "unitType": "tank_destroyer",
+      "mRank": 9
+    },
+    {
+      "unitName": "ussr_9p149",
+      "unitType": "tank_destroyer",
+      "mRank": 9
+    },
+    {
+      "unitName": "ussr_t_80u",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "ussr_t_90a",
+      "unitType": "medium_tank",
+      "mRank": 12
+    },
+    {
+      "unitName": "ussr_t_64a_1971",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "us_m19",
+      "unitType": "SPAA",
+      "mRank": 2
+    },
+    {
+      "unitName": "us_m42_duster",
+      "unitType": "SPAA",
+      "mRank": 3
+    },
+    {
+      "unitName": "us_skink_aa",
+      "unitType": "SPAA",
+      "mRank": 4
+    },
+    {
+      "unitName": "us_m163_vulcan",
+      "unitType": "SPAA",
+      "mRank": 7
+    },
+    {
+      "unitName": "us_m247",
+      "unitType": "SPAA",
+      "mRank": 9
+    },
+    {
+      "unitName": "us_m4a1_76w_sherman",
+      "unitType": "medium_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "us_m4a1_1942_sherman",
+      "unitType": "medium_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "us_m24_chaffee",
+      "unitType": "light_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "us_m4a2_sherman",
+      "unitType": "medium_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "us_t14",
+      "unitType": "heavy_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "us_m6a1",
+      "unitType": "heavy_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "us_m4a3e8_76w_sherman",
+      "unitType": "medium_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "us_m26e1_pershing",
+      "unitType": "medium_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "us_m10",
+      "unitType": "tank_destroyer",
+      "mRank": 2
+    },
+    {
+      "unitName": "us_m36b2",
+      "unitType": "tank_destroyer",
+      "mRank": 4
+    },
+    {
+      "unitName": "us_m18_hellcat",
+      "unitType": "light_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "us_m41_walker_bulldog",
+      "unitType": "light_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "us_m109a1",
+      "unitType": "tank_destroyer",
+      "mRank": 5
+    },
+    {
+      "unitName": "us_t26e5",
+      "unitType": "heavy_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "us_t34",
+      "unitType": "heavy_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "us_m103",
+      "unitType": "heavy_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "us_mbt_70",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "us_m60a3_tts",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "us_t95",
+      "unitType": "tank_destroyer",
+      "mRank": 7
+    },
+    {
+      "unitName": "us_m60a2",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "us_t92",
+      "unitType": "light_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "us_t114",
+      "unitType": "light_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "us_m3_bradley",
+      "unitType": "light_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "us_m1128_mgs",
+      "unitType": "light_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "us_m4a3e2_76w_sherman_jumbo",
+      "unitType": "heavy_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "us_m47_patton_II",
+      "unitType": "medium_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "us_m60a1",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "us_m3a3_bradley",
+      "unitType": "light_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "us_m1_abrams",
+      "unitType": "medium_tank",
+      "mRank": 12
+    },
+    {
+      "unitName": "us_m1a1_hc_abrams",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "us_m1_ip_abrams",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "germ_pzkpfw_IV_ausf_F2",
+      "unitType": "medium_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "germ_pzkpfw_IV_ausf_G",
+      "unitType": "medium_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "germ_pzkpfw_IV_ausf_H",
+      "unitType": "medium_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "germ_vk_3002m",
+      "unitType": "medium_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "germ_pzkpfw_V_ausf_d_panther",
+      "unitType": "medium_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "germ_pzkpfw_V_ausf_f_panther",
+      "unitType": "medium_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "germ_mkpz_m47",
+      "unitType": "medium_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "germ_leopard_I",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "germ_leopard_I_a1",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "germ_leopard_1a5",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "germ_pzkpfw_VI_ausf_h1_tiger",
+      "unitType": "heavy_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "germ_leopard_2a4",
+      "unitType": "medium_tank",
+      "mRank": 12
+    },
+    {
+      "unitName": "germ_leopard_2a4m_can",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "germ_leopard_2pl",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "germ_leopard_2k",
+      "unitType": "medium_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "germ_stug_III_ausf_F",
+      "unitType": "tank_destroyer",
+      "mRank": 1
+    },
+    {
+      "unitName": "germ_stug_III_ausf_G",
+      "unitType": "tank_destroyer",
+      "mRank": 2
+    },
+    {
+      "unitName": "germ_jgdpz_38t",
+      "unitType": "tank_destroyer",
+      "mRank": 3
+    },
+    {
+      "unitName": "germ_le_kpz_m41",
+      "unitType": "light_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "germ_pz_IV_L70",
+      "unitType": "tank_destroyer",
+      "mRank": 4
+    },
+    {
+      "unitName": "germ_panzerjager_panther",
+      "unitType": "tank_destroyer",
+      "mRank": 5
+    },
+    {
+      "unitName": "germ_panzerjager_tiger",
+      "unitType": "tank_destroyer",
+      "mRank": 7
+    },
+    {
+      "unitName": "germ_raketenjagdpanzer_2_hot",
+      "unitType": "tank_destroyer",
+      "mRank": 8
+    },
+    {
+      "unitName": "germ_wiesel_1_tow",
+      "unitType": "tank_destroyer",
+      "mRank": 9
+    },
+    {
+      "unitName": "germ_flakpanzer_IV_Ostwind",
+      "unitType": "SPAA",
+      "mRank": 2
+    },
+    {
+      "unitName": "germ_flakpanzer_IV_Wirbelwind",
+      "unitType": "SPAA",
+      "mRank": 2
+    },
+    {
+      "unitName": "germ_flakpanzer_IV_Ostwind_2",
+      "unitType": "SPAA",
+      "mRank": 4
+    },
+    {
+      "unitName": "germ_flakpanzer_zerstorer_45",
+      "unitType": "SPAA",
+      "mRank": 5
+    },
+    {
+      "unitName": "germ_flakpanzer_IV_Kugelblitz",
+      "unitType": "SPAA",
+      "mRank": 6
+    },
+    {
+      "unitName": "germ_marder_1a1",
+      "unitType": "light_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "germ_flakpz_I_Gepard",
+      "unitType": "SPAA",
+      "mRank": 8
+    },
+    {
+      "unitName": "germ_begleitpanzer_57",
+      "unitType": "light_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "germ_schutzenpanzer_puma",
+      "unitType": "light_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "germ_thyssen_henschel_tam",
+      "unitType": "light_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "germ_thyssen_henschel_tam_2c",
+      "unitType": "light_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "germ_pzkpfw_VI_ausf_b_tiger_IIp",
+      "unitType": "heavy_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "germ_pzkpfw_VI_ausf_b_tiger_IIh",
+      "unitType": "heavy_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "germ_mkpz_m48a2c",
+      "unitType": "medium_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "germ_mkpz_m48a2ga2",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "germ_kpz_70",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "fr_panhard_ebr_1951",
+      "unitType": "light_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "fr_m4a1_sherman_fl_10",
+      "unitType": "medium_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "fr_arl_44",
+      "unitType": "tank_destroyer",
+      "mRank": 4
+    },
+    {
+      "unitName": "fr_amx_13_75",
+      "unitType": "light_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "fr_amx_m4",
+      "unitType": "medium_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "fr_mars_15",
+      "unitType": "light_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "fr_amx_32_105",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "jp_type_3_chi_nu_75cm_type_5",
+      "unitType": "medium_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "jp_type_4_chi_to",
+      "unitType": "medium_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "jp_st_a1",
+      "unitType": "medium_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "jp_type_74_c",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "it_fiat_6614_106sr",
+      "unitType": "light_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "it_m113a1_tow",
+      "unitType": "tank_destroyer",
+      "mRank": 8
+    },
+    {
+      "unitName": "it_of_40_mk_2a",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "it_vcc_80_hitfist_60",
+      "unitType": "light_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "sw_strv_103c",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "sw_strv_105",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "sw_strf_90c",
+      "unitType": "light_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "sw_strf_9056",
+      "unitType": "light_tank",
+      "mRank": 12
+    },
+    {
+      "unitName": "il_magach_6b",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "il_magach_6r",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "il_centurion_shot_kal_gimel",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "uk_a30_sp_avenger",
+      "unitType": "medium_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "uk_a_22f_mk_7_churchill_1944",
+      "unitType": "heavy_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "uk_a_43_black_prince",
+      "unitType": "heavy_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "uk_a39_tortoise",
+      "unitType": "tank_destroyer",
+      "mRank": 6
+    },
+    {
+      "unitName": "uk_fv4202",
+      "unitType": "medium_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "uk_chieftain_mk_10",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "uk_olifant_mk_2",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "uk_ttd",
+      "unitType": "medium_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "cn_m4a4_sherman",
+      "unitType": "medium_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "cn_m24_chaffee",
+      "unitType": "light_tank",
+      "mRank": 1
+    },
+    {
+      "unitName": "cn_m10",
+      "unitType": "tank_destroyer",
+      "mRank": 2
+    },
+    {
+      "unitName": "cn_t_34_1942",
+      "unitType": "medium_tank",
+      "mRank": 2
+    },
+    {
+      "unitName": "cn_type_58",
+      "unitType": "medium_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "cn_m36",
+      "unitType": "tank_destroyer",
+      "mRank": 4
+    },
+    {
+      "unitName": "cn_m18_hellcat",
+      "unitType": "light_tank",
+      "mRank": 4
+    },
+    {
+      "unitName": "cn_su_100_1945",
+      "unitType": "tank_destroyer",
+      "mRank": 5
+    },
+    {
+      "unitName": "cn_is_2_1943",
+      "unitType": "heavy_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "cn_m48a1_patton_III",
+      "unitType": "medium_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "cn_type_59d",
+      "unitType": "medium_tank",
+      "mRank": 8
+    },
+    {
+      "unitName": "cn_pgz_09",
+      "unitType": "SPAA",
+      "mRank": 8
+    },
+    {
+      "unitName": "cn_cm_25",
+      "unitType": "tank_destroyer",
+      "mRank": 8
+    },
+    {
+      "unitName": "cn_ztl_11",
+      "unitType": "light_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "cn_hj_9",
+      "unitType": "tank_destroyer",
+      "mRank": 9
+    },
+    {
+      "unitName": "cn_zbd_04a",
+      "unitType": "light_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "cn_cm11",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "cn_m42_duster_liner",
+      "unitType": "SPAA",
+      "mRank": 3
+    },
+    {
+      "unitName": "cn_isu_152_liner",
+      "unitType": "tank_destroyer",
+      "mRank": 3
+    },
+    {
+      "unitName": "cn_zsd63_pg87_liner",
+      "unitType": "SPAA",
+      "mRank": 4
+    },
+    {
+      "unitName": "cn_zsl_92_liner",
+      "unitType": "SPAA",
+      "mRank": 5
+    },
+    {
+      "unitName": "cn_object_211_liner",
+      "unitType": "light_tank",
+      "mRank": 3
+    },
+    {
+      "unitName": "cn_is_2_1944_liner",
+      "unitType": "heavy_tank",
+      "mRank": 6
+    },
+    {
+      "unitName": "cn_type_62_liner",
+      "unitType": "light_tank",
+      "mRank": 5
+    },
+    {
+      "unitName": "cn_m_41d_liner",
+      "unitType": "light_tank",
+      "mRank": 7
+    },
+    {
+      "unitName": "cn_ptl_02",
+      "unitType": "light_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "cn_pgz_04a",
+      "unitType": "SPAA",
+      "mRank": 10
+    },
+    {
+      "unitName": "cn_ztz_99",
+      "unitType": "medium_tank",
+      "mRank": 12
+    },
+    {
+      "unitName": "cn_ztz_88a",
+      "unitType": "medium_tank",
+      "mRank": 9
+    },
+    {
+      "unitName": "cn_ztz_96",
+      "unitType": "medium_tank",
+      "mRank": 10
+    },
+    {
+      "unitName": "cn_ztz_96a",
+      "unitType": "medium_tank",
+      "mRank": 11
+    },
+    {
+      "unitName": "germ_flakpz_1a2_Gepard",
+      "unitType": "SPAA",
+      "mRank": 10
+    },
+    {
+      "unitName": "ussr_zsu_23_4m4",
+      "unitType": "SPAA",
+      "mRank": 10
+    },
+    {
+      "unitName": "us_xm_975_roland",
+      "unitType": "SPAA",
+      "mRank": 11
+    },
+    {
+      "unitName": "us_m1a2_sep_abrams",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "germ_leopard_2a5",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "ussr_t_72b3_arena_m",
+      "unitType": "medium_tank",
+      "mRank": 13
+    },
+    {
+      "unitName": "cn_wz_1001",
+      "unitType": "medium_tank",
+      "mRank": 13
+    }
+  ]
+}

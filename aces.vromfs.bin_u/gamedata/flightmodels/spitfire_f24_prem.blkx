@@ -2717,7 +2717,119 @@
           }
         ]
       }
-    ]
+    ],
+    "spitfire_f24": {
+      "type": "aircraft",
+      "hangar_place": "aircraft",
+      "info": {
+        "engine1_dm": {
+          "manufacturer": "rolls-royce",
+          "model": "griffon-61",
+          "mass": 900.0
+        },
+        "tanks_params": {
+          "tank1_dm": {
+            "protected": false
+          },
+          "tank2_dm": {
+            "protected": true
+          },
+          "tank3_dm": {
+            "protected": true
+          },
+          "tank4_dm": {
+            "protected": true
+          },
+          "tank5_dm": {
+            "protected": true
+          },
+          "tank6_dm": {
+            "protected": true
+          }
+        }
+      },
+      "tags": {
+        "ally": true,
+        "country_britain": true,
+        "type_fighter": true,
+        "britain": true,
+        "bulge": true,
+        "ruhr": true,
+        "sicily": true,
+        "malta": true,
+        "berlin": true,
+        "mediterranean": true,
+        "western_front": true,
+        "air": true
+      },
+      "Shop": {
+        "maxAltitude": 11800.0,
+        "maxSpeed": 209.17,
+        "turnTime": 18.2,
+        "airfieldLen": 420.0,
+        "maxSpeedAlt": 7315.0,
+        "climbSpeed": 25.0,
+        "climbTime": 425.0,
+        "climbAlt": 6096.0,
+        "wingLoading": 179.0,
+        "powerToWeightRatio": 0.5,
+        "rollRate": 155.0,
+        "pilotsCount": 1,
+        "gunnersCount": 0,
+        "pylonCount": 2,
+        "massPerSec": 5.17,
+        "weapons": {
+          "cannonHispanoMkII": {
+            "type": "cannon",
+            "gunsCount": 4,
+            "ammoCount": 576,
+            "shotFreq": 10.0
+          },
+          "uk_rp3": {
+            "reqModification": "aircraft_mod_2"
+          },
+          "uk_250lbs": {
+            "reqModification": "aircraft_mod_4"
+          },
+          "uk_500lbs": {
+            "reqModification": "aircraft_mod_6"
+          },
+          "uk_500lb_sap": {
+            "reqModification": "aircraft_mod_6"
+          },
+          "uk_1000lbs": {
+            "reqModification": "aircraft_mod_8"
+          }
+        }
+      },
+      "bullets": {
+        "cannonHispanoMkII": {
+          "default": {
+            "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+          },
+          "hispano_universal": {
+            "icon": "he_frag_i/sapi/ap/t_shell/",
+            "reqModification": "aircraft_mod_3"
+          },
+          "hispano_air_targets": {
+            "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/",
+            "reqModification": "aircraft_mod_9"
+          },
+          "hispano_tracers": {
+            "icon": "ap/t_shell/he_frag_i/",
+            "reqModification": "aircraft_mod_1"
+          },
+          "hispano_ground_targets": {
+            "icon": "ap/ap/ap/he_frag_i/t_shell/",
+            "reqModification": "aircraft_mod_7"
+          },
+          "hispano_stealth": {
+            "icon": "he_frag_i/he_frag_i/sapi/ap/",
+            "reqModification": "aircraft_mod_5"
+          }
+        }
+      }
+    }
   },
   "flexWing": {
     "wingStrainCoeff": 0.05,

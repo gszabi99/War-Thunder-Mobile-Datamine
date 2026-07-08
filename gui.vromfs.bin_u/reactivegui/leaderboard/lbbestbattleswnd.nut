@@ -44,7 +44,7 @@ let ratedCountHint = @() {
 
 let header = @() {
   watch = curLbCfg
-  size = [flex(), lbHeaderHeight]
+  size = [FLEX, lbHeaderHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(40)
@@ -54,7 +54,7 @@ let header = @() {
       children = backButton(close)
     }
     {
-      size = [tableWidth, flex()]
+      size = [tableWidth, FLEX]
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       children = [
@@ -63,7 +63,7 @@ let header = @() {
         ratedCountHint
       ]
     }
-    { size = flex() }
+    { size = FLEX }
   ]
 }
 
@@ -127,7 +127,7 @@ function content() {
 
   let rowsChildren = rows
     .map(@(children, idx) {
-      size = [flex(), rowHeight]
+      size = [FLEX, rowHeight]
       rendObj = ROBJ_SOLID
       color = getRowBgColor(idx % 2, lastIdx == idx)
       flow = FLOW_HORIZONTAL
@@ -136,18 +136,18 @@ function content() {
 
   if (!hasScroll)
     rowsChildren.append({
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = (rowsChildren.len() % 2) ? rowBgOddColor : rowBgEvenColor
     })
 
   return modalWndBg.__merge({
     watch = [curLbCfg, bestBattles, ratingBattlesCount]
-    size = [tableWidth, flex()]
+    size = [tableWidth, FLEX]
     flow = FLOW_VERTICAL
     children = [
        modalWndHeaderBg.__merge({
-         size = [flex(), lbHeaderRowHeight]
+         size = [FLEX, lbHeaderRowHeight]
          padding = !hasScroll ? lbTableBorderWidth
            : [lbTableBorderWidth, lbTableBorderWidth + scrollbarWidth, lbTableBorderWidth, lbTableBorderWidth]
          flow = FLOW_HORIZONTAL
@@ -155,7 +155,7 @@ function content() {
          children = mkLbHeaderRow(categories)
        })
        {
-         size = flex()
+         size = FLEX
          flow = FLOW_VERTICAL
          children = !hasScroll ? rowsChildren
            : makeVertScroll({
@@ -171,7 +171,7 @@ function content() {
 
 let scene = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
 
   onAttach = actualizeStats

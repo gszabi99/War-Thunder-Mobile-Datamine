@@ -30,7 +30,8 @@ let { mkLineCmds, mkLineCmdsOutline, mkLinePresetColor, mkPoint, mkBgElement, mk
 } = require("%rGui/event/treeEvent/treeEventComps.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { openEventWnd, unseenLootboxes, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
+let { unseenLootboxes, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
+let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
 let { subPresetContainer } = require("%rGui/event/treeEvent/treeEventSubPreset/subPresetContainer.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
@@ -54,13 +55,13 @@ let isShowSubPresetAllowed = Watched(false)
 
 let mapPoints = @() {
   watch = [presetPoints, presetPointSize]
-  size = flex()
+  size = FLEX
   children = presetPoints.get().reduce(@(acc, value, id) acc.append(mkPoint(value.__merge({ id }), presetPointSize.get())), [])
 }
 
 let bgElementsOnTop = @() {
   watch = presetBgElems
-  size = flex()
+  size = FLEX
   children = presetBgElems.get()
     .filter(@(v) !!v?.isOnTop)
     .map(mkBgElement)
@@ -68,7 +69,7 @@ let bgElementsOnTop = @() {
 
 let bgElements = @() {
   watch = presetBgElems
-  size = flex()
+  size = FLEX
   children = presetBgElems.get()
     .filter(@(v) !v?.isOnTop)
     .map(mkBgElement)
@@ -85,10 +86,10 @@ let mapContentAnims = [
 
 let mapBackground = @() {
   watch = presetBackground
-  size = flex()
+  size = FLEX
   children = presetBackground.get() == "" ? null
     : {
-        size = flex()
+        size = FLEX
         behavior = Behaviors.Button
         onClick = @() selectedPointId.set(null)
         rendObj = ROBJ_IMAGE
@@ -109,7 +110,7 @@ function mapLines() {
 
   return {
     watch = [presetLines, presetPoints, presetMapSize, presetUnlocksComplete]
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     commands = mkLineCmdsOutline(commands)
   }
@@ -127,7 +128,7 @@ function scrollToCurSubPreset() {
 
 let mapInsideBg = @() {
   watch = openedTreeEventId
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_9RECT
   texOffs = bgTexOffs
   screenOffs = [0, 0, 0, 0]
@@ -141,7 +142,7 @@ function mapContainer() {
     size = [bgMapWidth, bgMapHeight]
     clipChildren = true
     children = {
-      size = flex()
+      size = FLEX
       behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
       touchMarginPriority = TOUCH_BACKGROUND
       scrollHandler = scrollHandler
@@ -154,7 +155,7 @@ function mapContainer() {
         children = [
           mapInsideBg
           {
-            size = flex()
+            size = FLEX
             children = [
               mapBackground
               bgElements
@@ -206,7 +207,7 @@ let eventGamercard = {
         infoEllipseButton(@() openNewsWndTagged(openedTreeEventId.get()))
       ]
     }
-    { size = flex() }
+    { size = FLEX }
     mkCurrencies
   ]
 }
@@ -232,7 +233,7 @@ let lootboxBtn = mkCustomButton({
       text = utf8ToUpper(loc("events/lootboxBtn"))
     }.__update(fontTinyAccentedShaded)
   ]
-}, @() openEventWnd(openedTreeEventId.get()))
+}, @() openSeasonScene(LOOTBOX_TAB, null, openedTreeEventId.get()))
 
 let curEventLootboxes = Computed(@()
   orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == openedTreeEventId.get())))
@@ -245,7 +246,7 @@ let needShowUnseenMark = Computed(function(){
 })
 
 let footer = {
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   valign = ALIGN_BOTTOM
   children = [
     @() {
@@ -304,7 +305,7 @@ let allowSubPreset = @() isShowSubPresetAllowed.set(true)
 let treeEventWnd = @() {
   watch = openedTreeEventId
   key = {}
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture(getEventPresentation(openedTreeEventId.get()).bg)
   onAttach = @() resetTimeout(delayToLoadBgElems, allowSubPreset)
@@ -324,17 +325,17 @@ let treeEventWnd = @() {
     }
     @() {
       watch = [isSubPresetOpened, isShowSubPresetAllowed]
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       children = isSubPresetOpened.get() && isShowSubPresetAllowed.get() ? subPresetContainer : null
     }
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       flow = FLOW_VERTICAL
       children = [
         eventGamercard
-        { size = flex() }
+        { size = FLEX }
         footer
       ]
     }

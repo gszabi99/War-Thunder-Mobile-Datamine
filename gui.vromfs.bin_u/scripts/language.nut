@@ -48,7 +48,9 @@ let allLangs = [
     }.__update(lang)
   })
 
-local shortLangName = ""
+
+
+local shortLangName = loc("current_lang")
 
 function saveLanguage(langName) {
   if (currentLanguage.get() == langName)

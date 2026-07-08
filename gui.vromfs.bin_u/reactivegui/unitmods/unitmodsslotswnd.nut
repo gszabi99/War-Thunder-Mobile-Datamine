@@ -42,10 +42,9 @@ let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkUnseenModIndicator, mkVerticalPannableArea, verticalGradientLine,
-  mkCarouselPannableArea, mkLevelUpRewardBtnChildren, catsPanelBg
+  mkCarouselPannableArea, catsPanelBg
 } = require("%rGui/unitMods/modsComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
 let { blocksLineSize, blocksPadding, blocksGap, tabW, tabH, contentGamercardGap, slotsBlockMargin, catsBlockHeight
 } = require("%rGui/unitMods/unitModsConst.nut")
@@ -196,7 +195,7 @@ function mkSlotContent(idx) {
     .findindex(@(_, mod) mod in (weaponSlots.get()?[idx].wPresets ?? {})) != null)
 
   return {
-    size = [flex(), tabH]
+    size = [FLEX, tabH]
     children = [
       mkWeaponImage(weapon)
       mkWeaponDesc(weapon)
@@ -237,7 +236,7 @@ function mkBeltSlotContent(weapon, idx) {
     .findindex(@(_, mod) mod in (beltWeapons.get()?[idx].bulletSets ?? {})) != null)
   return @() {
     watch = [beltId, gunCount, isUnseen]
-    size = [flex(), tabH]
+    size = [FLEX, tabH]
     opacity = gunCount.get() == 0 ? 0.5 : 1.0
     children = beltId.get() == null ? null
       : [
@@ -297,13 +296,13 @@ function slotsBlock() {
   let cardsCount = weaponSlots.get().len() - 1 + beltWeapons.get().len()
   return catsPanelBg.__merge({
     watch = [beltWeapons, weaponSlots]
-    size = [saBorders[0] + tabW + blocksPadding, flex()]
+    size = [saBorders[0] + tabW + blocksPadding, FLEX]
     padding = [0, blocksPadding, 0, 0]
     margin = [contentGamercardGap, 0, 0, 0]
     halign = ALIGN_RIGHT
     children = cardsCount > maxSlotsNoScroll ? mkVerticalPannableArea(children, tabW, pageMaskY())
       : {
-          size = flex()
+          size = FLEX
           padding = [slotsBlockMargin, 0, 0, 0]
           flow = FLOW_VERTICAL
           gap = tabsGap
@@ -417,19 +416,16 @@ function onPurchaseMod() {
 }
 
 let isNotAvailableForUse = Computed(@() !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null))
-let hasUnseenRewards = Computed(@() curUnit.get()?.name in unseenUnitLvlRewardsList.get())
 
 let slotPresetButtons = @() {
   watch = [isNotAvailableForUse, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
-    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad, hasUnseenRewards, curSlotIdx]
+    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad, curSlotIdx]
   size = FLEX_H
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
-    isNotAvailableForUse.get() || !hasUnseenRewards.get() ? null
-      : { children = mkLevelUpRewardBtnChildren(curUnit.get()) }
     isNotAvailableForUse.get() ? null
       : modsInProgress.get() != null ? spinner
       : iconButtonCommon("ui/gameuiskin#icon_weapon_preset.svg",
@@ -457,7 +453,7 @@ let slotPresetButtons = @() {
 
 let unitModsWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   padding = [saBordersRv[0], 0, 0, 0]
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
@@ -473,19 +469,19 @@ let unitModsWnd = {
         curUnit)
     }
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       children = [
         slotsBlock
         verticalGradientLine
         @() {
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           padding = [0, 0, saBorders[1] - eqIconSize[1] / 2, 0]
           halign = ALIGN_RIGHT
           children = [
             {
-              size = flex()
+              size = FLEX
               padding = [contentGamercardGap, saBorders[0], contentGamercardGap, blocksGap]
               children = [
                 overloadInfoBlock

@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -13,12 +13,14 @@ let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, curTabId, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
   tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId, tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
-let { openEventWnd, curEventLootboxes, isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
+let { curEventLootboxes, isFitSeasonRewardsRequirements, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
+let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted,
   isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal } = require("%rGui/tutorial/completedTutorials.nut")
 let { questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { hasFirstBattleRewards } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
 const TUTORIAL_ID = "tutorialMainEvent"
@@ -28,25 +30,18 @@ let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 
 let canShowTutorialByCampaign = Computed(@() isFinishedSlotAttributes.get() && isFinishedArsenal.get())
 
-let hasFirstBattles = Computed(function() {
-  let idx = (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1) + 1
-  if (idx < 0)
-    return false
-  let battleRewardsLen = serverConfigs.get()?.firstBattlesRewards[curCampaign.get()].len() ?? 0
-  return idx < battleRewardsLen
-})
-
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinished.get()
   && canShowTutorialByCampaign.get()
   && isFinishedBattlePass.get()
-  && !hasFirstBattles.get()
+  && !hasFirstBattleRewards.get()
   && tutorialSectionIdWithReward.get() != null
   && isFitSeasonRewardsRequirements.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && tutorialQuestBtnKey.get() != null
   && isMainMenuTopScene.get()
-  && !isTutorialActive.get())
+  && !isTutorialActive.get()
+  && shouldShowEventMechanics.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
@@ -95,7 +90,6 @@ function startTutorial() {
           onClick = @() curTabId.set(tabId)
           needArrow = true
         }]
-        charId = "mary_points"
       }
       {
         id = "s4_open_section_with_reward"
@@ -140,7 +134,7 @@ function startTutorial() {
         text = loc("tutorial/mainEvent/openLootboxesWnd")
         objects = [{
           keys = "quest_header_btn"
-          onClick = openEventWnd
+          onClick = @() openSeasonScene(LOOTBOX_TAB)
           needArrow = true
         }]
         charId = "mary_like"

@@ -5,14 +5,12 @@ let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { eventUnitTypes } = require("%appGlobals/unitConst.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campaignsLevelInfo, campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsLevelInfo, campaignsList, curCampaign, abTests } = require("%appGlobals/pServer/campaign.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
+let { userstatStatsTables, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
@@ -22,6 +20,7 @@ let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentati
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 
+
 let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
 let getSeasonPrefix = @(n) $"season_{n}"
@@ -30,6 +29,13 @@ let getSpecialEventName = @(n) $"special_event_{n}"
 let openEventInfo = mkWatched(persist, "openEventInfo")
 let curEvent = Computed(@() openEventInfo.get()?.eventName)
 let eventWndOpenCounter = Computed(@() openEventInfo.get()?.counter ?? 0)
+
+let shouldShowEventMechanics = Computed(function() {
+  let minimumPlayedBattles = abTests.get()?.battlesToDisplayEvents.tointeger() ?? 0
+  let playedBattles = userstatStats.get()?.stats["global"].battle_common.battle_end ?? 0
+
+  return playedBattles >= minimumPlayedBattles
+})
 
 eventWndOpenCounter.subscribe(function(v) {
   if (v == 0)
@@ -56,6 +62,8 @@ let unseenLootboxes = Computed(function() {
   return res
 })
 let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
+
+let campToBack = mkWatched(persist, "campToBack", null)
 
 let bestCampLevel = Computed(@() campaignsLevelInfo.get()?.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
 
@@ -133,7 +141,7 @@ let specialEventsLootboxesState = Computed(function() {
 })
 
 let getEventPresentationId = @(eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
-let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), allSpecialEvents.get())).bg)
+let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), allSpecialEvents.get())))
 
 function getEventLoc(eventId, eSeason, sEvents) {
   local locId = eventId == MAIN_EVENT_ID
@@ -246,6 +254,11 @@ function updateUnseenLootboxesShowOnce(lootboxes) {
   })
 }
 
+function closeEventShellCleanup() {
+  campToBack.set(null)
+  unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEventName.get()))
+}
+
 if (seenLootboxes.get().len() == 0)
   loadSeenLootboxes()
 if (lootboxesAvailability.get().len() == 0)
@@ -272,18 +285,6 @@ balance.subscribe(function(v) {
 function markCurLootboxSeen(id) {
   saveSeenLootboxes([id], curEventName.get())
   updateUnseenLootboxesShowOnce({ [id] = false })
-}
-
-function openEventWnd(eventName = MAIN_EVENT_ID) {
-  eventName = specialEvents.get().findvalue(@(v) v.eventName == eventName)?.eventId ?? eventName
-  if (isOfflineMenu) {
-    openFMsgBox({ text = "Not supported in the offline mode" })
-    return
-  }
-  openEventInfo.set({
-    eventName
-    counter = curEvent.get() == eventName ? eventWndOpenCounter.get() + 1 : 1
-  })
 }
 
 let specialEventGamercardItems = Computed(function() {
@@ -355,7 +356,7 @@ return {
   isCurEventActive
 
   eventWndOpenCounter
-  openEventWnd
+  openEventInfo
   closeEventWnd = @() openEventInfo.set(null)
   markCurLootboxSeen
   eventEndsAt
@@ -366,6 +367,8 @@ return {
 
   unseenLootboxes
   unseenLootboxesShowOnce
+  campToBack
+  closeEventShellCleanup
 
   bestCampLevel
 
@@ -385,4 +388,5 @@ return {
   getEventPresentationId
 
   orderEvents
+  shouldShowEventMechanics
 }

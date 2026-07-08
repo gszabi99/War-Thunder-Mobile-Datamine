@@ -3,7 +3,7 @@ let { getActionBarItems } = require("hudActionBar")
 let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
 let { get_mission_time } = require("mission")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { getActionType, AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA, AB_SECONDARY_WEAPON } = require("%rGui/hud/actionBar/actionType.nut")
+let { getActionType, AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON } = require("%rGui/hud/actionBar/actionType.nut")
 
 let actionBar = Watched([])
 let actionBarUpdaters = Watched({})
@@ -56,6 +56,7 @@ let updateActionBarDelayed = @() gui_scene.resetTimeout(0.1, @() updateActionBar
 let primaryAction = Computed(@() actionBarItems.get()?[AB_PRIMARY_WEAPON])
 let primaryExtraAction = Computed(@() actionBarItems.get()?[AB_PRIMARY_WEAPON_EXTRA])
 let secondaryAction = keepref(Computed(@() actionBarItems.get()?[AB_SECONDARY_WEAPON]))
+let specAction = keepref(Computed(@() actionBarItems.get()?[AB_SPECIAL_WEAPON]))
 
 let startActionBarUpdate = @(id) id in actionBarUpdaters.get() ? null
   : actionBarUpdaters.mutate(@(v) v[id] <- true)
@@ -100,5 +101,6 @@ return {
   primaryAction
   primaryExtraAction
   secondaryAction
+  specAction
   emptyActionItem
 }

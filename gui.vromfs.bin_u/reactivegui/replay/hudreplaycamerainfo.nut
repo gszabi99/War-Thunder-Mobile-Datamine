@@ -46,7 +46,7 @@ let replayCameraInfo = @() {
 let hudReplayCameraInfo = @() {
   watch = can_use_debug_console
   key = "replay-camera-info"
-  size = flex()
+  size = FLEX
   margin = [ saBorders[1], saBorders[0], 0, 0]
 
   function onAttach() {

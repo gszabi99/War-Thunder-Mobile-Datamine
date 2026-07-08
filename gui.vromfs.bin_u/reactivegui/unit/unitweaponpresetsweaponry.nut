@@ -396,12 +396,12 @@ let mkBlockContent = @(preset, idx) @(){
 }
 
 let unitWeaponPresetWeaponry = {
-  size = flex()
+  size = FLEX
   padding = const [0, 0, hdpx(40), 0]
   children = {
     flow = FLOW_HORIZONTAL
     gap = contentGap
-    size = flex()
+    size = FLEX
     onDetach = @() activePresetIdx.set(-1)
     children = [
       mkBlocksContainer(

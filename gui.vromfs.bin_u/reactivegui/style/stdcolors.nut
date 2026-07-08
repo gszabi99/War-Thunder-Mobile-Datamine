@@ -34,6 +34,8 @@ return {
 
   selectColor = 0xFF7FAEFF  
 
+  tabBgColor = 0xB20C1113
+
   locColorTable = {
     mark = markTextColor
     darken = darkenTextColor

@@ -155,13 +155,13 @@ let feedBack = {
 
 
 return @() {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
     canShowSocialNetworks ? header : null
     canShowSocialNetworks ? socNetworks : null
-    { size = flex() }
+    { size = FLEX }
     feedBack
   ]
 }

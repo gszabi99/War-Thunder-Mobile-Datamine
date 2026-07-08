@@ -51,10 +51,11 @@ let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 let MAX_BIG_SLOTS = 8
 let RETRY_EMPTY_REFRESH_SEC = 300 
@@ -218,17 +219,19 @@ function headerText() {
 }
 
 let headerPanel = {
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   vplace = ALIGN_TOP
   hplace = ALIGN_LEFT
   valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = blockGap
   children = [
-    backButton(closeGoodsPreview)
-    headerText
-    { size = flex() }
-    balanceButtons
+    headerGradientBg([
+      backButton(closeGoodsPreview)
+      headerText
+    ])
+    {
+      hplace = ALIGN_RIGHT
+      children  = balanceButtons
+    }
   ]
 }
 
@@ -236,10 +239,10 @@ let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 25, 22, 31,-22))
 
 let mkHightlightPlate = @(isSelected, rStyle) {
-  size = flex()
+  size = FLEX
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       flipY = true
       image = highlight()
@@ -248,7 +251,7 @@ let mkHightlightPlate = @(isSelected, rStyle) {
       opacity = 0.5
     }
     {
-      size = [flex(), borderHeight]
+      size = [FLEX, borderHeight]
       pos = [0, -borderHeight]
       rendObj = ROBJ_BOX
       hplace = ALIGN_TOP
@@ -280,7 +283,7 @@ function mkSlot(reward, rStyle) {
     onClick = @() rewardSlots.get()?.isPurchased
         ? null
       : isSelected.get()
-        ? unitDetailsWnd({ name = reward.id })
+        ? openUnitDetailsWnd({ name = reward.id })
       : selIndex.set(reward.slotIdx)
     sound = rewardSlots.get()?.isPurchased ? {} : { click  = "click" }
     onAttach = @() openedUnitFromTree.get() == unit.get()?.name ? selIndex.set(reward.slotIdx) : null
@@ -438,7 +441,7 @@ function content() {
     let rewardSlotsSubscription = @(_) setSelIdx()
     return {
       watch = [shopGenSlotInProgress, openedGoodsId, openedUnitFromTree, isPurchased, availableRewards]
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL
@@ -468,7 +471,7 @@ function content() {
         }
         hasAnySlot ? buttons(hasRerollHint) : null
         {
-          size = const [flex(), hdpx(24)]
+          size = const [FLEX, hdpx(24)]
           valign = ALIGN_CENTER
           halign = ALIGN_CENTER
           children = !hasRerollHint ? null
@@ -489,20 +492,20 @@ function onDetach() {
 
 let previewWnd = bgShaded.__merge({
   key = openCount
-  size = flex()
+  size = FLEX
   onAttach = @() isAttached.set(true)
   onDetach
 
   children = [
     @() {
       watch = previewGoods
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture(getSlotsPreviewBg(previewGoods.get()?.id))
       keepAspect = KEEP_ASPECT_FILL
     }
     {
-      size = flex()
+      size = FLEX
       margin = saBordersRv
       flow = FLOW_VERTICAL
       children = [

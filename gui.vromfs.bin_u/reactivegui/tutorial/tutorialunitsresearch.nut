@@ -4,21 +4,26 @@ let logFB = log_with_prefix("[TUTOR_UNITS_RESEARCH] ")
 let { register_command } = require("console")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots, isCampaignWithSlots, curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
+let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 
+let { goodsByCategory } = require("%rGui/shop/shopState.nut")
+let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
+let { shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("%rGui/unit/delayedPurchaseUnit.nut")
 let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { needDelayAnimation, isBuyUnitWndOpened, animExpPart,
   animUnitAfterResearch } = require("%rGui/unitsTree/animState.nut")
 let { markTutorialCompleted, isFinishedUnitsResearch } = require("%rGui/tutorial/completedTutorials.nut")
 let { scrollToUnitGroupBottom, calcAreaSize } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
-let { visibleNodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { visibleNodes, unitsResearchStatus, currentResearch, selectedCountry, remapNodesPositionsShiftX } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
   activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
@@ -32,17 +37,20 @@ let { TUTORIAL_UNITS_RESEARCH_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { btnBEsc, btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOptions.nut")
+let { curProfileRewardId } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { getNodesReceiveInfo } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 
 
 let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
 let STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
 
+let FORCED_UNIT_PURCHASE_SKIP_DELAY_SEC = 10.0
+
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let savedAutoOfferOption = mkWatched(persist, "savedAutoOfferOption", null)
 
 let lastResearchedUnit = Computed(@() servProfile.get()?.levelInfo[curCampaign.get()].lastResearchedUnit ?? "")
-let hasGotFirstPredifinedReward = Computed(@()
-  (campProfile.get()?.lastReceivedFirstBattlesRewardIds[curCampaign.get()] ?? -1) >= 0)
+let hasGotFirstPredifinedReward = Computed(@() curProfileRewardId.get() >= 0)
 let curResearchUnitStatus = Computed(@() unitsResearchStatus.get()?[lastResearchedUnit.get()])
 
 let canBuyCurResearchUnit = Computed(function() {
@@ -72,6 +80,7 @@ shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function forcedUnitPurchaseSkip() {
   if (!isBuyUnitWndOpened.get() || animUnitAfterResearch.get() == null || !animExpPart.get()) {
+    logFB($"Skipping unit purchase by timer ({!isBuyUnitWndOpened.get()} || {animUnitAfterResearch.get() == null} || {!animExpPart.get()})")
     closeSelectUnitToSlotWnd()
     goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION)
   }
@@ -139,7 +148,7 @@ function startTutorial() {
           }
           needSaveUnitDataForTutorial.set(true)
           needDelayAnimation.set(false)
-          resetTimeout(5.0, forcedUnitPurchaseSkip)
+          resetTimeout(FORCED_UNIT_PURCHASE_SKIP_DELAY_SEC, forcedUnitPurchaseSkip)
         }
         nextStepAfter = isBuyUnitWndOpened
         objects = [{ keys = "sceneRoot", onClick = @() true }]
@@ -151,6 +160,7 @@ function startTutorial() {
           moveModalToTop(WND_UID)
           let { currencyId = "", price = 0 } = delayedPurchaseUnitData.get()
           if ((balance.get()?[currencyId] ?? 0) < price) {
+            logFB($"Skipping unit purchase, balance {balance.get()?[currencyId]} < {price} {currencyId}")
             closePurchaseAndBalanceBoxes()
             deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
           }
@@ -198,7 +208,19 @@ function startTutorial() {
         function beforeStart() {
           canOpenSelectUnitWithModal.set(false)
           closePurchaseAndBalanceBoxes()
-          local nodesToHighlight = visibleNodes.get().filter(@(node) unitsResearchStatus.get()?[node.name].canResearch
+          let nodeReceiveInfo = getNodesReceiveInfo({
+            campConfigsV = campConfigs.get(),
+            campMyUnitsV = campMyUnits.get(),
+            unreleasedUnitsV = unreleasedUnits.get(),
+            goodsByCategoryV = goodsByCategory.get(),
+            personalGoodsByShopCategoryV = personalGoodsByShopCategory.get(),
+            eventLootboxesV = eventLootboxes.get(),
+            shouldShowEventMechanicsV = shouldShowEventMechanics.get()
+          })
+          let filteredNodes = visibleNodes.get().__merge(nodeReceiveInfo)
+            .filter(@(n) campUnitsCfg.get()?[n.name] != null && n.country == selectedCountry.get())
+          let remapedNodes = remapNodesPositionsShiftX(filteredNodes, campConfigs.get(), true).nodes
+          local nodesToHighlight = remapedNodes.filter(@(node) unitsResearchStatus.get()?[node.name].canResearch
             && !unitsResearchStatus.get()?[node.name].isResearched)
 
           let availableNodesByPrevReserched = nodesToHighlight

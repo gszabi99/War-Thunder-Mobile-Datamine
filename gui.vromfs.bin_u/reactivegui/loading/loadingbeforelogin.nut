@@ -18,7 +18,7 @@ eventbus_subscribe("shaderWarmupStatusUpdate", function(p) {
 
 let loadingProgressbar = @() !isProgressbarVisible.get() ? { watch = isProgressbarVisible } : {
   watch = isProgressbarVisible
-  size = flex()
+  size = FLEX
   valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = progressbarGap
@@ -29,7 +29,7 @@ let loadingProgressbar = @() !isProgressbarVisible.get() ? { watch = isProgressb
 }
 
 return {
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   children = [
     gradientLoadingTip

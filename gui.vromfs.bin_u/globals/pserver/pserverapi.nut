@@ -33,6 +33,7 @@ const PROGRESS_AD_BUDGET = "AdBudgetInProgress"
 const PROGRESS_ITEM_CONVERSION = "ItemConversionInProgress"
 const PROGRESS_SKIP_OFFER = "SkipOfferInProgress"
 const PROGRESS_CLIENT_MISSION_REWARD = "ClientMissionRewardInProgress"
+const PROGRESS_UNIT_MASTERY_TIER = "UnitMasteryTierInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -266,6 +267,7 @@ return {
   ItemConversionInProgress = mkProgress(PROGRESS_ITEM_CONVERSION)
   skipOfferInProgress = mkProgress(PROGRESS_SKIP_OFFER)
   clientMissionRewardInProgress = mkProgress(PROGRESS_CLIENT_MISSION_REWARD)
+  unitMasteryTierInProgress = mkProgress(PROGRESS_UNIT_MASTERY_TIER)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -621,9 +623,9 @@ return {
     progressValue = missionId
   }, cb)
 
-  apply_first_battles_reward = @(campaign, unitName, rewardId, kills, cb = null) request({
-    method = "apply_first_battles_reward_v2"
-    params = { campaign, unitName, rewardId, kills }
+  apply_first_battles_reward = @(campaign, rewardId, units, cb = null) request({
+    method = "apply_first_battles_reward"
+    params = { campaign, rewardId, units }
     progressId = PROGRESS_FIRST_REWARD
     progressValue = rewardId
   }, cb)
@@ -900,13 +902,6 @@ return {
     progressValue = rewardIndexes
   }, cb)
 
-  apply_unit_level_rewards = @(unitName, campaign, cb = null)  request({
-    method = "apply_unit_level_rewards"
-    params = { unitName, campaign }
-    progressId = PROGRESS_UNIT
-    progressValue = unitName
-  }, cb)
-
   check_new_personal_goods = @(cb = null) request({
     method = "check_new_personal_goods"
     progressId = PROGRESS_PERSONAL_GOODS
@@ -1052,5 +1047,23 @@ return {
   get_configs_set = @(idx, cb = null) request({
     method = "get_configs_set"
     params = { idx }
+  }, cb)
+
+  clan_lookup = @(params, cb = null) request({
+    method = "clan_lookup"
+    projectId = "war_thunder_mobile_clans"
+    params
+  }, cb)
+
+  increase_vehicle_mastery_tier = @(unitName, masteryTier, cb = null) request({
+    method = "increase_vehicle_mastery_tier"
+    params = { unitName, masteryTier }
+    progressId = PROGRESS_UNIT_MASTERY_TIER
+    progressValue = unitName
+  }, cb)
+
+  add_unit_stats = @(unitName, statName, amount, cb = null) request({
+    method = "add_unit_stats"
+    params = { unitName, statName, amount }
   }, cb)
 }

@@ -14,7 +14,7 @@ let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
 
 function findFitGameMode(list, gameModes, stats, maxMRank, abTestsV) {
   foreach (cfg in list)
-    if (cfg.isFit(stats, maxMRank, abTestsV)) {
+    if ("gmName" in cfg && cfg.isFit(stats, maxMRank, abTestsV)) {
       let gameMode = gameModes.findvalue(@(gm) gm?.name == cfg.gmName)
       if (gameMode != null)
         return { gameMode, cfg }

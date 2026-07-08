@@ -81,7 +81,7 @@ let xrayDoll = @(size, stateFlags) {
     @() {
       watch = healthColor
       color = getHudConfigParameter("changeDmPanelColorDependingOnHp") ? healthColor.get() : teamBlueLightColor
-      size = flex()
+      size = FLEX
       transform = {
         rotate = 90
       }

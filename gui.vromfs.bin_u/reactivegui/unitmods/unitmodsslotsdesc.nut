@@ -182,7 +182,7 @@ let mkRows = @(rowsCfg, width) {
           flow = FLOW_HORIZONTAL
           gap = infoGap
           children = [
-            mkDesc(flex(), header, color)
+            mkDesc(FLEX, header, color)
             {
               maxWidth = width / 2 - infoGap
               rendObj = ROBJ_TEXTAREA

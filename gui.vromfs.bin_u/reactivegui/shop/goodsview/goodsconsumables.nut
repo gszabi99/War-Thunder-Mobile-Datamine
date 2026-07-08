@@ -46,7 +46,7 @@ let slotNameBG = {
 }
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x3F3F3F
 }
@@ -81,7 +81,7 @@ function mkImg(id, baseSize, pos, sortOrder = null) {
 }
 
 let mkImgs = @(ids, imageOptions) {
-  size = flex()
+  size = FLEX
   sortChildren = true
   clipChildren = true
   children = imageOptions.map(@(cfg, idx) idx not in ids ? null : mkImg(ids[idx], cfg.size, cfg.pos, cfg?.sortOrder))
@@ -128,7 +128,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
       .extend(mkGoodsCommonParts(goods, stateExt), addChildren)
       .append(@() {
         watch = hasLimitReached
-        size = flex()
+        size = FLEX
         children = hasLimitReached.get() ? disabledBg : null
       }),
     mkPricePlate(goods, stateExt, animParams), {size = goodsSmallSize})

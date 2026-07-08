@@ -65,7 +65,7 @@ function titleRow(name, locName, rowIdx) {
   let isUnseen = Computed(@() name in unseenDecorators.get())
   return {
     rendObj = ROBJ_SOLID
-    size = [flex(), rowHeight]
+    size = [FLEX, rowHeight]
     color = bgColor(rowIdx)
     xmbNode = {}
     behavior = Behaviors.Button
@@ -86,7 +86,7 @@ function titleRow(name, locName, rowIdx) {
       flow = FLOW_HORIZONTAL
       rendObj = ROBJ_BOX
       valign = ALIGN_CENTER
-      size = flex()
+      size = FLEX
       borderWidth = hdpx(2)
       borderColor = stateFlags.get() & S_HOVER ? hoverColor
         : (stateFlags.get() & S_ACTIVE) || isSelected.get() ? 0xFFFFFFFF
@@ -129,7 +129,7 @@ function titleRow(name, locName, rowIdx) {
 
 let emptyRow = @(rowIdx) {
   rendObj = ROBJ_SOLID
-  size = [flex(), rowHeight]
+  size = [FLEX, rowHeight]
   color = bgColor(rowIdx)
 }
 
@@ -142,7 +142,7 @@ function footer() {
   let currencyFullId = currencyToFullId.get()?[price?.currencyId] ?? price?.currencyId
   return {
     watch = [selectedTitleName, chosenTitleName, availTitles, allTitles, currencyToFullId]
-    size = [flex(), defButtonHeight]
+    size = [FLEX, defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)
     children = selectedTitleName.get() == chosenTitleName.get()
@@ -200,7 +200,7 @@ function titlesList() {
 }
 
 let titleContent = {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap
   children = [
@@ -219,7 +219,7 @@ let titleContent = {
 let titlesScene = @() {
   watch = hasVisibleTitles
   key = hasVisibleTitles
-  size = flex()
+  size = FLEX
   maxWidth = hdpx(1800)
   onAttach = @() selectedTitleName.set(chosenTitleName.get())
   onDetach = @() markDecoratorsSeen(unseenDecorators.get().filter(@(_, id) id in availTitles.get()).keys())
@@ -227,7 +227,7 @@ let titlesScene = @() {
     : {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_TEXT
       text = loc("title/no_titles")
     }.__update(fontMedium)

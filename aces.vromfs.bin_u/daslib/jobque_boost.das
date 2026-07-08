@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_aot = true
 options strict_smart_pointers = true
 
@@ -16,6 +14,7 @@ module jobque_boost shared public
 
 
 require jobque public
+require math
 
 require daslib/rtti
 require daslib/ast
@@ -49,7 +48,7 @@ class private NewJobMacro : AstFunctionAnnotation {
     
     
     
-    def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
+    def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         
         macro_verify(call.arguments[0] is ExprAscend, compiling_program(), call.at, "expecting lambda declaration, ExprAscend")
         var asc = call.arguments[0] as ExprAscend
@@ -57,31 +56,31 @@ class private NewJobMacro : AstFunctionAnnotation {
         var mks = asc.subexpr as ExprMakeStruct
         macro_verify(!(mks._type == null || mks._type.baseType != Type.tStructure), compiling_program(), call.at, "expecting lambda declaration, not a structure")
         
-        var inscope stype <- clone_structure(mks._type.structType)
+        var stype <- clone_structure(mks._type.structType)
         stype.name := "{stype.name}_new_job_clone"
-        var stype_ptr = get_ptr(stype)
-        var inscope sttype <- new TypeDecl(at = call.at, baseType = Type.tStructure, structType = stype_ptr)
+        var stype_ptr = stype
+        var sttype = new TypeDecl(at = call.at, baseType = Type.tStructure, structType = stype_ptr)
         for (fld in stype.fields) {
-            fld._type.flags &= ~(TypeDeclFlags.constant)
-            fld.flags &= ~(FieldDeclarationFlags.capturedConstant)
+            fld._type.flags.constant = false
+            fld.flags.capturedConstant = false
         }
-        var inscope pclone <- make_clone_structure(stype_ptr)
+        var pclone = make_clone_structure(stype_ptr)
         let const_clone = pclone.arguments[1]._type.flags.constant
         compiling_module() |> add_function(pclone)
         compiling_module() |> add_structure(stype)
         
-        var inscope ftype <- new TypeDecl(at = call.at, baseType = Type.tFunction)
-        move_new(ftype.firstType) <| new TypeDecl(at = call.at, baseType = Type.tVoid)
+        var ftype = new TypeDecl(at = call.at, baseType = Type.tFunction)
+        ftype.firstType = new TypeDecl(at = call.at, baseType = Type.tVoid)
         ftype.argTypes |> emplace_new <| clone_type(sttype)
         ftype.argTypes |> emplace <| sttype
         if (const_clone) {
-            ftype.argTypes[1].flags |= TypeDeclFlags.constant
+            ftype.argTypes[1].flags.constant = true
         }
         
-        var inscope ncall <- new ExprCall(at = call.at, name := "{call.name}_invoke")
+        var ncall = new ExprCall(at = call.at, name := "{call.name}_invoke")
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
         ncall.arguments |> emplace_new <| new ExprAddr(at = call.at, target := "clone", funcType <- ftype)
-        ncall.arguments |> emplace_new <| new ExprConstInt(at = call.at, value = int(mks._type.sizeOf))
+        ncall.arguments |> emplace_new <| new ExprConstInt(at = call.at, value = mks._type.sizeOf)
         return <- ncall
     }
 }
@@ -129,13 +128,9 @@ def for_each(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
         _builtin_channel_pop(channel) $(vd) {
             void_data = vd
         }
-        if (void_data == null) {
-            break
-        }
-        unsafe {
-            let typed_data = reinterpret<TT?#> void_data
-            invoke(blk, *typed_data)
-        }
+        if (void_data == null) break
+        let typed_data = unsafe(reinterpret<TT?#> void_data)
+        invoke(blk, *typed_data)
     }
 }
 
@@ -152,9 +147,7 @@ def for_each_clone(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
                 temp := *(unsafe(reinterpret<TT -# -& -const?#> vd))
             }
         }
-        if (!any) {
-            break
-        }
+        if (!any) break
         invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
         delete temp
     }
@@ -167,14 +160,10 @@ def pop_one(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
     _builtin_channel_pop(channel) $(vd) {
         void_data = vd
     }
-    if (void_data == null) {
-        return false
-    }
-    unsafe {
-        let typed_data = reinterpret<TT?#> void_data
-        invoke(blk, *typed_data)
-        return true
-    }
+    if (void_data == null) return false
+    let typed_data = unsafe(reinterpret<TT?#> void_data)
+    invoke(blk, *typed_data)
+    return true
 }
 
 def pop_and_clone_one(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
@@ -187,9 +176,7 @@ def pop_and_clone_one(channel : Channel?; blk : block<(res : auto(TT)#) : void>)
             temp := *(unsafe(reinterpret<TT -# -& -const?#> vd))
         }
     }
-    if (!any) {
-        return false
-    }
+    if (!any) return false
     invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
     delete temp
     return true
@@ -213,9 +200,7 @@ def try_pop_clone(channel : Channel?; blk : block<(res : auto(TT)#) : void>) : b
     any = _builtin_channel_try_pop(channel) $(data) {
         temp := *(unsafe(reinterpret<TT -# -& -const?#> data))
     }
-    if (!any) {
-        return false
-    }
+    if (!any) return false
     invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
     delete temp
     return true
@@ -239,9 +224,7 @@ def pop_with_timeout_clone(channel : Channel?; timeout_ms : int; blk : block<(re
     any = _builtin_channel_pop_with_timeout(channel, timeout_ms) $(data) {
         temp := *(unsafe(reinterpret<TT -# -& -const?#> data))
     }
-    if (!any) {
-        return false
-    }
+    if (!any) return false
     invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
     delete temp
     return true
@@ -333,6 +316,25 @@ def clear(box : LockBox?; type_ : auto(TT)) {
     }
 }
 
+def fill(box : LockBox?; data : auto(TT)) {
+    
+    
+    _builtin_lockbox_fill(box, unsafe(addr(data)))
+}
+
+def grab(box : LockBox?; blk : block<(var res : auto(TT)) : void>) : bool {
+    
+    
+    var res = false
+    _builtin_lockbox_grab(box) $(void_data) {
+        if (void_data != null) {
+            var typed_data = unsafe(reinterpret<TT -const?> void_data)
+            invoke(blk, *typed_data)
+            res = true
+        }
+    }
+    return res
+}
 
 [template(tinfo), deprecated(message="use `each_clone` instead")]
 def each(var channel : Channel?; tinfo : auto(TT)) {
@@ -340,15 +342,13 @@ def each(var channel : Channel?; tinfo : auto(TT)) {
     
     
     unsafe {
-        return <- generator<TT&#>() <| $() {
+        return <- generator<TT&#> {
             while (true) {
                 var void_data : void?
                 _builtin_channel_pop(channel) $(vd) {
                     void_data = vd
                 }
-                if (void_data == null) {
-                    break
-                }
+                if (void_data == null) break
                 unsafe {
                     yield *reinterpret<TT?#> void_data
                 }
@@ -366,7 +366,7 @@ def each_clone(var channel : Channel?; tinfo : auto(TT)) {
     
     
     unsafe {
-        return <- generator<TT&#>() <| $() {
+        return <- generator<TT&#> {
             while (true) {
                 var temp : TT -# -& -const
                 var any = false
@@ -376,15 +376,120 @@ def each_clone(var channel : Channel?; tinfo : auto(TT)) {
                         temp := *(unsafe(reinterpret<TT -# -& -const?#> vd))
                     }
                 }
-                if (!any) {
-                    break
-                }
+                if (!any) break
                 yield unsafe(reinterpret<TT -& -const#> temp)
                 delete temp
             }
             return false
         } finally {
             channel |> release
+        }
+    }
+}
+
+
+
+
+
+
+require daslib/archive
+
+def push(stream : Stream?; var data : array<uint8>) {
+    
+    
+    _builtin_stream_push(stream, data)
+}
+
+def push(stream : Stream?; data : array<uint8> const#) {
+    
+    _builtin_stream_push(stream, data)
+}
+
+def push_batch(stream : Stream?; var data : array<array<uint8>>) {
+    
+    _builtin_stream_push_batch(stream, data)
+}
+
+def push_archive(stream : Stream?; var value : auto(TT)) {
+    
+    
+    var bytes <- mem_archive_save(value)
+    _builtin_stream_push(stream, bytes)
+    unsafe {
+        delete bytes
+    }
+}
+
+def pop(stream : Stream?; blk : block<(bytes : array<uint8># -const) : void>) {
+    
+    
+    _builtin_stream_pop(stream, blk)
+}
+
+def try_pop(stream : Stream?; blk : block<(bytes : array<uint8># -const) : void>) : bool {
+    
+    return _builtin_stream_try_pop(stream, blk)
+}
+
+def pop_with_timeout(stream : Stream?; timeout_ms : int; blk : block<(bytes : array<uint8># -const) : void>) : bool {
+    
+    return _builtin_stream_pop_with_timeout(stream, timeout_ms, blk)
+}
+
+def gather(stream : Stream?; blk : block<(bytes : array<uint8># -const) : void>) {
+    
+    _builtin_stream_gather(stream, blk)
+}
+
+def peek(stream : Stream?; blk : block<(bytes : array<uint8># -const) : void>) {
+    
+    _builtin_stream_peek(stream, blk)
+}
+
+def pop_archive(stream : Stream?; blk : block<(var value : auto(TT)&) : void>) : bool {
+    
+    
+    var any = false
+    var value : TT -# -& -const
+    _builtin_stream_pop(stream) $(bytes : array<uint8># -const) {
+        if (length(bytes) > 0) {
+            any = true
+            mem_archive_load(bytes, value)
+        }
+    }
+    if (any) {
+        invoke(blk, value)
+    }
+    unsafe {
+        delete value
+    }
+    return any
+}
+
+def try_pop_archive(stream : Stream?; blk : block<(var value : auto(TT)&) : void>) : bool {
+    
+    var any = false
+    var value : TT -# -& -const
+    any = _builtin_stream_try_pop(stream) $(bytes : array<uint8># -const) {
+        mem_archive_load(bytes, value)
+    }
+    if (any) {
+        invoke(blk, value)
+    }
+    unsafe {
+        delete value
+    }
+    return any
+}
+
+def gather_archive(stream : Stream?; blk : block<(var value : auto(TT)&) : void>) {
+    
+    _builtin_stream_gather(stream) $(bytes : array<uint8># -const) {
+        var value : TT -# -& -const
+        mem_archive_load(bytes, value)
+        invoke(blk, value)
+        unsafe {
+            delete value
         }
     }
 }
@@ -423,10 +528,8 @@ def _parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job
     
     
     let total = range_end - range_begin
-    if (total <= 0 || num_jobs <= 0) {
-        return
-    }
-    let actual_jobs = num_jobs < total ? num_jobs : total
+    if (total <= 0 || num_jobs <= 0) return
+    let actual_jobs = min(num_jobs, total)
     let chunk = total / actual_jobs
     let remainder = total % actual_jobs
     with_wait_group(actual_jobs) $(wg) {
@@ -441,7 +544,7 @@ def _parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job
     }
 }
 
-[tag_function(tag_parallel_for)]
+[tag_function(tag_parallel_for), unused_argument(range_begin, range_end, num_jobs, blk)]
 def parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job_begin : int; job_end : int; var wg : JobStatus?) : void>) {
     
 }
@@ -451,13 +554,13 @@ class private ParallelForJobMacro : AstFunctionAnnotation {
     
     
     function_name : string = "jobque_boost::_parallel_for"
-    def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
+    def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         let last_index = call.arguments.length() - 1
         macro_verify(call.arguments[last_index] is ExprMakeBlock, compiling_program(), call.at, "expecting block as {last_index} argument")
-        var inscope newCall <- clone_expression(call)
+        var newCall = clone_expression(call)
         assume newCallCall = (newCall as ExprCall)
         newCallCall.name := function_name
-        var inscope new_body <- qmacro(new_job(@ {$b(((call.arguments[last_index] as ExprMakeBlock)._block as ExprBlock).list); }))
+        var new_body = qmacro(new_job(@ {$b(((call.arguments[last_index] as ExprMakeBlock)._block as ExprBlock).list); }))
         var new_block = ((newCallCall.arguments[last_index] as ExprMakeBlock)._block as ExprBlock)
         new_block.list.clear()
         new_block.list.emplace(new_body)
@@ -536,6 +639,12 @@ def public capture_jobque_lock_box(var js : LockBox?) : LockBox? {
     return js
 }
 
+def public capture_jobque_stream(var s : Stream?) : Stream? {
+    
+    s |> add_ref
+    return s
+}
+
 def public release_capture_jobque_channel(ch : Channel?) {
     
     if (ch != null) {
@@ -557,25 +666,21 @@ def public release_capture_jobque_lock_box(js : LockBox?) {
     }
 }
 
+def public release_capture_jobque_stream(s : Stream?) {
+    
+    if (s != null) {
+        panic("Stream has not been released. missing stream|>release or stream|>notify_and_release")
+    }
+}
+
 
 [macro_function]
 def private isPtrToJQ(typ : TypeDeclPtr; jqt : string) : bool {
-    if (!typ.isPointer) {
-        return false
-    }
-    if (typ.firstType == null) {
-        return false
-    }
-    if (!typ.firstType.isHandle) {
-        return false
-    }
-    if (typ.firstType.annotation._module.name != "jobque") {
-        return false
-    }
-    if (typ.firstType.annotation.name != jqt) {
-        return false
-    }
-    return true
+    if (!typ.isPointer
+            || typ.firstType == null
+            || !typ.firstType.isHandle
+            || typ.firstType.annotation._module.name != "jobque") return false
+    return typ.firstType.annotation.name == jqt
 }
 
 [capture_macro(name=channel_and_status_capture_macro)]
@@ -583,13 +688,13 @@ class private ChannelAndStatusCapture : AstCaptureMacro {
     
     def make_capture_call(expr : ExpressionPtr; name : string) : ExpressionPtr {
         
-        var inscope pCall <- new ExprCall(at = expr.at, name := name)
+        var pCall = new ExprCall(at = expr.at, name := name)
         pCall.arguments |> emplace_new <| clone_expression(expr)
         return <- pCall
     }
     def make_release_call(fld : FieldDeclaration; name : string) : ExpressionPtr {
         
-        var inscope pCall <- new ExprCall(at = fld.at, name := name)
+        var pCall = new ExprCall(at = fld.at, name := name)
         pCall.arguments |> emplace_new <| new ExprField(at = fld.at,
             value <- new ExprVar(at = fld.at, name := "__this"),
             name := fld.name,
@@ -607,8 +712,8 @@ class private ChannelAndStatusCapture : AstCaptureMacro {
             return <- make_capture_call(expr, "jobque_boost::capture_jobque_job_status")
         } elif (typ |> isPtrToJQ("LockBox")) {
             return <- make_capture_call(expr, "jobque_boost::capture_jobque_lock_box")
-        }
-        return <- default<ExpressionPtr>
+        } elif (typ |> isPtrToJQ("Stream")) return <- make_capture_call(expr, "jobque_boost::capture_jobque_stream")
+        return null
     }
     def override captureFunction(prog : Program?; mod : Module?; var lcs : Structure?; var fun : FunctionPtr) : void {
         
@@ -616,18 +721,20 @@ class private ChannelAndStatusCapture : AstCaptureMacro {
         
         
         
-        if (fun.flags._generator) {
-            return
-        }
+        
+        if (fun.flags._generator) return
         for (fld in lcs.fields) {
             if (fld._type |> isPtrToJQ("Channel")) {
-                var inscope pCall <- make_release_call(fld, "jobque_boost::release_capture_jobque_channel")
+                var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_channel")
                 (fun.body as ExprBlock).finalList |> emplace(pCall)
             } elif (fld._type |> isPtrToJQ("JobStatus")) {
-                var inscope pCall <- make_release_call(fld, "jobque_boost::release_capture_jobque_job_status")
+                var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_job_status")
                 (fun.body as ExprBlock).finalList |> emplace(pCall)
             } elif (fld._type |> isPtrToJQ("LockBox")) {
-                var inscope pCall <- make_release_call(fld, "jobque_boost::release_capture_jobque_lock_box")
+                var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_lock_box")
+                (fun.body as ExprBlock).finalList |> emplace(pCall)
+            } elif (fld._type |> isPtrToJQ("Stream")) {
+                var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_stream")
                 (fun.body as ExprBlock).finalList |> emplace(pCall)
             }
         }

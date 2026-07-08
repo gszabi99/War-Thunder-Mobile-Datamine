@@ -3,13 +3,13 @@ from "%appGlobals/rewardType.nut" import *
 let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { openRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
 let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 
 
 let WND_UID = "rewardPrizeView"
 
 
-let mkUnitPlateClick = @(r) unitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+let mkUnitPlateClick = @(r) openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
 let mkPlateClickByType = {
   [G_BLUEPRINT] = mkUnitPlateClick,
   [G_UNIT] = mkUnitPlateClick,
@@ -23,7 +23,7 @@ function mkRewardPlateBg(r, rStyle) {
     rendObj = ROBJ_BOX
     fillColor = 0xFFB9B9B9
     children = {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       rendObj = ROBJ_9RECT
@@ -31,7 +31,7 @@ function mkRewardPlateBg(r, rStyle) {
       padding = hdpx(3)
       color = 0xFFEEEEEE
       children = {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#offer_item_slot_bg.avif")
       }

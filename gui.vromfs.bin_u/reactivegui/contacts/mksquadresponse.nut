@@ -9,7 +9,7 @@ let { onNotifyRemove, onNotifyApply, invitations } = require("%rGui/invitations/
 let btnIconSize = evenPx(50)
 let btnMargin = hdpx(8)
 let btnDefOvr = {
-  iconSize = btnIconSize,
+  iconOvr = { size = btnIconSize },
   ovr = {
     size = [hdpx(130), rowHeight - btnMargin * 2],
     minWidth = btnIconSize

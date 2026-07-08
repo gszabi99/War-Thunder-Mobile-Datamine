@@ -60,18 +60,18 @@ if (register_command != null)
     $"debug.loadingScreen.{id}"))
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     loadingAnimBg
     {
-      size = flex()
+      size = FLEX
       padding = saBordersRv
       children = [
         mkTitleLogo()
         waitSpinner
         @() {
           watch = hasAnyMsg
-          size = [flex(), 0]
+          size = [FLEX, 0]
           pos = [0, sh(-20)]
           vplace = ALIGN_BOTTOM
           children = hasAnyMsg.get() ? null : gradientLoadingTip

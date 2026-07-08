@@ -143,7 +143,7 @@
           "angleMax": 45.0,
           "rateMax": 60.0,
           "prolongationTimeMax": 1.0,
-          "designationSourceTypeMask": 2,
+          "designationSourceType": "radar",
           "transmitter": {
             "power": 2000.0,
             "antenna": {

@@ -39,7 +39,7 @@ let singleStepAnimTime = 0.5
 let maxTotalAnimTime = 1.5
 
 let mkSlotLevelBg = @(ovr = {}) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
@@ -50,12 +50,12 @@ let mkSlotLevelBg = @(ovr = {}) {
 }.__update(ovr)
 
 let mkUnitLevelBg = @(childOvr = {}) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   transform = { rotate = 45 }
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     fillColor = nextLevelBgColor
     borderWidth = levelBlockBorderWidth
@@ -88,7 +88,7 @@ let slotImgByCampaign = {
   tank = "ui/gameuiskin#upgrades_tank_crew_icon.avif"
 }
 let mkSlotImg = @(campaign) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture(slotImgByCampaign?[campaign] ?? slotImgByCampaign.tank)
   keepAspect = true
@@ -188,7 +188,7 @@ let mkProgressBar = @(animId, curLevelIdxWatch, levelUpsArray, lineColor) functi
     children = [
       {
         key = $"line_{animId}_{levelUpsArray[curLevelIdxWatch.get()]}"
-        size = [receivedExpWidth, flex()]
+        size = [receivedExpWidth, FLEX]
         rendObj = ROBJ_SOLID
         color = receivedExpProgressColor
         transform = { pivot = [0, 0] }
@@ -214,7 +214,7 @@ let mkProgressBar = @(animId, curLevelIdxWatch, levelUpsArray, lineColor) functi
         ]
       }
       {
-        size = [curExpWidth, flex()]
+        size = [curExpWidth, FLEX]
         rendObj = ROBJ_SOLID
         color = lineColor
       }
@@ -265,7 +265,7 @@ let mkSlotPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
 }
 
 let mkUnitPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor) function() {
-  let { curLevel, curStarLevel, isLevelUpPrevSteps, isLevelUpCurStep, isMaxLevel
+  let { curLevel, curStarLevel, isLevelUpPrevSteps, isLevelUpCurStep, isMaxLevel,
     stepAnimTime, stepAnimDelay, levelSplashAnimTrigger
   } = levelUpsArray[curLevelIdxWatch.get()]
 
@@ -333,10 +333,10 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   let unlockedLevel = !isLevelUp ? level
     : getLevelProgress(levelCfg, reward?.totalExp ?? 0).unlockedLevel
   let maxLevel = levelsExp.len() > 0 ? levelsExp.len() 
-    : levelsExpCfg?[levelsExpCfg.len() - 1].upToLevel
+    : levelsExpCfg?[levelsExpCfg.len() - 1].upToLevel ?? 0
   let nextLevelWithRewards = isMaxLevel ? -1
     : isSlot ? (level + 1)
-    : getNextUnitLevelWithRewards(level + 1, maxLevel, modPresetCfg, unitWeaponry?[name])
+    : getNextUnitLevelWithRewards(level + 1, maxLevel, modPresetCfg, unitWeaponry?[name], campaign)
   let hasLevelUnlockRewards = isLevelUp && nextLevelWithRewards <= unlockedLevel
 
   let levelUpsArray = [{
@@ -380,18 +380,18 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
     }
   }
   else if (isLevelUp && levelsExpCfg.len() > 0) {
-    local fromLevel = level + 1
+    local fromLevel = level
     local leftReceivedExp = totalExp - addExp
     foreach (idx, c in levelsExpCfg) {
       if (c.upToLevel <= fromLevel)
         continue
-      for (local l = fromLevel; l < c.upToLevel; l++) {
+      for (local l = fromLevel + 1; l <= c.upToLevel; l++) {
         levelUpsArray.append({
           curLevel = l
           curStarLevel = isStarProgress ? starLevel + l - level : 0
           isLevelUpPrevSteps = isLevelUp
           isLevelUpCurStep = c.exp <= leftReceivedExp
-          isMaxLevel = (l + 1 == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
+          isMaxLevel = (l == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
           curExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, exp)
           receivedExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, leftReceivedExp)
         })
@@ -401,7 +401,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
       }
       if (leftReceivedExp <= 0)
         break
-      fromLevel = c.upToLevel
+      fromLevel = c.upToLevel + 1
     }
   }
 
@@ -468,7 +468,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
         transform = {}
         animations = statusAppearAnimations
         flow = FLOW_VERTICAL
-        children = isLevelUp && hasLevelUnlockRewards
+        children = isLevelUp && hasLevelUnlockRewards && unlockedLevel < maxLevel
             ? mkLevelStatusText(loc("debriefing/reachedLevelN", { level = unlockedLevel }), true,
                 {
                   transform = { pivot = [0.0, 1.0] }
@@ -479,6 +479,8 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
                 })
           : isMaxLevel
             ? mkLevelStatusText(loc("battlepass/maxLevel"), false)
+          : unlockedLevel >= maxLevel
+            ? mkLevelStatusText(loc("debriefing/reachedMaxLevel"), true)
           : nextLevelWithRewards != -1
             ?  mkLevelStatusText(loc("debriefing/requiresLevelN", { level = nextLevelWithRewards }), false)
           : null

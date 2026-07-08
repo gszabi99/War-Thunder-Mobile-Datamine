@@ -78,7 +78,7 @@ let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
 
 let mkChooseMoveControlsWnd = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   onAttach = @() selectedValue.set(getCurCtrlTypeW()?.get() ?? defaultValue)

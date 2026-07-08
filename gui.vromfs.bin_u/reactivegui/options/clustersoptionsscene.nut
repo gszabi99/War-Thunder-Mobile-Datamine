@@ -1,23 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%sqstd/string.nut" import utf8ToLower
+from "string" import format
+from "dagor.time" import get_time_msec
+from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%appGlobals/permissions.nut" import allow_clusters_selection
-from "%appGlobals/clustersState.nut" import OPTIMAL_RTT_LIMIT_MS, selClusters, clusterStats, userPreferredClusters, saveUserClusters
+from "%appGlobals/clustersState.nut" import OPTIMAL_RTT_LIMIT_MS, CAN_USER_DISABLE_FASTEST_CLUSTER, selClusters, clusterStats, fastestClusterId, userPreferredClusters, isWaitingManualRefresh, clustersRefreshNow, saveUserClusters
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, serverTime, gameStartServerTimeMsec
 from "%appGlobals/config/clusterPresentation.nut" import getClusterName, getClusterFullName
 from "%rGui/navState.nut" import registerScene
-from "%rGui/options/optCtrlType.nut" import OCT_LIST
-import "%rGui/options/mkOption.nut" as mkOption
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/toggle.nut" import toggleWithLabel, toggle
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdColors.nut" import goodTextColor2, badTextColor
+from "%rGui/style/stdColors.nut" import goodTextColor2, badTextColor, tabBgColor
+
+const MANUAL_REFRESH_COOLDOWN_SEC = 60
 
 let warnTextColor = 0xFFFFD93E
 
 let bgPanelPadding = hdpx(30)
-let buttonsGap = hdpx(150)
-let buttonsMinWidth = hdpx(600)
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)
@@ -33,6 +37,7 @@ let clusterStatsFixedOrder = Computed(@() clustersOrder.get()
   .filter(@(v) v != null))
 let canDisableClusters = Computed(@() clustersOrder.get()
   .reduce(@(res, id) res + (userPreferredClusters.get()?[id] != false ? 1 : 0), 0) > 1)
+let cooldownEndTime = mkWatched(persist, "cooldownEndTime", 0)
 
 isOpened.subscribe(function(v) {
   updateClustersOrder(v)
@@ -53,20 +58,28 @@ let mkTextarea = @(text, ovr = {}) {
   text
 }.__update(fontSmall, ovr)
 
-let clusterOptList = [ false, null, true ]
-let clusterOptValToString = @(v) loc(v == null ? "cluster/multi" : v ? "options/on" : "options/off")
-let clusterOptValToDescMap = {
-  [false] = @() loc("clusters/mode/off"),
-  [null]  = @() "".concat(
-      loc("clusters/mode/auto", { rttLimit = nbsp.concat(OPTIMAL_RTT_LIMIT_MS, loc("measureUnits/milliseconds")) }),
-      loc("ui/parentheses/space", { text = utf8ToLower(loc("mainmenu/recommended")) })
-    ),
-  [true]  = @() loc("clusters/mode/on"),
+function mkClusterToggle(clusterId, valueW, isAvailable) {
+  let sf = Watched(0)
+  return toggleWithLabel(sf, valueW, toggle(valueW, sf.get()), {
+    opacity = isAvailable ? 1 : 0.2
+    function onClick() {
+      let v = !valueW.get()
+      if (!v && !CAN_USER_DISABLE_FASTEST_CLUSTER && fastestClusterId.get() == clusterId)
+        return openMsgBox({ text = loc("clusters/cantDisableFastestCluster") })
+      if (!v && !canDisableClusters.get())
+        return openMsgBox({ text = loc("clusters/cantDisableLastCluster") })
+      valueW.set(v)
+    }
+  })
 }
 
-let buttonsTextsWidth = clusterOptList.map(@(v) calc_comp_size(mkText(clusterOptValToString(v), fontSmall))[0])
-  .reduce(@(res, v) max(res, v)) * clusterOptList.len()
-let buttonsWidth = max(buttonsMinWidth, buttonsTextsWidth + hdpx(80))
+let clusterOptHintCfg = [
+  [ "options/on", @() "".concat(
+      loc("clusters/mode/auto", { rttLimit = nbsp.concat(OPTIMAL_RTT_LIMIT_MS, loc("measureUnits/milliseconds")) }),
+      loc("ui/parentheses/space", { text = utf8ToLower(loc("mainmenu/recommended")) })
+    ) ],
+  [ "options/off", @() loc("clusters/mode/off") ],
+]
 
 let columnsCfg = [
   {
@@ -87,59 +100,52 @@ let columnsCfg = [
     relWidth = 1.0
     titleLocId = "clusters/reachability"
     halign = ALIGN_RIGHT
-    mkCell = @(c, v, _) mkText("".concat(v.availablePercent, "%"), {
+    mkCell = @(c, v, _) @() mkText("".concat(v.reachability, "%"), {
+        watch = isWaitingManualRefresh
         size = [c.width, SIZE_TO_CONTENT]
         halign = c.halign
-        color = v.availablePercent == 100 ? goodTextColor2
-          : v.availablePercent == 0 ? badTextColor
+        color = v.reachability == 100 ? goodTextColor2
+          : v.reachability == 0 ? badTextColor
           : warnTextColor
+        opacity = isWaitingManualRefresh.get() ? 0.5 : 1
       })
   }
   {
     relWidth = 1.0
     titleLocId = "clusters/averageRTT"
     halign = ALIGN_RIGHT
-    mkCell = @(c, v, _) mkText(v.hostsRTT != null
+    mkCell = @(c, v, _) @() mkText(v.hostsRTT != null
         ? nbsp.concat(v.hostsRTT, loc("measureUnits/milliseconds"))
         : loc("leaderboards/notAvailable"),
       {
+        watch = isWaitingManualRefresh
         size = [c.width, SIZE_TO_CONTENT]
         halign = c.halign
         color = v.hostsRTT == null ? badTextColor
           : v.hostsRTT <= OPTIMAL_RTT_LIMIT_MS ? goodTextColor2
           : warnTextColor
+        opacity = isWaitingManualRefresh.get() ? 0.5 : 1
       })
   }
   {
-    width = buttonsGap + buttonsWidth
-    titleLocId = "mode"
+    relWidth = 1.0
+    titleLocId = "options/enable"
     halign = ALIGN_RIGHT
-    mkCell = @(_, __, valueW) {
-        size = [buttonsWidth, SIZE_TO_CONTENT]
-        margin = [0, 0, 0, buttonsGap]
-        hplace = ALIGN_RIGHT
-        children = mkOption({
-          ctrlType = OCT_LIST
-          value = valueW
-          list = clusterOptList
-          valToString = clusterOptValToString
-          function setValue(v) {
-            if (v == false && !canDisableClusters.get())
-              return openMsgBox({ text = loc("clusters/cantDisableLastCluster") })
-            valueW.set(v)
-          }
-        })
+    mkCell = @(c, v, valueW) @() {
+        watch = fastestClusterId
+        size = [c.width, SIZE_TO_CONTENT]
+        halign = c.halign
+        children = mkClusterToggle(v.clusterId, valueW,
+          CAN_USER_DISABLE_FASTEST_CLUSTER || v.clusterId != fastestClusterId.get()) 
       }
-    hintTextCtor = @() "\n".join(clusterOptList.map(@(v) " ".concat(
-      colorize("@darken", clusterOptValToString(v)),
-      loc("ui/ndash"),
-      clusterOptValToDescMap[v]())))
+    hintTextCtor = @() "\n".join(clusterOptHintCfg.map(@(v)
+      " ".concat(colorize("@darken", loc(v[0])), loc("ui/ndash"), v[1]())))
   }
 ]
 
-let columnsWidth = saSize[0] - (2 * bgPanelPadding) - columnsCfg.reduce(@(acc, v) acc + (v?.width ?? 0), 0)
+let columnsWidth = saSize[0] - (2 * bgPanelPadding)
 let columnsWidthUnits = columnsWidth * 1.0 / columnsCfg.reduce(@(acc, v) acc + (v?.relWidth ?? 0), 0)
-columnsCfg.each(@(c) c.width <- c?.width ?? (c.relWidth * columnsWidthUnits).tointeger())
+columnsCfg.each(@(c) c.width <- (c.relWidth * columnsWidthUnits).tointeger())
 
 let wndHeader = {
   size = FLEX_H
@@ -159,13 +165,14 @@ let wndHeader = {
 let bgPanel = {
   size = FLEX_H
   rendObj = ROBJ_SOLID
-  color = 0x990C1113
+  color = tabBgColor
   padding = bgPanelPadding
   valign = ALIGN_CENTER
 }
 
 let currentClustersComp = bgPanel.__merge({
   halign = ALIGN_CENTER
+  padding = [bgPanelPadding, bgPanelPadding]
   flow = FLOW_HORIZONTAL
   gap = hdpx(16)
   children = [
@@ -183,7 +190,7 @@ let currentClustersComp = bgPanel.__merge({
 
 let mkHeaderRow = @() {
   size = FLEX_H
-  padding = [hdpx(16), bgPanelPadding]
+  padding = [bgPanelPadding, bgPanelPadding, hdpx(8), bgPanelPadding]
   flow = FLOW_HORIZONTAL
   children = columnsCfg.map(@(c) {
     size = [c.width, SIZE_TO_CONTENT]
@@ -194,25 +201,78 @@ let mkHeaderRow = @() {
       mkText(loc(c.titleLocId), fontTiny)
       infoTooltipButton(
         c?.hintTextCtor ?? @() loc($"{c.titleLocId}/desc"),
-        { flow = FLOW_VERTICAL, valign = ALIGN_TOP })
+        { flow = FLOW_VERTICAL, valign = ALIGN_TOP, flowOffset = hdpx(80) })
     ]
   })
 }
 
 function mkClusterRow(cluster, userPrefClustersW) {
   let { clusterId } = cluster
-  let valueW = Watched(userPrefClustersW.get()?[clusterId])
-  valueW.subscribe(@(v) userPrefClustersW.mutate(@(o) o[clusterId] <- v))
-  return bgPanel.__merge({
-    padding = const [hdpx(0), hdpx(30)]
+  let valueW = Watched(userPrefClustersW.get()?[clusterId] != false)
+  valueW.subscribe(@(v) userPrefClustersW.mutate(@(o) v == false
+    ? (o[clusterId] <- v)
+    : o.$rawdelete(clusterId)))
+  return {
+    valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     children = columnsCfg.map(@(col) col.mkCell(col, cluster, valueW))
-  })
+  }
+}
+
+let enableRefreshBtn = @() cooldownEndTime.set(0)
+
+function onRefreshBtn() {
+  if (!isServerTimeValid.get() || isWaitingManualRefresh.get() || cooldownEndTime.get() > serverTime.get())
+    return
+  cooldownEndTime.set(serverTime.get() + MANUAL_REFRESH_COOLDOWN_SEC)
+  clustersRefreshNow(true, true)
+}
+
+let cdCircleSz = hdpxi(50)
+function mkBtnSizeCooldownProgress(timeLeftSec, timeTotalSec) {
+  if (timeLeftSec <= 0 || timeTotalSec == 0)
+    return null
+  let finishTime = serverTime.get() + timeLeftSec
+  let shiftSec = ((gameStartServerTimeMsec.get() + get_time_msec()) % 1000) / 1000.0
+  let from = (timeTotalSec - timeLeftSec + shiftSec) * 1.0 / timeTotalSec
+  let duration = timeLeftSec - shiftSec
+  return {
+    size = [defButtonMinWidth, defButtonHeight]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    children = [
+      {
+        key = "refreshCooldown"
+        size = [cdCircleSz, cdCircleSz]
+        margin = [0, hdpx(10), 0, 0]
+        rendObj = ROBJ_PROGRESS_CIRCULAR
+        image = Picture($"ui/gameuiskin#circular_progress_1.svg:{cdCircleSz}:{cdCircleSz}")
+        fgColor = 0xFFFFFFFF
+        bgColor = 0xFF6A6A6A
+        fValue = 1
+        animations = [
+          { prop = AnimProp.fValue, from, to = 1.0, duration, onFinish = enableRefreshBtn, play = true }
+        ]
+      }
+      @() mkText(format("%02d", max(0, finishTime - serverTime.get())), { watch = serverTime }.__merge(fontMonoSmall))
+      mkText(loc("measureUnits/seconds"))
+    ]
+  }
+}
+
+let footer = @() {
+  watch = cooldownEndTime
+  size = FLEX_H
+  halign = ALIGN_RIGHT
+  children = cooldownEndTime.get() <= serverTime.get()
+    ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnRefresh")), onRefreshBtn)
+    : mkBtnSizeCooldownProgress(cooldownEndTime.get() - serverTime.get(), MANUAL_REFRESH_COOLDOWN_SEC)
 }
 
 let clustersOptionsScene = bgShaded.__merge({
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = hdpx(50)
@@ -220,19 +280,21 @@ let clustersOptionsScene = bgShaded.__merge({
     wndHeader
     @() {
       watch = [clusterStatsFixedOrder, userPreferredClusters]
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
-      gap = hdpx(30)
       children = [
         currentClustersComp
-        {
+        mkHeaderRow()
+        bgPanel.__merge({
+          padding = [bgPanelPadding, bgPanelPadding]
           size = FLEX_H
           flow = FLOW_VERTICAL
-          children = [ mkHeaderRow() ]
-            .extend(clusterStatsFixedOrder.get().map(@(v) mkClusterRow(v, userPreferredClusters)))
-        }
+          gap = bgPanelPadding
+          children = clusterStatsFixedOrder.get().map(@(v) mkClusterRow(v, userPreferredClusters))
+        })
       ]
     }
+    footer
   ]
   animations = wndSwitchAnim
 })

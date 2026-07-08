@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <polygon points="0,28.08 28.08,0 79.92,0 108,28.08 108,108 0,108" fill="url(#g)"/>
+  <path d="M28.08,0 L79.92,0 M108,28.08 L108,108 L0,108 L0,28.08" fill="none" stroke="white" stroke-width="3" stroke-linecap="square"/>
+  <line x1="0" y1="28.08" x2="28.08" y2="0" stroke="white" stroke-width="1.75"/>
+  <line x1="79.92" y1="0" x2="108" y2="28.08" stroke="white" stroke-width="1.75"/>
+</svg>

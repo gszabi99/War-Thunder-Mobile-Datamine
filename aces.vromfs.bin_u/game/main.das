@@ -5,7 +5,6 @@ require DagorSystem
 require ECSGlobalTags
 require %gameLibs.das.ecs.fs
 require %game.wt_scripts_init
-require %danetlibs.imgui_daeditor.imgui_daeditor_init
 require %appGame.libs_init
 
 [init]
@@ -15,7 +14,6 @@ def load
   ok = load_libs() && ok
   ok = load_wt_scripts("%game") && ok
   ok = load_folder("%appGame/es") && ok
-  ok = load_imgui_daeditor("%danetlibs/imgui_daeditor") && ok
   if ecs_has_tag("sound") || is_in_aot()
     ok = load_folder("%game/sound") && ok
   if ecs_has_tag("input") || is_in_aot()

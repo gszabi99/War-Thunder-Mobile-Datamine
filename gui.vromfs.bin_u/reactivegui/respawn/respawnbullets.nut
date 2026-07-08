@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets,
-  maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo, bulletSecStep, bulletSecLeftSteps
-  chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo,
-  bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps
-  chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec, maxBulletsSpecCountForExtraAmmo
+let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets, isFakeSecondary,
+  maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo, bulletSecStep, bulletSecLeftSteps, isFakeSpecial,
+  chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo,
+  bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps, chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo, gap } = require("%rGui/respawn/respawnComps.nut")
 let { openedSlot } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
@@ -19,7 +18,7 @@ let bulletCardStyle = mkBulletHeightInfo(choiceCount, choiceSecCount, choiceSpec
 
 function respawnBullets() {
   let res = {
-    watch = [bulletsInfo, bulletsSecInfo, choiceCount, choiceSecCount, bulletCardStyle, bulletsSpecInfo, choiceSpecCount]
+    watch = [bulletsInfo, isFakeSecondary, choiceCount, choiceSecCount, bulletCardStyle, isFakeSpecial, choiceSpecCount]
     animations = wndSwitchAnim
   }
   let bulletSliderSlots = []
@@ -40,7 +39,7 @@ function respawnBullets() {
         cardStyle = bulletCardStyle,
         onChangeSlider = setCurUnitBullets
       })))
-  if (bulletsSecInfo.get() != null)
+  if (!isFakeSecondary.get())
     bulletSliderSlots.extend(array(choiceSecCount.get()).map(@(_, idx)
       mkBulletSliderSlot({
         idx,
@@ -57,7 +56,7 @@ function respawnBullets() {
         cardStyle = bulletCardStyle,
         onChangeSlider = setCurUnitBullets
       })))
-  if (bulletsSpecInfo.get() != null)
+  if (!isFakeSpecial.get())
     bulletSliderSlots.extend(array(choiceSpecCount.get()).map(@(_, idx)
       mkBulletSliderSlot({
         idx,

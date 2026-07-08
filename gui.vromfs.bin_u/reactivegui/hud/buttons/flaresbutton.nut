@@ -84,7 +84,7 @@ let mkPeriodicFlareBtn = @(btnSize, center, imgSize, imgRepeat, stateFlags, scal
     mkBtnBg(btnSize, hudLightBlackColor)
     @() {
       watch = FlaresState
-      size = flex()
+      size = FLEX
       children = mkCircleProgressBgWeapon(btnSize, shortcutId, FlaresState.get(), true)
     }
     mkBorderPlane(btnSize, true, stateFlags, scale)
@@ -175,7 +175,7 @@ function flaresButtonCtor(scale) {
       mkBtnBg(btnSize, hudLightBlackColor)
       @() {
         watch = FlaresState
-        size = flex()
+        size = FLEX
         children = mkCircleProgressBgWeapon(btnSize, shortcutId, FlaresState.get(), isAvailable.get())
       }
       mkBorderPlane(btnSize, isAvailable.get(), stateFlagsMain, scale)

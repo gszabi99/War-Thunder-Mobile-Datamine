@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module enum_trait shared private
@@ -36,14 +34,34 @@ def public string(arg) {
     return "{arg}"
 }
 
+[expect_any_enum(arg)]
+def public operator !(arg) : bool {
+    
+    
+    
+    
+    
+    
+    
+    return int64(arg) == 0l
+}
+
+[expect_any_enum(arg)]
+def public bool(arg) : bool {
+    
+    
+    
+    
+    
+    return int64(arg) != 0l
+}
+
 [template(ent), unused_argument(ent)]
 def public to_enum(ent : auto(EnumT), name : string) : EnumT {
     
     
     for (e in type<EnumT>) {
-        if ("{e}" == name) {
-            return e
-        }
+        if ("{e}" == name) return e
     }
     panic("to_enum: enum value '{name}' not found in enum '{typeinfo typename(type<EnumT>)}'")
     return default<EnumT>
@@ -54,9 +72,7 @@ def public to_enum(ent : auto(EnumT), name : string; defaultValue : EnumT) : Enu
     
     
     for (e in type<EnumT>) {
-        if ("{e}" == name) {
-            return e
-        }
+        if ("{e}" == name) return e
     }
     return defaultValue
 }
@@ -77,26 +93,26 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
     
     def override apply(var enu : EnumerationPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         
-        var inscope enumT <- new TypeDecl(baseType = Type.tEnumeration, enumType = enu.get_ptr())
+        var enumT = new TypeDecl(baseType = Type.tEnumeration, enumType = enu)
         
         let varName = "_`enum`table`{enu.name}"
         add_global_private_let(compiling_module(), varName, enu.at, qmacro(enum_to_table(type<$t(enumT)>)))
         
-        var inscope enumFn <- qmacro_function("{enu.name}") $(src : string) : $t(enumT) {
+        var enumFn = qmacro_function("{enu.name}") $(src : string) : $t(enumT) {
             if (!key_exists($i(varName), src)) {
                 panic("string_to_enum: enum value '{src}' not found in enum '{typeinfo typename(type<$t(enumT)>)}'")
             }
             return $i(varName)?[src] ?? default<$t(enumT)>
         }
-        enumFn.flags &= ~FunctionFlags.privateFunction
+        enumFn.flags.privateFunction = false
         force_at(enumFn, enu.at)
         force_generated(enumFn, true)
         compiling_module() |> add_function(enumFn)
         
-        var inscope enumFnDefault <- qmacro_function("{enu.name}") $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
+        var enumFnDefault = qmacro_function("{enu.name}") $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
             return $i(varName)?[src] ?? defaultValue
         }
-        enumFnDefault.flags &= ~FunctionFlags.privateFunction
+        enumFnDefault.flags.privateFunction = false
         force_at(enumFnDefault, enu.at)
         force_generated(enumFnDefault, true)
         compiling_module() |> add_function(enumFnDefault)
@@ -108,39 +124,39 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
 [typeinfo_macro(name="enum_length")]
 class TypeInfoGetEnumLength : AstTypeInfoMacro {
     
-    def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
+    def override getAstChange(expr : ExprTypeInfo?; var errors : das_string) : ExpressionPtr {
         
         if (expr.typeexpr != null) {
             if (!expr.typeexpr.isEnum) {
                 errors := "expecting enumeration"
-                return <- default<ExpressionPtr>
+                return null
             }
             let sz = length(expr.typeexpr.enumType.list)
             return <- new ExprConstInt(at = expr.at, value = sz)
         }
         errors := "type is missing or not inferred"
-        return <- default<ExpressionPtr>
+        return null
     }
 }
 
 [typeinfo_macro(name="enum_names")]
 class TypeInfoGetEnumNames : AstTypeInfoMacro {
     
-    def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
+    def override getAstChange(expr : ExprTypeInfo?; var errors : das_string) : ExpressionPtr {
         
         if (expr.typeexpr == null) {
             errors := "type is missing or not inferred"
-            return <- default<ExpressionPtr>
+            return null
         }
         if (!expr.typeexpr.isEnum) {
             errors := "expecting enumeration"
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope arr <- new ExprMakeArray(at = expr.at, makeType <- typeinfo ast_typedecl(type<string>))
+        var arr = new ExprMakeArray(at = expr.at, makeType = typeinfo ast_typedecl(type<string>))
         for (i in iter_range(expr.typeexpr.enumType.list)) {
             {
                 assume name = expr.typeexpr.enumType.list[i].name
-                var inscope nameExpr <- new ExprConstString(at = expr.at, value := name)
+                var nameExpr = new ExprConstString(at = expr.at, value := name)
                 arr.values |> emplace <| nameExpr
             }
         }

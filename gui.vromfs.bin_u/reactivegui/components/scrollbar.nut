@@ -17,13 +17,13 @@ let defStyle = {
   }
 
   rootBase = {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.Pannable
     touchMarginPriority = TOUCH_BACKGROUND
   }
 }
 
-let calcBarSize = @(scrollbarWidth, isVertical) isVertical ? [scrollbarWidth, flex()] : [flex(), scrollbarWidth]
+let calcBarSize = @(scrollbarWidth, isVertical) isVertical ? [scrollbarWidth, FLEX] : [FLEX, scrollbarWidth]
 
 let outsideBarParams = {
   [true] = {
@@ -60,7 +60,7 @@ function scrollbar(scroll_handler, options = {}) {
   let knob = @() {
     watch = stateFlags
     key = "knob"
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_SOLID
     color = knobStyle?.colorCalc(stateFlags.get()) ?? knobStyle?.color
   }
@@ -71,7 +71,7 @@ function scrollbar(scroll_handler, options = {}) {
       : 1.0 / elemSize.get()
     return {
       watch = [elemSize, maxV, fValue]
-      size = flex()
+      size = FLEX
       flow = isVertical ? FLOW_VERTICAL : FLOW_HORIZONTAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
@@ -122,7 +122,7 @@ function scrollbar(scroll_handler, options = {}) {
 let DEF_SIDE_SCROLL_OPTIONS = defStyle.__merge({ 
   scrollAlign = ALIGN_RIGHT
   orientation = O_VERTICAL
-  size = flex()
+  size = FLEX
   maxWidth = null
   maxHeight = null
   needReservePlace = true 
@@ -215,12 +215,12 @@ function makeHVScrolls(content, options = {}) {
   })
 
   return {
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
 
     children = [
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_HORIZONTAL
         clipChildren = true
         children = [

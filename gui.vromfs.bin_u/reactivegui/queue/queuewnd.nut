@@ -9,7 +9,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { secondsToTimeSimpleString, millisecondsToSecondsInt } = require("%sqstd/time.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE, QS_ACTUALIZE_SQUAD,
+let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_CHECK_HOSTS,
   QS_NOT_IN_QUEUE, QS_JOINING, QS_IN_QUEUE, QS_CHECK_PENALTY, QS_REQUEST_STATS
 } = require("%appGlobals/queueState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
@@ -47,10 +47,11 @@ let hintIconShip = "hud_binoculars.svg"
 
 let queueStateLocId = {
   [QS_NOT_IN_QUEUE] = "matching/SERVER_ERROR_NOT_IN_QUEUE",
+  [QS_REQUEST_STATS] = "wait/actualizeProfile",
   [QS_ACTUALIZE] = "wait/actualizeProfile",
   [QS_CHECK_PENALTY] = "wait/actualizeProfile",
-  [QS_REQUEST_STATS] = "wait/actualizeProfile",
   [QS_ACTUALIZE_SQUAD] = "wait/actualizeSquadMembersProfile",
+  [QS_CHECK_HOSTS] = "wait/checkingServers",
   [QS_JOINING] = "wait/joiningQueue",
   [QS_IN_QUEUE] = "yn1/waiting_time",
   [QS_LEAVING] = "wait/queueLeave",
@@ -291,7 +292,7 @@ let mkBgImageByGameMode = {
 
 let bgImage = @() {
   watch = [missionCampaign, lastQueueMode]
-  size = flex()
+  size = FLEX
   children = mkBgImageByGameMode?[lastQueueMode.get()]() ?? mkBgImagesByCampaign?[missionCampaign.get()]()
 }
 
@@ -304,7 +305,7 @@ let queueWindow = @() {
     addFpsLimit(key)
   }
   onDetach = @() removeFpsLimit(key)
-  size = flex()
+  size = FLEX
   children = [
     bgImage
     {

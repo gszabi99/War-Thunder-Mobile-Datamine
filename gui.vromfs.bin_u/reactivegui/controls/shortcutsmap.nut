@@ -5,8 +5,18 @@ let { isReplayShortcuts } = require("%rGui/controls/shortcutFlags.nut")
 let allShortcuts = isReplayShortcuts ? {
   ID_MPSTATSCREEN = "J:Back | Tab"
   ID_SHOW_HERO_MODULES = "J:X | 6"
+  ID_COMBINATION = "J:LB"
+
+  
+  cam_fwd_rangeMax = "J:LS.Up | W"
+  cam_fwd_rangeMin = "J:LS.Down | S"
+  cam_strafe_rangeMax = "J:LS.Right | D"
+  cam_strafe_rangeMin = "J:LS.Left | A"
+  cam_vert_rangeMax = "E"
+  cam_vert_rangeMin = "Q"
 }
 : {
+  ID_COMBINATION = "J:LB"
   
   ID_FLIGHTMENU = "J:Start | Esc" 
   ID_CONTINUE = "J:RT | Space"
@@ -73,6 +83,7 @@ let allShortcuts = isReplayShortcuts ? {
 
 
   ID_SHIP_MANUAL_ANTIAIR_TOGGLE = "J:LB J:Y | K"
+  ID_SHIP_TOGGLE_CIWS = "J:LB J:D.Right | L"
 
   
   submarine_main_engine_rangeMax = "J:LS.Up | W | Up"

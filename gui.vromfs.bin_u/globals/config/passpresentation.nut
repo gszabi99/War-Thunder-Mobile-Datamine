@@ -67,6 +67,14 @@ let epPresentations = {
     icon = "ui/gameuiskin#event_pass_icon_uk_air_release_event.avif"
     iconVip = "ui/gameuiskin#event_pass_icon_uk_air_release_event_vip.avif"
   }
+  japan_tanks_release = {
+    bgColor = 0xFF999999
+    descLocId = "events/desc/tasksAndBattlesScore"
+    shortDescLocId = "events/desc/short/tasksAndBattlesScore"
+    bg = "ui/images/event_bg_japan_tanks_early_access.avif"
+    icon = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event.avif"
+    iconVip = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event_vip.avif"
+  }
 }.map(@(c) defEpPresentation.__merge(c))
 
 let defNewbieBpPresentation = {

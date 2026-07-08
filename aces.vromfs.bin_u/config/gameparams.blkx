@@ -1,5 +1,6 @@
 {
   "lowResFxOverbright": 4.0,
+  "bulletSetHasTriggerGroup": true,
   "enableRiExplosionDamage": true,
   "simpleSinking": true,
   "useJWTProfile": true,
@@ -351,6 +352,8 @@
   "enableBotTorpedoShooting": true,
   "torpedoShootByBotMaxDistance": 4000.0,
   "rocketDetonationDepth": 5.0,
+  "countermeasureByBotMaxDistance": 800.0,
+  "countermeasureUpdateByBotDelay": 0.8,
   "shipBotMaxDistToPointToDriveBackward": 2500.0,
   "tankTouchSensMult": 1.0,
   "tankTouchAimSensMult": 1.0,
@@ -13610,7 +13613,10 @@
         "armor_belt",
         "coal_bunker",
         "armor_cit",
+        "aps_sensor_",
+        "aps_launcher_",
         "ex_era_hull_",
+        "ex_aps_launcher_",
         "ex_era_turret_",
         "bow",
         "compartment",
@@ -13726,7 +13732,10 @@
         "composite_armor_hull_",
         "composite_armor_turret_",
         "ex_era_hull_",
+        "ex_aps_launcher_",
         "ex_era_turret_",
+        "aps_sensor_",
+        "aps_launcher_",
         "antenna_target_location_",
         "antenna_target_tagging_",
         "antenna_target_tagging_mount_",
@@ -16148,6 +16157,102 @@
         },
         {
           "name": "wheel_r_01_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "btr_3e1"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "icv_prototype"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "centauro_rgo_120"
+        },
+        {
+          "name": "wheel_r_01_",
           "modelNames": "vilkas"
         },
         {
@@ -16177,6 +16282,38 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "vilkas"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "type_16_mcv"
         },
         {
           "name": "suspension_r_01",
@@ -16325,6 +16462,8 @@
         "rangefinder_mount_",
         "handling_room_",
         "countermeasure_",
+        "aps_sensor_",
+        "aps_launcher_",
         {
           "name": "optic_"
         },
@@ -16546,6 +16685,10 @@
         },
         {
           "name": "ex_era_turret_",
+          "hideIfDead": true
+        },
+        {
+          "name": "ex_aps_launcher_",
           "hideIfDead": true
         },
         {
@@ -18744,6 +18887,7 @@
     "snapshotPeriod": 30,
     "replayRewind": true,
     "writeUnitNamesList": true,
+    "writeFuel": true,
     "showGuidanceLockTracker": true,
     "allowSelectFarAwayUnit": false
   },

@@ -24,7 +24,7 @@ let mkRewardPlateBg = @(size) {
   rendObj = ROBJ_BOX
   fillColor = 0xFFB9B9B9
   children = {
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_9RECT
@@ -32,7 +32,7 @@ let mkRewardPlateBg = @(size) {
     padding = hdpx(3)
     color = 0xFFEEEEEE
     children = {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#offer_item_slot_bg.avif")
     }
@@ -125,7 +125,7 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
       }
       @() {
         watch = activeSlideIdx
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL

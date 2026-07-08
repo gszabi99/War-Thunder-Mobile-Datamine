@@ -20,7 +20,7 @@ function mkDebriefingWndTabMpStats(debrData, _params) {
   let playersByTeamAligned = alignTeamLengths(mkPlayersByTeam(debrData))
   let tableHeight = contentHeight - topMargin
   let comp = {
-    size = const [sw(100), flex()]
+    size = const [sw(100), FLEX]
     pos = [0, topMargin]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER

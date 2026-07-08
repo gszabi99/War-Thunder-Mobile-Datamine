@@ -17,7 +17,7 @@ let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, clos
   HIDE_PREVIEW_MODALS_ID
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { mkRentBattlesButton, queueCurRandomBattleMode } = require("%rGui/mainMenu/toBattleButton.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
@@ -174,7 +174,7 @@ function openDetailsWnd() {
   let { skin = null } = unitForShow.get()
   if (skin != null && skin != (previewGoodsUnit.get()?.skin ?? previewGoodsUnit.get()?.currentSkins?[name] ?? "")) 
     cfg.skin <- skin
-  unitDetailsWnd(cfg)
+  openUnitDetailsWnd(cfg)
 }
 
 function mkBlueprintUnitPlate(unit){
@@ -195,7 +195,7 @@ function mkBlueprintUnitPlate(unit){
           }
           mkUnitTexts(unit, getUnitName(unit.name))
           {
-            size = flex()
+            size = FLEX
             valign = ALIGN_BOTTOM
             flow = FLOW_VERTICAL
             children = [
@@ -255,7 +255,7 @@ function mkAirBranchUnitPlate(unit, onSelectUnit) {
         ]
       }
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_TOP
         pos = [0, -selLineSize]
         children = selectedLineHorUnits(isSelected)
@@ -398,7 +398,7 @@ let earlyAccessDescriptionBlock = @(locId, unitName = null) {
 }
 
 let leftBlockSingleUnit = {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap = verticalGap
   children = [
@@ -413,7 +413,7 @@ function leftBlockEarlyAccess() {
   let backgroundImg = presentation.image
   return {
     watch = [goodsBattleMode, previewGoodsUnit]
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
     gap = verticalGap
     children = [
@@ -426,10 +426,10 @@ function leftBlockEarlyAccess() {
 }
 
 let rightBlock = {
-  size = flex()
+  size = FLEX
   children = [
     {
-      size = [flex(), maxInfoPanelHeight]
+      size = [FLEX, maxInfoPanelHeight]
       vplace = ALIGN_TOP
       children = unitInfoPanel({
         maxHeight = maxInfoPanelHeight
@@ -501,7 +501,7 @@ let scrollArrowsBlock = {
 
 let leftBlockUnits = @() {
   watch = [totalUnits, previewGoodsUnit, schRewards, goodsBattleMode]
-  size = totalUnits.get() > 1 ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT] : flex()
+  size = totalUnits.get() > 1 ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT] : FLEX
   halign = ALIGN_LEFT
   children = totalUnits.get() > 1
     ? @() {
@@ -526,14 +526,14 @@ let cbId = "onResetPenaltyToRandomBattleInUnitPreview"
 registerHandler(cbId, @(res) res?.error == null ? showNoPremMessageIfNeed(@() queueCurRandomBattleMode()) : null)
 
 let leftBlock = {
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap = verticalGap
   children = [
     @() {
       watch = needScroll
       size = !needScroll.get()
-        ? flex()
+        ? FLEX
         : [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
       children = [
         !needScroll.get() ? leftBlockUnits
@@ -570,7 +570,7 @@ previewRentUnitId.subscribe(@(id) battleRentInfo.set(id == null ? null
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = verticalGap
@@ -628,7 +628,7 @@ let previewWnd = @() {
           ]
         }
         {
-          size = flex()
+          size = FLEX
           children = [
             leftBlock
             rightBlock

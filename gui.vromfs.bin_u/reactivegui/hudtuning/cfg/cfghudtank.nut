@@ -8,9 +8,8 @@ let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGE
   EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let { mkCircleTankPrimaryGun, mkCircleGroundSecondaryGun, mkCircleGroundMachineGun, mkCircleZoomCtor,
-  mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn,
-  mkCircleFireworkBtn
+let { mkCircleTankPrimaryGun, mkCircleGroundMachineGun, mkCircleFireworkBtn, mkCircleTargetTrackingBtn,
+  mkCircleZoomCtor, mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { withActionBarButtonCtor, withAnyActionBarButtonCtor, withActionsButtonScaleCtor,
   withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
@@ -33,17 +32,25 @@ let { NEED_SHOW_POSE_INDICATOR, mkMoveIndicator, moveIndicatorTankEditView
 let { mkFreeCameraButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
+let { sideGunBulletMainButton, sideGunBulletExtraButton } = require("%rGui/hud/bullets/sideBulletButton.nut")
+let { mkSecGunWithBullets, mkSecGunWithBulletsEditView } = require("%rGui/hud/bullets/bulletSelectorCircle.nut")
+let { isFakeSecondary, isFakeSpecial, hasOnlyOneSideGroup, mainBulletInfoSec, extraBulletInfoSec, mainBulletCountSec,
+  bulletsInfoSec, currentBulletNameSec, nextBulletNameSec, selectBulletSec, mainBulletInfoSpec, extraBulletInfoSpec,
+  mainBulletCountSpec, extraBulletCountSec, extraBulletCountSpec, bulletsInfoSpec, currentBulletNameSpec,
+  nextBulletNameSpec, selectBulletSpec
+} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { mkBulletEditView, mkRepairActionItem } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
-let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns,
-  optDoubleRepairBtn
+let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns, optDoubleRepairBtn, optSplitSideGunBullets,
+  isBulletsRight, optBulletsRight
 } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
 let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
 let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isUnitAlive, isPlayingReplay, isInHangarChallenge } = require("%rGui/hudState.nut")
+let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
+let { isInHangarChallenge } = require("%rGui/hud/challengeState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
 let { showRadarOverMap, IsRadarVisible, IsRadarHudVisible, IsBScopeVisible } = require("%rGui/radar/radarState.nut")
@@ -51,6 +58,7 @@ let { mkRadarToggleButton, mkRadarToggleButtonEditView } = require("%rGui/radar/
 let { radarHudWithOverlayCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
 let { isCompassVisible } = require("%rGui/compass/compassState.nut")
 let { mkCompass, mkCompassEditView } = require("%rGui/compass/compass.nut")
+let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.get() == "arrows")
@@ -66,6 +74,16 @@ let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
 let tacticalMapPos = hdpx(155)
+
+let hasDoubleChoiceSec = Computed(@() !isFakeSecondary.get() && hasOnlyOneSideGroup.get())
+let hasDoubleChoiceSpec = Computed(@() !isFakeSpecial.get() && hasOnlyOneSideGroup.get())
+
+let isSplitSideGun = Computed(@() optSplitSideGunBullets.has(curUnitHudTuningOptions.get()))
+let hasSplitSingleSideGroup = Computed(@() isSplitSideGun.get() && hasOnlyOneSideGroup.get())
+let hasDoubleChoiceSecOpt = Computed(@() !isSplitSideGun.get() && hasDoubleChoiceSec.get())
+let hasDoubleChoiceSpecOpt = Computed(@() !isSplitSideGun.get() && hasDoubleChoiceSpec.get())
+let curSecGunBulletsOrientation = Computed(@() isBulletsRight(curUnitHudTuningOptions.get(), "secondaryGun"))
+let curSpecGunBulletsOrientation = Computed(@() isBulletsRight(curUnitHudTuningOptions.get(), "specialGun"))
 
 return {
   primaryGun = withActionsButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA],
@@ -90,18 +108,32 @@ return {
     })
 
   secondaryGun = withActionButtonScaleCtor(AB_SECONDARY_WEAPON,
-    mkCircleGroundSecondaryGun("ID_FIRE_GM_SECONDARY_GUN", AB_SECONDARY_WEAPON, "ui/gameuiskin#hud_main_weapon_fire.svg"),
+    mkSecGunWithBullets("ID_FIRE_GM_SECONDARY_GUN", AB_SECONDARY_WEAPON, "ui/gameuiskin#hud_main_weapon_fire.svg",
+      mainBulletInfoSec, extraBulletInfoSec, mainBulletCountSec, extraBulletCountSec,
+      bulletsInfoSec, currentBulletNameSec, nextBulletNameSec, @() selectBulletSec(0), @() selectBulletSec(1),
+      hasDoubleChoiceSecOpt, curSecGunBulletsOrientation),
     {
-      defTransform = mkRBPos([hdpx(-81), hdpx(-425)])
-      editView = mkCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
+      defTransform = mkRBPos([hdpx(-150), hdpx(-450)])
+      editView = @(options) optSplitSideGunBullets.has(options)
+        ? mkCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
+        : mkSecGunWithBulletsEditView("ui/gameuiskin#hud_main_weapon_fire.svg",
+            isBulletsRight(options, "secondaryGun"))
+      options = [optSplitSideGunBullets, optBulletsRight]
     })
 
   specialGun = withActionButtonScaleCtor(AB_SPECIAL_WEAPON,
-    mkCircleGroundSecondaryGun("ID_FIRE_GM_SPECIAL_GUN", AB_SPECIAL_WEAPON, "ui/gameuiskin#icon_rocket_in_progress.svg"),
+    mkSecGunWithBullets("ID_FIRE_GM_SPECIAL_GUN", AB_SPECIAL_WEAPON, "ui/gameuiskin#icon_rocket_in_progress.svg",
+      mainBulletInfoSpec, extraBulletInfoSpec, mainBulletCountSpec, extraBulletCountSpec,
+      bulletsInfoSpec, currentBulletNameSpec, nextBulletNameSpec, @() selectBulletSpec(0), @() selectBulletSpec(1),
+      hasDoubleChoiceSpecOpt, curSpecGunBulletsOrientation),
     {
-      defTransform = mkRBPos([hdpx(-28), hdpx(-265)])
-      editView = mkCircleBtnEditView("ui/gameuiskin#icon_rocket_in_progress.svg")
+      defTransform = mkRBPos([hdpx(-30), hdpx(-265)])
+      editView = @(options) optSplitSideGunBullets.has(options)
+        ? mkCircleBtnEditView("ui/gameuiskin#icon_rocket_in_progress.svg")
+        : mkSecGunWithBulletsEditView("ui/gameuiskin#icon_rocket_in_progress.svg",
+            isBulletsRight(options, "specialGun"))
       priority = Z_ORDER.BUTTON_PRIMARY
+      options = [optSplitSideGunBullets, optBulletsRight]
     })
 
   machineGun = {
@@ -214,6 +246,26 @@ return {
     defTransform = actionBarTransform(6, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 2)
     priority = Z_ORDER.BUTTON
+  }
+
+  sideGunBulletMain = {
+    ctor = sideGunBulletMainButton
+    defTransform = mkRBPos([hdpx(-actionBarInterval * 7) - (touchButtonSize * 0.1).tointeger(), hdpx(-150)])
+    editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 1, 0.8)
+    priority = Z_ORDER.BUTTON
+    isVisible = @(options) optSplitSideGunBullets.has(options)
+    isVisibleInBattle = hasSplitSingleSideGroup
+    options = [optSplitSideGunBullets]
+  }
+
+  sideGunBulletExtra = {
+    ctor = sideGunBulletExtraButton
+    defTransform = mkRBPos([hdpx(-actionBarInterval * 6) - (touchButtonSize * 0.1).tointeger(), hdpx(-150)])
+    editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 2, 0.8)
+    priority = Z_ORDER.BUTTON
+    isVisible = @(options) optSplitSideGunBullets.has(options)
+    isVisibleInBattle = hasSplitSingleSideGroup
+    options = [optSplitSideGunBullets]
   }
 
   voiceCmdStick = {

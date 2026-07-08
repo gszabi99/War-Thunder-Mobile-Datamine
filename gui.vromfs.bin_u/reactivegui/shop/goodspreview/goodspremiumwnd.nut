@@ -124,7 +124,7 @@ let premiumDescription = {
   }
 
 let backBtn = {
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   valign = ALIGN_CENTER
   children = backButton(closeGoodsPreview)
 }
@@ -132,7 +132,7 @@ let backBtn = {
 let premiumDescriptionWnd = {
   key = premDescWndUid
   rendObj = ROBJ_SOLID
-  size = flex()
+  size = FLEX
   color = premiumDescriptionWndBg
   padding = saBordersRv
   behavior = Behaviors.Button

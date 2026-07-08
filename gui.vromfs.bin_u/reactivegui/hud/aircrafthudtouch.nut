@@ -32,7 +32,7 @@ function mkOverheatProgress(orientation, progress) {
   let from = orientation == ORIENT_RIGHT ? 0.385 - progress* 0.25 : 0.615 + progress* 0.25
   let to = orientation == ORIENT_RIGHT ?  0.125 : 0.875
   return {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_PROGRESS_CIRCULAR
     image = orientation == ORIENT_RIGHT ? progressImageRight : progressImageLeft
     fgColor = orientation == ORIENT_RIGHT ? backGroundColor : overheatColor
@@ -46,7 +46,7 @@ function mkReloadProgress(orientation, duration) {
   let from = orientation == ORIENT_RIGHT ? 0.375 : 0.625
   let to = orientation == ORIENT_RIGHT ?  0.125 : 0.875
   return {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_PROGRESS_CIRCULAR
     image = orientation == ORIENT_RIGHT ? progressImageRight : progressImageLeft
     fgColor = orientation == ORIENT_RIGHT ? backGroundColor : reloadColor
@@ -73,7 +73,7 @@ let pointCrosshairScreenPositionUpdate = @() {
 
 let leftOverheatProgress = @() {
   watch = [hasCanon0, cannonsOverheat, Cannon0]
-  size = flex()
+  size = FLEX
   children = hasCanon0.get() && cannonsOverheat.get() > 0.1 && Cannon0.get().time == 0.
     ? mkOverheatProgress(ORIENT_LEFT, cannonsOverheat.get())
     : null
@@ -81,7 +81,7 @@ let leftOverheatProgress = @() {
 
 let rightOverheatProgress = @() {
   watch = [hasMGun0, hasAddGun, mgunsOverheat, addgunsOverheat, MGun0, AddGun]
-  size = flex()
+  size = FLEX
   children = hasMGun0.get() && mgunsOverheat.get() > 0.1 && MGun0.get().time == 0.
     ? mkOverheatProgress(ORIENT_RIGHT, mgunsOverheat.get())
     : hasAddGun.get() && addgunsOverheat.get() > 0.1 && AddGun.get().time == 0. ? mkOverheatProgress(ORIENT_RIGHT, addgunsOverheat.get())
@@ -90,7 +90,7 @@ let rightOverheatProgress = @() {
 
 let leftReloadProgress = @() {
   watch = [hasCanon0, Cannon0]
-  size = flex()
+  size = FLEX
   children = hasCanon0.get() && Cannon0.get().time > 0.
     ? mkReloadProgress(ORIENT_LEFT, Cannon0.get().time)
     : null
@@ -98,7 +98,7 @@ let leftReloadProgress = @() {
 
 let rightReloadProgress = @() {
   watch = [hasMGun0, MGun0]
-  size = flex()
+  size = FLEX
   children = hasMGun0.get() && MGun0.get().time > 0.
     ? mkReloadProgress(ORIENT_RIGHT,MGun0.get().time)
     : null
@@ -138,13 +138,13 @@ let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
   pos = [ - hitIndicatorSize * 0.5, - hitIndicatorSize * 0.5]
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = hitIndicatorStateCount.get() > 0 ? ROBJ_IMAGE : null
       image =  hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
       animations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
     }
     {
-      size = flex()
+      size = FLEX
       rendObj = hitIndicatorStateCount.get() > 1 ? ROBJ_IMAGE : null
       image = hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
       transform = {
@@ -153,7 +153,7 @@ let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
       animations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
     }
     {
-      size = flex()
+      size = FLEX
       rendObj = hitIndicatorStateCount.get() > 2 ? ROBJ_IMAGE : null
       image =  hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
       transform = {

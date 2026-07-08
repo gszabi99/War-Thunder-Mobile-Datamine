@@ -8,6 +8,7 @@ let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let isUnitsTreeOpen = mkWatched(persist, "isUnitsTreeOpen", false)
 let isUnitsTreeAttached = Watched(false)
 let unitsTreeOpenRank = Watched(null)
+let isUnitPlateLevelVisible = mkWatched(persist, "isUnitPlateLevelVisible", false)
 
 let unitsMaxRank = Computed(@() campUnitsCfg.get().map(@(v) v.rank).reduce(@(a, b) max(a, b)) ?? 0)
 
@@ -25,6 +26,7 @@ function openUnitsTreeAtUnit(unitName) {
 return {
   isUnitsTreeOpen
   isUnitsTreeAttached
+  isUnitPlateLevelVisible
   unitsTreeOpenRank
   closeUnitsTreeWnd
   openUnitsTreeWnd

@@ -86,7 +86,7 @@ function getErrorMsgParams(errCodeBase) {
     viewType = "errorMsg"
     text
     bqLocId
-    moreInfoLink = curtomUrls?[errCodeBase] ?? "".concat(loc($"url/knowledgebase"), errCode)
+    moreInfoLink = curtomUrls?[errCodeBase] ?? "".concat(getCurCircuitOverride("knowledgebaseURL",loc($"url/knowledgebase")), errCode)
     debugString = get_last_session_debug_info()
   }
 }

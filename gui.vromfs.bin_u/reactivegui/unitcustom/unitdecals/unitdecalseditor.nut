@@ -82,7 +82,7 @@ let decalActions = @() {
     size = optContainerBtnSize
     children = [
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_TOP
         halign = ALIGN_RIGHT
         children = [
@@ -91,7 +91,7 @@ let decalActions = @() {
         ]
       }
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [
@@ -101,7 +101,7 @@ let decalActions = @() {
         ]
       }
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         halign = ALIGN_LEFT
         children = [

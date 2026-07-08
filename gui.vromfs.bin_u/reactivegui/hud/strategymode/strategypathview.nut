@@ -301,7 +301,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
         children = [
           {
             rendObj = ROBJ_BOX
-            size = flex()
+            size = FLEX
             fillColor = isSelected.get() ? btnBgStyle.get().ready : 0
             borderWidth = (isSelected.get() || border) ? borderWidth : 0
             borderColor = borderColor
@@ -513,7 +513,7 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
       }
       {
         rendObj = ROBJ_TEXT
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         color = isEnabled.get() ? imageColor : imageDisabledColor
@@ -574,7 +574,7 @@ function mkCommandsUi(groupIndex) {
 }
 
 let pathNodesUi = @() {
-  size = flex()
+  size = FLEX
   watch = strategyDataCur
   children = strategyDataCur.get() ? mkNodesUi(strategyDataCur.get()) : null
 }

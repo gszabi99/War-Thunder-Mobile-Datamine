@@ -90,7 +90,7 @@ let headerText = @(text) {
 }.__update(fontTinyAccented)
 
 let header = @(children, ovr = {}) bg.__merge({
-  size = [flex(), headerHeight]
+  size = [FLEX, headerHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL

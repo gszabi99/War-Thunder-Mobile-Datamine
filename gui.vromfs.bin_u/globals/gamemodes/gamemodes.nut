@@ -7,8 +7,6 @@ from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 
 
 let gameModesRaw = sharedWatched("gameModesRaw", @() {}, 10) 
-let totalRooms = sharedWatched("totalRooms", @() -1)
-let totalPlayers = sharedWatched("totalPlayers", @() -1)
 let endedModes = Watched({})
 
 function updateEndTime() {
@@ -46,9 +44,6 @@ foreach (w in [isServerTimeValid, gameModesRaw])
 
 let allGameModes = Computed(@() gameModesRaw.get().filter(@(m, id) !(m?.disabled ?? false) && id not in endedModes.get()))
 
-let mkGameModeByCampaign = @(campaign)
-  Computed(@() allGameModes.get().findvalue(@(m) m?.displayType == "random_battle" && m?.campaign == campaign))
-
 let gameModeQueueGroups = Computed(function() {
   let res = {}
   foreach (m in allGameModes.get()) {
@@ -63,11 +58,8 @@ let getGameModeQueueGroup = @(mode, gameModeQueueGroupsV)
   gameModeQueueGroupsV?[mode?.economicName] ?? [mode]
 
 return {
-  mkGameModeByCampaign
   gameModesRaw
   allGameModes
-  totalPlayers
-  totalRooms
   gameModeQueueGroups
   getGameModeQueueGroup
   endedModes

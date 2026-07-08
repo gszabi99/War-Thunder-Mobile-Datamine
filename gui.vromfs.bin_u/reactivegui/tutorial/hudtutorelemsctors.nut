@@ -116,7 +116,7 @@ let mkImg = function(imgName, ovr = {}){
 let videoKey = {}
 let air_tutorial_shooting_moving_target = @(_) {
   key = videoKey
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0xFF000000
   padding = sh(5)

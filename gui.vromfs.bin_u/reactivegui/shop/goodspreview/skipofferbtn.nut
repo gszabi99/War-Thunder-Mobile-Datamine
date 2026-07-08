@@ -89,7 +89,7 @@ registerHandler("onGetSkipOfferAvailability", function(res) {
 })
 
 let skipsEnded = {
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   children = [
     {
       size = [iconSizeBig, iconSizeBig]
@@ -130,7 +130,7 @@ let contentVip = @(leftCount) leftCount < 1 ? skipsEnded : {
 }
 
 let contentCommon = @() {
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   children = [
     {
       pos = [-hdpx(25), 0]

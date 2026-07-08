@@ -50,7 +50,7 @@ let function skinBtn(skin) {
     children = [
       @() {
         watch = isSelected
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
         color = isSelected.get() ? selectColor : 0
@@ -58,7 +58,7 @@ let function skinBtn(skin) {
       }
       @() {
         watch = stateFlags
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_BOX
         fillColor = stateFlags.get() & S_HOVER ? hoverColor : 0
         borderRadius = skinBorderRadius
@@ -68,7 +68,7 @@ let function skinBtn(skin) {
       }
       @() {
         watch = isSelected
-        size = flex()
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
         children = isSelected.get() ? mkIcon("ui/gameuiskin#back_icon.svg", { color = 0xFF78FA78 }) : null

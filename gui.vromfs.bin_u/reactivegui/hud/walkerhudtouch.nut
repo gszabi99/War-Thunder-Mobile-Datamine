@@ -129,7 +129,7 @@ let circle = @(color, width) {
   color
   fillColor = 0
   rendObj = ROBJ_VECTOR_CANVAS
-  size = flex()
+  size = FLEX
   lineWidth = width
   commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
 }
@@ -167,7 +167,7 @@ let arcadeCrosshair = @() {
 }
 
 let mkReadyPart = @(progress) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_PROGRESS_CIRCULAR
   image = readyImage
   fgColor = crosshairReadyColor

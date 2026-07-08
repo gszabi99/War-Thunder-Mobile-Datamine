@@ -277,7 +277,7 @@ let showReplayError = @(isCorrupted)
   })
 
 let progressSpinner = {
-  size = [flex(), defButtonHeight]
+  size = [FLEX, defButtonHeight]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = spinner
@@ -317,7 +317,7 @@ let mkCheckIcon = @(isChecked, opacity) {
 
 let mkTrashButton = @(onClick) iconButtonCommon("ui/gameuiskin#btn_trash.svg", onClick,
   {
-    iconSize = hdpx(50),
+    iconOvr = { size = hdpx(50) },
     ovr = {
       size = [defButtonHeight, defButtonHeight],
       minWidth = defButtonHeight
@@ -372,14 +372,14 @@ let replayColumnsCfg = [
 ]
 
 let mkHeaderRow = @(columnCfg) {
-  size = [flex(), rowHeight]
+  size = [FLEX, rowHeight]
   flow = FLOW_HORIZONTAL
   padding = [0, 0, 0, headerGap + arrowFullSizeW]
   rendObj = ROBJ_SOLID
   color = bgColor
   gap = columnGap
   children = columnCfg.map(@(c) {
-    size = [c.width, flex()]
+    size = [c.width, FLEX]
     halign = ALIGN_LEFT
     valign = ALIGN_CENTER
     children = cellTextProps.__merge({ text = loc(c.headerText) })
@@ -387,11 +387,11 @@ let mkHeaderRow = @(columnCfg) {
 }
 
 let mkFoldableHeader = @(replay, columnCfg) {
-  size = [flex(), rowHeight]
+  size = [FLEX, rowHeight]
   flow = FLOW_HORIZONTAL
   gap = columnGap
   children = columnCfg.map(@(c) {
-    size = [c.width, flex()]
+    size = [c.width, FLEX]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     children = c.contentCtor(replay)
@@ -424,10 +424,10 @@ function mkAvatar(player) {
 }
 
 let mkPlayer = @(player, teamColor, halign) {
-  size = [flex(), playerRowHeight]
+  size = [FLEX, playerRowHeight]
   children = [
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       padding = halign == ALIGN_RIGHT ? [hdpx(2), 0, hdpx(2), hdpx(4)] : [hdpx(2), hdpx(4), hdpx(2), 0]
       gap = hdpx(4)
@@ -498,11 +498,11 @@ let mkFoldableContent = @(replay, isActive) @() {
               children = [
                 replay.isNotAvailable
                     ? textButtonInactive(utf8ToUpper(loc("strategyMode/launch")),
-                        @() showReplayError(replay.corrupted), { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
+                        @() showReplayError(replay.corrupted), { ovr = { minWidth = 0, size = [FLEX, defButtonHeight] } })
                   : !isReplayLoading.get()
                     ? textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")),
                         @() notAvailableForSquadMsg(@() startReplay(replay.path, replay.missionName)),
-                        { ovr = { minWidth = 0, size = [flex(), defButtonHeight] } })
+                        { ovr = { minWidth = 0, size = [FLEX, defButtonHeight] } })
                   : progressSpinner
                 !isReplayLoading.get() ? mkTrashButton(@() onDeleteReplay(replay)) : null
               ]
@@ -540,7 +540,7 @@ let mkReplaysRows = @(replays, columnsCfg) @(){
         children = replays.map(@(replay, idx) mkRow(replay, columnsCfg, idx))
       },
       {
-        size = [flex(), saSize[1] - (gamercardHeight + rowHeight + columnGap * 2 + saBorders[1])]
+        size = [FLEX, saSize[1] - (gamercardHeight + rowHeight + columnGap * 2 + saBorders[1])]
         isBarOutside = true
         barStyleCtor = @(hasScroll) !hasScroll ? {}
           : {
@@ -552,7 +552,7 @@ let mkReplaysRows = @(replays, columnsCfg) @(){
 }
 
 return @() {
-  size = flex()
+  size = FLEX
   watch = replaysList
   onAttach = @() refreshReplaysList()
   function onDetach() {

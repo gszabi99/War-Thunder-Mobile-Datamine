@@ -46,7 +46,7 @@ let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts
     size = [memberSize, memberSize]
   },
   @() {
-    size = flex()
+    size = FLEX
     watch = requestsToMeUids
     halign = ALIGN_RIGHT
     valign = ALIGN_TOP

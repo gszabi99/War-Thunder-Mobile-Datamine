@@ -35,7 +35,7 @@ let buttons = @() {
 
 return {
   key = {}
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   onDetach = @() markReadAll()
   gap

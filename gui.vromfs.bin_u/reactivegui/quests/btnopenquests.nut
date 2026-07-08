@@ -27,8 +27,8 @@ function btnOpenQuests(keyPostfix) {
     watch = questsBySection
     children = questsBySection.get().findindex(@(s) s.len() > 0) == null ? null
       : translucentButton("ui/gameuiskin#quests.svg",
-          "",
           openQuestsWnd,
+          null,
           statusMark,
           {
             key,
@@ -58,8 +58,8 @@ function mkBtnOpenTabQuests(tabId, ovr = {}) {
     watch = questsBySection
     children = questsBySection.get().findindex(@(s) s.len() > 0) == null ? null
       : translucentButton("ui/gameuiskin#quests.svg",
-          "",
           @() openQuestsWndOnTab(tabId),
+          null,
           @(_) status,
           ovr)
   }

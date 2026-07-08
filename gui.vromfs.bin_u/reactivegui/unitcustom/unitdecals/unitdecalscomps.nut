@@ -51,13 +51,13 @@ function getDecalDesc(name) {
 
 let mkDecalPrice = @(isAvailable, decalPrice, ovr = {}) @() {
   watch = [isAvailable, decalPrice]
-  size = [flex(), ph(30)]
+  size = [FLEX, ph(30)]
   vplace = ALIGN_BOTTOM
   valign = ALIGN_CENTER
   children = !isAvailable.get() && (decalPrice.get()?.price ?? 0) > 0
     ? [
         {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_BOX
           fillColor = commonBgColor
         }
@@ -68,7 +68,7 @@ let mkDecalPrice = @(isAvailable, decalPrice, ovr = {}) @() {
 }.__update(ovr)
 
 let decalBackground = {
-  size = flex()
+  size = FLEX
   padding = borderWidth
   borderWidth
   rendObj = ROBJ_BOX
@@ -91,7 +91,7 @@ let lockIcon = {
 }
 
 let unseenMark = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_RIGHT
   valign = ALIGN_TOP
   padding = hdpx(10)
@@ -148,7 +148,7 @@ function mkDecalCard(decal, availableDecals, selectedDecal, unseenDecals, onSele
 
 let disabledSlotContent = @() {
   watch = allow_subscriptions
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = commonBgColor
   opacity = 0.8
@@ -172,7 +172,7 @@ let emptySlotContent = {
 }.__update(fontVeryTinyAccentedShaded)
 
 let mkEmptyDecalSlot = @(isSelected, isDisabled, editingDecalId) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -185,7 +185,7 @@ let mkEmptyDecalSlot = @(isSelected, isDisabled, editingDecalId) {
 }
 
 let mkDefaultDecalSlot = @(decalId, isDisabled) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [

@@ -61,19 +61,27 @@ def install_new_thread_local_debug_agent(var agentPtr) {
 }
 
 
+
+
+
+
+
+
 struct DapiArray {
     data : void?
-    size : uint
-    capacity : uint
+    size : uint64
+    capacity : uint64
     lock : uint
     magic : uint
     flags : bitfield<_shared; _hopeless>
+    _pad_after_flags : uint
 }
 
 
 struct DapiTable : DapiArray {
     keys : void?
     hashes : uint?
+    tombstones : uint64
 }
 
 
@@ -106,7 +114,7 @@ class DapiDataWalker {
     def abstract canVisitStructure(ps : void?; si : StructInfo) : bool
     def abstract canVisitDim(ps : void?; ti : TypeInfo) : bool
     def abstract canVisitArray(pa : void?; ti : TypeInfo) : bool
-    def abstract canVisitArrayData(ti : TypeInfo; count : uint) : bool
+    def abstract canVisitArrayData(ti : TypeInfo; count : uint64) : bool
     def abstract canVisitTuple(ps : void?; ti : TypeInfo) : bool
     def abstract canVisitVariant(ps : void?; ti : TypeInfo) : bool
     def abstract canVisitTable(ps : void?; ti : TypeInfo) : bool
@@ -125,19 +133,19 @@ class DapiDataWalker {
     def abstract afterTupleEntry(ps : void?; ti : TypeInfo; pv : void?; idx : int; last : bool) : void
     def abstract beforeVariant(ps : void?; ti : TypeInfo) : void
     def abstract afterVariant(ps : void?; ti : TypeInfo) : void
-    def abstract beforeArrayData(ps : void?; stride : uint; count : uint; ti : TypeInfo) : void
-    def abstract afterArrayData(ps : void?; stride : uint; count : uint; ti : TypeInfo) : void
-    def abstract beforeArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint; last : bool) : void
-    def abstract afterArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint; last : bool) : void
+    def abstract beforeArrayData(ps : void?; stride : uint; count : uint64; ti : TypeInfo) : void
+    def abstract afterArrayData(ps : void?; stride : uint; count : uint64; ti : TypeInfo) : void
+    def abstract beforeArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint64; last : bool) : void
+    def abstract afterArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint64; last : bool) : void
     def abstract beforeDim(ps : void?; ti : TypeInfo) : void
     def abstract afterDim(ps : void?; ti : TypeInfo) : void
     def abstract beforeArray(pa : DapiArray; ti : TypeInfo) : void
     def abstract afterArray(pa : DapiArray; ti : TypeInfo) : void
     def abstract beforeTable(pa : DapiTable; ti : TypeInfo) : void
-    def abstract beforeTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint; last : bool) : void
-    def abstract afterTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint; last : bool) : void
-    def abstract beforeTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint; last : bool) : void
-    def abstract afterTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint; last : bool) : void
+    def abstract beforeTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint64; last : bool) : void
+    def abstract afterTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint64; last : bool) : void
+    def abstract beforeTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint64; last : bool) : void
+    def abstract afterTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint64; last : bool) : void
     def abstract afterTable(pa : DapiTable; ti : TypeInfo) : void
     def abstract beforeRef(ps : void?; ti : TypeInfo) : void
     def abstract afterRef(ps : void?; ti : TypeInfo) : void
@@ -191,13 +199,14 @@ class DapiDataWalker {
     def abstract InvalidData : void
 }
 
-def make_data_walker(classPtr) : smart_ptr<DataWalker> {
+def make_data_walker(classPtr; blk : block<(var adapter : DataWalker?) : void>) {
     static_if (typeinfo is_class(*classPtr)) {
-        let classInfo = class_info(*classPtr)
-        return <- make_data_walker(classPtr, classInfo)
+        unsafe {
+            let classInfo = class_info(*classPtr)
+            make_data_walker(classPtr, classInfo, blk)
+        }
     } else {
         concept_assert(false, "can't make data walker of non-class")
-        return <- default<smart_ptr<DataWalker>>
     }
 }
 
@@ -218,12 +227,13 @@ class DapiStackWalker {
     def abstract onCorruptStack(pp : Prologue) : void
 }
 
-def make_stack_walker(classPtr) : smart_ptr<StackWalker> {
+def make_stack_walker(classPtr; blk : block<(var adapter : StackWalker?) : void>) {
     static_if (typeinfo is_class(*classPtr)) {
-        let classInfo = class_info(*classPtr)
-        return <- make_stack_walker(classPtr, classInfo)
+        unsafe {
+            let classInfo = class_info(*classPtr)
+            make_stack_walker(classPtr, classInfo, blk)
+        }
     } else {
         concept_assert(false, "can't make stack walker of non-class")
-        return <- default<smart_ptr<StackWalker>>
     }
 }

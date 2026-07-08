@@ -18,7 +18,8 @@ let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress, acti
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap, linkToEventWidth, mkQuestText
+  allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap, linkToEventWidth, mkQuestText,
+  btnStyle, btnStyleSound
 } = require("%rGui/quests/questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull,
   getRewardsPreviewInfo, getEventCurrencyReward, REWARDS_PREVIEW_SLOTS
@@ -45,7 +46,7 @@ let { mkChainProgress } = require("%rGui/quests/questChain.nut")
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { G_UNIT } = require("%appGlobals/rewardType.nut")
 let { REWARD_STYLE_VERY_TINY } = require("%rGui/rewards/rewardStyles.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
 let { isOPActive, openOPPurchaseWnd } = require("%rGui/battlePass/operationPassState.nut")
@@ -57,9 +58,6 @@ let pageBlocksGap = hdpx(30)
 let lockedOpacity = 0.5
 let gradientHeightBottom = saBorders[1]
 
-let childOvr = (saRatio < 2 ? fontTinyAccentedShadedBold : {})
-let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
-let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, sound = { click  = "meta_get_unlock" } }, childOvr }
 let contentWidth = saSize[0] - tabW - minContentOffset
 
 let isPurchNoNeedResultWindow = @(purch) purch?.source == "userstatReward"
@@ -67,15 +65,16 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "userstatReward"
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
+let bottomPanelH = hdpx(90)
 
 let mkVerticalPannableAreaNoBlocks = verticalPannableAreaCtor(
-  sh(100) - topAreaSize + pageBlocksGap,
+  sh(100) - topAreaSize + pageBlocksGap - bottomPanelH,
   [pageBlocksGap, gradientHeightBottom])
 let mkVerticalPannableAreaOneBlock = verticalPannableAreaCtor(
-  sh(100) - topAreaSize - progressBarRewardSize,
+  sh(100) - topAreaSize - progressBarRewardSize - bottomPanelH,
   [pageBlocksGap, gradientHeightBottom])
 let mkVerticalPannableAreaTwoBlocks = verticalPannableAreaCtor(
-  sh(100) - topAreaSize - pageBlocksGap - progressBarRewardSize - sectionBtnHeight,
+  sh(100) - topAreaSize - pageBlocksGap - progressBarRewardSize - sectionBtnHeight - bottomPanelH,
   [pageBlocksGap, gradientHeightBottom])
 let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBlock, mkVerticalPannableAreaTwoBlocks]
 
@@ -326,12 +325,12 @@ function mkItem(item, textCtor, sectionId) {
                     ? [
                         !item?.chainQuests ? null : mkChainProgress(item, {padding = [0, 0, 0, headerPadding.get()]})
                         textCtor(item, {padding = [0, 0, 0, headerPadding.get()] })
-                        { size = flex() }
+                        { size = FLEX }
                         mkQuestBar(item)
                       ].filter(@(v) v != null)
                     : {
                         rendObj = ROBJ_TEXT
-                        size = const [flex(), hdpx(90)]
+                        size = const [FLEX, hdpx(90)]
                         flow = FLOW_HORIZONTAL
                         halign = ALIGN_LEFT
                         valign = ALIGN_CENTER
@@ -388,7 +387,7 @@ function mkItem(item, textCtor, sectionId) {
         ? { watch = needOPAccessMark }
         : {
           watch = needOPAccessMark
-          size = flex()
+          size = FLEX
           padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
           stopMouse = true
           flow = FLOW_HORIZONTAL
@@ -402,7 +401,7 @@ function mkItem(item, textCtor, sectionId) {
         children = isCompletedPrevQuest.get() ? null
           : {
               rendObj = ROBJ_SOLID
-              size = flex()
+              size = FLEX
               color = bgColor
             }
       }
@@ -465,7 +464,7 @@ function questTimerUntilStart(sectionTable) {
 
   return @() {
     watch = timeText
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = timeText.get() == "" ? null
@@ -625,7 +624,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
             children = [
               mkSectionTabs(sections.get(), curSectionId, onSectionChange)
               {
-                size = [flex(), hdpx(4)]
+                size = [FLEX, hdpx(4)]
                 rendObj = ROBJ_SOLID
                 color = selectColor
               }
@@ -647,7 +646,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
       flow = FLOW_VERTICAL
       children = !isProgressBySection.get()
         ? [progressBlock, sectionsBlock].filter(@(v) v != null)
-        : [sectionsBlock, progressBlock?.__update({ rendObj = ROBJ_SOLID, color = 0x990C1113 })].filter(@(v) v != null)
+        : [sectionsBlock, progressBlock?.__update({ rendObj = ROBJ_SOLID, color = tabBgColor })].filter(@(v) v != null)
     }
   }
 
@@ -689,7 +688,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
   return @() {
     watch = tabCurrencies
     key = sections
-    size = flex()
+    size = FLEX
     function onAttach() {
       tutorialSectionIdWithReward.subscribe(tutorSectionSubscription)
       curSectionId.subscribe(curSectionSubscription)
@@ -709,7 +708,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     children = [
       @() {
         watch = isCurSectionActive
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         gap = pageBlocksGap
         children = [
@@ -719,7 +718,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
               ? questTimerUntilStart(sectionTableUnlock)
             : @() {
                 watch = [isCurSectionActive, blocksOnTop]
-                size = flex()
+                size = FLEX
                 children = !isCurSectionActive.get() ? null
                   : [
                       pannableCtors[blocksOnTop.get()](

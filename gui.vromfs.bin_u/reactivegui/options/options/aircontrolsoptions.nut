@@ -150,7 +150,7 @@ let controlByGyroAimMode = {
   onChangeValue = @(v) sendChange("aircraft_gyro_aim_mode", v)
   list = Computed(@() isOptAvailableControlByGyroAimMode.get() ? currentControlByGyroAimModeList : [])
   mkContentCtor = @(v, _, _) {
-    size = [flex(), hdpx(103)]
+    size = [FLEX, hdpx(103)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_TEXTAREA
@@ -373,7 +373,7 @@ return {
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE][0],
       0.1,  
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE][1])
-    cameraViscositySlider(isStick, false, "options/camera_sensitivity_in_zoom_stick", OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
+    cameraViscositySlider(isStick, true, "options/camera_sensitivity_in_zoom_stick", OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
       getOptValue(OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK) ?? CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][1],
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][0],
       0.1,  

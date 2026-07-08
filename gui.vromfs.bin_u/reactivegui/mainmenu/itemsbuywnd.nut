@@ -24,6 +24,7 @@ let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let openBarterWnd = require("itemsConvertWnd.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 
 const btnHeight = hdpx(90)
@@ -46,7 +47,7 @@ let largeImageItemOptDict = {
 }
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0xFFEDE4C7
 }
@@ -59,7 +60,7 @@ let header = {
 
 
 let mkPricePlate = @(goods, hasLimitReached) {
-  size = const [flex(), btnHeight]
+  size = const [FLEX, btnHeight]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -69,16 +70,19 @@ let mkPricePlate = @(goods, hasLimitReached) {
       ? textButtonPricePurchase(null,
           mkCurrencyComp(goods.price, goods.currencyId),
           @() null,
-          { ovr = { size = flex(), minWidth = 0, behavior = null } })
+          { ovr = { size = FLEX, minWidth = 0, behavior = null } })
     : null
 }
 
 let gamercardPannel = @(currencys) @() {
   watch = currencys
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   vplace = ALIGN_TOP
   children = [
-    backButton(closeItemWnd)
+    headerGradientBg([
+      backButton(closeItemWnd)
+      header
+    ])
     mkCurrenciesBtns(currencys.get())
   ]
 }
@@ -108,7 +112,7 @@ function itemImg(reward) {
   let { size, pos } = largeImageItemOptDict?[id] ?? defImageItemOpt
 
   return {
-    size = flex()
+    size = FLEX
     valign = ALIGN_CENTER
     children = [
       mkImg(id, size, pos)
@@ -140,12 +144,12 @@ let itemSlot = @(goodsInfo, count, limit, sf) {
       image = Picture($"ui/gameuiskin/shop_bg_slot.avif:{bgSize[0]}:{bgSize[1]}:P")
     }
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       children = [
         cardHeader(goodsInfo.itemId)
         {
-          size = flex()
+          size = FLEX
           children = itemImg(goodsInfo.goods.rewards[0])
         }
         @() {
@@ -158,7 +162,7 @@ let itemSlot = @(goodsInfo, count, limit, sf) {
           color = 0x80000000
           padding = hdpx(10)
           children = {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = [FLEX, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             color = limit <= 0 || limit > count.get() ? 0xFFFFFFFF : warningTextColor
@@ -254,7 +258,7 @@ function mkContent() {
   })
   return bgShaded.__merge({
     key = wndKey
-    size = flex()
+    size = FLEX
     padding = saBordersRv
 
     onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
@@ -265,12 +269,7 @@ function mkContent() {
       {
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        flow = FLOW_VERTICAL
-        gap = hdpx(30)
-        children = [
-          header
-          mkGoods(goodsForPurchase)
-        ]
+        children = mkGoods(goodsForPurchase)
       }
     ]
     animations = wndSwitchAnim

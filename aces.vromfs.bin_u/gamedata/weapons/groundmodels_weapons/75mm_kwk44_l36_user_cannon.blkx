@@ -31,9 +31,9 @@
   "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 30,
-    "mass": 4.8,
+    "mass": 4.4,
     "explosiveType": "h5",
-    "explosiveMass": 0.515,
+    "explosiveMass": 0.513,
     "caliber": 0.075,
     "speed": 450.0,
     "maxDistance": 7000.0,
@@ -54,7 +54,7 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/heat.ivf",
-    "bulletName": "75mm_grhl_38_c",
+    "bulletName": "75mm_grhl_38_b",
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [
       300.0,
@@ -138,12 +138,6 @@
         4.0,
         10000.0
       ]
-    },
-    "cumulativeDamage": {
-      "armorPower": 115.0,
-      "distance": 2.5,
-      "damage": 170.0,
-      "onHitChanceMultFire": 25.0
     },
     "damage": {
       "explosive": {
@@ -332,6 +326,11 @@
       "stone_snow": {
         "fx": "hit_59_80mm_snow_he"
       }
+    },
+    "cumulativeDamage": {
+      "armorPower": 80.0,
+      "distance": 2.5,
+      "damage": 120.0
     }
   },
   "75mm_ger_kwk44_HEAT": {

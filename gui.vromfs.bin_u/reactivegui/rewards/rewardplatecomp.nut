@@ -69,7 +69,7 @@ let mkRewardPlateBgImpl = @(size, bgImg) {
   rendObj = ROBJ_BOX
   fillColor = 0xFFB9B9B9
   children = {
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_9RECT
@@ -77,7 +77,7 @@ let mkRewardPlateBgImpl = @(size, bgImg) {
     padding = rewardPlateBorderWidth
     color = 0xFFEEEEEE
     children = {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{bgImg}")
     }
@@ -103,7 +103,7 @@ let mkCommonLabelTextMarquee = @(text, rStyle) {
 }.__update(rStyle.textStyleSmall)
 
 let mkRewardLabel = @(children, rStyle, needPadding = true) {
-  size = [flex(), rStyle.labelHeight]
+  size = [FLEX, rStyle.labelHeight]
   padding = needPadding ? textPadding : null
   margin = rewardPlateBorderWidth
   vplace = ALIGN_BOTTOM
@@ -147,7 +147,7 @@ function mkProgressBarText(r, rStyle) {
       ? shortTextFromNum(r.count)
     : decimalFormat(r.count)
   return {
-    size = [flex(), progressBarHeight]
+    size = [FLEX, progressBarHeight]
     children = {
       rendObj = ROBJ_TEXT
       text = countText
@@ -158,9 +158,9 @@ function mkProgressBarText(r, rStyle) {
 }
 
 let mkProgressBarWithForecast = @(count, available, total) @() {
-  size = [flex(), progressBarHeight]
+  size = [FLEX, progressBarHeight]
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     fillColor = transparentBlackColor
     children = [
@@ -182,9 +182,9 @@ let mkProgressBarWithForecast = @(count, available, total) @() {
 }
 
 let mkProgressBar = @(available, total) @() {
-  size = [flex(), progressBarHeight]
+  size = [FLEX, progressBarHeight]
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_BOX
     fillColor = transparentBlackColor
     children = {
@@ -196,7 +196,7 @@ let mkProgressBar = @(available, total) @() {
 }
 
 let mkProgressLabel = @(available, total, rStyle) {
-  size = [flex(), rStyle.labelHeight]
+  size = [FLEX, rStyle.labelHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   children = {
@@ -233,7 +233,7 @@ let mkRewardFixedIcon = @(rStyle) {
 }
 
 let mkRewardDisabledBkg = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = transparentBlackColor
 }
@@ -241,7 +241,7 @@ let mkRewardDisabledBkg = {
 function mkRewardReceivedMark(rStyle, ovr = {}) {
   let iconSize = 2 * (rStyle.boxSize * 0.3 + 0.5).tointeger()
   return {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_SOLID
     color = transparentBlackColor
     children = {
@@ -371,7 +371,7 @@ let mkDecoratorIconAvatar = @(decoratorId, _rStyle, size) {
   size
   padding = rewardPlateBorderWidth
   children = {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(decoratorId)}:0:P")
   }
@@ -647,11 +647,11 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
     : false
 
   return {
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = [available, total, hasBlueprintUnit]
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         flow = FLOW_VERTICAL
         children = hasBlueprintUnit.get()
@@ -668,7 +668,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
       }
       @() {
         watch = unitRank
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
@@ -725,11 +725,11 @@ let mkDiscountOfferWrap = @(content, size) bgShaded.__merge({
   size
   transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   children = withGlareEffect(
-    { size = flex(), children = content },
+    { size = FLEX, children = content },
     size[0],
     null,
     { glareWidth }
-  ).__update({ size = flex() })
+  ).__update({ size = FLEX })
 })
 
 let mkDiscountOfferTag = @(discount) discountTag(discount, {
@@ -771,7 +771,7 @@ function mkReceivedUnit(unit, rStyle) {
 
   return @() {
     watch = isReceived
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = isReceived.get() ? mkRewardReceivedMark(rStyle) : null
@@ -843,7 +843,7 @@ let mkRewardPlateDiscountImage = @(reward, rStyle, rewardCtors) function() {
 
   return {
     watch = [serverConfigs, allShopGoods, activeOffersByGoods]
-    size = flex()
+    size = FLEX
     children = !previewReward ? null
       : !needShowAsOffer || getGoodsType(offer) not in discountOfferCtors
         ? mkRewardPlateDiscount(previewReward, newDiscount, rewardCtors, rStyle)
@@ -994,7 +994,7 @@ let mkRewardPlateVip = @(r, rStyle, ovr = {}) {
 }.__update(ovr)
 
 let mkRewardLocked = @(rStyle) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x60000000
   children = {

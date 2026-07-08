@@ -19,7 +19,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
   return @() {
     watch = [contact, info, isSelected, isHovered]
     key = uid
-    size = [flex(), rowHeight]
+    size = [FLEX, rowHeight]
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     behavior = Behaviors.Button
@@ -31,7 +31,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
     children = [
       contactOnlineStatusBlock(onlineStatus, battleUnit)
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         gap
@@ -50,7 +50,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
           }
           contactNameBlock(contact.get(), info.get())
           {
-            size = flex()
+            size = FLEX
           }
           contactSquadStatusBlock(uid.tointeger(), { margin = [0, gap, 0, 0]})
           responseAction

@@ -33,6 +33,7 @@ let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 let { hasPrem, hasVip, hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
 
 let WND_UID = "SLOT_PRESET_WND"
@@ -170,7 +171,7 @@ function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
       iconPath,
       onClick
       {
-        iconSize = iconSize,
+        iconOvr = { size = iconSize },
         ovr = {
           size = isGamepad.get() ? [btnIconSize*2, btnIconSize] : [btnIconSize, btnIconSize],
           minWidth = btnIconSize
@@ -191,7 +192,7 @@ function mkPresetButtons(presets, presetIdx) {
     watch = [canEdit, isNotSavedPreset, isMaxSavedPresetAmountReached, isGamepad]
     size = isGamepad.get() ? FLEX_H : SIZE_TO_CONTENT
     flow = FLOW_HORIZONTAL
-    gap = isGamepad.get() ? {size = flex()} : btnGap
+    gap = isGamepad.get() ? {size = FLEX} : btnGap
     children = [
       mkCustomIconButton(
         "ui/gameuiskin#btn_trash.svg",
@@ -224,7 +225,7 @@ function mkPresetButtons(presets, presetIdx) {
           @() openSubsPreview("vip", "slot_presets"),
           {
             ovr = {
-              size = [flex(), btnIconSize]
+              size = [FLEX, btnIconSize]
             },
             hotkeys = ["^J:X"]
           }
@@ -233,7 +234,7 @@ function mkPresetButtons(presets, presetIdx) {
           utf8ToUpper(loc("mainmenu/btnApply")),
           @() onApply(presets.get(), presetIdx.get(), curCampaign.get(), isCurrentPreset.get()),
           {
-            ovr = {size = [flex(), btnIconSize], minWidth = btnMinWidth},
+            ovr = {size = [FLEX, btnIconSize], minWidth = btnMinWidth},
             childOvr = fontTinyAccentedShaded,
             hotkeyBlockOvr = {padding = 0}
             hotkeys = ["^J:X"]
@@ -256,19 +257,16 @@ function mkPresetButtons(presets, presetIdx) {
   }
 }
 
+
 let contentHeader = {
-  flow = FLOW_HORIZONTAL
-  size = SIZE_TO_CONTENT
-  valign = ALIGN_CENTER
-  gap = saBordersRv[0]
-  margin = [0, 0, saBordersRv[0], 0]
-  children = [
+  margin = [0, 0, hdpx(20), 0]
+  children = headerGradientBg([
     backButton(closeSlotPresetWnd)
     {
       rendObj = ROBJ_TEXT
       text = loc("presets/title")
     }.__update(fontMedium)
-  ]
+  ])
 }
 
 let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
@@ -394,10 +392,10 @@ let mkBlockContent = @(preset, activePresetIdx, activeSlotIdx) @() {
     }
     @() {
       watch = maxPresetsCount
-      size = flex()
+      size = FLEX
       children = maxPresetsCount.get() > preset.idx ? null
         : {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_SOLID
             color = 0xDD000000
             valign = ALIGN_CENTER
@@ -415,14 +413,14 @@ let mkBlockContent = @(preset, activePresetIdx, activeSlotIdx) @() {
 function mkMainContent(presets, presetIdx, slotIdx) {
   return bgShadedLight.__merge({
     stopMouse = true
-    size = flex()
+    size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
     children = [
       contentHeader
       @() {
         watch = presetIdx
-        size = flex()
+        size = FLEX
         children = [
           mkBlocksContainer(
             presets,
@@ -466,7 +464,7 @@ function slotPresetWnd() {
   return {
     watch = [isOpenedPresetWnd, presetSlotUnit]
     key = {}
-    size = flex()
+    size = FLEX
     onDetach = closeSlotPresetWnd
     onAttach = loadSlotPresets
     children = [
@@ -489,7 +487,7 @@ function slotPresetWnd() {
               padding = [infoPanelPadding, 0, infoPanelPadding, 0]
               animations = wndSwitchAnim
             }, mkUnitTitle, presetSlotUnit)
-          {size = flex()}
+          {size = FLEX}
           mkPresetButtons(slotPresets, activePresetIdx)
         ]
       })
@@ -499,7 +497,7 @@ function slotPresetWnd() {
 
 let openImpl = @() addModalWindow({
   key = WND_UID
-  size = flex()
+  size = FLEX
   children = slotPresetWnd
   onClick = closeSlotPresetWnd
   stopMouse = true

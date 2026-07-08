@@ -19,7 +19,7 @@ let numFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 5, 2)
 let daysFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 6, 2)
 
 let bgHiglight =  {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x0134130A
 }
@@ -35,7 +35,7 @@ let mkPremiumDaysTitle = function(amount, oldAmount) {
   let daysOffset = min(0, titleWidth - daysWidth + hdpx(30))
 
   return {
-    size = [ titleWidth, flex() ]
+    size = [ titleWidth, FLEX ]
     hplace = ALIGN_RIGHT
     halign = ALIGN_CENTER
     children = [
@@ -75,7 +75,7 @@ function mkGoodsPremium(goods, onClick, state, animParams, addChildren) {
   let { rewards, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let premiumDays = rewards.findvalue(@(r) r.gType == G_PREMIUM)?.count ?? 0
   let premIconAndDaysTitleWrapper = {
-    size = flex()
+    size = FLEX
     children = [
       mkIconPrem()
       mkPremiumDaysTitle(premiumDays, viewBaseValue)

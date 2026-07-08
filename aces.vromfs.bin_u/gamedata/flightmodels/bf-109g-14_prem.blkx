@@ -1983,7 +1983,7 @@
         "WeaponPreset": [
           {
             "iconType": "gun_20mm",
-            "name": "R6",
+            "name": "R5",
             "Weapon": {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonMG15120.blk",
@@ -1997,7 +1997,7 @@
           },
           {
             "iconType": "gun_30mm",
-            "name": "R5",
+            "name": "R6",
             "Weapon": {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonMK108.blk",

@@ -9,7 +9,7 @@ let wndWidth = hdpx(1500)
 let wndHeight = hdpx(700)
 
 let msgContent = @(text, moreInfoLink) {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -27,7 +27,7 @@ function openMsgBoxError(text, uid = null, title = null, buttons = defaultBtnsCf
   removeModalWindow(uid)
   addModalWindow(bgShaded.__merge({
     key = uid
-    size = flex()
+    size = FLEX
     onClick = @() null
     children = {
       flow = FLOW_VERTICAL

@@ -91,7 +91,7 @@ let isFakeSceneHidden = Computed(function() {
   return true
 })
 
-let isFakeSceneLocked = Computed(function() {
+let isFakeSceneLocked = Computed(function() { 
   UNUSED(edObjectFlagsUpdateTrigger)
 
   let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
@@ -248,10 +248,10 @@ function gatherSceneItems(scene, order, isParentExpanded, depth, items, expanded
 
 function getEntityCount(scene) {
   if (scene.id == fakeScene.id) {
-    return allEntities.get()?[scene.id].len()
+    return allEntities.get()?[scene.id].len() ?? 0
   }
   else {
-    return entity_editor?.get_instance().getSceneEntityCount(scene.id)
+    return entity_editor?.get_instance().getSceneEntityCount(scene.id) ?? 0
   }
 }
 
@@ -526,10 +526,12 @@ function initScenesList() {
     expandedStateScenes.get()[scene.id] <- isExpanded
   }
 
+  local wasFakeSceneMarked = markedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
   local wasFakeSceneExpanded = expandedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
   markedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
   expandedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
 
+  markedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneMarked
   expandedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneExpanded
 
   markedStateScenes.trigger()
@@ -537,24 +539,40 @@ function initScenesList() {
 }
 
 function initEntitiesList() {
-  let entities = entity_editor?.get_instance().getEntities("") ?? []
+  let editorInstance = entity_editor?.get_instance()
+  let entities = editorInstance?.getEntities("") ?? []
+  let currentSelection = selectionStateEntities.get()
+
+  let sceneToCount = {}
+  let sceneToCurCount = {}
+  let eidToSceneId = {}
   foreach (eid in entities) {
-    let isSelected = selectionStateEntities.get()?[eid] ?? false
-    selectionStateEntities.get()[eid] <- isSelected
+    if (!(eid in currentSelection))
+      currentSelection[eid] <- false
+
+    let sceneId = editorInstance?.getEntityRecordSceneId(eid) ?? ecs.INVALID_SCENE_ID
+    eidToSceneId[eid] <- sceneId
+    let curVal = sceneToCount?[sceneId] ?? 0
+    if (curVal == 0) {
+      sceneToCurCount[sceneId] <- 0
+    }
+    sceneToCount[sceneId] <- curVal + 1
   }
-  allEntities.set({})
+
   allEntities.mutate(function(value) {
+    value.clear()
     foreach (eid in entities) {
-      local sceneId = entity_editor?.get_instance().getEntityRecordSceneId(eid) ?? ecs.INVALID_SCENE_ID
-
-      let entries = value?[sceneId]
-
-      if (entries == null) {
-        value[sceneId] <- [eid]
+      let sceneId = eidToSceneId[eid]
+      let fullCount = sceneToCount[sceneId]
+      let curCount = sceneToCurCount[sceneId]
+      if (curCount == 0) {
+        let newArray = array(fullCount, ecs.INVALID_ENTITY_ID)
+        newArray[0] = eid
+        value.rawset(sceneId, newArray)
+      } else {
+        value[sceneId][curCount] = eid
       }
-      else {
-        value[sceneId].append(eid)
-      }
+      sceneToCurCount[sceneId] = curCount + 1
     }
   })
   selectionStateEntities.trigger()
@@ -1670,22 +1688,30 @@ function createScenePropertiesControl() {
   let pivotY = Watched(pivot ? pivot.y : "")
   let pivotZ = Watched(pivot ? pivot.z : "")
 
+  function onSceneIndexChanged(idx) {
+    isTransformable.set(getIsTransformable())
+    let scenePivot = idx != -1 ? entity_editor?.get_instance().getScenePivot(idx) : null
+    pivotX.set(scenePivot ? scenePivot.x : "")
+    pivotY.set(scenePivot ? scenePivot.y : "")
+    pivotZ.set(scenePivot ? scenePivot.z : "")
+  }
+
   function onPivotXChanged(val) {
-    if (isStringFloat(val)) {
+    if (isStringFloat(val) && isStringFloat(pivotY.get()) && isStringFloat(pivotZ.get())) {
       entity_editor?.get_instance().setScenePivot(sceneIndex.get(),
         Point3(val.tofloat(), pivotY.get().tofloat(), pivotZ.get().tofloat()))
     }
   }
 
   function onPivotYChanged(val) {
-    if (isStringFloat(val)) {
+    if (isStringFloat(val) && isStringFloat(pivotX.get()) && isStringFloat(pivotZ.get())) {
       entity_editor?.get_instance().setScenePivot(sceneIndex.get(),
         Point3(pivotX.get().tofloat(), val.tofloat(), pivotZ.get().tofloat()))
     }
   }
 
   function onPivotZChanged(val) {
-    if (isStringFloat(val)) {
+    if (isStringFloat(val) && isStringFloat(pivotX.get()) && isStringFloat(pivotY.get())) {
       entity_editor?.get_instance().setScenePivot(sceneIndex.get(),
         Point3(pivotX.get().tofloat(), pivotY.get().tofloat(), val.tofloat()))
     }
@@ -1744,6 +1770,8 @@ function createScenePropertiesControl() {
     halign = ALIGN_LEFT
     valign = ALIGN_CENTER
     watch = [sceneIndex]
+    onAttach = @() sceneIndex.subscribe_with_nasty_disregard_of_frp_update(onSceneIndexChanged)
+    onDetach = @() sceneIndex.unsubscribe(onSceneIndexChanged)
     children = sceneIndex.get() != -1 ? getPropertiesControls() : []
   }
 }

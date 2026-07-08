@@ -16,7 +16,7 @@ let wndUid = "permissionsWnd"
 let close = @() removeModalWindow(wndUid)
 
 let mkBtn = @(label, isActive, func) (isActive ? textButtonPrimary : textButtonCommon)(
-  label, func, { ovr = { size = const [flex(), hdpx(100)] } })
+  label, func, { ovr = { size = const [FLEX, hdpx(100)] } })
 
 function permissionsList() {
   let list = allPermissions.get()
@@ -28,7 +28,7 @@ function permissionsList() {
     })
   let rows = arrayByRows(list, 2)
   if (rows.top().len() < 2)
-    rows.top().resize(2, { size = flex() })
+    rows.top().resize(2, { size = FLEX })
 
   return {
     watch = allPermissions
@@ -47,7 +47,7 @@ function permissionsList() {
 
 return @() addModalWindow(bgShaded.__merge({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = modalWndBg.__merge({
@@ -55,9 +55,9 @@ return @() addModalWindow(bgShaded.__merge({
     flow = FLOW_VERTICAL
     children = [
       modalWndHeaderWithClose("Permissions", close)
-      { size = [flex(), gap] }
+      { size = [FLEX, gap] }
       makeVertScroll(permissionsList)
-      { size = [flex(), gap] }
+      { size = [FLEX, gap] }
     ]
   })
 }))

@@ -19,14 +19,14 @@ function mkDebriefingWndTabQuests(debrData, _params) {
   let timeShow = questsAnimStartTime + questsProgressShowTime
 
   let comp = {
-    size = [flex(), contentHeight]
+    size = [FLEX, contentHeight]
     children = {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       children = [
         mkMissionResultTitle(debrData, false)
         {
-          size = [flex(), pageContentHeight]
+          size = [FLEX, pageContentHeight]
           vplace = ALIGN_BOTTOM
           children = pannableArea(questsProgressComps)
         }

@@ -13,7 +13,7 @@ function new_rnd_seed() {
 }
 
 const DEFAULT_MAX_INT_RAND = 32767
-const maxrndfloat = 16777215.0 
+const maxrndfloat = 16777216.0 
 const maxrndfloatmask = 16777215 
 const maxnoiseint = 0xffffffff 
 

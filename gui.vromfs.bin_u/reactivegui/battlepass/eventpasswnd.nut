@@ -5,7 +5,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
   EP_VIP, EP_COMMON, EP_NONE, purchasedEp,curOpenEventPass,
-  pointsCurStage, pointsPerStage, curEventId, seasonEndTime,
+  pointsCurStage, pointsPerStage, curEventId, epSeasonEndTime,
   isEpRewardsInProgress, receiveEpRewards, eventTitle
 } = require("%rGui/battlePass/eventPassState.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
@@ -44,7 +44,7 @@ function scrollToCardEP(scrollX, selProgress) {
 
 let header = @() {
   watch = curEventId
-  size = [flex(), gamercardHeight]
+  size = [FLEX, gamercardHeight]
   margin = saBordersRv
   valign = ALIGN_TOP
   halign = ALIGN_RIGHT
@@ -52,7 +52,7 @@ let header = @() {
 }
 
 let scrollArrowsBlock = {
-  size = flex()
+  size = FLEX
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
@@ -125,8 +125,7 @@ let leftMiddle = {
           curOpenEventPass.get()?.eventName not in gmEventsList.get()
             ? null
             : translucentButton(getEventPresentation(curOpenEventPass.get()?.eventName).icon,
-              "",
-              @() openGmEventWnd(curOpenEventPass.get()?.eventName))
+                @() openGmEventWnd(curOpenEventPass.get()?.eventName))
         ]
       }
     }
@@ -138,7 +137,7 @@ let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openEPPur
 
 let rightMiddle = @() {
   watch = [purchasedEp, curEventId, isEpActive]
-  size = [defButtonMinWidth, flex()]
+  size = [defButtonMinWidth, FLEX]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   valign = ALIGN_BOTTOM
@@ -157,14 +156,14 @@ let rightMiddle = @() {
         ? openPurchBpButton(loc("eventPass/btn_buy"))
       : purchasedEp.get() == EP_VIP
         ? {
-            size = [flex(), defButtonHeight]
+            size = [FLEX, defButtonHeight]
             halign = ALIGN_CENTER
             valign = ALIGN_BOTTOM
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             text = utf8ToUpper(loc("eventpass/active"))
           }.__update(fontTinyAccented)
-      : { size = [flex(), defButtonHeight] }
+      : { size = [FLEX, defButtonHeight] }
   ].filter(@(v) v != null)
 }
 
@@ -172,22 +171,22 @@ let middlePart = @(stagesList) function() {
   let stageData = stagesList.findvalue(@(s) s.progress == selectedStage.get())
   return {
     watch = selectedStage
-    size = flex()
+    size = FLEX
     margin = [saBorders[1], saBorders[0], 0, hdpx(20)]
     flow = FLOW_HORIZONTAL
     children = [
       leftMiddle
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_VERTICAL
         padding = [hdpx(55), 0, 0, 0]
         gap = hdpx(10)
         halign = ALIGN_CENTER
         children = [
           @() {
-            watch = [curEventId, eventTitle, seasonEndTime]
+            watch = [curEventId, eventTitle, epSeasonEndTime]
             flow = FLOW_HORIZONTAL
-            children = battlePassSeason(loc(eventTitle.get()), seasonEndTime.get(),
+            children = battlePassSeason(loc(eventTitle.get()), epSeasonEndTime.get(),
               infoTooltipButton(@() loc(getEpPresentation(curEventId.get()).descLocId)),
               {
                 halign = ALIGN_CENTER
@@ -210,11 +209,11 @@ let middlePart = @(stagesList) function() {
 
 let contentEP = @(stagesList, recommendInfo) @() {
   watch = stagesList
-  size = flex()
+  size = FLEX
   children = [
     header
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       gap = hdpx(15)
       children = [
@@ -225,7 +224,7 @@ let contentEP = @(stagesList, recommendInfo) @() {
           margin = [0, 0, saBorders[1], 0]
           children = [
             {
-              size = [flex(), progressIconSize[1]]
+              size = [FLEX, progressIconSize[1]]
             }
             rewardPannable(rewardsList(stagesList.get(), recommendInfo),
               { pos = [-hdpx(20), 0], size = FLEX_H, clipChilden = false },

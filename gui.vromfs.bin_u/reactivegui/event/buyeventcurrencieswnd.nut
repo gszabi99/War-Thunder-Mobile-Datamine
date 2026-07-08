@@ -10,7 +10,7 @@ let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nu
 
 let buyEventCurrenciesWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   rendObj = ROBJ_SOLID
   color = 0x80000000
@@ -18,11 +18,11 @@ let buyEventCurrenciesWnd = {
   children = [
     buyEventCurrenciesGamercard
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       children = [
-        { size = flex() }
+        { size = FLEX }
         buyEventCurrenciesHeader
         mkEventCurrenciesGoods
         { size = flex(2) }

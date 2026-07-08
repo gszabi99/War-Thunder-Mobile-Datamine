@@ -23,7 +23,7 @@ let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(10)) 
   size = [width, SIZE_TO_CONTENT]
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
       texOffs = [0,  gradDoubleTexOffset]

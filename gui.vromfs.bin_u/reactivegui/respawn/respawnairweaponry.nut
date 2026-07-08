@@ -79,7 +79,7 @@ let mkBeltCard = @(w, canClick)
   })
 
 let mkEmptyInfo = @(text) {
-  size = [flex(), weaponSize]
+  size = [FLEX, weaponSize]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER

@@ -22,7 +22,7 @@ let askRejectFriendRequest = @(uid) openMsgBox({
 })
 
 let btnDefOvr = {
-  iconSize = btnIconSize,
+  iconOvr = { size = btnIconSize },
   ovr = {
     size = [hdpx(130), rowHeight - btnMargin * 2],
     minWidth = btnIconSize

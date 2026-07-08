@@ -598,11 +598,11 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
 
   return @() {
     watch = consistentReceivedRewardIdx
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = hasBlueprintUnit
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         flow = FLOW_VERTICAL
         children = hasBlueprintUnit.get()
@@ -616,7 +616,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
           ]
       }
       {
-        size = flex()
+        size = FLEX
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
@@ -712,7 +712,7 @@ let fixedRewardIcon = @(viewInfo) {
   children = [
     @() {
       watch = [needHighlight, isReceivedAnimFixed]
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = needHighlight.get() && isReceivedAnimFixed.get() ? highlight : null
@@ -945,7 +945,7 @@ let progressbar = @(value) {
   children = [
     {
       rendObj = ROBJ_SOLID
-      size = flex()
+      size = FLEX
       color = 0xFFFFFFFF
       transform = {
         scale = [value, 1.0]
@@ -955,7 +955,7 @@ let progressbar = @(value) {
     }
     {
       rendObj = ROBJ_SOLID
-      size = flex()
+      size = FLEX
       color = premiumTextColor
       transform = {
         scale = [value, 1.0]
@@ -997,7 +997,7 @@ let fixedProgressInfo = @() {
         : fixedRewardIcon(nextFixedViewInfo.get()[0])
     ]
     : {
-        size = [flex(), openCountIconSize]
+        size = [FLEX, openCountIconSize]
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = {
@@ -1018,7 +1018,7 @@ let afterJackpotReceivedInfo = @() {
   children = [
     @() {
       watch = isJackpotCurrent
-      size = [flex(), openCountIconSize]
+      size = [FLEX, openCountIconSize]
       halign = ALIGN_CENTER
       valign = ALIGN_BOTTOM
       children = {
@@ -1059,7 +1059,7 @@ let lightBlock = {
 
 let rouletteWnd = @() {
   key = {}
-  size = flex()
+  size = FLEX
 
   function onAttach() {
     resetTimeout(openConfig.get().BACKUP_CLOSE_TIME * max(1, receivedRewardsAll.get().len()), closeRoulette) 
@@ -1083,7 +1083,7 @@ let rouletteWnd = @() {
         rouletteRewardsBlock
         lightBlock
         {
-          size = flex()
+          size = FLEX
           pos = [0, -hdpx(20)]
           children = mkLensFlareLootbox()
         }
@@ -1096,12 +1096,12 @@ let rouletteWnd = @() {
 let lootboxWnd = @() {
   watch = scenesOrder
   key = WND_UID
-  size = flex()
+  size = FLEX
   onClick = @() null
   onAttach = @() hideModals(ROULETTE_HIDE_MODALS_ID)
   onDetach = @() unhideModals(ROULETTE_HIDE_MODALS_ID)
   children = {
-    size = flex()
+    size = FLEX
     children = rouletteWnd
     animations = scenesOrder.get()?[0] == "eventWnd" ? wndSwitchAnim : null
   }

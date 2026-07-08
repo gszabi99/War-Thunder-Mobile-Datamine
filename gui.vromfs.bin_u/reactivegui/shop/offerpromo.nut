@@ -132,11 +132,11 @@ function mkOfferSwiper(offers) {
       ? mkOffer(offers[0], @() previewOfferByGoods(offers[0].id), mkOfferByGoodsPurchasingState(offers[0].id))
       : [
           {
-            size = flex()
+            size = FLEX
             clipChildren = true
             children = {
               key = curPointX
-              size = flex()
+              size = FLEX
               behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
               touchMarginPriority = TOUCH_BACKGROUND
               scrollHandler
@@ -165,7 +165,7 @@ function mkOfferSwiper(offers) {
           }
           @() {
             watch = realSliderOfferIdx
-            size = flex()
+            size = FLEX
             valign = ALIGN_BOTTOM
             halign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL

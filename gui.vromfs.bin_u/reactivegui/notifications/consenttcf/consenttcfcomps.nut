@@ -32,7 +32,7 @@ let mkTextarea = @(text, ovr = {}) {
 let mkTitle = @(text) mkTextarea(text, { margin = [hdpx(50), 0] }.__update(fontTitle))
 
 let urlUnderline = {
-  size = [flex(), hdpx(1)]
+  size = [FLEX, hdpx(1)]
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_SOLID
   color = linkColor
@@ -59,10 +59,10 @@ function mkLink(text, onClick, ovr = {}) {
 }
 
 let separatorLine = {
-  size = [flex(), textGap]
+  size = [FLEX, textGap]
   valign = ALIGN_CENTER
   children = {
-    size = [flex(), hdpx(2)]
+    size = [FLEX, hdpx(2)]
     rendObj = ROBJ_SOLID
     color = separatorColor
   }
@@ -101,7 +101,7 @@ const wndDescH = wndH - wndHeaderHeight - wndFooterH
 const wndContentWidth = wndW - (2 * descPadding)
 
 let mkStatusContent = @(text) {
-  size = [flex(), wndDescH]
+  size = [FLEX, wndDescH]
   valign = ALIGN_CENTER
   children = mkTextarea(text, { halign = ALIGN_CENTER })
 }
@@ -157,13 +157,13 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
 
 let mkIntroButtons = @(bqWndId) [
   textButtonCommon(utf8ToUpper(loc("consentWnd/btns/notConsent")), @() doAnswerAllAndClose(bqWndId, false))
-  {size = flex()}
+  {size = FLEX}
   textButtonPrimary(utf8ToUpper(loc("consentWnd/btns/consent")), @() doAnswerAllAndClose(bqWndId, true))
 ]
 
 let mkManageButtons = @(bqWndId) [
   textButtonPrimary(utf8ToUpper(loc("consentWnd/manage/acceptAll")), @() doAnswerAllAndClose(bqWndId, true))
-  {size = flex()}
+  {size = FLEX}
   textButtonCommon(utf8ToUpper(loc("consentWnd/manage/acceptChoosen")), @() doSaveAndClose(bqWndId))
 ]
 

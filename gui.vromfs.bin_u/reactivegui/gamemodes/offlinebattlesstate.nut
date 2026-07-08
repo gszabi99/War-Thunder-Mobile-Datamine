@@ -8,6 +8,7 @@ let { can_debug_configs, can_debug_missions } = require("%appGlobals/permissions
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sortCountries } = require("%appGlobals/config/countryPresentation.nut")
+let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
 let { startLocalMPBattleWithoutGamemode } = require("%rGui/gameModes/startOfflineMode.nut")
 let { isUnitNameMatchSearchStr } = require("%rGui/unit/unitNameSearch.nut")
@@ -103,15 +104,22 @@ isOfflineBattlesActive.subscribe(function(v) {
     resetSavedParams()
 })
 
-function runOfflineBattle(unitName = null, missionName = null) {
+let getOfflineBattleGameMode = @(campaign, allGameModesV)
+  allGameModesV.findvalue(@(m) m?.displayType == "random_battle" && m?.campaign == campaign)
+
+function runOfflineBattle(missionName = null, unitName = null) {
   unitName = unitName ?? selectedUnit.get()?.name
   missionName = missionName ?? selectedMission.get() ?? ""
   let allUnits = campUnitsCfg.get()
-  if(unitName not in allUnits)
+  if (unitName not in allUnits)
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
-  let unit = allUnits?[unitName] ?? {}
+  let unit = allUnits[unitName]
+  let mGMode = getOfflineBattleGameMode(unit.campaign, allGameModes.get())
+  if (mGMode == null)
+    return
+
   let battleData = {
     isCustomOfflineBattle = true
     reward = { unitName }
@@ -125,7 +133,7 @@ function runOfflineBattle(unitName = null, missionName = null) {
     : {}
   let unitPresetLevel = skipMissionSettings.get() ? unitPresetsLevelList[1] : savedUnitPresetLevel.get()
   eventbus_send("lastSingleMissionRewardData", { battleData })
-  startLocalMPBattleWithoutGamemode(unit, missionName, unitPresetLevel, misBlkParams)
+  startLocalMPBattleWithoutGamemode(mGMode.gameModeId, missionName, unit, unitPresetLevel, misBlkParams)
 }
 
 function openOfflineBattleMenu(debrData = {}) {
@@ -218,6 +226,7 @@ return {
   defMaxBotsCount,
   defMaxBotsRank,
   NUMBER_OF_PLAYERS
+  getOfflineBattleGameMode
 
   searchableUnitsList,
   countriesList,

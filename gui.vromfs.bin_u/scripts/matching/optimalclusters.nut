@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
-let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { round } =  require("math")
 let { format } =  require("string")
 let { blob } = require("iostream")
@@ -9,13 +9,18 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { send, last_error } = require("dagor.udp")
 let { rnd_float } = require("dagor.random")
 let { median, number_of_set_bits } = require("%sqstd/math.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
+let { isEqual, getSubArray } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { myUserId } = require("%appGlobals/profileStates.nut")
+let { can_send_hosts_reachability_to_matching } = require("%appGlobals/permissions.nut")
 let { gameStartServerTimeMsec } = require("%appGlobals/userstats/serverTime.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
-let { myClustersRTT, isInSquad, squadMembers } = require("%appGlobals/squadState.nut")
-let { OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LIMIT_MS_SQUAD, clusterStats, optimalClusters } = require("%appGlobals/clustersState.nut")
+let { myClustersRTT, isInSquad, isReady, squadMembers } = require("%appGlobals/squadState.nut")
+let { OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LIMIT_MS_SQUAD, REACHABILITY_CHECK_TIMEOUT_SEC,
+  clusterStats, optimalClusters, selClusters, unreachableHosts, lastReachabilityUpdateTimeMs,
+  isWaitingManualRefresh
+} = require("%appGlobals/clustersState.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
 let { clusterHosts } = require("%scripts/matching/clusterHosts.nut")
 
@@ -33,10 +38,13 @@ const RETRY_PROBE_DELAY_SEC = 30
 const MAX_ERRORS = 3 
 const INSIGNIFICANT_RTT_DIFF_MS = 25 
 const MINOR_MS = 1000 
+const REACHABILITY_EXPIRE_SEC = 300 
+const REACHABILITY_MINOR_MS = 200 
 
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
 let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get())
+let needResetRttOnRefresh = hardPersistWatched("needResetRttOnRefresh", false)
 
 
 function writeInt64NetBytes(stream, i) {
@@ -95,6 +103,7 @@ let mkHost = @(ip, port, clustersList) {
   avgRTT = null
   lastRequestId = 0
   lastRequestTimeMs = 0
+  isReachable = false
   errors = 0
   lastAnswerTimeMs = 0
 }
@@ -149,6 +158,98 @@ function scheduleNextProbeTime(func) {
   resetTimeout(timeLeftSec, func)
 }
 
+function calcAvgRttBySortedList(rttSortedList) {
+  let res = median(rttSortedList)
+  return res != null ? round(res).tointeger() : null
+}
+
+function getClustersToHostsMap(hostsByIp) {
+  let res = {}
+  foreach (hostInfo in hostsByIp)
+    foreach (clusterId in hostInfo.clustersList)
+      getSubArray(res, clusterId).append(hostInfo)
+  return res
+}
+
+function getClusterStats() {
+  
+  
+
+  let clustersToHostsMap = getClustersToHostsMap(hostsCfg)
+  let res = clustersToHostsMap
+    .map(function(hosts, clusterId) {
+        let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
+        let hostsRTT = calcAvgRttBySortedList(measuredHostsRTT.sort()) 
+        let hostsReachable = hosts.reduce(@(acc, v) acc + (v.isReachable ? 1 : 0), 0)
+        let reachability = round(100.0 * hostsReachable / hosts.len()).tointeger()
+        return {
+          clusterId
+          hostsRTT
+          reachability
+        }
+      })
+    .values()
+  res.sort(@(a, b)
+    (a.hostsRTT != null ? -1 : 1) <=> (b.hostsRTT != null ? -1 : 1)
+    || a.hostsRTT <=> b.hostsRTT
+    || b.reachability <=> a.reachability
+    || a.clusterId <=> b.clusterId)
+  return res
+}
+
+function onClustersRecalc() {
+  let newClusterStats = getClusterStats()
+  if (!isEqual(newClusterStats, clusterStats.get()))
+    clusterStats.set(newClusterStats)
+}
+
+function getOptimalClusters(stats) {
+  stats = stats.filter(@(c) c.hostsRTT != null)
+  if (stats.len() == 0)
+    return []
+
+  let fastClusters = stats
+    .filter(@(c) c.hostsRTT <= OPTIMAL_RTT_LIMIT_MS)
+  if (fastClusters.len())
+    return fastClusters.map(@(c) c.clusterId)
+
+  let rttLimit = stats[0].hostsRTT + INSIGNIFICANT_RTT_DIFF_MS
+  return stats
+    .filter(@(c) c.hostsRTT <= rttLimit)
+    .map(@(c) c.clusterId)
+}
+
+let isHostsReachabilityValid = @() !can_send_hosts_reachability_to_matching.get()
+  || (get_time_msec() - lastReachabilityUpdateTimeMs.get() < (REACHABILITY_EXPIRE_SEC * 1000))
+
+function getUnreachableHosts(clusters) {
+  let res = []
+  foreach (hostInfo in hostsCfg) {
+    let { ip, clustersList, isReachable } = hostInfo
+    if (!isReachable && clustersList.findvalue(@(v) clusters.contains(v)) != null)
+      res.append(ip)
+  }
+  res.sort()
+  return res
+}
+
+function updateHostsReachability() {
+  let reachabilityThresholdTimeMs = get_time_msec() - (REACHABILITY_CHECK_TIMEOUT_SEC * 1000) + REACHABILITY_MINOR_MS
+  foreach (hostInfo in hostsCfg) {
+    let { rttSamples, errors, lastRequestTimeMs } = hostInfo
+    hostInfo.isReachable = rttSamples.len() != 0 && errors == 0
+        && (lastRequestTimeMs == 0 || lastRequestTimeMs >= reachabilityThresholdTimeMs)
+  }
+  isWaitingManualRefresh.set(false)
+  onClustersRecalc()
+  let clusters = getOptimalClusters(clusterStats.get())
+  let newUnreachableHosts = getUnreachableHosts(clusters)
+  if (!isEqual(newUnreachableHosts, unreachableHosts.get()))
+    unreachableHosts.set(newUnreachableHosts)
+  lastReachabilityUpdateTimeMs.set(get_time_msec())
+  eventbus_send("hosts_reachability_validated", {})
+}
+
 function tryProbeHosts() {
   if (!isProbingActive.get())
     return
@@ -156,8 +257,10 @@ function tryProbeHosts() {
   hostsCfg.each(function(hostInfo) {
     if (isHostNeedRetry(hostInfo, nowMs)) {
       hostInfo.errors++
+      hostInfo.isReachable = false
       let clustersStr = ",".join(hostInfo.clustersList)
       logOC($"Host {hostInfo.ip} ({clustersStr}) failed to respond {hostInfo.errors} time(s)")
+      resetTimeout(CLUSTERS_RECALC_DELAY_SEC, onClustersRecalc)
     }
     else if (isHostNeedRegularUpdate(hostInfo, nowMs))
       hostInfo.errors = 0
@@ -179,12 +282,8 @@ function tryProbeHosts() {
     if (!send(CLIENT_SOCKET_ID, ip, port, data))
       logOC($"Failed to send request to host {ip}, ERROR: {last_error()}")
   }
+  resetTimeout(REACHABILITY_CHECK_TIMEOUT_SEC, updateHostsReachability)
   scheduleNextProbeTime(callee())
-}
-
-function calcAvgRttBySortedList(rttSortedList) {
-  let res = median(rttSortedList)
-  return res != null ? round(res).tointeger() : null
 }
 
 function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
@@ -195,103 +294,105 @@ function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
   hostInfo.__update({
     lastRequestId = 0
     lastRequestTimeMs = 0
+    isReachable = true
     errors = 0
     avgRTT = calcAvgRttBySortedList((clone rttSamples).sort())
     lastAnswerTimeMs = receivedTimeMs
   })
 }
 
-function getClusterStats() {
-  
-  
+let getMyClustersInfoForSquad = @() clusterStats.get().reduce(function(res, v) {
+    let rtt = v.hostsRTT
+    if (rtt == null)
+      return res
+    let { clusterId } = v
+    let unreachable = getUnreachableHosts([ clusterId ])
+    res.$rawset(clusterId, unreachable.len() ? { rtt, unreachable } : { rtt })
+    return res
+  }, {})
 
-  let clustersToHostsMap = {}
-  foreach (hostInfo in hostsCfg)
-    foreach (clusterId in hostInfo.clustersList) {
-      if (clustersToHostsMap?[clusterId] == null)
-        clustersToHostsMap[clusterId] <- []
-      clustersToHostsMap[clusterId].append(hostInfo)
-    }
-
-  let res = clustersToHostsMap
-    .map(function(hosts, clusterId) {
-        let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
-        let hostsAvailable = hosts.reduce(@(res, v) res + (v.rttSamples.len() > 0 ? 1 : 0), 0)
-        let availablePercent = round(100.0 * hostsAvailable / hosts.len()).tointeger()
-        return {
-          clusterId
-          hostsRTT = calcAvgRttBySortedList(measuredHostsRTT.sort()) 
-          availablePercent
-        }
-      })
-    .values()
-  res.sort(@(a, b)
-    (a.hostsRTT != null ? -1 : 1) <=> (b.hostsRTT != null ? -1 : 1)
-    || a.hostsRTT <=> b.hostsRTT
-    || a.clusterId <=> b.clusterId)
-  return res
+function updateMyClustersInfoForSquad(_) {
+  let newMyClustersRTT = getMyClustersInfoForSquad()
+  if (!isEqual(newMyClustersRTT, myClustersRTT.get()))
+    myClustersRTT.set(newMyClustersRTT)
 }
+clusterStats.subscribe(updateMyClustersInfoForSquad)
+unreachableHosts.subscribe(updateMyClustersInfoForSquad)
 
-function getOptimalClusters(stats) {
-  stats = stats.filter(@(c) c.hostsRTT != null)
-  if (stats.len() == 0)
-    return []
-
-  let fastClusters = stats
-    .filter(@(c) c.hostsRTT <= OPTIMAL_RTT_LIMIT_MS)
-  if (fastClusters.len())
-    return fastClusters.map(@(c) c.clusterId)
-
-  let rttLimit = stats[0].hostsRTT + INSIGNIFICANT_RTT_DIFF_MS
-  return stats
-    .filter(@(c) c.hostsRTT <= rttLimit)
-    .map(@(c) c.clusterId)
-}
-
-function getOptimalClustersForSquad(squadMembersVal) {
+function getClustersAndHostsForQueue(squadMembersVal) {
+  let defRes = {
+    clusters = selClusters.get()
+    unreachableHosts = unreachableHosts.get()
+  }
   let squadSize = squadMembersVal.len()
   if (squadSize == 0)
-    return null
+    return defRes
   let membersClustersRTT = squadMembersVal.map(@(m) m?.clustersRTT ?? {})
+  membersClustersRTT[myUserId.get()] <- getMyClustersInfoForSquad()
   let rttStats = {}
+  let unreachableIPs = {}
   foreach (v in membersClustersRTT)
-    foreach (clusterId, rtt in v) {
+    foreach (clusterId, data in v) {
       if (clusterId not in rttStats)
         rttStats[clusterId] <- { list = [] }
-      rttStats[clusterId].list.append(rtt)
+      rttStats[clusterId].list.append(data.rtt)
+      let cUnreachable = getSubArray(unreachableIPs, clusterId)
+      foreach (ip in (data?.unreachable ?? []))
+        if (!cUnreachable.contains(ip))
+          cUnreachable.append(ip)
     }
+  let clustersToHostsMap = getClustersToHostsMap(hostsCfg)
   foreach (clusterId, v in rttStats) {
     let size = v.list.len()
+    let unreachable = unreachableIPs[clusterId]
+    let hostIpsList = (clustersToHostsMap?[clusterId] ?? {}).map(@(hosts) hosts.ip)
+    let hostsTotal = hostIpsList.len()
+    let hostsReachable = hostIpsList.filter(@(ip) !unreachable.contains(ip)).len()
+    let reachability = hostsTotal != 0
+      ? (1.0 * hostsReachable / hostsTotal)
+      : 0.0
     v.list.sort()
     v.__update({
       clusterId
       size
       slowest = v.list[size - 1]
+      unreachable
+      reachability
     })
   }
   let rttStatsList = rttStats.values()
   rttStatsList.sort(@(a, b) b.size <=> a.size
     || a.slowest <=> b.slowest)
   for (local minSize = squadSize; minSize > 0; minSize--) {
-    foreach (needOptimalSpeed in [ true, false ]) {
-      local stats = rttStatsList.filter(@(v) v.size >= minSize)
-      if (!stats.len())
-        continue
-      let rttLimit = needOptimalSpeed
-        ? OPTIMAL_RTT_LIMIT_MS_SQUAD
-        : stats.map(@(v) v.slowest).reduce(@(res, v) min(res, v)) + INSIGNIFICANT_RTT_DIFF_MS
-      stats = stats.filter(@(v) v.slowest <= rttLimit)
-      if (stats.len())
-        return stats.map(@(v) v.clusterId)
+    foreach (needSkipFullyUnreachable in [ true, false ]) {
+      foreach (needFullReachability in (can_send_hosts_reachability_to_matching.get() ? [ false ] : [ true, false ])) {
+        foreach (slowestRttLimit in [ OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LIMIT_MS_SQUAD, -1 ]) {
+          local stats = rttStatsList
+            .filter(@(v) v.size >= minSize
+              && (!needSkipFullyUnreachable || v.reachability > 0)
+              && (!needFullReachability || v.reachability == 1.0))
+          if (!stats.len())
+            continue
+          let rttLimit = slowestRttLimit != -1
+            ? slowestRttLimit
+            : stats.map(@(v) v.slowest).reduce(@(res, v) min(res, v))
+          stats = stats.filter(@(v) v.slowest <= rttLimit)
+          if (stats.len()) {
+            let unreachableList = []
+            foreach (v in stats)
+              foreach (ip in v.unreachable)
+                if (!unreachableList.contains(ip))
+                  unreachableList.append(ip)
+            return {
+              clusters = stats.map(@(v) v.clusterId)
+              unreachableHosts = unreachableList
+            }
+          }
+        }
+      }
     }
   }
-  return null
-}
-
-function onClustersRecalc() {
-  let newClusterStats = getClusterStats()
-  if (!isEqual(newClusterStats, clusterStats.get()))
-    clusterStats.set(newClusterStats)
+  return defRes
 }
 
 clusterStats.subscribe(function(val) {
@@ -302,18 +403,20 @@ clusterStats.subscribe(function(val) {
   optimalClusters.set(newOptimalClusters)
 })
 
-clusterStats.subscribe(function(val) {
-  let newMyClustersRTT = val.filter(@(v) v.hostsRTT != null).map(@(v) [ v.clusterId, v.hostsRTT ]).totable()
-  if (!isEqual(newMyClustersRTT, myClustersRTT.get()))
-    myClustersRTT.set(newMyClustersRTT)
-})
+unreachableHosts.subscribe(@(v) v.len() != 0
+  ? logOC("".concat("Unreachable hosts for current clusters: ", ",".join(v)))
+  : null)
 
 isInQueue.subscribe(function(val) {
   if (!val || !isInSquad.get())
     return
-  let info = squadMembers.get().map(@(m) m?.clustersRTT ?? {}).values()
-    .map(@(v) ",".join(v.map(@(rtt, clusterId) $"{clusterId}={rtt}").values().sort()))
-  logOC("\n".join([ $"Squad members clusters RTT:" ].extend(info)))
+  let squadMembersClustersRtt = squadMembers.get().values().map(@(m) m?.clustersRTT ?? {})
+  let rttInfo = squadMembersClustersRtt.map(@(v) ",".join(v.map(function(data, clusterId) {
+      let unr = ",".join(data?.unreachable ?? [])
+      let comment = unr == "" ? "" : $"(!{unr})"
+      return $"{clusterId}={data.rtt}{comment}"
+    }).values().sort()))
+  logOC("\n".join([ $"Squad members clusters RTT:" ].extend(rttInfo)))
 })
 
 function logBadAnswer(evt, hostInfo, reason) {
@@ -353,6 +456,48 @@ function onUdpPacket(evt) {
   resetTimeout(CLUSTERS_RECALC_DELAY_SEC, onClustersRecalc)
 }
 
+function refreshNow(needResetRtt, isManual) {
+  if (!isProbingActive.get())
+    return
+  logOC($"{isManual ? "Manual" : "Automatic"} reachability check")
+  let expiredTimeMs = get_time_msec() - (REGULAR_PROBE_INTERVAL_SEC * 1000)
+  if (isManual)
+    isWaitingManualRefresh.set(true)
+  foreach (hostInfo in hostsCfg)
+    hostInfo.__update(
+      {
+        lastRequestId = 0
+        lastRequestTimeMs = 0
+        errors = 0
+        isReachable = false
+        lastAnswerTimeMs = expiredTimeMs
+      },
+      !needResetRtt ? {}
+        : {
+            rttSamples = []
+            avgRTT = null
+          })
+  scheduleNextProbeTime(tryProbeHosts)
+}
+
+let onRefreshNowEvent = @(evt) refreshNow(evt.needResetRtt, evt.isManual)
+
+function requestHostsReachability() {
+  refreshNow(needResetRttOnRefresh.get(), false)
+  needResetRttOnRefresh.set(false)
+}
+
+isReady.subscribe(@(v) (v && !isHostsReachabilityValid()) ? requestHostsReachability() : null)
+
+function onConnectionStatusChange(evt) {
+  if (!evt?.networkChanged)
+    return
+  needResetRttOnRefresh.set(true)
+  lastReachabilityUpdateTimeMs.set(0)
+}
+eventbus_subscribe("android.network.onConnectionStatusChange", onConnectionStatusChange)
+eventbus_subscribe("ios.network.onConnectionStatusChange", onConnectionStatusChange)
+
 clusterHosts.subscribe(function(v) {
   foreach (ip, clustersList in v)
     if (ip in hostsCfg)
@@ -367,20 +512,23 @@ isMatchingOnline.subscribe(function(_) {
   hostsCfg.each(@(hostInfo) hostInfo.__update({
     lastRequestId = 0
     lastRequestTimeMs = 0
+    isReachable = false
     errors = 0
   }))
+  lastReachabilityUpdateTimeMs.set(0)
   scheduleNextProbeTime(tryProbeHosts)
 })
 
 function startProbe() {
   eventbus_subscribe("udp.on_packet", onUdpPacket)
+  eventbus_subscribe("clusters_refresh_now", onRefreshNowEvent)
   scheduleNextProbeTime(tryProbeHosts)
 }
 
 function stopProbe() {
-  clearTimer(tryProbeHosts)
-  clearTimer(onClustersRecalc)
   eventbus_unsubscribe("udp.on_packet", onUdpPacket)
+  eventbus_unsubscribe("clusters_refresh_now", onRefreshNowEvent)
+  clearTimer(tryProbeHosts)
 }
 
 isProbingActive.subscribe(@(v) v? startProbe() : stopProbe())
@@ -388,5 +536,7 @@ if (isProbingActive.get())
   startProbe()
 
 return {
-  getOptimalClustersForSquad
+  isHostsReachabilityValid
+  requestHostsReachability
+  getClustersAndHostsForQueue
 }

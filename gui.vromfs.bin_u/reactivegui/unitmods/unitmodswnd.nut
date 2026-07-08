@@ -12,36 +12,36 @@ let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText, getAmmoTypeShortText,
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let getBulletStats = require("%rGui/bullets/bulletStats.nut")
 let { mkShellVideo } = require("%rGui/bullets/bulletsSelectorComps.nut")
+let { BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
 let { catsHeight } = require("%rGui/unitMods/unitModsScroll.nut")
 let { tabW, blocksGap, blocksPadding, blocksLineSize, modW, modH,
   knobSize, catsBlockHeight, contentGamercardGap, slotsBlockMargin
 } = require("%rGui/unitMods/unitModsConst.nut")
 let { modsCategories, curModCategoryId, curMod, isUnitModsOpen, closeUnitModsWnd,
-  modsSorted, unit, enableCurUnitMod, disableCurUnitMod,
-  isCurModPurchased, isCurModEnabled, isCurModLocked,
+  modsSorted, mods, unit, enableCurUnitMod, disableCurUnitMod,
+  isCurModPurchased, isCurModEnabled, isCurModLocked, curBulletId, curBulletCategoryId,
   getModCost, curUnitModCostCfg, iconCfg, isOwn, isUnitModAttached
 } = require("%rGui/unitMods/unitModsState.nut")
 let { mkModsCategories } = require("%rGui/unitMods/unitModsWndTabs.nut")
 let { mkMods } = require("%rGui/unitMods/unitModsCarousel.nut")
-let { curBullet, chosenBullets, chosenBulletsSec, chosenBulletsSpec, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, choiceCount,
+let { chosenBullets, chosenBulletsSec, chosenBulletsSpec, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, choiceCount,
   bulletTotalSteps, bulletStep, maxBulletsCountForExtraAmmo, hasExtraBullets, bulletLeftSteps, bulletSecTotalSteps,
   bulletSpecTotalSteps, bulletSecStep, bulletSpecStep, maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo,
-  hasExtraBulletsSec, hasExtraBulletsSpec, bulletSecLeftSteps, bulletSpecLeftSteps, isCurBulletLocked, isCurBulletEnabled,
-  setOrSwapCurUnitBullet, curBulletCategoryId, visibleBulletsList
+  hasExtraBulletsSec, hasExtraBulletsSpec, bulletSecLeftSteps, bulletSpecLeftSteps, isCurBulletEnabled,
+  setOrSwapCurUnitBullet, visibleBulletsList, isFakeSecondary, isFakeSpecial, curBullet
 } = require("%rGui/unitMods/unitBulletsState.nut")
 let { mkBulletsTabs } = require("%rGui/unitMods/unitBulletsWndTabs.nut")
 let { mkBullets } = require("%rGui/unitMods/unitBulletsCarousel.nut")
-let { mkVerticalPannableArea, mkCarouselPannableArea, verticalGradientLine,
-  mkBulletTypeIcon, mkLevelUpRewardBtnChildren, catsPanelBg
+let { mkVerticalPannableArea, mkCarouselPannableArea, verticalGradientLine, mkBulletTypeIcon, catsPanelBg
 } = require("%rGui/unitMods/modsComps.nut")
-let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { selLineSize } = require("%rGui/components/selectedLine.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { tabsGap, tabExtraWidth } = require("%rGui/components/tabs.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
@@ -100,10 +100,13 @@ function bulletsCategoriesBlock() {
     })
     allSlots.extend(slots)
   }
-  let bInfoSec = bulletsSecInfo.get()
-  if (bInfoSec != null) {
+
+  function buildSecSlots() {
+    let bInfoSec = bulletsSecInfo.get()
+    if (bInfoSec == null)
+      return []
     let bullets = chosenBulletsSec.get()
-    let slots = array(bullets.len()).map(function(_, i) {
+    return array(bullets.len()).map(function(_, i) {
       let bSlot = bullets?[i]
       let bSet = bInfoSec?.bulletSets[bSlot?.name]
       let idx = bSlot?.idx ?? i
@@ -121,12 +124,14 @@ function bulletsCategoriesBlock() {
         isOwn = isOwn.get()
       }
     })
-    allSlots.extend(slots)
   }
-  let bInfoSpec = bulletsSpecInfo.get()
-  if (bInfoSpec != null) {
+
+  function buildSpecSlots() {
+    let bInfoSpec = bulletsSpecInfo.get()
+    if (bInfoSpec == null)
+      return []
     let bullets = chosenBulletsSpec.get()
-    let slots = array(bullets.len()).map(function(_, i) {
+    return array(bullets.len()).map(function(_, i) {
       let bSlot = bullets?[i]
       let bSet = bInfoSpec?.bulletSets[bSlot?.name]
       let idx = bSlot?.idx ?? i
@@ -144,11 +149,21 @@ function bulletsCategoriesBlock() {
         isOwn = isOwn.get()
       }
     })
-    allSlots.extend(slots)
   }
+
+  
+  if (!isFakeSecondary.get())
+    allSlots.extend(buildSecSlots())
+  if (!isFakeSpecial.get())
+    allSlots.extend(buildSpecSlots())
+  if (isFakeSecondary.get())
+    allSlots.extend(buildSecSlots())
+  if (isFakeSpecial.get())
+    allSlots.extend(buildSpecSlots())
+
   return {
     watch = [bulletsInfo, bulletsSecInfo, bulletsSpecInfo, chosenBullets, chosenBulletsSec, chosenBulletsSpec,
-      bulletTotalSteps, bulletSecTotalSteps, bulletSpecTotalSteps, isOwn]
+      bulletTotalSteps, bulletSecTotalSteps, bulletSpecTotalSteps, isOwn, isFakeSecondary, isFakeSpecial]
     size = FLEX_H
     children = mkBulletsTabs(
       allSlots,
@@ -171,13 +186,13 @@ let modsCategoriesBlock = @() {
 
 let categoriesBlock = @() catsPanelBg.__merge({
   watch = emptyCatSlotHeight
-  size = [saBorders[0] + tabW + blocksPadding, flex()]
+  size = [saBorders[0] + tabW + blocksPadding, FLEX]
   padding = [0, blocksPadding - knobSize / 2, 0, 0]
   margin = [contentGamercardGap, 0, 0, 0]
   halign = ALIGN_RIGHT
   children = emptyCatSlotHeight.get() <= 0 ? mkVerticalPannableArea([bulletsCategoriesBlock, modsCategoriesBlock], catsWidth, pageMaskY())
     : {
-        size = [catsWidth, flex()]
+        size = [catsWidth, FLEX]
         padding = [slotsBlockMargin, 0, 0, 0]
         flow = FLOW_VERTICAL
         gap = tabsGap
@@ -188,7 +203,7 @@ let categoriesBlock = @() catsPanelBg.__merge({
 let bulletsBlock = @() {
   watch = visibleBulletsList
   size = FLEX_V
-  children = mkBullets(visibleBulletsList.get())
+  children = mkBullets(visibleBulletsList.get(), mods, curUnitModCostCfg)
 }
 
 let modsBlock = @() {
@@ -223,7 +238,7 @@ function mkBulletsInfo(bullet, unitInfo) {
   let { caliber = 0.0, bullets = [], shellAnimations = [] } = bSet
   let children = [
     {
-      size = [flex(), modH]
+      size = [FLEX, modH]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = shellVideoGap
@@ -232,7 +247,7 @@ function mkBulletsInfo(bullet, unitInfo) {
           size = [modW, modH]
           children = [
             {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_IMAGE
               image = Picture($"{getBulletImage(image, bullets)}:0:P")
               keepAspect = true
@@ -302,7 +317,7 @@ function mkModsInfo(mod, unitInfo) {
       children = [
         mkModIcon
         {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           halign = ALIGN_RIGHT
@@ -336,13 +351,11 @@ let spinner = {
   children = mkSpinner
 }
 
-function onPurchase() {
+function onPurchase(modName, price, currencyId, locName = null) {
   let unitName = unit.get().name
-  let modName = curMod.get().name
-  let { price, currencyId } = getModCost(curMod.get(), curUnitModCostCfg.get())
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion",
-      { item = colorize(userlogTextColor, loc($"modification/{modName}")) }),
+      { item = colorize(userlogTextColor, locName ?? loc($"modification/{modName}")) }),
     price = { price, currencyId },
     purchase = @() buy_unit_mod(unitName, modName, currencyId, price),
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}")
@@ -350,26 +363,54 @@ function onPurchase() {
   })
 }
 
-let mkModsButton = @(mod) @() {
-  watch = [isCurModPurchased, isCurModEnabled, isCurModLocked, modsInProgress]
-  children = isCurModLocked.get()
-      ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), mod?.reqLevel ?? 0,
-        @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
-    : modsInProgress.get() != null ? spinner
-    : !isCurModPurchased.get() ? textButtonPurchase(utf8ToUpper(loc("mainmenu/btnBuy")), onPurchase, { ovr = { key = "arsenal_purchase_btn" }, hotkeys = ["^J:Y"] })
-    : !isCurModEnabled.get() ? textButtonPrimary(utf8ToUpper(loc("mod/enable")), enableCurUnitMod)
-    : !mod?.isAlwaysOn ? textButtonPrimary(utf8ToUpper(loc("mod/disable")), disableCurUnitMod)
-    : null
+let mkModsButton = @(mod) function() {
+  let { price = 0, currencyId = "" } = isCurModPurchased.get() ? null
+    : getModCost(mod, curUnitModCostCfg.get())
+  return {
+    watch = [isCurModPurchased, isCurModEnabled, isCurModLocked, modsInProgress, curUnitModCostCfg]
+    children = isCurModLocked.get()
+        ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), mod?.reqLevel ?? 0,
+          @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
+      : modsInProgress.get() != null ? spinner
+      : !isCurModPurchased.get()
+        ? textButtonPricePurchase(utf8ToUpper(loc("mainmenu/btnBuy")),
+            mkCurrencyComp(price, currencyId),
+            @() onPurchase(mod.name, price, currencyId),
+            { ovr = { key = "arsenal_purchase_btn" }, hotkeys = ["^J:Y"] })
+      : !isCurModEnabled.get() ? textButtonPrimary(utf8ToUpper(loc("mod/enable")), enableCurUnitMod)
+      : !mod?.isAlwaysOn ? textButtonPrimary(utf8ToUpper(loc("mod/disable")), disableCurUnitMod)
+      : null
+  }
 }
 
-let mkBulletsButton = @(bullet) @() {
-  watch = [isCurBulletLocked, isCurBulletEnabled]
-  children = isCurBulletLocked.get()
-      ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), bullet?.fromUnitTags.reqLevel ?? 0,
-        @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
-    : !isCurBulletEnabled.get()
-      ? textButtonPrimary(utf8ToUpper(loc("mod/enable")), @() setOrSwapCurUnitBullet(curBulletCategoryId.get(), bullet.name))
-    : null
+function mkBulletsButton(bullet) {
+  let { fromUnitTags, reqLevel, status } = bullet
+  let isLockedByLevel = Computed(@() reqLevel > (unit.get()?.level ?? 0))
+  let costInfo = Computed(function() {
+    let mod = mods.get()?[fromUnitTags?.reqModification]
+    if (mod == null)
+      return { price = 0, currencyId = "", modName = "" }
+    return getModCost(mod, curUnitModCostCfg.get())
+      .__update({ modName = mod.name })
+  })
+  return function() {
+    let { modName, price, currencyId } = costInfo.get()
+    return {
+      watch = [isCurBulletEnabled, isLockedByLevel, costInfo]
+      children = isCurBulletEnabled.get() ? null
+        : (status & BS_UNLOCKED) != 0
+          ? textButtonPrimary(utf8ToUpper(loc("mod/enable")), @() setOrSwapCurUnitBullet(curBulletCategoryId.get(), bullet.name))
+        : isLockedByLevel.get()
+          ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), reqLevel,
+              @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
+        : price > 0
+          ? textButtonPricePurchase(utf8ToUpper(loc("mainmenu/btnBuy")),
+              mkCurrencyComp(price, currencyId),
+              @() onPurchase(modName, price, currencyId, getAmmoNameShortText(bullet?.bSet)),
+              { hotkeys = ["^J:Y"] })
+        : null
+    }
+  }
 }
 
 let infoPanelScrollHandler = ScrollHandler()
@@ -379,7 +420,7 @@ let makeInfoPanelVertScroll = @(content) makeVertScroll(content,
 
 let unitModsWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   padding = [saBordersRv[0], 0, 0, 0]
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
@@ -396,10 +437,10 @@ let unitModsWnd = {
     @() {
       watch = curCampaign
       padding = [0, 0, 0, saBorders[0]]
-      children = mkGamercardUnitCampaign(closeUnitModsWnd, getCampaignPresentation(curCampaign.get()).levelUnitModLocId)
+      children = mkGamercardUnitCampaign(closeUnitModsWnd, getCampaignPresentation(curCampaign.get()).levelUnitModLocId, unit)
     }
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_HORIZONTAL
       children = [
         categoriesBlock
@@ -407,18 +448,18 @@ let unitModsWnd = {
         @() {
           watch = iconH
           key = iconH
-          size = flex()
+          size = FLEX
           flow = FLOW_VERTICAL
           padding = [contentGamercardGap, 0, saBorders[1] - iconH.get(), 0]
           halign = ALIGN_RIGHT
           gap = buttonGap
           function onAttach() {
             curMod.subscribe(resetScrollHandler)
-            curBullet.subscribe(resetScrollHandler)
+            curBulletId.subscribe(resetScrollHandler)
           }
           function onDetach() {
             curMod.unsubscribe(resetScrollHandler)
-            curBullet.unsubscribe(resetScrollHandler)
+            curBulletId.unsubscribe(resetScrollHandler)
           }
           children = [
             @() panelBg.__merge({
@@ -444,20 +485,13 @@ let unitModsWnd = {
               gap = hdpx(20)
               flow = FLOW_HORIZONTAL
               children = !isOwn.get() ? null
-                : [
-                    @() {
-                      watch = [unit, unseenUnitLvlRewardsList]
-                      children = unit.get()?.name not in unseenUnitLvlRewardsList.get() ? null
-                        : { children = mkLevelUpRewardBtnChildren(unit.get()) }
-                    }
-                    curMod.get() != null ? mkModsButton(curMod.get())
-                      : curBullet.get() != null ? mkBulletsButton(curBullet.get())
-                      : null
-                  ].filter(@(v) v != null)
+                : curMod.get() != null ? mkModsButton(curMod.get())
+                : curBullet.get() != null ? mkBulletsButton(curBullet.get())
+                : null
             }
             @() {
               watch = [curModCategoryId, curBulletCategoryId, modTotalH]
-              size = [flex(), modTotalH.get()]
+              size = [FLEX, modTotalH.get()]
               valign = ALIGN_BOTTOM
               vplace = ALIGN_BOTTOM
               children = curModCategoryId.get() != null ? mkCarouselPannableArea(modsBlock, modTotalH.get(), pageMaskX())

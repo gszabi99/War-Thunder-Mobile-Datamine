@@ -9,7 +9,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { isSingleViewInfoRewardEmpty, getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
@@ -56,10 +56,10 @@ let mkRewardsListBtn = @(rewards, style, isQuestFinished = false) {
 let mkLockedIcon = @(ovr = {}) mkIcon("ui/gameuiskin#lock_icon.svg", [statusIconSize, statusIconSize], ovr)
 
 let lockedReward = {
-  size = flex()
+  size = FLEX
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = bgColor
     }
@@ -100,7 +100,7 @@ let rewardProgressBarCtor = @(r, isUnlocked, onClick, canReceiveReward, isReward
       children = !isRewardInProgress && canReceiveReward ? priorityUnseenMark : null
     }
     {
-      size = flex()
+      size = FLEX
       halign = ALIGN_RIGHT
       children = isRewardInProgress && canReceiveReward ? spinner : null
     }
@@ -109,7 +109,7 @@ let rewardProgressBarCtor = @(r, isUnlocked, onClick, canReceiveReward, isReward
 
 let mkQuestRewardPlate = @(r, startIdx, rewards, isQuestFinished = false, rStyle = rStyleDefault) {
   behavior = Behaviors.Button
-  onClick = @() r.rType == G_UNIT ? unitDetailsWnd({ name = r.id }) : openRewardsList(rewards, isQuestFinished)
+  onClick = @() r.rType == G_UNIT ? openUnitDetailsWnd({ name = r.id }) : openRewardsList(rewards, isQuestFinished)
   children = [
     mkRewardPlate(r, rStyle, {
       key = {}
@@ -132,7 +132,7 @@ let mkRewardPlateWithAnim = @(r, appearTime, isQuestFinished = Watched(false), h
     if (handleClick?())
       return
     if (r.rType == G_UNIT)
-      unitDetailsWnd({ name = r.id })
+      openUnitDetailsWnd({ name = r.id })
   }
   children = [
     mkRewardPlate(r, rStyle, {

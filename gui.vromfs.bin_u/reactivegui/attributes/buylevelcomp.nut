@@ -53,7 +53,7 @@ let mkLevelInfo = @(levels, sp, gradColor) {
   children = [
     mkSlotBgImg()
     {
-      size = flex()
+      size = FLEX
       padding = const [hdpx(10), hdpx(20)]
       valign = ALIGN_CENTER
       halign = ALIGN_LEFT
@@ -104,12 +104,12 @@ function generateDataDiscount(discountConfig, levelsToMax, isForSlot = false) {
 
 let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
   watch = [isInProgress, balanceGold]
-  size = const [flex(), pricePlateH]
+  size = const [FLEX, pricePlateH]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = isInProgress.get() != null ? spinner
     : [
-        textButtonPurchase(null, @() null, { ovr = { size = flex(), minWidth = 0, behavior = null } })
+        textButtonPurchase(null, @() null, { ovr = { size = FLEX, minWidth = 0, behavior = null } })
         mkDiscountPriceComp(fullCostGold, costGold, "gold",
           balanceGold.get() >= costGold ? CS_COMMON : CS_NO_BALANCE)
         mkDiscountCorner(((1.0 - costMul) * 100 + 0.5).tointeger())
@@ -176,7 +176,7 @@ function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick, gr
     gap = -hdpx(2)
     children = [
       {
-        size = flex()
+        size = FLEX
         children = bgParticles
       }
       mkLevelInfo(levels, sp, gradColor)

@@ -34,7 +34,7 @@ registerHandler("closeOfferWndOnSuccess",
 
 registerHandler("onDebugShiftOffer", @(_) check_new_offer(curCampaign.get(), "closeOfferWndOnSuccess"))
 
-let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] }, useFlexText = true })
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [FLEX, hdpx(100)] }, useFlexText = true })
 let infoTextOvr = {
   size = FLEX_H
   halign = ALIGN_LEFT,
@@ -168,7 +168,7 @@ function mkCommandsList() {
   let list = commandsList.map(@(c) mkBtn(c.label, c.func))
   let rows = arrayByRows(list, 2)
   if (rows.top().len() < 2)
-    rows.top().resize(2, { size = flex() })
+    rows.top().resize(2, { size = FLEX })
 
   return {
     size = FLEX_H
@@ -186,7 +186,7 @@ function mkCommandsList() {
 
 return @() addModalWindow({
   key = wndUid
-  size = flex()
+  size = FLEX
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
@@ -208,7 +208,7 @@ return @() addModalWindow({
             rendObj = ROBJ_TEXT
             text = "Debug offers"
           }.__update(fontSmall)
-          { size = flex() }
+          { size = FLEX }
           closeButton(close)
         ]
       }

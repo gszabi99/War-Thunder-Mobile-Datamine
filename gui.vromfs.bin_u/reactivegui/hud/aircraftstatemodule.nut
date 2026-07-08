@@ -25,7 +25,7 @@ function xrayDoll(stateFlags, scale) {
       damagePanelBacklight(stateFlags, [size, size])
       {
         rendObj = ROBJ_XRAYDOLL
-        size = flex()
+        size = FLEX
         rotateWithCamera = true
         drawOutlines = false
         drawSilhouette = true

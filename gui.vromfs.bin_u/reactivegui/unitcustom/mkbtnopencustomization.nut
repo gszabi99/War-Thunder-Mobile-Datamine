@@ -11,7 +11,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { unseenDecals } = require("%rGui/unitCustom/unitDecals/unseenDecals.nut")
 
 
-let iconSize = hdpxi(80)
+let iconSize = hdpxi(60)
 
 let customizationBtnContent = {
   valign = ALIGN_CENTER

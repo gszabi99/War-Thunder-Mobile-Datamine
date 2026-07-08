@@ -110,7 +110,7 @@ function fullImgBg(scale) {
 
 let imgBgComp = @(scale) @() {
   watch = isStickActiveByStick
-  size = flex()
+  size = FLEX
   opacity = isStickActiveByStick.get() ? 0.5 : 1.0
   children = isStickActiveByStick.get() ? imgBg(scale) : fullImgBg(scale)
   transform = {}
@@ -143,6 +143,21 @@ let moveStickBase = @(zoneSize, scale, touchStickAction, moveCtrlType) @() {
     [13, 0.2],
     [60, 0.5],
     [74, 0.9],
+    [75, 1.0]
+  ]
+  steeringTableAlternative = [
+    [-20, 0],
+    [-21, 0.1],
+    [-27, 0.15],
+    [-55, 0.6],
+    [-60, 0.99],
+    [-74, 0.99],
+    [12, 0],
+    [13, 0.1],
+    [20, 0.15],
+    [55, 0.6],
+    [60, 0.7],
+    [74, 0.8],
     [75, 1.0]
   ]
   maxValueRadius = zoneSize * zoneToBgRadius
@@ -282,7 +297,7 @@ let unitGamepadStick = @(scale, isTank) @(){
   }
   children = [
     {
-      size = flex()
+      size = FLEX
       opacity = 0.75
       children = fullImgBg(scale)
     }

@@ -9,6 +9,10 @@
   "allowHumanReload": true,
   "bulletsCartridge": 2,
   "fxType": "",
+  "drawRocketInBullet": true,
+  "mesh": "rocket_m1_volna",
+  "animChar": "rocket_m1_volna_char",
+  "reloadAnimParam": "rocket_action",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
@@ -19,8 +23,9 @@
     "bulletName": "m1volna",
     "mass": 735.0,
     "rocket": {
-      "bulletName": "rim7p",
-      "mesh": "rocket_rim7_sea_sparrow",
+      "bulletName": "m1volna",
+      "mesh": "rocket_m1_volna",
+      "shellAnimChar": "rocket_m1_volna_deployed_char",
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "groundRicochetPreset": "he_ground",
@@ -85,9 +90,9 @@
         0.0,
         0.0
       ],
-      "explosionEffect": "hit_291_390mm_metal_he",
+      "explosionEffect": "hit_ash_missile_metal_he",
       "groundCollisionEffect": "hit_291_390mm_dirt_he",
-      "ricochetEffect": "hit_291_390mm_metal_he",
+      "ricochetEffect": "hit_ash_missile_metal_he",
       "waterFxScale": [
         0.8,
         1.0
@@ -141,7 +146,7 @@
           "angleMax": 45.0,
           "rateMax": 60.0,
           "prolongationTimeMax": 1.0,
-          "designationSourceTypeMask": 2,
+          "designationSourceType": "radar",
           "transmitter": {
             "power": 2000.0,
             "antenna": {
@@ -306,16 +311,16 @@
           "fx": "hit_291_390mm_snow_he"
         },
         "glass": {
-          "fx": "hit_291_390mm_metal_he"
+          "fx": "hit_ash_missile_metal_he"
         },
         "wood": {
           "fx": "hit_291_390mm_wood_he"
         },
         "steel": {
-          "fx": "hit_291_390mm_metal_he"
+          "fx": "hit_ash_missile_metal_he"
         },
         "metal": {
-          "fx": "hit_291_390mm_metal_he"
+          "fx": "hit_ash_missile_metal_he"
         },
         "buildings": {
           "fx": "hit_291_390mm_stone_he"

@@ -22,7 +22,7 @@ let winsCount = Computed(@() npBpFreeRewardsUnlock.get()?.current ?? 0)
 let isNPActive = Computed(@() campaignActiveUnlocks.get()?[npBpPaidRewardsUnlock.get()?.requirement].isCompleted ?? false)
 let isNPSeasonActive = Computed(@() npBpFreeRewardsUnlock.get() != null)
 
-let seasonEndTime = Computed(@() userstatStatsTables.get()?.stats[npBpFreeRewardsUnlock.get()?.table]["$endsAt"] ?? 0)
+let nbpSeasonEndTime = Computed(@() userstatStatsTables.get()?.stats[npBpFreeRewardsUnlock.get()?.table]["$endsAt"] ?? 0)
 
 let mkNPPaidStageList = Computed(function() {
   let res = gatherUnlockStageInfo(npBpPaidRewardsUnlock.get(), true, isNPActive.get(), winsCount.get())
@@ -124,7 +124,7 @@ return {
   closeNPWnd = @() isNPWndOpened.set(false)
   isNPSeasonActive
   npPassGoods
-  seasonEndTime
+  nbpSeasonEndTime
   sendNpBqEvent
   hasNpBpRewardsToReceive
   hasUnseenNpPass

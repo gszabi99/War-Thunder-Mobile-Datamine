@@ -27,12 +27,12 @@ function mkLevelLine(cur, req, color, ovr = {}) {
         fillColor = 0xFF000000
         borderColor = 0xFFFFFFFF
         children = {
-          size = [ pw(100 * percent), flex() ]
+          size = [ pw(100 * percent), FLEX ]
           rendObj = ROBJ_SOLID
           color
         }}.__update(ovr))
       {
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         text = "/".concat(cur, req)

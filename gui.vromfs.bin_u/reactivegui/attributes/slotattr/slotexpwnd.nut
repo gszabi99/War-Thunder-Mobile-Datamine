@@ -68,7 +68,7 @@ let header = {
 }
 
 let totalExpCount = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = [FLEX, SIZE_TO_CONTENT]
   padding = hdpx(20)
   rendObj = ROBJ_SOLID
   color = 0x70000000
@@ -105,7 +105,7 @@ let mkSlotInfo = @(slot, idx) {
   halign = ALIGN_RIGHT
   children = [
     textComp(loc("gamercard/slot/title", { idx = idx + 1 }), fontVeryTinyAccented)
-    { size = flex() }
+    { size = FLEX }
     mkSlotLevel(slot?.level ?? 0, levelImageSize)
   ]
 }
@@ -143,14 +143,14 @@ let mkLevel = @(level, expPart, color = 0xFFFFFFFF) {
         }.__update(fontMonoTiny)
       ]
     }
-    expPart <= 0 ? { size = [flex(), lvlProgressHeight] }
+    expPart <= 0 ? { size = [FLEX, lvlProgressHeight] }
       : {
-          size = [flex(), lvlProgressHeight]
+          size = [FLEX, lvlProgressHeight]
           padding = lvlProgressBorder
           rendObj = ROBJ_SOLID
           color = 0xFF000000
           children = {
-            size = [pw(100 * expPart), flex()]
+            size = [pw(100 * expPart), FLEX]
             rendObj = ROBJ_SOLID
             color = 0xFFFFFFFF
           }
@@ -247,7 +247,7 @@ function mkSlider(idx) {
   })
 
   return {
-    size = [flex(), slotHeight]
+    size = [FLEX, slotHeight]
     padding = gap
     rendObj = ROBJ_SOLID
     color = 0x70000000
@@ -257,7 +257,7 @@ function mkSlider(idx) {
     children = [
       mkProgressBtn(mkProgressBtnContentDec(canDec), @() onChange(level.get() + (expPart.get() == 0 ? -1 : 0)))
       {
-        size = [sliderWidth, flex()]
+        size = [sliderWidth, FLEX]
         valign = ALIGN_CENTER
         children = [
           sliderHeader(curLevel, curExpPart, level, expPart)
@@ -276,7 +276,7 @@ function mkSlider(idx) {
       mkProgressBtn(mkProgressBtnContentInc(canInc), @() onChange(level.get() + 1))
       @() {
         watch = incCost
-        size = [priceBlockWidth, flex()]
+        size = [priceBlockWidth, FLEX]
         flow = FLOW_HORIZONTAL
         vplace = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -299,7 +299,7 @@ function mkSlider(idx) {
 }
 
 let mkRow = @(slot, idx) {
-  size = [flex(), slotHeight]
+  size = [FLEX, slotHeight]
   flow = FLOW_HORIZONTAL
   gap
   children = [
@@ -310,7 +310,7 @@ let mkRow = @(slot, idx) {
 
 let slots = @() {
   watch = curSlots
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   gap
   children = curSlots.get().map(mkRow)
@@ -318,26 +318,26 @@ let slots = @() {
 
 let navBar = @() {
   watch = [curCampSlotExp, curBalance]
-  size = [ flex(), defButtonHeight ]
+  size = [ FLEX, defButtonHeight ]
   children = curCampSlotExp.get() == curBalance.get() ? null
     : mkSpinnerHideBlock(Computed(@() slotInProgress.get() != null),
         textButtonPrimary(utf8ToUpper(loc("msgbox/btn_confirm")), buySlotsExp),
         {
-          size = [ flex(), defButtonHeight ]
+          size = [ FLEX, defButtonHeight ]
           halign = ALIGN_RIGHT
         })
 }
 
 let slotExpWnd = {
   key = {}
-  size = flex()
+  size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap
   children = [
     header
     {
-      size = flex()
+      size = FLEX
       flow = FLOW_VERTICAL
       gap
       children = [

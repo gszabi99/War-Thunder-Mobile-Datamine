@@ -23,7 +23,7 @@ let slotNameBG = {
 }
 
 let bgHiglight = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0x3F3F3F
 }
@@ -36,7 +36,7 @@ let boosterImage = @(id){
 }
 
 let mkImgs = @(list) {
-  size = flex()
+  size = FLEX
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -85,7 +85,7 @@ function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
       .extend(mkGoodsCommonParts(goods, stateExt), addChildren)
       .append(@() {
         watch = hasLimitReached
-        size = flex()
+        size = FLEX
         children = hasLimitReached.get() ? disabledBg : null
       }),
     mkPricePlate(goods, stateExt, animParams), {size = goodsSmallSize})

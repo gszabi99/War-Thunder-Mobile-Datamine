@@ -35,6 +35,7 @@
   "notUseDefaultBulletInGui": true,
   "changeBulletTypeForSet": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "allowRearmOnField": true,
   "mesh": "roland_rocket",
   "animChar": "roland_rocket_char",

@@ -3,7 +3,7 @@ let logO = log_with_prefix("[DbgOverlay] ")
 
 let WND_PARAMS = {
   key = null 
-  size = flex()
+  size = FLEX
   stopMouse = true
   stopHotkeys = true
   rendObj = ROBJ_SOLID
@@ -40,7 +40,7 @@ function addDbgOverlay(wnd = {}) {
 
 let dbgOverlayComponent = @() {
   watch = genIdx
-  size = flex()
+  size = FLEX
   children = dbgOverlayWindows
 }
 

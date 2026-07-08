@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { dgs_get_settings } = require("dagor.system")
 let { load_local_shared_settings, save_local_shared_settings} = require("%scripts/clientState/localProfile.nut")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
-let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_NSWITCH, availableLoginTypes
+let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_VKID, LT_GUEST, LT_NSWITCH, availableLoginTypes
 } = require("%appGlobals/loginState.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -24,6 +24,7 @@ if (is_ios) {
     [LT_GOOGLE] = true,
     [LT_HUAWEI] = true,
     [LT_FIREBASE] = true,
+    [LT_VKID] = true,
     [LT_FACEBOOK] = true,
   })
 let available = availableBase.filter(@(_, lt) availableLoginTypes?[lt] ?? false)

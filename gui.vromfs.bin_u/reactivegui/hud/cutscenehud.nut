@@ -38,7 +38,7 @@ let hintForSkip = function() {
 }
 
 return {
-  size = flex()
+  size = FLEX
   padding = [sh(10), saBordersRv[1]]
   behavior = Behaviors.Button
   function onDoubleClick() {

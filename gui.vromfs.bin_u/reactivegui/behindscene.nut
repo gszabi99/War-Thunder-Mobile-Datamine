@@ -11,22 +11,22 @@ let scenesList = []
 let sceneListGeneration = mkWatched(persist, "sceneListGeneration", 0)
 
 let behindScene = {
-  size = flex()
+  size = FLEX
   children = [
     @() {
       watch = [curSceneBg, curSceneBgFallback]
-      size = flex()
+      size = FLEX
       children = curSceneBg.get()?.bg in screensList
         ? {
             key = curSceneBg.get().bg
-            size = flex()
+            size = FLEX
             children = mkAnimBgWithGyro(screensList[curSceneBg.get().bg].mkLayers() ?? [])
             animations = wndSwitchAnim
           }
         : curSceneBg.get()?.bg == "" ? null
         : {
             key = curSceneBg.get()?.bg
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_IMAGE
             image = Picture(curSceneBg.get()?.bg)
             fallbackImage = Picture(curSceneBgFallback.get())
@@ -38,7 +38,7 @@ let behindScene = {
     @() {
       watch = sceneListGeneration
       key = sceneListGeneration
-      size = flex()
+      size = FLEX
       children = scenesList.map(@(v) v.scene)
     }
   ]

@@ -15,7 +15,7 @@ let getSpeedRangeText = @(speed1, speed2) speed1 == speed2 ? getSpeedText(speed1
 
 let getHeightText = @(height) "".concat(round(height), loc("measureUnits/meters_alt"))
 
-let getHeightRangeText = @(height1, height2) height1 == height2 ? getSpeedText(height1)
+let getHeightRangeText = @(height1, height2) height1 == height2 ? getHeightText(height1)
   : "".concat(round(height1), rangeSeparator, round(height2), loc("measureUnits/meters_alt"))
 
 let getDistanceText = @(distance) distance < 1000
