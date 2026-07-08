@@ -359,13 +359,13 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
     foreach (idx, c in levelsExpCfg) {
       if (c.upToLevel <= fromLevel)
         continue
-      for (local l = fromLevel; l < c.upToLevel; l++) {
+      for (local l = fromLevel + 1; l < c.upToLevel; l++) {
         levelUpsArray.append({
           curLevel = l
           curStarLevel = isStarProgress ? starLevel + l - level : 0
           isStarProgress
           isLevelUpCurStep = c.exp <= leftReceivedExp
-          isLastLevelCurStep = (l + 1 == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
+          isLastLevelCurStep = (l == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
           curExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, 0)
           receivedExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, leftReceivedExp)
         })

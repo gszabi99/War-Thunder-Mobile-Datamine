@@ -386,14 +386,16 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
       if (c.upToLevel <= fromLevel)
         continue
       for (local l = fromLevel + 1; l <= c.upToLevel; l++) {
+        let isMaxLevelStep = (l == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
         levelUpsArray.append({
           curLevel = l
           curStarLevel = isStarProgress ? starLevel + l - level : 0
           isLevelUpPrevSteps = isLevelUp
           isLevelUpCurStep = c.exp <= leftReceivedExp
-          isMaxLevel = (l == c.upToLevel) && ((idx + 1) not in levelsExpCfg)
-          curExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, exp)
-          receivedExpWidth = lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, leftReceivedExp)
+          isMaxLevel = isMaxLevelStep
+          curExpWidth = isMaxLevelStep && levelUpsArray.len() == 1 ? levelUpsArray[0].curExpWidth : 0
+          receivedExpWidth = isMaxLevelStep ? levelProgressBarFillWidth
+            : lerpClamped(0, c.exp, 0, levelProgressBarFillWidth, leftReceivedExp)
         })
         leftReceivedExp = leftReceivedExp - c.exp
         if (leftReceivedExp <= 0)
@@ -401,7 +403,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
       }
       if (leftReceivedExp <= 0)
         break
-      fromLevel = c.upToLevel + 1
+      fromLevel = c.upToLevel
     }
   }
 

@@ -5791,6 +5791,13 @@
       "fxScale": 1.0,
       "material": "metal"
     },
+    "american_9310_crane_freight": {
+      "physRes": "american_9310_crane_freight_destr_phobj",
+      "hp": 3.0,
+      "impulseThreshold": 3.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
     "berlin_tram_a": {
       "nextRes": "berlin_tram_a_dmg",
       "hp": 40.0,

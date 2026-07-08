@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { curTabParams } = require("%rGui/quests/questsState.nut")
 let { curEventCurrencies } = require("%rGui/event/eventState.nut")
 let { bpSeasonName, bpSeasonEndTime } = require("%rGui/battlePass/battlePassState.nut")
 let { opSeasonEndTime, opSeasonName } = require("%rGui/battlePass/operationPassState.nut")
@@ -9,7 +11,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { PASS_SCENE, seasonPageId } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { PASS_SCENE, QUESTS_TAB, LOOTBOX_TAB, seasonPageId } = require("%rGui/seasonScene/seasonSceneState.nut")
 
 let defSeasonName = bpSeasonName
 let defSeasonEndTime = bpSeasonEndTime
@@ -28,6 +30,14 @@ let seasonEndTimeByPage = {
   ),
 }
 
+let currenciesByPage = {
+  [PASS_SCENE] = Computed(@() passPageId.get() == BATTLE_PASS || passPageId.get() == OPERATION_PASS
+    ? [GOLD]
+    : curEventCurrencies.get()),
+  [QUESTS_TAB] = Computed(@() curTabParams.get()?.currencies),
+  [LOOTBOX_TAB] = curEventCurrencies
+}
+
 let mkHeaderChildren = @(seasonName, seasonEndTime) [
   @() {
     watch = seasonName
@@ -42,6 +52,15 @@ let mkHeaderChildren = @(seasonName, seasonEndTime) [
       : loc("battlepass/endsin", { time = secondsToHoursLoc(seasonEndTime.get() - serverTime.get()) }  )
   }.__update(fontTinyAccented)
 ]
+
+function headerCurrencies() {
+  let currencies = currenciesByPage?[seasonPageId.get()]
+  return currencies == null ? { watch = seasonPageId }
+    : {
+        watch = [seasonPageId, currencies]
+        children = mkCurrenciesBtns(currencies.get())
+      }
+}
 
 return @(close) {
   size = FLEX_H
@@ -62,9 +81,6 @@ return @(close) {
       }
     ])
     { size = FLEX }
-    @() {
-      watch = curEventCurrencies
-      children = mkCurrenciesBtns(curEventCurrencies.get())
-    }
+    headerCurrencies
   ]
 }

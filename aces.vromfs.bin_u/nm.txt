@@ -64143,3 +64143,5 @@ tokyo_road_barrier_c_destr_phobj
 tokyo_vending_a_destr_phobj
 tokyo_vending_b_destr_phobj
 tokyo_vending_c_destr_phobj
+american_9310_crane_freight
+american_9310_crane_freight_destr_phobj

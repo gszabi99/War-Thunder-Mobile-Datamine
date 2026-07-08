@@ -8,6 +8,7 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { G_SKIN, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
@@ -118,8 +119,11 @@ function skinBtn(skinPresentation) {
   let { name, image } = skinPresentation
   let isLocked = Computed(@() name not in availableSkins.get())
   let isSelected = Computed(@() name == selectedSkin.get())
-  let currencyId = Computed(@() serverConfigs.get()?.skins[name][baseUnit.get()?.name].currencyId
-    ?? findShopSkinGoods(baseUnit.get()?.name, name, shopGoods.get())?.price.currencyId)
+  let currencyId = Computed(function() {
+    let baseId = serverConfigs.get()?.skins[name][baseUnit.get()?.name].currencyId
+      ?? findShopSkinGoods(baseUnit.get()?.name, name, shopGoods.get())?.price.currencyId
+    return currencyToFullId.get()?[baseId] ?? baseId
+  })
   let canChangeTags = Computed(@() hasTagsChoice.get() && isSelected.get() && !isLocked.get())
 
   return @() {
@@ -332,7 +336,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     watch = [
       eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock,
       bpPurchasedUnlock, battlePassGoods, shopGoods, goodsLimitReset, dayOffset, serverTimeDay,
-      purchasesCount, todayPurchasesCount, shouldShowEventMechanics
+      purchasesCount, todayPurchasesCount, shouldShowEventMechanics, currencyToFullId
     ]
     padding = [0, saBorders[0], 0, 0]
     hplace = ALIGN_RIGHT
@@ -341,14 +345,16 @@ let receiveSkinInfo = @(unitName, skinName) function() {
   }
 
   let skinGoods = findShopSkinGoods(unitName, skinName, shopGoods.get())
-  if (skinGoods != null)
+  if (skinGoods != null) {
+    let currencyId = currencyToFullId.get()?[skinGoods?.price.currencyId] ?? skinGoods?.price.currencyId
     return res.__update({
       children = textButtonPricePurchase(
         utf8ToUpper(loc("mainmenu/btnBuy")),
-        mkCurrencyComp(skinGoods?.price.price, skinGoods?.price.currencyId),
+        mkCurrencyComp(skinGoods?.price.price, currencyId),
         @() openShopWndByGoods(skinGoods),
         { hplace = ALIGN_CENTER })
     })
+  }
 
   let goodsByLootboxId = {}
   foreach (goods in shopGoods.get()) {
