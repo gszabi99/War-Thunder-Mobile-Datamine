@@ -396,10 +396,11 @@ function mkBulletsButton(bullet) {
   return function() {
     let { modName, price, currencyId } = costInfo.get()
     return {
-      watch = [isCurBulletEnabled, isLockedByLevel, costInfo]
+      watch = [isCurBulletEnabled, isLockedByLevel, costInfo, modsInProgress]
       children = isCurBulletEnabled.get() ? null
         : (status & BS_UNLOCKED) != 0
           ? textButtonPrimary(utf8ToUpper(loc("mod/enable")), @() setOrSwapCurUnitBullet(curBulletCategoryId.get(), bullet.name))
+        : modsInProgress.get() != null ? spinner
         : isLockedByLevel.get()
           ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), reqLevel,
               @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
