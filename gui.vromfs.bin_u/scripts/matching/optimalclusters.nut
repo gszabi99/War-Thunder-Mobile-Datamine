@@ -322,7 +322,7 @@ unreachableHosts.subscribe(updateMyClustersInfoForSquad)
 function getClustersAndHostsForQueue(squadMembersVal) {
   let defRes = {
     clusters = selClusters.get()
-    unreachableHosts = unreachableHosts.get()
+    denied_hosts = unreachableHosts.get()
   }
   let squadSize = squadMembersVal.len()
   if (squadSize == 0)
@@ -333,6 +333,8 @@ function getClustersAndHostsForQueue(squadMembersVal) {
   let unreachableIPs = {}
   foreach (v in membersClustersRTT)
     foreach (clusterId, data in v) {
+      if ("rtt" not in data)
+        continue
       if (clusterId not in rttStats)
         rttStats[clusterId] <- { list = [] }
       rttStats[clusterId].list.append(data.rtt)
@@ -378,14 +380,14 @@ function getClustersAndHostsForQueue(squadMembersVal) {
             : stats.map(@(v) v.slowest).reduce(@(res, v) min(res, v))
           stats = stats.filter(@(v) v.slowest <= rttLimit)
           if (stats.len()) {
-            let unreachableList = []
+            let deniedHosts = []
             foreach (v in stats)
               foreach (ip in v.unreachable)
-                if (!unreachableList.contains(ip))
-                  unreachableList.append(ip)
+                if (!deniedHosts.contains(ip))
+                  deniedHosts.append(ip)
             return {
               clusters = stats.map(@(v) v.clusterId)
-              unreachableHosts = unreachableList
+              denied_hosts = deniedHosts
             }
           }
         }
@@ -414,7 +416,7 @@ isInQueue.subscribe(function(val) {
   let rttInfo = squadMembersClustersRtt.map(@(v) ",".join(v.map(function(data, clusterId) {
       let unr = ",".join(data?.unreachable ?? [])
       let comment = unr == "" ? "" : $"(!{unr})"
-      return $"{clusterId}={data.rtt}{comment}"
+      return $"{clusterId}={data?.rtt ?? -1}{comment}"
     }).values().sort()))
   logOC("\n".join([ $"Squad members clusters RTT:" ].extend(rttInfo)))
 })

@@ -44,12 +44,11 @@ function startAnimScroll(pos2) {
   if (time <= 0)
     return
 
-  if (animScrollCfg != null)
-    clearTimer(updateAnimScroll)
   let start = get_time_msec()
   animScrollCfg = { pos1, pos2, start, end = start + time,
     easing = @(t) t < 0.5 ? 2.0 * t * t : (1.0 - 2 * (1.0 - t) * (1.0 - t))
   }
+  clearTimer(updateAnimScroll)
   setInterval(0.01, updateAnimScroll)
 }
 

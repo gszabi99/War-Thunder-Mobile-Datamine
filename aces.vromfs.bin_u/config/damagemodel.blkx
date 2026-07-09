@@ -4468,6 +4468,20 @@
       "completely": true,
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
+    },
+    "autoloader_dm": {
+      "speed": 1.2,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
+    "autoloader_01_dm": {
+      "speed": 1.2,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     }
   },
   "leftTrackNodes": {

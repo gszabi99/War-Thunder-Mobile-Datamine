@@ -268,30 +268,30 @@ let underConstructionBg = {
   }
 }
 
+let mkScaledCampaignImage = @(img, pivot, scale) {
+  size = FLEX
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FILL
+  imageHalign = ALIGN_CENTER
+  imageValign = ALIGN_CENTER
+  image = Picture(img)
+  transform = { pivot, scale = [scale, scale] }
+  transitions = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
+}
+
+let mkPanelContentFallback = @(campaign, imagePivot = [0.5, 0.5], idleScale = 1.025, hoverScale = 1.115) @() {
+  watch = focusedCampaign
+  size = FLEX
+  children = mkScaledCampaignImage(getCampaignPresentation(campaign).fallbackImg,
+    imagePivot, focusedCampaign.get() == campaign ? hoverScale : idleScale)
+}
+
 let mkPanelContent = @(campaign, imagePivot = [0.5, 0.5], idleScale = 1.025, hoverScale = 1.115) @() {
   watch = focusedCampaign
   size = FLEX
   children = [
-    {
-      size = FLEX
-      rendObj = ROBJ_SOLID
-      color = 0xFF57595B
-    }
-    {
-      size = FLEX
-      rendObj = ROBJ_IMAGE
-      keepAspect = KEEP_ASPECT_FILL
-      imageHalign = ALIGN_CENTER
-      imageValign = ALIGN_CENTER
-      image = Picture(getCampaignPresentation(campaign).img)
-      transform = {
-        pivot = imagePivot
-        scale = focusedCampaign.get() == campaign
-          ? [hoverScale, hoverScale]
-          : [idleScale, idleScale]
-      }
-      transitions = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
-    }
+    mkScaledCampaignImage(getCampaignPresentation(campaign).img,
+      imagePivot, focusedCampaign.get() == campaign ? hoverScale : idleScale)
     @() {
       watch = can_use_debug_console
       size = [FLEX, (sh(100) * (can_use_debug_console.get() ? 0.25 : 0.17)).tointeger()]
@@ -312,7 +312,8 @@ let mkPanelContent = @(campaign, imagePivot = [0.5, 0.5], idleScale = 1.025, hov
   ]
 }
 
-let mkCenterBorderLines = @(panelScale) {
+let mkCenterBorderLines = @(panelScale) @() {
+  watch = focusedCampaign
   size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   color = slantBorderColor
@@ -393,31 +394,85 @@ let mkHitArea = @(campaign, xPos, width) {
   }
 }
 
-function mkCenterPanel(leftCamp, centerCamp, rightCamp, centerImageX, centerImageW, centerContent) {
-  let hovered = focusedCampaign.get()
-  let isCenterHovered = hovered == centerCamp
-  let isLeftHovered = hovered == leftCamp
-  let isRightHovered = hovered == rightCamp
-  let isSideHovered = isLeftHovered || isRightHovered
+let centerFallbackKey = {}
+let centerContentKey = {}
 
-  let panelScale = isCenterHovered ? MASK_SCALE_CENTER
-    : isSideHovered ? MASK_SCALE_SIDE
-    : 1.0
-  let panelScaleInv = isCenterHovered ? MASK_SCALE_CENTER_INV
-    : isSideHovered ? MASK_SCALE_SIDE_INV
-    : 1.0
-  let panelShiftX = isLeftHovered ? CENTER_SHIFT_SIDE
-    : isRightHovered ? -CENTER_SHIFT_SIDE
-    : 0
-
-  let onFocusedAnimFinish = @() focusedAnimFinishedCampaign.set(focusedCampaign.get())
-
+function calcCenterPanelState(hovered, leftCamp, centerCamp, rightCamp) {
+  let isCenter = hovered == centerCamp
+  let isSide = hovered == leftCamp || hovered == rightCamp
   return {
-    key = {}
+    scale = isCenter ? MASK_SCALE_CENTER
+      : isSide ? MASK_SCALE_SIDE
+      : 1.0
+    scaleInv = isCenter ? MASK_SCALE_CENTER_INV
+      : isSide ? MASK_SCALE_SIDE_INV
+      : 1.0
+    shiftX = hovered == leftCamp ? CENTER_SHIFT_SIDE
+      : hovered == rightCamp ? -CENTER_SHIFT_SIDE
+      : 0
+  }
+}
+
+let fallbackMaskedContent = @(centerContent, leftCamp, centerCamp, rightCamp) {
+  size = FLEX
+  rendObj = ROBJ_MASK
+  image = centerPanelMask()
+  clipChildren = true
+  children = @() {
     watch = focusedCampaign
-    pos = [CENTER_X, 0]
-    size = [CENTER_W, sh(100)]
+    size = FLEX
+    transform = {
+      pivot = [0.5, 0.5]
+      scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scaleInv, 1.0]
+    }
+    transitions = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
+    children = centerContent
+  }
+}
+
+let mkCenterFallbackPanel = @(leftCamp, centerCamp, rightCamp, centerContent) {
+  key = centerFallbackKey
+  pos = [CENTER_X, 0]
+  size = [CENTER_W, sh(100)]
+  children = @() {
+    watch = focusedCampaign
+    size = FLEX
     clipChildren = true
+    transform = {
+      pivot = [0.5, 0.5]
+      translate = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).shiftX, 0]
+      scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale, 1.0]
+    }
+    transitions = [
+      { prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad }
+      { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
+    ]
+    children = fallbackMaskedContent(centerContent, leftCamp, centerCamp, rightCamp)
+  }
+}
+
+let mkCenterPanel = @(key, leftCamp, centerCamp, rightCamp, centerImageX, centerImageW, centerContent) {
+  key
+  pos = [CENTER_X, 0]
+  size = [CENTER_W, sh(100)]
+  children = @() {
+    watch = focusedCampaign
+    size = FLEX
+    clipChildren = true
+    transform = {
+      pivot = [0.5, 0.5]
+      translate = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).shiftX, 0]
+      scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale, 1.0]
+    }
+    transitions = [
+      {
+        prop = AnimProp.translate
+        duration = ANIM_DUR
+        easing = OutQuad
+        onFinish = @() focusedAnimFinishedCampaign.set(focusedCampaign.get())
+      }
+      { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
+    ]
     children = [
       {
         size = FLEX
@@ -427,19 +482,24 @@ function mkCenterPanel(leftCamp, centerCamp, rightCamp, centerImageX, centerImag
         children = {
           pos = [centerImageX, 0]
           size = [centerImageW, sh(100)]
-          transform = { pivot = [0.5, 0.5], scale = [panelScaleInv, 1.0] }
+          transform = {
+            pivot = [0.5, 0.5]
+            scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scaleInv, 1.0]
+          }
           transitions = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
           children = centerContent
         }
       }
-      mkCenterBorderLines(panelScale)
-    ]
-    transform = { pivot = [0.5, 0.5], translate = [panelShiftX, 0], scale = [panelScale, 1.0] }
-    transitions = [
-      { prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad, onFinish = onFocusedAnimFinish }
-      { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
+      mkCenterBorderLines(calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale)
     ]
   }
+}
+
+let mkSidePanel = @(xPos, content) {
+  pos = [xPos, 0]
+  size = [SIDE_W, sh(100)]
+  clipChildren = true
+  children = content
 }
 
 function mkTriplePanelSelector(campaigns) {
@@ -450,6 +510,11 @@ function mkTriplePanelSelector(campaigns) {
   let rightX = sw(100) - SIDE_W
   let rightColX = CENTER_X + CENTER_W
   let rightColW = sw(100) - rightColX
+
+  let leftContentFallback = mkPanelContentFallback(leftCamp, [0.0, 0.5])
+  let rightContentFallback = mkPanelContentFallback(rightCamp, [1.0, 0.5])
+  let centerContentFallback = mkScaledCampaignImage(getCampaignPresentation(centerCamp).fallbackImg,
+    [0.5, 0.5], 1.0)
 
   let leftContent = mkPanelContent(leftCamp, [0.0, 0.5])
   let rightContent = mkPanelContent(rightCamp, [1.0, 0.5])
@@ -462,19 +527,14 @@ function mkTriplePanelSelector(campaigns) {
     size = FLEX
     clipChildren = true
     children = [
-      {
-        pos = [0, 0]
-        size = [SIDE_W, sh(100)]
-        clipChildren = true
-        children = leftContent
-      }
-      {
-        pos = [rightX, 0]
-        size = [SIDE_W, sh(100)]
-        clipChildren = true
-        children = rightContent
-      }
-      @() mkCenterPanel(leftCamp, centerCamp, rightCamp, centerImageX, centerImageW, centerContent)
+      mkSidePanel(0, leftContentFallback)
+      mkSidePanel(rightX, rightContentFallback)
+      mkCenterFallbackPanel(leftCamp, centerCamp, rightCamp, centerContentFallback)
+
+      mkSidePanel(0, leftContent)
+      mkSidePanel(rightX, rightContent)
+      mkCenterPanel(centerContentKey, leftCamp, centerCamp, rightCamp, centerImageX, centerImageW, centerContent)
+
       mkHitArea(leftCamp, 0, CENTER_X)
       mkHitArea(centerCamp, CENTER_X, CENTER_W)
       mkHitArea(rightCamp, rightColX, rightColW)
@@ -498,7 +558,6 @@ let topBar = @() {
   ]
 }
 
-let wndSwitchTrigger = {}
 let chooseCampaignScene = {
   key = {}
   size = FLEX
@@ -513,10 +572,6 @@ let chooseCampaignScene = {
       children = mkTriplePanelSelector(campaignsList.get())
     }
     topBar
-  ]
-  animations = [
-    { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.3, easing = OutQuad, play = true, trigger = wndSwitchTrigger }
-    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.1, easing = OutQuad, playFadeOut = true, trigger = wndSwitchTrigger }
   ]
 }
 

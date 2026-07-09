@@ -4095,6 +4095,334 @@
       "immortal": true
     },
     {
+      "name": "concrete_fence_b",
+      "immortal": true
+    },
+    {
+      "name": "mitsukoshi_ginza",
+      "immortal": true
+    },
+    {
+      "name": "kabukiza_theatre",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_mini_park_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_mini_park_b",
+      "immortal": true
+    },
+    {
+      "name": "fuji_mountain_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_avia_set_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_avia_set_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_avia_set_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_scaffolding_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_scaffolding_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_a_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_a_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_a_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_a_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_b_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_b_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_b_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_banners_b_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_a_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_a_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_a_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_a_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_b_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_b_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_b_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_banners_b_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_a_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_a_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_a_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_a_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_b_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_b_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_b_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_banners_b_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_banners_a_back",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_banners_a_front",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_banners_a_left",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_banners_a_right",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_balcony_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_balcony_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_balcony_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a_balcony_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_balcony_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_balcony_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_balcony_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b_balcony_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_c_balcony_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_c_balcony_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_c_balcony_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_c_balcony_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_d_balcony_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_d_balcony_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_d_balcony_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_d_balcony_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_balcony_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_balcony_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_balcony_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f_balcony_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_balcony_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_balcony_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_balcony_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g_balcony_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_b",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_c",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_d",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_f",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_buildings_set_g",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_bridge_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_bridge_b_30m",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_bridge_b_38m",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_bridge_b_50m",
+      "immortal": true
+    },
+    {
+      "name": "chuo_wako",
+      "immortal": true
+    },
+    {
+      "name": "ichi_office_block_a",
+      "immortal": true
+    },
+    {
+      "name": "nichigeki_theater",
+      "immortal": true
+    },
+    {
+      "name": "bowling_sphere_a",
+      "immortal": true
+    },
+    {
+      "name": "sanai_dream_a",
+      "immortal": true
+    },
+    {
+      "name": "sokyo_building",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_tower_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_train_wall_a",
+      "immortal": true
+    },
+    {
+      "name": "tokyo_train_wall_b",
+      "immortal": true
+    },
+    {
       "name": "tree_maple_large_a",
       "destructionImpulse": 35000.0,
       "canopyTriangle": false,

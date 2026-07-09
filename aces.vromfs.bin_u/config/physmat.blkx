@@ -1425,6 +1425,9 @@
     "visibilityRay": {
       "transparentCamera": {
         "en": false
+      },
+      "transparentMetal": {
+        "en": false
       }
     },
     "tankTrack": {

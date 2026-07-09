@@ -135,13 +135,16 @@ function tryWriteMembersData() {
 function addClustersInfoAndContinue() {
   if (curQueueState.get() != QS_CHECK_HOSTS)
     return
-  let { clusters, unreachableHosts } = getClustersAndHostsForQueue(squadMembers.get())
+  let { clusters, denied_hosts } = getClustersAndHostsForQueue(squadMembers.get())
+  let hasDeniedHosts = denied_hosts.len() != 0
   curQueue.mutate(function(q) {
-    q.params = q.params.__merge(can_send_hosts_reachability_to_matching.get()
-      ? { clusters, unreachableHosts }
+    q.params = q.params.__merge(can_send_hosts_reachability_to_matching.get() && hasDeniedHosts
+      ? { clusters, denied_hosts }
       : { clusters })
     q.state = QS_JOINING
     logQ($"Set clusters {",".join(clusters)}")
+    if (hasDeniedHosts)
+      logQ($"Set denied_hosts {",".join(denied_hosts)}")
   })
 }
 

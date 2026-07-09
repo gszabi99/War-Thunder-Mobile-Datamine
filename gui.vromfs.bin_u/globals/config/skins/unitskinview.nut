@@ -2359,7 +2359,7 @@ return {
     },
     "it_centauro_rgo_120": {
       "": "it_camo_green",
-      "desert": "it_camo_threecolor_modern"
+      "forest": "it_camo_threecolor_modern"
     },
     "it_centauro_rgo_120_prem": {
       "": "tr_camo_desert_bicolor_lines",

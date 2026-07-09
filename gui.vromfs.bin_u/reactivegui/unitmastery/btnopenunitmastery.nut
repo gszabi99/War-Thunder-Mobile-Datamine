@@ -139,14 +139,15 @@ function openUnitMastery(unit) {
       @() {
         watch = unit
         size = unitPlateSize
-        children = [
-          mkUnitBg(unit.get())
-          mkUnitImage(unit.get())
-          mkUnitTexts(unit.get(), getUnitName(unit.get().name))
-          mkUnitInfo(unit.get())
-          mkUnitPlateBorder(Watched(false))
-          mkUnitLevel(unitLvl.get(), unit.get().rewardedMasteryTier, { size = evenPx(32) })
-        ]
+        children = unit.get() == null ? null
+          : [
+              mkUnitBg(unit.get())
+              mkUnitImage(unit.get())
+              mkUnitTexts(unit.get(), getUnitName(unit.get().name))
+              mkUnitInfo(unit.get())
+              mkUnitPlateBorder(Watched(false))
+              mkUnitLevel(unitLvl.get(), unit.get()?.rewardedMasteryTier ?? 0, { size = evenPx(32) })
+            ]
       }
       @() {
         watch = unitTasks

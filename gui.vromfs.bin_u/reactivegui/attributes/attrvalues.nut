@@ -389,6 +389,11 @@ function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
   return [{ ctor = ROBJ_TEXT, value = cfg.valueToText(val) }]
 }
 
+function mulField(tbl, key, mul) {
+  if (key in tbl)
+    tbl[key] *= mul
+}
+
 function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
   let stats = shopCfg != null ? deep_clone(shopCfg) : null
   if (stats == null || attrPreset == null)
@@ -417,10 +422,10 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
 
   if (unitType == TANK) {
     let tankGearMult = 1 + (1 - (get_game_params_blk()?.difficulty_settings.baseDifficulty.easy.tankMainGearRatioMult ?? 1))
-    stats.maxSpeedForward *= tankGearMult
-    stats.maxSpeedBackward *= tankGearMult
-    baseStats.maxSpeedForward *= tankGearMult
-    baseStats.maxSpeedBackward *= tankGearMult
+    mulField(stats, "maxSpeedForward", tankGearMult)
+    mulField(stats, "maxSpeedBackward", tankGearMult)
+    mulField(baseStats, "maxSpeedForward", tankGearMult)
+    mulField(baseStats, "maxSpeedBackward", tankGearMult)
   }
   stats.baseStats <- baseStats
   return stats

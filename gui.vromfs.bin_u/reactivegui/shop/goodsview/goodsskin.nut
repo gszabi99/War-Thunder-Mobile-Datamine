@@ -10,7 +10,7 @@ let { mkGoodsWrap, borderBg, mkPricePlate, mkGoodsCommonParts,
   goodsSmallSize, goodsBgH, underConstructionBg, mkEndTime,
   limitFontGrad, mkBorderByCurrency, mkBgImg
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkGradRank, mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
+let { mkGradRank, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { ALL_PURCHASED, NOT_READY } = require("%rGui/shop/goodsStates.nut")
 
@@ -100,12 +100,20 @@ let mkHeader = @(unit) @() {
   flow = FLOW_VERTICAL
   padding = headerPadding
   halign = ALIGN_RIGHT
+  clipChildren = true
   children = unit.get() == null ? null
     : [
         loc("reward/skin_for", { unitName = getUnitName(unit.get().name).replace(" ", nbsp) })
         getUnitClassFontIcon(unit.get())
       ]
-        .map(@(t) mkGradGlowMultiLine(t, fontWtMedium, limitFontGrad, headerWidth, { halign = ALIGN_RIGHT }))
+        .map(@(t) mkGradGlowText(t, fontWtMedium, limitFontGrad,
+          {
+            halign = ALIGN_RIGHT,
+            behavior = Behaviors.Marquee,
+            speed = hdpx(20)
+            delay = defMarqueeDelay
+            maxWidth = headerWidth
+          }))
 }
 
 function mkGoodsSkin(goods, onClick, state, animParams, addChildren) {

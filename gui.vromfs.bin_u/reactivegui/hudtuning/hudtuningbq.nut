@@ -32,12 +32,11 @@ function fillChangedElems(elemIds, s1, s2, uType) {
         if (elemV != (s2?.options[id][elemId] ?? tuningStateDefault.options[id]))
           elemIds[elemId] <- true
     }
-    else
-      logerr($"Not found hud tuning option {id} in default config")
 
+  let hudCfg = cfgByUnitType?[uType] ?? {}
   foreach (id, v in s1?.transforms ?? {}) {
-    let transformToCompare = s2?.transforms[id] ?? cfgByUnitType?[uType][id].defTransform
-    if (transformToCompare != null && !isEqual(v, transformToCompare))
+    let transformToCompare = s2?.transforms[id] ?? hudCfg?[id].defTransform
+    if (id in hudCfg && transformToCompare != null && !isEqual(v, transformToCompare))
       elemIds[id] <- true
   }
 }

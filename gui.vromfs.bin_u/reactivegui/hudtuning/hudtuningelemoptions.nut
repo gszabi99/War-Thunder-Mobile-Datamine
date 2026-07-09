@@ -27,7 +27,7 @@ let optionsBlockBg = {
   borderWidth = hdpxi(4)
 }
 
-function modifyOptions(modify, changeUid = "", changeStackTime = 0) {
+function modifyOptions(modify, source, changeUid = "", changeStackTime = 0) {
   if (tuningState.get() == null)
     return
   let ts = tuningState.get()
@@ -36,7 +36,7 @@ function modifyOptions(modify, changeUid = "", changeStackTime = 0) {
   setTuningState(ts.__merge({ options = optionsVal }), changeUid, changeStackTime)
   foreach (k, _ in optionsVal)
     if (k in tuningStateDefault.customOptions)
-      optionsToElemIds.set(optionsToElemIds.get().__merge({ [k] = selectedId.get() }))
+      optionsToElemIds.set(optionsToElemIds.get().__merge({ [k] = source }))
 }
 
 let mkOptionsCol = @(width, children) {

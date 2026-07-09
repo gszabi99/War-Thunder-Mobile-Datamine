@@ -121,7 +121,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
     return
   }
 
-  let { id, params, progressId, progressValue, action } = context
+  let { id, params, progressId, progressValue, action, projectId = null } = context
 
   local err = debugError ?? result?.error
   debugError = null
@@ -156,7 +156,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
     let count = retryActionsCounter?[action] ?? 0
     if (count < MAX_RETRIES) {
       retryActionsCounter[action] <- count + 1
-      doRequest(action, params, id, progressId, progressValue)
+      doRequest(action, params, id, progressId, progressValue, projectId)
       return
     }
   }

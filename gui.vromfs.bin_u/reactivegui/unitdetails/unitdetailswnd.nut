@@ -101,7 +101,8 @@ function buttonsBlock() {
     children = [
       { size = FLEX }
       mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
-      mkBtnOpenUnitMastery(baseUnit, { ovr = { size = leftBtnSizeWithRewardBtn }})
+      isOwnUnitPreview ? mkBtnOpenUnitMastery(baseUnit, { ovr = { size = leftBtnSizeWithRewardBtn }})
+        : null
       testDriveButton
       !isOwnUnitPreview && !hasAlwaysModsBtnByCamp?[curCampaign.get()] ? null
         : {

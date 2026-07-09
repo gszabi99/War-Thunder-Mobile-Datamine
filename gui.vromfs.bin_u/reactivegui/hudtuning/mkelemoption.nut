@@ -161,8 +161,8 @@ function mkElemOption(optCfg, elemId, options, modifyOptions) {
     onChangeValue?(v)
     return v == optValue.get() ? null
       : value != null ? value.set(v)
-      : changeStackTime <= 0 ? modifyOptions(@(o) setValue(o, elemId, v))
-      : modifyOptions(@(o) setValue(o, elemId, v), $"{locId}&{elemId}", changeStackTime)
+      : changeStackTime <= 0 ? modifyOptions(@(o) setValue(o, elemId, v), elemId)
+      : modifyOptions(@(o) setValue(o, elemId, v), elemId, $"{locId}&{elemId}", changeStackTime)
   }
   return ctor?(optCfg, optValue, sendChangeValue)
 }
@@ -193,9 +193,10 @@ function mkAllElemsOption(optCfg, allIds, options, modifyOptions) {
     foreach(id in allIds)
       setValue(o, id, v)
   }
+  let elemId = $"All: {optCfg?.id ?? ""}"
   let setValueExt = @(v, changeStackTime = 0) changeStackTime <= 0
-    ? modifyOptions(@(o) setValueForAll(o, v))
-    : modifyOptions(@(o) setValueForAll(o, v), $"{locId}&__all_elems__", changeStackTime)
+    ? modifyOptions(@(o) setValueForAll(o, v), elemId)
+    : modifyOptions(@(o) setValueForAll(o, v), elemId, $"{locId}&__all_elems__", changeStackTime)
   return ctor?(optCfg, value, setValueExt)
 }
 
