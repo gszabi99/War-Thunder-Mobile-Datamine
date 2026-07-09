@@ -78,7 +78,7 @@
       ]
     },
     "mission": {
-      "level": "levels/avg_alaska_town.bin",
+      "level": "levels/avg_tokyo.bin",
       "type": "domination",
       "environment": "Day",
       "weather": "clear",

@@ -8640,3 +8640,4 @@ silver_district/desc;missions/_Conq3/desc
 gameData/missions/cta/tanks/silver_district/battleareas/template_silver_district_Conq3_battleareas.blk
 missions/_Dom;silver_district/name
 silver_district/desc;missions/_Dom/desc
+15.5
