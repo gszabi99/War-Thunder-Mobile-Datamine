@@ -64228,3 +64228,5 @@ sokyo_building
 tokyo_tower_a
 tokyo_train_wall_a
 tokyo_train_wall_b
+tokyo_town_main_a_tex_d
+tokyo_park_a

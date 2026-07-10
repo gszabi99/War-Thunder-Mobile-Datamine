@@ -33,14 +33,15 @@ let nextTimeout = keepref(Computed(@() progressTimeouts.get()
 let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressChange", { id, value, isInProgress })
 let get_time_sec = @() (get_time_msec() * 0.001).tointeger()
 
-let noNeedLogerrOnErrors = {
-  ["Couldn't connect to server"] = true,
-  ["Timeout was reached"] = true,
-  RETRY_LIMIT_EXCEED = true,
-  unknownDeeplinkReward = true,
-  notAllowedDeeplinkReward = true,
-  NO_TOKEN = true
-}
+let noNeedLogerrOnErrors = [
+  "Couldn't connect to server", "Timeout was reached",
+  "RETRY_LIMIT_EXCEED", "OUT_OF_RETRIES", "NO_TOKEN",
+  "unknownDeeplinkReward", "notAllowedDeeplinkReward",
+]
+  .totable()
+
+let noNeedLogerrOnErrorPart = [ "Connect Timeout" ]
+  .totable()
 
 let retryErrId = " RETRY"
 let MAX_RETRIES = 2
@@ -108,6 +109,10 @@ let getParamsLog = @(params) params == null ? "null"
 
 local doRequest = null 
 
+let needLogerrForError = @(errId) type(errId) != "string"
+  || (errId not in noNeedLogerrOnErrors
+      && null == noNeedLogerrOnErrorPart.findvalue(@(p) errId.indexof(p) != null))
+
 eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
   local result = clone msg
   let actionFull  = result?.$rawdelete("$action")
@@ -162,7 +167,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
   }
 
   retryActionsCounter.$rawdelete(action)
-  if (errId not in noNeedLogerrOnErrors)
+  if (needLogerrForError(errId))
     logerr($"[profileServerClient] {action} returned error: {logErr} /*params = {getParamsLog(params)}*/")
   sendResult({ error = err }, id, progressId, progressValue, action)
 

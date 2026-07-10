@@ -1025,6 +1025,8 @@ return {
   apply_last_battle_ad_reward = @(sessionId, cb = null) request({
     method = "apply_last_battle_ad_reward"
     params = { sessionId }
+    progressId = PROGRESS_AD_BUDGET
+    progressValue = ""
   }, cb)
 
   pp_get_units = @(units, cb = null) request({

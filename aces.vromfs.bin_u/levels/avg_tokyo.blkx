@@ -207,7 +207,7 @@
     "helicopterVerMul": 1.0,
     "helicopterToDirectWindMul": 2.0,
     "helicopterFalloff": 0.001,
-    "alaska_town_detailed_tex_d": "alaska_town_detailed_scatter_mask",
+    "tokyo_town_main_a_tex_d": "tokyo_park_a",
     "layer": [
       {
         "maskChannel": [

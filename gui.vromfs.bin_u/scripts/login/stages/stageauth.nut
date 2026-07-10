@@ -15,7 +15,7 @@ let appleAccount = require("ios.account.apple")
 let { getUUID } = require("ios.platform")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let fbAccount = is_ios ? require("ios.account.facebook") : require("android.account.fb")
-let { startVKIDSignIn = @() null, signOut = @() null, VKID_RESULT_OK = 1, VKID_RESULT_CANCEL = 2 } = is_android ? require_optional("android.account.vkid") : {}
+let { startVKIDSignIn = @() null, logoutVKID = @() null, VKID_RESULT_OK = 1, VKID_RESULT_CANCEL = 2 } = is_android ? require_optional("android.account.vkid") : {}
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { openUrl } = require("%scripts/url.nut")
@@ -95,6 +95,8 @@ let proceedAuthByResult = {
 function proceedAuthorizationResult(result, loginType) {
   if (loginType != LT_GAIJIN && result == YU2_WRONG_LOGIN)
     result = YU2_FAIL
+  if (loginType == LT_VKID && result != YU2_OK)
+    logoutVKID()
 
   let action = proceedAuthByResult?[result]
   if (action != null) {
@@ -156,7 +158,7 @@ eventbus_subscribe("android.account.vkid.onSignInCallback",
       send_counter("auth.vkid_signin_errors", 1, { error = status })
       interruptStage({ error = $"VKID sign in failed: {status}" })
       if (status != VKID_RESULT_CANCEL) {
-        signOut()
+        logoutVKID()
         errorMsgBox(YU2_UNKNOWN,
           [
             { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }

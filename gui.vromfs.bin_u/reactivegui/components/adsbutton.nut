@@ -2,12 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { apply_last_battle_ad_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { apply_last_battle_ad_reward, registerHandler, adBudgetInProgress
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { battleAdsBonusesCfg, isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/adsState.nut")
-let { SECONDARY, COMMON } = require("%rGui/components/buttonStyles.nut")
+let { SECONDARY, COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { iconTextButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
@@ -15,6 +17,7 @@ let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 
 let bonusIconSize = hdpxi(35)
 let bonusIconShift = hdpx(25)
+let adsBonusBtnSize = [hdpx(400), defButtonHeight]
 
 let adsBonuses = Computed(function() {
   let res = {}
@@ -78,7 +81,7 @@ function mkAdsButton(debrData) {
   let hasAdBudget = Computed(@() adBudget.get() > 0)
   return @() !isAdsAvailable.get() ? { watch = isAdsAvailable }
     : {
-        watch = [hasVip, isAdsAvailable, hasAdBudget, isProviderInited]
+        watch = [hasVip, isAdsAvailable, hasAdBudget, isProviderInited, adBudgetInProgress]
         children = {
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
@@ -93,20 +96,27 @@ function mkAdsButton(debrData) {
               flow = FLOW_HORIZONTAL
               children = mkBonusesText(debrData, adsBonuses.get())
             }
-            iconTextButton(
-              hasVip.get() ? "ui/gameuiskin#gamercard_subs_vip.avif" : "ui/gameuiskin#watch_ads.svg",
-              utf8ToUpper(hasAdBudget.get() ? loc("debriefing/improveReward") : loc("btn/adsLimitReached")),
-              @() !hasAdBudget.get() ? openMsgBox({ text = loc("msg/adsLimitReached") })
-                : hasVip.get() ? apply_last_battle_ad_reward(sessionId, { id = "debriefing.adShowed", sessionId })
-                : !isProviderInited.get() ? onNotInitedProviderClick()
-                : showAdsForReward({
-                    bqId = "after_battle",
-                    bqParams = { details = campaign },
-                    cost = 1,
-                    sessionId,
-                  }),
-              mergeStyles(hasAdBudget.get() && isProviderInited.get() ? SECONDARY : COMMON,
-                { ovr = { size = [hdpx(400), hdpxi(109)]} }))
+            adBudgetInProgress.get()
+              ? {
+                  size = adsBonusBtnSize
+                  valign = ALIGN_CENTER
+                  halign = ALIGN_CENTER
+                  children = spinner
+                }
+              : iconTextButton(
+                  hasVip.get() ? "ui/gameuiskin#gamercard_subs_vip.avif" : "ui/gameuiskin#watch_ads.svg",
+                  utf8ToUpper(hasAdBudget.get() ? loc("debriefing/improveReward") : loc("btn/adsLimitReached")),
+                  @() !hasAdBudget.get() ? openMsgBox({ text = loc("msg/adsLimitReached") })
+                    : hasVip.get() ? apply_last_battle_ad_reward(sessionId, { id = "debriefing.adShowed", sessionId })
+                    : !isProviderInited.get() ? onNotInitedProviderClick()
+                    : showAdsForReward({
+                        bqId = "after_battle",
+                        bqParams = { details = campaign },
+                        cost = 1,
+                        sessionId,
+                      }),
+                  mergeStyles(hasAdBudget.get() && isProviderInited.get() ? SECONDARY : COMMON,
+                    { ovr = { size = adsBonusBtnSize } }))
           ]
         }
   }
