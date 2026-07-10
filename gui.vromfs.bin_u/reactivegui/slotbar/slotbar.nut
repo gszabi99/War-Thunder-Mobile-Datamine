@@ -348,14 +348,14 @@ let function mkUnitSlot(unit, idx, onClick, isSelected, needUseDragAndDrop = tru
   }
 }
 
-function mkHasUnseenUnitDetails(unit, hasUnseenArsenal, hasUnseenAttributes = Watched(false)) {
+function mkHasUnseenUnitDetails(unit, hasUnseenArsenal) {
   let hasUnseenMastery = mkHasUnseenMastery(unit)
   return Computed(function() {
     if (unit.get() == null)
       return false
     let { name } = unit.get()
 
-    if (hasUnseenArsenal.get() || hasUnseenAttributes.get() || hasUnseenMastery.get())
+    if (hasUnseenArsenal.get() || hasUnseenMastery.get())
       return true
     return name in campMyUnits.get() && (name in unseenSkins.get() || unseenDecals.get().len() > 0)
   })
@@ -363,7 +363,7 @@ function mkHasUnseenUnitDetails(unit, hasUnseenArsenal, hasUnseenAttributes = Wa
 
 function actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSlots, idx) {
   let showBtns = Computed(@() selectedSlotIdx.get() == idx)
-  let hasUnseenInfo = mkHasUnseenUnitDetails(unit, hasUnseenArsenal, hasUnseenAttributes)
+  let hasUnseenInfo = mkHasUnseenUnitDetails(unit, hasUnseenArsenal)
   return @() {
     watch = [showBtns, unit, hasUnitWeaponSlots]
     size = actionBtnsBlockSize

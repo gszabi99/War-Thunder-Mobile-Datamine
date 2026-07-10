@@ -47,7 +47,7 @@
   "fireFx": "ground_model_fire",
   "minRelativeTankCameraThreshold": 1.46,
   "rearmSmokeTimeOnField": 60.0,
-  "rearmTimeOnField": 120.0,
+  "rearmTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -3239,7 +3239,6 @@
       "fatalExplosion": true,
       "shells": [
         {
-          "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
           "ammo_turret_02_dm": {
