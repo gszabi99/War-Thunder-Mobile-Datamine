@@ -21,7 +21,7 @@ return freeze({
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
-    childOvr = fontTinyAccentedShadedBold
+    childOvr = fontBoldTinyAccentedShaded
     gradientOvr = { color = 0xFF7395CF }
     gradientContainerOvr = { fillColor = 0xFF3A5D91 }
     borderGradientOvr = defBorderGradient
@@ -31,7 +31,7 @@ return freeze({
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
-    childOvr = fontTinyAccentedShadedBold
+    childOvr = fontBoldTinyAccentedShaded
     gradientOvr = { color = 0xFF57595B }
     gradientContainerOvr = { fillColor = 0xFF191616 }
     borderGradientOvr = defBorderGradient
@@ -41,7 +41,7 @@ return freeze({
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
-    childOvr = fontTinyAccentedShadedBold
+    childOvr = fontBoldTinyAccentedShaded
     gradientOvr = { color = 0xFF65C99E }
     gradientContainerOvr = { fillColor = 0xFF32946A }
     borderGradientOvr = defBorderGradient
@@ -54,7 +54,7 @@ return freeze({
       borderWidth = defButtonBorderWidth
       padding = defButtonBorderWidth
     }
-    childOvr = fontTinyAccentedShadedBold.__merge({
+    childOvr = fontBoldTinyAccentedShaded.__merge({
       color = 0x80808080
     })
     gradientOvr = { color = 0x80808080 }
@@ -66,7 +66,7 @@ return freeze({
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
-    childOvr = fontTinyAccentedShadedBold
+    childOvr = fontBoldTinyAccentedShaded
     gradientOvr = { color = 0xFFFFB92D }
     gradientContainerOvr = { fillColor = 0xFFC88704 }
     borderGradientOvr = defBorderGradient
@@ -76,7 +76,7 @@ return freeze({
       size = [hdpx(400), defButtonHeight]
       minWidth = defButtonMinWidth
     }
-    childOvr = fontTinyAccentedShadedBold
+    childOvr = fontBoldTinyAccentedShaded
     hasPattern = true
     gradientOvr = { color = 0xFFDC1208 }
     gradientContainerOvr = { fillColor = 0xFF8C1208 }
@@ -89,7 +89,7 @@ return freeze({
       fillColor = 0xFFFFFFFF
       borderColor = Color(184, 184, 155)
     }
-    childOvr = fontTinyAccentedShadedBold.__merge({
+    childOvr = fontBoldTinyAccentedShaded.__merge({
       color = Color(0, 0, 0)
       fontFxFactor = 0
     })

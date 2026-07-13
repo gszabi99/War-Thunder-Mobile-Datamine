@@ -16,7 +16,7 @@ let { file_exists } = require("dagor.fs")
 let multilineButtonOvrStyle = {
   size = const [hdpx(500), SIZE_TO_CONTENT],
   lineSpacing = hdpx(-4)
-}.__update(fontTinyAccentedShadedBold)
+}.__update(fontBoldTinyAccentedShaded)
 
 let buttonsWidthStyle = {
   ovr = {
@@ -42,7 +42,6 @@ return @() {
   gap = buttonsVGap
   halign = ALIGN_CENTER
   children = [
-    textButtonCommon(utf8ToUpper(loc("mainmenu/btnAccountDelete")), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
     mkCustomButton(
       mkButtonTextMultiline(utf8ToUpper(loc("privacyPolicy")), multilineButtonOvrStyle),
       @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }),
@@ -59,5 +58,6 @@ return @() {
       : null
     !file_exists(licenseFileName) ? null
       : textButtonPrimary(utf8ToUpper(loc("options/license")), openLicenseWnd, buttonsWidthStyle)
+    textButtonCommon(utf8ToUpper(loc("mainmenu/btnAccountDelete")), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
   ]
 }

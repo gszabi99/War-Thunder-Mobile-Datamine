@@ -39,6 +39,12 @@ let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
   getResolutionByQuality(get_default_graphics_preset()),
   validateResolution)
 
+function isArmAsrBlockedByGpu() {
+  let gpu = (get_user_system_info()?.videoCard ?? "").tolower()
+  return gpu.contains("xclipse") && gpu.contains("960")
+}
+let armAsrAvailable = @() is_arm_asr_supported() && !isArmAsrBlockedByGpu()
+
 let aaList = ["low_fxaa"]
   .extend(is_fxaa_high_broken() ? [] : ["high_fxaa"])
   .extend(supports_deferred_msaa() ? ["mobile_msaa"] : [])
@@ -46,7 +52,7 @@ let aaList = ["low_fxaa"]
   .extend(is_ios && is_metalfx_upscale_supported() ? ["metalfx_fxaa"] : [])
   .extend((is_android || is_pc) && (get_settings_blk()?.graphics.listAllAaOptions ?? false)
     ? ["sgsr"].extend(get_default_graphics_preset() != "low"
-        ? ["sgsr2"].extend(is_arm_asr_supported() ? ["arm_asr"] : [])
+        ? ["sgsr2"].extend(armAsrAvailable() ? ["arm_asr"] : [])
         : []) : [])
   .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["smaa"])
 

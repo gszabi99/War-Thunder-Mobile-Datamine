@@ -23,7 +23,7 @@ let mkPlayerLabelText = @(text) {
   rendObj = ROBJ_TEXT
   text
   color = 0xFFFFFFFF
-}.__update(fontTinyAccentedShadedBold)
+}.__update(fontBoldTinyAccentedShaded)
 
 let icoSize = hdpxi(64)
 
@@ -42,9 +42,9 @@ let mkUnitLabel = @(name, distMeters, color, needIcon, ovr) {
     needIcon
       ? mkIcon("ui/gameuiskin#icon_hud_gift.svg", color, { margin = [ 0, 0, hdpx(10), 0 ] })
       : null
-    mkPlayerLabelText(name).__update(fontTinyAccentedShadedBold, playerLabelShade, { color })
+    mkPlayerLabelText(name).__update(fontBoldTinyAccentedShaded, playerLabelShade, { color })
     mkPlayerLabelText(" ".concat(format("%.2f", 0.001 * distMeters), loc("measureUnits/km_dist")))
-      .__update(fontVeryTinyShadedBold, playerLabelShade)
+      .__update(fontBoldVeryTinyShaded, playerLabelShade)
   ]
 }.__update(ovr)
 

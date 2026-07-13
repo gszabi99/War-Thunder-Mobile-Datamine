@@ -29,16 +29,12 @@ let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
-let { isGuestLogin, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
+let { canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
 let { hasRestorePurchases, restorePurchases, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { subsByCategory } = require("%rGui/shop/shopState.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-
-
-let canUpgradeGuestAccountToGaijinID = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
-  && isGuestLogin.get())
 
 
 
@@ -219,7 +215,7 @@ let mkSubsIcon = @(status) @() {
 let mkPremAction = @(status) textButtonPurchase(
   utf8ToUpper(loc($"subscription/{status == "prem_inactive" ? "activate" : "upgrade"}")),
   @() openSubsPreview("vip", "account_page"),
-  { hotkeys = [btnAUp], childOvr = fontTinyAccentedShadedBold })
+  { hotkeys = [btnAUp], childOvr = fontBoldTinyAccentedShaded })
 
 function mkPremiumDescription() {
   let premStatus = Computed(@() !havePremium.get() ? "prem_inactive"
@@ -272,7 +268,7 @@ let userInfoBlock = {
 let buttonsWidthStyle = {
   ovr = { minWidth = hdpx(550) }
 }
-let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontTinyAccentedShadedBold)
+let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontBoldTinyAccentedShaded)
 
 let mkButton = @(locId, cb, style = PRIMARY) mkCustomButton(
   mkButtonTextMultiline(utf8ToUpper(loc(locId)), multilineButtonOvrStyle),

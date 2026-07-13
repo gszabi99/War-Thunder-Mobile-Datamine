@@ -21,7 +21,7 @@ let buttonsWidthStyle = {
     minWidth = hdpx(550)
   }
 }
-let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontTinyAccentedShadedBold)
+let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontBoldTinyAccentedShaded)
 
 let isSignedIn = Computed(@() debugSignedIn.get() || isSigned.get())
 

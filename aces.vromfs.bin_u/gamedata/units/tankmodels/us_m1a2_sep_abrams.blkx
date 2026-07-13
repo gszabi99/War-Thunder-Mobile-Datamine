@@ -2550,16 +2550,10 @@
     ],
     "hideNodes": {
       "node": [
-        "ex_armor_turret_03",
-        "ex_armor_turret_04",
-        "ex_armor_l_10",
         "ex_armor_l_12",
-        "ex_armor_r_10",
         "ex_armor_r_12",
         "ex_decor_l_37",
-        "ex_decor_l_07",
         "ex_decor_r_37",
-        "ex_decor_r_07",
         "emtr_mortar_flame_13",
         "emtr_mortar_flame_14",
         "emtr_mortar_flame_15",
@@ -3615,16 +3609,10 @@
           ],
           "hideNodes": {
             "node": [
-              "ex_armor_turret_03",
-              "ex_armor_turret_04",
-              "ex_armor_l_10",
               "ex_armor_l_12",
-              "ex_armor_r_10",
               "ex_armor_r_12",
               "ex_decor_l_37",
-              "ex_decor_l_07",
               "ex_decor_r_37",
-              "ex_decor_r_07",
               "emtr_mortar_flame_13",
               "emtr_mortar_flame_14",
               "emtr_mortar_flame_15",

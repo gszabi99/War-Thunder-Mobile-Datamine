@@ -391,8 +391,8 @@ let buttons = @(hasRerollAnim) function() {
   }
   if (previewGoodsWithUpdatedPrice.get() == null)
     return res
-  let maxTextSize = max(calc_str_box(rerollText, fontTinyShadedBold)[0], calc_str_box(buyText, fontTinyShadedBold)[0])
-  let fontOvr = maxTextSize < buttonTextWidth ? fontTinyShadedBold : fontVeryTinyShadedBold
+  let maxTextSize = max(calc_str_box(rerollText, fontBoldTinyShaded)[0], calc_str_box(buyText, fontBoldTinyShaded)[0])
+  let fontOvr = maxTextSize < buttonTextWidth ? fontBoldTinyShaded : fontBoldVeryTinyShaded
   let { id, price } = previewGoodsWithUpdatedPrice.get()
   return res.__update({
     flow = FLOW_HORIZONTAL

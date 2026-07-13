@@ -3,7 +3,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { get_game_mode, get_game_type } = require("mission")
 let { GO_WIN, GO_EARLY, get_game_over_reason } = require("guiMission")
 let { get_current_mission_info_cached } = require("blkGetters")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isInBattle, battleSessionId, battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { lastClientBattleData, wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
@@ -55,7 +55,7 @@ function getSingleMissionResult(rewardData) {
       isTutorial
       teams = [ { tickets = 0 } ]
     })
-  if (!isTutorial)
+  if (!isTutorial && (campConfigs.get()?.campaignCfg.slotAttrPreset ?? "") != "")
     res.__update({ slots = mkSlotsCommonInfo(campaign) })
   if (rewardData?.battleData != null) {
     res.__update(rewardData.battleData)

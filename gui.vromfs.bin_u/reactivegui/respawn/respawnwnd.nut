@@ -485,7 +485,7 @@ function toBattleButton(onClick, styleOvr) {
               halign = ALIGN_CENTER
               gap = hdpx(5)
               children = [
-                mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/toBattle/short")), fontTinyAccentedShadedBold)
+                mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/toBattle/short")), fontBoldTinyAccentedShaded)
                 needShowSpareDesc.get() ? mkCurrencyComp(1, SPARE, CS_GAMERCARD) : null
                 spawnCost.get() <= 0 ? null : mkSpawnScore(spawnCost.get(), CS_GAMERCARD)
               ]

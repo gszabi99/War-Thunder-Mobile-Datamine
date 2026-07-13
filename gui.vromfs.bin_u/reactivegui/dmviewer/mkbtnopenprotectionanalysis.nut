@@ -30,7 +30,7 @@ let mkBtnContent = @(contentOvr = {}) {
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
       text = utf8ToUpper(loc("mainmenu/btnProtectionAnalysis"))
-    }.__update(fontTinyAccentedShadedBold)
+    }.__update(fontBoldTinyAccentedShaded)
   ]
 }
 

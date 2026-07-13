@@ -130,7 +130,7 @@ let campaignsBtn = @() {
             color = 0xFFFFFFFF
             maxWidth = campBtnSize[0] - campBtnImageSize[0] - campBtnGap
             text = loc("changeCampaignShort")
-          }.__update(fontTinyAccentedShadedBold))
+          }.__update(fontBoldTinyAccentedShaded))
         unseenCampaigns.get().len() == 0 ? null
           : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
       ].filter(@(v) v != null)

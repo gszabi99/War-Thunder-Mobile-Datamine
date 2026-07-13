@@ -46,6 +46,7 @@ let defaults = {
   has_decals = isDevBuild
   has_extended_sound = isDevBuild
   tcf_consent_enabled = isDevBuild
+  google_consent_enabled = false
   has_game_center = isDevBuild
   allow_hdr_on_ios = isDevBuild
   allow_event_gift_on_ios = isDevBuild

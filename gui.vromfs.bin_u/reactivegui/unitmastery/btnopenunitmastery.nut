@@ -45,7 +45,7 @@ let btnContent = {
     {
       rendObj = ROBJ_TEXT
       text = utf8ToUpper(loc("mainmenu/btnMastery"))
-    }.__update(fontTinyAccentedShadedBold)
+    }.__update(fontBoldTinyAccentedShaded)
   ]
 }
 

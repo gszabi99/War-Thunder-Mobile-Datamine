@@ -21,24 +21,22 @@ let alignToString = {
 }
 
 function fillChangedElems(elemIds, s1, s2, uType) {
+  let hudCfg = cfgByUnitType?[uType] ?? {}
   foreach (id, v in s1?.options ?? {})
     if (id in tuningStateDefault.customOptions) {
-      if (v != (s2?.options[id] ?? tuningStateDefault.customOptions[id])
-          && id in optionsToElemIds.get())
-        elemIds[optionsToElemIds.get()[id]] <- true
+      let elemId = optionsToElemIds.get()?[id]
+      if (elemId != null && elemId in hudCfg && v != (s2?.options[id] ?? tuningStateDefault.customOptions[id]))
+        elemIds[elemId] <- true
     }
     else if (id in tuningStateDefault.options) {
       foreach (elemId, elemV in v)
-        if (elemV != (s2?.options[id][elemId] ?? tuningStateDefault.options[id]))
+        if (elemId in hudCfg && elemV != (s2?.options[id][elemId] ?? tuningStateDefault.options[id]))
           elemIds[elemId] <- true
     }
 
-  let hudCfg = cfgByUnitType?[uType] ?? {}
-  foreach (id, v in s1?.transforms ?? {}) {
-    let transformToCompare = s2?.transforms[id] ?? hudCfg?[id].defTransform
-    if (id in hudCfg && transformToCompare != null && !isEqual(v, transformToCompare))
+  foreach (id, v in s1?.transforms ?? {})
+    if (id in hudCfg && !isEqual(v, s2?.transforms[id] ?? hudCfg[id].defTransform))
       elemIds[id] <- true
-  }
 }
 
 let getParam = @(value, idx) type(value) == "integer" ? $"paramInt{idx}"

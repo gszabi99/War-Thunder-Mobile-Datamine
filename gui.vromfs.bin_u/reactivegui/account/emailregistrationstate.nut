@@ -7,6 +7,8 @@ let { getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_auth
 let { object_to_json_string } = require("json")
 let logGuest = log_with_prefix("[GUEST] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { is_nswitch } = require("%sqstd/platform.nut")
+let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { authTags, isLoginByGajin, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInLoadingScreen, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
@@ -24,6 +26,11 @@ let isGuestLoginBase = Computed(@() authTags.get().contains("guestlogin")
   || authTags.get().contains("firebaselogin"))
 let isDebugGuestLogin = mkWatched(persist, "isDebugGuestLogin", false)
 let isGuestLogin = Computed(@() isGuestLoginBase.get() != isDebugGuestLogin.get())
+
+
+let canUpgradeGuestAccountToGaijinID = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
+  && isGuestLogin.get())
+
 let needVerifyEmailBase = Computed(@() !isGuestLogin.get()
   && isContactsReceived.get()
   && accountLink.get() == null
@@ -173,6 +180,7 @@ register_command(function() {
 
 return {
   isGuestLogin
+  canUpgradeGuestAccountToGaijinID
   openGuestEmailRegistration
   renewGuestRegistrationTags
   needVerifyEmail

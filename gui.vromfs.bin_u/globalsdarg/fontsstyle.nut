@@ -24,6 +24,10 @@ let shade = {
   fontFxFactor = 32 
 }
 
+let mullerMonoRegular = { font = muller_mono_regular }
+let mullerMonoMedium = { font = muller_mono_medium }
+let mullerBold = { font = muller_bold }
+
 let fontVeryVeryTiny = {
   font = muller_regular
   fontSize = hdpxi(17)
@@ -114,19 +118,22 @@ let fontMediumShaded = fontMedium.__merge(shade)
 let fontBigShaded = fontBig.__merge(shade)
 let fontVeryLargeShaded = fontVeryLarge.__merge(shade)
 
-let fontMonoVeryTiny = fontVeryTiny.__merge({ font = muller_mono_regular })
-let fontMonoTiny = fontTiny.__merge({ font = muller_mono_regular })
-let fontMonoSmall = fontSmall.__merge({ font = muller_mono_medium })
-let fontMonoMedium = fontMedium.__merge({ font = muller_mono_medium })
+let fontBoldVeryTinyAccented = fontVeryTinyAccented.__merge(mullerBold)
+let fontBoldSmall = fontSmall.__merge(mullerBold)
 
-let fontVeryTinyShadedBold = fontVeryTinyShaded.__merge({ font = muller_bold })
-let fontTinyShadedBold = fontTinyShaded.__merge({ font = muller_bold })
-let fontTinyAccentedShadedBold = fontTinyAccentedShaded.__merge({ font = muller_bold })
-let fontSmallShadedBold = fontSmallShaded.__merge({ font = muller_bold })
+let fontBoldVeryTinyShaded = fontVeryTinyShaded.__merge(mullerBold)
+let fontBoldTinyShaded = fontTinyShaded.__merge(mullerBold)
+let fontBoldTinyAccentedShaded = fontTinyAccentedShaded.__merge(mullerBold)
+let fontBoldSmallShaded = fontSmallShaded.__merge(mullerBold)
 
-let fontMonoVeryTinyShaded = fontVeryTiny.__merge({ font = muller_mono_regular }, shadeTiny)
-let fontMonoTinyShaded = fontTiny.__merge({ font = muller_mono_regular }, shadeTiny)
-let fontMonoTinyAccentedShaded = fontTinyAccented.__merge({ font = muller_mono_medium }, shadeTiny)
+let fontMonoVeryTiny = fontVeryTiny.__merge(mullerMonoRegular)
+let fontMonoTiny = fontTiny.__merge(mullerMonoRegular)
+let fontMonoSmall = fontSmall.__merge(mullerMonoMedium)
+let fontMonoMedium = fontMedium.__merge(mullerMonoMedium)
+
+let fontMonoVeryTinyShaded = fontVeryTinyShaded.__merge(mullerMonoRegular)
+let fontMonoTinyShaded = fontTinyShaded.__merge(mullerMonoRegular)
+let fontMonoTinyAccentedShaded = fontTinyAccentedShaded.__merge(mullerMonoMedium)
 
 let fontsSets = {
   common = {
@@ -161,10 +168,14 @@ let fontsSets = {
     fontSmallAccentedShaded
   }
   bold = {
-    fontVeryTinyShadedBold
-    fontTinyShadedBold
-    fontTinyAccentedShadedBold
-    fontSmallShadedBold
+    fontBoldVeryTinyAccented
+    fontBoldSmall
+  }
+  boldShaded = {
+    fontBoldVeryTinyShaded
+    fontBoldTinyShaded
+    fontBoldTinyAccentedShaded
+    fontBoldSmallShaded
   }
   monospace = {
     fontMonoVeryTiny

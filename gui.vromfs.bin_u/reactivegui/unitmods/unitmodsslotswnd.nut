@@ -437,7 +437,7 @@ let slotPresetButtons = @() {
       : modsInProgress.get() != null ? spinner
       : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
         ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),
-          @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] }.__merge({textOvr = fontTinyShadedBold}))
+          @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] }.__merge({textOvr = fontBoldTinyShaded}))
       : curWeaponIsLocked.get() ? null
       : !curWeaponIsPurchased.get()
         ? textButtonPurchase(utf8ToUpper(loc("mainmenu/btnBuy")), onPurchaseMod, { ovr = { key = "arsenal_purchase_btn" }, hotkeys = ["^J:Y"] })

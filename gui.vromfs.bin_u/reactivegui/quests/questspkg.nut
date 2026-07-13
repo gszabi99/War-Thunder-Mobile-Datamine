@@ -30,7 +30,7 @@ let linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
 let headerLineGap = isWidescreen ? hdpx(20) : hdpx(8)
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
-let childOvr = isWidescreen ? {} : fontTinyAccentedShadedBold
+let childOvr = isWidescreen ? {} : fontBoldTinyAccentedShaded
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
 let btnGap = hdpx(10)
@@ -189,7 +189,7 @@ function mkAdsBtn(unlock) {
             text = utf8ToUpper(hasAdBudget.get()
               ? loc(!hasVip.get() ? "quests/addProgress" : "quests/addProgress_budget", { num = adBudget.get() })
               : loc("btn/adsLimitReached"))
-          }.__update(fontVeryTinyShadedBold, adsButtonCounter)
+          }.__update(fontBoldVeryTinyShaded, adsButtonCounter)
         ]
       },
       onClick,

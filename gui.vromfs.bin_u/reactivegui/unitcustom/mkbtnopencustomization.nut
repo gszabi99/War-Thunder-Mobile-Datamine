@@ -27,7 +27,7 @@ let customizationBtnContent = {
     {
       rendObj = ROBJ_TEXT
       text = utf8ToUpper(loc("unit/customization"))
-    }.__update(fontTinyAccentedShadedBold)
+    }.__update(fontBoldTinyAccentedShaded)
   ]
 }
 

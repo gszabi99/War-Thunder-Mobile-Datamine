@@ -116,7 +116,7 @@ let mkDecalText = @(text, ovr = {}) text == null ? null : {
   halign = ALIGN_LEFT
   maxWidth = hdpx(500)
   text
-}.__update(fontSmallShadedBold, ovr)
+}.__update(fontBoldSmallShaded, ovr)
 
 function decalDescriptionBlock() {
   let decalId = Computed(@() selectedDecalId.get() ?? selectedSlot.get()?.decalId ?? "")

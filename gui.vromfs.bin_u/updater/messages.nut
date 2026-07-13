@@ -130,7 +130,7 @@ function mkButton(text, onClick) {
             behavior = Behaviors.TextArea
             text
             halign = ALIGN_CENTER
-          }.__update(fontTinyShadedBold)
+          }.__update(fontBoldTinyShaded)
         ]
       }
     }

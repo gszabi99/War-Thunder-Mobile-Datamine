@@ -105,7 +105,7 @@ return @(isPassActive, isEventActive) function () {
                     rendObj = ROBJ_TEXT
                     color = 0xFFFFFFFF
                     text = utf8ToUpper(loc("events/seasonNumber", { number = eventSeasonIdx.get() }))
-                  }.__update(fontTinyShadedBold)
+                  }.__update(fontBoldTinyShaded)
                   needShowUnseenMarker.get() ? priorityUnseenMark : null
                 ]
               }

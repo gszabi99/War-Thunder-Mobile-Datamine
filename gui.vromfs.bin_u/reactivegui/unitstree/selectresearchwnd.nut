@@ -257,7 +257,7 @@ function openImpl() {
         })
         mkSpinnerHideBlock(unitInProgress,
           textButtonBattle(utf8ToUpper(loc("unitsTree/chooseResearch/accept")),
-            @() acceptChooseResearch(startUnit.get()?.name, curCountry.get()), { childOvr = fontTinyAccentedShadedBold, hotkeys = ["^J:X"] }))
+            @() acceptChooseResearch(startUnit.get()?.name, curCountry.get()), { childOvr = fontBoldTinyAccentedShaded, hotkeys = ["^J:X"] }))
       ]
     })
     animations = wndSwitchAnim

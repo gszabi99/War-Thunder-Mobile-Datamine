@@ -54,14 +54,14 @@ let mkButtonTextMultiline = @(text, override = {}) {
   behavior = Behaviors.TextArea
   text
   halign = ALIGN_CENTER
-}.__update(fontTinyShadedBold, override)
+}.__update(fontBoldTinyShaded, override)
 
 function mkButtonText(text, style, ovr = {}) {
   let { useFlexText = false } = style
   let res = {
     rendObj = ROBJ_TEXT
     text
-  }.__update(fontSmallShadedBold, ovr)
+  }.__update(fontBoldSmallShaded, ovr)
 
   if (useFlexText || calc_comp_size(res)[0] <= buttonTextWidth)
     return res
@@ -74,7 +74,7 @@ let mkPriceTextsComp = @(text, priceComp, style = {}, flow = FLOW_VERTICAL) {
   valign = ALIGN_CENTER
   gap = hdpx(3)
   children = [
-    !text ? null : mkButtonText(text, style, {}.__update(fontTinyShadedBold, style?.childOvr ?? {}))
+    !text ? null : mkButtonText(text, style, {}.__update(fontBoldTinyShaded, style?.childOvr ?? {}))
     priceComp
   ]
 }
@@ -192,7 +192,7 @@ let mkImageTextContent = @(icon, iconSize, text, ovr = {}) {
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
       text
-    }.__update(fontTinyAccentedShadedBold)
+    }.__update(fontBoldTinyAccentedShaded)
   ]
 }.__update(ovr)
 
