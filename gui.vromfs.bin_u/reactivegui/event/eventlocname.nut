@@ -2,8 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import G_DISCOUNT, unitRewardTypes
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%rGui/shop/shopState.nut" import isDisabledGoods
 from "%rGui/rewards/rewardViewInfo.nut" import getUnlockRewardsViewInfo
+from "%rGui/event/eventState.nut" import curEvent, eventSeason, allSpecialEvents, MAIN_EVENT_ID
+from "%rGui/quests/questsState.nut" import progressUnlockByTab
+from "%rGui/shop/shopState.nut" import allShopGoods
+
 
 function getSpecialEventRewardUnitName(stages, servConfigs, allGoods) {
   foreach (stage in stages) {
@@ -24,7 +29,25 @@ function getSpecialEventLocName(eventName, rewardUnitName) {
     : defaultLoc
 }
 
+let getMainEventLoc = @(eSeason) loc($"events/name/{eSeason}")
+
+let getEventLocFull = @(eventId, eventSeasonV, allSpecialEventsV, progressUnlockByTabV, serverConfigsV, allShopGoodsV)
+  eventId == MAIN_EVENT_ID ? getMainEventLoc(eventSeasonV)
+    : eventId not in allSpecialEventsV ? ""
+    : getSpecialEventLocName(allSpecialEventsV[eventId].eventName,
+        getSpecialEventRewardUnitName(progressUnlockByTabV?[eventId].stages ?? [],
+           serverConfigsV, allShopGoodsV))
+
+let mkEventLocComp = @(eventId) Computed(@() getEventLocFull(eventId.get(), eventSeason.get(),
+  allSpecialEvents.get(), progressUnlockByTab.get(), serverConfigs.get(), allShopGoods.get()))
+
+let curEventLoc = mkEventLocComp(curEvent)
+
 return {
   getSpecialEventLocName
   getSpecialEventRewardUnitName
+
+  getMainEventLoc
+  mkEventLocComp
+  curEventLoc
 }

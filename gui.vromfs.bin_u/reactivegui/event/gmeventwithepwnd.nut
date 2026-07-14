@@ -127,7 +127,11 @@ let footer = @() {
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_shop.svg", utf8ToUpper(loc("eventShop"))),
                   @() openShopWnd(null, null, "events"), COMMON)
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_event_pass.svg", utf8ToUpper(loc("eventPass"))),
-                  @() openSeasonScene(PASS_SCENE, getEventPassName(curOpenEventPass.get()?.eventName)))
+                  function() {
+                    let { eventName = null } = getEventPassName(curOpenEventPass.get()?.eventName)
+                    if (eventName != null)
+                      openSeasonScene(eventName, PASS_SCENE, eventName)
+                  })
               ]
             }
           ]

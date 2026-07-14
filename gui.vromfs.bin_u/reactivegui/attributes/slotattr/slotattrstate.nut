@@ -164,6 +164,10 @@ function mkUnseenSlotAttrByIdx(idx) {
 function applyAttributes() {
   if (selAttrSpCost.get() <= 0 || slotInProgress.get() != null)
     return
+  if (!isSlotAttrOpened.get()) {
+    logerr("Try to applyAttributes for slot when slot attributes window is closed")
+    return
+  }
   add_slot_attributes(curCampaign.get(), selectedSlotIdx.get(), selAttributes.get(), selAttrSpCost.get())
 }
 

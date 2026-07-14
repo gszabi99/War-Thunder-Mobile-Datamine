@@ -21,8 +21,8 @@ let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoo
 } = require("%rGui/battlePass/battlePassState.nut")
 let { unitSkins, selectedSkin, currentSkin, availableSkins, selectedSkinCfg, hasTagsChoice
 } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let { MAIN_EVENT_ID, getEventLoc, eventSeason, allSpecialEvents, shouldShowEventMechanics
-} = require("%rGui/event/eventState.nut")
+let { MAIN_EVENT_ID, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { mkEventLocComp } = require("%rGui/event/eventLocName.nut")
 let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let changeSkinTagWnd = require("%rGui/unitCustom/unitSkins/changeSkinTagWnd.nut")
@@ -43,7 +43,8 @@ let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
-let { openSeasonScene, PASS_SCENE, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openSeasonScene, openMainSeasonScene, PASS_SCENE, LOOTBOX_TAB
+} = require("%rGui/seasonScene/seasonSceneState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { chooseBetterGoods, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
 
@@ -304,7 +305,7 @@ function onPurchase() {
 }
 
 function openLootboxForEvent(lootbox) {
-  openSeasonScene(LOOTBOX_TAB, null, lootbox?.meta.event_id ?? MAIN_EVENT_ID)
+  openSeasonScene(lootbox?.meta.event_id ?? MAIN_EVENT_ID, LOOTBOX_TAB)
   openEventWndLootbox(lootbox.name)
 }
 
@@ -391,12 +392,12 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 
   if (lootbox != null && shouldShowEventMechanics.get()) {
     let { event_id = MAIN_EVENT_ID } = lootbox?.meta
+    let eventLocName = mkEventLocComp(Watched(event_id))
     return res.__update({
       children = [
         @() mkInfoTextarea(
-          loc("canReceive/inEvent",
-            { eventName = colorize(markTextColor, getEventLoc(event_id, eventSeason.get(), allSpecialEvents.get())) }),
-          { watch = [eventSeason, allSpecialEvents] })
+          loc("canReceive/inEvent", { eventName = colorize(markTextColor, eventLocName.get()) }),
+          { watch = eventLocName })
         textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openLootboxForEvent(lootbox), { hplace = ALIGN_CENTER })
       ]
     })
@@ -413,7 +414,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     return res.__update({
         children = [
         mkInfoTextarea(loc("canReceive/inBattlePass"))
-        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openSeasonScene(PASS_SCENE, BATTLE_PASS), { hplace = ALIGN_CENTER })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openMainSeasonScene(PASS_SCENE, BATTLE_PASS), { hplace = ALIGN_CENTER })
       ]
     })
 

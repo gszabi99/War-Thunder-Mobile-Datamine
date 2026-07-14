@@ -1,54 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
-  EP_VIP, EP_COMMON, EP_NONE, purchasedEp,curOpenEventPass,
-  pointsCurStage, pointsPerStage, curEventId, epSeasonEndTime,
-  isEpRewardsInProgress, receiveEpRewards, eventTitle
+  EP_VIP, EP_COMMON, EP_NONE, purchasedEp,
+  pointsCurStage, pointsPerStage, curEventId,
+  isEpRewardsInProgress, receiveEpRewards
 } = require("%rGui/battlePass/eventPassState.nut")
-let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, sideTabWidth, vGradientGapSize
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable
 } = require("%rGui/battlePass/battlePassPkg.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
 let eventPassRewardsList = require("%rGui/battlePass/eventPassRewardsList.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
-let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
-let bpIconSize = [hdpx(269), hdpx(306)]
+let bpIconSize = [hdpx(189), hdpx(214)]
 let scrollHandler = ScrollHandler()
-
-let rewardPannable = horizontalPannableAreaCtor(sw(100) - (sideTabWidth + vGradientGapSize[0]),
-  [hdpx(40) + vGradientGapSize[0], hdpx(60)], [hdpx(40), hdpx(200)])
 
 function scrollToCardEP(scrollX, selProgress) {
   selectedStage.set(selProgress)
   if (scrollX > saSize[0] / 2)
     scrollHandler.scrollToX(scrollX - saSize[0] / 2)
-}
-
-let header = @() {
-  watch = curEventId
-  size = [FLEX, gamercardHeight]
-  margin = saBordersRv
-  valign = ALIGN_TOP
-  halign = ALIGN_RIGHT
-  children = mkCurrenciesBtns([GOLD].extend(getEpPresentation(curEventId.get()).passWndCurrencies))
 }
 
 let scrollArrowsBlock = {
@@ -107,29 +84,8 @@ let levelBlock = @() {
 }
 
 let leftMiddle = {
-  padding = const [hdpx(10), 0, hdpx(20), 0]
-  flow = FLOW_VERTICAL
-  pos = [0, hdpx(140)]
-  gap = hdpx(10)
-  children = [
-    levelBlock
-    @() {
-      watch = [curOpenEventPass, gmEventsList]
-      flow = FLOW_VERTICAL
-      gap = hdpx(15)
-      children = {
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(15)
-        children = [
-          mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB)
-          curOpenEventPass.get()?.eventName not in gmEventsList.get()
-            ? null
-            : translucentButton(getEventPresentation(curOpenEventPass.get()?.eventName).icon,
-                @() openGmEventWnd(curOpenEventPass.get()?.eventName))
-        ]
-      }
-    }
-  ]
+  vplace = ALIGN_BOTTOM
+  children = levelBlock
 }
 
 let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openEPPurchaseWnd,
@@ -139,8 +95,10 @@ let rightMiddle = @() {
   watch = [purchasedEp, curEventId, isEpActive]
   size = [defButtonMinWidth, FLEX]
   flow = FLOW_VERTICAL
+  hplace = ALIGN_RIGHT
   halign = ALIGN_CENTER
   valign = ALIGN_BOTTOM
+  gap = hdpx(35)
   children = [
     (curEventId.get() ?? "") == "" ? null
       : {
@@ -172,73 +130,44 @@ let middlePart = @(stagesList) function() {
   return {
     watch = selectedStage
     size = FLEX
-    margin = [saBorders[1], saBorders[0], 0, hdpx(20)]
-    flow = FLOW_HORIZONTAL
     children = [
       leftMiddle
       {
         size = FLEX
-        flow = FLOW_VERTICAL
-        padding = [hdpx(55), 0, 0, 0]
-        gap = hdpx(10)
-        halign = ALIGN_CENTER
-        children = [
-          @() {
-            watch = [curEventId, eventTitle, epSeasonEndTime]
-            flow = FLOW_HORIZONTAL
-            children = battlePassSeason(loc(eventTitle.get()), epSeasonEndTime.get(),
-              infoTooltipButton(@() loc(getEpPresentation(curEventId.get()).descLocId)),
-              {
-                halign = ALIGN_CENTER
-                padding = const [hdpx(0), hdpx(200), hdpx(5), hdpx(200)]
-              }
-            )
-          }
-          stageData == null ? null
-            : bpRewardDesc(stageData,
-                { lockText = "eventpass/lock", paidText = "eventpass/paid" },
-                curStage,
-                @() receiveEpRewards(stageData.progress),
-                isEpRewardsInProgress)
-        ]
+        children = stageData == null ? null
+          : bpRewardDesc(stageData,
+              { lockText = "eventpass/lock", paidText = "eventpass/paid" },
+              curStage,
+              @() receiveEpRewards(stageData.progress),
+              isEpRewardsInProgress)
       }
       rightMiddle
     ]
   }
 }
 
-let contentEP = @(stagesList, recommendInfo) @() {
+let contentEP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
   watch = stagesList
   size = FLEX
-  children = [
-    header
-    {
-      size = FLEX
-      flow = FLOW_VERTICAL
-      gap = hdpx(15)
-      children = [
-        middlePart(stagesList.get())
-        {
-          size = [sw(100) - sideTabWidth, SIZE_TO_CONTENT]
-          hplace = ALIGN_CENTER
-          margin = [0, 0, saBorders[1], 0]
-          children = [
-            {
-              size = [FLEX, progressIconSize[1]]
-            }
-            rewardPannable(rewardsList(stagesList.get(), recommendInfo),
-              { pos = [-hdpx(20), 0], size = FLEX_H, clipChilden = false },
-              {
-                size = FLEX_H
-                behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
-                scrollHandler = scrollHandler
-              })
-            scrollArrowsBlock
-          ]
-        }
-      ]
-    }
-  ]
+  children = {
+    size = [FLEX, contentH]
+    flow = FLOW_VERTICAL
+    gap = hdpx(15)
+    children = [
+      middlePart(stagesList.get())
+      {
+        size = FLEX_H
+        children = [
+          {
+            size = [FLEX, progressIconSize[1]]
+          }
+          mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
+            scrollHandler, isFullScreenWidth)
+          scrollArrowsBlock
+        ]
+      }
+    ]
+  }
   animations = wndSwitchAnim
 }
 

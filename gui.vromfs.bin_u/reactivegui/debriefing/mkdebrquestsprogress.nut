@@ -6,7 +6,7 @@ let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentati
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
-let { getSpecialEventLocName } = require("%rGui/event/specialEventLocName.nut")
+let { getSpecialEventLocName } = require("%rGui/event/eventLocName.nut")
 
 let progressFillTime = 0.5
 let completedTxtBlinkTime = 0.25

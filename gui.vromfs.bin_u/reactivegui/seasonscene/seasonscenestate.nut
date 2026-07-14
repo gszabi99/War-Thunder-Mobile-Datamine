@@ -14,11 +14,10 @@ let LOOTBOX_TAB = "lootbox_tab"
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
 
-let seasonTabs = [ PASS_SCENE, QUESTS_TAB,LOOTBOX_TAB]
+let seasonTabs = [ PASS_SCENE, QUESTS_TAB, LOOTBOX_TAB ]
 
 let seasonTabIdx = Computed(@() seasonTabs.indexof(playerSelectedSeasonTab.get()) ?? 0)
 let seasonPageId = Computed(@() seasonTabs?[seasonTabIdx.get()])
-
 
 let bgScene = Computed(function() {
   let id = seasonPageId.get()
@@ -38,15 +37,15 @@ function registerSeasonTabClose(tabId, fn) {
   seasonTabCloseHandlers[tabId] <- fn
 }
 
-function openSeasonScene(id, subId = null, eventName = MAIN_EVENT_ID) {
+function openSeasonScene(eventName, id, subId = null) {
   eventName = specialEvents.get().findvalue(@(v) v.eventName == eventName)?.eventId ?? eventName
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return null
   }
-  if (!shouldShowEventMechanics.get() && id != QUESTS_TAB) {
+  if (!shouldShowEventMechanics.get() && id != QUESTS_TAB && eventName != "")
     return null
-  }
+
   openEventInfo.set({
     eventName
     counter = curEvent.get() == eventName ? eventWndOpenCounter.get() + 1 : 1
@@ -59,6 +58,7 @@ function openSeasonScene(id, subId = null, eventName = MAIN_EVENT_ID) {
   }
 }
 
+let openMainSeasonScene = @(id, subId = null) openSeasonScene(MAIN_EVENT_ID, id, subId)
 
 function closeSeasonScene() {
   let id = playerSelectedSeasonTab.get()
@@ -77,6 +77,7 @@ return {
   seasonPageId
   openSeasonTab
   openSeasonScene
+  openMainSeasonScene
   closeSeasonScene
   registerSeasonTabClose
   bgScene

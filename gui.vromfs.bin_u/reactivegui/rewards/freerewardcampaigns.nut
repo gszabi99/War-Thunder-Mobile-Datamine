@@ -16,7 +16,7 @@ let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 
 
 let UNITS_STATUS = {
-  UNITS_INITIAL = null,
+  NOT_INITED = null,
   UNITS_AVAILABLE = true,
   UNITS_UNAVAILABLE = false
 }
@@ -26,7 +26,7 @@ let needShowTutorialAfterReward = hardPersistWatched("freeRewardCampaigns.needSh
 let prevState = Watched(null)
 let unitsStatus = keepref(Computed(function() {
   if (!isProfileReceived.get())
-    return UNITS_STATUS.UNITS_INITIAL
+    return UNITS_STATUS.NOT_INITED
   return campMyUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})) != null
     ? UNITS_STATUS.UNITS_AVAILABLE
     : UNITS_STATUS.UNITS_UNAVAILABLE
@@ -45,13 +45,17 @@ let needShowTutorialAfterLeaveGame = keepref(Computed(function() {
     && (battles == 0 && offlineBattles == 0)
 }))
 
-unitsStatus.subscribe(function(v) {
+function updateUnitToShowAsReceived(unitsStatusV) {
+  if (unitsStatusV == UNITS_STATUS.NOT_INITED)
+    return
   let { prevCampaign = null, hasUnitsPrev = null } = prevState.get()
   if (prevCampaign == null || prevCampaign != curCampaign.get())
-    return prevState.set({ prevCampaign = curCampaign.get(), hasUnitsPrev = v })
-  if (hasUnitsPrev == false && v == UNITS_STATUS.UNITS_AVAILABLE)
+    return prevState.set({ prevCampaign = curCampaign.get(), hasUnitsPrev = unitsStatusV })
+  if (hasUnitsPrev == false && unitsStatusV == UNITS_STATUS.UNITS_AVAILABLE)
     unitToShowAsReceived.set(campMyUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})))
-})
+}
+updateUnitToShowAsReceived(unitsStatus.get())
+unitsStatus.subscribe(updateUnitToShowAsReceived)
 needShowTutorialAfterLeaveGame.subscribe(@(v) v ? needShowTutorialAfterReward.set(true) : null)
 
 function showReward() {

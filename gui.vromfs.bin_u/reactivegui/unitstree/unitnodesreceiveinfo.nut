@@ -81,7 +81,7 @@ let receiveTypeCfg = {
     receiveInfoDesc = @(l) loc("canReceive/inShopLootbox",
       { name = colorize(markTextColor, getLootboxName(l.name).replace(" ", nbsp)) })
     function open(l) {
-      openSeasonScene(LOOTBOX_TAB, null, l?.meta.event_id ?? MAIN_EVENT_ID)
+      openSeasonScene(l?.meta.event_id ?? MAIN_EVENT_ID, LOOTBOX_TAB)
       openEventWndLootbox(l.name)
     },
     function mkTimeLeft(l) {

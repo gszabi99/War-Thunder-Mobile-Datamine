@@ -233,7 +233,7 @@ let lootboxBtn = mkCustomButton({
       text = utf8ToUpper(loc("events/lootboxBtn"))
     }.__update(fontTinyAccentedShaded)
   ]
-}, @() openSeasonScene(LOOTBOX_TAB, null, openedTreeEventId.get()))
+}, @() openSeasonScene(openedTreeEventId.get(), LOOTBOX_TAB))
 
 let curEventLootboxes = Computed(@()
   orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == openedTreeEventId.get())))

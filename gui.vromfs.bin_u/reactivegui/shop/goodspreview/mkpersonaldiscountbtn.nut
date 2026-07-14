@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { openQuestsWndOnTab } = require("%rGui/quests/questsState.nut")
+let { openSeasonScene, QUESTS_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { campaignActiveUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { discountsToApply } = require("%rGui/shop/discounts.nut")
 
@@ -52,7 +52,7 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
           rendObj = ROBJ_IMAGE
           image = Picture("ui/gameuiskin#offer_upgrade_discount_icon.avif:0:P")
           behavior = Behaviors.Button
-          onClick = @() openQuestsWndOnTab(eventIdByPersonalDiscount.get())
+          onClick = @() openSeasonScene(eventIdByPersonalDiscount.get(), QUESTS_TAB)
           transform = {}
           animations = opacityAnims(0.5 * aTimePackNameFull, aTimeHeaderStart).append(
             { prop = AnimProp.translate, from = [-hdpx(100), 0.0], to = [0.0, 0.0], easing = InQuad, play = true,

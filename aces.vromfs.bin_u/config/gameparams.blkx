@@ -10008,6 +10008,10 @@
       "my": "tank_cannon_breech",
       "enemy": "tank_cannon_breech"
     },
+    "autoloader": {
+      "my": "tank_autoloader",
+      "enemy": "tank_autoloader"
+    },
     "commander_panoramic_sight": {
       "my": "tank_commander_panoramic_sight",
       "enemy": "tank_commander_panoramic_sight"
@@ -13711,6 +13715,7 @@
         "cannon_breech_",
         "fuel_tank_",
         "ammo_",
+        "autoloader_",
         "gun_a_breech_",
         "gun_a_cannon_breech_",
         "radiator_",
@@ -16490,6 +16495,9 @@
         },
         {
           "name": "radio_station_"
+        },
+        {
+          "name": "autoloader_"
         },
         {
           "name": "sonar_"

@@ -7,24 +7,19 @@ let { isBpActive, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, sideTabWidth, vGradientGapSize, contentH,
-  middlePartW
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable
 } = require("%rGui/battlePass/battlePassPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
 let battlePassRewardsList = require("%rGui/battlePass/battlePassRewardsList.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 let bpIconSize = [hdpx(298), hdpx(181)]
 
 let scrollHandler = ScrollHandler()
-
-let rewardPannable = horizontalPannableAreaCtor(sw(100) - (sideTabWidth + vGradientGapSize[0]),
-  [hdpx(40) + vGradientGapSize[0], hdpx(60)], [hdpx(40), hdpx(200)])
 
 function scrollToCardBP(scrollX, selProgress) {
   selectedStage.set(selProgress)
@@ -134,29 +129,24 @@ let middlePart = @(stagesList) function() {
   let stageData = stagesList.findvalue(@(s) s.progress == selectedStage.get())
   return {
     watch = selectedStage
-    size = [middlePartW, FLEX]
+    size = FLEX
     children = [
       leftMiddle
       {
         size = FLEX
-        flow = FLOW_VERTICAL
-        gap = hdpx(10)
-        halign = ALIGN_CENTER
-        children = [
-          stageData == null ? null
-            : bpRewardDesc(stageData,
-                { lockText = "battlepass/lock", paidText = "battlepass/paid" },
-                curStage,
-                @() receiveBpRewards(stageData.progress),
-                isBpRewardsInProgress)
-        ]
+        children = stageData == null ? null
+          : bpRewardDesc(stageData,
+              { lockText = "battlepass/lock", paidText = "battlepass/paid" },
+              curStage,
+              @() receiveBpRewards(stageData.progress),
+              isBpRewardsInProgress)
       }
       rightMiddle
     ]
   }
 }
 
-let contentBP = @(stagesList, recommendInfo) @() {
+let contentBP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
   watch = stagesList
   size = FLEX
   children = {
@@ -166,21 +156,14 @@ let contentBP = @(stagesList, recommendInfo) @() {
     children = [
       middlePart(stagesList.get())
       {
-        size = [sw(100) - sideTabWidth, SIZE_TO_CONTENT]
-        hplace = ALIGN_CENTER
-        margin = [0, 0, saBorders[1], 0]
+        size = FLEX_H
         children = [
           {
             key = "battle_pass_progress_bar" 
             size = [FLEX, progressIconSize[1]]
           }
-          rewardPannable(rewardsList(stagesList.get(), recommendInfo),
-            { pos = [-hdpx(20), 0], size = FLEX_H, clipChilden = false },
-            {
-              size = FLEX_H
-              behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
-              scrollHandler = scrollHandler
-            })
+          mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
+            scrollHandler, isFullScreenWidth)
           scrollArrowsBlock
         ]
       }

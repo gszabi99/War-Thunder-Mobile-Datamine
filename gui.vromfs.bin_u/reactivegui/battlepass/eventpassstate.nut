@@ -27,7 +27,7 @@ let eventPassTables = Computed(function() {
   return res
 })
 
-let getEventPassName = @(eventName) $"{EVENT_PASS}_{eventName}"
+let getEventPassName = memoize(@(eventName) $"{EVENT_PASS}_{eventName}")
 
 let eventsPassList = Computed(@() allSpecialEvents.get().values().filter(@(v) eventPassTables.get().contains(v.tableId)))
 let curOpenEventPass = Computed(@() eventsPassList.get().findvalue(@(v) v.eventName == curEventId.get()))
@@ -132,7 +132,7 @@ let isEpActive = Computed(@() debugBp.get() == null
 
 purchasedEp.subscribe(@(_) isEPPurchaseWndOpened.set(false))
 
-let hasEpRewardsToReceive = Computed(function() {
+let hasEpRewardsToReceiveByTableId = Computed(function() {
   let res = {}
   foreach (v in eventsPassList.get())
     res[v.tableId] <- false
@@ -160,12 +160,13 @@ let hasEpRewardsToReceive = Computed(function() {
   return res
 })
 
-let mkHasEpRewardsToReceive = @(name) Computed(function() {
-  let { tableId = null } = eventsPassList.get().findvalue(@(v) getEventPassName(v.eventName) == name.get())
-  return hasEpRewardsToReceive.get()?[tableId]
-})
+function hasEpRewardsToReceive(eventName, eventsPassListV, hasByTableId) {
+  let { tableId = null } = eventsPassListV.findvalue(@(v) getEventPassName(v.eventName) == eventName)
+  return hasByTableId?[tableId]
+}
 
-let hasAnyEpRewardsToReceive = Computed(@() null != hasEpRewardsToReceive.get().findvalue(@(v) v))
+let mkHasEpRewardsToReceive = @(eventName) Computed(@()
+  hasEpRewardsToReceive(eventName.get(), eventsPassList.get(), hasEpRewardsToReceiveByTableId.get()))
 
 let pointsCurStage = Computed(@() (eventProgressUnlock.get()?.current ?? 0)
   % pointsPerStage.get() )
@@ -349,8 +350,9 @@ return {
   eventsPassList
   curEventId
   epSeasonEndTime
-  hasAnyEpRewardsToReceive
+  hasEpRewardsToReceiveByTableId
   mkHasEpRewardsToReceive
+  hasEpRewardsToReceive
 
   getEpIcon = @(epType, season) getPresentationByType(epType).icon(season)
   getEpName = @(epType) getPresentationByType(epType).name()

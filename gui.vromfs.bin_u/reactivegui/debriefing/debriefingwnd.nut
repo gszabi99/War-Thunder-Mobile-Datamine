@@ -75,7 +75,7 @@ let function openSpecialEvent() {
     else if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
       openTreeEventWnd(eventId)
     else
-      openSeasonScene(LOOTBOX_TAB, null, eventId)
+      openSeasonScene(eventId, LOOTBOX_TAB)
   }
 }
 

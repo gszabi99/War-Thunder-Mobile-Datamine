@@ -9,15 +9,13 @@ let { isOPActive, openOPPurchaseWnd, selectedStage, curStage, getOPIcon,
 } = require("%rGui/battlePass/operationPassState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, sideTabWidth, vGradientGapSize, contentH,
-  middlePartW
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable
 } = require("%rGui/battlePass/battlePassPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
 let operationPassRewardsList = require("%rGui/battlePass/operationPassRewardsList.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { bgCard, purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
 let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
@@ -41,9 +39,6 @@ let isShowedAdForOPCampaign = Computed(@() OPCampaign.get() in showedAdForCampai
 let saveShowedAdCampaign = @(camp) showedAdForCampaigns.mutate(@(v) v[camp] <- true)
 
 opSeasonNumber.subscribe(@(_) showedAdForCampaigns.set({}))
-
-let rewardPannable = horizontalPannableAreaCtor(sw(100) - (sideTabWidth + vGradientGapSize[0]),
-  [hdpx(40) + vGradientGapSize[0], hdpx(60)], [hdpx(40), hdpx(200)])
 
 function scrollToCardOP(scrollX, selProgress) {
   selectedStage.set(selProgress)
@@ -222,14 +217,11 @@ let middlePart = @(stagesList) function() {
   let stageData = stagesList.findvalue(@(s) s.progress == selectedStage.get())
   return {
     watch = selectedStage
-    size = [middlePartW, FLEX]
+    size = FLEX
     children = [
       leftMiddle
       {
         size = FLEX
-        flow = FLOW_VERTICAL
-        gap = hdpx(10)
-        halign = ALIGN_CENTER
         children = stageData == null ? null
           : bpRewardDesc(stageData,
               { lockText = "operationpass/lock", paidText = "operationpass/paid" },
@@ -242,7 +234,7 @@ let middlePart = @(stagesList) function() {
   }
 }
 
-let contentOP = @(stagesList, recommendInfo) @() {
+let contentOP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
   watch = stagesList
   size = FLEX
   onDetach = @() saveShowedAdCampaign(OPCampaign.get())
@@ -254,21 +246,14 @@ let contentOP = @(stagesList, recommendInfo) @() {
       children = [
         middlePart(stagesList.get())
         {
-          size = [sw(100) - sideTabWidth, SIZE_TO_CONTENT]
-          hplace = ALIGN_CENTER
-          margin = [0, 0, saBorders[1], 0]
+          size = FLEX_H
           children = [
             {
               key = "battle_pass_progress_bar" 
               size = [FLEX, progressIconSize[1]]
             }
-            rewardPannable(rewardsList(stagesList.get(), recommendInfo),
-              { pos = [-hdpx(20), 0], size = FLEX_H, clipChilden = false },
-              {
-                size = FLEX_H
-                behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
-                scrollHandler = scrollHandler
-              })
+            mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
+              scrollHandler, isFullScreenWidth)
             operationPassLastRewardAd(stagesList.get(), recommendInfo.get())
             scrollArrowsBlock
           ]

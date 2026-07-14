@@ -23,7 +23,7 @@ let { markTutorialCompleted,
 let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
-let { openSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openMainSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { hasFirstBattleRewards } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
@@ -190,7 +190,7 @@ function startTutorial() {
         text = loc("tutorial/battlePass/openBattlePassWnd")
         objects = [{
           keys = "quest_header_btn"
-          onClick = @() openSeasonScene(PASS_SCENE, BATTLE_PASS)
+          onClick = @() openMainSeasonScene(PASS_SCENE, BATTLE_PASS)
           needArrow = true
         }]
         charId = "mary_points"

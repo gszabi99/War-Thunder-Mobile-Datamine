@@ -46,8 +46,6 @@ let customLootboxImages = {
   operation_pass_infinite_lootbox_air             = "battle_pass_infinite_lootbox.avif"
 
   event_special_china_tanks_spending_event        = "event_special_lunar_ny.avif"
-  japan_tanks_spending_event_box                  = "event_special_japan_tanks_spending_event.avif"
-
   valentine_day_candy_lootbox                     = "valentine_day_candy_lootbox.avif"
   valentine_day_extra_reward_lootbox              = "valentine_day_candy_lootbox.avif"
 
@@ -186,6 +184,7 @@ let lootboxPreviewBg = {
   event_special_gift_air_anniversary_2025           = "ui/images/event_bg_anniversary_2025.avif"
 
   event_special_china_tanks_spending_event         = "ui/images/event_bg_lunar.avif"
+  japan_tanks_spending_event_box                   = "ui/images/event_bg_japan_tanks_early_access.avif"
   uk_air_spending_event_box                        = "ui/images/event_bg_uk_air_early_access.avif"
 
   valentine_day_candy_lootbox                      = "ui/images/event_bg_valentine_day_2026.avif"

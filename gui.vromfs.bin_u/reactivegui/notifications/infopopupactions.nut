@@ -14,7 +14,7 @@ let actions = {
       let lootbox = eventLootboxesRaw.get()?[p?[curCampaign.get()]]
       if (lootbox == null)
         return
-      openSeasonScene(LOOTBOX_TAB, null, lootbox?.meta.event_id ?? MAIN_EVENT_ID)
+      openSeasonScene(lootbox?.meta.event_id ?? MAIN_EVENT_ID, LOOTBOX_TAB)
       openEventWndLootbox(lootbox.name)
     }
   },

@@ -123,6 +123,7 @@ let presentations = {
   japan_spending                = {
     image = $"ui/gameuiskin/icon_japan_tanks_spending_shop.avif",
     bg = "ui/images/event_bg_japan_tanks_early_access.avif",
+    icon = "ui/gameuiskin#icon_event_japan_tanks_spending.svg",
   }
   japan_tanks_release           = {
     bg = "ui/images/event_bg_japan_tanks_early_access.avif",

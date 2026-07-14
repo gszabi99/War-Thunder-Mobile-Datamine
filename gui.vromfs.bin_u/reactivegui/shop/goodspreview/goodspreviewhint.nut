@@ -7,7 +7,8 @@ let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
+let { eventSeason } = require("%rGui/event/eventState.nut")
+let { getMainEventLoc } = require("%rGui/event/eventLocName.nut")
 
 
 let hintPadding = hdpx(10)
@@ -50,13 +51,12 @@ let decoratorHint = @(r) function() {
 }
 
 let itemOrCurrnecyHint = @(r) @() {
-  watch = [eventSeason, allSpecialEvents]
+  watch = eventSeason
   size = const [hdpx(500), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = "\n".concat(
-    colorize(0xFFFFFFFF, loc($"item/{r.id}",
-      { name = getEventLoc(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()) })),
+    colorize(0xFFFFFFFF, loc($"item/{r.id}", { name = getMainEventLoc(eventSeason.get()) })),
     loc($"item/{r.id}/desc")
   )
   color = 0xFFD0D0D0

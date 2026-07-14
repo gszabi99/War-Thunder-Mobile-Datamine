@@ -12,7 +12,6 @@ let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
 let { userstatStatsTables, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
-let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
 let { closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
@@ -142,16 +141,6 @@ let specialEventsLootboxesState = Computed(function() {
 
 let getEventPresentationId = @(eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
 let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), allSpecialEvents.get())))
-
-function getEventLoc(eventId, eSeason, sEvents) {
-  local locId = eventId == MAIN_EVENT_ID
-      ? $"events/name/{eSeason}"
-    : "".concat("events/name/", sEvents?[eventId].eventName)
-  if (!doesLocTextExist(locId))
-    locId = "events/name/default"
-  return loc(locId)
-}
-let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), allSpecialEvents.get()))
 
 let curEventSeason = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? (userstatStatsTables.get()?.stats.season["$index"] ?? 0)
@@ -349,8 +338,6 @@ isEventActive.subscribe(@(v) v ? null : logE($"Primary game event finished!"))
 return {
   curEvent
   curEventName
-  curEventLoc
-  getEventLoc
   curEventSeason
   curEventEndsAt
   isCurEventActive

@@ -6,6 +6,7 @@ from "hudTuningConsts.nut" import tuningStateDefault, ALIGN_C, ALIGN_L, ALIGN_R,
 from "hudTuningState.nut" import tuningStateOnOpen, tuningUnitType, hudTuningStateByUnitType, optionsToElemIds,
   mkEmptyTuningState, registerBeforeUnitTypeChangeCb
 from "cfgByUnitType.nut" import cfgByUnitType
+from "cfg/cfgOptions.nut" import allElemOptionsList
 
 
 let alignToString = {
@@ -44,6 +45,13 @@ let getParam = @(value, idx) type(value) == "integer" ? $"paramInt{idx}"
   : type(value) == "string" ? $"paramStr{idx}"
   : ""
 
+let modifyValue = {
+  scale = @(v) v?.tofloat()
+  visible = @(v) v == null ? null
+    : type(v) == "bool" ? v
+    : v.tointeger() == 1
+}
+
 function trySendToBq() {
   let uType = tuningUnitType.get()
   if (uType == null)
@@ -77,13 +85,16 @@ function trySendToBq() {
       elemId,
       posX = round_by_value(rawPosX.tofloat() / width, 0.01),
       posY = round_by_value(rawPosY.tofloat() / height, 0.01),
-      align = alignToString?[align] ?? "?"
-      scale = newState?.options.scale[elemId].tofloat() ?? tuningStateDefault.options.scale,
+      align = alignToString?[align] ?? "?",
       resolution = $"{width} x {height}",
       unitType = uType
-    }
+    }.__update(allElemOptionsList.reduce(@(res, v)
+                res.$rawset(v.id,
+                  modifyValue?[v.id](newState?.options[v.id][elemId])
+                    ?? tuningStateDefault.options[v.id]),
+                {}))
     foreach (o in options) {
-      if (o?.id == null || o.id == "scale")
+      if (o?.id == null || null != allElemOptionsList.findvalue(@(v) v.id == o.id))
         continue
 
       if (o.id in tuningStateDefault.options) {

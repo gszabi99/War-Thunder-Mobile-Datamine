@@ -10,12 +10,12 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
-let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, curTabId, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
+let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, tabIdToOpen, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
   tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId, tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { curEventLootboxes, isFitSeasonRewardsRequirements, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openMainSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted,
   isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal } = require("%rGui/tutorial/completedTutorials.nut")
 let { questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
@@ -87,7 +87,7 @@ function startTutorial() {
         text = loc("tutorial/mainEvent/openMainEventTab")
         objects = [{
           keys = "main_event_tab"
-          onClick = @() curTabId.set(tabId)
+          onClick = @() tabIdToOpen.set(tabId)
           needArrow = true
         }]
       }
@@ -134,7 +134,7 @@ function startTutorial() {
         text = loc("tutorial/mainEvent/openLootboxesWnd")
         objects = [{
           keys = "quest_header_btn"
-          onClick = @() openSeasonScene(LOOTBOX_TAB)
+          onClick = @() openMainSeasonScene(LOOTBOX_TAB)
           needArrow = true
         }]
         charId = "mary_like"

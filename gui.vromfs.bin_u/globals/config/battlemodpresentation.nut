@@ -20,7 +20,7 @@ let battleModsForOffer = {
   }
   tanks_japan_branch_access = {
     locId = "offer/earlyAccess/desc/tanks_japan_branch_access"
-    image = "ui/images/offer_japan_tree_bg.avif"
+    image = "ui/images/offer_japan_tanks_early_access.avif"
     bannerImg = "ui/gameuiskin#japan_offer_banner.avif"
   }
   air_uk_branch_access = {

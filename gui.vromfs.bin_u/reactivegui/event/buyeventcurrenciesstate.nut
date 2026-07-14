@@ -5,8 +5,9 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
 let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime, shopGoods
 } = require("%rGui/shop/shopState.nut")
-let { getEventPresentationId, getEventLoc, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
+let { getEventPresentationId, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
+let { mkEventLocComp } = require("%rGui/event/eventLocName.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
@@ -94,7 +95,7 @@ let bgImage = Computed(@()
   getEventPresentation(
     getEventPresentationId(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()) ?? parentEventName.get() ?? currencyId.get()
   ).bg)
-let parentEventLoc = Computed(@() getEventLoc(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()))
+let parentEventLoc = mkEventLocComp(parentEventId)
 
 function openBuyEventCurrenciesWnd(id) {
   if (isOfflineMenu)

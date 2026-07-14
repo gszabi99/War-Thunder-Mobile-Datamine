@@ -32,6 +32,7 @@ let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
 let rewardsList = Watched(null)
 let isRewardsQuestFinished = Watched(false)
 let isRewardsListOpen = Computed(@() rewardsList.get() != null)
+let tabIdToOpen = Watched(null)
 let curTabId = Watched(null)
 let curTabParams = Watched({})
 
@@ -245,7 +246,7 @@ function openQuestsWndOnTab(tabId) {
   isQuestsOpen.set(false)
   let tabToOpen = tabId in questsCfg.get() ? tabId
     : (specialEvents.get().findindex(@(s) s.eventName == tabId) ?? tabId)
-  curTabId.set(tabToOpen)
+  tabIdToOpen.set(tabToOpen)
   openQuestsWnd()
 }
 
@@ -296,6 +297,7 @@ return {
   openRewardsList
   closeRewardsList
 
+  tabIdToOpen
   curTabId
   curTabParams
   questsBySection

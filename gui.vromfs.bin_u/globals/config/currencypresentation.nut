@@ -91,7 +91,7 @@ let bigIcons = {
   lollipopbond = "ui/gameuiskin#lollipopbond_goods_2026_01.avif"
   chocolatebond = "ui/gameuiskin#chocolatebond_goods_2026_01.avif"
   ukbond = "ui/gameuiskin#ukbond_goods_01.avif"
-  japanbond = "ui/gameuiskin#japanbond_goods_01.avif"
+  japanbond = "ui/gameuiskin#japanbond_goods_2026_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"

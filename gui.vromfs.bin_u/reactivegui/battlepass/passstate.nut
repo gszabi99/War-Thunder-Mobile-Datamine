@@ -14,6 +14,8 @@ let { mkOPStagesList, isOpVipActive, isOpCommonActive, hasOPRewardsToReceive, op
   lastStageOpProgress, OPProgressUnlock
 } = require("%rGui/battlePass/operationPassState.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
+let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
+let { curEvent } = require("%rGui/event/eventState.nut")
 
 
 let SEEN_PASSES = "seenPasses"
@@ -57,11 +59,13 @@ let getTabStateData = @(passName) passName == null ? null
 
 let visibleTabs = Computed(function() {
   let res = []
-  if (bpProgressUnlock.get())
+  let eventId = curEvent.get()
+  if (bpProgressUnlock.get() && eventId == MAIN_EVENT_ID)
     res.append(BATTLE_PASS)
   foreach (ep in eventsPassList.get())
-    res.append(getEventPassName(ep.eventName))
-  if (OPProgressUnlock.get())
+    if (ep.eventId == eventId)
+      res.append(getEventPassName(ep.eventName))
+  if (OPProgressUnlock.get() && eventId == MAIN_EVENT_ID)
     res.append(OPERATION_PASS)
   return res
 })
@@ -111,7 +115,7 @@ function isPassGoodsUnseen(passes, sPasses) {
   foreach (p in passes)
     if (p?.id != null && p.id not in sPasses)
       return true
-  return passes.len() == 0
+  return false
 }
 
 function tryMarkPassesSeenByPageId(v) {

@@ -503,6 +503,7 @@
     "shadowSunDirDeltaThreshold": 0.999,
     "srgb8bitRT": true,
     "forceCullUnderwaterRiAboveWater": true,
+    "forceRenderWaves": true,
     "raytraced_shadows": {
       "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,

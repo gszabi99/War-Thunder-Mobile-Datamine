@@ -1,16 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getOPPresentation, getBPPresentation, getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { mkGradientCtorDoubleSideY, gradTexSize, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
-let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { closePassScene, passPageId, playerSelectedScene, passPageIdx,
-  BATTLE_PASS, EVENT_PASS, OPERATION_PASS, visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData
+let { passPageId, playerSelectedScene, passPageIdx, BATTLE_PASS, EVENT_PASS, OPERATION_PASS,
+  visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData
 } = require("passState.nut")
 let { bpSeasonNumber } = require("%rGui/battlePass/battlePassState.nut")
 let { eventBgImage, curEventId } = require("%rGui/battlePass/eventPassState.nut")
@@ -18,7 +17,9 @@ let { OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
 let { contentBP, scrollToCardBP } = require("battlePassWnd.nut")
 let { contentEP, scrollToCardEP } = require("eventPassWnd.nut")
 let { contentOP, scrollToCardOP } = require("operationPassWnd.nut")
-let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize, sideTabPadding } = require("battlePassPkg.nut")
+let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize } = require("battlePassPkg.nut")
+
+let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0x80000000, 0.07))
 
 let sceneBg = keepref(Computed(function() {
   let id = passPageId.get()
@@ -65,10 +66,10 @@ function mkTab(idx, name, campaign) {
     size = tabSize
     rendObj = ROBJ_IMAGE
     image = simpleHorGrad
+    color = isActive.get() ? selectColor : 0xFF000000
     flipX = true
     behavior = Behaviors.Button
     onClick = @() playerSelectedScene.set(name)
-    color = isActive.get() ? selectColor : 0xFF000000
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -84,20 +85,11 @@ function mkTab(idx, name, campaign) {
   }
 }
 
-let wndKey = {}
-
-function passSceneWnd() {
-  if (visibleTabs.get().len == 0 )
-    return { watch = [passPageId, visibleTabs] }
-
+let mkTabContent = @(isFullScreenWidth) function () {
   let data = getTabData(passPageId.get())
   let dataState = getTabStateData(passPageId.get())
   if (!data || !dataState)
-    return {
-      watch = [passPageId, visibleTabs]
-      padding = saBordersRv
-      children = backButton(closePassScene)
-    }
+    return { watch = passPageId }
 
   let { content, scrollToCard } = data
   let { mkStagesList, isVipActive, isCommonActive, lastRewardProgress } = dataState
@@ -137,7 +129,22 @@ function passSceneWnd() {
   recommendInfo.subscribe(@(v) !v ? null : scrollToCard(v.scrollX, v.selProgress))
 
   return {
-    watch = [passPageId, visibleTabs]
+    watch = passPageId
+    size = flex()
+    padding = isFullScreenWidth ? [0, saBorders[0]] : [0, saBorders[0], 0, 0]
+    children = content(stagesList, recommendInfo, isFullScreenWidth)
+  }
+}
+
+let wndKey = {}
+let visibleTabsCount = Computed(@() visibleTabs.get().len())
+
+function passSceneWnd() {
+  if (visibleTabsCount.get() == 0 )
+    return { watch = visibleTabsCount }
+
+  return {
+    watch = visibleTabsCount
     key = wndKey
     size = FLEX
     flow = FLOW_HORIZONTAL
@@ -147,24 +154,18 @@ function passSceneWnd() {
       color = 0xFFACACAC
     }
     children = [
-      {
-        padding = sideTabPadding
-        size = [sideTabWidth + selLineSize, sh(100)]
-        rendObj = ROBJ_SOLID
-        color = 0x80000000
-        flow = FLOW_VERTICAL
-        gap = hdpx(60)
-        children = [
-          @() {
+      visibleTabsCount.get() <= 1 ? null
+        : @() {
             watch = [visibleTabs, OPCampaign]
+            size = [sideTabWidth, sh(100)]
+            rendObj = ROBJ_IMAGE
+            image = lineGradientVert()
             flow = FLOW_VERTICAL
-            hplace = ALIGN_RIGHT
+            halign = ALIGN_RIGHT
             gap = hdpx(10)
             children = visibleTabs.get().map(@(v, idx) mkTab(idx, v, OPCampaign.get()))
           }
-        ]
-      }
-      content(stagesList, recommendInfo)
+      mkTabContent(visibleTabsCount.get() <= 1)
     ]
     animations = wndSwitchAnim
   }

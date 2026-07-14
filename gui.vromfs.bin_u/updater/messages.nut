@@ -149,7 +149,7 @@ function openUpdateUrl() {
     if (url != null)
       shell_execute({ cmd = is_ios ? "open" : "action", file = url })
   }
-  exit(0)
+  
 }
 
 function openSupportUrl() {
