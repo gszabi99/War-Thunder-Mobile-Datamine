@@ -25,6 +25,7 @@ let OPERATION_PASS = "operation_pass"
 let seenPasses = mkWatched(persist, SEEN_PASSES, {})
 let playerSelectedScene = mkWatched(persist, "playerSelectedScene", null)
 let passOpenCounter = mkWatched(persist, "passOpenCounter", 0)
+let isPassSceneAttached = mkWatched(persist, "isPassSceneAttached", false)
 
 let tabsState = {
   [BATTLE_PASS] = {
@@ -157,6 +158,7 @@ return {
   OPERATION_PASS
 
   passOpenCounter
+  isPassSceneAttached
   openPassScene
   closePassScene
 

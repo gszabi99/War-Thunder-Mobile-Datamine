@@ -461,7 +461,6 @@ let unitRewardsDailyBlock = @(unit, title) unit?.dailyGoldLimit == 0 ? null : {
 }
 
 let unitHeaderBlock = @(unit, unitTitleCtor) @(){
-  watch = campMyUnits
   hplace = ALIGN_RIGHT
   minWidth = statsWidth
   padding = hdpx(10)

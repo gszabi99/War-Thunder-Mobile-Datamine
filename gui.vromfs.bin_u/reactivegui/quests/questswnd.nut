@@ -1,19 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+let { deferOnce } = require("dagor.workcycle")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize } = require("%rGui/style/gradients.nut")
-let { hasUnseenQuestsBySection, questsCfg, questsBySection,
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId, isQuestsAttached,
   COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB,
-  progressUnlockByTab, progressUnlockBySection, isQuestsOpen, tabIdToOpen
+  progressUnlockByTab, progressUnlockBySection, tabIdToOpen
 } = require("%rGui/quests/questsState.nut")
 let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("%rGui/quests/questsWndPage.nut")
-let { tabW, tabPadding } = require("%rGui/options/optionsStyle.nut")
+let { contentWidth, contentWidthFull, tabW, tabPadding, minContentOffset } = require("%rGui/options/optionsStyle.nut")
+let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
+let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, getSpecialEventName,
   specialEventsLootboxesState, MAIN_EVENT_ID, shouldShowEventMechanics, curEvent
 } = require("%rGui/event/eventState.nut")
-let { openSeasonScene, openMainSeasonScene, LOOTBOX_TAB, PASS_SCENE, QUESTS_TAB
+let { openSeasonScene, openMainSeasonScene, LOOTBOX_TAB, PASS_SCENE
 } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { getSpecialEventLocName, getSpecialEventRewardUnitName } = require("%rGui/event/eventLocName.nut")
 let { hasBpRewardsToReceive, isBpSeasonActive
@@ -24,6 +28,7 @@ let { mkQuestsHeaderBtn, linkToEventWidth } = require("%rGui/quests/questsPkg.nu
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { selLineSize } = require("%rGui/components/selectedLine.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { shopGoods, openShopWnd, allShopGoods, getGoodsShopId } = require("%rGui/shop/shopState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
@@ -36,6 +41,7 @@ let iconColor = 0xFFFFFFFF
 let tabGap = hdpx(10)
 
 let maxTabTextWidth = tabW - iconSize - tabGap - selLineSize - tabPadding[1] * 2
+let mkTabsVerticalPannableArea = verticalPannableAreaCtor(sh(100) - hdpx(180), [hdpx(30), saBorders[1]])
 
 let personalTabImageByCamp = {
   air = "ui/gameuiskin#icon_personal_air.svg"
@@ -348,14 +354,81 @@ foreach(tab in tabs)
   if ("unseen" not in tab)
     tab.unseen <- mkUnseen(tab.id, tab?.hasReward ?? Watched(false))
 
-isQuestsOpen.subscribe(function(v) {
-  if (!v)
-    return
-  local tabId = tabIdToOpen.get()
-  local eventName = tabId
-  if (tabId == null || specialEventsOrdered.get().findvalue(@(item) item.eventId == tabId) == null)
-    eventName = MAIN_EVENT_ID
-  openSeasonScene(eventName, QUESTS_TAB)
-})
+let clearTabIdToOpen = @() deferOnce(@() tabIdToOpen.set(null))
 
-return tabs
+function questsWndCtor() {
+  function findTabIdxById(pageId) {
+    if (pageId != null) {
+      let idxById = tabs.findindex(@(v) v?.id == pageId)
+      if (idxById != null && (tabs[idxById]?.isVisible.get() ?? true))
+        return idxById
+      return tabs.findindex(@(v) v?.id == ACHIEVEMENTS_TAB)
+    }
+
+    return tabs.findindex(@(v) (v?.isVisible.get() ?? true)) ?? 0
+  }
+  let curTabIdx = Watched(findTabIdxById(tabIdToOpen.get()))
+  clearTabIdToOpen()
+  let updateCurTabId = @() curTabId.set(tabs?[curTabIdx.get()].id)
+  updateCurTabId()
+  curTabIdx.subscribe(@(_) updateCurTabId())
+
+  let scrollHandler = ScrollHandler()
+
+  function setTabById(id) {
+    let idx = findTabIdxById(id)
+    if (idx != null && (tabs[idx]?.isVisible.get() ?? true))
+      curTabIdx.set(idx)
+    clearTabIdToOpen()
+  }
+
+  function curOptionsContent() {
+    let tab = tabs?[curTabIdx.get()]
+    let { isFullWidth = false } = tab
+    return (tab?.content ?? tab?.contentCtor)
+      ? {
+          watch = curTabIdx
+          size = [isFullWidth ? contentWidthFull : contentWidth, flex()]
+          children = {
+            hplace = ALIGN_CENTER
+            key = tab
+            size = FLEX
+            flow = FLOW_VERTICAL
+            children = tab?.content ?? tab?.contentCtor()
+            animations = wndSwitchAnim
+          }
+        }
+      : {
+          watch = curTabIdx
+          size = FLEX
+          children = tab?.children ? mkChildrenOptions(tab?.children) : { size = FLEX }
+        }
+  }
+
+  let tabsList = mkTabsVerticalPannableArea(
+    mkOptionsTabs(tabs, curTabIdx),
+      { size = [ tabW + minContentOffset, flex() ] },
+      { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+
+  return {
+    pos = [-selLineSize, 0]
+    key = setTabById
+    function onAttach() {
+      tabIdToOpen.subscribe(setTabById)
+      isQuestsAttached.set(true)
+    }
+    function onDetach() {
+      tabIdToOpen.unsubscribe(setTabById)
+      isQuestsAttached.set(false)
+    }
+    size = [FLEX, flex()]
+    flow = FLOW_HORIZONTAL
+    halign = ALIGN_CENTER
+    children = [
+      tabsList
+      curOptionsContent
+    ]
+  }
+}
+
+return questsWndCtor

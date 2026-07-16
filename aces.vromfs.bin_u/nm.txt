@@ -64232,3 +64232,4 @@ tokyo_town_main_a_tex_d
 tokyo_park_a
 autoloader_
 forceRenderWaves
+allowPipelineCache

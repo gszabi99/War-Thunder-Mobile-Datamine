@@ -20,8 +20,6 @@ let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { curOpenEventPass, eventBgImage, getEventPassName } = require("%rGui/battlePass/eventPassState.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
-let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
 let { openSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { setHangarUnitGroup, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
@@ -115,11 +113,6 @@ let footer = @() {
           flow = FLOW_VERTICAL
           gap = hdpx(20)
           children = [
-            mkBtnOpenTabQuests(curOpenEventPass.get()?.eventId ?? COMMON_TAB, {
-              sizeBtn = [hdpx(109), hdpx(109)],
-              iconSize = hdpx(85)
-              size = hdpx(109)
-            })
             {
               flow = FLOW_HORIZONTAL
               gap = hdpx(20)

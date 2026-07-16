@@ -2,10 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { curEventBg, openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter,
-  shouldShowEventMechanics
+  shouldShowEventMechanics, specialEventsOrdered
 } = require("%rGui/event/eventState.nut")
 let { playerSelectedScene } = require("%rGui/battlePass/passState.nut")
 let { sceneBg } = require("%rGui/battlePass/passScene.nut")
+let { tabIdToOpen, questsCfg } = require("%rGui/quests/questsState.nut")
+
 
 let PASS_SCENE = "pass_scene"
 let QUESTS_TAB = "quests_tab"
@@ -66,6 +68,18 @@ function closeSeasonScene() {
   seasonSceneOpenCounter.set(0)
 }
 
+function openQuestsWndOnTab(tabId) {
+  let tabToOpen = tabId in questsCfg.get() ? tabId
+    : (specialEvents.get().findindex(@(s) s.eventName == tabId) ?? tabId)
+
+  local eventName = tabToOpen
+  if (tabToOpen == null || specialEventsOrdered.get().findvalue(@(item) item.eventId == tabToOpen) == null)
+    eventName = MAIN_EVENT_ID
+  tabIdToOpen.set(tabToOpen)
+  openSeasonScene(eventName, QUESTS_TAB)
+}
+
+
 return {
   PASS_SCENE
   QUESTS_TAB
@@ -79,6 +93,7 @@ return {
   openSeasonScene
   openMainSeasonScene
   closeSeasonScene
+  openQuestsWndOnTab
   registerSeasonTabClose
   bgScene
 }

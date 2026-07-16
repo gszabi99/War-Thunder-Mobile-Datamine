@@ -268,7 +268,6 @@ let footer = {
       children = squadPanel
     }
     @() {
-      watch = openedTreeEventId
       hplace = ALIGN_RIGHT
       halign = ALIGN_RIGHT
       valign = ALIGN_BOTTOM

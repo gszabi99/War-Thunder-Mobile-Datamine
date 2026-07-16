@@ -9,11 +9,11 @@ let { receiveUnlockRewards, batchReceiveRewards, unlockInProgress } = require("%
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
-let { battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonActive
+let { tutorialFreeMarkIdx, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
-let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection, getStarsTotalNonUpdatable,
+let { COMMON_TAB, isQuestsAttached, questsCfg, questsBySection, getStarsTotalNonUpdatable,
   progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, tutorialQuestBtnKey
 } = require("%rGui/quests/questsState.nut")
 let { shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
@@ -22,8 +22,8 @@ let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
 let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
-let { openMainSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { BATTLE_PASS, isPassSceneAttached } = require("%rGui/battlePass/passState.nut")
+let { openMainSeasonScene, PASS_SCENE, openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { hasFirstBattleRewards } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
@@ -68,7 +68,9 @@ let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_BATTLE_PASS_ID
-  && !isMainMenuTopScene.get() && battlePassOpenCounter.get() == 0 && !isQuestsOpen.get()))
+  && !isMainMenuTopScene.get()
+  && !isQuestsAttached.get()
+  && !isPassSceneAttached.get()))
 
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)

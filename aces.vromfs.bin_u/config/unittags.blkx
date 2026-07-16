@@ -46061,13 +46061,16 @@
           "icon": "ap_i/frag_i_t/"
         },
         "ns23_armor_targets": {
-          "icon": "frag_i_t/ap_i/ap_i/ap_i/"
+          "icon": "frag_i_t/ap_i/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_2"
         },
         "ns23_air_targets": {
-          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/"
+          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/",
+          "reqModification": "aircraft_mod_3"
         },
         "ns23_stealth": {
-          "icon": "ap_i/"
+          "icon": "ap_i/",
+          "reqModification": "aircraft_mod_1"
         }
       }
     }

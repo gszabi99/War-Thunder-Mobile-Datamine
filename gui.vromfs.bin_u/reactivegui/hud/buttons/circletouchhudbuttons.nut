@@ -941,7 +941,6 @@ function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
   let stateFlags = Watched(0)
   let imgSize = (0.9 * buttonSize).tointeger()
   return @() {
-    watch = [canZoom, isInZoom]
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
     behavior = TouchScreenButton

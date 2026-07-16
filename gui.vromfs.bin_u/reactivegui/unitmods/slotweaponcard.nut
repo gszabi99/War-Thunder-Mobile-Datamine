@@ -29,7 +29,6 @@ let mkContentBlock = @(content, isActive, isHover) {
 
   children = [
     @() {
-      watch = isActive
       size = FLEX
       rendObj = ROBJ_SOLID
       color = tabBgColor

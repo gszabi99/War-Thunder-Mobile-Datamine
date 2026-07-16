@@ -201,7 +201,7 @@ function mkTagButton(tag) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() selTag.get() == tag)
   let underline = @() {
-    watch = [isSelected, stateFlags]
+    watch = isSelected
     size = [FLEX, underlineSize]
     pos = [0, underlineSize]
     vplace = ALIGN_BOTTOM
@@ -283,7 +283,7 @@ let function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
       @() {
-        watch = [isSelected, stateFlags]
+        watch = isSelected
         size = FLEX
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#slot_border.svg:{presetSize}:{presetSize}:P")

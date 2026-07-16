@@ -26,6 +26,7 @@ let getSeasonPrefix = @(n) $"season_{n}"
 let getSpecialEventName = @(n) $"special_event_{n}"
 
 let openEventInfo = mkWatched(persist, "openEventInfo")
+let isEventSceneAttached = mkWatched(persist, "isEventSceneAttached", false)
 let curEvent = Computed(@() openEventInfo.get()?.eventName)
 let eventWndOpenCounter = Computed(@() openEventInfo.get()?.counter ?? 0)
 
@@ -343,6 +344,7 @@ return {
   isCurEventActive
 
   eventWndOpenCounter
+  isEventSceneAttached
   openEventInfo
   closeEventWnd = @() openEventInfo.set(null)
   markCurLootboxSeen

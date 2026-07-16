@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
-  bestCampLevel, curEventLootboxes,curEvent, MAIN_EVENT_ID, isCurEventActive,
-  curEventName, specialEventsWithTree, specialEventGamercardItems, campToBack, closeEventShellCleanup
+  bestCampLevel, curEventLootboxes,curEvent, MAIN_EVENT_ID, isCurEventActive, isEventSceneAttached,
+  curEventName, specialEventGamercardItems, campToBack, closeEventShellCleanup
 } = require("%rGui/event/eventState.nut")
 let { closeSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -322,7 +322,6 @@ function eventWndContent() {
                   children = [
                     
                     @() {
-                      watch = [specialEventsWithTree, curEventName]
                       vplace = ALIGN_BOTTOM
                       flow = FLOW_HORIZONTAL
                       gap = buttonsHGap
@@ -373,11 +372,13 @@ let mkEventWnd = @() {
   key = wndKey
   size = [FLEX, contentH]
   function onAttach() {
+    isEventSceneAttached.set(true)
     if(campToBack.get() != curCampaign.get() && campToBack.get() != null) {
       setCampaign(campToBack.get())
       campToBack.set(null)
     }
   }
+  onDetach = @() isEventSceneAttached.set(false)
   children = eventWndContent()
   animations = wndSwitchAnim
 }

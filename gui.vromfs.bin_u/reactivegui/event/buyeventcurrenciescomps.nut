@@ -10,13 +10,13 @@ let { mkGoodsWrap, mkSlotBgImg, mkCurrencyAmountTitle, mkGoodsImg, mkPricePlate,
   txt, mkGoodsLimitAndEndTime, goodsGlareAnimDuration } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { onGoodsClick, mkGoodsListWithBaseValue, mkGoodsState } = require("%rGui/shop/shopWndPage.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { openEventQuestsWnd, getQuestCurrenciesInTab, questsCfg, questsBySection, progressUnlockBySection,
-  progressUnlockByTab } = require("%rGui/quests/questsState.nut")
+let { getQuestNextRewardCurrenciesInTab, questsCfg, questsBySection, progressUnlockBySection, progressUnlockByTab
+} = require("%rGui/quests/questsState.nut")
+let { openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -67,14 +67,14 @@ let questsLinkPlate = {
   children = txt({ text = utf8ToUpper(loc("mainmenu/btnQuests")) }.__update(fontSmall))
 }
 
-function mkQuestsLink(curId, eventId) {
+function mkQuestsLink(curId, eventIdW) {
   let cfg = getCurrencyGoodsPresentation(curId, 1000000)
   let bgParticles = mkBgParticles(goodsBgSize)
 
   return mkGoodsWrap(
     {},
     function() {
-      openEventQuestsWnd(eventId)
+      openQuestsWndOnTab(eventIdW.get())
       closeBuyEventCurrenciesWnd()
     },
     @(sf, _) [
@@ -176,10 +176,7 @@ let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}
   halign = needUseScroll ? ALIGN_LEFT : ALIGN_CENTER
   gap
   children = [
-    @() {
-      watch = [showQuestsLink, parentEventId]
-      children = showQuestsLink.get() ? mkQuestsLink(cId, parentEventId.get()) : null
-    }
+    showQuestsLink ? mkQuestsLink(cId, parentEventId) : null
   ].extend(mkGoodsListWithBaseValue(goodsList)
       .sort(sortByCurrencyAndAmount)
       .map(@(good, idx) mkGoods(good,
@@ -192,24 +189,25 @@ let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}
 }.__update(ovr)
 
 function mkEventCurrenciesGoods() {
-  let cId = currencyToFullId.get()?[currencyId.get()] ?? currencyId.get()
-  let showQuestsLink = Computed(@()
-    getQuestCurrenciesInTab(parentEventId.get(), questsCfg.get(), questsBySection.get(),
-      progressUnlockBySection.get(), progressUnlockByTab.get(), userstatStatsTables.get(), serverConfigs.get())
-        .findindex(@(v) v == cId) != null)
+  let showQuestsLink = Computed(@() currencyId.get() in
+    getQuestNextRewardCurrenciesInTab(parentEventId.get(), questsCfg.get(), questsBySection.get(),
+      progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get()))
   let needUseScroll = Computed(@() (eventCurrenciesGoods.get().len()) + (showQuestsLink.get() ? 1 : 0) > maxColumns)
+  let cFullId = Computed(@() currencyToFullId.get()?[currencyId.get()] ?? currencyId.get())
 
-  return {
-    watch = [eventCurrenciesGoods, currencyId, currencyToFullId, needUseScroll]
+  return @() {
+    watch = [eventCurrenciesGoods, cFullId, needUseScroll, showQuestsLink]
     size = FLEX_H
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
-    children = !needUseScroll.get() ? mkCurrenciesList(cId, eventCurrenciesGoods.get(), showQuestsLink, needUseScroll.get())
+    children = !needUseScroll.get()
+      ? mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLink.get(), needUseScroll.get())
       : {
-        size = FLEX
+        size = FLEX_H
         children = [
-          pannableArea(mkCurrenciesList(cId, eventCurrenciesGoods.get(), showQuestsLink, needUseScroll.get()),
-            {},
+          pannableArea(
+            mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLink.get(), needUseScroll.get()),
+            { size = [sw(100), FLEX] },
             {
               behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
               scrollHandler = scrollHandler

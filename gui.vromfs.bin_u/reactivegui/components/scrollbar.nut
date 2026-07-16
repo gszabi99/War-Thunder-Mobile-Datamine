@@ -160,14 +160,13 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
     children = content
   })
 
-  let { isElemFit, scrollComp } = scrollbar(scrollHandler, options)
+  let { scrollComp } = scrollbar(scrollHandler, options)
 
   let childrenContent = isBarOutside ? contentRoot
     : scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP ? [scrollComp, contentRoot]
     : [contentRoot, scrollComp]
 
   let mainBlock = @() {
-    watch = isElemFit
     size
     maxHeight
     maxWidth

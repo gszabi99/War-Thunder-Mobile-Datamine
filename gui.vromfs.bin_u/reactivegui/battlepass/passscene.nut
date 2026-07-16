@@ -9,7 +9,7 @@ let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { passPageId, playerSelectedScene, passPageIdx, BATTLE_PASS, EVENT_PASS, OPERATION_PASS,
-  visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData
+  visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData, isPassSceneAttached
 } = require("passState.nut")
 let { bpSeasonNumber } = require("%rGui/battlePass/battlePassState.nut")
 let { eventBgImage, curEventId } = require("%rGui/battlePass/eventPassState.nut")
@@ -153,6 +153,8 @@ function passSceneWnd() {
       rendObj = ROBJ_SOLID
       color = 0xFFACACAC
     }
+    onAttach = @() isPassSceneAttached.set(true)
+    onDetach = @() isPassSceneAttached.set(false)
     children = [
       visibleTabsCount.get() <= 1 ? null
         : @() {

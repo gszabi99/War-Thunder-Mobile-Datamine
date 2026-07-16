@@ -936,7 +936,6 @@ let battleModeViewCtors = {
 }
 
 let mkBattleModeRewards = @(rewards) rewards.len() == 0 ? null : @() {
-  watch = serverConfigs
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
   children = arrayByRows(

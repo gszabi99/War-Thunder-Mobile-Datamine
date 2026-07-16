@@ -14,7 +14,6 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
 
   children = [
     @() {
-      watch = isActive
       size = FLEX
       rendObj = ROBJ_SOLID
       color = bgColor

@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { PASS_SCENE, QUESTS_TAB, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { passSceneWnd } = require("%rGui/battlePass/passScene.nut")
 let { visibleTabs, BATTLE_PASS, OPERATION_PASS, closePassScene, passPageId, seenPasses, isPassGoodsUnseen
@@ -19,88 +18,13 @@ let { isCurEventActive, curEventLootboxes, closeEventWnd, curEventCurrencies, MA
 } = require("%rGui/event/eventState.nut")
 let { curEventLoc } = require("%rGui/event/eventLocName.nut")
 let { isEventWndLootboxOpen, closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let questsTabs = require("%rGui/quests/questsWnd.nut")
-let { tabIdToOpen, questsCfg, questsBySection, curTabParams, curTabId,
+let questsWndCtor = require("%rGui/quests/questsWnd.nut")
+let { questsCfg, questsBySection, curTabParams, curTabId,
   progressUnlockByTab, hasUnseenQuestsBySection, progressUnlockBySection
 } = require("%rGui/quests/questsState.nut")
 let { COMMON_TAB, EVENT_TAB, PERSONAL_TAB, ACHIEVEMENTS_TAB, PROMO_TAB } = require("%rGui/unlocks/unlocksConst.nut")
-let { contentWidth, contentWidthFull, tabW, minContentOffset } = require("%rGui/options/optionsStyle.nut")
-let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
-let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
 let eventWnd = require("%rGui/event/eventWnd.nut")
-let { contentH } = require("%rGui/battlePass/battlePassPkg.nut")
 
-
-let mkTabsVerticalPannableArea = verticalPannableAreaCtor(sh(100) - hdpx(180), [hdpx(30), saBorders[1]])
-
-function questsContentCtor() {
-  function findTabIdxById(pageId) {
-    if (pageId != null) {
-      let idxById = questsTabs.findindex(@(v) v?.id == pageId)
-      if (idxById != null && (questsTabs[idxById]?.isVisible.get() ?? true))
-        return idxById
-      return questsTabs.findindex(@(v) v?.id == ACHIEVEMENTS_TAB)
-    }
-
-    return questsTabs.findindex(@(v) (v?.isVisible.get() ?? true)) ?? 0
-  }
-  let curTabIdx = Watched(findTabIdxById(tabIdToOpen.get()))
-  let updateCurTabId = @() curTabId.set(questsTabs?[curTabIdx.get()].id)
-  updateCurTabId()
-  curTabIdx.subscribe(@(_) updateCurTabId())
-
-  let scrollHandler = ScrollHandler()
-
-  function setTabById(id) {
-    let idx = findTabIdxById(id)
-    if (idx != null && (questsTabs[idx]?.isVisible.get() ?? true))
-      curTabIdx.set(idx)
-  }
-
-  function curOptionsContent() {
-    let tab = questsTabs?[curTabIdx.get()]
-    let { isFullWidth = false } = tab
-    return (tab?.content ?? tab?.contentCtor)
-      ? {
-          watch = curTabIdx
-          size = [isFullWidth ? contentWidthFull : contentWidth, contentH]
-          children = {
-            hplace = ALIGN_CENTER
-            key = tab
-            size = [FLEX, contentH]
-            flow = FLOW_VERTICAL
-            children = tab?.content ?? tab?.contentCtor()
-            animations = wndSwitchAnim
-          }
-        }
-      : {
-          watch = curTabIdx
-          size = FLEX
-          children = tab?.children ? mkChildrenOptions(tab?.children) : { size = FLEX }
-        }
-  }
-
-  let tabsList = mkTabsVerticalPannableArea(
-    mkOptionsTabs(questsTabs, curTabIdx),
-      { size = [ tabW + minContentOffset, contentH ] },
-      { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-
-  return {
-    pos = [-selLineSize, 0]
-    key = setTabById
-    onAttach = @() tabIdToOpen.subscribe(setTabById)
-    onDetach = @() tabIdToOpen.unsubscribe(setTabById)
-    size = [FLEX, contentH]
-    flow = FLOW_HORIZONTAL
-    halign = ALIGN_CENTER
-    children = [
-      tabsList
-      curOptionsContent
-    ]
-  }
-}
 
 let defHeaderTitle = Computed(@() curEvent.get() == MAIN_EVENT_ID ? bpSeasonName.get() : curEventLoc.get())
 let defHeaderEndTime = Computed(@() curEvent.get() == MAIN_EVENT_ID ? bpSeasonEndTime.get() : curEventEndsAt.get())
@@ -172,7 +96,7 @@ let sceneContentCfg = {
     headerTitle = Computed(@() curTabId.get() == PERSONAL_TAB ? opSeasonName.get() : defHeaderTitle.get())
     headerEndTime = Computed(@() curTabId.get() == PERSONAL_TAB ? opSeasonEndTime.get() : defHeaderEndTime.get())
     currencies = Computed(@() curTabParams.get()?.currencies)
-    content = questsContentCtor
+    content = questsWndCtor
     function onTabClose() {
       closeEventShellCleanup()
       closeEventWnd()

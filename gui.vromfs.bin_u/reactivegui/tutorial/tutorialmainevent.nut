@@ -10,12 +10,14 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
-let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, tabIdToOpen, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
+let { COMMON_TAB, isQuestsAttached, tabIdToOpen, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
   tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId, tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
-let { curEventLootboxes, isFitSeasonRewardsRequirements, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { curEventLootboxes, isFitSeasonRewardsRequirements, shouldShowEventMechanics,
+  isEventSceneAttached
+} = require("%rGui/event/eventState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { openMainSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openMainSeasonScene, LOOTBOX_TAB, openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted,
   isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal } = require("%rGui/tutorial/completedTutorials.nut")
 let { questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
@@ -46,7 +48,9 @@ let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_ID
-  && !isMainMenuTopScene.get() && !isQuestsOpen.get()))
+  && !isMainMenuTopScene.get()
+  && !isQuestsAttached.get()
+  && !isEventSceneAttached.get()))
 
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)

@@ -302,7 +302,6 @@ let mkPanelContent = @(campaign, imagePivot = [0.5, 0.5], idleScale = 1.025, hov
 }
 
 let mkCenterBorderLines = @(panelScale) @() {
-  watch = focusedCampaign
   size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   color = slantBorderColor

@@ -8,7 +8,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
 
-let buyEventCurrenciesWnd = {
+let buyEventCurrenciesWnd = @() {
   key = {}
   size = FLEX
   padding = saBordersRv
@@ -24,7 +24,7 @@ let buyEventCurrenciesWnd = {
       children = [
         { size = FLEX }
         buyEventCurrenciesHeader
-        mkEventCurrenciesGoods
+        mkEventCurrenciesGoods()
         { size = flex(2) }
         buyEventCurrenciesDesc
       ]

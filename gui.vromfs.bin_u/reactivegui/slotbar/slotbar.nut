@@ -170,7 +170,6 @@ let function emptySlotTree(idx) {
 let function slotToPurchase(priceGold) {
   let stateFlags = Watched(0)
   return @() {
-    watch = stateFlags
     size = unitPlateSize
     rendObj = ROBJ_BOX
     fillColor = 0x80000000

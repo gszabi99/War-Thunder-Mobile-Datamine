@@ -220,9 +220,7 @@ function onPathNodeHold() {
 }
 
 function mkWarningNode(nodeId, nodePos, nodeSize, hintStr) {
-  let stateFlags = Watched(0)
   return @() {
-    watch = stateFlags
     hplace = ALIGN_CENTER
     vplace = ALIGN_BOTTOM
     behavior = Behaviors.Button

@@ -13,6 +13,15 @@ def find_server_player_eid(player_eid)
     return false
   return resultEid
 
+def find_server_player_eid_by_user_id(user_id)
+  var resultEid = INVALID_ENTITY_ID
+  find_query() <| $ [es] (eid : EntityId; server_player__userId : uint64)
+    if server_player__userId == user_id
+      resultEid = eid
+      return true
+    return false
+  return resultEid
+
 [es(tag=server, on_appear, track=server_player__connId)]
 def init_server_player(evt : Event;
                        server_player__playerId : int;
@@ -46,6 +55,17 @@ def create_server_player_es(evt : EventOnPlayerConnected;
       serverPlayerEid = INVALID_ENTITY_ID
     if serverPlayerEid != INVALID_ENTITY_ID
       return
+
+  serverPlayerEid = find_server_player_eid_by_user_id(m_player.userId)
+  if !!serverPlayerEid
+    print("[ServerPlayer]: Rebind the server player for user {m_player.userId} to player id {player_id} and connection id {connId}")
+    query(serverPlayerEid) <| $ [es] (var server_player__playerEid : EntityId&;
+                                      var server_player__playerId : int&;
+                                      var server_player__connId : int&)
+      server_player__playerEid = player_eid
+      server_player__playerId = player_id
+      server_player__connId = connId
+    return
 
   if connId < 0
     print("[ServerPlayer]: Cannot create server player with id {player_id} for user {m_player.userId} due to connection is not created")

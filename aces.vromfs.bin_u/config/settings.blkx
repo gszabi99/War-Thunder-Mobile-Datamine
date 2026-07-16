@@ -2535,6 +2535,13 @@
                 }
               },
               {
+                "gpu": "G610",
+                "driverMaxVer0": 30,
+                "data": {
+                  "allowPipelineCache": false
+                }
+              },
+              {
                 "driverMaxVer0": [
                   25,
                   2

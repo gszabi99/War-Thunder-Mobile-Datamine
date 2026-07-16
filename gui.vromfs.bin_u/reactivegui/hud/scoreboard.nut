@@ -702,7 +702,6 @@ let scoreBoardEditView = {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = @() {
-        watch = timeLeft
         rendObj = ROBJ_TEXT
         text = "xx:xx"
       }.__update(fontTiny)

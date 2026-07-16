@@ -181,7 +181,7 @@ function mkRhombZoomButton(scale) {
     halign = ALIGN_CENTER
     children = [
       @() {
-        watch = [stateFlags, isDisabled, isInZoom, hasAimingModeForWeapon, btnBgStyle]
+        watch = [stateFlags, isDisabled, isInZoom, hasAimingModeForWeapon]
         size = FLEX
         rendObj = ROBJ_BOX
         borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed

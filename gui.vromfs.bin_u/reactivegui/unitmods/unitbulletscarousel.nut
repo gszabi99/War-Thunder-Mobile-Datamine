@@ -20,7 +20,6 @@ let mkBulletContent = @(content, isActive, isHover) {
   size = [SIZE_TO_CONTENT, modH]
   children = [
     @() {
-      watch = isActive
       size = FLEX
       rendObj = ROBJ_SOLID
       color = bgColor

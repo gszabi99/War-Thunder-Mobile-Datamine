@@ -16,7 +16,7 @@ let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
-let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
+let { openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
 let { mkLootboxImageWithSlotScale } = require("%rGui/rewards/components/lootboxView.nut")
@@ -197,7 +197,7 @@ let leaderbordBtn = mkCustomButton(
 
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
-  @() openEventQuestsWnd(curEvent.get()),
+  @() openQuestsWndOnTab(curEvent.get()),
   buttonStyles.COMMON.__merge({ hotkeys = ["^J:Y"] }))
 
 let mkCurrencyComp = @(value, currencyId, isInactive) {

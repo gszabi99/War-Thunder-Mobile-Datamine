@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress, emptyProgress,
@@ -22,13 +21,13 @@ let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let { getUnlockRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { sendBqQuestsReceiveTask } = require("%rGui/quests/bqQuests.nut")
 
 
 let SEEN_QUESTS = "seenQuests"
 
-let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
+let isQuestsAttached = mkWatched(persist, "isQuestsAttached", false)
 let rewardsList = Watched(null)
 let isRewardsQuestFinished = Watched(false)
 let isRewardsListOpen = Computed(@() rewardsList.get() != null)
@@ -159,28 +158,56 @@ let getStarsTotalNonUpdatable = @(unlock) (
 let tutorialSectionIdWithReward = Computed(@() questsCfg.get()?[EVENT_TAB]
   .findvalue(@(section) null != questsBySection.get()?[section].findvalue(@(r) r.hasReward)))
 
-function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, statsTables, sConfigs) {
-  let res = []
-  foreach (idx, s in qCfg?[tabId] ?? []) {
-    foreach (quest in qBySection[s].values().append(
-      pUnlockBySection?[s],
-      idx == 0 ? pUnlockByTab?[tabId] : null
-    ).filter(@(v) v)) {
-      let { currency = null } = statsTables?.stats[quest.table].rerollPrice
-      if (currency != null && !res.contains(currency))
-        res.append(currency)
-      let stage = quest.stages?[quest.stage] ?? quest.stages?[quest.stages.len() - 1]
-      if (stage != null){
-        if ((stage?.price ?? 0) > 0 && !res.contains(stage?.currencyCode) && !quest?.isCompleted)
-          res.append(stage?.currencyCode)
-        foreach (reward in getUnlockRewardsViewInfo(stage, sConfigs)){
-          if (reward.rType == "currency" && !res.contains(reward.id))
-            res.append(reward.id)
-        }
-      }
-    }
-  }
+function getUnlockNextRewardCurrencies(u, sConfigs) {
+  let res = {}
+  let { rewards = null } = u.stages?[u.stage] ?? u.stages?[u.stages.len() - 1]
+  if (rewards == null)
+    return res
+  foreach (rId, _ in rewards)
+    sConfigs?.userstatRewards[rId].each(function(g) {
+      let { gType = "", id = "" } = g
+      if (gType == G_CURRENCY)
+        res[id] <- true
+    })
   return res
+}
+
+function getAllUnlockCurrencies(u, sConfigs, statsTables) {
+  let res = getUnlockNextRewardCurrencies(u, sConfigs)
+  if (u?.isCompleted)
+    return res
+
+  let { currency = null } = statsTables?.stats[u.table].rerollPrice
+  if (currency != null)
+    res[currency] <- true
+  let { price = 0, currencyCode = "" } = u.stages?[u.stage] ?? u.stages?[u.stages.len() - 1]
+  if (price > 0 && currencyCode != "")
+    res[currencyCode] <- true
+  return res
+}
+
+function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, statsTables, sConfigs) {
+  let currencies = {}
+  if (tabId in pUnlockByTab)
+    currencies.__update(getAllUnlockCurrencies(pUnlockByTab[tabId], sConfigs, statsTables))
+  qCfg?[tabId].each(function(s) {
+    if (s in pUnlockBySection)
+      currencies.__update(getAllUnlockCurrencies(pUnlockBySection[s], sConfigs, statsTables))
+    qBySection?[s].each(@(q) currencies.__update(getAllUnlockCurrencies(q, sConfigs, statsTables)))
+  })
+  return currencies.keys()
+}
+
+function getQuestNextRewardCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
+  let currencies = {}
+  if (tabId in pUnlockByTab)
+    currencies.__update(getUnlockNextRewardCurrencies(pUnlockByTab[tabId], sConfigs))
+  qCfg?[tabId].each(function(s) {
+    if (s in pUnlockBySection)
+      currencies.__update(getUnlockNextRewardCurrencies(pUnlockBySection[s], sConfigs))
+    qBySection?[s].each(@(q) currencies.__update(getUnlockNextRewardCurrencies(q, sConfigs)))
+  })
+  return currencies
 }
 
 let mkHasReceivedAllRewards = @(item, rewardsPreview) Computed(function() {
@@ -234,22 +261,6 @@ let hasUnseenQuestsBySection = Computed(@() questsBySection.get().map(@(quests)
 let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.get()?[sectionId] ? null
   : saveSeenQuests(questsBySection.get()?[sectionId].filter(@(v) !v.hasReward).keys())
 
-function openQuestsWnd() {
-  if (isOfflineMenu) {
-    openFMsgBox({ text = "Not supported in the offline mode" })
-    return
-  }
-  isQuestsOpen.set(true)
-}
-
-function openQuestsWndOnTab(tabId) {
-  isQuestsOpen.set(false)
-  let tabToOpen = tabId in questsCfg.get() ? tabId
-    : (specialEvents.get().findindex(@(s) s.eventName == tabId) ?? tabId)
-  tabIdToOpen.set(tabToOpen)
-  openQuestsWnd()
-}
-
 function onWatchQuestAd(unlock) {
   let { name, progressCorrectionStep = 0, isCompleted = false } = unlock
   if (adBudget.get() < SPEED_UP_AD_COST) {
@@ -286,10 +297,7 @@ eventbus_subscribe("adsRewardApply", function(data) {
 
 
 return {
-  openQuestsWnd
-  openQuestsWndOnTab
-  openEventQuestsWnd = openQuestsWndOnTab
-  isQuestsOpen
+  isQuestsAttached
 
   rewardsList
   isRewardsQuestFinished
@@ -313,6 +321,7 @@ return {
   progressUnlockByTab
   progressUnlockBySection
   getQuestCurrenciesInTab
+  getQuestNextRewardCurrenciesInTab
 
   tutorialSectionIdWithReward
   tutorialSectionId
