@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isBpActive, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
   BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods, pointsCurStage, pointsPerStage,
-  receiveBpRewards, isBpRewardsInProgress
+  receiveBpRewards, isBpRewardsInProgress, bpSeasonEndTime
 } = require("%rGui/battlePass/battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable
-} = require("%rGui/battlePass/battlePassPkg.nut")
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText
+} = require("%rGui/battlePass/passPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
 let battlePassRewardsList = require("%rGui/battlePass/battlePassRewardsList.nut")
@@ -83,8 +83,13 @@ let levelBlock = @() {
 }
 
 let leftMiddle = {
-  vplace = ALIGN_BOTTOM
-  children = levelBlock
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = { size = flex() }
+  children = [
+    mkTimeEndsAtText(bpSeasonEndTime, { key = "battle_pass_time" }) 
+    levelBlock
+  ]
 }
 
 let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openBPPurchaseWnd,
@@ -157,6 +162,7 @@ let contentBP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
       middlePart(stagesList.get())
       {
         size = FLEX_H
+        margin = [0, 0, hdpx(30), 0]
         children = [
           {
             key = "battle_pass_progress_bar" 

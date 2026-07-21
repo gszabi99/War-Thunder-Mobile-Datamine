@@ -1,40 +1,41 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { PASS_SCENE, QUESTS_TAB, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, questTabsByEventId, isSeasonTabVisible,
+  seasonShopId
+} = require("%rGui/seasonScene/seasonSceneState.nut")
 let { passSceneWnd } = require("%rGui/battlePass/passScene.nut")
 let { visibleTabs, BATTLE_PASS, OPERATION_PASS, closePassScene, passPageId, seenPasses, isPassGoodsUnseen
 } = require("%rGui/battlePass/passState.nut")
-let { bpSeasonName, bpSeasonEndTime, hasBpRewardsToReceive, battlePassGoods
+let { hasBpRewardsToReceive, battlePassGoods, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpProgressUnlock
 } = require("%rGui/battlePass/battlePassState.nut")
-let { opSeasonEndTime, opSeasonName, hasOPRewardsToReceive, operationPassGoods
+let { hasOPRewardsToReceive, operationPassGoods, OP_EVENT_ID, OPFreeRewardsUnlock,
+  OPPaidRewardsUnlock, OPProgressUnlock
 } = require("%rGui/battlePass/operationPassState.nut")
-let { epSeasonEndTime, eventTitle, hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId,
-  eventsPassList, allEventPassGoods
+let { hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId, eventsPassList, allEventPassGoods,
+  eventFreeRewardsUnlock, eventPaidRewardsUnlock, eventProgressUnlock
 } = require("%rGui/battlePass/eventPassState.nut")
-let { isCurEventActive, curEventLootboxes, closeEventWnd, curEventCurrencies, MAIN_EVENT_ID,
-  curEvent, closeEventShellCleanup, shouldShowEventMechanics, curEventEndsAt, specialEvents,
-  unseenLootboxes, unseenLootboxesShowOnce
+let { curEventCurrencies, MAIN_EVENT_ID, specialEvents, unseenLootboxes, unseenLootboxesShowOnce,
+  subEventsByMain
 } = require("%rGui/event/eventState.nut")
-let { curEventLoc } = require("%rGui/event/eventLocName.nut")
 let { isEventWndLootboxOpen, closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
+let { hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop,
+  shopCurCategories
+} = require("%rGui/shop/shopState.nut")
+let { getShopIdForEventId } = require("%rGui/shop/eventShopState.nut")
+let eventShopTabContent = require("%rGui/shop/shopWnd.nut")
+let { mkShopHeaderRight } = require("%rGui/shop/shopWndPage.nut")
 let questsWndCtor = require("%rGui/quests/questsWnd.nut")
-let { questsCfg, questsBySection, curTabParams, curTabId,
-  progressUnlockByTab, hasUnseenQuestsBySection, progressUnlockBySection
+let { questsCfg, curTabParams, progressUnlockByTab, hasUnseenQuestsBySection, progressUnlockBySection
 } = require("%rGui/quests/questsState.nut")
-let { COMMON_TAB, EVENT_TAB, PERSONAL_TAB, ACHIEVEMENTS_TAB, PROMO_TAB } = require("%rGui/unlocks/unlocksConst.nut")
+let { getAllUnlockCurrencies } = require("%rGui/unlocks/unlocks.nut")
+let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let eventWnd = require("%rGui/event/eventWnd.nut")
 
-
-let defHeaderTitle = Computed(@() curEvent.get() == MAIN_EVENT_ID ? bpSeasonName.get() : curEventLoc.get())
-let defHeaderEndTime = Computed(@() curEvent.get() == MAIN_EVENT_ID ? bpSeasonEndTime.get() : curEventEndsAt.get())
 
 let contentCfgDefaults = {
   icon = "ui/gameuiskin#icon_primary_attention.svg"
   label = ""
   isVisible = Watched(true)
-  headerTitle = defHeaderTitle
-  headerEndTime = defHeaderEndTime
   currencies = null 
   content = null
   onTabClose = null 
@@ -42,10 +43,9 @@ let contentCfgDefaults = {
   mkHasUnseen = null 
 }
 
-let questTabsByEventId = {
-  [""] = [ACHIEVEMENTS_TAB, PROMO_TAB],
-  [MAIN_EVENT_ID] = [COMMON_TAB, EVENT_TAB, PERSONAL_TAB, ACHIEVEMENTS_TAB, PROMO_TAB]
-}
+let getQuestTabs = @(eventId, subEventsByMainV)
+  ((clone questTabsByEventId?[eventId]) ?? [eventId]) 
+    .extend(subEventsByMainV?[eventId] ?? [])
 
 let hasQuestsUnseen = @(tabsList, questsCfgV, prUnlockByTab, hasUnseenBySection, prUnlockBySection)
   null != tabsList.findindex(@(tabId)
@@ -57,65 +57,71 @@ let sceneContentCfg = {
   [PASS_SCENE] = {
     icon = "ui/gameuiskin#icon_bp.svg"
     label = "pass"
-    isVisible = Computed(@() shouldShowEventMechanics.get() && visibleTabs.get().len() > 0)
     defaultSubId = Computed(@() visibleTabs.get().len() > 0 ? visibleTabs.get()?[0] : BATTLE_PASS)
-    headerTitle = Computed(@() passPageId.get() == BATTLE_PASS ? bpSeasonName.get()
-      : passPageId.get() == OPERATION_PASS ? opSeasonName.get()
-      : loc(eventTitle.get())
-    )
-    headerEndTime = Computed(@() passPageId.get() == BATTLE_PASS ? bpSeasonEndTime.get()
-      : passPageId.get() == OPERATION_PASS ? opSeasonEndTime.get()
-      : epSeasonEndTime.get()
-    )
-    currencies = Computed(@() passPageId.get() == BATTLE_PASS || passPageId.get() == OPERATION_PASS
-      ? [GOLD]
-      : curEventCurrencies.get())
+    currencies = Computed(function() {
+      let resTbl = {}
+      if (passPageId.get() == BATTLE_PASS)
+        resTbl.__update(
+          getAllUnlockCurrencies(bpFreeRewardsUnlock.get(), serverConfigs.get(), userstatStatsTables.get())
+          getAllUnlockCurrencies(bpPaidRewardsUnlock.get(), serverConfigs.get(), userstatStatsTables.get())
+          getAllUnlockCurrencies(bpProgressUnlock.get(), serverConfigs.get(), userstatStatsTables.get()))
+      else if (passPageId.get() == OPERATION_PASS)
+        resTbl.__update(
+          getAllUnlockCurrencies(OPFreeRewardsUnlock.get(), serverConfigs.get(), userstatStatsTables.get())
+          getAllUnlockCurrencies(OPPaidRewardsUnlock.get(), serverConfigs.get(), userstatStatsTables.get())
+          getAllUnlockCurrencies(OPProgressUnlock.get(), serverConfigs.get(), userstatStatsTables.get()))
+      else
+        resTbl.__update(
+          getAllUnlockCurrencies(eventFreeRewardsUnlock.get(), serverConfigs.get(), userstatStatsTables.get())
+          getAllUnlockCurrencies(eventPaidRewardsUnlock.get(), serverConfigs.get(), userstatStatsTables.get())
+          getAllUnlockCurrencies(eventProgressUnlock.get(), serverConfigs.get(), userstatStatsTables.get()))
+      return resTbl.keys()
+    })
     content = @() passSceneWnd
     onTabClose = closePassScene
-    mkHasUnseen = @(eventId) Computed(@() eventId.get() == MAIN_EVENT_ID
-        ? (hasBpRewardsToReceive.get()
-            || hasOPRewardsToReceive.get()
-            || isPassGoodsUnseen(battlePassGoods.get(), seenPasses.get())
-            || isPassGoodsUnseen(operationPassGoods.get(), seenPasses.get()))
-      : eventId.get() in specialEvents.get()
-        && (hasEpRewardsToReceive(specialEvents.get()[eventId.get()].eventName,
-            eventsPassList.get(), hasEpRewardsToReceiveByTableId.get())
-          || isPassGoodsUnseen(allEventPassGoods.get()?[specialEvents.get()[eventId.get()].eventName] ?? {},
-              seenPasses.get())))
+    mkHasUnseen = @(eventId) Computed(function() {
+      if (eventId.get() == MAIN_EVENT_ID
+          && (hasBpRewardsToReceive.get() || isPassGoodsUnseen(battlePassGoods.get(), seenPasses.get())))
+        return true
+      if (eventId.get() == OP_EVENT_ID
+          && (hasOPRewardsToReceive.get() || isPassGoodsUnseen(operationPassGoods.get(), seenPasses.get())))
+        return true
+      let list = [ eventId.get() ].extend(subEventsByMain.get()?[eventId.get()] ?? [])
+      foreach (e in list) {
+        let { eventName = null } = specialEvents.get()?[e]
+        if (eventName != null
+            && (hasEpRewardsToReceive(eventName, eventsPassList.get(), hasEpRewardsToReceiveByTableId.get())
+              || isPassGoodsUnseen(allEventPassGoods.get()?[eventName] ?? {}, seenPasses.get())))
+          return true
+      }
+      return false
+    })
   },
   [QUESTS_TAB] = {
     icon = "ui/gameuiskin#quests.svg"
     label = "tasks"
-    isVisible = Computed(function() {
-      let tabsList = questTabsByEventId?[curEvent.get()] ?? [curEvent.get()]
-      foreach (tabId in tabsList)
-        if (questsCfg.get()?[tabId].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
-          return true
-      return false
-    })
-    headerTitle = Computed(@() curTabId.get() == PERSONAL_TAB ? opSeasonName.get() : defHeaderTitle.get())
-    headerEndTime = Computed(@() curTabId.get() == PERSONAL_TAB ? opSeasonEndTime.get() : defHeaderEndTime.get())
     currencies = Computed(@() curTabParams.get()?.currencies)
     content = questsWndCtor
-    function onTabClose() {
-      closeEventShellCleanup()
-      closeEventWnd()
-      eventbus_send("seasonSceneClosed", { tab = QUESTS_TAB })
-    }
-    mkHasUnseen = @(eventId) Computed(@() hasQuestsUnseen(questTabsByEventId?[eventId.get()] ?? [eventId.get()],
+    mkHasUnseen = @(eventId) Computed(@() hasQuestsUnseen(getQuestTabs(eventId.get(), subEventsByMain.get()),
       questsCfg.get(), progressUnlockByTab.get(), hasUnseenQuestsBySection.get(), progressUnlockBySection.get()))
+  },
+  [EVENT_SHOP_TAB] = {
+    icon = "ui/gameuiskin#icon_shop.svg"
+    label = "topmenu/store"
+    currencies = curEventCurrencies
+    headerRightCtor = @() mkShopHeaderRight(seasonShopId, Computed(@() shopCurCategories.get()?[seasonShopId.get()]))
+    content = eventShopTabContent
+    mkHasUnseen = @(eventId) Computed(function() {
+      let sId = getShopIdForEventId(eventId.get(), specialEvents.get(),
+        goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get())
+      return sId != null && (hasUnseenGoodsByShop.get()?[sId].findvalue(@(c) c) ?? false)
+    })
   },
   [LOOTBOX_TAB] = {
     icon = "ui/gameuiskin#events_chest_icon.svg"
     label = "trophies"
-    isVisible = Computed(@() shouldShowEventMechanics.get() && isCurEventActive.get() && curEventLootboxes.get().len() > 0)
     currencies = curEventCurrencies
     content = @() eventWnd
-    function onTabClose() {
-      closeEventShellCleanup()
-      closeEventWnd()
-      eventbus_send("seasonSceneClosed", { tab = LOOTBOX_TAB })
-    }
     function onBack() {
       if (!isEventWndLootboxOpen.get())
         return false
@@ -126,6 +132,6 @@ let sceneContentCfg = {
       || unseenLootboxesShowOnce.get().findindex(@(v) v == eventId.get()) != null)
   },
 }
-  .map(@(c) contentCfgDefaults.__merge(c))
+  .map(@(c, id) contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched }))
 
 return sceneContentCfg

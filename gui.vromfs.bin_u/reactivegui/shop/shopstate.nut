@@ -15,20 +15,21 @@ let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop, allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, PLATINUM, commonCurrencies } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { G_PREMIUM, G_ITEM } = require("%appGlobals/rewardType.nut")
+let { G_PREMIUM, G_ITEM, G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("%rGui/shop/schRewardsState.nut")
 let { platformGoods, platformSubs } = require("%rGui/shop/platformGoods.nut")
 let { personalGoodsByShopCategory, personalGoodsUnseenIds, markPersonalGoodsSeen, resetSeenPersonalGoods,
-  personalGoodsSoonByShopCategory
+  personalGoodsSoonByShopCategory, activePersonalGoods, personalGoodsCfg
 } = require("%rGui/shop/personalGoodsState.nut")
 let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 
 
 let SEEN_GOODS = "shopSeenGoods_v2"
@@ -39,6 +40,7 @@ let pageScrollHandler = ScrollHandler()
 
 let shopOpenCount = mkWatched(persist, "shopOpenCount", {}) 
 let shopCurCategories = mkWatched(persist, "shopCurCategories", {}) 
+
 let curShopId = Computed(function() {
   local res = null
   local counter = 0
@@ -71,7 +73,7 @@ let sortGoodsByReward = @(a, b) (b == null) <=> (a == null)
         || (a.id == b.id ? (a.count <=> b.count) : 0))
 
 let sortGoods = @(a, b)
-  b.meta?.eventId <=> a.meta?.eventId
+  b.meta?.event_id <=> a.meta?.event_id
   || b.meta?.order <=> a.meta?.order
   || b.slotsPreset <=> a.slotsPreset
   || sortByCurrencyId(a.price.currencyId, b.price.currencyId)
@@ -81,12 +83,17 @@ let sortGoods = @(a, b)
   || a.id <=> b.id
 
 
+let isCommonGoods = @(goods) "showAsOffer" not in goods.meta
+  && "event_id" not in goods.meta
+  && (goods.price.currencyId == "" || goods.price.currencyId in commonCurrencies)
+
 let cfgAllGoods = Computed(function() {
   let { prohibitedShopGoods = {}, allGoods = {} } = campConfigs.get()
   let { locations = [], goods = {} } = prohibitedShopGoods
+  let needEventGoods = shouldShowEventMechanics.get()
   if (!locations.contains(getCountryCode()))
-    return allGoods
-  return allGoods.filter(@(_, id) id not in goods)
+    return needEventGoods ? allGoods : allGoods.filter(isCommonGoods)
+  return allGoods.filter(@(sGoods, id) id not in goods && (needEventGoods || isCommonGoods(sGoods)))
 })
 
 let goodsWithTimers = Computed(@() cfgAllGoods.get()
@@ -114,7 +121,7 @@ let shopsCfgOrdered = [
   }
   {
     id = "events"
-    isFit = @(g) g?.meta.shopId == "1" || "eventId" in g?.meta
+    isFit = @(g) g?.meta.shopId == "1" || "event_id" in g?.meta
   }
   {
     id = "common"
@@ -515,12 +522,26 @@ function openShopWndByGoods(goods) {
   deferOnce(@() anim_start($"attract_goods_{goods.id}"))
 }
 
-let curShopActualSchRewardsByCategory = Computed(function() {
+
+
+
+
+let mkShopActualSchRewardsByCategoryFor = @(shopIdW) Computed(function() {
+  let sId = shopIdW.get()
   let res = {}
   foreach(catId, goods in actualSchRewardByCategory.get())
-    if(curShopId.get() != null && getGoodsShopId(goods) == curShopId.get()) {
+    if (sId != null && getGoodsShopId(goods) == sId)
       res.$rawset(catId, goods)
-    }
+  return res
+})
+let getCurShopGoodsByCategoryFor = @(goodsByCategoryW, shopIdW) Computed(function() {
+  let sId = shopIdW.get()
+  let res = {}
+  foreach(catId, goodsList in goodsByCategoryW.get())
+    foreach (goods in goodsList)
+      if(getGoodsShopId(goods) == sId) {
+        getSubArray(res, catId).append(goods)
+      }
   return res
 })
 
@@ -528,31 +549,21 @@ let curShopGoodsByCategory = Computed(@() goodsByShop.get()?[curShopId.get()])
 let curShopSoonGoodsByCategory = Computed(@() soonGoodsByShop.get()?[curShopId.get()])
 let curShopSoonPGoodsByCategory = Computed(@() soonPersonalGoodsByShop.get()?[curShopId.get()])
 
-let getCurShopGoodsByCategory = @(goodsByCategoryW) Computed(function() {
-  let res = {}
-  foreach(catId, goodsList in goodsByCategoryW.get())
-    foreach (goods in goodsList)
-      if(getGoodsShopId(goods) == curShopId.get()) {
-        getSubArray(res, catId).append(goods)
-      }
-  return res
-})
-
-let curShopPersonalGoodsByCategory = Computed(@() personalGoodsByShop.get()?[curShopId.get()])
-
-let curShopSubsByCategory = getCurShopGoodsByCategory(subsByCategory)
-
 let hasUnseenGoodsByShop = Computed(function() {
   let unseen = shopUnseenGoods.get()
   return goodsIdsByShop.get().map(@(idsByCat)
     idsByCat.map(@(ids) null != ids.findvalue(@(id) id in unseen)))
 })
 
-let saveSeenGoodsCurrent = @() saveSeenGoods(goodsIdsByShop.get()?[curShopId.get()][curCategoryId.get()] ?? [])
+function saveSeenGoodsCurrent(sId = null) {
+  let shopId = sId ?? curShopId.get()
+  let catId = shopCurCategories.get()?[shopId]
+  saveSeenGoods(goodsIdsByShop.get()?[shopId][catId] ?? [])
+}
 
-function onTabChange(id) {
-  saveSeenGoodsCurrent()
-  setShopCategory(id)
+function onTabChange(id, sId = null) {
+  saveSeenGoodsCurrent(sId)
+  setShopCategory(id, sId)
 }
 
 let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo = null)
@@ -566,6 +577,40 @@ function findGoodsByShop(goodsByShopV, isFit) {
           return { shop = sId, category = catId }
   return { shop = null, category = null }
 }
+
+let mkShopCurrenciesAndItemsList = @(shopId, catId) Computed(function() {
+  let currencies = {}
+  let items = {}
+
+  function addFromGoods(goods) {
+    currencies[goods.price.currencyId] <- true
+    let rewards = goods?.rewards ?? goods.goods 
+    if (rewards.len() != 1) 
+      return
+    let { gType, id } = rewards[0]
+    if (gType == G_ITEM)
+      items[id] <- true
+    else if (gType == G_CURRENCY)
+      currencies[id] <- true
+  }
+  foreach (goodsId in goodsIdsByShop.get()?[shopId.get()][catId.get()] ?? {}) {
+    let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId]
+    if (goods != null)
+      addFromGoods(goods)
+  }
+  foreach (goods in soonGoodsByShop.get()?[shopId.get()][catId.get()] ?? {})
+    addFromGoods(goods)
+
+  foreach (goods in soonPersonalGoodsByShop.get()?[shopId.get()][catId.get()] ?? {})
+    foreach (groupCfg in personalGoodsCfg.get()?[goods.baseId].groups ?? {})
+      currencies[groupCfg.price.currencyId] <- true
+
+  currencies.$rawdelete("")
+  return {
+    currencies = currencies.keys().sort(sortByCurrencyId)
+    items = items.keys().sort(@(a, b) (orderByItems?[a] ?? 0) <=> (orderByItems?[b] ?? 0))
+  }
+})
 
 register_command(function() {
   shopSeenGoods.set({})
@@ -621,13 +666,17 @@ return {
   goodsIdsByShop
   soonGoodsByShop
   soonPersonalGoodsByShop
-  curShopActualSchRewardsByCategory
+  personalGoodsByShop
   curShopGoodsByCategory
   curShopSoonGoodsByCategory
   curShopSoonPGoodsByCategory
-  curShopPersonalGoodsByCategory
-  curShopSubsByCategory
+
+  shopCurCategories
+  mkShopActualSchRewardsByCategoryFor
+  getCurShopGoodsByCategoryFor
 
   findGoodsByShop
   getGoodsShopId
+
+  mkShopCurrenciesAndItemsList
 }

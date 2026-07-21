@@ -36,7 +36,6 @@ let epProgressUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
   EVENTPASS_POINTS in unlock?.meta && curOpenEventPass.get()?.tableId == unlock.table)?.name)
 
 let epSeasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
-let eventBgImage = Computed(@() getEventPresentation(curEventId.get()).bg)
 let eventTitle = Computed(@() getEventPresentation(curEventId.get()).locId)
 
 let EP_NONE = "none"
@@ -310,7 +309,6 @@ register_command(
   "ui.debug.eventPass")
 
 return {
-  eventBgImage
   eventTitle
   isEPPurchaseWndOpened
   openEPPurchaseWnd = @() isEPPurchaseWndOpened.set(true)

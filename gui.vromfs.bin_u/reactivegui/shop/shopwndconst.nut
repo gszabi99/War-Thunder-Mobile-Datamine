@@ -13,7 +13,7 @@ let fullTabW = tabW + selLineSize
 
 return {
   goodsGap
-  goodsH = hdpxi(378)
+  goodsH = hdpxi(320)
   goodsSmallSizeW
   goodsPerRow
   iconSize

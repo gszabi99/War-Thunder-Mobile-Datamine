@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isEqual } = require("%sqstd/underscore.nut")
-let { getOPPresentation, getBPPresentation, getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -11,25 +11,13 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { passPageId, playerSelectedScene, passPageIdx, BATTLE_PASS, EVENT_PASS, OPERATION_PASS,
   visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData, isPassSceneAttached
 } = require("passState.nut")
-let { bpSeasonNumber } = require("%rGui/battlePass/battlePassState.nut")
-let { eventBgImage, curEventId } = require("%rGui/battlePass/eventPassState.nut")
 let { OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
 let { contentBP, scrollToCardBP } = require("battlePassWnd.nut")
 let { contentEP, scrollToCardEP } = require("eventPassWnd.nut")
 let { contentOP, scrollToCardOP } = require("operationPassWnd.nut")
-let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize } = require("battlePassPkg.nut")
+let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize } = require("passPkg.nut")
 
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0x80000000, 0.07))
-
-let sceneBg = keepref(Computed(function() {
-  let id = passPageId.get()
-  if (id == BATTLE_PASS)
-    return { bg = "ui/images/bp_bg_01.avif", bgColor = getBPPresentation(bpSeasonNumber.get()).bgColor }
-  if (id != null && id.startswith(EVENT_PASS))
-    return { bg = eventBgImage.get(), bgColor = getEpPresentation(curEventId.get()).bgColor }
-  let { bg, bgColor } = getOPPresentation(OPCampaign.get())
-  return { bg, bgColor }
-}))
 
 let tabs = {
   [BATTLE_PASS] = {
@@ -175,5 +163,4 @@ function passSceneWnd() {
 
 return {
   passSceneWnd
-  sceneBg
 }

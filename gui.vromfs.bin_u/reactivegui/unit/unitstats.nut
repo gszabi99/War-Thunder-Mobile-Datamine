@@ -710,7 +710,7 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
 
 function mkUnitStats(unit, attrLevels, attrPreset, cfgKey) {
   let { unitType, name, mods = null } = unit
-  let shopCfg = applyAttrLevels(unitType, getUnitTagsShop(name), attrLevels, attrPreset, mods)
+  let shopCfg = applyAttrLevels(unitType, getUnitTagsShop(name), attrLevels, attrPreset, mods, name)
   return getUnitStats(unit,
     shopCfg,
     shopCfg?.baseStats ?? getUnitTagsShop(name),

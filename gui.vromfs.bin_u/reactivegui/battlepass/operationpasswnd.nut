@@ -5,12 +5,12 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isOPActive, openOPPurchaseWnd, selectedStage, curStage, getOPIcon,
   OP_VIP, OP_COMMON, OP_NONE, purchasedOP, operationPassGoods, pointsCurStage, pointsPerStage,
-  receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber
+  receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber, opSeasonEndTime
 } = require("%rGui/battlePass/operationPassState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable
-} = require("%rGui/battlePass/battlePassPkg.nut")
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText
+} = require("%rGui/battlePass/passPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
 let operationPassRewardsList = require("%rGui/battlePass/operationPassRewardsList.nut")
@@ -170,8 +170,13 @@ let levelBlock = @() {
 }
 
 let leftMiddle = {
-  vplace = ALIGN_BOTTOM
-  children = levelBlock
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = { size = flex() }
+  children = [
+    mkTimeEndsAtText(opSeasonEndTime)
+    levelBlock
+  ]
 }
 
 let openPurchOpButton = @(text) textButtonMultiline(utf8ToUpper(text), openOPPurchaseWnd,
@@ -247,6 +252,7 @@ let contentOP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
         middlePart(stagesList.get())
         {
           size = FLEX_H
+          margin = [0, 0, hdpx(30), 0]
           children = [
             {
               key = "battle_pass_progress_bar" 

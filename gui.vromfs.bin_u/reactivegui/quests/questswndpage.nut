@@ -528,18 +528,28 @@ function mergeQuestChains(quests, tabId, sectionId) {
   return res
 }
 
-let headerLine = @(headerChildCtor, child) {
+let headerLine = @(headerChildCtor, child, isFullScreenWidth) {
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = headerLineGap
   valign = ALIGN_CENTER
+  halign = isFullScreenWidth ? ALIGN_CENTER : ALIGN_LEFT
   children = [
     headerChildCtor
     child
   ].filter(@(v) v != null)
 }
 
-function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, headerChildWidth = null, hasHeader = null) {
+let mkFullScreenWidthBar = @(block, isFullScreenWidth) block == null || !isFullScreenWidth ? block
+  : {
+      size = [saSize[0], SIZE_TO_CONTENT]
+      hplace = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      halign = ALIGN_CENTER
+      children = block
+    }
+
+function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, headerChildWidth = null, hasHeader = null, isFullScreenWidth = Watched(false)) {
   let selSectionId = mkWatched(persist, $"selSectionId_{tabId}", null)
   let personalQuestsOrder = mkWatched(persist, $"personalQuestsOrdera_{tabId}", {})
   let curSectionId = Computed(function() {
@@ -613,8 +623,8 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
   headerChildWidth = headerChildWidth ?? Computed(@() hasHeader.get() ? linkToEventWidth : 0)
   function header() {
     let progressBlock = !hasProgressUnlock.get() ? null
-      : !hasHeader.get() ? mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth)
-      : headerLine(headerChildCtor, mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth))
+      : !hasHeader.get() ? mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth, isFullScreenWidth)
+      : headerLine(headerChildCtor, mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth, isFullScreenWidth), isFullScreenWidth.get())
 
     let sectionsComp = isSectionsEmpty.get() ? allQuestsCompleted
       : sections.get().len() > 1
@@ -633,20 +643,21 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
       : null
 
     let sectionsBlock = !progressBlock && hasHeader.get()
-      ? headerLine(headerChildCtor, sectionsComp)
+      ? headerLine(headerChildCtor, sectionsComp, isFullScreenWidth.get())
       : sectionsComp
 
     if (!sectionsBlock && !progressBlock)
       return { watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock, hasHeader] }
 
+    let watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock, hasHeader, isFullScreenWidth]
     return {
-      watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock, hasHeader]
+      watch
       size = FLEX_H
       gap = pageBlocksGap
       flow = FLOW_VERTICAL
       children = !isProgressBySection.get()
-        ? [progressBlock, sectionsBlock].filter(@(v) v != null)
-        : [sectionsBlock, progressBlock?.__update({ rendObj = ROBJ_SOLID, color = tabBgColor })].filter(@(v) v != null)
+        ? [mkFullScreenWidthBar(progressBlock, isFullScreenWidth.get()), sectionsBlock].filter(@(v) v != null)
+        : [sectionsBlock, mkFullScreenWidthBar(progressBlock?.__update({ rendObj = ROBJ_SOLID, color = tabBgColor }), isFullScreenWidth.get())].filter(@(v) v != null)
     }
   }
 

@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
-  bestCampLevel, curEventLootboxes,curEvent, MAIN_EVENT_ID, isCurEventActive, isEventSceneAttached,
-  curEventName, specialEventGamercardItems, campToBack, closeEventShellCleanup
+  bestCampLevel, curEventLootboxes, curEvent, MAIN_EVENT_ID, isCurEventActive, isEventSceneAttached,
+  specialEventGamercardItems, campToBack, closeEventShellCleanup, curEventEndsAt
 } = require("%rGui/event/eventState.nut")
 let { closeSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -45,11 +45,9 @@ let { onCampaignChange } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { needFirstBattleTutorForCampaign } = require("%rGui/tutorial/tutorialMissions.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { contentH } = require("%rGui/battlePass/battlePassPkg.nut")
+let { contentH, mkTimeEndsAtText, bottomPanelH } = require("%rGui/battlePass/passPkg.nut")
 
 
-let iconSize = hdpxi(60)
-let bottomPanelH = saBorders[1] + iconSize
 let MAX_LOOTBOXES_AMOUNT = 3
 let contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
@@ -111,17 +109,16 @@ function mkLootboxBlock(lootbox, blockSize) {
   let { name } = lootbox
   let stateFlags = Watched(0)
 
-  let hasUnseen = Computed(@() name in unseenLootboxes.get()?[curEventName.get()] || unseenLootboxesShowOnce.get()?[name])
+  let hasUnseen = Computed(@() name in unseenLootboxes.get()?[curEvent.get()] || unseenLootboxesShowOnce.get()?[name])
   let unseenMark = @() {
     watch = hasUnseen
     size = 0
-    pos = [pw(10), ph(10)]
-    hplace = ALIGN_LEFT
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
+    pos = [-hdpx(210), -hdpx(140)]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
     children = hasUnseen.get() ? priorityUnseenMark : null
   }
-  let lootboxImage = mkLootboxImageWithTimer(lootbox, blockSize, unseenMark)
+  let lootboxImage = mkLootboxImageWithTimer(lootbox, blockSize)
 
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get()))
   let info = lootboxInfo(lootbox, stateFlags)
@@ -130,9 +127,8 @@ function mkLootboxBlock(lootbox, blockSize) {
     key = $"lootbox_{name}" 
     watch = stateFlags
     onElemState = @(sf) stateFlags.set(sf)
-    size = [blockSize, SIZE_TO_CONTENT]
+    size = [blockSize, sh(55)]
     halign = ALIGN_CENTER
-    flow = FLOW_VERTICAL
     behavior = Behaviors.Button
     function onClick() {
       openEventWndLootbox(name)
@@ -141,15 +137,23 @@ function mkLootboxBlock(lootbox, blockSize) {
     sound = { click  = "click" }
     clickableInfo = loc("mainmenu/btnSelect")
     children = [
-      info
-
       {
+        vplace = ALIGN_CENTER
+        pos = [0, hdpx(40)]
         transform = { scale = (stateFlags.get() & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }
         transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-        children = lootboxImage
+        children = [lootboxImage, unseenMark]
       }
-
-      mkProgress(stepsToFixed)
+      {
+        vplace = ALIGN_CENTER
+        pos = [0, -hdpx(200)]
+        children = info
+      }
+      {
+        vplace = ALIGN_CENTER
+        pos = [0, hdpx(270)]
+        children = mkProgress(stepsToFixed)
+      }
     ]
   }
 }
@@ -259,18 +263,22 @@ function mkLootboxPreviewContent() {
       }
       @() {
         watch = eventWndLootbox
-        size = FLEX
-        flow = FLOW_VERTICAL
+        size = [flex(), ph(100)]
         halign = ALIGN_CENTER
         children = eventWndLootbox.get() == null ? null
           : [
+              {
+                pos = [0, ph(20)]
+                children = lootboxImageWithTimer(eventWndLootbox.get())
+              }
               lootboxHeader(eventWndLootbox.get())
-              { size = FLEX }
-              lootboxImageWithTimer(eventWndLootbox.get())
-              { size = flex(3) }
-              progressInfo
-              { size = const [0, hdpx(50)] }
+              {
+                vplace = ALIGN_BOTTOM
+                pos = [0, -(defButtonHeight + hdpx(50))]
+                children = progressInfo
+              }
               @() {
+                vplace = ALIGN_BOTTOM
                 watch = [eventWndLootbox, lootboxInProgress]
                 size = [SIZE_TO_CONTENT, defButtonHeight]
                 children = lootboxInProgress.get() ? null : mkPurchaseBtns(eventWndLootbox.get(), onPurchase)
@@ -284,7 +292,7 @@ function mkLootboxPreviewContent() {
 
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.get().len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
-  let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEventName.get()))
+  let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEvent.get()))
   let battleCampaign = Computed(@() battleInfo.get()?.campaign ?? curCampaign.get())
   let itemsByGameMode = Computed(@() {
     [SPARE] = battleInfo.get()?.mission_decl.allowSpare ?? true
@@ -292,75 +300,74 @@ function eventWndContent() {
   return @() {
     watch = [isEventWndLootboxOpen, battleInfo, battleCampaign, itemsByGameMode]
     size = FLEX
-    padding = saBordersRv
+    padding = [0, saBordersRv[1], saBordersRv[0], saBordersRv[1]]
     flow = FLOW_VERTICAL
-    children = []
-      .extend(isEventWndLootboxOpen.get()
-        ? [ mkLootboxPreviewContent() ]
-        : [
-            {
-              size = FLEX
-              children = [
-                {
+    children = isEventWndLootboxOpen.get() ? mkLootboxPreviewContent()
+      : [
+          mkTimeEndsAtText(curEventEndsAt, { size = FLEX_H, halign = ALIGN_CENTER, margin = null })
+          {
+            size = FLEX
+            children = [
+              {
+                size = FLEX
+                children = @() {
+                  watch = [curEventLootboxes, blockSize]
                   size = FLEX
-                  children = @() {
-                    watch = [curEventLootboxes, blockSize]
-                    size = FLEX
-                    margin = const [0, 0, hdpx(120), 0]
-                    flow = FLOW_HORIZONTAL
-                    hplace = ALIGN_CENTER
-                    halign = ALIGN_CENTER
-                    valign = ALIGN_CENTER
-                    children = curEventLootboxes.get().map(@(v) mkLootboxBlock(v, blockSize.get()))
-                    animations = wndSwitchAnim
-                  }
-                }
-                {
-                  key = {}
-                  size = FLEX_H
-                  vplace = ALIGN_BOTTOM
-                  children = [
-                    
-                    @() {
-                      vplace = ALIGN_BOTTOM
-                      flow = FLOW_HORIZONTAL
-                      gap = buttonsHGap
-                      children = [
-                        @() {
-                          watch = [has_leaderboard, curEvent]
-                          size = [SIZE_TO_CONTENT, defButtonHeight]
-                          children = !has_leaderboard.get() || curEvent.get() != MAIN_EVENT_ID ? null : leaderbordBtn
-                        }
-                      ]
-                    }
-                    
-                    !battleInfo.get() ? null : {
-                      hplace = ALIGN_CENTER
-                      vplace = ALIGN_BOTTOM
-                      halign = ALIGN_CENTER
-                      valign = ALIGN_BOTTOM
-                      children = squadPanel
-                    }
-                    
-                    !battleInfo.get() ? null : @() {
-                      watch = curEventName
-                      hplace = ALIGN_RIGHT
-                      vplace = ALIGN_BOTTOM
-                      halign = ALIGN_RIGHT
-                      valign = ALIGN_BOTTOM
-                      flow = FLOW_VERTICAL
-                      gap = hdpx(10)
-                      children = [
-                        toBattleHint(battleCampaign.get(), itemsByGameMode.get(), curEventName.get())
-                        mkToBattleButton(battleInfo.get(), curEventName.get(), battleCampaign.get())
-                      ]
-                    }
-                  ]
+                  margin = const [0, 0, hdpx(120), 0]
+                  flow = FLOW_HORIZONTAL
+                  hplace = ALIGN_CENTER
+                  halign = ALIGN_CENTER
+                  valign = ALIGN_CENTER
+                  children = curEventLootboxes.get().map(@(v) mkLootboxBlock(v, blockSize.get()))
                   animations = wndSwitchAnim
                 }
-              ]
-            }
-          ])
+              }
+              {
+                key = {}
+                size = FLEX_H
+                vplace = ALIGN_BOTTOM
+                children = [
+                  
+                  @() {
+                    vplace = ALIGN_BOTTOM
+                    flow = FLOW_HORIZONTAL
+                    gap = buttonsHGap
+                    children = [
+                      @() {
+                        watch = [has_leaderboard, curEvent]
+                        size = [SIZE_TO_CONTENT, defButtonHeight]
+                        children = !has_leaderboard.get() || curEvent.get() != MAIN_EVENT_ID ? null : leaderbordBtn
+                      }
+                    ]
+                  }
+                  
+                  !battleInfo.get() ? null : {
+                    hplace = ALIGN_CENTER
+                    vplace = ALIGN_BOTTOM
+                    halign = ALIGN_CENTER
+                    valign = ALIGN_BOTTOM
+                    children = squadPanel
+                  }
+                  
+                  !battleInfo.get() ? null : @() {
+                    watch = curEvent
+                    hplace = ALIGN_RIGHT
+                    vplace = ALIGN_BOTTOM
+                    halign = ALIGN_RIGHT
+                    valign = ALIGN_BOTTOM
+                    flow = FLOW_VERTICAL
+                    gap = hdpx(10)
+                    children = [
+                      toBattleHint(battleCampaign.get(), itemsByGameMode.get(), curEvent.get())
+                      mkToBattleButton(battleInfo.get(), curEvent.get(), battleCampaign.get())
+                    ]
+                  }
+                ]
+                animations = wndSwitchAnim
+              }
+            ]
+          }
+        ]
   }
 }
 

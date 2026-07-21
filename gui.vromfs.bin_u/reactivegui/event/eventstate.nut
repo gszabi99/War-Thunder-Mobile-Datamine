@@ -7,10 +7,10 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { eventUnitTypes } = require("%appGlobals/unitConst.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campaignsLevelInfo, campaignsList, curCampaign, abTests } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsLevelInfo, campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
-let { userstatStatsTables, userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
@@ -18,6 +18,7 @@ let { closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
+let { OP_EVENT_ID, isOPSeasonActive } = require("%rGui/battlePass/operationPassState.nut")
 
 
 let SEEN_LOOTBOXES = "seenLootboxes"
@@ -29,13 +30,6 @@ let openEventInfo = mkWatched(persist, "openEventInfo")
 let isEventSceneAttached = mkWatched(persist, "isEventSceneAttached", false)
 let curEvent = Computed(@() openEventInfo.get()?.eventName)
 let eventWndOpenCounter = Computed(@() openEventInfo.get()?.counter ?? 0)
-
-let shouldShowEventMechanics = Computed(function() {
-  let minimumPlayedBattles = abTests.get()?.battlesToDisplayEvents.tointeger() ?? 0
-  let playedBattles = userstatStats.get()?.stats["global"].battle_common.battle_end ?? 0
-
-  return playedBattles >= minimumPlayedBattles
-})
 
 eventWndOpenCounter.subscribe(function(v) {
   if (v == 0)
@@ -75,7 +69,7 @@ let eventsLists = Computed(function() {
     if (!unlock?.meta.event_table)
       continue
     let { event_id = null, tree_travel = false, tree_gift = false, tree_quest = false,
-      quest_cluster = false, campaign = ""
+      quest_cluster = false, campaign = "", sub_event_of = ""
     } = unlock?.meta
     if (campaign != "" && campaign != curCamp)
       continue
@@ -100,6 +94,7 @@ let eventsLists = Computed(function() {
       endsAt
       season
       tableId
+      subEventOf = sub_event_of
     }
     if (isTreeEvent)
       eventsWithTree[event_id] <- eventData
@@ -121,6 +116,21 @@ let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res
 let specialEventsWithTree = Computed(@() eventsLists.get().eventsWithTree)
 let allSpecialEvents = Computed(@() {}.__merge(specialEvents.get(), specialEventsWithTree.get()))
 
+let subEventsList = Computed(function() {
+  let res = {}
+  foreach (e in specialEvents.get())
+    if (e.subEventOf != "")
+      res[e.eventId] <- e.subEventOf
+  return res
+})
+
+let subEventsByMain = Computed(function() {
+  let res = {}
+  foreach (evt, parent in subEventsList.get())
+    getSubArray(res, parent).append(evt)
+  return res
+})
+
 let specialEventsLootboxesState = Computed(function() {
   let lootboxesEventIds = {}
   foreach(l in eventLootboxesRaw.get()) {
@@ -141,7 +151,6 @@ let specialEventsLootboxesState = Computed(function() {
 })
 
 let getEventPresentationId = @(eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
-let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), allSpecialEvents.get())))
 
 let curEventSeason = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? (userstatStatsTables.get()?.stats.season["$index"] ?? 0)
@@ -151,15 +160,18 @@ let curEventEndsAt = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? eventEndsAt.get()
   : (specialEvents.get()?[curEvent.get()].endsAt ?? 0))
 
-let curEventName = Computed(@() curEvent.get() == MAIN_EVENT_ID
-    ? curEvent.get()
-  : specialEvents.get()?[curEvent.get()].eventName ?? curEvent.get())
+let getIsEventActive = @(eventId, isEActive, isOActive, specEvents) eventId == MAIN_EVENT_ID ? isEActive
+  : eventId == OP_EVENT_ID ? isOActive
+  : eventId == "" ? true
+  : eventId in specEvents
 
-let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID ? isEventActive.get()
-  : curEvent.get() in specialEvents.get())
+let isCurEventActive = Computed(@()
+  getIsEventActive(curEvent.get(), isEventActive.get(), isOPSeasonActive.get(), specialEvents.get()))
 
-let curEventLootboxes = Computed(@()
-  orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.get())))
+let getEventLootboxes = @(eventId, lootboxesRaw)
+  orderLootboxesBySlot(lootboxesRaw.filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == eventId))
+
+let curEventLootboxes = Computed(@() getEventLootboxes(curEvent.get(), eventLootboxesRaw.get()))
 
 let curEventCurrencies = Computed(@() curEventLootboxes.get().reduce(function(res, l) {
   let currencyId = l?.currencyId
@@ -246,7 +258,7 @@ function updateUnseenLootboxesShowOnce(lootboxes) {
 
 function closeEventShellCleanup() {
   campToBack.set(null)
-  unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEventName.get()))
+  unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEvent.get()))
 }
 
 if (seenLootboxes.get().len() == 0)
@@ -273,7 +285,7 @@ balance.subscribe(function(v) {
 })
 
 function markCurLootboxSeen(id) {
-  saveSeenLootboxes([id], curEventName.get())
+  saveSeenLootboxes([id], curEvent.get())
   updateUnseenLootboxesShowOnce({ [id] = false })
 }
 
@@ -338,7 +350,6 @@ isEventActive.subscribe(@(v) v ? null : logE($"Primary game event finished!"))
 
 return {
   curEvent
-  curEventName
   curEventSeason
   curEventEndsAt
   isCurEventActive
@@ -366,16 +377,18 @@ return {
   specialEventsWithTree
   allSpecialEvents
   specialEventsOrdered
+  subEventsList
+  subEventsByMain
   specialEventsLootboxesState
   getSpecialEventName
+  getIsEventActive
+  getEventLootboxes
   curEventLootboxes
   curEventCurrencies
   specialEventGamercardItems
   isFitSeasonRewardsRequirements
 
-  curEventBg
   getEventPresentationId
 
   orderEvents
-  shouldShowEventMechanics
 }

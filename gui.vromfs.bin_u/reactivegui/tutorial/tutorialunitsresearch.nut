@@ -15,7 +15,7 @@ let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
 
 let { goodsByCategory } = require("%rGui/shop/shopState.nut")
 let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
-let { shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("%rGui/unit/delayedPurchaseUnit.nut")
 let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")

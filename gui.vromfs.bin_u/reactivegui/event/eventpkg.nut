@@ -112,7 +112,7 @@ let lootboxInfo = @(lootbox, stateFlags) function() {
   }
 }
 
-function mkLootboxImageWithTimer(lootbox, width, imgChild) {
+function mkLootboxImageWithTimer(lootbox, width, imgChild = null) {
   let { timeRange = null, reqPlayerLevel = 0 } = lootbox
   let blockSize = [width, lootboxHeight]
   let { start = 0, end = 0 } = timeRange

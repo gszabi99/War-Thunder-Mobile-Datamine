@@ -19,7 +19,7 @@ let bgHiglight = {
 }
 
 let getImgByAmount = @(amount)
-  mkGoodsImg(getCurrencyGoodsPresentation(GOLD, amount).img, null, { keepAspect = KEEP_ASPECT_FILL })
+  mkGoodsImg(getCurrencyGoodsPresentation(GOLD, amount).img, null, { keepAspect = true })
 
 function getLocNameGold(goods) {
   let amount = goods.rewards?[0].count ?? 0

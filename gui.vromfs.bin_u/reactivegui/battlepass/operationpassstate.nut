@@ -23,6 +23,7 @@ let OP_COMMON = "common"
 let OP_VIP = "vip"
 
 let OP_MAX_LEVELS_TO_ADD = 10
+let OP_EVENT_ID = "operation_pass"
 
 let isOPPurchaseWndOpened = mkWatched(persist, "isOPPurchaseWndOpened", false)
 let debugOP = mkWatched(persist, "debugOP", null)
@@ -272,9 +273,12 @@ return {
   sendOPBqEvent
   buyOPLevel
 
+
+  isOpAvailable = Computed(@() OPProgressUnlock.get() != null)
   OPFreeRewardsUnlock
   OPPaidRewardsUnlock
   OPPurchasedUnlock
+  OPProgressUnlock
   operationPassGoods
   isOPRewardsInProgress
   isOPSeasonActive
@@ -289,7 +293,6 @@ return {
   isOpCommonActive
   purchasedOP
   pointsCurStage
-  OPProgressUnlock
   pointsPerStage
   OPLevelPrice
   isOPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
@@ -305,6 +308,7 @@ return {
   getOPIcon
   getOPName
 
+  OP_EVENT_ID
   OP_NONE
   OP_COMMON
   OP_VIP

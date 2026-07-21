@@ -7,14 +7,13 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, sortGoods, openShopWnd, openShopWndByGoods, shopGoods, goodsLinks, subsGroups, curShopId,
-  curShopActualSchRewardsByCategory, curShopGoodsByCategory, curShopPersonalGoodsByCategory,
-  curShopSubsByCategory, curShopSoonGoodsByCategory, soonGoodsByShop, goodsIdsByShop,
-  curShopSoonPGoodsByCategory, soonPersonalGoodsByShop
+let { curCategoryId, sortGoods, openShopWnd, shopGoods, goodsLinks, subsGroups, curShopId,
+  curShopGoodsByCategory, curShopSoonGoodsByCategory, curShopSoonPGoodsByCategory, mkShopCurrenciesAndItemsList
 } = require("%rGui/shop/shopState.nut")
+let { openShopByGoods } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { getPersonalGoodsBaseId, activePersonalGoods, pGoodsOffsets, personalGoodsCfg } = require("%rGui/shop/personalGoodsState.nut")
+let { getPersonalGoodsBaseId, pGoodsOffsets, personalGoodsCfg } = require("%rGui/shop/personalGoodsState.nut")
 let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
@@ -29,9 +28,6 @@ let { mkSubscriptionCard } = require("%rGui/shop/goodsView/subscriptionCard.nut"
 let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, mkGoodsTimeProgress
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { openGoodsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
-let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -175,71 +171,38 @@ let gamercardShopItemsBalanceBtns = @(items) {
     if (category)
       return openShopWnd(category, null, curShopId.get())
     let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
-    openShopWndByGoods(goods)
+    openShopByGoods(goods)
   }))
 }
 
-let mkShopGamercard = @(onClose) function() {
-  let currencies = {}
-  let items = {}
-  local needShowPremium = false
-  let goodsIds = goodsIdsByShop.get()?[curShopId.get()]
-  foreach (goodsId in goodsIds?[curCategoryId.get()] ?? {}) {
-    let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId]
-    if (goods == null)
-      continue
-
-    if (goods.price.currencyId != "")
-      currencies[goods.price.currencyId] <- true
-    if ((goods?.rewards.len() ?? 0) != 1)
-      continue 
-    let { gType, id } = goods.rewards[0]
-    if (gType == G_PREMIUM)
-      needShowPremium = true
-    else if (gType == G_ITEM)
-      items[id] <- true
-    else if (gType == G_CURRENCY)
-      currencies[id] <- true
-  }
-  foreach (goods in soonGoodsByShop.get()?[curShopId.get()][curCategoryId.get()] ?? {}) {
-    if (goods.price.currencyId != "")
-      currencies[goods.price.currencyId] <- true
-    if (goods.rewards.len() == 1 && goods.rewards[0].gType == G_CURRENCY)
-      currencies[goods.rewards[0].id] <- true
-  }
-  foreach (goods in soonPersonalGoodsByShop.get()?[curShopId.get()][curCategoryId.get()] ?? {})
-    foreach (groupCfg in personalGoodsCfg.get()?[goods.baseId].groups ?? {})
-      if (groupCfg.price.currencyId != "")
-        currencies[groupCfg.price.currencyId] <- true
-  let orderItems = items.keys().sort(@(a,b)
-    itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
-  return {
-    watch = [ curCategoryId, curShopId, activePersonalGoods, shopGoods, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsCfg ]
-    size = [ saSize[0], SIZE_TO_CONTENT ]
-    valign = ALIGN_CENTER
+function mkShopHeaderRight(shopId, catId) {
+  let list = mkShopCurrenciesAndItemsList(shopId, catId)
+  return @() {
+    watch = list
+    hplace = ALIGN_RIGHT
+    flow = FLOW_HORIZONTAL
     gap = gamercardGap
     children = [
-      headerGradientBg([
-        backButton(onClose)
-        {
-          rendObj = ROBJ_TEXT
-          text = loc("topmenu/store")
-        }.__update(fontBigShaded)
-      ])
-      {
-        hplace = ALIGN_RIGHT
-        flow = FLOW_HORIZONTAL
-        gap = gamercardGap
-        children = [
-          needShowPremium ? premIconWithTimeOnChange : null
-          gamercardShopItemsBalanceBtns(orderItems)
-          mkCurrenciesBtns(currencies.keys().sort(sortByCurrencyId))
-            .__update({ size = SIZE_TO_CONTENT })
-        ]
-      }
-
+      gamercardShopItemsBalanceBtns(list.get().items)
+      mkCurrenciesBtns(list.get().currencies).__update({ size = SIZE_TO_CONTENT })
     ]
   }
+}
+
+let mkShopGamercard = @(onClose) {
+  size = [ saSize[0], SIZE_TO_CONTENT ]
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = [
+    headerGradientBg([
+      backButton(onClose)
+      {
+        rendObj = ROBJ_TEXT
+        text = loc("topmenu/store")
+      }.__update(fontBigShaded)
+    ])
+    mkShopHeaderRight(curShopId, curCategoryId)
+  ]
 }
 
 function mkAnimParams(idx, headers) {
@@ -397,14 +360,17 @@ let mkSubscriptionCardExt = @(subs, animParams) mkSubscriptionCard(
   }), animParams
 )
 
-function mkShopCategoryGoods(categoryCfg, distances) {
+let mkShopCategoryGoods = kwarg(function mkShopCategoryGoods(categoryCfg,  distances,
+  goodsByCategory, soonGoodsByCategory, schRewardsByCategory, soonPGoodsByCategory,
+  personalGoodsByCategory, subsByCategory
+) {
   let { id = "", title = "", getTitle = null } = categoryCfg
-  let goodsListBase = Computed(@() curShopGoodsByCategory.get()?[id] ?? [])
-  let soonList = Computed(@() curShopSoonGoodsByCategory.get()?[id] ?? [])
-  let schReward = Computed(@() curShopActualSchRewardsByCategory.get()?[id])
-  let personalSoonList = Computed(@() curShopSoonPGoodsByCategory.get()?[id] ?? [])
-  let personalList = Computed(@() curShopPersonalGoodsByCategory.get()?[id])
-  let subsList = Computed(@() curShopSubsByCategory.get()?[id])
+  let goodsListBase = Computed(@() goodsByCategory.get()?[id] ?? [])
+  let soonList = Computed(@() soonGoodsByCategory.get()?[id] ?? [])
+  let schReward = Computed(@() schRewardsByCategory.get()?[id])
+  let personalSoonList = Computed(@() soonPGoodsByCategory.get()?[id] ?? [])
+  let personalList = Computed(@() personalGoodsByCategory.get()?[id])
+  let subsList = Computed(@() subsByCategory.get()?[id])
   let rowsBefore = Computed(@() distances.get()?[id].rowsBefore ?? 0)
   let headersBefore = Computed(@() distances.get()?[id].headersBefore ?? 0)
 
@@ -475,15 +441,23 @@ function mkShopCategoryGoods(categoryCfg, distances) {
       }
     })
   }
-}
+})
 
-let mkShopPage = @(curCategoriesCfg, distances) @() {
-  watch = [curCategoriesCfg, curShopId]
+let mkShopPage = @(curCategoriesCfg, distances, ctx) @() {
+  watch = [curCategoriesCfg, ctx.shopIdW]
   children = {
-    key = curShopId.get()
+    key = ctx.shopIdW.get()
     flow = FLOW_VERTICAL
     gap = categoryGap
-    children = curCategoriesCfg.get().map(@(categoryCfg) mkShopCategoryGoods(categoryCfg, distances))
+    children = curCategoriesCfg.get().map(@(categoryCfg) mkShopCategoryGoods({
+      categoryCfg, distances
+      goodsByCategory = ctx.goodsByCategory
+      soonGoodsByCategory = ctx.soonGoodsByCategory
+      schRewardsByCategory = ctx.schRewardsByCategory
+      soonPGoodsByCategory = ctx.soonPGoodsByCategory
+      personalGoodsByCategory = ctx.personalGoodsByCategory
+      subsByCategory = ctx.subsByCategory
+    }))
     transform = {}
     animations = tabTranslateWithOpacitySwitchAnim
   }
@@ -495,4 +469,5 @@ return {
   mkGoodsListWithBaseValue
   mkGoodsState
   mkShopGamercard
+  mkShopHeaderRight
 }

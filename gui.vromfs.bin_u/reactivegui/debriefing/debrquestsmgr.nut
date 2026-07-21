@@ -8,6 +8,7 @@ let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientStat
 let { questsBySection, progressUnlockByTab, saveSeenQuests } = require("%rGui/quests/questsState.nut")
 let { specialEventsOrdered } = require("%rGui/event/eventState.nut")
 let { getSpecialEventRewardUnitName } = require("%rGui/event/eventLocName.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
 let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { allShopGoods } = require("%rGui/shop/shopState.nut")
@@ -27,11 +28,14 @@ function getTreeEventQuests() {
   return res
 }
 
-let savePrevProgress = function() {
+let sectionsWithoutEvents = [ "promo_quest", "achievement" ].totable()
+
+function savePrevProgress() {
   let res = {}
-  foreach (section in {}.__merge(questsBySection.get(), getTreeEventQuests()))
-    foreach (id, quest in section)
-      res[id] <- quest.current
+  foreach (sId, section in {}.__merge(questsBySection.get(), getTreeEventQuests()))
+    if (shouldShowEventMechanics.get() || sId in sectionsWithoutEvents)
+      foreach (id, quest in section)
+        res[id] <- quest.current
   prevProgress.set(res)
 }
 

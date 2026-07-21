@@ -16,9 +16,8 @@ let { decalsCollection, selectedDecalId, availableDecals, decalsSlots, selectedS
 let { closeUnitCustom, unitCustomOpenCount, sectionsList, selSectionId, curSelectedSectionId, SECTION_IDS
 } = require("%rGui/unitCustom/unitCustomState.nut")
 let { baseUnit, unitToShow, isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
-} = require("%rGui/components/gradientDefComps.nut")
-let { mkSectionTabs, sectionBtnGap, gamercardHeight } = require("%rGui/unitCustom/unitCustomComps.nut")
+let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { mkSectionTabs, sectionBtnGap } = require("%rGui/unitCustom/unitCustomComps.nut")
 let { mkDecalsCollectionChoice } = require("%rGui/unitCustom/unitDecals/decalsCollectionChoice.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let unitDecalsSlotsActions = require("%rGui/unitCustom/unitDecals/unitDecalsSlotsActions.nut")
@@ -131,11 +130,12 @@ function decalDescriptionBlock() {
     children = curSelectedSectionId.get() != SECTION_IDS.DECALS || decalId.get() == "" ? null
       : [
           {
-            padding = sectionBtnGap
+            pos = [-saBorders[0], 0]
             rendObj = ROBJ_IMAGE
             image = simpleHorGrad
-            color = 0xAA000000
+            color = 0x80000000
             flipX = true
+            padding = [hdpx(10), saBorders[0], hdpx(20), saBorders[0]]
             flow = FLOW_VERTICAL
             gap = sectionBtnGap
             children = [
@@ -154,27 +154,20 @@ function decalDescriptionBlock() {
 }
 
 let unitCustomizationGamercard = {
-  size = [FLEX, gamercardHeight]
+  size = FLEX_H
   padding = saBordersRv
   flow = FLOW_HORIZONTAL
   children = [
-    doubleSideGradient.__merge({
-      size = [SIZE_TO_CONTENT, gamercardHeight]
-      padding = [doubleSideGradientPaddingY, doubleSideGradientPaddingX, doubleSideGradientPaddingY, 0]
-      valign = ALIGN_CENTER
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(50)
-      children = [
-        backButton(@() !isEditingDecal.get() ? closeUnitCustom()
-          : shouldSaveDecal.get() ? askSaveAndChangeToSlot()
-          : exitDecalMode())
-        @() {
-          watch = baseUnit
-          rendObj = ROBJ_TEXT
-          text = getUnitName(baseUnit.get())
-        }.__update(fontSmall)
-      ]
-    })
+    headerGradientBg([
+      backButton(@() !isEditingDecal.get() ? closeUnitCustom()
+        : shouldSaveDecal.get() ? askSaveAndChangeToSlot()
+        : exitDecalMode())
+      @() {
+        watch = baseUnit
+        rendObj = ROBJ_TEXT
+        text = getUnitName(baseUnit.get())
+      }.__update(fontSmall)
+    ])
     { size = FLEX }
     mkCurrenciesBtns([GOLD])
   ]
@@ -304,14 +297,14 @@ let unitCustomWnd = {
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
-  gap = hdpx(10)
+  gap = -hdpx(10)
   onAttach = @() isCustomizationWndAttached.set(true)
   onDetach = @() isCustomizationWndAttached.set(false)
   children = [
     unitCustomizationGamercard
     {
       size = FLEX
-      padding = saBordersRv
+      padding = [0, saBorders[0], saBorders[1], saBorders[0]]
       children = [
         decalDescriptionBlock
         penaltyDescription()

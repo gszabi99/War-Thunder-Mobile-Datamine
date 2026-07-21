@@ -17,7 +17,7 @@ function getUnitStats(commonData) {
     let attrPreset = slotAttrPreset != ""
       ? attrPresetsW.get()?[slotAttrPreset] ?? []
       : attrPresetsW.get()?[unit?.attrPreset] ?? []
-    unitDataCache.unitStats <- applyAttrLevels(unit.unitType, shopCfg, attrLevels, attrPreset, unit?.mods)
+    unitDataCache.unitStats <- applyAttrLevels(unit.unitType, shopCfg, attrLevels, attrPreset, unit?.mods, unit.name)
   }
   return unitDataCache.unitStats
 }

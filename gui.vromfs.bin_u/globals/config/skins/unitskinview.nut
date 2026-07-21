@@ -3748,6 +3748,9 @@ return {
     "uk_battlecruiser_invincible": {
       "": "camo_homefleet_deckhouse"
     },
+    "uk_battlecruiser_queen_mary": {
+      "": "camo_greygreen_curves"
+    },
     "uk_battlecruiser_renown": {
       "upgraded": "camo_nord_bluegreen"
     },
@@ -5830,6 +5833,9 @@ return {
     },
     "vampire_fb5_prem": {
       "": "uk_vampire_fb5_raf"
+    },
+    "washington_b1": {
+      "": "usa_p_40c_metal"
     },
     "wellington_mk10": {
       "": "usa_sb2u_2",

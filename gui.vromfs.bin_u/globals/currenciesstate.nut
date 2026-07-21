@@ -72,6 +72,7 @@ let allCurrencies = currenciesRes.values()
 
 return currenciesRes.__update({
   allCurrencies
+  commonCurrencies = [ WP, GOLD, PLATINUM ].totable()
 
   isBalanceReceived
   balance

@@ -4,12 +4,12 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
   EP_VIP, EP_COMMON, EP_NONE, purchasedEp,
   pointsCurStage, pointsPerStage, curEventId,
-  isEpRewardsInProgress, receiveEpRewards
+  isEpRewardsInProgress, receiveEpRewards, epSeasonEndTime
 } = require("%rGui/battlePass/eventPassState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable
-} = require("%rGui/battlePass/battlePassPkg.nut")
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText
+} = require("%rGui/battlePass/passPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
 let eventPassRewardsList = require("%rGui/battlePass/eventPassRewardsList.nut")
@@ -84,8 +84,13 @@ let levelBlock = @() {
 }
 
 let leftMiddle = {
-  vplace = ALIGN_BOTTOM
-  children = levelBlock
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = { size = flex() }
+  children = [
+    mkTimeEndsAtText(epSeasonEndTime)
+    levelBlock
+  ]
 }
 
 let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openEPPurchaseWnd,
@@ -157,6 +162,7 @@ let contentEP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
       middlePart(stagesList.get())
       {
         size = FLEX_H
+        margin = [0, 0, hdpx(30), 0]
         children = [
           {
             size = [FLEX, progressIconSize[1]]

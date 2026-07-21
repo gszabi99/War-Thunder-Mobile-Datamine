@@ -15,9 +15,10 @@ let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
 let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, getSpecialEventName,
-  specialEventsLootboxesState, MAIN_EVENT_ID, shouldShowEventMechanics, curEvent
+  specialEventsLootboxesState, MAIN_EVENT_ID, curEvent, subEventsList
 } = require("%rGui/event/eventState.nut")
-let { openSeasonScene, openMainSeasonScene, LOOTBOX_TAB, PASS_SCENE
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
+let { openSeasonScene, openMainSeasonScene, LOOTBOX_TAB, PASS_SCENE, openEventShopWnd
 } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { getSpecialEventLocName, getSpecialEventRewardUnitName } = require("%rGui/event/eventLocName.nut")
 let { hasBpRewardsToReceive, isBpSeasonActive
@@ -29,12 +30,12 @@ let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { selLineSize } = require("%rGui/components/selectedLine.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { shopGoods, openShopWnd, allShopGoods, getGoodsShopId } = require("%rGui/shop/shopState.nut")
+let { shopGoods, allShopGoods } = require("%rGui/shop/shopState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
 let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
-let { hasOPRewardsToReceive } = require("%rGui/battlePass/operationPassState.nut")
-let { BATTLE_PASS, OPERATION_PASS } = require("%rGui/battlePass/passState.nut")
+let { hasOPRewardsToReceive, OP_EVENT_ID } = require("%rGui/battlePass/operationPassState.nut")
+let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
 
 let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
@@ -95,7 +96,7 @@ let linkToOperationPassBtnCtor = @() {
   children = [
     mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
     iconPersonal,
-    @() openMainSeasonScene(PASS_SCENE, OPERATION_PASS),
+    @() openSeasonScene(OP_EVENT_ID, PASS_SCENE),
       @() {
         watch = hasOPRewardsToReceive
         margin = unseenMarkMargin
@@ -130,9 +131,8 @@ function mkLinkToStoreBtnInfo(idx) {
     ? getEventPresentation(lootboxInfo.get().eventName).icon
     : getEventPresentation(eventName.get()).icon)
   let eventGoods = Computed(@() eventName.get() != ""
-    && shopGoods.get().findvalue(@(item) item?.meta.eventId == eventName.get()))
+    && shopGoods.get().findvalue(@(item) item?.meta.event_id == eventName.get()))
   let hasGoods = Computed(@() eventGoods.get() != null)
-  let shopId = Computed(@() getGoodsShopId(eventGoods.get()))
   let isEventPassQuests = Computed(@() eventsPassList.get().findindex(@(v) v.eventName == eventName.get()) != null)
   let hasEpRewardsToReceive = mkHasEpRewardsToReceive(
     Computed(@() isEventPassQuests.get() ? getEventPassName(eventName.get()) : null))
@@ -153,7 +153,7 @@ function mkLinkToStoreBtnInfo(idx) {
                 children = hasEpRewardsToReceive.get() ? priorityUnseenMark : null
               })
         : hasGoods.get()
-          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(null, null, shopId.get()))
+          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openEventShopWnd(eventName.get()))
         : lootboxInfo.get()
           ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openSeasonScene(lootboxInfo.get().eventId, LOOTBOX_TAB))
         : null
@@ -276,9 +276,9 @@ function mkSpecialQuestsTab(idx) {
     id
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()?[id] ?? []), mkQuest, id, comp, width, hasComponent)
+    contentCtor = @(isFullScreenWidth) questsWndPage(Computed(@() questsCfg.get()?[id] ?? []), mkQuest, id, comp, width, hasComponent, isFullScreenWidth)
     isVisible = Computed(@() shouldShowEventMechanics.get()
-      && curEvent.get() == id
+      && (curEvent.get() == id || subEventsList.get()?[id] == curEvent.get())
       && questsCfg.get()?[id].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     hasReward
   }
@@ -292,7 +292,7 @@ let tabs = [
     imageSizeMul = imageSizeMul
     imageTabOffset = imageTabOffset
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
+    contentCtor = @(isFullScreenWidth) questsWndPage(Computed(@() questsCfg.get()[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor, null, null, isFullScreenWidth)
     isVisible = Computed(@() shouldShowEventMechanics.get()
       && curEvent.get() == MAIN_EVENT_ID
       && questsCfg.get()[COMMON_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null
@@ -304,7 +304,7 @@ let tabs = [
     imageSizeMul = imageSizeMul
     imageTabOffset = imageTabOffset
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
+    contentCtor = @(isFullScreenWidth) questsWndPage(Computed(@() questsCfg.get()[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor, null, null, isFullScreenWidth)
     tabContent = eventTabContent()
     isVisible = Computed(@() shouldShowEventMechanics.get()
       && curEvent.get() == MAIN_EVENT_ID
@@ -322,9 +322,9 @@ let tabs = [
     locId = "quests/personal"
     image = iconPersonal
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[PERSONAL_TAB]), mkQuest, PERSONAL_TAB, linkToOperationPassBtnCtor)
+    contentCtor = @(isFullScreenWidth) questsWndPage(Computed(@() questsCfg.get()[PERSONAL_TAB]), mkQuest, PERSONAL_TAB, linkToOperationPassBtnCtor, null, null, isFullScreenWidth)
     isVisible = Computed(@() shouldShowEventMechanics.get()
-      && curEvent.get() == MAIN_EVENT_ID
+      && curEvent.get() == OP_EVENT_ID
       && questsCfg.get()[PERSONAL_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     hasReward = hasOPRewardsToReceive
   }
@@ -334,7 +334,7 @@ let tabs = [
     image = "ui/gameuiskin#prizes_icon.svg"
     imageSizeMul = 0.8
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[ACHIEVEMENTS_TAB]), mkAchievement, ACHIEVEMENTS_TAB)
+    contentCtor = @(isFullScreenWidth) questsWndPage(Computed(@() questsCfg.get()[ACHIEVEMENTS_TAB]), mkAchievement, ACHIEVEMENTS_TAB, null, null, null, isFullScreenWidth)
     isVisible = Computed(@() isCommonQuestsVisible.get()
       && questsCfg.get()[ACHIEVEMENTS_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
   }
@@ -344,7 +344,7 @@ let tabs = [
     image = "ui/gameuiskin#quest_promo_icon.svg"
     imageSizeMul = 0.9
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[PROMO_TAB]), mkQuest, PROMO_TAB)
+    contentCtor = @(isFullScreenWidth) questsWndPage(Computed(@() questsCfg.get()[PROMO_TAB]), mkQuest, PROMO_TAB, null, null, null, isFullScreenWidth)
     isVisible = Computed(@() isCommonQuestsVisible.get()
       && questsCfg.get()[PROMO_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
   }
@@ -354,9 +354,16 @@ foreach(tab in tabs)
   if ("unseen" not in tab)
     tab.unseen <- mkUnseen(tab.id, tab?.hasReward ?? Watched(false))
 
+let tabsVisibleWatches = tabs.map(@(t) t?.isVisible).filter(@(w) w != null)
 let clearTabIdToOpen = @() deferOnce(@() tabIdToOpen.set(null))
 
 function questsWndCtor() {
+  let isFullScreenWidth = Watched(false)
+  let updateFullScreenWidth = @() isFullScreenWidth.set(
+    tabsVisibleWatches.reduce(@(visibleCount, w) visibleCount + (w.get() ? 1 : 0), 0) <= 1)
+  let onTabVisibleChange = @(_) updateFullScreenWidth()
+  updateFullScreenWidth()
+
   function findTabIdxById(pageId) {
     if (pageId != null) {
       let idxById = tabs.findindex(@(v) v?.id == pageId)
@@ -376,6 +383,8 @@ function questsWndCtor() {
   let scrollHandler = ScrollHandler()
 
   function setTabById(id) {
+    if (id == null)
+      return
     let idx = findTabIdxById(id)
     if (idx != null && (tabs[idx]?.isVisible.get() ?? true))
       curTabIdx.set(idx)
@@ -385,21 +394,22 @@ function questsWndCtor() {
   function curOptionsContent() {
     let tab = tabs?[curTabIdx.get()]
     let { isFullWidth = false } = tab
+    let watch = [curTabIdx, isFullScreenWidth]
     return (tab?.content ?? tab?.contentCtor)
       ? {
-          watch = curTabIdx
+          watch
           size = [isFullWidth ? contentWidthFull : contentWidth, flex()]
           children = {
             hplace = ALIGN_CENTER
             key = tab
             size = FLEX
             flow = FLOW_VERTICAL
-            children = tab?.content ?? tab?.contentCtor()
+            children = tab?.content ?? tab?.contentCtor(isFullScreenWidth)
             animations = wndSwitchAnim
           }
         }
       : {
-          watch = curTabIdx
+          watch
           size = FLEX
           children = tab?.children ? mkChildrenOptions(tab?.children) : { size = FLEX }
         }
@@ -410,22 +420,33 @@ function questsWndCtor() {
       { size = [ tabW + minContentOffset, flex() ] },
       { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
 
+  let tabsListBlock = @() {
+    watch = isFullScreenWidth
+    size = isFullScreenWidth.get() ? [0, flex()] : [tabW + minContentOffset, flex()]
+    children = isFullScreenWidth.get() ? null : tabsList
+  }
+
   return {
     pos = [-selLineSize, 0]
     key = setTabById
     function onAttach() {
       tabIdToOpen.subscribe(setTabById)
+      foreach (w in tabsVisibleWatches)
+        w.subscribe(onTabVisibleChange)
+      updateFullScreenWidth()
       isQuestsAttached.set(true)
     }
     function onDetach() {
       tabIdToOpen.unsubscribe(setTabById)
+      foreach (w in tabsVisibleWatches)
+        w.unsubscribe(onTabVisibleChange)
       isQuestsAttached.set(false)
     }
     size = [FLEX, flex()]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     children = [
-      tabsList
+      tabsListBlock
       curOptionsContent
     ]
   }

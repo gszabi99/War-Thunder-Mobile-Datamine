@@ -135,7 +135,7 @@ function openDetailsWnd() {
 
 
 let mkHeader = @() mkPreviewHeader(
-  Computed(@() previewGoods.get()?.offerClass == "seasonal" || previewGoods.get()?.meta.eventId
+  Computed(@() previewGoods.get()?.offerClass == "seasonal" || previewGoods.get()?.meta.event_id
     ? loc("seasonalOffer")
     : loc("limitedTimeOffer")),
   closeGoodsPreview,

@@ -1,11 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress, emptyProgress,
-  setLastSeenUnlocks, unseenUnlocks
+  setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardCurrencies, getAllUnlockCurrencies
 } = require("%rGui/unlocks/unlocks.nut")
 let { EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION,
   PERSONAL_META_MARK, SPEED_UP_AD_COST
@@ -158,34 +157,6 @@ let getStarsTotalNonUpdatable = @(unlock) (
 let tutorialSectionIdWithReward = Computed(@() questsCfg.get()?[EVENT_TAB]
   .findvalue(@(section) null != questsBySection.get()?[section].findvalue(@(r) r.hasReward)))
 
-function getUnlockNextRewardCurrencies(u, sConfigs) {
-  let res = {}
-  let { rewards = null } = u.stages?[u.stage] ?? u.stages?[u.stages.len() - 1]
-  if (rewards == null)
-    return res
-  foreach (rId, _ in rewards)
-    sConfigs?.userstatRewards[rId].each(function(g) {
-      let { gType = "", id = "" } = g
-      if (gType == G_CURRENCY)
-        res[id] <- true
-    })
-  return res
-}
-
-function getAllUnlockCurrencies(u, sConfigs, statsTables) {
-  let res = getUnlockNextRewardCurrencies(u, sConfigs)
-  if (u?.isCompleted)
-    return res
-
-  let { currency = null } = statsTables?.stats[u.table].rerollPrice
-  if (currency != null)
-    res[currency] <- true
-  let { price = 0, currencyCode = "" } = u.stages?[u.stage] ?? u.stages?[u.stages.len() - 1]
-  if (price > 0 && currencyCode != "")
-    res[currencyCode] <- true
-  return res
-}
-
 function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, statsTables, sConfigs) {
   let currencies = {}
   if (tabId in pUnlockByTab)
@@ -201,11 +172,11 @@ function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnl
 function getQuestNextRewardCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
   let currencies = {}
   if (tabId in pUnlockByTab)
-    currencies.__update(getUnlockNextRewardCurrencies(pUnlockByTab[tabId], sConfigs))
+    currencies.__update(getUnlockAllRewardCurrencies(pUnlockByTab[tabId], sConfigs))
   qCfg?[tabId].each(function(s) {
     if (s in pUnlockBySection)
-      currencies.__update(getUnlockNextRewardCurrencies(pUnlockBySection[s], sConfigs))
-    qBySection?[s].each(@(q) currencies.__update(getUnlockNextRewardCurrencies(q, sConfigs)))
+      currencies.__update(getUnlockAllRewardCurrencies(pUnlockBySection[s], sConfigs))
+    qBySection?[s].each(@(q) currencies.__update(getUnlockAllRewardCurrencies(q, sConfigs)))
   })
   return currencies
 }

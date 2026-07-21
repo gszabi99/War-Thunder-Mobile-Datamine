@@ -33,7 +33,7 @@ let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let goodsW = hdpxi(555)
 let goodsSmallSize = [goodsSmallSizeW, goodsH]
-let goodsBgH = hdpxi(291)
+let goodsBgH = hdpxi(233) 
 let timerSize = hdpxi(80)
 let advertSize = hdpxi(60)
 let vipIconW = CS_INCREASED_ICON.iconSize

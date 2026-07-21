@@ -16,7 +16,7 @@ let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
 let { COMMON_TAB, isQuestsAttached, questsCfg, questsBySection, getStarsTotalNonUpdatable,
   progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, tutorialQuestBtnKey
 } = require("%rGui/quests/questsState.nut")
-let { shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")

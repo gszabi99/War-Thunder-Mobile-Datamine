@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "math" import round
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
+let { register_command } = require("console")
 let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_VKID, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL } = require("%appGlobals/legal.nut")
@@ -30,6 +31,8 @@ let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
 let check2StepAuthCode = mkWatched(persist, "check2StepAuthCode", false)
 let hasEmail2step = mkWatched(persist, "hasEmail2step", false)
 let secStepType = mkWatched(persist, "secStepType", SST_UNKNOWN)
+let isVkAllowed = mkWatched(persist, "isVkAllowed", false)
+
 let showPasswordIconSize = [hdpxi(50), hdpxi(40)]
 
 let isShowLanguagesList = Watched(false)
@@ -418,9 +421,13 @@ let loginButtonCtors = {
   [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_FIREBASE }),
     loginButtonStyle),
-  [LT_VKID] = @() mkCustomButton(vkLoginButtonContent,
-    @() eventbus_send("doLogin", { loginType = LT_VKID }),
-    loginButtonStyle),
+  [LT_VKID] = @() @() {
+    watch = isVkAllowed
+    children = !isVkAllowed.get() ? null
+      : mkCustomButton(vkLoginButtonContent,
+          @() eventbus_send("doLogin", { loginType = LT_VKID }),
+          loginButtonStyle)
+  },
   [LT_GUEST] = @() mkCustomButton(guestLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_GUEST }),
     loginButtonStyle),
@@ -525,5 +532,7 @@ let mkLoginWnd = @() {
   ]
   animations = wndSwitchAnim
 }
+
+register_command(@() isVkAllowed.set(!isVkAllowed.get()), "login.toggleVkHide")
 
 return mkLoginWnd

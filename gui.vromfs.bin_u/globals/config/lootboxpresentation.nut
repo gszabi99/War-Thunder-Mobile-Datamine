@@ -212,11 +212,13 @@ let eventLootboxScale = {
   event_special_ships_anniversary_2024 = 1.2,
   ["event_ships_big_season_25.avif"] = 1.2,
   ["event_ships_big_season_31.avif"] = 1.25,
+  ["event_ships_big_season_35.avif"] = 1.6,
   ["event_special_april_event_2026.avif"] = 1.5,
 }
 
 let eventLootboxShiftPos = {
   ["event_ships_big_season_25.avif"] = [0, -0.15],
+  ["event_ships_big_season_35.avif"] = [0, -0.1],
 }
 
 let customGoodsLootboxScale = {

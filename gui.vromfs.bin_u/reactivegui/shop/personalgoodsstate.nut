@@ -12,6 +12,7 @@ let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/server
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
 let { SC_FEATURED, SC_SPECIAL } = require("%rGui/shop/shopConst.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 
 
 let SEEN_PERSONAL_GOODS = "seenPersonalGoods"
@@ -43,7 +44,7 @@ let needRefresh = Computed(function() {
 let shouldRefreshRequest = keepref(Computed(@() needRefresh.get() && isInMenu.get()))
 
 function updateRelevance() {
-  if (!isServerTimeValid.get()) {
+  if (!isServerTimeValid.get() || !shouldShowEventMechanics.get()) {
     pGoodsRelevance.set({})
     pGoodsSoon.set({})
     return
@@ -88,7 +89,7 @@ function updateRelevance() {
 pGoodsRelevance.whiteListMutatorClosure(updateRelevance)
 updateRelevance()
 
-foreach (w in [isServerTimeValid, personalGoodsCfg, personalGoods])
+foreach (w in [isServerTimeValid, personalGoodsCfg, personalGoods, shouldShowEventMechanics])
   w.subscribe(@(_) updateRelevance())
 
 let activePersonalGoods = Computed(function(prev) {
@@ -142,7 +143,7 @@ let soonPersonalGoods = Computed(function(prev) {
 let mkPGoodsByShopCategory = @(activeGoods) Computed(function() {
   let res = {}
   foreach (g in activeGoods.get())
-    getSubArray(res, "eventId" in g.meta ? SC_SPECIAL : SC_FEATURED).append(g)
+    getSubArray(res, "event_id" in g.meta ? SC_SPECIAL : SC_FEATURED).append(g)
   res.each(@(l) l.sort(@(a, b)
     (a?.lifeTime ?? 0) <=> (b?.lifeTime ?? 0)
       || (a?.endTime ?? 0) <=> (b?.endTime ?? 0)

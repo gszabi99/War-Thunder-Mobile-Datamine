@@ -3,7 +3,7 @@ let { mkCurrencyFullId, currencyToFullId, sortByCurrencyId, currencySeasons
 } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCurrencyConvertInfo } = require("%appGlobals/config/currencyPresentation.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventId, parentEventLoc,
+let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventLoc,
   buyCurrencyWndGamercardCurrencies
 } = require("%rGui/event/buyEventCurrenciesState.nut")
 let { mkGoodsWrap, mkSlotBgImg, mkCurrencyAmountTitle, mkGoodsImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles,
@@ -67,14 +67,14 @@ let questsLinkPlate = {
   children = txt({ text = utf8ToUpper(loc("mainmenu/btnQuests")) }.__update(fontSmall))
 }
 
-function mkQuestsLink(curId, eventIdW) {
+function mkQuestsLink(curId, tabId) {
   let cfg = getCurrencyGoodsPresentation(curId, 1000000)
   let bgParticles = mkBgParticles(goodsBgSize)
 
   return mkGoodsWrap(
     {},
     function() {
-      openQuestsWndOnTab(eventIdW.get())
+      openQuestsWndOnTab(tabId)
       closeBuyEventCurrenciesWnd()
     },
     @(sf, _) [
@@ -171,12 +171,12 @@ let scrollArrowsBlock = {
 let sortByCurrencyAndAmount = @(a, b) sortByCurrencyId(a.price.currencyId, b.price.currencyId)
   || a.price.price <=> b.price.price
 
-let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}) {
+let mkCurrenciesList = @(cId, goodsList, showQuestsLinkTabId, needUseScroll, ovr = {}) {
   flow = FLOW_HORIZONTAL
   halign = needUseScroll ? ALIGN_LEFT : ALIGN_CENTER
   gap
   children = [
-    showQuestsLink ? mkQuestsLink(cId, parentEventId) : null
+    showQuestsLinkTabId != null ? mkQuestsLink(cId, showQuestsLinkTabId) : null
   ].extend(mkGoodsListWithBaseValue(goodsList)
       .sort(sortByCurrencyAndAmount)
       .map(@(good, idx) mkGoods(good,
@@ -189,24 +189,31 @@ let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}
 }.__update(ovr)
 
 function mkEventCurrenciesGoods() {
-  let showQuestsLink = Computed(@() currencyId.get() in
-    getQuestNextRewardCurrenciesInTab(parentEventId.get(), questsCfg.get(), questsBySection.get(),
-      progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get()))
-  let needUseScroll = Computed(@() (eventCurrenciesGoods.get().len()) + (showQuestsLink.get() ? 1 : 0) > maxColumns)
+  let showQuestsLinkTabId = Computed(function() {
+    foreach (tabId, _ in questsCfg.get()) {
+      let currencies = getQuestNextRewardCurrenciesInTab(tabId, questsCfg.get(), questsBySection.get(),
+        progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get())
+      if (currencyId.get() in currencies)
+        return tabId
+    }
+    return null
+  })
+  let needUseScroll = Computed(@()
+    (eventCurrenciesGoods.get().len()) + (showQuestsLinkTabId.get() != null ? 1 : 0) > maxColumns)
   let cFullId = Computed(@() currencyToFullId.get()?[currencyId.get()] ?? currencyId.get())
 
   return @() {
-    watch = [eventCurrenciesGoods, cFullId, needUseScroll, showQuestsLink]
+    watch = [eventCurrenciesGoods, cFullId, needUseScroll, showQuestsLinkTabId]
     size = FLEX_H
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = !needUseScroll.get()
-      ? mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLink.get(), needUseScroll.get())
+      ? mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLinkTabId.get(), needUseScroll.get())
       : {
         size = FLEX_H
         children = [
           pannableArea(
-            mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLink.get(), needUseScroll.get()),
+            mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLinkTabId.get(), needUseScroll.get()),
             { size = [sw(100), FLEX] },
             {
               behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],

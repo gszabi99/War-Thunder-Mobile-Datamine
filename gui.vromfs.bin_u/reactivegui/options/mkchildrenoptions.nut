@@ -7,7 +7,7 @@ let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
-let { contentH } = require("%rGui/battlePass/battlePassPkg.nut")
+let { contentH } = require("%rGui/battlePass/passPkg.nut")
 
 let contentWidth = saSize[0] - tabW - saBorders[0]
 let pannableAreaWidth = saSize[0] - tabW + saBorders[0]

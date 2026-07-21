@@ -8,6 +8,7 @@ let { deep_clone } = require("%sqstd/underscore.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 let { get_modifications_blk, get_game_params_blk } = require("blkGetters")
 let { TANK, SHIP, AIR } = require("%appGlobals/unitConst.nut")
+let { getUnitTags } = require("%appGlobals/unitTags.nut")
 
 let iconDamage = "►"
 let iconCooldown = "▩"
@@ -48,6 +49,14 @@ let planeAttrToCrewParamsMap = {
   plane_jamming = [ "weaponsmith", "weaponCare", "jamProbabilityMultiplier" ]
   plane_reloading = [ "weaponsmith", "reloadSpeed", "gun" ]
   plane_scatter = [ "weaponsmith", "weaponCare", "mulMaxDeltaAngle" ]
+}
+
+let tankArcadeBoostInfluenceByTag = {
+  type_light_tank = "lightTankArcadeBoostInfluence"
+  type_medium_tank = "mediumTankArcadeBoostInfluence"
+  type_heavy_tank = "heavyTankArcadeBoostInfluence"
+  type_tank_destroyer = "tankDestroyerArcadeBoostInfluence"
+  type_spaa = "spaaArcadeBoostInfluence"
 }
 
 function modsMul(attrId, mods) {
@@ -394,7 +403,15 @@ function mulField(tbl, key, mul) {
     tbl[key] *= mul
 }
 
-function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
+function getTankArcadeBoostInfluence(unitName, easyDifficulty) {
+  let tags = unitName != null ? getUnitTags(unitName) : {}
+  foreach (tag, cfgKey in tankArcadeBoostInfluenceByTag)
+    if (tag in tags)
+      return easyDifficulty?[cfgKey] ?? 1.0
+  return 1.0
+}
+
+function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods, unitName = null) {
   let stats = shopCfg != null ? deep_clone(shopCfg) : null
   if (stats == null || attrPreset == null)
     return stats
@@ -421,7 +438,10 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
   }
 
   if (unitType == TANK) {
-    let tankGearMult = 1 + (1 - (get_game_params_blk()?.difficulty_settings.baseDifficulty.easy.tankMainGearRatioMult ?? 1))
+    let easyDifficulty = get_game_params_blk()?.difficulty_settings.baseDifficulty.easy
+    let gearRatioMult = easyDifficulty?.tankMainGearRatioMult ?? 1
+    let boostInfluence = getTankArcadeBoostInfluence(unitName, easyDifficulty)
+    let tankGearMult = 1.0 / (1 + (gearRatioMult - 1) * boostInfluence)
     mulField(stats, "maxSpeedForward", tankGearMult)
     mulField(stats, "maxSpeedBackward", tankGearMult)
     mulField(baseStats, "maxSpeedForward", tankGearMult)

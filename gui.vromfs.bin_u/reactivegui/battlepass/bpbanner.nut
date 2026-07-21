@@ -5,7 +5,7 @@ let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradie
 let { eventSeason, eventSeasonIdx, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { translucentButton, translucentButtonsVGap, translucentButtonsWidth } = require("%rGui/components/translucentButton.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { openMainSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openMainSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
 let { tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
 
@@ -19,7 +19,7 @@ let textRowHeight = hdpx(30)
 let bannerHeight = hdpx(20) + bannerIconSize[1] + textRowHeight
 
 let mainEventBtn = @(unseenMark) translucentButton("ui/gameuiskin#icon_events.svg",
-  @() openMainSeasonScene(LOOTBOX_TAB),
+  @() openMainSeasonScene(),
   null,
   @(_) unseenMark)
 
@@ -45,7 +45,7 @@ return @(isPassActive, isEventActive) function () {
           color = stateFlags.get() & S_HOVER ? hoverColor : borderColor
           onElemState = @(sf) stateFlags.set(sf)
           behavior = Behaviors.Button
-          onClick = @() openMainSeasonScene(LOOTBOX_TAB)
+          onClick = @() openMainSeasonScene()
           children = {
             size = [FLEX, SIZE_TO_CONTENT]
             rendObj = ROBJ_BOX

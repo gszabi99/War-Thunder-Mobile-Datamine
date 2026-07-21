@@ -64233,3 +64233,27 @@ tokyo_park_a
 autoloader_
 forceRenderWaves
 allowPipelineCache
+uk_battlecruiser_queen_mary
+uk_533mm_21in_mk1_torpedo
+silver_district_Dom
+battlecruiser_queen_mary
+gameData/Weapons/torpedoes/uk_533mm_21in_mk1_torpedo.blk
+uk_battlecruiser_queen_mary_default
+gameData/units/ships/weaponPresets/uk_battlecruiser_queen_mary_default.blk
+washington_b1
+hasThrustVectoringMode
+HasThrustVecMainControlsMode
+UseClimbMinLimByRAltitude
+radar1_dm
+2026-06-24 00:00:00
+fm/washington_b1.blk
+fuse_panel
+washington_b1_default
+washington_b1_c*
+washington_b1_n*
+washington_b1_lsb_night_c*
+washington_b1_lsb_night_n*
+washington_b1_radar_c*
+washington_b1_radar_lsb_night_c*
+washington_b1_radar_n*
+washington_b1_radar_lsb_night_n*

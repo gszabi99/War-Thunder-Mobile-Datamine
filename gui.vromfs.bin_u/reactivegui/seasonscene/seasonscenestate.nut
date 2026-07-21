@@ -1,35 +1,105 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { curEventBg, openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter,
-  shouldShowEventMechanics, specialEventsOrdered
+let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter, subEventsList,
+  specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup, closeEventWnd,
+  getEventPresentationId, eventSeason, allSpecialEvents
 } = require("%rGui/event/eventState.nut")
-let { playerSelectedScene } = require("%rGui/battlePass/passState.nut")
-let { sceneBg } = require("%rGui/battlePass/passScene.nut")
-let { tabIdToOpen, questsCfg } = require("%rGui/quests/questsState.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
+let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
+let { eventsPassList } = require("%rGui/battlePass/eventPassState.nut")
+let { bpProgressUnlock } = require("%rGui/battlePass/battlePassState.nut")
+let { isOPSeasonActive, OP_EVENT_ID, OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
+let { playerSelectedScene, getVisibleTabs } = require("%rGui/battlePass/passState.nut")
+let { tabIdToOpen, questsCfg, questsBySection } = require("%rGui/quests/questsState.nut")
+let { openShopWndByGoods, getGoodsShopId, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
+  personalGoodsByShop
+} = require("%rGui/shop/shopState.nut")
+let { getShopIdForEventId } = require("%rGui/shop/eventShopState.nut")
+let { COMMON_TAB, EVENT_TAB, PERSONAL_TAB, ACHIEVEMENTS_TAB, PROMO_TAB } = require("%rGui/unlocks/unlocksConst.nut")
 
 
 let PASS_SCENE = "pass_scene"
 let QUESTS_TAB = "quests_tab"
+let EVENT_SHOP_TAB = "event_shop_tab"
 let LOOTBOX_TAB = "lootbox_tab"
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
 
-let seasonTabs = [ PASS_SCENE, QUESTS_TAB, LOOTBOX_TAB ]
+let seasonTabs = [ PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB ]
+
+let questTabsByEventId = {
+  [""] = [ ACHIEVEMENTS_TAB, PROMO_TAB ],
+  [MAIN_EVENT_ID] = [ COMMON_TAB, EVENT_TAB, ACHIEVEMENTS_TAB, PROMO_TAB ],
+  [OP_EVENT_ID] = [ PERSONAL_TAB ],
+}
 
 let seasonTabIdx = Computed(@() seasonTabs.indexof(playerSelectedSeasonTab.get()) ?? 0)
 let seasonPageId = Computed(@() seasonTabs?[seasonTabIdx.get()])
 
-let bgScene = Computed(function() {
-  let id = seasonPageId.get()
-  if (id == PASS_SCENE)
-    return sceneBg.get()
-  if ( id == LOOTBOX_TAB || id == QUESTS_TAB)
-    return curEventBg.get()
-  return null
-})
+let seasonShopId = Computed(@() getShopIdForEventId(curEvent.get(), specialEvents.get(),
+  goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get()))
 
+function isQuestsTabVisible(eventId, qCfg, qBySection) {
+  let tabsList = questTabsByEventId?[eventId] ?? [eventId]
+  foreach (tabId in tabsList)
+    if (qCfg?[tabId].findindex(@(s) qBySection[s].len() > 0) != null)
+      return true
+  return false
+}
+
+let isShopTabVisible = @(sId, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV, personalGoodsByShopV)
+  sId != null
+    && 0 < (goodsByShopV[sId].len() + soonGoodsByShopV[sId].len() + soonPersonalGoodsByShopV[sId].len()
+      + personalGoodsByShopV[sId].len())
+
+let isLootboxTabVisible = @(eventId, isEActive, isOActive, specEvents, lootboxesRaw)
+  getIsEventActive(eventId, isEActive, isOActive, specEvents)
+    && getEventLootboxes(eventId, lootboxesRaw).len() > 0
+
+let isSeasonTabVisible = {
+  [PASS_SCENE] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get()
+      && getVisibleTabs(id, bpProgressUnlock.get(), eventsPassList.get(), subEventsList.get()).len() > 0
+    watched = Computed(@() shouldShowEventMechanics.get()
+      && getVisibleTabs(curEvent.get(), bpProgressUnlock.get(), eventsPassList.get(), subEventsList.get()).len() > 0)
+  },
+  [QUESTS_TAB] = {
+    calcByEventId = @(id) isQuestsTabVisible(id, questsCfg.get(), questsBySection.get()),
+    watched = Computed(@() isQuestsTabVisible(curEvent.get(), questsCfg.get(), questsBySection.get()))
+  },
+  [EVENT_SHOP_TAB] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get()
+      && isShopTabVisible(
+        getShopIdForEventId(id, specialEvents.get(), goodsByShop.get(), soonGoodsByShop.get(),
+          soonPersonalGoodsByShop.get(), personalGoodsByShop.get()),
+        goodsByShop.get(), soonGoodsByShop.get(),
+        soonPersonalGoodsByShop.get(), personalGoodsByShop.get())
+    watched = Computed(@() shouldShowEventMechanics.get()
+      && isShopTabVisible(seasonShopId.get(), goodsByShop.get(), soonGoodsByShop.get(),
+        soonPersonalGoodsByShop.get(), personalGoodsByShop.get()))
+  },
+  [LOOTBOX_TAB] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get()
+      && isLootboxTabVisible(id, isEventActive.get(), isOPSeasonActive.get(), specialEvents.get(),
+        eventLootboxesRaw.get()),
+    watched = Computed(@() shouldShowEventMechanics.get()
+      && isLootboxTabVisible(curEvent.get(), isEventActive.get(), isOPSeasonActive.get(), specialEvents.get(),
+        eventLootboxesRaw.get()))
+  },
+}
+
+let bgScene = Computed(function() {
+  let eventId = curEvent.get()
+  if (eventId == OP_EVENT_ID)
+    return getOPPresentation(OPCampaign.get())
+  if (eventId == "")
+    return getEventPresentation(getEventPresentationId(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()))
+  return getEventPresentation(getEventPresentationId(eventId, eventSeason.get(), allSpecialEvents.get()))
+})
 
 let openSeasonTab = @(id) playerSelectedSeasonTab.set(id)
 
@@ -39,14 +109,20 @@ function registerSeasonTabClose(tabId, fn) {
   seasonTabCloseHandlers[tabId] <- fn
 }
 
-function openSeasonScene(eventName, id, subId = null) {
+function openSeasonScene(eventName, tabIdRaw = null, subId = null) {
   eventName = specialEvents.get().findvalue(@(v) v.eventName == eventName)?.eventId ?? eventName
+  let prevTab = playerSelectedSeasonTab.get()
+  let tabId = isSeasonTabVisible?[tabIdRaw].calcByEventId(eventName) ? tabIdRaw
+    : isSeasonTabVisible?[prevTab].calcByEventId(eventName) ? prevTab
+    : seasonTabs.findvalue(@(v) isSeasonTabVisible[v].calcByEventId(eventName))
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return null
   }
-  if (!shouldShowEventMechanics.get() && id != QUESTS_TAB && eventName != "")
+  if (tabId == null) {
+    logerr("Try to open season scene when all tabs are not visible")
     return null
+  }
 
   openEventInfo.set({
     eventName
@@ -54,17 +130,18 @@ function openSeasonScene(eventName, id, subId = null) {
   })
 
   seasonSceneOpenCounter.set(seasonSceneOpenCounter.get() + 1)
-  openSeasonTab(id)
-  if (id == PASS_SCENE && subId != null) {
+  openSeasonTab(tabId)
+  if (tabId == PASS_SCENE && subId != null)
     playerSelectedScene.set(subId)
-  }
 }
 
-let openMainSeasonScene = @(id, subId = null) openSeasonScene(MAIN_EVENT_ID, id, subId)
+let openMainSeasonScene = @(id = null, subId = null) openSeasonScene(MAIN_EVENT_ID, id, subId)
 
 function closeSeasonScene() {
   let id = playerSelectedSeasonTab.get()
   seasonTabCloseHandlers?[id]()
+  closeEventShellCleanup()
+  closeEventWnd()
   seasonSceneOpenCounter.set(0)
 }
 
@@ -79,21 +156,41 @@ function openQuestsWndOnTab(tabId) {
   openSeasonScene(eventName, QUESTS_TAB)
 }
 
+let openEventShopWnd = @(eventName) openSeasonScene(eventName, EVENT_SHOP_TAB)
+
+function openShopByGoods(goods) {
+  if (getGoodsShopId(goods) == "common")
+    return openShopWndByGoods(goods)
+  let eventId = goods?.meta?.event_id
+  if (eventId == null) {
+    logerr("openShopByGoods: goods classified into an event shop bucket but have no meta.event_id")
+    return
+  }
+  openEventShopWnd(eventId)
+}
+
 
 return {
   PASS_SCENE
   QUESTS_TAB
+  EVENT_SHOP_TAB
   LOOTBOX_TAB
+  questTabsByEventId
+  isSeasonTabVisible
   playerSelectedSeasonTab
   seasonSceneOpenCounter
   seasonTabs
   seasonTabIdx
   seasonPageId
+  seasonShopId
+
   openSeasonTab
   openSeasonScene
   openMainSeasonScene
   closeSeasonScene
   openQuestsWndOnTab
+  openEventShopWnd
+  openShopByGoods
   registerSeasonTabClose
   bgScene
 }

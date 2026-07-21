@@ -39,6 +39,7 @@ let BAR_COLOR_BLINK = 1.0
 let fadeWidth = hdpx(10)
 let minStageProgressWidth = hdpx(100)
 let progressBarWidthFull = sw(100) - saBorders[0] * 2 - tabW - minContentOffset
+let progressBarWidthNoTabs = saSize[0]
 let firstProgressWider = starIconOffset
 
 let visibleProgress = hardPersistWatched("unlocks.visibleProgress", {})
@@ -173,6 +174,7 @@ function mkQuestBar(quest, triggerPostfix = null) {
 
 let scrollHandler = ScrollHandler()
 let pannableArea = horizontalPannableAreaCtor(progressBarWidthFull, [fadeWidth, fadeWidth])
+let pannableAreaNoTabs = horizontalPannableAreaCtor(progressBarWidthNoTabs, [fadeWidth, fadeWidth])
 
 function getCurStageIdx(unlock) {
   let { stages = [], current = 0 } = unlock
@@ -348,8 +350,9 @@ function stageRewardsWidth(rewardsArray, allGoods, servConfigs) {
     + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
 }
 
-function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth) {
-  let progressBarWidth = Computed(@() progressBarWidthFull - starIconOffset
+function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth, isFullScreenWidth) {
+  let barWidthFull = Computed(@() isFullScreenWidth.get() ? progressBarWidthNoTabs : progressBarWidthFull)
+  let progressBarWidth = Computed(@() barWidthFull.get() - starIconOffset
     - (headerChildWidth.get() == 0 ? 0 : headerChildWidth.get() + headerLineGap))
   let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
     .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)))
@@ -359,14 +362,12 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
   let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
     : {
-        watch = [progressUnlock, hasScroll, headerChildWidth, progressBarWidth, minWidth, rewardsFullWidth]
-        size = FLEX_H
+        watch = [progressUnlock, hasScroll, headerChildWidth, progressBarWidth, minWidth, rewardsFullWidth, isFullScreenWidth]
+        hplace = ALIGN_LEFT
         padding = [0, 0, 0, starIconOffset]
         children = [
           !hasScroll.get()
-            ? mkStages(progressUnlock.get(),
-                (progressBarWidth.get() - rewardsFullWidth.get() - firstProgressWider) / max(progressUnlock.get()?.stages.len() ?? 1, 1),
-                tabId, curSectionId)
+            ? mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId)
             : {
                 key = hasScroll
                 size = [progressBarWidth.get() + fadeWidth * 2, progressBarHeight]
@@ -382,7 +383,8 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
                   scrollHandler.scrollToX(max(0, x - progressBarRewardSize / 4))
                 }
                 children = [
-                  pannableArea(mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId),
+                  (isFullScreenWidth.get() ? pannableAreaNoTabs : pannableArea)(
+                    mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId),
                     { pos = [0, 0], size = FLEX_H, vplace = ALIGN_CENTER },
                     {
                       size = FLEX_H

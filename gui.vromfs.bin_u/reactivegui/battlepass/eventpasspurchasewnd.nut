@@ -6,7 +6,7 @@ let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isEPPurchaseWndOpened, closeEPPurchaseWnd, isEpSeasonActive, curStage, sendEpBqEvent,
   purchasedEp, eventPurchasedUnlock, eventPaidRewardsUnlock, eventFreeRewardsUnlock, openedEventPassGoods, getEpIcon,
-  EP_NONE, EP_COMMON, EP_VIP, getEpName, epSeasonEndTime, eventBgImage, curEventId, eventPassVipLevels
+  EP_NONE, EP_COMMON, EP_VIP, getEpName, epSeasonEndTime, curEventId, eventPassVipLevels
 } = require("%rGui/battlePass/eventPassState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -30,6 +30,8 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+let { bgScene } = require("%rGui/seasonScene/seasonSceneState.nut")
+
 
 isEpSeasonActive.subscribe(@(isActive) isActive ? null : closeEPPurchaseWnd())
 
@@ -421,6 +423,6 @@ let function bpPurchaseWnd() {
 
 let sceneId = "epPurchaseWnd"
 registerScene(sceneId, bpPurchaseWnd, closeEPPurchaseWnd, isEPPurchaseWndOpened)
-setSceneBg(sceneId, eventBgImage.get())
-eventBgImage.subscribe(@(v) setSceneBg(sceneId, v))
+setSceneBg(sceneId, bgScene.get()?.bg, bgScene.get()?.bgColor)
+bgScene.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))
 registerUnlocksSceneToUpdate(sceneId)

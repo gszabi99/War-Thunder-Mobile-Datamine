@@ -21,7 +21,8 @@ let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoo
 } = require("%rGui/battlePass/battlePassState.nut")
 let { unitSkins, selectedSkin, currentSkin, availableSkins, selectedSkinCfg, hasTagsChoice
 } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let { MAIN_EVENT_ID, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { mkEventLocComp } = require("%rGui/event/eventLocName.nut")
 let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -33,7 +34,7 @@ let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { userlogTextColor, markTextColor, selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { shopGoods, openShopWndByGoods } = require("%rGui/shop/shopState.nut")
+let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -43,7 +44,7 @@ let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
-let { openSeasonScene, openMainSeasonScene, PASS_SCENE, LOOTBOX_TAB
+let { openSeasonScene, openMainSeasonScene, PASS_SCENE, LOOTBOX_TAB, openShopByGoods
 } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { chooseBetterGoods, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
@@ -352,7 +353,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
       children = textButtonPricePurchase(
         utf8ToUpper(loc("mainmenu/btnBuy")),
         mkCurrencyComp(skinGoods?.price.price, currencyId),
-        @() openShopWndByGoods(skinGoods),
+        @() openShopByGoods(skinGoods),
         { hplace = ALIGN_CENTER })
     })
   }

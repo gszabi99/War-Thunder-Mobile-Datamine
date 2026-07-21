@@ -159,7 +159,7 @@ function offerCards() {
   if (unit == null)
     return { watch }
   let upgradedUnit = unit?.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
-    { isUpgraded = true })
+    { isUpgraded = true, skin = "upgraded" })
   return modalWndBg.__merge({
     flow = FLOW_VERTICAL
     onClick = close

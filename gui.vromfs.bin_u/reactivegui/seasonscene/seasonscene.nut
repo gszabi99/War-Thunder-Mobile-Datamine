@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { selectColor } = require("%rGui/style/stdColors.nut")
@@ -17,10 +15,10 @@ let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { curEvent } = require("%rGui/event/eventState.nut")
+let { curEventLoc } = require("%rGui/event/eventLocName.nut")
+let { bottomPanelH, bottomPanelIconSize } = require("%rGui/battlePass/passPkg.nut")
 
 
-let iconSize = hdpxi(60)
-let bottomPanelH = saBorders[1] + iconSize
 let tabHighlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 10, 27, 31,-22))
 
@@ -64,9 +62,9 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
         gap = hdpx(10)
         children = [
           {
-            size = iconSize
+            size = bottomPanelIconSize
             rendObj = ROBJ_IMAGE
-            image = Picture($"{icon}:{iconSize}:P")
+            image = Picture($"{icon}:{bottomPanelIconSize}:P")
             keepAspect = true
           }
           {
@@ -108,28 +106,16 @@ let seasonTabsBlock = @() {
     .filter(@(c) c != null))
 }
 
-let mkHeaderChildren = @(seasonName, seasonEndTime) [
-  @() {
-    watch = seasonName
-    rendObj = ROBJ_TEXT
-    text = seasonName.get()
-  }.__update(fontBig)
-  @() {
-    key = "battle_pass_time" 
-    watch = [seasonEndTime, serverTime]
-    rendObj = ROBJ_TEXT
-    text = !seasonEndTime.get() || (seasonEndTime.get() - serverTime.get() < 0) ? null
-      : loc("battlepass/endsin", { time = secondsToHoursLoc(seasonEndTime.get() - serverTime.get()) }  )
-  }.__update(fontTinyAccented)
-]
-
-function headerCurrencies() {
-  let { currencies = null } = sceneContentCfg?[seasonPageId.get()]
-  return currencies == null ? { watch = seasonPageId }
-    : {
-        watch = [seasonPageId, currencies]
-        children = mkCurrenciesBtns(currencies.get())
-      }
+function headerRightBlock() {
+  let { currencies = null, headerRightCtor = null } = sceneContentCfg?[seasonPageId.get()]
+  return {
+    watch = [ seasonPageId, currencies ].filter(@(v) v != null)
+    size = FLEX
+    valign = ALIGN_RIGHT
+    children = headerRightCtor != null ? headerRightCtor()
+      : currencies != null ? mkCurrenciesBtns(currencies.get())
+      : null
+  }
 }
 
 let seasonHeader = {
@@ -145,16 +131,17 @@ let seasonHeader = {
       })
       @() {
         watch = seasonPageId
-        size = FLEX_H
         flow = FLOW_VERTICAL
         gap = hdpx(5)
         children = seasonPageId.get() not in sceneContentCfg ? null
-          : mkHeaderChildren(sceneContentCfg[seasonPageId.get()].headerTitle,
-              sceneContentCfg?[seasonPageId.get()].headerEndTime)
+          : @() {
+              watch = curEventLoc
+              rendObj = ROBJ_TEXT
+              text = curEventLoc.get()
+            }.__update(fontBig)
       }
     ])
-    { size = FLEX }
-    headerCurrencies
+    headerRightBlock
   ]
 }
 

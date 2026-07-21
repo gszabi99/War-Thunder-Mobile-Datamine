@@ -13,9 +13,9 @@ let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
 let { COMMON_TAB, isQuestsAttached, tabIdToOpen, EVENT_TAB, questsBySection, getStarsTotalNonUpdatable,
   tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId, tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
-let { curEventLootboxes, isFitSeasonRewardsRequirements, shouldShowEventMechanics,
-  isEventSceneAttached
+let { curEventLootboxes, isFitSeasonRewardsRequirements, isEventSceneAttached
 } = require("%rGui/event/eventState.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMainSeasonScene, LOOTBOX_TAB, openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted,

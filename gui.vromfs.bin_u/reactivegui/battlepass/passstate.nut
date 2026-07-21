@@ -11,11 +11,11 @@ let { mkEpStagesList, isEpVipActive, isEpCommonActive, mkHasEpRewardsToReceive, 
   lastStageEpProgress, curEventId, getEventPassName, EVENT_PASS, eventsPassList
 } = require("%rGui/battlePass/eventPassState.nut")
 let { mkOPStagesList, isOpVipActive, isOpCommonActive, hasOPRewardsToReceive, operationPassGoods,
-  lastStageOpProgress, OPProgressUnlock
+  lastStageOpProgress, OP_EVENT_ID
 } = require("%rGui/battlePass/operationPassState.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
-let { curEvent } = require("%rGui/event/eventState.nut")
+let { curEvent, subEventsList } = require("%rGui/event/eventState.nut")
 
 
 let SEEN_PASSES = "seenPasses"
@@ -58,18 +58,19 @@ let getTabStateData = @(passName) passName == null ? null
   : passName.startswith(EVENT_PASS) ? tabsState[EVENT_PASS]
   : tabsState?[passName]
 
-let visibleTabs = Computed(function() {
+function getVisibleTabs(eventId, bpUnlock, passList, subList) {
   let res = []
-  let eventId = curEvent.get()
-  if (bpProgressUnlock.get() && eventId == MAIN_EVENT_ID)
+  if (bpUnlock && eventId == MAIN_EVENT_ID)
     res.append(BATTLE_PASS)
-  foreach (ep in eventsPassList.get())
-    if (ep.eventId == eventId)
+  foreach (ep in passList)
+    if (ep.eventId == eventId || subList?[ep.eventId] == eventId)
       res.append(getEventPassName(ep.eventName))
-  if (OPProgressUnlock.get() && eventId == MAIN_EVENT_ID)
+  if (eventId == OP_EVENT_ID)
     res.append(OPERATION_PASS)
   return res
-})
+}
+
+let visibleTabs = Computed(@() getVisibleTabs(curEvent.get(), bpProgressUnlock.get(), eventsPassList.get(), subEventsList.get()))
 
 let passPageIdx = Computed(@() visibleTabs.get().indexof(playerSelectedScene.get()) ?? 0)
 let passPageId = Computed(@() visibleTabs.get()?[passPageIdx.get()])
@@ -170,5 +171,6 @@ return {
   playerSelectedScene
   visibleTabs
 
+  getVisibleTabs
   getTabStateData
 }

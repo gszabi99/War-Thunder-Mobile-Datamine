@@ -18,9 +18,8 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { curOpenEventPass, eventBgImage, getEventPassName } = require("%rGui/battlePass/eventPassState.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { openSeasonScene, PASS_SCENE } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { curOpenEventPass, getEventPassName } = require("%rGui/battlePass/eventPassState.nut")
+let { openSeasonScene, PASS_SCENE, openEventShopWnd, bgScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { setHangarUnitGroup, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
@@ -34,7 +33,7 @@ let isWndAttached = Watched(false)
 
 let bgUnits = Computed(@() getEventPresentation(openedGMEvenPasstId.get()).bgUnits)
 let hasBgUnits = Computed(@() bgUnits.get() != null)
-let curEventBgImage = keepref(Computed(@() hasBgUnits.get() ? "" : eventBgImage.get()))
+let curEventBg = keepref(Computed(@() hasBgUnits.get() ? { bg = "" } : bgScene.get()))
 
 let unitsToSetInHangar = keepref(Computed(@() isWndAttached.get() ? bgUnits.get() : null))
 unitsToSetInHangar.subscribe(@(v) v == null ? null
@@ -118,7 +117,7 @@ let footer = @() {
               gap = hdpx(20)
               children = [
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_shop.svg", utf8ToUpper(loc("eventShop"))),
-                  @() openShopWnd(null, null, "events"), COMMON)
+                  @() openEventShopWnd(openedGMEvenPasstId.get()), COMMON)
                 mkCustomButton(buttonsContent("ui/gameuiskin#icon_event_pass.svg", utf8ToUpper(loc("eventPass"))),
                   function() {
                     let { eventName = null } = getEventPassName(curOpenEventPass.get()?.eventName)
@@ -201,5 +200,5 @@ let gmEventWnd = @() {
 let sceneId = "gmEventEPWnd"
 registerScene(sceneId, gmEventWnd, closeGmEPWnd, openedGMEvenPassCounter)
 setSceneBgFallback(sceneId, eventBgFallback)
-setSceneBg(sceneId, curEventBgImage.get())
-curEventBgImage.subscribe(@(v) setSceneBg(sceneId, v))
+setSceneBg(sceneId, curEventBg.get()?.bg, curEventBg.get()?.bgColor)
+curEventBg.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))

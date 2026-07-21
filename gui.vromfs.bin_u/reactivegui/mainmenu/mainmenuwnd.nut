@@ -10,7 +10,6 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
-let mkEventShopBtn = require("%rGui/shop/eventShopBtn.nut")
 let { translucentButtonsVGap, translucentButtonsWidth, translucentButton, translucentBtnStyles
 } = require("%rGui/components/translucentButton.nut")
 let { setHangarUnit, hasBgUnitsByCamp } = require("%rGui/unit/hangarUnit.nut")
@@ -33,7 +32,8 @@ let { canReceivePremDailyBonus, hasPremiumSubs } = require("%rGui/state/profileP
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
-let { isFitSeasonRewardsRequirements, isEventActive, shouldShowEventMechanics } = require("%rGui/event/eventState.nut")
+let { isFitSeasonRewardsRequirements, isEventActive } = require("%rGui/event/eventState.nut")
+let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { isBpSeasonActive } = require("%rGui/battlePass/battlePassState.nut")
 let { isOPSeasonActive } = require("%rGui/battlePass/operationPassState.nut")
 let { isEpSeasonActive } = require("%rGui/battlePass/eventPassState.nut")
@@ -60,6 +60,8 @@ let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/usersta
 let { unitPlateSize, slotsGap } = require("%rGui/slotBar/slotBarConsts.nut")
 let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByShop } = require("%rGui/shop/shopState.nut")
+let { openSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
+let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
 
 
 let battleInfoBlockMinHeight = hdpx(120)
@@ -126,7 +128,7 @@ let campaignsBtn = @() {
             size = FLEX
             rendObj = ROBJ_TEXT
             valign = ALIGN_CENTER
-            halign = ALIGN_RIGHT
+            halign = ALIGN_CENTER
             color = 0xFFFFFFFF
             maxWidth = campBtnSize[0] - campBtnImageSize[0] - campBtnGap
             text = loc("changeCampaignShort")
@@ -179,6 +181,11 @@ let btnShop = @() translucentButton("ui/gameuiskin#icon_shop.svg",
     children = needShopUnseenMark.get() ? priorityUnseenMark : null
   },
   { iconMul = 0.8 })
+
+let mkBtnOnlyAchievementsAndPromo = @() translucentButton("ui/gameuiskin#prizes_icon.svg",
+  @() openSeasonScene(""),
+  null,
+  @(_) mkSeasonSceneUnseenMark("", { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP }))
 
 function btnChangeSlotsPreset() {
   let stateFlags = Watched(0)
@@ -280,11 +287,6 @@ let leftTopButtons = {
           flow = FLOW_HORIZONTAL
           gap = hdpx(30)
           children = [
-            @() {
-              watch = shouldShowEventMechanics
-              pos = [0, hdpx(-15)]
-              children = shouldShowEventMechanics.get() ? mkEventShopBtn() : null
-            }
             offerPromo
           ]
         }
@@ -294,7 +296,7 @@ let leftTopButtons = {
       watch = [isNextBattleNewbieOffline, hasBanner, isPassActive, isEventActive]
       children = isNextBattleNewbieOffline.get() && DBGLEVEL == 0 ? null
         : btnVerRow([
-            hasBanner.get() ? bpBanner(isPassActive.get(), isEventActive.get()) : null
+            hasBanner.get() ? bpBanner(isPassActive.get(), isEventActive.get()) : mkBtnOnlyAchievementsAndPromo()
             btnVerRow([
               eventsTitleBlock
               btnHorRow([

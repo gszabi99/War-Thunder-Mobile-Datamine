@@ -31,6 +31,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+let { bgScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 
 isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBPPurchaseWnd())
 
@@ -427,5 +428,6 @@ let function bpPurchaseWnd() {
 
 let sceneId = "bpPurchaseWnd"
 registerScene(sceneId, bpPurchaseWnd, closeBPPurchaseWnd, isBPPurchaseWndOpened)
-setSceneBg(sceneId, "ui/images/bp_bg_01.avif")
+setSceneBg(sceneId, bgScene.get()?.bg, bgScene.get()?.bgColor)
+bgScene.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))
 registerUnlocksSceneToUpdate(sceneId)

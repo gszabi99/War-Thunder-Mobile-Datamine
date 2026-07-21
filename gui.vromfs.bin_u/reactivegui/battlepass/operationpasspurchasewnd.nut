@@ -30,9 +30,10 @@ let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { questsBySection } = require("%rGui/quests/questsState.nut")
 let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+let { bgScene } = require("%rGui/seasonScene/seasonSceneState.nut")
+
 
 isOPSeasonActive.subscribe(@(isActive) isActive ? null : closeOPPurchaseWnd())
 
@@ -440,6 +441,6 @@ let function opPurchaseWnd() {
 
 let sceneId = "opPurchaseWnd"
 registerScene(sceneId, opPurchaseWnd, closeOPPurchaseWnd, isOPPurchaseWndOpened)
-setSceneBg(sceneId, getOPPresentation(OPCampaign.get()).bg)
-OPCampaign.subscribe(@(v) setSceneBg(sceneId, getOPPresentation(v).bg))
+setSceneBg(sceneId, bgScene.get()?.bg, bgScene.get()?.bgColor)
+bgScene.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))
 registerUnlocksSceneToUpdate(sceneId)

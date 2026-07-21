@@ -1,11 +1,5 @@
 from "%appGlobals/currenciesState.nut" import *
 
-let defBPPresentation = {
-  bgColor = 0xFFFFFFFF
-}
-
-let bpPresentations = {}
-
 let defOpPresentation = {
   icon = null
   iconVip = null
@@ -41,7 +35,6 @@ let defEpPresentation = {
   descLocId = "eventPass/desc"
   shortDescLocId = "battlepass/tasksDesc"
   passWndCurrencies = []
-  bgColor = 0xFFFFFFFF
 }
 
 let epPresentations = {
@@ -51,27 +44,21 @@ let epPresentations = {
     passWndCurrencies = [ CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND ]
   }
   lunar_ny_2026 = {
-    bgColor = 0xFF999999
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"
   }
   event_april_2026 = {
-    bgColor = 0xFF999999
     passWndCurrencies = [ APRILINTEL, APRILBOND ]
   }
   uk_air_release = {
-    bgColor = 0xFF999999
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"
-    bg = "ui/images/event_bg_uk_air_early_access.avif"
     icon = "ui/gameuiskin#event_pass_icon_uk_air_release_event.avif"
     iconVip = "ui/gameuiskin#event_pass_icon_uk_air_release_event_vip.avif"
   }
   japan_tanks_release = {
-    bgColor = 0xFF999999
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"
-    bg = "ui/images/event_bg_japan_tanks_early_access.avif"
     icon = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event.avif"
     iconVip = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event_vip.avif"
   }
@@ -96,6 +83,5 @@ let newbieBpPresentations = {
 return {
   getOPPresentation = @(camp) opPresentations?[camp] ?? defOpPresentation
   getEpPresentation = @(eventId) epPresentations?[eventId] ?? defEpPresentation
-  getBPPresentation = @(seasonNumber) bpPresentations?[$"season_{seasonNumber}"] ?? defBPPresentation
   getNewbieBPPresentation = @(camp) newbieBpPresentations?[camp] ?? defNewbieBpPresentation
 }

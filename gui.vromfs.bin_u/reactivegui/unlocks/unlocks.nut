@@ -4,6 +4,7 @@ let { register_command } = require("console")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { userstatDescList, userstatUnlocks, userstatStatsTables, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
@@ -177,6 +178,33 @@ function isPrevUnlockCompleted(id, unlocks) {
   let requirements = requirement.split("|").map(@(r) r.strip())
   return requirements.len() == 0
     || null != requirements.findvalue(@(r) unlocks?[r].isCompleted ?? false)
+}
+
+function getUnlockAllRewardCurrencies(u, sConfigs) {
+  let res = {}
+  let { stages = [] } = u
+  foreach (s in stages)
+    s?.rewards.each(@(_, rId)
+      sConfigs?.userstatRewards[rId].each(function(g) {
+        let { gType = "", id = "" } = g
+        if (gType == G_CURRENCY)
+          res[id] <- true
+      }))
+  return res
+}
+
+function getAllUnlockCurrencies(u, sConfigs, statsTables) {
+  let res = getUnlockAllRewardCurrencies(u, sConfigs)
+  if (u?.isCompleted ?? true)
+    return res
+
+  let { currency = null } = statsTables?.stats[u.table].rerollPrice
+  if (currency != null)
+    res[currency] <- true
+  let { price = 0, currencyCode = "" } = u.stages?[u.stage] ?? u.stages?[u.stages.len() - 1]
+  if (price > 0 && currencyCode != "")
+    res[currencyCode] <- true
+  return res
 }
 
 function callExtCb(context) {
@@ -394,6 +422,8 @@ return {
   setLastSeenUnlocks
   spendingUnlocks
   isPrevUnlockCompleted
+  getUnlockAllRewardCurrencies
+  getAllUnlockCurrencies
 
   unlockInProgress
   receiveUnlockRewards

@@ -7,7 +7,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { reset_campaigns, campaignInProgress, registerHandler
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { campaignsList, setCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsList, setCampaign, curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
 let { needFirstBattleTutorForCampaign, rewardTutorialMission, setSkippedTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
@@ -23,7 +23,7 @@ let { headerGradientBg, doubleSideGradientPaddingY } = require("%rGui/components
 let { simpleVerGrad } = require("%rGui/style/gradients.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { textColor, goodTextColor2, selectColor } = require("%rGui/style/stdColors.nut")
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, defer } = require("dagor.workcycle")
 
 
 let colorBlack = 0xFF000000
@@ -38,8 +38,8 @@ let checkboxSize = hdpx(40)
 let smallGap = hdpx(10)
 
 let ANIM_DUR = 0.31
-let CAMPAIGN_APPLY_DELAY = 0.03
-let CAMPAIGN_APPLY_FALLBACK = ANIM_DUR + 0.1
+let CAMPAIGN_CLOSE_DELAY = 0.03
+let CAMPAIGN_CLOSE_FALLBACK = ANIM_DUR + 0.1
 
 let SLANT_PX = hdpxi(80)
 let CENTER_X = (sw(100) * 0.30).tointeger()
@@ -85,11 +85,10 @@ let centerPanelMask = mkBitmapPictureLazy(max(4, (CENTER_W / MASK_DOWNSAMPLE).to
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened.set(false)
-let hoveredCampaign = mkWatched(persist, "chooseCampHover", null)
 let pushedCampaign = mkWatched(persist, "chooseCampPushed", null)
 let focusedAnimFinishedCampaign = mkWatched(persist, "chooseCampAnimFinished", null)
 let chosenCampaign = mkWatched(persist, "chooseCampChosen", null)
-let focusedCampaign = Computed(@() chosenCampaign.get() ?? pushedCampaign.get() ?? hoveredCampaign.get())
+let focusedCampaign = Computed(@() chosenCampaign.get() ?? pushedCampaign.get())
 
 let backBtn = headerGradientBg([
   backButton(close, { stopMouse = true })
@@ -112,12 +111,23 @@ isOpened.subscribe(function(v) {
   chosenCampaign.set(null)
 })
 
+function startDelayedCloseWnd() {
+  let campaign = chosenCampaign.get()
+  if (campaign == null || curCampaign.get() != campaign)
+    return
+
+  resetTimeout(focusedAnimFinishedCampaign.get() == campaign
+    ? CAMPAIGN_CLOSE_DELAY
+    : CAMPAIGN_CLOSE_FALLBACK,
+  close)
+}
+
 function applyCampaign(campaign, onChangeCamp = null) {
   onChangeCamp?()
-  close()
   setCampaign(campaign)
   if (needFirstBattleTutorForCampaign(campaign))
     markUnitsSeen(unseenUnits.get())
+  startDelayedCloseWnd()
 }
 
 function onCampaignChange(campaign, onChangeCamp = null) {
@@ -163,15 +173,19 @@ function onCampaignChange(campaign, onChangeCamp = null) {
   })
 }
 
-function tryApplyChosenCampaign() {
-  let campaign = chosenCampaign.get()
-  if (campaign != null)
-    resetTimeout(focusedAnimFinishedCampaign.get() == campaign ? CAMPAIGN_APPLY_DELAY : CAMPAIGN_APPLY_FALLBACK,
-      @() chosenCampaign.get() == campaign ? onCampaignChange(campaign) : null)
-}
+chosenCampaign.subscribe(function(campaign) {
+  pushedCampaign.set(null)
+  if (campaign == null)
+    return
 
-chosenCampaign.subscribe(@(_) tryApplyChosenCampaign())
-focusedAnimFinishedCampaign.subscribe(@(_) tryApplyChosenCampaign())
+  if (needFirstBattleTutorForCampaign(campaign) && !skipTutor.get())
+    resetTimeout(CAMPAIGN_CLOSE_FALLBACK, @() chosenCampaign.get() == campaign
+      ? onCampaignChange(campaign)
+      : null)
+  else
+    defer(@() chosenCampaign.get() == campaign ? onCampaignChange(campaign) : null)
+})
+focusedAnimFinishedCampaign.subscribe(@(_) startDelayedCloseWnd())
 focusedCampaign.subscribe(@(campaign) focusedAnimFinishedCampaign.get() != campaign
   ? focusedAnimFinishedCampaign.set(null)
   : null)
@@ -370,11 +384,6 @@ let mkHitArea = @(campaign, xPos, width) {
   sound = { click = "click" }
   onClick = @() chosenCampaign.get() == null ? chosenCampaign.set(campaign) : null
   function onElemState(sf) {
-    if (sf & S_HOVER)
-      hoveredCampaign.set(campaign)
-    else if (hoveredCampaign.get() == campaign)
-      hoveredCampaign.set(null)
-
     if (sf & S_ACTIVE)
       pushedCampaign.set(campaign)
     else if (pushedCampaign.get() == campaign)
