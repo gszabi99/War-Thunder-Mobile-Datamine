@@ -18,8 +18,7 @@ let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress, acti
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap, linkToEventWidth, mkQuestText,
-  btnStyle, btnStyleSound
+  allQuestsCompleted, mkAdsBtn, btnSize, mkQuestText, btnStyle, btnStyleSound
 } = require("%rGui/quests/questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull,
   getRewardsPreviewInfo, getEventCurrencyReward, REWARDS_PREVIEW_SLOTS
@@ -46,7 +45,7 @@ let { mkChainProgress } = require("%rGui/quests/questChain.nut")
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { G_UNIT } = require("%appGlobals/rewardType.nut")
 let { REWARD_STYLE_VERY_TINY } = require("%rGui/rewards/rewardStyles.nut")
-let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
+let { selectColor } = require("%rGui/style/stdColors.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
 let { isOPActive, openOPPurchaseWnd } = require("%rGui/battlePass/operationPassState.nut")
@@ -528,18 +527,6 @@ function mergeQuestChains(quests, tabId, sectionId) {
   return res
 }
 
-let headerLine = @(headerChildCtor, child, isFullScreenWidth) {
-  size = FLEX_H
-  flow = FLOW_HORIZONTAL
-  gap = headerLineGap
-  valign = ALIGN_CENTER
-  halign = isFullScreenWidth ? ALIGN_CENTER : ALIGN_LEFT
-  children = [
-    headerChildCtor
-    child
-  ].filter(@(v) v != null)
-}
-
 let mkFullScreenWidthBar = @(block, isFullScreenWidth) block == null || !isFullScreenWidth ? block
   : {
       size = [saSize[0], SIZE_TO_CONTENT]
@@ -549,7 +536,7 @@ let mkFullScreenWidthBar = @(block, isFullScreenWidth) block == null || !isFullS
       children = block
     }
 
-function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, headerChildWidth = null, hasHeader = null, isFullScreenWidth = Watched(false)) {
+function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(false)) {
   let selSectionId = mkWatched(persist, $"selSectionId_{tabId}", null)
   let personalQuestsOrder = mkWatched(persist, $"personalQuestsOrdera_{tabId}", {})
   let curSectionId = Computed(function() {
@@ -567,8 +554,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     return curId ?? sectionsList?[0] ?? sections.get()?[0]
   })
 
-  let tabProgressUnlock = Computed(@() progressUnlockByTab.get()?[tabId])
-  let progressUnlock = Computed(@() tabProgressUnlock.get() ?? progressUnlockBySection.get()?[curSectionId.get()])
+  let progressUnlock = Computed(@() progressUnlockByTab.get()?[tabId] ?? progressUnlockBySection.get()?[curSectionId.get()])
   let progressUnlockName = Computed(@() progressUnlock.get()?.name)
 
   let questsSortedByPersonal = Computed(function() {
@@ -602,12 +588,10 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
   }
 
   let hasProgressUnlock = Computed(@() progressUnlock.get() != null)
-  let isProgressBySection = Computed(@() tabProgressUnlock.get() == null)
 
-  hasHeader = hasHeader ?? Watched(headerChildCtor != null)
   let blocksOnTop = Computed(function() {
     local n = 0
-    if (progressUnlock.get() || hasHeader.get())
+    if (progressUnlock.get())
       n++
     if (sections.get().len() > 1)
       n++
@@ -620,13 +604,11 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
   let scrollHandler = ScrollHandler()
 
   let isSectionsEmpty = Computed(@() sections.get().findindex(@(s) questsBySection.get()[s].len() > 0) == null)
-  headerChildWidth = headerChildWidth ?? Computed(@() hasHeader.get() ? linkToEventWidth : 0)
   function header() {
     let progressBlock = !hasProgressUnlock.get() ? null
-      : !hasHeader.get() ? mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth, isFullScreenWidth)
-      : headerLine(headerChildCtor, mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth, isFullScreenWidth), isFullScreenWidth.get())
+      : mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScreenWidth)
 
-    let sectionsComp = isSectionsEmpty.get() ? allQuestsCompleted
+    let sectionsBlock = isSectionsEmpty.get() ? allQuestsCompleted
       : sections.get().len() > 1
         ? {
             size = FLEX_H
@@ -642,22 +624,16 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
           }
       : null
 
-    let sectionsBlock = !progressBlock && hasHeader.get()
-      ? headerLine(headerChildCtor, sectionsComp, isFullScreenWidth.get())
-      : sectionsComp
-
     if (!sectionsBlock && !progressBlock)
-      return { watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock, hasHeader] }
+      return { watch = [sections, isSectionsEmpty, hasProgressUnlock] }
 
-    let watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock, hasHeader, isFullScreenWidth]
+    let watch = [sections, isSectionsEmpty, hasProgressUnlock, isFullScreenWidth]
     return {
       watch
       size = FLEX_H
       gap = pageBlocksGap
       flow = FLOW_VERTICAL
-      children = !isProgressBySection.get()
-        ? [mkFullScreenWidthBar(progressBlock, isFullScreenWidth.get()), sectionsBlock].filter(@(v) v != null)
-        : [sectionsBlock, mkFullScreenWidthBar(progressBlock?.__update({ rendObj = ROBJ_SOLID, color = tabBgColor }), isFullScreenWidth.get())].filter(@(v) v != null)
+      children = [mkFullScreenWidthBar(progressBlock, isFullScreenWidth.get()), sectionsBlock].filter(@(v) v != null)
     }
   }
 

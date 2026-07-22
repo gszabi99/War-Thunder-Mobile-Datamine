@@ -247,9 +247,10 @@ function getLootboxPreviewBg(name) {
   if (lootboxPreviewBg?[name])
     return lootboxPreviewBg[name]
   let season = name!=null ? regexp2(@"_season_(\d+)$").multiExtract("\\1", name)?[0] : null
-  lootboxPreviewBg[name] <- season ? $"ui/images/event_bg_season_{season}.avif" : defaultBgImage
+  
+  lootboxPreviewBg[name ?? ""] <- season ? $"ui/images/event_bg_season_{season}.avif" : defaultBgImage
 
-  return lootboxPreviewBg[name]
+  return lootboxPreviewBg[name ?? ""]
 }
 
 let defaultImgFilenameCache = {}

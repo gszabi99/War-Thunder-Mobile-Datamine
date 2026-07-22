@@ -12,7 +12,6 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
 let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
-let { headerLineGap } = require("%rGui/quests/questsPkg.nut")
 let { sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
 let { allShopGoods, isDisabledGoods } = require("%rGui/shop/shopState.nut")
@@ -24,7 +23,7 @@ let { isAdsVisible } = require("%rGui/ads/adsState.nut")
 let questBarHeight = hdpx(28)
 let progressBarHeight = hdpx(30)
 let starIconSize = hdpxi(60)
-let starIconOffset = hdpx(40)
+let starIconOffset = hdpx(44)
 let borderWidth = hdpx(3)
 let bgColor = 0x80000000
 let questBarColor = 0xFF2EC181
@@ -37,7 +36,7 @@ let BAR_COLOR_SHOW = 0.4
 let BAR_COLOR_BLINK = 1.0
 
 let fadeWidth = hdpx(10)
-let minStageProgressWidth = hdpx(100)
+let minStageProgressWidth = hdpx(122)
 let progressBarWidthFull = sw(100) - saBorders[0] * 2 - tabW - minContentOffset
 let progressBarWidthNoTabs = saSize[0]
 let firstProgressWider = starIconOffset
@@ -350,10 +349,9 @@ function stageRewardsWidth(rewardsArray, allGoods, servConfigs) {
     + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
 }
 
-function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth, isFullScreenWidth) {
+function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScreenWidth) {
   let barWidthFull = Computed(@() isFullScreenWidth.get() ? progressBarWidthNoTabs : progressBarWidthFull)
-  let progressBarWidth = Computed(@() barWidthFull.get() - starIconOffset
-    - (headerChildWidth.get() == 0 ? 0 : headerChildWidth.get() + headerLineGap))
+  let progressBarWidth = Computed(@() barWidthFull.get() - starIconOffset)
   let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
     .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)))
   let rewardsFullWidth = Computed(@() stageRewards.get()
@@ -362,7 +360,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
   let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
     : {
-        watch = [progressUnlock, hasScroll, headerChildWidth, progressBarWidth, minWidth, rewardsFullWidth, isFullScreenWidth]
+        watch = [progressUnlock, hasScroll, progressBarWidth, minWidth, rewardsFullWidth, isFullScreenWidth]
         hplace = ALIGN_LEFT
         padding = [0, 0, 0, starIconOffset]
         children = [

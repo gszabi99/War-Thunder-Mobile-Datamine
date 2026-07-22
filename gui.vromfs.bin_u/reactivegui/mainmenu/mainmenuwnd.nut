@@ -10,6 +10,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
+let mkEventShopBtn = require("%rGui/shop/eventShopBtn.nut")
 let { translucentButtonsVGap, translucentButtonsWidth, translucentButton, translucentBtnStyles
 } = require("%rGui/components/translucentButton.nut")
 let { setHangarUnit, hasBgUnitsByCamp } = require("%rGui/unit/hangarUnit.nut")
@@ -287,6 +288,11 @@ let leftTopButtons = {
           flow = FLOW_HORIZONTAL
           gap = hdpx(30)
           children = [
+            @() {
+              watch = shouldShowEventMechanics
+              pos = [0, hdpx(-15)]
+              children = shouldShowEventMechanics.get() ? mkEventShopBtn() : null
+            }
             offerPromo
           ]
         }
