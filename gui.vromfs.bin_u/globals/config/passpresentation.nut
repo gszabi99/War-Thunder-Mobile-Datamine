@@ -56,7 +56,7 @@ let epPresentations = {
     icon = "ui/gameuiskin#event_pass_icon_uk_air_release_event.avif"
     iconVip = "ui/gameuiskin#event_pass_icon_uk_air_release_event_vip.avif"
   }
-  japan_tanks_release = {
+  japan_spending = {
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"
     icon = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event.avif"

@@ -171,28 +171,28 @@ let defaultSeasonImages = [
 let defaultBgImage = "ui/images/event_bg.avif"
 
 let lootboxPreviewBg = { 
-  event_special_gift_tanks_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
-  event_special_gift_ships_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
-  event_special_gift_air_new_year_2025           = "ui/images/event_bg_christmas_2024.avif"
+  event_special_gift_tanks_new_year_2025         = { bg = "ui/images/event_bg_christmas_2024.avif" }
+  event_special_gift_ships_new_year_2025         = { bg = "ui/images/event_bg_christmas_2024.avif" }
+  event_special_gift_air_new_year_2025           = { bg = "ui/images/event_bg_christmas_2024.avif" }
 
-  event_special_tanks_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
-  event_special_ships_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
-  event_special_air_independence_2025            = "ui/images/event_bg_event_independence_day.avif"
+  event_special_tanks_independence_2025          = { bg = "ui/images/event_bg_event_independence_day.avif" }
+  event_special_ships_independence_2025          = { bg = "ui/images/event_bg_event_independence_day.avif" }
+  event_special_air_independence_2025            = { bg = "ui/images/event_bg_event_independence_day.avif" }
 
-  event_special_gift_tanks_anniversary_2025         = "ui/images/event_bg_anniversary_2025.avif"
-  event_special_gift_ships_anniversary_2025         = "ui/images/event_bg_anniversary_2025.avif"
-  event_special_gift_air_anniversary_2025           = "ui/images/event_bg_anniversary_2025.avif"
+  event_special_gift_tanks_anniversary_2025         = { bg = "ui/images/event_bg_anniversary_2025.avif" }
+  event_special_gift_ships_anniversary_2025         = { bg = "ui/images/event_bg_anniversary_2025.avif" }
+  event_special_gift_air_anniversary_2025           = { bg = "ui/images/event_bg_anniversary_2025.avif" }
 
-  event_special_china_tanks_spending_event         = "ui/images/event_bg_lunar.avif"
-  japan_tanks_spending_event_box                   = "ui/images/event_bg_japan_tanks_early_access.avif"
-  uk_air_spending_event_box                        = "ui/images/event_bg_uk_air_early_access.avif"
+  event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
+  japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
+  uk_air_spending_event_box                        = { bg = "ui/images/event_bg_uk_air_early_access.avif" }
 
-  valentine_day_candy_lootbox                      = "ui/images/event_bg_valentine_day_2026.avif"
-  valentine_day_extra_reward_lootbox               = "ui/images/event_bg_valentine_day_2026.avif"
+  valentine_day_candy_lootbox                      = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
+  valentine_day_extra_reward_lootbox               = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
 
-  april_event_2026_tanks = "ui/images/event_bg_event_april_2026.avif"
-  april_event_2026_ships = "ui/images/event_bg_event_april_2026.avif"
-  april_event_2026_air   = "ui/images/event_bg_event_april_2026.avif"
+  april_event_2026_tanks = { bg = "ui/images/event_bg_event_april_2026.avif" }
+  april_event_2026_ships = { bg = "ui/images/event_bg_event_april_2026.avif" }
+  april_event_2026_air   = { bg = "ui/images/event_bg_event_april_2026.avif" }
 }
 
 let defEventLootboxScaleBySlot = {
@@ -248,7 +248,7 @@ function getLootboxPreviewBg(name) {
     return lootboxPreviewBg[name]
   let season = name!=null ? regexp2(@"_season_(\d+)$").multiExtract("\\1", name)?[0] : null
   
-  lootboxPreviewBg[name ?? ""] <- season ? $"ui/images/event_bg_season_{season}.avif" : defaultBgImage
+  lootboxPreviewBg[name ?? ""] <- { bg = season ? $"ui/images/event_bg_season_{season}.avif" : defaultBgImage }
 
   return lootboxPreviewBg[name ?? ""]
 }

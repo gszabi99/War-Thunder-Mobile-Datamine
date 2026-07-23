@@ -8,7 +8,7 @@ let { lootboxPreviewContent } = require("%rGui/shop/lootboxPreviewContent.nut")
 let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 
 let defaultBgImage = "ui/images/event_bg.avif"
-let bgImage = keepref(Computed(@() getLootboxPreviewBg(previewLootbox.get()?.name) ?? defaultBgImage))
+let bgImage = keepref(Computed(@() getLootboxPreviewBg(previewLootbox.get()?.name) ?? { bg = defaultBgImage}))
 
 let wndHeaderGap = hdpx(30)
 let wndHeader = {
@@ -52,5 +52,5 @@ let lootboxPreviewWnd = @() {
 let sceneId = "lootboxPreviewWnd"
 registerScene(sceneId, lootboxPreviewWnd, closeLootboxPreview, isLootboxPreviewOpen)
 setSceneBgFallback(sceneId, defaultBgImage)
-setSceneBg(sceneId, bgImage.get())
-bgImage.subscribe(@(v) setSceneBg(sceneId, v))
+setSceneBg(sceneId, bgImage.get().bg, bgImage.get()?.bgColor)
+bgImage.subscribe(@(v) setSceneBg(sceneId, v.bg, v?.bgColor))

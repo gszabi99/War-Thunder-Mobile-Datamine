@@ -30,7 +30,8 @@ let { allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks, maxReleasedUn
 } = require("%appGlobals/updater/gameModeAddons.nut")
 let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
 let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
-let { getMGameModeMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
+let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
+let { getMGameModeMissionUnitsAndAddons, getBotUnits } = require("%appGlobals/updater/missionUnits.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
@@ -156,12 +157,20 @@ function getMGMListMissionUnitsAndAddons(mode, maxRank, gameModeQueueGroupsV, al
   return { misAddons = resAddons, misUnits = resUnits }
 }
 
+function getMGMListMissionUnitsAndAddonsWithBots(mode, maxRank, gameModeQueueGroupsV, allLowKillStreak = false) {
+  let res = getMGMListMissionUnitsAndAddons(mode, maxRank, gameModeQueueGroupsV, allLowKillStreak)
+  if ("campaign" in mode)
+    res.misUnits.__update(
+      getBotUnits(mode, mode.campaign, maxRank - 1, maxRank + (isNewbieMode(mode.name) ? 0 : 1)))
+  return res
+}
+
 let randomBattleMisInfo = Computed(@(prev) prevIfEqual(prev,
-  getMGMListMissionUnitsAndAddons(randomBattleMode.get(), battleUnitsMaxMRank.get(), gameModeQueueGroups.get())))
+  getMGMListMissionUnitsAndAddonsWithBots(randomBattleMode.get(), battleUnitsMaxMRank.get(), gameModeQueueGroups.get())))
 let randomBattleCoreMisInfo = Computed(@(prev) prevIfEqual(prev,
-  getMGMListMissionUnitsAndAddons(randomBattleModeCore.get(), battleUnitsMaxMRank.get(), gameModeQueueGroups.get())))
+  getMGMListMissionUnitsAndAddonsWithBots(randomBattleModeCore.get(), battleUnitsMaxMRank.get(), gameModeQueueGroups.get())))
 let randomBattleMaxMisInfo = Computed(@(prev) prevIfEqual(prev,
-  getMGMListMissionUnitsAndAddons(randomBattleModeCore.get(),
+  getMGMListMissionUnitsAndAddonsWithBots(randomBattleModeCore.get(),
     maxMyMRank.get(),
     gameModeQueueGroups.get(),
     true)))

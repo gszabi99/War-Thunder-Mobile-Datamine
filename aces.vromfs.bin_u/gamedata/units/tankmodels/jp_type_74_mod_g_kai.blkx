@@ -1727,6 +1727,12 @@
     ],
     "detectionHeight": 2.63
   },
+  "default_skin": {
+    "replace_tex": {
+      "from": "jp_camo_sdf_green*",
+      "to": "jp_camo_modern_green*"
+    }
+  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "jp_camo_sdf_green*",

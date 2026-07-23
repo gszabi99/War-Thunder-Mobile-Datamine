@@ -196,5 +196,5 @@ let previewWnd = @() {
 let sceneId = "goodsLootboxPreviewWnd"
 registerScene(sceneId, previewWnd, closeGoodsPreview, openCount)
 setSceneBgFallback(sceneId, "ui/images/event_bg.avif")
-setSceneBg(sceneId, bgImage.get())
-bgImage.subscribe(@(v) setSceneBg(sceneId, v))
+setSceneBg(sceneId, bgImage.get().bg, bgImage.get()?.bgColor)
+bgImage.subscribe(@(v) setSceneBg(sceneId, v.bg, v?.bgColor))

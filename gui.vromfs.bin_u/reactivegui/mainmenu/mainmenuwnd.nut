@@ -61,7 +61,8 @@ let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/usersta
 let { unitPlateSize, slotsGap } = require("%rGui/slotBar/slotBarConsts.nut")
 let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByShop } = require("%rGui/shop/shopState.nut")
-let { openSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openSeasonScene, isQuestsTabVisible } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { questsCfg, questsBySection } = require("%rGui/quests/questsState.nut")
 let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
 
 
@@ -183,10 +184,15 @@ let btnShop = @() translucentButton("ui/gameuiskin#icon_shop.svg",
   },
   { iconMul = 0.8 })
 
-let mkBtnOnlyAchievementsAndPromo = @() translucentButton("ui/gameuiskin#prizes_icon.svg",
-  @() openSeasonScene(""),
-  null,
-  @(_) mkSeasonSceneUnseenMark("", { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP }))
+let isAchievementsAndPromoBtnVisible = Computed(@() isQuestsTabVisible("", questsCfg.get(), questsBySection.get()))
+
+let btnOnlyAchievementsAndPromo = @() {
+  watch = isAchievementsAndPromoBtnVisible
+  children = !isAchievementsAndPromoBtnVisible.get() ? null
+    : translucentButton("ui/gameuiskin#prizes_icon.svg",
+        @() openSeasonScene(""),
+        null,
+        @(_) mkSeasonSceneUnseenMark("", { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP }))}
 
 function btnChangeSlotsPreset() {
   let stateFlags = Watched(0)
@@ -302,7 +308,7 @@ let leftTopButtons = {
       watch = [isNextBattleNewbieOffline, hasBanner, isPassActive, isEventActive]
       children = isNextBattleNewbieOffline.get() && DBGLEVEL == 0 ? null
         : btnVerRow([
-            hasBanner.get() ? bpBanner(isPassActive.get(), isEventActive.get()) : mkBtnOnlyAchievementsAndPromo()
+            hasBanner.get() ? bpBanner(isPassActive.get(), isEventActive.get()) : btnOnlyAchievementsAndPromo
             btnVerRow([
               eventsTitleBlock
               btnHorRow([

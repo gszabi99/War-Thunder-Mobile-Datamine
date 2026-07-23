@@ -34,6 +34,7 @@ const PROGRESS_ITEM_CONVERSION = "ItemConversionInProgress"
 const PROGRESS_SKIP_OFFER = "SkipOfferInProgress"
 const PROGRESS_CLIENT_MISSION_REWARD = "ClientMissionRewardInProgress"
 const PROGRESS_UNIT_MASTERY_TIER = "UnitMasteryTierInProgress"
+const PROGRESS_MIG_ACC_INFO = "MigAccInfoInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -268,6 +269,7 @@ return {
   skipOfferInProgress = mkProgress(PROGRESS_SKIP_OFFER)
   clientMissionRewardInProgress = mkProgress(PROGRESS_CLIENT_MISSION_REWARD)
   unitMasteryTierInProgress = mkProgress(PROGRESS_UNIT_MASTERY_TIER)
+  migAccInfoInProgress = mkProgress(PROGRESS_MIG_ACC_INFO)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -1067,5 +1069,11 @@ return {
   add_unit_stats = @(unitName, statName, amount, cb = null) request({
     method = "add_unit_stats"
     params = { unitName, statName, amount }
+  }, cb)
+
+  get_migrate_acc_info = @(cb = null) request({
+    method = "get_migrate_acc_info"
+    progressId = PROGRESS_MIG_ACC_INFO
+    progressValue = true
   }, cb)
 }

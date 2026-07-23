@@ -57,6 +57,7 @@ let mkPersonalDiscountBtn = require("%rGui/shop/goodsPreview/mkPersonalDiscountB
 let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
 let TIME_TO_SHOW_UI = 5.0 
@@ -381,12 +382,19 @@ let earlyAccessImageBlock = @(img) img == null ? null
       size = const [sw(50), sh(50)]
       rendObj = ROBJ_IMAGE
       image = Picture($"{img}:0:P")
+      keepAspect = true
+      imageHalign = ALIGN_LEFT
     }
 
 let earlyAccessDescriptionBlock = @(locId, unitName = null) {
-  size = FLEX_H
   flow = FLOW_VERTICAL
+  pos = [-saBorders[0], 0]
+  rendObj = ROBJ_IMAGE
+  image = simpleHorGrad
+  color = 0x80000000
+  flipX = true
   gap = hdpx(10)
+  padding = [0, saBorders[0], hdpx(25), saBorders[0]]
   children = [
     @() itemsDescText.__update({ watch = previewGoods, padding = const [hdpx(20), 0] })
     {

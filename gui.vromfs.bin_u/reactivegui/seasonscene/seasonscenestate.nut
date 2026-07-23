@@ -193,4 +193,5 @@ return {
   openShopByGoods
   registerSeasonTabClose
   bgScene
+  isQuestsTabVisible
 }

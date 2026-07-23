@@ -932,26 +932,25 @@ atau memilih ulang item tersebut tanpa biaya tambahan.";"ไม่มีกา�
 • {unitName} 载\t具";"• イギリス\t兵器\tブランチへの\t早期\tアクセス
 • 航空機 {unitName}";"• 搶\t先\t體\t驗\t英\t國\t科\t技\t樹\t分\t支 
 • {unitName} 載\t具";;
-"offer/earlyAccess/purch/tanks_japan_branch_access";"Early Access to the Japanese tank branch";"Accès Anticipé à la branche des chars japonais";"Accesso anticipato all'albero tecnologico Giapponese";"Früher Zugang zum japanischen Panzerzweig";"Acceso Anticipado a la rama de tanques Japoneses";"Ранний доступ к ветке японских танков";"Ранній доступ до гілки японських танків";"Wczesny dostęp do japońskiej gałęzi czołgów";"Acesso Antecipado à árvore de tanques japoneses";"Japon tank dalına Erken Erişim";"Předběžný přístup k tankovému stromu Japonska";"Early Access to the Japanese tank branch";"Akses Awal ke cabang tank Jepang";"Early Access to the Japanese tank branch";"일본 전차 트리의 장비를 미리 사용해볼 수 있습니다.";"日\t本\t陆\t战\t分\t支\t抢\t先\t体\t验\t资\t格";"Early Access to the Japanese tank branch";"搶\t鮮\t體\t驗\t日\t本\t陸\t戰\t分\t支";;
-"offer/earlyAccess/desc/tanks_japan_branch_access";"• Early Access to the Japanese tank branch 
-• Tank {unitName}";"• Accès Anticipé à la branche des chars japonais 
-• Char {unitName}";"• Accesso anticipato all'albero tecnologico Giapponese 
-• Carro {unitName}";"• Früher Zugang zum japanischen Panzerzweig 
-• Panzer {unitName}";"• Acceso Anticipado a la rama de tanques Japoneses 
-• Tanque {unitName}";"• Ранний доступ к ветке японских танков 
-• Танк {unitName}";"• Ранній доступ до гілки японських танків 
+"offer/earlyAccess/purch/tanks_japan_branch_access";"Early Access to the Japanese tank branch";"Accès Anticipé à la branche des chars japonais";"Accesso anticipato all'albero tecnologico Giapponese";"Früher Zugang zum japanischen Panzerzweig";"Acceso Anticipado a la rama de tanques Japoneses";"Ранний доступ к ветке японских танков";"Ранній доступ до гілки японських танків";"Wczesny dostęp do japońskiej gałęzi czołgów";"Acesso Antecipado à árvore de tanques japoneses";"Japon tank dalına Erken Erişim";"Předběžný přístup k tankovému stromu Japonska";"Early Access to the Japanese tank branch";"Akses Awal ke cabang tank Jepang";"Early Access to the Japanese tank branch";"일본 전차 트리의 장비를 미리 사용해볼 수 있습니다.";"日\t本\t陆\t战\t分\t支\t抢\t先\t体\t验\t资\t格";"日本戦車部門への\t早期\tアクセス";"搶\t鮮\t體\t驗\t日\t本\t陸\t戰\t分\t支";;
+"offer/earlyAccess/desc/tanks_japan_branch_access";"• Early Access to the Japanese tank branch
+• Tank {unitName}";"• Accès Anticipé à la branche des chars japonais
+• Char {unitName}";"• Accesso anticipato all'albero tecnologico Giapponese
+• Carro {unitName}";"• Früher Zugang zum japanischen Panzerzweig
+• Panzer {unitName}";"• Acceso Anticipado a la rama de tanques Japoneses
+• Tanque {unitName}";"• Ранний доступ к ветке японских танков
+• Танк {unitName}";"• Ранній доступ до гілки японських танків
 • Танк {unitName}";"• Wczesny dostęp do japońskiej gałęzi czołgów
-• Czołg {unitName}";"• Acesso Antecipado à árvore de tanques japoneses 
-• Tanque {unitName}";"• Japon tank dalına Erken Erişim 
-• Tank {unitName}";"• Předčasný přístup k japonské větvi tanků 
-• Tank {unitName}";"• Early Access to the Japanese tank branch 
-• Tank {unitName}";"• Akses Awal ke cabang tank Jepang 
-• Tank {unitName}";"• Early Access to the Japanese tank branch 
+• Czołg {unitName}";"• Acesso Antecipado à árvore de tanques japoneses
+• Tanque {unitName}";"• Japon tank dalına Erken Erişim
+• Tank {unitName}";"• Předčasný přístup k japonské větvi tanků
+• Tank {unitName}";"• Early Access to the Japanese tank branch
+• Tank {unitName}";"• Akses Awal ke cabang tank Jepang
+• Tank {unitName}";"• Early Access to the Japanese tank branch
 • Tank {unitName}";"• 일본 전차 트리의 장비를 미리 사용할 수 있습니다.
- 
-• {unitName} 전차";"• 日\t本\t陆\t战\t科\t技\t树\t抢\t先\t体\t验\t资\t格 
-• {unitName} 载\t具";"• Early Access to the Japanese tank branch 
-• Tank {unitName}";"• 搶\t先\t體\t驗\t日\t本\t科\t技\t樹\t陸\t戰\t分\t支 
+• {unitName} 전차";"• 日\t本\t陆\t战\t科\t技\t树\t抢\t先\t体\t验\t资\t格
+• {unitName} 载\t具";"• 日本戦車部門への\t早期\tアクセス
+• 戦車 {unitName}";"• 搶\t先\t體\t驗\t日\t本\t科\t技\t樹\t陸\t戰\t分\t支
 • {unitName} 載\t具";;
 "limitedTimeOffer";"Limited time offer";"Offre à durée limitée";"Offerta a tempo limitato";"Zeitlich begrenztes Angebot";"Oferta por tiempo limitado";"Временное предложение";"Тимчасова пропозиція";"Oferta ograniczona czasowo";"Oferta por tempo limitado";"Süreyle sınırlı teklif";"Časově omezená nabídka";"Προσφορά περιορισμένου χρόνου";"Penawaran berbatas waktu";"ข้อเสนอจำกัดเวลา";"기간 한정 특가";"限\t时\t优\t惠";"期間限定\tオファー";"限\t時\t優\t惠";;
 "lastChance";"Last chance";"Dernière chance";"Ultima possibilità";"Letzte Chance";"Última oportunidad";"Последний шанс";"Останній шанс";"Ostatnia szansa";"Última oportunidade";"Son şans";"Poslední šance";"Τελευταία ευκαιρία";"Kesempatan terakhir";"โอกาสสุดท้าย";"마지막 기회";"最\t后\t机\t会";"ラストチャンス";"最\t後\t機\t會";;
@@ -1056,7 +1055,7 @@ atau memilih ulang item tersebut tanpa biaya tambahan.";"ไม่มีกา�
 "lootbox/lucky";"Jackpot";"Jackpot";"Jackpot";"Jackpot";"Premio";"Джекпот";"Джекпот";"Nagroda Główna";"Jackpot";"Büyük İkramiye";"Jackpot";"Jackpot";"Jackpot";"Jackpot";"잭팟";"大\t奖";"ジャックポット";"頭\t獎";;
 "lootbox/guaranteed";"Guaranteed reward";"Récompense garantie";"Ricompensa garantita";"Garantierte Belohnung";"Recompensa garantizada";"Гарантированная награда";"Гарантована нагорода!";"Nagroda gwarantowana";"Recompensa garantida";"Kesin ödül";"Jistá odměna";"Guaranteed reward";"Imbalan terjamin";"Guaranteed reward";"확정 보상";"必\t得\t奖\t励";"確定報酬";"保\t底\t獎\t勵";;
 "lootbox/uk_air_spending_event_box";"Early Access Trophy";"Trophée Accès Anticipé";"Trofeo Accesso Anticipato";"Trophäe für frühen Zugang";"Trofeo de Acceso Anticipado";"Трофей раннего доступа";"Трофей раннього доступу";"Trofeum Wczesnego Dostępu";"Troféu de Acesso Antecipado";"Erken Erişim Ganimeti";"Trofej za předběžný přístup";"Early Access Trophy";"Trofi Akses Awal";"Early Access Trophy";"얼리 액세스 전리품 상자";"抢\t先\t体\t验\t物\t资\t箱";"早期\tアクセストロフィー";"搶\t先\t體\t驗\t寶\t箱";;
-"lootbox/japan_tanks_spending_event_box";"Japan Early Access Trophy: Tanks";"Trophée de l'Accès Anticipé du Japon: Chars";"Trofeo Accesso Anticipato Giappone: Carri";"Japan-Early-Access-Trophäe: Panzer";"Trofeo Acceso Anticipado de Japón: Tanques";"Трофей раннего доступа Японии: Танки";"Трофей раннього доступу: Японія (танки)";"Trofeum Wczesnego Dostępu Japonii: Czołgi";"Troféu de Acesso Antecipado do Japão: Tanques";"Japon Erken Erişim Ganimeti: Tanklar";"Japonská trofej za předběžný přístup: Tanky";"Japan Early Access Trophy: Tanks";"Trofi Akses Awal Jepang: Tank";"Japan Early Access Trophy: Tanks";"일본 얼리 액세스 전리품 상자: 전차";"日\t本\t抢\t先\t体\t验\t物\t资\t箱：\t陆\t战";"Japan Early Access Trophy: Tanks";"日\t本\t科\t技\t樹\t搶\t先\t體\t驗\t寶\t箱：\t陸\t戰";;
+"lootbox/japan_tanks_spending_event_box";"Early Access Trophy";"Trophée de l'Accès Anticipé du Japon: Chars";"Trofeo Accesso Anticipato Giappone: Carri";"Japan-Early-Access-Trophäe: Panzer";"Trofeo Acceso Anticipado de Japón: Tanques";"Трофей раннего доступа";"Трофей раннього доступу: Японія (танки)";"Trofeum Wczesnego Dostępu Japonii: Czołgi";"Troféu de Acesso Antecipado do Japão: Tanques";"Japon Erken Erişim Ganimeti: Tanklar";"Japonská trofej za předběžný přístup: Tanky";"Early Access Trophy";"Trofi Akses Awal Jepang: Tank";"Early Access Trophy";"일본 얼리 액세스 전리품 상자: 전차";"日\t本\t抢\t先\t体\t验\t物\t资\t箱：\t陆\t战";"Early Access Trophy";"日\t本\t科\t技\t樹\t搶\t先\t體\t驗\t寶\t箱：\t陸\t戰";;
 "offer/unit/tanks";"General's kit";"Kit du général";"Kit del Generale";"Paket des Generals";"Kit de General";"Набор генерала";"Набір генерала";"Zestaw generała";"Kit do General";"Generalin kiti";"Generálova sada";"Κιτ στρατηγού";"Kit Jenderal";"ชุดนายพล";"육군 사령관 키트";"陆\t军\t司\t令\t礼\t包";"将軍の\tキット";"陸\t軍\t司\t令\t禮\t包";;
 "offer/unit/ships";"Admiral's kit";"Kit de l'amiral";"Kit dell'Ammiraglio";"Paket des Admirals";"Kit del Almirante";"Набор адмирала";"Набір адмірала";"Zestaw admirała";"Kit do Almirante";"Amiralin kiti";"Admirálova sada";"Κιτ ναυάρχου";"Kit Laksamana";"ชุดพลเรือเอก";"해군 사령관 키트";"海\t军\t司\t令\t礼\t包";"提督の\tキット";"海\t軍\t司\t令\t禮\t包";;
 "offer/gold";"Big crate of gold";"Grande boîte d'or";"Grossa cassa con oro";"Große Kiste Gold";"Caja grande de oro";"Большой ящик с золотом";"Великий ящик золота";"Duża skrzynia ze złotem";"Caixote grande de ouro";"Büyük altın kutusu";"Velká bedna se zlatem";"Μεγάλο κιβώτιο με χρυσό";"Peti besar berisi emas";"ทองลังใหญ่";"대형 골드 상자";"大\t箱\t金\t币";"ゴールドの\t大きな\tクレート";"大\t箱\t金\t鷹";;

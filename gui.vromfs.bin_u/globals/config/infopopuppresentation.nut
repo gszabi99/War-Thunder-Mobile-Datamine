@@ -41,7 +41,7 @@ let presentations = {
     image = "ui/images/event_bg_uk_air_early_access.avif"
   }
   japan_tanks_early_access = {
-    image = "ui/images/event_bg_japan_tanks_early_access.avif"
+    image = "ui/images/tanks_japan_tree_info.avif"
   }
   senrai_maidens = {
     image = "ui/images/WTM_anime_2700x1080.avif"
