@@ -72856,7 +72856,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "bullets": {
       "90mm_Type61_user_cannon": {
@@ -76338,7 +76339,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "bullets": {
       "105mm_L7A3_STB_user_cannon": {
@@ -88554,7 +88556,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 90.0,
@@ -88758,7 +88761,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 20.0,
@@ -98821,7 +98825,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 105.0,
@@ -112360,7 +112365,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 75.0,
@@ -112424,7 +112430,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 75.0,
@@ -112498,7 +112505,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_tank_destroyer": true
+      "type_tank_destroyer": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 120.0,
@@ -112547,7 +112555,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 75.0,
@@ -112608,7 +112617,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 75.0,
@@ -112669,7 +112679,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_heavy_tank": true
+      "type_heavy_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 88.0,
@@ -112732,7 +112743,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 75.0,
@@ -112810,7 +112822,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 76.2,
@@ -112888,7 +112901,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_spaa": true
+      "type_spaa": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 20.0,
@@ -112953,7 +112967,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 90.0,
@@ -113027,7 +113042,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 90.0,
@@ -113104,7 +113120,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 90.0,
@@ -113182,7 +113199,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_tank_destroyer": true
+      "type_tank_destroyer": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 155.0,
@@ -113251,7 +113269,8 @@
     "tags": {
       "country_thailand": true,
       "tank": true,
-      "type_spaa": true
+      "type_spaa": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 20.0,
@@ -113306,7 +113325,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 30.0,
@@ -113371,7 +113391,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 105.0,
@@ -113445,7 +113466,8 @@
     "tags": {
       "country_thailand": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 105.0,
@@ -113530,7 +113552,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 30.0,
@@ -113619,7 +113642,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 30.0,
@@ -113706,7 +113730,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 105.0,
@@ -113787,7 +113812,8 @@
       "tank": true,
       "type_light_tank": true,
       "scout": true,
-      "canRepairAnyAlly": true
+      "canRepairAnyAlly": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 105.0,
@@ -113926,7 +113952,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_tank_destroyer": true
+      "type_tank_destroyer": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 130.0,
@@ -113980,7 +114007,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_medium_tank": true
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 120.0,
@@ -114050,7 +114078,8 @@
     "tags": {
       "country_japan": true,
       "tank": true,
-      "type_tank_destroyer": true
+      "type_tank_destroyer": true,
+      "hide_in_offline_battles": true
     },
     "Shop": {
       "mainWeaponCaliber": 155.0,

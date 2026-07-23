@@ -64258,3 +64258,11 @@ battlecruiser_queen_mary
 gameData/Weapons/torpedoes/uk_533mm_21in_mk1_torpedo.blk
 uk_battlecruiser_queen_mary_default
 gameData/units/ships/weaponPresets/uk_battlecruiser_queen_mary_default.blk
+miniMapIconDrawDist
+captureTime
+captureProgressColor
+captureProgressSize
+captureProgressHeight
+maxAllowedUnitSpeed
+pickup_zone__miniMapIconDrawDistSq
+pickup_zone__hasPickupers
