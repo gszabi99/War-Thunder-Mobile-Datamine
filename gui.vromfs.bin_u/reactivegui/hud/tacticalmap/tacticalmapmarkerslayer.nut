@@ -3,13 +3,15 @@ let { fabs } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { getPlayerMapPos, worldPosToMapPos } = require("guiTacticalMap")
+let { getMapRelativePlayerPos, worldToMap } = require("guiArtillery")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+let { hudWhiteColor, hudGreenColor } = require("%rGui/style/hudColors.nut")
 
 let MARKER_TYPE = {
   RADIO_SPEAKER = 1
   CAPTURE_POINT_MARK = 2
   ATTENTION_MARK = 3
+  RECON_AREA = 4
 }
 
 let POS_UPDATE_INTERVAL = 0.3
@@ -105,6 +107,44 @@ let markerTypes = {
   [MARKER_TYPE.ATTENTION_MARK] = attentionMarkBase.__merge({
     ctor = @(data) ctorMarkAttention(evenPx(40), data)
   }),
+  [MARKER_TYPE.RECON_AREA] = {
+    showSec = 10.0
+    isDuplicate = @(_, __) true
+    function getMapPos(_params) {
+      let p = getMapRelativePlayerPos()
+      return p.len() >= 2 ? { x = p[0], y = p[1] } : null
+    }
+    function ctor(data) {
+      let { id, mapPos, startTimeMs, params } = data
+      if (mapPos == null)
+        return null
+      let clampedPos = { x = min(max(mapPos.x, 0.0), 1.0), y = min(max(mapPos.y, 0.0), 1.0) }
+      let startDelay = (startTimeMs - get_time_msec()) / 1000.0
+      let diameterPrc = worldToMap(params.radius) * 2 * 100
+      return {
+        key = $"mapMark{id}"
+        pos = [pw(clampedPos.x * 100 - diameterPrc / 2), ph(clampedPos.y * 100 - diameterPrc / 2)]
+        size = [pw(diameterPrc), ph(diameterPrc)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        fillColor = 0
+        color = hudGreenColor
+        lineWidth = hdpx(4)
+        transform = {}
+        commands = [
+          [VECTOR_ELLIPSE, 50, 50, 50, 50],
+          [VECTOR_LINE, 50, 50, 50, 0]
+        ]
+        animations = [
+          { prop = AnimProp.rotate, from = 0, to = 360, duration = 3.0,
+              play = true, easing = Linear, delay = startDelay, loop = true }
+          { prop = AnimProp.opacity, from = 0, to = 1, duration = FADE_TIME,
+              play = true, easing = InOutQuad, delay = startDelay }
+          { prop = AnimProp.opacity, from = 1, to = 0, duration = FADE_TIME,
+              easing = InOutQuad, playFadeOut = true }
+        ]
+      }
+    }
+  },
 }
 
 let removeMapMarker = @(id) id not in mapMarkers.get() ? null
@@ -114,7 +154,8 @@ function addMapMarker(markerType, params) {
   mapMarkers.mutate(function(mm) {
     let nowMs = get_time_msec()
     let mCfg = markerTypes[markerType]
-    let { isDuplicate, getMapPos, showSec } = mCfg
+    let { isDuplicate, getMapPos } = mCfg
+    let showSec = params?.showSec ?? mCfg.showSec
     foreach (data in mm.filter(@(v) v.markerType == markerType))
       if (isDuplicate(data.params, params))
         mm.$rawdelete(data.id)

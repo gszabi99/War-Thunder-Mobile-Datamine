@@ -91,6 +91,7 @@
       "gt_last_man_standing": true,
       "timeLimit": 60,
       "useTankBots": true,
+      "blockTankNavmeshObstacles": true,
       "battleAreaColorPreset": "battleRoyale",
       "ignoreInvulnerableTimer": false,
       "useCustomSuperArtillery": true,

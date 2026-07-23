@@ -3,6 +3,7 @@ from "eventbus" import eventbus_subscribe
 from "%rGui/hudHints/mainHintLogState.nut" import addEvent
 from "%rGui/hud/crewState.nut" import crewState
 from "%rGui/hudHints/hintCtors.nut" import registerHintCreator, defaultHintCtor
+let { MARKER_TYPE, addMapMarker } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 
 
 let CREW_HINT_TYPE = "battleRoyaleCrew"
@@ -42,10 +43,24 @@ registerHintCreator(CREW_HINT_TYPE, @(_, __) @() {
 
 eventbus_subscribe("onPickupItem", function(data) {
   let rewardKeys = data.filter(@(_, k) eventByReward?[k] != null)
-  if (rewardKeys.len() == 0) {
+  if (rewardKeys.len() == 0 && data?.reconRadius == null) {
     addEvent(defaultEvent)
     return
   }
   foreach (rewardKey, _ in rewardKeys)
     addEvent(eventByReward[rewardKey])
+
+  let reconRadius = data?.reconRadius
+  let reconDuration = data?.reconDuration
+  if (reconRadius != null && reconDuration != null)
+    addMapMarker(MARKER_TYPE.RECON_AREA, { radius = reconRadius, showSec = reconDuration })
+})
+
+eventbus_subscribe("onRadioDetected", function(_data) {
+  addEvent({
+    id = "radioDetected"
+    hType = "mission"
+    text = loc("hints/pickup/radioDetected")
+    ttl = MSG_SHOW_TIME
+  })
 })

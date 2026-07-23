@@ -8641,3 +8641,4 @@ gameData/missions/cta/tanks/silver_district/battleareas/template_silver_district
 missions/_Dom;silver_district/name
 silver_district/desc;missions/_Dom/desc
 15.5
+blockTankNavmeshObstacles

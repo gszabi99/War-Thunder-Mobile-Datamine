@@ -4280,6 +4280,17 @@
         255,
         255
       ],
+      "miniMapIconDrawDist": 250.0,
+      "captureTime": 15.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 50.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
       "rewards": {
         "medical_kit_expendable": 1,
         "manual_extinguisher_expendable": 1,

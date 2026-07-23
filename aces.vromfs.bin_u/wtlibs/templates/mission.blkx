@@ -412,6 +412,8 @@
       255,
       255
     ],
+    "pickup_zone__miniMapIconDrawDistSq": -1.0,
+    "pickup_zone__hasPickupers": false,
     "loot__model_res": {
       "_tags": "render"
     }

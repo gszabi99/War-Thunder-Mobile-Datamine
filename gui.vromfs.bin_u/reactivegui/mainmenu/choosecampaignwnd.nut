@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { object_to_json_string } = require("json")
+let { resetTimeout } = require("dagor.workcycle")
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { getCampaignPresentation, campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -23,7 +24,6 @@ let { headerGradientBg, doubleSideGradientPaddingY } = require("%rGui/components
 let { simpleVerGrad } = require("%rGui/style/gradients.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { textColor, goodTextColor2, selectColor } = require("%rGui/style/stdColors.nut")
-let { resetTimeout, defer } = require("dagor.workcycle")
 
 
 let colorBlack = 0xFF000000
@@ -111,26 +111,14 @@ isOpened.subscribe(function(v) {
   chosenCampaign.set(null)
 })
 
-function startDelayedCloseWnd() {
-  let campaign = chosenCampaign.get()
-  if (campaign == null || curCampaign.get() != campaign)
-    return
-
-  resetTimeout(focusedAnimFinishedCampaign.get() == campaign
-    ? CAMPAIGN_CLOSE_DELAY
-    : CAMPAIGN_CLOSE_FALLBACK,
-  close)
-}
-
 function applyCampaign(campaign, onChangeCamp = null) {
-  onChangeCamp?()
   setCampaign(campaign)
   if (needFirstBattleTutorForCampaign(campaign))
     markUnitsSeen(unseenUnits.get())
-  startDelayedCloseWnd()
+  onChangeCamp?()
 }
 
-function onCampaignChange(campaign, onChangeCamp = null) {
+function onCampaignChange(campaign, onChangeCamp = close) {
   if (skipTutor.get()) {
     setSkippedTutor(campaign)
     applyCampaign(campaign, onChangeCamp)
@@ -174,18 +162,32 @@ function onCampaignChange(campaign, onChangeCamp = null) {
 }
 
 chosenCampaign.subscribe(function(campaign) {
-  pushedCampaign.set(null)
   if (campaign == null)
     return
 
-  if (needFirstBattleTutorForCampaign(campaign) && !skipTutor.get())
-    resetTimeout(CAMPAIGN_CLOSE_FALLBACK, @() chosenCampaign.get() == campaign
-      ? onCampaignChange(campaign)
-      : null)
-  else
-    defer(@() chosenCampaign.get() == campaign ? onCampaignChange(campaign) : null)
+  let isAnimFinished = focusedAnimFinishedCampaign.get() == campaign
+  if (needFirstBattleTutorForCampaign(campaign) && !skipTutor.get()) {
+    if (isAnimFinished)
+      onCampaignChange(campaign)
+    else
+      resetTimeout(CAMPAIGN_CLOSE_FALLBACK,
+        @() chosenCampaign.get() == campaign ? onCampaignChange(campaign) : null)
+  }
+  else {
+    onCampaignChange(campaign, isAnimFinished ? close : null)
+    if (!isAnimFinished)
+      resetTimeout(CAMPAIGN_CLOSE_FALLBACK, close)
+  }
 })
-focusedAnimFinishedCampaign.subscribe(@(_) startDelayedCloseWnd())
+
+focusedAnimFinishedCampaign.subscribe(function(campaign) {
+  if (campaign == null || chosenCampaign.get() == campaign)
+    return
+  resetTimeout(CAMPAIGN_CLOSE_DELAY,
+    campaign == curCampaign.get() && isAnyCampaignSelected.get() ? close
+      : @() chosenCampaign.get() == campaign ? onCampaignChange(campaign) : null)
+})
+
 focusedCampaign.subscribe(@(campaign) focusedAnimFinishedCampaign.get() != campaign
   ? focusedAnimFinishedCampaign.set(null)
   : null)
