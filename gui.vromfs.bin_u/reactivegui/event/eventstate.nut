@@ -37,8 +37,8 @@ eventWndOpenCounter.subscribe(function(v) {
 })
 
 let eventEndsAt = Computed(@() userstatStatsTables.get()?.stats.season["$endsAt"] ?? 0)
-let eventSeasonIdx = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? 0)
-let eventSeason = Computed(@() getSeasonPrefix(eventSeasonIdx.get()))
+let eventSeasonIdx = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? -1)
+let eventSeason = Computed(@() eventSeasonIdx.get() == -1 ? "" : getSeasonPrefix(eventSeasonIdx.get()))
 let isEventActive = Computed(@() unlockTables.get()?.season == true)
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})

@@ -117,11 +117,11 @@ let startNextDayTime = @(time) TIME_DAY_IN_SECONDS - (time % TIME_DAY_IN_SECONDS
 let shopsCfgOrdered = [
   {
     id = "events2"
-    isFit = @(g) g?.meta.shopId == "2"
+    isFit = @(g) (g?.meta.shopId == "2") && !g?.isHidden
   }
   {
     id = "events"
-    isFit = @(g) g?.meta.shopId == "1" || "event_id" in g?.meta
+    isFit = @(g) (g?.meta.shopId == "1" || "event_id" in g?.meta) && !g?.isHidden
   }
   {
     id = "common"

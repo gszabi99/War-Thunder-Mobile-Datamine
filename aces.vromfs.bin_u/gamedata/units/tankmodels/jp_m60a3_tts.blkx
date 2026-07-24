@@ -2754,7 +2754,13 @@
     "tracks": {
       "animationMultiplier": 0.71,
       "height": 0.095,
-      "width": 0.55
+      "width": 0.55,
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.1,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2767,12 +2773,12 @@
       "minRPM": 700.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 195000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 5.42,
       "sideGearRatio": 1.07,
       "neutralGearRatio": 9.0,
+      "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
           -4.57,

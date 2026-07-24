@@ -82,14 +82,15 @@ return @(isPassActive, isEventActive) function () {
                 flow = FLOW_HORIZONTAL
                 valign = ALIGN_CENTER
                 gap = hdpx(10)
-                children = [
-                  {
-                    rendObj = ROBJ_TEXT
-                    color = 0xFFFFFFFF
-                    text = utf8ToUpper(loc("events/seasonNumber", { number = eventSeasonIdx.get() }))
-                  }.__update(fontBoldTinyShaded)
-                  unseenMark
-                ]
+                children = eventSeasonIdx.get() < 0 ? null
+                  : [
+                      {
+                        rendObj = ROBJ_TEXT
+                        color = 0xFFFFFFFF
+                        text = utf8ToUpper(loc("events/seasonNumber", { number = eventSeasonIdx.get() }))
+                      }.__update(fontBoldTinyShaded)
+                      unseenMark
+                    ]
               }
             ]
           }

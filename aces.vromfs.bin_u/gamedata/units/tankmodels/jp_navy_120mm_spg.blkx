@@ -2268,7 +2268,7 @@
       ],
       "CenterOfGravity": [
         0.2,
-        0.5,
+        0.05,
         0.0
       ],
       "AdvancedMass": true,
@@ -2295,11 +2295,11 @@
       "minRPM": 800.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.287,
       "mainGearRatio": 1.45,
       "sideGearRatio": 6.315,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -2.0,

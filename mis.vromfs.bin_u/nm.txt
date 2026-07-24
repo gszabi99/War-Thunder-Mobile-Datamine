@@ -8642,3 +8642,5 @@ missions/_Dom;silver_district/name
 silver_district/desc;missions/_Dom/desc
 15.5
 blockTankNavmeshObstacles
+assign_bot_beh_tree
+battleRoyalBot

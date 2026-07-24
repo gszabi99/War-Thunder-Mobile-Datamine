@@ -1421,6 +1421,213 @@
       }
     },
     {
+      "name": "battleRoyalBot",
+      "selectStrategy": "ordered",
+      "tankBotSetup": {},
+      "setupAngerParams": {
+        "baseRate": -1.0,
+        "visibilityRate": 20.0,
+        "damageValue": 100.0,
+        "outOfSightRate": -100.0,
+        "distanceMultiplierMax": 2.0,
+        "distanceBoundsMin": 5.0,
+        "distanceBoundsMax": 100.0
+      },
+      "sequencer": {
+        "parallel": {
+          "updateAnger": {},
+          "cycle": {
+            "selector": {
+              "selectStrategy": "ordered",
+              "selectOnSuccess": true,
+              "sequencer": {
+                "findEnemies": {
+                  "outListName": "targets",
+                  "maxDistance": 300.0
+                },
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "findTargetByAnger": {
+                        "inListName": "targets",
+                        "outVarName": "priorityTarget",
+                        "angerThreshold": 20.0
+                      },
+                      "setAsEnemyTarget": {
+                        "inVarName": "priorityTarget",
+                        "minTimeBetweenSwitch": 15.0,
+                        "resetIfAngerLessThen": 5.0,
+                        "angerDeltaThreshold": 40.0
+                      },
+                      "switchAutoShoot": {
+                        "isEnabledShooting": true
+                      }
+                    },
+                    {
+                      "resetEnemyTarget": {},
+                      "switchAutoShoot": {
+                        "isEnabledShooting": false
+                      }
+                    }
+                  ]
+                }
+              },
+              "success": {}
+            }
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "sequencer": [
+              {
+                "driveToBattleArea": {
+                  "insideFactor": 0.7
+                },
+                "parallel": {
+                  "cycle": {
+                    "driveToBattleArea": {
+                      "insideFactor": 0.7
+                    }
+                  },
+                  "driveToPos": {
+                    "dist": 10.0,
+                    "cornersAngleFactorDist": [
+                      20.0,
+                      0.0
+                    ],
+                    "cornersSpeedMultiplier": 1.0,
+                    "cornersSteeringOffset": 4.0,
+                    "obstacleAvoidAngle": 8.0,
+                    "obstacleAvoidDistMultiplier": 1.5,
+                    "maxTimeIgnoreObstacle": 10.0,
+                    "obstacleAvoidDistMin": 20.0,
+                    "obstacleAvoidDistMax": 45.0,
+                    "deflectPath": true,
+                    "deflectionRadius": 100.0,
+                    "suspendIfTargetChanged": false
+                  }
+                }
+              },
+              {
+                "checkEnemy": {},
+                "parallel": [
+                  {
+                    "cycle": [
+                      {
+                        "or": {
+                          "not": [
+                            {
+                              "checkDistanceToTarget": {
+                                "distance": 40.0
+                              }
+                            },
+                            {
+                              "checkShoot": {}
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "pursueTarget": {
+                          "distanceMin": 40.0,
+                          "distanceMax": 200.0,
+                          "includeEnemySpawn": true,
+                          "forcePathRecalc": true
+                        }
+                      }
+                    ],
+                    "driveToPos": {
+                      "dist": 7.0,
+                      "obstacleAvoidAngle": 10.0,
+                      "obstacleAvoidDistMultiplier": 1.2,
+                      "obstacleAvoidDistMin": 15.0,
+                      "obstacleAvoidDistMax": 40.0,
+                      "navEntryReachDist": 8.0,
+                      "deflectPath": false,
+                      "deflectionRadius": 100.0,
+                      "suspendIfTargetChanged": false
+                    }
+                  },
+                  {
+                    "cycle": [
+                      {
+                        "sequencer": {
+                          "checkEnemy": {},
+                          "checkInBattleZone": {}
+                        }
+                      },
+                      {
+                        "sequencer": {
+                          "selector": {
+                            "selectStrategy": "ordered",
+                            "selectOnSuccess": true,
+                            "driveToBattleArea": {
+                              "patrolInside": true,
+                              "insideFactor": 0.85,
+                              "centerPull": 1.0
+                            },
+                            "selectRandomPosition": {
+                              "radius": 120.0,
+                              "minRadius": 40.0
+                            }
+                          },
+                          "driveToPos": {
+                            "dist": 10.0,
+                            "obstacleAvoidAngle": 9.0,
+                            "obstacleAvoidDistMultiplier": 1.3,
+                            "obstacleAvoidDistMin": 18.0,
+                            "obstacleAvoidDistMax": 45.0,
+                            "navEntryReachDist": 8.0,
+                            "deflectPath": false,
+                            "deflectionRadius": 100.0,
+                            "suspendIfTargetChanged": false
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "driveToBattleArea": {
+                    "patrolInside": true,
+                    "insideFactor": 0.85,
+                    "centerPull": 1.0
+                  },
+                  "selectRandomPosition": {
+                    "radius": 250.0,
+                    "minRadius": 100.0
+                  }
+                },
+                "driveToPos": {
+                  "dist": 5.0,
+                  "cornersAngleFactorDist": [
+                    30.0,
+                    0.0
+                  ],
+                  "cornersSpeedMultiplier": 0.4,
+                  "cornersSteeringOffset": 4.0,
+                  "obstacleAvoidAngle": 9.0,
+                  "obstacleAvoidDistMultiplier": 1.5,
+                  "maxTimeIgnoreObstacle": 12.0,
+                  "obstacleAvoidDistMin": 20.0,
+                  "obstacleAvoidDistMax": 45.0,
+                  "deflectPath": true,
+                  "deflectionRadius": 100.0,
+                  "suspendIfTargetChanged": false
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "name": "shipMissionUnit",
       "selectStrategy": "ordered",
       "selector": {

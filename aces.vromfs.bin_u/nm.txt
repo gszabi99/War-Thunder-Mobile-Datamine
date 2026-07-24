@@ -64266,3 +64266,11 @@ captureProgressHeight
 maxAllowedUnitSpeed
 pickup_zone__miniMapIconDrawDistSq
 pickup_zone__hasPickupers
+driveToBattleArea
+insideFactor
+forcePathRecalc
+navEntryReachDist
+checkInBattleZone
+patrolInside
+centerPull
+battleRoyalBot

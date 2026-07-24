@@ -30,7 +30,9 @@ function getSpecialEventLocName(eventName, rewardUnitName) {
     : defaultLoc
 }
 
-let getMainEventLoc = @(eSeason) loc($"events/name/{eSeason}")
+
+let getMainEventLoc = @(eSeason) eSeason == "" ? loc("events/name/default")
+  : loc($"events/name/{eSeason}")
 
 let getEventLocFull = @(eventId, eventSeasonV, allSpecialEventsV, progressUnlockByTabV, serverConfigsV, allShopGoodsV, opName)
   eventId == MAIN_EVENT_ID ? getMainEventLoc(eventSeasonV)

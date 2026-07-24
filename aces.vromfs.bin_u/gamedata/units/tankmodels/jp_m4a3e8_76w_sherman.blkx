@@ -2560,7 +2560,7 @@
       ],
       "CenterOfGravity": [
         0.05,
-        0.5,
+        0.3,
         0.0
       ],
       "CenterOfGravityClampY": [
@@ -2595,11 +2595,11 @@
       "minRPM": 700.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 3.74,
       "sideGearRatio": 2.56,
+      "alternativeGearControl": 5.0,
       "gearRatios": {
         "ratio": [
           -5.65,

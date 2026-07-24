@@ -30,11 +30,13 @@ let bpPresentation = {
   },
   [BP_COMMON] = {
     name = @() loc("battlePass")
-    icon = @(season) $"ui/gameuiskin#bp_icon_active_{season}.avif"
+    icon = @(season) season != "" ? $"ui/gameuiskin#bp_icon_active_{season}.avif"
+      : $"ui/gameuiskin#bp_icon_not_active.avif"
   },
   [BP_VIP] = {
     name = @() loc("battlePassVIP")
-    icon = @(season) $"ui/gameuiskin#bp_icon_active_{season}_vip.avif"
+    icon = @(season) season != "" ? $"ui/gameuiskin#bp_icon_active_{season}_vip.avif"
+      : $"ui/gameuiskin#bp_icon_not_active.avif"
   },
 }
 let getBpPresentation = @(bpType) bpPresentation?[bpType] ?? bpPresentation[BP_NONE]
@@ -44,8 +46,9 @@ let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
 let tutorialFreeMarkIdx = Watched(null)
 
-let bpSeasonNumber = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? 0)
-let bpSeasonName = Computed(@() loc($"events/name/season_{bpSeasonNumber.get()}"))
+let bpSeasonNumber = Computed(@() userstatStatsTables.get()?.stats.season["$index"] ?? -1)
+let bpSeasonName = Computed(@() bpSeasonNumber.get() <= 0 ? loc("events/name/default")
+  : loc($"events/name/season_{bpSeasonNumber.get()}"))
 let bpSeasonEndTime = Computed(@() userstatStatsTables.get()?.stats.season["$endsAt"] ?? 0)
 
 let bpProgressUnlock = Computed(@() activeUnlocks.get()?[BP_PROGRESS_UNLOCK_ID])
