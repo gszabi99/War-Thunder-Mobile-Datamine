@@ -118,6 +118,7 @@ let sceneContentCfg = {
     })
   },
   [LOOTBOX_TAB] = {
+    key = "quest_header_btn"
     icon = "ui/gameuiskin#events_chest_icon.svg"
     label = "trophies"
     currencies = curEventCurrencies

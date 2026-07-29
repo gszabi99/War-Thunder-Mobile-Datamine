@@ -5,7 +5,6 @@ let { openSeasonScene, QUESTS_TAB } = require("%rGui/seasonScene/seasonSceneStat
 let { campaignActiveUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { discountsToApply } = require("%rGui/shop/discounts.nut")
 
-let verticalGap = hdpx(20)
 let giftBoxAnimDur = 0.2
 
 function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
@@ -45,7 +44,7 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
   return @() {
     watch = eventIdByPersonalDiscount
     size = hdpx(130)
-    pos = [verticalGap, 0]
+    pos = [0, -hdpx(30)]
     children = !eventIdByPersonalDiscount.get() ? null
       : {
           size = FLEX

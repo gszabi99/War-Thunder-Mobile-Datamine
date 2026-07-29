@@ -11,7 +11,9 @@ let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { is_ios } = require("%sqstd/platform.nut")
 let matching = require("%appGlobals/matching_api.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
+let supportContact = getCurCircuitOverride("supportSite", "support.gaijin.net")
 
 function errorHandlerRetryMessage(code) {
   let errorId = matching.error_string(code)
@@ -19,7 +21,7 @@ function errorHandlerRetryMessage(code) {
   sendErrorLocIdBqEvent(locId)
   openFMsgBox({
     uid = "errorMessageBox"
-    text = loc(locId)
+    text = loc(locId, { support = supportContact })
     buttons = [
       { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
     ]
@@ -90,7 +92,7 @@ function showMatchingError(response) {
 
   let errorId = response?.error_id ?? matching.error_string(response.error)
   let locId = "".concat("matching/", replace(errorId, ".", "_"))
-  local text = loc(locId)
+  local text = loc(locId, { support = supportContact })
   if ("error_message" in response)
     text = $"{text}\n<B>{response.error_message}</B>"
 

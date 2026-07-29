@@ -31,7 +31,6 @@ let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -219,7 +218,7 @@ function headerText() {
 }
 
 let headerPanel = {
-  size = [FLEX, gamercardHeight]
+  size = [FLEX, SIZE_TO_CONTENT]
   vplace = ALIGN_TOP
   hplace = ALIGN_LEFT
   valign = ALIGN_CENTER

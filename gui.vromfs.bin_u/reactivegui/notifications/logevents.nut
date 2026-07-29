@@ -23,6 +23,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 let { get_cur_circuit_name } = require("app")
+let { get_platform_string_id } = require("platform")
 
 const FIRST_LOGIN_EVENT = "first_login_event"
 const STATS_SENT = "statsSent"
@@ -91,7 +92,14 @@ function logAdjust(eventType, eventValue) {
 }
 
 eventbus_subscribe("adjust.onGetAdjustAdId", function(p) {
-  sendCustomBqEvent("adjust_ids", { adid = p.adid, circuit = get_cur_circuit_name() })
+  sendCustomBqEvent("adjust_ids", {
+    adid = p.adid
+    circuit = get_cur_circuit_name()
+    platform = get_platform_string_id()
+    idfa = is_ios ? (p?.idfa ?? "") : ""
+    idfv = is_ios ? (p?.idfv ?? "") : ""
+    gps_adid = is_android ? (p?.gps_adid ?? "") : ""
+  })
 })
 
 function sendEvent(id) {

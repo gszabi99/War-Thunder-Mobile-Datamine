@@ -1,19 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin} = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize} = require("%rGui/rewards/rewardPlateComp.nut")
-let { textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
 let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice,
-  isBPLevelPurchaseInProgress, tutorialFreeMarkIdx
+  tutorialFreeMarkIdx
 } = require("%rGui/battlePass/battlePassState.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let buyBPLevelMsg = require("%rGui/battlePass/buyBPLevelMsg.nut")
-let { hoverCard, cardBorder, cardContent, bgCard, purchBtnHeight} = require("%rGui/battlePass/passRewardsListComp.nut")
+let { hoverCard, cardBorder, cardContent, bgCard} = require("%rGui/battlePass/passRewardsListComp.nut")
 
 function mkCard(stageInfo, idx) {
   let stateFlags = Watched(0)
-  let { canReceive, viewInfo, progress, canBuyLevel } = stageInfo
+  let { canReceive, viewInfo, progress } = stageInfo
   function onClick(){
     selectedStage.set(progress)
     if(canReceive)
@@ -45,19 +40,6 @@ function mkCard(stageInfo, idx) {
           cardContent(stageInfo, stateFlags, isBpRewardsInProgress)
         ]
       }
-      canBuyLevel && bpLevelPrice.get() != null && bpLevelPrice.get().price > 0
-        ? mkSpinnerHideBlock(isBPLevelPurchaseInProgress,
-            textButtonPricePurchaseLow(utf8ToUpper(loc("battlepass/buyLevel")),
-              mkCurrencyComp(bpLevelPrice.get().price, bpLevelPrice.get().currency),
-              @() buyBPLevelMsg(bpLevelPrice.get(), stageInfo),
-              { hotkeys = ["^J:X"]
-                ovr = { size = [SIZE_TO_CONTENT, purchBtnHeight]
-                        minWidth = cardWidth
-                        contentPadding = [0, hdpx(20)]
-                      }
-              }),
-            { hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, purchBtnHeight] })
-        : { size = [SIZE_TO_CONTENT, purchBtnHeight] }
     ]
   }
 }

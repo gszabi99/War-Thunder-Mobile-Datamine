@@ -442,6 +442,7 @@
     "refractionDistMulForShips": 0.1,
     "forceLowPreset": false,
     "sceneResolutionPreset": "medium",
+    "armAsrMaxSceneScale": 0.744,
     "defaultPresetAA": "low_fxaa",
     "xrayOutlinesScale": 1.0,
     "hasLowresDecals": false,

@@ -278,9 +278,12 @@ let battlePassIcon = @(bpList, selBpInfo) function() {
     onClick = @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType)
     children = [
       {
-        rendObj = ROBJ_TEXT
-        text = getEpName(selBpInfo.get()?.bpType)
-        hplace = ALIGN_CENTER
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        maxWidth = rightBlockWidth
+        halign = ALIGN_CENTER
+        hplace = ALIGN_RIGHT
+        text = getEpName(selBpInfo.get()?.bpType, curEventId.get())
       }.__update(fontBig)
       {
         size = [FLEX, bpIconSize]
@@ -326,7 +329,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
                 if (purchList == null)
                   purchaseGoods(goods?.id, eventPassRemainder)
                 else
-                  purchaseGoodsSeq(purchList, getEpName(selBpInfo.get()?.bpType), eventPassRemainder)
+                  purchaseGoodsSeq(purchList, getEpName(selBpInfo.get()?.bpType, curEventId.get()), eventPassRemainder)
               },
               { ovr = { minWidth = bpIconSize }})
         : {

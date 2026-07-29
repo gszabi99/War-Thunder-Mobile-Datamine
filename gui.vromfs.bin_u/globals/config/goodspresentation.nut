@@ -14,6 +14,7 @@ let customGoodsLocId = {
 let goodsLocIdByNamePart = {
   ["event_pass_vip_"] = "eventPassVIP",
   ["battle_pass_vip_"] = "battlePassVIP",
+  ["event_pass_collectors_"] = "collectorsPass",
 }
 
 let defaultIcon = "ui/gameuiskin/icon_primary_attention.svg"

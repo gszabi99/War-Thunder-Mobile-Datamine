@@ -25,7 +25,7 @@ let { REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { doubleSideGradient, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient, doubleSideGradientPaddingY, headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
@@ -409,17 +409,9 @@ function previewGoodsTimeLeft(halign, width = hdpx(350)) {
       }
 }
 
-let mkPreviewHeader = @(textW, onBack, animStartTime) {
-  pos = [-saBordersRv[1], 0]
-  rendObj = ROBJ_IMAGE
-  image = simpleHorGrad
-  color = 0x80000000
-  padding = const [hdpx(20), hdpx(50), hdpx(17), saBordersRv[1]]
-  flipX = true
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = horGap
-  children = [
+
+let mkPreviewHeader = @(textW, onBack, animStartTime) headerGradientBg(
+  [
     backButton(onBack, { animations = opacityAnims(aTimeBackBtn, aTimePackNameBack + animStartTime, "element_appear") })
     @() {
       watch = textW
@@ -434,9 +426,14 @@ let mkPreviewHeader = @(textW, onBack, animStartTime) {
           duration = aTimePackNameFull, delay = animStartTime, trigger = ANIM_SKIP_DELAY }
       )
     }.__update(fontBig)
-  ]
-  animations = colorAnims(aTimePackNameBack, animStartTime)
-}
+  ],
+  {
+    padding = const [0, 0, hdpx(17), 0]
+    animations = colorAnims(aTimePackNameBack, animStartTime)
+  }
+)
+
+
 
 let mkTimeBlock = @(animStartTime, child) {
   padding = hdpx(10)

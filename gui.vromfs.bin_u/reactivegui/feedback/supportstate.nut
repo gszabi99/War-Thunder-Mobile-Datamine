@@ -5,6 +5,7 @@ let { get_cur_circuit_name } = require("app")
 let { get_network_block } = require("blkGetters")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 
 
@@ -41,7 +42,9 @@ function updateUrls(isLoggedInVal) {
 isLoggedIn.subscribe(updateUrls)
 updateUrls(isLoggedIn.get())
 
-let supportUrl = Computed(@() loc(canUseZendeskSso.get() ? "url/support" : "url/support/nologin"))
+let supportUrl = Computed(@() canUseZendeskSso.get()
+  ? loc("url/support")
+  : getCurCircuitOverride("supportURL", loc("url/support/nologin")))
 
 let langCfg = {
   English = { locale = "en-US", lang = "english" }

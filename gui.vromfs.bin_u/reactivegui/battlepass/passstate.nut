@@ -83,7 +83,7 @@ function openPassScene(id) {
 }
 
 function updateCurEventId() {
-  let curEventPassName = playerSelectedScene.get()
+  let curEventPassName = passPageId.get()
   let { eventName = null } = eventsPassList.get().findvalue(@(ep) getEventPassName(ep.eventName) == curEventPassName)
   if (eventName != null)
     curEventId.set(eventName)
@@ -135,7 +135,7 @@ function closePassScene() {
 }
 
 eventsPassList.subscribe(@(_) updateCurEventId())
-playerSelectedScene.subscribe(@(_) updateCurEventId())
+passPageId.subscribe(@(_) updateCurEventId())
 passPageId.subscribe(@(v) v == null ? closePassScene() : tryMarkPassesSeenByPageId(v))
 
 if (seenPasses.get().len() == 0)

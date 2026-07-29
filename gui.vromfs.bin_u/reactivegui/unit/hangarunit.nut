@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+from "blkGetters" import get_unittags_blk
+from "console" import register_command
 require("%rGui/onlyAfterLogin.nut")
 let logH = log_with_prefix("[HANGAR] ")
 let DataBlock = require("DataBlock")
@@ -373,6 +375,24 @@ eventbus_subscribe("onHangarModelLoaded", function(_) {
     loadCurrentHangarUnitModel()
   }
 })
+
+register_command(
+  function(unitName) {
+    if (unitName not in get_unittags_blk())
+      return console_print($"Unit {unitName} does not exist in the unittags.blk") 
+    setHangarUnit(unitName)
+    console_print("Done") 
+  },
+  "hangar.set_unit")
+
+register_command(
+  function(unitName, skinName) {
+    if (unitName not in get_unittags_blk())
+      return console_print($"Unit {unitName} does not exist in the unittags.blk") 
+    setHangarUnitWithSkin(unitName, skinName)
+    console_print("Done") 
+  },
+  "hangar.set_unit_with_skin")
 
 return {
   loadedHangarUnitName 

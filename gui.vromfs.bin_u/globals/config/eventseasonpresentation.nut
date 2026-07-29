@@ -126,6 +126,21 @@ let presentations = {
     bgColor = 0xFF999999,
     icon = "ui/gameuiskin#icon_event_japan_tanks_spending.svg",
   }
+  collectors_pass_tanks         = {
+    image = $"ui/gameuiskin#events_chest_icon.svg"
+    icon = "ui/gameuiskin#events_chest_icon.svg"
+    bg = "ui/images/blueprint_folder_bg_tanks.avif",
+  }
+  collectors_pass_ships         = {
+    image = $"ui/gameuiskin#events_chest_icon.svg"
+    icon = "ui/gameuiskin#events_chest_icon.svg"
+    bg = "ui/images/ship_blueprint_bg.avif",
+  }
+  collectors_pass_air           = {
+    image = $"ui/gameuiskin#events_chest_icon.svg"
+    icon = "ui/gameuiskin#events_chest_icon.svg"
+    bg = "ui/images/air_beta_access_bg.avif",
+  }
   aprilintel                   = { bg = "ui/images/event_bg_event_april_2026.avif" }
   halloweenbond                = { bg = "ui/images/event_bg_halloween_2025.avif" }
   valentinebond                = { bg = "ui/images/event_bg_valentine_day_2026.avif" }

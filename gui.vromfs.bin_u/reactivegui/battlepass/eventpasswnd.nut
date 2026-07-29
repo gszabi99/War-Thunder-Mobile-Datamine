@@ -4,11 +4,12 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
   EP_VIP, EP_COMMON, EP_NONE, purchasedEp,
   pointsCurStage, pointsPerStage, curEventId,
-  isEpRewardsInProgress, receiveEpRewards, epSeasonEndTime
+  isEpRewardsInProgress, receiveEpRewards, epSeasonEndTime,
+  eventLevelPrice, isEPLevelPurchaseInProgress
 } = require("%rGui/battlePass/eventPassState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText, mkPassIcon
 } = require("%rGui/battlePass/passPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
@@ -17,9 +18,9 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
+let buyEPLevelMsg = require("%rGui/battlePass/buyEPLevelMsg.nut")
 
 
-let bpIconSize = [hdpx(189), hdpx(214)]
 let scrollHandler = ScrollHandler()
 
 function scrollToCardEP(scrollX, selProgress) {
@@ -44,7 +45,8 @@ let rewardsList = @(stages, recommendInfo) @() {
   gap = hdpx(20)
   onAttach = @() scrollToCardEP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
   children = [
-    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage)
+    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage,
+      eventLevelPrice, isEPLevelPurchaseInProgress, buyEPLevelMsg)
     eventPassRewardsList(stages)
   ]
 }
@@ -106,17 +108,14 @@ let rightMiddle = @() {
   gap = hdpx(35)
   children = [
     (curEventId.get() ?? "") == "" ? null
-      : {
-          size = bpIconSize
-          rendObj = ROBJ_IMAGE
-          image = Picture($"{getEpIcon(purchasedEp.get(), curEventId.get())}:{bpIconSize[0]}:{bpIconSize[1]}:P")
-          fallbackImage = Picture($"ui/gameuiskin#event_pass_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
-          opacity = isEpActive.get() ? 1 : 0.5
-        }
+      : mkPassIcon([purchasedEp, curEventId, isEpActive],
+          @() getEpIcon(purchasedEp.get(), curEventId.get()),
+          @() isEpActive.get(),
+          "ui/gameuiskin#event_pass_icon_not_active.avif")
     purchasedEp.get() == EP_COMMON
         ? openPurchBpButton(loc("eventPass/upgrade"))
       : purchasedEp.get() == EP_NONE
-        ? openPurchBpButton(loc("eventPass/btn_buy"))
+        ? openPurchBpButton(loc(getEpPresentation(curEventId.get()).btnBuyLocId))
       : purchasedEp.get() == EP_VIP
         ? {
             size = [FLEX, defButtonHeight]

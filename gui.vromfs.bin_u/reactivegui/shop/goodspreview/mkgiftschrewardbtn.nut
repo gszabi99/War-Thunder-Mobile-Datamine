@@ -15,7 +15,7 @@ function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = nul
   let isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
     size = hdpx(130)
-    pos = [verticalGap,0]
+    pos = [verticalGap,-hdpx(30)]
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
     behavior = Behaviors.Button

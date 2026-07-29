@@ -5,7 +5,6 @@ let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -77,8 +76,9 @@ function mkPricePlate(bst, count) {
 }
 
 let gamercardPannel = {
-  size = [FLEX, gamercardHeight]
+  size = [FLEX, SIZE_TO_CONTENT]
   vplace = ALIGN_TOP
+  valign = ALIGN_CENTER
   children = [
     headerGradientBg([
       backButton(close)

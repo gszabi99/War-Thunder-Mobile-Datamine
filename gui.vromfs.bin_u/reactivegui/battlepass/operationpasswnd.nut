@@ -5,11 +5,12 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isOPActive, openOPPurchaseWnd, selectedStage, curStage, getOPIcon,
   OP_VIP, OP_COMMON, OP_NONE, purchasedOP, operationPassGoods, pointsCurStage, pointsPerStage,
-  receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber, opSeasonEndTime
+  receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber, opSeasonEndTime,
+  OPLevelPrice, isOPLevelPurchaseInProgress
 } = require("%rGui/battlePass/operationPassState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText, mkPassIcon
 } = require("%rGui/battlePass/passPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
@@ -23,6 +24,7 @@ let { bpCardStyle, bpCardPadding, bpCardHeight } = require("%rGui/battlePass/bpC
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
+let buyOPLevelMsg = require("%rGui/battlePass/buyOPLevelMsg.nut")
 
 
 let TIME_TO_HIDE_AD = 4
@@ -30,7 +32,6 @@ let HIDE_AD_TRIGGER = "hideOPLastReward"
 let startAdPointX = hdpx(700)
 let endAdPointX = hdpx(2000)
 let moveAdDuration = 1
-let opIconSize = [hdpx(298), hdpx(181)]
 let scrollHandler = ScrollHandler()
 
 let showedAdForCampaigns = mkWatched(persist, "showedAdForCampaigns", {})
@@ -131,7 +132,8 @@ let rewardsList = @(stages, recommendInfo) @() {
   gap = hdpx(20)
   onAttach = @() scrollToCardOP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
   children = [
-    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage)
+    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage,
+      OPLevelPrice, isOPLevelPurchaseInProgress, buyOPLevelMsg)
     operationPassRewardsList(stages)
   ]
 }
@@ -191,16 +193,10 @@ let rightMiddle = @() {
   valign = ALIGN_BOTTOM
   gap = hdpx(35)
   children = [
-    @() {
-      watch = [purchasedOP, isOPActive, OPCampaign]
-      size = opIconSize
-      vplace = ALIGN_CENTER
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{getOPIcon(purchasedOP.get(), OPCampaign.get())}:{opIconSize[0]}:{opIconSize[1]}:P")
-      fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{opIconSize[0]}:{opIconSize[1]}:P")
-      opacity = isOPActive.get() ? 1 : 0.5
-      keepAspect = true
-    }
+    mkPassIcon([purchasedOP, OPCampaign, isOPActive],
+      @() getOPIcon(purchasedOP.get(), OPCampaign.get()),
+      @() isOPActive.get(),
+      "ui/gameuiskin#bp_icon_not_active.avif")
     purchasedOP.get() == OP_COMMON && operationPassGoods.get()[OP_VIP] != null
         ? openPurchOpButton(loc("operationPass/upgrade"))
       : purchasedOP.get() == OP_NONE

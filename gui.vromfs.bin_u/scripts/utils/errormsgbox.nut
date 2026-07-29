@@ -12,6 +12,8 @@ let { SST_MAIL } = require("%appGlobals/loginState.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let matching = require("%appGlobals/matching_api.nut")
 
+let supportContact = getCurCircuitOverride("supportSite", "support.gaijin.net")
+
 let curtomUrls = {
   [SERVER_ERROR_MAINTENANCE] =  getCurCircuitOverride("newsURL","https://www.wtmobile.com/news"),
   ["CANNOT_LOGIN_WITH_LINKED_ACCOUNT"] = "",
@@ -26,7 +28,7 @@ function matchingErrData(error_text) {
     text = loc("yn1/error/fmt",
       {
         text = loc("yn1/connect_error"),
-        err_msg = loc(bqLocId, error_text),
+        err_msg = doesLocTextExist(bqLocId) ? loc(bqLocId, { support = supportContact }) : error_text,
         err_code = ""
       })
   }
@@ -36,7 +38,7 @@ function defErrData(res) {
   let errCode = res == "0" ? "" : res
   let bqLocId = $"yn1/error/{errCode}"
   if (doesLocTextExist(bqLocId))
-    return { bqLocId, text = loc(bqLocId) }
+    return { bqLocId, text = loc(bqLocId, { support = supportContact }) }
 
   return {
     bqLocId

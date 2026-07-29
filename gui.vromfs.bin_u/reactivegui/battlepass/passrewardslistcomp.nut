@@ -84,11 +84,6 @@ function cardContent(stageInfo, stateFlags, isRewardsInProgress, addChild = null
   return @() {
     watch = [stateFlags, isEmptyReward]
     children = [
-      !isVip ? null : {
-        hplace = ALIGN_CENTER
-        rendObj = ROBJ_TEXT
-        text = loc("battlePass/VIP/mark")
-      }.__update(fontSmallShaded)
       {
         flow = FLOW_VERTICAL
         gap = bpCardGap
@@ -114,6 +109,11 @@ function cardContent(stageInfo, stateFlags, isRewardsInProgress, addChild = null
             : isVip ? vipMark
             : isPaid ? paidMark
             : freeMark
+          !isVip ? null : {
+            hplace = ALIGN_CENTER
+            rendObj = ROBJ_TEXT
+            text = loc("battlePass/VIP/mark")
+          }.__update(fontSmallShaded)
         ]
       }
     ]

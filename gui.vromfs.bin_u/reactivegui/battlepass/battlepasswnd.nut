@@ -2,12 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isBpActive, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
   BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods, pointsCurStage, pointsPerStage,
-  receiveBpRewards, isBpRewardsInProgress, bpSeasonEndTime
+  receiveBpRewards, isBpRewardsInProgress, bpSeasonEndTime,
+  bpLevelPrice, isBPLevelPurchaseInProgress
 } = require("%rGui/battlePass/battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText
+let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText, mkPassIcon
 } = require("%rGui/battlePass/passPkg.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
@@ -16,8 +17,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-
-let bpIconSize = [hdpx(298), hdpx(181)]
+let buyBPLevelMsg = require("%rGui/battlePass/buyBPLevelMsg.nut")
 
 let scrollHandler = ScrollHandler()
 
@@ -44,7 +44,8 @@ let rewardsList = @(stages, recommendInfo) @() {
   gap = hdpx(20)
   onAttach = @() scrollToCardBP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
   children = [
-    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage)
+    bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage,
+      bpLevelPrice, isBPLevelPurchaseInProgress, buyBPLevelMsg)
     battlePassRewardsList(stages)
   ]
 }
@@ -104,15 +105,10 @@ let rightMiddle = @() {
   valign = ALIGN_BOTTOM
   gap = hdpx(35)
   children = [
-    @() {
-      watch = [purchasedBp, eventSeason, isBpActive, battlePassGoods]
-      size = bpIconSize
-      vplace = ALIGN_CENTER
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{getBpIcon(purchasedBp.get(), eventSeason.get())}:{bpIconSize[0]}:{bpIconSize[1]}:P")
-      fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
-      opacity = isBpActive.get() ? 1 : 0.5
-    }
+    mkPassIcon([purchasedBp, eventSeason, isBpActive],
+      @() getBpIcon(purchasedBp.get(), eventSeason.get()),
+      @() isBpActive.get(),
+      "ui/gameuiskin#bp_icon_not_active.avif")
     purchasedBp.get() == BP_COMMON && battlePassGoods.get()[BP_VIP] != null
         ? openPurchBpButton(loc("battlePass/upgrade"))
       : purchasedBp.get() == BP_NONE && battlePassGoods.get()[BP_COMMON] != null

@@ -1,10 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
+let { getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
+let { bpCardStyle, bpCardPadding } = require("%rGui/battlePass/bpCardsStyle.nut")
 
 let progressIconSize = [evenPx(54), hdpxi(58)]
+let defPassIconSize = [hdpx(298), hdpx(181)]
 let tabSize = [hdpx(140), hdpx(140)]
 let bpLineFillColor = 0xFF191919
 let bpBorderColor = 0xFF7C7C7C
@@ -86,6 +94,47 @@ let mkTimeEndsAtText = @(time, ovr = {}) @() {
     : loc("battlepass/endsin", { time = secondsToHoursLoc(time.get() - serverTime.get()) }  )
 }.__update(fontTinyAccented, ovr)
 
+function mkPassIcon(watch, getImage, getIsActive, fallback, ovr = {}) {
+  let size = ovr?.size ?? defPassIconSize
+  return @() {
+    watch
+    size
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    image = Picture($"{getImage()}:{size[0]}:{size[1]}:P")
+    fallbackImage = Picture($"{fallback}:{size[0]}:{size[1]}:P")
+    keepAspect = true
+    opacity = getIsActive() ? 1 : 0.5
+  }.__update(ovr)
+}
+
+let emptyBuyLevelBlock = { size = [SIZE_TO_CONTENT, purchBtnHeight] }
+
+function mkBuyLevelBlock(canBuyLevel, viewInfo, levelPrice, isLevelPurchaseInProgress, buyLevelMsg, context) {
+  if (!canBuyLevel)
+    return emptyBuyLevelBlock
+  return function() {
+    let price = levelPrice.get()
+    let cardWidth = getRewardPlateSize(viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
+    return {
+      watch = levelPrice
+      size = [SIZE_TO_CONTENT, purchBtnHeight]
+      children = price == null || price.price <= 0 ? null
+        : mkSpinnerHideBlock(isLevelPurchaseInProgress,
+            textButtonPricePurchaseLow(utf8ToUpper(loc("battlepass/buyLevel")),
+              mkCurrencyComp(price.price, price.currency),
+              @() buyLevelMsg(price, context),
+              { hotkeys = ["^J:X"]
+                ovr = { size = [SIZE_TO_CONTENT, purchBtnHeight]
+                        minWidth = cardWidth
+                        contentPadding = [0, hdpx(20)]
+                      }
+              }),
+            { hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, purchBtnHeight] })
+    }
+  }
+}
+
 return {
   bpCurProgressbar
   bpProgressText
@@ -104,4 +153,6 @@ return {
   bottomPanelIconSize
   mkRewardsPannable
   mkTimeEndsAtText
+  mkBuyLevelBlock
+  mkPassIcon
 }

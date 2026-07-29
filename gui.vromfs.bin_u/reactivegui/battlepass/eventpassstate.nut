@@ -3,6 +3,7 @@ let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -352,8 +353,12 @@ return {
   mkHasEpRewardsToReceive
   hasEpRewardsToReceive
 
-  getEpIcon = @(epType, season) getPresentationByType(epType).icon(season)
-  getEpName = @(epType) getPresentationByType(epType).name()
+  getEpIcon = @(epType, eventName) epType == EP_NONE
+    ? (getEpPresentation(eventName).iconInactive ?? getPresentationByType(EP_NONE).icon(eventName))
+    : getPresentationByType(epType).icon(eventName)
+  getEpName = @(epType, eventName) epType == EP_VIP ? loc(getEpPresentation(eventName).nameVipLocId)
+    : epType == EP_COMMON ? loc(getEpPresentation(eventName).nameLocId)
+    : ""
 
   EP_NONE
   EP_COMMON

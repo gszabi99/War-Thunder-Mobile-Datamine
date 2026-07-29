@@ -1,7 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull, progressIconSize } = require("%rGui/battlePass/passPkg.nut")
+let { bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull, progressIconSize, mkBuyLevelBlock
+} = require("%rGui/battlePass/passPkg.nut")
+let { purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
+
+let buyLevelBlockOffs = -(purchBtnHeight + hdpx(10))
 
 let halfWidthProgressIcon = progressIconSize[0] / 2
 
@@ -47,6 +51,40 @@ let emptyStage = {
   halign = ALIGN_CENTER
 }
 
+function mkStageIcon(stage, curStage, levelPrice, isLevelPurchaseInProgress, buyLevelMsg) {
+  let icon = bpProgressIcon(max(0, stage.progress), stage?.loopMultiply ?? 0, curStage)
+  if (!(stage?.canBuyLevel ?? false))
+    return icon
+  return {
+    size = progressIconSize
+    children = [
+      icon
+      {
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_TOP
+        pos = [0, buyLevelBlockOffs]
+        children = mkBuyLevelBlock(true, stage.viewInfo, levelPrice, isLevelPurchaseInProgress, buyLevelMsg, stage)
+      }
+    ]
+  }
+}
+
+function bpLevelBuyOverflow(rewardsStages, buyIdx, levelPrice, isLevelPurchaseInProgress, buyLevelMsg) {
+  let stage = rewardsStages[buyIdx]
+  let buyBlockWidth = calc_comp_size(
+    mkBuyLevelBlock(true, stage.viewInfo, levelPrice, isLevelPurchaseInProgress, buyLevelMsg, stage))[0]
+  let cardSize = getRewardPlateSize(1, bpCardStyle)[0] + 2 * bpCardPadding[1] + bpCardMargin
+  let cardsToEnd = rewardsStages.len() - buyIdx
+  let overflowPastCardsRow = buyBlockWidth / 2 - (cardsToEnd - 0.5) * cardSize
+  if (overflowPastCardsRow <= 0)
+    return 0
+  let firstCardWidth = getRewardPlateSize(rewardsStages[0].viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
+  let lastCardWidth = getRewardPlateSize(
+    rewardsStages[rewardsStages.len() - 1].viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
+  let iconsVsCardsRowGap = (firstCardWidth + lastCardWidth) / 2 - progressIconSize[0]
+  return overflowPastCardsRow + iconsVsCardsRowGap
+}
+
 function bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage) {
   let curSlotWidth = getRewardPlateSize(stage?.viewInfo.slots ?? 1, bpCardStyle)[0]
   let nextSlotWidth = getRewardPlateSize(stage.nextSlots, bpCardStyle)[0]
@@ -62,17 +100,23 @@ function bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage
   }
 }
 
-function bpProgressBar(rewardsStages, curStage, pointsCurStage, pointsPerStage) {
+function bpProgressBar(rewardsStages, curStage, pointsCurStage, pointsPerStage,
+  levelPrice, isLevelPurchaseInProgress, buyLevelMsg
+) {
   let halfWidthFirstSlot = getRewardPlateSize(rewardsStages?[0].viewInfo.slots ?? 1, bpCardStyle)[0] / 2
   let posFirstElem = halfWidthFirstSlot + bpCardPadding[1] - halfWidthProgressIcon
   let lastIdx = rewardsStages.len() - 1
+  let buyIdx = rewardsStages.findindex(@(s) !(s?.isVip ?? false) && (s?.canBuyLevel ?? false))
+  let buyOverflow = buyIdx == null ? 0
+    : bpLevelBuyOverflow(rewardsStages, buyIdx, levelPrice, isLevelPurchaseInProgress, buyLevelMsg)
   let children = []
   foreach(idx, stage in rewardsStages)
     children.append(
-      stage?.isVip ? emptyStage : bpProgressIcon(max(0, stage.progress), stage?.loopMultiply ?? 0, curStage)
+      stage?.isVip ? emptyStage : mkStageIcon(stage, curStage, levelPrice, isLevelPurchaseInProgress, buyLevelMsg)
       lastIdx == idx ? null : bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage) )
   return {
     pos = [ posFirstElem, 0]
+    margin = [-buyLevelBlockOffs, buyOverflow, 0, 0]
     flow = FLOW_HORIZONTAL
     children
   }

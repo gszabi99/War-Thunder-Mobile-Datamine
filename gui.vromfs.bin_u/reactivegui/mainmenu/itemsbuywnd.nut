@@ -6,7 +6,6 @@ let { registerScene } = require("%rGui/navState.nut")
 let { isOpenedItemWnd, closeItemWnd, getCheapestGoods, itemsForPurchaseIds } = require("itemsBuyState.nut")
 let { warningTextColor } = require("%rGui/style/stdColors.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkColoredGradientY, simpleHorGrad } = require("%rGui/style/gradients.nut")
@@ -76,8 +75,9 @@ let mkPricePlate = @(goods, hasLimitReached) {
 
 let gamercardPannel = @(currencys) @() {
   watch = currencys
-  size = [FLEX, gamercardHeight]
+  size = [FLEX, SIZE_TO_CONTENT]
   vplace = ALIGN_TOP
+  valign = ALIGN_CENTER
   children = [
     headerGradientBg([
       backButton(closeItemWnd)

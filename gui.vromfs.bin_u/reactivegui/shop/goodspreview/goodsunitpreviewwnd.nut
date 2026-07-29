@@ -606,7 +606,6 @@ let previewWnd = @() {
           valign = ALIGN_CENTER
           children = [
             {
-              pos = [-saBordersRv[1], 0]
               flow = FLOW_HORIZONTAL
               children = [
                 mkHeader

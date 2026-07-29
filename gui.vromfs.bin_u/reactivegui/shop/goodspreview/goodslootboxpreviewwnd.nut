@@ -78,7 +78,6 @@ let headerPanel = {
   valign = ALIGN_CENTER
   children = [
     {
-      pos = [-saBordersRv[1], 0]
       size = FLEX
       flow = FLOW_HORIZONTAL
       gap = horGap

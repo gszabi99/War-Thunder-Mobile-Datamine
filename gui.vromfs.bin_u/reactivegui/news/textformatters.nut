@@ -214,6 +214,12 @@ let accent = @(obj, formatTextFunc, _) obj.__merge({
 
 let getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx + 1], 100, false)
 
+let columnJustify = {
+  start = { align = ALIGN_TOP, height = SIZE_TO_CONTENT },
+  center = { align = ALIGN_CENTER, height = flex() },
+  end = { align = ALIGN_BOTTOM, height = flex() }
+}
+
 function columns(obj, formatTextFunc, _) {
   local preset = obj?.preset ?? "single"
   preset = preset.split("_")
@@ -224,8 +230,10 @@ function columns(obj, formatTextFunc, _) {
     flow = FLOW_HORIZONTAL
     children = cols.map(@(col, idx) {
       flow = FLOW_VERTICAL
-      size = [flex(getColWeightByPresetAndIdx(idx, preset)), SIZE_TO_CONTENT]
-      children = formatTextFunc(col.v)
+      valign = columnJustify?[obj?.justify].align ?? ALIGN_TOP
+      size = [flex(getColWeightByPresetAndIdx(idx, preset)),
+        columnJustify?[obj?.justify].height ?? SIZE_TO_CONTENT]
+      children = formatTextFunc(col)
       clipChildren = true
     })
   }

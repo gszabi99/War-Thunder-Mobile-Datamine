@@ -1,7 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { REWARD_STYLE_MEDIUM, REWARD_STYLE_BIG, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
+let { getEventLootboxSizeMul } = require("%appGlobals/config/lootboxPresentation.nut")
+let { mkSquareIconBtn } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { getLootboxPicture, lootboxFallbackPicture } = require("%rGui/rewards/components/lootboxView.nut")
+let { REWARD_STYLE_MEDIUM, REWARD_STYLE_BIG, REWARD_STYLE_SMALL, REWARD_STYLE_LARGE } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -115,7 +118,17 @@ let infoImageCtors = {
   decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM)
   currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
   booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
-  decal = function(viewInfo, _) {
+  function lootbox(viewInfo, _) {
+    let sizeMul = getEventLootboxSizeMul(viewInfo.id, null, null)
+    return {
+      size = (REWARD_STYLE_LARGE.boxSize * sizeMul + 0.5).tointeger()
+      rendObj = ROBJ_IMAGE
+      image = getLootboxPicture(viewInfo.id, null)
+      fallbackImage = lootboxFallbackPicture
+      keepAspect = true
+      children = mkSquareIconBtn("⌡", @() openLootboxPreview(viewInfo.id), { pos = [0, ph(60)] })
+  }}
+  function decal(viewInfo, _) {
     let size = [1.5 * REWARD_STYLE_MEDIUM.boxSize, REWARD_STYLE_MEDIUM.boxSize]
     return {
       size

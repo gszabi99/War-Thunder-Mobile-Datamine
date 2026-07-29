@@ -56,9 +56,6 @@ let nestedBgColor = 0x70000000
 
 let spinner = mkSpinner(hdpx(100))
 
-let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
-let columnsCount = (saSize[0] + saBorders[0] + boxGap) / (boxSize + boxGap) 
-let itemsBlockWidth = isWidescreen ? saSize[0] : columnsCount * (boxSize + boxGap)
 let headerTextHeight = calc_str_box("A", fontSmallShaded)[1]
 let maxNoScrollHeight = saSize[1] - hdpx(110) 
 
@@ -590,28 +587,6 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
   }.__update(ovr)
 }
 
-function lootboxPreviewContent(lootbox, ovr = {}) {
-  if (lootbox == null)
-    return { size = FLEX }.__update(ovr)
-  let rewards = Computed(@() getLootboxRewardsAutoLast(lootbox, servProfile.get(), serverConfigs.get()))
-  return @() {
-    watch = rewards
-    size = FLEX_H
-    halign = ALIGN_CENTER
-    valign = ALIGN_TOP
-    flow = FLOW_VERTICAL
-    gap = hdpx(15)
-    children = [
-      mkText(loc("events/lootboxContains"),
-        { size = [FLEX, hdpx(80)], halign = ALIGN_CENTER, valign = ALIGN_CENTER })
-      lootboxImageWithTimer(lootbox)
-      itemsBlock(
-        rewards.get(),
-        itemsBlockWidth, REWARD_STYLE_MEDIUM, { halign = ALIGN_CENTER })
-    ]
-  }.__update(ovr)
-}
-
 let lootboxHeader = @(lootbox) mkText(getLootboxName(lootbox.name))
 
 let mkRow = @(children) {
@@ -679,11 +654,13 @@ let mkJackpotProgress = @(stepsToFixed) @() {
 }
 
 return {
-  lootboxPreviewContent
+  getLootboxRewardsAutoLast
+
   lootboxImageWithTimer
   lootboxContentBlock
   lootboxHeader
   mkJackpotProgress
   mkJackpotProgressBar
   smallChestIcon
+  mkReward
 }

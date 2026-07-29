@@ -35,6 +35,19 @@ let defEpPresentation = {
   descLocId = "eventPass/desc"
   shortDescLocId = "battlepass/tasksDesc"
   passWndCurrencies = []
+  iconInactive = null
+  btnBuyLocId = "eventPass/btn_buy"
+  nameLocId = "eventPass"
+  nameVipLocId = "eventPassVIP"
+}
+
+let collectorsPresentation = {
+  descLocId = "events/desc/tasksAndBattlesScore"
+  shortDescLocId = "events/desc/short/tasksAndBattlesScore"
+  iconInactive = "ui/gameuiskin#operation_pass_icon_not_active.avif"
+  btnBuyLocId = "collectorsPass/btn_buy"
+  nameLocId = "collectorsPass"
+  nameVipLocId = "collectorsPassVIP"
 }
 
 let epPresentations = {
@@ -62,6 +75,9 @@ let epPresentations = {
     icon = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event.avif"
     iconVip = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event_vip.avif"
   }
+  collectors_pass_tanks = collectorsPresentation
+  collectors_pass_ships = collectorsPresentation
+  collectors_pass_air = collectorsPresentation
 }.map(@(c) defEpPresentation.__merge(c))
 
 let defNewbieBpPresentation = {

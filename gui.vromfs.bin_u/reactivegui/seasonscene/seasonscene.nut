@@ -39,6 +39,7 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
   let icon = tabConfig?.icon ?? $"season_tab_{tabName}"
   let isUnseen = tabConfig?.mkHasUnseen(curEvent)
   return {
+    key = tabConfig?.key
     size = FLEX_V
     behavior = Behaviors.Button
     onClick = @() openSeasonTab(tabName)

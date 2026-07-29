@@ -1,20 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin
 } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
-let { textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
-let { receiveEpRewards, isEpRewardsInProgress, selectedStage, eventLevelPrice,
-  isEPLevelPurchaseInProgress
+let { receiveEpRewards, isEpRewardsInProgress, selectedStage, eventLevelPrice
 } = require("%rGui/battlePass/eventPassState.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let buyEPLevelMsg = require("%rGui/battlePass/buyEPLevelMsg.nut")
-let { hoverCard, cardBorder, cardContent, bgCard, purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
+let { hoverCard, cardBorder, cardContent, bgCard } = require("%rGui/battlePass/passRewardsListComp.nut")
 
 function mkCard(stageInfo, idx) {
   let stateFlags = Watched(0)
-  let { canReceive, viewInfo, progress, canBuyLevel } = stageInfo
+  let { canReceive, viewInfo, progress } = stageInfo
   function onClick(){
     selectedStage.set(progress)
     if(canReceive)
@@ -46,19 +40,6 @@ function mkCard(stageInfo, idx) {
           cardContent(stageInfo, stateFlags, isEpRewardsInProgress)
         ]
       }
-      canBuyLevel && eventLevelPrice.get() != null && eventLevelPrice.get().price > 0
-        ? mkSpinnerHideBlock(isEPLevelPurchaseInProgress,
-            textButtonPricePurchaseLow(utf8ToUpper(loc("battlepass/buyLevel")),
-              mkCurrencyComp(eventLevelPrice.get().price, eventLevelPrice.get().currency),
-              @() buyEPLevelMsg(eventLevelPrice.get(), stageInfo)
-              { hotkeys = ["^J:X"]
-                ovr = { size = [SIZE_TO_CONTENT, purchBtnHeight]
-                        minWidth = cardWidth
-                        contentPadding = [0, hdpx(20)]
-                      }
-              }),
-            { hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, purchBtnHeight] })
-        : { size = [SIZE_TO_CONTENT, purchBtnHeight] }
     ]
   }
 }
