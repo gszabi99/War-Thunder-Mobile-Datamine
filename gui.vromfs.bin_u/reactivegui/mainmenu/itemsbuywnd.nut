@@ -23,7 +23,7 @@ let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let openBarterWnd = require("itemsConvertWnd.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
 
 const btnHeight = hdpx(90)
@@ -73,18 +73,17 @@ let mkPricePlate = @(goods, hasLimitReached) {
     : null
 }
 
-let gamercardPannel = @(currencys) @() {
-  watch = currencys
+let gamercardPannel = @(currencies) @() {
+  watch = currencies
   size = [FLEX, SIZE_TO_CONTENT]
   vplace = ALIGN_TOP
   valign = ALIGN_CENTER
-  children = [
-    headerGradientBg([
+  children = headerGradientWithRightBlock(
+    [
       backButton(closeItemWnd)
       header
-    ])
-    mkCurrenciesBtns(currencys.get())
-  ]
+    ],
+    mkCurrenciesBtns(currencies.get()))
 }
 
 let cardTitle = @(id) {

@@ -3,9 +3,9 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openSeasonScene, LOOTBOX_TAB, openGmEventWnd } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let { gmEventsList } = require("%rGui/event/gmEventState.nut")
 
 let actions = {
   open_event_lootbox = { 

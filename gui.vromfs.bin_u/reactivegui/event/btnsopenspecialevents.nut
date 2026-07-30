@@ -5,10 +5,10 @@ let { translucentButton, translucentButtonsVGap } = require("%rGui/components/tr
 let { specialEventsLootboxesState, specialEvents, orderEvents, subEventsList
 } = require("%rGui/event/eventState.nut")
 let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { openSeasonScene, openEventShopWnd} = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openSeasonScene, openEventShopWnd, openGmEventWnd } = require("%rGui/seasonScene/seasonSceneState.nut")
 let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
 let { goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop } = require("%rGui/shop/shopState.nut")
-let { gmEventsList, openGmEventWnd, hasFinishedFirstBattle, canOpenGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let { gmEventsList } = require("%rGui/event/gmEventState.nut")
 let { getShopEventName } = require("%rGui/shop/eventShopState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { tabIdToOpen } = require("%rGui/quests/questsState.nut")
@@ -59,8 +59,6 @@ function btnsOpenSpecialEvents() {
     })
 
     gmEventsList.get().keys().each(function(id) {
-      if (!canOpenGmEventWnd(id, hasFinishedFirstBattle.get()))
-        return
       usedEvents[id] <- true
       children.append(translucentButton(getEventPresentation(id).icon, @() openGmEventWnd(id)))
     })
@@ -83,7 +81,7 @@ function btnsOpenSpecialEvents() {
   }
 
   return {
-    watch = [ specialEventsLootboxesState, gmEventsList, hasFinishedFirstBattle, specialEvents,
+    watch = [ specialEventsLootboxesState, gmEventsList, specialEvents,
       shouldShowEventMechanics, isOpAvailable, curCampaign, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
       personalGoodsByShop, subEventsList
     ]

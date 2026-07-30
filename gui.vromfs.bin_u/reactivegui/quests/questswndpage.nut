@@ -49,6 +49,8 @@ let { selectColor } = require("%rGui/style/stdColors.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
 let { isOPActive, openOPPurchaseWnd } = require("%rGui/battlePass/operationPassState.nut")
+let { selLineSize } = require("%rGui/components/selectedLine.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
 let bgColor = 0x80000000
@@ -471,6 +473,32 @@ function questTimerUntilStart(sectionTable) {
   }
 }
 
+function questTimerUntilEnd(sectionTable) {
+  let endsAt = Computed(@() userstatStatsTables.get()?.stats[sectionTable.get()?.table]["$endsAt"] ?? 0)
+  let timeText = Computed(function() {
+    let timeLeft = endsAt.get() - serverTime.get()
+    return timeLeft > 0 ? secondsToHoursLoc(timeLeft) : ""
+  })
+
+  return @() {
+    watch = timeText
+    pos = [-(saBorders[0] + (tabW + minContentOffset) / 2 - selLineSize), 0]
+    hplace = ALIGN_LEFT
+    children = timeText.get() == "" ? null
+      : {
+          rendObj = ROBJ_IMAGE
+          image = simpleHorGrad
+          color = 0x80000000
+          flipX = true
+          padding = [hdpx(10), saBorders[0], hdpx(20), saBorders[0]]
+          children = {
+            rendObj = ROBJ_TEXT
+            text = timeText.get()
+          }.__update(fontSmall)
+        }
+  }
+}
+
 let questsSort = @(a, b) b.hasReward <=> a.hasReward
   || a.isFinished <=> b.isFinished
   || "chainQuests" in b <=> "chainQuests" in a
@@ -694,7 +722,7 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
     }
     children = [
       @() {
-        watch = isCurSectionActive
+        watch = [isCurSectionActive, isFullScreenWidth]
         size = FLEX
         flow = FLOW_VERTICAL
         gap = pageBlocksGap
@@ -702,12 +730,14 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
           header
 
           !isCurSectionActive.get()
-              ? questTimerUntilStart(sectionTableUnlock)
+            ? questTimerUntilStart(sectionTableUnlock)
             : @() {
-                watch = [isCurSectionActive, blocksOnTop]
+                watch = [isCurSectionActive, blocksOnTop, isFullScreenWidth]
                 size = FLEX
                 children = !isCurSectionActive.get() ? null
                   : [
+                      !isFullScreenWidth.get() ? null
+                        : questTimerUntilEnd(sectionTableUnlock)
                       pannableCtors[blocksOnTop.get()](
                         @() {
                           watch = questsCount

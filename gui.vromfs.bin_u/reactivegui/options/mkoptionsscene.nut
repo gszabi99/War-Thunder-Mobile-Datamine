@@ -5,6 +5,7 @@ let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { tabExtraWidth } = require("%rGui/components/tabs.nut")
 
 let { registerScene } = require("%rGui/navState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -125,7 +126,6 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
     size = FLEX
     padding = saBordersRv
     flow = FLOW_VERTICAL
-    gap = hdpx(50)
 
     function onAttach() {
       if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.get() ?? true))
@@ -133,14 +133,10 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
     }
 
     children = [
-      headerComp ?? {
-        size = FLEX_H
-        valign = ALIGN_CENTER
-        children = headerGradientBg([backBtn])
-      }
+      headerComp ?? headerGradientBg(backBtn)
       {
-        pos = [-hdpx(8), 0]
-        size = FLEX
+        size = [saSize[0] + tabExtraWidth, FLEX]
+        pos = [-tabExtraWidth, 0]
         flow = FLOW_HORIZONTAL
         children = [
           tabsList

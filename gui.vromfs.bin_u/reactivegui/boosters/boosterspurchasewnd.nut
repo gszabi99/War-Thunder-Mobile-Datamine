@@ -20,7 +20,7 @@ let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pSer
 let { hoverColor, warningTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { mkBgParticles, tinyLimitReachedPlate } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
 let close = @() isOpenedBoosterWnd.set(false)
 
@@ -75,18 +75,12 @@ function mkPricePlate(bst, count) {
   }
 }
 
-let gamercardPannel = {
-  size = [FLEX, SIZE_TO_CONTENT]
-  vplace = ALIGN_TOP
-  valign = ALIGN_CENTER
-  children = [
-    headerGradientBg([
-      backButton(close)
-      header
-    ])
-    gamercardBalanceBtns
-  ]
-}
+let gamercardPannel = headerGradientWithRightBlock(
+  [
+    backButton(close)
+    header
+  ],
+  gamercardBalanceBtns)
 
 let infoBtn = @(id) infoCommonButton(
   @() boosterDesc(id),

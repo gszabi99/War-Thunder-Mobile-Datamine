@@ -38,7 +38,7 @@ let getEventLocFull = @(eventId, eventSeasonV, allSpecialEventsV, progressUnlock
   eventId == MAIN_EVENT_ID ? getMainEventLoc(eventSeasonV)
     : eventId == OP_EVENT_ID ? opName
     : eventId == "" ? loc("quests/achievements")
-    : eventId not in allSpecialEventsV ? ""
+    : eventId not in allSpecialEventsV ? loc(getEventPresentation(eventId).locId)
     : getSpecialEventLocName(allSpecialEventsV[eventId].eventName,
         getSpecialEventRewardUnitName(progressUnlockByTabV?[eventId].stages ?? [],
            serverConfigsV, allShopGoodsV))

@@ -12,8 +12,7 @@ let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootbo
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims, horGap,
-  ANIM_SKIP, ANIM_SKIP_DELAY
+let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims, ANIM_SKIP, ANIM_SKIP_DELAY
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
@@ -50,12 +49,6 @@ let lootbox = Computed(@(prev) prevIfEqual(prev,
 let lootboxAmount = Computed(@() previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).count)
 let bgImage = keepref(Computed(@() getLootboxPreviewBg(lootbox.get()?.name)))
 
-
-let header = mkPreviewHeader(
-  Computed(@() lootbox.get() == null ? "" : getLootboxName(lootbox.get().name)),
-  closeGoodsPreview,
-  aTimeHeaderStart)
-
 function balanceButtons() {
   let { currencyId = "" } = previewGoods.get()?.price
   return {
@@ -71,29 +64,19 @@ function balanceButtons() {
   }
 }
 
-let headerPanel = {
-  size = [FLEX, wndHeaderHeight]
-  vplace = ALIGN_TOP
-  hplace = ALIGN_LEFT
-  valign = ALIGN_CENTER
-  children = [
-    {
-      size = FLEX
-      flow = FLOW_HORIZONTAL
-      gap = horGap
-      children = [
-        header
-        @() {
-          watch = [previewGoods, schRewards]
-          children = mkGiftSchRewardBtn(
-            schRewards.get()?[$"gift_{previewGoods.get()?.meta.campaign}_goods_preview"],
-            aTimeHeaderStart)
-        }
-      ]
+let header = mkPreviewHeader(
+  Computed(@() lootbox.get() == null ? "" : getLootboxName(lootbox.get().name)),
+  closeGoodsPreview,
+  aTimeHeaderStart,
+  [
+    @() {
+      watch = [previewGoods, schRewards]
+      children = mkGiftSchRewardBtn(
+        schRewards.get()?[$"gift_{previewGoods.get()?.meta.campaign}_goods_preview"],
+        aTimeHeaderStart)
     }
-    balanceButtons
-  ]
-}
+  ],
+  balanceButtons)
 
 function canBuyNGoods(goods, purchCount, todayPurchCount, dOffset, servTimeDay) {
   let { id, limit = 0, dailyLimit = 0 } = goods
@@ -183,9 +166,8 @@ let previewWnd = @() {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
-    gap = contentGap
     children = [
-      headerPanel
+      header
       content
     ]
   }

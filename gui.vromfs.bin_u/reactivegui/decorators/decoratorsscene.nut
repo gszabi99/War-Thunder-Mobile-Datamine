@@ -9,7 +9,7 @@ let { isDecoratorsSceneOpened, unseenDecorators, availNickFrames, availAvatars,
 availTitles } = require("%rGui/decorators/decoratorState.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
 
 let curTabId = Watched(null)
@@ -51,23 +51,14 @@ let backBtn = backButton(function() {
   isDecoratorsSceneOpened.set(false)
 })
 
-let header = {
-  size = FLEX_H
-  valign = ALIGN_CENTER
-  children = [
-    headerGradientBg([
-      backBtn
-      {
-        rendObj = ROBJ_TEXT
-        text = loc("mainmenu/decorators")
-      }.__update(fontBigShaded)
-    ])
+let header = headerGradientWithRightBlock(
+  [
+    backBtn
     {
-      size = FLEX_H
-      halign = ALIGN_RIGHT
-      children = gamercardBalanceBtns
-    }
-  ]
-}
+      rendObj = ROBJ_TEXT
+      text = loc("mainmenu/decorators")
+    }.__update(fontBigShaded)
+  ],
+  gamercardBalanceBtns)
 
 mkOptionsScene("decoratorsScene", tabs, isDecoratorsSceneOpened, curTabId, header)

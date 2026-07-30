@@ -14,7 +14,7 @@ let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nex
 } = require("%rGui/news/newsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock, headerHeightInSafeArea } = require("%rGui/components/gradientDefComps.nut")
 let { tabBgColor } = require("%rGui/style/stdColors.nut")
 
 let textColor = 0xFFFFFFFF
@@ -294,38 +294,27 @@ let articleContent = @() {
         scrollArticleBtn("^J:R.Thumb.Down | PageDown", 1)
       ]
 }
-let wndHeaderGap = hdpx(30)
 
-let wndHeader = {
-  size = FLEX_H
-  valign = ALIGN_CENTER
-  padding = [0, pagesStripGap + pagesStripW, 0, 0]
-  children = [
-    headerGradientBg([
-      backButton(function() {
-        closeNewsWnd()
-      })
-      {
-        rendObj = ROBJ_TEXT
-        halign = ALIGN_LEFT
-        color = textColor
-        text = loc("newsWnd/header")
-        margin = const [0, 0, 0, hdpx(15)]
-      }.__update(fontBig)
-    ])
+let wndHeader = headerGradientWithRightBlock(
+  [
+    backButton(closeNewsWnd),
     {
-      hplace = ALIGN_RIGHT
-      children = mkDropMenuBtn(@() [fontsCfg],
-        Watched(0),
-        "ui/gameuiskin#icon_menu_settings.svg",
-        hdpx(65))
-    }
-
-  ]
-}
+      rendObj = ROBJ_TEXT
+      halign = ALIGN_LEFT
+      color = textColor
+      text = loc("newsWnd/header")
+    }.__update(fontBig)
+  ],
+  {
+    hplace = ALIGN_RIGHT
+    children = mkDropMenuBtn(@() [fontsCfg],
+      Watched(0),
+      "ui/gameuiskin#icon_menu_settings.svg",
+      hdpx(65))
+  })
 
 function calcLayoutParams() {
-  let selectorHeightPx = saSize[1] - calc_comp_size(wndHeader)[1] - wndHeaderGap
+  let selectorHeightPx = saSize[1] - headerHeightInSafeArea
   articlesPerPage.set(max(1, ((selectorHeightPx + selectorBtnMinGap) / (selectorBtnH + selectorBtnMinGap)).tointeger()))
   let gapsCount = articlesPerPage.get() - 1
   selectorBtnGap.set(gapsCount > 0
@@ -340,7 +329,6 @@ let newsWnd = bgShaded.__merge({
   padding = saBordersRv
   onDetach = markCurArticleSeen
   flow = FLOW_VERTICAL
-  gap = wndHeaderGap
   children = [
     wndHeader
     {

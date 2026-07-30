@@ -54,7 +54,7 @@ let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
 let MAX_BIG_SLOTS = 8
 let RETRY_EMPTY_REFRESH_SEC = 300 
@@ -217,22 +217,12 @@ function headerText() {
   }
 }
 
-let headerPanel = {
-  size = [FLEX, SIZE_TO_CONTENT]
-  vplace = ALIGN_TOP
-  hplace = ALIGN_LEFT
-  valign = ALIGN_CENTER
-  children = [
-    headerGradientBg([
-      backButton(closeGoodsPreview)
-      headerText
-    ])
-    {
-      hplace = ALIGN_RIGHT
-      children  = balanceButtons
-    }
-  ]
-}
+let header = headerGradientWithRightBlock(
+  [
+    backButton(closeGoodsPreview)
+    headerText
+  ],
+  balanceButtons)
 
 let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 25, 22, 31,-22))
@@ -503,12 +493,12 @@ let previewWnd = bgShaded.__merge({
       image = Picture(getSlotsPreviewBg(previewGoods.get()?.id))
       keepAspect = KEEP_ASPECT_FILL
     }
-    {
+    @() {
       size = FLEX
       margin = saBordersRv
       flow = FLOW_VERTICAL
       children = [
-        headerPanel
+        header
         content()
       ]
     }

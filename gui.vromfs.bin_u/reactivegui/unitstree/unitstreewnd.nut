@@ -6,7 +6,7 @@ let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsTreeBg, unitsTreeOpenRank, isUnit
 } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { mkNodesReceiveInfo } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
@@ -31,7 +31,7 @@ let { selectedTreeSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { researchBlock, mkBarText } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
 
 let TREE_FILTERS = "tree"
@@ -182,31 +182,22 @@ function mkLevelCheckbox(text, isActive, onClick) {
   }
 }
 
-let unitsTreeGamercard = @(filters, activeFilters, allUnits) {
-  size = [FLEX, backButtonHeight]
-  valign = ALIGN_CENTER
-  gap = hdpx(20)
-  children = [
-    headerGradientBg([
-      backButton(onBackButtonClick)
-      {
-        rendObj = ROBJ_TEXT
-        text = loc("unitsTree/researches")
-      }.__update(isWidescreen ? fontMedium : fontSmall)
-      unitFilterButton(filters, allUnits)
-      mkLevelCheckbox(loc("unitsTree/showLevel"), isUnitPlateLevelVisible,
-        @() isUnitPlateLevelVisible.set(!isUnitPlateLevelVisible.get()))
-      @() {
-        watch = [activeFilters, isFiltersVisible]
-        children = activeFilters.get() > 0 && !isFiltersVisible.get() ? clearFiltersButton : null
-      }
-    ])
+let unitsTreeGamercard = @(filters, activeFilters, allUnits) headerGradientWithRightBlock(
+  [
+    backButton(onBackButtonClick)
     {
-      hplace = ALIGN_RIGHT
-      children = mkCurrenciesBtns([WP, GOLD]).__update({ pos = [0, hdpx(5)] })
+      rendObj = ROBJ_TEXT
+      text = loc("unitsTree/researches")
+    }.__update(isWidescreen ? fontMedium : fontSmall)
+    unitFilterButton(filters, allUnits)
+    mkLevelCheckbox(loc("unitsTree/showLevel"), isUnitPlateLevelVisible,
+      @() isUnitPlateLevelVisible.set(!isUnitPlateLevelVisible.get()))
+    @() {
+      watch = [activeFilters, isFiltersVisible]
+      children = activeFilters.get() > 0 && !isFiltersVisible.get() ? clearFiltersButton : null
     }
-  ]
-}
+  ],
+  mkCurrenciesBtns([WP, GOLD]))
 
 let infoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap + saBorders[1] - rankBlockOffset
 

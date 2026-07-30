@@ -5,8 +5,6 @@ let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 
-let verticalGap = hdpx(20)
-
 function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = null) {
   if (!giftSchReward?.isReady)
     return null
@@ -15,7 +13,6 @@ function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = nul
   let isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
     size = hdpx(130)
-    pos = [verticalGap,-hdpx(30)]
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
     behavior = Behaviors.Button

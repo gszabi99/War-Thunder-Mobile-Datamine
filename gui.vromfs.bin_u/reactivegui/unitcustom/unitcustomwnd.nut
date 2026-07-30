@@ -16,7 +16,7 @@ let { decalsCollection, selectedDecalId, availableDecals, decalsSlots, selectedS
 let { closeUnitCustom, unitCustomOpenCount, sectionsList, selSectionId, curSelectedSectionId, SECTION_IDS
 } = require("%rGui/unitCustom/unitCustomState.nut")
 let { baseUnit, unitToShow, isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 let { mkSectionTabs, sectionBtnGap } = require("%rGui/unitCustom/unitCustomComps.nut")
 let { mkDecalsCollectionChoice } = require("%rGui/unitCustom/unitDecals/decalsCollectionChoice.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
@@ -153,25 +153,18 @@ function decalDescriptionBlock() {
   }
 }
 
-let unitCustomizationGamercard = {
-  size = FLEX_H
-  padding = saBordersRv
-  flow = FLOW_HORIZONTAL
-  children = [
-    headerGradientBg([
-      backButton(@() !isEditingDecal.get() ? closeUnitCustom()
-        : shouldSaveDecal.get() ? askSaveAndChangeToSlot()
-        : exitDecalMode())
-      @() {
-        watch = baseUnit
-        rendObj = ROBJ_TEXT
-        text = getUnitName(baseUnit.get())
-      }.__update(fontSmall)
-    ])
-    { size = FLEX }
-    mkCurrenciesBtns([GOLD])
-  ]
-}
+let header = headerGradientWithRightBlock(
+  [
+    backButton(@() !isEditingDecal.get() ? closeUnitCustom()
+      : shouldSaveDecal.get() ? askSaveAndChangeToSlot()
+      : exitDecalMode())
+    @() {
+      watch = baseUnit
+      rendObj = ROBJ_TEXT
+      text = getUnitName(baseUnit.get())
+    }.__update(fontSmall)
+  ],
+  mkCurrenciesBtns([GOLD]))
 
 let sectionContentById = {
   [SECTION_IDS.SKINS] = @() {
@@ -294,17 +287,16 @@ let sectionsBlock = @() {
 let unitCustomWnd = {
   key = {}
   size = FLEX
+  padding = saBordersRv
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
-  gap = -hdpx(10)
   onAttach = @() isCustomizationWndAttached.set(true)
   onDetach = @() isCustomizationWndAttached.set(false)
   children = [
-    unitCustomizationGamercard
+    header
     {
       size = FLEX
-      padding = [0, saBorders[0], saBorders[1], saBorders[0]]
       children = [
         decalDescriptionBlock
         penaltyDescription()

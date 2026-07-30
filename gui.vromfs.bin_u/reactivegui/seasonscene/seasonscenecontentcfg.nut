@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, questTabsByEventId, isSeasonTabVisible,
-  seasonShopId
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
+  questTabsByEventId, isSeasonTabVisible, seasonShopId
 } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { passSceneWnd } = require("%rGui/battlePass/passScene.nut")
 let { visibleTabs, BATTLE_PASS, OPERATION_PASS, closePassScene, passPageId, seenPasses, isPassGoodsUnseen
@@ -17,6 +18,8 @@ let { hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId, eventsPassList, all
 let { curEventCurrencies, MAIN_EVENT_ID, specialEvents, unseenLootboxes, unseenLootboxesShowOnce,
   subEventsByMain
 } = require("%rGui/event/eventState.nut")
+let gmEventWnd = require("%rGui/event/gmEventWnd.nut")
+let { openedGmEventId } = require("%rGui/event/gmEventState.nut")
 let { isEventWndLootboxOpen, closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop,
   shopCurCategories
@@ -33,7 +36,7 @@ let eventWnd = require("%rGui/event/eventWnd.nut")
 
 
 let contentCfgDefaults = {
-  icon = "ui/gameuiskin#icon_primary_attention.svg"
+  icon = "ui/gameuiskin#icon_primary_attention.svg" 
   label = ""
   isVisible = Watched(true)
   currencies = null 
@@ -132,6 +135,11 @@ let sceneContentCfg = {
     mkHasUnseen = @(eventId) Computed(@() (unseenLootboxes.get()?[eventId.get()].len() ?? 0) > 0
       || unseenLootboxesShowOnce.get().findindex(@(v) v == eventId.get()) != null)
   },
+  [BATTLE_TAB] = {
+    icon = Computed(@() getEventPresentation(openedGmEventId.get()).icon)
+    label = "mainmenu/toBattle/short"
+    content = @() gmEventWnd
+  }
 }
   .map(@(c, id) contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched }))
 

@@ -5,10 +5,12 @@ let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter, subEventsList,
   specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup, closeEventWnd,
-  getEventPresentationId, eventSeason, allSpecialEvents
+  getEventPresentationId, eventSeason, allSpecialEvents, specialEventsWithTree
 } = require("%rGui/event/eventState.nut")
 let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
+let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
+let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 let { eventsPassList } = require("%rGui/battlePass/eventPassState.nut")
 let { bpProgressUnlock } = require("%rGui/battlePass/battlePassState.nut")
 let { isOPSeasonActive, OP_EVENT_ID, OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
@@ -25,11 +27,12 @@ let PASS_SCENE = "pass_scene"
 let QUESTS_TAB = "quests_tab"
 let EVENT_SHOP_TAB = "event_shop_tab"
 let LOOTBOX_TAB = "lootbox_tab"
+let BATTLE_TAB = "battle"
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
 
-let seasonTabs = [ PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB ]
+let seasonTabs = [ BATTLE_TAB, PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB ]
 
 let questTabsByEventId = {
   [""] = [ ACHIEVEMENTS_TAB, PROMO_TAB ],
@@ -59,6 +62,9 @@ let isShopTabVisible = @(sId, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsB
 let isLootboxTabVisible = @(eventId, isEActive, isOActive, specEvents, lootboxesRaw)
   getIsEventActive(eventId, isEActive, isOActive, specEvents)
     && getEventLootboxes(eventId, lootboxesRaw).len() > 0
+
+let isBattleVisible = @(eventId, separateEventModesV, specialEventsV)
+  eventId in separateEventModesV || specialEventsV?[eventId].eventName in separateEventModesV
 
 let isSeasonTabVisible = {
   [PASS_SCENE] = {
@@ -90,7 +96,16 @@ let isSeasonTabVisible = {
       && isLootboxTabVisible(curEvent.get(), isEventActive.get(), isOPSeasonActive.get(), specialEvents.get(),
         eventLootboxesRaw.get()))
   },
+  [BATTLE_TAB] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get()
+      && isBattleVisible(id, separateEventModes.get(), specialEvents.get())
+    watched = Computed(@() shouldShowEventMechanics.get()
+      && isBattleVisible(curEvent.get(), separateEventModes.get(), specialEvents.get()))
+  }
 }
+
+let bgUnits = Computed(@() seasonPageId.get() != BATTLE_TAB ? null
+  : getEventPresentation(curEvent.get()).bgUnits)
 
 let bgScene = Computed(function() {
   let eventId = curEvent.get()
@@ -100,6 +115,9 @@ let bgScene = Computed(function() {
     return getEventPresentation(getEventPresentationId(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()))
   return getEventPresentation(getEventPresentationId(eventId, eventSeason.get(), allSpecialEvents.get()))
 })
+
+let hasBattleTab = isSeasonTabVisible[BATTLE_TAB].watched
+let newsTag = Computed(@() hasBattleTab.get() ? curEvent.get() : null)
 
 let openSeasonTab = @(id) playerSelectedSeasonTab.set(id)
 
@@ -169,8 +187,17 @@ function openShopByGoods(goods) {
   openEventShopWnd(eventId)
 }
 
+function openGmEventWnd(eventName) {
+  if (eventName not in separateEventModes.get())
+    return
+  let eventId = specialEventsWithTree.get().findindex(@(event) event.eventName == eventName)
+  if (eventId != null)
+    return openTreeEventWnd(eventId)
+  openSeasonScene(eventName)
+}
 
 return {
+  BATTLE_TAB
   PASS_SCENE
   QUESTS_TAB
   EVENT_SHOP_TAB
@@ -191,7 +218,10 @@ return {
   openQuestsWndOnTab
   openEventShopWnd
   openShopByGoods
+  openGmEventWnd
   registerSeasonTabClose
   bgScene
+  bgUnits
+  newsTag
   isQuestsTabVisible
 }

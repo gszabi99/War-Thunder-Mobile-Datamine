@@ -4,7 +4,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientBg, headerMargin, headerHeightInSafeArea } = require("%rGui/components/gradientDefComps.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageVerySmall } = require("%rGui/components/scrollArrows.nut")
 let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
@@ -15,10 +15,13 @@ let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM
 } = require("%rGui/rewards/rewardStyles.nut")
 
 
-let gap = hdpx(15)
-let rewardsMaxWidth = saSize[0] + (isWidescreen ? 0 : saBorders[0] / 2) 
-let rewardsMaxHeight = hdpx(470)
-let rewardsGradientSize = [gap, saBorders[1]]
+let infoBlockWidth = hdpx(500)
+let rewardsMaxWidth = saSize[0] - infoBlockWidth - headerMargin
+let rewardsMaxHeight = saSize[1] - headerHeightInSafeArea - headerMargin
+let rewardsGradientSize = [headerMargin, saBorders[1]]
+
+let infoFont = fontSmallShaded
+let infoTextHeight = calc_str_box("A", infoFont)[1]
 
 let defaultBgImage = "ui/images/event_bg.avif"
 let bgImage = keepref(Computed(@() getLootboxPreviewBg(previewLootbox.get()?.name) ?? { bg = defaultBgImage}))
@@ -31,9 +34,9 @@ let getSlotsInRow = @(style) 2 * max(1, (rewardsMaxWidth + style.boxGap).tointeg
 
 function calcRewardsHeight(rewards, slotsInRow, style) {
   if (rewards.len() == 0)
-    return 0
+    return infoTextHeight
   let rows = ceil(rewards.reduce(@(res, r) res + r.slots, 0).tofloat() / slotsInRow).tointeger()
-  return rows * (style.boxSize + style.boxGap) - style.boxGap
+  return infoTextHeight + rows * (style.boxSize + style.boxGap)
 }
 
 let mkStyleComp = @(rewards) Computed(function() {
@@ -66,8 +69,13 @@ let wndHeader = headerGradientBg(
       text = !previewLootbox.get()?.name ? ""
         : getLootboxName(previewLootbox.get()?.name)
     }.__update(fontBigShaded)
-  ],
-  { margin = [0, 0, hdpx(30), 0] })
+  ])
+
+let infoText = {
+  size = [SIZE_TO_CONTENT, infoTextHeight]
+  rendObj = ROBJ_TEXT
+  text = loc("events/lootboxContains")
+}.__update(infoFont)
 
 let mkRewardsBlock = @(rewards, style, sizes) function() {
   let { slotsInRow, width } = sizes.get()
@@ -92,6 +100,7 @@ let mkRewardsBlock = @(rewards, style, sizes) function() {
       gap = boxGap
       children
     })
+      .insert(0, infoText)
   }
 }
 
@@ -108,19 +117,14 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
     size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_TOP
-    flow = FLOW_VERTICAL
-    gap = needScroll.get() ? gap : { size = FLEX }
+    flow = FLOW_HORIZONTAL
+    gap = headerMargin
     children = [
-      {
-        rendObj = ROBJ_TEXT
-        text = loc("events/lootboxContains")
-      }.__update(fontSmallShaded)
-      lootboxImageWithTimer(lootbox)
-      !needScroll.get() ? rewardsBlock
-        : @() {
-            watch = sizes
-            size = [sizes.get().width, rewardsMaxHeight]
-            children = [
+      @() {
+        watch = needScroll
+        size = [rewardsMaxWidth, rewardsMaxHeight]
+        children = !needScroll.get() ? rewardsBlock
+          : [
               pannableArea(
                 rewardsBlock,
                 {},
@@ -128,8 +132,17 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
               mkScrollArrow(scrollHandler, MR_B, scrollArrowImageVerySmall,
                 { vplace = ALIGN_CENTER, pos = [0, 0.5 * (rewardsMaxHeight + saBorders[1])] })
             ]
-          }
-      !needScroll.get() ? { size = [0, flex(2)] } : null
+      }
+      {
+        size = FLEX
+        flow = FLOW_VERTICAL
+        halign = ALIGN_CENTER
+        children = [
+          { size = FLEX }
+          lootboxImageWithTimer(lootbox)
+          { size = flex(2) }
+        ]
+      }
     ]
   }.__update(ovr)
 }
@@ -140,7 +153,6 @@ let lootboxPreviewWnd = @() {
   size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
-  gap
   children = [
     wndHeader
     lootboxPreviewContent(previewLootbox.get())

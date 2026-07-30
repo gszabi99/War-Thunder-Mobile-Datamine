@@ -10,13 +10,14 @@ let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice, aTimePriceFull,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
   aTimePriceStrike, opacityAnims, colorAnims, oldPriceBlock
 } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { gradRadial } = require("%rGui/style/gradients.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
+let { gradRadial, simpleHorGrad } = require("%rGui/style/gradients.nut")
+let { headerGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
 let { mkSparks } = require("%rGui/effects/sparks.nut")
 let { playSound } = require("sound_wt")
 let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
 let { mkLensFlare, aTimeFlareMiddle } = require("%rGui/effects/mkLensFlare.nut")
 let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
+
 
 let openCount = Computed(@() previewType.get() == GPT_CURRENCY ? openPreviewCount.get() : 0)
 let imageHeight = hdpx(450)
@@ -42,7 +43,6 @@ let currencyStyle = CS_BIG.__merge({
 })
 let currencyOldStyle = currencyStyle.__merge({ iconSize = hdpxi(60), fontStyle = fontBig })
 
-let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart)
 let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart, skipOfferBtn)
 
 function goldInfo() {
@@ -52,9 +52,16 @@ function goldInfo() {
     return { watch = previewGoods }
   let { discountInPercent } = applyDiscount(previewGoods.get(), discountsToApply.get())
   let oldCount = (count * (1.0 - (discountInPercent / 100.0))).tointeger()
-  return doubleSideGradient.__merge({
+  return {
     watch = [previewGoods, discountsToApply]
-    pos = [-doubleSideGradientPaddingX, 0]
+    vplace = ALIGN_TOP
+    pos = [saBorders[0], -headerGradientPaddingY]
+    padding = [headerGradientPaddingY, saBorders[0], headerGradientPaddingY, hdpx(80)]
+
+    rendObj = ROBJ_IMAGE
+    image = simpleHorGrad
+    color = 0x70000000
+
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     children = [
@@ -66,19 +73,10 @@ function goldInfo() {
         })
     ]
     animations = colorAnims(aTimeGoldBack, aTimeGoldStart)
-  })
+  }
 }
 
-let headerPanel = {
-  vplace = ALIGN_TOP
-  hplace = ALIGN_LEFT
-  flow = FLOW_VERTICAL
-  gap = hdpx(30)
-  children = [
-    header
-    goldInfo
-  ]
-}
+let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart, [], goldInfo)
 
 let previewBgFadeColor = 0xFF707090
 let previewBg = {
@@ -152,10 +150,15 @@ let previewWnd = @() {
       size = saSize
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
+      children = header
+    }
+    {
+      size = saSize
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
-        headerPanel
         currencyHighlight
         currencyEffectBw
         currencyImage

@@ -16,7 +16,6 @@ let genParams = {
 
   
   bgUnits = @(_) null 
-  accessStat = @(_) ""
   hasConsumablePlate = @(_) false
   
   

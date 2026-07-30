@@ -8,10 +8,9 @@ let { allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { iconButtonPrimary, iconButtonCommon, textButtonPrimary, textButtonCommon,
   textButtonPurchase
 } = require("%rGui/components/textButton.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
-let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
+let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
@@ -33,7 +32,7 @@ let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 let { hasPrem, hasVip, hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientBg, headerHeightInSafeArea, headerMargin } = require("%rGui/components/gradientDefComps.nut")
 
 
 let WND_UID = "SLOT_PRESET_WND"
@@ -48,10 +47,10 @@ let btnMinWidth = hdpx(200)
 let btnIconSize = hdpx(70)
 let iconSize = hdpx(40)
 let btnGap = hdpx(20)
-let infoPanelWidth = hdpx(640)
 let infoPanelPadding = hdpx(50)
-let presetBlockWidth = saSize[0] - infoPanelWidth + saBordersRv[1] - hdpx(10)
-let presetBlockHeight = saSize[1] - backButtonHeight - saBordersRv[0]
+let infoPanelWidth = statsWidth + infoPanelPadding
+let presetBlockWidth = saSize[0] - infoPanelWidth - headerMargin
+let presetBlockHeight = saSize[1] - headerHeightInSafeArea - headerMargin
 let maxPresetsCount = Computed(@() hasPrem.get() ? maxPresetsPrem.get()
   : hasVip.get() ? maxPresetsVip.get()
   : maxPreset.get())
@@ -258,16 +257,13 @@ function mkPresetButtons(presets, presetIdx) {
 }
 
 
-let contentHeader = {
-  margin = [0, 0, hdpx(20), 0]
-  children = headerGradientBg([
-    backButton(closeSlotPresetWnd)
-    {
-      rendObj = ROBJ_TEXT
-      text = loc("presets/title")
-    }.__update(fontMedium)
-  ])
-}
+let header = headerGradientBg([
+  backButton(closeSlotPresetWnd)
+  {
+    rendObj = ROBJ_TEXT
+    text = loc("presets/title")
+  }.__update(fontMedium)
+])
 
 let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
   let stateFlags = Watched(0)
@@ -410,37 +406,26 @@ let mkBlockContent = @(preset, activePresetIdx, activeSlotIdx) @() {
 }
 
 
-function mkMainContent(presets, presetIdx, slotIdx) {
-  return bgShadedLight.__merge({
-    stopMouse = true
-    size = FLEX
-    padding = saBordersRv
-    flow = FLOW_VERTICAL
-    children = [
-      contentHeader
-      @() {
-        watch = presetIdx
-        size = FLEX
-        children = [
-          mkBlocksContainer(
-            presets,
-            presetIdx,
-            @(p, _) mkBlockContent(p, presetIdx, slotIdx),
-            function(idx) {
-              playerSelectedPresetIdx.set(idx)
-              playerSelectedSlotIdx.set(null)
-            },
-            presetBlockWidth,
-            hdpx(190),
-            presetBlockHeight
-          )
-        ]
-      }
-    ]
-  })
+let mkMainContent = @(presets, presetIdx, slotIdx) @() {
+  watch = presetIdx
+  size = FLEX
+  children = [
+    mkBlocksContainer(
+      presets,
+      presetIdx,
+      @(p, _) mkBlockContent(p, presetIdx, slotIdx),
+      function(idx) {
+        playerSelectedPresetIdx.set(idx)
+        playerSelectedSlotIdx.set(null)
+      },
+      presetBlockWidth,
+      hdpx(190),
+      presetBlockHeight
+    )
+  ]
 }
 
-function slotPresetWnd() {
+function mkSlotPresetWnd() {
   let slotPresets = Computed(function() {
     let savedSPresets = savedSlotPresets.get().map(@(v, i) v.__merge({ idx = i }))
     let currentPresetIdx = savedSPresets.findindex(@(p) isEqual(p.presetUnits, currentPresetUnits.get())) ?? -1
@@ -460,45 +445,57 @@ function slotPresetWnd() {
   let activePresetUnits = Computed(@() slotPresets.get().findvalue(@(p) p.idx == activePresetIdx.get())?.presetUnits ?? [])
   let activeSlotIdx = Computed(@() playerSelectedSlotIdx.get() ?? activePresetUnits.get().findindex(@(n) n !=""))
   let presetSlotUnit = Computed(@() campMyUnits.get()?[activePresetUnits.get()?[activeSlotIdx.get()]])
-
-  return {
-    watch = [isOpenedPresetWnd, presetSlotUnit]
+  let presetButtons = mkPresetButtons(slotPresets, activePresetIdx)
+  return bgShadedDark.__merge({
     key = {}
     size = FLEX
+    padding = saBordersRv
     onDetach = closeSlotPresetWnd
     onAttach = loadSlotPresets
+    flow = FLOW_VERTICAL
     children = [
-      mkCutBg([])
-      mkMainContent(slotPresets, activePresetIdx, activeSlotIdx)
-      !presetSlotUnit.get() ? null : panelBg.__merge({
-        size = [infoPanelWidth, presetBlockHeight]
-        pos = [0, backButtonHeight + saBordersRv[0] * 2]
-        hplace = ALIGN_RIGHT
-        flow = FLOW_VERTICAL
-        padding = [infoPanelPadding, infoPanelPadding, 0, infoPanelPadding]
+      header
+      {
+        size = FLEX
+        flow = FLOW_HORIZONTAL
+        gap = headerMargin
         children = [
-          mkUnitPlate(presetSlotUnit.get()).__merge({hplace = ALIGN_CENTER})
-          unitInfoPanel(
-            {
-              rendObj = ROBJ_BOX
-              size = [statsWidth, SIZE_TO_CONTENT]
-              maxHeight = hdpxi(470)
-              hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-              padding = [infoPanelPadding, 0, infoPanelPadding, 0]
-              animations = wndSwitchAnim
-            }, mkUnitTitle, presetSlotUnit)
-          {size = FLEX}
-          mkPresetButtons(slotPresets, activePresetIdx)
+          mkMainContent(slotPresets, activePresetIdx, activeSlotIdx)
+          {
+            size = [infoPanelWidth, FLEX]
+            children = @() panelBg.__merge({
+              watch = presetSlotUnit
+              size = [infoPanelWidth + saBorders[0], FLEX]
+              padding = [infoPanelPadding, saBorders[0], 0, infoPanelPadding]
+              flow = FLOW_VERTICAL
+              children = presetSlotUnit.get() == null
+                ? [
+                    { size = FLEX }
+                    presetButtons
+                  ]
+                : [
+                    mkUnitPlate(presetSlotUnit.get()).__merge({ hplace = ALIGN_CENTER })
+                    unitInfoPanel(
+                      {
+                        size = [statsWidth, FLEX]
+                        padding = [infoPanelPadding, 0, 0, 0]
+                        hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+                        animations = wndSwitchAnim
+                      }, mkUnitTitle, presetSlotUnit, {})
+                    presetButtons
+                  ]
+            })
+          }
         ]
-      })
+      }
     ]
-  }
+  })
 }
 
 let openImpl = @() addModalWindow({
   key = WND_UID
   size = FLEX
-  children = slotPresetWnd
+  children = mkSlotPresetWnd()
   onClick = closeSlotPresetWnd
   stopMouse = true
 })

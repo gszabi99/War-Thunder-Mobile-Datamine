@@ -1,119 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let logE = log_with_prefix("[GM_EVENT] ")
 let { eventbus_send } = require("eventbus")
-let { HangarCameraControl } = require("wt.behaviors")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
-let { getEventPresentation, eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
-let { isGmEventWndOpened, closeGmEventWnd, curGmList, openedGmEventId, reqBattleMods, hasAccessCurGmEvent
-} = require("%rGui/event/gmEventState.nut")
-let { userstatStats, userstatSetStat, userstatRegisterExecutor, statsInProgress
-} = require("%rGui/unlocks/userstat.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { curGmList, openedGmEventId } = require("%rGui/event/gmEventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
 let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { sendNewbieBqEvent, sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
-let { gmEventContent, goodsSize, goodsGap } = require("%rGui/event/gmEventComps.nut")
-let { PLATINUM } = require("%appGlobals/currenciesState.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
-let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
-let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
-let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
 
 
 let headerGap = hdpx(30)
-
-let statMode = "meta_common"
-let STAT_NO_NEED = -1
-let STAT_NOT_REQUESTED = 0
-let STAT_REQUESTED = 1
-let STAT_HAS_ACCESS = 2
-let MAX_GOODS_COUNT = 3
-
-let chosenUnitIdx = Watched(null)
-let isWndAttached = Watched(false)
-let curEventAccessStat = Computed(@() openedGmEventId.get() == null ? ""
-  : getEventPresentation(openedGmEventId.get()).accessStat)
-let curEventAccessStatValue = Computed(@() curEventAccessStat.get() == "" ? STAT_NO_NEED
-  : userstatStats.get()?.stats["global"][statMode][curEventAccessStat.get()])
-let isAcceessStatInProgress = Computed(@() !!statsInProgress.get()?[curEventAccessStat.get()])
-let bgUnits = Computed(@() getEventPresentation(openedGmEventId.get()).bgUnits)
-let curGmEventBg = keepref(Computed(@() bgUnits.get() != null ? ""
-  : getEventPresentation(openedGmEventId.get()).bg))
-
-let unitsToSetInHangar = keepref(Computed(@() isWndAttached.get() ? bgUnits.get() : null))
-unitsToSetInHangar.subscribe(@(v) v == null ? null
-  : chosenUnitIdx.set(setHangarUnitGroup(v, chosenUnitIdx.get() == null, chosenUnitIdx.get())))
-isMainMenuAttached.subscribe(@(v) v ? chosenUnitIdx.set(null) : null)
-registerAutoDownloadUnits(Computed(@() (unitsToSetInHangar.get() ?? []).reduce(@(res, u) res.$rawset(u, true), {})),
-  DLP_HIGH)
-
-function setAccessStat(value, context = {}) {
-  if (isAcceessStatInProgress.get())
-    return
-  let stat = curEventAccessStat.get()
-  if (stat != null && curEventAccessStatValue.get() != value) {
-    sendUiBqEvent("set_access_stat", { id = stat, status = value.tostring() })
-    userstatSetStat(statMode, stat, value, context)
-  }
-}
-
-userstatRegisterExecutor("gmEvent.requestAccess", function(result, context) {
-  let { eventId } = context
-  if ("error" not in result)
-    openMsgBox({ text = loc($"{eventId}/freeAccess/resultMsg"), title = loc($"{eventId}/freeAccess/resultMsg/header") })
-})
-
-let signUpForCbtContent = @() {
-  watch = [isAcceessStatInProgress, openedGmEventId]
-  halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  gap = hdpx(40)
-  children = isAcceessStatInProgress.get() ? spinner
-    : [
-        {
-          maxWidth = hdpx(1400)
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          color = 0xFFE0E0E0
-          colorTable = locColorTable
-          preformatted = FMT_KEEP_SPACES
-          text = loc($"{openedGmEventId.get()}/freeAcccess/desc")
-        }.__update(fontSmall)
-        {
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          gap = hdpx(30)
-          children = [
-            {
-              rendObj = ROBJ_TEXT
-              color = 0xFFE0E0E0
-              text = loc("readMore")
-            }.__update(fontSmall)
-            infoEllipseButton(@() openNewsWndTagged(openedGmEventId.get()))
-          ]
-        }
-        textButtonPrimary(utf8ToUpper(loc($"{openedGmEventId.get()}/freeAccess/btn")),
-          function() {
-            logE("User press freeAccess button")
-            setAccessStat(STAT_REQUESTED, { executeAfter = "gmEvent.requestAccess", eventId = openedGmEventId.get() })
-          })
-      ]
-}
 
 let gmEventText = {
   rendObj = ROBJ_TEXTAREA
@@ -132,61 +30,18 @@ let gmEventDescriptionText = @(text) {
   text
 }.__update(fontTiny, gmEventText)
 
-let gmEventStatusText = @(text) {
-  maxWidth = (saSize[0] - (goodsSize[0] * MAX_GOODS_COUNT + goodsGap * MAX_GOODS_COUNT * 2)) / 2
-  pos = [0, hdpx(40)]
-  text
-}.__update(fontTinyAccented, gmEventText)
-
-function validateAccessStat() {
-  if (curEventAccessStat.get() == "" || !isWndAttached.get())
-    return
-  if (hasAccessCurGmEvent.get() && curEventAccessStatValue.get() != STAT_HAS_ACCESS) {
-    logE($"Has access on window attach. set stat {curEventAccessStat.get()} to {STAT_HAS_ACCESS}")
-    setAccessStat(STAT_HAS_ACCESS)
-    sendTelemetryEvent("purchase_cbt_access")
-  }
-  else if (!hasAccessCurGmEvent.get() && curEventAccessStatValue.get() == STAT_HAS_ACCESS) {
-    logE($"Dont has access on window attach. But has stat. So set stat {curEventAccessStat.get()} to {STAT_NOT_REQUESTED}")
-    setAccessStat(STAT_NOT_REQUESTED)
-  }
-}
-
-isWndAttached.subscribe(@(_) validateAccessStat())
-hasAccessCurGmEvent.subscribe(@(_) validateAccessStat())
 let content = @() {
-  watch = [hasAccessCurGmEvent, curEventAccessStatValue, curEventAccessStat]
+  watch = openedGmEventId
   size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  onAttach = @() isWndAttached.set(true)
-  onDetach = @() isWndAttached.set(false)
-  children = !hasAccessCurGmEvent.get() && curEventAccessStat.get() != "" && curEventAccessStatValue.get() != STAT_REQUESTED
-    ? signUpForCbtContent
-    : [
-        {
-          flow = FLOW_VERTICAL
-          halign = ALIGN_CENTER
-          children = [
-            "descHeaderLocId" not in getEventPresentation(openedGmEventId.get()) ? null
-              : gmEventSubTitleText(loc(getEventPresentation(openedGmEventId.get()).descHeaderLocId))
-            gmEventContent(Computed(@() reqBattleMods.get().len() == 0 ? []
-              : shopGoodsAllCampaigns.get()
-                .filter(@(goods)
-                  null != (goods.rewards.findvalue(@(v) v.gType == G_BATTLE_MOD && reqBattleMods.get().contains(v.id))))
-                .values()))
-            "descLocId" not in getEventPresentation(openedGmEventId.get()) ? null
-              : gmEventDescriptionText(loc(getEventPresentation(openedGmEventId.get()).descLocId))
-          ]
-        }
-        !hasAccessCurGmEvent.get()
-          ? {
-              hplace = ALIGN_LEFT
-              vplace = ALIGN_TOP
-              children = gmEventStatusText(loc($"{openedGmEventId.get()}/freeAccess/resultMsg"))
-            }
-          : null
-      ]
+  flow = FLOW_VERTICAL
+  children = [
+    "descHeaderLocId" not in getEventPresentation(openedGmEventId.get()) ? null
+      : gmEventSubTitleText(loc(getEventPresentation(openedGmEventId.get()).descHeaderLocId))
+    "descLocId" not in getEventPresentation(openedGmEventId.get()) ? null
+      : gmEventDescriptionText(loc(getEventPresentation(openedGmEventId.get()).descLocId))
+  ]
 }
 
 let toBattleHint = @(text) {
@@ -206,38 +61,6 @@ let toBattleHint = @(text) {
   }.__update(fontTinyAccented)
 }
 
-let gmEventTitle = @(text) @() {
-  hplace = ALIGN_CENTER
-  size = SIZE_TO_CONTENT
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(40)
-  children = [
-    {
-      maxWidth = pw(97)
-      text
-    }.__update(fontBig, gmEventText)
-    infoEllipseButton(@() openNewsWndTagged(openedGmEventId.get()))
-  ]
-}
-
-let header = @() {
-  watch = openedGmEventId
-  size = [FLEX, gamercardHeight]
-  valign = ALIGN_CENTER
-  children = [
-    backButton(closeGmEventWnd)
-    gmEventTitle(loc(getEventPresentation(openedGmEventId.get()).locId))
-    {
-      size = FLEX_H
-      flow = FLOW_HORIZONTAL
-      halign = ALIGN_RIGHT
-      gap = hdpx(70)
-      children = mkCurrenciesBtns([PLATINUM])
-    }
-  ]
-}
-
 let footer = @() {
   watch = curGmList
   size = [FLEX, defButtonHeight]
@@ -249,59 +72,42 @@ let footer = @() {
           children = squadPanel
         }
         @() {
-          watch = [hasAccessCurGmEvent, openedGmEventId]
+          watch = openedGmEventId
           hplace = ALIGN_RIGHT
           halign = ALIGN_RIGHT
           valign = ALIGN_BOTTOM
           flow = FLOW_VERTICAL
           gap = hdpx(10)
-          children = hasAccessCurGmEvent.get()
-            ? [
-                toBattleHint(loc("events/toBattle"))
-                mkToBattleButtonWithSquadManagement(
-                  function() {
-                    if (curGmList.get().len() == 0)
-                      return
-                    sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
-                    let modeId = curGmList.get()[0].gameModeId
-                    let campaign = curGmList.get()[0].campaign
-                    if (tryOpenQueuePenaltyWnd(campaign, curGmList.get()[0], { id = "queueToGameMode", modeId }))
-                      return
-                    eventbus_send("queueToGameMode", { modeId })
-                  },
-                  Computed(@() curGmList.get()?[0]))
-              ]
-            : [
-                toBattleHint(loc($"{openedGmEventId.get()}/requireAccess"))
-                textButtonCommon(utf8ToUpper(loc("mainmenu/toBattle/short")),
-                  @() openMsgBox({ text = loc($"{openedGmEventId.get()}/requireAccess") }))
-              ]
+          children = [
+            toBattleHint(loc("events/toBattle"))
+            mkToBattleButtonWithSquadManagement(
+              function() {
+                if (curGmList.get().len() == 0)
+                  return
+                sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
+                let modeId = curGmList.get()[0].gameModeId
+                let campaign = curGmList.get()[0].campaign
+                if (tryOpenQueuePenaltyWnd(campaign, curGmList.get()[0], { id = "queueToGameMode", modeId }))
+                  return
+                eventbus_send("queueToGameMode", { modeId })
+              },
+              Computed(@() curGmList.get()?[0]))
+          ]
         }
       ]
 }
 
-let wndKey = {}
-let gmEventWnd = @() {
-  watch = [openedGmEventId, bgUnits]
-  key = wndKey
+let gmEventWnd = {
   size = FLEX
   padding = saBordersRv
-
-  behavior = bgUnits.get() == null ? null : HangarCameraControl
-  touchMarginPriority = TOUCH_BACKGROUND
 
   flow = FLOW_VERTICAL
   gap = headerGap
   children = [
-    header
     content
     footer
   ]
   animations = wndSwitchAnim
 }
 
-let sceneId = "gmEventWnd"
-registerScene(sceneId, gmEventWnd, closeGmEventWnd, isGmEventWndOpened)
-setSceneBgFallback(sceneId, eventBgFallback)
-setSceneBg(sceneId, curGmEventBg.get())
-curGmEventBg.subscribe(@(v) setSceneBg(sceneId, v))
+return gmEventWnd

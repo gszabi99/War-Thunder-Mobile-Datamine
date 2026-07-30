@@ -25,8 +25,6 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
 let { isOnline, isDisconnected, canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
 let { checkReconnect } = require("%scripts/matchingRooms/sessionReconnect.nut")
-let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
-let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 
 
@@ -40,18 +38,7 @@ function msgBoxWithFalse(params) {
   return false
 }
 
-function showReqBattleModeMsg(msgLocId, reqBMods, msgParams = {}) {
-  local modeName = reqBMods[0]
-  foreach(bm in reqBMods) {
-    let { locId = null} = getBattleModPresentation(bm)
-    if (locId != null) {
-      modeName = loc(locId)
-    }
-  }
-  openFMsgBox({ text = loc(msgLocId, msgParams.__merge({ mode = modeName })) })
-}
-
-function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
+function isSquadReadyWithMsgbox(mode, allReqAddons) {
   let { minSquadSize = 1, only_override_units = false, gameModeId } = mode
   if (!isInSquad.get()) {
     if (minSquadSize > 1)
@@ -79,14 +66,6 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
 
   if (squadMembers.get().findindex(@(_, uid) !squadOnline.get()?[uid]))
     return msgBoxWithFalse({ text = loc("squad/has_offline_members") })
-
-  if (reqBMods.len() > 0) {
-    let noModsMembers = squadMembers.get().filter(@(m) !!m?.battleMods.findvalue(@(bm) reqBMods.contains(bm)))
-    if (noModsMembers.len() != squadMembers.get().len()) {
-      showReqBattleModeMsg("squad/not_all_has_battle_mod", reqBMods)
-      return false
-    }
-  }
 
   if (only_override_units || mode?.mission_decl.customRules.customBots) {
     local hasAllResources = true
@@ -180,12 +159,7 @@ function queueToGameModeImpl(mode) {
     return
   }
 
-  let { reqBattleMod = "", campaign = null, only_override_units = false } = mode
-  let reqBMods = reqBattleMod.split(";").filter(@(v) v != "")
-  if (reqBMods.len() > 0 && !reqBMods.findvalue(@(v) !!activeBattleMods.get()?[v])) {
-    showReqBattleModeMsg("msg/needBattleMode", reqBMods)
-    return
-  }
+  let { campaign = null, only_override_units = false } = mode
 
   log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", allBattleUnits.get())
   log("modeInfo = ", getModeAddonsDbgString(mode))
@@ -200,7 +174,7 @@ function queueToGameModeImpl(mode) {
     maxReleasedUnitRanksV = maxReleasedUnitRanks.get(),
     unitSizesV = unitSizes.get(),
   })
-  if (!isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods))
+  if (!isSquadReadyWithMsgbox(mode, allReqAddons))
     return
 
   if (addonsToDownload.len() + unitsToDownload.len() > 0 && !canBattleWithoutAddons.get()) {

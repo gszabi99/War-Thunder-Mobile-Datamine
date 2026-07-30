@@ -25,7 +25,8 @@ let { REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { doubleSideGradient, doubleSideGradientPaddingY, headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient, doubleSideGradientPaddingY, headerGradientWithRightBlock
+} = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
@@ -410,14 +411,18 @@ function previewGoodsTimeLeft(halign, width = hdpx(350)) {
 }
 
 
-let mkPreviewHeader = @(textW, onBack, animStartTime) headerGradientBg(
+let mkPreviewHeader = @(textW, onBack, animStartTime, addChildren = [], rightChildren = null) headerGradientWithRightBlock(
   [
     backButton(onBack, { animations = opacityAnims(aTimeBackBtn, aTimePackNameBack + animStartTime, "element_appear") })
     @() {
       watch = textW
+      maxWidth = saSize[0] - hdpx(600)
       rendObj = ROBJ_TEXT
       color = 0xFFFFFFFF
       text = utf8ToUpper(textW.get())
+      behavior = Behaviors.Marquee
+      delay = defMarqueeDelay
+      clipChildren = true
       transform = { pivot = [0, 0.5] }
       animations = opacityAnims(0.5 * aTimePackNameFull, animStartTime).append(
         { prop = AnimProp.translate, from = [-hdpx(100), 0.0], to = [0.0, 0.0], easing = InQuad, play = true,
@@ -426,12 +431,9 @@ let mkPreviewHeader = @(textW, onBack, animStartTime) headerGradientBg(
           duration = aTimePackNameFull, delay = animStartTime, trigger = ANIM_SKIP_DELAY }
       )
     }.__update(fontBig)
-  ],
-  {
-    padding = const [0, 0, hdpx(17), 0]
-    animations = colorAnims(aTimePackNameBack, animStartTime)
-  }
-)
+  ].extend(addChildren),
+  rightChildren,
+  { animations = colorAnims(aTimePackNameBack, animStartTime) })
 
 
 

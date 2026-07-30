@@ -295,17 +295,6 @@ let singleUnitBlock = @() {
 let branchUnitsBlock = @(unit)
   mkAirBranchUnitPlate(unit, @() curSelectedUnitId.set(unit.name))
 
-let mkHeader = @() mkPreviewHeader(
-  Computed(@() getCustomGoodsNameById(previewGoods.get()?.id ?? "")
-    ?? (goodsBattleMode.get() != null ? loc("offer/earlyAccess")
-          : previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
-          : (previewGoods.get()?.id ?? "") == "branch_offer"
-            ? " ".concat(getUnitName(previewGoodsUnit.get()), loc("offer/airBranch"))
-          : previewGoodsUnit.get() ? getUnitName(previewGoodsUnit.get())
-          : "")),
-  closeGoodsPreview,
-  aTimeHeaderStart)
-
 let packInfo = @(isHintBottom) {
   flow = isHintBottom ? FLOW_VERTICAL : null
   children = [
@@ -353,6 +342,35 @@ let balanceBlock = @() {
   ]
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
+
+let headerChidren = [
+  @() {
+    watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
+    children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
+      mkGiftSchRewardBtn(
+        schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign ?? ""}_offer"]
+        aTimeHeaderStart,
+        skipAnimsOnce)
+  }
+  @() {
+    watch = previewGoods
+    children = !previewGoods.get()?.id ? null
+      : mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart)
+  }
+]
+
+let header = mkPreviewHeader(
+  Computed(@() getCustomGoodsNameById(previewGoods.get()?.id ?? "")
+    ?? (goodsBattleMode.get() != null ? loc("offer/earlyAccess")
+          : previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
+          : (previewGoods.get()?.id ?? "") == "branch_offer"
+            ? " ".concat(getUnitName(previewGoodsUnit.get()), loc("offer/airBranch"))
+          : previewGoodsUnit.get() ? getUnitName(previewGoodsUnit.get())
+          : "")),
+  closeGoodsPreview,
+  aTimeHeaderStart,
+  headerChidren,
+  balanceBlock)
 
 let itemsDescText = {
   rendObj = ROBJ_TEXT
@@ -581,7 +599,6 @@ let previewWnd = @() {
   size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
-  gap = verticalGap
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   stopMouse = true
@@ -601,39 +618,7 @@ let previewWnd = @() {
 
   children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true))
     : [
-        {
-          size = FLEX_H
-          valign = ALIGN_CENTER
-          children = [
-            {
-              flow = FLOW_HORIZONTAL
-              children = [
-                mkHeader
-                {
-                  size = 0
-                  flow = FLOW_HORIZONTAL
-                  gap = hdpx(10)
-                  children = [
-                    @() {
-                      watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
-                      children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
-                        mkGiftSchRewardBtn(
-                          schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign ?? ""}_offer"]
-                          aTimeHeaderStart,
-                          skipAnimsOnce)
-                    }
-                    @() {
-                      watch = previewGoods
-                      children = !previewGoods.get()?.id ? null
-                        : mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart)
-                    }
-                  ]
-                }
-              ]
-            }
-            balanceBlock
-          ]
-        }
+        header
         {
           size = FLEX
           children = [

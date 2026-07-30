@@ -466,7 +466,6 @@ let content = {
   key = {}
   size = FLEX
   flow = FLOW_VERTICAL
-  gap = hdpx(30)
   function onAttach() {
     if (initOfflineBattlesData.get() != null) {
       let { unitName, missionName } = initOfflineBattlesData.get()

@@ -133,14 +133,6 @@ function openDetailsWnd() {
   openUnitDetailsWnd(cfg)
 }
 
-
-let mkHeader = @() mkPreviewHeader(
-  Computed(@() previewGoods.get()?.offerClass == "seasonal" || previewGoods.get()?.meta.event_id
-    ? loc("seasonalOffer")
-    : loc("limitedTimeOffer")),
-  closeGoodsPreview,
-  aTimeHeaderStart)
-
 let packInfo = {
   flow = FLOW_VERTICAL
   children = [
@@ -183,6 +175,15 @@ let balanceBlock = @() {
   ]
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
+
+let header = @() mkPreviewHeader(
+  Computed(@() previewGoods.get()?.offerClass == "seasonal" || previewGoods.get()?.meta.event_id
+    ? loc("seasonalOffer")
+    : loc("limitedTimeOffer")),
+  closeGoodsPreview,
+  aTimeHeaderStart,
+  [],
+  balanceBlock)
 
 let unitHeaderBlock = @() {
   watch = unitForShow
@@ -239,7 +240,6 @@ let previewWnd = @() {
   size = FLEX
   padding = saBordersRv
   flow = FLOW_VERTICAL
-  gap = verticalGap
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   stopMouse = true
@@ -248,16 +248,9 @@ let previewWnd = @() {
   onAttach = @() isWindowAttached.set(true)
   onDetach = @() isWindowAttached.set(false)
 
-  children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true)):
-   [
-        {
-          size = FLEX_H
-          valign = ALIGN_CENTER
-          children = [
-            mkHeader
-            balanceBlock
-          ]
-        }
+  children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true))
+    : [
+        header
         {
           size = FLEX
           children = rightBlock

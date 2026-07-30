@@ -38,7 +38,7 @@ let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { categoryGap, titleGap, goodsPerRow, titleH } = require("%rGui/shop/shopWndConst.nut")
 let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
 let { activeInternalSubs } = require("%rGui/state/profilePremium.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
 let soonPersonalGoodsDelay = 7.0
 let goodsGlareRepeatDelay = 3
@@ -189,21 +189,15 @@ function mkShopHeaderRight(shopId, catId) {
   }
 }
 
-let mkShopGamercard = @(onClose) {
-  size = [ saSize[0], SIZE_TO_CONTENT ]
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = [
-    headerGradientBg([
-      backButton(onClose)
-      {
-        rendObj = ROBJ_TEXT
-        text = loc("topmenu/store")
-      }.__update(fontBigShaded)
-    ])
-    mkShopHeaderRight(curShopId, curCategoryId)
-  ]
-}
+let mkShopGamercard = @(onClose) headerGradientWithRightBlock(
+  [
+    backButton(onClose)
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("topmenu/store")
+    }.__update(fontBigShaded)
+  ],
+  mkShopHeaderRight(curShopId, curCategoryId))
 
 function mkAnimParams(idx, headers) {
   let col = idx % goodsPerRow
