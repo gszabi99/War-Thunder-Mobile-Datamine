@@ -9,7 +9,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { requestData, createGuidsRequestParams } = require("%rGui/shop/httpRequest.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
-const REPEAT_ON_ERROR_SEC = 60
+let REPEAT_ON_ERROR_SEC = [60, 120, 240, 600, 900, 1200]
 const NO_ANSWER_TIMEOUT_SEC = 60
 const AUTO_UPDATE_TIME_SEC = 3600
 
@@ -18,8 +18,14 @@ let allGuids = hardPersistWatched("goodsGaijin.allGuids", {})
 let goodsInfo = hardPersistWatched("goodsGaijin.goodsInfo", {})
 let lastError = hardPersistWatched("goodsGaijin.lastError", null)
 let lastUpdateTime = hardPersistWatched("goodsGaijin.lastUpdateTime", 0)
+let retryTimeIdx = hardPersistWatched("goodsGaijin.retryTimeIdx", -1)
 let needForceUpdate = Watched(false)
-let needRetry = Computed(@() lastError.get() != null && !isInBattle.get() && !isGoodsRequested.get())
+let hasInfoAboutAllGuids = Computed(@() null == allGuids.get().findindex(@(_, guid) guid not in goodsInfo.get()))
+let needRetryTime = keepref(Computed(@()
+  isInBattle.get() || isGoodsRequested.get() || lastError.get() == null || hasInfoAboutAllGuids.get() ? 0 
+    : (REPEAT_ON_ERROR_SEC?[min(retryTimeIdx.get(), REPEAT_ON_ERROR_SEC.len() - 1)] ?? 0)))
+
+lastError.subscribe(@(v) retryTimeIdx.set(v == null ? -1 : retryTimeIdx.get() + 1))
 
 let resetRequestedFlag = @() isGoodsRequested.set(false)
 isGoodsRequested.subscribe(@(_) resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag))
@@ -58,10 +64,10 @@ function refreshAvailableGuids() {
 }
 
 guidsForRequest.subscribe(@(_) deferOnce(refreshAvailableGuids))
-needRetry.subscribe(@(v) v ? resetTimeout(REPEAT_ON_ERROR_SEC, refreshAvailableGuids)
+needRetryTime.subscribe(@(v) v > 0 ? resetTimeout(v, refreshAvailableGuids)
   : clearTimer(refreshAvailableGuids))
-if (needRetry.get())
-  resetTimeout(REPEAT_ON_ERROR_SEC, refreshAvailableGuids)
+if (needRetryTime.get() > 0)
+  resetTimeout(needRetryTime.get(), refreshAvailableGuids)
 else if (goodsInfo.get().len() == 0)
   refreshAvailableGuids()
 

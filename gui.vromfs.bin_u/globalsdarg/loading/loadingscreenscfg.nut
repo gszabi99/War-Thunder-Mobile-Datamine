@@ -280,6 +280,15 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_38.avif")
   }
+  major_s36_thunder_blossom = {
+    camp = [ "tanks" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_39.avif")
+    timeRange = {
+      season = "event_main_season"
+      seasonIdx = 36
+    }
+  }
   simple_airplane_1 = {
     camp = [ "air" ]
     weight = 1.0

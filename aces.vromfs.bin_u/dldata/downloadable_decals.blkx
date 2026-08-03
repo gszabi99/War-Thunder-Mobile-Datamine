@@ -2622,5 +2622,61 @@
     "lod0": "jbsgfzeicu5odtwtjo5oyjq5pbsk6qtz-fklq",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "poqmulusdxlbcrtr5vhrptyjcgnk4csq-bori"
+  },
+  "ussr_text_silny": {
+    "category": "ussr",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "du2bieozf5zuctbpjmuclsxg2vb2rhsi-bgqi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "uownmpucrfrichd2seexvxnlf4fxe7ld-ngq"
+  },
+  "admiral_seal_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "r6hbmjxpajkepva35bezuu25thidnvlh-hani",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "mhuxwmdrugor3ge6eio5y2x2iksl67lq-b6lq"
+  },
+  "se_numbers_2": {
+    "category": "numbers",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAEAAQkAAAAIAAFlcFUBAAAAAAA=",
+    "lod0": "6x2z5uouv32n4zpqkruoe5wabp4wbgsk-rni",
+    "hdr1": "RERTeEFTVDREABAAgACAAAgAAAAIABFVcFUAAAAAAAA=",
+    "lod1": "jkgvemsv6oub6dyaahixzrzqyqjteent-g5q"
+  },
+  "se_numbers_3": {
+    "category": "numbers",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAEAAQkAAAAIAAFlcFUBAAAAAAA=",
+    "lod0": "fn2egmxythbyymc4mblhgolx2fhzc2r3-rta",
+    "hdr1": "RERTeEFTVDREABAAgACAAAgAAAAIABFVcFUAAAAAAAA=",
+    "lod1": "b5b3nhtdcctnwvosffzaph5kpt4zdbtd-gyq"
+  },
+  "se_numbers_9": {
+    "category": "numbers",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAEAAQkAAAAIAAFlcFUBAAAAAAA=",
+    "lod0": "mjgvjd5slnsgam3kktynbth2e24ldwdy-sfy",
+    "hdr1": "RERTeEFTVDREABAAgACAAAgAAAAIABFVcFUAAAAAAAA=",
+    "lod1": "6q2qesyyunlgxof6j5p65hdgvplsxjqa-hfa"
+  },
+  "wtm_3_years_paid_snail_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "nwcbvxjq6qivggsnwbsuwemyiqcuepwm-e3kq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "jluvndapnzan3kwyp36vq2saiuon2cqy-bpay"
+  },
+  "wtm_3_years_snail_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "wtfkx3tsnnomhhru4xvtizqmqmht75mz-eqby",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "qr2lfsetpaph5xf6rccagemiqkjm5da7-bkta"
   }
 }

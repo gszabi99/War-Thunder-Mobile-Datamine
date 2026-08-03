@@ -35,6 +35,7 @@
   "areaScreenTopWidthPart": 0.7,
   "areaScreenTopHeightPart": 0.1,
   "areaTextInflate": 5.0,
+  "pickupMapIconDistFalloffK": 0.2,
   "tacticalMapBorder": "item",
   "tacticalMapBorderColor": [
     255,

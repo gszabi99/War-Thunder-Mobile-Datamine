@@ -171,7 +171,7 @@ let defaultSeasonImages = [
   { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) $"{id.replace("air", "ships")}.avif" },
 ]
 
-let defaultBgImage = "ui/images/event_bg.avif"
+let defaultBgImage = "ui/images/bp_bg_01.avif"
 
 let lootboxPreviewBg = { 
   event_special_gift_tanks_new_year_2025         = { bg = "ui/images/event_bg_christmas_2024.avif" }

@@ -18,7 +18,7 @@ let operationPassRewardsList = require("%rGui/battlePass/operationPassRewardsLis
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
-let { bgCard, purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
+let { bgCard } = require("%rGui/battlePass/passRewardsListComp.nut")
 let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
 let { bpCardStyle, bpCardPadding, bpCardHeight } = require("%rGui/battlePass/bpCardsStyle.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
@@ -79,7 +79,6 @@ function operationPassLastRewardAd(stagesList, recommendInfo) {
     key = stageInfo
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_RIGHT
-    margin = [0, 0, purchBtnHeight, 0]
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     function onClick() {
