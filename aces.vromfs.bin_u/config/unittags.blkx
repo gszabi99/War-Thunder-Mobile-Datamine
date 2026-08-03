@@ -98361,7 +98361,6 @@
         },
         "100mm_9m117": {
           "icon": "hud_ammo_atgm_tandem_ap1_he1",
-          "reqLevel": 16,
           "maxCount": 8
         }
       }
@@ -102495,8 +102494,7 @@
           "reqLevel": 12
         },
         "76mm_ussr_APCR_1943": {
-          "icon": "hud_ammo_apcr",
-          "reqLevel": 16
+          "icon": "hud_ammo_apcr"
         },
         "76mm_ussr_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -102837,8 +102835,7 @@
           "reqLevel": 12
         },
         "122mm_ussr_APCBC": {
-          "icon": "hud_ammo_ap3_he1",
-          "reqLevel": 16
+          "icon": "hud_ammo_ap3_he1"
         }
       }
     },
@@ -113029,8 +113026,7 @@
         },
         "90mm_us_M313_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2,
-          "reqLevel": 16
+          "maxCount": 2
         }
       }
     }
