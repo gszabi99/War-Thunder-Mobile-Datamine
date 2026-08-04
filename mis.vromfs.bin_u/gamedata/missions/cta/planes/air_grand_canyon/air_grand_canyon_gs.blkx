@@ -4198,7 +4198,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 150.0,
               "moveType": "USE_SPLINES"
             }
           }
@@ -9414,7 +9414,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 150.0,
               "moveType": "USE_SPLINES"
             }
           }

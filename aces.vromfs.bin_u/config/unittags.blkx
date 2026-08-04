@@ -46751,6 +46751,295 @@
       }
     }
   },
+  "j8m1": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "toko",
+        "model": "ro_2",
+        "mass": 166.0,
+        "thrust": 1500.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "pacific": true,
+      "not_in_dynamic_campaign": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 14900.0,
+      "maxSpeed": 276.353,
+      "turnTime": 17.0275,
+      "airfieldLen": 357.136,
+      "maxSpeedAlt": 10000.0,
+      "climbSpeed": 47.4182,
+      "climbTime": 63.9856,
+      "climbAlt": 3000.0,
+      "wingLoading": 213.0,
+      "thrustToWeightRatio": 0.4,
+      "rollRate": 177.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 0,
+      "massPerSec": 5.0625,
+      "rocketfuel": 4,
+      "weapons": {
+        "cannonHo155": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 120,
+          "shotFreq": 7.5
+        }
+      }
+    },
+    "bullets": {
+      "cannonHo155": {
+        "default": {
+          "icon": "ball_shell/he_frag/he_frag_i/he_frag_t/"
+        },
+        "ho155_universal": {
+          "icon": "he_frag_t/he_frag_i/he_frag/ball_t_shell/he_frag/he_frag/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "ho155_ground_targets": {
+          "icon": "ball_t_shell/ball_t_shell/he_frag_t/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "ho155_tracers": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "ho155_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ball_shell/",
+          "reqModification": "aircraft_mod_4"
+        }
+      }
+    }
+  },
+  "j8m1_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "toko",
+        "model": "ro_2",
+        "mass": 166.0,
+        "thrust": 1500.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "pacific": true,
+      "not_in_dynamic_campaign": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 14900.0,
+      "maxSpeed": 276.353,
+      "turnTime": 17.0275,
+      "airfieldLen": 357.136,
+      "maxSpeedAlt": 10000.0,
+      "climbSpeed": 47.4182,
+      "climbTime": 63.9856,
+      "climbAlt": 3000.0,
+      "wingLoading": 213.0,
+      "thrustToWeightRatio": 0.4,
+      "rollRate": 177.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 0,
+      "massPerSec": 5.0625,
+      "rocketfuel": 4,
+      "weapons": {
+        "cannonHo155": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 120,
+          "shotFreq": 7.5
+        }
+      }
+    },
+    "bullets": {
+      "cannonHo155": {
+        "default": {
+          "icon": "ball_shell/he_frag/he_frag_i/he_frag_t/"
+        },
+        "ho155_universal": {
+          "icon": "he_frag_t/he_frag_i/he_frag/ball_t_shell/he_frag/he_frag/"
+        },
+        "ho155_ground_targets": {
+          "icon": "ball_t_shell/ball_t_shell/he_frag_t/"
+        },
+        "ho155_tracers": {
+          "icon": "he_frag_t/"
+        },
+        "ho155_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ball_shell/"
+        }
+      }
+    }
+  },
+  "swift_f1": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "releaseDate": "2019-09-10 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "avon_105",
+        "mass": 1000.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12192.0,
+      "maxSpeed": 273.7,
+      "turnTime": 25.0,
+      "airfieldLen": 850.0,
+      "climbTime": 246.0,
+      "maxSpeedAlt": 3048.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 28.0,
+      "wingLoading": 246.0,
+      "thrustToWeightRatio": 0.33,
+      "rollRate": 125.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 10.42,
+      "weapons": {
+        "cannonADEN": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 400,
+          "shotFreq": 20.0
+        },
+        "uk_500lbs_43": {
+          "reqModification": "aircraft_mod_3"
+        },
+        "uk_1000lbs_gp_mk1": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "uk_1000lbs_mc_mk1": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "uk_rp3_4b": {
+          "reqModification": "aircraft_mod_2"
+        }
+      }
+    },
+    "bullets": {
+      "cannonADEN": {
+        "default": {
+          "icon": "ap/he_i_t/"
+        },
+        "aden_ground_targets": {
+          "icon": "ap/he_i_t/ap/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "aden_air_targets": {
+          "icon": "he_frag_i/he_i_t/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "aden_stealth": {
+          "icon": "ap/he_frag_i/",
+          "reqModification": "aircraft_mod_4"
+        }
+      }
+    }
+  },
+  "swift_f1_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "releaseDate": "2019-09-10 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "rolls-royce",
+        "model": "avon_105",
+        "mass": 1000.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12192.0,
+      "maxSpeed": 273.7,
+      "turnTime": 25.0,
+      "airfieldLen": 850.0,
+      "climbTime": 246.0,
+      "maxSpeedAlt": 3048.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 28.0,
+      "wingLoading": 246.0,
+      "thrustToWeightRatio": 0.33,
+      "rollRate": 125.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 10.42,
+      "weapons": {
+        "cannonADEN": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 400,
+          "shotFreq": 20.0
+        },
+        "uk_500lbs_43": {},
+        "uk_1000lbs_gp_mk1": {},
+        "uk_1000lbs_mc_mk1": {},
+        "uk_rp3_4b": {}
+      }
+    },
+    "bullets": {
+      "cannonADEN": {
+        "default": {
+          "icon": "ap/he_i_t/"
+        },
+        "aden_ground_targets": {
+          "icon": "ap/he_i_t/ap/"
+        },
+        "aden_air_targets": {
+          "icon": "he_frag_i/he_i_t/"
+        },
+        "aden_stealth": {
+          "icon": "ap/he_frag_i/"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",

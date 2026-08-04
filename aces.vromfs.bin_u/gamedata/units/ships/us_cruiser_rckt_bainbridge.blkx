@@ -315,6 +315,7 @@
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
+      "auxiliary_caliber_turret_02_dm": {},
       "auxiliary_caliber_turret_03_dm": {},
       "auxiliary_caliber_turret_04_dm": {},
       "auxiliary_caliber_turret_05_dm": {}
@@ -405,6 +406,7 @@
       {
         "name": [
           "auxiliary_caliber_turret_01_dm",
+          "auxiliary_caliber_turret_02_dm",
           "auxiliary_caliber_turret_03_dm",
           "auxiliary_caliber_turret_04_dm",
           "auxiliary_caliber_turret_05_dm"
@@ -598,6 +600,7 @@
         "engine_room_01_dm",
         "engine_room_02_dm",
         "auxiliary_caliber_turret_01_dm",
+        "auxiliary_caliber_turret_02_dm",
         "auxiliary_caliber_turret_03_dm",
         "auxiliary_caliber_turret_04_dm",
         "auxiliary_caliber_turret_05_dm",
@@ -2731,6 +2734,7 @@
             "compartment_06_dm": {},
             "bridge_dm": {},
             "auxiliary_caliber_turret_01_dm": {},
+            "auxiliary_caliber_turret_02_dm": {},
             "auxiliary_caliber_turret_03_dm": {},
             "auxiliary_caliber_turret_04_dm": {},
             "auxiliary_caliber_turret_05_dm": {},

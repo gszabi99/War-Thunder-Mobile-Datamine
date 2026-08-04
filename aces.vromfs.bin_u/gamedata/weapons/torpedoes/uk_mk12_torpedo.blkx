@@ -39,11 +39,6 @@
     "underwaterExplosionEffect": "underwater_explosion",
     "dragCx": 0.24,
     "startPropulsionDelay": 0.1,
-    "autoaimEnabled": false,
-    "aaMaxAimAngle": 0.0,
-    "aaSpeedPrediction": 0.0,
-    "aaAccelPrediction": 0.0,
-    "aaAngleCorrection": 0.0,
     "relativeVelArmorShift": [
       200.0,
       1000.0

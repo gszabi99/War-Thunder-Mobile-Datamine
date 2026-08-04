@@ -320,6 +320,7 @@
       "hp": 84940.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
+      "auxiliary_caliber_turret_01_dm": {},
       "auxiliary_caliber_turret_02_dm": {},
       "auxiliary_caliber_turret_03_dm": {},
       "auxiliary_caliber_turret_04_dm": {}
@@ -600,6 +601,7 @@
         "tt_02_dm",
         "engine_room_01_dm",
         "main_caliber_turret_01_dm",
+        "auxiliary_caliber_turret_01_dm",
         "auxiliary_caliber_turret_02_dm",
         "auxiliary_caliber_turret_03_dm",
         "auxiliary_caliber_turret_04_dm",

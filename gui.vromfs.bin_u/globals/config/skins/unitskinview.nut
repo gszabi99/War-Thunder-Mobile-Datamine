@@ -2525,6 +2525,13 @@ return {
     "j7w1": {
       "": "jap_ki_43_3_otsu"
     },
+    "j8m1": {
+      "": "jap_aichi_b7a2_dark_green",
+      "camo": "jap_a7m1"
+    },
+    "j8m1_prem": {
+      "": "jap_ki_61_hei"
+    },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
     },
@@ -3612,6 +3619,13 @@ return {
     "sw_veak_40_reskin3": {
       "": "se_camo_green",
       "forest": "se_camo_modern_deform"
+    },
+    "swift_f1": {
+      "": "ussr_la_11_standard",
+      "camo": "uk_typhoon_mk1a_camo"
+    },
+    "swift_f1_prem": {
+      "": "usa_f8f1b_bearcat"
     },
     "ta-152c": {
       "": "germ_ta152c",

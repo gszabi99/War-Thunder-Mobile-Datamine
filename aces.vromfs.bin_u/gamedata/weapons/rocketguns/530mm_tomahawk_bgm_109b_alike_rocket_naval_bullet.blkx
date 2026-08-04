@@ -181,7 +181,7 @@
           "loftTargetOmegaMax": 0.35,
           "timeOut": 0.8,
           "propNavMult": 5.0,
-          "reqAccelMax": 20.0,
+          "reqAccelMax": 15.0,
           "baseIndSpeed": 1800.0,
           "accelControlProp": 0.0056,
           "accelControlIntg": 0.027,

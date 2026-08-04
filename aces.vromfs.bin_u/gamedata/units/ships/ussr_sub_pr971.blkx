@@ -479,7 +479,7 @@
     "surfacingAreaMult": 0.8,
     "maxVerticalSpeed": 2.5,
     "mass": {
-      "Empty": 7000000.0,
+      "Empty": 8400000.0,
       "momentOfInertia": [
         30.0,
         250.0,
@@ -623,13 +623,12 @@
         "triggerGroup": "rockets",
         "blk": "gameData/weapons/rocketGuns/514mm_3m14e_pl_alike_rocket_naval_bullet.blk",
         "weaponType": "rockets",
-        "emitter": "bone_rocket_01",
-        "flash": "bone_rocket_01",
+        "emitter": "bone_torpedo_01",
         "emitterGenRange": [
           1,
           4
         ],
-        "emitterGenFmt": "bone_rocket_%02d",
+        "emitterGenFmt": "bone_torpedo_%02d",
         "useEmitter": true,
         "allowableDelta": [
           180.0,
@@ -680,7 +679,7 @@
         "triggerGroup": "torpedoes",
         "external": true,
         "blk": "gameData/Weapons/torpedoes/ussr_650mm_65_76_torpedo.blk",
-        "emitter": "bone_torpedo_05",
+        "emitter": "bone_torpedo_01",
         "emitterGenRange": [
           1,
           4
@@ -926,13 +925,12 @@
               "triggerGroup": "rockets",
               "blk": "gameData/weapons/rocketGuns/514mm_3m14e_pl_alike_rocket_naval_bullet.blk",
               "weaponType": "rockets",
-              "emitter": "bone_rocket_01",
-              "flash": "bone_rocket_01",
+              "emitter": "bone_torpedo_01",
               "emitterGenRange": [
                 1,
                 4
               ],
-              "emitterGenFmt": "bone_rocket_%02d",
+              "emitterGenFmt": "bone_torpedo_%02d",
               "useEmitter": true,
               "allowableDelta": [
                 180.0,
@@ -983,7 +981,7 @@
               "triggerGroup": "torpedoes",
               "external": true,
               "blk": "gameData/Weapons/torpedoes/ussr_650mm_65_76_torpedo.blk",
-              "emitter": "bone_torpedo_05",
+              "emitter": "bone_torpedo_01",
               "emitterGenRange": [
                 1,
                 4
