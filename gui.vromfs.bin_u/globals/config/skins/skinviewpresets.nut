@@ -288,6 +288,8 @@ let skinsByTag = {
     "camo_darkgrey_zigzag"
     "camo_ghiglino_spots"
     "camo_greenedges"
+    "camo_deepblue_antpath"
+    "camo_bluelight_geometry"
 
     "camo_asiatic_forest"
     "camo_blue_waves"
@@ -346,6 +348,14 @@ let skinsByTag = {
     "camo_small_bicolor_spots"
     "camo_multicolor_arctic"
 
+    "camo_redblack_spots"
+    "camo_multicolor_waves"
+    "camo_multicolor_spots"
+    "camo_modern_geometry"
+    "camo_blackyellow_geometry"
+    "camo_blackblue_brokenglass"
+    "camo_bicolor_geometry"
+
     "camo_lightblue_splotch"
     "camo_dark_spots"
     "camo_marine_geometry"
@@ -367,9 +377,7 @@ let skinsByTag = {
     "camo_gray_splotch"
     "camo_bluewater_geometry"
     "camo_sboat_fleet"
-    "camo_multicolor_waves"
     "camo_blackblue_geometry"
-    "camo_redblack_spots"
     "camo_redwhite_stripes"
     "camo_olive_slash_lines"
     "it_camo_blackgreen_deforming"

@@ -1078,6 +1078,9 @@ return {
     "fr_destroyer_aigle_class_aigle": {
       "": "ann_camo"
     },
+    "fr_frigate_rckt_la_fayette": {
+      "upgraded": "camo_multicolor_spots"
+    },
     "fr_lorraine_100": {
       "": "fr_camo_vert_olive_arme",
       "forest": "fr_camo_green_sand_brown"
@@ -1491,6 +1494,9 @@ return {
     },
     "germ_frigate_rckt_kortenaer": {
       "upgraded": "camo_blackgreenwhite_spots"
+    },
+    "germ_frigate_rckt_niedersachsen": {
+      "upgraded": "camo_browngray_modern"
     },
     "germ_frigate_rckt_sachsen": {
       "upgraded": "camo_3gray_colors_geometry"
@@ -2617,6 +2623,9 @@ return {
     "jp_destroyer_rckt_murasame": {
       "olive_slash_lines": "camo_olive_slash_lines",
       "upgraded": "camo_purplewhite_spots"
+    },
+    "jp_destroyer_rckt_takanami": {
+      "upgraded": "camo_blackgray_lines"
     },
     "jp_destroyer_rckt_takatsuki": {
       "upgraded": "camo_asiatic_forest"
