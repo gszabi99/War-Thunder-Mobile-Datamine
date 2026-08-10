@@ -48,7 +48,7 @@ let mkGradient = @(override) {
   image = Picture($"ui/gameuiskin#gradient_button.svg")
 }.__update(override)
 
-let mkButtonTextMultiline = @(text, override = {}) {
+let mkButtonTextMultiline = @(text, override = {}) @() {
   size = [buttonTextWidth, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
@@ -62,10 +62,17 @@ function mkButtonText(text, style, ovr = {}) {
     rendObj = ROBJ_TEXT
     text
   }.__update(fontBoldSmallShaded, ovr)
-
-  if (useFlexText || calc_comp_size(res)[0] <= buttonTextWidth)
+  let txtWidth = (type(style?.ovr.size[0]) == "float" ? style.ovr.size[0] : defButtonMinWidth) - (style?.ovr.padding[1] ?? paddingX) * 2
+  if (useFlexText || calc_comp_size(res)[0] <= txtWidth)
     return res
-  return mkButtonTextMultiline(text, ovr)
+  let multTxtComp = mkButtonTextMultiline(text, {}.__update(ovr, {size = [txtWidth, SIZE_TO_CONTENT]}))
+  let compSize = calc_comp_size(multTxtComp)
+  let txtHeigth = (type(style?.ovr.size[1]) == "float" ? style.ovr.size[1] : defButtonHeight) - (style?.ovr.padding[0] ?? 0) * 2
+
+  if (compSize[0] <= txtWidth && compSize[1] <= txtHeigth)
+    return multTxtComp
+
+  return mkButtonTextMultiline(text, ovr.__merge(fontBoldVeryTinyShaded, {size = [txtWidth, SIZE_TO_CONTENT]}))
 }
 
 let mkPriceTextsComp = @(text, priceComp, style = {}, flow = FLOW_VERTICAL) {

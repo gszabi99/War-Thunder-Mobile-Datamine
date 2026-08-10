@@ -2678,5 +2678,13 @@
     "lod0": "wtfkx3tsnnomhhru4xvtizqmqmht75mz-eqby",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "qr2lfsetpaph5xf6rccagemiqkjm5da7-bkta"
+  },
+  "thunder_blossom_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "4r7eipbv4hipkg3ut2e25ymsrtf4has6-hlky",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "wwah2rrgjzd4sae5kydw6n3ud46ywdbu-b52y"
   }
 }

@@ -22,6 +22,7 @@
       "mode": {
         "type": "finalBlow",
         "includeAI": false,
+        "isGlobalFinalBlow": true,
         "condition": {
           "type": "online"
         }

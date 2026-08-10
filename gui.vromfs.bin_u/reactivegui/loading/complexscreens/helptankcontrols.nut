@@ -39,24 +39,38 @@ let pointCrosshair = {
   color = 0xFFFFFFFF
 }
 
-let crosshair = {
-  size = array(2, hdpx(15))
+let crosshairSize = hdpxi(30)
+let crosshairLineW = hdpxi(2)
+let crosshairH = {
+  size = crosshairSize
   rendObj = ROBJ_VECTOR_CANVAS
   color = penetrationColors[0]
-  lineWidth = hdpx(2)
+  lineWidth = crosshairLineW
   commands = [
-    [VECTOR_LINE, 50, 0, 50, 100],
-    [VECTOR_LINE, 0, 50, 100, 50],
+    [VECTOR_LINE, 50, 17, 50, 83],
+    [VECTOR_LINE, 17, 50, 83, 50],
+  ]
+}
+let crosshairL = {
+  size = crosshairSize
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = penetrationColors[2]
+  lineWidth = crosshairLineW
+  commands = [
+    [VECTOR_LINE, 50, 0, 50, 30],
+    [VECTOR_LINE, 50, 70, 50, 100],
+    [VECTOR_LINE, 0, 50, 30, 50],
+    [VECTOR_LINE, 70, 50, 100, 50],
   ]
 }
 
-let crosshairWithText = @(color, text) {
+let crosshairWithText = @(crosshairComp, color, text) {
   padding = const [0, 0, 0, hdpx(5)]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(10)
   children = [
-    crosshair.__merge({ color })
+    crosshairComp.__merge({ color })
     mkText(text)
   ]
 }
@@ -65,9 +79,9 @@ let crosshairInfo = {
   flow = FLOW_VERTICAL
   children = [
     mkText(loc("help/penetrationProbability"))
-    crosshairWithText(penetrationColors[0], loc("help/penetrationHigh"))
-    crosshairWithText(penetrationColors[1], loc("help/penetrationAverage"))
-    crosshairWithText(penetrationColors[2], loc("help/penetrationLow"))
+    crosshairWithText(crosshairH, penetrationColors[0], loc("help/penetrationHigh"))
+    crosshairWithText(crosshairH, penetrationColors[1], loc("help/penetrationAverage"))
+    crosshairWithText(crosshairL, penetrationColors[2], loc("help/penetrationLow"))
   ]
 }
 
@@ -99,13 +113,12 @@ let bgItems = [
   pointCrosshair.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(11), ph(-11)]
+    pos = [pw(10.9), ph(-11)]
   })
-  crosshair.__merge({
-    size = array(2, ph(2))
+  crosshairH.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(15.2), ph(-11)]
+    pos = [pw(15.3), ph(-11)]
   })
   stickWidgetComp.__merge({
     vplace = ALIGN_CENTER
@@ -127,13 +140,13 @@ let hints = [
   }
   {
     content = mkText(loc("help/screenMiddle"))
-    lines = mkLines([1985, sightY, 1624, sightY])
+    lines = mkLines([1975, sightY, 1624, sightY])
     needTgtPoint = false
     blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER }
   }
   {
     content = mkTextarea(loc("help/shotTarget"), hdpx(340))
-    lines = mkLines([2162, sightY, 2532, sightY])
+    lines = mkLines([2180, sightY, 2532, sightY])
     needTgtPoint = false
     blockOvr = { vplace = ALIGN_CENTER }
   }

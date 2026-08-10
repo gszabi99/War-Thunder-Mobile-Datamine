@@ -167,14 +167,17 @@ function exploreRewardMsgBox(item, rewardsPreview, price, currencyId, currencyRe
   })
 }
 
-let mkQuestBtn = @(item, currencyReward, rewardsPreview, hasReceivedAllRewards) function() {
+let mkQuestBtn = @(item, currencyReward, rewardsPreview, hasReceivedAllRewards, needOPAccessMark = false) function() {
   let { name, progressCorrectionStep = 0 } = item
   let hasAds = !item?.hasReward && !hasReceivedAllRewards && progressCorrectionStep > 0
   let isRewardInProgress = hasAds ? Computed(@() name in unlockInProgress.get() || adBudgetInProgress.get())
     : Computed(@() name in unlockInProgress.get())
   let price = getUnlockPrice(item)
 
-  let questBtn = item?.hasReward
+  let questBtn = needOPAccessMark
+      ? textButtonPurchase(utf8ToUpper(loc("quests/needOP")), openOPPurchaseWnd,
+          { ovr = {size = btnSize, minWidth = btnSize[0], padding = [0, hdpx(2)]} })
+    : item?.hasReward
       ? textButtonSecondary(
           utf8ToUpper(loc("btn/receive")),
           @() receiveReward(item, currencyReward),
@@ -235,11 +238,11 @@ function mkItemTimerUntilReroll(statsTable) {
   }
 }
 
-let mkRerollBtn = @(item, rerollPrice, hasReceivedAllRewards) @() {
-  watch = hasReceivedAllRewards
+let mkRerollBtn = @(item, rerollPrice, isDisabledW) @() {
+  watch = isDisabledW
   vplace = ALIGN_TOP
   children = mkSpinnerHideBlock(Computed(@() item.name in unlockInProgress.get()),
-    item.hasReward || hasReceivedAllRewards.get()
+    item.hasReward || isDisabledW.get()
       ? iconButtonInactive($"ui/gameuiskin#icon_repeatable.svg",
           @() null
           { ovr = { size = [btnSize[1], btnSize[1]], minWidth = 0 } })
@@ -305,9 +308,8 @@ function mkItem(item, textCtor, sectionId) {
       }
 
       @() {
-        watch = [isHiddenForReroll, needOPAccessMark]
+        watch = isHiddenForReroll
         size = FLEX_H
-        opacity = needOPAccessMark.get() ? 0.5 : 1
         children = isHiddenForReroll.get() ? mkItemTimerUntilReroll(statsTable)
           : {
               size = FLEX_H
@@ -317,11 +319,12 @@ function mkItem(item, textCtor, sectionId) {
               valign = ALIGN_BOTTOM
               children = [
                 @() {
-                  watch = [isCompletedPrevQuest, headerPadding, leftBlockMinHeight]
+                  watch = [isCompletedPrevQuest, headerPadding, leftBlockMinHeight, needOPAccessMark]
                   size = FLEX_H
                   flow = FLOW_VERTICAL
                   minHeight = leftBlockMinHeight.get()
                   gap = hdpx(8)
+                  opacity = needOPAccessMark.get() ? 0.5 : 1.0
                   children = isCompletedPrevQuest.get()
                     ? [
                         !item?.chainQuests ? null : mkChainProgress(item, {padding = [0, 0, 0, headerPadding.get()]})
@@ -345,7 +348,7 @@ function mkItem(item, textCtor, sectionId) {
                   gap = questItemsGap
                   halign = ALIGN_RIGHT
                   children = [
-                    !hasRerollBtn.get() ? null : mkRerollBtn(item, rerollPrice, hasReceivedAllRewards)
+                    !hasRerollBtn.get() ? null : mkRerollBtn(item, rerollPrice, Computed(@() hasReceivedAllRewards.get() || needOPAccessMark.get()))
                     {
                       vplace = ALIGN_BOTTOM
                       flow = FLOW_HORIZONTAL
@@ -362,9 +365,9 @@ function mkItem(item, textCtor, sectionId) {
                         }
 
                         @() {
-                          watch = [isCompletedPrevQuest, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards]
+                          watch = [isCompletedPrevQuest, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards, needOPAccessMark]
                           children = isCompletedPrevQuest.get()
-                            ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get())
+                            ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get(), needOPAccessMark.get())
                             : {
                                 size = btnSize
                                 halign = ALIGN_CENTER
@@ -384,18 +387,6 @@ function mkItem(item, textCtor, sectionId) {
               ]
             }
       }
-      @() !needOPAccessMark.get()
-        ? { watch = needOPAccessMark }
-        : {
-          watch = needOPAccessMark
-          size = FLEX
-          padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
-          stopMouse = true
-          flow = FLOW_HORIZONTAL
-          halign = ALIGN_RIGHT
-          valign = ALIGN_BOTTOM
-          children = textButtonPurchase(utf8ToUpper(loc("quests/needOP")), openOPPurchaseWnd, {ovr = {size = btnSize, minWidth = btnSize[0]}})
-        }
       @() {
         watch = isCompletedPrevQuest
         size = FLEX_H

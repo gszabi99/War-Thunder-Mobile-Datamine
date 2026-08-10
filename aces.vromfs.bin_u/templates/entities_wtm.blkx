@@ -305,7 +305,8 @@
     "battleRoyaleLog:array": {},
     "raceLog:array": {},
     "missionScoreLog:array": {},
-    "unitClasses:object": {}
+    "unitClasses:object": {},
+    "bigQueryEvents:object": {}
   },
   "statistic_players": {
     "statisticPlayers:object": {},

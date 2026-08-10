@@ -30,7 +30,7 @@ let linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
 let childOvr = isWidescreen ? {} : fontBoldTinyAccentedShaded
-let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
+let btnStyle = { ovr = { size = btnSize, minWidth = 0, padding = [0, hdpx(2)] }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
 let btnGap = hdpx(10)
 let vipIconW = CS_INCREASED_ICON.iconSize

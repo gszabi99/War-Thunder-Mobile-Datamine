@@ -44,7 +44,6 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
   return @() {
     watch = eventIdByPersonalDiscount
     size = hdpx(130)
-    pos = [0, -hdpx(30)]
     children = !eventIdByPersonalDiscount.get() ? null
       : {
           size = FLEX

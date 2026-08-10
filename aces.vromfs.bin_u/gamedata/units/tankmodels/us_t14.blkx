@@ -46,6 +46,8 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "minRelativeTankCameraThreshold": 1.4,
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.85,
@@ -2850,6 +2852,9 @@
         }
       }
     }
+  },
+  "enabled_modifications": {
+    "tank_smoke_screen_system_mod": true
   },
   "upgraded_skin": {
     "replace_tex": {

@@ -477,7 +477,7 @@
     "maxRoll": 0.0,
     "trimAutoCorrectionPower": 0.01,
     "surfacingAreaMult": 0.8,
-    "maxVerticalSpeed": 2.5,
+    "maxVerticalSpeed": 3.3,
     "mass": {
       "Empty": 8400000.0,
       "momentOfInertia": [

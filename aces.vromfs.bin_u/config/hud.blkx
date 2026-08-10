@@ -3800,6 +3800,7 @@
     "textHudAlpha": 0.85,
     "measuresAlpha": 0.65,
     "offsetToNextLine": 22.0,
+    "isArtilleryTimerBesideMap": true,
     "overheatMessageTimeToWork": 120.0,
     "overheatTimeToDieMax": 120.0,
     "color": [
