@@ -285,7 +285,7 @@ let screensList = {
     weight = 2.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_39.avif")
     timeRange = {
-      season = "event_main_season"
+      season = "season"
       seasonIdx = 36
     }
   }

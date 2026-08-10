@@ -909,6 +909,10 @@
     ],
     "detectionHeight": 47.1
   },
+  "torpedoSeries": {
+    "delay": 0.1,
+    "count": 1
+  },
   "sound": {
     "EngineName": "engine_shipbig01",
     "EngineNameAi": "engine_shipbig_ai",

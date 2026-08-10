@@ -17,7 +17,7 @@ let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut
 let { selectedLineHorSolid } = require("%rGui/components/selectedLine.nut")
 let { unitsResearchStatus, currentResearch, selectedCountry, visibleNodes, mkResearchableCountries
 } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage, mkFlagImageWithoutGrad
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -204,7 +204,29 @@ let function mkFlag(country, curCountry) {
   }
 }
 
-let wndContent = @(startUnit, allCountries, curCountry) {
+let mkResearchHint = @(laterCountries) @() {
+  watch = laterCountries
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  children = [
+    {
+      maxWidth = hdpx(laterCountries.get().len() == 0 ? 700 : 900)
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text = loc(laterCountries.get().len() == 0 ? "unitsTree/changeResearchHint"
+        : "unitsTree/changeResearchHint/laterCountries"),
+      halign = ALIGN_CENTER
+    }.__update(fontTiny)
+    {
+      flow = FLOW_HORIZONTAL
+      gap = flagGap
+      children = laterCountries.get().map(@(c) mkFlagImageWithoutGrad(c, flagSize))
+    }
+  ]
+}
+
+
+let wndContent = @(startUnit, allCountries, curCountry, laterCountries) {
   padding = [0, buttonsHGap]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -218,6 +240,8 @@ let wndContent = @(startUnit, allCountries, curCountry) {
     }
     mkSmallText(loc("unitsTree/startUnit"), { color = selectColor })
     unitsBlock(startUnit)
+    { size = flagGap }
+    mkResearchHint(laterCountries)
   ]
 }
 
@@ -229,7 +253,25 @@ function acceptChooseResearch(unitId, country) {
 function openImpl() {
   sendUiBqEvent("first_country_choice", { id = "start_select_research" })
 
-  let allCountries = mkResearchableCountries(visibleNodes)
+  let allCountriesRaw = mkResearchableCountries(visibleNodes)
+  let countriesInfo = Computed(function() {
+    let res = { allowedNow = [], allowedLater = [] }
+    let first = serverConfigs.get()?.firstChoiceResearch[curCampaign.get()]
+    if (first != null)
+      foreach (c in allCountriesRaw.get())
+        if (first.contains(c))
+          res.allowedNow.append(c)
+        else
+          res.allowedLater.append(c)
+
+    if (res.allowedNow.len() == 0) {
+      res.allowedNow = allCountriesRaw.get()
+      res.allowedLater.clear()
+    }
+    return res
+  })
+  let allCountries = Computed(@() countriesInfo.get().allowedNow)
+
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()
     : allCountries.get()?[0])
@@ -248,13 +290,7 @@ function openImpl() {
       minWidth = minWidthWnd
       children = [
         modalWndHeader(loc("unitsTree/chooseCountryResearch"), { padding = [0, buttonsHGap] })
-        wndContent(startUnit, allCountries, curCountry)
-        mkSmallText(loc("unitsTree/changeResearchHint"), {
-          maxWidth = hdpx(700)
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          halign = ALIGN_CENTER
-        })
+        wndContent(startUnit, allCountries, curCountry, Computed(@() countriesInfo.get().allowedLater))
         mkSpinnerHideBlock(unitInProgress,
           textButtonBattle(utf8ToUpper(loc("unitsTree/chooseResearch/accept")),
             @() acceptChooseResearch(startUnit.get()?.name, curCountry.get()), { childOvr = fontBoldTinyAccentedShaded, hotkeys = ["^J:X"] }))

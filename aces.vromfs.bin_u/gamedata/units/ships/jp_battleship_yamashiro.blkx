@@ -3661,6 +3661,11 @@
       "blk": "gameData/units/ships/weaponPresets/jp_battleship_yamashiro_default.blk"
     }
   },
+  "torpedoSeries": {
+    "delay": 0.1,
+    "count": 1,
+    "isDeadzoneCheck": true
+  },
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},

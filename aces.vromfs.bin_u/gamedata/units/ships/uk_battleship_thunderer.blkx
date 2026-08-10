@@ -862,6 +862,10 @@
     ],
     "detectionHeight": 47.1
   },
+  "torpedoSeries": {
+    "delay": 0.1,
+    "count": 1
+  },
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},

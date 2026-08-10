@@ -26,6 +26,11 @@
     "decoyCollisionRadiusSq": 1000.0,
     "courseChangeViscosity": 1.6,
     "startPropulsionDelay": 0.1,
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
     "DamageParts": {
       "body": {
         "hp": 100.0,

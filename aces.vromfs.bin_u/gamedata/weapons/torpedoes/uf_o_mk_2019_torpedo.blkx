@@ -66,6 +66,11 @@
     "startPropulsionDelay": 0.1,
     "useStartSpeed": true,
     "explosionFx": "bomb_expl_100kg",
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
     "passiveSonarDetectionRange": 4500.0,
     "activeSonarDetectionRange": 210.0,
     "hitPowerMult": 100.0,
@@ -105,6 +110,7 @@
       200.0,
       1000.0
     ],
+    "explodeTreshold": 0.1,
     "explodeHitPower": 2000.0,
     "explodeArmorPower": 500.0,
     "explodeRadius": [

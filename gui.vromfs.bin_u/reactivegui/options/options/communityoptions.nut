@@ -1,14 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+from "auth_wt" import getCountryCode
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "%sqstd/platform.nut" import is_nswitch
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride, isExternalOperator
+from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
 
-from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-
-let { eventbus_send } = require("eventbus")
-let { getCurrentLanguage } = require("dagor.localize")
-let { getCountryCode } = require("auth_wt")
-let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
-let { is_nswitch } = require("%sqstd/platform.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
 
 let iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
@@ -38,7 +36,7 @@ let socNetList = operatorNetowrks ? (operatorNetowrks % "p").map(@(blk) copyPara
       image = "ui/gameuiskin#icon_social_discord.svg"
       url = "https://discord.gg/VP2DuSbUZH"
     }
-  getCurrentLanguage() != "Russian" ? null
+  !isExternalOperator() ? null
     : {
       text = "community/vk"
       image = "ui/gameuiskin#icon_social_vk.svg"

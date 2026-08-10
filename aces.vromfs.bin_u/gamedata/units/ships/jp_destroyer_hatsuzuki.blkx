@@ -723,6 +723,10 @@
   "optics": {
     "binoculars": "navy_binoculars"
   },
+  "torpedoSeries": {
+    "delay": 0.1,
+    "count": 1
+  },
   "Effects": {
     "waterSplashFx": "water_splash_medium",
     "sideSplashSpeedMult": 0.2,
