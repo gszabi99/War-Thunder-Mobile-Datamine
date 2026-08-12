@@ -2686,5 +2686,29 @@
     "lod0": "4r7eipbv4hipkg3ut2e25ymsrtf4has6-hlky",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "wwah2rrgjzd4sae5kydw6n3ud46ywdbu-b52y"
+  },
+  "french_tank_emblem_02_stencil": {
+    "category": "france",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "flweairczqlrizq3byxbplnwriv2ls4j-bbuq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "7xucoeyd6bxfcfk65o3vgmur22svi6u7-rgq"
+  },
+  "s36_ninja_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "6lhei2ofzuotcmec4gysnqo5qobfmx3t-fiia",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "drrrzkmcpp4cyirmpvqvtxbovojsauul-bp5a"
+  },
+  "s36_thunder_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "rudoffi6jzdjwg27jntqpdi2qr3gipm6-ds5i",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "5ugkdmn555allj7uvl3ol53irv2bxmep-bbpy"
   }
 }

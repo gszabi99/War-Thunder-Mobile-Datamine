@@ -102,6 +102,12 @@ let viewStats = [
     format = @(v) format("%.0f", v)
   }
   {
+    name = loc("stats/damage_per_battle_max")
+    campaign = "ships"
+    value = @(stats) stats?.profile_stat_damage_max ?? 0
+    format = @(v) format("%.0f", v)
+  }
+  {
     name = loc("stats/kill_death_ratio")
     campaign = "tanks"
     value = @(stats) secureDiv(stats?.profile_stat_kill ?? 0, stats?.profile_stat_death ?? 0)

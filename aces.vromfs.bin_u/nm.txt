@@ -64373,3 +64373,13 @@ bigQueryEvents:object
 isArtilleryTimerBesideMap
 isGlobalFinalBlow
 factory_building_a_awning
+french_tank_emblem_02_stencil
+s36_ninja_decal
+s36_thunder_decal
+flweairczqlrizq3byxbplnwriv2ls4j-bbuq
+7xucoeyd6bxfcfk65o3vgmur22svi6u7-rgq
+6lhei2ofzuotcmec4gysnqo5qobfmx3t-fiia
+drrrzkmcpp4cyirmpvqvtxbovojsauul-bp5a
+rudoffi6jzdjwg27jntqpdi2qr3gipm6-ds5i
+5ugkdmn555allj7uvl3ol53irv2bxmep-bbpy
+sentMaxStatsToUserstat:object
