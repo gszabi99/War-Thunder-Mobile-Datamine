@@ -173,7 +173,7 @@ function openDetailsWnd() {
     canShowOwnUnit = false
   }
   let { skin = null } = unitForShow.get()
-  if (skin != null && skin != (previewGoodsUnit.get()?.skin ?? previewGoodsUnit.get()?.currentSkins?[name] ?? "")) 
+  if (skin != null)
     cfg.skin <- skin
   openUnitDetailsWnd(cfg)
 }

@@ -1,21 +1,31 @@
+from "%globalsDarg/darg_library.nut" import *
 let { pow } = require("math")
-let { G_UNIT_UPGRADE, G_LOOTBOX, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+let { G_UNIT_UPGRADE, G_LOOTBOX, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { getDay } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { RewardSearcher } = require("%rGui/rewards/lootboxesRewards.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 
 
+function tryApplyUnitSkinFromGoods(unit, goods) {
+  let unitName = unit?.name ?? ""
+  let skin = goods?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName)?.subId
+  return unit != null && skin != null
+    ? unit.__merge({ skin })
+    : unit
+}
+
 function getBestUnitByGoods(goods, sConfigs) {
   if (goods?.meta.previewUnit)
-    return sConfigs?.allUnits[goods?.meta.previewUnit]
+    return tryApplyUnitSkinFromGoods(sConfigs?.allUnits[goods?.meta.previewUnit], goods)
   if (goods == null)
     return null
   let r = goods.rewards.findvalue(@(r) r.gType in unitRewardTypes)
   if (r == null)
     return null
   let unit = sConfigs?.allUnits[r.id]
-  return r.gType != G_UNIT_UPGRADE ? unit
+  let unitUpg = r.gType != G_UNIT_UPGRADE ? unit
      : unit?.__merge({ isUpgraded = true }, sConfigs?.gameProfile.upgradeUnitBonus ?? {})
+  return tryApplyUnitSkinFromGoods(unitUpg, goods)
 }
 
 function canPurchaseGoods(id, limit, dailyLimit, limitReset, dayOffset, serverTimeDay, purchCount, todayPurchCount) {
