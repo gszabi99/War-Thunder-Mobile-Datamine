@@ -930,11 +930,11 @@
         "missionSendVarToGui": [
           {
             "var_name": "AirDropTimer",
-            "int_value": "60"
+            "int_value": "@AirDropTimer"
           },
           {
             "var_name": "AirDropTimer",
-            "int_value": "-1"
+            "int_value": "@AirDropReset"
           }
         ],
         "wait": {
@@ -988,7 +988,7 @@
         },
         "missionSendVarToGui": {
           "var_name": "AirDropTimer",
-          "int_value": "60"
+          "int_value": "@AirDropTimer"
         }
       },
       "else_actions": {}
@@ -1018,6 +1018,8 @@
     "br_warning_shrink_time_diff": 0,
     "timer_to_next_stage": 0,
     "mission_start_timer": 0,
+    "AirDropTimer": 60,
+    "AirDropReset": -1,
     "current_stage": 0,
     "stage_for_modify_1": 2,
     "stage_for_modify_2": 8,

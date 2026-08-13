@@ -8805,3 +8805,6 @@ repairHealSmall
 AirDropTimer
 60
 -1
+AirDropReset
+@AirDropTimer
+@AirDropReset
