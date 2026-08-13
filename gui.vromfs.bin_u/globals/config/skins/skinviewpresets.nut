@@ -192,6 +192,15 @@ let skinsByTag = {
     "ussr_camo_object_279_bulldog"
     "ussr_camo_object_279_victor"
     "tr_camo_desert_bicolor_lines"
+    "ussr_t_72av_turms_anniversary2026"
+    "us_xm1_gm_anniversary2026"
+    "us_m60a3_tts_anniversary2026"
+    "uk_tog_2_anniversary2026"
+    "il_merkava_mk_2b_anniversary2026"
+    "germ_leopard_c2_mexas_anniversary2026"
+    "fr_amx_30_b2_brenus_anniversary2026"
+    "cn_type_69_2g_anniversary2026"
+    "ussr_2s19_m2_anniversary2026"
   ],
 
   [WINTER] = [
@@ -391,6 +400,8 @@ let skinsByTag = {
     "camo_lny_26"
     "camo_bismarck_february_skin_c"
     "camo_pink"
+    "lun_birthday_26"
+    "frigate_1239_birthday_26"
   ],
 
   [AIR] = [
@@ -421,6 +432,7 @@ let skinsByTag = {
     "germ_bf_110g_2_night"
     "germ_ger_bv_238"
     "germ_ger_bv_238_red"
+    "germ_ger_bv_238_croco"
     "germ_do335a_1"
     "germ_do335b_2_camo"
     "germ_do_217m_1"
@@ -510,6 +522,7 @@ let skinsByTag = {
     "usa_f_82e"
     "usa_f_84g_aerobatic"
     "usa_f_84g_fourqueens"
+    "usa_f_89d"
     "usa_f8f1b_bearcat"
     "usa_p_40e_1_shark"
     "usa_p_40c_metal"

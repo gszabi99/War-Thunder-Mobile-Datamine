@@ -9,6 +9,8 @@ let { mkButtonHoldTooltip, REPAY_TIME } = require("%rGui/tooltip.nut")
 let { commonGlare } = require("%rGui/components/glare.nut")
 
 
+let calc_content_size2 = require("daRg")?.calc_content_size ?? calc_comp_size
+
 let ICON_SIZE = hdpx(70)
 let buttonsHGap = hdpx(64)
 let buttonsVGap = hdpx(20)
@@ -62,14 +64,19 @@ function mkButtonText(text, style, ovr = {}) {
     rendObj = ROBJ_TEXT
     text
   }.__update(fontBoldSmallShaded, ovr)
-  let txtWidth = (type(style?.ovr.size[0]) == "float" ? style.ovr.size[0] : defButtonMinWidth) - (style?.ovr.padding[1] ?? paddingX) * 2
-  if (useFlexText || calc_comp_size(res)[0] <= txtWidth)
+  let paddingSizeX = (style?.ovr.padding[1] ?? style?.ovr.padding ?? paddingX) * 2
+  let btnWidth = type(style?.ovr.size[0]) == "float" ? style.ovr.size[0]
+    : (style?.ovr.minWidth ?? 0) > 0 ? style.ovr.minWidth
+    : defButtonMinWidth
+  let txtWidth = btnWidth - paddingSizeX
+
+  if (useFlexText || calc_content_size2(res)[0] <= txtWidth)
     return res
   let multTxtComp = mkButtonTextMultiline(text, {}.__update(ovr, {size = [txtWidth, SIZE_TO_CONTENT]}))
-  let compSize = calc_comp_size(multTxtComp)
+  let contentSize = calc_content_size2(multTxtComp)
   let txtHeigth = (type(style?.ovr.size[1]) == "float" ? style.ovr.size[1] : defButtonHeight) - (style?.ovr.padding[0] ?? 0) * 2
 
-  if (compSize[0] <= txtWidth && compSize[1] <= txtHeigth)
+  if (contentSize[0] <= txtWidth && contentSize[1] <= txtHeigth)
     return multTxtComp
 
   return mkButtonTextMultiline(text, ovr.__merge(fontBoldVeryTinyShaded, {size = [txtWidth, SIZE_TO_CONTENT]}))
@@ -221,9 +228,12 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let hasGradient = gradientOvr?.color != null
   let hasBorderGradient = borderGradientOvr?.color != null
   let stateFlags = style?.stateFlags ?? Watched(0)
+  let wrapperOvr = { size = ovrSize }.__update(hotkeyBlockOvr)
+  if (ovr?.padding == 0 || ovr?.padding[1] == 0)
+    wrapperOvr.padding <- ovr.padding
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
     (type(content) == "table") ? content.__merge(childOvr) : content,
-    { size = ovrSize }.__update(hotkeyBlockOvr)
+    wrapperOvr
   )
 
   local ovrExt = ovr

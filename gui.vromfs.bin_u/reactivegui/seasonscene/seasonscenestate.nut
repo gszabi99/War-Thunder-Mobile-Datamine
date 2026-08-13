@@ -42,6 +42,7 @@ let questTabsByEventId = {
 
 let seasonTabIdx = Computed(@() seasonTabs.indexof(playerSelectedSeasonTab.get()) ?? 0)
 let seasonPageId = Computed(@() seasonTabs?[seasonTabIdx.get()])
+let isBattleTab = Computed(@() seasonPageId.get() == BATTLE_TAB)
 
 let seasonShopId = Computed(@() getShopIdForEventId(curEvent.get(), specialEvents.get(),
   goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get()))
@@ -202,6 +203,7 @@ return {
   QUESTS_TAB
   EVENT_SHOP_TAB
   LOOTBOX_TAB
+  isBattleTab
   questTabsByEventId
   isSeasonTabVisible
   playerSelectedSeasonTab

@@ -6,6 +6,8 @@ let mkDefPresentation = @(id) {
   descLocId = $"infoPopup/{id}/desc"
   image = null
   imageSize = [1000, 400]
+  innerImage = null
+  innerImageSize = [750, 300]
 }
 
 let presentations = {
@@ -31,6 +33,10 @@ let presentations = {
     image = "ui/images/event_bg_event_april_2026.avif"
     imageSize = [1200, 554]
   }
+  anniversary_2026 = {
+    image = "ui/bkg/login_bkg_anniversary_2026.avif"
+    imageSize = [1200, 554]
+  }
   china_tanks_early_access = {
     image = "ui/images/tanks_china_tree_info.avif"
   }
@@ -45,12 +51,15 @@ let presentations = {
   }
   collectors_pass_tanks_s35 = {
     image = "ui/images/blueprint_folder_bg_tanks.avif"
+    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
   }
   collectors_pass_ships_s35 = {
     image = "ui/images/ship_blueprint_bg.avif"
+    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
   }
   collectors_pass_air_s35 = {
     image = "ui/images/air_beta_access_bg.avif"
+    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
   }
   senrai_maidens = {
     image = "ui/images/WTM_anime_2700x1080.avif"

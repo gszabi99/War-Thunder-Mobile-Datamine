@@ -7,8 +7,8 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, sortGoods, openShopWnd, shopGoods, goodsLinks, subsGroups, curShopId,
-  curShopGoodsByCategory, curShopSoonGoodsByCategory, curShopSoonPGoodsByCategory, mkShopCurrenciesAndItemsList
+let { curCategoryId, sortGoods, shopGoods, goodsLinks, subsGroups, curShopId,
+  goodsByShop, onTabChange, getGoodsShopId, mkShopCurrenciesAndItemsList
 } = require("%rGui/shop/shopState.nut")
 let { openShopByGoods } = require("%rGui/seasonScene/seasonSceneState.nut")
 let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
@@ -159,20 +159,20 @@ function onGoodsClick(goods) {
     purchaseFunc(goods)
 }
 
-let gamercardShopItemsBalanceBtns = @(items) {
+function mkItemRefillClick(id, shopId, curCatId) {
+  let has = @(g) null != (g?.rewards ?? g?.goods ?? []).findvalue(@(r) r.id == id && r.gType == G_ITEM)
+  let category = goodsByShop.get()?[shopId].findindex(@(goods) null != goods.findvalue(has))
+  if (category != null)
+    return category == curCatId ? null : @() onTabChange(category, shopId)
+  let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
+  return goods == null || getGoodsShopId(goods) == shopId ? null : @() openShopByGoods(goods)
+}
+
+let gamercardShopItemsBalanceBtns = @(shopId, catId, items) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = items.map(@(id) mkItemsBalance(id, function() {
-    let has = @(g) null != g.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM)
-    let category = curShopGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
-      ?? curShopSoonGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
-      ?? curShopSoonPGoodsByCategory.get().findindex(@(goods) null != goods.findvalue(has))
-    if (category)
-      return openShopWnd(category, null, curShopId.get())
-    let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
-    openShopByGoods(goods)
-  }))
+  children = items.map(@(id) mkItemsBalance(id, mkItemRefillClick(id, shopId.get(), catId.get())))
 }
 
 function mkShopHeaderRight(shopId, catId) {
@@ -183,7 +183,7 @@ function mkShopHeaderRight(shopId, catId) {
     flow = FLOW_HORIZONTAL
     gap = gamercardGap
     children = [
-      gamercardShopItemsBalanceBtns(list.get().items)
+      gamercardShopItemsBalanceBtns(shopId, catId, list.get().items)
       mkCurrenciesBtns(list.get().currencies).__update({ size = SIZE_TO_CONTENT })
     ]
   }

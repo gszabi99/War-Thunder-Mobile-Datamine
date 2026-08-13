@@ -116,8 +116,8 @@ function mkMissionResultTitle(debrData, needAnim) {
     : isDisconnected ? missionResultParamsByType.disconnect
     : isDeserter ? missionResultParamsByType.deserter
     : !isFinished ? missionResultParamsByType.inProgress
-    : (gameType & GT_FFA) != 0 ? missionResultParamsByType.finished
     : isWon ? missionResultParamsByType.victory
+    : (gameType & GT_FFA) != 0 ? missionResultParamsByType.finished
     : missionResultParamsByType.defeat
   return {
     size = FLEX_H

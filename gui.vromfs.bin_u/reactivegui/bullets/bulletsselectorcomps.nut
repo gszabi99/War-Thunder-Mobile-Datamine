@@ -9,7 +9,7 @@ let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { markShellsSeenInBattle } = require("%rGui/respawn/respawnState.nut")
 let getBulletStats = require("%rGui/bullets/bulletStats.nut")
 let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
-let { BS_UNLOCKED, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT } = require("bulletsConst.nut")
+let { BS_UNLOCKED, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT, BS_BR_PICKUP } = require("bulletsConst.nut")
 let { selectColor, textColor } = require("%rGui/style/stdColors.nut")
 
 
@@ -211,7 +211,8 @@ let mkBulletsList = @(bInfo, bulletsStatus, chosenBullets, openedSlot, selSlot, 
   let { bulletSets, bulletsOrder, fromUnitTags } = bInfo.get()
   let visibleBulletsList = bulletsOrder.filter(function(name) {
     let status = bulletsStatus.get()?[name] ?? 0
-    return (status & BS_VISIBLE) != 0 && (openedSlot.get() != 0 || (status & BS_ONLY_EXTERNAL_SLOT) == 0)
+    return (status & BS_VISIBLE) != 0 && (status & BS_BR_PICKUP) == 0
+      && (openedSlot.get() != 0 || (status & BS_ONLY_EXTERNAL_SLOT) == 0)
   })
 
   let numberBullets = visibleBulletsList.len()

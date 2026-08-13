@@ -2863,12 +2863,27 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "smoke_point_circle_blue": {
-    "fx": "smoke_point_circle_blue_cmps_fx",
+    "fx": "smoke_point_circle_green_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
   "smoke_point_circle_green": {
-    "fx": "smoke_point_circle_green_cmps_fx",
+    "fx": "smoke_point_circle_blue_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_point_circle_red": {
+    "fx": "smoke_point_circle_red_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_point_circle_yellow": {
+    "fx": "smoke_point_circle_yellow_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_point_red": {
+    "fx": "smoke_point_circle_red_no_circle_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },

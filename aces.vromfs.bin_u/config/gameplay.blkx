@@ -4281,14 +4281,14 @@
         255
       ],
       "miniMapIconDrawDist": 250.0,
-      "captureTime": 15.0,
+      "captureTime": 6.0,
       "captureProgressColor": [
         0,
         150,
         255,
         255
       ],
-      "captureProgressSize": 50.0,
+      "captureProgressSize": 60.0,
       "captureProgressHeight": 3.0,
       "maxAllowedUnitSpeed": -1.0,
       "rewards": {
@@ -4300,7 +4300,7 @@
       }
     },
     "crewSkillUpgrade": {
-      "fxName": "smoke_point_circle_green",
+      "fxName": "smoke_point_circle_blue",
       "fxScale": 0.3,
       "objectModelName": "br_pickup_crew_upgrade",
       "miniMapIconId": "iconPickupCrewSkill",
@@ -4310,8 +4310,192 @@
         255,
         255
       ],
+      "miniMapIconDrawDist": 250.0,
+      "captureTime": 6.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
       "rewards": {
-        "crew_skill_percent": 50
+        "crew_skill_percent": 25
+      }
+    },
+    "repairHeal": {
+      "fxName": "smoke_point_circle_green",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_rep_ammo",
+      "miniMapIconId": "iconPickupRepairHeal",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "miniMapIconDrawDist": 250.0,
+      "captureTime": 6.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
+      "rewards": {
+        "medical_kit_expendable": 1,
+        "manual_extinguisher_expendable": 1,
+        "repair_percent": 100,
+        "ammo_percent": 100
+      }
+    },
+    "radioArtillery": {
+      "fxName": "smoke_point_circle_yellow",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_art",
+      "miniMapIconId": "iconPickupRadioArtillery",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "miniMapIconDrawDist": 250.0,
+      "captureTime": 6.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
+      "rewards": {
+        "artillery": 1,
+        "recon": {
+          "radius": 500.0,
+          "duration": 20.0
+        }
+      }
+    },
+    "airDropAmmo": {
+      "fxName": "smoke_point_circle_red",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_apfsds",
+      "miniMapIconId": "iconPickupAirdrop",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "miniMapIconDrawDist": 3000.0,
+      "captureTime": 10.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
+      "airdropEcsTemplate": "pickup_zone_airdrop_parachute",
+      "rewards": {
+        "ammo_percent": 100,
+        "add_pickup_ammo": 5
+      }
+    },
+    "crewSkillUpgradeSmall": {
+      "fxName": "smoke_point_circle_blue",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_crew_upgrade",
+      "miniMapIconId": "iconPickupCrewSkill",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "miniMapIconDrawDist": 200.0,
+      "captureTime": 6.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
+      "rewards": {
+        "crew_skill_percent": 25
+      }
+    },
+    "repairHealSmall": {
+      "fxName": "smoke_point_circle_green",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_rep_ammo",
+      "miniMapIconId": "iconPickupRepairHeal",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "miniMapIconDrawDist": 200.0,
+      "captureTime": 6.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
+      "rewards": {
+        "medical_kit_expendable": 1,
+        "manual_extinguisher_expendable": 1,
+        "repair_percent": 100,
+        "ammo_percent": 100
+      }
+    },
+    "radioArtillerySmall": {
+      "fxName": "smoke_point_circle_yellow",
+      "fxScale": 0.3,
+      "objectModelName": "br_pickup_art",
+      "miniMapIconId": "iconPickupRadioArtillery",
+      "miniMapIconColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "miniMapIconDrawDist": 200.0,
+      "captureTime": 6.0,
+      "captureProgressColor": [
+        0,
+        150,
+        255,
+        255
+      ],
+      "captureProgressSize": 60.0,
+      "captureProgressHeight": 3.0,
+      "maxAllowedUnitSpeed": -1.0,
+      "rewards": {
+        "artillery": 1,
+        "add_pickup_ammo": 4,
+        "recon": {
+          "radius": 350.0,
+          "duration": 20.0
+        }
       }
     },
     "tankPvE": {

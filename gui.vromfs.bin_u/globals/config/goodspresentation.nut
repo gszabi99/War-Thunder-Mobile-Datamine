@@ -43,6 +43,14 @@ let iconGoodsAsOffer = {
   seasonal_event_new_year_2026_il_merkava_mk_2d_nc_with_skin = "ui/unitskin#il_merkava_mk_2d_event.avif"
   seasonal_event_new_year_2026_jp_type_90_nc_with_skin = "ui/unitskin#jp_type_90_event.avif"
 
+  anniversary_event_2026_br_tank_fr_amx_30_b2_brenus = "ui/unitskin#fr_amx_30_b2_brenus_event.avif"
+  anniversary_event_2026_br_tank_us_m60a3_tts = "ui/unitskin#us_m60a3_tts_event.avif"
+  anniversary_event_2026_br_tank_cn_type_69_2g = "ui/unitskin#cn_type_69_2g_event.avif"
+  anniversary_event_2026_br_tank_germ_leopard_c2_mexas = "ui/unitskin#germ_leopard_c2_mexas_event.avif"
+  anniversary_event_2026_br_tank_us_xm1_gm = "ui/unitskin#us_xm1_gm_event.avif"
+  anniversary_event_2026_br_tank_ussr_t_72av_turms = "ui/unitskin#ussr_t_72av_turms_event.avif"
+  anniversary_event_2026_br_tank_il_merkava_mk_2b_early = "ui/unitskin#il_merkava_mk_2b_early_event.avif"
+
   seasonal_event_valentine_day_2026_ship_old_us_destroyer_selfridge_skin_only = "ui/unitskin#us_destroyer_selfridge_vd.avif"
   seasonal_event_valentine_day_2026_ship_old_us_destroyer_selfridge = "ui/unitskin#us_destroyer_selfridge_vd.avif"
   seasonal_event_valentine_day_2026_air_kitsuka_skin_only = "ui/unitskin#kitsuka_pink.avif"

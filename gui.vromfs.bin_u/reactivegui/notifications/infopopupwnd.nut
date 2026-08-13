@@ -50,7 +50,7 @@ function mkActionButton(popup) {
 }
 
 function mkContent(popup) {
-  let { descLocId, image, imageSize } = getInfoPopupPresentation(popup.id)
+  let { descLocId, image, imageSize, innerImage, innerImageSize } = getInfoPopupPresentation(popup.id)
   let desc = doesLocTextExist(descLocId) ? loc(descLocId) : null
   local descBox = msgBoxText(desc, { size = SIZE_TO_CONTENT, maxWidth = contentWidth, halign = ALIGN_LEFT }
     .__update(fontTinyAccented))
@@ -70,6 +70,14 @@ function mkContent(popup) {
             rendObj = ROBJ_IMAGE
             image = Picture(image)
             keepAspect = true
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = !innerImage ? null : {
+              size = innerImageSize.map(hdpxi)
+              rendObj = ROBJ_IMAGE
+              image = Picture($"{innerImage}:0:P")
+              keepAspect = true
+            }
           }
       desc == null ? null : descBox
       mkActionButton(popup)

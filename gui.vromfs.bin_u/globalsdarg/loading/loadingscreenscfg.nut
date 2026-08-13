@@ -137,7 +137,7 @@ let screensList = {
   }
   event_pony = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_11.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_april_fools_2024.avif")
   }
   simple_tank_12 = {
     camp = [ "tanks" ]
@@ -156,11 +156,18 @@ let screensList = {
   }
   event_anniversary = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_15.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_anniversary_2024.avif")
   }
   event_anniversary_2025 = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_29.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_anniversary_2025.avif")
+  }
+  event_anniversary_2026 = {
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_anniversary_2026.avif")
+    timeRange = {
+      season = "event_anniversary_season"
+    }
   }
   simple_tank_16 = {
     camp = [ "tanks" ]
@@ -169,11 +176,11 @@ let screensList = {
   }
   event_halloween = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_17.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_halloween_2024.avif")
   }
   event_new_year_25_26 = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_34.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_new_year_2026.avif")
     timeRange = {
       start = "2025-12-22T10:00"
       end = "2026-01-08T10:00"
@@ -191,15 +198,15 @@ let screensList = {
   }
   event_christmas = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_20.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_new_year_2025.avif")
   }
   event_lunar_ny = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_21.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_lunar_ny_2025.avif")
   }
   event_lunar_ny_2026 = {
     weight = 2.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_36.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_lunar_ny_2026.avif")
     timeRange = {
       start = "2026-02-05T10:00"
       end = "2026-02-19T10:00"
@@ -215,11 +222,11 @@ let screensList = {
   event_april_fools = {
     camp = [ "ships" ]
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_8.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_april_fools_2025.avif")
   }
   event_black_friday_2025 = {
     weight = 0.0
-    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_32.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_black_friday_2025.avif")
   }
   event_china_tanks_early_access = {
     weight = 1.0

@@ -368,7 +368,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
             ? mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId)
             : {
                 key = hasScroll
-                size = [progressBarWidth.get() + fadeWidth * 2, progressBarHeight]
+                size = [progressBarWidth.get() + fadeWidth * 2, progressBarRewardSize]
                 hplace = ALIGN_CENTER
                 vplace = ALIGN_CENTER
                 function onAttach() {

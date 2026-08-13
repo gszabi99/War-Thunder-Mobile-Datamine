@@ -41,6 +41,10 @@ let customLootboxImages = {
   april_event_2026_ships      = "event_special_april_event_2026.avif"
   april_event_2026_air        = "event_special_april_event_2026.avif"
 
+  anniversary_event_2026_tanks      = "anniversary_2026_lootbox.avif"
+  anniversary_event_2026_ships      = "anniversary_2026_lootbox.avif"
+  anniversary_event_2026_air        = "anniversary_2026_lootbox.avif"
+
   operation_pass_infinite_lootbox_tanks           = "battle_pass_infinite_lootbox.avif"
   operation_pass_infinite_lootbox_ships           = "battle_pass_infinite_lootbox.avif"
   operation_pass_infinite_lootbox_air             = "battle_pass_infinite_lootbox.avif"
@@ -143,6 +147,10 @@ let customRouletteImages = {
   april_event_2026_ships = "ui/images/event_bg_event_april_2026.avif"
   april_event_2026_air   = "ui/images/event_bg_event_april_2026.avif"
 
+  anniversary_event_2026_tanks = "ui/bkg/login_bkg_anniversary_2026.avif"
+  anniversary_event_2026_ships = "ui/bkg/login_bkg_anniversary_2026.avif"
+  anniversary_event_2026_air   = "ui/bkg/login_bkg_anniversary_2026.avif"
+
   event_special_gift_tanks_anniversary_2025 = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
   event_special_gift_ships_anniversary_2025 = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
   event_special_gift_air_anniversary_2025   = "ui/images/event_bg_roulette_event_anniversary_2025.avif"
@@ -200,6 +208,10 @@ let lootboxPreviewBg = {
   april_event_2026_tanks = { bg = "ui/images/event_bg_event_april_2026.avif" }
   april_event_2026_ships = { bg = "ui/images/event_bg_event_april_2026.avif" }
   april_event_2026_air   = { bg = "ui/images/event_bg_event_april_2026.avif" }
+
+  anniversary_event_2026_tanks = { bg = "ui/bkg/login_bkg_anniversary_2026.avif", bgColor = 0xFF999999 }
+  anniversary_event_2026_ships = { bg = "ui/bkg/login_bkg_anniversary_2026.avif", bgColor = 0xFF999999 }
+  anniversary_event_2026_air   = { bg = "ui/bkg/login_bkg_anniversary_2026.avif", bgColor = 0xFF999999 }
 }
 
 let defEventLootboxScaleBySlot = {
@@ -222,6 +234,7 @@ let eventLootboxScale = {
   ["event_ships_big_season_35.avif"] = 1.6,
   ["event_ships_big_season_36.avif"] = 1.7,
   ["event_special_april_event_2026.avif"] = 1.5,
+  ["anniversary_2026_lootbox.avif"] = 1.5,
 }
 
 let eventLootboxShiftPos = {

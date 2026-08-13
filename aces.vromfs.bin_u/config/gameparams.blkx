@@ -152,6 +152,7 @@
   ],
   "missleWarningDistance": 1000.0,
   "missleWarningTargetSize": 80.0,
+  "pickupAmmoFeature": true,
   "teleScale": 0.03,
   "minSkyAmbientLighting": [
     0.00954,

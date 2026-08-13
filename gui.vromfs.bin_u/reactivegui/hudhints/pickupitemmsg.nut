@@ -29,6 +29,20 @@ let eventByReward = {
     ttl = MSG_SHOW_TIME
     locId = "hints/race/pickup/boost"
   }
+  artillery = {
+    id = "battleRoyaleArtillery"
+    key = "battleRoyaleArtillery"
+    hType = "mission"
+    ttl = MSG_SHOW_TIME
+    locId = "hints/battleRoyale/pickup/artillery"
+  }
+  add_pickup_ammo = {
+    id = "pickupAmmo"
+    key = "pickupAmmo"
+    hType = "mission"
+    ttl = MSG_SHOW_TIME
+    locId = "hints/battleRoyale/pickup/ammo"
+  }
 }
 
 let crewSkillPercent = keepref(Computed(@() crewState.get()?.crewSkillPercent ?? 0))

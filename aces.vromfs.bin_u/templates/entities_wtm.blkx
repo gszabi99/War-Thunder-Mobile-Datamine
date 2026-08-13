@@ -397,5 +397,17 @@
   "hangar_major_banner_air": {
     "_use": "rendinst",
     "hangarMajorBannerAir:tag": {}
+  },
+  "pickup_zone_airdrop_parachute": {
+    "_use": "pickup_zone_airdrop_base",
+    "simpleObject__resName": "airdrop_ammo_box",
+    "simpleObject__charName": "airdrop_ammo_box_char",
+    "pickup_airdrop__total_time": 60.0,
+    "pickup_airdrop__max_fall_speed": 6.0,
+    "pickup_airdrop__time_ratio_freefly": 0.01,
+    "pickup_airdrop__time_ratio_opening": 0.01,
+    "pickup_airdrop__duration_landed": 5.0,
+    "pickup_airdrop__groundFx": "smoke_point_red",
+    "pickup_zone__miniMapIconName": "iconAirDrop"
   }
 }

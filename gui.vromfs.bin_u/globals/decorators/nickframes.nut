@@ -200,6 +200,8 @@ let nickFrames = {
   oni_mask_s36 = @(n) $"⌖{n}⌖"
   kunai_s36 = @(n) $"⌗{n}⌘"
   war_fan_s36 = @(n) $"⌙{n}⌚"
+  snail_cake_bday_26 = @(n) $"⊣{n}⊤"
+  medal_three_bday_26 = @(n) $"⊥{n}⊥"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

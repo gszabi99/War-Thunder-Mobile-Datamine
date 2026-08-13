@@ -1955,17 +1955,67 @@
   },
   "default_skin": {
     "name": "prem_camo",
-    "replace_tex": {
+    "set_tex": {
       "from": "ekranoplan_lun_c*",
-      "to": "ekranoplan_lun_skin_c*"
-    }
+      "to": "ekranoplan_lun_skin_c*",
+      "param": "camo_skin_tex"
+    },
+    "replace_tex": [
+      {
+        "from": "camo_hellgrau_50*",
+        "to": "camo_middle_blu*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "camo_b15*",
+        "to": "camo_middle_blu*",
+        "param": "camo_skin_tex"
+      }
+    ]
   },
   "vehicleSkins": {
     "factory": {
-      "replace_tex": {
-        "from": "ekranoplan_lun_skin_c*",
-        "to": "ekranoplan_lun_c*"
-      }
+      "set_tex": {
+        "from": "ekranoplan_lun_c*",
+        "to": "camo_noskin_common*",
+        "param": "camo_skin_tex"
+      },
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_hellgrau_50*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_b15*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    },
+    "lun_birthday_26": {
+      "set_tex": {
+        "from": "ekranoplan_lun_c*",
+        "to": "ekranoplan_lun_birthday_26_skin_c*",
+        "param": "camo_skin_tex"
+      },
+      "replace_tex": [
+        {
+          "from": "ekranoplan_lun_n*",
+          "to": "ekranoplan_lun_birthday_26_skin_n*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_syntheticblackpaint*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_syntheticblackpaint*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   }
 }

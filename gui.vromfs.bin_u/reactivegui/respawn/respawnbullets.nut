@@ -3,12 +3,12 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets, isFakeSecondary,
   maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo, bulletSecStep, bulletSecLeftSteps, isFakeSpecial,
   chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo,
-  bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps, chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec
+  bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps, chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec, brPickupPrimIdx
 } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo, gap } = require("%rGui/respawn/respawnComps.nut")
 let { openedSlot } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
 let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
-let { mkBulletSliderSlot } = require("%rGui/bullets/bulletsSlotComps.nut")
+let { mkBulletSliderSlot, mkBulletLockedSlot } = require("%rGui/bullets/bulletsSlotComps.nut")
 
 
 let choiceCount = Computed(@() chosenBullets.get().len())
@@ -18,27 +18,29 @@ let bulletCardStyle = mkBulletHeightInfo(choiceCount, choiceSecCount, choiceSpec
 
 function respawnBullets() {
   let res = {
-    watch = [bulletsInfo, isFakeSecondary, choiceCount, choiceSecCount, bulletCardStyle, isFakeSpecial, choiceSpecCount]
+    watch = [bulletsInfo, isFakeSecondary, choiceCount, choiceSecCount, bulletCardStyle, isFakeSpecial, choiceSpecCount, brPickupPrimIdx]
     animations = wndSwitchAnim
   }
   let bulletSliderSlots = []
   if (bulletsInfo.get() != null)
     bulletSliderSlots.extend(array(choiceCount.get()).map(@(_, idx)
-      mkBulletSliderSlot({
-        idx,
-        selSlot,
-        bInfo = bulletsInfo,
-        bullets = chosenBullets,
-        bTotalSteps = bulletTotalSteps,
-        bStep = bulletStep,
-        maxBullets = maxBulletsCountForExtraAmmo,
-        withExtraBullets = hasExtraBullets,
-        bLeftSteps = bulletLeftSteps,
-        hasUnseenShells = hasUnseenShellsBySlot,
-        openedSlot,
-        cardStyle = bulletCardStyle,
-        onChangeSlider = setCurUnitBullets
-      })))
+      idx == brPickupPrimIdx.get() 
+        ? mkBulletLockedSlot({ idx, bInfo = bulletsInfo, bullets = chosenBullets, iconImage = "icon_air_drop" })
+        : mkBulletSliderSlot({
+            idx,
+            selSlot,
+            bInfo = bulletsInfo,
+            bullets = chosenBullets,
+            bTotalSteps = bulletTotalSteps,
+            bStep = bulletStep,
+            maxBullets = maxBulletsCountForExtraAmmo,
+            withExtraBullets = hasExtraBullets,
+            bLeftSteps = bulletLeftSteps,
+            hasUnseenShells = hasUnseenShellsBySlot,
+            openedSlot,
+            cardStyle = bulletCardStyle,
+            onChangeSlider = setCurUnitBullets
+          })))
   if (!isFakeSecondary.get())
     bulletSliderSlots.extend(array(choiceSecCount.get()).map(@(_, idx)
       mkBulletSliderSlot({

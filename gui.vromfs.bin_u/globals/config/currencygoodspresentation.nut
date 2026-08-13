@@ -1,7 +1,7 @@
 let { max } = require("math")
 let { getBaseCurrency, getSeasonStr, getCurrencyBigIcon } = require("currencyPresentation.nut")
 let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILINTEL, APRILMAPPIECE, APRILDOUBLON,
-  BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, HALLOWEENBOND, VALENTINEBOND,
+  BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, ANNIVERSARYTOKEN, HALLOWEENBOND, VALENTINEBOND,
   CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND, UKBOND, JAPANBOND
 } = require("%appGlobals/currenciesState.nut")
 
@@ -75,9 +75,12 @@ let presentations = {
     { img = "independencebond_goods_03.avif", amountAtLeast = 3000 }
   ],
   [ANNIVERSARYBOND] = [
-    { img = "anniversarybond_goods_2025_01.avif", amountAtLeast = 0 }
-    { img = "anniversarybond_goods_2025_02.avif", amountAtLeast = 500 }
-    { img = "anniversarybond_goods_2025_03.avif", amountAtLeast = 1500 }
+    { img = "anniversarybond_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "anniversarybond_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "anniversarybond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ],
+  [ANNIVERSARYTOKEN] = [
+    { img = "anniversarytoken_goods_2026_01.avif", amountAtLeast = 0 }
   ],
   [HALLOWEENBOND] = [
     { img = "halloweenbond_goods_2025_01.avif", amountAtLeast = 0 }

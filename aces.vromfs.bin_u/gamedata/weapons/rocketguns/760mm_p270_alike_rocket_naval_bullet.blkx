@@ -7,7 +7,7 @@
   "helicopterGroup": 2,
   "reloadTime": 15.0,
   "allowHumanReload": true,
-  "bulletsCartridge": 4,
+  "bulletsCartridge": 2,
   "fxType": "",
   "tags": {
     "antiTankRocket": true,
@@ -179,7 +179,7 @@
           "loftAngleToAccelMult": 1.0,
           "loftTargetOmegaMax": 2.0,
           "propNavMult": 5.0,
-          "reqAccelMax": 10.0,
+          "reqAccelMax": 15.0,
           "baseIndSpeed": 1800.0,
           "accelControlProp": 0.0084,
           "accelControlIntg": 0.0455,

@@ -244,6 +244,7 @@ return {
     },
     "bv-238": {
       "": "germ_ger_bv_238_red",
+      "croco": "germ_ger_bv_238_croco",
       "standart": "germ_ger_bv_238"
     },
     "cn_al_khalid_1": {
@@ -519,7 +520,11 @@ return {
     },
     "cn_type_69_2g": {
       "": "bd_camo_forest_fourcolor",
+      "fiction": "cn_type_69_2g_anniversary2026",
       "forest": "ussr_camo_green"
+    },
+    "cn_type_69_2g_event": {
+      "": "cn_type_69_2g_anniversary2026"
     },
     "cn_type_86": {
       "": "ussr_camo_green",
@@ -751,6 +756,10 @@ return {
     "f-84g_thailand": {
       "": "ussr_i_15_1935_moscow"
     },
+    "f-89d": {
+      "": "usa_f_89d",
+      "standart": "germ_bf_109g_14_winter"
+    },
     "f2a-1": {
       "": "usa_tbd_1_1938",
       "upgraded": "usa_sb2u_3"
@@ -947,7 +956,11 @@ return {
     },
     "fr_amx_30_b2_brenus": {
       "": "fr_camo_vert_olive_arme",
+      "fiction": "fr_amx_30_b2_brenus_anniversary2026",
       "upgraded": "fr_camo_modern_urban"
+    },
+    "fr_amx_30_b2_brenus_event": {
+      "": "fr_amx_30_b2_brenus_anniversary2026"
     },
     "fr_amx_30_dca": {
       "": "fr_camo_vert_olive_arme",
@@ -1620,7 +1633,11 @@ return {
     },
     "germ_leopard_c2_mexas": {
       "": "ger_camo_bronzegruen",
-      "desert": "ger_camo_modern_desert_threecolor"
+      "desert": "ger_camo_modern_desert_threecolor",
+      "fiction": "germ_leopard_c2_mexas_anniversary2026"
+    },
+    "germ_leopard_c2_mexas_event": {
+      "": "germ_leopard_c2_mexas_anniversary2026"
     },
     "germ_marder_1a1": {
       "": "ger_camo_bronzegruen",
@@ -2221,7 +2238,11 @@ return {
     },
     "il_merkava_mk_2b_early": {
       "": "isr_camo_threecolor",
-      "desert": "isr_camo_sandgray"
+      "desert": "isr_camo_sandgray",
+      "fiction": "il_merkava_mk_2b_anniversary2026"
+    },
+    "il_merkava_mk_2b_early_event": {
+      "": "il_merkava_mk_2b_anniversary2026"
     },
     "il_merkava_mk_2d": {
       "": "isr_camo_sandgreen",
@@ -4173,6 +4194,7 @@ return {
     },
     "uk_tog_2": {
       "": "ann_2_camo",
+      "fiction": "uk_tog_2_anniversary2026",
       "forest": "uk_camo_tog"
     },
     "uk_ttd": {
@@ -4751,7 +4773,11 @@ return {
     },
     "us_m60a3_tts": {
       "": "us_camo_modern_green",
+      "fiction": "us_m60a3_tts_anniversary2026",
       "upgraded": "usa_modern_gray_desert"
+    },
+    "us_m60a3_tts_event": {
+      "": "us_m60a3_tts_anniversary2026"
     },
     "us_m6a1": {
       "": "us_camo_olive",
@@ -4934,7 +4960,11 @@ return {
     },
     "us_xm1_gm": {
       "": "usa_modern_seventh_army",
+      "fiction": "us_xm1_gm_anniversary2026",
       "forest": "us_camo_modern_green"
+    },
+    "us_xm1_gm_event": {
+      "": "us_xm1_gm_anniversary2026"
     },
     "us_xm_8": {
       "": "us_camo_modern_green",
@@ -4960,6 +4990,10 @@ return {
       "desert": "ussr_camo_czechoslovak_yellow_green",
       "forest": "ussr_camo_dkgreen_ltgreen_brown",
       "winter": "ussr_camo_winter_lines"
+    },
+    "ussr_2s19_m2": {
+      "": "ussr_2s19_m2_anniversary2026",
+      "forest": "ussr_camo_green"
     },
     "ussr_2s25": {
       "": "ussr_modern_desert",
@@ -5170,7 +5204,8 @@ return {
       "upgraded": "camo_northern_fleet_contrast"
     },
     "ussr_ekranoplan_lun": {
-      "": "gev_ann_camo"
+      "": "gev_ann_camo",
+      "lun_birthday_26": "lun_birthday_26"
     },
     "ussr_frigate_rckt_pr11352": {
       "upgraded": "camo_geometry_longdiag"
@@ -5180,6 +5215,10 @@ return {
     },
     "ussr_frigate_rckt_pr11661k": {
       "upgraded": "camo_violetgray_geometry"
+    },
+    "ussr_frigate_rckt_pr1239": {
+      "": "frigate_1239_birthday_26",
+      "historical": "camo_threegray_spots"
     },
     "ussr_is_1": {
       "": "ussr_camo_green",
@@ -5635,7 +5674,11 @@ return {
     },
     "ussr_t_72av_turms": {
       "": "ussr_modern_desert",
+      "fiction": "ussr_t_72av_turms_anniversary2026",
       "forest": "ussr_camo_green"
+    },
+    "ussr_t_72av_turms_event": {
+      "": "ussr_t_72av_turms_anniversary2026"
     },
     "ussr_t_72b3_2011": {
       "": "ussr_modern_green",
@@ -5964,6 +6007,9 @@ return {
     },
     "yak-9ut_prem": {
       "": "ussr_il_10_winter44"
+    },
+    "yak_1_litvyak": {
+      "": "germ_bf_109a"
     },
     "yak_2_kabb": {
       "": "ussr_yak_2_kabb",

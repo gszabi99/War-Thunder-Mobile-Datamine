@@ -20,6 +20,7 @@ let APRILDOUBLON = "aprilDoublon"
 let HOTMAYBOND = "hotmaybond"
 let INDEPENDENCEBOND = "independencebond"
 let ANNIVERSARYBOND = "anniversarybond"
+let ANNIVERSARYTOKEN = "anniversarytoken"
 let HALLOWEENBOND = "halloweenbond"
 let VALENTINEBOND = "valentinebond"
 let CANDYBOND = "candybond"
@@ -59,6 +60,7 @@ let currenciesRes = {
   HOTMAYBOND
   INDEPENDENCEBOND
   ANNIVERSARYBOND
+  ANNIVERSARYTOKEN
   HALLOWEENBOND
   VALENTINEBOND
   CANDYBOND

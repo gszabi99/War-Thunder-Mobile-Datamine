@@ -3070,6 +3070,48 @@
           "param": "camo_skin_tex"
         }
       ]
+    },
+    "fiction": {
+      "set_tex": [
+        {
+          "from": "tog_2_body_c*",
+          "to": "tog_2_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "tog_2_gun_c*",
+          "to": "tog_2_gun_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "tog_2_mods_c*",
+          "to": "tog_2_mods_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "tog_2_turret_c*",
+          "to": "tog_2_turret_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        }
+      ],
+      "replace_tex": [
+        {
+          "from": "tog_2_body_n*",
+          "to": "tog_2_body_anniversary_skin_n*"
+        },
+        {
+          "from": "tog_2_gun_n*",
+          "to": "tog_2_gun_anniversary_skin_n*"
+        },
+        {
+          "from": "tog_2_mods_n*",
+          "to": "tog_2_mods_anniversary_skin_n*"
+        },
+        {
+          "from": "tog_2_turret_n*",
+          "to": "tog_2_turret_anniversary_skin_n*"
+        }
+      ]
     }
   },
   "defaultDecals": {

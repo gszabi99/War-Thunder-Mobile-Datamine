@@ -4027,6 +4027,18 @@
           "to": "bv_238_n*"
         }
       ]
+    },
+    "croco": {
+      "replace_tex": [
+        {
+          "from": "bv_238_red1_c*",
+          "to": "bv_238_crocodile_c*"
+        },
+        {
+          "from": "bv_238_1_n*",
+          "to": "bv_238_crocodile_n*"
+        }
+      ]
     }
   }
 }

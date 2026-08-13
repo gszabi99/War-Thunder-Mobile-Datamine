@@ -15,6 +15,7 @@ let knobSize = evenPx(50)
 let sliderGap = knobSize / 2 + (0.1 * btnSize).tointeger()
 let sliderWidth = bulletsBlockWidth - 2 * (btnSize + sliderGap + padding)
 let arrowSize = [hdpxi(50), hdpxi(50)]
+let lockIconSize = evenPx(60)
 
 let arrowBtnImage = @(isOpened) {
   rendObj = ROBJ_IMAGE
@@ -28,15 +29,17 @@ function onHeaderClick(key, slotIdx) {
     showRespChooseWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
 }
 
-function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShells, openedSlot) {
+function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShells, openedSlot, lockedSide = null) {
+  let isLocked = lockedSide != null
   let fromUnitTags = Computed(@() bInfo.get()?.fromUnitTags[bSlot.get()?.name])
   let { idx = -1 } = bSlot.get()
   let key = $"respBulletsHeader{idx}"
-  let hasUnseenBullets = Computed(@() (bSlot.get()?.idx ?? 0) > 0
+  let slotOvr = isLocked ? { watch = [fromUnitTags, bSet], opacity = 0.5 } : { watch = [fromUnitTags, bSet] }
+  let hasUnseenBullets = isLocked ? null : Computed(@() (bSlot.get()?.idx ?? 0) > 0
     && hasUnseenShells.get()?[selSlot.get()?.id ?? 0].findvalue(@(v) v) != null)
   return @() {
     watch = [bSet, fromUnitTags]
-    onAttach = @() deferOnce(function() {
+    onAttach = isLocked ? null : @() deferOnce(function() {
       let aabb = gui_scene.getCompAABBbyKey(key)
       if (aabb != null)
         bulletsAABB.mutate(@(v) v.__update({ [idx] = aabb }))
@@ -44,15 +47,15 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
     size = [bulletsBlockWidth, headerSlotHeight]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
-    behavior = Behaviors.Button
+    behavior = isLocked ? null : Behaviors.Button
     children = [
       {
         key
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [
-          @() mkBulletSlot(chosenBullets, bSet.get(), fromUnitTags.get(), {}, {}, { watch = [fromUnitTags, bSet] }, idx)
-          @() {
+          @() mkBulletSlot(chosenBullets, bSet.get(), fromUnitTags.get(), {}, {}, slotOvr, idx)
+          isLocked ? null : @() {
             watch = openedSlot
             size = [FLEX, headerSlotHeight]
             rendObj = ROBJ_BOX
@@ -60,7 +63,7 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
           }
         ]
       }
-      @() {
+      isLocked ? lockedSide : @() {
         key = $"respBulletsBtn{idx}" 
         size = FLEX
         watch = openedSlot
@@ -104,6 +107,13 @@ let mkBulletSlider = @(size, count, unitValue, maxValue, onChange) @() {
     mkKnobCtor(size[1])
   ).__update({ vplace = ALIGN_TOP })
 }
+
+let mkBulletCountText = @(text, ovr = {}) {
+  rendObj = ROBJ_TEXT
+  hplace = ALIGN_CENTER
+  color = 0xFFFFFFFF
+  text
+}.__update(fontTiny, ovr)
 
 function mkBulletSliderWithBtns(bSlot, maxCount, maxBullets, withExtraBullets, bStep, bLeftSteps, cardStyle, onChangeSlider) {
   let count = Computed(@() bSlot.get()?.count ?? 0)
@@ -170,14 +180,10 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
                 bStep, bLeftSteps, cardStyle, onChangeSlider)
           bg.__merge({
             size = [FLEX, bTotalSteps.get() <= 1 ? SIZE_TO_CONTENT : 0]
-            children = @() {
+            children = @() mkBulletCountText(countText.get(), {
               watch = countText
-              rendObj = ROBJ_TEXT
               pos = [0, bTotalSteps.get() <= 1 ? 0 : -hdpx(40)]
-              hplace = ALIGN_CENTER
-              text = countText.get()
-              color = 0xFFFFFFFF
-            }.__update(fontTiny)
+            })
           })
         ]
       }
@@ -185,7 +191,38 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
   }
 }
 
+let lockedSideOverlay = @(iconImage) {
+  size = FLEX
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_IMAGE
+    size = lockIconSize
+    image = Picture($"ui/gameuiskin#{iconImage}.svg:{lockIconSize}:P")
+    keepAspect = true
+  }
+}
+
+function mkBulletLockedSlot(idx, bInfo, bullets, iconImage = "lock_icon") {
+  let bSlot = Computed(@() bullets.get()?[idx])
+  let bSet = Computed(@() bInfo.get()?.bulletSets[bSlot.get()?.name])
+  return @() {
+    watch = bSet
+    children = bSet.get() == null ? null : {
+      flow = FLOW_VERTICAL
+      children = [
+        bulletHeader(null, bSlot, bSet, bInfo, bullets, null, null, lockedSideOverlay(iconImage))
+        bg.__merge({
+          size = FLEX_H
+          children = mkBulletCountText("0") 
+        })
+      ]
+    }
+  }
+}
+
 return {
   mkBulletSliderSlot = kwarg(mkBulletSliderSlot)
+  mkBulletLockedSlot = kwarg(mkBulletLockedSlot)
   mkBulletSlider
 }

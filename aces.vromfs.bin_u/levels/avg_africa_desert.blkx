@@ -112,6 +112,9 @@
       32768.0
     ]
   },
+  "alternativeMapCoord": {
+    "customLevelTankMap": "avg_africa_desert_BR_map*"
+  },
   "stars": {
     "latitude": 30.0,
     "longitude": 26.0,
@@ -207,7 +210,7 @@
     ],
     "land_micro_details_uv_scale": 0.62,
     "microdetail_stone_a_tex_n*": {
-      "coloring": 0.4
+      "coloring": 0.5
     },
     "microdetail_generic_granules_a_tex_n*": {
       "coloring": 0.1

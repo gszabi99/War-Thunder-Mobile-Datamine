@@ -12,10 +12,13 @@ let openedGmEventId = Computed(function() {
     return evt
   return null
 })
+
+let gmEventEndsAt = Computed(@() specialEvents.get()?[curEvent.get()].endsAt ?? 0)
 let curGmList = Computed(@() separateEventModes.get()?[openedGmEventId.get()] ?? [])
 
 return {
   openedGmEventId
+  gmEventEndsAt
   gmEventsList = separateEventModes
   curGmList
 }

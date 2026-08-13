@@ -5,7 +5,7 @@ let { translucentButton, translucentButtonsVGap } = require("%rGui/components/tr
 let { specialEventsLootboxesState, specialEvents, orderEvents, subEventsList
 } = require("%rGui/event/eventState.nut")
 let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { openSeasonScene, openEventShopWnd, openGmEventWnd } = require("%rGui/seasonScene/seasonSceneState.nut")
+let { openSeasonScene, openEventShopWnd, BATTLE_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
 let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
 let { goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop } = require("%rGui/shop/shopState.nut")
 let { gmEventsList } = require("%rGui/event/gmEventState.nut")
@@ -60,7 +60,7 @@ function btnsOpenSpecialEvents() {
 
     gmEventsList.get().keys().each(function(id) {
       usedEvents[id] <- true
-      children.append(translucentButton(getEventPresentation(id).icon, @() openGmEventWnd(id)))
+      children.append(translucentButton(getEventPresentation(id).icon, @() openSeasonScene(id, BATTLE_TAB)))
     })
 
     

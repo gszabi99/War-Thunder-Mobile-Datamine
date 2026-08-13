@@ -1,17 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { curGmList, openedGmEventId } = require("%rGui/event/gmEventState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let squadPanel = require("%rGui/squad/squadPanel.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+from "eventbus" import eventbus_send
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
+from "%rGui/event/gmEventState.nut" import curGmList, openedGmEventId, gmEventEndsAt
+from "%rGui/mainMenu/toBattleButton.nut" import mkToBattleButtonWithSquadManagement
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
+import "%rGui/squad/squadPanel.nut" as squadPanel
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+import "%rGui/components/panelBg.nut" as panelBg
 
 
 let headerGap = hdpx(30)
+let txtWidth = defButtonMinWidth + saBorders[0] * 2
+let txtPaddingV = hdpx(20)
+let txtPaddingH = saBorders[0] / 2
+let iconTimerSize = hdpxi(30)
+
+let curGameMode = Computed(@() curGmList.get()?[0])
 
 let gmEventText = {
   rendObj = ROBJ_TEXTAREA
@@ -21,90 +30,109 @@ let gmEventText = {
 
 let gmEventSubTitleText = @(text) {
   halign = ALIGN_CENTER
-  maxWidth = hdpx(1100)
+  maxWidth = txtWidth
   text
-}.__update(fontTiny, gmEventText)
+}.__update(fontTinyAccentedShaded, gmEventText)
 
 let gmEventDescriptionText = @(text) {
-  maxWidth = hdpx(900)
+  maxWidth = txtWidth
   text
-}.__update(fontTiny, gmEventText)
+}.__update(fontTinyAccentedShaded, gmEventText)
 
-let content = @() {
+let txtBlock = @() {
   watch = openedGmEventId
-  size = FLEX
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
     "descHeaderLocId" not in getEventPresentation(openedGmEventId.get()) ? null
       : gmEventSubTitleText(loc(getEventPresentation(openedGmEventId.get()).descHeaderLocId))
     "descLocId" not in getEventPresentation(openedGmEventId.get()) ? null
       : gmEventDescriptionText(loc(getEventPresentation(openedGmEventId.get()).descLocId))
+    gmEventDescriptionText(loc("events/toBattle"))
   ]
 }
 
-let toBattleHint = @(text) {
-  hplace = ALIGN_RIGHT
-  pos = [saBorders[0] * 0.5, 0]
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  padding = [saBorders[0] * 0.2, saBorders[0] * 0.5]
-  texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, saBorders[0]]
-  color = 0x70000000
-  children = {
-    size = [defButtonMinWidth, SIZE_TO_CONTENT]
-    rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
-    text
-  }.__update(fontTinyAccented)
-}
-
 let footer = @() {
-  watch = curGmList
-  size = [FLEX, defButtonHeight]
+  watch = curGameMode
+  size = [FLEX, SIZE_TO_CONTENT]
   valign = ALIGN_BOTTOM
-  children = curGmList.get().len() == 0 ? null
+  vplace = ALIGN_BOTTOM
+  children = curGameMode.get() == null ? null
     : [
-        {
-          hplace = ALIGN_CENTER
-          children = squadPanel
-        }
-        @() {
+        (curGameMode.get()?.maxSquadSize ?? 1) <= 1 ? null
+          : {
+              hplace = ALIGN_CENTER
+              children = squadPanel
+            }
+        @() panelBg.__merge({
           watch = openedGmEventId
+          padding = [txtPaddingV, saBorders[0], saBorders[0], txtPaddingH]
+          pos = [saBorders[0], saBorders[0]]
           hplace = ALIGN_RIGHT
-          halign = ALIGN_RIGHT
+          halign = ALIGN_CENTER
           valign = ALIGN_BOTTOM
           flow = FLOW_VERTICAL
-          gap = hdpx(10)
+          gap = txtPaddingV
           children = [
-            toBattleHint(loc("events/toBattle"))
+            txtBlock
             mkToBattleButtonWithSquadManagement(
               function() {
-                if (curGmList.get().len() == 0)
+                if (curGameMode.get() == null)
                   return
                 sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
-                let modeId = curGmList.get()[0].gameModeId
-                let campaign = curGmList.get()[0].campaign
-                if (tryOpenQueuePenaltyWnd(campaign, curGmList.get()[0], { id = "queueToGameMode", modeId }))
+                let modeId = curGameMode.get().gameModeId
+                let campaign = curGameMode.get().campaign
+                if (tryOpenQueuePenaltyWnd(campaign, curGameMode.get(), { id = "queueToGameMode", modeId }))
                   return
                 eventbus_send("queueToGameMode", { modeId })
               },
-              Computed(@() curGmList.get()?[0]))
+              curGameMode)
+          ]
+        })
+      ]
+}
+
+function timerBlock() {
+  let timeText = Computed(function() {
+    let timeLeft = gmEventEndsAt.get() - serverTime.get()
+    return timeLeft > 0 ? secondsToHoursLoc(timeLeft) : ""
+  })
+
+  return {
+    watch = timeText
+    pos = [-(saBorders[0]), 0]
+    children = timeText.get() == "" ? null
+      : {
+          rendObj = ROBJ_IMAGE
+          image = simpleHorGrad
+          color = 0x80000000
+          flipX = true
+          padding = [hdpx(5), saBorders[0], hdpx(5), saBorders[0]]
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = hdpx(10)
+          children = [
+            {
+              rendObj = ROBJ_IMAGE
+              size = iconTimerSize
+              image = Picture($"ui/gameuiskin#timer_icon.svg:{iconTimerSize}:P")
+              keepAspect = true
+            }
+            {
+              rendObj = ROBJ_TEXT
+              text = timeText.get()
+            }.__update(fontTinyAccented)
           ]
         }
-      ]
+  }
 }
 
 let gmEventWnd = {
   size = FLEX
-  padding = saBordersRv
+  padding = [0, saBordersRv[1], saBordersRv[0], saBordersRv[1]]
 
-  flow = FLOW_VERTICAL
   gap = headerGap
   children = [
-    content
+    timerBlock
     footer
   ]
   animations = wndSwitchAnim

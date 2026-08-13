@@ -1,28 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let { seasonSceneOpenCounter, seasonTabs, seasonTabIdx, seasonPageId, newsTag,
-  PASS_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose
-} = require("%rGui/seasonScene/seasonSceneState.nut")
-let sceneContentCfg = require("%rGui/seasonScene/seasonSceneContentCfg.nut")
-let { playerSelectedScene } = require("%rGui/battlePass/passState.nut")
-let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { curEvent } = require("%rGui/event/eventState.nut")
-let { curEventLoc } = require("%rGui/event/eventLocName.nut")
-let { bottomPanelH, bottomPanelIconSize } = require("%rGui/battlePass/passPkg.nut")
-let { setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
-let { registerAutoDownloadUnits, DLP_HIGH } = require("%rGui/updater/updaterState.nut")
-let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
+from "wt.behaviors" import HangarCameraControl
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/battlePass/passPkg.nut" import bottomPanelH, bottomPanelIconSize
+from "%rGui/battlePass/passState.nut" import playerSelectedScene
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/components/infoButton.nut" import infoEllipseButton
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/event/eventLocName.nut" import curEventLoc
+from "%rGui/event/eventState.nut" import curEvent
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "%rGui/navState.nut" import registerScene, setSceneBg
+from "%rGui/news/newsState.nut" import openNewsWndTagged
+import "%rGui/seasonScene/seasonSceneContentCfg.nut" as sceneContentCfg
+from "%rGui/seasonScene/seasonSceneState.nut" import seasonSceneOpenCounter, seasonTabs, seasonTabIdx, seasonPageId,
+  newsTag, PASS_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose, isBattleTab
+from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/unit/hangarUnit.nut" import setHangarUnitGroup
+from "%rGui/unlocks/userstat.nut" import registerUnlocksSceneToUpdate
+from "%rGui/updater/updaterState.nut" import registerAutoDownloadUnits, DLP_HIGH
 
 
 let tabHighlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
@@ -207,7 +206,9 @@ function seasonScene() {
 }
 
 let sceneId = "seasonScene"
+
 registerScene(sceneId, seasonScene, closeSeasonScene, seasonSceneOpenCounter)
-setSceneBg(sceneId, bgSceneExt.get()?.bg, bgSceneExt.get()?.bgColor)
-bgSceneExt.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))
+setSceneBg(sceneId, bgSceneExt.get()?.bg, isBattleTab.get() ? null : bgSceneExt.get()?.bgColor)
+bgSceneExt.subscribe(@(v) setSceneBg(sceneId, v?.bg, isBattleTab.get() ? null : v?.bgColor))
+isBattleTab.subscribe(@(v) setSceneBg(sceneId, bgSceneExt.get()?.bg, v ? null : bgSceneExt.get()?.bgColor))
 registerUnlocksSceneToUpdate(sceneId)

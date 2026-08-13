@@ -63,6 +63,10 @@ let epPresentations = {
   event_april_2026 = {
     passWndCurrencies = [ APRILINTEL, APRILBOND ]
   }
+  anniversary_2026 = {
+    shortDescLocId = "eventPass/desc"
+    passWndCurrencies = [ ANNIVERSARYBOND, ANNIVERSARYTOKEN ]
+  }
   uk_air_release = {
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"

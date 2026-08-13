@@ -1,24 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let regexp2 = require("regexp2")
-let { roundToDigits } = require("%sqstd/math.nut")
-let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
-let { getUnitName, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
-let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
-let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { premiumTextColor, collectibleTextColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
-let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
-let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { mkMasteryTierColorIcon } = require("%rGui/components/masteryTierComp.nut")
-let { raceTotalLaps, raceTotalCheckpoints } = require("%rGui/hud/raceState.nut")
+import "regexp2" as regexp2
+from "%sqstd/math.nut" import roundToDigits, lerpClamped
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/config/hudCustomRulesPresentation.nut" import getCtfFlagPresentation
+from "%appGlobals/config/subsPresentation.nut" import mkSubsIcon
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/timeToText.nut" import preciseSecondsToString
+from "%appGlobals/unitPresentation.nut" import getUnitName, unitClassFontIcons
+from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%rGui/components/masteryTierComp.nut" import mkMasteryTierColorIcon
+from "%rGui/components/playerPlaceIcon.nut" import playerPlaceIconSize, mkPlaceIcon
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/hud/raceState.nut" import raceTotalLaps, raceTotalCheckpoints
+from "%rGui/mpStatistics/playersSortFunc.nut" import getScoreFull
+from "%rGui/mpStatistics/viewProfile.nut" import selectedPlayerForInfo
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdColors.nut" import premiumTextColor, collectibleTextColor, selectColor
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor, mySquadLightColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
 
 
 let STICKY_UPPER = 0x01
@@ -385,22 +385,51 @@ function mkMpStatsTable(columnsCfg, teams, statsWithScrollHeight = null) {
       let teamColor = isTeamBattle && teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
       let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]
       let headerRow = mkTeamHeaderRow(columnCfg, isTeamBattle)
-      let playerRows = team.map(@(player, idx) mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle))
       if (statsWithScrollHeight == null)
         return {
           size = FLEX_H
           flow = FLOW_VERTICAL
-          children = [headerRow].extend(playerRows)
+          children = [headerRow].extend(team.map(@(player, idx) mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle, null, {})))
         }
 
       let localPlayerIdx = team.findindex(@(p) p.isLocal) ?? 0
       let localPlayerPosY = localPlayerIdx * rowHeight
-      let localPosState = Computed(function() {
-        let curY = scrollHandler.elem?.getOverScrollOffsY() ?? 0
-        return curY > localPlayerPosY ? STICKY_UPPER
-          : curY + statsWithScrollHeight - rowHeight < localPlayerPosY + rowHeight ? STICKY_BELOW
-          : 0
-      })
+      let curY = Computed(@() scrollHandler.elem?.getScrollOffsY() ?? 0)
+      let localPosState = Computed(@() curY.get() >= localPlayerPosY ? STICKY_UPPER
+          : curY.get() + statsWithScrollHeight - rowHeight <= localPlayerPosY + rowHeight ? STICKY_BELOW
+          : 0)
+
+      function getOpacity(p, idx) {
+        if (p?.isLocal && localPosState.get() != 0)
+          return 0
+        let currentY = curY.get()
+        let rHeight = rowHeight.tofloat()
+        if (localPosState.get() == STICKY_UPPER) {
+          let startFadeY = (idx - 1.0) * rHeight
+          let endFadeY = idx * rHeight - rHeight / 2.0
+
+          return lerpClamped(startFadeY, endFadeY, 1.0, 0.0, currentY)
+        }
+
+        if (localPosState.get() == STICKY_BELOW) {
+          let startFadeY = currentY + statsWithScrollHeight.tofloat() - rHeight * 2.0
+          let endFadeY = (idx + 1) * rHeight
+
+          return lerpClamped(startFadeY, startFadeY + rHeight / 2, 1.0, 0.0, endFadeY)
+        }
+
+        return 1
+      }
+
+      let playerRows = team.map(@(player, idx) mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle, null,
+        {
+          behavior = Behaviors.RtPropUpdate,
+          update = @() { opacity = getOpacity(player, idx) }
+        }))
+
+      let getYOffset = @() localPosState.get() == STICKY_BELOW ? statsWithScrollHeight - rowHeight * 2
+        : 0
+
       return {
         size = [FLEX, statsWithScrollHeight]
         children = [
@@ -419,17 +448,18 @@ function mkMpStatsTable(columnsCfg, teams, statsWithScrollHeight = null) {
             ]
           }
           localPlayerIdx not in team ? null
-            : @() {
-                watch = localPosState
+            : {
                 size = [FLEX, SIZE_TO_CONTENT]
+                behavior = Behaviors.RtPropUpdate,
+                update = @() {
+                  opacity = localPosState.get() != 0 ? 1 : 0
+                  transform = {
+                    translate = [0, getYOffset()]
+                  }
+                }
                 pos = [0, rowHeight]
-                children = localPosState.get() & STICKY_UPPER
-                    ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx, isTeamBattle,
-                        rowStickyBgLocalPlayerColor, { pos = [0, 0] })
-                  : localPosState.get() & STICKY_BELOW
-                    ? mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx, isTeamBattle,
-                        rowStickyBgLocalPlayerColor, { pos = [0, statsWithScrollHeight - rowHeight * 2] })
-                  : null
+                children = mkPlayerRow(columnCfg, team[localPlayerIdx], teamColor, localPlayerIdx, isTeamBattle,
+                  rowStickyBgLocalPlayerColor, {})
               }
         ]
       }

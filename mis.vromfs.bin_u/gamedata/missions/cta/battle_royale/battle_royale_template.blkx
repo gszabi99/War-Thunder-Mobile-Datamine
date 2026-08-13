@@ -338,7 +338,6 @@
         },
         "triggerEnable": {
           "target": [
-            "br_area_set",
             "victory_condition_check",
             "create_pickups"
           ]
@@ -730,7 +729,7 @@
         "unitWhenCountMatches": {
           "object_type": "isActive",
           "object_marking": 0,
-          "func": "equal",
+          "func": "notMore",
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
@@ -748,7 +747,7 @@
           "areaDivIntVar": "@br_area_div",
           "warningTimeIntVar": "0",
           "groundBorderVisuals": false,
-          "gradualZoneNarrowingTime": 0.0,
+          "gradualZoneNarrowingTime": "",
           "reset": true
         },
         "wait": {
@@ -854,134 +853,6 @@
       },
       "else_actions": {}
     },
-    "create_pickups": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "current_stage",
-          "value": 0,
-          "comparasion_func": "notLess"
-        }
-      },
-      "actions": {
-        "missionCreatePickUps": [
-          {
-            "preset": "allInOne",
-            "count": 5,
-            "minDistanceFromBattleAreaEdge": 10.0,
-            "doNotDespawnOutsideBattleArea": true,
-            "showIconOnMinimap": true,
-            "target": "pickups_area_sq",
-            "count_var": "pickups_count"
-          },
-          {
-            "preset": "crewSkillUpgrade",
-            "count": 5,
-            "minDistanceFromBattleAreaEdge": 10.0,
-            "doNotDespawnOutsideBattleArea": true,
-            "showIconOnMinimap": true,
-            "target": "pickups_area_sq",
-            "count_var": "pickups_count"
-          }
-        ],
-        "varSetInt": [
-          {
-            "value": 0,
-            "var": "pickups2_stage",
-            "input_var": "artillery_disable_stage"
-          },
-          {
-            "value": 0,
-            "var": "pickups2_count",
-            "input_var": "pickups_count"
-          }
-        ],
-        "varModify": [
-          {
-            "operator": "divAB",
-            "value": 2.0,
-            "var": "pickups2_stage"
-          },
-          {
-            "operator": "divAB",
-            "value": 2.0,
-            "var": "pickups2_count"
-          }
-        ],
-        "triggerEnable": {
-          "target": "create_pickups2"
-        }
-      },
-      "else_actions": {}
-    },
-    "create_pickups2": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": [
-          {
-            "var_value": "current_stage",
-            "value": 0,
-            "comparasion_func": "notLess",
-            "var_value_other": "pickups2_stage"
-          },
-          {
-            "var_value": "pickups2_stage",
-            "value": 0,
-            "comparasion_func": "more"
-          },
-          {
-            "var_value": "pickups2_count",
-            "value": 0,
-            "comparasion_func": "more"
-          }
-        ]
-      },
-      "actions": {
-        "missionCreatePickUps": [
-          {
-            "preset": "allInOne",
-            "count": 5,
-            "minDistanceFromBattleAreaEdge": 10.0,
-            "doNotDespawnOutsideBattleArea": true,
-            "showIconOnMinimap": true,
-            "target": "pickups_area_sq",
-            "count_var": "pickups2_count"
-          },
-          {
-            "preset": "crewSkillUpgrade",
-            "count": 5,
-            "minDistanceFromBattleAreaEdge": 10.0,
-            "doNotDespawnOutsideBattleArea": true,
-            "showIconOnMinimap": true,
-            "target": "pickups_area_sq",
-            "count_var": "pickups2_count"
-          }
-        ]
-      },
-      "else_actions": {}
-    },
     "shooting_and_moving_lock": {
       "is_enabled": false,
       "comments": "",
@@ -1006,6 +877,118 @@
           "isImmortal": true,
           "cannotShoot": true,
           "cannotMove": true
+        }
+      },
+      "else_actions": {}
+    },
+    "create_pickups_special": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "current_stage",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "pickups_special_stage_1"
+          },
+          {
+            "var_value": "pickups_special_stage_1",
+            "value": 0,
+            "comparasion_func": "more"
+          },
+          {
+            "var_value": "pickups_special_count_1",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        ]
+      },
+      "actions": {
+        "missionCreatePickUps": {
+          "preset": "airDropAmmo",
+          "count": 1,
+          "minDistanceFromBattleAreaEdge": 50.0,
+          "doNotDespawnOutsideBattleArea": true,
+          "showIconOnMinimap": true,
+          "target": "pickups_area_sq",
+          "count_var": "pickups_special_count_1"
+        },
+        "triggerEnable": {
+          "target": "create_pickups_special_2"
+        },
+        "missionSendVarToGui": [
+          {
+            "var_name": "AirDropTimer",
+            "int_value": "60"
+          },
+          {
+            "var_name": "AirDropTimer",
+            "int_value": "-1"
+          }
+        ],
+        "wait": {
+          "time": 70.0
+        }
+      },
+      "else_actions": {}
+    },
+    "create_pickups_special_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "current_stage",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "pickups_special_stage_2"
+          },
+          {
+            "var_value": "pickups_special_stage_2",
+            "value": 0,
+            "comparasion_func": "more"
+          },
+          {
+            "var_value": "pickups_special_count_2",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        ]
+      },
+      "actions": {
+        "missionCreatePickUps": {
+          "preset": "airDropAmmo",
+          "count": 1,
+          "minDistanceFromBattleAreaEdge": 50.0,
+          "doNotDespawnOutsideBattleArea": true,
+          "showIconOnMinimap": true,
+          "target": "pickups_area_sq",
+          "count_var": "pickups_special_count_2"
+        },
+        "missionSendVarToGui": {
+          "var_name": "AirDropTimer",
+          "int_value": "60"
         }
       },
       "else_actions": {}
@@ -1042,12 +1025,20 @@
     "artillery_disable_stage": 0,
     "artillery_disable_hint": "hints/artillery_disable_warning",
     "artillery_disable_counter": 2,
-    "pickups_count": 0,
+    "pickups_crew_count": 0,
+    "pickups_radio_count": 0,
+    "pickups_repair_count": 0,
     "pickups2_stage": 0,
-    "pickups2_count": 0,
+    "pickups2_crew_count": 0,
+    "pickups2_radio_count": 0,
+    "pickups2_repair_count": 0,
     "areaWidthMultiplier": 2,
     "is_zone_shrinking": true,
-    "br_reduce_timer_bufer": 0.0
+    "br_reduce_timer_bufer": 0.0,
+    "pickups_special_stage_1": 0,
+    "pickups_special_stage_2": 0,
+    "pickups_special_count_1": 0,
+    "pickups_special_count_2": 0
   },
   "dialogs": {},
   "airfields": {},

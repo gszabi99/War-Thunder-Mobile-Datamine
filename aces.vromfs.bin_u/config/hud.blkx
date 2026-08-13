@@ -35,7 +35,7 @@
   "areaScreenTopWidthPart": 0.7,
   "areaScreenTopHeightPart": 0.1,
   "areaTextInflate": 5.0,
-  "pickupMapIconDistFalloffK": 0.2,
+  "pickupMapIconDistFalloffK": 0.1,
   "tacticalMapBorder": "item",
   "tacticalMapBorderColor": [
     255,
@@ -605,8 +605,12 @@
       }
     },
     "customIcons": {
-      "iconPickupAllInOne": "pickup_map_icon_allinone.svg:21:21:K",
-      "iconPickupCrewSkill": "pickup_map_icon_crewskill.svg:21:21:K"
+      "iconPickupAllInOne": "pickup_map_icon_allinone.svg:23:23:K",
+      "iconPickupCrewSkill": "pickup_map_icon_crewskill.svg:24:24:K",
+      "iconPickupAirdrop": "br_pickup_apfsds.svg:27:27:K",
+      "iconPickupRepairHeal": "br_pickup_rep_heal.svg:28:28:K",
+      "iconPickupRadioArtillery": "br_pickup_arti_recon.svg:25:25:K",
+      "iconAirDrop": "icon_air_drop.svg:24:24:K"
     }
   },
   "radar": {
@@ -4104,6 +4108,7 @@
           "bulletType": 0,
           "bulletTypeInGroup": 0,
           "isCoaxialShareCooldown": true,
+          "combineTriggerGroupsPerUnit": true,
           "triggerGroup": [
             "machinegun",
             "coaxial"

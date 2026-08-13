@@ -1,7 +1,7 @@
 {
   "selected_tag": "",
   "bin_dump_file": "",
-  "entities": "gamedata/scenes/avg_abandoned_factory_battleroyal_objects.blk",
+  "entities": "gamedata/scenes/avg_abandoned_factory_battleroyal_objects_b.blk",
   "mission_settings": {
     "player": {
       "army": 1,
@@ -85,13 +85,17 @@
       "weather": "hazy",
       "maxTimeToReturnToMapForTanks": 40.0,
       "killDistFromBattleAreaForTanks": 0.0,
+      "blockTankNavmeshObstacles": true,
       "locName": "missions/BR;abandoned_factory/name",
       "locDesc": "missions/BR/desc",
       "gt_ffa": true,
       "gt_last_man_standing": true,
       "timeLimit": 60,
+      "useAlternativeMapCoord": [
+        true,
+        true
+      ],
       "useTankBots": true,
-      "blockTankNavmeshObstacles": true,
       "battleAreaColorPreset": "battleRoyale",
       "ignoreInvulnerableTimer": false,
       "useCustomSuperArtillery": true,
@@ -194,14 +198,189 @@
             "fromDescriptor": "br_area_div"
           },
           {
+            "value": 10,
+            "var": "pickups_crew_count",
+            "fromDescriptor": "pickups_crew_count"
+          },
+          {
+            "value": 10,
+            "var": "pickups_radio_count",
+            "fromDescriptor": "pickups_radio_count"
+          },
+          {
+            "value": 10,
+            "var": "pickups_repair_count",
+            "fromDescriptor": "pickups_repair_count"
+          },
+          {
+            "value": 10,
+            "var": "pickups2_crew_count",
+            "fromDescriptor": "pickups2_crew_count"
+          },
+          {
+            "value": 10,
+            "var": "pickups2_radio_count",
+            "fromDescriptor": "pickups2_radio_count"
+          },
+          {
+            "value": 10,
+            "var": "pickups2_repair_count",
+            "fromDescriptor": "pickups2_repair_count"
+          },
+          {
+            "value": 3,
+            "var": "pickups_special_stage_1",
+            "fromDescriptor": "pickups_special_stage_1"
+          },
+          {
             "value": 5,
-            "var": "pickups_count",
-            "fromDescriptor": "pickups_count"
+            "var": "pickups_special_stage_2",
+            "fromDescriptor": "pickups_special_stage_2"
+          },
+          {
+            "value": 3,
+            "var": "pickups_special_count_1",
+            "fromDescriptor": "pickups_special_count_1"
+          },
+          {
+            "value": 2,
+            "var": "pickups_special_count_2",
+            "fromDescriptor": "pickups_special_count_2"
           },
           {
             "value": 0,
             "var": "pickups2_stage",
             "fromDescriptor": "pickups2_stage"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "create_pickups": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "current_stage",
+          "value": 0,
+          "comparasion_func": "notLess"
+        }
+      },
+      "actions": {
+        "missionCreatePickUps": [
+          {
+            "preset": "radioArtillerySmall",
+            "count": 5,
+            "minDistanceFromBattleAreaEdge": 10.0,
+            "doNotDespawnOutsideBattleArea": true,
+            "showIconOnMinimap": true,
+            "target": "pickups_area_sq",
+            "count_var": "pickups_radio_count"
+          },
+          {
+            "preset": "crewSkillUpgradeSmall",
+            "count": 5,
+            "minDistanceFromBattleAreaEdge": 10.0,
+            "doNotDespawnOutsideBattleArea": true,
+            "showIconOnMinimap": true,
+            "target": "pickups_area_sq",
+            "count_var": "pickups_crew_count"
+          },
+          {
+            "preset": "repairHealSmall",
+            "count": 5,
+            "minDistanceFromBattleAreaEdge": 10.0,
+            "doNotDespawnOutsideBattleArea": true,
+            "showIconOnMinimap": true,
+            "target": "pickups_area_sq",
+            "count_var": "pickups_repair_count"
+          }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "pickups2_stage",
+          "input_var": "artillery_disable_stage"
+        },
+        "varModify": {
+          "operator": "divAB",
+          "value": 2.0,
+          "var": "pickups2_stage"
+        },
+        "triggerEnable": {
+          "target": [
+            "create_pickups2",
+            "br_area_set"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "create_pickups2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "current_stage",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "pickups2_stage"
+          },
+          {
+            "var_value": "pickups2_stage",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        ]
+      },
+      "actions": {
+        "missionCreatePickUps": [
+          {
+            "preset": "radioArtillerySmall",
+            "count": 5,
+            "minDistanceFromBattleAreaEdge": 10.0,
+            "doNotDespawnOutsideBattleArea": true,
+            "showIconOnMinimap": true,
+            "target": "pickups_area_sq",
+            "count_var": "pickups2_radio_count"
+          },
+          {
+            "preset": "crewSkillUpgradeSmall",
+            "count": 5,
+            "minDistanceFromBattleAreaEdge": 10.0,
+            "doNotDespawnOutsideBattleArea": true,
+            "showIconOnMinimap": true,
+            "target": "pickups_area_sq",
+            "count_var": "pickups2_crew_count"
+          },
+          {
+            "preset": "repairHealSmall",
+            "count": 5,
+            "minDistanceFromBattleAreaEdge": 10.0,
+            "doNotDespawnOutsideBattleArea": true,
+            "showIconOnMinimap": true,
+            "target": "pickups_area_sq",
+            "count_var": "pickups2_repair_count"
           }
         ]
       },
@@ -257,13 +436,7 @@
             "spawn11",
             "spawn12",
             "spawn13",
-            "spawn14",
-            "spawn15",
-            "spawn16",
-            "spawn17",
-            "spawn18",
-            "spawn19",
-            "spawn20"
+            "spawn14"
           ]
         }
       },
@@ -332,7 +505,94 @@
             "pickuparea37",
             "pickuparea38",
             "pickuparea39",
-            "pickuparea40"
+            "pickuparea40",
+            "pickuparea41",
+            "pickuparea42",
+            "pickuparea43",
+            "pickuparea44",
+            "pickuparea45",
+            "pickuparea46",
+            "pickuparea47",
+            "pickuparea48",
+            "pickuparea49",
+            "pickuparea50",
+            "pickuparea51",
+            "pickuparea52",
+            "pickuparea53",
+            "pickuparea54",
+            "pickuparea55",
+            "pickuparea56",
+            "pickuparea57",
+            "pickuparea58",
+            "pickuparea59",
+            "pickuparea60",
+            "pickuparea61",
+            "pickuparea62",
+            "pickuparea63",
+            "pickuparea64",
+            "pickuparea65",
+            "pickuparea66",
+            "pickuparea67",
+            "pickuparea68",
+            "pickuparea69",
+            "pickuparea70",
+            "pickuparea71",
+            "pickuparea72",
+            "pickuparea73",
+            "pickuparea74",
+            "pickuparea75",
+            "pickuparea76",
+            "pickuparea77",
+            "pickuparea78",
+            "pickuparea79",
+            "pickuparea80",
+            "pickuparea81",
+            "pickuparea82",
+            "pickuparea83",
+            "pickuparea84",
+            "pickuparea85",
+            "pickuparea86",
+            "pickuparea87",
+            "pickuparea88",
+            "pickuparea89",
+            "pickuparea90",
+            "pickuparea91",
+            "pickuparea92",
+            "pickuparea93",
+            "pickuparea94",
+            "pickuparea95",
+            "pickuparea96",
+            "pickuparea97",
+            "pickuparea98",
+            "pickuparea99",
+            "pickuparea100",
+            "pickuparea101",
+            "pickuparea102",
+            "pickuparea103",
+            "pickuparea104",
+            "pickuparea105",
+            "pickuparea106",
+            "pickuparea107",
+            "pickuparea108",
+            "pickuparea109",
+            "pickuparea110",
+            "pickuparea111",
+            "pickuparea112",
+            "pickuparea113",
+            "pickuparea114",
+            "pickuparea115",
+            "pickuparea116",
+            "pickuparea117",
+            "pickuparea118",
+            "pickuparea119",
+            "pickuparea120",
+            "pickuparea121",
+            "pickuparea122",
+            "pickuparea123",
+            "pickuparea124",
+            "pickuparea125",
+            "pickuparea126",
+            "pickuparea127"
           ]
         }
       }
@@ -416,7 +676,7 @@
           -1200.0
         ],
         [
-          2223.1,
+          2223.11,
           12.25,
           2141.55
         ]
@@ -428,9 +688,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -7.11248,
+          0.565788,
           0.0,
-          -9.66503
+          -11.9867
         ],
         [
           0.0,
@@ -438,14 +698,14 @@
           0.0
         ],
         [
-          9.66503,
+          11.9867,
           0.0,
-          -7.11248
+          0.565788
         ],
         [
-          2119.9,
-          12.85,
-          2502.5
+          2101.86,
+          12.8494,
+          2652.74
         ]
       ],
       "objLayer": 0,
@@ -455,9 +715,9 @@
       "type": "Sphere",
       "tm": [
         [
-          2.15979,
+          7.05079,
           0.0,
-          11.8041
+          -9.7102
         ],
         [
           0.0,
@@ -465,14 +725,14 @@
           0.0
         ],
         [
-          -11.8041,
+          9.7102,
           0.0,
-          2.15979
+          7.05079
         ],
         [
-          1983.75,
-          8.05003,
-          1653.7
+          1746.84,
+          12.9242,
+          2635.32
         ]
       ],
       "objLayer": 0,
@@ -482,9 +742,9 @@
       "type": "Sphere",
       "tm": [
         [
-          5.21706,
+          12.0,
           0.0,
-          -10.8066
+          0.0211854
         ],
         [
           0.0,
@@ -492,14 +752,14 @@
           0.0
         ],
         [
-          10.8066,
+          -0.0211854,
           0.0,
-          5.21706
+          12.0
         ],
         [
-          1754.35,
+          1706.81,
           8.04993,
-          2225.35
+          2168.05
         ]
       ],
       "objLayer": 0,
@@ -509,9 +769,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -9.12834,
+          5.03817,
           0.0,
-          7.78928
+          10.8911
         ],
         [
           0.0,
@@ -519,14 +779,14 @@
           0.0
         ],
         [
-          -7.78928,
+          -10.8911,
           0.0,
-          -9.12834
+          5.03817
         ],
         [
-          1784.15,
+          1776.97,
           8.04929,
-          1672.75
+          1591.78
         ]
       ],
       "objLayer": 0,
@@ -563,9 +823,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.31622,
+          -6.61251,
           0.0,
-          10.7582
+          10.0138
         ],
         [
           0.0,
@@ -573,14 +833,14 @@
           0.0
         ],
         [
-          -10.7582,
+          -10.0138,
           0.0,
-          -5.31622
+          -6.61251
         ],
         [
-          2663.55,
-          8.0,
-          1731.4
+          2733.46,
+          8.44727,
+          1587.01
         ]
       ],
       "objLayer": 0,
@@ -590,9 +850,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -11.996,
+          8.99552,
           0.0,
-          0.308766
+          -7.94229
         ],
         [
           0.0,
@@ -600,14 +860,14 @@
           0.0
         ],
         [
-          -0.308766,
+          7.94229,
           0.0,
-          -11.996
+          8.99552
         ],
         [
-          2626.2,
-          8.05,
-          1851.2
+          2589.39,
+          8.05005,
+          2659.63
         ]
       ],
       "objLayer": 0,
@@ -617,9 +877,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -0.468044,
+          -0.148397,
           0.0,
-          11.9908
+          -11.999
         ],
         [
           0.0,
@@ -627,14 +887,14 @@
           0.0
         ],
         [
-          -11.9908,
+          11.999,
           0.0,
-          -0.468044
+          -0.148397
         ],
         [
-          2265.25,
-          9.20039,
-          2102.3
+          1884.89,
+          9.20013,
+          2369.01
         ]
       ],
       "objLayer": 0,
@@ -659,9 +919,9 @@
           -11.9978
         ],
         [
-          2226.35,
-          8.04999,
-          1925.0
+          2242.09,
+          8.05005,
+          1905.18
         ]
       ],
       "objLayer": 0,
@@ -671,9 +931,9 @@
       "type": "Sphere",
       "tm": [
         [
-          12.0,
+          11.9999,
           0.0,
-          -0.00891793
+          -0.0580607
         ],
         [
           0.0,
@@ -681,14 +941,14 @@
           0.0
         ],
         [
-          0.00891793,
+          0.0580607,
           0.0,
-          12.0
+          11.9999
         ],
         [
-          2087.4,
-          8.05005,
-          2114.25
+          2034.6,
+          8.00195,
+          1958.9
         ]
       ],
       "objLayer": 0,
@@ -713,9 +973,9 @@
           -0.0563846
         ],
         [
-          2294.15,
-          8.05,
-          1845.6
+          2641.88,
+          8.05005,
+          1994.85
         ]
       ],
       "objLayer": 0,
@@ -752,9 +1012,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -6.2051,
+          0.342165,
           0.0,
-          10.2711
+          -11.9951
         ],
         [
           0.0,
@@ -762,14 +1022,14 @@
           0.0
         ],
         [
-          -10.2711,
+          11.9951,
           0.0,
-          -6.2051
+          0.342165
         ],
         [
-          2164.5,
+          2167.48,
           10.5,
-          2300.2
+          2356.91
         ]
       ],
       "objLayer": 0,
@@ -779,9 +1039,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -11.9782,
+          11.997,
           0.0,
-          0.723339
+          -0.266999
         ],
         [
           0.0,
@@ -789,14 +1049,14 @@
           0.0
         ],
         [
-          -0.723339,
+          0.266999,
           0.0,
-          -11.9782
+          11.997
         ],
         [
-          2349.2,
-          8.05038,
-          2173.05
+          1730.63,
+          8.05042,
+          1877.04
         ]
       ],
       "objLayer": 0,
@@ -821,9 +1081,9 @@
           2.61859
         ],
         [
-          1774.7,
-          8.05,
-          1876.9
+          1684.52,
+          8.04974,
+          2484.89
         ]
       ],
       "objLayer": 0,
@@ -848,9 +1108,9 @@
           -1.29712
         ],
         [
-          1913.6,
-          8.05,
-          1933.0
+          1677.57,
+          8.05005,
+          2560.29
         ]
       ],
       "objLayer": 0,
@@ -875,9 +1135,9 @@
           5.16994
         ],
         [
-          2635.01,
+          1652.75,
           11.8,
-          1993.54
+          2569.85
         ]
       ],
       "objLayer": 0,
@@ -902,9 +1162,9 @@
           -7.85793
         ],
         [
-          2296.9,
+          1654.48,
           13.0,
-          2501.65
+          2535.87
         ]
       ],
       "objLayer": 0,
@@ -929,9 +1189,9 @@
           -9.18159
         ],
         [
-          2356.7,
-          13.0,
-          2362.05
+          1657.12,
+          12.9999,
+          2503.32
         ]
       ],
       "objLayer": 0,
@@ -956,9 +1216,9 @@
           5.03837
         ],
         [
-          1899.55,
+          1657.88,
           12.05,
-          2455.25
+          2478.98
         ]
       ],
       "objLayer": 0,
@@ -984,7 +1244,7 @@
         ],
         [
           2496.35,
-          8.05457,
+          8.03223,
           1970.25
         ]
       ],
@@ -1011,7 +1271,7 @@
         ],
         [
           2529.05,
-          8.02053,
+          8.02246,
           2103.55
         ]
       ],
@@ -1038,7 +1298,7 @@
         ],
         [
           2563.45,
-          8.26362,
+          8.26367,
           1650.4
         ]
       ],
@@ -1065,7 +1325,7 @@
         ],
         [
           2150.5,
-          7.99966,
+          8.00195,
           1850.85
         ]
       ],
@@ -1092,7 +1352,7 @@
         ],
         [
           2361.6,
-          7.99967,
+          8.00195,
           1811.8
         ]
       ],
@@ -1119,7 +1379,7 @@
         ],
         [
           2265.25,
-          7.99966,
+          8.00195,
           1694.2
         ]
       ],
@@ -1146,7 +1406,7 @@
         ],
         [
           2013.65,
-          8.02419,
+          8.02539,
           1591.95
         ]
       ],
@@ -1172,9 +1432,9 @@
           1.0
         ],
         [
-          2036.75,
-          7.99966,
-          1724.85
+          2024.05,
+          8.00195,
+          1722.6
         ]
       ],
       "objLayer": 0,
@@ -1200,7 +1460,7 @@
         ],
         [
           1884.55,
-          8.00812,
+          7.94531,
           1724.15
         ]
       ],
@@ -1227,7 +1487,7 @@
         ],
         [
           1910.55,
-          7.99967,
+          8.00195,
           2029.45
         ]
       ],
@@ -1254,7 +1514,7 @@
         ],
         [
           1708.2,
-          8.03108,
+          8.4502,
           2117.45
         ]
       ],
@@ -1281,7 +1541,7 @@
         ],
         [
           2171.55,
-          7.99967,
+          8.00195,
           2095.65
         ]
       ],
@@ -1308,7 +1568,7 @@
         ],
         [
           2104.34,
-          7.99966,
+          8.00195,
           2126.34
         ]
       ],
@@ -1335,7 +1595,7 @@
         ],
         [
           1957.0,
-          7.99974,
+          8.00195,
           2181.75
         ]
       ],
@@ -1362,7 +1622,7 @@
         ],
         [
           1975.9,
-          9.63142,
+          9.69043,
           2417.2
         ]
       ],
@@ -1389,7 +1649,7 @@
         ],
         [
           1884.0,
-          8.00449,
+          8.0293,
           1869.0
         ]
       ],
@@ -1416,7 +1676,7 @@
         ],
         [
           1827.15,
-          8.31126,
+          8.1875,
           2371.25
         ]
       ],
@@ -1443,7 +1703,7 @@
         ],
         [
           2164.1,
-          12.8627,
+          12.8652,
           2442.8
         ]
       ],
@@ -1470,7 +1730,7 @@
         ],
         [
           2390.85,
-          9.99854,
+          9.99414,
           2369.0
         ]
       ],
@@ -1497,7 +1757,7 @@
         ],
         [
           2494.65,
-          8.01656,
+          8.01953,
           2244.85
         ]
       ],
@@ -1524,7 +1784,7 @@
         ],
         [
           2347.6,
-          7.99966,
+          8.00195,
           1950.75
         ]
       ],
@@ -1551,7 +1811,7 @@
         ],
         [
           2345.0,
-          7.99967,
+          8.00195,
           2066.15
         ]
       ],
@@ -1578,7 +1838,7 @@
         ],
         [
           2261.95,
-          8.05926,
+          8.05371,
           2201.85
         ]
       ],
@@ -1605,7 +1865,7 @@
         ],
         [
           2104.2,
-          8.0616,
+          8.0625,
           2211.65
         ]
       ],
@@ -1632,7 +1892,7 @@
         ],
         [
           2083.6,
-          10.2955,
+          10.3037,
           2316.8
         ]
       ],
@@ -1659,7 +1919,7 @@
         ],
         [
           2064.95,
-          7.99966,
+          8.00195,
           2025.5
         ]
       ],
@@ -1686,7 +1946,7 @@
         ],
         [
           2192.35,
-          12.7928,
+          12.7939,
           2591.95
         ]
       ],
@@ -1713,7 +1973,7 @@
         ],
         [
           2409.4,
-          7.99963,
+          8.00195,
           1987.6
         ]
       ],
@@ -1740,7 +2000,7 @@
         ],
         [
           1973.3,
-          7.99966,
+          8.00195,
           1822.8
         ]
       ],
@@ -1767,7 +2027,7 @@
         ],
         [
           2329.05,
-          8.00299,
+          8.00586,
           1627.85
         ]
       ],
@@ -1794,7 +2054,7 @@
         ],
         [
           2110.55,
-          7.99966,
+          8.00195,
           1927.85
         ]
       ],
@@ -1821,7 +2081,7 @@
         ],
         [
           1814.7,
-          7.99963,
+          8.21973,
           2052.5
         ]
       ],
@@ -1848,7 +2108,7 @@
         ],
         [
           2167.3,
-          7.99966,
+          8.00195,
           1754.9
         ]
       ],
@@ -1875,7 +2135,7 @@
         ],
         [
           2345.3,
-          7.99966,
+          8.00195,
           1732.5
         ]
       ],
@@ -1902,7 +2162,7 @@
         ],
         [
           2263.0,
-          7.99966,
+          8.00195,
           1895.1
         ]
       ],
@@ -1929,7 +2189,7 @@
         ],
         [
           2474.3,
-          8.17871,
+          8.12109,
           1726.55
         ]
       ],
@@ -1956,7 +2216,7 @@
         ],
         [
           1736.1,
-          8.0365,
+          8.16113,
           1794.15
         ]
       ],
@@ -1982,9 +2242,9 @@
           1.0
         ],
         [
-          2145.5,
-          8.18665,
-          1669.45
+          2145.3,
+          8.00195,
+          1674.5
         ]
       ],
       "objLayer": 0,
@@ -2010,7 +2270,7 @@
         ],
         [
           2797.3,
-          8.16795,
+          8.16992,
           1890.4
         ]
       ],
@@ -2037,7 +2297,7 @@
         ],
         [
           2482.85,
-          8.12578,
+          8.12695,
           1818.85
         ]
       ],
@@ -2228,6 +2488,2355 @@
           2359.8,
           7.99955,
           1733.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea41": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2429.23,
+          9.86914,
+          2358.48
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea42": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2452.75,
+          9.60156,
+          2342.29
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea43": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2373.37,
+          9.65625,
+          2348.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea44": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2393.51,
+          10.248,
+          2381.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea45": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1749.67,
+          8.14844,
+          1803.61
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea46": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1729.27,
+          8.16699,
+          1821.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea47": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1783.2,
+          8.11816,
+          1785.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea48": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1820.1,
+          8.08594,
+          1788.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea49": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1847.75,
+          7.8916,
+          1710.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea50": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1901.65,
+          7.97363,
+          1735.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea51": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1883.4,
+          7.93262,
+          1673.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea52": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1849.35,
+          7.88281,
+          1674.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea53": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1979.35,
+          8.01953,
+          1608.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea54": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2021.9,
+          8.00586,
+          1667.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea55": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2032.05,
+          7.96387,
+          1565.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea56": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2046.8,
+          8.00195,
+          1723.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea57": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2126.6,
+          8.00195,
+          1722.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea58": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2158.65,
+          8.00195,
+          1727.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea59": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2124.35,
+          8.00195,
+          1657.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea60": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2163.85,
+          8.00977,
+          1656.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea61": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2305.55,
+          8.00195,
+          1697.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea62": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2098.5,
+          8.00195,
+          1695.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea63": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2231.65,
+          8.00195,
+          1696.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea64": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2330.05,
+          8.00195,
+          1661.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea65": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2328.3,
+          8.00195,
+          1718.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea66": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2523.45,
+          8.19824,
+          1641.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea67": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2467.65,
+          8.1084,
+          1667.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea68": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2427.25,
+          8.04688,
+          1736.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea69": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2383.0,
+          8.00195,
+          1666.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea70": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2520.1,
+          8.17969,
+          1811.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea71": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2399.7,
+          8.00195,
+          1832.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea72": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2285.95,
+          8.00195,
+          1901.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea73": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2228.55,
+          8.00195,
+          1899.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea74": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2156.8,
+          8.00195,
+          1909.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea75": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2136.1,
+          8.00195,
+          1946.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea76": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2170.5,
+          8.00195,
+          1965.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea77": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1984.45,
+          8.00195,
+          1801.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea78": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1940.95,
+          8.00195,
+          1857.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea79": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1852.55,
+          8.05664,
+          1893.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea80": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1851.8,
+          8.05664,
+          1842.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea81": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1854.5,
+          8.08301,
+          1966.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea82": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1766.65,
+          8.31543,
+          2069.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea83": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1709.2,
+          8.39648,
+          2063.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea84": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1740.5,
+          8.26562,
+          1975.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea85": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1865.85,
+          8.05078,
+          2068.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea86": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1799.02,
+          8.16992,
+          2147.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea87": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1825.95,
+          8.11523,
+          2246.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea88": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1879.77,
+          8.01074,
+          2287.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea89": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1784.86,
+          8.28223,
+          2342.16
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea90": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1739.06,
+          8.38965,
+          2383.23
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea91": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1789.89,
+          8.73926,
+          2482.87
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea92": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1942.6,
+          9.4248,
+          2602.96
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea93": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1939.13,
+          8.8457,
+          2500.48
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea94": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1943.27,
+          8.49805,
+          2348.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea95": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1987.48,
+          9.23828,
+          2348.69
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea96": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2043.63,
+          10.3359,
+          2362.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea97": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2036.65,
+          8.19629,
+          2280.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea98": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2195.99,
+          8.00195,
+          2042.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea99": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2250.16,
+          8.00195,
+          2025.53
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea100": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2296.31,
+          8.00195,
+          2037.29
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea101": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2278.34,
+          8.00488,
+          2171.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea102": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2267.85,
+          8.10938,
+          2241.18
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea103": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2157.24,
+          8.08887,
+          2225.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea104": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2005.5,
+          10.0156,
+          2507.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea105": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2356.42,
+          12.1807,
+          2447.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea106": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2470.91,
+          11.5156,
+          2430.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea107": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2542.67,
+          11.1289,
+          2504.18
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea108": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2501.18,
+          11.4248,
+          2580.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea109": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2398.53,
+          11.9648,
+          2610.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea110": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2213.09,
+          12.1504,
+          2709.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea111": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2051.2,
+          10.2324,
+          2660.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea112": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2065.46,
+          11.1748,
+          2558.03
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea113": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2512.38,
+          11.1162,
+          2393.44
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea114": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2554.57,
+          10.9902,
+          2437.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea115": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2663.65,
+          10.3164,
+          2458.12
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea116": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2708.36,
+          9.93359,
+          2352.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea117": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2716.24,
+          8.05469,
+          2209.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea118": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2571.33,
+          8.03125,
+          2220.16
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea119": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2473.66,
+          8.01465,
+          2198.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea120": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2371.41,
+          8.37305,
+          2271.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea121": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2594.93,
+          8.1084,
+          1870.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea122": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2661.8,
+          8.12891,
+          1878.16
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea123": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2533.99,
+          8.07812,
+          1875.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea124": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2729.95,
+          8.17676,
+          1819.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea125": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2754.35,
+          8.44531,
+          1649.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea126": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1682.23,
+          8.99121,
+          2525.57
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "pickuparea127": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2696.43,
+          10.2354,
+          2573.96
         ]
       ],
       "objLayer": 0,

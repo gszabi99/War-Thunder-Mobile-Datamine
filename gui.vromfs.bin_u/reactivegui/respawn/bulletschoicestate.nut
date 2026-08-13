@@ -12,6 +12,7 @@ let { calcBulletStep, calcBulletsStatus, calcChosenBullets, calcMaxBullets, calc
   ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
 } = require("%rGui/bullets/calcBullets.nut")
 
+let BR_PICKUP_RESERVE = 999
 
 let unitName = Computed(@() selSlot.get()?.name)
 let bulletsInfo = Computed(@() unitName.get() == null ? null
@@ -99,10 +100,18 @@ let chosenBulletsSpec = Computed(@()
     BULLETS_PRIM_SLOTS + secBulletsSlots.get()
   ).map(@(s) s.$rawset("visIdx", (s.idx - (BULLETS_PRIM_SLOTS + secBulletsSlots.get())) + primaryCount.get() + secondaryCount.get())))
 
+let isBrPickupBullet = @(status, bullet) ((status?[bullet.name] ?? 0) & BS_BR_PICKUP) != 0
 let bulletFormat = @(b, c, tg) { name = b.name, count = ceil(b.count / c).tointeger(), triggerGroup = tg }
 let bulletsToSpawn = Computed(function() {
   let primTg = bulletsInfo.get()?.triggerGroup ?? "primary"
-  let res = chosenBullets.get().map(@(b) bulletFormat(b, bulletsInfo.get()?.catridge ?? 1, primTg))
+  let primCatridge = bulletsInfo.get()?.catridge ?? 1
+  let status = bulletsStatus.get()
+  let res = chosenBullets.get().map(function(b) {
+    let formatB = bulletFormat(b, primCatridge, primTg)
+    if (isBrPickupBullet(status, b))
+      formatB.count = BR_PICKUP_RESERVE
+    return formatB
+  })
   if (isFakeSecondary.get() && isFakeSpecial.get())
     return res
 
@@ -129,7 +138,7 @@ let bulletsToSpawn = Computed(function() {
   return res
 })
 
-let isBrPickupBullet = @(status, bullet) ((status?[bullet.name] ?? 0) & BS_BR_PICKUP) != 0
+let brPickupPrimIdx = Computed(@() chosenBullets.get().findindex(@(bullet) isBrPickupBullet(bulletsStatus.get(), bullet)) ?? -1)
 let chosenBulletsAmount = Computed(@() chosenBullets.get()
   .reduce(@(acc, bullet) isBrPickupBullet(bulletsStatus.get(), bullet) ? acc : acc + bullet.count, 0))
 let chosenBulletsSecAmount = Computed(@() chosenBulletsSec.get().len() > 0
@@ -141,10 +150,9 @@ let chosenBulletsSpecAmount = Computed(@() chosenBulletsSpec.get().len() > 0
 let hasZeroBullets = Computed(@() chosenBulletsAmount.get() == 0 || chosenBulletsSecAmount.get() == 0 || chosenBulletsSpecAmount.get() == 0)
 let hasLowBullets = Computed(@() chosenBulletsAmount.get() < BULLETS_LOW_AMOUNT
   || chosenBulletsAmount.get() < bulletsInfo.get().total * BULLETS_LOW_PERCENT / 100)
-let mainBulletsToSpawn = Computed(@() bulletsToSpawn.get().filter(@(b) !isBrPickupBullet(bulletsStatus.get(), b)))
 let hasZeroMainBullets = Computed(@() hasExtraBullets.get()
-  && mainBulletsToSpawn.get().len() > 0
-  && mainBulletsToSpawn.get()[0].count == 0)
+  && bulletsToSpawn.get().len() > 0
+  && bulletsToSpawn.get()[0].count == 0)
 
 function setCurUnitBullets(slotIdx, bName, bCount) {
   if (!setUnitBullets(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), chosenBulletsSpec.get(), slotIdx, bName, bCount))
@@ -178,6 +186,7 @@ return {
   bulletsStatusSec
   bulletsStatusSpec
   chosenBullets
+  brPickupPrimIdx
   chosenBulletsSec
   chosenBulletsSpec
   bulletsToSpawn

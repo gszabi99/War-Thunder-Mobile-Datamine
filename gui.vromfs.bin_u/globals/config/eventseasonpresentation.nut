@@ -93,7 +93,15 @@ let presentations = {
   hotmaybond                   = { bg = "ui/images/event_bg_season_20.avif" }
   independencebond             = { bg = "ui/images/event_bg_event_independence_day.avif" }
   anniversary_2025             = { bg = "ui/images/event_bg_anniversary_2025.avif", gamercardItems = [ "firework_kit" ] }
-  anniversarybond              = { bg = "ui/images/event_bg_anniversary_2025.avif" }
+  anniversarybond              = { bg = "ui/bkg/login_bkg_anniversary_2026.avif" }
+  anniversary_2026             = {
+    image = $"ui/gameuiskin/icon_event_anniversary_2026_shop.avif",
+    icon = "ui/gameuiskin#icon_event_anniversary_2026.svg",
+    bg = "ui/bkg/login_bkg_anniversary_2026.avif"
+    bgColor = 0xFF999999,
+    descLocId = "events/toBattle/anniversary_2026"
+  }
+  anniversarytoken             = { bg = "ui/bkg/login_bkg_anniversary_2026.avif" }
   halloween_2025               = { bg = "ui/images/event_bg_halloween_2025.avif", gamercardItems = [ "firework_kit" ] }
   new_year_2026                = {
     image = $"ui/gameuiskin/icon_event_christmas_shop.avif",

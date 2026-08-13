@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isGtBattleRoyale } = require("%rGui/missionState.nut")
 let { crewState } = require("%rGui/hud/crewState.nut")
@@ -23,7 +22,7 @@ let getCrewRankIcon = @(level) crewRankIconsList[clamp(level, 0, 100).tointeger(
 
 function mkCrewRank(level, scale) {
   let font = scaleFontWithTransform(fontVeryTinyShaded, scale, [0, 1])
-  let size = scaleArr(iconSize, scale)
+  let size = scaleEven(iconSize, scale)
 
   return {
     size = blockSize
@@ -35,7 +34,7 @@ function mkCrewRank(level, scale) {
         size
         rendObj = ROBJ_IMAGE
         color = hudGrassColor
-        image = Picture($"{getCrewRankIcon(level)}:{size}:{size}:P")
+        image = Picture($"{getCrewRankIcon(level)}:{size}:P")
         keepAspect = true
       }
       {

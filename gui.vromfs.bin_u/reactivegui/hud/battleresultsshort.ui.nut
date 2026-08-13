@@ -98,13 +98,13 @@ let resultText = {
   [GO_WIN]  = "".concat(loc("debriefing/victory"), "!"),
   [GO_FAIL] = "".concat(loc("debriefing/defeat"), "!"),
 }
-let resultTextFFA = "".concat(loc("MISSION_FINISHED"), "!")
+let resultTextFFA = {
+  [GO_WIN]  = "".concat(loc("debriefing/victory"), "!"),
+  [GO_FAIL] = "".concat(loc("MISSION_FINISHED"), "!"),
+}
 
-let getResultText = @(resultNum, isFFA) resultNum == null
-    ? ""
-  : isFFA
-    ? resultTextFFA
-  : resultText[resultNum]
+let getResultText = @(resultNum, isFFA) resultNum == null ? ""
+  : (isFFA ? resultTextFFA : resultText)[resultNum]
 
 let textBgColor = Watched(whiteBgColor)
 let showText = Watched(false)

@@ -1,68 +1,135 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/screenHintsLib.nut" import mkScreenHints
 
-let bgImage = "ui/images/help/help_event_battle_royale.avif"
+const bgImage = "ui/images/help/help_event_battle_royale.avif"
 let bgSize = [3282, 1041]
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
 
-let hintBgColor = 0xCC052737
+const hintBgColor = 0xCC052737
+const mapIconColor = 0xFFFF9600
+const pickupRedColor = 0xFFB50000
+const pickupBlueColor = 0xFF1E60CC
+const pickupGreenColor = 0xFF418B4C
+const pickupYellowColor = 0xFFBEA00F
 
-let mkTextarea = @(text, maxWidth, ovr = {}) {
+let mkTextarea = @(text, maxWidth, isFixedWidth = false) {
   maxWidth
+  size = isFixedWidth
+    ? [maxWidth, SIZE_TO_CONTENT]
+    : null
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = 0xFFFFFFFF
   text
-}.__update(fontTiny, ovr)
+}.__update(fontTiny)
 
-let hintPickupIntroW = hdpx(350)
-let hintPickupW = hdpx(570)
-let hintAreaW = hdpx(300)
-let hintFfaW = hdpx(400)
+const markSz = evenPx(60)
+const markInnerSz = evenPx(54)
+const iconSz = evenPx(32)
+let mkColorMark = @(color, icon) {
+  size = markSz
+  pos = const [hdpx(-75), hdpx(-12)]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#circle.svg:{markSz}:{markSz}")
+  children = [
+    {
+      size = const [hdpx(7), hdpx(3)]
+      pos = const [hdpx(33), 0]
+      rendObj = ROBJ_SOLID
+      color = 0xFFFFFFFF
+    }
+    {
+      size = markInnerSz
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#circle.svg:{markInnerSz}:{markInnerSz}")
+      color
+    }
+    {
+      size = iconSz
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#{icon}:{iconSz}:{iconSz}:P")
+      keepAspect = true
+      color = mapIconColor
+    }
+  ]
+}
 
-let hintPickupsPosY = 25
-let pickup1PosX = 1196
-let pickup1PosY = 404
-let pickup2PosX = 2148
-let pickup2PosY = 280
+const hintAreaW = hdpx(350)
+const hintPickupW = hdpx(350)
 
-let hintAreaPosX = 3075
-let hintAreaPosY = 460
-let areaPosX = 2982
-let areaPosY = 326
+const hintPickupsPosX = 3074
+const airDropPosX = 1690
+const airDropPosY = 25
+const pickup1PosY = 25
+const pickup2PosY = 368
+const pickup3PosY = 710
+
+const hintAreaPosX = 208
+const hintAreaPosY = 25
+const areaPosX = 230
+const areaPosY = 400
+const hintPickupIntroPosX = 208
+const hintPickupIntroPosY = 1016
 
 let hints = [
-  {
-    content = mkTextarea(loc("help/event/battleRoyale/pickups"), hintPickupIntroW)
-    pos = mkSizeByParent([208, hintPickupsPosY])
-    bgColor = hintBgColor
-  }
-  {
-    content = mkTextarea(loc("help/event/battleRoyale/pickupCrew", { percent = 50 }), hintPickupW)
-    pos = mkSizeByParent([990, hintPickupsPosY])
-    bgColor = hintBgColor
-    lines = mkLines([pickup1PosX, pickup1PosY, pickup1PosX, 167])
-  }
-  {
-    content = mkTextarea(loc("help/event/battleRoyale/pickupConsumables"), hintPickupW)
-    pos = mkSizeByParent([2065, hintPickupsPosY])
-    bgColor = hintBgColor
-    lines = mkLines([pickup2PosX, pickup2PosY, pickup2PosX, 170])
-  }
   {
     content = mkTextarea(loc("help/event/battleRoyale/area"), hintAreaW)
     pos = mkSizeByParent([hintAreaPosX, hintAreaPosY])
     bgColor = hintBgColor
-    blockOvr = { hplace = ALIGN_RIGHT }
     lines = mkLines([areaPosX, areaPosY, areaPosX, hintAreaPosY])
   }
   {
-    content = mkTextarea(loc("help/event/battleRoyale/noTeams"), hintFfaW)
-    pos = mkSizeByParent([834, 858])
+    content = mkTextarea(loc("help/event/battleRoyale/pickups"), hintAreaW)
+    pos = mkSizeByParent([hintPickupIntroPosX, hintPickupIntroPosY])
+    blockOvr = { vplace = ALIGN_BOTTOM }
     bgColor = hintBgColor
-    blockOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER }
+  }
+  {
+    content = {
+      children = [
+        mkTextarea(loc("help/event/battleRoyale/airDrop"), hintPickupW)
+        mkColorMark(pickupRedColor, "br_pickup_apfsds.svg")
+      ]
+    }
+    pos = mkSizeByParent([airDropPosX, airDropPosY])
+    bgColor = hintBgColor
+  }
+  {
+    content = {
+      children = [
+        mkTextarea(loc("help/event/battleRoyale/pickupCrew", { percent = 25 }), hintPickupW, true)
+        mkColorMark(pickupBlueColor, "pickup_map_icon_crewskill.svg")
+      ]
+    }
+    pos = mkSizeByParent([hintPickupsPosX, pickup1PosY])
+    blockOvr = { hplace = ALIGN_RIGHT }
+    bgColor = hintBgColor
+  }
+  {
+    content = {
+      children = [
+        mkTextarea(loc("help/event/battleRoyale/pickupConsumables"), hintPickupW, true)
+        mkColorMark(pickupGreenColor, "br_pickup_rep_heal.svg")
+      ]
+    }
+    pos = mkSizeByParent([hintPickupsPosX, pickup2PosY])
+    blockOvr = { hplace = ALIGN_RIGHT }
+    bgColor = hintBgColor
+  }
+  {
+    content = {
+      children = [
+        mkTextarea(loc("help/event/battleRoyale/pickupRadio"), hintPickupW, true)
+        mkColorMark(pickupYellowColor, "br_pickup_arti_recon.svg")
+      ]
+    }
+    pos = mkSizeByParent([hintPickupsPosX, pickup3PosY])
+    blockOvr = { hplace = ALIGN_RIGHT }
+    bgColor = hintBgColor
   }
 ]
 
@@ -73,7 +140,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100) / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

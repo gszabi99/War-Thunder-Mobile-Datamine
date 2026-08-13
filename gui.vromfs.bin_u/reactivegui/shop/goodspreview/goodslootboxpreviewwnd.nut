@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
+let { G_LOOTBOX, G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
+let { GOLD, WP } = require("%appGlobals/currenciesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -24,6 +26,7 @@ let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
+let { getAllLootboxRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
 let wndHeaderHeight = hdpx(110)
 let contentGap = hdpx(30)
@@ -51,15 +54,23 @@ let bgImage = keepref(Computed(@() getLootboxPreviewBg(lootbox.get()?.name)))
 
 function balanceButtons() {
   let { currencyId = "" } = previewGoods.get()?.price
+  let currencyIds = { [currencyId] = true }
+  if (lootbox.get() != null)
+    foreach (r in getAllLootboxRewardsViewInfo(lootbox.get()))
+      if (r.rType == G_CURRENCY)
+        currencyIds[currencyToFullId.get()?[r.id] ?? r.id] <- true
+  currencyIds.$rawdelete("")
+  currencyIds.$rawdelete(GOLD)
+  currencyIds.$rawdelete(WP)
   return {
-    watch = previewGoods
+    watch = [previewGoods, lootbox, currencyToFullId]
     pos = [saBorders[0], 0]
     padding = [hdpx(10), saBorders[0]]
     rendObj = ROBJ_IMAGE
     image = simpleHorGrad
     color = 0x70000000
     hplace = ALIGN_RIGHT
-    children = currencyId == "" ? null : mkCurrenciesBtns([currencyId])
+    children = currencyIds.len() == 0 ? null : mkCurrenciesBtns(currencyIds.keys())
     animations = opacityAnims(1, aTimePriceStart + 0.5)
   }
 }

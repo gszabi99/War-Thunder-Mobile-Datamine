@@ -5,12 +5,17 @@ let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campConfigs, purchasesCount, todayPurchasesCount, goodsLimitReset
+} = require("%appGlobals/pServer/campaign.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, shopGoods, soonGoods } = require("%rGui/shop/shopState.nut")
+let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { getGoodsByCurrencyId } = require("%rGui/shop/goodsUtils.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
@@ -325,12 +330,21 @@ let hasCurrencyShop = @(cId, goods, soon) cId in openCfg
   || null != goods.findvalue(@(g) isGoodsForCurrency(g, cId))
   || null != soon.findvalue(@(g) isGoodsForCurrency(g, cId))
 
+function mkCurrencyOpenAction(cId, goods, soon, configs, limitReset, dOffset, servTimeDay, purchCount, todayPurchCount) {
+  if (hasCurrencyShop(cId, goods, soon))
+    return openBuyCurrencyWnd(cId)
+  let goodsId = getGoodsByCurrencyId(cId, goods.__merge(soon), configs, limitReset, dOffset, servTimeDay,
+    purchCount, todayPurchCount)?.id
+  return goodsId == null ? null : @() openGoodsPreview(goodsId)
+}
+
 let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
   size = FLEX_H
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
   children = @() {
-    watch = [shopGoods, soonGoods]
+    watch = [shopGoods, soonGoods, serverConfigs, goodsLimitReset, dayOffset, serverTimeDay,
+      purchasesCount, todayPurchasesCount]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
@@ -338,8 +352,9 @@ let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
     children = !currencies ? null
       : [].extend(currencies)
           .sort(@(a, b) sortByCurrencyId(b, a)) 
-          .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] || !hasCurrencyShop(c, shopGoods.get(), soonGoods.get()) ? null
-            : openBuyCurrencyWnd(c)))
+          .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null
+            : mkCurrencyOpenAction(c, shopGoods.get(), soonGoods.get(), serverConfigs.get(),
+                goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get())))
   }
 }
 
