@@ -1029,7 +1029,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 90.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1042,7 +1042,7 @@
         "limits": {
           "yaw": [
             -120.0,
-            30.0
+            -30.0
           ],
           "pitch": [
             0.0,
@@ -1073,7 +1073,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 90.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -1628,7 +1628,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 90.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -1641,7 +1641,7 @@
               "limits": {
                 "yaw": [
                   -120.0,
-                  30.0
+                  -30.0
                 ],
                 "pitch": [
                   0.0,
@@ -1672,7 +1672,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 90.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -2207,7 +2207,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 90.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -2220,7 +2220,7 @@
               "limits": {
                 "yaw": [
                   -120.0,
-                  30.0
+                  -30.0
                 ],
                 "pitch": [
                   0.0,
@@ -2251,7 +2251,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 90.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,

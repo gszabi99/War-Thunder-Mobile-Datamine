@@ -3258,7 +3258,7 @@
           0.0
         ],
         "useStartSpeed": true,
-        "allowableDelta": 70.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -3300,7 +3300,7 @@
           0.0
         ],
         "useStartSpeed": true,
-        "allowableDelta": 70.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -3342,7 +3342,7 @@
           0.0
         ],
         "useStartSpeed": true,
-        "allowableDelta": 70.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -3384,7 +3384,7 @@
           0.0
         ],
         "useStartSpeed": true,
-        "allowableDelta": 70.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -3426,7 +3426,7 @@
           0.0
         ],
         "useStartSpeed": true,
-        "allowableDelta": 70.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -3473,7 +3473,7 @@
     "detectionHeight": 40.1
   },
   "torpedoSeries": {
-    "delay": 0.1,
+    "delay": 0.6,
     "count": 3,
     "isDeadzoneCheck": true
   },
@@ -5855,7 +5855,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -5897,7 +5897,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -5939,7 +5939,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -5981,7 +5981,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -6023,7 +6023,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -8431,7 +8431,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -8473,7 +8473,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -8515,7 +8515,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -8557,7 +8557,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -8599,7 +8599,7 @@
                 0.0
               ],
               "useStartSpeed": true,
-              "allowableDelta": 70.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,

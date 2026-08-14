@@ -3251,6 +3251,11 @@
           "from": "amx_30_turret_c*",
           "to": "amx_30_turret_cenzub_c*",
           "param": "camo_skin_tex"
+        },
+        {
+          "from": "amx_30_b2_parts_add_c*",
+          "to": "amx_30_b2_parts_add_cenzub_c*",
+          "param": "camo_skin_tex"
         }
       ]
     }

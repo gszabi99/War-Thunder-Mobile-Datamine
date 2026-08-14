@@ -2379,6 +2379,9 @@
         "pylon_rocket8"
       ]
     },
+    "HideDmParts": {
+      "node": "radar_dm"
+    },
     "WeaponSlot": [
       {
         "index": 0,

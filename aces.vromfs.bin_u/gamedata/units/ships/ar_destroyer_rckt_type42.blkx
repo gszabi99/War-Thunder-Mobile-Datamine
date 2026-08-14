@@ -804,14 +804,14 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 80.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_head_01",
-          "gun": "tt_head_01",
+          "gun": "tt_01",
           "gunnerDm": "tt_01_dm"
         },
         "limits": {
@@ -848,14 +848,14 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 80.0,
+        "allowableDelta": 40.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_head_02",
-          "gun": "tt_head_02",
+          "gun": "tt_02",
           "gunnerDm": "tt_02_dm"
         },
         "limits": {
@@ -1428,14 +1428,14 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 80.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_01",
-                "gun": "tt_head_01",
+                "gun": "tt_01",
                 "gunnerDm": "tt_01_dm"
               },
               "limits": {
@@ -1472,14 +1472,14 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 80.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_02",
-                "gun": "tt_head_02",
+                "gun": "tt_02",
                 "gunnerDm": "tt_02_dm"
               },
               "limits": {
@@ -2032,14 +2032,14 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 80.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_01",
-                "gun": "tt_head_01",
+                "gun": "tt_01",
                 "gunnerDm": "tt_01_dm"
               },
               "limits": {
@@ -2076,14 +2076,14 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 80.0,
+              "allowableDelta": 40.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_02",
-                "gun": "tt_head_02",
+                "gun": "tt_02",
                 "gunnerDm": "tt_02_dm"
               },
               "limits": {
