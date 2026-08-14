@@ -159,6 +159,7 @@ let presentations = {
   japanbond                    = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
   event_leyte_battle           = { imageSizeMul = 1.4 }
   tank_constructor_birthday    = { image = $"ui/gameuiskin/icon_event_event_black_friday_shop.avif" }
+  event_litvyak_birthday       = { bg = "ui/images/event_bg_season_36.avif" }
   offers_event                 = { locId = "events/name/challenge", bg = "ui/images/event_bg_season_35.avif" }
   premiere_challenge_first     = { locId = "events/name/challenge", bg = "ui/images/event_bg_season_35.avif" }
   premiere_challenge_second    = { locId = "events/name/challenge", bg = "ui/images/event_bg_season_35.avif" }

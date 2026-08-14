@@ -3,7 +3,7 @@ let logA = log_with_prefix("[ADDONS] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { get_free_disk_space = @() -1,
-  download_content_in_background, stop_updater, is_updater_running,
+  download_content_in_background, stop_updater, is_updater_running, add_addons,
   remove_addons_resources_async = @(_) null,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
@@ -585,6 +585,13 @@ eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
 function removeAddonsForCampaign(campaigns) {
   remove_addons_resources_async(getPkgsForCampaign(campaigns))
 }
+
+curHangarAddon.subscribe(function(addon) {
+  if (addon != null) {
+    logA($"Create download request for hangar addon: {addon}")
+    add_addons([addon])
+  }
+})
 
 return {
   startDownloadAddons  
