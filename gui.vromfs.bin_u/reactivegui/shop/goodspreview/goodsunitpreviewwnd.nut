@@ -138,9 +138,10 @@ previewGoodsUnit.subscribe(@(v) curSelectedUnitId.set(v?.name ?? ""))
 let unitForShow = Computed(function() {
   if (!isWindowAttached.get() || previewGoodsUnit.get() == null)
     return null
-  let unitName = curSelectedUnitId.get()
+  local unitName = curSelectedUnitId.get()
   local res = clone (unitName == previewGoodsUnit.get().name || unitName == "" ? previewGoodsUnit.get()
     : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.get().__merge({ name = unitName })))
+  unitName = res.name
 
   res.skin <- previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_SKIN && r.id == unitName).subId
     ?? (previewGoodsUnit.get()?.isUpgraded ? "upgraded" : "")

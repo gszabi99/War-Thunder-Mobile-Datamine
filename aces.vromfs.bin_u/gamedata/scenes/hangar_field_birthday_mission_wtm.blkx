@@ -1,169 +1,10 @@
 {
-  "entity": [
+  "import": [
     {
-      "_template": "backmodel_spawn_point",
-      "transform": [
-        [
-          -0.313163,
-          0.0,
-          -0.9497
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.9497,
-          0.0,
-          -0.313162
-        ],
-        [
-          2955.73,
-          7.00009,
-          -2958.63
-        ]
-      ],
-      "spawnPointType": "ship",
-      "forPremiumVehicle": true
+      "scene": "gamedata/scenes/hangar_field_units.blk"
     },
     {
-      "_template": "backmodel_spawn_point",
-      "transform": [
-        [
-          -0.807473,
-          0.0,
-          -0.589905
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.589905,
-          0.0,
-          -0.807473
-        ],
-        [
-          2777.38,
-          6.99944,
-          -3172.01
-        ]
-      ],
-      "spawnPointType": "ship",
-      "forPremiumVehicle": false
-    },
-    {
-      "_template": "backmodel_spawn_point",
-      "transform": [
-        [
-          -0.289548,
-          0.0,
-          -0.957163
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.957163,
-          0.0,
-          -0.289548
-        ],
-        [
-          3053.74,
-          6.99998,
-          -2503.93
-        ]
-      ],
-      "spawnPointType": "ship",
-      "forPremiumVehicle": false
-    },
-    {
-      "_template": "backmodel_spawn_point",
-      "transform": [
-        [
-          0.978113,
-          0.0,
-          -0.208075
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.208075,
-          0.0,
-          0.978113
-        ],
-        [
-          444.264,
-          139.6,
-          3598.6
-        ]
-      ],
-      "spawnPointType": "tank",
-      "forPremiumVehicle": false
-    },
-    {
-      "_template": "backmodel_spawn_point",
-      "transform": [
-        [
-          0.839296,
-          0.0,
-          -0.543675
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.543675,
-          0.0,
-          0.839296
-        ],
-        [
-          456.119,
-          139.6,
-          3624.89
-        ]
-      ],
-      "spawnPointType": "tank",
-      "forPremiumVehicle": false
-    },
-    {
-      "_template": "backmodel_spawn_point",
-      "transform": [
-        [
-          0.90902,
-          0.0,
-          -0.416751
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.416751,
-          0.0,
-          0.90902
-        ],
-        [
-          449.221,
-          139.6,
-          3612.68
-        ]
-      ],
-      "spawnPointType": "tank",
-      "forPremiumVehicle": false
-    },
-    {
-      "_template": "ecs_fx",
+      "scene": "gamedata/scenes/hangar_field_major_banners_tank.blk",
       "transform": [
         [
           1.0,
@@ -181,64 +22,15 @@
           1.0
         ],
         [
-          2133.7,
-          8.04736,
-          1892.3
-        ]
-      ],
-      "ecs_fx__res": "fire_ground_medium_fx"
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "tank",
-      "setting__playerNo": -1,
-      "setting__className": "tankModels/us_m24_chaffee",
-      "setting__unit_class": "us_m24_chaffee",
-      "setting__name": "armada_29",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 1,
-      "setting__count": 1,
-      "setting__attack_type": "dont_aim",
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          1.0,
+          0.0,
           0.0,
           0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          2197.6,
-          8.13,
-          1887.4
         ]
       ]
     },
     {
-      "_template": "unit_loader",
-      "setting__unitType": "tank",
-      "setting__playerNo": -1,
-      "setting__className": "tankModels/us_m24_chaffee",
-      "setting__unit_class": "us_m24_chaffee",
-      "setting__name": "armada_30",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 1,
-      "setting__count": 1,
-      "setting__isDead": true,
-      "setting__attack_type": "dont_aim",
-      "setting__loadSound": false,
-      "setting__tm": [
+      "scene": "gamedata/scenes/hangar_field_major_banners_ship.blk",
+      "transform": [
         [
           1.0,
           0.0,
@@ -255,26 +47,15 @@
           1.0
         ],
         [
-          2217.6,
-          8.13,
-          1887.4
+          0.0,
+          0.0,
+          0.0
         ]
       ]
     },
     {
-      "_template": "unit_loader",
-      "setting__unitType": "aircraft",
-      "setting__playerNo": -1,
-      "setting__className": "fw_190a_1",
-      "setting__unit_class": "fw_190a_1",
-      "setting__name": "armada_31",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 1,
-      "setting__count": 1,
-      "setting__attack_type": "dont_aim",
-      "setting__loadSound": false,
-      "setting__tm": [
+      "scene": "gamedata/scenes/hangar_field_major_banners_plane.blk",
+      "transform": [
         [
           1.0,
           0.0,
@@ -291,27 +72,15 @@
           1.0
         ],
         [
-          2131.7,
-          8.13,
-          1909.8
+          0.0,
+          0.0,
+          0.0
         ]
       ]
     },
     {
-      "_template": "unit_loader",
-      "setting__unitType": "aircraft",
-      "setting__playerNo": -1,
-      "setting__className": "fw_190a_1",
-      "setting__unit_class": "fw_190a_1",
-      "setting__name": "armada_32",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 1,
-      "setting__count": 1,
-      "setting__isDead": true,
-      "setting__attack_type": "dont_aim",
-      "setting__loadSound": false,
-      "setting__tm": [
+      "scene": "gamedata/scenes/hangar_field_objects_birthday.blk",
+      "transform": [
         [
           1.0,
           0.0,
@@ -328,45 +97,9 @@
           1.0
         ],
         [
-          2157.7,
-          8.13,
-          1909.8
-        ]
-      ]
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "ship",
-      "setting__playerNo": -1,
-      "setting__className": "ships/us_destroyer_fletcher",
-      "setting__unit_class": "us_destroyer_fletcher",
-      "setting__name": "armada_33",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 1,
-      "setting__count": 1,
-      "setting__attack_type": "dont_aim",
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          1.0,
+          0.0,
           0.0,
           0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          2908.1,
-          8.13,
-          -2939.6
         ]
       ]
     }

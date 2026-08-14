@@ -3881,6 +3881,16 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.291131,
       "decal2Tex": "israel_numbers_1"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "fiction": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3888,12 +3898,62 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "isr_camo_sandgray*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
       }
+    },
+    "fiction": {
+      "replace_tex": [
+        {
+          "from": "us_camo_olive*",
+          "to": "us_camo_olive*"
+        },
+        {
+          "from": "merkava_mk_2b_late_body_n*",
+          "to": "merkava_mk_2b_late_body_anniversary_skin_n*"
+        },
+        {
+          "from": "merkava_mk_2b_late_turret_n*",
+          "to": "merkava_mk_2b_late_turret_anniversary_skin_n*"
+        },
+        {
+          "from": "merkava_mk_2B_early_gun_n*",
+          "to": "merkava_mk_2B_early_gun_anniversary_skin_n*"
+        },
+        {
+          "from": "merkava_mk_2b_late_body_add_n*",
+          "to": "merkava_mk_2b_late_body_add_anniversary_skin_n*"
+        },
+        {
+          "from": "merkava_mk_2B_early_turret_add_n*",
+          "to": "merkava_mk_2B_early_turret_add_anniversary_skin_n*"
+        }
+      ],
+      "set_tex": [
+        {
+          "from": "merkava_mk_2b_late_body_c*",
+          "to": "merkava_mk_2b_late_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "merkava_mk_2b_late_turret_c*",
+          "to": "merkava_mk_2b_late_turret_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "merkava_mk_2B_early_gun_c*",
+          "to": "merkava_mk_2B_early_gun_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "merkava_mk_2b_late_body_add_c*",
+          "to": "merkava_mk_2b_late_body_add_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "merkava_mk_2B_early_turret_add_c*",
+          "to": "merkava_mk_2B_early_turret_add_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "smokeScreenExhaustEmitters": {

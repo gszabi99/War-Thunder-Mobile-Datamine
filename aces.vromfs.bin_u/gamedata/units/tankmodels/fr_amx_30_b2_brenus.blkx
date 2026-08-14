@@ -1849,43 +1849,6 @@
       ]
     }
   },
-  "defaultDecals": {
-    "winter": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
-    }
-  },
-  "vehicleSkins": {
-    "desert": {
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_green_sand_brown*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    },
-    "desert2": {
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_jaune_sahara*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    },
-    "winter": {
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "tl_camo_usa_colors*"
-      }
-    }
-  },
   "battleHideNodes": {
     "n": [
       "details",
@@ -3301,6 +3264,98 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "fiction": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "fiction": {
+      "set_tex": [
+        {
+          "from": "amx_30_body_c*",
+          "to": "amx_30_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "amx_30_gun_c*",
+          "to": "amx_30_gun_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "amx_30_turret_c*",
+          "to": "amx_30_turret_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "era_giat_bs_g2_c*",
+          "to": "era_giat_bs_g2_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "amx_30_b2_brenus_body_add_c*",
+          "to": "amx_30_b2_brenus_body_add_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "amx_30_b2_brenus_turret_add_c*",
+          "to": "amx_30_b2_brenus_turret_add_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "amx_30_b2_parts_add_c*",
+          "to": "amx_30_b2_parts_add_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "era_giat_bs_g2_brennus_mount_c*",
+          "to": "era_giat_bs_g2_brennus_mount_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        }
+      ],
+      "replace_tex": [
+        {
+          "from": "amx_30_body_n*",
+          "to": "amx_30_body_anniversary_skin_n*"
+        },
+        {
+          "from": "amx_30_gun_n*",
+          "to": "amx_30_gun_anniversary_skin_n*"
+        },
+        {
+          "from": "amx_30_turret_n*",
+          "to": "amx_30_turret_anniversary_skin_n*"
+        },
+        {
+          "from": "era_giat_bs_g2_n*",
+          "to": "era_giat_bs_g2_anniversary_skin_n*"
+        },
+        {
+          "from": "amx_30_b2_brenus_body_add_n*",
+          "to": "amx_30_b2_brenus_body_add_anniversary_skin_n*"
+        },
+        {
+          "from": "amx_30_b2_brenus_turret_add_n*",
+          "to": "amx_30_b2_brenus_turret_add_anniversary_skin_n*"
+        },
+        {
+          "from": "amx_30_b2_parts_add_n*",
+          "to": "amx_30_b2_parts_add_anniversary_skin_n*"
+        },
+        {
+          "from": "era_giat_bs_g2_brennus_mount_n*",
+          "to": "era_giat_bs_g2_brennus_mount_anniversary_skin_n*"
+        }
+      ]
     }
   },
   "counterMeasures": {

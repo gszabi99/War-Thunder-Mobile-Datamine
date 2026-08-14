@@ -50,16 +50,40 @@ let presentations = {
     image = "ui/images/tanks_japan_tree_info.avif"
   }
   collectors_pass_tanks_s35 = {
+    locId = "infoPopup/collectors_pass_tanks/title"
+    descLocId = "infoPopup/collectors_pass_tanks/desc"
     image = "ui/images/blueprint_folder_bg_tanks.avif"
     innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
   }
   collectors_pass_ships_s35 = {
+    locId = "infoPopup/collectors_pass_ships/title"
+    descLocId = "infoPopup/collectors_pass_ships/desc"
     image = "ui/images/ship_blueprint_bg.avif"
     innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
   }
   collectors_pass_air_s35 = {
+    locId = "infoPopup/collectors_pass_air/title"
+    descLocId = "infoPopup/collectors_pass_air/desc"
     image = "ui/images/air_beta_access_bg.avif"
     innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
+  }
+  collectors_pass_tanks_s36 = {
+    locId = "infoPopup/collectors_pass_tanks/title"
+    descLocId = "infoPopup/collectors_pass_tanks/desc"
+    image = "ui/images/blueprint_folder_bg_tanks.avif"
+    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
+  }
+  collectors_pass_ships_s36 = {
+    locId = "infoPopup/collectors_pass_ships/title"
+    descLocId = "infoPopup/collectors_pass_ships/desc"
+    image = "ui/images/ship_blueprint_bg.avif"
+    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
+  }
+  collectors_pass_air_s36 = {
+    locId = "infoPopup/collectors_pass_air/title"
+    descLocId = "infoPopup/collectors_pass_air/desc"
+    image = "ui/images/air_beta_access_bg.avif"
+    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
   }
   senrai_maidens = {
     image = "ui/images/WTM_anime_2700x1080.avif"

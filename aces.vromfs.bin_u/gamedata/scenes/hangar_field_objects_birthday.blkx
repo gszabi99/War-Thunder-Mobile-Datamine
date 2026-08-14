@@ -1,0 +1,7830 @@
+{
+  "entity": [
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "wreaths_number_02",
+      "transform": [
+        [
+          5.85478,
+          0.0,
+          0.00102316
+        ],
+        [
+          0.0,
+          5.85478,
+          0.0
+        ],
+        [
+          -0.00102316,
+          0.0,
+          5.85478
+        ],
+        [
+          3652.05,
+          52.2394,
+          3646.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "wreaths_number_02",
+      "transform": [
+        [
+          1.02072,
+          0.0,
+          1.94857
+        ],
+        [
+          0.0,
+          2.19972,
+          0.0
+        ],
+        [
+          -1.94857,
+          0.0,
+          1.02072
+        ],
+        [
+          426.626,
+          157.817,
+          3649.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "wreaths_number_02",
+      "transform": [
+        [
+          -2.18101,
+          0.0,
+          -6.63629
+        ],
+        [
+          0.0,
+          6.9855,
+          0.0
+        ],
+        [
+          6.63629,
+          0.0,
+          -2.18101
+        ],
+        [
+          3261.16,
+          72.2,
+          -2931.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.13216,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.13216
+        ],
+        [
+          3153.19,
+          14.9999,
+          -2818.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          4.13216,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.13216
+        ],
+        [
+          3168.34,
+          14.9999,
+          -2771.58
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          4.73398,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.73398,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.73398
+        ],
+        [
+          3183.55,
+          14.9999,
+          -2724.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.3189,
+          0.0,
+          -3.42015
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          3.42015,
+          0.0,
+          -2.3189
+        ],
+        [
+          3198.53,
+          14.9999,
+          -2676.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.3189,
+          0.0,
+          -3.42015
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          3.42015,
+          0.0,
+          -2.3189
+        ],
+        [
+          3214.25,
+          14.9999,
+          -2628.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -3.18842,
+          0.0,
+          3.79534
+        ],
+        [
+          0.0,
+          4.95687,
+          0.0
+        ],
+        [
+          -3.79534,
+          0.0,
+          -3.18842
+        ],
+        [
+          3230.72,
+          14.9999,
+          -2575.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -1.69266,
+          0.0,
+          -3.76957
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          3.76957,
+          0.0,
+          -1.69266
+        ],
+        [
+          3245.95,
+          14.9999,
+          -2527.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -3.02038,
+          0.0,
+          -2.81993
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          2.81993,
+          0.0,
+          -3.02038
+        ],
+        [
+          3136.1,
+          14.9999,
+          -2872.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -3.68607,
+          0.0,
+          -3.44144
+        ],
+        [
+          0.0,
+          5.04288,
+          0.0
+        ],
+        [
+          3.44144,
+          0.0,
+          -3.68607
+        ],
+        [
+          3120.42,
+          14.9999,
+          -2919.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -3.02038,
+          0.0,
+          -2.81993
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          2.81993,
+          0.0,
+          -3.02038
+        ],
+        [
+          3105.12,
+          14.9999,
+          -2967.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -3.42534,
+          0.0,
+          -3.19801
+        ],
+        [
+          0.0,
+          4.68617,
+          0.0
+        ],
+        [
+          3.19801,
+          0.0,
+          -3.42534
+        ],
+        [
+          3089.98,
+          14.9999,
+          -3016.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -3.11427,
+          0.0,
+          -2.90759
+        ],
+        [
+          0.0,
+          4.26061,
+          0.0
+        ],
+        [
+          2.90759,
+          0.0,
+          -3.11427
+        ],
+        [
+          3073.96,
+          14.9999,
+          -3068.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -3.11427,
+          0.0,
+          -2.90759
+        ],
+        [
+          0.0,
+          4.26061,
+          0.0
+        ],
+        [
+          2.90759,
+          0.0,
+          -3.11427
+        ],
+        [
+          3058.95,
+          14.9999,
+          -3116.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -3.40035,
+          0.0,
+          -3.17468
+        ],
+        [
+          0.0,
+          4.65198,
+          0.0
+        ],
+        [
+          3.17468,
+          0.0,
+          -3.40035
+        ],
+        [
+          3043.05,
+          14.9999,
+          -3165.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -3.34487,
+          0.0,
+          -3.12288
+        ],
+        [
+          0.0,
+          4.57608,
+          0.0
+        ],
+        [
+          3.12288,
+          0.0,
+          -3.34487
+        ],
+        [
+          3028.1,
+          14.9999,
+          -3212.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -3.86689,
+          0.0,
+          2.44697
+        ],
+        [
+          0.0,
+          4.57608,
+          0.0
+        ],
+        [
+          -2.44697,
+          0.0,
+          -3.86689
+        ],
+        [
+          3012.15,
+          14.9998,
+          -3259.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.54128,
+          0.0,
+          0.563277
+        ],
+        [
+          0.0,
+          4.57608,
+          0.0
+        ],
+        [
+          -0.563277,
+          0.0,
+          4.54128
+        ],
+        [
+          3000.2,
+          14.9998,
+          -3300.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          4.32248,
+          0.0,
+          0.536137
+        ],
+        [
+          0.0,
+          4.3556,
+          0.0
+        ],
+        [
+          -0.536137,
+          0.0,
+          4.32248
+        ],
+        [
+          2983.95,
+          14.9998,
+          -3347.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.13216,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.13216,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.13216
+        ],
+        [
+          3237.65,
+          35.65,
+          -2822.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          4.98104,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.98104,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.98104
+        ],
+        [
+          3210.6,
+          35.65,
+          -2919.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -4.3134,
+          0.0,
+          2.49104
+        ],
+        [
+          0.0,
+          4.98104,
+          0.0
+        ],
+        [
+          -2.49104,
+          0.0,
+          -4.3134
+        ],
+        [
+          3181.1,
+          35.65,
+          -3014.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.45165,
+          0.0,
+          4.33591
+        ],
+        [
+          0.0,
+          4.98104,
+          0.0
+        ],
+        [
+          -4.33591,
+          0.0,
+          -2.45165
+        ],
+        [
+          3258.5,
+          35.65,
+          -2754.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          0.987134,
+          0.0,
+          -4.88224
+        ],
+        [
+          0.0,
+          4.98104,
+          0.0
+        ],
+        [
+          4.88224,
+          0.0,
+          0.987134
+        ],
+        [
+          3295.4,
+          35.65,
+          -2638.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          1.11679,
+          0.0,
+          -5.52348
+        ],
+        [
+          0.0,
+          5.63525,
+          0.0
+        ],
+        [
+          5.52348,
+          0.0,
+          1.11679
+        ],
+        [
+          3278.9,
+          35.65,
+          -2693.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.68545,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.68545,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.68545
+        ],
+        [
+          3108.7,
+          7.1,
+          -2796.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          1.90326,
+          0.0,
+          -2.80089
+        ],
+        [
+          0.0,
+          3.38636,
+          0.0
+        ],
+        [
+          2.80089,
+          0.0,
+          1.90326
+        ],
+        [
+          3083.25,
+          7.09999,
+          -2781.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.59686,
+          0.0,
+          3.51417
+        ],
+        [
+          0.0,
+          5.0286,
+          0.0
+        ],
+        [
+          -3.51417,
+          0.0,
+          3.59686
+        ],
+        [
+          3031.7,
+          7.09999,
+          -2751.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.59686,
+          0.0,
+          3.51417
+        ],
+        [
+          0.0,
+          5.0286,
+          0.0
+        ],
+        [
+          -3.51417,
+          0.0,
+          3.59686
+        ],
+        [
+          3050.85,
+          7.09999,
+          -2785.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          2.77719,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.77719,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.77719
+        ],
+        [
+          3065.85,
+          8.20001,
+          -2796.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -2.68409,
+          0.0,
+          -2.94507
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          2.94507,
+          0.0,
+          -2.68409
+        ],
+        [
+          3013.1,
+          8.2,
+          -2788.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          1.16373,
+          0.0,
+          2.25031
+        ],
+        [
+          0.0,
+          2.53341,
+          0.0
+        ],
+        [
+          -2.25031,
+          0.0,
+          1.16373
+        ],
+        [
+          2955.1,
+          8.19999,
+          -2775.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          5.75952,
+          0.0,
+          -0.669691
+        ],
+        [
+          0.0,
+          5.79832,
+          0.0
+        ],
+        [
+          0.669691,
+          0.0,
+          5.75952
+        ],
+        [
+          3072.95,
+          7.09999,
+          -2734.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.73319,
+          0.0,
+          -0.434079
+        ],
+        [
+          0.0,
+          3.75834,
+          0.0
+        ],
+        [
+          0.434079,
+          0.0,
+          3.73319
+        ],
+        [
+          3206.7,
+          15.0,
+          -2762.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.73319,
+          0.0,
+          -0.434079
+        ],
+        [
+          0.0,
+          3.75834,
+          0.0
+        ],
+        [
+          0.434079,
+          0.0,
+          3.73319
+        ],
+        [
+          3172.2,
+          15.0,
+          -2844.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          3.08265,
+          0.0,
+          -2.52489
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          2.52489,
+          0.0,
+          3.08265
+        ],
+        [
+          3209.43,
+          14.95,
+          -2814.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          3.9847,
+          0.0,
+          -0.00459492
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          0.00459492,
+          0.0,
+          3.9847
+        ],
+        [
+          3228.25,
+          14.95,
+          -2759.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -2.56369,
+          0.0,
+          1.83747
+        ],
+        [
+          0.0,
+          3.15418,
+          0.0
+        ],
+        [
+          -1.83747,
+          0.0,
+          -2.56369
+        ],
+        [
+          3143.27,
+          14.2346,
+          -2807.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          1.67587,
+          0.0,
+          5.78193
+        ],
+        [
+          0.0,
+          6.01991,
+          0.0
+        ],
+        [
+          -5.78193,
+          0.0,
+          1.67587
+        ],
+        [
+          3261.34,
+          63.1318,
+          -2929.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          1.67587,
+          0.0,
+          5.78193
+        ],
+        [
+          0.0,
+          6.01991,
+          0.0
+        ],
+        [
+          -5.78193,
+          0.0,
+          1.67587
+        ],
+        [
+          3237.2,
+          63.1318,
+          -3012.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "cake_anniversary_b",
+      "transform": [
+        [
+          -3.21129,
+          0.0,
+          -2.80923
+        ],
+        [
+          0.0,
+          4.26663,
+          0.0
+        ],
+        [
+          2.80923,
+          0.0,
+          -3.21129
+        ],
+        [
+          3265.79,
+          15.1056,
+          -2563.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_a",
+      "transform": [
+        [
+          4.63896,
+          0.0,
+          -9.35315
+        ],
+        [
+          0.0,
+          10.4404,
+          0.0
+        ],
+        [
+          9.35315,
+          0.0,
+          4.63896
+        ],
+        [
+          2073.65,
+          426.55,
+          -4130.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          1.79842,
+          0.0,
+          -2.59124
+        ],
+        [
+          0.0,
+          3.15418,
+          0.0
+        ],
+        [
+          2.59124,
+          0.0,
+          1.79842
+        ],
+        [
+          3146.03,
+          14.961,
+          -2867.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -2.10209,
+          0.0,
+          -3.82673
+        ],
+        [
+          0.0,
+          4.36608,
+          0.0
+        ],
+        [
+          3.82673,
+          0.0,
+          -2.10209
+        ],
+        [
+          3279.88,
+          36.2073,
+          -2837.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -1.31799,
+          0.0,
+          4.1624
+        ],
+        [
+          0.0,
+          4.36608,
+          0.0
+        ],
+        [
+          -4.1624,
+          0.0,
+          -1.31799
+        ],
+        [
+          3270.82,
+          36.2074,
+          -2846.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          2.96763,
+          0.0,
+          -1.06864
+        ],
+        [
+          0.0,
+          3.15418,
+          0.0
+        ],
+        [
+          1.06864,
+          0.0,
+          2.96763
+        ],
+        [
+          3174.79,
+          14.2346,
+          -2742.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          1.3221,
+          0.0,
+          2.86372
+        ],
+        [
+          0.0,
+          3.15418,
+          0.0
+        ],
+        [
+          -2.86372,
+          0.0,
+          1.3221
+        ],
+        [
+          3192.44,
+          14.2346,
+          -2656.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          1.3221,
+          0.0,
+          2.86372
+        ],
+        [
+          0.0,
+          3.15418,
+          0.0
+        ],
+        [
+          -2.86372,
+          0.0,
+          1.3221
+        ],
+        [
+          3156.43,
+          8.00135,
+          -2569.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          1.22432,
+          0.0,
+          2.90687
+        ],
+        [
+          0.0,
+          3.15418,
+          0.0
+        ],
+        [
+          -2.90687,
+          0.0,
+          1.22432
+        ],
+        [
+          3080.72,
+          8.00134,
+          -2558.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          -3.50234,
+          0.0,
+          1.20583
+        ],
+        [
+          0.0,
+          3.7041,
+          0.0
+        ],
+        [
+          -1.20583,
+          0.0,
+          -3.50234
+        ],
+        [
+          3040.22,
+          8.00134,
+          -2536.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_a",
+      "transform": [
+        [
+          4.63896,
+          0.0,
+          -9.35315
+        ],
+        [
+          0.0,
+          10.4404,
+          0.0
+        ],
+        [
+          9.35315,
+          0.0,
+          4.63896
+        ],
+        [
+          1264.64,
+          233.22,
+          -4911.06
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          2.71299,
+          0.0,
+          5.12447
+        ],
+        [
+          0.0,
+          5.79832,
+          0.0
+        ],
+        [
+          -5.12447,
+          0.0,
+          2.71299
+        ],
+        [
+          2961.65,
+          7.10004,
+          -2747.57
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.3694,
+          0.0,
+          6.36432
+        ],
+        [
+          0.0,
+          7.20121,
+          0.0
+        ],
+        [
+          -6.36432,
+          0.0,
+          3.3694
+        ],
+        [
+          2997.11,
+          7.10002,
+          -2733.84
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_a",
+      "transform": [
+        [
+          4.86814,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.86814,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.86814
+        ],
+        [
+          1095.2,
+          309.927,
+          3855.89
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_a",
+      "transform": [
+        [
+          4.86814,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.86814,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.86814
+        ],
+        [
+          901.185,
+          211.654,
+          3978.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          1.22706,
+          0.0,
+          -5.79911
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          5.79911,
+          0.0,
+          1.22706
+        ],
+        [
+          3522.64,
+          -30.3509,
+          -2399.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.259318,
+          0.0,
+          -5.9393
+        ],
+        [
+          0.0,
+          5.94496,
+          0.0
+        ],
+        [
+          5.9393,
+          0.0,
+          0.259318
+        ],
+        [
+          326.503,
+          77.7295,
+          3927.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          1.22706,
+          0.0,
+          -5.79911
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          5.79911,
+          0.0,
+          1.22706
+        ],
+        [
+          3630.36,
+          35.7634,
+          -2554.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -0.290509,
+          0.0,
+          -5.92039
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          5.92039,
+          0.0,
+          -0.290509
+        ],
+        [
+          3755.29,
+          93.9745,
+          -2857.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -2.28937,
+          0.0,
+          -5.46755
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          5.46755,
+          0.0,
+          -2.28937
+        ],
+        [
+          3541.18,
+          93.9745,
+          -3143.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -4.91967,
+          0.0,
+          -3.3064
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          3.3064,
+          0.0,
+          -4.91967
+        ],
+        [
+          3282.8,
+          36.4059,
+          -3270.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -5.13082,
+          0.0,
+          -2.96817
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          2.96817,
+          0.0,
+          -5.13082
+        ],
+        [
+          3074.77,
+          31.7589,
+          -3296.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          1.22706,
+          0.0,
+          -5.79911
+        ],
+        [
+          0.0,
+          5.92751,
+          0.0
+        ],
+        [
+          5.79911,
+          0.0,
+          1.22706
+        ],
+        [
+          4095.55,
+          40.3258,
+          -2021.68
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -2.68409,
+          0.0,
+          -2.94507
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          2.94507,
+          0.0,
+          -2.68409
+        ],
+        [
+          2995.93,
+          8.20001,
+          -3010.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          -2.68409,
+          0.0,
+          -2.94507
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          2.94507,
+          0.0,
+          -2.68409
+        ],
+        [
+          3032.48,
+          8.20001,
+          -3022.76
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -3.96458,
+          0.0,
+          0.399955
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          -0.399955,
+          0.0,
+          -3.96458
+        ],
+        [
+          2901.47,
+          8.2,
+          -2974.73
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          0.83112,
+          0.0,
+          3.89706
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          -3.89706,
+          0.0,
+          0.83112
+        ],
+        [
+          2805.75,
+          9.48883,
+          -3152.59
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          0.83112,
+          0.0,
+          3.89706
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          -3.89706,
+          0.0,
+          0.83112
+        ],
+        [
+          2868.64,
+          8.09564,
+          -3229.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          0.83112,
+          0.0,
+          3.89706
+        ],
+        [
+          0.0,
+          3.9847,
+          0.0
+        ],
+        [
+          -3.89706,
+          0.0,
+          0.83112
+        ],
+        [
+          2927.17,
+          8.09563,
+          -3238.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.250108,
+          0.0,
+          -0.899507
+        ],
+        [
+          0.0,
+          0.857705,
+          0.0
+        ],
+        [
+          0.899507,
+          0.0,
+          -0.250108
+        ],
+        [
+          3277.62,
+          54.2049,
+          -2847.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.250108,
+          0.0,
+          -0.899507
+        ],
+        [
+          0.0,
+          0.857705,
+          0.0
+        ],
+        [
+          0.899507,
+          0.0,
+          -0.250108
+        ],
+        [
+          3253.17,
+          54.2049,
+          -2931.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.250108,
+          0.0,
+          -0.899507
+        ],
+        [
+          0.0,
+          0.857705,
+          0.0
+        ],
+        [
+          0.899507,
+          0.0,
+          -0.250108
+        ],
+        [
+          3229.16,
+          54.2049,
+          -3013.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.562673,
+          0.0,
+          1.72963
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.72963,
+          0.0,
+          0.562673
+        ],
+        [
+          3135.42,
+          14.9217,
+          -2813.36
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3142.98,
+          14.9217,
+          -2790.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3150.62,
+          14.9217,
+          -2766.06
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3158.22,
+          14.9217,
+          -2742.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3165.8,
+          14.9217,
+          -2718.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3173.43,
+          14.9217,
+          -2694.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3181.01,
+          14.9217,
+          -2670.31
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3188.66,
+          14.9217,
+          -2646.22
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3196.12,
+          14.9217,
+          -2622.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3208.95,
+          14.9217,
+          -2582.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3216.58,
+          14.9217,
+          -2558.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3224.16,
+          14.9217,
+          -2534.37
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3231.68,
+          14.9217,
+          -2510.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3069.2,
+          14.9217,
+          -3022.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3076.42,
+          14.9217,
+          -2998.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3083.93,
+          14.9217,
+          -2975.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3091.56,
+          14.9217,
+          -2951.06
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3099.16,
+          14.9217,
+          -2927.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3106.74,
+          14.9217,
+          -2903.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3114.31,
+          14.9217,
+          -2879.37
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3121.99,
+          14.9217,
+          -2855.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          2994.89,
+          14.9217,
+          -3255.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3002.42,
+          14.9217,
+          -3231.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3010.09,
+          14.9217,
+          -3207.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3017.67,
+          14.9217,
+          -3183.28
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3025.37,
+          14.9217,
+          -3159.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3032.9,
+          14.9217,
+          -3135.32
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3040.55,
+          14.9217,
+          -3111.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3048.1,
+          14.9217,
+          -3087.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          3055.6,
+          14.9217,
+          -3063.77
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          2958.91,
+          14.9217,
+          -3367.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          2966.36,
+          14.9217,
+          -3344.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          2973.96,
+          14.9217,
+          -3320.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.565321,
+          0.0,
+          1.78114
+        ],
+        [
+          0.0,
+          1.83074,
+          0.0
+        ],
+        [
+          -1.73362,
+          0.0,
+          0.550238
+        ],
+        [
+          2981.52,
+          14.9217,
+          -3296.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.54416,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.59246,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.54416
+        ],
+        [
+          3722.69,
+          23.5732,
+          3638.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          6.44143,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.44143,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6.44143
+        ],
+        [
+          3798.17,
+          20.6171,
+          3528.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          5.91891,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.91891,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.91891
+        ],
+        [
+          3789.41,
+          23.4754,
+          3513.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          1.96686,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.96686,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.96686
+        ],
+        [
+          3717.91,
+          23.3697,
+          3639.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          2.28376,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.28376,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.28376
+        ],
+        [
+          3650.37,
+          23.4095,
+          3630.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.28376,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.28376,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.28376
+        ],
+        [
+          3654.95,
+          23.4523,
+          3635.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          4.42462,
+          0.0,
+          -0.0568683
+        ],
+        [
+          0.0,
+          4.42498,
+          0.0
+        ],
+        [
+          0.0568683,
+          0.0,
+          4.42462
+        ],
+        [
+          3655.45,
+          45.3,
+          3646.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          4.42462,
+          0.0,
+          -0.0568683
+        ],
+        [
+          0.0,
+          4.42498,
+          0.0
+        ],
+        [
+          0.0568683,
+          0.0,
+          4.42462
+        ],
+        [
+          3587.75,
+          44.099,
+          3646.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          2.13747,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.13747,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.13747
+        ],
+        [
+          3719.74,
+          23.7682,
+          3634.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.873834,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.873834
+        ],
+        [
+          3772.07,
+          34.4011,
+          3623.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          0.00735388,
+          0.0,
+          -1.99806
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.99806,
+          0.0,
+          0.00735388
+        ],
+        [
+          3771.61,
+          23.7216,
+          3625.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          0.00735388,
+          0.0,
+          -1.99806
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.99806,
+          0.0,
+          0.00735388
+        ],
+        [
+          3773.25,
+          23.7216,
+          3702.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.873834,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.873834
+        ],
+        [
+          3773.72,
+          34.4011,
+          3700.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          0.00735388,
+          0.0,
+          -1.99806
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.99806,
+          0.0,
+          0.00735388
+        ],
+        [
+          3775.86,
+          23.7216,
+          3787.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.873834,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.873834
+        ],
+        [
+          3776.33,
+          34.4011,
+          3786.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          1.41804,
+          0.0,
+          -1.40764
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.40764,
+          0.0,
+          1.41804
+        ],
+        [
+          3483.5,
+          23.7216,
+          3668.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          -0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          3485.15,
+          34.4011,
+          3667.76
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          1.41804,
+          0.0,
+          -1.40764
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.40764,
+          0.0,
+          1.41804
+        ],
+        [
+          3551.58,
+          23.7216,
+          3606.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          -0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          3553.22,
+          34.4011,
+          3605.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          1.41804,
+          0.0,
+          -1.40764
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.40764,
+          0.0,
+          1.41804
+        ],
+        [
+          3412.1,
+          23.7216,
+          3731.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          -0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          3413.75,
+          34.4011,
+          3730.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          1.41804,
+          0.0,
+          -1.40764
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          1.40764,
+          0.0,
+          1.41804
+        ],
+        [
+          3337.62,
+          23.7216,
+          3799.81
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          -0.617894,
+          0.0,
+          0.617894
+        ],
+        [
+          3339.27,
+          34.4011,
+          3798.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_a",
+      "transform": [
+        [
+          2.98954,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.98954,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.98954
+        ],
+        [
+          4160.67,
+          164.072,
+          4251.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "cake_anniversary_b",
+      "transform": [
+        [
+          -1.94247,
+          0.0,
+          0.804599
+        ],
+        [
+          0.0,
+          2.10252,
+          0.0
+        ],
+        [
+          -0.804599,
+          0.0,
+          -1.94247
+        ],
+        [
+          3790.8,
+          23.6994,
+          3522.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.42783,
+          0.0,
+          2.03719
+        ],
+        [
+          0.0,
+          3.1693,
+          0.0
+        ],
+        [
+          -2.03719,
+          0.0,
+          2.42783
+        ],
+        [
+          3643.87,
+          23.4523,
+          3642.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          0.215151,
+          0.0,
+          2.45919
+        ],
+        [
+          0.0,
+          2.46858,
+          0.0
+        ],
+        [
+          -2.45919,
+          0.0,
+          0.215151
+        ],
+        [
+          3583.69,
+          23.4523,
+          3638.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          0.245793,
+          0.0,
+          2.80943
+        ],
+        [
+          0.0,
+          2.82016,
+          0.0
+        ],
+        [
+          -2.80943,
+          0.0,
+          0.245793
+        ],
+        [
+          3588.69,
+          23.4523,
+          3633.84
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          2.82433,
+          0.0,
+          -0.62614
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          0.62614,
+          0.0,
+          2.82433
+        ],
+        [
+          3776.33,
+          23.7682,
+          3667.36
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          2.04559,
+          0.0,
+          2.0456
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.0456,
+          0.0,
+          2.04559
+        ],
+        [
+          3797.36,
+          23.7682,
+          3625.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.04559,
+          0.0,
+          2.0456
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.0456,
+          0.0,
+          2.04559
+        ],
+        [
+          3803.23,
+          23.7682,
+          3687.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.82433,
+          0.0,
+          -0.62614
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          0.62614,
+          0.0,
+          2.82433
+        ],
+        [
+          3789.76,
+          23.7682,
+          3736.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          3.95242,
+          0.0,
+          -0.87623
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          0.87623,
+          0.0,
+          3.95242
+        ],
+        [
+          3782.67,
+          23.7682,
+          3774.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -1.38463,
+          0.0,
+          3.80423
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          -3.80423,
+          0.0,
+          -1.38463
+        ],
+        [
+          3811.88,
+          23.7682,
+          3817.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -0.166318,
+          0.0,
+          -3.80932
+        ],
+        [
+          0.0,
+          3.85348,
+          0.0
+        ],
+        [
+          3.80932,
+          0.0,
+          -0.166318
+        ],
+        [
+          3714.51,
+          23.5732,
+          3637.73
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.7723,
+          0.0,
+          5.94521
+        ],
+        [
+          0.0,
+          6.62954,
+          0.0
+        ],
+        [
+          -5.94521,
+          0.0,
+          -2.7723
+        ],
+        [
+          3564.88,
+          23.5732,
+          3414.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -6.06048,
+          0.0,
+          2.51033
+        ],
+        [
+          0.0,
+          6.62954,
+          0.0
+        ],
+        [
+          -2.51033,
+          0.0,
+          -6.06048
+        ],
+        [
+          3603.15,
+          23.5733,
+          3379.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          0.252134,
+          0.0,
+          -2.8819
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          2.8819,
+          0.0,
+          0.252134
+        ],
+        [
+          3466.58,
+          23.7682,
+          3641.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -2.2951,
+          0.0,
+          -1.76109
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          1.76109,
+          0.0,
+          -2.2951
+        ],
+        [
+          3512.41,
+          23.7682,
+          3630.44
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          0.252134,
+          0.0,
+          -2.8819
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          2.8819,
+          0.0,
+          0.252134
+        ],
+        [
+          3510.18,
+          23.7682,
+          3597.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -2.2951,
+          0.0,
+          -1.76109
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          1.76109,
+          0.0,
+          -2.2951
+        ],
+        [
+          3556.86,
+          23.7682,
+          3575.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -3.2118,
+          0.0,
+          -2.4645
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          2.4645,
+          0.0,
+          -3.2118
+        ],
+        [
+          3594.07,
+          23.7682,
+          3558.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          3.80423,
+          0.0,
+          -1.38463
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          1.38463,
+          0.0,
+          3.80423
+        ],
+        [
+          3604.25,
+          23.7682,
+          3506.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -3.98688,
+          0.0,
+          0.702994
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          -0.702994,
+          0.0,
+          -3.98688
+        ],
+        [
+          3644.03,
+          23.7682,
+          3495.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          2.73505,
+          0.0,
+          2.98478
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          -2.98478,
+          0.0,
+          2.73505
+        ],
+        [
+          3660.68,
+          23.7682,
+          3447.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          1.95442,
+          0.0,
+          2.13288
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.13288,
+          0.0,
+          1.95442
+        ],
+        [
+          3697.02,
+          23.7682,
+          3434.44
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -0.74874,
+          0.0,
+          2.79433
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.79433,
+          0.0,
+          -0.74874
+        ],
+        [
+          3746.74,
+          23.7682,
+          3421.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          1.95442,
+          0.0,
+          2.13288
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.13288,
+          0.0,
+          1.95442
+        ],
+        [
+          3750.31,
+          23.7682,
+          3388.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          -0.74874,
+          0.0,
+          2.79433
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.79433,
+          0.0,
+          -0.74874
+        ],
+        [
+          3797.37,
+          23.7682,
+          3385.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          5.6809,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.6809,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.6809
+        ],
+        [
+          3698.04,
+          23.7682,
+          3684.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.40085,
+          0.0,
+          5.14864
+        ],
+        [
+          0.0,
+          5.6809,
+          0.0
+        ],
+        [
+          -5.14864,
+          0.0,
+          2.40085
+        ],
+        [
+          3677.55,
+          23.7682,
+          3689.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          0.495122,
+          0.0,
+          5.65928
+        ],
+        [
+          0.0,
+          5.6809,
+          0.0
+        ],
+        [
+          -5.65928,
+          0.0,
+          0.495122
+        ],
+        [
+          3657.77,
+          23.7682,
+          3682.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          2.04559,
+          0.0,
+          2.0456
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.0456,
+          0.0,
+          2.04559
+        ],
+        [
+          3832.43,
+          23.7682,
+          3404.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          2.82433,
+          0.0,
+          -0.62614
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          0.62614,
+          0.0,
+          2.82433
+        ],
+        [
+          3811.4,
+          23.7682,
+          3447.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.04559,
+          0.0,
+          2.0456
+        ],
+        [
+          0.0,
+          2.89291,
+          0.0
+        ],
+        [
+          -2.0456,
+          0.0,
+          2.04559
+        ],
+        [
+          3838.29,
+          23.7682,
+          3466.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          3.2589,
+          0.0,
+          -0.722481
+        ],
+        [
+          0.0,
+          3.33803,
+          0.0
+        ],
+        [
+          0.722481,
+          0.0,
+          3.2589
+        ],
+        [
+          3783.77,
+          23.7682,
+          3534.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          3.95242,
+          0.0,
+          -0.87623
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          0.87623,
+          0.0,
+          3.95242
+        ],
+        [
+          3830.63,
+          23.7682,
+          3542.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -1.38463,
+          0.0,
+          3.80423
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          -3.80423,
+          0.0,
+          -1.38463
+        ],
+        [
+          3846.05,
+          23.7682,
+          3607.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -5.49612,
+          0.0,
+          0.723578
+        ],
+        [
+          0.0,
+          5.54355,
+          0.0
+        ],
+        [
+          -0.723578,
+          0.0,
+          -5.49612
+        ],
+        [
+          3783.64,
+          23.7681,
+          3510.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          6.66483,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.66483,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6.66483
+        ],
+        [
+          3793.48,
+          23.5441,
+          3514.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -3.2118,
+          0.0,
+          -2.4645
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          2.4645,
+          0.0,
+          -3.2118
+        ],
+        [
+          3781.12,
+          23.7682,
+          3588.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -4.4253,
+          0.0,
+          -2.30366
+        ],
+        [
+          0.0,
+          4.989,
+          0.0
+        ],
+        [
+          2.30366,
+          0.0,
+          -4.4253
+        ],
+        [
+          3730.83,
+          23.7681,
+          3649.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_a",
+      "transform": [
+        [
+          4.3959,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.3959,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.3959
+        ],
+        [
+          3918.78,
+          164.072,
+          4035.91
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -1.87133,
+          0.0,
+          4.01309
+        ],
+        [
+          0.0,
+          4.42795,
+          0.0
+        ],
+        [
+          -4.01309,
+          0.0,
+          -1.87133
+        ],
+        [
+          3420.65,
+          -6.91242,
+          3406.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -2.46403,
+          0.0,
+          2.93651
+        ],
+        [
+          0.0,
+          3.83334,
+          0.0
+        ],
+        [
+          -2.93651,
+          0.0,
+          -2.46403
+        ],
+        [
+          3506.65,
+          -23.6891,
+          3341.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -3.14009,
+          0.0,
+          3.74222
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          -3.74222,
+          0.0,
+          -3.14009
+        ],
+        [
+          3573.33,
+          -20.6085,
+          3198.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -4.54941,
+          0.0,
+          1.88443
+        ],
+        [
+          0.0,
+          4.92425,
+          0.0
+        ],
+        [
+          -1.88443,
+          0.0,
+          -4.54941
+        ],
+        [
+          3706.91,
+          -4.11714,
+          3107.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -4.65902,
+          0.0,
+          1.46898
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          -1.46898,
+          0.0,
+          -4.65902
+        ],
+        [
+          3860.69,
+          -20.6086,
+          2930.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          2.55285,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.55285,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.55285
+        ],
+        [
+          3721.85,
+          23.75,
+          3546.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          3.24345,
+          0.0,
+          -1.34348
+        ],
+        [
+          0.0,
+          3.51069,
+          0.0
+        ],
+        [
+          1.34348,
+          0.0,
+          3.24345
+        ],
+        [
+          3696.75,
+          23.75,
+          3550.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          4.2402,
+          0.0,
+          -1.75635
+        ],
+        [
+          0.0,
+          4.58956,
+          0.0
+        ],
+        [
+          1.75635,
+          0.0,
+          4.2402
+        ],
+        [
+          3719.55,
+          23.75,
+          3588.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          4.2402,
+          0.0,
+          -1.75635
+        ],
+        [
+          0.0,
+          4.58956,
+          0.0
+        ],
+        [
+          1.75635,
+          0.0,
+          4.2402
+        ],
+        [
+          3651.4,
+          23.75,
+          3592.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -1.26436,
+          0.0,
+          -4.71866
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          4.71866,
+          0.0,
+          -1.26436
+        ],
+        [
+          4105.45,
+          -30.8,
+          3229.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          -1.26436,
+          0.0,
+          -4.71866
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          4.71866,
+          0.0,
+          -1.26436
+        ],
+        [
+          3988.55,
+          4.05,
+          3433.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          1.46899,
+          0.0,
+          -4.65902
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          4.65902,
+          0.0,
+          1.46899
+        ],
+        [
+          4027.1,
+          -7.7,
+          3690.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.213088,
+          0.0,
+          -4.88047
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          4.88047,
+          0.0,
+          0.213088
+        ],
+        [
+          4050.85,
+          -37.25,
+          3573.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -4.017,
+          0.0,
+          4.017
+        ],
+        [
+          0.0,
+          5.6809,
+          0.0
+        ],
+        [
+          -4.017,
+          0.0,
+          -4.017
+        ],
+        [
+          3594.55,
+          23.7682,
+          3684.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -5.12986,
+          0.0,
+          5.12986
+        ],
+        [
+          0.0,
+          7.25472,
+          0.0
+        ],
+        [
+          -5.12986,
+          0.0,
+          -5.12986
+        ],
+        [
+          3633.25,
+          23.7682,
+          3684.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.56169,
+          0.0,
+          -0.669396
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.669396,
+          0.0,
+          -0.56169
+        ],
+        [
+          4022.86,
+          34.401,
+          3178.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          -1.53533,
+          0.0,
+          1.27869
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          -1.27869,
+          0.0,
+          -1.53533
+        ],
+        [
+          4024.59,
+          23.7215,
+          3177.56
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          -1.53533,
+          0.0,
+          1.27869
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          -1.27869,
+          0.0,
+          -1.53533
+        ],
+        [
+          3960.83,
+          23.7215,
+          3234.46
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.56169,
+          0.0,
+          -0.669396
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.669396,
+          0.0,
+          -0.56169
+        ],
+        [
+          3959.1,
+          34.401,
+          3235.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.56169,
+          0.0,
+          -0.669396
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.669396,
+          0.0,
+          -0.56169
+        ],
+        [
+          3900.78,
+          34.401,
+          3286.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          -1.53533,
+          0.0,
+          1.27869
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          -1.27869,
+          0.0,
+          -1.53533
+        ],
+        [
+          3902.5,
+          23.7215,
+          3285.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.56169,
+          0.0,
+          -0.669396
+        ],
+        [
+          0.0,
+          0.873834,
+          0.0
+        ],
+        [
+          0.669396,
+          0.0,
+          -0.56169
+        ],
+        [
+          3852.7,
+          34.401,
+          3330.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          -1.53533,
+          0.0,
+          1.27869
+        ],
+        [
+          0.0,
+          1.99808,
+          0.0
+        ],
+        [
+          -1.27869,
+          0.0,
+          -1.53533
+        ],
+        [
+          3854.42,
+          23.7215,
+          3330.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -3.11459,
+          0.0,
+          4.05901
+        ],
+        [
+          0.0,
+          5.18448,
+          0.0
+        ],
+        [
+          -4.06987,
+          0.0,
+          -3.12292
+        ],
+        [
+          3644.05,
+          23.5732,
+          3642.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          4.0449,
+          0.0,
+          2.57689
+        ],
+        [
+          0.0,
+          4.85994,
+          0.0
+        ],
+        [
+          -2.58378,
+          0.0,
+          4.05572
+        ],
+        [
+          3656.85,
+          23.5732,
+          3640.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          -2.1472,
+          0.0,
+          1.90257
+        ],
+        [
+          0.0,
+          2.86883,
+          0.0
+        ],
+        [
+          -1.90257,
+          0.0,
+          -2.1472
+        ],
+        [
+          3657.9,
+          32.9842,
+          3325.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          -2.1472,
+          0.0,
+          1.90257
+        ],
+        [
+          0.0,
+          2.86883,
+          0.0
+        ],
+        [
+          -1.90257,
+          0.0,
+          -2.1472
+        ],
+        [
+          3717.6,
+          33.0693,
+          3270.89
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.34168,
+          0.0,
+          -2.70668
+        ],
+        [
+          0.0,
+          5.18448,
+          0.0
+        ],
+        [
+          2.71392,
+          0.0,
+          4.35329
+        ],
+        [
+          3579.14,
+          23.5732,
+          3638.84
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          1.77522,
+          0.0,
+          5.04457
+        ],
+        [
+          0.0,
+          5.41911,
+          0.0
+        ],
+        [
+          -5.05807,
+          0.0,
+          1.77997
+        ],
+        [
+          3588.78,
+          23.5732,
+          3637.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          3.76211,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.76211
+        ],
+        [
+          3792.02,
+          23.5732,
+          3636.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          3.53187,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.56941,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.48316
+        ],
+        [
+          3782.3,
+          23.5733,
+          3680.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          3.76211,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.76211
+        ],
+        [
+          3803.42,
+          23.5734,
+          3701.11
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.23837,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.23837
+        ],
+        [
+          3789.56,
+          23.5734,
+          3744.06
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          4.23837,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.23837
+        ],
+        [
+          3810.49,
+          23.5734,
+          3786.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          4.23837,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.23837
+        ],
+        [
+          3777.86,
+          23.5733,
+          3828.54
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          2.45249,
+          0.0,
+          2.85286
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          -2.85286,
+          0.0,
+          2.45249
+        ],
+        [
+          3624.29,
+          23.5731,
+          3511.31
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          2.30239,
+          0.0,
+          2.67826
+        ],
+        [
+          0.0,
+          3.56941,
+          0.0
+        ],
+        [
+          -2.64133,
+          0.0,
+          2.27064
+        ],
+        [
+          3584.85,
+          23.5732,
+          3532.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          2.45249,
+          0.0,
+          2.85286
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          -2.85286,
+          0.0,
+          2.45249
+        ],
+        [
+          3582.72,
+          23.5733,
+          3562.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          2.76296,
+          0.0,
+          3.21401
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          -3.21401,
+          0.0,
+          2.76296
+        ],
+        [
+          3541.11,
+          23.5733,
+          3579.58
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          2.76296,
+          0.0,
+          3.21401
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          -3.21401,
+          0.0,
+          2.76296
+        ],
+        [
+          3522.81,
+          23.5733,
+          3622.91
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          2.76296,
+          0.0,
+          3.21401
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          -3.21401,
+          0.0,
+          2.76296
+        ],
+        [
+          3469.42,
+          23.5732,
+          3625.77
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.63616,
+          0.0,
+          -2.68406
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          2.68406,
+          0.0,
+          -2.63616
+        ],
+        [
+          3402.59,
+          23.573,
+          3546.63
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.47483,
+          0.0,
+          -2.51979
+        ],
+        [
+          0.0,
+          3.56941,
+          0.0
+        ],
+        [
+          2.48504,
+          0.0,
+          -2.4407
+        ],
+        [
+          3440.55,
+          23.5731,
+          3522.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -2.63616,
+          0.0,
+          -2.68406
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          2.68406,
+          0.0,
+          -2.63616
+        ],
+        [
+          3440.71,
+          23.5732,
+          3493.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3481.06,
+          23.5732,
+          3473.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3496.45,
+          23.5732,
+          3428.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3549.53,
+          23.5732,
+          3422.16
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3802.01,
+          23.5728,
+          3368.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3748.93,
+          23.5728,
+          3375.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3733.54,
+          23.5728,
+          3419.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -2.63616,
+          0.0,
+          -2.68406
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          2.68406,
+          0.0,
+          -2.63616
+        ],
+        [
+          3693.18,
+          23.5728,
+          3439.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.47483,
+          0.0,
+          -2.51979
+        ],
+        [
+          0.0,
+          3.56941,
+          0.0
+        ],
+        [
+          2.48504,
+          0.0,
+          -2.4407
+        ],
+        [
+          3693.02,
+          23.5727,
+          3469.46
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.63616,
+          0.0,
+          -2.68406
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          2.68406,
+          0.0,
+          -2.63616
+        ],
+        [
+          3655.07,
+          23.5726,
+          3493.11
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3994.77,
+          23.5725,
+          3184.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3941.69,
+          23.5725,
+          3191.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.96988,
+          0.0,
+          -3.02384
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          3.02384,
+          0.0,
+          -2.96988
+        ],
+        [
+          3926.3,
+          23.5725,
+          3235.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -2.63616,
+          0.0,
+          -2.68406
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          2.68406,
+          0.0,
+          -2.63616
+        ],
+        [
+          3885.94,
+          23.5725,
+          3256.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -2.47483,
+          0.0,
+          -2.51979
+        ],
+        [
+          0.0,
+          3.56941,
+          0.0
+        ],
+        [
+          2.48504,
+          0.0,
+          -2.4407
+        ],
+        [
+          3885.78,
+          23.5724,
+          3285.77
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -2.63616,
+          0.0,
+          -2.68406
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          2.68406,
+          0.0,
+          -2.63616
+        ],
+        [
+          3847.83,
+          23.5724,
+          3309.42
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -4.20936,
+          0.0,
+          0.495071
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          -0.495071,
+          0.0,
+          -4.20936
+        ],
+        [
+          3827.66,
+          23.5725,
+          3427.79
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -4.20936,
+          0.0,
+          0.495071
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          -0.495071,
+          0.0,
+          -4.20936
+        ],
+        [
+          3800.2,
+          23.5725,
+          3473.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -4.20936,
+          0.0,
+          0.495071
+        ],
+        [
+          0.0,
+          4.28342,
+          0.0
+        ],
+        [
+          -0.495071,
+          0.0,
+          -4.20936
+        ],
+        [
+          3825.9,
+          23.5725,
+          3513.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_c",
+      "transform": [
+        [
+          -3.73636,
+          0.0,
+          0.43944
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          -0.43944,
+          0.0,
+          -3.73636
+        ],
+        [
+          3817.15,
+          23.5725,
+          3557.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          -3.5077,
+          0.0,
+          0.412546
+        ],
+        [
+          0.0,
+          3.56941,
+          0.0
+        ],
+        [
+          -0.406857,
+          0.0,
+          -3.45932
+        ],
+        [
+          3840.59,
+          23.5724,
+          3575.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -3.73636,
+          0.0,
+          0.43944
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          -0.43944,
+          0.0,
+          -3.73636
+        ],
+        [
+          3836.03,
+          23.5723,
+          3620.18
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          1.05654,
+          0.0,
+          -3.90808
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          3.90808,
+          0.0,
+          1.05654
+        ],
+        [
+          3854.74,
+          23.7682,
+          3732.86
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "factory_crane_c_column_dmg",
+      "transform": [
+        [
+          1.19412,
+          0.0,
+          -0.118599
+        ],
+        [
+          0.0,
+          1.2,
+          0.0
+        ],
+        [
+          0.118599,
+          0.0,
+          1.19412
+        ],
+        [
+          3863.03,
+          23.7706,
+          3678.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.575407,
+          0.0,
+          -0.817867
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.817867,
+          0.0,
+          0.575407
+        ],
+        [
+          3864.25,
+          23.6147,
+          3680.17
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.575407,
+          0.0,
+          -0.817867
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.817867,
+          0.0,
+          0.575407
+        ],
+        [
+          3864.21,
+          23.9652,
+          3680.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.575407,
+          0.0,
+          -0.817867
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.817867,
+          0.0,
+          0.575407
+        ],
+        [
+          3865.22,
+          23.6075,
+          3679.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.575407,
+          0.0,
+          -0.817867
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.817867,
+          0.0,
+          0.575407
+        ],
+        [
+          3886.83,
+          23.6289,
+          3707.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.575407,
+          0.0,
+          -0.817867
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.817867,
+          0.0,
+          0.575407
+        ],
+        [
+          3880.67,
+          23.5932,
+          3666.77
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -1.71912,
+          0.0,
+          3.66524
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          -3.66524,
+          0.0,
+          -1.71912
+        ],
+        [
+          3868.58,
+          23.7682,
+          3693.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          4.01492,
+          0.0,
+          -0.519443
+        ],
+        [
+          0.0,
+          4.04838,
+          0.0
+        ],
+        [
+          0.519443,
+          0.0,
+          4.01492
+        ],
+        [
+          3838.34,
+          23.7682,
+          3652.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          3.74444,
+          0.0,
+          -0.364254
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          0.364254,
+          0.0,
+          3.74444
+        ],
+        [
+          3869.81,
+          23.5731,
+          3718.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -3.71207,
+          0.0,
+          0.611607
+        ],
+        [
+          0.0,
+          3.8021,
+          0.0
+        ],
+        [
+          -0.611607,
+          0.0,
+          -3.71207
+        ],
+        [
+          3872.63,
+          23.5726,
+          3683.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_c",
+      "transform": [
+        [
+          -8.58544,
+          0.0,
+          -1.85725
+        ],
+        [
+          0.0,
+          8.78402,
+          0.0
+        ],
+        [
+          1.85725,
+          0.0,
+          -8.58544
+        ],
+        [
+          3338.92,
+          -182.371,
+          3648.04
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_b",
+      "transform": [
+        [
+          3.86376,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.86376,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.86376
+        ],
+        [
+          3778.43,
+          23.4762,
+          3581.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_b",
+      "transform": [
+        [
+          6.489,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.489,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6.489
+        ],
+        [
+          3730.76,
+          23.4762,
+          3639.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_d",
+      "transform": [
+        [
+          6.489,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.489,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6.489
+        ],
+        [
+          3658.21,
+          23.4762,
+          3637.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_b",
+      "transform": [
+        [
+          6.489,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.489,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6.489
+        ],
+        [
+          3593.5,
+          23.4762,
+          3636.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_c",
+      "transform": [
+        [
+          5.27303,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.27303,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.27303
+        ],
+        [
+          3582.82,
+          23.4762,
+          3634.31
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_b",
+      "transform": [
+        [
+          6.18402,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.18402,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6.18402
+        ],
+        [
+          3781.65,
+          23.4762,
+          3529.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_d",
+      "transform": [
+        [
+          5.19468,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.19468,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.19468
+        ],
+        [
+          3776.02,
+          23.4762,
+          3515.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_d",
+      "transform": [
+        [
+          5.19468,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.19468,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.19468
+        ],
+        [
+          3672.46,
+          23.4762,
+          3465.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          3.28727,
+          0.0,
+          -1.23919
+        ],
+        [
+          0.0,
+          3.51308,
+          0.0
+        ],
+        [
+          1.23919,
+          0.0,
+          3.28727
+        ],
+        [
+          3570.44,
+          23.7682,
+          3411.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          0.0712786,
+          0.0,
+          -2.39448
+        ],
+        [
+          0.0,
+          2.39554,
+          0.0
+        ],
+        [
+          2.39448,
+          0.0,
+          0.0712786
+        ],
+        [
+          3602.3,
+          23.7682,
+          3381.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "cake_anniversary_b",
+      "transform": [
+        [
+          2.15833,
+          0.0,
+          0.147683
+        ],
+        [
+          0.0,
+          2.16338,
+          0.0
+        ],
+        [
+          -0.147683,
+          0.0,
+          2.15833
+        ],
+        [
+          391.954,
+          139.022,
+          3596.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.613455,
+          0.0,
+          1.30931
+        ],
+        [
+          0.0,
+          1.4459,
+          0.0
+        ],
+        [
+          -1.30931,
+          0.0,
+          0.613455
+        ],
+        [
+          418.944,
+          149.727,
+          3631.52
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          0.638489,
+          0.0,
+          1.36274
+        ],
+        [
+          0.0,
+          1.5049,
+          0.0
+        ],
+        [
+          -1.36274,
+          0.0,
+          0.638489
+        ],
+        [
+          427.308,
+          149.727,
+          3649.37
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          -1.35596,
+          0.0,
+          0.652761
+        ],
+        [
+          0.0,
+          1.5049,
+          0.0
+        ],
+        [
+          -0.652761,
+          0.0,
+          -1.35596
+        ],
+        [
+          459.397,
+          149.727,
+          3555.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "triangle_flags_line_a",
+      "transform": [
+        [
+          -1.35596,
+          0.0,
+          0.652761
+        ],
+        [
+          0.0,
+          1.5049,
+          0.0
+        ],
+        [
+          -0.652761,
+          0.0,
+          -1.35596
+        ],
+        [
+          441.674,
+          149.468,
+          3563.91
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.62186,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.62186,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.62186
+        ],
+        [
+          481.479,
+          138.961,
+          3650.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          5.91352,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.91352,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.91352
+        ],
+        [
+          433.801,
+          138.961,
+          3673.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          2.11834,
+          0.0,
+          1.6651
+        ],
+        [
+          0.0,
+          2.69443,
+          0.0
+        ],
+        [
+          -1.6651,
+          0.0,
+          2.11834
+        ],
+        [
+          460.231,
+          139.473,
+          3639.83
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_d",
+      "transform": [
+        [
+          3.61392,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.61392,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.61392
+        ],
+        [
+          464.001,
+          139.525,
+          3643.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "party_hat_b",
+      "transform": [
+        [
+          4.92219,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.92219,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.92219
+        ],
+        [
+          466.026,
+          139.409,
+          3643.79
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          2.26837,
+          0.0,
+          2.00689
+        ],
+        [
+          0.0,
+          3.02872,
+          0.0
+        ],
+        [
+          -2.00689,
+          0.0,
+          2.26837
+        ],
+        [
+          483.185,
+          139.442,
+          3645.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -1.30499,
+          0.0,
+          -1.96687
+        ],
+        [
+          0.0,
+          2.36043,
+          0.0
+        ],
+        [
+          1.96687,
+          0.0,
+          -1.30499
+        ],
+        [
+          473.128,
+          139.332,
+          3565.56
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          0.671128,
+          0.0,
+          1.36121
+        ],
+        [
+          0.0,
+          1.51767,
+          0.0
+        ],
+        [
+          -1.36121,
+          0.0,
+          0.671128
+        ],
+        [
+          463.499,
+          139.242,
+          3551.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          -0.594224,
+          0.0,
+          0.2957
+        ],
+        [
+          0.0,
+          0.663732,
+          0.0
+        ],
+        [
+          -0.2957,
+          0.0,
+          -0.594224
+        ],
+        [
+          463.696,
+          147.292,
+          3552.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_banner_10",
+      "transform": [
+        [
+          0.597144,
+          0.0,
+          -0.289758
+        ],
+        [
+          0.0,
+          0.663732,
+          0.0
+        ],
+        [
+          0.289758,
+          0.0,
+          0.597144
+        ],
+        [
+          500.992,
+          147.292,
+          3636.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "banner_pole_a",
+      "transform": [
+        [
+          -0.657518,
+          0.0,
+          -1.36783
+        ],
+        [
+          0.0,
+          1.51767,
+          0.0
+        ],
+        [
+          1.36783,
+          0.0,
+          -0.657518
+        ],
+        [
+          501.176,
+          139.242,
+          3638.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -2.08946,
+          0.0,
+          1.7012
+        ],
+        [
+          0.0,
+          2.69443,
+          0.0
+        ],
+        [
+          -1.7012,
+          0.0,
+          -2.08946
+        ],
+        [
+          425.069,
+          139.625,
+          3635.86
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          -3.89487,
+          0.0,
+          -0.0176925
+        ],
+        [
+          0.0,
+          3.89491,
+          0.0
+        ],
+        [
+          0.0176925,
+          0.0,
+          -3.89487
+        ],
+        [
+          396.514,
+          139.625,
+          3605.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -2.26152,
+          0.0,
+          5.10338
+        ],
+        [
+          0.0,
+          5.58203,
+          0.0
+        ],
+        [
+          -5.10338,
+          0.0,
+          -2.26152
+        ],
+        [
+          387.871,
+          139.223,
+          3581.46
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          3.49925,
+          0.0,
+          3.54045
+        ],
+        [
+          0.0,
+          4.97791,
+          0.0
+        ],
+        [
+          -3.54045,
+          0.0,
+          3.49925
+        ],
+        [
+          411.882,
+          138.961,
+          3631.32
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          4.37211,
+          0.0,
+          4.42358
+        ],
+        [
+          0.0,
+          6.2196,
+          0.0
+        ],
+        [
+          -4.42358,
+          0.0,
+          4.37211
+        ],
+        [
+          387.797,
+          138.961,
+          3603.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          3.94981,
+          0.0,
+          3.99632
+        ],
+        [
+          0.0,
+          5.61886,
+          0.0
+        ],
+        [
+          -3.99632,
+          0.0,
+          3.94981
+        ],
+        [
+          386.454,
+          138.961,
+          3589.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_b",
+      "transform": [
+        [
+          3.94981,
+          0.0,
+          3.99632
+        ],
+        [
+          0.0,
+          5.61886,
+          0.0
+        ],
+        [
+          -3.99632,
+          0.0,
+          3.94981
+        ],
+        [
+          507.168,
+          138.961,
+          3638.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          0.920425,
+          0.0,
+          -2.17357
+        ],
+        [
+          0.0,
+          2.36043,
+          0.0
+        ],
+        [
+          2.17357,
+          0.0,
+          0.920425
+        ],
+        [
+          496.498,
+          139.332,
+          3591.44
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_a",
+      "transform": [
+        [
+          -1.82284,
+          0.0,
+          -1.49962
+        ],
+        [
+          0.0,
+          2.36043,
+          0.0
+        ],
+        [
+          1.49962,
+          0.0,
+          -1.82284
+        ],
+        [
+          452.019,
+          139.332,
+          3562.44
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          2.23911,
+          -0.01269,
+          -0.927467
+        ],
+        [
+          0.0117241,
+          2.42359,
+          -0.00485626
+        ],
+        [
+          0.92748,
+          2.34996e-10,
+          2.23914
+        ],
+        [
+          446.703,
+          139.514,
+          3604.76
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          0.209507,
+          -0.00585161,
+          -2.41454
+        ],
+        [
+          0.0117241,
+          2.42359,
+          -0.00485626
+        ],
+        [
+          2.41452,
+          -0.0112603,
+          0.209533
+        ],
+        [
+          466.088,
+          139.436,
+          3612.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_confetti_a",
+      "transform": [
+        [
+          0.209507,
+          -0.00585161,
+          -2.41454
+        ],
+        [
+          0.0117241,
+          2.42359,
+          -0.00485626
+        ],
+        [
+          2.41452,
+          -0.0112603,
+          0.209533
+        ],
+        [
+          467.415,
+          139.377,
+          3586.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -2.27905,
+          0.0,
+          -1.43731
+        ],
+        [
+          0.0,
+          2.69443,
+          0.0
+        ],
+        [
+          1.43731,
+          0.0,
+          -2.27905
+        ],
+        [
+          420.252,
+          139.473,
+          3576.42
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -5.41092,
+          0.0,
+          -3.0668
+        ],
+        [
+          0.0,
+          6.2196,
+          0.0
+        ],
+        [
+          3.0668,
+          0.0,
+          -5.41092
+        ],
+        [
+          464.803,
+          138.961,
+          3545.68
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_balloons_group_a",
+      "transform": [
+        [
+          -4.85904,
+          0.0,
+          3.88242
+        ],
+        [
+          0.0,
+          6.2196,
+          0.0
+        ],
+        [
+          -3.88242,
+          0.0,
+          -4.85904
+        ],
+        [
+          419.136,
+          138.961,
+          3571.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_c",
+      "transform": [
+        [
+          -3.14447,
+          0.0,
+          2.56017
+        ],
+        [
+          0.0,
+          4.0549,
+          0.0
+        ],
+        [
+          -2.56017,
+          0.0,
+          -3.14447
+        ],
+        [
+          368.195,
+          139.792,
+          3621.12
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.213088,
+          0.0,
+          -4.88047
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          4.88047,
+          0.0,
+          0.213088
+        ],
+        [
+          -14.235,
+          84.0972,
+          3502.41
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.303807,
+          0.0,
+          -6.95826
+        ],
+        [
+          0.0,
+          6.96489,
+          0.0
+        ],
+        [
+          6.95826,
+          0.0,
+          0.303807
+        ],
+        [
+          -291.007,
+          84.0972,
+          3293.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.256831,
+          0.0,
+          -5.88233
+        ],
+        [
+          0.0,
+          5.88794,
+          0.0
+        ],
+        [
+          5.88233,
+          0.0,
+          0.256831
+        ],
+        [
+          -12.8187,
+          52.4357,
+          3235.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_c",
+      "transform": [
+        [
+          -19.6442,
+          0.0,
+          -6.36931
+        ],
+        [
+          0.0,
+          27.917,
+          0.0
+        ],
+        [
+          8.61033,
+          0.0,
+          -26.556
+        ],
+        [
+          -754.746,
+          -249.637,
+          3489.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.213088,
+          0.0,
+          -4.88047
+        ],
+        [
+          0.0,
+          4.88512,
+          0.0
+        ],
+        [
+          4.88047,
+          0.0,
+          0.213088
+        ],
+        [
+          168.975,
+          100.285,
+          3142.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.332157,
+          0.0,
+          -7.60757
+        ],
+        [
+          0.0,
+          7.61482,
+          0.0
+        ],
+        [
+          7.60757,
+          0.0,
+          0.332157
+        ],
+        [
+          -10.4349,
+          95.9272,
+          3911.59
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.332157,
+          0.0,
+          -7.60757
+        ],
+        [
+          0.0,
+          7.61482,
+          0.0
+        ],
+        [
+          7.60757,
+          0.0,
+          0.332157
+        ],
+        [
+          120.344,
+          109.1,
+          4069.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.280863,
+          0.0,
+          -6.43277
+        ],
+        [
+          0.0,
+          6.4389,
+          0.0
+        ],
+        [
+          6.43277,
+          0.0,
+          0.280863
+        ],
+        [
+          369.604,
+          149.655,
+          110.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.280863,
+          0.0,
+          -6.43277
+        ],
+        [
+          0.0,
+          6.4389,
+          0.0
+        ],
+        [
+          6.43277,
+          0.0,
+          0.280863
+        ],
+        [
+          656.364,
+          97.9932,
+          3954.63
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "birthday_balloon_b",
+      "transform": [
+        [
+          0.280863,
+          0.0,
+          -6.43277
+        ],
+        [
+          0.0,
+          6.4389,
+          0.0
+        ],
+        [
+          6.43277,
+          0.0,
+          0.280863
+        ],
+        [
+          1017.91,
+          74.521,
+          3709.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "anniversary_gift_pile_b",
+      "transform": [
+        [
+          -2.68477,
+          0.0,
+          2.57674
+        ],
+        [
+          0.0,
+          3.72123,
+          0.0
+        ],
+        [
+          -2.57674,
+          0.0,
+          -2.68477
+        ],
+        [
+          510.802,
+          139.473,
+          3634.78
+        ]
+      ]
+    }
+  ]
+}

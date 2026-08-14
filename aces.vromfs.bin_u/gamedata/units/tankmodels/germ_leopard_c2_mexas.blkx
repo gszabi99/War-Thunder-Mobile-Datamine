@@ -3128,6 +3128,66 @@
         "from": "ger_camo_bronzegruen*",
         "to": "ger_camo_modern_desert_threecolor*"
       }
+    },
+    "fiction": {
+      "set_tex": [
+        {
+          "from": "leopard_1_a1_body_c*",
+          "to": "leopard_1_a1_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "leopard_1_a1_gun_c*",
+          "to": "leopard_1_a1_gun_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "leopard_1a5_turret_c*",
+          "to": "leopard_1a5_turret_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "leopard_c2_mexas_c*",
+          "to": "leopard_c2_mexas_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "mg_mount_leopard_c*",
+          "to": "mg_mount_leopard_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "mg_mount_leopard_c2_mexas_c*",
+          "to": "mg_mount_leopard_c2_mexas_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        }
+      ],
+      "replace_tex": [
+        {
+          "from": "leopard_1_a1_body_n*",
+          "to": "leopard_1_a1_body_anniversary_skin_n*"
+        },
+        {
+          "from": "leopard_1_a1_gun_n*",
+          "to": "leopard_1_a1_gun_anniversary_skin_n*"
+        },
+        {
+          "from": "leopard_1a5_turret_n*",
+          "to": "leopard_1a5_turret_anniversary_skin_n*"
+        },
+        {
+          "from": "leopard_c2_mexas_n*",
+          "to": "leopard_c2_mexas_anniversary_skin_n*"
+        },
+        {
+          "from": "mg_mount_leopard_n*",
+          "to": "mg_mount_leopard_anniversary_skin_n*"
+        },
+        {
+          "from": "mg_mount_leopard_c2_mexas_n*",
+          "to": "mg_mount_leopard_c2_mexas_anniversary_skin_n*"
+        }
+      ]
     }
   },
   "defaultDecals": {
@@ -3187,6 +3247,11 @@
       "decal0OppositeMirrored": true,
       "decal0WidthBox": 0.200561,
       "decal0Tex": "usa_commander_a_co"
+    },
+    "fiction": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "ammoStowages": {

@@ -298,6 +298,10 @@
       "hq": false,
       "modelsPatch": false
     },
+    "pkg_hangar_field_birthday": {
+      "hq": false,
+      "modelsPatch": false
+    },
     "pkg_sound_common": {
       "hq": false,
       "modelsPatch": false,

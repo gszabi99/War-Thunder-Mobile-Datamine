@@ -3184,6 +3184,70 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_green*"
       }
+    },
+    "fiction": {
+      "replace_tex": [
+        {
+          "from": "ussr_camo_green*",
+          "to": "ussr_camo_green*"
+        },
+        {
+          "from": "type_69_2g_n*",
+          "to": "type_69_2g_anniversary_skin_n*"
+        },
+        {
+          "from": "type_69_2a_body_n*",
+          "to": "type_69_2g_body_anniversary_skin_n*"
+        },
+        {
+          "from": "type_69_2a_body_armor_n*",
+          "to": "type_69_2g_body_armor_anniversary_skin_n*"
+        },
+        {
+          "from": "type_69_2g_gun_n*",
+          "to": "type_69_2g_gun_anniversary_skin_n*"
+        },
+        {
+          "from": "type_69_2a_turret_n*",
+          "to": "type_69_2g_turret_anniversary_skin_n*"
+        },
+        {
+          "from": "ussr_mg_mount_t_54_n*",
+          "to": "ussr_mg_mount_t_54_anniversary_skin_n*"
+        }
+      ],
+      "set_tex": [
+        {
+          "from": "type_69_2a_body_c*",
+          "to": "type_69_2g_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "type_69_2a_body_armor_c*",
+          "to": "type_69_2g_body_armor_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "type_69_2g_c*",
+          "to": "type_69_2g_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "type_69_2g_gun_c*",
+          "to": "type_69_2g_gun_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "type_69_2a_turret_c*",
+          "to": "type_69_2g_turret_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "ussr_mg_mount_t_54_c*",
+          "to": "ussr_mg_mount_t_54_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "default_skin": {
@@ -3199,6 +3263,11 @@
       "camo_rotation": 0.0
     },
     "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "fiction": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0

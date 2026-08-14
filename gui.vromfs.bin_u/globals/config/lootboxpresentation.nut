@@ -128,6 +128,9 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_32 = "past_events_box_seasons_1_to_32.avif"
   past_events_box_ships_seasons_1_to_32 = "past_events_box_seasons_1_to_32.avif"
   past_events_box_air_seasons_1_to_32 = "past_events_box_seasons_1_to_32.avif"
+  past_events_box_tanks_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
+  past_events_box_ships_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
+  past_events_box_air_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
 }
 
 let customRouletteImages = {
@@ -197,6 +200,9 @@ let lootboxPreviewBg = {
   past_events_box_tanks_seasons_1_to_32             = { bg = "ui/images/event_bg_season_35.avif" }
   past_events_box_ships_seasons_1_to_32             = { bg = "ui/images/event_bg_season_35.avif" }
   past_events_box_air_seasons_1_to_32               = { bg = "ui/images/event_bg_season_35.avif" }
+  past_events_box_tanks_seasons_1_to_33             = { bg = "ui/images/event_bg_season_36.avif" }
+  past_events_box_ships_seasons_1_to_33             = { bg = "ui/images/event_bg_season_36.avif" }
+  past_events_box_air_seasons_1_to_33               = { bg = "ui/images/event_bg_season_36.avif" }
 
   event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
   japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }

@@ -64782,3 +64782,10 @@ br_pickup_apfsds.svg:27:27:K
 br_pickup_rep_heal.svg:28:28:K
 br_pickup_arti_recon.svg:25:25:K
 icon_air_drop.svg:24:24:K
+artilleryTimerBesideMapGap
+gameData/scenes/hangar_field_birthday_mission_wtm.blk
+gamedata/scenes/hangar_field_objects_birthday.blk
+wreaths_number_02
+hangar_field_tyre_a
+birthday_balloon_c
+pkg_hangar_field_birthday

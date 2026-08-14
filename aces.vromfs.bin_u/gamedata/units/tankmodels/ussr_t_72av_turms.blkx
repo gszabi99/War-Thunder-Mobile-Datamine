@@ -3716,6 +3716,11 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "fiction": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3724,6 +3729,61 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_green*"
       }
+    },
+    "fiction": {
+      "replace_tex": [
+        {
+          "from": "ussr_camo_green*",
+          "to": "ussr_camo_green*"
+        },
+        {
+          "from": "t_72av_turms_body_n*",
+          "to": "t_72av_turms_body_anniversary_skin_n*"
+        },
+        {
+          "from": "t_72av_turms_gun_n*",
+          "to": "t_72av_turms_gun_anniversary_skin_n*"
+        },
+        {
+          "from": "t_72av_turms_turret_n*",
+          "to": "t_72av_turms_turret_anniversary_skin_n*"
+        },
+        {
+          "from": "t_72b_1989_body_n*",
+          "to": "t_72b_1989_body_anniversary_skin_n*"
+        },
+        {
+          "from": "mg_nsvt_mount_n*",
+          "to": "mg_nsvt_mount_anniversary_skin_n*"
+        }
+      ],
+      "set_tex": [
+        {
+          "from": "t_72av_turms_body_c*",
+          "to": "t_72av_turms_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_72av_turms_gun_c*",
+          "to": "t_72av_turms_gun_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_72av_turms_turret_c*",
+          "to": "t_72av_turms_turret_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_72b_1989_body_c*",
+          "to": "t_72b_1989_body_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "mg_nsvt_mount_c*",
+          "to": "mg_nsvt_mount_anniversary_skin_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
     }
   },
   "dmgAngles": {
