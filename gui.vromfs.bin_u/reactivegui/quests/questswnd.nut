@@ -219,6 +219,7 @@ let tabs = [
   mkSpecialQuestsTab(2)
   mkSpecialQuestsTab(3)
   mkSpecialQuestsTab(4)
+  mkSpecialQuestsTab(5)
   {
     id = PERSONAL_TAB
     locId = "quests/personal"

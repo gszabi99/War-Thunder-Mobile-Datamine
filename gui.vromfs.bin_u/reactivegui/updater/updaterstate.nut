@@ -586,12 +586,15 @@ function removeAddonsForCampaign(campaigns) {
   remove_addons_resources_async(getPkgsForCampaign(campaigns))
 }
 
-curHangarAddon.subscribe(function(addon) {
+function createDownloadRequestForHangarAddon(addon) {
   if (addon != null) {
     logA($"Create download request for hangar addon: {addon}")
     add_addons([addon])
   }
-})
+}
+
+createDownloadRequestForHangarAddon(curHangarAddon.get())
+curHangarAddon.subscribe(createDownloadRequestForHangarAddon)
 
 return {
   startDownloadAddons  

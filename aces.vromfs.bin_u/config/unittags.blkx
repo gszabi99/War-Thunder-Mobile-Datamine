@@ -113694,8 +113694,7 @@
         },
         "76mm_us_M88_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2,
-          "reqLevel": 12
+          "maxCount": 2
         }
       }
     }
@@ -113991,8 +113990,7 @@
         },
         "90mm_us_M313_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2,
-          "reqLevel": 12
+          "maxCount": 2
         }
       }
     }
