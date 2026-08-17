@@ -1477,31 +1477,6 @@
         "disallowTaa": true
       }
     },
-    "broken_grass": {
-      "gpu": "Adreno (TM) 840",
-      "android_presets": {
-        "low": {
-          "graphics": {
-            "grassRadiusMul": 0.0
-          }
-        },
-        "medium": {
-          "graphics": {
-            "grassRadiusMul": 0.0
-          }
-        },
-        "high": {
-          "graphics": {
-            "grassRadiusMul": 0.0
-          }
-        },
-        "max": {
-          "graphics": {
-            "grassRadiusMul": 0.0
-          }
-        }
-      }
-    },
     "broken_foliage": {
       "codename": [
         "motorola moto g(20) ",

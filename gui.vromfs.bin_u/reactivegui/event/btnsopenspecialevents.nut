@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { specialEventsLootboxesState, specialEvents, orderEvents, subEventsList
+let { specialEventsLootboxesState, specialEventsOrdered, subEventsList
 } = require("%rGui/event/eventState.nut")
 let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
 let { openSeasonScene, openEventShopWnd, BATTLE_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
@@ -32,31 +32,30 @@ function btnsOpenSpecialEvents() {
         mkUnseenWithSf(OP_EVENT_ID)))
     }
 
-    orderEvents(specialEventsLootboxesState.get().withLootboxes).each(function(evt) {
-      if (evt.eventId in subEventsList.get())
-        return
-      usedEvents[evt.eventName] <- true
-      children.append(translucentButton(getEventPresentation(evt.eventName).icon,
-        @() openSeasonScene(evt.eventId),
-        null,
-        mkUnseenWithSf(evt.eventId)))
-    })
-
-    orderEvents(specialEventsLootboxesState.get().withoutLootboxes).each(function(evt) {
-      if (evt.eventId in subEventsList.get())
-        return
-      usedEvents[evt.eventName] <- true
-      children.append(translucentButton(getEventPresentation(evt.eventName).icon,
-        function onClick() {
-          let globalEventId = specialEvents.get().findindex(@(s) s.eventName == evt.eventName) ?? evt.eventId
-          tabIdToOpen.set(globalEventId)
-          openSeasonScene(evt.eventName)
-        },
-        null,
-        mkUnseenWithSf(evt.eventId),
-        { iconMul = getEventPresentation(evt.eventName).imageSizeMul }
-      ))
-    })
+    foreach (evt in specialEventsOrdered.get()) {
+      let { eventName, eventId } = evt
+      if (eventId in subEventsList.get())
+        continue
+      if (eventName in specialEventsLootboxesState.get().withLootboxes) {
+        usedEvents[eventName] <- true
+        children.append(translucentButton(getEventPresentation(eventName).icon,
+          @() openSeasonScene(eventId),
+          null,
+          mkUnseenWithSf(eventId)))
+      }
+      else if (eventName in specialEventsLootboxesState.get().withoutLootboxes) {
+        usedEvents[eventName] <- true
+        children.append(translucentButton(getEventPresentation(eventName).icon,
+          function onClick() {
+            tabIdToOpen.set(eventId)
+            openSeasonScene(eventName)
+          },
+          null,
+          mkUnseenWithSf(eventId),
+          { iconMul = getEventPresentation(eventName).imageSizeMul }
+        ))
+      }
+    }
 
     gmEventsList.get().keys().each(function(id) {
       usedEvents[id] <- true
@@ -81,7 +80,7 @@ function btnsOpenSpecialEvents() {
   }
 
   return {
-    watch = [ specialEventsLootboxesState, gmEventsList, specialEvents,
+    watch = [ specialEventsLootboxesState, gmEventsList, specialEventsOrdered,
       shouldShowEventMechanics, isOpAvailable, curCampaign, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
       personalGoodsByShop, subEventsList
     ]

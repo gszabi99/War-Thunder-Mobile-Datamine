@@ -143,9 +143,9 @@ let specialEventsLootboxesState = Computed(function() {
   foreach (se in specialEvents.get()) {
     let { eventName } = se
     if (eventName in lootboxesEventIds)
-      res.withLootboxes[eventName] <- se
+      res.withLootboxes[eventName] <- true
     else if (eventName not in separateEventModes.get())
-      res.withoutLootboxes[eventName] <- se
+      res.withoutLootboxes[eventName] <- true
   }
   return res
 })

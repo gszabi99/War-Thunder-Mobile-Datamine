@@ -2710,5 +2710,13 @@
     "lod0": "rudoffi6jzdjwg27jntqpdi2qr3gipm6-ds5i",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "5ugkdmn555allj7uvl3ol53irv2bxmep-bbpy"
+  },
+  "simple_22_lilly": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "ov4cbe5nvrrnwrzzew62ub2rgmoqyic7-eo2i",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "w57n4egqlqkczj673fh7t3nxx6rjabrw-bjhq"
   }
 }
