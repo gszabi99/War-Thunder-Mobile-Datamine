@@ -47207,6 +47207,95 @@
       }
     }
   },
+  "n1k1_kyuofu": {
+    "type": "aircraft",
+    "hangar_place": "hydroplane",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "mitsubishi",
+        "model": "kasei_14",
+        "mass": 800.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "visibleBaseTag": true,
+      "type_hydroplane": true,
+      "pacific": true,
+      "far_eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 10000.0,
+      "maxSpeed": 135.9,
+      "turnTime": 19.0,
+      "airfieldLen": 500.0,
+      "climbTime": 335.0,
+      "maxSpeedAlt": 6000.0,
+      "climbAlt": 5000.0,
+      "climbSpeed": 14.9,
+      "wingLoading": 148.0,
+      "powerToWeightRatio": 0.41,
+      "rollRate": 70.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 2.51135,
+      "weapons": {
+        "gunType97": {
+          "type": "machine gun",
+          "gunsCount": 2,
+          "ammoCount": 1100,
+          "shotFreq": 15.0
+        },
+        "cannonType99": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 200,
+          "shotFreq": 8.6
+        },
+        "type97mod6_60kg": {}
+      }
+    },
+    "bullets": {
+      "gunType97": {
+        "default": {
+          "icon": "t_ball/he_i_ball/ball/ap_ball/ap_ball/i_ball/"
+        },
+        "7_7mm_universal": {
+          "icon": "t_ball/ap_ball/he_i_ball/ap_ball/"
+        },
+        "7_7_tracers": {
+          "icon": "t_ball/t_ball/t_ball/ap_ball/"
+        },
+        "7_7_stealth": {
+          "icon": "i_ball/ap_ball/ap_ball/ap_ball/he_i_ball/"
+        }
+      },
+      "cannonType99": {
+        "default": {
+          "icon": "t_shell/he_frag_i/he_frag_i/ap_i/"
+        },
+        "type99mk1_universal": {
+          "icon": "he_frag_t/he_frag/he_frag/ap/"
+        },
+        "type99mk1_ground_targets": {
+          "icon": "ap_i/ap_i/ap/ap/he_frag/he_frag_t/"
+        },
+        "type99mk1_tracers": {
+          "icon": "he_frag_t/"
+        },
+        "type99mk1_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ap/ap/"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",
@@ -61656,6 +61745,88 @@
           "gunsCount": 6,
           "caliber": 130.0,
           "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "au_battleship_franz_ferdinand": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "operatorCountry": "country_naval_austria_hungary",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 692,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 890,
+      "shipCrewMin": 140,
+      "shipCrewRating": 2.63424,
+      "maxSpeed": 11.3,
+      "turningTime": 27,
+      "addTorpedoesCountPack": 1,
+      "mainWeaponCaliber": 305.0,
+      "weapons": {
+        "305mm_45_12inch_skoda_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 1700.0,
+          "shotFreq": 0.1,
+          "gunsCount": 4,
+          "caliber": 305.0,
+          "ammoCount": 800,
+          "isBeltAmmo": false
+        },
+        "240mm_45_9inch_skoda_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 1400.0,
+          "shotFreq": 0.105,
+          "gunsCount": 8,
+          "caliber": 240.0,
+          "ammoCount": 800,
+          "isBeltAmmo": false
+        },
+        "100mm_50_skoda_k10_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 250.0,
+          "shotFreq": 0.238,
+          "gunsCount": 20,
+          "caliber": 100.0,
+          "ammoCount": 4000,
+          "isBeltAmmo": false
+        },
+        "66mm_45_skoda_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 210.0,
+          "shotFreq": 0.5,
+          "aimMaxDist": 1750.0,
+          "gunsCount": 2,
+          "caliber": 66.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        },
+        "47mm_qf3pdr_hotchkiss_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 52.0,
+          "shotFreq": 0.5,
+          "aimMaxDist": 1750.0,
+          "gunsCount": 4,
+          "caliber": 47.0,
+          "ammoCount": 1200,
+          "isBeltAmmo": false
+        },
+        "au_450_torpedo": {
+          "wtype": "torpedo",
+          "damage": 4550.0,
+          "shotFreq": 0.1,
+          "distToLive": 2500.0,
+          "gunsCount": 3,
+          "caliber": 450.0,
+          "ammoCount": 15,
           "isBeltAmmo": false
         }
       }

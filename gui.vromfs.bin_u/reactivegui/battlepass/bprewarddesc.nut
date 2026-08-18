@@ -13,7 +13,7 @@ let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentatio
 let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { infoCommonButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitInfo
+let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -23,12 +23,13 @@ let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
 
 
-let unitPlateWidth = hdpx(480)
-let unitPlateHeight = unitPlateWidth * unitPlateRatio
+let unitPlateWidth = 2 * REWARD_STYLE_MEDIUM.boxSize + REWARD_STYLE_MEDIUM.boxGap
+let unitPlateHeight = REWARD_STYLE_MEDIUM.boxSize
+let unitInfoBtnSize = evenPx(50)
 
-let mkUnitPlate = @(unitId) function() {
+let mkUnitPlate = @(unitId, isUpgraded = false) function() {
   let res = { watch = serverConfigs }
-  let unit = serverConfigs.get()?.allUnits[unitId]
+  let unit = serverConfigs.get()?.allUnits[unitId].__merge({ isUpgraded })
   if (unit == null)
     return res
   return res.__update({
@@ -47,7 +48,7 @@ let mkUnitPlate = @(unitId) function() {
           padding = hdpx(10)
           children = infoCommonButton(
             @() openUnitDetailsWnd({ name = unit.name }),
-            { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
+            { size = unitInfoBtnSize, hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
           )
         }
       ]
@@ -110,11 +111,10 @@ let rewardDesc = @(reward, curStage, lockText, paidText) @() {
 }.__update(fontTinyAccented)
 
 let defImageCtor = @(viewInfo, _) mkRewardPlateImage(viewInfo, REWARD_STYLE_BIG)
-let unitImageCtor = @(viewInfo, _) mkUnitPlate(viewInfo.id)
 
 let infoImageCtors = {
-  unit = unitImageCtor
-  unitUpgrade = unitImageCtor
+  unit = @(vi, _) mkUnitPlate(vi.id)
+  unitUpgrade = @(vi, _) mkUnitPlate(vi.id, true)
   decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM)
   currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
   booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)

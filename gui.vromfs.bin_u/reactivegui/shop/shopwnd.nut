@@ -127,7 +127,13 @@ function mkShopContent(contentW, pannableAreaCtor, shopIdW = null, close = close
     let currentY = pageScrollHandler?.elem.getScrollOffsY()
     if (currentY == null)
       return
-    let idx = distances.get().findindex(@(v) currentY >= v.top && currentY <= v.bottom)
+    let bottomBoundary = pageScrollHandler?.elem.getContentHeight() ?? 0
+    let isBottom = currentY + (pageScrollHandler?.elem.getHeight() ?? 0) >= bottomBoundary
+    local idx = null
+    if (isBottom)
+      idx = distances.get().findindex(@(v) v.top > currentY)
+    if (!isBottom || idx == null)
+      idx = distances.get().findindex(@(v) currentY >= v.top && currentY <= v.bottom)
     if (idx != categoryIdW.get() && idx != null)
       action(idx)
   }

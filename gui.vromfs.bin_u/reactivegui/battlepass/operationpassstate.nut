@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { G_UNIT } = require("%appGlobals/rewardType.nut")
+let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
 let { getUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
 let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
@@ -46,7 +46,7 @@ let opSeasonUnitName = Computed(function() {
   let { userstatRewards = {} } = serverConfigs.get()
   for (local i = stages.len() - 1; i >= 0; i--)
     foreach (k, _ in stages[i].rewards) {
-      let unitReward = (userstatRewards?[k] ?? []).findvalue(@(r) r.gType == G_UNIT)
+      let unitReward = (userstatRewards?[k] ?? []).findvalue(@(r) r.gType in unitRewardTypes)
       if (unitReward != null)
         return getUnitName(unitReward.id)
     }

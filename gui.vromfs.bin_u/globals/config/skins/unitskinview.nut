@@ -77,6 +77,9 @@ return {
       "": "usa_pby_5a_early_a",
       "upgraded": "ussr_la_11_standard"
     },
+    "au_battleship_franz_ferdinand": {
+      "": "camo_blackwhite_geometry"
+    },
     "b-17e": {
       "": "usa_p43a_1_usaaf",
       "upgraded": "ussr_p_47d_ussr"
@@ -3270,6 +3273,9 @@ return {
     "mosquito_fb_mk6": {
       "": "usa_p_400",
       "upgraded": "uk_spitfire_mk1a_summer"
+    },
+    "n1k1_kyuofu": {
+      "": "jap_aichi_b7a2_dark_green"
     },
     "n1k2_j": {
       "": "jap_ki_43_3_otsu",
