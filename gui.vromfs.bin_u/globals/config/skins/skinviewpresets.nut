@@ -192,6 +192,7 @@ let skinsByTag = {
     "ussr_camo_object_279_bulldog"
     "ussr_camo_object_279_victor"
     "tr_camo_desert_bicolor_lines"
+    "ussr_camo_bmpt_72"
     "ussr_t_72av_turms_anniversary2026"
     "us_xm1_gm_anniversary2026"
     "us_m60a3_tts_anniversary2026"

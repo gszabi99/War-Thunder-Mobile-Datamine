@@ -115383,6 +115383,88 @@
       }
     }
   },
+  "ussr_bmpt_72": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "operatorCountry": "country_russia",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_tank_destroyer": true,
+      "type_missile_tank": true,
+      "has_proximityFuse_rocket": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 130.0,
+      "mainWeaponType": "auxCannon",
+      "armorThicknessFront": [
+        0.55,
+        0.0,
+        0.45
+      ],
+      "armorThicknessSide": [
+        0.25,
+        0.0,
+        0.75
+      ],
+      "crew": 3,
+      "mass": 44000.0,
+      "maxSpeedForward": 16.6691,
+      "maxSpeedBackward": 1.16161,
+      "powerToWeightRatio": 22.7273,
+      "weapons": {
+        "30mm_2A42_BMPT_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 35.1221,
+          "reloadTime": 0.10917,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": true
+        },
+        "130mm_9M120_BMPT_launcher_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 130.0,
+          "armorPower": 800.0,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_PKT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_2A42_BMPT_user_cannon": {
+        "30mm_2a42_APDS": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "30mm_2a42_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_2a42_HE": {
+          "icon": "hud_ammo_bullet_he"
+        }
+      },
+      "130mm_9M120_BMPT_launcher_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_atgm_tandem_ap2_he1"
+        },
+        "130mm_9m120f_1_ATGM": {
+          "icon": "hud_ammo_atgm_he_ap1_he2"
+        }
+      }
+    }
+  },
   "ussr_2s19_m2": {
     "type": "tank",
     "hangar_place": "tank",

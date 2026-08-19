@@ -47,7 +47,7 @@ let mkUnitPlate = @(unitId, isUpgraded = false) function() {
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
           children = infoCommonButton(
-            @() openUnitDetailsWnd({ name = unit.name }),
+            @() openUnitDetailsWnd({ name = unitId, isUpgraded }),
             { size = unitInfoBtnSize, hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
           )
         }

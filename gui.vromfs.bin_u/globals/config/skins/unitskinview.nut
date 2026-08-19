@@ -5104,6 +5104,10 @@ return {
       "": "ussr_camo_green",
       "forest": "ussr_camo_deform"
     },
+    "ussr_bmpt_72": {
+      "": "ussr_camo_bmpt_72",
+      "forest": "ussr_modern_green"
+    },
     "ussr_bmpt_prem": {
       "": "ussr_camo_bmpt",
       "forest": "ussr_camo_green"
