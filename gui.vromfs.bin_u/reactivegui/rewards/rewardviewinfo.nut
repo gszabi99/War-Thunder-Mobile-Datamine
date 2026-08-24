@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
+from "%appGlobals/config/countryPresentation.nut" import sortCountries
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
@@ -7,36 +8,40 @@ let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut"
 let NO_DROP_LIMIT = 1000000
 
 let rTypesPriority = {
-  [G_STAT_SET]        = 1000000,
-  [G_STAT_ADD]        = 1000000,
-  [G_LOOTBOX]         = 100000,
-  [G_PRIZE_TICKET]    = 30000,
-  [G_UNIT_UPGRADE]    = 20000,
-  [G_UNIT]            = 10000,
-  [G_BLUEPRINT]       = 9000,
-  [G_DISCOUNT]        = 8000,
-  [G_SKIN]            = 5000,
-  [G_DECORATOR]       = 1000,
-  [G_BOOSTER]         = 500,
-  [G_CURRENCY]        = 100,
-  [G_PREMIUM]         = 50,
-  [G_ITEM]            = 1,
+  [G_STAT_SET]        = 10_000_000,
+  [G_STAT_ADD]        = 9_000_000,
+  [G_LOOTBOX]         = 8_000_000,
+  [G_PRIZE_TICKET]    = 900_000,
+  [G_UNIT_UPGRADE]    = 800_000,
+  [G_UNIT]            = 700_000,
+  [G_BLUEPRINT]       = 600_000,
+  [G_DISCOUNT]        = 500_000,
+  [G_SKIN]            = 400_000,
+  [G_DECORATOR]       = 10_000,
+  [G_BOOSTER]         = 5000,
+  [G_CURRENCY]        = 1000,
+  [G_PREMIUM]         = 900,
+  [G_ITEM]            = 100,
 }
+
+foreach (i, t in rewardTypeByValue.keys().sort())
+  if (t not in rTypesPriority)
+    rTypesPriority[t] <- i
 
 let customPriority = {
   [G_DECORATOR] = {
-    avatar        = 1010
-    nickFrame     = 1009
-    title         = 1008
+    avatar        = 10_010
+    nickFrame     = 10_009
+    title         = 10_008
   },
   [G_CURRENCY] = {
-    gold          = 110
-    eventKey      = 109
-    warbond       = 108
-    wp            = 30
+    gold          = 1010
+    eventKey      = 1009
+    warbond       = 1008
+    wp            = 300
   },
   [G_ITEM] = {
-    spare         = 40
+    spare         = 400
   },
 }
 
@@ -61,11 +66,29 @@ let ignoreSubIdRTypes = [G_CURRENCY, G_LOOTBOX, G_BLUEPRINT].reduce(@(res, t) re
 
 let getDecoratorType = memoize(@(id) serverConfigs.get()?.allDecorators[id].dType)
 
+
+function unitsSort(a, b) {
+  let { allUnits = null } = serverConfigs.get()
+  let unitA = allUnits?[a.id]
+  let unitB = allUnits?[b.id]
+  if (unitA == null || unitB == null)
+    return (unitA == null) <=> (unitB == null)
+  return unitB.mRank <=> unitA.mRank
+    || sortCountries(unitA.country, unitB.country)
+}
+
+let customSort = {
+  [G_UNIT] = unitsSort,
+  [G_UNIT_UPGRADE] = unitsSort,
+  [G_BLUEPRINT] = unitsSort,
+}
+
 let getPriorirty = @(info)
   info.rType == "decorator" ? customPriority.decorator?[getDecoratorType(info.id)]
     : (customPriority?[info.rType]?[info.id] ?? rTypesPriority?[info.rType] ?? 0)
 
 let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
+  || (customSort?[a.rType](a, b) ?? 0)
   || b.count <=> a.count
   || a.id <=> b.id
   || (a?.subId ?? 0) <=> (b?.subId ?? 0)
