@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { eventSectionOrder } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
-let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress, emptyProgress,
-  setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardCurrencies, getAllUnlockCurrencies
+let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockTablesSeasons, isSeasonPast, unlockProgress,
+  emptyProgress, setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardCurrencies, getAllUnlockCurrencies
 } = require("%rGui/unlocks/unlocks.nut")
 let { EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION,
   PERSONAL_META_MARK, SPEED_UP_AD_COST
@@ -12,7 +13,7 @@ let { EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
+let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { showAdsForReward, isProviderInited  } = require("%rGui/ads/adsState.nut")
 let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -48,40 +49,54 @@ function closeRewardsList() {
 }
 
 let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFIX, day)
+let mkEventNamedSectionName = @(section, eventName) "".concat(eventName, "_", EVENT_PREFIX, "section_", section)
 
 let inactiveEventUnlocks = Computed(@() allUnlocksDesc.get()
-  .filter(@(u) u?.meta.event_day != null && !(unlockTables.get()?[u?.table] ?? false))
+  .filter(@(u) (u?.meta.event_day != null || (u?.meta.section ?? "") != "")
+    && !(unlockTables.get()?[u?.table] ?? false)
+    && !isSeasonPast(u, unlockTablesSeasons.get()))
   .map(@(u, id) u.__merge(unlockProgress.get()?[id] ?? emptyProgress)))
 
-let eventUnlocksByDays = Computed(function() {
-  let days = {}
+let eventUnlocksBySection = Computed(function() {
+  let res = {}
   let unlocks = {}.__merge(campaignActiveUnlocks.get(), inactiveEventUnlocks.get())
-  foreach (name, u in unlocks) {
-    let { event_day = null, event_id = null } = u?.meta
-    if (!event_id || !event_day)
+  foreach (name, unlock in unlocks) {
+    let { event_id = null, event_day = null, section = null } = unlock?.meta
+    if (event_id == null)
       continue
-    if (event_id not in days)
-      days[event_id] <- {}
-    days[event_id][event_day] <- (days[event_id]?[event_day] ?? {}).__update({ [name] = u })
+    let sectionId = event_day != null ? mkEventSectionName(event_day, event_id)
+      : (section ?? "") != "" ? mkEventNamedSectionName(section, event_id)
+      : null
+    if (sectionId == null)
+      continue
+    getSubTable(getSubTable(res, event_id), sectionId)[name] <- unlock
   }
-  return days
-})
-
-let eventDays = Computed(function(prev) {
-  let res = {}
-  foreach (key, event in eventUnlocksByDays.get())
-    res[key] <- event.keys().sort(@(a, b) a.tointeger() <=> b.tointeger())
-  return isEqual(prev, res) ? prev : res
-})
-
-let eventSections = Computed(function() {
-  let res = {}
-  foreach (eventName, days in eventDays.get())
-    res[eventName] <- days.map(@(v) {
-      name = mkEventSectionName(v, eventName)
-      idx = v
-    })
   return res
+})
+
+let eventSections = Computed(function(prev) {
+  let res = {}
+  foreach (eventId, sections in eventUnlocksBySection.get()) {
+    let descs = sections.keys().map(function(sectionId) {
+      let unlocks = sections[sectionId]
+      let { event_day = null, section = null } = unlocks[unlocks.keys()[0]]?.meta
+      return event_day != null
+        ? {
+            name = sectionId
+            sortDay = event_day.tointeger()
+            section = null
+            title = loc("enumerated_day", { number = event_day })
+          }
+        : { name = sectionId, sortDay = null, section, title = loc($"quests/{section}") }
+    })
+    descs.sort(@(a, b) (a.sortDay != null) <=> (b.sortDay != null)
+      || a.sortDay <=> b.sortDay
+      || (eventSectionOrder?[a.section] ?? 1) <=> (eventSectionOrder?[b.section] ?? 1)
+      || a.section <=> b.section)
+
+    res[eventId] <- descs
+  }
+  return prevIfEqual(prev, res)
 })
 
 let sectionMetaMarks = [DAILY_SECTION, WEEKLY_SECTION, "promo_quest", "achievement", PERSONAL_META_MARK]
@@ -100,11 +115,9 @@ let sectionsCfg = Computed(function() {
     [DAILY_SECTION] = loc("userlog/battletask/type/daily"),
     [WEEKLY_SECTION] = loc("quests/weekly")
   }
-  foreach (cfg in eventSections.get())
-    res.__update(cfg.reduce(function(acc, v) {
-      acc[v.name] <- loc("enumerated_day", { number = v.idx })
-      return acc
-    }, {}))
+  foreach (descs in eventSections.get())
+    foreach (d in descs)
+      res[d.name] <- d.title
   return res
 })
 
@@ -117,18 +130,18 @@ let questsBySection = Computed(function() {
   foreach (name, u in campaignActiveUnlocks.get())
     if (u?.meta.event_progress)
       continue
-    else if (u?.meta.event_id in res)
-      res[u.meta.event_id][name] <- u
-    else
-      foreach (section in sectionMetaMarks)
-        if (section in u?.meta)
-          res[section][name] <- u
-
-  foreach (eventName, unlocks in eventUnlocksByDays.get())
-    res.__update(unlocks.reduce(function(acc, v, key) {
-      acc[mkEventSectionName(key, eventName)] <- v
-      return acc
-    }, {}))
+    else {
+      let eventId = u?.meta.event_id
+      if (eventId in res)
+        res[eventId][name] <- u
+      else
+        foreach (section in sectionMetaMarks)
+          if (section in u?.meta)
+            res[section][name] <- u
+    }
+  foreach (sections in eventUnlocksBySection.get())
+    foreach (sectionId, unlocks in sections)
+      res[sectionId] <- unlocks
   return res
 })
 
@@ -137,7 +150,7 @@ let progressUnlockByTab = Computed(function() {
   foreach(unlock in campaignActiveUnlocks.get())
     if ("event_progress" in unlock?.meta) {
       let { event_id = MAIN_EVENT_ID } = unlock.meta
-      let key = event_id == MAIN_EVENT_ID || event_id == "" ? EVENT_TAB
+      let key = event_id == MAIN_EVENT_ID ? EVENT_TAB
         : specialEvents.get().findindex(@(e) e.eventName == event_id)
       if (key != null)
         res[key] <- unlock

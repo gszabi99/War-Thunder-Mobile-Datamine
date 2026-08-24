@@ -129,6 +129,12 @@
       },
       "radarVisibility": {
         "band0": 0.08
+      },
+      "signature": {
+        "isCloud": true,
+        "radar": {
+          "multiplier0": 0.08
+        }
       }
     }
   }

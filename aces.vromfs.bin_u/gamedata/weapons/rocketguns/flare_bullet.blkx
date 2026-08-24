@@ -126,6 +126,11 @@
       },
       "infraRedVisibility": {
         "band2": 1.0
+      },
+      "signature": {
+        "infraRed": {
+          "emission2": 1.0
+        }
       }
     }
   }

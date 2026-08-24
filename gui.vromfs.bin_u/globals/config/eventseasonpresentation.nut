@@ -172,6 +172,8 @@ let seasonFlagsRotation = {
   air = ["major_banner_wall_even", "major_banner_wall_odd"],
 }
 
+let eventSectionOrder = { daily = 0, weekly = 1 }
+
 function mkEventPresentation(name) {
   let res = presentations?[name] ?? {}
   foreach (id, gen in genParams)
@@ -193,4 +195,5 @@ return {
   getEventPresentation
   eventBgFallback
   seasonFlagsRotation
+  eventSectionOrder
 }

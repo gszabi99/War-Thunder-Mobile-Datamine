@@ -117,7 +117,7 @@ function closeMsgBox(uid) {
     logM($"close '{uid}'")
 }
 
-function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}, modalPriority = MWP_COMMON) {
+function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}, modalPriority = MWP_COMMON, onBgClick = null) {
   uid = uid ?? $"msgbox_{text}"
   closeMsgBox(uid)
   logM($"open '{uid}'")
@@ -126,7 +126,7 @@ function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wn
     priority = modalPriority
     size = FLEX
     children = mkCustomMsgBoxWnd(title, text, mkMsgBoxBtnsSet(uid, buttons), wndOvr)
-    onClick = EMPTY_ACTION
+    onClick = onBgClick ?? EMPTY_ACTION
     animations = wndSwitchAnim
   }))
   return uid

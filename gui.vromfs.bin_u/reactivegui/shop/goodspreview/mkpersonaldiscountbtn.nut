@@ -33,9 +33,9 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
       return null
 
     foreach (u in campaignActiveUnlocks.get()) {
-      let { event_id = null } = u?.meta
+      let { event_id = null, sub_event_of = null } = u?.meta
       if (event_id != null && u?.stages.findindex(@(s) s?.rewards.findindex(@(_, id) id in discountRewards) != null) != null)
-        return event_id
+        return sub_event_of ?? event_id
     }
 
     return null

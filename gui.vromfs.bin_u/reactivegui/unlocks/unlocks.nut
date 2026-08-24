@@ -112,6 +112,14 @@ function isFitSeason(unlock, seasons) {
     && (end_index == null || end_index >= season)
 }
 
+function isSeasonPast(unlock, seasons) {
+  let { end_index = null, table = unlock?.table ?? "" } = unlock?.activity
+  if (table == "")
+    return false
+  let season = seasons?[table] ?? -1
+  return end_index != null && season >= 0 && end_index < season
+}
+
 let personalUnlocksData = Computed(@() userstatUnlocks.get()?.personalUnlocks ?? {})
 
 let activeUnlocks = Computed(@(prev) allUnlocksDesc.get()
@@ -413,6 +421,8 @@ return {
   emptyProgress = freeze(emptyProgress)
   getRelativeStageData
   unlockTables
+  unlockTablesSeasons
+  isSeasonPast
   allUnlocksDesc
   buyUnlock
   buyUnlockReroll

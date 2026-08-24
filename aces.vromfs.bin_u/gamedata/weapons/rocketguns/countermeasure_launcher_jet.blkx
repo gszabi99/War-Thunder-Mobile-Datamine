@@ -154,6 +154,11 @@
       },
       "infraRedVisibility": {
         "band2": 1.0
+      },
+      "signature": {
+        "infraRed": {
+          "emission2": 1.0
+        }
       }
     }
   },
@@ -289,6 +294,12 @@
           },
           "radarVisibility": {
             "band0": 0.08
+          },
+          "signature": {
+            "isCloud": true,
+            "radar": {
+              "multiplier0": 0.08
+            }
           }
         }
       },
@@ -419,6 +430,11 @@
           },
           "infraRedVisibility": {
             "band2": 1.0
+          },
+          "signature": {
+            "infraRed": {
+              "emission2": 1.0
+            }
           }
         }
       }
@@ -553,6 +569,11 @@
           },
           "infraRedVisibility": {
             "band2": 1.0
+          },
+          "signature": {
+            "infraRed": {
+              "emission2": 1.0
+            }
           }
         }
       },
@@ -683,6 +704,11 @@
           },
           "infraRedVisibility": {
             "band2": 1.0
+          },
+          "signature": {
+            "infraRed": {
+              "emission2": 1.0
+            }
           }
         }
       },
@@ -816,6 +842,12 @@
           },
           "radarVisibility": {
             "band0": 0.08
+          },
+          "signature": {
+            "isCloud": true,
+            "radar": {
+              "multiplier0": 0.08
+            }
           }
         }
       }
@@ -950,6 +982,11 @@
           },
           "infraRedVisibility": {
             "band2": 1.0
+          },
+          "signature": {
+            "infraRed": {
+              "emission2": 1.0
+            }
           }
         }
       },
@@ -1080,6 +1117,11 @@
           },
           "infraRedVisibility": {
             "band2": 1.0
+          },
+          "signature": {
+            "infraRed": {
+              "emission2": 1.0
+            }
           }
         }
       }
@@ -1216,6 +1258,12 @@
         },
         "radarVisibility": {
           "band0": 0.08
+        },
+        "signature": {
+          "isCloud": true,
+          "radar": {
+            "multiplier0": 0.08
+          }
         }
       }
     }

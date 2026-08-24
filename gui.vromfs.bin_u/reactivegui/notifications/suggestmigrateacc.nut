@@ -16,12 +16,15 @@ from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
-from "%rGui/components/textButton.nut" import textButtonBattle, textButtonPrimary
+from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
 from "%rGui/account/emailRegistrationState.nut" import canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration
 
+
 const INCOMPATIBLE_FROM_VERSION = "1.26.0.0"
+const GUEST_MSG_UID = "migrateGuestUpgrade"
 
 local info = null
 
@@ -31,7 +34,10 @@ let wndPadW = hdpx(90)
 let wndPadH = hdpx(50)
 let contentW = wndW - (2 * wndPadW)
 let parGap = hdpx(40)
-let advGap = hdpx(40)
+let advGap = hdpx(30)
+let urlColor = 0xFF17C0FC
+let urlHoverColor = 0xFF84E0FA
+let urlLineWidth = hdpxi(1)
 
 let isSuggested = hardPersistWatched("suggestMigrateAcc.isSuggested", false)
 let shouldsuggestMigrateAcc = keepref(Computed(@() external_gp_build_released.get() && !isExternalOperator()
@@ -59,6 +65,34 @@ function openMigrationWebpageAndMaybeClose() {
 function openRegionalAppPageInGooglePlay() {
   if (info?.REGIONAL_APP_GOOGLEPLAY_URL != null)
     eventbus_send("openUrl", { baseUrl = info.REGIONAL_APP_GOOGLEPLAY_URL })
+}
+
+function openPixelSitePage() {
+  if (info?.PIXEL_SITE_URL != null)
+    eventbus_send("openUrl", { baseUrl = info.PIXEL_SITE_URL })
+}
+
+function upgradeGuestAccount() {
+  if (canLinkEmailForGaijinLogin.get())
+    openLinkEmailForGaijinLogin()
+  else if (canUpgradeGuestAccountToGaijinID.get())
+    openGuestEmailRegistration()
+}
+
+function onMigrateClick() {
+  if (!canLinkEmailForGaijinLogin.get() && !canUpgradeGuestAccountToGaijinID.get())
+    return openMigrationWebpageAndMaybeClose()
+
+  openMsgBox({
+    uid = GUEST_MSG_UID
+    title = utf8ToUpper(info?.guestAccTitle ?? "")
+    text = info?.guestAccDesc ?? ""
+    function onBgClick() {
+      closeMsgBox(GUEST_MSG_UID)
+      close()
+    }
+    buttons = [{ text = info?.btnGaijinId, styleId = "PRIMARY", isDefault = true, cb = upgradeGuestAccount }]
+  })
 }
 
 let mkTextarea = @(text, ovr = {}) {
@@ -93,7 +127,7 @@ function mkAdvComps() {
     gap = hdpx(30)
     children = [
       advIcons?[idx] != null
-        ? mkIcon(advIcons[idx], hdpx(50))
+        ? mkIcon(advIcons[idx], hdpx(60))
         : null
       mkTextarea(utf8ToUpper(txt), { size = FLEX_H, halign = ALIGN_CENTER }.__update(fontBoldVeryTinyAccented))
     ]
@@ -118,6 +152,27 @@ let errorWnd = modalWndBg.__merge({
     mkStatusText("\n".concat(loc("failed_to_load_data"), loc("try_again_later")))
   ]
 })
+
+function mkUrlLink(text, action) {
+  if (text == "")
+    return null
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    rendObj = ROBJ_TEXT
+    text
+    color = (stateFlags.get() & S_HOVER) ? urlHoverColor : urlColor
+    behavior = Behaviors.Button
+    onElemState = @(sf) stateFlags.set(sf)
+    onClick = action
+    children = {
+      size = [flex(), urlLineWidth]
+      vplace = ALIGN_BOTTOM
+      rendObj = ROBJ_SOLID
+      color = (stateFlags.get() & S_HOVER) ? urlHoverColor : urlColor
+    }
+  }.__update(fontTinyAccented)
+}
 
 let mkContentWnd = @() modalWndBg.__merge({
   size = [wndW, wndH]
@@ -145,6 +200,7 @@ let mkContentWnd = @() modalWndBg.__merge({
               { size = [flex(), SIZE_TO_CONTENT], halign = ALIGN_CENTER }.__update(fontBoldSmall))
             {
               size = [flex(), SIZE_TO_CONTENT]
+              margin = [0, 0, hdpx(30), 0]
               flow = FLOW_HORIZONTAL
               gap = parGap
               children = mkParComps()
@@ -157,21 +213,22 @@ let mkContentWnd = @() modalWndBg.__merge({
             }
           ]
         }
-        @() {
-          watch = [canLinkEmailForGaijinLogin, canUpgradeGuestAccountToGaijinID]
+        {
           size = [flex(), SIZE_TO_CONTENT]
           vplace = ALIGN_BOTTOM
+          valign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
           children = [
-            textButtonPrimary(utf8ToUpper(info?.btnApp ?? ""), openRegionalAppPageInGooglePlay)
-            { size = [hdpx(50), flex()] }
-            canLinkEmailForGaijinLogin.get()
-                ? textButtonPrimary(utf8ToUpper(info?.btnGaijinId ?? ""), openLinkEmailForGaijinLogin)
-              : canUpgradeGuestAccountToGaijinID.get()
-                ? textButtonPrimary(utf8ToUpper(info?.btnGaijinId ?? ""), openGuestEmailRegistration)
-              : null
+            {
+              flow = FLOW_VERTICAL
+              gap = hdpx(20)
+              children = [
+                mkUrlLink(info?.btnApp ?? "", openRegionalAppPageInGooglePlay)
+                mkUrlLink(info?.btnPix ?? "", openPixelSitePage)
+              ]
+            }
             { size = FLEX }
-            textButtonBattle(utf8ToUpper(info?.btnMigrate ?? ""), openMigrationWebpageAndMaybeClose)
+            textButtonBattle(utf8ToUpper(info?.btnMigrate ?? ""), onMigrateClick)
           ]
         }
       ]
